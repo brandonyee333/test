@@ -19,9 +19,11 @@ import com.liferay.lcs.client.alert.LCSAlert;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.BasePowerMockitoTest;
 import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
+import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.util.LCSUtil;
@@ -47,7 +49,6 @@ import org.junit.runner.RunWith;
 
 import org.mockito.Matchers;
 
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -56,12 +57,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest(
 	{
-		FileUtil.class, HandshakeTask.class, LCSClusterEntryTokenAdvisor.class,
-		LCSUtil.class
+		FileUtil.class, HandshakeTask.class,
+		LCSClusterEntryTokenAdvisorImpl.class, LCSUtil.class
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class LCSAlertAdvisorImplTest extends PowerMockito {
+public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 
 	@Before
 	public void setUp() {
@@ -77,7 +78,8 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsEventManager,
-			_mockGetMessagesToReturnHandshakeResponseMessage(201));
+			spyGetMessagesToReturnHandshakeResponseMessage(
+				201, lcsEventManager));
 
 		handshakeTask.run();
 
@@ -92,8 +94,10 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 	public void testErrorInvalidTokenIfEncryptorExceptionThrown()
 		throws Exception {
 
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =
-			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			"test-file-name"
@@ -114,10 +118,12 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 			new byte[0]
 		);
 
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisor, lcsEventManager, null);
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -135,7 +141,8 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsEventManager,
-			_mockGetMessagesToReturnHandshakeResponseMessage(200));
+			spyGetMessagesToReturnHandshakeResponseMessage(
+				200, lcsEventManager));
 
 		handshakeTask.run();
 
@@ -155,7 +162,8 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsEventManager,
-			_mockGetMessagesToReturnHandshakeResponseMessage(202));
+			spyGetMessagesToReturnHandshakeResponseMessage(
+				202, lcsEventManager));
 
 		handshakeTask.run();
 
@@ -198,10 +206,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 		};
 
 		for (Exception exception : exceptions) {
-			LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
-				new LCSAlertAdvisorImpl());
+			LCSEventManager lcsEventManager = new LCSEventManager();
 
-			_testLCSClusterEntryAdvisorExceptionIsThrown(exception);
+			LCSAlertAdvisorImpl lcsAlertAdvisor = spy(
+				new LCSAlertAdvisorImpl(lcsEventManager));
+
+			_testLCSClusterEntryAdvisorExceptionIsThrown(
+				exception, lcsEventManager);
 
 			Set<LCSAlert> lcsAlerts = lcsAlertAdvisor.getLCSAlerts();
 
@@ -222,8 +233,10 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testLCSPortletNotAuthorized() throws Exception {
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =
-			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			new LCSClusterEntryToken()
@@ -233,10 +246,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSAlertAdvisorImpl lcsAlertAdvisor = new LCSAlertAdvisorImpl(
+			lcsEventManager);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisor, lcsEventManager,
+				_mockIsAuthorizedReturnValue(Boolean.FALSE));
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -247,8 +263,10 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testSuccessValidToken() throws Exception {
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =
-			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			new LCSClusterEntryToken()
@@ -258,10 +276,13 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 			Matchers.anyInt()
 		);
 
-		LCSAlertAdvisorImpl lcsAlertAdvisor = spy(new LCSAlertAdvisorImpl());
+		LCSAlertAdvisorImpl lcsAlertAdvisor = new LCSAlertAdvisorImpl(
+			lcsEventManager);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisor, lcsEventManager,
+				_mockIsAuthorizedReturnValue(Boolean.TRUE));
 
 		lcsClusterEntryTokenCheckTask.run();
 
@@ -302,21 +323,6 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 		return handshakeResponseMessage;
 	}
 
-	private HandshakeResponseMessage _createHandshakeResponseMessage(
-		int errorCode) {
-
-		HandshakeResponseMessage handshakeResponseMessage =
-			new HandshakeResponseMessage();
-
-		handshakeResponseMessage.setErrorCode(errorCode);
-		handshakeResponseMessage.setErrorMessage(
-			"{\"errorCode\": " + errorCode +
-				", \"errorDescription\": \"Test\", \"status\": 400}");
-		handshakeResponseMessage.setKey("mock");
-
-		return handshakeResponseMessage;
-	}
-
 	private HandshakeResponseMessage _createHandshakeResponseSuccessMessage() {
 		HandshakeResponseMessage handshakeResponseMessage =
 			new HandshakeResponseMessage();
@@ -349,27 +355,6 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 		return lcsGatewayClient;
 	}
 
-	private LCSGatewayClient _mockGetMessagesToReturnHandshakeResponseMessage(
-			int errorCode)
-		throws Exception {
-
-		LCSGatewayClient lcsGatewayClient = mock(LCSGatewayClientImpl.class);
-
-		doReturn(
-			new ArrayList<Message>() {
-				{
-					add(_createHandshakeResponseMessage(errorCode));
-				}
-			}
-		).when(
-			lcsGatewayClient
-		).getMessages(
-			Matchers.anyString()
-		);
-
-		return lcsGatewayClient;
-	}
-
 	private LCSGatewayClient _mockGetMessagesToReturnHandshakeSuccessMessage()
 		throws Exception {
 
@@ -388,6 +373,22 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 		);
 
 		return lcsGatewayClient;
+	}
+
+	private LCSPortalClient _mockIsAuthorizedReturnValue(Boolean returnValue)
+		throws Exception {
+
+		LCSPortalClient lcsPortalClient = mock(LCSPortalClient.class);
+
+		doReturn(
+			returnValue
+		).when(
+			lcsPortalClient
+		).isAuthorized(
+			Matchers.anyString(), Matchers.anyString()
+		);
+
+		return lcsPortalClient;
 	}
 
 	private HandshakeTask _spyHandshakeTask(
@@ -422,11 +423,12 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 	}
 
 	private LCSClusterEntryTokenAdvisor
-			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
+			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(
+				LCSEventManager lcsEventManager)
 		throws Exception {
 
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = spy(
-			new LCSClusterEntryTokenAdvisorImpl());
+			new LCSClusterEntryTokenAdvisorImpl(lcsEventManager));
 
 		// Skip JavaParser, will fix
 
@@ -439,11 +441,11 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 	}
 
 	private void _testLCSClusterEntryAdvisorExceptionIsThrown(
-			Exception exception)
+			Exception exception, LCSEventManager lcsEventManager)
 		throws Exception {
 
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor =
-			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+			_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doThrow(
 			exception
@@ -454,7 +456,8 @@ public class LCSAlertAdvisorImplTest extends PowerMockito {
 		);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisor, lcsEventManager, null);
 
 		lcsClusterEntryTokenCheckTask.run();
 	}
