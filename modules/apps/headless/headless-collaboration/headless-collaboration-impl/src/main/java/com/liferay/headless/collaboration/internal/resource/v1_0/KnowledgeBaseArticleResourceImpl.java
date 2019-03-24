@@ -74,6 +74,24 @@ public class KnowledgeBaseArticleResourceImpl
 
 		return Page.of(
 			transform(
+				_kbArticleService.getGroupKBArticles(
+					contentSpaceId, WorkflowConstants.STATUS_APPROVED,
+					pagination.getStartPosition(), pagination.getEndPosition(),
+					null),
+				this::_toKBArticle),
+			pagination,
+			_kbArticleService.getKBArticlesCount(
+				contentSpaceId, 0, WorkflowConstants.STATUS_APPROVED));
+	}
+
+	@Override
+	public Page<KnowledgeBaseArticle>
+			getContentSpaceTreeKnowledgeBaseArticlesPage(
+				Long contentSpaceId, Pagination pagination)
+		throws Exception {
+
+		return Page.of(
+			transform(
 				_kbArticleService.getKBArticles(
 					contentSpaceId, 0, WorkflowConstants.STATUS_APPROVED,
 					pagination.getStartPosition(), pagination.getEndPosition(),
@@ -141,6 +159,17 @@ public class KnowledgeBaseArticleResourceImpl
 
 	@Override
 	public KnowledgeBaseArticle postContentSpaceKnowledgeBaseArticle(
+			Long contentSpaceId, KnowledgeBaseArticle knowledgeBaseArticle)
+		throws Exception {
+
+		return _getKnowledgeBaseArticle(
+			contentSpaceId, 0L,
+			_classNameLocalService.fetchClassName(KBFolder.class.getName()),
+			knowledgeBaseArticle);
+	}
+
+	@Override
+	public KnowledgeBaseArticle postContentSpaceTreeKnowledgeBaseArticle(
 			Long contentSpaceId, KnowledgeBaseArticle knowledgeBaseArticle)
 		throws Exception {
 
