@@ -23,6 +23,7 @@ import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSKeystoreException;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
@@ -48,7 +49,9 @@ import java.security.cert.Certificate;
 
 import javax.crypto.spec.SecretKeySpec;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
@@ -56,6 +59,31 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = LCSClusterEntryTokenAdvisor.class)
 public class LCSClusterEntryTokenAdvisorImpl
 	implements LCSClusterEntryTokenAdvisor, LCSEventListener {
+
+	public LCSClusterEntryTokenAdvisorImpl() {
+	}
+
+	public LCSClusterEntryTokenAdvisorImpl(LCSEventManager lcsEventManager) {
+		_lcsEventManager = lcsEventManager;
+
+		activate();
+	}
+
+	@Activate
+	public void activate() {
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
+	}
 
 	public String getLCSAccessSecret() {
 		return _lcsAccessSecret;
@@ -327,6 +355,10 @@ public class LCSClusterEntryTokenAdvisorImpl
 	private String _lcsAccessToken;
 	private long _lcsClusterEntryId;
 	private long _lcsClusterEntryTokenId;
+
+	@Reference
+	private LCSEventManager _lcsEventManager;
+
 	private String _portalPropertiesBlacklist;
 
 }
