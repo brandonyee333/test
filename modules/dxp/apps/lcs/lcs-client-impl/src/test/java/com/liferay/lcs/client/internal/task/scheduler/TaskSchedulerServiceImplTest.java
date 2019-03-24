@@ -17,6 +17,7 @@ package com.liferay.lcs.client.internal.task.scheduler;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
+import com.liferay.lcs.client.internal.BasePowerMockitoTest;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
@@ -31,7 +32,6 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
@@ -55,7 +55,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -69,7 +68,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class TaskSchedulerServiceImplTest extends PowerMockito {
+public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 
 	@Before
 	public void setUp() {
@@ -218,7 +217,7 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		LCSEventManager lcsEventManager = new LCSEventManager();
 
 		LCSGatewayClient lcsGatewayClient =
-			_mockGetMessagesToReturnHandshakeResponseMessage(
+			spyGetMessagesToReturnHandshakeResponseMessage(
 				200, lcsEventManager);
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
@@ -258,7 +257,7 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		LCSEventManager lcsEventManager = new LCSEventManager();
 
 		LCSGatewayClient lcsGatewayClient =
-			_mockGetMessagesToReturnHandshakeResponseMessage(
+			spyGetMessagesToReturnHandshakeResponseMessage(
 				201, lcsEventManager);
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
@@ -299,7 +298,7 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		LCSEventManager lcsEventManager = new LCSEventManager();
 
 		LCSGatewayClient lcsGatewayClient =
-			_mockGetMessagesToReturnHandshakeResponseMessage(
+			spyGetMessagesToReturnHandshakeResponseMessage(
 				202, lcsEventManager);
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
@@ -333,21 +332,6 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 		);
 	}
 
-	private HandshakeResponseMessage _createHandshakeResponseMessage(
-		int errorCode) {
-
-		HandshakeResponseMessage handshakeResponseMessage =
-			new HandshakeResponseMessage();
-
-		handshakeResponseMessage.setErrorCode(errorCode);
-		handshakeResponseMessage.setErrorMessage(
-			"{\"errorCode\": " + errorCode +
-				", \"errorDescription\": \"Test\", \"status\": 400}");
-		handshakeResponseMessage.setKey("mock");
-
-		return handshakeResponseMessage;
-	}
-
 	private LCSGatewayClient _mockGetMessagesToReturnCommandMessages(
 			LCSEventManager lcsEventManager)
 		throws Exception {
@@ -367,42 +351,6 @@ public class TaskSchedulerServiceImplTest extends PowerMockito {
 					add(new ScheduleTasksCommandMessage());
 					add(new SendInstallationEnvironmentCommandMessage());
 					add(new SendPortalPropertiesCommandMessage());
-				}
-			}
-		).when(
-			lcsGatewayClient
-		).getMessages(
-			Matchers.anyString()
-		);
-
-		return lcsGatewayClient;
-	}
-
-	private LCSGatewayClient _mockGetMessagesToReturnHandshakeResponseMessage(
-			int errorCode, LCSEventManager lcsEventManager)
-		throws Exception {
-
-		LCSGatewayClient lcsGatewayClient = spy(
-			new LCSGatewayClientImpl(lcsEventManager));
-
-		doNothing(
-		).when(
-			lcsGatewayClient
-		).deleteMessages(
-			Matchers.anyString()
-		);
-
-		doNothing(
-		).when(
-			lcsGatewayClient
-		).sendMessage(
-			Matchers.any(Message.class)
-		);
-
-		doReturn(
-			new ArrayList<Message>() {
-				{
-					add(_createHandshakeResponseMessage(errorCode));
 				}
 			}
 		).when(
