@@ -42,6 +42,15 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 		}
 	}
 
+	public LCSClusterEntryTokenCheckTask(
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSEventManager lcsEventManager, LCSPortalClient lcsPortalClient) {
+
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
+		_lcsEventManager = lcsEventManager;
+		_lcsPortalClient = lcsPortalClient;
+	}
+
 	@Override
 	public void run() {
 		LCSUtil.processLCSPortletState(LCSPortletState.NOT_REGISTERED);
