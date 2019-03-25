@@ -14,16 +14,29 @@
 
 package com.liferay.lcs.client.internal;
 
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
+import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
+import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
+import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.portal.kernel.service.CompanyLocalService;
+
+import java.net.UnknownHostException;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadFactory;
 
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -105,6 +118,30 @@ public class BasePowerMockitoTest extends PowerMockito {
 		return lcsGatewayClient;
 	}
 
+	protected HandshakeTask spyHandshakeTask(
+			LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
+			LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
+			UptimeAdvisor uptimeAdvisor)
+		throws Exception {
+
+		CompanyLocalService companyLocalService = mock(
+			CompanyLocalService.class);
+		LCSAlertAdvisor lcsAlertAdvisor = new LCSAlertAdvisorImpl();
+
+		HandshakeTask handshakeTask = spy(
+			new HandshakeTask(
+				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
+				lcsGatewayClient, lcsKeyAdvisor, threadFactory, uptimeAdvisor));
+
+		doReturn(
+			new HandshakeMessage()
+		).when(
+			handshakeTask, "_createHandshakeMessage"
+		);
+
+		return handshakeTask;
+	}
+
 	protected LCSClusterEntryTokenAdvisorImpl
 			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(
 				LCSEventManager lcsEventManager)
@@ -152,6 +189,34 @@ public class BasePowerMockitoTest extends PowerMockito {
 		);
 
 		return lcsClusterEntryTokenAdvisorImpl;
+	}
+
+	protected LCSGatewayClient spySendMessageToThrowLCSGatewayException(
+			LCSEventManager lcsEventManager)
+		throws Exception {
+
+		LCSGatewayClient lcsGatewayClient = spy(
+			new LCSGatewayClientImpl(lcsEventManager));
+
+		doReturn(
+			Boolean.TRUE
+		).when(
+			lcsGatewayClient
+		).isAvailable();
+
+		doThrow(
+			new LCSGatewayException(
+				"Unable to send message",
+				new JSONWebServiceTransportException.CommunicationFailure(
+					"Test gateway communication failure",
+					new ExecutionException(new UnknownHostException("Test"))))
+		).when(
+			lcsGatewayClient
+		).sendMessage(
+			Matchers.any(Message.class)
+		);
+
+		return lcsGatewayClient;
 	}
 
 	protected void verifyLCSClusterEntryTokenAdvisor(

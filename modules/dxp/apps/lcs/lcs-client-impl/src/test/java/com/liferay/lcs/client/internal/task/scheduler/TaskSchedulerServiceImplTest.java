@@ -15,37 +15,28 @@
 package com.liferay.lcs.client.internal.task.scheduler;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.BasePowerMockitoTest;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
-import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
-import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
 
-import java.net.UnknownHostException;
-
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadFactory;
 
 import org.junit.Before;
@@ -97,10 +88,11 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 		LCSEventManager lcsEventManager = new LCSEventManager();
 
 		LCSGatewayClient lcsGatewayClient =
-			_mockSendMessageToThrowLCSGatewayException(lcsEventManager);
+			spySendMessageToThrowLCSGatewayException(lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient);
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 			lcsEventManager, lcsGatewayClient, handshakeTask);
@@ -138,8 +130,9 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 		LCSGatewayClient lcsGatewayClient =
 			_mockGetMessagesToReturnCommandMessages(lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient);
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 			lcsEventManager, lcsGatewayClient, handshakeTask);
@@ -220,8 +213,9 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 			spyGetMessagesToReturnHandshakeResponseMessage(
 				200, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient);
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 			lcsEventManager, lcsGatewayClient, handshakeTask);
@@ -260,8 +254,9 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 			spyGetMessagesToReturnHandshakeResponseMessage(
 				201, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient);
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 			lcsEventManager, lcsGatewayClient, handshakeTask);
@@ -301,8 +296,9 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 			spyGetMessagesToReturnHandshakeResponseMessage(
 				202, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient);
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 			lcsEventManager, lcsGatewayClient, handshakeTask);
@@ -360,57 +356,6 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 		);
 
 		return lcsGatewayClient;
-	}
-
-	private LCSGatewayClient _mockSendMessageToThrowLCSGatewayException(
-			LCSEventManager lcsEventManager)
-		throws Exception {
-
-		LCSGatewayClient lcsGatewayClient = spy(
-			new LCSGatewayClientImpl(lcsEventManager));
-
-		doReturn(
-			Boolean.TRUE
-		).when(
-			lcsGatewayClient
-		).isAvailable();
-
-		doThrow(
-			new LCSGatewayException(
-				"Unable to send message",
-				new JSONWebServiceTransportException.CommunicationFailure(
-					"Test gateway communication failure",
-					new ExecutionException(new UnknownHostException("Test"))))
-		).when(
-			lcsGatewayClient
-		).sendMessage(
-			Matchers.any(Message.class)
-		);
-
-		return lcsGatewayClient;
-	}
-
-	private HandshakeTask _spyHandshakeTask(
-			LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient)
-		throws Exception {
-
-		CompanyLocalService companyLocalService = mock(
-			CompanyLocalService.class);
-		LCSAlertAdvisor lcsAlertAdvisor = new LCSAlertAdvisorImpl();
-
-		HandshakeTask handshakeTask = spy(
-			new HandshakeTask(
-				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
-				lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-				_uptimeAdvisor));
-
-		doReturn(
-			new HandshakeMessage()
-		).when(
-			handshakeTask, "_createHandshakeMessage"
-		);
-
-		return handshakeTask;
 	}
 
 	private void _spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
