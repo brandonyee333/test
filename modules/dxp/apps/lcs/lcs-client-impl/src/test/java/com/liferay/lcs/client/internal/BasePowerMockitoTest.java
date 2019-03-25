@@ -26,6 +26,7 @@ import com.liferay.lcs.messaging.Message;
 import java.util.ArrayList;
 
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import org.powermock.api.mockito.PowerMockito;
 
@@ -151,6 +152,35 @@ public class BasePowerMockitoTest extends PowerMockito {
 		);
 
 		return lcsClusterEntryTokenAdvisorImpl;
+	}
+
+	protected void verifyLCSClusterEntryTokenAdvisor(
+			int maxNumberOfOnLCSEventInvocations,
+			int maxNumberOfSpecificOnLCSEventInvocations,
+			LCSEvent specificLCSEvent, int maxNumberOfDeleteMethodInvocations,
+			LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl)
+		throws Exception {
+
+		Mockito.verify(
+			lcsClusterEntryTokenAdvisorImpl,
+			Mockito.times(maxNumberOfOnLCSEventInvocations)
+		).onLCSEvent(
+			Matchers.any(LCSEvent.class)
+		);
+
+		Mockito.verify(
+			lcsClusterEntryTokenAdvisorImpl,
+			Mockito.times(maxNumberOfSpecificOnLCSEventInvocations)
+		).onLCSEvent(
+			specificLCSEvent
+		);
+
+		verifyPrivate(
+			lcsClusterEntryTokenAdvisorImpl,
+			Mockito.times(maxNumberOfDeleteMethodInvocations)
+		).invoke(
+			"_deleteLCSCLusterEntryTokenFile"
+		);
 	}
 
 	private HandshakeResponseMessage _createHandshakeResponseMessage(

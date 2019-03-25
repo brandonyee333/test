@@ -16,11 +16,16 @@ package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
+import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
+import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.BasePowerMockitoTest;
 import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
+import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
+import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.HandshakeMessage;
@@ -31,6 +36,8 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
+
+import java.io.IOException;
 
 import java.net.UnknownHostException;
 
@@ -45,7 +52,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -55,11 +61,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(
 	{
 		ConfigurationFactoryUtil.class, FileUtil.class, HandshakeTask.class,
-		LCSClusterEntryTokenAdvisorImpl.class, PortletClassLoaderUtil.class
+		LCSClusterEntryTokenAdvisorImpl.class, LCSUtil.class,
+		PortletClassLoaderUtil.class
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
+public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 
 	@Before
 	public void setUp() {
@@ -83,8 +90,23 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 		_uptimeAdvisor = mock(UptimeAdvisor.class);
 
 		mockStatic(
-			ConfigurationFactoryUtil.class, FileUtil.class,
+			ConfigurationFactoryUtil.class, FileUtil.class, LCSUtil.class,
 			PortletClassLoaderUtil.class);
+	}
+
+	@Test
+	public void testNoReactionIfExceptionIsThrown() throws Exception {
+		_testNoReactionIfExceptionIsThrown(
+			new IOException("Test lcs cluster entry token file IO exception"),
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED);
+		_testNoReactionIfExceptionIsThrown(
+			new MissingLCSClusterEntryTokenException(
+				"Test lcs cluster entry token file missing exception"),
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING);
+		_testNoReactionIfExceptionIsThrown(
+			new MultipleLCSClusterEntryTokenException(
+				"Test lcs cluster entry token file multiple token exception"),
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS);
 	}
 
 	@Test
@@ -262,6 +284,39 @@ public class LCSClusterEntryTokenAdvisorImplTest extends PowerMockito {
 		doNothing(
 		).when(
 			_lcsClusterEntryTokenAdvisor, "_deleteLCSCLusterEntryTokenFile"
+		);
+	}
+
+	private void _testNoReactionIfExceptionIsThrown(
+			Exception exception, LCSEvent expectedLCSEvent)
+		throws Exception {
+
+		LCSEventManager lcsEventManager = spy(new LCSEventManager());
+
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
+
+		doThrow(
+			exception
+		).when(
+			lcsClusterEntryTokenAdvisorImpl
+		).processLCSClusterEntryToken(
+			Matchers.anyInt()
+		);
+
+		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisorImpl, lcsEventManager, null);
+
+		lcsClusterEntryTokenCheckTask.run();
+
+		verifyLCSClusterEntryTokenAdvisor(
+			0, 0, expectedLCSEvent, 0, lcsClusterEntryTokenAdvisorImpl);
+
+		Mockito.verify(
+			lcsEventManager, Mockito.times(1)
+		).publish(
+			expectedLCSEvent
 		);
 	}
 
