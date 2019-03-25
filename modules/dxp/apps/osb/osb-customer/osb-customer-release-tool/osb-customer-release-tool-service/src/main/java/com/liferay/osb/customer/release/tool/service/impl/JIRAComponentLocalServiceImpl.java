@@ -47,10 +47,11 @@ public class JIRAComponentLocalServiceImpl
 	}
 
 	public JIRAComponent updateJIRAComponent(
-		long jiraComponentId, boolean visible) {
+			long jiraComponentId, boolean visible)
+		throws PortalException {
 
-		JIRAComponent jiraComponent =
-			jiraComponentPersistence.fetchByPrimaryKey(jiraComponentId);
+		JIRAComponent jiraComponent = jiraComponentPersistence.findByPrimaryKey(
+			jiraComponentId);
 
 		jiraComponent.setVisible(visible);
 
