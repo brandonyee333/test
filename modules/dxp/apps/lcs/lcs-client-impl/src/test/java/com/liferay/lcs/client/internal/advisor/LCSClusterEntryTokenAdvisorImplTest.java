@@ -14,35 +14,22 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
-import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.BasePowerMockitoTest;
-import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
-import com.liferay.lcs.messaging.HandshakeMessage;
-import com.liferay.lcs.messaging.HandshakeResponseMessage;
-import com.liferay.lcs.messaging.Message;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletClassLoaderUtil;
-import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.IOException;
 
-import java.net.UnknownHostException;
-
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ThreadFactory;
 
 import org.junit.Before;
@@ -70,14 +57,6 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 
 	@Before
 	public void setUp() {
-		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
-
-		doReturn(
-			Boolean.TRUE
-		).when(
-			_lcsGatewayClient
-		).isAvailable();
-
 		_lcsKeyAdvisor = mock(LCSKeyAdvisor.class);
 
 		doReturn(
@@ -113,22 +92,29 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 	public void testTokenIsDeletedIfHandshakeExceptionErrorCode200()
 		throws Exception {
 
-		_mockGetMessagesToReturnHandshakeResponseMessage(200);
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSGatewayClient lcsGatewayClient =
+			spyGetMessagesToReturnHandshakeResponseMessage(
+				200, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisor =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
+
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			_lcsClusterEntryTokenAdvisor
+			lcsClusterEntryTokenAdvisor
 		).onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID
 		);
 
 		verifyPrivate(
-			_lcsClusterEntryTokenAdvisor, Mockito.times(1)
+			lcsClusterEntryTokenAdvisor, Mockito.times(1)
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
 		);
@@ -138,22 +124,29 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 	public void testTokenIsDeletedIfHandshakeExceptionErrorCode201()
 		throws Exception {
 
-		_mockGetMessagesToReturnHandshakeResponseMessage(201);
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSGatewayClient lcsGatewayClient =
+			spyGetMessagesToReturnHandshakeResponseMessage(
+				201, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisor =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
+
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			_lcsClusterEntryTokenAdvisor
+			lcsClusterEntryTokenAdvisor
 		).onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH
 		);
 
 		verifyPrivate(
-			_lcsClusterEntryTokenAdvisor, Mockito.times(1)
+			lcsClusterEntryTokenAdvisor, Mockito.times(1)
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
 		);
@@ -163,22 +156,29 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 	public void testTokenIsDeletedIfHandshakeExceptionErrorCode202()
 		throws Exception {
 
-		_mockGetMessagesToReturnHandshakeResponseMessage(202);
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSGatewayClient lcsGatewayClient =
+			spyGetMessagesToReturnHandshakeResponseMessage(
+				202, lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisor =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
+
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			_lcsClusterEntryTokenAdvisor
+			lcsClusterEntryTokenAdvisor
 		).onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS
 		);
 
 		verifyPrivate(
-			_lcsClusterEntryTokenAdvisor, Mockito.times(1)
+			lcsClusterEntryTokenAdvisor, Mockito.times(1)
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
 		);
@@ -186,104 +186,24 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 
 	@Test
 	public void testTokenIsNotDeletedIfGatewayUnavailable() throws Exception {
-		_mockSendMessageToThrowLCSGatewayException();
+		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSGatewayClient lcsGatewayClient =
+			spySendMessageToThrowLCSGatewayException(lcsEventManager);
 
-		HandshakeTask handshakeTask = _spyHandshakeTask();
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisor =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
+
+		HandshakeTask handshakeTask = spyHandshakeTask(
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
+			_uptimeAdvisor);
 
 		handshakeTask.run();
 
-		Mockito.verify(
-			_lcsClusterEntryTokenAdvisor
-		).onLCSEvent(
-			LCSEvent.HANDSHAKE_FAILED
-		);
-
 		verifyPrivate(
-			_lcsClusterEntryTokenAdvisor, Mockito.never()
+			lcsClusterEntryTokenAdvisor, Mockito.never()
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
-		);
-	}
-
-	private HandshakeResponseMessage _createHandshakeResponseMessage(
-		int errorCode) {
-
-		HandshakeResponseMessage handshakeResponseMessage =
-			new HandshakeResponseMessage();
-
-		handshakeResponseMessage.setErrorCode(errorCode);
-		handshakeResponseMessage.setErrorMessage(
-			"{\"errorCode\": " + errorCode +
-				", \"errorDescription\": \"Test\", \"status\": 400}");
-		handshakeResponseMessage.setKey("mock");
-
-		return handshakeResponseMessage;
-	}
-
-	private void _mockGetMessagesToReturnHandshakeResponseMessage(int errorCode)
-		throws Exception {
-
-		doReturn(
-			new ArrayList<Message>() {
-				{
-					add(_createHandshakeResponseMessage(errorCode));
-				}
-			}
-		).when(
-			_lcsGatewayClient
-		).getMessages(
-			Matchers.anyString()
-		);
-	}
-
-	private void _mockSendMessageToThrowLCSGatewayException() throws Exception {
-		doThrow(
-			new LCSGatewayException(
-				"Unable to send message",
-				new JSONWebServiceTransportException.CommunicationFailure(
-					"Test gateway communication failure",
-					new ExecutionException(new UnknownHostException("Test"))))
-		).when(
-			_lcsGatewayClient
-		).sendMessage(
-			Matchers.any(Message.class)
-		);
-	}
-
-	private HandshakeTask _spyHandshakeTask() throws Exception {
-		CompanyLocalService companyLocalService = mock(
-			CompanyLocalService.class);
-		LCSAlertAdvisor lcsAlertAdvisor = new LCSAlertAdvisorImpl();
-		LCSEventManager lcsEventManager = new LCSEventManager();
-
-		HandshakeTask handshakeTask = spy(
-			new HandshakeTask(
-				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
-				_lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-				_uptimeAdvisor));
-
-		doReturn(
-			new HandshakeMessage()
-		).when(
-			handshakeTask, "_createHandshakeMessage"
-		);
-
-		return handshakeTask;
-	}
-
-	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
-		throws Exception {
-
-		_lcsClusterEntryTokenAdvisor = spy(
-			new LCSClusterEntryTokenAdvisorImpl());
-
-		// Skip JavaParser, will fix
-
-		doNothing(
-		).when(
-			_lcsClusterEntryTokenAdvisor, "_deleteLCSCLusterEntryTokenFile"
 		);
 	}
 
@@ -320,8 +240,6 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 		);
 	}
 
-	private LCSClusterEntryTokenAdvisorImpl _lcsClusterEntryTokenAdvisor;
-	private LCSGatewayClient _lcsGatewayClient;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 	private ThreadFactory _threadFactory;
 	private UptimeAdvisor _uptimeAdvisor;
