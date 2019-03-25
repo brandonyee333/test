@@ -242,6 +242,10 @@ public interface JIRAComponentLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public JIRAComponent updateJIRAComponent(JIRAComponent jiraComponent);
 
+	public JIRAComponent updateJIRAComponent(
+			long jiraComponentId, boolean visible)
+		throws PortalException;
+
 	public JIRAComponent updateJIRAComponent(long remoteId, String name)
 		throws PortalException;
 

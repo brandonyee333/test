@@ -296,6 +296,13 @@ public class JIRAComponentLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.release.tool.model.JIRAComponent
+			updateJIRAComponent(long jiraComponentId, boolean visible)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateJIRAComponent(jiraComponentId, visible);
+	}
+
+	public static com.liferay.osb.customer.release.tool.model.JIRAComponent
 			updateJIRAComponent(long remoteId, String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 

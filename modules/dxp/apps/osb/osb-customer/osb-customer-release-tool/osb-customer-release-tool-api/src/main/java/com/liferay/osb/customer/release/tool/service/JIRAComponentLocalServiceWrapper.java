@@ -313,6 +313,15 @@ public class JIRAComponentLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.release.tool.model.JIRAComponent
+			updateJIRAComponent(long jiraComponentId, boolean visible)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _jiraComponentLocalService.updateJIRAComponent(
+			jiraComponentId, visible);
+	}
+
+	@Override
+	public com.liferay.osb.customer.release.tool.model.JIRAComponent
 			updateJIRAComponent(long remoteId, String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
