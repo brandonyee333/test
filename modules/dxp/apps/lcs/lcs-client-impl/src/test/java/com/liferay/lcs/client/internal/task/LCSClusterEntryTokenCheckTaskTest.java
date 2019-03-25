@@ -14,20 +14,27 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.BasePowerMockitoTest;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
+import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.task.scheduler.TaskSchedulerServiceImpl;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.petra.encryptor.EncryptorException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
+
+import java.net.UnknownHostException;
+
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +43,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -44,10 +50,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @author Igor Beslic
  */
 @PrepareForTest(
-	{FileUtil.class, LCSClusterEntryTokenAdvisor.class, LCSUtil.class}
+	{FileUtil.class, LCSClusterEntryTokenAdvisorImpl.class, LCSUtil.class}
 )
 @RunWith(PowerMockRunner.class)
-public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
+public class LCSClusterEntryTokenCheckTaskTest extends BasePowerMockitoTest {
 
 	@Before
 	public void setUp() {
@@ -58,26 +64,33 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 
 	@Test
 	public void testCheckLCSClusterEntryTokenSuccess() throws Exception {
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			new LCSClusterEntryToken()
 		).when(
-			_lcsClusterEntryTokenAdvisorImpl
+			lcsClusterEntryTokenAdvisorImpl
 		).processLCSClusterEntryToken(
 			Matchers.anyInt()
 		);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisorImpl, lcsEventManager,
+				mockLCSPortalClientIsAuthorized(Boolean.TRUE));
 
 		lcsClusterEntryTokenCheckTask.run();
 
 		_verifyLCSClusterEntryTokenAdvisor(
-			1, 0, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 0);
+			1, 0, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 0,
+			lcsClusterEntryTokenAdvisorImpl);
 
 		_verifyLCSClusterEntryTokenAdvisor(
-			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, 0);
+			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, 0,
+			lcsClusterEntryTokenAdvisorImpl);
 
 		Mockito.verify(
 			_taskSchedulerService
@@ -102,61 +115,84 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 	}
 
 	@Test
-	public void testLCSPortletNotAuthorized() throws Exception {
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+	public void testLCSPortalClientCommunicationFailureExceptionIsThrown()
+		throws Exception {
+
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			new LCSClusterEntryToken()
 		).when(
-			_lcsClusterEntryTokenAdvisorImpl
+			lcsClusterEntryTokenAdvisorImpl
 		).processLCSClusterEntryToken(
 			Matchers.anyInt()
 		);
 
+		LCSPortalClient lcsPortalClient =
+			mockLCSPortalClientIsAuthorizedThrowsException(
+				new JSONWebServiceTransportException.CommunicationFailure(
+					"Test LCS portal communication failure",
+					new ExecutionException(new UnknownHostException("Test"))));
+
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisorImpl, lcsEventManager,
+				lcsPortalClient);
 
 		lcsClusterEntryTokenCheckTask.run();
 
 		_verifyLCSClusterEntryTokenAdvisor(
-			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 1);
+			0, 0, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED, 0,
+			lcsClusterEntryTokenAdvisorImpl);
 	}
 
 	@Test
-	public void testLCSUtilExceptionIsThrown() throws Exception {
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+	public void testLCSPortletNotAuthorized() throws Exception {
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			new LCSClusterEntryToken()
 		).when(
-			_lcsClusterEntryTokenAdvisorImpl
+			lcsClusterEntryTokenAdvisorImpl
 		).processLCSClusterEntryToken(
 			Matchers.anyInt()
 		);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisorImpl, lcsEventManager,
+				mockLCSPortalClientIsAuthorized(Boolean.FALSE));
 
 		lcsClusterEntryTokenCheckTask.run();
 
 		_verifyLCSClusterEntryTokenAdvisor(
-			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED, 0);
+			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 1,
+			lcsClusterEntryTokenAdvisorImpl);
 	}
 
 	@Test
 	public void testTokenIsDeletedIfExceptionThrown() throws Exception {
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doReturn(
 			"test-file-name"
 		).when(
-			_lcsClusterEntryTokenAdvisorImpl, "getLCSClusterEntryTokenFileName"
+			lcsClusterEntryTokenAdvisorImpl, "getLCSClusterEntryTokenFileName"
 		);
 
 		doThrow(
 			new EncryptorException("Test encryptor exception")
 		).when(
-			_lcsClusterEntryTokenAdvisorImpl, "decrypt",
+			lcsClusterEntryTokenAdvisorImpl, "decrypt",
 			Matchers.any(byte[].class), Matchers.anyInt()
 		);
 
@@ -167,79 +203,72 @@ public class LCSClusterEntryTokenCheckTaskTest extends PowerMockito {
 		);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisorImpl, lcsEventManager, null);
 
 		lcsClusterEntryTokenCheckTask.run();
 
 		_verifyLCSClusterEntryTokenAdvisor(
-			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 1);
-	}
-
-	private void _spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete()
-		throws Exception {
-
-		_lcsClusterEntryTokenAdvisorImpl = spy(
-			new LCSClusterEntryTokenAdvisorImpl());
-
-		// Skip JavaParser, will fix
-
-		doNothing(
-		).when(
-			_lcsClusterEntryTokenAdvisorImpl, "_deleteLCSCLusterEntryTokenFile"
-		);
+			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 1,
+			lcsClusterEntryTokenAdvisorImpl);
 	}
 
 	private void _testLCSClusterEntryAdvisorExceptionIsThrown(
 			Exception exception, LCSEvent expectedLCSEvent)
 		throws Exception {
 
-		_spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete();
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		doThrow(
 			exception
 		).when(
-			_lcsClusterEntryTokenAdvisorImpl
+			lcsClusterEntryTokenAdvisorImpl
 		).processLCSClusterEntryToken(
 			Matchers.anyInt()
 		);
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+			new LCSClusterEntryTokenCheckTask(
+				lcsClusterEntryTokenAdvisorImpl, lcsEventManager, null);
 
 		lcsClusterEntryTokenCheckTask.run();
 
-		_verifyLCSClusterEntryTokenAdvisor(1, 1, expectedLCSEvent, 0);
+		_verifyLCSClusterEntryTokenAdvisor(
+			1, 1, expectedLCSEvent, 0, lcsClusterEntryTokenAdvisorImpl);
 	}
 
 	private void _verifyLCSClusterEntryTokenAdvisor(
 			int maxNumberOfOnLCSEventInvocations,
 			int maxNumberOfSpecificOnLCSEventInvocations,
-			LCSEvent specificLCSEvent, int maxNumberOfDeleteMethodInvocations)
+			LCSEvent specificLCSEvent, int maxNumberOfDeleteMethodInvocations,
+			LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl)
 		throws Exception {
 
 		Mockito.verify(
-			_lcsClusterEntryTokenAdvisorImpl,
+			lcsClusterEntryTokenAdvisorImpl,
 			Mockito.times(maxNumberOfOnLCSEventInvocations)
 		).onLCSEvent(
 			Matchers.any(LCSEvent.class)
 		);
 
 		Mockito.verify(
-			_lcsClusterEntryTokenAdvisorImpl,
+			lcsClusterEntryTokenAdvisorImpl,
 			Mockito.times(maxNumberOfSpecificOnLCSEventInvocations)
 		).onLCSEvent(
 			specificLCSEvent
 		);
 
 		verifyPrivate(
-			_lcsClusterEntryTokenAdvisorImpl,
+			lcsClusterEntryTokenAdvisorImpl,
 			Mockito.times(maxNumberOfDeleteMethodInvocations)
 		).invoke(
 			"_deleteLCSCLusterEntryTokenFile"
 		);
 	}
 
-	private LCSClusterEntryTokenAdvisorImpl _lcsClusterEntryTokenAdvisorImpl;
 	private TaskSchedulerService _taskSchedulerService;
 
 }
