@@ -70,7 +70,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateAccountEntryURL %>" method="post">
+<aui:form action="<%= updateAccountEntryURL %>" enctype="multipart/form-data" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
