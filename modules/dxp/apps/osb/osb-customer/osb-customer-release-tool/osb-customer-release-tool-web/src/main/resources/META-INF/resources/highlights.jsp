@@ -66,7 +66,8 @@ JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderRespo
 		{
 			fixPackJSONObject: <%= fixPackJSONObject %>,
 			fixPackResultsURL: '<%= fixPackResultsURL %>',
-			highlightsDescription: highlightsDescription
+			highlightsDescription: highlightsDescription,
+			highlightsFiltersArray: <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
 		},
 		document.getElementById('<portlet:namespace />highlights')
 	);
