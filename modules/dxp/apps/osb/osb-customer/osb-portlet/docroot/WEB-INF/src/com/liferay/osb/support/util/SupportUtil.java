@@ -70,7 +70,7 @@ public class SupportUtil {
 			defaultLocale,
 			ContentUtil.get(
 				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
+				"com/liferay/osb/admin/dependencies" +
 					"/email_account_entry_tier_body.tmpl"));
 
 		return map;
@@ -94,7 +94,7 @@ public class SupportUtil {
 			defaultLocale,
 			ContentUtil.get(
 				SupportUtil.class.getClassLoader(),
-				"com/liferay/osb/support/dependencies" +
+				"com/liferay/osb/admin/dependencies" +
 					"/email_account_entry_tier_subject.tmpl"));
 
 		return map;
