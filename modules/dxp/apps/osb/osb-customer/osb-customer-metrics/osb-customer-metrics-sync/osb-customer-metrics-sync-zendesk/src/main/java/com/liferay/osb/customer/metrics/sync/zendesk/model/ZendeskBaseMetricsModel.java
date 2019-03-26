@@ -16,12 +16,10 @@ package com.liferay.osb.customer.metrics.sync.zendesk.model;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
-import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalService;
+import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalServiceUtil;
 
 import java.util.List;
 import java.util.Map;
-
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -74,15 +72,12 @@ public abstract class ZendeskBaseMetricsModel<T> implements MetricsModel<T> {
 	public void resyncAll() throws Exception {
 		Class<?> clazz = getModelClass();
 
-		SyncState syncState = _syncStateLocalService.fetchSyncState(
+		SyncState syncState = SyncStateLocalServiceUtil.fetchSyncState(
 			clazz.getName());
 
 		syncState.setLastRunTime(0);
 
-		_syncStateLocalService.updateSyncState(syncState);
+		SyncStateLocalServiceUtil.updateSyncState(syncState);
 	}
-
-	@Reference
-	private SyncStateLocalService _syncStateLocalService;
 
 }
