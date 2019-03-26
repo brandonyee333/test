@@ -13,6 +13,7 @@ const ARTICLES_PER_PAGE = 50;
 
 export default class Changelog extends Component {
 	static propTypes = {
+		changelogDescription: PropTypes.string.isRequired,
 		jiraIssueEndpoint: PropTypes.string.isRequired,
 		jiraIssueJSONObject: PropTypes.oneOfType(
 			[error, jiraIssueJSONObject]
@@ -58,15 +59,20 @@ export default class Changelog extends Component {
 	}
 
 	render() {
-		const {jiraIssueJSONObject} = this.state;
+		const {changelogDescription, jiraIssueJSONObject} = this.state;
 
 		const totalPage = jiraIssueJSONObject.total ? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE) : '';
+
+		const changelogTab = {
+			tabDescription: changelogDescription,
+			tabName: 'changelog'
+		}
 
 		return (
 			<Fragment>
 				<TableResults
 					jsonObject={jiraIssueJSONObject}
-					tab="changelog"
+					tab={changelogTab}
 				/>
 
 				{!!totalPage && totalPage > 1 && (

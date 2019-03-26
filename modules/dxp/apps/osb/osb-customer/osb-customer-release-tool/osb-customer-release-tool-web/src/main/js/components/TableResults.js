@@ -12,7 +12,12 @@ TableResults.propTypes = {
 	jsonObject: PropTypes.oneOfType(
 		[error, fixPackJSONObject, jiraIssueJSONObject]
 	).isRequired,
-	tab: PropTypes.oneOf(['highlights', 'changelog']).isRequired
+	tab: PropTypes.shape(
+		{
+			tabDescription: PropTypes.string,
+			tabName: PropTypes.string
+		}
+	).isRequired
 };
 
 export default function TableResults({jsonObject, tab}) {

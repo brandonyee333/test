@@ -33,25 +33,6 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<h2>
-	<liferay-ui:message key="changelog" />
-</h2>
-
-<%
-JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
-%>
-
-<c:if test="<%= journalArticle != null %>">
-
-	<%
-	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-	%>
-
-	<h5 class="secondary-text-color section-subtitle">
-		<%= journalArticleDisplay.getContent() %>
-	</h5>
-</c:if>
-
 <%
 JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderResponse);
 %>
@@ -59,11 +40,27 @@ JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderR
 <div id="<portlet:namespace />changelog"></div>
 
 <aui:script>
+	var changelogDescription = '';
+
+	<%
+	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
+	%>
+
+	if (<%= journalArticle != null %>) {
+
+		<%
+		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+		%>
+
+		changelogDescription = '<%= journalArticleDisplay.getContent() %>';
+	}
+
 	ReleaseTool.render(
 		ReleaseTool.Changelog,
 		{
 			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
-			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
+			jiraIssueJSONObject: <%= jiraIssueJSONObject %>,
+			changelogDescription: changelogDescription
 		},
 		document.getElementById('<portlet:namespace />changelog')
 	);

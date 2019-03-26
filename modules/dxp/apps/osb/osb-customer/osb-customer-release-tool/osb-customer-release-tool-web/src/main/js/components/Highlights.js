@@ -13,16 +13,25 @@ export default class Highlights extends Component {
 		fixPackJSONObject: PropTypes.oneOfType(
 			[error, fixPackJSONObject]
 		).isRequired,
-		fixPackResultsURL: PropTypes.string.isRequired
+		fixPackResultsURL: PropTypes.string.isRequired,
+		highlightsDescription: PropTypes.string.isRequired
 	};
 
 	render() {
-		const {fixPackJSONObject} = this.props;
+		const {
+			fixPackJSONObject,
+			highlightsDescription
+		} = this.props;
+
+		const highlightsTab = {
+			tabDescription: highlightsDescription,
+			tabName: 'highlights'
+		}
 
 		return (
 			<TableResults
 				jsonObject={fixPackJSONObject}
-				tab="highlights"
+				tab={highlightsTab}
 			/>
 		);
 	}

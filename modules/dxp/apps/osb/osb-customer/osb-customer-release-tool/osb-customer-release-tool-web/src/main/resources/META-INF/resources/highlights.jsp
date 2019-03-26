@@ -43,33 +43,30 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
 %>
 
-<h2 class="highlights">
-	<liferay-ui:message key="highlights" />
-</h2>
-
-<%
-JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
-%>
-
-<c:if test="<%= journalArticle != null %>">
-
-	<%
-	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-	%>
-
-	<h5 class="secondary-text-color section-subtitle">
-		<%= journalArticleDisplay.getContent() %>
-	</h5>
-</c:if>
-
 <div id="<portlet:namespace />highlights"></div>
 
 <aui:script>
+	var highlightsDescription = '';
+
+	<%
+	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
+	%>
+
+	if (<%= journalArticle != null %>) {
+
+		<%
+		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+		%>
+
+		highlightsDescription = '<%= journalArticleDisplay.getContent() %>';
+	}
+
 	ReleaseTool.render(
 		ReleaseTool.Highlights,
 		{
 			fixPackJSONObject: <%= fixPackJSONObject %>,
-			fixPackResultsURL: '<%= fixPackResultsURL %>'
+			fixPackResultsURL: '<%= fixPackResultsURL %>',
+			highlightsDescription: highlightsDescription
 		},
 		document.getElementById('<portlet:namespace />highlights')
 	);

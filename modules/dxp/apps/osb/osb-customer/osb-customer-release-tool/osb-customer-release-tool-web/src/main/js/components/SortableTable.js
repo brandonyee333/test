@@ -12,7 +12,12 @@ export default class SortableTable extends Component {
 		jsonObject: PropTypes.oneOfType(
 			[fixPackJSONObject, jiraIssueJSONObject]
 		).isRequired,
-		tab: PropTypes.oneOf(['highlights', 'changelog']).isRequired
+		tab: PropTypes.shape(
+			{
+				tabDescription: PropTypes.string,
+				tabName: PropTypes.string
+			}
+		).isRequired
 	};
 
 	state = {
@@ -38,20 +43,39 @@ export default class SortableTable extends Component {
 	};
 
 	render() {
-		const {jsonObject: {total}, tab} = this.props;
+		const {
+			jsonObject: {total},
+			tab: {tabName},
+			tab: {tabDescription}
+		} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
 
-		const table = tab === 'highlights' ? highlightsTable : changelogTable;
+		const table = tabName === 'highlights' ? highlightsTable : changelogTable;
 
 		return (
 			<Fragment>
+				<h2>
+					{tabName === 'highlights' ?
+						Liferay.Language.get('highlights')
+					:
+						tabName === 'changelog' ?
+							Liferay.Language.get('changelog')
+						:
+							Liferay.Language.get('module-changes')
+					}
+				</h2>
+
+				{tabDescription && (
+					<h5 class="secondary-text-color section-subtitle" dangerouslySetInnerHTML={{__html: tabDescription}}></h5>
+				)}
+
 				<div className="results-count">
 					{Liferay.Language.get('x-results', total.toString())}
 				</div>
 
-				<table className={`table ${tab}-table table-autofit table-list`} role="table">
+				<table className={`table ${tabName}-table table-autofit table-list`} role="table">
 					<thead>
 						<tr>
 							{table.tableHeader(orderBy, this.handleSort)}
