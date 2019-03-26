@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StackTraceUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -414,6 +416,8 @@ public class WebRESTWebServiceImpl
 	}
 
 	protected void sendEmail(String mailBody) {
+		mailBody = StringUtil.replace(mailBody, CharPool.NEW_LINE, "<br />");
+
 		try {
 			InternetAddress from = new InternetAddress("noreply@liferay.com");
 			InternetAddress to = new InternetAddress(
