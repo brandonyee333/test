@@ -26,6 +26,21 @@ header:not(.has-control-panel) + main {
 		margin: 32px 0 64px;
 	}
 
+	.refinement-filters {
+		background-color: $color-grey;
+		border: $border-radius;
+		margin: 0 48px 0 -12px;
+		padding: $padding-default;
+
+		.refinement-checkbox {
+			margin-right: 8px;
+		}
+
+		.refine-by {
+			margin: 0 0 8px;
+		}
+	}
+
 	.results-count {
 		padding: $padding-default 0;
 	}
