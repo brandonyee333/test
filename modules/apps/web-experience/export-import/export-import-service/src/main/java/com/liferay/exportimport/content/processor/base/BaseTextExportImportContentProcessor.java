@@ -1576,21 +1576,23 @@ public class BaseTextExportImportContentProcessor
 				for (Element element : elements) {
 					String className = element.attributeValue("class-name");
 
-					if (className.equals(Layout.class.getName())) {
-						String uuid = element.attributeValue("uuid");
-						String privateLayout = element.attributeValue(
-							"private-layout");
+					if (!className.equals(Layout.class.getName())) {
+						continue;
+					}
 
-						existingLayout =
-							LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
-								uuid, portletDataContext.getScopeGroupId(),
-								Boolean.valueOf(privateLayout));
+					String uuid = element.attributeValue("uuid");
+					String privateLayout = element.attributeValue(
+						"private-layout");
 
-						if (existingLayout != null) {
-							newPlid = existingLayout.getPlid();
+					existingLayout =
+						LayoutLocalServiceUtil.fetchLayoutByUuidAndGroupId(
+							uuid, portletDataContext.getScopeGroupId(),
+							Boolean.valueOf(privateLayout));
 
-							break;
-						}
+					if (existingLayout != null) {
+						newPlid = existingLayout.getPlid();
+
+						break;
 					}
 				}
 			}
