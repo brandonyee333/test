@@ -260,7 +260,6 @@ public class JournalTransformer {
 					request.setAttribute(
 						JavaConstants.JAVAX_PORTLET_REQUEST,
 						portletRequestModel.getPortletRequest());
-
 					request.setAttribute(
 						JavaConstants.JAVAX_PORTLET_RESPONSE,
 						portletRequestModel.getPortletResponse());
