@@ -354,34 +354,35 @@ public class DDMFormValuesExportImportContentProcessor
 				Layout importedLayout = fetchImportedLayout(
 					_portletDataContext, jsonObject);
 
-				if (importedLayout == null) {
-					Element missingReferencesElement =
-						_portletDataContext.getMissingReferencesElement();
+				if (importedLayout != null) {
+					value.addString(locale, toJSON(importedLayout));
 
-					List<Element> elements =
-						missingReferencesElement.elements();
+					continue;
+				}
 
-					for (Element element : elements) {
-						String className = element.attributeValue("class-name");
+				Element missingReferencesElement =
+					_portletDataContext.getMissingReferencesElement();
 
-						if (className.equals(Layout.class.getName())) {
-							String uuid = element.attributeValue("uuid");
-							String privateLayout = element.attributeValue(
-								"private-layout");
+				List<Element> elements = missingReferencesElement.elements();
 
-							importedLayout =
-								_layoutLocalService.fetchLayoutByUuidAndGroupId(
-									uuid, _portletDataContext.getScopeGroupId(),
-									Boolean.valueOf(privateLayout));
-						}
-					}
+				for (Element element : elements) {
+					String className = element.attributeValue("class-name");
 
-					if (importedLayout == null) {
-						continue;
+					if (className.equals(Layout.class.getName())) {
+						String uuid = element.attributeValue("uuid");
+						String privateLayout = element.attributeValue(
+							"private-layout");
+
+						importedLayout =
+							_layoutLocalService.fetchLayoutByUuidAndGroupId(
+								uuid, _portletDataContext.getScopeGroupId(),
+								Boolean.valueOf(privateLayout));
 					}
 				}
 
-				value.addString(locale, toJSON(importedLayout));
+				if (importedLayout != null) {
+					value.addString(locale, toJSON(importedLayout));
+				}
 			}
 		}
 
