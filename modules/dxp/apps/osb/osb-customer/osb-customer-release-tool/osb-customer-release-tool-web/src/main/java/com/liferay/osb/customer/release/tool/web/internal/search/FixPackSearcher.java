@@ -48,6 +48,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -226,8 +227,24 @@ public class FixPackSearcher extends BaseSearcher {
 
 		jsonObject.put("content", journalArticleDisplay.getContent());
 
+		JSONObject fieldsUsedJSONObject = jsonFactory.createJSONObject();
+
 		Fields ddmFields = _journalConverter.getDDMFields(
 			journalArticle.getDDMStructure(), journalArticle.getContent());
+
+		for (String ddmFieldName : ddmFields.getNames()) {
+			String ddmFieldValue = DDMFieldsUtil.getString(
+				ddmFields, ddmFieldName);
+
+			if (Validator.isNotNull(ddmFieldValue)) {
+				fieldsUsedJSONObject.put(ddmFieldName, Boolean.TRUE);
+			}
+			else {
+				fieldsUsedJSONObject.put(ddmFieldName, Boolean.FALSE);
+			}
+		}
+
+		jsonObject.put("fieldsUsed", fieldsUsedJSONObject);
 
 		String releaseDate = DDMFieldsUtil.getString(ddmFields, "releaseDate");
 
