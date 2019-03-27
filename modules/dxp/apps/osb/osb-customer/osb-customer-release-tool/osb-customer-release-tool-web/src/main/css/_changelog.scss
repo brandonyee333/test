@@ -34,13 +34,13 @@
 	}
 
 	.modal-body {
-		padding: $padding-default;
 		max-height: 82vh;
+		padding: $padding-default;
 	}
 
 	.modal-content {
-		box-shadow: none;
 		border-radius: 0;
+		box-shadow: none;
 		overflow: hidden;
 	}
 
