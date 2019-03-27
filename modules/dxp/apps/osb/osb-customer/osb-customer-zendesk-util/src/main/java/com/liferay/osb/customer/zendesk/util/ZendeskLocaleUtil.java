@@ -26,10 +26,7 @@ import org.osgi.service.component.annotations.Component;
 public class ZendeskLocaleUtil {
 
 	public String convertToZendeskLocale(String locale) {
-		if (locale.equals("zh_CN")) {
-			return ZendeskLocales.CHINA;
-		}
-		else if (locale.equals("en_US")) {
+		if (locale.equals("en_US")) {
 			return ZendeskLocales.US;
 		}
 		else if (locale.equals("es_ES")) {
@@ -40,6 +37,9 @@ public class ZendeskLocaleUtil {
 		}
 		else if (locale.equals("pt_BR")) {
 			return ZendeskLocales.PORTUGAL;
+		}
+		else if (locale.equals("zh_CN")) {
+			return ZendeskLocales.CHINA;
 		}
 		else {
 			return StringPool.BLANK;
