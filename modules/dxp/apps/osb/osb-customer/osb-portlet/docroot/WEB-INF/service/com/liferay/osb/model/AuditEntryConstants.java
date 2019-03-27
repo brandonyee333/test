@@ -136,6 +136,9 @@ public class AuditEntryConstants {
 		else if (action == ACTION_DELETE) {
 			return "deleted";
 		}
+		else if (action == ACTION_RENEW) {
+			return "renewed";
+		}
 		else if (action == ACTION_UNASSIGN) {
 			return "unassigned";
 		}
@@ -167,6 +170,9 @@ public class AuditEntryConstants {
 		}
 		else if (fieldClassName.equals(OfferingEntry.class.getName())) {
 			return "offering";
+		}
+		else if (fieldClassName.equals(OrderEntry.class.getName())) {
+			return "order";
 		}
 		else {
 			return NOT_AVAILABLE;
