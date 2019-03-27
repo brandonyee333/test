@@ -295,6 +295,8 @@ public class AccountCustomerLocalServiceImpl
 				AccountEntry.class.getName());
 			long fieldClassNameId = classNameLocalService.getClassNameId(
 				AccountCustomer.class.getName());
+			User accountCustomerUser = userLocalService.fetchUser(
+				accountCustomer.getUserId());
 
 			auditEntryLocalService.addAuditEntry(
 				userId, user.getFullName(), now, classNameId,
@@ -304,7 +306,8 @@ public class AccountCustomerLocalServiceImpl
 				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
 				AccountCustomerConstants.getRoleLabel(oldRole),
 				String.valueOf(oldRole), accountCustomer.getRoleLabel(),
-				String.valueOf(accountCustomer.getRole()), StringPool.BLANK);
+				String.valueOf(accountCustomer.getRole()),
+				accountCustomerUser.getFullName());
 		}
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(

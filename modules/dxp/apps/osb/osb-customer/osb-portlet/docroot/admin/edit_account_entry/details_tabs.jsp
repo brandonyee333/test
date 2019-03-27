@@ -319,7 +319,7 @@ for (SupportRegion supportRegion : supportRegions) {
 
 								<liferay-ui:message key="<%= auditEntry.getFieldClassNameIdLabel() %>" />
 
-								<c:if test="<%= (auditEntry.getFieldClassNameId() == PortalUtil.getClassNameId(OfferingEntry.class)) && Validator.isNotNull(auditEntry.getDescription()) %>">
+								<c:if test="<%= Validator.isNotNull(auditEntry.getDescription()) %>">
 									<span>
 										(<%= HtmlUtil.escape(auditEntry.getDescription()) %>)
 									</span>

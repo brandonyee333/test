@@ -159,6 +159,12 @@ public class AuditEntryConstants {
 		else if (fieldClassName.equals(AccountEntry.class.getName())) {
 			return "project";
 		}
+		else if (fieldClassName.equals(AccountCustomer.class.getName())) {
+			return "customer";
+		}
+		else if (fieldClassName.equals(AccountWorker.class.getName())) {
+			return "worker";
+		}
 		else if (fieldClassName.equals(OfferingEntry.class.getName())) {
 			return "offering";
 		}
