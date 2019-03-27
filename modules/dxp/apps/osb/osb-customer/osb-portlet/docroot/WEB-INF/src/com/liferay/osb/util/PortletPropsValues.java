@@ -42,10 +42,6 @@ public class PortletPropsValues {
 		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
 			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);
 
-	public static final boolean QA_INFRASTRUCTURE_ENABLED =
-		GetterUtil.getBoolean(
-			PortletProps.get(PortletPropsKeys.QA_INFRASTRUCTURE_ENABLED));
-
 	public static final boolean REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		GetterUtil.getBoolean(
 			PortletProps.get(

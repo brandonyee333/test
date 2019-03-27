@@ -38,9 +38,6 @@ public interface PortletPropsKeys {
 	public static final String PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS =
 		"provisioning.opportunity.product.family.tokens";
 
-	public static final String QA_INFRASTRUCTURE_ENABLED =
-		"qa.infrastructure.enabled";
-
 	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		"remote.json.service.api.lcs.enabled";
 

@@ -19,7 +19,6 @@ import com.liferay.osb.admin.asset.AccountEntryAssetRendererFactory;
 import com.liferay.osb.admin.asset.OrderEntryAssetRendererFactory;
 import com.liferay.osb.service.permission.OSBCommonPermission;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBCustomerQAInfrastructureUtil;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.dao.db.DB;
@@ -168,12 +167,6 @@ public class AdminServletContextListener
 		// Expando
 
 		AdminServletContextListenerExpandoHelper.setup();
-
-		// QA Infrastructure
-
-		if (PortletPropsValues.QA_INFRASTRUCTURE_ENABLED) {
-			OSBCustomerQAInfrastructureUtil.setupQAInfrastructure();
-		}
 
 		// Upgrade
 
