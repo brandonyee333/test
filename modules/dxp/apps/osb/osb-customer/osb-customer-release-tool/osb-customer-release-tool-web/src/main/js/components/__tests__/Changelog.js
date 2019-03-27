@@ -1,5 +1,5 @@
 import React from 'react';
-import {cleanup, render} from 'react-testing-library';
+import {cleanup, fireEvent, render} from 'react-testing-library';
 
 import times from 'lodash.times';
 
@@ -13,8 +13,7 @@ const setup = () => {
 				description: 'description',
 				key: 'LPS-90100',
 				release: 'GA',
-				summary:
-					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
+				summary: 'summary 1',
 				url: '/'
 			},
 			{
@@ -22,7 +21,7 @@ const setup = () => {
 				description: 'description 2',
 				key: 'LPS-85155',
 				release: 'GA',
-				summary: 'Add menu - Heading order invalid',
+				summary: 'summary 2',
 				url: '/'
 			}
 		],
@@ -64,13 +63,9 @@ afterEach(cleanup);
 
 describe('Changelog', () => {
 	it('renders changelog results correctly', () => {
-		const {changelogJSONObj, container, queryByRole} = setup();
+		const {container, queryByRole} = setup();
 
-		// Pagination will only show if there are more than 50 results
-
-		changelogJSONObj.total < 50
-			? expect(queryByRole('navigation')).toBeFalsy()
-			: expect(queryByRole('navigation')).toBeTruthy();
+		expect(queryByRole('navigation')).toBeFalsy()
 		expect(container).toMatchSnapshot();
 	});
 
@@ -96,6 +91,28 @@ describe('Changelog', () => {
 		);
 
 		expect(queryByRole('navigation')).toBeFalsy();
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders details modal when a ticket summary is clicked', () => {
+		const {container, queryByRole, queryByText} = setup();
+
+		fireEvent.click(queryByText('summary 1'));
+
+		expect(queryByRole('dialog')).toBeTruthy();
+		expect(queryByText('details')).toBeTruthy();
+		expect(container).toMatchSnapshot();
+	});
+
+	it('updates details modal when a different ticket summary is clicked', () => {
+		const {container, queryByRole, queryByText} = setup();
+
+		fireEvent.click(queryByText('summary 1'));
+
+		expect(queryByRole('dialog')).toBeTruthy();
+		expect(queryByText('details')).toBeTruthy();
+
+		fireEvent.click(queryByText('summary 2'));
 		expect(container).toMatchSnapshot();
 	});
 });
