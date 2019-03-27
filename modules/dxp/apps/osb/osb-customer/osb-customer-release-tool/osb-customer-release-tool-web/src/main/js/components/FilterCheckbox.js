@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-export default class RefinementCheckbox extends Component {
-	static PropTypes = {
+export default class FilterCheckbox extends Component {
+	static propTypes = {
 		checkboxLabel: PropTypes.string.isRequired,
 		checkboxValue: PropTypes.string.isRequired,
-		refineByCheckbox: PropTypes.func.isRequired
+		handleCheckboxChange: PropTypes.func.isRequired
 	};
 
 	handleCheckboxChange = () => {
-		const {checkboxLabel, refineByCheckbox} = this.props;
+		const {checkboxValue, handleCheckboxChange} = this.props;
 
-		refineByCheckbox(checkboxLabel);
+		handleCheckboxChange(checkboxValue);
 	}
 
 	render() {

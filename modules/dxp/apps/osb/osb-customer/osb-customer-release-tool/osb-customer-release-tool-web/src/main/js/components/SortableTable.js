@@ -43,11 +43,7 @@ export default class SortableTable extends Component {
 	};
 
 	render() {
-		const {
-			jsonObject: {total},
-			tab: {tabName},
-			tab: {tabDescription}
-		} = this.props;
+		const {jsonObject: {total}, tab: {tabName}} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
@@ -56,21 +52,6 @@ export default class SortableTable extends Component {
 
 		return (
 			<Fragment>
-				<h2>
-					{tabName === 'highlights' ?
-						Liferay.Language.get('highlights')
-					:
-						tabName === 'changelog' ?
-							Liferay.Language.get('changelog')
-						:
-							Liferay.Language.get('module-changes')
-					}
-				</h2>
-
-				{tabDescription && (
-					<h5 class="secondary-text-color section-subtitle" dangerouslySetInnerHTML={{__html: tabDescription}}></h5>
-				)}
-
 				<div className="results-count">
 					{Liferay.Language.get('x-results', total.toString())}
 				</div>

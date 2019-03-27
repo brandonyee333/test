@@ -6,8 +6,8 @@ import axios from 'axios';
 import {error} from '../types/generic';
 import {fixPackJSONObject} from '../types/highlights';
 
+import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
-import * as highlightsFilters from './HighlightsFilters';
 
 export default class Highlights extends Component {
 	static propTypes = {
@@ -23,18 +23,16 @@ export default class Highlights extends Component {
 		refineBy: []
 	};
 
-	refineByCheckbox = checkboxLabel => {
+	handleCheckboxChange = checkboxValue => {
 		const {refineBy} = this.state;
-
-		const formattedLabel = checkboxLabel.replace(/\s+/g, '-').toLowerCase();
 
 		let refineByArray = refineBy;
 
-		if (!refineBy.includes(formattedLabel)) {
-			refineByArray.push(formattedLabel);
+		if (!refineBy.includes(checkboxValue)) {
+			refineByArray.push(checkboxValue);
 		}
 		else {
-			const index = refineBy.indexOf(formattedLabel);
+			const index = refineBy.indexOf(checkboxValue);
 
 			refineByArray.splice(index, 1);
 		}
@@ -49,28 +47,15 @@ export default class Highlights extends Component {
 	refineObject = results => {
 		const {refineBy} = this.state;
 
-		let refinedObject = {};
-		let refinedResults = [];
-
-		results.map(
-			fixPack => {
-				refineBy.map(
-					filter => {
-						const indexOfFilter = fixPack.content.indexOf(filter);
-						const indexOfFixPack = refinedResults.indexOf(fixPack);
-
-						if (indexOfFilter != -1 && indexOfFixPack == -1) {
-							refinedResults.push(fixPack);
-						}
-					}
+		const refinedResults = results.filter(
+			result => {
+				return refineBy.some(
+					filter => result.fieldsUsed[filter]
 				);
 			}
 		);
 
-		refinedObject.results = refinedResults;
-		refinedObject.total = refinedResults.length;
-
-		return refinedObject;
+		return {results: refinedResults, total: refinedResults.length};
 	}
 
 	render() {
@@ -90,13 +75,29 @@ export default class Highlights extends Component {
 
 		const jsonObject = refineBy.length ? this.refineObject(results) : fixPackJSONObject;
 
+		if (refineBy.length) {
+			this.refineObject(results);
+		}
+
 		return (
 			<Fragment>
 				<div className="col-md-3">
-					{highlightsFilters.refinementFilters(
-						highlightsFiltersArray,
-						this.refineByCheckbox
-					)}
+					<div className="refinement-filters">
+						<h3 className="refine-by">
+							{Liferay.Language.get('refine-by')}
+						</h3>
+
+						{!!highlightsFiltersArray && highlightsFiltersArray.map(
+							checkbox => (
+								<FilterCheckbox
+									key={checkbox.value}
+									checkboxLabel={checkbox.label}
+									checkboxValue={checkbox.value}
+									handleCheckboxChange={this.handleCheckboxChange}
+								/>
+							)
+						)}
+					</div>
 				</div>
 
 				<div className="col-md-9">

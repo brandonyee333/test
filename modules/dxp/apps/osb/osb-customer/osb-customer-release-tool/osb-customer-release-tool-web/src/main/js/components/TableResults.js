@@ -27,6 +27,14 @@ export default function TableResults({jsonObject, tab}) {
 				<Alert type="danger">{jsonObject.error.message}</Alert>
 			)}
 
+			<h2>
+				{Liferay.Language.get(tab.tabName)}
+			</h2>
+
+			{tab.tabDescription && (
+				<h5 className="secondary-text-color section-subtitle" dangerouslySetInnerHTML={{__html: tab.tabDescription}}></h5>
+			)}
+
 			{!!jsonObject.results && (
 				<SortableTable jsonObject={jsonObject} tab={tab} />
 			)}
