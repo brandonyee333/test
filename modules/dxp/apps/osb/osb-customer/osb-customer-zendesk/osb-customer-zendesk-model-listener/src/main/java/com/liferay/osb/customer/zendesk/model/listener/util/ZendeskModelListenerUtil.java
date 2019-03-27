@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.util;
 
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
@@ -93,27 +92,6 @@ public class ZendeskModelListenerUtil {
 		sb.append(sb2);
 
 		return sb.toString();
-	}
-
-	public static String convertToZendeskLocale(String locale) {
-		if (locale.equals("zh_CN")) {
-			return ZendeskLocales.CHINA;
-		}
-		else if (locale.equals("en_US")) {
-			return ZendeskLocales.US;
-		}
-		else if (locale.equals("es_ES")) {
-			return ZendeskLocales.SPAIN;
-		}
-		else if (locale.equals("ja_JP")) {
-			return ZendeskLocales.JAPAN;
-		}
-		else if (locale.equals("pt_BR")) {
-			return ZendeskLocales.PORTUGAL;
-		}
-		else {
-			return StringPool.BLANK;
-		}
 	}
 
 }

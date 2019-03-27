@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.web.internal.translator;
 
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskArticleWebService;

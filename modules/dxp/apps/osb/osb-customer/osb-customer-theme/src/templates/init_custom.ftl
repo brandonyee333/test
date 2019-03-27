@@ -2,6 +2,7 @@
 	layout_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.LayoutLocalService")
 	portal_permission = serviceLocator.findService("com.liferay.portal.kernel.service.permission.PortalPermission")
 	role_local_service = serviceLocator.findService("com.liferay.portal.kernel.service.RoleLocalService")
+	zendesk_locale_util = serviceLocator.findService("com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil")
 
 	theme_display_permission_checker = theme_display.getPermissionChecker()
 
@@ -36,21 +37,3 @@
 <#if is_signed_in && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil")?? && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil").hasMegaMenu(user.getUserId())>
 	<#assign has_mega_menu = true />
 </#if>
-
-<#function convert_to_zendesk_locale locale>
-	<#local zendesk_locale = "" />
-
-	<#if stringUtil.equals(locale, "en_US")>
-		<#local zendesk_locale = "en-us" />
-	<#elseif stringUtil.equals(locale, "es_ES")>
-		<#local zendesk_locale = "es" />
-	<#elseif stringUtil.equals(locale, "ja_JP")>
-		<#local zendesk_locale = "ja" />
-	<#elseif stringUtil.equals(locale, "pt_BR")>
-		<#local zendesk_locale = "pt" />
-	<#elseif stringUtil.equals(locale, "zh_CN")>
-		<#local zendesk_locale = "zh-cn" />
-	</#if>
-
-	<#return zendesk_locale>
-</#function>

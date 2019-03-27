@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.connector.constants;
+package com.liferay.osb.customer.zendesk.constants;
 
 /**
  * @author Amos Fong

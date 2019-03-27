@@ -11,6 +11,5 @@
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/synchronizer/PartnerWorkerSynchronizer.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/synchronizer/UserSynchronizer.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/UserModelListener.java" />
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/zendesk/model/listener/util/ZendeskModelListenerUtil.java" />
 	</source-check>
 </suppressions>

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.importer;
 
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskLocales;
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;

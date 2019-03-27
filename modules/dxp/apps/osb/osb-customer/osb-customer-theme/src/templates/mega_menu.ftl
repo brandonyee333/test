@@ -9,7 +9,7 @@
 	);
 
 	function addLocaleParamToURI(locale, urn) {
-		return '${zendesk_url}/hc/${convert_to_zendesk_locale(locale)}/' + urn;
+		return '${zendesk_url}/hc/${zendesk_locale_util.convertToZendeskLocale(locale)}/' + urn;
 	}
 
 	var accountLinks = {

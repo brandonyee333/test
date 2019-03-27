@@ -57,7 +57,7 @@
 
 					<div class="dropdown-menu dropdown-menu-caret dropdown-menu-end" id="user-dropdown">
 						<div id="user-menu" role="menu">
-							<a class="my-activities" href="${zendesk_url}/hc/${convert_to_zendesk_locale(current_locale)}/requests"><@liferay.language key="my-activities" /></a>
+							<a class="my-activities" href="${zendesk_url}/hc/${zendesk_locale_util.convertToZendeskLocale(current_locale)}/requests"><@liferay.language key="my-activities" /></a>
 
 							<#if liferay_employee>
 								<a href="/group/license"><@liferay.language key="license" /></a>

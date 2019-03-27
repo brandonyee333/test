@@ -19,7 +19,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
-import com.liferay.osb.customer.zendesk.model.listener.util.ZendeskModelListenerUtil;
+import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -163,7 +163,7 @@ public class UserSynchronizer {
 	public long sync(User user, String organizationName, Set<String> tags)
 		throws PortalException {
 
-		String locale = ZendeskModelListenerUtil.convertToZendeskLocale(
+		String locale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
 
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
@@ -259,6 +259,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private ZendeskLocaleUtil _zendeskLocaleUtil;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
