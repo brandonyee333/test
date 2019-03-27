@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 
 <suppressions>
-	<checkstyle>
-		<suppress checks="StaticVariableName" files="docroot/WEB-INF/service/com/liferay/osb/util/OSBConstants\.java" />
-	</checkstyle>
 	<source-check>
 		<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_4_7/Upgrade_20160419113858448_OfferingBundle\.java" />
 		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/admin/servlet/AdminServletContextListener\.java" />
