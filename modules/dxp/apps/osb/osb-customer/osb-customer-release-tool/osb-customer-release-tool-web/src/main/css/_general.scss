@@ -1,0 +1,67 @@
+.main-heading {
+	background-color: $color-grey;
+	padding: 80px 0 84px;
+}
+
+.pagination {
+	margin: 32px 0 64px;
+}
+
+.refine-by-filters {
+	background-color: $color-grey;
+	border: $border-radius;
+	margin: 0 48px 0 -12px;
+	padding: $padding-default;
+
+	h3 {
+		margin: 0;
+	}
+
+	.filter-checkbox {
+		margin-right: 8px;
+	}
+
+	.filter-checkbox-container {
+		padding-top: $padding-md;
+	}
+
+	@include media-breakpoint-down(md) {
+		margin-right: -12px;
+	}
+}
+
+.results-count {
+	padding: $padding-default 0;
+}
+
+.section-subtitle {
+	padding-top: 8px;
+}
+
+.sorting-indicator {
+	margin-left: 8px;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&.asc {
+		transform: rotate(180deg);
+	}
+}
+
+.table {
+	table-layout: auto;
+
+	> thead > tr > th {
+		font-weight: $font-weight-semi-bold;
+	}
+
+	> tbody > tr > td:first-child {
+		font-weight: $font-weight-normal;
+	}
+}
+
+.table-list a {
+	color: $color-primary;
+}

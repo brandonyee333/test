@@ -3,31 +3,31 @@ import PropTypes from 'prop-types';
 
 export default class FilterCheckbox extends Component {
 	static propTypes = {
-		checkboxLabel: PropTypes.string.isRequired,
-		checkboxValue: PropTypes.string.isRequired,
-		handleCheckboxChange: PropTypes.func.isRequired
+		handleOnChange: PropTypes.func.isRequired,
+		label: PropTypes.string.isRequired,
+		value: PropTypes.string.isRequired
 	};
 
-	handleCheckboxChange = () => {
-		const {checkboxValue, handleCheckboxChange} = this.props;
+	handleOnChange = () => {
+		const {value, handleOnChange} = this.props;
 
-		handleCheckboxChange(checkboxValue);
+		handleOnChange(value);
 	}
 
 	render() {
-		const {checkboxLabel, checkboxValue} = this.props;
+		const {label, value} = this.props;
 
 		return (
-			<div className="refinement-checkbox-container">
+			<div className="filter-checkbox-container">
 				<label>
 					<input
-						className="refinement-checkbox"
-						name={checkboxValue}
-						onChange={this.handleCheckboxChange}
+						className="filter-checkbox"
+						name={value}
+						onChange={this.handleOnChange}
 						type="checkbox"
 					/>
 
-					<span className="refinement-checkbox-label">{checkboxLabel}</span>
+					<span className="filter-checkbox-label">{label}</span>
 				</label>
 			</div>
 		);

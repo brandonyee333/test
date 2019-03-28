@@ -33,17 +33,11 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<strong>Refinement Filters:</strong> <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
-
-<br />
-
-<strong>Fix Pack Refinement Endpoint:</strong> <%= fixPackResultsURL %>
-
 <%
 JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
 %>
 
-<div id="<portlet:namespace />highlights"></div>
+<div class="container-fluid row" id="<portlet:namespace />highlights"></div>
 
 <aui:script>
 	var highlightsDescription = '';
@@ -52,22 +46,22 @@ JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderRespo
 	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
 	%>
 
-	if (<%= journalArticle != null %>) {
+	<c:if test="<%= journalArticle != null %>">
 
 		<%
 		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
 		%>
 
 		highlightsDescription = '<%= journalArticleDisplay.getContent() %>';
-	}
+	</c:if>
 
 	ReleaseTool.render(
 		ReleaseTool.Highlights,
 		{
+			description: highlightsDescription,
+			filters: <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>,
 			fixPackJSONObject: <%= fixPackJSONObject %>,
-			fixPackResultsURL: '<%= fixPackResultsURL %>',
-			highlightsDescription: highlightsDescription,
-			highlightsFiltersArray: <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>
+			fixPackResultsURL: '<%= fixPackResultsURL %>'
 		},
 		document.getElementById('<portlet:namespace />highlights')
 	);

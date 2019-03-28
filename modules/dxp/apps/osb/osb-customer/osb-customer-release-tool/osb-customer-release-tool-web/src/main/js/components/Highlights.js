@@ -1,8 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import axios from 'axios';
-
 import {error} from '../types/generic';
 import {fixPackJSONObject} from '../types/highlights';
 
@@ -11,89 +9,85 @@ import TableResults from './TableResults';
 
 export default class Highlights extends Component {
 	static propTypes = {
+		description: PropTypes.string.isRequired,
+		filters: PropTypes.array.isRequired,
 		fixPackJSONObject: PropTypes.oneOfType(
 			[error, fixPackJSONObject]
 		).isRequired,
-		fixPackResultsURL: PropTypes.string.isRequired,
-		highlightsDescription: PropTypes.string.isRequired,
-		highlightsFiltersArray: PropTypes.array.isRequired
+		fixPackResultsURL: PropTypes.string.isRequired
 	};
 
 	state = {
-		refineBy: []
+		filterBy: []
 	};
 
-	handleCheckboxChange = checkboxValue => {
-		const {refineBy} = this.state;
+	handleCheckboxChange = value => {
+		const {filterBy} = this.state;
 
-		let refineByArray = refineBy;
+		let filterByArray = filterBy;
 
-		if (!refineBy.includes(checkboxValue)) {
-			refineByArray.push(checkboxValue);
+		if (!filterBy.includes(value)) {
+			filterByArray.push(value);
 		}
 		else {
-			const index = refineBy.indexOf(checkboxValue);
+			const index = filterBy.indexOf(value);
 
-			refineByArray.splice(index, 1);
+			filterByArray.splice(index, 1);
 		}
 
 		this.setState(
 			{
-				refineBy: refineByArray
+				filterBy: filterByArray
 			}
 		);
 	};
 
-	refineObject = results => {
-		const {refineBy} = this.state;
+	filterResults = () => {
+		const {fixPackJSONObject} = this.props;
+		const {filterBy} = this.state;
 
-		const refinedResults = results.filter(
-			result => {
-				return refineBy.some(
-					filter => result.fieldsUsed[filter]
-				);
-			}
-		);
+		if (fixPackJSONObject.results) {
+			const filteredResults = fixPackJSONObject.results.filter(
+				result => {
+					return filterBy.some(
+						filter => result.fieldsUsed[filter]
+					);
+				}
+			);
 
-		return {results: refinedResults, total: refinedResults.length};
+			return {results: filteredResults, total: filteredResults.length};
+		}
+
+		return fixPackJSONObject;
 	}
 
 	render() {
 		const {
+			description,
+			filters,
 			fixPackJSONObject,
-			highlightsDescription,
-			highlightsFiltersArray
 		} = this.props;
-		const {refineBy} = this.state;
+		const {filterBy} = this.state;
 
-		const highlightsTab = {
-			tabDescription: highlightsDescription,
-			tabName: 'highlights'
-		}
-
-		const {results} = fixPackJSONObject;
-
-		const jsonObject = refineBy.length ? this.refineObject(results) : fixPackJSONObject;
-
-		if (refineBy.length) {
-			this.refineObject(results);
-		}
+		const jsonObject = filterBy.length
+			? this.filterResults()
+			: fixPackJSONObject;
 
 		return (
 			<Fragment>
 				<div className="col-md-3">
-					<div className="refinement-filters">
-						<h3 className="refine-by">
+					<div className="refine-by-filters">
+						<h3>
 							{Liferay.Language.get('refine-by')}
 						</h3>
 
-						{!!highlightsFiltersArray && highlightsFiltersArray.map(
+						{!!filters && filters.map(
 							checkbox => (
 								<FilterCheckbox
 									key={checkbox.value}
-									checkboxLabel={checkbox.label}
-									checkboxValue={checkbox.value}
-									handleCheckboxChange={this.handleCheckboxChange}
+									handleOnChange={this.handleCheckboxChange}
+									label={checkbox.label}
+									value={checkbox.value}
 								/>
 							)
 						)}
@@ -103,7 +97,10 @@ export default class Highlights extends Component {
 				<div className="col-md-9">
 					<TableResults
 						jsonObject={jsonObject}
-						tab={highlightsTab}
+						tab={{
+							tabDescription: description,
+							tabName: 'highlights'
+						}}
 					/>
 				</div>
 			</Fragment>

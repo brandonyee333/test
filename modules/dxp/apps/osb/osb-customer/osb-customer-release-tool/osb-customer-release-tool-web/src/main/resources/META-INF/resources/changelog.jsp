@@ -37,7 +37,7 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderResponse);
 %>
 
-<div id="<portlet:namespace />changelog"></div>
+<div class="container-fluid row" id="<portlet:namespace />changelog"></div>
 
 <aui:script>
 	var changelogDescription = '';
@@ -46,21 +46,21 @@ JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderR
 	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
 	%>
 
-	if (<%= journalArticle != null %>) {
+	<c:if test="<%= journalArticle != null %>">
 
 		<%
 		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
 		%>
 
 		changelogDescription = '<%= journalArticleDisplay.getContent() %>';
-	}
+	</c:if>
 
 	ReleaseTool.render(
 		ReleaseTool.Changelog,
 		{
+			description: changelogDescription,
 			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
-			jiraIssueJSONObject: <%= jiraIssueJSONObject %>,
-			changelogDescription: changelogDescription
+			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />changelog')
 	);
