@@ -23,16 +23,19 @@ TableResults.propTypes = {
 export default function TableResults({jsonObject, tab}) {
 	return (
 		<Fragment>
-			{!!jsonObject.error && (
-				<Alert type="danger">{jsonObject.error.message}</Alert>
-			)}
-
 			<h2>
 				{Liferay.Language.get(tab.tabName)}
 			</h2>
 
-			{tab.tabDescription && (
-				<h5 className="secondary-text-color section-subtitle" dangerouslySetInnerHTML={{__html: tab.tabDescription}}></h5>
+			{!!tab.tabDescription && (
+				<h5
+					className="secondary-text-color section-subtitle"
+					dangerouslySetInnerHTML={{__html: tab.tabDescription}}
+				/>
+			)}
+
+			{!!jsonObject.error && (
+				<Alert type="danger">{jsonObject.error.message}</Alert>
 			)}
 
 			{!!jsonObject.results && (

@@ -33,9 +33,14 @@ describe('TableResults', () => {
 		total: 2
 	};
 
+	const tab = {
+		tabDescription: 'description for the tab',
+		tabName: 'test tab'
+	}
+
 	it('renders error correctly', () => {
 		const {container, getByRole} = render(
-			<TableResults jsonObject={error} tab="highlights" />
+			<TableResults jsonObject={error} tab={tab} />
 		);
 
 		expect(getByRole('alert')).toBeTruthy();
@@ -44,7 +49,7 @@ describe('TableResults', () => {
 
 	it('renders content correctly', () => {
 		const {container, getByRole} = render(
-			<TableResults jsonObject={contentObj} tab="changelog" />
+			<TableResults jsonObject={contentObj} tab={tab} />
 		);
 
 		expect(getByRole('table')).toBeTruthy();
