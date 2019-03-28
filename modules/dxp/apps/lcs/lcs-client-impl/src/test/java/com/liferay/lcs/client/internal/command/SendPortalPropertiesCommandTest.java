@@ -15,6 +15,7 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.internal.task.advisor.TaskAdvisorImpl;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -89,7 +90,8 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 		);
 
 		SendPortalPropertiesCommand sendPortalPropertiesCommand =
-			new SendPortalPropertiesCommand(null);
+			new SendPortalPropertiesCommand(
+				lcsClusterEntryTokenAdvisor, null, new TaskAdvisorImpl());
 
 		Properties properties =
 			sendPortalPropertiesCommand.getSecurityInsensitivePropertiesKeys();

@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.client.internal.task.advisor;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.internal.command.Command;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
@@ -137,14 +138,16 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		TaskAdvisorImpl taskAdvisor = new TaskAdvisorImpl();
 
 		Command<? extends CommandMessage> sendPortalPropertiesCommand =
-			new SendPortalPropertiesCommand(_lcsGatewayClient);
+			new SendPortalPropertiesCommand(
+				mock(LCSClusterEntryTokenAdvisor.class), _lcsGatewayClient,
+				taskAdvisor);
 
 		messageCommands.put(
 			"com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage",
 			sendPortalPropertiesCommand);
 
 		Command<? extends CommandMessage> sendPatchesCommand =
-			new SendPatchesCommand(_lcsGatewayClient);
+			new SendPatchesCommand(_lcsGatewayClient, taskAdvisor);
 
 		messageCommands.put(
 			"com.liferay.lcs.messaging.SendPatchesCommandMessage",
