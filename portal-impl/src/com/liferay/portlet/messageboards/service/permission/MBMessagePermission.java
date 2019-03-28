@@ -25,13 +25,12 @@ import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.portlet.PortletProvider;
-import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -97,12 +96,9 @@ public class MBMessagePermission implements BaseModelPermissionChecker {
 			return false;
 		}
 
-		String portletId = PortletProviderUtil.getPortletId(
-			MBMessage.class.getName(), PortletProvider.Action.EDIT);
-
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, message.getGroupId(), MBMessage.class.getName(),
-			message.getMessageId(), portletId, actionId);
+			message.getMessageId(), PortletKeys.MESSAGE_BOARDS_ADMIN, actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();

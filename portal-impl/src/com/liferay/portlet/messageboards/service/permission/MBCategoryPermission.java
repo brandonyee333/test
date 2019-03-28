@@ -21,13 +21,12 @@ import com.liferay.message.boards.kernel.model.MBCategoryConstants;
 import com.liferay.message.boards.kernel.service.MBBanLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBCategoryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.portlet.PortletProvider;
-import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
 
 /**
@@ -124,13 +123,10 @@ public class MBCategoryPermission implements BaseModelPermissionChecker {
 			actionId = ActionKeys.ADD_SUBCATEGORY;
 		}
 
-		String portletId = PortletProviderUtil.getPortletId(
-			MBCategory.class.getName(), PortletProvider.Action.EDIT);
-
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, category.getGroupId(),
-			MBCategory.class.getName(), category.getCategoryId(), portletId,
-			actionId);
+			MBCategory.class.getName(), category.getCategoryId(),
+			PortletKeys.MESSAGE_BOARDS_ADMIN, actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();
