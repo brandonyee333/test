@@ -48,7 +48,11 @@ const setup = () => {
 	};
 
 	const utils = render(
-		<Changelog jiraIssueEndpoint="/" jiraIssueJSONObject={changelogJSONObj} />
+		<Changelog
+			description="description"
+			jiraIssueEndpoint="/"
+			jiraIssueJSONObject={changelogJSONObj}
+		/>
 	);
 
 	return {
@@ -65,7 +69,7 @@ describe('Changelog', () => {
 	it('renders changelog results correctly', () => {
 		const {container, queryByRole} = setup();
 
-		expect(queryByRole('navigation')).toBeFalsy()
+		expect(queryByRole('navigation')).toBeFalsy();
 		expect(container).toMatchSnapshot();
 	});
 
@@ -74,6 +78,7 @@ describe('Changelog', () => {
 
 		const {container, queryByRole} = render(
 			<Changelog
+				description="description"
 				jiraIssueEndpoint="/"
 				jiraIssueJSONObject={changelogJSONObjSize51}
 			/>
@@ -87,7 +92,11 @@ describe('Changelog', () => {
 		const {noResults} = setup();
 
 		const {container, queryByRole} = render(
-			<Changelog jiraIssueEndpoint="/" jiraIssueJSONObject={noResults} />
+			<Changelog
+				description="description"
+				jiraIssueEndpoint="/"
+				jiraIssueJSONObject={noResults}
+			/>
 		);
 
 		expect(queryByRole('navigation')).toBeFalsy();

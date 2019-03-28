@@ -59,20 +59,19 @@ export default class Changelog extends Component {
 	}
 
 	render() {
-		const {changelogDescription, jiraIssueJSONObject} = this.state;
+		const {changelogDescription} = this.props;
+		const {jiraIssueJSONObject} = this.state;
 
 		const totalPage = jiraIssueJSONObject.total ? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE) : '';
-
-		const changelogTab = {
-			tabDescription: changelogDescription,
-			tabName: 'changelog'
-		}
 
 		return (
 			<Fragment>
 				<TableResults
 					jsonObject={jiraIssueJSONObject}
-					tab={changelogTab}
+					tab={{
+						tabDescription: changelogDescription,
+						tabName: 'changelog'
+					}}
 				/>
 
 				{!!totalPage && totalPage > 1 && (

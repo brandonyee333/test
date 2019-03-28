@@ -39,7 +39,7 @@ export default function TableResults({jsonObject, tab}) {
 			)}
 
 			{!!jsonObject.results && (
-				<SortableTable jsonObject={jsonObject} tab={tab} />
+				<SortableTable jsonObject={jsonObject} tabName={tab.tabName} />
 			)}
 		</Fragment>
 	);

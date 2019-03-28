@@ -12,12 +12,7 @@ export default class SortableTable extends Component {
 		jsonObject: PropTypes.oneOfType(
 			[fixPackJSONObject, jiraIssueJSONObject]
 		).isRequired,
-		tab: PropTypes.shape(
-			{
-				tabDescription: PropTypes.string,
-				tabName: PropTypes.string
-			}
-		).isRequired
+		tabName: PropTypes.string.isRequired
 	};
 
 	state = {
@@ -43,7 +38,7 @@ export default class SortableTable extends Component {
 	};
 
 	render() {
-		const {jsonObject: {total}, tab: {tabName}} = this.props;
+		const {jsonObject: {total}, tabName} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
