@@ -16,6 +16,7 @@ package com.liferay.osb.customer.metrics.sync.liferay.model;
 
 import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
+import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEntryLanguage;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -37,7 +38,8 @@ public class AccountEntryLanguageMetricsModel
 		AccountEntryLanguage accountEntryLanguage) {
 
 		Map<String, Object> attributes =
-			accountEntryLanguage.getModelAttributes();
+			_metricsTransformationUtil.transformSharedAttributes(
+				accountEntryLanguage.getModelAttributes());
 
 		attributes.put(
 			"languageId",
@@ -59,5 +61,8 @@ public class AccountEntryLanguageMetricsModel
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private MetricsTransformationUtil _metricsTransformationUtil;
 
 }
