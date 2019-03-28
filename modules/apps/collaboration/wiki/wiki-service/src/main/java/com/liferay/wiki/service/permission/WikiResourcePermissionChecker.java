@@ -50,8 +50,8 @@ public class WikiResourcePermissionChecker
 		PermissionChecker permissionChecker, long groupId, String actionId) {
 
 		return contains(
-			permissionChecker, RESOURCE_NAME, WikiPortletKeys.WIKI, groupId,
-			actionId);
+			permissionChecker, RESOURCE_NAME, WikiPortletKeys.WIKI_ADMIN,
+			groupId, actionId);
 	}
 
 	@Override

@@ -97,7 +97,7 @@ public class WikiNodePermissionChecker implements BaseModelPermissionChecker {
 
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, node.getGroupId(), WikiNode.class.getName(),
-			node.getNodeId(), WikiPortletKeys.WIKI, actionId);
+			node.getNodeId(), WikiPortletKeys.WIKI_ADMIN, actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();
