@@ -50,8 +50,8 @@ public class BookmarksResourcePermissionChecker
 		PermissionChecker permissionChecker, long classPK, String actionId) {
 
 		return contains(
-			permissionChecker, RESOURCE_NAME, BookmarksPortletKeys.BOOKMARKS,
-			classPK, actionId);
+			permissionChecker, RESOURCE_NAME,
+			BookmarksPortletKeys.BOOKMARKS_ADMIN, classPK, actionId);
 	}
 
 	@Override

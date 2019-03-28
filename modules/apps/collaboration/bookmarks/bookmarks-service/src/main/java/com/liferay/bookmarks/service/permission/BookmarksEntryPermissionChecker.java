@@ -73,7 +73,7 @@ public class BookmarksEntryPermissionChecker
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, entry.getGroupId(),
 			BookmarksEntry.class.getName(), entry.getEntryId(),
-			BookmarksPortletKeys.BOOKMARKS, actionId);
+			BookmarksPortletKeys.BOOKMARKS_ADMIN, actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();
