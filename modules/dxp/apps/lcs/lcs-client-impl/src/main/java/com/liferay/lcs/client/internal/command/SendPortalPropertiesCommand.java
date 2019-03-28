@@ -49,8 +49,13 @@ public class SendPortalPropertiesCommand
 	public SendPortalPropertiesCommand() {
 	}
 
-	public SendPortalPropertiesCommand(LCSGatewayClient lcsGatewayClient) {
+	public SendPortalPropertiesCommand(
+		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
+		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
+
+		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
+		_taskAdvisor = taskAdvisor;
 	}
 
 	@Override

@@ -41,8 +41,14 @@ import org.osgi.service.component.annotations.Reference;
 @Component
 public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 
-	public SendPatchesCommand(LCSGatewayClient lcsGatewayClient) {
+	public SendPatchesCommand() {
+	}
+
+	public SendPatchesCommand(
+		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
+
 		_lcsGatewayClient = lcsGatewayClient;
+		_taskAdvisor = taskAdvisor;
 	}
 
 	@Override
@@ -132,7 +138,8 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendPatchesCommand.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
 
 	@Reference
 	private TaskAdvisor _taskAdvisor;
