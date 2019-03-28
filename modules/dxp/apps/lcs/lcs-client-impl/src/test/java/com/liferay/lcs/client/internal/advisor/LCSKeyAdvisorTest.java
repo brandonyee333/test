@@ -147,8 +147,7 @@ public class LCSKeyAdvisorTest extends PowerMockito {
 	private String _getTestLCSKeyFilePath(String fileName) {
 		Class<LCSKeyAdvisorTest> clazz = LCSKeyAdvisorTest.class;
 
-		URL resource = clazz.getResource(
-			"dependencies/data/license/server/" + fileName);
+		URL resource = clazz.getResource("data/license/server/" + fileName);
 
 		return resource.getPath();
 	}

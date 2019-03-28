@@ -106,7 +106,7 @@ public class LCSRESTErrorTest extends PowerMockito {
 		try {
 			Class<?> clazz = LCSRESTErrorTest.class;
 
-			inputStream = clazz.getResourceAsStream("dependencies/" + fileName);
+			inputStream = clazz.getResourceAsStream(fileName);
 
 			BufferedReader bufferedReader = new BufferedReader(
 				new InputStreamReader(inputStream, "UTF-8"));
