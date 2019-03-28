@@ -21,14 +21,13 @@ import com.liferay.document.library.kernel.service.DLAppLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.portlet.PortletProvider;
-import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
 
 /**
@@ -82,12 +81,10 @@ public class DLFolderPermission implements BaseModelPermissionChecker {
 			actionId = ActionKeys.ADD_SUBFOLDER;
 		}
 
-		String portletId = PortletProviderUtil.getPortletId(
-			Folder.class.getName(), PortletProvider.Action.EDIT);
-
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, dlFolder.getGroupId(), DLFolder.class.getName(),
-			dlFolder.getFolderId(), portletId, actionId);
+			dlFolder.getFolderId(), PortletKeys.DOCUMENT_LIBRARY_ADMIN,
+			actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();
