@@ -23,30 +23,6 @@
 		</settings>
 		<layout-templates>
 			<custom>
-				<layout-template id="1_column" name="Full">
-					<template-path>/layouttpl/custom/1-column-layouttpl/1_column.tpl</template-path>
-					<thumbnail-path>/layouttpl/custom/1-column-layouttpl/1_column.png</thumbnail-path>
-				</layout-template>
-				<layout-template id="1_2_columns_ii" name="Split 100-25-75">
-					<template-path>/layouttpl/custom/1-2-columns-ii-layouttpl/1_2_columns_ii.tpl</template-path>
-					<thumbnail-path>/layouttpl/custom/1-2-columns-ii-layouttpl/1_2_columns_ii.png</thumbnail-path>
-				</layout-template>
-				<layout-template id="1_2_columns_iii" name="Split 100-50-50">
-					<template-path>/layouttpl/custom/1-2-columns-iii-layouttpl/1_2_columns_iii.tpl</template-path>
-					<thumbnail-path>/layouttpl/custom/1-2-columns-iii-layouttpl/1_2_columns_iii.png</thumbnail-path>
-				</layout-template>
-				<layout-template id="2_columns_i" name="Standard">
-					<template-path>/layouttpl/custom/2-columns-i-layouttpl/2_columns_i.tpl</template-path>
-					<thumbnail-path>/layouttpl/custom/2-columns-i-layouttpl/2_columns_i.png</thumbnail-path>
-				</layout-template>
-				<layout-template id="2_columns_ii" name="Split 50-50">
-					<template-path>/layouttpl/custom/2-columns-ii-layouttpl/2_columns_ii.tpl</template-path>
-					<thumbnail-path>/layouttpl/custom/2-columns-ii-layouttpl/2_columns_ii.png</thumbnail-path>
-				</layout-template>
-				<layout-template id="2_columns_iii" name="Split 66-33">
-					<template-path>/layouttpl/custom/2-columns-iii-layouttpl/2_columns_iii.tpl</template-path>
-					<thumbnail-path>/layouttpl/custom/2-columns-iii-layouttpl/2_columns_iii.png</thumbnail-path>
-				</layout-template>
 				<layout-template id="2-columns-iv" name="2 Columns (25/75)">
 					<template-path>/layouttpl/custom/2-columns-iv-layouttpl/2_columns_iv.tpl</template-path>
 					<thumbnail-path>/layouttpl/custom/2-columns-iv-layouttpl/2_columns_iv.png</thumbnail-path>

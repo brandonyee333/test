@@ -1,5 +1,0 @@
-Bundle-Name: Liferay OSB Customer Portal Asset Publisher Web
-Bundle-SymbolicName: com.liferay.osb.customer.portal.asset.publisher.web
-Bundle-Version: 1.0.0
-Fragment-Host: com.liferay.asset.publisher.web
-Liferay-Releng-Module-Group-Title: Customer Portal
