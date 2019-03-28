@@ -18,14 +18,13 @@ import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil;
 import com.liferay.exportimport.kernel.staging.permission.StagingPermissionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.portlet.PortletProvider;
-import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.BaseModelPermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
 import com.liferay.portal.kernel.util.HashUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.workflow.permission.WorkflowPermissionUtil;
 
 import java.util.Map;
@@ -129,12 +128,9 @@ public class BlogsEntryPermission implements BaseModelPermissionChecker {
 		PermissionChecker permissionChecker, BlogsEntry entry,
 		String actionId) {
 
-		String portletId = PortletProviderUtil.getPortletId(
-			BlogsEntry.class.getName(), PortletProvider.Action.EDIT);
-
 		Boolean hasPermission = StagingPermissionUtil.hasPermission(
 			permissionChecker, entry.getGroupId(), BlogsEntry.class.getName(),
-			entry.getEntryId(), portletId, actionId);
+			entry.getEntryId(), PortletKeys.BLOGS_ADMIN, actionId);
 
 		if (hasPermission != null) {
 			return hasPermission.booleanValue();
