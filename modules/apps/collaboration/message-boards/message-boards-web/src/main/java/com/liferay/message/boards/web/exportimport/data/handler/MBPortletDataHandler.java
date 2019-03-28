@@ -27,6 +27,7 @@ import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.model.MBThreadFlag;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.util.PropsValues;
 
 import javax.portlet.PortletPreferences;
@@ -142,6 +143,11 @@ public class MBPortletDataHandler extends BasePortletDataHandler {
 		setImportControls(getExportControls());
 		setPublishToLiveByDefault(
 			PropsValues.MESSAGE_BOARDS_PUBLISH_TO_LIVE_BY_DEFAULT);
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(

@@ -37,6 +37,7 @@ import com.liferay.message.boards.kernel.service.MBThreadFlagLocalService;
 import com.liferay.message.boards.kernel.service.MBThreadLocalService;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.messageboards.service.permission.MBPermission;
@@ -330,6 +331,11 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 		MBThreadLocalService mbThreadLocalService) {
 
 		_mbThreadLocalService = mbThreadLocalService;
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	private MBBanLocalService _mbBanLocalService;

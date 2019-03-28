@@ -36,6 +36,7 @@ import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryReg
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.model.Repository;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.constants.DLConstants;
@@ -365,6 +366,11 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 				portletDataContext);
 
 		repositoryActionableDynamicQuery.performCount();
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference

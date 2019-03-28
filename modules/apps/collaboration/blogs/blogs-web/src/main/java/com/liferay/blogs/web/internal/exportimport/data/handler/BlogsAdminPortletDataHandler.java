@@ -26,6 +26,7 @@ import com.liferay.exportimport.kernel.lar.PortletDataHandlerControl;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.blogs.constants.BlogsConstants;
@@ -184,6 +185,11 @@ public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 		BlogsStatsUserLocalService blogsStatsUserLocalService) {
 
 		_blogsStatsUserLocalService = blogsStatsUserLocalService;
+	}
+
+	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
+	protected void setModuleServiceLifecycle(
+		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	private BlogsEntryLocalService _blogsEntryLocalService;
