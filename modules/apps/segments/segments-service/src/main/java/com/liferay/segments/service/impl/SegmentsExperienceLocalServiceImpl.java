@@ -43,17 +43,6 @@ public class SegmentsExperienceLocalServiceImpl
 	extends SegmentsExperienceLocalServiceBaseImpl {
 
 	@Override
-	public SegmentsExperience addDefaultExperience(
-			long groupId, long classNameId, long classPK)
-		throws PortalException {
-
-		SegmentsEntry segmentsEntry = _getDefaultSegment(groupId);
-
-		return _addDefaultExperience(
-			groupId, segmentsEntry.getSegmentsEntryId(), classNameId, classPK);
-	}
-
-	@Override
 	public SegmentsExperience addSegmentsExperience(
 			long segmentsEntryId, long classNameId, long classPK,
 			Map<Locale, String> nameMap, int priority, boolean active,
@@ -177,8 +166,8 @@ public class SegmentsExperienceLocalServiceImpl
 			return null;
 		}
 
-		return segmentsExperienceLocalService.addDefaultExperience(
-			groupId, classNameId, classPK);
+		return _addDefaultExperience(
+			groupId, segmentsEntry.getSegmentsEntryId(), classNameId, classPK);
 	}
 
 	@Override
