@@ -43,31 +43,14 @@ public class SegmentsExperienceLocalServiceImpl
 	extends SegmentsExperienceLocalServiceBaseImpl {
 
 	@Override
-	public SegmentsExperience addDefaultSegmentsExperience(
+	public SegmentsExperience addDefaultExperience(
 			long groupId, long classNameId, long classPK)
 		throws PortalException {
 
-		SegmentsEntry segmentsEntry = _getDefaultSegmentsEntry(groupId);
+		SegmentsEntry segmentsEntry = _getDefaultSegment(groupId);
 
-		Map<Locale, String> nameMap = ResourceBundleUtil.getLocalizationMap(
-			_getResourceBundleLoader(), "default-experience-name");
-
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setAddGuestPermissions(true);
-		serviceContext.setAddGroupPermissions(true);
-		serviceContext.setScopeGroupId(groupId);
-
-		Group group = groupLocalService.getGroup(groupId);
-
-		long defaultUserId = userLocalService.getDefaultUserId(
-			group.getCompanyId());
-
-		serviceContext.setUserId(defaultUserId);
-
-		return segmentsExperienceLocalService.addSegmentsExperience(
-			segmentsEntry.getSegmentsEntryId(), classNameId, classPK, nameMap,
-			0, true, serviceContext);
+		return _addDefaultExperience(
+			groupId, segmentsEntry.getSegmentsEntryId(), classNameId, classPK);
 	}
 
 	@Override
@@ -179,7 +162,7 @@ public class SegmentsExperienceLocalServiceImpl
 			boolean addDefaultExperience)
 		throws PortalException {
 
-		SegmentsEntry segmentsEntry = _getDefaultSegmentsEntry(groupId);
+		SegmentsEntry segmentsEntry = _getDefaultSegment(groupId);
 
 		SegmentsExperience segmentsExperience =
 			segmentsExperiencePersistence.fetchByG_S_C_C(
@@ -194,7 +177,7 @@ public class SegmentsExperienceLocalServiceImpl
 			return null;
 		}
 
-		return segmentsExperienceLocalService.addDefaultSegmentsExperience(
+		return segmentsExperienceLocalService.addDefaultExperience(
 			groupId, classNameId, classPK);
 	}
 
@@ -315,7 +298,32 @@ public class SegmentsExperienceLocalServiceImpl
 		return segmentsExperiencePersistence.update(segmentsExperience);
 	}
 
-	private SegmentsEntry _getDefaultSegmentsEntry(long groupId)
+	private SegmentsExperience _addDefaultExperience(
+			long groupId, long segmentsEntryId, long classNameId, long classPK)
+		throws PortalException {
+
+		Map<Locale, String> nameMap = ResourceBundleUtil.getLocalizationMap(
+			_getResourceBundleLoader(), "default-experience-name");
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setAddGuestPermissions(true);
+		serviceContext.setAddGroupPermissions(true);
+		serviceContext.setScopeGroupId(groupId);
+
+		Group group = groupLocalService.getGroup(groupId);
+
+		long defaultUserId = userLocalService.getDefaultUserId(
+			group.getCompanyId());
+
+		serviceContext.setUserId(defaultUserId);
+
+		return segmentsExperienceLocalService.addSegmentsExperience(
+			segmentsEntryId, classNameId, classPK, nameMap, 0, true,
+			serviceContext);
+	}
+
+	private SegmentsEntry _getDefaultSegment(long groupId)
 		throws PortalException {
 
 		SegmentsEntry segmentsEntry =
