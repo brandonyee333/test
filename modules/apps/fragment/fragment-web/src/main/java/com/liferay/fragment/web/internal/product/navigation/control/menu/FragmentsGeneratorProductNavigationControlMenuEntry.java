@@ -24,7 +24,6 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuE
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 
 import java.util.Locale;
-import java.util.Objects;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -72,8 +71,8 @@ public class FragmentsGeneratorProductNavigationControlMenuEntry
 		String mvcRenderCommandName = ParamUtil.getString(
 			request, portletDisplay.getNamespace() + "mvcRenderCommandName");
 
-		if (Objects.equals(
-				mvcRenderCommandName, "/fragment/edit_fragment_entry")) {
+		if ((mvcRenderCommandName != null) &&
+			mvcRenderCommandName.equals("/fragment/edit_fragment_entry")) {
 
 			return true;
 		}
