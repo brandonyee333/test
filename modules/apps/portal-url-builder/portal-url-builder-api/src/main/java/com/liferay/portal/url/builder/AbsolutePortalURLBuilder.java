@@ -58,6 +58,17 @@ public interface AbsolutePortalURLBuilder {
 		Bundle bundle, String relativeURL);
 
 	/**
+	 * Returns URLs for module resources. Module resources live in {@link
+	 * com.liferay.portal.kernel.util.Portal#getPathModule()}.
+	 *
+	 * @param  relativeURL the resource's relative URL
+	 * @return a builder that returns module resource URLs
+	 * @deprecated As of Mueller (7.2.x), use {@link AbsolutePortalURLBuilder#forModule(Bundle, String)}
+	 */
+	@Deprecated
+	public ModuleAbsolutePortalURLBuilder forModule(String relativeURL);
+
+	/**
 	 * Returns URLs for portlet dependency resources. Portlet dependency
 	 * resources live in the portal's root path.
 	 *

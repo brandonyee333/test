@@ -97,6 +97,18 @@ public class AbsolutePortalURLBuilderImpl implements AbsolutePortalURLBuilder {
 	}
 
 	@Override
+	public ModuleAbsolutePortalURLBuilder forModule(String relativeURL) {
+		return new ModuleAbsolutePortalURLBuilder() {
+
+			@Override
+			public String build() {
+				return _build(_portal.getPathModule(), relativeURL);
+			}
+
+		};
+	}
+
+	@Override
 	public PortletDependencyAbsolutePortalURLBuilder forPortletDependency(
 		PortletDependency portletDependency, String cssURN,
 		String javaScriptURN) {
