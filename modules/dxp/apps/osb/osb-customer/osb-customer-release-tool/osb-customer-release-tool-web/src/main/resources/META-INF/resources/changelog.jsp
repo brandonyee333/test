@@ -59,6 +59,7 @@ JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderR
 		ReleaseTool.Changelog,
 		{
 			description: changelogDescription,
+			filters: <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>,
 			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
 			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
 		},

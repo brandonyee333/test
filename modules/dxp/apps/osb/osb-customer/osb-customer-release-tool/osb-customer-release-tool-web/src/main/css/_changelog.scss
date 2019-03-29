@@ -1,3 +1,32 @@
+.changelog-filter {
+	.filter-header,
+	.text-filter {
+		flex-shrink: 0;
+	}
+	
+	.jira-components {
+		flex-grow: 1;
+		margin-right: -24px;
+		overflow: auto;
+		padding-right: $padding-default;
+		
+		&.filter-subsection {
+			margin-bottom: 32px;
+		}
+	}
+	
+	.more-options {
+		bottom: 24px;
+		position: absolute;
+	}
+
+	.refine-by-filters {
+		display: flex;
+		flex-direction: column;
+		max-height: 50vh;
+	}
+}
+
 .changelog-table {
 	> tbody > tr > td.lfr-summary-column {
 		font-size: $font-size-md;
@@ -5,12 +34,12 @@
 }
 
 .lfr-component-column {
-	width: 25%;
+	width: 20%;
 }
 
 .lfr-key-column,
 .lfr-release-column {
-	width: 10%;
+	width: 13%;
 }
 
 .lfr-summary-column {

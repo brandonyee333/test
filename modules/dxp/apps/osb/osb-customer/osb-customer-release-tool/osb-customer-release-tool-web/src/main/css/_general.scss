@@ -13,6 +13,11 @@
 	margin: 0 48px 0 -12px;
 	padding: $padding-default;
 
+	button {
+		font-size: $font-size-md;
+		padding: 0;
+	}
+
 	h3 {
 		margin: 0;
 	}
@@ -23,6 +28,25 @@
 
 	.filter-checkbox-container {
 		padding-top: $padding-md;
+
+		label {
+			display: flex;
+		}
+	}
+
+	.filter-header {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.filter-subsection {
+		margin-bottom: 8px;
+		margin-top: $margin-default;
+	}
+
+	.text-filter {
+		height: 32px;
+		margin-top: $margin-sm;
 	}
 
 	@include media-breakpoint-down(md) {

@@ -23,8 +23,10 @@ export default class Highlights extends Component {
 		filterBy: []
 	};
 
-	handleCheckboxChange = value => {
+	handleCheckboxChange = event => {
 		const {filterBy} = this.state;
+
+		const value = event.currentTarget.value;
 
 		const checkedFilters = filterBy;
 

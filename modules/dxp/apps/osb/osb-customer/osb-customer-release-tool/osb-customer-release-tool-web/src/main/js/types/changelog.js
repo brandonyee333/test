@@ -1,5 +1,14 @@
 import PropTypes from 'prop-types';
 
+export const jiraComponentsType = PropTypes.arrayOf(
+	PropTypes.shape(
+		{
+			name: PropTypes.string,
+			value: PropTypes.string
+		}
+	)
+);
+
 export const jiraIssueJSONObjectType = PropTypes.shape(
 	{
 		results: PropTypes.arrayOf(

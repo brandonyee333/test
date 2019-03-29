@@ -124,7 +124,7 @@ input:not([type="submit"]),
 select,
 textarea {
 	background-clip: border-box;
-	background-color: $input-bg;
+	background-color: $color-white;
 	border: $input-border-width solid $input-border-color;
 	border-radius: $input-border-radius;
 	display: block;
@@ -143,6 +143,11 @@ textarea {
 	&[readonly] {
 		background-color: $input-disabled-bg;
 		color: $color-default-disabled;
+	}
+
+	&.input-small {
+		font-size: $input-label-font-size;
+		padding: $input-sm-padding-y $input-sm-padding-x;
 	}
 }
 

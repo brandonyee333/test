@@ -1,19 +1,28 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import 'core-js/fn/array/includes';
+
 import axios from 'axios';
+import debounce from 'lodash.debounce';
 
 import {errorType} from '../types/generic';
-import {jiraIssueJSONObjectType} from '../types/changelog';
+import {jiraComponentsType, jiraIssueJSONObjectType} from '../types/changelog';
 
+import Button from './Button';
+import FilterCheckbox from './FilterCheckbox';
 import Pagination from './Pagination';
 import TableResults from './TableResults';
 
 const ARTICLES_PER_PAGE = 50;
+const FILTER_ON_LOAD = 7;
 
 export default class Changelog extends Component {
+	changelogTextInputRef = React.createRef();
+
 	static propTypes = {
 		description: PropTypes.string.isRequired,
+		filters: jiraComponentsType.isRequired,
 		jiraIssueEndpoint: PropTypes.string.isRequired,
 		jiraIssueJSONObject: PropTypes.oneOfType(
 			[errorType, jiraIssueJSONObjectType]
@@ -21,25 +30,106 @@ export default class Changelog extends Component {
 	};
 
 	state = {
+		selectedFilters: {
+			components: [],
+			keywords: ''
+		},
 		jiraIssueJSONObject: this.props.jiraIssueJSONObject,
+		seeAllFilterValues: false
+	}
+
+	handleCheckboxChange = event => {
+		const {selectedFilters} = this.state;
+
+		const name = event.currentTarget.name;
+
+		const components = selectedFilters.components;
+
+		if (!components.includes(name)) {
+			components.push(name);
+		}
+		else {
+			components.splice(selectedFilters.components.indexOf(name), 1);
+		}
+
+		this.setState(
+			{
+				selectedFilters: {
+					...selectedFilters,
+					components: components
+				}
+			}
+		)
+
+		this.queryJiraIssues(components, selectedFilters.keywords);
+	};
+
+	handleClearFilter = () => {
+		this.setState(
+			{
+				selectedFilters: {
+					components: [],
+					keywords: ''
+				}
+			}
+		);
+
+		this.queryJiraIssues();
+
+		this.changelogTextInputRef.current.value = '';
+	}
+
+	handleFilterTextInputKeyUp = event => {
+		const {selectedFilters} = this.state;
+
+		if (event.keyCode === 13) {
+			this.setState(
+				{
+					selectedFilters: {
+						...selectedFilters,
+						keywords: event.target.value
+					}
+				}
+			);
+
+			this.queryJiraIssues(selectedFilters.components, event.target.value);
+		}
+	}
+
+	handleTogglingFilterValues = () => {
+		const {seeAllFilterValues} = this.state;
+
+		this.setState(
+			{
+				seeAllFilterValues: !seeAllFilterValues
+			}
+		);
 	}
 
 	handlePaginationClick = (number) => {
+		const {selectedFilters: {components, keywords}} = this.state;
+
 		// startAt param begins at 0 and not 1
 
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
-		this.queryJiraIssues(startAt);
+		this.queryJiraIssues(components, keywords, startAt);
 
 		window.scroll(0, 0);
 	};
 
-	queryJiraIssues = (startAt) => {
+	queryJiraIssues = (components = [], keywords = '', startAt = 0) => {
 		const {jiraIssueEndpoint} = this.props;
 
 		const {namespace} = window.ReleaseToolConstants;
 
-		axios.get(`${jiraIssueEndpoint}&${namespace}startAt=${startAt}`)
+		const encodedComponents = encodeURIComponent(components.toString());
+		const encodedKeywords = encodeURIComponent(keywords);
+
+		axios
+			.get(
+				`${jiraIssueEndpoint}&${namespace}components=${encodedComponents}&${namespace}keywords=${encodedKeywords}&${namespace}startAt=${startAt}`
+			)
 			.then(
 				({data}) => {
 					this.setState(
@@ -59,27 +149,101 @@ export default class Changelog extends Component {
 	}
 
 	render() {
-		const {description} = this.props;
-		const {jiraIssueJSONObject} = this.state;
+		const {description, filters} = this.props;
+		const {
+			selectedFilters: {components, keywords},
+			jiraIssueJSONObject,
+			seeAllFilterValues
+		} = this.state;
 
 		const totalPage = jiraIssueJSONObject.total ? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE) : '';
 
 		return (
 			<Fragment>
-				<TableResults
-					jsonObject={jiraIssueJSONObject}
-					tab={{
-						tabDescription: description,
-						tabName: 'changelog'
-					}}
-				/>
+				<div className="changelog-filter col-md-3">
+					{!!filters && (
+						<div className="refine-by-filters">
+							<div className="filter-header">
+								<h3>
+									{Liferay.Language.get('refine-by')}
+								</h3>
 
-				{!!totalPage && totalPage > 1 && (
-					<Pagination
-						onClick={this.handlePaginationClick}
-						total={totalPage}
+								{!!(keywords || components.length) && (
+									<Button
+										display="link"
+										onClick={this.handleClearFilter}
+										type="button"
+									>
+										{Liferay.Language.get('clear-all')}
+									</Button>
+								)}
+							</div>
+
+							<input
+								ref={this.changelogTextInputRef}
+								className="input-small text-filter"
+								onKeyUp={debounce(this.handleFilterTextInputKeyUp, 500)}
+								placeholder={Liferay.Language.get('contains-text')}
+								type="text"
+							/>
+
+							<div className="filter-subsection jira-components semibold">
+								{Liferay.Language.get('component')}
+							
+								{filters.map(
+									(checkbox, index) => {
+										if (
+											seeAllFilterValues
+												? seeAllFilterValues
+												: index + 1 <= FILTER_ON_LOAD
+										) {
+											return (
+												<FilterCheckbox
+													key={checkbox.value}
+													checked={!!components.includes(checkbox.name)}
+													handleOnChange={this.handleCheckboxChange}
+													label={checkbox.name}
+													value={checkbox.value}
+												/>
+											);
+										}
+									}
+								)}
+							</div>
+
+							{filters.length > FILTER_ON_LOAD && (
+								<div className="more-options">
+									<Button
+										display="link"
+										onClick={this.handleTogglingFilterValues}
+										type="button"
+									>
+										{Liferay.Language.get(
+											seeAllFilterValues ? 'see-less' : 'see-more'
+										)}
+									</Button>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
+
+				<div className="col-md-9">
+					<TableResults
+						jsonObject={jiraIssueJSONObject}
+						tab={{
+							tabDescription: description,
+							tabName: 'changelog'
+						}}
 					/>
-				)}
+
+					{!!totalPage && totalPage > 1 && (
+						<Pagination
+							onClick={this.handlePaginationClick}
+							total={totalPage}
+						/>
+					)}
+				</div>
 			</Fragment>
 		);
 	}
