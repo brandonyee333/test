@@ -42,6 +42,13 @@ const setup = () => {
 		total: 51
 	};
 
+	const filters = times(10, i => {
+		return {
+			name: `component ${i}`,
+			value: `${i}`
+		};
+	});
+
 	const noResults = {
 		results: [],
 		total: 0
@@ -50,6 +57,7 @@ const setup = () => {
 	const utils = render(
 		<Changelog
 			description="description"
+			filters={filters}
 			jiraIssueEndpoint="/"
 			jiraIssueJSONObject={changelogJSONObj}
 		/>
@@ -58,6 +66,7 @@ const setup = () => {
 	return {
 		changelogJSONObj,
 		changelogJSONObjSize51,
+		filters,
 		noResults,
 		...utils
 	};
@@ -74,10 +83,11 @@ describe('Changelog', () => {
 	});
 
 	it('renders changelog with pagination when results exceed 50 items', () => {
-		const {changelogJSONObjSize51} = setup();
+		const {changelogJSONObjSize51, filters} = setup();
 
 		const {container, queryByRole} = render(
 			<Changelog
+				filters={filters}
 				description="description"
 				jiraIssueEndpoint="/"
 				jiraIssueJSONObject={changelogJSONObjSize51}
@@ -89,10 +99,11 @@ describe('Changelog', () => {
 	});
 
 	it('renders no results correctly', () => {
-		const {noResults} = setup();
+		const {filters, noResults} = setup();
 
 		const {container, queryByRole} = render(
 			<Changelog
+				filters={filters}
 				description="description"
 				jiraIssueEndpoint="/"
 				jiraIssueJSONObject={noResults}
@@ -123,5 +134,83 @@ describe('Changelog', () => {
 
 		fireEvent.click(queryByText('summary 2'));
 		expect(container).toMatchSnapshot();
+	});
+
+	it('shows seven filter checkboxes and a See More option below the filters if more than seven filter values are available', () => {
+		const {container, getByText} = setup();
+
+		expect(
+			container.querySelectorAll('.filter-checkbox-container').length
+		).toBe(7);
+		expect(getByText('see-more')).toBeTruthy();
+	});
+
+	it('does not show a See More option below the filters if seven or less filter values are available', () => {
+		const {changelogJSONObj} = setup();
+
+		const {container} = render(
+			<Changelog
+				filters={[
+					{
+						name: 'component 1',
+						value: '1'
+					},
+					{
+						name: 'component 2',
+						value: '2'
+					}
+				]}
+				description="description"
+				jiraIssueEndpoint="/"
+				jiraIssueJSONObject={changelogJSONObj}
+			/>
+		);
+
+		expect(
+			container.querySelectorAll('.filter-checkbox-container').length
+		).toBe(2);
+		expect(container).toMatchSnapshot();
+	});
+
+	it('expands the refine by filters if Show More is clicked and displays a Show Less option', () => {
+		const {container, getByText} = setup();
+
+		fireEvent.click(getByText('see-more'));
+
+		expect(
+			container.querySelectorAll('.filter-checkbox-container').length
+		).toBeGreaterThan(7);
+		expect(getByText('see-less')).toBeTruthy();
+	});
+
+	it('shows a Clear All option when a filter is selected and removes the option when all filters are unselected', () => {
+		const {container, queryByText} = setup();
+
+		fireEvent.click(container.querySelector('input[type=checkbox]'));
+
+		expect(queryByText('clear-all')).toBeTruthy();
+
+		fireEvent.click(container.querySelector('input[type=checkbox]'));
+
+		expect(queryByText('clear-all')).toBeFalsy();
+	});
+
+	it('clears all filter selections and text input field when Clear All is clicked', () => {
+		const {container, getByText} = setup();
+
+		const checkbox = container.querySelector('input[type=checkbox]');
+		const textInput = container.querySelector('input[type=text]');
+
+		fireEvent.click(checkbox);
+		fireEvent.change(textInput, {
+			target: {
+				value: 'test'
+			}
+		});
+
+		fireEvent.click(getByText('clear-all'));
+
+		expect(checkbox.checked).toBeFalsy();
+		expect(textInput.value).toBe('');
 	});
 });

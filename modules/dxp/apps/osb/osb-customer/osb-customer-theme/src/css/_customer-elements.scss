@@ -125,7 +125,7 @@ select,
 textarea {
 	background-clip: border-box;
 	background-color: $color-white;
-	border: $input-border-width solid $input-border-color;
+	border: 1px solid $input-border-color;
 	border-radius: $input-border-radius;
 	display: block;
 	font-size: $font-size-base;
