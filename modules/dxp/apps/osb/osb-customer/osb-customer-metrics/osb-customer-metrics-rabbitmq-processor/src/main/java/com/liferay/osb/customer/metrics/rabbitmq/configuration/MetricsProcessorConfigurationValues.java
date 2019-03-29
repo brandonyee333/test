@@ -24,6 +24,10 @@ public class MetricsProcessorConfigurationValues {
 	public static final String[] CLASSNAME_MAPPINGS =
 		MetricsProcessorConfigurationUtil.getArray("classname.mappings");
 
+	public static final String[] DATABASE_SCHEMA_EMOJI_SUPPORTED_NAMES =
+		MetricsProcessorConfigurationUtil.getArray(
+			"database.schema.emoji.supported.names");
+
 	public static final String DATABASE_SCHEMA_NAME = GetterUtil.getString(
 		MetricsProcessorConfigurationUtil.get("database.schema.name"));
 

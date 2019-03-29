@@ -201,10 +201,18 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 		try {
 			Context initialContext = new InitialContext();
 
+			String actualSchema = getSchema(schema);
+
 			DataSource dataSource = (DataSource)initialContext.lookup(
-				JDBC_PATH + getSchema(schema));
+				JDBC_PATH + actualSchema);
 
 			connection = dataSource.getConnection();
+
+			if (isSchemaEmojiSupported(actualSchema)) {
+				ps = connection.prepareStatement(UTF8MB4_QUERY);
+
+				ps.executeUpdate();
+			}
 
 			ps = connection.prepareStatement(sql);
 
@@ -224,7 +232,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 				i++;
 			}
 
-			ps.executeQuery();
+			ps.executeUpdate();
 		}
 		finally {
 			DataAccess.cleanUp(connection, ps);

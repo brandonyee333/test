@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -38,6 +39,7 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -177,6 +179,14 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return "OSB_Metrics" + modelName;
 	}
 
+	protected boolean isSchemaEmojiSupported(String schema) {
+		List<String> databaseSchemaEmojiSupportedNames = ListUtil.fromArray(
+			MetricsProcessorConfigurationValues.
+				DATABASE_SCHEMA_EMOJI_SUPPORTED_NAMES);
+
+		return databaseSchemaEmojiSupportedNames.contains(schema);
+	}
+
 	protected void runSQL(String schema, String sql) throws Exception {
 		Connection connection = null;
 		Statement statement = null;
@@ -223,6 +233,8 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			MetricsProcessorConfigurationValues.DATABASE_SCHEMA_NAME;
 
 	protected static final String JDBC_PATH = "java:comp/env/jdbc/";
+
+	protected static final String UTF8MB4_QUERY = "set names utf8mb4";
 
 	private static final String _BAD_COLUMN_FILE =
 		"/com/liferay/portal/tools/service/builder/dependencies" +
