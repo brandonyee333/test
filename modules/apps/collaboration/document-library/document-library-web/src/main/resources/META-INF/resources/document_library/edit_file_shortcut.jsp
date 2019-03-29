@@ -27,9 +27,11 @@ FileShortcut fileShortcut = (FileShortcut)request.getAttribute(WebKeys.DOCUMENT_
 
 long fileShortcutId = BeanParamUtil.getLong(fileShortcut, request, "fileShortcutId");
 
-long toGroupId = ParamUtil.getLong(request, "toGroupId");
+long toGroupId = ParamUtil.getLong(request, "toGroupId", themeDisplay.getScopeGroupId());
 
-Group toGroup = null;
+Group toGroup = GroupServiceUtil.getGroup(toGroupId);
+
+toGroup = toGroup.toEscapedModel();
 
 long repositoryId = BeanParamUtil.getLong(fileShortcut, request, "repositoryId");
 long folderId = BeanParamUtil.getLong(fileShortcut, request, "folderId");
@@ -106,11 +108,7 @@ if (portletTitleBasedNavigation) {
 				</div>
 
 				<%
-				String toGroupName = StringPool.BLANK;
-
-				if (toGroup != null) {
-					toGroupName = HtmlUtil.escape(toGroup.getDescriptiveName(locale));
-				}
+				String toGroupName = toGroup.getDescriptiveName(locale);
 				%>
 
 				<div class="form-group">
@@ -126,7 +124,7 @@ if (portletTitleBasedNavigation) {
 				<div class="form-group">
 					<aui:input label="document" name="toFileEntryTitle" type="resource" value="<%= toFileEntryTitle %>" />
 
-					<aui:button disabled="<%= toGroup == null %>" name="selectToFileEntryButton" value="select" />
+					<aui:button name="selectToFileEntryButton" value="select" />
 				</div>
 			</aui:fieldset>
 
