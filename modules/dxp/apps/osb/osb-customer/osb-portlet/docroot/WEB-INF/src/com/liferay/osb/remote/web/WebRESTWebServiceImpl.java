@@ -24,7 +24,9 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StackTraceUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.HashMap;
@@ -117,7 +119,7 @@ public class WebRESTWebServiceImpl
 			return super.doDelete(url);
 		}
 		catch (RemoteServiceException rse) {
-			sendEmail(StackTraceUtil.getStackTrace(rse));
+			sendEmail(rse, null);
 
 			throw rse;
 		}
@@ -131,7 +133,7 @@ public class WebRESTWebServiceImpl
 			return super.doDelete(url, parameters);
 		}
 		catch (RemoteServiceException rse) {
-			sendEmail(StackTraceUtil.getStackTrace(rse));
+			sendEmail(rse, parameters);
 
 			throw rse;
 		}
@@ -145,7 +147,7 @@ public class WebRESTWebServiceImpl
 			return super.doPut(url, parameters);
 		}
 		catch (RemoteServiceException rse) {
-			sendEmail(StackTraceUtil.getStackTrace(rse));
+			sendEmail(rse, parameters);
 
 			throw rse;
 		}
@@ -183,12 +185,12 @@ public class WebRESTWebServiceImpl
 				return null;
 			}
 
-			sendEmail(StackTraceUtil.getStackTrace(rse));
+			sendEmail(rse, parameters);
 
 			throw rse;
 		}
 		catch (Exception e) {
-			sendEmail(StackTraceUtil.getStackTrace(e));
+			sendEmail(e, parameters);
 
 			throw new RemoteServiceException(e);
 		}
@@ -374,7 +376,7 @@ public class WebRESTWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			sendEmail(StackTraceUtil.getStackTrace(e));
+			sendEmail(e, parameters);
 
 			if (e instanceof RemoteServiceException) {
 				throw (RemoteServiceException)e;
@@ -394,7 +396,7 @@ public class WebRESTWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			sendEmail(StackTraceUtil.getStackTrace(e));
+			sendEmail(e, parameters);
 
 			if (e instanceof RemoteServiceException) {
 				throw (RemoteServiceException)e;
@@ -414,7 +416,7 @@ public class WebRESTWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			sendEmail(StackTraceUtil.getStackTrace(e));
+			sendEmail(e, parameters);
 
 			if (e instanceof RemoteServiceException) {
 				throw (RemoteServiceException)e;
@@ -424,8 +426,20 @@ public class WebRESTWebServiceImpl
 		}
 	}
 
-	protected void sendEmail(String mailBody) {
-		mailBody = StringUtil.replace(mailBody, CharPool.NEW_LINE, "<br />");
+	protected void sendEmail(Exception e, Map<String, String> parameters) {
+		StringBundler sb = new StringBundler(5);
+
+		if (parameters != null) {
+			sb.append("<strong>Parameters: </strong><br />");
+			sb.append(MapUtil.toString(parameters));
+			sb.append("<br /><br />");
+		}
+
+		sb.append("<strong>Stack Trace:</strong><br />");
+
+		String stackTrace = StackTraceUtil.getStackTrace(e);
+
+		sb.append(StringUtil.replace(stackTrace, CharPool.NEW_LINE, "<br />"));
 
 		try {
 			InternetAddress from = new InternetAddress("noreply@liferay.com");
@@ -436,7 +450,7 @@ public class WebRESTWebServiceImpl
 			String mailSubject = "Auto Generated Web API Error Message";
 
 			MailMessage mailMessage = new MailMessage(
-				from, to, mailSubject, mailBody, true);
+				from, to, mailSubject, sb.toString(), true);
 
 			MailServiceUtil.sendEmail(mailMessage);
 		}
