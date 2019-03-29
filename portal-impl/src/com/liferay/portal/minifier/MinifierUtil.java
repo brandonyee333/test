@@ -132,7 +132,7 @@ public class MinifierUtil {
 				_log.debug(
 					StringBundler.concat(
 						"Minification for ", String.valueOf(length),
-						" bytes of Javascript in resource ", resourceName,
+						" bytes of JavaScript in resource ", resourceName,
 						" took ", String.valueOf(stopWatch.getTime()), " ms"));
 			}
 		}
