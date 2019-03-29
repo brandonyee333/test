@@ -173,15 +173,24 @@ public class WebRESTWebServiceImpl
 		parameters.put("emailAddress", emailAddress);
 
 		try {
-			return doGetToJSONObject(
+			String response = doGet(
 				_URL_API_REST_USERS + "email_address", parameters);
+
+			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (RemoteServiceException rse) {
 			if (rse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
 				return null;
 			}
 
+			sendEmail(StackTraceUtil.getStackTrace(rse));
+
 			throw rse;
+		}
+		catch (Exception e) {
+			sendEmail(StackTraceUtil.getStackTrace(e));
+
+			throw new RemoteServiceException(e);
 		}
 	}
 
@@ -360,7 +369,7 @@ public class WebRESTWebServiceImpl
 		throws RemoteServiceException {
 
 		try {
-			String response = doGet(url, parameters);
+			String response = super.doGet(url, parameters);
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
@@ -380,7 +389,7 @@ public class WebRESTWebServiceImpl
 		throws RemoteServiceException {
 
 		try {
-			String response = doPost(url, parameters);
+			String response = super.doPost(url, parameters);
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
@@ -400,7 +409,7 @@ public class WebRESTWebServiceImpl
 		throws RemoteServiceException {
 
 		try {
-			String response = doPut(url, parameters);
+			String response = super.doPut(url, parameters);
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
