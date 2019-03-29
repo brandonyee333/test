@@ -82,7 +82,8 @@ public class DDMTemplateCTConfigurationRegistrar {
 		}
 		catch (PortalException pe) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to get template version ID", pe);
+				_log.debug(
+					"An error occured when getting template version id", pe);
 			}
 
 			return 0;
