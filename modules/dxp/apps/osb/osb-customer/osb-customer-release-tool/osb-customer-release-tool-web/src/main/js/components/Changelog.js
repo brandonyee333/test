@@ -29,6 +29,8 @@ export default class Changelog extends Component {
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
 		this.queryJiraIssues(startAt);
+
+		window.scroll(0, 0);
 	};
 
 	queryJiraIssues = (startAt) => {
