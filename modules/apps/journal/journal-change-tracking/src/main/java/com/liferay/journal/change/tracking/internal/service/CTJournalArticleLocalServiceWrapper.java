@@ -1786,7 +1786,7 @@ public class CTJournalArticleLocalServiceWrapper
 	protected void setJournalArticleLocalService(
 		JournalArticleLocalService journalArticleLocalService) {
 
-		// Needed for synchronization
+		// This is needed because of synchronisation
 
 	}
 

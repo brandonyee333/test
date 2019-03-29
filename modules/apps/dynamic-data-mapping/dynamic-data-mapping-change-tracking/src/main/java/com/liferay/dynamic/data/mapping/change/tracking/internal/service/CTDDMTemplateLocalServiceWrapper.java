@@ -139,7 +139,7 @@ public class CTDDMTemplateLocalServiceWrapper
 	protected void setDDMTemplateLocalService(
 		DDMTemplateLocalService ddmTemplateLocalService) {
 
-		// Needed for synchronization
+		// This is needed because of synchronisation
 
 	}
 
@@ -214,12 +214,12 @@ public class CTDDMTemplateLocalServiceWrapper
 	@Reference
 	private CTManager _ctManager;
 
-	// Needed for synchronization
+	// only needed for synchronization purposes
 
 	@Reference
 	private DDMTemplateLocalService _ddmTemplateLocalService;
 
-	// Needed for synchronization
+	// only needed for synchronization purposes
 
 	@Reference
 	private DDMTemplateVersionLocalService _ddmTemplateVersionLocalService;
