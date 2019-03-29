@@ -43,9 +43,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	service = OSBCustomerKnowledgeBaseImporterMessageListener.class
+	service = OfficialDocumentationBuilderMessageListener.class
 )
-public class OSBCustomerKnowledgeBaseImporterMessageListener
+public class OfficialDocumentationBuilderMessageListener
 	extends BaseMessageListener {
 
 	@Activate
@@ -99,7 +99,7 @@ public class OSBCustomerKnowledgeBaseImporterMessageListener
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OSBCustomerKnowledgeBaseImporterMessageListener.class);
+		OfficialDocumentationBuilderMessageListener.class);
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;

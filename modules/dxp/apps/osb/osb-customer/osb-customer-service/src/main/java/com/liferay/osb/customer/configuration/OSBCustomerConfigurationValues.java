@@ -21,19 +21,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class OSBCustomerConfigurationValues {
 
-	public static final String AUTO_DEPLOYER_EMAIL_FROM_ADDRESS =
-		GetterUtil.getString(
-			OSBCustomerConfigurationUtil.get(
-				"auto.deployer.email.from.address"));
-
-	public static final String AUTO_DEPLOYER_EMAIL_TO_ADDRESS =
-		GetterUtil.getString(
-			OSBCustomerConfigurationUtil.get("auto.deployer.email.to.address"));
-
-	public static final String AUTO_DEPLOYER_EMAIL_TO_NAME =
-		GetterUtil.getString(
-			OSBCustomerConfigurationUtil.get("auto.deployer.email.to.name"));
-
 	public static final String LIFERAY_DOCS_BUILD_SCRIPT = GetterUtil.getString(
 		OSBCustomerConfigurationUtil.get("liferay.docs.build.script"));
 
