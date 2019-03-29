@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterCheckbox renders correctly 1`] = `
+<div>
+  <div
+    class="filter-checkbox-container"
+  >
+    <label>
+      <input
+        class="filter-checkbox"
+        name="checkbox value"
+        type="checkbox"
+      />
+      <span
+        class="filter-checkbox-label"
+      >
+        test label
+      </span>
+    </label>
+  </div>
+</div>
+`;

@@ -2,6 +2,14 @@
 
 exports[`Changelog renders changelog results correctly 1`] = `
 <div>
+  <h2>
+    changelog
+  </h2>
+  <h5
+    class="secondary-text-color section-subtitle"
+  >
+    description
+  </h5>
   <div
     class="results-count"
   >
@@ -120,6 +128,14 @@ exports[`Changelog renders changelog results correctly 1`] = `
 
 exports[`Changelog renders changelog with pagination when results exceed 50 items 1`] = `
 <div>
+  <h2>
+    changelog
+  </h2>
+  <h5
+    class="secondary-text-color section-subtitle"
+  >
+    description
+  </h5>
   <div
     class="results-count"
   >
@@ -1958,6 +1974,14 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
 
 exports[`Changelog renders details modal when a ticket summary is clicked 1`] = `
 <div>
+  <h2>
+    changelog
+  </h2>
+  <h5
+    class="secondary-text-color section-subtitle"
+  >
+    description
+  </h5>
   <div
     class="results-count"
   >
@@ -2147,6 +2171,14 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
 
 exports[`Changelog renders no results correctly 1`] = `
 <div>
+  <h2>
+    changelog
+  </h2>
+  <h5
+    class="secondary-text-color section-subtitle"
+  >
+    description
+  </h5>
   <div
     class="results-count"
   >
@@ -2206,6 +2238,14 @@ exports[`Changelog renders no results correctly 1`] = `
 
 exports[`Changelog updates details modal when a different ticket summary is clicked 1`] = `
 <div>
+  <h2>
+    changelog
+  </h2>
+  <h5
+    class="secondary-text-color section-subtitle"
+  >
+    description
+  </h5>
   <div
     class="results-count"
   >

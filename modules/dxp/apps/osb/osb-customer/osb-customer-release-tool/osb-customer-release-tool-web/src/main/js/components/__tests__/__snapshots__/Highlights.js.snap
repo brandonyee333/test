@@ -1,0 +1,298 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Highlights renders correctly 1`] = `
+<div>
+  <div
+    class="col-md-3"
+  >
+    <div
+      class="refine-by-filters"
+    >
+      <h3>
+        refine-by
+      </h3>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="keyHighlights"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Key Highlights
+          </span>
+        </label>
+      </div>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="importantChanges"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Important Changes
+          </span>
+        </label>
+      </div>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="knownIssues"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Known Issues
+          </span>
+        </label>
+      </div>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="security"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Security
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-9"
+  >
+    <h2>
+      highlights
+    </h2>
+    <h5
+      class="secondary-text-color section-subtitle"
+    >
+      Description for Highlights tab.
+    </h5>
+    <div
+      class="results-count"
+    >
+      x-results
+    </div>
+    <table
+      class="table highlights-table table-autofit table-list"
+      role="table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="lfr-released-column"
+          >
+            release
+             
+            <svg
+              class="desc lexicon-icon sorting-indicator"
+              role="button"
+            >
+              <use
+                xlink:href="#arrow-up"
+              />
+            </svg>
+          </th>
+          <th
+            class="lfr-details-column"
+          >
+            details
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="journal-article-row"
+          id="118267960"
+        >
+          <td
+            class="lfr-released-column"
+          >
+            Mar 6, 2019
+          </td>
+          <td
+            class="lfr-details-column"
+          >
+            <div>
+              Content Text
+            </div>
+          </td>
+        </tr>
+        <tr
+          class="journal-article-row"
+          id="118267952"
+        >
+          <td
+            class="lfr-released-column"
+          >
+            Mar 1, 2019
+          </td>
+          <td
+            class="lfr-details-column"
+          >
+            <div>
+              Content 2 Text
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Highlights renders no results correctly 1`] = `
+<div>
+  <div
+    class="col-md-3"
+  >
+    <div
+      class="refine-by-filters"
+    >
+      <h3>
+        refine-by
+      </h3>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="keyHighlights"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Key Highlights
+          </span>
+        </label>
+      </div>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="importantChanges"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Important Changes
+          </span>
+        </label>
+      </div>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="knownIssues"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Known Issues
+          </span>
+        </label>
+      </div>
+      <div
+        class="filter-checkbox-container"
+      >
+        <label>
+          <input
+            class="filter-checkbox"
+            name="security"
+            type="checkbox"
+          />
+          <span
+            class="filter-checkbox-label"
+          >
+            Security
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-9"
+  >
+    <h2>
+      highlights
+    </h2>
+    <h5
+      class="secondary-text-color section-subtitle"
+    >
+      Description for No Results Highlights tab.
+    </h5>
+    <div
+      class="results-count"
+    >
+      x-results
+    </div>
+    <table
+      class="table highlights-table table-autofit table-list"
+      role="table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="lfr-released-column"
+          >
+            release
+             
+            <svg
+              class="desc lexicon-icon sorting-indicator"
+              role="button"
+            >
+              <use
+                xlink:href="#arrow-up"
+              />
+            </svg>
+          </th>
+          <th
+            class="lfr-details-column"
+          >
+            details
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+    <div
+      class="no-results"
+    >
+      no-results-found-to-match-your-selection
+      <h5
+        class="secondary-text-color"
+      >
+        try-modifying-your-criteria
+      </h5>
+    </div>
+  </div>
+</div>
+`;
