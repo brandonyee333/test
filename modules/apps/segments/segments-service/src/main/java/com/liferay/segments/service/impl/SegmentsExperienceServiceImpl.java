@@ -86,8 +86,8 @@ public class SegmentsExperienceServiceImpl
 			OrderByComparator<SegmentsExperience> orderByComparator)
 		throws PortalException {
 
-		segmentsExperienceLocalService.addDefaultSegmentsExperience(
-			groupId, classNameId, classPK);
+		segmentsExperienceLocalService.fetchDefaultSegmentsExperience(
+			groupId, classNameId, classPK, true);
 
 		return segmentsExperiencePersistence.filterFindByG_C_C_A(
 			groupId, classNameId, classPK, active, start, end,
@@ -99,8 +99,8 @@ public class SegmentsExperienceServiceImpl
 			long groupId, long classNameId, long classPK, boolean active)
 		throws PortalException {
 
-		segmentsExperienceLocalService.addDefaultSegmentsExperience(
-			groupId, classNameId, classPK);
+		segmentsExperienceLocalService.fetchDefaultSegmentsExperience(
+			groupId, classNameId, classPK, true);
 
 		return segmentsExperiencePersistence.filterCountByG_C_C_A(
 			groupId, classNameId, classPK, active);
