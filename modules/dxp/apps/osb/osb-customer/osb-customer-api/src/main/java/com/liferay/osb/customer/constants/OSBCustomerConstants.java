@@ -19,16 +19,7 @@ package com.liferay.osb.customer.constants;
  */
 public class OSBCustomerConstants {
 
-	public static final long ASSET_VOCABULARY_ARTICLE_TYPE_ID = 10892;
-
-	public static final long ASSET_VOCABULARY_COMPONENT_ID = 10891;
-
-	public static final long ASSET_VOCABULARY_LIFERAY_PRODUCT_ID = 11179;
-
 	public static final long COMPANY_ID = 10157;
-
-	public static final String DDM_STRUCTURE_ARTICLE_DISPLAY_KEY =
-		"ARTICLE-DISPLAY";
 
 	public static final long GROUP_KNOWLEDGE_ID = 10738;
 
@@ -40,9 +31,6 @@ public class OSBCustomerConstants {
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
 
 	public static final long ORGANIZATION_PARTNER_ID = 1747324;
-
-	public static final String RESOURCE_NAME_KNOWLEDGE_DISPLAY =
-		"com.liferay.osb.documentation.display";
 
 	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTORS_ID = 3525738;
 
@@ -60,15 +48,13 @@ public class OSBCustomerConstants {
 
 	public static final long ROLE_CUSTOMER_PORTAL_ID = 1546575;
 
-	public static final long ROLE_DOCUMENT_LEAD = 19253;
-
 	public static final long ROLE_GUEST_ID = 10165;
 
 	public static final long ROLE_LIFERAY_EMPLOYEE_ID = 10946;
 
 	public static final long ROLE_OSB_ACCOUNT_ADMIN_ID = 1546563;
 
-	public static long ROLE_OSB_ADMINISTRATOR_ID = 1546561;
+	public static final long ROLE_OSB_ADMINISTRATOR_ID = 1546561;
 
 	public static final long ROLE_PARTNER_ID = 54427;
 

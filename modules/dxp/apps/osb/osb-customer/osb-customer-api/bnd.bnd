@@ -1,7 +1,4 @@
 Bundle-Name: Liferay OSB Customer API
 Bundle-SymbolicName: com.liferay.osb.customer.api
 Bundle-Version: 1.0.0
-Export-Package:\
-	com.liferay.osb.customer.constants,\
-	com.liferay.osb.customer.service,\
-	com.liferay.osb.customer.util.comparator
+Export-Package: com.liferay.osb.customer.constants
