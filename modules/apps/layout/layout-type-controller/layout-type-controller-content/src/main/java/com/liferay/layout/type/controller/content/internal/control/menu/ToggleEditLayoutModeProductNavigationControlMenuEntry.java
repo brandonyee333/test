@@ -12,25 +12,24 @@
  * details.
  */
 
-package com.liferay.layout.type.controller.asset.display.internal.product.navigation.control.menu;
+package com.liferay.layout.type.controller.content.internal.control.menu;
 
-import com.liferay.asset.kernel.model.AssetEntry;
-import com.liferay.asset.kernel.model.AssetRenderer;
+import com.liferay.layout.content.page.editor.constants.ContentPageEditorWebKeys;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.type.controller.content.internal.controller.ContentLayoutTypeController;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutTypeController;
+import com.liferay.portal.kernel.model.LayoutTypePortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.permission.LayoutPermissionUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.util.PropsValues;
 import com.liferay.product.navigation.control.menu.BaseJSPProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuEntry;
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -44,18 +43,18 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"product.navigation.control.menu.category.key=" + ProductNavigationControlMenuCategoryKeys.TOOLS,
-		"product.navigation.control.menu.entry.order:Integer=200"
+		"product.navigation.control.menu.category.key=" + ProductNavigationControlMenuCategoryKeys.USER,
+		"product.navigation.control.menu.entry.order:Integer=50"
 	},
 	service = ProductNavigationControlMenuEntry.class
 )
-public class EditAssetDisplayMenuProductNavigationControlMenuEntry
+public class ToggleEditLayoutModeProductNavigationControlMenuEntry
 	extends BaseJSPProductNavigationControlMenuEntry
 	implements ProductNavigationControlMenuEntry {
 
 	@Override
 	public String getIconJspPath() {
-		return "/page_template/edit_menu.jsp";
+		return "/entries/toggle_edit_layout_mode.jsp";
 	}
 
 	@Override
@@ -73,52 +72,37 @@ public class EditAssetDisplayMenuProductNavigationControlMenuEntry
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Layout layout = themeDisplay.getLayout();
+		LayoutTypePortlet layoutTypePortlet =
+			themeDisplay.getLayoutTypePortlet();
 
-		if (layout.isTypeControlPanel()) {
+		LayoutTypeController layoutTypeController =
+			layoutTypePortlet.getLayoutTypeController();
+
+		if (layoutTypeController.isFullPageDisplayable()) {
 			return false;
 		}
 
-		String layoutMode = ParamUtil.getString(
-			request, "p_l_mode", Constants.VIEW);
-
-		if (layoutMode.equals(Constants.EDIT)) {
+		if (!(layoutTypeController instanceof ContentLayoutTypeController)) {
 			return false;
 		}
 
-		Group group = layout.getGroup();
+		String className = (String)request.getAttribute(
+			ContentPageEditorWebKeys.CLASS_NAME);
 
-		if (group.hasStagingGroup() && !group.isStagingGroup() &&
-			PropsValues.STAGING_LIVE_GROUP_LOCKING_ENABLED) {
-
-			return false;
-		}
-
-		AssetEntry assetEntry = (AssetEntry)request.getAttribute(
-			WebKeys.LAYOUT_ASSET_ENTRY);
-
-		if (assetEntry == null) {
-			return false;
-		}
-
-		AssetRenderer assetRenderer = assetEntry.getAssetRenderer();
-
-		if (((assetRenderer == null) ||
-			 !assetRenderer.hasEditPermission(
-				 themeDisplay.getPermissionChecker())) &&
-			!LayoutPermissionUtil.contains(
-				themeDisplay.getPermissionChecker(), layout,
-				ActionKeys.UPDATE)) {
+		if (Objects.equals(
+				className, LayoutPageTemplateEntry.class.getName())) {
 
 			return false;
 		}
 
-		return true;
+		return LayoutPermissionUtil.contains(
+			themeDisplay.getPermissionChecker(), themeDisplay.getLayout(),
+			ActionKeys.UPDATE);
 	}
 
 	@Override
 	@Reference(
-		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.asset.display)",
+		target = "(osgi.web.symbolicname=com.liferay.layout.type.controller.content)",
 		unbind = "-"
 	)
 	public void setServletContext(ServletContext servletContext) {
