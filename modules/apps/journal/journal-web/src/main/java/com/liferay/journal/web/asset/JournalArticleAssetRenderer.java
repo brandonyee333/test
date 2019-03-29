@@ -273,18 +273,23 @@ public class JournalArticleAssetRenderer
 	}
 
 	@Override
-	public PortletURL getURLEdit(HttpServletRequest request) throws Exception {
+	public PortletURL getURLEdit(
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse)
+		throws Exception {
+
 		Group group = GroupLocalServiceUtil.fetchGroup(_article.getGroupId());
 
 		if (group.isCompany()) {
-			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
-				WebKeys.THEME_DISPLAY);
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)liferayPortletRequest.getAttribute(
+					WebKeys.THEME_DISPLAY);
 
 			group = themeDisplay.getScopeGroup();
 		}
 
 		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
-			request, group, JournalPortletKeys.JOURNAL, 0, 0,
+			liferayPortletRequest, group, JournalPortletKeys.JOURNAL, 0, 0,
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("mvcPath", "/edit_article.jsp");
@@ -295,18 +300,6 @@ public class JournalArticleAssetRenderer
 			"version", String.valueOf(_article.getVersion()));
 
 		return portletURL;
-	}
-
-	@Override
-	public PortletURL getURLEdit(
-			LiferayPortletRequest liferayPortletRequest,
-			LiferayPortletResponse liferayPortletResponse)
-		throws Exception {
-
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			liferayPortletRequest);
-
-		return getURLEdit(request);
 	}
 
 	@Override
