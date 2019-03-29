@@ -1,24 +1,15 @@
 import PropTypes from 'prop-types';
 
-export const filtersJSONObject = PropTypes.arrayOf(
+export const filtersType = PropTypes.arrayOf(
 	PropTypes.shape(
 		{
-			fixPacks: PropTypes.arrayOf(
-				PropTypes.shape(
-					{
-						name: PropTypes.string,
-						version: PropTypes.string
-					}
-				)
-			),
-			name: PropTypes.string,
-			product: PropTypes.string,
-			version: PropTypes.string
+			label: PropTypes.string,
+			value: PropTypes.string
 		}
 	)
 );
 
-export const fixPackJSONObject = PropTypes.shape(
+export const fixPackJSONObjectType = PropTypes.shape(
 	{
 		results: PropTypes.arrayOf(
 			PropTypes.shape(

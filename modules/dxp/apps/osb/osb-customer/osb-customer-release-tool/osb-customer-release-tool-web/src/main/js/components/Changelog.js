@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 import axios from 'axios';
 
-import {error} from '../types/generic';
-import {jiraIssueJSONObject} from '../types/changelog';
+import {errorType} from '../types/generic';
+import {jiraIssueJSONObjectType} from '../types/changelog';
 
 import Pagination from './Pagination';
 import TableResults from './TableResults';
@@ -16,7 +16,7 @@ export default class Changelog extends Component {
 		description: PropTypes.string.isRequired,
 		jiraIssueEndpoint: PropTypes.string.isRequired,
 		jiraIssueJSONObject: PropTypes.oneOfType(
-			[error, jiraIssueJSONObject]
+			[errorType, jiraIssueJSONObjectType]
 		).isRequired
 	};
 

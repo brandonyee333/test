@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const jiraIssueJSONObject = PropTypes.shape(
+export const jiraIssueJSONObjectType = PropTypes.shape(
 	{
 		results: PropTypes.arrayOf(
 			PropTypes.shape(

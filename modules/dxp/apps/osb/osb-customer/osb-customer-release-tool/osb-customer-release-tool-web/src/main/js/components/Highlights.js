@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import {error} from '../types/generic';
-import {fixPackJSONObject} from '../types/highlights';
+import {errorType} from '../types/generic';
+import {filtersType, fixPackJSONObjectType} from '../types/highlights';
 
 import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
@@ -10,9 +10,9 @@ import TableResults from './TableResults';
 export default class Highlights extends Component {
 	static propTypes = {
 		description: PropTypes.string.isRequired,
-		filters: PropTypes.array.isRequired,
+		filters: filtersType.isRequired,
 		fixPackJSONObject: PropTypes.oneOfType(
-			[error, fixPackJSONObject]
+			[errorType, fixPackJSONObjectType]
 		).isRequired,
 		fixPackResultsURL: PropTypes.string.isRequired
 	};

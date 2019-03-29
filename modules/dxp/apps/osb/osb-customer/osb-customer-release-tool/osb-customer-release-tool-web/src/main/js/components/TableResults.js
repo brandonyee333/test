@@ -1,16 +1,20 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import {error} from '../types/generic';
-import {fixPackJSONObject} from '../types/highlights';
-import {jiraIssueJSONObject} from '../types/changelog';
+import {errorType} from '../types/generic';
+import {fixPackJSONObjectType} from '../types/highlights';
+import {jiraIssueJSONObjectType} from '../types/changelog';
 
 import Alert from './Alert';
 import SortableTable from './SortableTable';
 
 TableResults.propTypes = {
 	jsonObject: PropTypes.oneOfType(
-		[error, fixPackJSONObject, jiraIssueJSONObject]
+		[
+			errorType,
+			fixPackJSONObjectType,
+			jiraIssueJSONObjectType
+		]
 	).isRequired,
 	tab: PropTypes.shape(
 		{

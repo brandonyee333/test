@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import 'core-js/fn/array/find';
 import 'core-js/fn/array/find-index';
 
-import {filtersJSONObject} from '../types/highlights';
+import {filtersJSONObjectType} from '../types/generic';
 
 import Button from './Button';
 
@@ -22,7 +22,7 @@ export default class FixpackFilters extends Component {
 
 	static propTypes = {
 		actionURL: PropTypes.string.isRequired,
-		filtersJSON: filtersJSONObject.isRequired,
+		filtersJSON: filtersJSONObjectType.isRequired,
 		fixpackURL: PropTypes.string,
 		fromFixPackVersion: PropTypes.string,
 		productVersion: PropTypes.string,

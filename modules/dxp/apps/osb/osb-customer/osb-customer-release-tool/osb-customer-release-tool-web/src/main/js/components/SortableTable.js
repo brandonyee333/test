@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import {fixPackJSONObject} from '../types/highlights';
-import {jiraIssueJSONObject} from '../types/changelog';
+import {fixPackJSONObjectType} from '../types/highlights';
+import {jiraIssueJSONObjectType} from '../types/changelog';
 
 import * as changelogTable from './ChangelogTable';
 import * as highlightsTable from './HightlightsTable';
@@ -10,7 +10,7 @@ import * as highlightsTable from './HightlightsTable';
 export default class SortableTable extends Component {
 	static propTypes = {
 		jsonObject: PropTypes.oneOfType(
-			[fixPackJSONObject, jiraIssueJSONObject]
+			[fixPackJSONObjectType, jiraIssueJSONObjectType]
 		).isRequired,
 		tabName: PropTypes.string.isRequired
 	};
