@@ -29,6 +29,8 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortletRequestModel;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -173,6 +175,14 @@ public class FixPackSearcher extends BaseSearcher {
 				_journalArticleLocalService.fetchLatestArticle(
 					classPK, WorkflowConstants.STATUS_APPROVED);
 
+			if (journalArticle == null) {
+				_log.error(
+					"Journal article search index is stale and contains " +
+						classPK);
+
+				continue;
+			}
+
 			JSONObject journalArticleJSONObject = toJSONObject(
 				portletRequest, mimeResponse, themeDisplay, journalArticle);
 
@@ -265,6 +275,9 @@ public class FixPackSearcher extends BaseSearcher {
 
 		return jsonObject;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		FixPackSearcher.class);
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
