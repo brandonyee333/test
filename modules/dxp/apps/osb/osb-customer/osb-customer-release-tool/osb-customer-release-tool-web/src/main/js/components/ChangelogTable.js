@@ -98,8 +98,6 @@ class TicketDetail extends Component {
 
 							<h3>{Liferay.Language.get('key')}</h3>
 
-							{Liferay.Language.get('this-issue-is-related-to')}{' '}
-
 							<a href={ticket.url}>{ticket.key}</a>
 						</div>
 					</Modal>
