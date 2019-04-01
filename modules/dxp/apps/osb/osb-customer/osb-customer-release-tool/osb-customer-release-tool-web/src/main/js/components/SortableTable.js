@@ -48,7 +48,7 @@ export default class SortableTable extends Component {
 		return (
 			<Fragment>
 				<div className="results-count">
-					{Liferay.Language.get('x-results', total.toString())}
+					{AUI().Lang.sub(Liferay.Language.get('x-results'), [total.toString()])}
 				</div>
 
 				<table className={`table ${tabName}-table table-autofit table-list`} role="table">
