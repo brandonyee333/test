@@ -366,7 +366,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 
-		if (soldBy.equals("Liferay Australia") ||
+		if (soldBy.equals("Liferay Africa") ||
+			soldBy.equals("Liferay Australia") ||
 			soldBy.equals("Liferay Canada") ||
 			soldBy.equals("Liferay France") ||
 			soldBy.equals("Liferay Germany") ||
@@ -374,8 +375,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			soldBy.equals("Liferay India") ||
 			soldBy.equals("Liferay International") ||
 			soldBy.equals("Liferay Middle East") ||
-			soldBy.equals("Liferay Morocco") ||
 			soldBy.equals("Liferay Netherlands") ||
+			soldBy.equals("Liferay Nordic") ||
 			soldBy.equals("Liferay Singapore") || soldBy.equals("Liferay UK") ||
 			soldBy.equals("Liferay US")) {
 
@@ -702,7 +703,18 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return "Global";
 		}
 
-		if (soldBy.equals("Liferay Australia")) {
+		if (soldBy.equals("Liferay Africa") ||
+			soldBy.equals("Liferay France") ||
+			soldBy.equals("Liferay Germany") ||
+			soldBy.equals("Liferay Hungary") ||
+			soldBy.equals("Liferay International") ||
+			soldBy.equals("Liferay Middle East") ||
+			soldBy.equals("Liferay Netherlands") ||
+			soldBy.equals("Liferay Nordic") || soldBy.equals("Liferay UK")) {
+
+			return "Hungary";
+		}
+		else if (soldBy.equals("Liferay Australia")) {
 			return "Australia";
 		}
 		else if (soldBy.equals("Liferay Brazil")) {
@@ -717,17 +729,6 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 				 soldBy.equals("Liferay Singapore")) {
 
 			return "China";
-		}
-		else if (soldBy.equals("Liferay France") ||
-				 soldBy.equals("Liferay Germany") ||
-				 soldBy.equals("Liferay Hungary") ||
-				 soldBy.equals("Liferay International") ||
-				 soldBy.equals("Liferay Middle East") ||
-				 soldBy.equals("Liferay Morocco") ||
-				 soldBy.equals("Liferay Netherlands") ||
-				 soldBy.equals("Liferay UK")) {
-
-			return "Hungary";
 		}
 		else if (soldBy.equals("Liferay India")) {
 			return "India";
