@@ -11166,6 +11166,10 @@ liferay-amd-loader@4.0.0-alpha.5:
   resolved "https://registry.yarnpkg.com/liferay-amd-loader/-/liferay-amd-loader-4.0.0-alpha.5.tgz#cf2f3d8b2922d11a35e297113cf859e5241ad443"
   integrity sha512-zjX1hBwe6laOAvex49zPIbbsDUvSNA2Nw8ob2sRbGEfZMv5pZWleQqSC0Tx/ZGa0A7oaTniaFS3tekS4/bKbwA==
 
+"liferay-ckeditor@github:liferay/liferay-ckeditor#next":
+  version "4.11.3-liferay.0"
+  resolved "https://codeload.github.com/liferay/liferay-ckeditor/tar.gz/b7078c8b47b29714c20dc31938d52108d15edf48"
+
 liferay-css-parse@~1.7.1:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/liferay-css-parse/-/liferay-css-parse-1.7.1.tgz#c0750cc0f0645d2190eeefee845b6fcb154f3e45"

@@ -1,0 +1,7 @@
+{
+  "name": "frontend-editor-ckeditor-web",
+  "version": "3.0.0",
+  "dependencies": {
+    "liferay-ckeditor": "github:liferay/liferay-ckeditor#next"
+  }
+}
