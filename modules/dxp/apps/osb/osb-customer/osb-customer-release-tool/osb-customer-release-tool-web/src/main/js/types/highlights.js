@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-export const filtersType = PropTypes.arrayOf(
+export const fixPackFieldsType = PropTypes.arrayOf(
 	PropTypes.shape(
 		{
 			label: PropTypes.string,

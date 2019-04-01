@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import 'core-js/fn/array/includes';
 
 import {errorType} from '../types/generic';
-import {filtersType, fixPackJSONObjectType} from '../types/highlights';
+import {fixPackFieldsType, fixPackJSONObjectType} from '../types/highlights';
 
 import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
@@ -12,7 +12,7 @@ import TableResults from './TableResults';
 export default class Highlights extends Component {
 	static propTypes = {
 		description: PropTypes.string.isRequired,
-		filters: filtersType.isRequired,
+		filters: fixPackFieldsType.isRequired,
 		fixPackJSONObject: PropTypes.oneOfType(
 			[errorType, fixPackJSONObjectType]
 		).isRequired,
