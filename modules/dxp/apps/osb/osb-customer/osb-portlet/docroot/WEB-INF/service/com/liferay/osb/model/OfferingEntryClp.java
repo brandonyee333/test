@@ -1017,6 +1017,25 @@ public class OfferingEntryClp extends BaseModelImpl<OfferingEntry>
 	}
 
 	@Override
+	public java.lang.String getProductType() {
+		try {
+			String methodName = "getProductType";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public java.lang.String getSizingLabel() {
 		try {
 			String methodName = "getSizingLabel";
@@ -1138,6 +1157,22 @@ public class OfferingEntryClp extends BaseModelImpl<OfferingEntry>
 			Class<?>[] parameterTypes = new Class<?>[] { boolean.class };
 
 			Object[] parameterValues = new Object[] { informationalOnly };
+
+			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public void setProductType(java.lang.String productType) {
+		try {
+			String methodName = "setProductType";
+
+			Class<?>[] parameterTypes = new Class<?>[] { java.lang.String.class };
+
+			Object[] parameterValues = new Object[] { productType };
 
 			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
 		}

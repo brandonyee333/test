@@ -461,6 +461,11 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
+	public java.lang.String getProductType() {
+		return _offeringEntry.getProductType();
+	}
+
+	@Override
 	public java.lang.String getSizingLabel() {
 		return _offeringEntry.getSizingLabel();
 	}
@@ -841,6 +846,11 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	@Override
 	public void setProductEntryId(long productEntryId) {
 		_offeringEntry.setProductEntryId(productEntryId);
+	}
+
+	@Override
+	public void setProductType(java.lang.String productType) {
+		_offeringEntry.setProductType(productType);
 	}
 
 	/**

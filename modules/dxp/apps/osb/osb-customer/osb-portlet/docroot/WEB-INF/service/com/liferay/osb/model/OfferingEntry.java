@@ -81,6 +81,8 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 	public ProductEntry getProductEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
+	public java.lang.String getProductType();
+
 	public java.lang.String getSizingLabel();
 
 	@com.liferay.portal.kernel.json.JSON()
@@ -97,4 +99,6 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 	public boolean isInformationalOnly();
 
 	public void setInformationalOnly(boolean informationalOnly);
+
+	public void setProductType(java.lang.String productType);
 }
