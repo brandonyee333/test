@@ -72,22 +72,24 @@ export default class Highlights extends Component {
 		return (
 			<Fragment>
 				<div className="col-md-3">
-					<div className="refine-by-filters">
-						<h3>
-							{Liferay.Language.get('refine-by')}
-						</h3>
+					{!!filters && (
+						<div className="refine-by-filters">
+							<h3>
+								{Liferay.Language.get('refine-by')}
+							</h3>
 
-						{!!filters && filters.map(
-							checkbox => (
-								<FilterCheckbox
-									key={checkbox.value}
-									handleOnChange={this.handleCheckboxChange}
-									label={checkbox.label}
-									value={checkbox.value}
-								/>
-							)
-						)}
-					</div>
+							{filters.map(
+								checkbox => (
+									<FilterCheckbox
+										key={checkbox.value}
+										handleOnChange={this.handleCheckboxChange}
+										label={checkbox.label}
+										value={checkbox.value}
+									/>
+								)
+							)}
+						</div>
+					)}
 				</div>
 
 				<div className="col-md-9">
