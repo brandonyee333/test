@@ -150,6 +150,10 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 			getProductEntryId());
 	}
 
+	public String getProductType() {
+		return _productType;
+	}
+
 	public String getSizingLabel() {
 		return OfferingEntryConstants.getSizingLabel(getSizing());
 	}
@@ -182,6 +186,11 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 		_informationalOnly = informationalOnly;
 	}
 
+	public void setProductType(String productType) {
+		_productType = productType;
+	}
+
 	private boolean _informationalOnly;
+	private String _productType;
 
 }

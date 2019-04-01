@@ -527,7 +527,20 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 	protected String getNotesProductName(OfferingEntry offeringEntry)
 		throws PortalException {
 
-		StringBundler sb = new StringBundler(7);
+		String productType = offeringEntry.getProductType();
+
+		String productTypeLabel = getNotesProductTypeLabel(productType);
+
+		if (productType.equals(SalesforceConstants.PRODUCT_TYPE_RENEWAL)) {
+			return productTypeLabel;
+		}
+
+		StringBundler sb = new StringBundler(9);
+
+		if (Validator.isNotNull(productTypeLabel)) {
+			sb.append(productTypeLabel);
+			sb.append(StringPool.SPACE);
+		}
 
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 
@@ -552,6 +565,27 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 		}
 
 		return sb.toString();
+	}
+
+	protected String getNotesProductTypeLabel(String productType) {
+		if (productType.equals(
+				SalesforceConstants.PRODUCT_TYPE_RENEWAL_DOWNGRADE)) {
+
+			return "Downgrade";
+		}
+		else if (productType.equals(
+					SalesforceConstants.PRODUCT_TYPE_RENEWAL_MIGRATION)) {
+
+			return "Migration";
+		}
+		else if (productType.equals(
+					SalesforceConstants.PRODUCT_TYPE_RENEWAL_UPGRADE)) {
+
+			return "Upgrade";
+		}
+		else {
+			return productType;
+		}
 	}
 
 	protected String getProductDescription(String name) {
@@ -1106,6 +1140,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 					OfferingDefinitionConstants.LIFETIME_INDEFINITE_VALUE);
 			}
 
+			offeringEntry.setProductType(productType);
 			offeringEntry.setSupportTickets(
 				getSupportTickets(curSupportResponse));
 			offeringEntry.setSupportLifetime(supportLifetime);

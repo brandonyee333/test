@@ -37,6 +37,8 @@ public class SalesforceConstants {
 
 	public static final String PRODUCT_TYPE_NEW = "New";
 
+	public static final String PRODUCT_TYPE_RENEWAL = "Renewal";
+
 	public static final String PRODUCT_TYPE_RENEWAL_DOWNGRADE =
 		"Renewal Downgrade";
 
