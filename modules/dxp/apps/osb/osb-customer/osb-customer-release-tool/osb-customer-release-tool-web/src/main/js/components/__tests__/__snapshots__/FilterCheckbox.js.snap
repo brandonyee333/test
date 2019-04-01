@@ -8,8 +8,9 @@ exports[`FilterCheckbox renders correctly 1`] = `
     <label>
       <input
         class="filter-checkbox"
-        name="checkbox value"
+        name="test label"
         type="checkbox"
+        value="checkbox value"
       />
       <span
         class="filter-checkbox-label"
