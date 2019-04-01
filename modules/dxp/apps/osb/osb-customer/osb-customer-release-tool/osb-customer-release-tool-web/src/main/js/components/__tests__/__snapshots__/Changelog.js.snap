@@ -2075,8 +2075,6 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
                     <h3>
                       key
                     </h3>
-                    this-issue-is-related-to
-                     
                     <a
                       href="/"
                     >
@@ -2359,8 +2357,6 @@ exports[`Changelog updates details modal when a different ticket summary is clic
                     <h3>
                       key
                     </h3>
-                    this-issue-is-related-to
-                     
                     <a
                       href="/"
                     >
