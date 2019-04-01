@@ -30,12 +30,24 @@ const setup = () => {
 		results: [
 			{
 				content: 'Content Text',
+				fieldsUsed: {
+					importantChanges: true,
+					keyHighlights: true,
+					knownIssues: true,
+					security: true
+				},
 				releaseDate: 'Mar 6, 2019',
 				resourcePrimKey: '118267960',
 				title: 'Fix Pack 2'
 			},
 			{
 				content: 'Content 2 Text',
+				fieldsUsed: {
+					importantChanges: false,
+					keyHighlights: false,
+					knownIssues: false,
+					security: false
+				},
 				releaseDate: 'Mar 1, 2019',
 				resourcePrimKey: '118267952',
 				title: 'Fix Pack1'
@@ -106,6 +118,32 @@ describe('SortableTable', () => {
 
 		fireEvent.click(getByRole('button'));
 
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders the singular x-result language key when there is only one result', () => {
+		const singleResult = {
+			results: [
+				{
+					components: ['Accessibility'],
+					description: 'description 2',
+					key: 'LPS-85155',
+					release: 'GA',
+					summary: 'Add menu - Heading order invalid',
+					url: '/'
+				}
+			],
+			total: 1
+		};
+
+		const {container, getByText} = render(
+			<SortableTable
+				jsonObject={singleResult}
+				tabName="changelog"
+			/>
+		);
+
+		expect(getByText('x-result')).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});
 });

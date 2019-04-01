@@ -9,3 +9,11 @@ window.Liferay = {
 		get: lang
 	}
 };
+
+window.AUI = () => ({
+	Lang: {
+		sub(key) {
+			return key;
+		}
+	}
+});
