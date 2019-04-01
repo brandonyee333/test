@@ -10,10 +10,10 @@
 
 			.panel-body {
 				border-top: 1px solid $color-divider;
-				padding: 24px 15px;
+				padding: $padding-default $padding-md;
 
 				.btn-link {
-					margin-right: 16px;
+					margin-right: $margin-md;
 
 					&,
 					&:focus,
@@ -54,7 +54,7 @@
 	}
 
 	.file-list {
-		padding: 12px 0;
+		padding: $padding-sm 0;
 		width: 50%;
 
 		.attachment-pool {
@@ -89,7 +89,7 @@
 	}
 
 	.panel-header {
-		padding: 16px 24px;
+		padding: $padding-sm $padding-default;
 
 		&.btn-link,
 		&.btn-link:active:focus,

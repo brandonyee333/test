@@ -60,12 +60,12 @@
 
 		.user-display {
 			display: inline-flex;
-			margin-right: 16px;
+			margin-right: $margin-md;
 		}
 
 		.summary {
 			font-style: italic;
-			margin-left: 16px;
+			margin-left: $margin-md;
 		}
 	}
 }

@@ -135,7 +135,7 @@
 					padding: $padding-default $padding-md 40px;
 
 					.nav-card {
-						padding: 12px $padding-default;
+						padding: $padding-sm $padding-default;
 
 						.title {
 							font-weight: $font-weight-normal;
@@ -245,7 +245,7 @@
 		}
 
 		.dropdown-menu-caret {
-			margin: 10px 12px;
+			margin: 10px $margin-sm;
 
 			&:after,
 			&:before {

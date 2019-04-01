@@ -1,10 +1,10 @@
 .details-table {
 	> tbody {
 		display: block;
-		padding: 12px 24px;
+		padding: $padding-sm $padding-default;
 
 		> tr > td {
-			padding: 12px 0;
+			padding: $padding-sm 0;
 			width: 50%;
 		}
 	}

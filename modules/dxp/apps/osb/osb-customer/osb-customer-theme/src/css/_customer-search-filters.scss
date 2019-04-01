@@ -21,7 +21,7 @@
 		border-left-width: 0;
 		box-shadow: 0 6px 15px -7px rgba(9, 16, 29, 0.05);
 		float: left;
-		padding: 12px 10px 12px 24px;
+		padding: $padding-sm 10px $padding-sm $padding-default;
 		width: 50%;
 
 		&:first-child {
