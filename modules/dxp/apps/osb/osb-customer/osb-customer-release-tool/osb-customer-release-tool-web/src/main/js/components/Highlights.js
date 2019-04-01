@@ -1,6 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import 'core-js/fn/array/includes';
+
 import {errorType} from '../types/generic';
 import {filtersType, fixPackJSONObjectType} from '../types/highlights';
 
@@ -24,20 +26,18 @@ export default class Highlights extends Component {
 	handleCheckboxChange = value => {
 		const {filterBy} = this.state;
 
-		let filterByArray = filterBy;
+		const checkedFilters = filterBy;
 
 		if (!filterBy.includes(value)) {
-			filterByArray.push(value);
+			checkedFilters.push(value);
 		}
 		else {
-			const index = filterBy.indexOf(value);
-
-			filterByArray.splice(index, 1);
+			checkedFilters.splice(filterBy.indexOf(value), 1);
 		}
 
 		this.setState(
 			{
-				filterBy: filterByArray
+				filterBy: checkedFilters
 			}
 		);
 	};
@@ -47,31 +47,25 @@ export default class Highlights extends Component {
 		const {filterBy} = this.state;
 
 		if (fixPackJSONObject.results) {
-			const filteredResults = fixPackJSONObject.results.filter(
+			const newResults = fixPackJSONObject.results.filter(
 				result => {
-					return filterBy.some(
+					return filterBy.every(
 						filter => result.fieldsUsed[filter]
 					);
 				}
 			);
 
-			return {results: filteredResults, total: filteredResults.length};
+			return {
+				results: newResults,
+				total: newResults.length
+			};
 		}
 
 		return fixPackJSONObject;
 	}
 
 	render() {
-		const {
-			description,
-			filters,
-			fixPackJSONObject,
-		} = this.props;
-		const {filterBy} = this.state;
-
-		const jsonObject = filterBy.length
-			? this.filterResults()
-			: fixPackJSONObject;
+		const {description, filters} = this.props;
 
 		return (
 			<Fragment>
@@ -96,7 +90,7 @@ export default class Highlights extends Component {
 
 				<div className="col-md-9">
 					<TableResults
-						jsonObject={jsonObject}
+						jsonObject={this.filterResults()}
 						tab={{
 							tabDescription: description,
 							tabName: 'highlights'
