@@ -314,3 +314,87 @@ exports[`SortableTable renders no results message 1`] = `
   </div>
 </div>
 `;
+
+exports[`SortableTable renders the singular x-result language key when there is only one result 1`] = `
+<div>
+  <div
+    class="results-count"
+  >
+    x-result
+  </div>
+  <table
+    class="table changelog-table table-autofit table-list"
+    role="table"
+  >
+    <thead>
+      <tr>
+        <th
+          class="lfr-summary-column table-cell-content"
+        >
+          summary
+        </th>
+        <th
+          class="lfr-component-column"
+        >
+          component
+        </th>
+        <th
+          class="lfr-release-column"
+        >
+          release
+           
+          <svg
+            class="desc lexicon-icon sorting-indicator"
+            role="button"
+          >
+            <use
+              xlink:href="#arrow-up"
+            />
+          </svg>
+        </th>
+        <th
+          class="lfr-key-column"
+        >
+          key
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        class="journal-article-row"
+        id="LPS-85155GA"
+      >
+        <td
+          class="lfr-summary-column table-cell-content"
+        >
+          <button
+            class="btn btn-md btn-link"
+            type="button"
+          >
+            Add menu - Heading order invalid
+          </button>
+        </td>
+        <td
+          class="lfr-component-column"
+        >
+          Accessibility
+        </td>
+        <td
+          class="lfr-release-column"
+        >
+          GA
+        </td>
+        <td
+          class="lfr-key-column"
+        >
+          <a
+            href="/"
+          >
+            LPS-85155
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
