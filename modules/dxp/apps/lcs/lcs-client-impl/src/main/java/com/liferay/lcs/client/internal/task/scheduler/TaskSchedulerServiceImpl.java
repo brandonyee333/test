@@ -14,20 +14,18 @@
 
 package com.liferay.lcs.client.internal.task.scheduler;
 
-import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.InitializationException;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
-import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.SignOffTask;
+import com.liferay.lcs.client.internal.task.Task;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -69,22 +67,20 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, HandshakeTask handshakeTask,
-		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
 		LCSConfigurationProvider lcsConfigurationProvider,
 		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
 		LCSKeyAdvisor lcsKeyAdvisor, TaskAdvisor taskAdvisor,
-		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
+		ThreadFactory threadFactory, UptimeTask uptimeTask) {
 
 		_defaultInterval = defaultInterval;
 		_handshakeTask = handshakeTask;
-		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsConfigurationProvider = lcsConfigurationProvider;
 		_lcsEventManager = lcsEventManager;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
-		_uptimeAdvisor = uptimeAdvisor;
+		_uptimeTask = uptimeTask;
 
 		_subscribeToLCSEvents();
 	}
@@ -313,9 +309,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 	}
 
-	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun)
-		throws InitializationException {
-
+	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
 		if (_shutdownPending) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -325,9 +319,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 			return;
 		}
-
-		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask = _resolve(
-			LCSClusterEntryTokenCheckTask.class);
 
 		long delay = 0;
 
@@ -342,10 +333,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 
 		_scheduledExecutorService.schedule(
-			lcsClusterEntryTokenCheckTask, delay, TimeUnit.SECONDS);
+			_lcsClusterEntryTokenCheckTask, delay, TimeUnit.SECONDS);
 
 		if (_log.isTraceEnabled()) {
-			_log.trace("Executed " + lcsClusterEntryTokenCheckTask);
+			_log.trace("Executed " + _lcsClusterEntryTokenCheckTask);
 		}
 	}
 
@@ -479,21 +470,12 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	private void _scheduleUptimeMonitoringTask() {
-		try {
-			_uptimeAdvisor.init();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-
-		UptimeTask uptimeTask = new UptimeTask();
-
 		_uptimeTaskScheduledFuture =
 			_scheduledExecutorService.scheduleAtFixedRate(
-				uptimeTask, 1, 1, TimeUnit.MINUTES);
+				_uptimeTask, 1, 1, TimeUnit.MINUTES);
 
 		if (_log.isTraceEnabled()) {
-			_log.trace(uptimeTask.toString() + " scheduled");
+			_log.trace(_uptimeTask.toString() + " scheduled");
 		}
 	}
 
@@ -523,11 +505,17 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private BundleContext _bundleContext;
 	private int _defaultInterval;
 
-	@Reference
-	private HandshakeTask _handshakeTask;
+	@Reference(
+		target = "(component.name=com.liferay.lcs.client.internal.task.HandshakeTask)",
+		unbind = "-"
+	)
+	private Task _handshakeTask;
 
-	@Reference
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	@Reference(
+		target = "(component.name=com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask)",
+		unbind = "-"
+	)
+	private Task _lcsClusterEntryTokenCheckTask;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
@@ -553,8 +541,11 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	@Reference
 	private ThreadFactory _threadFactory;
 
-	@Reference
-	private UptimeAdvisor _uptimeAdvisor;
+	@Reference(
+		target = "(component.name=com.liferay.lcs.client.internal.task.UptimeTask)",
+		unbind = "-"
+	)
+	private Task _uptimeTask;
 
 	private ScheduledFuture<?> _uptimeTaskScheduledFuture;
 

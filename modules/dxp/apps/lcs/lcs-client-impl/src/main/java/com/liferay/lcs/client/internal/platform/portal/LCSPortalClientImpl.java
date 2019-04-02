@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component(immediate = true, service = LCSPortalClientImpl.class)
+@Component(immediate = true, service = LCSPortalClient.class)
 public class LCSPortalClientImpl implements LCSPortalClient {
 
 	@Activate
@@ -73,6 +73,10 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 
 		_jsonWebServiceClient =
 			(JSONWebServiceClient)componentInstance.getInstance();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override

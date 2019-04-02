@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -34,7 +35,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  */
 @Component(
-	immediate = true, name = "LCSClusterEntryTokenCheckTask",
+	immediate = true,
+	name = "com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask",
 	service = Task.class
 )
 public class LCSClusterEntryTokenCheckTask implements Task {
@@ -88,6 +90,13 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				"Unable to validate the environment token file", throwable);
 
 			_lcsEventManager.publish(lcsEvent);
+		}
+	}
+
+	@Activate
+	protected void activate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
 		}
 	}
 

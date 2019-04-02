@@ -15,24 +15,24 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
-import com.liferay.portal.kernel.bean.BeanLocator;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(
+	immediate = true, name = "com.liferay.lcs.client.internal.task.UptimeTask",
+	service = Task.class
+)
 public class UptimeTask implements Task {
 
 	public UptimeTask() {
-		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
-			"lcs-portlet");
-
-		_uptimeAdvisor = (UptimeAdvisor)beanLocator.locate(
-			_uptimeMonitoringAdvisorClass.getName());
-
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
@@ -52,6 +52,13 @@ public class UptimeTask implements Task {
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
+	}
+
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
@@ -63,7 +70,7 @@ public class UptimeTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(UptimeTask.class);
 
-	private final UptimeAdvisor _uptimeAdvisor;
-	private Class<?> _uptimeMonitoringAdvisorClass = UptimeAdvisor.class;
+	@Reference
+	private UptimeAdvisor _uptimeAdvisor;
 
 }

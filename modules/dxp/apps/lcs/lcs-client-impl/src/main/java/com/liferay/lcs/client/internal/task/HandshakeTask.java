@@ -71,7 +71,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  * @author Marko Cikos
  */
-@Component(immediate = true, name = "HandshakeTask", service = Task.class)
+@Component(
+	immediate = true,
+	name = "com.liferay.lcs.client.internal.task.HandshakeTask",
+	service = Task.class
+)
 public class HandshakeTask implements Task {
 
 	public HandshakeTask() {

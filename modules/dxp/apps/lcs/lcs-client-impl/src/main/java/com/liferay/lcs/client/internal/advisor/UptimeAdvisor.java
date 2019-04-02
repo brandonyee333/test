@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.util.LCSPortletPreferencesUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,6 +40,7 @@ import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -52,8 +54,13 @@ public class UptimeAdvisor implements LCSEventListener {
 	public UptimeAdvisor() {
 	}
 
-	public UptimeAdvisor(LCSKeyAdvisor lcsKeyAdvisor) {
+	public UptimeAdvisor(
+		LCSEventManager lcsEventManager, LCSKeyAdvisor lcsKeyAdvisor) {
+
+		_lcsEventManager = lcsEventManager;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
+
+		_subscribeEvents();
 	}
 
 	public List<Map<String, Long>> getUptimeEntries() {
@@ -73,24 +80,6 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 
 		return uptimeEntries;
-	}
-
-	public void init() throws IOException {
-		if (_initalized) {
-			return;
-		}
-
-		_uptimes = new ArrayList<>(_getPersistedUptimes());
-
-		_checkCurrentUptime();
-
-		_addCurrentUptime(_uptimes);
-
-		_initalized = true;
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Initialized");
-		}
 	}
 
 	@Override
@@ -132,6 +121,27 @@ public class UptimeAdvisor implements LCSEventListener {
 		_currentUptime.endTime = System.currentTimeMillis();
 
 		_storeUptimes();
+	}
+
+	@Activate
+	protected void activate() throws IOException {
+		if (_initalized) {
+			return;
+		}
+
+		_uptimes = new ArrayList<>(_getPersistedUptimes());
+
+		_checkCurrentUptime();
+
+		_addCurrentUptime(_uptimes);
+
+		_subscribeEvents();
+
+		_initalized = true;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized");
+		}
 	}
 
 	private void _addCurrentUptime(List<Uptime> uptimes) {
@@ -291,6 +301,12 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 	}
 
+	private void _subscribeEvents() {
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(UptimeAdvisor.class);
 
 	private static final RuntimeMXBean _runtimeMXBean =
@@ -298,6 +314,9 @@ public class UptimeAdvisor implements LCSEventListener {
 
 	private Uptime _currentUptime;
 	private boolean _initalized;
+
+	@Reference
+	private LCSEventManager _lcsEventManager;
 
 	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
