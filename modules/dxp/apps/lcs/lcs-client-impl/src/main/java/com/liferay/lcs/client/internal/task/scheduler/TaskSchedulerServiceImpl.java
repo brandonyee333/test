@@ -21,6 +21,7 @@ import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
+import com.liferay.lcs.client.internal.exception.InitializationException;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
@@ -49,10 +50,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Riccardo Ferrari
@@ -84,20 +87,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_uptimeAdvisor = uptimeAdvisor;
 
 		_subscribeToLCSEvents();
-	}
-
-	@Activate
-	public void activate() {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_defaultInterval = Integer.valueOf(
-			lcsConfiguration.commandScheduleDefaultInterval());
-
-		_subscribeToLCSEvents();
-
-		_scheduledExecutorService = Executors.newScheduledThreadPool(
-			10, _threadFactory);
 	}
 
 	@Deactivate
@@ -229,6 +218,22 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_executeLCSClusterEntryTokenCheckTask(false);
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_defaultInterval = Integer.valueOf(
+			lcsConfiguration.commandScheduleDefaultInterval());
+
+		_subscribeToLCSEvents();
+
+		_scheduledExecutorService = Executors.newScheduledThreadPool(
+			10, _threadFactory);
+	}
+
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
@@ -308,7 +313,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 	}
 
-	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
+	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun)
+		throws InitializationException {
+
 		if (_shutdownPending) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
@@ -319,20 +326,23 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			return;
 		}
 
-		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
-			new LCSClusterEntryTokenCheckTask();
+		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask = _resolve(
+			LCSClusterEntryTokenCheckTask.class);
+
+		long delay = 0;
 
 		if (delayRun) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Checking environment token in 60 seconds");
-			}
+			delay = 60;
 
-			_scheduledExecutorService.schedule(
-				lcsClusterEntryTokenCheckTask, 60, TimeUnit.SECONDS);
+			if (_log.isInfoEnabled()) {
+				_log.info(
+					String.format(
+						"Checking environment token in %d seconds", delay));
+			}
 		}
-		else {
-			_scheduledExecutorService.submit(lcsClusterEntryTokenCheckTask);
-		}
+
+		_scheduledExecutorService.schedule(
+			lcsClusterEntryTokenCheckTask, delay, TimeUnit.SECONDS);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executed " + lcsClusterEntryTokenCheckTask);
@@ -433,6 +443,29 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_executeLCSClusterEntryTokenCheckTask(false);
 	}
 
+	private <T> T _resolve(Class<T> clazz) throws InitializationException {
+		ServiceTracker<T, T> serviceTracker = new ServiceTracker<>(
+			_bundleContext, clazz, null);
+
+		int allowedAttempts = 5;
+
+		serviceTracker.open();
+
+		while (allowedAttempts-- > 0) {
+			try {
+				return serviceTracker.waitForService(5 * 1000L);
+			}
+			catch (InterruptedException ie) {
+				if (_log.isTraceEnabled()) {
+					_log.error("Waiting for service " + clazz);
+				}
+			}
+		}
+
+		throw new InitializationException(
+			"LCS Client encountered  timeout while waiting for " + clazz);
+	}
+
 	private void _restart() {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Restarting LCS lifecycle");
@@ -487,6 +520,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private static final Log _log = LogFactoryUtil.getLog(
 		TaskSchedulerServiceImpl.class);
 
+	private BundleContext _bundleContext;
 	private int _defaultInterval;
 
 	@Reference

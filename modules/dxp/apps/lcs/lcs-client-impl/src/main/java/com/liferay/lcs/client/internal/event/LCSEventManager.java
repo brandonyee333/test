@@ -24,12 +24,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSEventManager.class)
 public class LCSEventManager {
 
 	public void publish(LCSEvent lcsEvent) {
@@ -80,6 +81,13 @@ public class LCSEventManager {
 				String.format(
 					_LOG_PATTERN_NEW_REGISTRATION,
 					String.valueOf(lcsEventListener), lcsEvent.name()));
+		}
+	}
+
+	@Activate
+	protected void activate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
 		}
 	}
 

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
@@ -90,7 +91,11 @@ public class LCSPortletStateAdvisorImpl implements LCSPortletStateAdvisor {
 	private LCSPortletState _lastLCSPortletState =
 		LCSPortletState.NO_SUBSCRIPTION;
 	private long _lastLicenseCheckTime;
+
+	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
+
+	@Reference
 	private LCSSubscriptionEntryClient _lcsSubscriptionEntryClient;
 
 }

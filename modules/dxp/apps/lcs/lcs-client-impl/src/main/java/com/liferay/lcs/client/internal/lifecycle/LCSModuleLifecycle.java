@@ -16,6 +16,7 @@ package com.liferay.lcs.client.internal.lifecycle;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -28,11 +29,11 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSModuleLifecycle.class)
 public class LCSModuleLifecycle {
 
 	@Activate
-	protected void activate() throws Exception {
+	protected void activate() {
 		_lcsConfiguration = _lcsConfigurationProvider.getLCSConfiguration();
 
 		if (_log.isInfoEnabled()) {
@@ -40,10 +41,12 @@ public class LCSModuleLifecycle {
 				"LCS client " + _lcsConfiguration.lcsClientVersion() +
 					" activated");
 		}
+
+		_taskSchedulerService.start();
 	}
 
 	@Deactivate
-	protected void deactivate() throws Exception {
+	protected void deactivate() {
 		if (_log.isWarnEnabled()) {
 			_log.warn(
 				"LCS client " + _lcsConfiguration.lcsClientVersion() +
@@ -61,5 +64,8 @@ public class LCSModuleLifecycle {
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
+
+	@Reference
+	private TaskSchedulerService _taskSchedulerService;
 
 }

@@ -71,7 +71,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  * @author Marko Cikos
  */
-@Component
+@Component(immediate = true, name = "HandshakeTask", service = Task.class)
 public class HandshakeTask implements Task {
 
 	public HandshakeTask() {
@@ -107,6 +107,9 @@ public class HandshakeTask implements Task {
 
 	@Activate
 	public void activate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override

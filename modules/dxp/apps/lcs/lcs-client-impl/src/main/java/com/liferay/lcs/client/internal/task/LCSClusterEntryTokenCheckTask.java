@@ -33,7 +33,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component
+@Component(
+	immediate = true, name = "LCSClusterEntryTokenCheckTask",
+	service = Task.class
+)
 public class LCSClusterEntryTokenCheckTask implements Task {
 
 	public LCSClusterEntryTokenCheckTask() {
