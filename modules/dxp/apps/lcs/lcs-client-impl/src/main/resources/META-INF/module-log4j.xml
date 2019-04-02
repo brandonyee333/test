@@ -2,19 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-	<appender class="org.apache.log4j.rolling.RollingFileAppender" name="RollingFileAppender">
-		<rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
-			<param name="FileNamePattern" value="@liferay.home@/logs/lcs-portlet@spi.id@.%d{yyyy-MM-dd}.log" />
-		</rollingPolicy>
-
-		<layout class="org.apache.log4j.EnhancedPatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH\:mm\:ss} %-5p [%t][%c{1}:%L] %m%n" />
-		</layout>
-	</appender>
-
-	<logger additivity="false" name="com.liferay.lcs">
-		<level value="INFO" />
-
-		<appender-ref ref="RollingFileAppender" />
-	</logger>
+	<category name="com.liferay.lcs.client">
+		<priority value="WARN" />
+	</category>
 </log4j:configuration>
