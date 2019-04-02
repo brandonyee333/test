@@ -14,13 +14,11 @@
 
 package com.liferay.osb.hook.upgrade;
 
-import com.liferay.osb.util.UpgradeUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeLocalServiceUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -32,21 +30,11 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-import java.util.List;
-
 /**
  * @author Amos Fong
  * @author Ryan Park
  */
-public class BaseUpgradeProcess extends UpgradeProcess {
-
-	public int getFrequency() {
-		return 0;
-	}
-
-	public long getTimestamp() {
-		return 0;
-	}
+public abstract class BaseUpgradeProcess extends UpgradeProcess {
 
 	public boolean hasIndex(String tableName, String indexName)
 		throws Exception {
@@ -104,25 +92,7 @@ public class BaseUpgradeProcess extends UpgradeProcess {
 		return false;
 	}
 
-	@Override
-	public void upgrade() throws UpgradeException {
-		super.upgrade();
-
-		long timestamp = getTimestamp();
-
-		if (timestamp > 0) {
-			UpgradeUtil.setRunTime(timestamp, System.currentTimeMillis());
-		}
-	}
-
-	@Override
-	protected void doUpgrade() throws Exception {
-		List<Class<?>> classes = UpgradeUtil.getClasses(getThreshold());
-
-		for (Class<?> clazz : classes) {
-			upgrade(clazz);
-		}
-	}
+	protected abstract void doUpgrade() throws Exception;
 
 	protected void insertListType(int listTypeId, String name, String type)
 		throws Exception {

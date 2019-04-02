@@ -27,11 +27,6 @@ public class Upgrade_20180626102209566_SupportResponse
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20180626102209566L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		SupportResponse supportResponse =
 			SupportResponseLocalServiceUtil.fetchSupportResponseByName(

@@ -83,12 +83,10 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.tools.Upgrade;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.mvc.OSBPortlet;
-import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.AddressCityException;
 import com.liferay.portal.kernel.exception.AddressStreetException;
 import com.liferay.portal.kernel.exception.AddressZipException;
@@ -1343,8 +1341,5 @@ public class AdminPortlet extends OSBPortlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
-
-	@BeanReference(type = Upgrade.class)
-	private static Upgrade _upgrade;
 
 }

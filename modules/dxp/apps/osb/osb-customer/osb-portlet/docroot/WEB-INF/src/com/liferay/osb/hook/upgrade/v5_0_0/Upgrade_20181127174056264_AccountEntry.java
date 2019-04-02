@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20181127174056264_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20181127174056264L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!tableHasColumn("OSB_AccountEntry", "activeSupport")) {
 			runSQL(

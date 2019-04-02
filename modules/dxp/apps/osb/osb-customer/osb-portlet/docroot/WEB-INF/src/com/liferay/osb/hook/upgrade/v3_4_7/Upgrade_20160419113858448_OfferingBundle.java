@@ -24,11 +24,6 @@ public class Upgrade_20160419113858448_OfferingBundle
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160419113858448L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(OfferingBundleModelImpl.TABLE_SQL_CREATE);
 

@@ -24,11 +24,6 @@ public class Upgrade_20160420144302833_OfferingDefinition
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160420144302833L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("drop index IX_10B93EA3 on OSB_OfferingDefinition");
 		runSQL("drop index IX_32A99633 on OSB_OfferingDefinition");

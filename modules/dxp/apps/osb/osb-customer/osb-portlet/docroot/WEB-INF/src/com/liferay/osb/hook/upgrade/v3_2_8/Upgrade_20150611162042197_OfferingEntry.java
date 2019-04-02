@@ -34,11 +34,6 @@ import java.util.Map;
 public class Upgrade_20150611162042197_OfferingEntry
 	extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20150611162042197L;
-	}
-
 	protected void deleteOfferingEntry(OfferingEntry offeringEntry)
 		throws Exception {
 

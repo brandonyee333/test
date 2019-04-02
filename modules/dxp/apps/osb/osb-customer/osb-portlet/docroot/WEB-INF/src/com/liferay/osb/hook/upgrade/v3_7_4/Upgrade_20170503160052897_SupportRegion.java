@@ -23,11 +23,6 @@ public class Upgrade_20170503160052897_SupportRegion
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170503160052897L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (hasColumn("OSB_SupportRegion", "managerUserId")) {
 			return;

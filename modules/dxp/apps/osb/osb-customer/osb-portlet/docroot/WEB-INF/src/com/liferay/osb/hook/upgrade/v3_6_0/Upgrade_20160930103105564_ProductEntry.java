@@ -37,11 +37,6 @@ import java.sql.ResultSet;
  */
 public class Upgrade_20160930103105564_ProductEntry extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20160930103105564L;
-	}
-
 	protected void addLicenseEntries() throws PortalException {
 		LicenseEntryLocalServiceUtil.addLicenseEntry(
 			OSBConstants.USER_AMOS_FONG_USER_ID, _deBackupProductEntryId,

@@ -31,11 +31,6 @@ public class Upgrade_20170622171146887_SupportResponse
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170622171146887L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		SupportResponseLocalServiceUtil.addSupportResponse(
 			OSBConstants.USER_AMOS_FONG_USER_ID, "Floating",

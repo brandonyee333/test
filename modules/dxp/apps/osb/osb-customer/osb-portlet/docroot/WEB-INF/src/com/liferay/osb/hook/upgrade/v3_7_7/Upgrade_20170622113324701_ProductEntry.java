@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20170622113324701_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170622113324701L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("update OSB_ProductEntry set type_ = 0");
 	}

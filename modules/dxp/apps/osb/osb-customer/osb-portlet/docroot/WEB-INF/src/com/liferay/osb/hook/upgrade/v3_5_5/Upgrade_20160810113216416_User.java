@@ -29,11 +29,6 @@ import java.sql.ResultSet;
 public class Upgrade_20160810113216416_User extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160810113216416L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;

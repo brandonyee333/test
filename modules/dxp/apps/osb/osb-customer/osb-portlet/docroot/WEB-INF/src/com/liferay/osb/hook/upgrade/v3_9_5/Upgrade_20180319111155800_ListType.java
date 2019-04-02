@@ -23,11 +23,6 @@ import com.liferay.osb.model.AccountEnvironmentConstants;
 public class Upgrade_20180319111155800_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20180319111155800L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"update ListType set name = 'elasticsearch-2.x' where listTypeId " +

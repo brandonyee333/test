@@ -29,11 +29,6 @@ public class Upgrade_20180618165258624_PartnerWorker
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20180618165258624L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		List<PartnerEntry> partnerEntries =
 			PartnerEntryLocalServiceUtil.getPartnerEntries(

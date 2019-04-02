@@ -60,11 +60,6 @@ public class Upgrade_20140626163336549_Address extends BaseUpgradeProcess {
 	}
 
 	@Override
-	public long getTimestamp() {
-		return 20140626163336549L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAddress();
 	}

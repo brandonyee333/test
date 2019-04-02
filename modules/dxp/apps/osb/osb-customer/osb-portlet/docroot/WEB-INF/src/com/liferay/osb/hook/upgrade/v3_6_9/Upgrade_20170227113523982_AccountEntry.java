@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20170227113523982_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170227113523982L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("alter table OSB_AccountEntry add column lastAuditDate DATE");
 

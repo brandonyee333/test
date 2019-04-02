@@ -33,11 +33,6 @@ import java.sql.ResultSet;
 public class Upgrade_20160810063012518_Expando extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160810063012518L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;

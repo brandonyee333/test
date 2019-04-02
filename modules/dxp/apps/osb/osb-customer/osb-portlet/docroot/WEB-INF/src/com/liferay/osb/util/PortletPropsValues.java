@@ -31,10 +31,6 @@ public class PortletPropsValues {
 	public static final String CORP_PROJECT_LINK = PortletProps.get(
 		PortletPropsKeys.CORP_PROJECT_LINK);
 
-	public static final boolean DEVELOPER_UPGRADE_ENABLED =
-		GetterUtil.getBoolean(
-			PortletProps.get(PortletPropsKeys.DEVELOPER_UPGRADE_ENABLED));
-
 	public static final String[]
 		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
 			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);

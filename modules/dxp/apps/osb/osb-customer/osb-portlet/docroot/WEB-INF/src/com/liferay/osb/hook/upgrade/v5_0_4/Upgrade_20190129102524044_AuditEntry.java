@@ -32,11 +32,6 @@ import java.text.Format;
 public class Upgrade_20190129102524044_AuditEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20190129102524044L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!tableHasColumn("OSB_AuditEntry", "description")) {
 			runSQL(

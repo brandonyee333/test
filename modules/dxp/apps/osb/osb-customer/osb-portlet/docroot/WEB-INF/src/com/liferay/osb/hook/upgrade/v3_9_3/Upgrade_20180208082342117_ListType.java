@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20180208082342117_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20180208082342117L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			39006, "aws-aurora",

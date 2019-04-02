@@ -28,11 +28,6 @@ public class Upgrade_20160725150104145_OfferingEntry
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160725150104145L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;

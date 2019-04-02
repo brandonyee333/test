@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20141203103736658_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20141203103736658L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			34031, "pending-customer",

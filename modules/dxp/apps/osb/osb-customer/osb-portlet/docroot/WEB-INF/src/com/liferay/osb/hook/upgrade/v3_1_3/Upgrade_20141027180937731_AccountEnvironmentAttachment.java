@@ -23,11 +23,6 @@ public class Upgrade_20141027180937731_AccountEnvironmentAttachment
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20141027180937731L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"alter table OSB_AccountEnvironmentAttachment change fileSize " +

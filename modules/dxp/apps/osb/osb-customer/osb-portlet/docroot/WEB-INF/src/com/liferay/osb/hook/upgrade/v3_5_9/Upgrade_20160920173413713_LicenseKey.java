@@ -23,11 +23,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 public class Upgrade_20160920173413713_LicenseKey extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160920173413713L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_LicenseKey", "productEntryId")) {
 			runSQL("alter table OSB_LicenseKey add column productEntryId LONG");

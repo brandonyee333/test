@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20140918161616041_SupportRegion
 	extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20140918161616041L;
-	}
-
 	protected void addTimeZoneId() throws Exception {
 		if (hasColumn("OSB_SupportRegion", "timeZoneId")) {
 			return;

@@ -41,11 +41,6 @@ import java.util.Map;
 public class Upgrade_20150407162519339_Expando extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150407162519339L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		updateExpandoColumn(OSBConstants.COMPANY_ID);
 	}

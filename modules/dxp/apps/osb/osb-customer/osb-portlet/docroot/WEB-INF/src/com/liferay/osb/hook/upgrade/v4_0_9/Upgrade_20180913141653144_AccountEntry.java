@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20180913141653144_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20180913141653144L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (hasColumn("OSB_AccountEntry", "dossieraAccountKey")) {
 			return;

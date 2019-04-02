@@ -23,11 +23,6 @@ import com.liferay.osb.model.AccountEntryConstants;
 public class Upgrade_20170424172241881_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170424172241881L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			35028, "food-services", AccountEntryConstants.LIST_TYPE_INDUSTRY);

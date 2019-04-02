@@ -29,11 +29,6 @@ import java.sql.ResultSet;
 public class Upgrade_20150406084031636_User extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150406084031636L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
 

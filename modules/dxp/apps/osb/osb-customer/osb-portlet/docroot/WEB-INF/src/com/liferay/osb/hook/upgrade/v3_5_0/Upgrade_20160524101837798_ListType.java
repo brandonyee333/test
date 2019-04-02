@@ -23,11 +23,6 @@ import com.liferay.osb.model.AuditEntryConstants;
 public class Upgrade_20160524101837798_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160524101837798L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			AuditEntryConstants.FIELD_PARTNER, "partner",

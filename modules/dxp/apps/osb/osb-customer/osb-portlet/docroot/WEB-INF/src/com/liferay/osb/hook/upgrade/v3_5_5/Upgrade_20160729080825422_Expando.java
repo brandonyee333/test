@@ -22,11 +22,6 @@ import com.liferay.portal.kernel.util.StringBundler;
  */
 public class Upgrade_20160729080825422_Expando extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20160729080825422L;
-	}
-
 	protected void deleteOSBCountryExpandoValues() throws Exception {
 		runSQL(
 			"delete from ExpandoValue where columnId = " +

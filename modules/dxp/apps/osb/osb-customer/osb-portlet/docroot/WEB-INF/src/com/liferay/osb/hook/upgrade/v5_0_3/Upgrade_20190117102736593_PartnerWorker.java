@@ -24,11 +24,6 @@ public class Upgrade_20190117102736593_PartnerWorker
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20190117102736593L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		StringBundler sb = new StringBundler(4);
 

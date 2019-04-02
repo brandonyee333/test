@@ -23,11 +23,6 @@ public class Upgrade_20161101110614967_OfferingEntry
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20161101110614967L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasIndex("OSB_OfferingEntry", "IX_E0CF6A9F")) {
 			runSQL(

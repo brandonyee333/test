@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20141008135107584_PartnerEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20141008135107584L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		upgradePartnerEntry();
 	}

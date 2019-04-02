@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20161101094342547_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20161101094342547L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("update ListType set name = '7.0' where listTypeId = 41000");
 	}

@@ -26,9 +26,6 @@ public interface PortletPropsKeys {
 
 	public static final String CORP_PROJECT_LINK = "corp.project.link";
 
-	public static final String DEVELOPER_UPGRADE_ENABLED =
-		"developer.upgrade.enabled";
-
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";
 

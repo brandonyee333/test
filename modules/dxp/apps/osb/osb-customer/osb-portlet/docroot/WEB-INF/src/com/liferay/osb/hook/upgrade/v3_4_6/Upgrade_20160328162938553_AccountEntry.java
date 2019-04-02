@@ -23,11 +23,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 public class Upgrade_20160328162938553_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160328162938553L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		StringBundler sb = new StringBundler(3);
 

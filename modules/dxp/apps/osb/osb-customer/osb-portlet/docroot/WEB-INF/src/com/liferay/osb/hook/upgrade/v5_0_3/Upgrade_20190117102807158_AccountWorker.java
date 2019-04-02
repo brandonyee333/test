@@ -24,11 +24,6 @@ public class Upgrade_20190117102807158_AccountWorker
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20190117102807158L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		StringBundler sb = new StringBundler(4);
 

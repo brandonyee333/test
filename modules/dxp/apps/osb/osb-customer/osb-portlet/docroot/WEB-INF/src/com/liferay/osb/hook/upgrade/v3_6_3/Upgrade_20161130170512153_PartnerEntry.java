@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20161130170512153_PartnerEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20161130170512153L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"alter table OSB_PartnerEntry add column dossieraAccountKey " +

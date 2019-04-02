@@ -23,11 +23,6 @@ public class Upgrade_20140731010631183_AccountAttachment
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20140731010631183L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (hasColumn("OSB_AccountAttachment", "accountProjectId")) {
 			return;

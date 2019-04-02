@@ -27,11 +27,6 @@ import java.util.List;
 public class Upgrade_20150109184444735_SupportResponse
 	extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20150109184444735L;
-	}
-
 	protected void doUpdateSupportResponse(
 			int supportLevel, int deprecatedSupportLevel)
 		throws Exception {

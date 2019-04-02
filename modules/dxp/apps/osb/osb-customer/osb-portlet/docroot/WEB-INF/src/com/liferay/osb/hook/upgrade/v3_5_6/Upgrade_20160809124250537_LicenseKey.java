@@ -28,11 +28,6 @@ import java.util.Map;
 public class Upgrade_20160809124250537_LicenseKey extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160809124250537L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		updateIndexes();
 		updateLicenseKeys();

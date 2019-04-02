@@ -43,11 +43,6 @@ import java.util.Set;
 public class Upgrade_20160811141901211_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160811141901211L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (hasTable("OSB_AccountEntryLanguage")) {
 			return;

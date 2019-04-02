@@ -25,11 +25,6 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 public class Upgrade_20170530081027591_User extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170530081027591L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		StringBundler sb = new StringBundler(6);
 

@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20141212084143408_AuditEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20141212084143408L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"create index IX_56D6EFE1 on OSB_AuditEntry (classNameId, " +

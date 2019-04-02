@@ -23,11 +23,6 @@ public class Upgrade_20170713110007653_OfferingEntry
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170713110007653L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"create index IX_D879F1BE on OSB_OfferingEntry (accountEntryId, " +

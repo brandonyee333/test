@@ -28,11 +28,6 @@ import java.util.List;
 public class Upgrade_20170707110203181_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170707110203181L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		List<ProductEntry> productEntries =
 			ProductEntryLocalServiceUtil.getProductEntries(

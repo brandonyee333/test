@@ -23,11 +23,6 @@ public class Upgrade_20160115135320671_OfferingEntry
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160115135320671L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL("update OSB_OfferingEntry set processorCoresAllowed = 8");
 	}

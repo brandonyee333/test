@@ -29,11 +29,6 @@ import java.util.List;
 public class Upgrade_20160315105316316_Organization extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160315105316316L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		List<Long> inactiveUserIds = new ArrayList<>();
 

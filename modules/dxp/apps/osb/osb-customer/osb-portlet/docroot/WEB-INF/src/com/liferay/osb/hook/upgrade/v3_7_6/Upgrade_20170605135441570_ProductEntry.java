@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20170605135441570_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170605135441570L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		transferAssets(
 			_PRODUCT_ENTRY_PARTNER_ID, _PRODUCT_ENTRY_PORTAL_LIMITED_ID);

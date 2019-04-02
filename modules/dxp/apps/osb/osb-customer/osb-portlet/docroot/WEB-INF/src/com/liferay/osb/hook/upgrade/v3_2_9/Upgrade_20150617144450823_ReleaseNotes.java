@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20150617144450823_ReleaseNotes extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150617144450823L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"alter table RN_ReleaseNotes modify column jiraIssueKeys " +

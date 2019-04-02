@@ -35,11 +35,6 @@ import java.sql.ResultSet;
 public class Upgrade_20170616160207742_AccountCustomer
 	extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20170616160207742L;
-	}
-
 	protected void addAccountCustomer(long userId, long accountEntryId)
 		throws PortalException {
 

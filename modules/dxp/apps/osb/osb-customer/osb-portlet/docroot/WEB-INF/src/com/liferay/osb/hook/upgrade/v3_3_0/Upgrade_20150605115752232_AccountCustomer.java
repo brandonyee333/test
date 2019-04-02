@@ -23,11 +23,6 @@ public class Upgrade_20150605115752232_AccountCustomer
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150605115752232L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasIndex("OSB_AccountCustomer", "IX_A47A5E94")) {
 			runSQL(

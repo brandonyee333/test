@@ -23,11 +23,6 @@ public class Upgrade_20140424155621721_SupportResponse
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20140424155621721L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		renameColumns();
 

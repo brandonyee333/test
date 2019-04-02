@@ -29,11 +29,6 @@ import java.util.List;
  */
 public class Upgrade_20150617144546039_ObsoleteData extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20150617144546039L;
-	}
-
 	protected void deleteLayoutMBDiscussions() throws PortalException {
 		List<MBDiscussion> mbDiscussions =
 			MBMessageLocalServiceUtil.getDiscussions(Layout.class.getName());

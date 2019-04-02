@@ -23,11 +23,6 @@ import com.liferay.osb.util.OSBConstants;
 public class Upgrade_20160809121913146_AccountEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160809121913146L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		removeLiferayTrialAccountCustomers();
 		updateIndexes();

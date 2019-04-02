@@ -23,11 +23,6 @@ import com.liferay.osb.model.impl.SupportRegionModelImpl;
 public class Upgrade_20140424155616603_SupportRegion
 	extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20140424155616603L;
-	}
-
 	protected void createSupportRegion() throws Exception {
 		if (!hasTable(SupportRegionModelImpl.TABLE_NAME)) {
 			runSQL(SupportRegionModelImpl.TABLE_SQL_CREATE);

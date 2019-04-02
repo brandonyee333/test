@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20150402150154367_AuditEvent extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150402150154367L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"update Audit_AuditEvent set message = classPK where className = " +

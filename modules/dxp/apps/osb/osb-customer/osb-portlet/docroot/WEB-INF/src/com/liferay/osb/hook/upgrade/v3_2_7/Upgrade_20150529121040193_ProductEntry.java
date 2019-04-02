@@ -24,11 +24,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 public class Upgrade_20150529121040193_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150529121040193L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn(ProductEntryImpl.TABLE_NAME, "version")) {
 			StringBundler sb = new StringBundler(3);

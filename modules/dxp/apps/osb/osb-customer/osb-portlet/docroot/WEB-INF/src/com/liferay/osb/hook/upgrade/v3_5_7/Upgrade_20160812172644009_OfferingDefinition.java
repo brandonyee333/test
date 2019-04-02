@@ -23,11 +23,6 @@ public class Upgrade_20160812172644009_OfferingDefinition
 	extends Upgrade_20160602105202547_OfferingDefinition {
 
 	@Override
-	public long getTimestamp() {
-		return 20160812172644009L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		removeDuplicates();
 	}

@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20140801185959487_Region extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20140801185959487L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		upgradeRegion();
 	}

@@ -23,11 +23,6 @@ import com.liferay.osb.model.impl.PartnerEntryModelImpl;
 public class Upgrade_20141218193532347_PartnerEntries_SupportRegions
 	extends BaseUpgradeProcess {
 
-	@Override
-	public long getTimestamp() {
-		return 20141218193532347L;
-	}
-
 	protected void createTablesAndIndexes() throws Exception {
 		runSQL(
 			PartnerEntryModelImpl.

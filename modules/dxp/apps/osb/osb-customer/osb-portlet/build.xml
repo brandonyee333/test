@@ -38,29 +38,6 @@
 		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="build-service" />
 	</target>
 
-	<target name="build-upgrade">
-		<if>
-			<isset property="entity" />
-			<then>
-				<property name="entity.name" value="${entity}" />
-			</then>
-			<else>
-				<property name="entity.name" value="" />
-			</else>
-		</if>
-
-		<java
-			classname="com.liferay.osb.tools.UpgradeBuilder"
-			classpathref="plugin.classpath"
-			failonerror="true"
-			fork="true"
-			newenvironment="true"
-		>
-			<arg value="${entity.name}" />
-			<jvmarg value="-Dportal.base.dir=${portal.base.dir}" />
-		</java>
-	</target>
-
 	<target name="format-javadoc">
 		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="format-javadoc" />
 

@@ -30,11 +30,6 @@ import java.util.List;
 public class Upgrade_20190122121242433_ProductEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20190122121242433L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		long classNameId = ClassNameLocalServiceUtil.getClassNameId(
 			ProductEntry.class);

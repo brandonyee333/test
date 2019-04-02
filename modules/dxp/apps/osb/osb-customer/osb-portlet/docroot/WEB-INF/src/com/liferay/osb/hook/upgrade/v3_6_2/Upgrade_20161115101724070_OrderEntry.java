@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20161115101724070_OrderEntry extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20161115101724070L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_OrderEntry", "status")) {
 			runSQL("alter table OSB_OrderEntry add column status INTEGER");

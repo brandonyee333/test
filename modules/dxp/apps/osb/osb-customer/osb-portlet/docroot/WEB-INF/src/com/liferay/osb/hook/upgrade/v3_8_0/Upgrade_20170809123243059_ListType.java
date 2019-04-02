@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20170809123243059_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170809123243059L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			29008, "openjdk-8",

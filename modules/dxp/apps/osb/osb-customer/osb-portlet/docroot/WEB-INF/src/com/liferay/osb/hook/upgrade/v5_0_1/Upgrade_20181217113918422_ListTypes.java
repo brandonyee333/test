@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20181217113918422_ListTypes extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20181217113918422L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			27066, "websphere-8.5.5-fix-pack-11+",

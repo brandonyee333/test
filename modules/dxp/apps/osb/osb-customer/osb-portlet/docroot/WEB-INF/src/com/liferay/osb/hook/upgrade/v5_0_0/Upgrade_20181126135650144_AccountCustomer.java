@@ -23,11 +23,6 @@ public class Upgrade_20181126135650144_AccountCustomer
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20181126135650144L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (tableHasColumn("OSB_AccountCustomer", "notifications")) {
 			runSQL("alter table OSB_AccountCustomer drop column notifications");

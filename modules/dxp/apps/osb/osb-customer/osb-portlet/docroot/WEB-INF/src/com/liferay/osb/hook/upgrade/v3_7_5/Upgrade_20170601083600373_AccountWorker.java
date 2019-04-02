@@ -40,11 +40,6 @@ public class Upgrade_20170601083600373_AccountWorker
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170601083600373L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		List<AccountWorker> accountWorkers =
 			AccountWorkerLocalServiceUtil.getAccountWorkers(

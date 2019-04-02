@@ -23,11 +23,6 @@ public class Upgrade_20190226150319201_ExternalIdMapper
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20190226150319201L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"delete from OSB_ExternalIdMapper where (type_ = 2) or (type_ = " +

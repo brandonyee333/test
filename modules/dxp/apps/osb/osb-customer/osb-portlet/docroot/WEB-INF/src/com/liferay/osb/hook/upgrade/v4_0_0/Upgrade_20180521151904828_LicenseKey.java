@@ -23,11 +23,6 @@ import com.liferay.osb.model.impl.LicenseKeyImpl;
 public class Upgrade_20180521151904828_LicenseKey extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20180521151904828L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (hasColumn(LicenseKeyImpl.TABLE_NAME, "sizing")) {
 			return;

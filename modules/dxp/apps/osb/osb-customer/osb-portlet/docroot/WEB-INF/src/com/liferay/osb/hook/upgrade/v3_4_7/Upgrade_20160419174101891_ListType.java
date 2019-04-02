@@ -23,11 +23,6 @@ import com.liferay.osb.model.ProductEntry;
 public class Upgrade_20160419174101891_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160419174101891L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			20100, "7.0 DE",

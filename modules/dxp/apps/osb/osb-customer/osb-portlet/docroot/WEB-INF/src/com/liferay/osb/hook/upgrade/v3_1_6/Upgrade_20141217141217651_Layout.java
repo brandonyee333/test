@@ -23,11 +23,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 public class Upgrade_20141217141217651_Layout extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20141217141217651L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		updateLayout();
 	}

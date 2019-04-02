@@ -36,11 +36,6 @@ public class Upgrade_20160602105202547_OfferingDefinition
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160602105202547L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_OfferingDefinition", "productDescription")) {
 			runSQL(

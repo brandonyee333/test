@@ -30,11 +30,6 @@ public class Upgrade_20160413174405139_OfferingEntry
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20160413174405139L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_OfferingEntry", "version")) {
 			runSQL("alter table OSB_OfferingEntry add column version INTEGER");

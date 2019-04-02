@@ -23,11 +23,6 @@ public class Upgrade_20170131150512687_SupportResponse
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20170131150512687L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn("OSB_SupportResponse", "accessType")) {
 			return;

@@ -23,11 +23,6 @@ public class Upgrade_20190124135600134_AccountEnvironment
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20190124135600134L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
 			"alter table OSB_AccountEnvironment add column envCommerce " +

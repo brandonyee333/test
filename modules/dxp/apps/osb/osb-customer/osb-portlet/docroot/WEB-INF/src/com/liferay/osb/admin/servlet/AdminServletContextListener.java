@@ -120,11 +120,6 @@ public class AdminServletContextListener
 
 		AdminServletContextListenerExpandoHelper.setup();
 
-		// Upgrade
-
-		AdminServletContextListenerUpgradeHelper.setup(
-			_servletContext.getServletContextName());
-
 		// OSGi
 
 		Registry registry = RegistryUtil.getRegistry();

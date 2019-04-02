@@ -28,11 +28,6 @@ import java.util.List;
 public class Upgrade_20161025160551826_User extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20161025160551826L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		List<User> users = UserLocalServiceUtil.getUsers(
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS);

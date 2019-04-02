@@ -25,11 +25,6 @@ public class Upgrade_20150529113918401_OfferingEntry
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20150529113918401L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (!hasColumn(OfferingEntryImpl.TABLE_NAME, "processorCoresAllowed")) {
 			StringBundler sb = new StringBundler(3);

@@ -22,11 +22,6 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 public class Upgrade_20140728135826405_ListType extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20140728135826405L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		insertListType(
 			34030, "ticket-call", "com.liferay.osb.model.AuditEntry.field");

@@ -23,11 +23,6 @@ public class Upgrade_20140513113816789_AccountEnvironment
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20140513113816789L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		upgradeAccountEnvironment();
 	}

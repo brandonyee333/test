@@ -24,11 +24,6 @@ public class Upgrade_20140724104359450_AccountProject
 	extends BaseUpgradeProcess {
 
 	@Override
-	public long getTimestamp() {
-		return 20140724104359450L;
-	}
-
-	@Override
 	protected void doUpgrade() throws Exception {
 		if (hasTable(AccountProjectImpl.TABLE_NAME)) {
 			return;
