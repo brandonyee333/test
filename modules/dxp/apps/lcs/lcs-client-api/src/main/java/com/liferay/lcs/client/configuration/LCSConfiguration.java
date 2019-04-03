@@ -160,6 +160,12 @@ public interface LCSConfiguration {
 	public String lcsPlatformPortalProtocol();
 
 	@Meta.AD(deflt = "", required = false)
+	public String proxyAuthType();
+
+	@Meta.AD(deflt = "", required = false)
+	public String proxyDomain();
+
+	@Meta.AD(deflt = "", required = false)
 	public String proxyHostLogin();
 
 	@Meta.AD(deflt = "", required = false)
@@ -170,6 +176,9 @@ public interface LCSConfiguration {
 
 	@Meta.AD(deflt = "0", required = false)
 	public int proxyHostPort();
+
+	@Meta.AD(deflt = "", required = false)
+	public String proxyWorkstation();
 
 	@Meta.AD(deflt = "100", required = false)
 	public String scheduledTaskPageSize();
