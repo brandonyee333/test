@@ -23,6 +23,7 @@ import com.liferay.lcs.client.internal.exception.InitializationException;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
+import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.SignOffTask;
 import com.liferay.lcs.client.internal.task.Task;
@@ -67,6 +68,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl(
 		int defaultInterval, HandshakeTask handshakeTask,
+		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask,
 		LCSConfigurationProvider lcsConfigurationProvider,
 		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
 		LCSKeyAdvisor lcsKeyAdvisor, TaskAdvisor taskAdvisor,
@@ -74,6 +76,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		_defaultInterval = defaultInterval;
 		_handshakeTask = handshakeTask;
+		_lcsClusterEntryTokenCheckTask = lcsClusterEntryTokenCheckTask;
 		_lcsConfigurationProvider = lcsConfigurationProvider;
 		_lcsEventManager = lcsEventManager;
 		_lcsGatewayClient = lcsGatewayClient;
@@ -81,6 +84,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeTask = uptimeTask;
+
+		_scheduledExecutorService = Executors.newScheduledThreadPool(
+			10, _threadFactory);
 
 		_subscribeToLCSEvents();
 	}
