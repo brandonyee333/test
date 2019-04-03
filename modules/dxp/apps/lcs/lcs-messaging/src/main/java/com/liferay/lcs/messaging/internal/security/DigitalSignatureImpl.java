@@ -25,8 +25,11 @@ import java.security.KeyStore;
 import java.security.Signature;
 import java.security.cert.Certificate;
 
+import java.util.Map;
+
 import javax.xml.bind.DatatypeConverter;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -39,11 +42,19 @@ import org.osgi.service.component.annotations.Component;
  * @version 2.1.1
  * @since   LCS 0.1
  */
-@Component(immediate = true, service = DigitalSignature.class)
+@Component(factory = "DigitalSignature", service = {})
 public class DigitalSignatureImpl implements DigitalSignature {
 
 	public DigitalSignatureImpl() {
 		_keyStorePassword = "_k3y#5t0r3-p45S";
+	}
+
+	@Activate
+	public void activate(Map<String, Object> properties) {
+		setKeyName(_getString("keyName", properties));
+		setKeyStorePath(_getString("keyStorePath", properties));
+		setKeyStoreType(_getString("keyStoreType", properties));
+		setSigningAlgorithm(_getString("signingAlgorithm", properties));
 	}
 
 	@Override
@@ -283,6 +294,14 @@ public class DigitalSignatureImpl implements DigitalSignature {
 			_keyStorePath, _keyStoreType, _keyStorePassword);
 
 		return _keyStore;
+	}
+
+	private String _getString(String key, Map<String, Object> properties) {
+		if (!properties.containsKey(key)) {
+			return null;
+		}
+
+		return String.valueOf(properties.get(key));
 	}
 
 	private String _keyAlias;
