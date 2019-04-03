@@ -209,9 +209,11 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 			connection = dataSource.getConnection();
 
 			if (isSchemaEmojiSupported(actualSchema)) {
-				ps = connection.prepareStatement(UTF8MB4_QUERY);
+				try (PreparedStatement ps2 = connection.prepareStatement(
+						UTF8MB4_QUERY)) {
 
-				ps.executeUpdate();
+					ps2.executeUpdate();
+				}
 			}
 
 			ps = connection.prepareStatement(sql);
