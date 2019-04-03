@@ -19,10 +19,8 @@ import com.liferay.lcs.client.internal.BasePowerMockitoTest;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
-import com.liferay.lcs.client.internal.task.scheduler.TaskSchedulerServiceImpl;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -54,8 +52,6 @@ public class LCSClusterEntryTokenCheckTaskTest extends BasePowerMockitoTest {
 	@Before
 	public void setUp() {
 		mockStatic(FileUtil.class, LCSUtil.class);
-
-		_taskSchedulerService = mock(TaskSchedulerServiceImpl.class);
 	}
 
 	@Test
@@ -156,7 +152,5 @@ public class LCSClusterEntryTokenCheckTaskTest extends BasePowerMockitoTest {
 			1, 1, LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, 1,
 			lcsClusterEntryTokenAdvisorImpl);
 	}
-
-	private TaskSchedulerService _taskSchedulerService;
 
 }

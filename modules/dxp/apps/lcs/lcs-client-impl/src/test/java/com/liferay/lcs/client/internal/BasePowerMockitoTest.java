@@ -147,48 +147,54 @@ public class BasePowerMockitoTest extends PowerMockito {
 				LCSEventManager lcsEventManager)
 		throws Exception {
 
-		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl = spy(
-			new LCSClusterEntryTokenAdvisorImpl(lcsEventManager));
+		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
+			new LCSClusterEntryTokenAdvisorImpl(lcsEventManager);
+
+		lcsEventManager.unsubscribe(lcsClusterEntryTokenAdvisorImpl);
+
+		LCSClusterEntryTokenAdvisorImpl spyLCSClusterEntryTokenAdvisorImpl =
+			spy(lcsClusterEntryTokenAdvisorImpl);
 
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED,
-			lcsClusterEntryTokenAdvisorImpl);
+			spyLCSClusterEntryTokenAdvisorImpl);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH,
-			lcsClusterEntryTokenAdvisorImpl);
+			spyLCSClusterEntryTokenAdvisorImpl);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID,
-			lcsClusterEntryTokenAdvisorImpl);
+			spyLCSClusterEntryTokenAdvisorImpl);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS,
-			lcsClusterEntryTokenAdvisorImpl);
+			spyLCSClusterEntryTokenAdvisorImpl);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED,
-			lcsClusterEntryTokenAdvisorImpl);
+			spyLCSClusterEntryTokenAdvisorImpl);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED,
-			lcsClusterEntryTokenAdvisorImpl);
+			spyLCSClusterEntryTokenAdvisorImpl);
 
 		doReturn(
 			"mockedAccessToken"
 		).when(
-			lcsClusterEntryTokenAdvisorImpl
+			spyLCSClusterEntryTokenAdvisorImpl
 		).getLCSAccessToken();
 
 		doReturn(
 			"mockedAccessSecret"
 		).when(
-			lcsClusterEntryTokenAdvisorImpl
+			spyLCSClusterEntryTokenAdvisorImpl
 		).getLCSAccessSecret();
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			lcsClusterEntryTokenAdvisorImpl, "_deleteLCSCLusterEntryTokenFile"
+			spyLCSClusterEntryTokenAdvisorImpl,
+			"_deleteLCSCLusterEntryTokenFile"
 		);
 
-		return lcsClusterEntryTokenAdvisorImpl;
+		return spyLCSClusterEntryTokenAdvisorImpl;
 	}
 
 	protected LCSGatewayClient spySendMessageToThrowLCSGatewayException(
