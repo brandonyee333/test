@@ -17,6 +17,7 @@ package com.liferay.lcs.client.internal.advisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.MockPortletPreferencesImpl;
 import com.liferay.lcs.client.internal.advisor.answer.LCSPortletPreferencesUtilAnswer;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.util.LCSPortletPreferencesUtil;
 
 import java.lang.management.ManagementFactory;
@@ -63,7 +64,8 @@ public class UptimeAdvisorTest extends PowerMockito {
 			lcsKeyAdvisor
 		).getKey();
 
-		_uptimeAdvisor = spy(new UptimeAdvisor(lcsKeyAdvisor));
+		_uptimeAdvisor = spy(
+			new UptimeAdvisor(new LCSEventManager(), lcsKeyAdvisor));
 	}
 
 	@Test
@@ -75,7 +77,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 			Matchers.anyString()
 		);
 
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		_uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 
@@ -86,7 +88,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 		setUp();
 
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
 
@@ -101,7 +103,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testGetUptimes() throws Exception {
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
@@ -123,7 +125,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
 				"]");
 
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
@@ -156,7 +158,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 			Matchers.anyString()
 		);
 
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
@@ -187,7 +189,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 			Matchers.anyString()
 		);
 
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
@@ -215,7 +217,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 				",{\"startTime\":\"1539099932697\",\"endTime\":" +
 					"\"1539099992697\"}]");
 
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();
@@ -240,7 +242,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testUpdateCurrentUptime() throws Exception {
-		_uptimeAdvisor.init();
+		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
 			_uptimeAdvisor.getUptimeEntries();

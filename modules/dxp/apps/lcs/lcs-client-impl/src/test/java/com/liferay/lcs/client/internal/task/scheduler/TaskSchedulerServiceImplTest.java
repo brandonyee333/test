@@ -25,6 +25,7 @@ import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
+import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
@@ -365,9 +366,9 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTest {
 
 		_taskSchedulerService = spy(
 			new TaskSchedulerServiceImpl(
-				1000, handshakeTask, _lcsClusterEntryTokenAdvisor,
-				_lcsConfigurationProvider, lcsEventManager, lcsGatewayClient,
-				_lcsKeyAdvisor, _taskAdvisor, _threadFactory, _uptimeAdvisor));
+				1000, handshakeTask, _lcsConfigurationProvider, lcsEventManager,
+				lcsGatewayClient, _lcsKeyAdvisor, _taskAdvisor, _threadFactory,
+				new UptimeTask()));
 
 		// Skip JavaParser, will fix
 
