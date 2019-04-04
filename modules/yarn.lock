@@ -3980,11 +3980,6 @@ clay-component@2.11.1, clay-component@^2.11.1:
     metal-dom "^2.16.0"
     metal-state "^2.16.0"
 
-clay-css@2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/clay-css/-/clay-css-2.10.0.tgz#c9849944d78e94c86045ba16006fb4ae26e358d7"
-  integrity sha512-QDl0iUoCLQbMaCR1HyekPEAnKQFw7mMpdjNpVzkTQkzvcx9UAL5LP77+3cq4L/8Hq9voP2nw6YsvzQzR+zhXtw==
-
 clay-css@2.11.1:
   version "2.11.1"
   resolved "https://registry.yarnpkg.com/clay-css/-/clay-css-2.11.1.tgz#70cd1a4e77439fb6d47c275f0e821fdf4a6524be"
@@ -11028,18 +11023,6 @@ liferay-frontend-common-css@1.0.4, liferay-frontend-common-css@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/liferay-frontend-common-css/-/liferay-frontend-common-css-1.0.4.tgz#e4d73e406020d907c909bcacb2700a52fa1c7f16"
   integrity sha1-5Nc+QGAg2QfJCbyssnAKUvocfxY=
-
-liferay-frontend-theme-styled@4.0.0-alpha.1552930087997:
-  version "4.0.0-alpha.1552930087997"
-  resolved "https://registry.yarnpkg.com/liferay-frontend-theme-styled/-/liferay-frontend-theme-styled-4.0.0-alpha.1552930087997.tgz#24cdec06a0874be6358ebed7ab2c00b418fe6526"
-  integrity sha512-LWLH8LCrP7mtUoX/gg9pJa0Br4tbt8Th6ba9ycsck27lN2JTN2GdUTgo9ayLP0Pfuk8g2FpzRmgBU9cvyN4glw==
-
-liferay-frontend-theme-unstyled@4.0.0-alpha.1552930030671:
-  version "4.0.0-alpha.1552930030671"
-  resolved "https://registry.yarnpkg.com/liferay-frontend-theme-unstyled/-/liferay-frontend-theme-unstyled-4.0.0-alpha.1552930030671.tgz#a60678fb560ea085d4641148d65025d232b5aaf4"
-  integrity sha512-nom2B+86/EEUpT5QxPQgt81hk6mjvxqgWy7lSrAw0oR7lPqZ19q2ITQ5PaKT2hTJipio1gMCutWgUdljGoFFow==
-  dependencies:
-    clay-css "2.10.0"
 
 liferay-jest-junit-reporter@1.0.1:
   version "1.0.1"
