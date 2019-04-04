@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.messaging.PortalModelMessage;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -26,11 +28,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
 /**
  * @author Riccardo Ferrari
  * @author Igor Beslic
  */
 public class SitesTask extends BasePortalModelTask {
+
+	@Activate
+	public void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		setPauseInterval(lcsConfiguration.scheduledTaskPauseInterval());
+		setPageSize(lcsConfiguration.scheduledTaskPageSize());
+	}
 
 	protected DynamicQuery getGroupDynamicQuery() {
 		DynamicQuery dynamicQuery = GroupLocalServiceUtil.dynamicQuery();

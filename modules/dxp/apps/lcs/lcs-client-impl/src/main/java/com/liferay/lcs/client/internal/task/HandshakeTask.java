@@ -15,17 +15,18 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSHandshakeException;
 import com.liferay.lcs.client.internal.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
@@ -114,6 +115,12 @@ public class HandshakeTask implements Task {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
 		}
+
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_heartbeatInterval = lcsConfiguration.communicationHeartbeatInterval();
+		_lcsClientVersion = lcsConfiguration.lcsClientVersion();
 	}
 
 	@Override
@@ -264,8 +271,7 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setHashCode(_key.hashCode());
 
 		handshakeMessage.setHeartbeatInterval(
-			GetterUtil.getLong(
-				PortletPropsValues.COMMUNICATION_HEARTBEAT_INTERVAL, 60000L));
+			GetterUtil.getLong(_heartbeatInterval, 60000L));
 
 		handshakeMessage.setKey(_key);
 		handshakeMessage.setLCSClusterEntryTokenId(_lcsClusterEntryTokenId);
@@ -276,8 +282,7 @@ public class HandshakeTask implements Task {
 
 		handshakeMessage.setLCSPortletBuildNumber(
 			LCSUtil.getLCSPortletBuildNumber());
-		handshakeMessage.setLCSPortletVersion(
-			PortletPropsValues.LCS_CLIENT_VERSION);
+		handshakeMessage.setLCSPortletVersion(_lcsClientVersion);
 		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
 
 		if (LCSPatcherUtil.isConfigured()) {
@@ -437,12 +442,17 @@ public class HandshakeTask implements Task {
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
+	private int _heartbeatInterval;
 	private String _key;
 
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;
 
+	private String _lcsClientVersion;
 	private long _lcsClusterEntryTokenId;
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 	@Reference
 	private LCSEventManager _lcsEventManager;

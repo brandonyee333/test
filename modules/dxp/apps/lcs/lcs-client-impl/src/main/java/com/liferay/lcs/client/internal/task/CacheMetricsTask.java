@@ -14,9 +14,10 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.management.MBeanServerService;
 import com.liferay.lcs.client.internal.management.ObjectNameKeyPropertyMapKeyStrategy;
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 
@@ -35,6 +36,15 @@ import javax.management.ObjectName;
  * @author Igor Beslic
  */
 public class CacheMetricsTask extends BaseScheduledTask {
+
+	@Activate
+	public void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_multiVMObjectName = lcsConfiguration.cacheMetricsMultiVMObjectName();
+		_singleVMObjectName = lcsConfiguration.cacheMetricsSingleVMObjectName();
+	}
 
 	@Override
 	public Scope getScope() {
@@ -121,9 +131,7 @@ public class CacheMetricsTask extends BaseScheduledTask {
 		throws Exception {
 
 		Set<ObjectName> objectNames = _mBeanServerService.getObjectNames(
-			new ObjectName(
-				PortletPropsValues.CACHE_METRICS_MULTI_VM_OBJECT_NAME),
-			null);
+			new ObjectName(_multiVMObjectName), null);
 
 		return _mBeanServerService.getObjectNamesAttributes(
 			objectNames,
@@ -135,9 +143,7 @@ public class CacheMetricsTask extends BaseScheduledTask {
 		throws Exception {
 
 		Set<ObjectName> objectNames = _mBeanServerService.getObjectNames(
-			new ObjectName(
-				PortletPropsValues.CACHE_METRICS_SINGLE_VM_OBJECT_NAME),
-			null);
+			new ObjectName(_singleVMObjectName), null);
 
 		return _mBeanServerService.getObjectNamesAttributes(
 			objectNames,
@@ -155,6 +161,13 @@ public class CacheMetricsTask extends BaseScheduledTask {
 		return payload;
 	}
 
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
 	private MBeanServerService _mBeanServerService;
+
+	private String _multiVMObjectName;
+	private String _singleVMObjectName;
 
 }

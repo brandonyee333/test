@@ -23,6 +23,7 @@ import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.Message;
+import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
@@ -60,24 +61,36 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Activate
-	public void activate() {
+	public void activate() throws Exception {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
-		Dictionary<String, String> properties = new Hashtable<>();
+		Dictionary<String, Object> properties = new Hashtable<>();
 
+		properties.put(
+			"headers",
+			"OSB_LCS_API_Token=" +
+				lcsConfiguration.osbLCSGatewayWebSecureApiToken());
 		properties.put(
 			"hostName", lcsConfiguration.platformLcsGatewayHostName());
 		properties.put(
-			"hostPort", lcsConfiguration.platformLcsGatewayHostPort());
+			"hostPort",
+			String.valueOf(lcsConfiguration.platformLcsGatewayHostPort()));
+		properties.put(
+			"keyStore",
+			KeyStoreFactory.getInstance(
+				lcsConfiguration.platformLcsGatewayKeyStorePath(),
+				lcsConfiguration.platformLcsGatewayKeyStoreType()));
 		properties.put(
 			"protocol", lcsConfiguration.platformLcsGatewayWebProtocol());
-
+		properties.put("proxyAuthType", lcsConfiguration.proxyAuthType());
+		properties.put("proxyDomain", lcsConfiguration.proxyDomain());
 		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
 		properties.put(
 			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
 		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
 		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
+		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
 
 		ComponentInstance componentInstance =
 			_jsonWebServiceClientComponentFactory.newInstance(properties);

@@ -18,14 +18,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.lcs.activation.LCSClusterEntryTokenContentAdvisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSKeystoreException;
-import com.liferay.lcs.client.internal.util.PortletPropsValues;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.security.KeyStoreAdvisor;
 import com.liferay.lcs.security.KeyStoreFactory;
@@ -83,6 +84,13 @@ public class LCSClusterEntryTokenAdvisorImpl
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_keyName = lcsConfiguration.digitalSignatureKeyName();
+		_keyStorePath = lcsConfiguration.digitalSignatureKeyStorePath();
+		_keyStoreType = lcsConfiguration.digitalSignatureKeyStoreType();
+
 	}
 
 	public String getLCSAccessSecret() {
@@ -148,9 +156,7 @@ public class LCSClusterEntryTokenAdvisorImpl
 
 		KeyStore keyStore = _getLCSKeystore();
 
-		String keyName = PortletPropsValues.DIGITAL_SIGNATURE_KEY_NAME;
-
-		Certificate certificate = _getCertificate(keyStore, keyName);
+		Certificate certificate = _getCertificate(keyStore, _keyName);
 
 		Key key = certificate.getPublicKey();
 
@@ -161,7 +167,8 @@ public class LCSClusterEntryTokenAdvisorImpl
 		try {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Decrypting environment token with default key " + keyName);
+					"Decrypting environment token with default key " +
+						_keyName);
 			}
 
 			symmetricKeyBytes = Encryptor.decryptUnencodedAsBytes(
@@ -171,9 +178,8 @@ public class LCSClusterEntryTokenAdvisorImpl
 			KeyStoreAdvisor keyStoreAdvisor = new KeyStoreAdvisor();
 
 			try {
-				keyName = keyStoreAdvisor.getKeyAlias(
-					lcsPortletBuildNumber,
-					PortletPropsValues.DIGITAL_SIGNATURE_KEY_NAME, keyStore);
+				_keyName = keyStoreAdvisor.getKeyAlias(
+					lcsPortletBuildNumber, _keyName, keyStore);
 			}
 			catch (Exception e) {
 				throw new LCSKeystoreException(
@@ -183,10 +189,10 @@ public class LCSClusterEntryTokenAdvisorImpl
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Decrypting environment token with key " + keyName);
+				_log.debug("Decrypting environment token with key " + _keyName);
 			}
 
-			certificate = _getCertificate(keyStore, keyName);
+			certificate = _getCertificate(keyStore, _keyName);
 
 			key = certificate.getPublicKey();
 
@@ -278,9 +284,7 @@ public class LCSClusterEntryTokenAdvisorImpl
 	private KeyStore _getLCSKeystore() {
 		try {
 			return KeyStoreFactory.getInstance(
-				PortletPropsValues.DIGITAL_SIGNATURE_KEY_STORE_PATH,
-				PortletPropsValues.DIGITAL_SIGNATURE_KEY_STORE_TYPE,
-				"_k3y#5t0r3-p45S");
+				_keyStorePath, _keyStoreType, "_k3y#5t0r3-p45S");
 		}
 		catch (Exception e) {
 			throw new LCSKeystoreException(
@@ -351,10 +355,16 @@ public class LCSClusterEntryTokenAdvisorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSClusterEntryTokenAdvisorImpl.class);
 
+	private String _keyName;
+	private String _keyStorePath;
+	private String _keyStoreType;
 	private String _lcsAccessSecret;
 	private String _lcsAccessToken;
 	private long _lcsClusterEntryId;
 	private long _lcsClusterEntryTokenId;
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 	@Reference
 	private LCSEventManager _lcsEventManager;

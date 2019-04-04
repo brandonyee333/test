@@ -16,6 +16,7 @@ package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
@@ -42,31 +43,38 @@ import org.osgi.service.component.annotations.Reference;
 public class LCSPortalClientImpl implements LCSPortalClient {
 
 	@Activate
-	public void activate() {
+	public void activate() throws Exception {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
-		Dictionary<String, String> properties = new Hashtable<>();
+		Dictionary<String, Object> properties = new Hashtable<>();
 
 		properties.put(
-			"hostName", lcsConfiguration.platformLcsGatewayHostName());
+			"hostName", lcsConfiguration.lcsPlatformPortalHostName());
 		properties.put(
-			"hostPort", lcsConfiguration.platformLcsGatewayHostPort());
+			"hostPort",
+			String.valueOf(lcsConfiguration.lcsPlatformPortalHostPort()));
 		properties.put(
-			"protocol", lcsConfiguration.platformLcsGatewayWebProtocol());
-
+			"keyStore",
+			KeyStoreFactory.getInstance(
+				lcsConfiguration.lcsPlatformPortalKeyStorePath(),
+				lcsConfiguration.lcsPlatformPortalKeyStoreType()));
 		properties.put(
 			"oAuthConsumerKey",
 			lcsConfiguration.lcsPlatformPortalOauthConsumerKey());
 		properties.put(
 			"oAuthConsumerSecret",
 			lcsConfiguration.lcsPlatformPortalOauthConsumerSecret());
-
+		properties.put(
+			"protocol", lcsConfiguration.lcsPlatformPortalProtocol());
+		properties.put("proxyAuthType", lcsConfiguration.proxyAuthType());
+		properties.put("proxyDomain", lcsConfiguration.proxyDomain());
 		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
 		properties.put(
 			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
 		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
 		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
+		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
 
 		ComponentInstance componentInstance =
 			_jsonWebServiceClientComponentFactory.newInstance(properties);

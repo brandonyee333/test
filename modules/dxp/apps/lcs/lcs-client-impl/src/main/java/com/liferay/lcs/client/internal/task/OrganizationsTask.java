@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.messaging.PortalModelMessage;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
@@ -24,10 +26,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
 /**
  * @author Eduardo García
  */
 public class OrganizationsTask extends BasePortalModelTask {
+
+	@Activate
+	public void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		setPauseInterval(lcsConfiguration.scheduledTaskPauseInterval());
+		setPageSize(lcsConfiguration.scheduledTaskPageSize());
+	}
 
 	@Override
 	protected List<Map<String, Object>> getModels(int start, int end) {
@@ -72,5 +84,8 @@ public class OrganizationsTask extends BasePortalModelTask {
 	protected PortalModelMessage.Type getPortalModelType() {
 		return PortalModelMessage.Type.ORGANIZATION;
 	}
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 }
