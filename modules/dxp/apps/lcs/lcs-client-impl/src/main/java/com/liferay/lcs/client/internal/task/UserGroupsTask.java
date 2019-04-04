@@ -18,8 +18,8 @@ import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.messaging.PortalModelMessage;
 import com.liferay.portal.kernel.model.UserGroup;
-import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.UserGroupLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Eduardo García
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class UserGroupsTask extends BasePortalModelTask {
 
 	@Activate
@@ -45,7 +49,7 @@ public class UserGroupsTask extends BasePortalModelTask {
 	protected List<Map<String, Object>> getModels(int start, int end) {
 		List<Map<String, Object>> userGroupMaps = new ArrayList<>();
 
-		List<UserGroup> userGroups = UserGroupLocalServiceUtil.getUserGroups(
+		List<UserGroup> userGroups = _userGroupLocalService.getUserGroups(
 			start, end);
 
 		for (UserGroup userGroup : userGroups) {
@@ -57,7 +61,7 @@ public class UserGroupsTask extends BasePortalModelTask {
 
 	@Override
 	protected long getModelsCount() {
-		return UserGroupLocalServiceUtil.getUserGroupsCount();
+		return _userGroupLocalService.getUserGroupsCount();
 	}
 
 	@Override
@@ -68,7 +72,7 @@ public class UserGroupsTask extends BasePortalModelTask {
 	protected Map<String, Object> getUserGroupMap(UserGroup userGroup) {
 		Map<String, Object> userGroupMap = new HashMap<>();
 
-		int userGroupUsersCount = UserLocalServiceUtil.getUserGroupUsersCount(
+		int userGroupUsersCount = _userLocalService.getUserGroupUsersCount(
 			userGroup.getUserGroupId());
 
 		userGroupMap.put("companyId", userGroup.getCompanyId());
@@ -82,5 +86,11 @@ public class UserGroupsTask extends BasePortalModelTask {
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private UserGroupLocalService _userGroupLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

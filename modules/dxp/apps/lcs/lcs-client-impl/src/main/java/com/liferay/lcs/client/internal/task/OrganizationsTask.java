@@ -18,8 +18,8 @@ import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.messaging.PortalModelMessage;
 import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +27,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Eduardo García
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class OrganizationsTask extends BasePortalModelTask {
 
 	@Activate
@@ -46,7 +50,7 @@ public class OrganizationsTask extends BasePortalModelTask {
 		List<Map<String, Object>> organizationMaps = new ArrayList<>();
 
 		List<Organization> organizations =
-			OrganizationLocalServiceUtil.getOrganizations(start, end);
+			_organizationLocalService.getOrganizations(start, end);
 
 		for (Organization organization : organizations) {
 			organizationMaps.add(getOrganizationMap(organization));
@@ -57,7 +61,7 @@ public class OrganizationsTask extends BasePortalModelTask {
 
 	@Override
 	protected long getModelsCount() {
-		return OrganizationLocalServiceUtil.getOrganizationsCount();
+		return _organizationLocalService.getOrganizationsCount();
 	}
 
 	protected Map<String, Object> getOrganizationMap(
@@ -66,7 +70,7 @@ public class OrganizationsTask extends BasePortalModelTask {
 		Map<String, Object> organizationMap = new HashMap<>();
 
 		int organizationUsersCount =
-			UserLocalServiceUtil.getOrganizationUsersCount(
+			_userLocalService.getOrganizationUsersCount(
 				organization.getOrganizationId());
 
 		organizationMap.put("companyId", organization.getCompanyId());
@@ -87,5 +91,11 @@ public class OrganizationsTask extends BasePortalModelTask {
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private OrganizationLocalService _organizationLocalService;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

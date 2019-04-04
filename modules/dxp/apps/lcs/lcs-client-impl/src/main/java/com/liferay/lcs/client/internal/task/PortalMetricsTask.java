@@ -22,20 +22,18 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class PortalMetricsTask extends BaseScheduledTask {
 
 	@Override
 	public Scope getScope() {
 		return Scope.NODE;
-	}
-
-	public void setPortalMetricsAggregator(
-		PortalMetricsAggregator portalMetricsAggregator) {
-
-		_portalMetricsAggregator = portalMetricsAggregator;
 	}
 
 	@Override
@@ -67,6 +65,7 @@ public class PortalMetricsTask extends BaseScheduledTask {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsTask.class);
 
+	@Reference
 	private PortalMetricsAggregator _portalMetricsAggregator;
 
 }

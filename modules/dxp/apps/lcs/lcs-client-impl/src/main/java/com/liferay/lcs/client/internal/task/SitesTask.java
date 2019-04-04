@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.GroupLocalService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,10 +29,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Riccardo Ferrari
  * @author Igor Beslic
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class SitesTask extends BasePortalModelTask {
 
 	@Activate
@@ -45,7 +49,7 @@ public class SitesTask extends BasePortalModelTask {
 	}
 
 	protected DynamicQuery getGroupDynamicQuery() {
-		DynamicQuery dynamicQuery = GroupLocalServiceUtil.dynamicQuery();
+		DynamicQuery dynamicQuery = _groupLocalService.dynamicQuery();
 
 		Criterion siteCriterion = RestrictionsFactoryUtil.eq("site", true);
 
@@ -62,7 +66,7 @@ public class SitesTask extends BasePortalModelTask {
 	protected List<Map<String, Object>> getModels(int start, int end) {
 		List<Map<String, Object>> siteMaps = new ArrayList<>();
 
-		List<Group> groups = GroupLocalServiceUtil.dynamicQuery(
+		List<Group> groups = _groupLocalService.dynamicQuery(
 			getGroupDynamicQuery(), start, end);
 
 		for (Group group : groups) {
@@ -74,7 +78,7 @@ public class SitesTask extends BasePortalModelTask {
 
 	@Override
 	protected long getModelsCount() {
-		return GroupLocalServiceUtil.dynamicQueryCount(getGroupDynamicQuery());
+		return _groupLocalService.dynamicQueryCount(getGroupDynamicQuery());
 	}
 
 	@Override
@@ -95,5 +99,11 @@ public class SitesTask extends BasePortalModelTask {
 
 		return site;
 	}
+
+	@Reference
+	private GroupLocalService _groupLocalService;
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 }

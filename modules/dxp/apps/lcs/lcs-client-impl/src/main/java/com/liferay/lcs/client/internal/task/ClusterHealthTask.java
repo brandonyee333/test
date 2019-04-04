@@ -17,10 +17,13 @@ package com.liferay.lcs.client.internal.task;
 import com.liferay.lcs.client.internal.util.ClusterNodeUtil;
 import com.liferay.lcs.messaging.ClusterHealthMessage;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class ClusterHealthTask extends BaseScheduledTask {
 
 	@Override

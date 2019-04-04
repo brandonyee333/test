@@ -31,10 +31,15 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import javax.management.ObjectName;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class CacheMetricsTask extends BaseScheduledTask {
 
 	@Activate
@@ -49,10 +54,6 @@ public class CacheMetricsTask extends BaseScheduledTask {
 	@Override
 	public Scope getScope() {
 		return Scope.NODE;
-	}
-
-	public void setmBeanServerService(MBeanServerService mBeanServerService) {
-		_mBeanServerService = mBeanServerService;
 	}
 
 	protected void doRun() throws Exception {

@@ -25,10 +25,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class JVMMetricsTask extends BaseScheduledTask {
 
 	@Override

@@ -21,10 +21,17 @@ import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component(immediate = true, service = ScheduledTask.class)
 public class LicenseManagerTask implements ScheduledTask {
+
+	public LicenseManagerTask() {
+	}
 
 	public LicenseManagerTask(
 		LCSGatewayClient lcsGatewayClient,
@@ -87,7 +94,10 @@ public class LicenseManagerTask implements ScheduledTask {
 	private static final Log _log = LogFactoryUtil.getLog(
 		LicenseManagerTask.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final LCSPortletStateAdvisorImpl _lcsPortletStateAdvisor;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSPortletStateAdvisorImpl _lcsPortletStateAdvisor;
 
 }

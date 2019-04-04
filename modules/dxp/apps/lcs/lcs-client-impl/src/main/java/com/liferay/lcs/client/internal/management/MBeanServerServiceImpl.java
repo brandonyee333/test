@@ -29,9 +29,12 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Riccardo Ferrari
  */
+@Component(service = MBeanServerService.class)
 public class MBeanServerServiceImpl implements MBeanServerService {
 
 	@Override
