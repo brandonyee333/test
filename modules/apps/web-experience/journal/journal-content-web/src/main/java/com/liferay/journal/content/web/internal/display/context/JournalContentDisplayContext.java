@@ -686,16 +686,13 @@ public class JournalContentDisplayContext {
 			portletURL.setParameter(
 				"referringPortletResource", portletDisplay.getId());
 
-			portletURL.setParameter("articleId", article.getArticleId());
-
 			portletURL.setParameter(
 				"groupId", String.valueOf(article.getGroupId()));
-
-			portletURL.setWindowState(LiferayWindowState.POP_UP);
-
+			portletURL.setParameter("articleId", article.getArticleId());
 			portletURL.setParameter(
 				"hideDefaultSuccessMessage", Boolean.TRUE.toString());
 			portletURL.setParameter("showHeader", Boolean.TRUE.toString());
+			portletURL.setWindowState(LiferayWindowState.POP_UP);
 
 			return portletURL.toString();
 		}
