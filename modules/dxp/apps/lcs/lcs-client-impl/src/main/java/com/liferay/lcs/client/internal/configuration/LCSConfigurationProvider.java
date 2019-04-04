@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Deactivate;
 public class LCSConfigurationProvider {
 
 	public LCSConfiguration getLCSConfiguration() {
-		return _lcsConfiguration;
+		return new LCSConfigurationDecorator(_lcsConfiguration);
 	}
 
 	@Activate
