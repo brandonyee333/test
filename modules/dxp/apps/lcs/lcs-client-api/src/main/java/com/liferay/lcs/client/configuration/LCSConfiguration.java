@@ -41,10 +41,10 @@ public interface LCSConfiguration {
 	public String cacheMetricsSingleVMObjectName();
 
 	@Meta.AD(deflt = "86400", required = false)
-	public String commandScheduleDefaultInterval();
+	public int commandScheduleDefaultInterval();
 
 	@Meta.AD(deflt = "60000", required = false)
-	public String communicationHeartbeatInterval();
+	public int communicationHeartbeatInterval();
 
 	@Meta.AD(deflt = "localhost", required = false)
 	public String digitalSignatureKeyName();
@@ -104,7 +104,7 @@ public interface LCSConfiguration {
 	public String platformLcsGatewayHostName();
 
 	@Meta.AD(deflt = "443", required = false)
-	public String platformLcsGatewayHostPort();
+	public int platformLcsGatewayHostPort();
 
 	@Meta.AD(deflt = "classpath:/keystore.jks", required = false)
 	public String platformLcsGatewayKeyStorePath();
@@ -181,9 +181,9 @@ public interface LCSConfiguration {
 	public String proxyWorkstation();
 
 	@Meta.AD(deflt = "100", required = false)
-	public String scheduledTaskPageSize();
+	public int scheduledTaskPageSize();
 
 	@Meta.AD(deflt = "60000", required = false)
-	public String scheduledTaskPauseInterval();
+	public int scheduledTaskPauseInterval();
 
 }
