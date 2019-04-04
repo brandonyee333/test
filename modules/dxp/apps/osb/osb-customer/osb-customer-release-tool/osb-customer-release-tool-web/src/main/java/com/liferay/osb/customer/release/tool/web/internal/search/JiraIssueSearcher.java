@@ -50,6 +50,11 @@ public class JiraIssueSearcher extends BaseSearcher {
 			String orderByType)
 		throws PortalException {
 
+		int pos = jiraFixPackCustomField.indexOf(StringPool.UNDERLINE);
+
+		String jiraFixPackJQLField =
+			"cf[" + jiraFixPackCustomField.substring(pos + 1) + "]";
+
 		StringBundler sb = new StringBundler(23);
 
 		sb.append("project in (\"");
@@ -58,11 +63,11 @@ public class JiraIssueSearcher extends BaseSearcher {
 				ReleaseToolConfigurationValues.FIX_PACK_JIRA_PROJECTS,
 				"\",\""));
 		sb.append("\") AND ");
-		sb.append(StringUtil.quote(jiraFixPackCustomField));
+		sb.append(jiraFixPackJQLField);
 		sb.append(">=");
 		sb.append(fromFixPackVersion);
 		sb.append(" AND ");
-		sb.append(StringUtil.quote(jiraFixPackCustomField));
+		sb.append(jiraFixPackJQLField);
 		sb.append("<=");
 		sb.append(toFixPackVersion);
 
@@ -87,7 +92,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 		}
 
 		sb.append(" order by ");
-		sb.append(StringUtil.quote(jiraFixPackCustomField));
+		sb.append(jiraFixPackJQLField);
 		sb.append(" ");
 		sb.append(orderByType);
 
