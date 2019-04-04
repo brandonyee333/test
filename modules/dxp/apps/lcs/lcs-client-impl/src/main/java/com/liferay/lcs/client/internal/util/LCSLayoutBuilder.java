@@ -47,7 +47,6 @@ public class LCSLayoutBuilder {
 			lcsConfiguration.lcsPlatformPortalHostName();
 		_lcsPlatformPortalHostPort =
 			lcsConfiguration.lcsPlatformPortalHostPort();
-
 		_lcsPlatformPortalLayoutLCSClusterEntry =
 			lcsConfiguration.lcsPlatformPortalLayoutLCSClusterEntry();
 		_lcsPlatformPortalLayoutLCSClusterNode =
