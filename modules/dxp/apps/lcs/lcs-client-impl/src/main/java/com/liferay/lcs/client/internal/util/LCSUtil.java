@@ -14,8 +14,6 @@
 
 package com.liferay.lcs.client.internal.util;
 
-import com.liferay.lcs.client.platform.portal.LCSClusterNode;
-import com.liferay.lcs.client.platform.portal.LCSProject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
 import com.liferay.portal.kernel.log.Log;
@@ -23,19 +21,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
-import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.lang.reflect.Field;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 /**
@@ -43,62 +34,6 @@ import java.util.StringTokenizer;
  * @author Ivica Cardic
  */
 public class LCSUtil {
-
-	public static String getLCSClusterEntryLayoutURL(
-		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
-
-		Map<String, String> publicRenderParameters = new HashMap<>();
-
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSClusterEntryId"),
-			String.valueOf(lcsClusterNode.getLcsClusterEntryId()));
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSProjectId"),
-			String.valueOf(lcsProject.getLcsProjectId()));
-
-		return getLCSLayoutURL(
-			PortletPropsValues.OSB_LCS_PORTLET_LAYOUT_LCS_CLUSTER_ENTRY,
-			publicRenderParameters);
-	}
-
-	public static String getLCSClusterNodeLayoutURL(
-		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
-
-		Map<String, String> publicRenderParameters = new HashMap<>();
-
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSClusterEntryId"),
-			String.valueOf(lcsClusterNode.getLcsClusterEntryId()));
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSClusterNodeId"),
-			String.valueOf(lcsClusterNode.getLcsClusterNodeId()));
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSProjectId"),
-			String.valueOf(lcsProject.getLcsProjectId()));
-
-		return getLCSLayoutURL(
-			PortletPropsValues.OSB_LCS_PORTLET_LAYOUT_LCS_CLUSTER_NODE,
-			publicRenderParameters);
-	}
-
-	public static String getLCSPortalURL() {
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(PortletPropsValues.OSB_LCS_PORTLET_PROTOCOL);
-		sb.append(Http.PROTOCOL_DELIMITER);
-		sb.append(PortletPropsValues.OSB_LCS_PORTLET_HOST_NAME);
-
-		if ((PortletPropsValues.OSB_LCS_PORTLET_HOST_PORT == Http.HTTP_PORT) ||
-			(PortletPropsValues.OSB_LCS_PORTLET_HOST_PORT == Http.HTTPS_PORT)) {
-
-			return sb.toString();
-		}
-
-		sb.append(StringPool.COLON);
-		sb.append(PortletPropsValues.OSB_LCS_PORTLET_HOST_PORT);
-
-		return sb.toString();
-	}
 
 	public static int getLCSPortletBuildNumber() {
 		int lcsPortletBuildNumber = 0;
@@ -115,18 +50,6 @@ public class LCSUtil {
 		}
 
 		return lcsPortletBuildNumber;
-	}
-
-	public static String getLCSProjectLayoutURL(LCSProject lcsProject) {
-		Map<String, String> publicRenderParameters = new HashMap<>();
-
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSProjectId"),
-			String.valueOf(lcsProject.getLcsProjectId()));
-
-		return getLCSLayoutURL(
-			PortletPropsValues.OSB_LCS_PORTLET_LAYOUT_LCS_PROJECT,
-			publicRenderParameters);
 	}
 
 	public static String getPortalEdition() {
@@ -148,25 +71,6 @@ public class LCSUtil {
 		}
 	}
 
-	public static String getRegistrationLayoutURL(
-		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
-
-		Map<String, String> publicRenderParameters = new HashMap<>();
-
-		publicRenderParameters.put(
-			getPublicRenderParameterName("environmentPage"), "registration");
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSClusterEntryId"),
-			String.valueOf(lcsClusterNode.getLcsClusterEntryId()));
-		publicRenderParameters.put(
-			getPublicRenderParameterName("layoutLCSProjectId"),
-			String.valueOf(lcsProject.getLcsProjectId()));
-
-		return getLCSLayoutURL(
-			PortletPropsValues.OSB_LCS_PORTLET_LAYOUT_LCS_CLUSTER_ENTRY,
-			publicRenderParameters);
-	}
-
 	public static void processLCSPortletState(LCSPortletState lcsPortletState) {
 		Message message = LicenseManagerMessageType.LCS_AVAILABLE.createMessage(
 			lcsPortletState);
@@ -182,49 +86,6 @@ public class LCSUtil {
 
 			_log.trace(sb.toString());
 		}
-	}
-
-	protected static String getLCSLayoutURL(
-		String friendlyURL, Map<String, String> parms) {
-
-		String layoutFullURL = getLCSPortalURL() + friendlyURL;
-
-		if (parms.isEmpty()) {
-			return layoutFullURL;
-		}
-
-		StringBundler sb = new StringBundler(4 * parms.size() + 1);
-
-		sb.append(layoutFullURL);
-		sb.append(StringPool.QUESTION);
-
-		Set<String> keys = parms.keySet();
-
-		Iterator<String> iterator = keys.iterator();
-
-		while (iterator.hasNext()) {
-			String parm = iterator.next();
-
-			sb.append(parm);
-
-			sb.append(StringPool.EQUAL);
-			sb.append(parms.get(parm));
-
-			if (iterator.hasNext()) {
-				sb.append(StringPool.AMPERSAND);
-			}
-		}
-
-		return sb.toString();
-	}
-
-	protected static String getPublicRenderParameterName(String parameterName) {
-		StringBundler sb = new StringBundler(2);
-
-		sb.append(PortletQName.PUBLIC_RENDER_PARAMETER_NAMESPACE);
-		sb.append(parameterName);
-
-		return sb.toString();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);
