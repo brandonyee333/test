@@ -67,23 +67,11 @@ public class LCSClusterEntryTokenAdvisorImpl
 	public LCSClusterEntryTokenAdvisorImpl(LCSEventManager lcsEventManager) {
 		_lcsEventManager = lcsEventManager;
 
-		activate();
+		_initLCSEventManager();
 	}
 
 	@Activate
 	public void activate() {
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
@@ -91,6 +79,7 @@ public class LCSClusterEntryTokenAdvisorImpl
 		_keyStorePath = lcsConfiguration.digitalSignatureKeyStorePath();
 		_keyStoreType = lcsConfiguration.digitalSignatureKeyStoreType();
 
+		_initLCSEventManager();
 	}
 
 	public String getLCSAccessSecret() {
@@ -300,6 +289,21 @@ public class LCSClusterEntryTokenAdvisorImpl
 		}
 
 		return liferayHome;
+	}
+
+	private void _initLCSEventManager() {
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
 	}
 
 	private LCSClusterEntryToken _processLCSClusterEntryTokenFile(
