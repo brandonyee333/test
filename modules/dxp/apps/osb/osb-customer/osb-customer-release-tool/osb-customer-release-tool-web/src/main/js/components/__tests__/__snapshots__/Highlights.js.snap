@@ -8,9 +8,13 @@ exports[`Highlights renders correctly 1`] = `
     <div
       class="refine-by-filters"
     >
-      <h3>
-        refine-by
-      </h3>
+      <div
+        class="filter-header"
+      >
+        <h3>
+          refine-by
+        </h3>
+      </div>
       <div
         class="filter-checkbox-container"
       >
@@ -173,9 +177,13 @@ exports[`Highlights renders no results correctly 1`] = `
     <div
       class="refine-by-filters"
     >
-      <h3>
-        refine-by
-      </h3>
+      <div
+        class="filter-header"
+      >
+        <h3>
+          refine-by
+        </h3>
+      </div>
       <div
         class="filter-checkbox-container"
       >
