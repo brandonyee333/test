@@ -49,12 +49,18 @@ export default class SortableTable extends Component {
 			<Fragment>
 				<div className="results-count">
 					{total === 1
-						? AUI().Lang.sub(Liferay.Language.get('x-result'), [
+						? AUI().Lang.sub(
+							Liferay.Language.get('x-result'), 
+							[
 								total.toString()
-						  ])
-						: AUI().Lang.sub(Liferay.Language.get('x-results'), [
+							]
+						)
+						: AUI().Lang.sub(
+							Liferay.Language.get('x-results'), 
+							[
 								total.toString()
-						  ])
+							]
+						)
 					}
 				</div>
 
