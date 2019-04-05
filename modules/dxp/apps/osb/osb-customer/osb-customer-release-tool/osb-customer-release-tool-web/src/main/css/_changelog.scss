@@ -3,18 +3,18 @@
 	.text-filter {
 		flex-shrink: 0;
 	}
-	
+
 	.jira-components {
 		flex-grow: 1;
 		margin-right: -24px;
 		overflow: auto;
 		padding-right: $padding-default;
-		
+
 		&.filter-subsection {
 			margin-bottom: 32px;
 		}
 	}
-	
+
 	.more-options {
 		bottom: 24px;
 		position: absolute;

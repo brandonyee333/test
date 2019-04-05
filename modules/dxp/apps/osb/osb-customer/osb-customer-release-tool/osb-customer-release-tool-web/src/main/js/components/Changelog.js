@@ -36,7 +36,7 @@ export default class Changelog extends Component {
 		},
 		jiraIssueJSONObject: this.props.jiraIssueJSONObject,
 		seeAllFilterValues: false
-	}
+	};
 
 	debounceEvent(...args) {
 		this.debounced = debounce(...args);
@@ -45,7 +45,7 @@ export default class Changelog extends Component {
 			event.persist();
 
 			return this.debounced(event);
-		}
+		};
 	}
 
 	componentWillUnmount() {
@@ -73,7 +73,7 @@ export default class Changelog extends Component {
 					components: components
 				}
 			}
-		)
+		);
 
 		this.queryJiraIssues(components, selectedFilters.keywords);
 	};
@@ -91,7 +91,7 @@ export default class Changelog extends Component {
 		this.queryJiraIssues();
 
 		this.changelogTextInputRef.current.value = '';
-	}
+	};
 
 	handleFilterTextInputKeyUp = event => {
 		const {selectedFilters} = this.state;
@@ -108,7 +108,7 @@ export default class Changelog extends Component {
 
 			this.queryJiraIssues(selectedFilters.components, event.target.value);
 		}
-	}
+	};
 
 	handleTogglingFilterValues = () => {
 		const {seeAllFilterValues} = this.state;
@@ -118,10 +118,12 @@ export default class Changelog extends Component {
 				seeAllFilterValues: !seeAllFilterValues
 			}
 		);
-	}
+	};
 
 	handlePaginationClick = (number) => {
-		const {selectedFilters: {components, keywords}} = this.state;
+		const {
+			selectedFilters: {components, keywords}
+		} = this.state;
 
 		// startAt param begins at 0 and not 1
 
@@ -160,7 +162,7 @@ export default class Changelog extends Component {
 					}
 				}
 			);
-	}
+	};
 
 	render() {
 		const {description, filters} = this.props;
@@ -170,7 +172,9 @@ export default class Changelog extends Component {
 			seeAllFilterValues
 		} = this.state;
 
-		const totalPage = jiraIssueJSONObject.total ? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE) : '';
+		const totalPage = jiraIssueJSONObject.total
+			? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE)
+			: '';
 
 		return (
 			<Fragment>
@@ -206,7 +210,7 @@ export default class Changelog extends Component {
 
 							<div className="filter-subsection jira-components semibold">
 								{Liferay.Language.get('component')}
-							
+
 								{filters.map(
 									(checkbox, index) => {
 										if (
