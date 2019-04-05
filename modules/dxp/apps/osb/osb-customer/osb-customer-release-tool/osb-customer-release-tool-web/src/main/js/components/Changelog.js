@@ -235,9 +235,9 @@ export default class Changelog extends Component {
 										onClick={this.handleTogglingFilterValues}
 										type="button"
 									>
-										{Liferay.Language.get(
-											seeAllFilterValues ? 'see-less' : 'see-more'
-										)}
+										{seeAllFilterValues
+											? Liferay.Language.get('see-less')
+											: Liferay.Language.get('see-more')}
 									</Button>
 								</div>
 							)}
