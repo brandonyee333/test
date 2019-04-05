@@ -35,7 +35,7 @@ describe('TableResults', () => {
 
 	const tab = {
 		tabDescription: 'description for the tab',
-		tabName: 'test-tab'
+		tabName: 'changelog'
 	}
 
 	it('renders error correctly', () => {

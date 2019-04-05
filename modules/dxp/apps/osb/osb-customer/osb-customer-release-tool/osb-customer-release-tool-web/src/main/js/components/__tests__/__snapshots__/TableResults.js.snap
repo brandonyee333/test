@@ -3,7 +3,7 @@
 exports[`TableResults renders content correctly 1`] = `
 <div>
   <h2>
-    test-tab
+    changelog
   </h2>
   <h5
     class="secondary-text-color section-subtitle"
@@ -16,7 +16,7 @@ exports[`TableResults renders content correctly 1`] = `
     x-results
   </div>
   <table
-    class="table test-tab-table table-autofit table-list"
+    class="table changelog-table table-autofit table-list"
     role="table"
   >
     <thead>
@@ -129,7 +129,7 @@ exports[`TableResults renders content correctly 1`] = `
 exports[`TableResults renders error correctly 1`] = `
 <div>
   <h2>
-    test-tab
+    changelog
   </h2>
   <h5
     class="secondary-text-color section-subtitle"
