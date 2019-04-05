@@ -38,6 +38,20 @@ export default class Changelog extends Component {
 		seeAllFilterValues: false
 	}
 
+	debounceEvent(...args) {
+		this.debounced = debounce(...args);
+
+		return event => {
+			event.persist();
+
+			return this.debounced(event);
+		}
+	}
+
+	componentWillUnmount() {
+		this.debounced.cancel();
+	}
+
 	handleCheckboxChange = event => {
 		const {selectedFilters} = this.state;
 
@@ -182,7 +196,10 @@ export default class Changelog extends Component {
 							<input
 								ref={this.changelogTextInputRef}
 								className="input-small text-filter"
-								onKeyUp={debounce(this.handleFilterTextInputKeyUp, 500)}
+								onKeyUp={this.debounceEvent(
+									this.handleFilterTextInputKeyUp,
+									500
+								)}
 								placeholder={Liferay.Language.get('contains-text')}
 								type="text"
 							/>
