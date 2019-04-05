@@ -6,6 +6,7 @@ import 'core-js/fn/array/includes';
 import {errorType} from '../types/generic';
 import {fixPackFieldsType, fixPackJSONObjectType} from '../types/highlights';
 
+import Button from './Button';
 import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
 
@@ -44,6 +45,14 @@ export default class Highlights extends Component {
 		);
 	};
 
+	handleClearFilter = () => {
+		this.setState(
+			{
+				filterBy: []
+			}
+		);
+	};
+
 	filterResults = () => {
 		const {fixPackJSONObject} = this.props;
 		const {filterBy} = this.state;
@@ -64,24 +73,38 @@ export default class Highlights extends Component {
 		}
 
 		return fixPackJSONObject;
-	}
+	};
 
 	render() {
 		const {description, filters} = this.props;
+		const {filterBy} = this.state;
 
 		return (
 			<Fragment>
 				<div className="col-md-3">
 					{!!filters && (
 						<div className="refine-by-filters">
-							<h3>
-								{Liferay.Language.get('refine-by')}
-							</h3>
+							<div className="filter-header">
+								<h3>
+									{Liferay.Language.get('refine-by')}
+								</h3>
+
+								{!!filterBy.length && (
+									<Button
+										display="link"
+										onClick={this.handleClearFilter}
+										type="button"
+									>
+										{Liferay.Language.get('clear-all')}
+									</Button>
+								)}
+							</div>
 
 							{filters.map(
 								checkbox => (
 									<FilterCheckbox
 										key={checkbox.value}
+										checked={!!filterBy.includes(checkbox.value)}
 										handleOnChange={this.handleCheckboxChange}
 										label={checkbox.label}
 										value={checkbox.value}
