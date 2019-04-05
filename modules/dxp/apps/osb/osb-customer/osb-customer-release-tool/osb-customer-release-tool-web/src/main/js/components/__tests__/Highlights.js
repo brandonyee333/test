@@ -114,4 +114,28 @@ describe('Highlights', () => {
 
 		expect(tbody.querySelectorAll('tr').length).toBe(2);
 	});
+
+	it('shows a Clear All option when a filter is selected and removes the option when all filters are unselected', () => {
+		const {container, queryByText} = setup();
+
+		fireEvent.click(container.querySelector('input[type=checkbox]'));
+
+		expect(queryByText('clear-all')).toBeTruthy();
+
+		fireEvent.click(container.querySelector('input[type=checkbox]'));
+
+		expect(queryByText('clear-all')).toBeFalsy();
+	});
+
+	it('clears all filter selections when Clear All is clicked', () => {
+		const {container, getByText} = setup();
+
+		const checkbox = container.querySelector('input[type=checkbox]');
+
+		fireEvent.click(checkbox);
+
+		fireEvent.click(getByText('clear-all'));
+
+		expect(checkbox.checked).toBeFalsy();
+	});
 });
