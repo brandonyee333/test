@@ -40,7 +40,7 @@ class Downloads extends React.Component {
 		metadata: '',
 		showEULA: false,
 		showModal: false
-	}
+	};
 
 	componentDidMount() {
 		const {metadata, requiredAgreement} = this.props;
@@ -80,7 +80,7 @@ class Downloads extends React.Component {
 		);
 	}
 
-	getMetadata = (id) => {
+	getMetadata = id => {
 		const metadata = this.props.metadata;
 
 		return metadata.find(data => data.id === id);

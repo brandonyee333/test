@@ -8,7 +8,8 @@ import {filtersJSONObjectType} from '../types/generic';
 
 import Button from './Button';
 
-const PORTLET_ID = 'com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet';
+const PORTLET_ID =
+	'com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet';
 
 export default class FixpackFilters extends Component {
 	fixpackFiltersFormRef = React.createRef();
@@ -70,13 +71,13 @@ export default class FixpackFilters extends Component {
 				toFixPackVersion: ''
 			}
 		);
-	}
+	};
 
 	handleSubmit = target => {
 		if (target !== '') {
 			this.fixpackFiltersFormRef.current.submit();
 		}
-	}
+	};
 
 	lookupFixPacksByProduct = (isToFixPackFilter = false) => {
 		const {filtersJSON} = this.props;
@@ -208,13 +209,13 @@ class Filter extends Component {
 		}
 
 		return currentValue;
-	}
+	};
 
-	handleChange = (event) => {
+	handleChange = event => {
 		const {onChange} = this.props;
 
 		onChange(event.currentTarget.value);
-	}
+	};
 
 	render() {
 		const {disabled, id, label, options, placeholder, selected} = this.props;

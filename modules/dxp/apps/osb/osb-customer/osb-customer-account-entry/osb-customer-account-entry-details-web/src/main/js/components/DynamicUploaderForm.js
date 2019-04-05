@@ -192,7 +192,7 @@ export default class DynamicUploaderForm extends React.Component {
 
 	generateToken = () => {
 		return axios.get(this.props.generateTokenURL);
-	}
+	};
 
 	handleClear = () => {
 		this.state.resumable.cancel();
@@ -207,7 +207,7 @@ export default class DynamicUploaderForm extends React.Component {
 				}
 			}
 		);
-	}
+	};
 
 	handleClearAccepted = () => {
 		this.state.resumable.removeFile(this.state.fileObj);
@@ -221,7 +221,7 @@ export default class DynamicUploaderForm extends React.Component {
 				fileObj: ''
 			}
 		);
-	}
+	};
 
 	handlePause = () => {
 		this.state.resumable.pause();
@@ -234,7 +234,7 @@ export default class DynamicUploaderForm extends React.Component {
 				}
 			}
 		);
-	}
+	};
 
 	handlePlay = () => {
 		this.state.resumable.upload();
@@ -247,7 +247,7 @@ export default class DynamicUploaderForm extends React.Component {
 				}
 			}
 		);
-	}
+	};
 
 	handleSubmit = (event) => {
 		event.preventDefault();
@@ -273,7 +273,7 @@ export default class DynamicUploaderForm extends React.Component {
 				}
 			);
 		}
-	}
+	};
 
 	handleUpdateComment = (event) => {
 		this.setState(
@@ -281,7 +281,7 @@ export default class DynamicUploaderForm extends React.Component {
 				comment: event.currentTarget.value
 			}
 		);
-	}
+	};
 
 	updateActionUrl = () => {
 		const {addTicketAttachmentURL} = this.props;
@@ -301,7 +301,7 @@ export default class DynamicUploaderForm extends React.Component {
 		actionUrl += `&${namespace}comment=${encodeURIComponent(this.state.comment)}`;
 
 		this.formRef.current.action = actionUrl;
-	}
+	};
 
 	validateForm = () => {
 		const {
@@ -310,7 +310,7 @@ export default class DynamicUploaderForm extends React.Component {
 		} = this.state.file;
 
 		return (fileName && fileSize);
-	}
+	};
 
 	render() {
 		const {namespace} = this.state;

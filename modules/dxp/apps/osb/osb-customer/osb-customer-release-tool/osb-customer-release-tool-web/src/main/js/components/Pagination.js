@@ -19,7 +19,7 @@ class PaginationItem extends React.Component {
 		const {number, onClick} = this.props;
 
 		onClick(number);
-	}
+	};
 
 	render() {
 		const {active, label, number} = this.props;
@@ -98,7 +98,7 @@ export default class Pagination extends React.Component {
 		}
 
 		return pages;
-	}
+	};
 
 	handleClick = activePage => {
 		const {onClick} = this.props;
@@ -110,17 +110,19 @@ export default class Pagination extends React.Component {
 		);
 
 		onClick(activePage);
-	}
+	};
 
 	setBuffers = () => {
 		const {total} = this.props;
 		const {currentPage} = this.state;
 
-		let nextPageBuffer = total - currentPage >= PAGE_BUFFER ? PAGE_BUFFER : total - currentPage;
+		let nextPageBuffer =
+			total - currentPage >= PAGE_BUFFER ? PAGE_BUFFER : total - currentPage;
 		let prevPageBuffer = 0;
 
 		if (currentPage > 1) {
-			prevPageBuffer = currentPage > PAGE_BUFFER ? PAGE_BUFFER : currentPage - 1;
+			prevPageBuffer =
+				currentPage > PAGE_BUFFER ? PAGE_BUFFER : currentPage - 1;
 
 			if (currentPage === total) {
 				nextPageBuffer = 0;
@@ -131,7 +133,7 @@ export default class Pagination extends React.Component {
 			nextPageBuffer,
 			prevPageBuffer
 		};
-	}
+	};
 
 	render() {
 		return (

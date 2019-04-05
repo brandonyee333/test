@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import 'core-js/fn/array/find';
 
-const PORTLET_ID = 'com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet';
+const PORTLET_ID =
+	'com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet';
 
 export default class SearchFilters extends React.Component {
 	searchDownloadsFormRef = React.createRef();
@@ -22,7 +23,7 @@ export default class SearchFilters extends React.Component {
 		).isRequired
 	};
 
-	getFileTypes = (comparator) => {
+	getFileTypes = comparator => {
 		const {productsJSONArray} = this.props;
 
 		const productEntry = productsJSONArray.find(
@@ -33,7 +34,9 @@ export default class SearchFilters extends React.Component {
 	};
 
 	state = {
-		availableFileTypes: this.getFileTypes(this.props.currentProductAssetCategoryId),
+		availableFileTypes: this.getFileTypes(
+			this.props.currentProductAssetCategoryId
+		),
 		fileTypeAssetCategoryId: this.props.currentFileTypeAssetCategoryId,
 		productAssetCategoryId: this.props.currentProductAssetCategoryId
 	};
@@ -71,7 +74,11 @@ export default class SearchFilters extends React.Component {
 
 	render() {
 		const {actionURL, productsJSONArray} = this.props;
-		const {availableFileTypes, fileTypeAssetCategoryId, productAssetCategoryId} = this.state;
+		const {
+			availableFileTypes,
+			fileTypeAssetCategoryId,
+			productAssetCategoryId
+		} = this.state;
 
 		const {namespace} = window.DownloadsConstants;
 

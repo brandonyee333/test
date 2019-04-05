@@ -13,11 +13,11 @@ export default class FilterCheckbox extends Component {
 		value: PropTypes.string.isRequired
 	};
 
-	handleOnChange = (event) => {
+	handleOnChange = event => {
 		const {handleOnChange} = this.props;
 
 		handleOnChange(event);
-	}
+	};
 
 	render() {
 		const {checked, label, value} = this.props;

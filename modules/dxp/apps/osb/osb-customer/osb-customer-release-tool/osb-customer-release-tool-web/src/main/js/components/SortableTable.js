@@ -31,14 +31,19 @@ export default class SortableTable extends Component {
 	};
 
 	sortResults = () => {
-		const {jsonObject: {results}} = this.props;
+		const {
+			jsonObject: {results}
+		} = this.props;
 		const {orderBy} = this.state;
 
 		return orderBy === 'desc' ? results.concat() : results.concat().reverse();
 	};
 
 	render() {
-		const {jsonObject: {total}, tabName} = this.props;
+		const {
+			jsonObject: {total},
+			tabName
+		} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
