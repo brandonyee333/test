@@ -43,14 +43,19 @@ export default class SortableTable extends Component {
 
 		const results = this.sortResults(orderBy);
 
-		const resultsLangKey = total === 1 ? 'x-result' : 'x-results';
-
 		const table = tabName === 'highlights' ? highlightsTable : changelogTable;
 
 		return (
 			<Fragment>
 				<div className="results-count">
-					{AUI().Lang.sub(Liferay.Language.get(resultsLangKey), [total.toString()])}
+					{total === 1
+						? AUI().Lang.sub(Liferay.Language.get('x-result'), [
+								total.toString()
+						  ])
+						: AUI().Lang.sub(Liferay.Language.get('x-results'), [
+								total.toString()
+						  ])
+					}
 				</div>
 
 				<table className={`table ${tabName}-table table-autofit table-list`} role="table">

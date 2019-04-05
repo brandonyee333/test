@@ -28,7 +28,9 @@ export default function TableResults({jsonObject, tab}) {
 	return (
 		<Fragment>
 			<h2>
-				{Liferay.Language.get(tab.tabName)}
+				{tab.tabName === 'highlights'
+					? Liferay.Language.get('highlights')
+					: Liferay.Language.get('changelog')}
 			</h2>
 
 			{!!tab.tabDescription && (
