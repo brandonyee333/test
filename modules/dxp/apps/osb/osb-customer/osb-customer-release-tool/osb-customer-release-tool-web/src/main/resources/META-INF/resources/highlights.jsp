@@ -23,6 +23,18 @@ double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
+
+JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
+
+String highlightsDescription = StringPool.BLANK;
+
+JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
+
+if (journalArticle != null) {
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+
+	highlightsDescription = journalArticleDisplay.getContent();
+}
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPackResultsURL">
@@ -33,26 +45,9 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<%
-JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
-%>
-
 <div class="container-fluid row" id="<portlet:namespace />highlights"></div>
 
 <aui:script>
-
-	<%
-	String highlightsDescription = StringPool.BLANK;
-
-	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
-
-	if (journalArticle != null) {
-		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-
-		highlightsDescription = journalArticleDisplay.getContent();
-	}
-	%>
-
 	ReleaseTool.render(
 		ReleaseTool.Highlights,
 		{

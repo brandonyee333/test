@@ -29,13 +29,25 @@ TableResults.propTypes = {
 	).isRequired
 };
 
+const displayTabName = name => {
+	// Liferay.Language.get() only accepts string parameter. 
+
+	let tabName = Liferay.Language.get('module-changes');
+
+	if (name === 'highlights') {
+		tabName = Liferay.Language.get('highlights');
+	} else if (name === 'changelog') {
+		tabName = Liferay.Language.get('changelog');
+	}
+
+	return tabName;
+}
+
 export default function TableResults({jsonObject, orderBy, tab}) {
 	return (
 		<Fragment>
 			<h2>
-				{tab.tabName === 'highlights'
-					? Liferay.Language.get('highlights')
-					: Liferay.Language.get('changelog')}
+				{displayTabName(tab.tabName)}
 			</h2>
 
 			{!!tab.tabDescription && (

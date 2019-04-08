@@ -23,6 +23,18 @@ double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
+
+JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderResponse);
+
+String changelogDescription = StringPool.BLANK;
+
+JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
+
+if (journalArticle != null) {
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+
+	changelogDescription = journalArticleDisplay.getContent();
+}
 %>
 
 <liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/jira_issues" var="refinedJiraIssuesURL">
@@ -33,26 +45,9 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<%
-JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderResponse);
-%>
-
 <div class="container-fluid row" id="<portlet:namespace />changelog"></div>
 
 <aui:script>
-
-	<%
-	String changelogDescription = StringPool.BLANK;
-
-	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
-
-	if (journalArticle != null) {
-		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-
-		changelogDescription = journalArticleDisplay.getContent();
-	}
-	%>
-
 	ReleaseTool.render(
 		ReleaseTool.Changelog,
 		{

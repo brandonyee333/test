@@ -16,43 +16,59 @@
 
 <%@ include file="/init.jsp" %>
 
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/artifact_versions" var="refinedArtifactVersionsURL">
-	<portlet:param name="changesOnly" value="true" />
-	<portlet:param name="fromFixPackVersion" value="2.0" />
-	<portlet:param name="keywords" value="apache" />
-	<portlet:param name="product" value="dxp" />
-	<portlet:param name="productVersion" value="7.0" />
-	<portlet:param name="owners" value="1,2" />
-	<portlet:param name="toFixPackVersion" value="5.0" />
-</liferay-portlet:resourceURL>
-
-<strong>Refinement Endpoint:</strong> <%= refinedArtifactVersionsURL %>
-
-<br />
-
-<strong>Owners Filter:</strong> <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>
-
-<h2>
-	<liferay-ui:message key="module-changes" />
-</h2>
-
 <%
-JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesJournalArticleId);
+String tabs1 = ParamUtil.getString(request, "tabs1");
+
+double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
+String product = ParamUtil.getString(request, "product");
+double productVersion = ParamUtil.getDouble(request, "productVersion");
+double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 %>
 
-<c:if test="<%= journalArticle != null %>">
-
-	<%
-	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-	%>
-
-	<h5 class="secondary-text-color section-subtitle">
-		<%= journalArticleDisplay.getContent() %>
-	</h5>
-</c:if>
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/artifact_versions" var="refinedArtifactVersionsURL">
+	<portlet:param name="tabs1" value="<%= tabs1 %>" />
+	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
+	<portlet:param name="product" value="<%= product %>" />
+	<portlet:param name="productVersion" value="<%= String.valueOf(productVersion) %>" />
+	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
+</liferay-portlet:resourceURL>
 
 <%
 JSONObject jsonObject = artifactVersionSearcher.search(renderRequest, renderResponse);
 %>
 
+<div class="container-fluid row" id="<portlet:namespace />moduleChanges"></div>
+
+<strong>Refinement Endpoint:</strong> <%= refinedArtifactVersionsURL %>
+
+<strong>Owners Filter:</strong> <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>
+
 <strong>Results:</strong> <%= HtmlUtil.escape(jsonObject.toString()) %>
+
+<aui:script>
+	var moduleChangesDescription = '';
+
+	<%
+	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesJournalArticleId);
+	%>
+
+	<c:if test="<%= journalArticle != null %>">
+
+		<%
+		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+		%>
+
+		moduleChangesDescription = '<%= journalArticleDisplay.getContent() %>';
+	</c:if>
+
+	ReleaseTool.render(
+		ReleaseTool.ModuleChanges,
+		{
+			description: moduleChangesDescription,
+			filters: <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>,
+			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
+			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
+		},
+		document.getElementById('<portlet:namespace />moduleChanges')
+	);
+</aui:script>
