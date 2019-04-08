@@ -4,7 +4,7 @@ export const tableHeader = (orderBy, handleSort) => (
 	<Fragment>
 		<th className="lfr-released-column">
 			{Liferay.Language.get('release')}{' '}
-			<svg className={`${orderBy} lexicon-icon sorting-indicator`} onClick={handleSort} role="button">
+			<svg className={`arrow-up ${orderBy} lexicon-icon sorting-indicator`} onClick={handleSort} role="button">
 				<use xlinkHref="#arrow-up" />
 			</svg>
 		</th>

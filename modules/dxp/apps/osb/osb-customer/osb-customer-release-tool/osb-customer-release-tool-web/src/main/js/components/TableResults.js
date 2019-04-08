@@ -8,6 +8,10 @@ import {jiraIssueJSONObjectType} from '../types/changelog';
 import Alert from './Alert';
 import SortableTable from './SortableTable';
 
+TableResults.defaultProps = {
+	orderBy: 'desc'
+};
+
 TableResults.propTypes = {
 	jsonObject: PropTypes.oneOfType(
 		[
@@ -16,6 +20,7 @@ TableResults.propTypes = {
 			jiraIssueJSONObjectType
 		]
 	).isRequired,
+	orderBy: PropTypes.oneOf(['asc', 'desc']),
 	tab: PropTypes.shape(
 		{
 			tabDescription: PropTypes.string,
@@ -24,7 +29,7 @@ TableResults.propTypes = {
 	).isRequired
 };
 
-export default function TableResults({jsonObject, tab}) {
+export default function TableResults({jsonObject, orderBy, tab}) {
 	return (
 		<Fragment>
 			<h2>
@@ -45,7 +50,11 @@ export default function TableResults({jsonObject, tab}) {
 			)}
 
 			{!!jsonObject.results && (
-				<SortableTable jsonObject={jsonObject} tabName={tab.tabName} />
+				<SortableTable
+					jsonObject={jsonObject}
+					orderBy={orderBy}
+					tabName={tab.tabName}
+				/>
 			)}
 		</Fragment>
 	);

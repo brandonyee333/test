@@ -12,11 +12,12 @@ export default class SortableTable extends Component {
 		jsonObject: PropTypes.oneOfType(
 			[fixPackJSONObjectType, jiraIssueJSONObjectType]
 		).isRequired,
+		orderBy: PropTypes.oneOf(['asc', 'desc']).isRequired,
 		tabName: PropTypes.string.isRequired
 	};
 
 	state = {
-		orderBy: 'desc'
+		orderBy: this.props.orderBy
 	};
 
 	handleSort = () => {
@@ -30,13 +31,15 @@ export default class SortableTable extends Component {
 		);
 	};
 
-	sortResults = () => {
+	sortResults = newOrderBy => {
 		const {
-			jsonObject: {results}
+			jsonObject: {results},
+			orderBy
 		} = this.props;
-		const {orderBy} = this.state;
 
-		return orderBy === 'desc' ? results.concat() : results.concat().reverse();
+		return orderBy === newOrderBy
+			? results.concat()
+			: results.concat().reverse();
 	};
 
 	render() {

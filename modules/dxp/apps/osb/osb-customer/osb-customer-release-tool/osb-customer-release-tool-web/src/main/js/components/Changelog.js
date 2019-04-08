@@ -252,6 +252,7 @@ export default class Changelog extends Component {
 				<div className="col-md-9">
 					<TableResults
 						jsonObject={jiraIssueJSONObject}
+						orderBy='asc'
 						tab={{
 							tabDescription: description,
 							tabName: 'changelog'

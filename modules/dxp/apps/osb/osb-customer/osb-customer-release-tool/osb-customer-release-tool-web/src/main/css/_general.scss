@@ -69,7 +69,8 @@
 		cursor: pointer;
 	}
 
-	&.asc {
+	&.arrow-up.asc,
+	&.arrow-down.desc {
 		transform: rotate(180deg);
 	}
 }

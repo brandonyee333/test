@@ -64,6 +64,7 @@ const setup = () => {
 	const utils = render(
 		<SortableTable
 			jsonObject={highlightsJSONObj}
+			orderBy="desc"
 			tabName="highlights"
 		/>
 	);
@@ -90,6 +91,7 @@ describe('SortableTable', () => {
 		const {container} = render(
 			<SortableTable
 				jsonObject={changelogJSONObj}
+				orderBy="desc"
 				tabName="changelog"
 			/>
 		);
@@ -103,6 +105,7 @@ describe('SortableTable', () => {
 		rerender(
 			<SortableTable
 				jsonObject={noResults}
+				orderBy="desc"
 				tabName="highlights"
 			/>
 		);
@@ -139,6 +142,7 @@ describe('SortableTable', () => {
 		const {container, getByText} = render(
 			<SortableTable
 				jsonObject={singleResult}
+				orderBy="desc"
 				tabName="changelog"
 			/>
 		);
