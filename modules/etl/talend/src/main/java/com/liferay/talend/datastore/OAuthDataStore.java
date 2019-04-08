@@ -16,6 +16,8 @@ package com.liferay.talend.datastore;
 
 import java.io.Serializable;
 
+import java.net.URL;
+
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -43,7 +45,7 @@ public class OAuthDataStore implements Serializable {
 		return consumerSecret;
 	}
 
-	public java.net.URL getServerURL() {
+	public URL getServerURL() {
 		return serverURL;
 	}
 
@@ -59,7 +61,7 @@ public class OAuthDataStore implements Serializable {
 		return this;
 	}
 
-	public OAuthDataStore setServerURL(java.net.URL serverURL) {
+	public OAuthDataStore setServerURL(URL serverURL) {
 		this.serverURL = serverURL;
 
 		return this;
@@ -75,6 +77,6 @@ public class OAuthDataStore implements Serializable {
 
 	@Documentation("TODO fill the documentation for this parameter")
 	@Option
-	private java.net.URL serverURL;
+	private URL serverURL;
 
 }

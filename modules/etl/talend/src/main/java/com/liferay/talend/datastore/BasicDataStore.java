@@ -16,6 +16,8 @@ package com.liferay.talend.datastore;
 
 import java.io.Serializable;
 
+import java.net.URL;
+
 import org.talend.sdk.component.api.configuration.Option;
 import org.talend.sdk.component.api.configuration.type.DataStore;
 import org.talend.sdk.component.api.configuration.ui.layout.GridLayout;
@@ -44,7 +46,7 @@ public class BasicDataStore implements Serializable {
 		return password;
 	}
 
-	public java.net.URL getServerURL() {
+	public URL getServerURL() {
 		return serverURL;
 	}
 
@@ -64,7 +66,7 @@ public class BasicDataStore implements Serializable {
 		return this;
 	}
 
-	public BasicDataStore setServerURL(java.net.URL serverURL) {
+	public BasicDataStore setServerURL(URL serverURL) {
 		this.serverURL = serverURL;
 
 		return this;
@@ -87,7 +89,7 @@ public class BasicDataStore implements Serializable {
 
 	@Documentation("TODO fill the documentation for this parameter")
 	@Option
-	private java.net.URL serverURL;
+	private URL serverURL;
 
 	@Documentation("TODO fill the documentation for this parameter")
 	@Option
