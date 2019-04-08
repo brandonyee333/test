@@ -5,7 +5,13 @@ import {fixPackJSONObjectType} from '../types/highlights';
 import {jiraIssueJSONObjectType} from '../types/changelog';
 
 export default class SortableTable extends Component {
+	static defaultProps = {
+		fromFixPackVersion: '',
+		toFixPackVersion: ''
+	};
+
 	static propTypes = {
+		fromFixPackVersion: PropTypes.string,
 		jsonObject: PropTypes.oneOfType(
 			[fixPackJSONObjectType, jiraIssueJSONObjectType]
 		).isRequired,
@@ -16,7 +22,8 @@ export default class SortableTable extends Component {
 				tableBody: PropTypes.func,
 				tableHeader: PropTypes.func,
 			}
-		).isRequired
+		).isRequired,
+		toFixPackVersion: PropTypes.string
 	};
 
 	state = {
@@ -47,9 +54,11 @@ export default class SortableTable extends Component {
 
 	render() {
 		const {
+			fromFixPackVersion,
 			jsonObject: {total},
 			name,
-			table
+			table,
+			toFixPackVersion
 		} = this.props;
 		const {orderBy} = this.state;
 
@@ -77,7 +86,12 @@ export default class SortableTable extends Component {
 				<table className={`table ${name}-table table-autofit table-list`} role="table">
 					<thead>
 						<tr>
-							{table.tableHeader(orderBy, this.handleSort)}
+							{table.tableHeader(
+								orderBy,
+								this.handleSort,
+								fromFixPackVersion,
+								toFixPackVersion
+							)}
 						</tr>
 					</thead>
 

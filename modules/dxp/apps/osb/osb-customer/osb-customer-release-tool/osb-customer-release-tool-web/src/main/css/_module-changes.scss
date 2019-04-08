@@ -1,0 +1,42 @@
+.module-changes-table {
+	color: $color-default-disabled;
+
+	a {
+		color: $color-disabled;
+	}
+
+	.lfr-from-version-column,
+	.lfr-to-version-column {
+		width: 15%;
+	}
+
+	.lfr-group-column {
+		width: 30%;
+	}
+
+	.lfr-name-column {
+		padding-left: $padding-sm;
+
+		&:before {
+			content: '';
+			margin-left: -$margin-sm;
+			margin-right: $margin-sm;
+		}
+	}
+}
+
+.module-changed {
+	color: $color-default;
+
+	a {
+		color: $color-primary;
+	}
+
+	.lfr-name-column:before {
+		border-left: 2.5px solid $color-success;
+	}
+}
+
+.table > tbody > tr.module-changed > td:first-child {
+	font-weight: $font-weight-semi-bold;
+}

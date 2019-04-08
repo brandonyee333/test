@@ -36,7 +36,7 @@ TableResults.propTypes = {
 };
 
 const displayTabName = name => {
-	// Liferay.Language.get() only accepts string parameter. 
+	// Liferay.Language.get() only accepts string parameter.
 
 	let tabName = Liferay.Language.get('module-changes');
 
@@ -49,7 +49,9 @@ const displayTabName = name => {
 	return tabName;
 }
 
-export default function TableResults({jsonObject, orderBy, tab, table}) {
+export default function TableResults(props) {
+	const {jsonObject, orderBy, tab, table} = props;
+
 	return (
 		<Fragment>
 			<h2>
@@ -73,6 +75,7 @@ export default function TableResults({jsonObject, orderBy, tab, table}) {
 					name={tab.tabName}
 					orderBy={orderBy}
 					table={table}
+					{...props}
 				/>
 			)}
 		</Fragment>

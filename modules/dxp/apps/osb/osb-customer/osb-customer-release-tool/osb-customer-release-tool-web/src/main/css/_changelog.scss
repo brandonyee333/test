@@ -31,15 +31,15 @@
 	> tbody > tr > td.lfr-summary-column {
 		font-size: $font-size-md;
 	}
-}
 
-.lfr-component-column {
-	width: 20%;
-}
+	.lfr-component-column {
+		width: 20%;
+	}
 
-.lfr-key-column,
-.lfr-release-column {
-	width: 13%;
+	.lfr-key-column,
+	.lfr-release-column {
+		width: 13%;
+	}
 }
 
 .lfr-summary-column {

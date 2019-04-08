@@ -54,7 +54,9 @@ if (journalArticle != null) {
 			description: '<%= HtmlUtil.escapeJS(moduleChangesDescription) %>',
 			endpoint: '<%= refinedArtifactVersionsURL %>',
 			filters: <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>,
-			jsonObject: <%= jsonObject %>
+			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
+			jsonObject: <%= jsonObject %>,
+			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />moduleChanges')
 	);

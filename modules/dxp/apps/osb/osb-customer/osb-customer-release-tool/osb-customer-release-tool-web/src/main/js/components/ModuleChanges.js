@@ -9,7 +9,7 @@ import {
 	artifactVersionJSONObjectType
 } from '../types/module-changes';
 
-import * as moduleChangeTable from './ModuleChangeTable';
+import * as moduleChangesTable from './ModuleChangesTable';
 
 import TableResults from './TableResults';
 
@@ -18,13 +18,21 @@ export default class ModuleChanges extends Component {
 		description: PropTypes.string.isRequired,
 		endpoint: PropTypes.string.isRequired,
 		filters: artifactVersionFiltersType.isRequired,
+		fromFixPackVersion: PropTypes.string.isRequired,
 		jsonObject: PropTypes.oneOfType(
 			[errorType, artifactVersionJSONObjectType]
-		).isRequired
+		).isRequired,
+		toFixPackVersion: PropTypes.string.isRequired
 	};
 
 	render() {
-		const {description, filters, jsonObject} = this.props;
+		const {
+			description,
+			filters,
+			fromFixPackVersion,
+			jsonObject,
+			toFixPackVersion
+		} = this.props;
 
 		return (
 			<Fragment>
@@ -40,11 +48,14 @@ export default class ModuleChanges extends Component {
 
 				<div className="col-md-9">
 					<TableResults
+						fromFixPackVersion={fromFixPackVersion}
 						jsonObject={jsonObject}
 						tab={{
 							tabDescription: description,
 							tabName: 'module-changes'
 						}}
+						table={moduleChangesTable}
+						toFixPackVersion={toFixPackVersion}
 					/>
 				</div>
 			</Fragment>
