@@ -174,7 +174,7 @@ export default class Changelog extends Component {
 
 		const totalPage = jiraIssueJSONObject.total
 			? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE)
-			: '';
+			: 1;
 
 		return (
 			<Fragment>
@@ -258,7 +258,7 @@ export default class Changelog extends Component {
 						}}
 					/>
 
-					{!!totalPage && totalPage > 1 && (
+					{totalPage > 1 && (
 						<Pagination
 							onClick={this.handlePaginationClick}
 							total={totalPage}
