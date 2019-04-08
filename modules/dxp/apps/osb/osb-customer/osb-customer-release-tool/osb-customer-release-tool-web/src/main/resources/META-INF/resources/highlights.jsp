@@ -40,25 +40,23 @@ JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderRespo
 <div class="container-fluid row" id="<portlet:namespace />highlights"></div>
 
 <aui:script>
-	var highlightsDescription = '';
 
 	<%
+	String highlightsDescription = StringPool.BLANK;
+
 	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
-	%>
 
-	<c:if test="<%= journalArticle != null %>">
-
-		<%
+	if (journalArticle != null) {
 		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-		%>
 
-		highlightsDescription = '<%= journalArticleDisplay.getContent() %>';
-	</c:if>
+		highlightsDescription = journalArticleDisplay.getContent();
+	}
+	%>
 
 	ReleaseTool.render(
 		ReleaseTool.Highlights,
 		{
-			description: highlightsDescription,
+			description: '<%= HtmlUtil.escapeJS(highlightsDescription) %>',
 			filters: <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>,
 			fixPackJSONObject: <%= fixPackJSONObject %>,
 			fixPackResultsURL: '<%= fixPackResultsURL %>'

@@ -40,25 +40,23 @@ JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderR
 <div class="container-fluid row" id="<portlet:namespace />changelog"></div>
 
 <aui:script>
-	var changelogDescription = '';
 
 	<%
+	String changelogDescription = StringPool.BLANK;
+
 	JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
-	%>
 
-	<c:if test="<%= journalArticle != null %>">
-
-		<%
+	if (journalArticle != null) {
 		JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
-		%>
 
-		changelogDescription = '<%= journalArticleDisplay.getContent() %>';
-	</c:if>
+		changelogDescription = journalArticleDisplay.getContent();
+	}
+	%>
 
 	ReleaseTool.render(
 		ReleaseTool.Changelog,
 		{
-			description: changelogDescription,
+			description: '<%= HtmlUtil.escapeJS(changelogDescription) %>',
 			filters: <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>,
 			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
 			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
