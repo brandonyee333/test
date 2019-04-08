@@ -1,6 +1,8 @@
 import React from 'react';
 import {cleanup, fireEvent, render} from 'react-testing-library';
 
+import * as changelogTable from '../ChangelogTable';
+import * as highlightsTable from '../HightlightsTable';
 import SortableTable from '../SortableTable';
 
 const setup = () => {
@@ -64,8 +66,9 @@ const setup = () => {
 	const utils = render(
 		<SortableTable
 			jsonObject={highlightsJSONObj}
+			name="highlights"
 			orderBy="desc"
-			tabName="highlights"
+			table={highlightsTable}
 		/>
 	);
 
@@ -91,8 +94,9 @@ describe('SortableTable', () => {
 		const {container} = render(
 			<SortableTable
 				jsonObject={changelogJSONObj}
-				orderBy="desc"
-				tabName="changelog"
+				name="changelog"
+				orderBy="asc"
+				table={changelogTable}
 			/>
 		);
 
@@ -105,8 +109,9 @@ describe('SortableTable', () => {
 		rerender(
 			<SortableTable
 				jsonObject={noResults}
+				name="highlights"
 				orderBy="desc"
-				tabName="highlights"
+				table={highlightsTable}
 			/>
 		);
 
@@ -142,8 +147,9 @@ describe('SortableTable', () => {
 		const {container, getByText} = render(
 			<SortableTable
 				jsonObject={singleResult}
-				orderBy="desc"
-				tabName="changelog"
+				name="changelog"
+				orderBy="asc"
+				table={changelogTable}
 			/>
 		);
 

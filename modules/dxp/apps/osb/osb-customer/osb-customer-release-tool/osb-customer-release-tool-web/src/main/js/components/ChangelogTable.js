@@ -116,6 +116,8 @@ class TicketDetail extends Component {
 	}
 }
 
+export const tableBody = results => <Ticket tickets={results} />;
+
 export const tableHeader = (orderBy, handleSort) => (
 	<Fragment>
 		<th className="lfr-summary-column table-cell-content">
@@ -139,5 +141,3 @@ export const tableHeader = (orderBy, handleSort) => (
 		</th>
 	</Fragment>
 );
-
-export const tableBody = results => <Ticket tickets={results} />;

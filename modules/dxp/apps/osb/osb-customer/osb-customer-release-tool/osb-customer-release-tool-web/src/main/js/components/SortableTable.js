@@ -4,16 +4,19 @@ import PropTypes from 'prop-types';
 import {fixPackJSONObjectType} from '../types/highlights';
 import {jiraIssueJSONObjectType} from '../types/changelog';
 
-import * as changelogTable from './ChangelogTable';
-import * as highlightsTable from './HightlightsTable';
-
 export default class SortableTable extends Component {
 	static propTypes = {
 		jsonObject: PropTypes.oneOfType(
 			[fixPackJSONObjectType, jiraIssueJSONObjectType]
 		).isRequired,
+		name: PropTypes.string.isRequired,
 		orderBy: PropTypes.oneOf(['asc', 'desc']).isRequired,
-		tabName: PropTypes.string.isRequired
+		table: PropTypes.shape(
+			{
+				tableBody: PropTypes.func,
+				tableHeader: PropTypes.func,
+			}
+		).isRequired
 	};
 
 	state = {
@@ -45,13 +48,12 @@ export default class SortableTable extends Component {
 	render() {
 		const {
 			jsonObject: {total},
-			tabName
+			name,
+			table
 		} = this.props;
 		const {orderBy} = this.state;
 
 		const results = this.sortResults(orderBy);
-
-		const table = tabName === 'highlights' ? highlightsTable : changelogTable;
 
 		return (
 			<Fragment>
@@ -72,7 +74,7 @@ export default class SortableTable extends Component {
 					}
 				</div>
 
-				<table className={`table ${tabName}-table table-autofit table-list`} role="table">
+				<table className={`table ${name}-table table-autofit table-list`} role="table">
 					<thead>
 						<tr>
 							{table.tableHeader(orderBy, this.handleSort)}

@@ -1,17 +1,5 @@
 import React, {Fragment} from 'react';
 
-export const tableHeader = (orderBy, handleSort) => (
-	<Fragment>
-		<th className="lfr-released-column">
-			{Liferay.Language.get('release')}{' '}
-			<svg className={`arrow-up ${orderBy} lexicon-icon sorting-indicator`} onClick={handleSort} role="button">
-				<use xlinkHref="#arrow-up" />
-			</svg>
-		</th>
-		<th className="lfr-details-column">{Liferay.Language.get('details')}</th>
-	</Fragment>
-);
-
 export const tableBody = results =>
 	results.map(
 		fixPack => (
@@ -27,3 +15,15 @@ export const tableBody = results =>
 			</tr>
 		)
 	);
+
+export const tableHeader = (orderBy, handleSort) => (
+	<Fragment>
+		<th className="lfr-released-column">
+			{Liferay.Language.get('release')}{' '}
+			<svg className={`arrow-up ${orderBy} lexicon-icon sorting-indicator`} onClick={handleSort} role="button">
+				<use xlinkHref="#arrow-up" />
+			</svg>
+		</th>
+		<th className="lfr-details-column">{Liferay.Language.get('details')}</th>
+	</Fragment>
+);

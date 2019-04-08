@@ -1,13 +1,15 @@
 import React from 'react';
 import {render} from 'react-testing-library';
 
+import * as changelogTable from '../ChangelogTable';
 import TableResults from '../TableResults';
 
 describe('TableResults', () => {
 	const error = {
 		error: {
 			message: 'Please enter a valid version range.',
-			name: 'class com.liferay.osb.customer.release.tool.web.internal.exception.VersionRangeException'
+			name:
+				'class com.liferay.osb.customer.release.tool.web.internal.exception.VersionRangeException'
 		}
 	};
 
@@ -18,7 +20,7 @@ describe('TableResults', () => {
 				description: 'description',
 				key: 'LPS-90100',
 				release: 'GA',
-				summary: 'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
+				summary: 'IE11 Web Image Resizing',
 				url: '/'
 			},
 			{
@@ -36,11 +38,11 @@ describe('TableResults', () => {
 	const tab = {
 		tabDescription: 'description for the tab',
 		tabName: 'changelog'
-	}
+	};
 
 	it('renders error correctly', () => {
 		const {container, getByRole} = render(
-			<TableResults jsonObject={error} tab={tab} />
+			<TableResults jsonObject={error} tab={tab} table={changelogTable} />
 		);
 
 		expect(getByRole('alert')).toBeTruthy();
@@ -49,7 +51,7 @@ describe('TableResults', () => {
 
 	it('renders content correctly', () => {
 		const {container, getByRole} = render(
-			<TableResults jsonObject={contentObj} tab={tab} />
+			<TableResults jsonObject={contentObj} tab={tab} table={changelogTable} />
 		);
 
 		expect(getByRole('table')).toBeTruthy();

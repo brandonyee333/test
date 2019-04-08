@@ -6,6 +6,8 @@ import 'core-js/fn/array/includes';
 import {errorType} from '../types/generic';
 import {fixPackFieldsType, fixPackJSONObjectType} from '../types/highlights';
 
+import * as highlightsTable from './HightlightsTable';
+
 import Button from './Button';
 import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
@@ -122,6 +124,7 @@ export default class Highlights extends Component {
 							tabDescription: description,
 							tabName: 'highlights'
 						}}
+						table={highlightsTable}
 					/>
 				</div>
 			</Fragment>

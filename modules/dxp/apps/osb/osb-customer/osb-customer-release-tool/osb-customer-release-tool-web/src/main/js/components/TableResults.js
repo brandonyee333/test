@@ -26,6 +26,12 @@ TableResults.propTypes = {
 			tabDescription: PropTypes.string,
 			tabName: PropTypes.string
 		}
+	).isRequired,
+	table: PropTypes.shape(
+		{
+			tableBody: PropTypes.func,
+			tableHeader: PropTypes.func,
+		}
 	).isRequired
 };
 
@@ -43,7 +49,7 @@ const displayTabName = name => {
 	return tabName;
 }
 
-export default function TableResults({jsonObject, orderBy, tab}) {
+export default function TableResults({jsonObject, orderBy, tab, table}) {
 	return (
 		<Fragment>
 			<h2>
@@ -64,8 +70,9 @@ export default function TableResults({jsonObject, orderBy, tab}) {
 			{!!jsonObject.results && (
 				<SortableTable
 					jsonObject={jsonObject}
+					name={tab.tabName}
 					orderBy={orderBy}
-					tabName={tab.tabName}
+					table={table}
 				/>
 			)}
 		</Fragment>

@@ -9,6 +9,8 @@ import debounce from 'lodash.debounce';
 import {errorType} from '../types/generic';
 import {jiraComponentsType, jiraIssueJSONObjectType} from '../types/changelog';
 
+import * as changelogTable from './ChangelogTable';
+
 import Button from './Button';
 import FilterCheckbox from './FilterCheckbox';
 import Pagination from './Pagination';
@@ -257,6 +259,7 @@ export default class Changelog extends Component {
 							tabDescription: description,
 							tabName: 'changelog'
 						}}
+						table={changelogTable}
 					/>
 
 					{totalPage > 1 && (
