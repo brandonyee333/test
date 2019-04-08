@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModuleChanges renders correctly 1`] = `
+<div>
+  <div
+    class="col-md-3"
+  >
+    <div
+      class="refine-by-filters"
+    >
+      <div
+        class="filter-header"
+      >
+        <h3>
+          refine-by
+        </h3>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-9"
+  >
+    <h2>
+      module-changes
+    </h2>
+    <h5
+      class="secondary-text-color section-subtitle"
+    >
+      Description for Module Changes tab.
+    </h5>
+    <div
+      class="results-count"
+    >
+      x-results
+    </div>
+    <table
+      class="table module-changes-table table-autofit table-list"
+      role="table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="lfr-name-column table-cell-content"
+          >
+            name
+          </th>
+          <th
+            class="lfr-group-column"
+          >
+            group
+          </th>
+          <th
+            class="lfr-from-version-column"
+          >
+            fixpack
+            1.0.1
+          </th>
+          <th
+            class="lfr-to-version-column"
+          >
+            fixpack
+            1.0.8
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="journal-article-row "
+          id="1.0.1-1.0.1-0"
+        >
+          <td
+            class="lfr-name-column table-cell-content"
+          >
+            com.liferay.portal.workflow.kaleo.designer.api
+          </td>
+          <td
+            class="lfr-group-column"
+          >
+            com.liferay
+          </td>
+          <td
+            class="lfr-from-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.1
+            </a>
+          </td>
+          <td
+            class="lfr-to-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.1
+            </a>
+          </td>
+        </tr>
+        <tr
+          class="journal-article-row module-changed"
+          id="1.0.6-1.0.8-1"
+        >
+          <td
+            class="lfr-name-column table-cell-content"
+          >
+            com.liferay.announcements.web
+          </td>
+          <td
+            class="lfr-group-column"
+          >
+            com.liferay
+          </td>
+          <td
+            class="lfr-from-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.6
+            </a>
+          </td>
+          <td
+            class="lfr-to-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.8
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`ModuleChanges renders no results correctly 1`] = `
+<div>
+  <div
+    class="col-md-3"
+  >
+    <div
+      class="refine-by-filters"
+    >
+      <div
+        class="filter-header"
+      >
+        <h3>
+          refine-by
+        </h3>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-9"
+  >
+    <h2>
+      module-changes
+    </h2>
+    <h5
+      class="secondary-text-color section-subtitle"
+    >
+      Description for Module Changes tab.
+    </h5>
+    <div
+      class="results-count"
+    >
+      x-results
+    </div>
+    <table
+      class="table module-changes-table table-autofit table-list"
+      role="table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="lfr-name-column table-cell-content"
+          >
+            name
+          </th>
+          <th
+            class="lfr-group-column"
+          >
+            group
+          </th>
+          <th
+            class="lfr-from-version-column"
+          >
+            fixpack
+            1.0.6
+          </th>
+          <th
+            class="lfr-to-version-column"
+          >
+            fixpack
+            1.0.8
+          </th>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+    <div
+      class="no-results"
+    >
+      no-results-found-to-match-your-selection
+      <h5
+        class="secondary-text-color"
+      >
+        try-modifying-your-criteria
+      </h5>
+    </div>
+  </div>
+</div>
+`;

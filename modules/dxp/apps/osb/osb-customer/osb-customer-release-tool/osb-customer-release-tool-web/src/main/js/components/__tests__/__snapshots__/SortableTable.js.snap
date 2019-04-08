@@ -29,11 +29,11 @@ exports[`SortableTable renders changelog table correctly 1`] = `
           release
            
           <svg
-            class="desc lexicon-icon sorting-indicator"
+            class="arrow-down asc lexicon-icon sorting-indicator"
             role="button"
           >
             <use
-              xlink:href="#arrow-up"
+              xlink:href="#arrow-down"
             />
           </svg>
         </th>
@@ -137,7 +137,7 @@ exports[`SortableTable renders highlights table correctly 1`] = `
           release
            
           <svg
-            class="desc lexicon-icon sorting-indicator"
+            class="arrow-up desc lexicon-icon sorting-indicator"
             role="button"
           >
             <use
@@ -211,7 +211,7 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
           release
            
           <svg
-            class="asc lexicon-icon sorting-indicator"
+            class="arrow-up asc lexicon-icon sorting-indicator"
             role="button"
           >
             <use
@@ -285,7 +285,7 @@ exports[`SortableTable renders no results message 1`] = `
           release
            
           <svg
-            class="desc lexicon-icon sorting-indicator"
+            class="arrow-up desc lexicon-icon sorting-indicator"
             role="button"
           >
             <use
@@ -344,11 +344,11 @@ exports[`SortableTable renders the singular x-result language key when there is 
           release
            
           <svg
-            class="desc lexicon-icon sorting-indicator"
+            class="arrow-down asc lexicon-icon sorting-indicator"
             role="button"
           >
             <use
-              xlink:href="#arrow-up"
+              xlink:href="#arrow-down"
             />
           </svg>
         </th>

@@ -99,11 +99,11 @@ exports[`Changelog does not show a See More option below the filters if seven or
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-down asc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
-                xlink:href="#arrow-up"
+                xlink:href="#arrow-down"
               />
             </svg>
           </th>
@@ -383,11 +383,11 @@ exports[`Changelog renders changelog results correctly 1`] = `
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-down asc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
-                xlink:href="#arrow-up"
+                xlink:href="#arrow-down"
               />
             </svg>
           </th>
@@ -667,11 +667,11 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-down asc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
-                xlink:href="#arrow-up"
+                xlink:href="#arrow-down"
               />
             </svg>
           </th>
@@ -2671,11 +2671,11 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-down asc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
-                xlink:href="#arrow-up"
+                xlink:href="#arrow-down"
               />
             </svg>
           </th>
@@ -3026,11 +3026,11 @@ exports[`Changelog renders no results correctly 1`] = `
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-down asc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
-                xlink:href="#arrow-up"
+                xlink:href="#arrow-down"
               />
             </svg>
           </th>
@@ -3251,11 +3251,11 @@ exports[`Changelog updates details modal when a different ticket summary is clic
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-down asc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
-                xlink:href="#arrow-up"
+                xlink:href="#arrow-down"
               />
             </svg>
           </th>

@@ -113,7 +113,7 @@ exports[`Highlights renders correctly 1`] = `
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-up desc lexicon-icon sorting-indicator"
               role="button"
             >
               <use
@@ -282,7 +282,7 @@ exports[`Highlights renders no results correctly 1`] = `
             release
              
             <svg
-              class="desc lexicon-icon sorting-indicator"
+              class="arrow-up desc lexicon-icon sorting-indicator"
               role="button"
             >
               <use

@@ -37,11 +37,11 @@ exports[`TableResults renders content correctly 1`] = `
           release
            
           <svg
-            class="desc lexicon-icon sorting-indicator"
+            class="arrow-down desc lexicon-icon sorting-indicator"
             role="button"
           >
             <use
-              xlink:href="#arrow-up"
+              xlink:href="#arrow-down"
             />
           </svg>
         </th>
@@ -64,7 +64,7 @@ exports[`TableResults renders content correctly 1`] = `
             class="btn btn-md btn-link"
             type="button"
           >
-            IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio
+            IE11 Web Image Resizing
           </button>
         </td>
         <td
