@@ -52,9 +52,9 @@ if (journalArticle != null) {
 		ReleaseTool.Changelog,
 		{
 			description: '<%= HtmlUtil.escapeJS(changelogDescription) %>',
+			endpoint: '<%= refinedJiraIssuesURL %>',
 			filters: <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>,
-			jiraIssueEndpoint: '<%= refinedJiraIssuesURL %>',
-			jiraIssueJSONObject: <%= jiraIssueJSONObject %>
+			jsonObject: <%= jiraIssueJSONObject %>
 		},
 		document.getElementById('<portlet:namespace />changelog')
 	);

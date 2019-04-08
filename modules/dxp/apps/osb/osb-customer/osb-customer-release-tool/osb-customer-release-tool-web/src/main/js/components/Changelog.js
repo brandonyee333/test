@@ -22,9 +22,9 @@ export default class Changelog extends Component {
 
 	static propTypes = {
 		description: PropTypes.string.isRequired,
+		endpoint: PropTypes.string.isRequired,
 		filters: jiraComponentsType.isRequired,
-		jiraIssueEndpoint: PropTypes.string.isRequired,
-		jiraIssueJSONObject: PropTypes.oneOfType(
+		jsonObject: PropTypes.oneOfType(
 			[errorType, jiraIssueJSONObjectType]
 		).isRequired
 	};
@@ -34,7 +34,7 @@ export default class Changelog extends Component {
 			components: [],
 			keywords: ''
 		},
-		jiraIssueJSONObject: this.props.jiraIssueJSONObject,
+		jsonObject: this.props.jsonObject,
 		seeAllFilterValues: false
 	};
 
@@ -135,7 +135,7 @@ export default class Changelog extends Component {
 	};
 
 	queryJiraIssues = (components = [], keywords = '', startAt = 0) => {
-		const {jiraIssueEndpoint} = this.props;
+		const {endpoint} = this.props;
 
 		const {namespace} = window.ReleaseToolConstants;
 
@@ -144,13 +144,13 @@ export default class Changelog extends Component {
 
 		axios
 			.get(
-				`${jiraIssueEndpoint}&${namespace}components=${encodedComponents}&${namespace}keywords=${encodedKeywords}&${namespace}startAt=${startAt}`
+				`${endpoint}&${namespace}components=${encodedComponents}&${namespace}keywords=${encodedKeywords}&${namespace}startAt=${startAt}`
 			)
 			.then(
 				({data}) => {
 					this.setState(
 						{
-							jiraIssueJSONObject: data
+							jsonObject: data
 						}
 					);
 				}
@@ -167,13 +167,13 @@ export default class Changelog extends Component {
 	render() {
 		const {description, filters} = this.props;
 		const {
+			jsonObject,
 			selectedFilters: {components, keywords},
-			jiraIssueJSONObject,
 			seeAllFilterValues
 		} = this.state;
 
-		const totalPage = jiraIssueJSONObject.total
-			? Math.ceil(jiraIssueJSONObject.total / ARTICLES_PER_PAGE)
+		const totalPage = jsonObject.total
+			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
 			: 1;
 
 		return (
@@ -251,7 +251,7 @@ export default class Changelog extends Component {
 
 				<div className="col-md-9">
 					<TableResults
-						jsonObject={jiraIssueJSONObject}
+						jsonObject={jsonObject}
 						orderBy='asc'
 						tab={{
 							tabDescription: description,

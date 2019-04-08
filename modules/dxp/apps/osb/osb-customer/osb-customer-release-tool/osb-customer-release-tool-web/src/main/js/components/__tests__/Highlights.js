@@ -62,8 +62,8 @@ const setup = () => {
 		<Highlights
 			description="Description for Highlights tab."
 			filters={filters}
-			fixPackJSONObject={highlightsJSONObj}
 			fixPackResultsURL="/"
+			jsonObject={highlightsJSONObj}
 		/>
 	);
 
@@ -86,8 +86,8 @@ describe('Highlights', () => {
 			<Highlights
 				description="Description for No Results Highlights tab."
 				filters={filters}
-				fixPackJSONObject={noResults}
 				fixPackResultsURL="/"
+				jsonObject={noResults}
 			/>
 		);
 

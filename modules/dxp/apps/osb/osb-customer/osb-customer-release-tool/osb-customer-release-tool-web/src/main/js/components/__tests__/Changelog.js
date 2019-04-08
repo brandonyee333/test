@@ -57,9 +57,9 @@ const setup = () => {
 	const utils = render(
 		<Changelog
 			description="description"
+			endpoint="/"
 			filters={filters}
-			jiraIssueEndpoint="/"
-			jiraIssueJSONObject={changelogJSONObj}
+			jsonObject={changelogJSONObj}
 		/>
 	);
 
@@ -87,10 +87,10 @@ describe('Changelog', () => {
 
 		const {container, queryByRole} = render(
 			<Changelog
-				filters={filters}
 				description="description"
-				jiraIssueEndpoint="/"
-				jiraIssueJSONObject={changelogJSONObjSize51}
+				endpoint="/"
+				filters={filters}
+				jsonObject={changelogJSONObjSize51}
 			/>
 		);
 
@@ -103,10 +103,10 @@ describe('Changelog', () => {
 
 		const {container, queryByRole} = render(
 			<Changelog
-				filters={filters}
 				description="description"
-				jiraIssueEndpoint="/"
-				jiraIssueJSONObject={noResults}
+				endpoint="/"
+				filters={filters}
+				jsonObject={noResults}
 			/>
 		);
 
@@ -150,6 +150,8 @@ describe('Changelog', () => {
 
 		const {container} = render(
 			<Changelog
+				description="description"
+				endpoint="/"
 				filters={[
 					{
 						name: 'component 1',
@@ -160,9 +162,7 @@ describe('Changelog', () => {
 						value: '2'
 					}
 				]}
-				description="description"
-				jiraIssueEndpoint="/"
-				jiraIssueJSONObject={changelogJSONObj}
+				jsonObject={changelogJSONObj}
 			/>
 		);
 

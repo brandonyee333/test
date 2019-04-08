@@ -14,10 +14,10 @@ export default class Highlights extends Component {
 	static propTypes = {
 		description: PropTypes.string.isRequired,
 		filters: fixPackFieldsType.isRequired,
-		fixPackJSONObject: PropTypes.oneOfType(
+		fixPackResultsURL: PropTypes.string.isRequired,
+		jsonObject: PropTypes.oneOfType(
 			[errorType, fixPackJSONObjectType]
-		).isRequired,
-		fixPackResultsURL: PropTypes.string.isRequired
+		).isRequired
 	};
 
 	state = {
@@ -54,11 +54,11 @@ export default class Highlights extends Component {
 	};
 
 	filterResults = () => {
-		const {fixPackJSONObject} = this.props;
+		const {jsonObject} = this.props;
 		const {filterBy} = this.state;
 
-		if (fixPackJSONObject.results) {
-			const newResults = fixPackJSONObject.results.filter(
+		if (jsonObject.results) {
+			const newResults = jsonObject.results.filter(
 				result => {
 					return filterBy.every(
 						filter => result.fieldsUsed[filter]
@@ -72,7 +72,7 @@ export default class Highlights extends Component {
 			};
 		}
 
-		return fixPackJSONObject;
+		return jsonObject;
 	};
 
 	render() {
