@@ -1031,9 +1031,7 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("testrayCaseComposites", testrayCaseComposites);
 
-		List<TestrayCase> testrayCases = TestrayCaseLocalServiceUtil.getTestrayCases(-1, -1);
-
-		JSONArray testrayCasesJSONArray = _getTestrayCasesJSONArray(testrayCases);
+		JSONArray testrayCasesJSONArray = _getTestrayCasesJSONArray(testrayCaseComposites);
 
 		portletRequest.setAttribute("testrayCasesJSONArray", testrayCasesJSONArray);
 
