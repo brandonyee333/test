@@ -3,7 +3,7 @@
 exports[`ModuleChanges renders correctly 1`] = `
 <div>
   <div
-    class="col-md-3"
+    class="col-md-3 module-changes-filter"
   >
     <div
       class="refine-by-filters"
@@ -14,6 +14,74 @@ exports[`ModuleChanges renders correctly 1`] = `
         <h3>
           refine-by
         </h3>
+      </div>
+      <input
+        class="input-small text-filter"
+        placeholder="name"
+        type="text"
+      />
+      <div
+        class="filter-subsection module-groups semibold"
+      >
+        group
+        <div
+          class="filter-checkbox-container"
+        >
+          <label>
+            <input
+              class="filter-checkbox"
+              name="Liferay Artifacts"
+              type="checkbox"
+              value="0"
+            />
+            <span
+              class="filter-checkbox-label"
+            >
+              Liferay Artifacts
+            </span>
+          </label>
+        </div>
+        <div
+          class="filter-checkbox-container"
+        >
+          <label>
+            <input
+              class="filter-checkbox"
+              name="Third Party Libraries"
+              type="checkbox"
+              value="1"
+            />
+            <span
+              class="filter-checkbox-label"
+            >
+              Third Party Libraries
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        class="filter-subsection module-changes-toggle semibold"
+      >
+        only-show
+        <div
+          class="toggle"
+        >
+          <label>
+            <input
+              class="toggle-switch"
+              type="checkbox"
+            />
+            <span
+              aria-hidden="true"
+              class="toggle-switch-bar"
+            >
+              <span
+                class="toggle-switch-handle"
+              />
+            </span>
+          </label>
+          changes
+        </div>
       </div>
     </div>
   </div>
@@ -53,12 +121,14 @@ exports[`ModuleChanges renders correctly 1`] = `
             class="lfr-from-version-column"
           >
             fixpack
+             
             1.0.1
           </th>
           <th
             class="lfr-to-version-column"
           >
             fixpack
+             
             1.0.8
           </th>
         </tr>
@@ -139,7 +209,7 @@ exports[`ModuleChanges renders correctly 1`] = `
 exports[`ModuleChanges renders no results correctly 1`] = `
 <div>
   <div
-    class="col-md-3"
+    class="col-md-3 module-changes-filter"
   >
     <div
       class="refine-by-filters"
@@ -150,6 +220,74 @@ exports[`ModuleChanges renders no results correctly 1`] = `
         <h3>
           refine-by
         </h3>
+      </div>
+      <input
+        class="input-small text-filter"
+        placeholder="name"
+        type="text"
+      />
+      <div
+        class="filter-subsection module-groups semibold"
+      >
+        group
+        <div
+          class="filter-checkbox-container"
+        >
+          <label>
+            <input
+              class="filter-checkbox"
+              name="Liferay Artifacts"
+              type="checkbox"
+              value="0"
+            />
+            <span
+              class="filter-checkbox-label"
+            >
+              Liferay Artifacts
+            </span>
+          </label>
+        </div>
+        <div
+          class="filter-checkbox-container"
+        >
+          <label>
+            <input
+              class="filter-checkbox"
+              name="Third Party Libraries"
+              type="checkbox"
+              value="1"
+            />
+            <span
+              class="filter-checkbox-label"
+            >
+              Third Party Libraries
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        class="filter-subsection module-changes-toggle semibold"
+      >
+        only-show
+        <div
+          class="toggle"
+        >
+          <label>
+            <input
+              class="toggle-switch"
+              type="checkbox"
+            />
+            <span
+              aria-hidden="true"
+              class="toggle-switch-bar"
+            >
+              <span
+                class="toggle-switch-handle"
+              />
+            </span>
+          </label>
+          changes
+        </div>
       </div>
     </div>
   </div>
@@ -189,12 +327,14 @@ exports[`ModuleChanges renders no results correctly 1`] = `
             class="lfr-from-version-column"
           >
             fixpack
+             
             1.0.6
           </th>
           <th
             class="lfr-to-version-column"
           >
             fixpack
+             
             1.0.8
           </th>
         </tr>
