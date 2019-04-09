@@ -44,7 +44,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <div class="main-heading">
 	<h1>
-		<liferay-ui:message key="liferay-dxp-release-notes-tool" />
+		<liferay-ui:message key="liferay-dxp-release-notes" />
 	</h1>
 </div>
 
