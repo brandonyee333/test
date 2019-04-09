@@ -74,8 +74,8 @@
 		cursor: pointer;
 	}
 
-	&.arrow-up.asc,
-	&.arrow-down.desc {
+	&.arrow-down.desc,
+	&.arrow-up.asc {
 		transform: rotate(180deg);
 	}
 }
