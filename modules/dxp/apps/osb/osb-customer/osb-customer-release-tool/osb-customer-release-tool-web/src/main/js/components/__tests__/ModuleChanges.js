@@ -45,7 +45,7 @@ const setup = () => {
 	const utils = render(
 		<ModuleChanges
 			description="Description for Module Changes tab."
-			endpoint='/'
+			endpoint="/"
 			filters={filters}
 			fromFixPackVersion="1.0.1"
 			jsonObject={jsonObject}
@@ -71,7 +71,7 @@ describe('ModuleChanges', () => {
 		const {container} = render(
 			<ModuleChanges
 				description="Description for Module Changes tab."
-				endpoint='/'
+				endpoint="/"
 				filters={filters}
 				fromFixPackVersion="1.0.6"
 				jsonObject={noResults}
@@ -80,5 +80,44 @@ describe('ModuleChanges', () => {
 		);
 
 		expect(container).toMatchSnapshot();
+	});
+
+	it('shows a Clear All option when a filter is selected and removes the option when all filters are unselected', () => {
+		const {container, queryByText} = setup();
+
+		fireEvent.click(container.querySelector('input[type=checkbox]'));
+
+		expect(queryByText('clear-all')).toBeTruthy();
+
+		fireEvent.click(container.querySelector('input[type=checkbox]'));
+
+		expect(queryByText('clear-all')).toBeFalsy();
+	});
+
+	it('clears all filter selections, text input, and toggle when Clear All is clicked', () => {
+		const {container, getByText} = setup();
+
+		const checkbox = container.querySelector('input[type=checkbox]');
+		const textInput = container.querySelector('input[type=text]');
+		const toggle = container.querySelector('.toggle-switch');
+
+		fireEvent.click(checkbox);
+		fireEvent.change(textInput, {
+			target: {
+				value: 'test'
+			}
+		});
+
+		fireEvent.change(toggle, {
+			target: {
+				checked: true
+			}
+		});
+
+		fireEvent.click(getByText('clear-all'));
+
+		expect(checkbox.checked).toBeFalsy();
+		expect(textInput.value).toBe('');
+		expect(toggle.checked).toBeFalsy();
 	});
 });

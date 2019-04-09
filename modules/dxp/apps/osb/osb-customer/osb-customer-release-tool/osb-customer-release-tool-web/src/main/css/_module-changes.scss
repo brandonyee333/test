@@ -23,17 +23,26 @@
 			margin-right: $margin-sm;
 		}
 	}
+
+	.module-changed {
+		color: $color-default;
+
+		a {
+			color: $color-primary;
+		}
+
+		.lfr-name-column:before {
+			border-left: 2.5px solid $color-success;
+		}
+	}
 }
 
-.module-changed {
-	color: $color-default;
-
-	a {
-		color: $color-primary;
-	}
-
-	.lfr-name-column:before {
-		border-left: 2.5px solid $color-success;
+.module-changes-toggle {
+	.toggle {
+		align-items: center;
+		display: flex;
+		font-size: $font-size-md;
+		margin: $margin-default 0 0;
 	}
 }
 

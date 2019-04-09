@@ -141,12 +141,12 @@ export default class Changelog extends Component {
 
 		const {namespace} = window.ReleaseToolConstants;
 
-		const encodedComponents = encodeURIComponent(components.toString());
-		const encodedKeywords = encodeURIComponent(keywords);
+		const encodedComponentsParam = encodeURIComponent(components.toString());
+		const encodedKeywordsParam = encodeURIComponent(keywords);
 
 		axios
 			.get(
-				`${endpoint}&${namespace}components=${encodedComponents}&${namespace}keywords=${encodedKeywords}&${namespace}startAt=${startAt}`
+				`${endpoint}&${namespace}components=${encodedComponentsParam}&${namespace}keywords=${encodedKeywordsParam}&${namespace}startAt=${startAt}`
 			)
 			.then(
 				({data}) => {

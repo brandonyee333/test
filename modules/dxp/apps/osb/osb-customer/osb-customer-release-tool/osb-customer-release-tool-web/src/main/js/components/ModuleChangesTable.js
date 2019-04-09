@@ -37,11 +37,11 @@ export const tableHeader = (
 		</th>
 		<th className="lfr-group-column">{Liferay.Language.get('group')}</th>
 		<th className="lfr-from-version-column">
-			{Liferay.Language.get('fixpack')}
+			{Liferay.Language.get('fixpack')}{' '}
 			{fromFixPackVersion}
 		</th>
 		<th className="lfr-to-version-column">
-			{Liferay.Language.get('fixpack')}
+			{Liferay.Language.get('fixpack')}{' '}
 			{toFixPackVersion}
 		</th>
 	</Fragment>
