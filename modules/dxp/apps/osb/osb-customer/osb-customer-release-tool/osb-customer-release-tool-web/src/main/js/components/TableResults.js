@@ -36,6 +36,8 @@ TableResults.propTypes = {
 };
 
 const displayTabName = name => {
+	// Liferay.Language.get() only accepts string parameter.
+
 	let tabName = Liferay.Language.get('module-changes');
 
 	if (name === 'highlights') {
