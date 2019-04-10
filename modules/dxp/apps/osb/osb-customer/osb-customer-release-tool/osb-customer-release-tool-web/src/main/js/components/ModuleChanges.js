@@ -225,7 +225,7 @@ export default class ModuleChanges extends Component {
 									checkbox => (
 										<FilterCheckbox
 											key={checkbox.value}
-											checked={!!owners.includes(checkbox.value.toString())}
+											checked={!!owners.includes(checkbox.value)}
 											handleOnChange={this.handleCheckboxChange}
 											label={checkbox.label}
 											value={checkbox.value}

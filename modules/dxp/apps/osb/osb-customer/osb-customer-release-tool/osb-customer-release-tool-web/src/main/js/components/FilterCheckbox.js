@@ -10,12 +10,7 @@ export default class FilterCheckbox extends Component {
 		checked: PropTypes.bool,
 		handleOnChange: PropTypes.func.isRequired,
 		label: PropTypes.string.isRequired,
-		value: PropTypes.oneOfType(
-			[
-				PropTypes.number,
-				PropTypes.string
-			]
-		).isRequired
+		value: PropTypes.string.isRequired
 	};
 
 	handleOnChange = event => {

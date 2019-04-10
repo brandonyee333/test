@@ -7,11 +7,11 @@ const setup = () => {
 	const filters = [
 		{
 			label: 'Liferay Artifacts',
-			value: 0
+			value: '0'
 		},
 		{
 			label: 'Third Party Libraries',
-			value: 1
+			value: '1'
 		}
 	];
 

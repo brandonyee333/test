@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export const artifactVersionFiltersType = PropTypes.arrayOf(
 	PropTypes.shape({
 		label: PropTypes.string,
-		value: PropTypes.number
+		value: PropTypes.string
 	})
 );
 
