@@ -176,10 +176,13 @@ insert into ListType (listTypeId, name, type_) values (29006, 'oracle-jdk-8', 'c
 insert into ListType (listTypeId, name, type_) values (29007, 'ibm-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29008, 'oracle-openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29009, 'oracle-openjdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29010, 'adoptopenjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29011, 'adoptopenjdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29012, 'azul-zulu-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29013, 'azul-zulu-jdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29014, 'red-hat-openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29015, 'red-hat-openjdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29016, 'oracle-jdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29017, 'amazon-corretto-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29018, 'amazon-corretto-jdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 
 insert into ListType (listTypeId, name, type_) values (30000, 'linux', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30001, 'mac-os-x', 'com.liferay.osb.model.AccountEnvironment.envOS');
@@ -328,6 +331,8 @@ insert into ListType (listTypeId, name, type_) values (39003, 'azure-files', 'co
 insert into ListType (listTypeId, name, type_) values (39004, 'azure-sql-databases', 'com.liferay.osb.model.AccountEnvironment.envCS');
 insert into ListType (listTypeId, name, type_) values (39005, 'azure-virtual-machines', 'com.liferay.osb.model.AccountEnvironment.envCS');
 insert into ListType (listTypeId, name, type_) values (39006, 'aws-aurora', 'com.liferay.osb.model.AccountEnvironment.envCS');
+insert into ListType (listTypeId, name, type_) values (39007, 'google-cloud-compute', 'com.liferay.osb.model.AccountEnvironment.envCS');
+insert into ListType (listTypeId, name, type_) values (39008, 'google-cloud-sql', 'com.liferay.osb.model.AccountEnvironment.envCS');
 
 insert into ListType (listTypeId, name, type_) values (40000, 'elasticsearch-2.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40001, 'kibana-4.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
