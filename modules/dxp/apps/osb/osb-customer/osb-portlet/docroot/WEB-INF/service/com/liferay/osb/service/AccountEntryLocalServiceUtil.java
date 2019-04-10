@@ -698,6 +698,15 @@ public class AccountEntryLocalServiceUtil {
 			.updateLastAuditDate(userId, accountEntryId, auditLabel, auditValue);
 	}
 
+	public static void updateLastZendeskAuditDate(long userId,
+		long accountEntryId, java.lang.String auditLabel,
+		java.lang.String auditValue)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService()
+			.updateLastZendeskAuditDate(userId, accountEntryId, auditLabel,
+			auditValue);
+	}
+
 	public static void updateStatus(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateStatus(accountEntryId);

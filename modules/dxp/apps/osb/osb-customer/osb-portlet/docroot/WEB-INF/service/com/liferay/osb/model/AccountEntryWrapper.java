@@ -86,6 +86,7 @@ public class AccountEntryWrapper implements AccountEntry,
 		attributes.put("activeSupport", getActiveSupport());
 		attributes.put("activeTicketSupport", getActiveTicketSupport());
 		attributes.put("lastAuditDate", getLastAuditDate());
+		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -267,6 +268,12 @@ public class AccountEntryWrapper implements AccountEntry,
 
 		if (lastAuditDate != null) {
 			setLastAuditDate(lastAuditDate);
+		}
+
+		Date lastZendeskAuditDate = (Date)attributes.get("lastZendeskAuditDate");
+
+		if (lastZendeskAuditDate != null) {
+			setLastZendeskAuditDate(lastZendeskAuditDate);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -758,6 +765,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
+	* Returns the last zendesk audit date of this account entry.
+	*
+	* @return the last zendesk audit date of this account entry
+	*/
+	@Override
+	public Date getLastZendeskAuditDate() {
+		return _accountEntry.getLastZendeskAuditDate();
+	}
+
+	/**
 	* Returns the modified date of this account entry.
 	*
 	* @return the modified date of this account entry
@@ -1107,6 +1124,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setLastAuditDate(Date lastAuditDate) {
 		_accountEntry.setLastAuditDate(lastAuditDate);
+	}
+
+	/**
+	* Sets the last zendesk audit date of this account entry.
+	*
+	* @param lastZendeskAuditDate the last zendesk audit date of this account entry
+	*/
+	@Override
+	public void setLastZendeskAuditDate(Date lastZendeskAuditDate) {
+		_accountEntry.setLastZendeskAuditDate(lastZendeskAuditDate);
 	}
 
 	/**

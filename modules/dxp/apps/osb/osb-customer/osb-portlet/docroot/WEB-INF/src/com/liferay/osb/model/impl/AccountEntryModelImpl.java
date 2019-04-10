@@ -99,6 +99,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			{ "activeSupport", Types.BOOLEAN },
 			{ "activeTicketSupport", Types.BOOLEAN },
 			{ "lastAuditDate", Types.TIMESTAMP },
+			{ "lastZendeskAuditDate", Types.TIMESTAMP },
 			{ "status", Types.INTEGER },
 			{ "statusByUserId", Types.BIGINT },
 			{ "statusByUserName", Types.VARCHAR },
@@ -136,6 +137,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("activeSupport", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("activeTicketSupport", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("lastAuditDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("lastZendeskAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
@@ -143,7 +145,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("statusMessage", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,dossieraAccountKey VARCHAR(75) null,corpEntryName VARCHAR(255) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,dossieraAccountKey VARCHAR(75) null,corpEntryName VARCHAR(255) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastAuditDate DATE null,lastZendeskAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.name ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.name ASC";
@@ -212,6 +214,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		model.setActiveSupport(soapModel.getActiveSupport());
 		model.setActiveTicketSupport(soapModel.getActiveTicketSupport());
 		model.setLastAuditDate(soapModel.getLastAuditDate());
+		model.setLastZendeskAuditDate(soapModel.getLastZendeskAuditDate());
 		model.setStatus(soapModel.getStatus());
 		model.setStatusByUserId(soapModel.getStatusByUserId());
 		model.setStatusByUserName(soapModel.getStatusByUserName());
@@ -323,6 +326,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		attributes.put("activeSupport", getActiveSupport());
 		attributes.put("activeTicketSupport", getActiveTicketSupport());
 		attributes.put("lastAuditDate", getLastAuditDate());
+		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -507,6 +511,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if (lastAuditDate != null) {
 			setLastAuditDate(lastAuditDate);
+		}
+
+		Date lastZendeskAuditDate = (Date)attributes.get("lastZendeskAuditDate");
+
+		if (lastZendeskAuditDate != null) {
+			setLastZendeskAuditDate(lastZendeskAuditDate);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -1063,6 +1073,17 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@JSON
 	@Override
+	public Date getLastZendeskAuditDate() {
+		return _lastZendeskAuditDate;
+	}
+
+	@Override
+	public void setLastZendeskAuditDate(Date lastZendeskAuditDate) {
+		_lastZendeskAuditDate = lastZendeskAuditDate;
+	}
+
+	@JSON
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -1293,6 +1314,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryImpl.setActiveSupport(getActiveSupport());
 		accountEntryImpl.setActiveTicketSupport(getActiveTicketSupport());
 		accountEntryImpl.setLastAuditDate(getLastAuditDate());
+		accountEntryImpl.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		accountEntryImpl.setStatus(getStatus());
 		accountEntryImpl.setStatusByUserId(getStatusByUserId());
 		accountEntryImpl.setStatusByUserName(getStatusByUserName());
@@ -1534,6 +1556,15 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			accountEntryCacheModel.lastAuditDate = Long.MIN_VALUE;
 		}
 
+		Date lastZendeskAuditDate = getLastZendeskAuditDate();
+
+		if (lastZendeskAuditDate != null) {
+			accountEntryCacheModel.lastZendeskAuditDate = lastZendeskAuditDate.getTime();
+		}
+		else {
+			accountEntryCacheModel.lastZendeskAuditDate = Long.MIN_VALUE;
+		}
+
 		accountEntryCacheModel.status = getStatus();
 
 		accountEntryCacheModel.statusByUserId = getStatusByUserId();
@@ -1568,7 +1599,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(69);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1626,6 +1657,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getActiveTicketSupport());
 		sb.append(", lastAuditDate=");
 		sb.append(getLastAuditDate());
+		sb.append(", lastZendeskAuditDate=");
+		sb.append(getLastZendeskAuditDate());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append(", statusByUserId=");
@@ -1643,7 +1676,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(103);
+		StringBundler sb = new StringBundler(106);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1762,6 +1795,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getLastAuditDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>lastZendeskAuditDate</column-name><column-value><![CDATA[");
+		sb.append(getLastZendeskAuditDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
 		sb.append("]]></column-value></column>");
@@ -1836,6 +1873,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private boolean _activeSupport;
 	private boolean _activeTicketSupport;
 	private Date _lastAuditDate;
+	private Date _lastZendeskAuditDate;
 	private int _status;
 	private int _originalStatus;
 	private boolean _setOriginalStatus;

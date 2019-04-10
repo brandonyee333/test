@@ -529,6 +529,20 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setLastAuditDate(Date lastAuditDate);
 
 	/**
+	 * Returns the last zendesk audit date of this account entry.
+	 *
+	 * @return the last zendesk audit date of this account entry
+	 */
+	public Date getLastZendeskAuditDate();
+
+	/**
+	 * Sets the last zendesk audit date of this account entry.
+	 *
+	 * @param lastZendeskAuditDate the last zendesk audit date of this account entry
+	 */
+	public void setLastZendeskAuditDate(Date lastZendeskAuditDate);
+
+	/**
 	 * Returns the status of this account entry.
 	 *
 	 * @return the status of this account entry

@@ -110,6 +110,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		attributes.put("activeSupport", getActiveSupport());
 		attributes.put("activeTicketSupport", getActiveTicketSupport());
 		attributes.put("lastAuditDate", getLastAuditDate());
+		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -294,6 +295,12 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 		if (lastAuditDate != null) {
 			setLastAuditDate(lastAuditDate);
+		}
+
+		Date lastZendeskAuditDate = (Date)attributes.get("lastZendeskAuditDate");
+
+		if (lastZendeskAuditDate != null) {
+			setLastZendeskAuditDate(lastZendeskAuditDate);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -1030,6 +1037,30 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
+	public Date getLastZendeskAuditDate() {
+		return _lastZendeskAuditDate;
+	}
+
+	@Override
+	public void setLastZendeskAuditDate(Date lastZendeskAuditDate) {
+		_lastZendeskAuditDate = lastZendeskAuditDate;
+
+		if (_accountEntryRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountEntryRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setLastZendeskAuditDate",
+						Date.class);
+
+				method.invoke(_accountEntryRemoteModel, lastZendeskAuditDate);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -1674,6 +1705,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		clone.setActiveSupport(getActiveSupport());
 		clone.setActiveTicketSupport(getActiveTicketSupport());
 		clone.setLastAuditDate(getLastAuditDate());
+		clone.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		clone.setStatus(getStatus());
 		clone.setStatusByUserId(getStatusByUserId());
 		clone.setStatusByUserName(getStatusByUserName());
@@ -1739,7 +1771,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(69);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1797,6 +1829,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getActiveTicketSupport());
 		sb.append(", lastAuditDate=");
 		sb.append(getLastAuditDate());
+		sb.append(", lastZendeskAuditDate=");
+		sb.append(getLastZendeskAuditDate());
 		sb.append(", status=");
 		sb.append(getStatus());
 		sb.append(", statusByUserId=");
@@ -1814,7 +1848,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(103);
+		StringBundler sb = new StringBundler(106);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1933,6 +1967,10 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getLastAuditDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
+			"<column><column-name>lastZendeskAuditDate</column-name><column-value><![CDATA[");
+		sb.append(getLastZendeskAuditDate());
+		sb.append("]]></column-value></column>");
+		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
 		sb.append("]]></column-value></column>");
@@ -1986,6 +2024,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	private boolean _activeSupport;
 	private boolean _activeTicketSupport;
 	private Date _lastAuditDate;
+	private Date _lastZendeskAuditDate;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;

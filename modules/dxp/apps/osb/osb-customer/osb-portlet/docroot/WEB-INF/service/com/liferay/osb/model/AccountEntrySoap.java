@@ -62,6 +62,7 @@ public class AccountEntrySoap implements Serializable {
 		soapModel.setActiveSupport(model.getActiveSupport());
 		soapModel.setActiveTicketSupport(model.getActiveTicketSupport());
 		soapModel.setLastAuditDate(model.getLastAuditDate());
+		soapModel.setLastZendeskAuditDate(model.getLastZendeskAuditDate());
 		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusByUserId(model.getStatusByUserId());
 		soapModel.setStatusByUserName(model.getStatusByUserName());
@@ -355,6 +356,14 @@ public class AccountEntrySoap implements Serializable {
 		_lastAuditDate = lastAuditDate;
 	}
 
+	public Date getLastZendeskAuditDate() {
+		return _lastZendeskAuditDate;
+	}
+
+	public void setLastZendeskAuditDate(Date lastZendeskAuditDate) {
+		_lastZendeskAuditDate = lastZendeskAuditDate;
+	}
+
 	public int getStatus() {
 		return _status;
 	}
@@ -423,6 +432,7 @@ public class AccountEntrySoap implements Serializable {
 	private boolean _activeSupport;
 	private boolean _activeTicketSupport;
 	private Date _lastAuditDate;
+	private Date _lastZendeskAuditDate;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;

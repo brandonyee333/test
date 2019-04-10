@@ -768,6 +768,14 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public void updateLastZendeskAuditDate(long userId, long accountEntryId,
+		java.lang.String auditLabel, java.lang.String auditValue)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountEntryLocalService.updateLastZendeskAuditDate(userId,
+			accountEntryId, auditLabel, auditValue);
+	}
+
+	@Override
 	public void updateStatus(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.updateStatus(accountEntryId);

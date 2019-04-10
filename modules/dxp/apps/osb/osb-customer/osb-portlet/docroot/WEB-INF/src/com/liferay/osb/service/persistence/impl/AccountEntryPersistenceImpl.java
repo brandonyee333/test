@@ -7685,6 +7685,7 @@ public class AccountEntryPersistenceImpl extends BasePersistenceImpl<AccountEntr
 		accountEntryImpl.setActiveSupport(accountEntry.isActiveSupport());
 		accountEntryImpl.setActiveTicketSupport(accountEntry.isActiveTicketSupport());
 		accountEntryImpl.setLastAuditDate(accountEntry.getLastAuditDate());
+		accountEntryImpl.setLastZendeskAuditDate(accountEntry.getLastZendeskAuditDate());
 		accountEntryImpl.setStatus(accountEntry.getStatus());
 		accountEntryImpl.setStatusByUserId(accountEntry.getStatusByUserId());
 		accountEntryImpl.setStatusByUserName(accountEntry.getStatusByUserName());

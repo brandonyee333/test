@@ -504,6 +504,10 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		java.lang.String auditLabel, java.lang.String auditValue)
 		throws PortalException;
 
+	public void updateLastZendeskAuditDate(long userId, long accountEntryId,
+		java.lang.String auditLabel, java.lang.String auditValue)
+		throws PortalException;
+
 	public void updateStatus(long accountEntryId) throws PortalException;
 
 	public void validate(AccountEntry accountEntry) throws PortalException;

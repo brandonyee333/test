@@ -53,6 +53,7 @@ create table OSB_AccountEntry (
 	activeSupport BOOLEAN,
 	activeTicketSupport BOOLEAN,
 	lastAuditDate DATE null,
+	lastZendeskAuditDate DATE null,
 	status INTEGER,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,

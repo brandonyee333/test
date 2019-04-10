@@ -450,13 +450,19 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				"long", "long", "java.lang.String", "java.lang.String"
 			};
 
-		_methodName81 = "updateStatus";
+		_methodName81 = "updateLastZendeskAuditDate";
 
-		_methodParameterTypes81 = new String[] { "long" };
+		_methodParameterTypes81 = new String[] {
+				"long", "long", "java.lang.String", "java.lang.String"
+			};
 
-		_methodName82 = "validate";
+		_methodName82 = "updateStatus";
 
-		_methodParameterTypes82 = new String[] {
+		_methodParameterTypes82 = new String[] { "long" };
+
+		_methodName83 = "validate";
+
+		_methodParameterTypes83 = new String[] {
 				"com.liferay.osb.model.AccountEntry"
 			};
 	}
@@ -2933,11 +2939,45 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	}
 
 	@Override
-	public void updateStatus(long accountEntryId)
+	public void updateLastZendeskAuditDate(long userId, long accountEntryId,
+		java.lang.String auditLabel, java.lang.String auditValue)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName81,
-				_methodParameterTypes81, new Object[] { accountEntryId });
+				_methodParameterTypes81,
+				new Object[] {
+					userId,
+					
+				accountEntryId,
+					
+				ClpSerializer.translateInput(auditLabel),
+					
+				ClpSerializer.translateInput(auditValue)
+				});
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
+	@Override
+	public void updateStatus(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName82,
+				_methodParameterTypes82, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2960,8 +3000,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	public void validate(com.liferay.osb.model.AccountEntry accountEntry)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName82,
-				_methodParameterTypes82,
+			_invokableLocalService.invokeMethod(_methodName83,
+				_methodParameterTypes83,
 				new Object[] { ClpSerializer.translateInput(accountEntry) });
 		}
 		catch (Throwable t) {
@@ -3146,4 +3186,6 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	private String[] _methodParameterTypes81;
 	private String _methodName82;
 	private String[] _methodParameterTypes82;
+	private String _methodName83;
+	private String[] _methodParameterTypes83;
 }

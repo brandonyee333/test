@@ -66,7 +66,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(67);
+		StringBundler sb = new StringBundler(69);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -124,6 +124,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		sb.append(activeTicketSupport);
 		sb.append(", lastAuditDate=");
 		sb.append(lastAuditDate);
+		sb.append(", lastZendeskAuditDate=");
+		sb.append(lastZendeskAuditDate);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append(", statusByUserId=");
@@ -248,6 +250,14 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 			accountEntryImpl.setLastAuditDate(new Date(lastAuditDate));
 		}
 
+		if (lastZendeskAuditDate == Long.MIN_VALUE) {
+			accountEntryImpl.setLastZendeskAuditDate(null);
+		}
+		else {
+			accountEntryImpl.setLastZendeskAuditDate(new Date(
+					lastZendeskAuditDate));
+		}
+
 		accountEntryImpl.setStatus(status);
 		accountEntryImpl.setStatusByUserId(statusByUserId);
 
@@ -322,6 +332,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 		activeTicketSupport = objectInput.readBoolean();
 		lastAuditDate = objectInput.readLong();
+		lastZendeskAuditDate = objectInput.readLong();
 
 		status = objectInput.readInt();
 
@@ -433,6 +444,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 		objectOutput.writeBoolean(activeTicketSupport);
 		objectOutput.writeLong(lastAuditDate);
+		objectOutput.writeLong(lastZendeskAuditDate);
 
 		objectOutput.writeInt(status);
 
@@ -483,6 +495,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public boolean activeSupport;
 	public boolean activeTicketSupport;
 	public long lastAuditDate;
+	public long lastZendeskAuditDate;
 	public int status;
 	public long statusByUserId;
 	public String statusByUserName;
