@@ -29,8 +29,7 @@ import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-
-import java.util.Date;
+import com.liferay.portal.kernel.util.DateUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -176,9 +175,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	protected boolean isUpdateAccountEntry(
 		AccountEntry oldAccountEntry, AccountEntry accountEntry) {
 
-		Date lastZendeskAuditDate = oldAccountEntry.getLastZendeskAuditDate();
-
-		if (!lastZendeskAuditDate.equals(
+		if (!DateUtil.equals(
+				oldAccountEntry.getLastZendeskAuditDate(),
 				accountEntry.getLastZendeskAuditDate())) {
 
 			return false;
