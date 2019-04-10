@@ -36,8 +36,7 @@ export default class SortableTable extends Component {
 		this.setState(
 			{
 				orderBy: orderBy === 'desc' ? 'asc' : 'desc'
-			},
-			() => this.sortResults()
+			}
 		);
 	};
 
