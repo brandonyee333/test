@@ -30,7 +30,7 @@ public interface UserCard extends BaseClayCard {
 	/**
 	 * @deprecated As of Judson (7.1.x), with no direct replacement
 	 */
-	@Deprecated	
+	@Deprecated
 	public default String getInitials() {
 		return null;
 	}
