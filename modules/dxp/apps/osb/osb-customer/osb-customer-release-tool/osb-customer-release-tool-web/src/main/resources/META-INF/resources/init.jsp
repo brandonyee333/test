@@ -32,7 +32,6 @@ page import="com.liferay.osb.customer.release.tool.web.internal.display.context.
 page import="com.liferay.osb.customer.release.tool.web.internal.search.ArtifactVersionSearcher" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.search.FixPackSearcher" %><%@
 page import="com.liferay.osb.customer.release.tool.web.internal.search.JiraIssueSearcher" %><%@
-page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletRequestModel" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@

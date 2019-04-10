@@ -24,8 +24,6 @@ String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
-JSONObject jsonObject = artifactVersionSearcher.search(renderRequest, renderResponse);
-
 String moduleChangesDescription = StringPool.BLANK;
 
 JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesJournalArticleId);
@@ -37,7 +35,7 @@ if (journalArticle != null) {
 }
 %>
 
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/artifact_versions" var="refinedArtifactVersionsURL">
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/artifact_versions" var="artifactVersionSearchURL">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="product" value="<%= product %>" />
@@ -52,10 +50,10 @@ if (journalArticle != null) {
 		ReleaseTool.ModuleChanges,
 		{
 			description: '<%= HtmlUtil.escapeJS(moduleChangesDescription) %>',
-			endpoint: '<%= refinedArtifactVersionsURL %>',
+			endpoint: '<%= artifactVersionSearchURL %>',
 			filters: <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>,
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
-			jsonObject: <%= jsonObject %>,
+			jsonObject: <%= artifactVersionSearcher.search(renderRequest, renderResponse) %>,
 			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />moduleChanges')

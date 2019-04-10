@@ -24,8 +24,6 @@ String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
-JSONObject jiraIssueJSONObject = jiraIssueSearcher.search(renderRequest, renderResponse);
-
 String changelogDescription = StringPool.BLANK;
 
 JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), changelogJournalArticleId);
@@ -37,7 +35,7 @@ if (journalArticle != null) {
 }
 %>
 
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/jira_issues" var="refinedJiraIssuesURL">
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/jira_issues" var="jiraIssueSearchURL ">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="product" value="<%= product %>" />
@@ -52,9 +50,9 @@ if (journalArticle != null) {
 		ReleaseTool.Changelog,
 		{
 			description: '<%= HtmlUtil.escapeJS(changelogDescription) %>',
-			endpoint: '<%= refinedJiraIssuesURL %>',
+			endpoint: '<%= jiraIssueSearchURL %>',
 			filters: <%= releaseToolDisplayContext.getJIRAComponentFiltersJSONArray() %>,
-			jsonObject: <%= jiraIssueJSONObject %>
+			jsonObject: <%= jiraIssueSearcher.search(renderRequest, renderResponse) %>
 		},
 		document.getElementById('<portlet:namespace />changelog')
 	);

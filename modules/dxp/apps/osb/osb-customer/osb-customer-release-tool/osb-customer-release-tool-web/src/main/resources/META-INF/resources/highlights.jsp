@@ -24,8 +24,6 @@ String product = ParamUtil.getString(request, "product");
 double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
-JSONObject fixPackJSONObject = fixPackSearcher.search(renderRequest, renderResponse);
-
 String highlightsDescription = StringPool.BLANK;
 
 JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), highlightsJournalArticleId);
@@ -37,7 +35,7 @@ if (journalArticle != null) {
 }
 %>
 
-<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPackResultsURL">
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/fix_packs" var="fixPackSearchURL">
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="product" value="<%= product %>" />
@@ -53,8 +51,8 @@ if (journalArticle != null) {
 		{
 			description: '<%= HtmlUtil.escapeJS(highlightsDescription) %>',
 			filters: <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>,
-			fixPackResultsURL: '<%= fixPackResultsURL %>',
-			jsonObject: <%= fixPackJSONObject %>
+			fixPackResultsURL: '<%= fixPackSearchURL %>',
+			jsonObject: <%= fixPackSearcher.search(renderRequest, renderResponse) %>
 		},
 		document.getElementById('<portlet:namespace />highlights')
 	);
