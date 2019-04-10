@@ -136,8 +136,6 @@ export const tableHeader = (orderBy, handleSort) => (
 				<use xlinkHref="#arrow-down" />
 			</svg>
 		</th>
-		<th className="lfr-key-column">
-			{Liferay.Language.get('key')}
-		</th>
+		<th className="lfr-key-column">{Liferay.Language.get('key')}</th>
 	</Fragment>
 );

@@ -34,7 +34,8 @@ export default class Changelog extends Component {
 	state = {
 		selectedFilters: {
 			components: [],
-			keywords: ''
+			keywords: '',
+			orderBy: 'asc'
 		},
 		jsonObject: this.props.jsonObject,
 		seeAllFilterValues: false
@@ -77,7 +78,11 @@ export default class Changelog extends Component {
 			}
 		);
 
-		this.queryJiraIssues(components, selectedFilters.keywords);
+		this.queryJiraIssues(
+			components,
+			selectedFilters.keywords,
+			selectedFilters.orderBy
+		);
 	};
 
 	handleClearFilter = () => {
@@ -85,7 +90,8 @@ export default class Changelog extends Component {
 			{
 				selectedFilters: {
 					components: [],
-					keywords: ''
+					keywords: '',
+					orderBy: 'asc'
 				}
 			}
 		);
@@ -108,7 +114,11 @@ export default class Changelog extends Component {
 				}
 			);
 
-			this.queryJiraIssues(selectedFilters.components, event.target.value);
+			this.queryJiraIssues(
+				selectedFilters.components,
+				event.target.value,
+				selectedFilters.orderBy
+			);
 		}
 	};
 
@@ -122,21 +132,42 @@ export default class Changelog extends Component {
 		);
 	};
 
-	handlePaginationClick = (number) => {
+	handlePaginationClick = number => {
 		const {
-			selectedFilters: {components, keywords}
+			selectedFilters: {components, keywords, orderBy}
 		} = this.state;
 
 		// startAt param begins at 0 and not 1
 
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
-		this.queryJiraIssues(components, keywords, startAt);
+		this.queryJiraIssues(components, keywords, orderBy, startAt);
 
 		window.scroll(0, 0);
 	};
 
-	queryJiraIssues = (components = [], keywords = '', startAt = 0) => {
+	handleQuerySortedResults = () => {
+		const {selectedFilters} = this.state;
+
+		const currentOrderBy = selectedFilters.orderBy === 'desc' ? 'asc' : 'desc';
+
+		this.setState(
+			{
+				selectedFilters: {
+					...selectedFilters,
+					orderBy: currentOrderBy
+				}
+			}
+		)
+
+		this.queryJiraIssues(
+			selectedFilters.components,
+			selectedFilters.keywords,
+			currentOrderBy
+		);
+	}
+
+	queryJiraIssues = (components = [], keywords = '', orderBy = 'asc', startAt = 0) => {
 		const {endpoint} = this.props;
 
 		const {namespace} = window.ReleaseToolConstants;
@@ -146,7 +177,7 @@ export default class Changelog extends Component {
 
 		axios
 			.get(
-				`${endpoint}&${namespace}components=${encodedComponentsParam}&${namespace}keywords=${encodedKeywordsParam}&${namespace}startAt=${startAt}`
+				`${endpoint}&${namespace}components=${encodedComponentsParam}&${namespace}keywords=${encodedKeywordsParam}&${namespace}orderByType=${orderBy}&${namespace}startAt=${startAt}`
 			)
 			.then(
 				({data}) => {
@@ -170,7 +201,7 @@ export default class Changelog extends Component {
 		const {description, filters} = this.props;
 		const {
 			jsonObject,
-			selectedFilters: {components, keywords},
+			selectedFilters: {components, keywords, orderBy},
 			seeAllFilterValues
 		} = this.state;
 
@@ -254,7 +285,10 @@ export default class Changelog extends Component {
 				<div className="col-md-9">
 					<TableResults
 						jsonObject={jsonObject}
-						orderBy='asc'
+						orderBy={orderBy}
+						sortingFunction={
+							totalPage > 1 ? this.handleQuerySortedResults : null
+						}
 						tab={{
 							tabDescription: description,
 							tabName: 'changelog'

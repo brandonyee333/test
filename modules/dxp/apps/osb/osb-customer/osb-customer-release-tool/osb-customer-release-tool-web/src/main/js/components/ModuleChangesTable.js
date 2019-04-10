@@ -25,24 +25,21 @@ export const tableBody = results =>
 		}
 	);
 
-export const tableHeader = (
-	orderBy,
-	handleSort,
-	fromFixPackVersion,
-	toFixPackVersion
-) => (
-	<Fragment>
-		<th className="lfr-name-column table-cell-content">
-			{Liferay.Language.get('name')}
-		</th>
-		<th className="lfr-group-column">{Liferay.Language.get('group')}</th>
-		<th className="lfr-from-version-column">
-			{Liferay.Language.get('fixpack')}{' '}
-			{fromFixPackVersion}
-		</th>
-		<th className="lfr-to-version-column">
-			{Liferay.Language.get('fixpack')}{' '}
-			{toFixPackVersion}
-		</th>
-	</Fragment>
-);
+export const tableHeader = (orderBy, handleSort, props) => {
+	const {fromFixPackVersion, toFixPackVersion} = props;
+
+	return (
+		<Fragment>
+			<th className="lfr-name-column table-cell-content">
+				{Liferay.Language.get('name')}
+			</th>
+			<th className="lfr-group-column">{Liferay.Language.get('group')}</th>
+			<th className="lfr-from-version-column">
+				{Liferay.Language.get('fixpack')} {fromFixPackVersion}
+			</th>
+			<th className="lfr-to-version-column">
+				{Liferay.Language.get('fixpack')} {toFixPackVersion}
+			</th>
+		</Fragment>
+	);
+};

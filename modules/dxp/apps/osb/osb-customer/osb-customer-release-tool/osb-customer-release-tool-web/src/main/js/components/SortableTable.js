@@ -6,24 +6,22 @@ import {jiraIssueJSONObjectType} from '../types/changelog';
 
 export default class SortableTable extends Component {
 	static defaultProps = {
-		fromFixPackVersion: '',
-		toFixPackVersion: ''
+		sortingFunction: null
 	};
 
 	static propTypes = {
-		fromFixPackVersion: PropTypes.string,
 		jsonObject: PropTypes.oneOfType(
 			[fixPackJSONObjectType, jiraIssueJSONObjectType]
 		).isRequired,
 		name: PropTypes.string.isRequired,
 		orderBy: PropTypes.oneOf(['asc', 'desc']).isRequired,
+		sortingFunction: PropTypes.func,
 		table: PropTypes.shape(
 			{
 				tableBody: PropTypes.func,
 				tableHeader: PropTypes.func,
 			}
-		).isRequired,
-		toFixPackVersion: PropTypes.string
+		).isRequired
 	};
 
 	state = {
@@ -31,6 +29,7 @@ export default class SortableTable extends Component {
 	};
 
 	handleSort = () => {
+		const {sortingFunction} = this.props;
 		const {orderBy} = this.state;
 
 		this.setState(
@@ -38,6 +37,10 @@ export default class SortableTable extends Component {
 				orderBy: orderBy === 'desc' ? 'asc' : 'desc'
 			}
 		);
+
+		if (sortingFunction) {
+			sortingFunction();
+		}
 	};
 
 	sortResults = newOrderBy => {
@@ -53,11 +56,9 @@ export default class SortableTable extends Component {
 
 	render() {
 		const {
-			fromFixPackVersion,
 			jsonObject: {total},
 			name,
-			table,
-			toFixPackVersion
+			table
 		} = this.props;
 		const {orderBy} = this.state;
 
@@ -88,8 +89,7 @@ export default class SortableTable extends Component {
 							{table.tableHeader(
 								orderBy,
 								this.handleSort,
-								fromFixPackVersion,
-								toFixPackVersion
+								this.props
 							)}
 						</tr>
 					</thead>
