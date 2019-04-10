@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
@@ -130,10 +131,20 @@ public class AccountEntrySynchronizer {
 	public void removeObsoleteTags(AccountEntry accountEntry)
 		throws PortalException {
 
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
+
+		Set<String> removeTags = new HashSet<>();
+
+		removeTags.add(
+			ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+
 		for (AccountCustomer accountCustomer :
 				accountEntry.getAccountCustomers()) {
 
-			_userSynchronizer.removeObsoleteTags(accountCustomer.getUserId());
+			_userSynchronizer.removeObsoleteTags(
+				accountCustomer.getUserId(), null, removeTags);
 		}
 	}
 

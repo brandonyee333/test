@@ -21,6 +21,16 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskModelListenerConfigurationValues {
 
+	public static final int ZENDESK_ACCOUNT_ENTRY_SYNC_BATCH =
+		GetterUtil.getInteger(
+			ZendeskModelListenerConfigurationUtil.get(
+				"zendesk.account.entry.sync.batch"));
+
+	public static final int ZENDESK_ACCOUNT_ENTRY_SYNC_INTERVAL =
+		GetterUtil.getInteger(
+			ZendeskModelListenerConfigurationUtil.get(
+				"zendesk.account.entry.sync.interval"));
+
 	public static final String ZENDESK_ADMIN_EMAIL_ADDRESS =
 		GetterUtil.getString(
 			ZendeskModelListenerConfigurationUtil.get(

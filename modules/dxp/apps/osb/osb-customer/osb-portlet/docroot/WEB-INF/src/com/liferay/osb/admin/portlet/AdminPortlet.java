@@ -541,7 +541,7 @@ public class AdminPortlet extends OSBPortlet {
 		message.put("accountEntryId", accountEntryId);
 
 		MessageBusUtil.sendMessage(
-			"liferay/account_entry_zendesk_sync", message);
+			"liferay/zendesk_account_entry_sync", message);
 	}
 
 	public void updateAccountCustomer(

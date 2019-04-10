@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.internal.messaging.config;
 
+import com.liferay.osb.customer.zendesk.model.listener.internal.constants.ZendeskDestinationNames;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
@@ -34,9 +35,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	service = AccountEntryZendeskSyncMessagingConfigurator.class
+	service = SynchronizeAccountEntryMessagingConfigurator.class
 )
-public class AccountEntryZendeskSyncMessagingConfigurator {
+public class SynchronizeAccountEntryMessagingConfigurator {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
@@ -45,7 +46,7 @@ public class AccountEntryZendeskSyncMessagingConfigurator {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/account_entry_zendesk_sync");
+				ZendeskDestinationNames.ACCOUNT_ENTRY_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);

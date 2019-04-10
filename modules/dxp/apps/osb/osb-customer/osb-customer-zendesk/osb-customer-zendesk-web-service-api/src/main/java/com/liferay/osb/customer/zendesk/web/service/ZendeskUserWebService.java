@@ -21,6 +21,7 @@ import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -53,6 +54,9 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public ZendeskUser getZendeskUserByExternalId(String externalId)
+		throws PortalException;
+
+	public List<ZendeskUser> getZendeskUsers(long[] zendeskUserIds)
 		throws PortalException;
 
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)

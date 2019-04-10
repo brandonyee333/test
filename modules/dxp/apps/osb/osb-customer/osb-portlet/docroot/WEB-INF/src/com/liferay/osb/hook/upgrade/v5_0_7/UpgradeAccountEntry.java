@@ -12,25 +12,20 @@
  *
  */
 
-package com.liferay.osb.hook.upgrade;
+package com.liferay.osb.hook.upgrade.v5_0_7;
 
-import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeAccountEntry;
-import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeListType;
+import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 
 /**
- * @author Jenny Chen
+ * @author Amos Fong
  */
-public class UpgradeProcess_5_0_7 extends BaseUpgradeProcess {
-
-	@Override
-	public int getThreshold() {
-		return 507;
-	}
+public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeAccountEntry.class);
-		upgrade(UpgradeListType.class);
+		runSQL(
+			"alter table OSB_AccountEntry add column lastZendeskAuditDate " +
+				"DATE");
 	}
 
 }

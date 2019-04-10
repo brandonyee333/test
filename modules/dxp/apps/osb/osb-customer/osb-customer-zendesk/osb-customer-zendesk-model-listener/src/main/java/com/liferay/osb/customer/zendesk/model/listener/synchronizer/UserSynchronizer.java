@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.HashSet;
 import java.util.List;
@@ -62,7 +63,7 @@ public class UserSynchronizer {
 
 		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 
-		sync(user, null, tags);
+		update(user, null, tags);
 	}
 
 	public void addPhone(long userId, Phone phone) throws PortalException {
@@ -81,86 +82,54 @@ public class UserSynchronizer {
 			zendeskUserId, zendeskUserIdentityId, "phone_number");
 	}
 
-	public void removeObsoleteTags(long userId) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+	public void removeObsoleteTags(
+			long userId, Set<String> currentTags,
+			Set<String> additionalObsoleteTags)
+		throws PortalException {
 
-		Set<String> tags = new HashSet<>();
+		Set<String> tags = getObsoleteTags(userId);
 
-		// Customer
-
-		boolean customer = false;
-
-		List<AccountCustomer> accountCustomers =
-			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
-
-		for (AccountCustomer accountCustomer : accountCustomers) {
-			if (accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_WATCHER) {
-
-				continue;
-			}
-
-			AccountEntry accountEntry = accountCustomer.getAccountEntry();
-
-			if (accountEntry.getActiveTicketSupport()) {
-				customer = true;
-
-				break;
-			}
+		if (additionalObsoleteTags != null) {
+			tags.addAll(additionalObsoleteTags);
 		}
 
-		if (!customer) {
-			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
-		}
-
-		// Partner
-
-		boolean partnerManagedSupportDeveloper = false;
-
-		List<PartnerWorker> partnerWorkers =
-			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
-
-		for (PartnerWorker partnerWorker : partnerWorkers) {
-			PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
-
-			List<AccountEntry> accountEntries =
-				partnerEntry.getPartnerManagedAccountEntries();
-
-			if (accountEntries.isEmpty()) {
-				continue;
-			}
-
-			if (partnerWorker.getRole() !=
-					PartnerWorkerConstants.ROLE_WATCHER) {
-
-				partnerManagedSupportDeveloper = true;
-
-				break;
-			}
-		}
-
-		if (!partnerManagedSupportDeveloper) {
-			tags.add(ZendeskTagConstants.OSB_PARTNER);
-		}
-
-		// Knowledge base
-
-		if (!customer && partnerWorkers.isEmpty() &&
-			!_organizationLocalService.hasUserOrganization(
-				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
-			!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-				userId, false)) {
-
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		if (currentTags != null) {
+			tags.retainAll(currentTags);
 		}
 
 		if (!tags.isEmpty()) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+
 			_asyncZendeskUserWebService.deleteZendeskUserTags(
 				zendeskUserId, tags);
 		}
 	}
 
-	public long sync(User user, String organizationName, Set<String> tags)
+	public void sync(ZendeskUser zendeskUser, User user, Set<String> tags)
+		throws PortalException {
+
+		String emailAddress = user.getEmailAddress();
+		String fullName = user.getFullName();
+		String locale = _zendeskLocaleUtil.convertToZendeskLocale(
+			user.getLanguageId());
+
+		if (!StringUtil.equalsIgnoreCase(
+				emailAddress, zendeskUser.getEmail()) ||
+			!StringUtil.equalsIgnoreCase(fullName, zendeskUser.getName()) ||
+			!StringUtil.equalsIgnoreCase(locale, zendeskUser.getLocale())) {
+
+			update(user, null, null);
+		}
+
+		tags.removeAll(zendeskUser.getTags());
+
+		if (!tags.isEmpty()) {
+			_zendeskUserWebService.addZendeskUserTags(
+				zendeskUser.getZendeskUserId(), tags);
+		}
+	}
+
+	public long update(User user, String organizationName, Set<String> tags)
 		throws PortalException {
 
 		String locale = _zendeskLocaleUtil.convertToZendeskLocale(
@@ -243,6 +212,80 @@ public class UserSynchronizer {
 		ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
 		return Long.valueOf(externalIdMapper.getExternalId());
+	}
+
+	protected Set<String> getObsoleteTags(long userId) throws PortalException {
+		Set<String> tags = new HashSet<>();
+
+		// Customer
+
+		boolean customer = false;
+
+		List<AccountCustomer> accountCustomers =
+			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
+
+		for (AccountCustomer accountCustomer : accountCustomers) {
+			if (accountCustomer.getRole() ==
+					AccountCustomerConstants.ROLE_WATCHER) {
+
+				continue;
+			}
+
+			AccountEntry accountEntry = accountCustomer.getAccountEntry();
+
+			if (accountEntry.getActiveTicketSupport()) {
+				customer = true;
+
+				break;
+			}
+		}
+
+		if (!customer) {
+			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
+		}
+
+		// Partner
+
+		boolean partnerManagedSupportDeveloper = false;
+
+		List<PartnerWorker> partnerWorkers =
+			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
+
+		for (PartnerWorker partnerWorker : partnerWorkers) {
+			PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
+
+			List<AccountEntry> accountEntries =
+				partnerEntry.getPartnerManagedAccountEntries();
+
+			if (accountEntries.isEmpty()) {
+				continue;
+			}
+
+			if (partnerWorker.getRole() !=
+					PartnerWorkerConstants.ROLE_WATCHER) {
+
+				partnerManagedSupportDeveloper = true;
+
+				break;
+			}
+		}
+
+		if (!partnerManagedSupportDeveloper) {
+			tags.add(ZendeskTagConstants.OSB_PARTNER);
+		}
+
+		// Knowledge base
+
+		if (!customer && partnerWorkers.isEmpty() &&
+			!_organizationLocalService.hasUserOrganization(
+				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
+			!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
+				userId, false)) {
+
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		}
+
+		return tags;
 	}
 
 	@Reference(target = "(async=true)")

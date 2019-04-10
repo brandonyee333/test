@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
+import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -83,7 +84,8 @@ public class PartnerWorkerSynchronizer {
 			}
 		}
 
-		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+		_userSynchronizer.removeObsoleteTags(
+			partnerWorker.getUserId(), null, null);
 	}
 
 	public void remove(PartnerWorker partnerWorker) throws PortalException {
@@ -99,7 +101,24 @@ public class PartnerWorkerSynchronizer {
 			}
 		}
 
-		_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+		_userSynchronizer.removeObsoleteTags(
+			partnerWorker.getUserId(), null, null);
+	}
+
+	public void sync(
+			ZendeskUser zendeskUser, long accountEntryId,
+			PartnerWorker partnerWorker)
+		throws PortalException {
+
+		User user = _userLocalService.getUser(partnerWorker.getUserId());
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+
+		Set<String> tags = getTags(
+			partnerWorker, new long[] {zendeskOrganizationId});
+
+		_userSynchronizer.sync(zendeskUser, user, tags);
 	}
 
 	public void updateRole(PartnerWorker partnerWorker) throws PortalException {
@@ -114,7 +133,8 @@ public class PartnerWorkerSynchronizer {
 					zendeskUserId, zendeskOrganizationIds);
 			}
 
-			_userSynchronizer.removeObsoleteTags(partnerWorker.getUserId());
+			_userSynchronizer.removeObsoleteTags(
+				partnerWorker.getUserId(), null, null);
 		}
 		else {
 			add(partnerWorker);
@@ -145,6 +165,14 @@ public class PartnerWorkerSynchronizer {
 
 		User user = _userLocalService.getUser(partnerWorker.getUserId());
 
+		Set<String> tags = getTags(partnerWorker, zendeskOrganizationIds);
+
+		return _userSynchronizer.update(user, null, tags);
+	}
+
+	protected Set<String> getTags(
+		PartnerWorker partnerWorker, long[] zendeskOrganizationIds) {
+
 		Set<String> tags = new HashSet<>();
 
 		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
@@ -155,7 +183,7 @@ public class PartnerWorkerSynchronizer {
 			tags.add(ZendeskTagConstants.OSB_PARTNER);
 		}
 
-		return _userSynchronizer.sync(user, null, tags);
+		return tags;
 	}
 
 	protected long[] getZendeskOrganizationIds(PartnerWorker partnerWorker)

@@ -12,25 +12,14 @@
  *
  */
 
-package com.liferay.osb.hook.upgrade;
-
-import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeAccountEntry;
-import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeListType;
+package com.liferay.osb.customer.zendesk.model.listener.internal.constants;
 
 /**
- * @author Jenny Chen
+ * @author Amos Fong
  */
-public class UpgradeProcess_5_0_7 extends BaseUpgradeProcess {
+public class ZendeskDestinationNames {
 
-	@Override
-	public int getThreshold() {
-		return 507;
-	}
-
-	@Override
-	protected void doUpgrade() throws Exception {
-		upgrade(UpgradeAccountEntry.class);
-		upgrade(UpgradeListType.class);
-	}
+	public static final String ACCOUNT_ENTRY_SYNC =
+		"liferay/zendesk_account_entry_sync";
 
 }

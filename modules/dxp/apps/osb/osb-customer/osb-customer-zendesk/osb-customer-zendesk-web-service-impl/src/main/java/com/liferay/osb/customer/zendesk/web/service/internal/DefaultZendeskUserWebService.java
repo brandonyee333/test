@@ -30,9 +30,11 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -143,6 +145,21 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		}
 
 		return zendeskConverter.toZendeskUser(usersJSONArray.getJSONObject(0));
+	}
+
+	public List<ZendeskUser> getZendeskUsers(long[] zendeskUserIds)
+		throws PortalException {
+
+		String endpoint =
+			ZendeskRESTEndpoints.URL_API_V2 + "users/show_many.json?ids=" +
+				StringUtil.merge(zendeskUserIds);
+
+		JSONObject jsonObject = zendeskBaseWebService.get(
+			endpoint, StringPool.BLANK);
+
+		JSONArray usersJSONArray = jsonObject.getJSONArray("users");
+
+		return zendeskConverter.toZendeskUsers(usersJSONArray);
 	}
 
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)

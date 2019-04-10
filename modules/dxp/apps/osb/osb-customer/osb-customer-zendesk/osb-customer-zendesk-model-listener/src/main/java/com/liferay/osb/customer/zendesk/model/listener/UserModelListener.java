@@ -86,7 +86,7 @@ public class UserModelListener extends BaseModelListener<User> {
 				if (organizationId ==
 						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) {
 
-					_userSynchronizer.removeObsoleteTags(userId);
+					_userSynchronizer.removeObsoleteTags(userId, null, null);
 				}
 			}
 		}
@@ -115,7 +115,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			if (!oldFirstName.equals(user.getFirstName()) ||
 				!oldLastName.equals(user.getLastName())) {
 
-				_userSynchronizer.sync(user, null, null);
+				_userSynchronizer.update(user, null, null);
 			}
 		}
 		catch (Exception e) {

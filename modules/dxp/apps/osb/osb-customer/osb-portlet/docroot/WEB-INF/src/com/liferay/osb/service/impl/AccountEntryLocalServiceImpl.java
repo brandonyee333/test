@@ -1716,6 +1716,37 @@ public class AccountEntryLocalServiceImpl
 			StringPool.BLANK, true, false);
 	}
 
+	public void updateLastZendeskAuditDate(
+			long userId, long accountEntryId, String auditLabel,
+			String auditValue)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+		Date now = new Date();
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		accountEntry.setLastZendeskAuditDate(now);
+
+		accountEntryPersistence.update(accountEntry);
+
+		if (Validator.isNotNull(auditLabel) ||
+			Validator.isNotNull(auditValue)) {
+
+			long classNameId = classNameLocalService.getClassNameId(
+				AccountEntry.class.getName());
+
+			auditEntryLocalService.addAuditEntry(
+				userId, user.getFullName(), now, classNameId, accountEntryId, 0,
+				classNameId, accountEntryId, AuditEntryConstants.ACTION_AUDIT,
+				AuditEntryConstants.FIELD_NOT_APPLICABLE,
+				VisibilityConstants.ADMIN, auditLabel, auditValue,
+				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,
+				false);
+		}
+	}
+
 	public void updateStatus(long accountEntryId) throws PortalException {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
