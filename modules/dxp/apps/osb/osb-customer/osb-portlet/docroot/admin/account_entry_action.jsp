@@ -72,12 +72,14 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		url="<%= viewOrdersEntriesURL %>"
 	/>
 
-	<portlet:actionURL name="deleteAccountEntry" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-		<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
-	</portlet:actionURL>
+	<c:if test="<%= OSBAccountEntryPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>">
+		<portlet:actionURL name="deleteAccountEntry" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+			<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+			<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+		</portlet:actionURL>
 
-	<liferay-ui:icon-delete
-		url="<%= deleteURL %>"
-	/>
+		<liferay-ui:icon-delete
+			url="<%= deleteURL %>"
+		/>
+	</c:if>
 </liferay-ui:icon-menu>

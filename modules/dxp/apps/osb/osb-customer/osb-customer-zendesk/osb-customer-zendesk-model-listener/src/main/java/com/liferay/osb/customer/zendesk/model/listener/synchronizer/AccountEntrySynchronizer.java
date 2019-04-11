@@ -24,6 +24,7 @@ import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
@@ -116,6 +117,43 @@ public class AccountEntrySynchronizer {
 		if (!zendeskTickets.isEmpty()) {
 			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
 		}
+	}
+
+	public void remove(AccountEntry accountEntry) throws PortalException {
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountEntry.getAccountEntryId());
+
+		if (zendeskOrganizationId <= 0) {
+			return;
+		}
+
+		Set<String> criteria = new HashSet<>();
+
+		criteria.add("organization:" + zendeskOrganizationId);
+
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (!zendeskTickets.isEmpty()) {
+			throw new RequiredAccountEntryException(
+				"You cannot delete projects with tickets");
+		}
+
+		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+			getDefaultUserEmail(accountEntry.getCode()));
+
+		_asyncZendeskUserWebService.deleteZendeskUser(
+			zendeskUser.getZendeskUserId());
+
+		removeAccountCustomers(accountEntry);
+
+		if (accountEntry.isPartnerManagedSupport()) {
+			removePartnerManagedSupport(accountEntry);
+		}
+
+		_asyncZendeskOrganizationWebService.deleteZendeskOrganization(
+			zendeskOrganizationId);
 	}
 
 	public void removeAccountCustomers(AccountEntry accountEntry)
@@ -271,6 +309,9 @@ public class AccountEntrySynchronizer {
 
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+
+	@Reference(target = "(async=true)")
+	private ZendeskOrganizationWebService _asyncZendeskOrganizationWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _asyncZendeskUserWebService;

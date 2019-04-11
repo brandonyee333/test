@@ -62,16 +62,22 @@ public class DefaultZendeskOrganizationWebService
 				partnerFirstLineSupport, partnerJiraProject, partnerCode, sla,
 				status, supportLanguage, supportRegion, tier, tags);
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.post(
+		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, zendeskOrganizationJSONObject.toString());
 
-		_messagePublisherUtil.sendEventNotification(
+		messagePublisherUtil.sendEventNotification(
 			"zendesk.organization.create", responseJSONObject);
 
 		JSONObject organizationJSONObject = responseJSONObject.getJSONObject(
 			"organization");
 
-		return _zendeskConverter.toZendeskOrganization(organizationJSONObject);
+		return zendeskConverter.toZendeskOrganization(organizationJSONObject);
+	}
+
+	public void deleteZendeskOrganization(long zendeskOrganizationId)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
 	}
 
 	public ZendeskOrganization getZendeskOrganization(String externalId)
@@ -81,7 +87,7 @@ public class DefaultZendeskOrganizationWebService
 
 		parameters.put("external_id", externalId);
 
-		JSONObject responseJSONObject = _zendeskBaseWebService.get(
+		JSONObject responseJSONObject = zendeskBaseWebService.get(
 			ZendeskRESTEndpoints.URL_API_V2 + "organizations/search.json",
 			parameters);
 
@@ -92,7 +98,7 @@ public class DefaultZendeskOrganizationWebService
 			return null;
 		}
 
-		return _zendeskConverter.toZendeskOrganization(
+		return zendeskConverter.toZendeskOrganization(
 			organizationsJSONArray.getJSONObject(0));
 	}
 
@@ -181,12 +187,12 @@ public class DefaultZendeskOrganizationWebService
 	}
 
 	@Reference
-	private MessagePublisherUtil _messagePublisherUtil;
+	protected MessagePublisherUtil messagePublisherUtil;
 
 	@Reference
-	private ZendeskBaseWebService _zendeskBaseWebService;
+	protected ZendeskBaseWebService zendeskBaseWebService;
 
 	@Reference
-	private ZendeskConverter _zendeskConverter;
+	protected ZendeskConverter zendeskConverter;
 
 }

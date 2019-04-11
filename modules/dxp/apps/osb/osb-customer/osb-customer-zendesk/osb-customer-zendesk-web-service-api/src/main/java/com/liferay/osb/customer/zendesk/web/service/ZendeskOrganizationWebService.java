@@ -36,6 +36,9 @@ public interface ZendeskOrganizationWebService {
 			Set<String> tags)
 		throws PortalException;
 
+	public void deleteZendeskOrganization(long zendeskOrganizationId)
+		throws PortalException;
+
 	public ZendeskOrganization getZendeskOrganization(String externalId)
 		throws PortalException;
 

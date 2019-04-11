@@ -38,6 +38,16 @@ import java.util.List;
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
 public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
+	public AccountEntry deleteAccountEntry(long accountEntryId)
+		throws PortalException {
+
+		OSBAccountEntryPermission.check(
+			getPermissionChecker(), accountEntryId, ActionKeys.DELETE);
+
+		return accountEntryLocalService.deleteAccountEntry(
+			getUserId(), accountEntryId);
+	}
+
 	@JSONWebService
 	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid)
 		throws PortalException {

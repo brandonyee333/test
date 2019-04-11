@@ -134,6 +134,20 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	}
 
 	@Override
+	public void onBeforeRemove(AccountEntry accountEntry)
+		throws ModelListenerException {
+
+		try {
+			_accountEntrySynchronizer.remove(accountEntry);
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
+	}
+
+	@Override
 	public void onBeforeUpdate(AccountEntry accountEntry)
 		throws ModelListenerException {
 

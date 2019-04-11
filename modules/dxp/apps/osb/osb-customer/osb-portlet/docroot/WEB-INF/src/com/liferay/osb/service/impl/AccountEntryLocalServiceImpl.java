@@ -875,8 +875,10 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	@Override
-	public AccountEntry deleteAccountEntry(long accountEntryId)
+	public AccountEntry deleteAccountEntry(long userId, long accountEntryId)
 		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
 
 		// Account entry
 
@@ -889,8 +891,10 @@ public class AccountEntryLocalServiceImpl
 			throw new RequiredAccountEntryException();
 		}
 
-		AccountEntry accountEntry = accountEntryPersistence.remove(
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
+
+		accountEntryPersistence.remove(accountEntry);
 
 		// Account entries
 
@@ -935,6 +939,16 @@ public class AccountEntryLocalServiceImpl
 		for (OrderEntry orderEntry : orderEntries) {
 			orderEntryLocalService.deleteOrderEntry(orderEntry);
 		}
+
+		// Audit entry
+
+		auditEntryLocalService.addAuditEntry(
+			userId, user.getFullName(), new Date(), classNameId, accountEntryId,
+			0, classNameId, accountEntryId, AuditEntryConstants.ACTION_DELETE,
+			AuditEntryConstants.FIELD_NOT_APPLICABLE, VisibilityConstants.ADMIN,
+			accountEntry.getName(),
+			String.valueOf(accountEntry.getAccountEntryId()), StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK);
 
 		return accountEntry;
 	}

@@ -60,6 +60,10 @@ public class OSBAccountEntryPermission {
 			return true;
 		}
 
+		if (actionId.equals(OSBActionKeys.DELETE)) {
+			return false;
+		}
+
 		if (actionId.equals(OSBActionKeys.ADD_LICENSE) ||
 			actionId.equals(OSBActionKeys.ADD_LICENSE_KEY_SET)) {
 

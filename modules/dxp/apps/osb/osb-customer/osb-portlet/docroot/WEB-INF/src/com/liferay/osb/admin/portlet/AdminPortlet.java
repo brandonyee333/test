@@ -72,6 +72,7 @@ import com.liferay.osb.rabbitmq.RabbitMQConsumer;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
@@ -333,7 +334,7 @@ public class AdminPortlet extends OSBPortlet {
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 
-		AccountEntryLocalServiceUtil.deleteAccountEntry(accountEntryId);
+		AccountEntryServiceUtil.deleteAccountEntry(accountEntryId);
 	}
 
 	public void deleteAccountWorker(
