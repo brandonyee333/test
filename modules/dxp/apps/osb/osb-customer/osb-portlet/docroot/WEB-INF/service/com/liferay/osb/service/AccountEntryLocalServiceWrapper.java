@@ -145,6 +145,14 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry deleteAccountEntry(long userId,
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryLocalService.deleteAccountEntry(userId,
+			accountEntryId);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEntry fetchAccountEntry(
 		long accountEntryId) {
 		return _accountEntryLocalService.fetchAccountEntry(accountEntryId);

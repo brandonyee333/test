@@ -65,6 +65,20 @@ import java.rmi.RemoteException;
  */
 @ProviderType
 public class AccountEntryServiceSoap {
+	public static com.liferay.osb.model.AccountEntrySoap deleteAccountEntry(
+		long accountEntryId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.deleteAccountEntry(accountEntryId);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.model.AccountEntrySoap fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid) throws RemoteException {
 		try {

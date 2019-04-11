@@ -33,6 +33,13 @@ public class AccountEntryServiceWrapper implements AccountEntryService,
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry deleteAccountEntry(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntryService.deleteAccountEntry(accountEntryId);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {

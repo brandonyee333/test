@@ -140,6 +140,9 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry deleteAccountEntry(long accountEntryId)
 		throws PortalException;
 
+	public AccountEntry deleteAccountEntry(long userId, long accountEntryId)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchAccountEntry(long accountEntryId);
 

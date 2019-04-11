@@ -41,6 +41,12 @@ public class AccountEntryServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.AccountEntryServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static com.liferay.osb.model.AccountEntry deleteAccountEntry(
+		long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteAccountEntry(accountEntryId);
+	}
+
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {

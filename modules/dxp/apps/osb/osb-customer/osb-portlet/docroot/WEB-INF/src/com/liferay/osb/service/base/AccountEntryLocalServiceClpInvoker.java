@@ -262,7 +262,7 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		_methodName215 = "deleteAccountEntry";
 
-		_methodParameterTypes215 = new String[] { "long" };
+		_methodParameterTypes215 = new String[] { "long", "long" };
 
 		_methodName216 = "fetchAnalyticsCloudBasicAccountEntry";
 
@@ -798,7 +798,8 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		if (_methodName215.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
-			return AccountEntryLocalServiceUtil.deleteAccountEntry(((Long)arguments[0]).longValue());
+			return AccountEntryLocalServiceUtil.deleteAccountEntry(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
 		}
 
 		if (_methodName216.equals(name) &&

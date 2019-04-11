@@ -144,6 +144,12 @@ public class AccountEntryLocalServiceUtil {
 		return getService().deleteAccountEntry(accountEntryId);
 	}
 
+	public static com.liferay.osb.model.AccountEntry deleteAccountEntry(
+		long userId, long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().deleteAccountEntry(userId, accountEntryId);
+	}
+
 	public static com.liferay.osb.model.AccountEntry fetchAccountEntry(
 		long accountEntryId) {
 		return getService().fetchAccountEntry(accountEntryId);
