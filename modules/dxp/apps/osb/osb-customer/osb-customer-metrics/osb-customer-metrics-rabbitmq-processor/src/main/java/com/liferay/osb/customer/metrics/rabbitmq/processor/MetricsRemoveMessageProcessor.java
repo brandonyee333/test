@@ -73,7 +73,7 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 		Map<String, Object> columnMap = getColumnMap(
 			modelJSONObject.getJSONObject("values"));
 
-		String sql = buildSql(getTableName(modelName), columnMap);
+		String sql = buildSql(getTableName(modelName, schema), columnMap);
 
 		runSQL(schema, sql);
 

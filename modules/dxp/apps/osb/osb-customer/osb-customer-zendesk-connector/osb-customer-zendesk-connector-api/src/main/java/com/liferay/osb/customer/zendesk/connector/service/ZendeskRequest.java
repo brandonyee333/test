@@ -84,7 +84,7 @@ public class ZendeskRequest {
 	}
 
 	public boolean hasParameters() {
-		if ((_parameters != null) && !_parameters.isEmpty()) {
+		if (_parameters != null) {
 			return true;
 		}
 		else {

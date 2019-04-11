@@ -35,7 +35,7 @@ public class MetricsDropMessageProcessor extends BaseMessageProcessor {
 
 		String modelName = modelJSONObject.getString("name");
 
-		runSQL(schema, "truncate table " + getTableName(modelName));
+		runSQL(schema, "truncate table " + getTableName(modelName, schema));
 
 		JSONArray mappingsJSONArray = jsonObject.getJSONArray("mappings");
 

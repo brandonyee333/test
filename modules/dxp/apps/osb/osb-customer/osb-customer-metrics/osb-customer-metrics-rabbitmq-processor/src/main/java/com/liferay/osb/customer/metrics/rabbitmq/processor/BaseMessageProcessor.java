@@ -175,8 +175,15 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return schema;
 	}
 
-	protected String getTableName(String modelName) {
-		return "OSB_Metrics" + modelName;
+	protected String getTableName(String modelName, String schema) {
+		if (Validator.isNull(schema)) {
+			return "OSB_Metrics" + modelName;
+		}
+		else if (schema.equals("zendesk")) {
+			return modelName.substring(7);
+		}
+
+		return modelName;
 	}
 
 	protected boolean isSchemaEmojiSupported(String schema) {

@@ -124,7 +124,10 @@ public abstract class BaseTransformer implements MessageProcessor {
 	}
 
 	private static final String[] _DATE_FIELDS = {
-		"created_at", "deleted_at", "edited_at", "last_login_at", "updated_at"
+		"assigned_at", "assignee_updated_at", "created_at", "deleted_at",
+		"edited_at", "initially_assigned_at", "last_login_at",
+		"latest_comment_added_at", "requester_updated_at", "solved_at",
+		"status_updated_at", "updated_at"
 	};
 
 	private static final Log _log = LogFactoryUtil.getLog(

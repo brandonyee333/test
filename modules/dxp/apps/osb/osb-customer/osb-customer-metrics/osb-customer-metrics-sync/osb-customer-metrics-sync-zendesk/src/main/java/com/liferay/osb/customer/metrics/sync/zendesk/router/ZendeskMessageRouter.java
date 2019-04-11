@@ -17,6 +17,7 @@ package com.liferay.osb.customer.metrics.sync.zendesk.router;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskArticleTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskOrganizationTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskTicketEventTransformer;
+import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskTicketMetricsTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskTicketTransformer;
 import com.liferay.osb.customer.metrics.sync.zendesk.transformer.ZendeskUserTransformer;
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
@@ -58,6 +59,14 @@ public class ZendeskMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(zendeskTicketEventTransformer, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setZendeskTicketMetricsTransformer(
+		ZendeskTicketMetricsTransformer zendeskTicketMetricsTransformer,
+		Map<String, Object> properties) {
+
+		addRoute(zendeskTicketMetricsTransformer, properties);
 	}
 
 	@Reference(unbind = "-")

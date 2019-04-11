@@ -50,6 +50,8 @@ public interface ZendeskRESTEndpoints {
 
 	public static final String TICKET_FIELDS = "ticket_fields.json";
 
+	public static final String TICKET_METRICS = "ticket_metrics.json";
+
 	public static final String URL_API_V2 = "/api/v2/";
 
 	public static final String USERS_CREATE_OR_UPDATE =
