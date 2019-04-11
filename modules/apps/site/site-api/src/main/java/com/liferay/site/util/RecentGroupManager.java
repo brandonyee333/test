@@ -148,11 +148,13 @@ public class RecentGroupManager {
 				continue;
 			}
 
+			String friendlyURL = group.getFriendlyURL();
+
 			Layout layout = _layoutLocalService.fetchFirstLayout(
 				group.getGroupId(), false,
 				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
 
-			if (layout == null) {
+			if ((layout == null) && !friendlyURL.equals("/global")) {
 				layout = _layoutLocalService.fetchFirstLayout(
 					group.getGroupId(), true,
 					LayoutConstants.DEFAULT_PARENT_LAYOUT_ID);
