@@ -80,6 +80,34 @@
 	}
 }
 
+.tab-description {
+	width: 80%;
+
+	h4 {
+		margin: $margin-default 0 8px;
+	}
+
+	li {
+		margin-bottom: 8px;
+	}
+
+	ul {
+		margin: $margin-default 0;
+		padding-left: $padding-md;
+	}
+
+	.alert {
+		display: flex;
+		font-size: $font-size-md;
+
+		.alert-indicator {
+			align-items: center;
+			display: flex;
+			padding-right: $padding-sm;
+		}
+	}
+}
+
 .table {
 	table-layout: auto;
 

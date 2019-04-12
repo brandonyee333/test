@@ -87,7 +87,10 @@ a {
 code,
 pre,
 .code {
+	color: $color-body;
 	font-family: "Roboto Mono", SFMono-Regular, monospace;
+	font-size: 14px;
+	line-height: 24px;
 }
 
 code,
@@ -96,8 +99,8 @@ pre {
 }
 
 code {
-	background-color: $code-text-background-color;
-	padding: 4px;
+	background-color: $color-divider;
+	padding: 2px 4px;
 }
 
 pre {
@@ -178,6 +181,10 @@ main {
 
 textarea {
 	height: auto;
+}
+
+.color-success {
+	color: $color-success; 
 }
 
 .form-field {
