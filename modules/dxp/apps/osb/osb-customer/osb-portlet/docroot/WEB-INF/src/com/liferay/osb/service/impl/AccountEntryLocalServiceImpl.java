@@ -696,7 +696,7 @@ public class AccountEntryLocalServiceImpl
 		// Offering entries
 
 		Date supportEndDate = new Date(
-			System.currentTimeMillis() + (90 * Time.DAY));
+			System.currentTimeMillis() + (1 * Time.YEAR));
 
 		for (OfferingEntry offeringEntry : accountEntry.getOfferingEntries()) {
 			offeringEntry.setSupportEndDate(supportEndDate);
