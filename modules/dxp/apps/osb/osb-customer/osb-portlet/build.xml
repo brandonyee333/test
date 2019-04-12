@@ -36,6 +36,20 @@
 		<delete file="${portal.base.dir}/tools/sdk/dependencies/com.liferay.portal.tools.service.builder/ivy.xml.MD5" />
 
 		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="build-service" />
+
+		<replaceregexp
+			file="docroot/WEB-INF/service/com/liferay/osb/service/ClpSerializer.java"
+			flags="s"
+			match="@author Brian Wing Shun Chan"
+			replace="@author Brian Wing Shun Chan${line.separator} * @generated"
+		/>
+
+		<replaceregexp
+			file="docroot/WEB-INF/service/com/liferay/osb/service/messaging/ClpMessageListener.java"
+			flags="s"
+			match="@author Brian Wing Shun Chan"
+			replace="@author Brian Wing Shun Chan${line.separator} * @generated"
+		/>
 	</target>
 
 	<target name="format-javadoc">

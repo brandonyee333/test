@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.messaging.Message;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 @ProviderType
 public class ClpMessageListener extends BaseMessageListener {

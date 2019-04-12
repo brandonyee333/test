@@ -62,6 +62,7 @@ import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
+ * @generated
  */
 @ProviderType
 public class ClpSerializer {
