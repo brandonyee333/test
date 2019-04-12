@@ -109,7 +109,7 @@ public class SupportUtil {
 			String listTypeName = listType.getName();
 
 			if (translate) {
-				listTypeName = LanguageUtil.get(Locale.US, listTypeName);
+				listTypeName = LanguageUtil.get(LocaleUtil.US, listTypeName);
 			}
 
 			if (listTypeName.equals(name)) {

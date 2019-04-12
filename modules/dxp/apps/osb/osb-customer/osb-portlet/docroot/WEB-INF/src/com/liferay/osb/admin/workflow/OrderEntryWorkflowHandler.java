@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
@@ -62,14 +63,16 @@ public class OrderEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 		String salesforceOpportunityTaskName = (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME);
 
-		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityTaskName));
+		sb.append(
+			LanguageUtil.get(LocaleUtil.US, salesforceOpportunityTaskName));
 
 		sb.append(StringPool.SPACE);
 
 		String salesforceOpportunityStageName = (String)workflowContext.get(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME);
 
-		sb.append(LanguageUtil.get(Locale.US, salesforceOpportunityStageName));
+		sb.append(
+			LanguageUtil.get(LocaleUtil.US, salesforceOpportunityStageName));
 
 		sb.append(" for ");
 		sb.append(

@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -321,7 +322,7 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 
 				for (ListType listType : listTypes) {
 					String name = LanguageUtil.get(
-						Locale.US, listType.getName());
+						LocaleUtil.US, listType.getName());
 
 					if (name.equals("Mobile Phone")) {
 						name = "Mobile";
@@ -459,7 +460,7 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 		}
 		else if (type == ExpandoColumnConstants.STRING_LOCALIZED) {
 			expandoValue.setStringMap(
-				(Map<Locale, String>)data, Locale.getDefault());
+				(Map<Locale, String>)data, LocaleUtil.getDefault());
 		}
 		else {
 			expandoValue.setString((String)data);

@@ -37,14 +37,17 @@ public class CorpProjectSearch extends SearchContainer<CorpProject> {
 
 	public static final String EMPTY_RESULTS_MESSAGE = "no-projects-were-found";
 
-	public static List<String> headerNames = new ArrayList<>();
-	public static Map<String, String> orderableHeaders = new HashMap<>();
-
-	static {
-		headerNames.add("name");
-
-		orderableHeaders.put("name", "name");
-	}
+	public static List<String> headerNames = new ArrayList<String>() {
+		{
+			headerNames.add("name");
+		}
+	};
+	public static Map<String, String> orderableHeaders =
+		new HashMap<String, String>() {
+			{
+				orderableHeaders.put("name", "name");
+			}
+		};
 
 	public CorpProjectSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

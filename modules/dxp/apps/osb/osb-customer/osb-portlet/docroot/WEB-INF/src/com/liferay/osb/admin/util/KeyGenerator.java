@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -42,7 +43,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -277,7 +277,7 @@ public class KeyGenerator {
 				properties.put(
 					"instanceSize",
 					LanguageUtil.get(
-						Locale.US,
+						LocaleUtil.US,
 						OfferingEntryConstants.getSizingLabel(sizing)));
 			}
 

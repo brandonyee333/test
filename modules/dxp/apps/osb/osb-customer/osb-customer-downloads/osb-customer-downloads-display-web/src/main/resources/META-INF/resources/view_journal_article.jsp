@@ -139,7 +139,7 @@ JSONObject requiredAgreementJSONObject = JSONFactoryUtil.createJSONObject();
 if (Validator.isNotNull(requiredAgreement)) {
 	PortletPreferences downloadsPortletPreferences = PortletPreferencesLocalServiceUtil.getPreferences(company.getCompanyId(), company.getCompanyId(), PortletKeys.PREFS_OWNER_TYPE_COMPANY, PortletKeys.PREFS_PLID_SHARED, "3_WAR_osbportlet", null);
 
-	String languageId = LocaleUtil.toLanguageId(Locale.US);
+	String languageId = LocaleUtil.toLanguageId(LocaleUtil.US);
 
 	String agreementURL = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Url_" + languageId, StringPool.BLANK));
 	String agreementVersion = GetterUtil.getString(downloadsPortletPreferences.getValue(requiredAgreement + "Version_" + languageId, StringPool.BLANK));

@@ -33,14 +33,14 @@ public class OfferingDefinitionSearch
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-offering-definitions-were-found";
 
-	public static List<String> headerNames = new ArrayList<>();
-
-	static {
-		headerNames.add("product");
-		headerNames.add("sla");
-		headerNames.add("licenses");
-		headerNames.add("tickets");
-	}
+	public static List<String> headerNames = new ArrayList<String>() {
+		{
+			headerNames.add("product");
+			headerNames.add("sla");
+			headerNames.add("licenses");
+			headerNames.add("tickets");
+		}
+	};
 
 	public OfferingDefinitionSearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

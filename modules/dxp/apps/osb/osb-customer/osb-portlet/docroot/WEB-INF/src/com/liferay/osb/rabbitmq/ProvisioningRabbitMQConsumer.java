@@ -89,7 +89,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -557,7 +556,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 		if (Validator.isNotNull(offeringEntry.getSizingLabel())) {
 			sb.append(
-				LanguageUtil.get(Locale.US, offeringEntry.getSizingLabel()));
+				LanguageUtil.get(
+					LocaleUtil.US, offeringEntry.getSizingLabel()));
 		}
 
 		if (Validator.isNotNull(offeringEntry.getProductDescription())) {

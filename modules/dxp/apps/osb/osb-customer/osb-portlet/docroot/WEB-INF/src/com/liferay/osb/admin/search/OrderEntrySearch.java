@@ -30,13 +30,13 @@ public class OrderEntrySearch extends SearchContainer<OrderEntry> {
 
 	public static final String EMPTY_RESULTS_MESSAGE = "no-orders-were-found";
 
-	public static List<String> headerNames = new ArrayList<>();
-
-	static {
-		headerNames.add("uuid");
-		headerNames.add("account");
-		headerNames.add("start-date");
-	}
+	public static List<String> headerNames = new ArrayList<String>() {
+		{
+			headerNames.add("uuid");
+			headerNames.add("account");
+			headerNames.add("start-date");
+		}
+	};
 
 	public OrderEntrySearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {

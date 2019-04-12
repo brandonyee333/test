@@ -43,20 +43,23 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 	public static final String EMPTY_RESULTS_MESSAGE =
 		"no-license-keys-were-found";
 
-	public static List<String> headerNames = new ArrayList<>();
-	public static Map<String, String> orderableHeaders = new HashMap<>();
-
-	static {
-		headerNames.add("account");
-		headerNames.add("name");
-		headerNames.add("product");
-		headerNames.add("version");
-		headerNames.add("start-date");
-		headerNames.add("expiration-date");
-
-		orderableHeaders.put("expiration-date", "expiration-date");
-		orderableHeaders.put("start-date", "start-date");
-	}
+	public static List<String> headerNames = new ArrayList<String>() {
+		{
+			headerNames.add("account");
+			headerNames.add("name");
+			headerNames.add("product");
+			headerNames.add("version");
+			headerNames.add("start-date");
+			headerNames.add("expiration-date");
+		}
+	};
+	public static Map<String, String> orderableHeaders =
+		new HashMap<String, String>() {
+			{
+				orderableHeaders.put("expiration-date", "expiration-date");
+				orderableHeaders.put("start-date", "start-date");
+			}
+		};
 
 	public LicenseKeySearch(
 		PortletRequest portletRequest, DisplayTerms displayTerms,

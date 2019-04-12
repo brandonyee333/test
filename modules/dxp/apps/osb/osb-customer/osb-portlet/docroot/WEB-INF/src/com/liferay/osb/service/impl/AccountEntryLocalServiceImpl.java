@@ -459,7 +459,7 @@ public class AccountEntryLocalServiceImpl
 		long countryId = 0;
 
 		if (ArrayUtil.isNotEmpty(countries)) {
-			String countryName = LanguageUtil.get(Locale.US, countries[0]);
+			String countryName = LanguageUtil.get(LocaleUtil.US, countries[0]);
 
 			if (countryName.equals("Taiwan")) {
 				countryName += ", ROC";

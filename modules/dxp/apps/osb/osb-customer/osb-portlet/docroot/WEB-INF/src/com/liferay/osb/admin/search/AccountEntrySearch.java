@@ -31,14 +31,14 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 
 	public static final String EMPTY_RESULTS_MESSAGE = "no-projects-were-found";
 
-	public static List<String> headerNames = new ArrayList<>();
-
-	static {
-		headerNames.add("name");
-		headerNames.add("code");
-		headerNames.add("partner");
-		headerNames.add("support-end-date");
-	}
+	public static List<String> headerNames = new ArrayList<String>() {
+		{
+			headerNames.add("name");
+			headerNames.add("code");
+			headerNames.add("partner");
+			headerNames.add("support-end-date");
+		}
+	};
 
 	public AccountEntrySearch(
 		PortletRequest portletRequest, PortletURL iteratorURL) {
