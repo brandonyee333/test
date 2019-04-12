@@ -89,7 +89,7 @@ exports[`ModuleChanges renders correctly 1`] = `
     class="col-md-9"
   >
     <h2>
-      module-changes
+      module-version-changes-since-dxp-release
     </h2>
     <h5
       class="secondary-text-color section-subtitle"
@@ -295,7 +295,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
     class="col-md-9"
   >
     <h2>
-      module-changes
+      module-version-changes-since-dxp-release
     </h2>
     <h5
       class="secondary-text-color section-subtitle"
