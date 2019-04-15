@@ -158,7 +158,7 @@ export default class Changelog extends Component {
 					orderBy: currentOrderBy
 				}
 			}
-		)
+		);
 
 		this.queryJiraIssues(
 			selectedFilters.components,
