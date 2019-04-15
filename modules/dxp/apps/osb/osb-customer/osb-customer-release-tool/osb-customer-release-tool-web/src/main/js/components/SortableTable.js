@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import {default as langSub} from '../helpers/langSub';
 import {fixPackJSONObjectType} from '../types/highlights';
 import {jiraIssueJSONObjectType} from '../types/changelog';
 
@@ -68,13 +69,13 @@ export default class SortableTable extends Component {
 			<Fragment>
 				<div className="results-count">
 					{total === 1
-						? AUI().Lang.sub(
+						? langSub(
 							Liferay.Language.get('x-result'),
 							[
 								total.toString()
 							]
 						)
-						: AUI().Lang.sub(
+						: langSub(
 							Liferay.Language.get('x-results'),
 							[
 								total.toString()
