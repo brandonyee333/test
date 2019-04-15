@@ -47,22 +47,22 @@ public class UserSearch extends SearchContainer<User> {
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
-			headerNames.add("first-name");
-			headerNames.add("last-name");
-			headerNames.add("screen-name");
-			//headerNames.add("email-address");
-			headerNames.add("job-title");
-			headerNames.add("organizations");
+			add("first-name");
+			add("last-name");
+			add("screen-name");
+			//add("email-address");
+			add("job-title");
+			add("organizations");
 		}
 	};
 	public static Map<String, String> orderableHeaders =
 		new HashMap<String, String>() {
 			{
-				orderableHeaders.put("first-name", "first-name");
-				orderableHeaders.put("last-name", "last-name");
-				orderableHeaders.put("screen-name", "screen-name");
-				//orderableHeaders.put("email-address", "email-address");
-				orderableHeaders.put("job-title", "job-title");
+				put("first-name", "first-name");
+				put("last-name", "last-name");
+				put("screen-name", "screen-name");
+				//put("email-address", "email-address");
+				put("job-title", "job-title");
 			}
 		};
 

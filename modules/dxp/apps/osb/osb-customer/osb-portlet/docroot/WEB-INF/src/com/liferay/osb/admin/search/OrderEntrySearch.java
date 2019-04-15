@@ -32,9 +32,9 @@ public class OrderEntrySearch extends SearchContainer<OrderEntry> {
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
-			headerNames.add("uuid");
-			headerNames.add("account");
-			headerNames.add("start-date");
+			add("uuid");
+			add("account");
+			add("start-date");
 		}
 	};
 

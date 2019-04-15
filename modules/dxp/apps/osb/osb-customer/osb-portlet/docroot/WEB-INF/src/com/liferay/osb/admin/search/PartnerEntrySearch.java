@@ -33,8 +33,8 @@ public class PartnerEntrySearch extends SearchContainer<PartnerEntry> {
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
-			headerNames.add("code");
-			headerNames.add("parent-partner");
+			add("code");
+			add("parent-partner");
 		}
 	};
 

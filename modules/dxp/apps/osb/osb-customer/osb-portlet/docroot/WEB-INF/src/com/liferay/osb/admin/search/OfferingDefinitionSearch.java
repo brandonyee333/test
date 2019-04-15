@@ -35,10 +35,10 @@ public class OfferingDefinitionSearch
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
-			headerNames.add("product");
-			headerNames.add("sla");
-			headerNames.add("licenses");
-			headerNames.add("tickets");
+			add("product");
+			add("sla");
+			add("licenses");
+			add("tickets");
 		}
 	};
 

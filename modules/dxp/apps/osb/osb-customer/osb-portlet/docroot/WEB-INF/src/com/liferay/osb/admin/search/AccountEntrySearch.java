@@ -33,10 +33,10 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
-			headerNames.add("name");
-			headerNames.add("code");
-			headerNames.add("partner");
-			headerNames.add("support-end-date");
+			add("name");
+			add("code");
+			add("partner");
+			add("support-end-date");
 		}
 	};
 

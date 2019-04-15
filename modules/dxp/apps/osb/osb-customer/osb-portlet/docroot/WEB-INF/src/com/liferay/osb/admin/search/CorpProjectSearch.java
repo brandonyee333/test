@@ -39,13 +39,13 @@ public class CorpProjectSearch extends SearchContainer<CorpProject> {
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
-			headerNames.add("name");
+			add("name");
 		}
 	};
 	public static Map<String, String> orderableHeaders =
 		new HashMap<String, String>() {
 			{
-				orderableHeaders.put("name", "name");
+				put("name", "name");
 			}
 		};
 
