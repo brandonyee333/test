@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
-import {default as langSub} from '../helpers/langSub';
+import {default as langSub} from '../helpers/lang-util';
 import {fixPackJSONObjectType} from '../types/highlights';
 import {jiraIssueJSONObjectType} from '../types/changelog';
 
