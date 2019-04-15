@@ -1,19 +1,23 @@
 import React, {Fragment} from 'react';
 
-export const tableBody = results =>
+export const tableBody = (results, props) =>
 	results.map(
-		fixPack => (
-			<tr
-				key={fixPack.resourcePrimKey}
-				className="journal-article-row"
-				id={fixPack.resourcePrimKey}
-			>
-				<td className="lfr-released-column">{fixPack.releaseDate}</td>
-				<td className="lfr-details-column">
-					<div dangerouslySetInnerHTML={{__html: fixPack.content}} />
-				</td>
-			</tr>
-		)
+		fixPack => {
+			const {filterByClassName} = props;
+
+			return (
+				<tr
+					key={fixPack.resourcePrimKey}
+					className="journal-article-row"
+					id={fixPack.resourcePrimKey}
+				>
+					<td className="lfr-released-column">{fixPack.releaseDate}</td>
+					<td className="lfr-details-column">
+						<div className={`details ${filterByClassName}`} dangerouslySetInnerHTML={{__html: fixPack.content}} />
+					</td>
+				</tr>
+			)
+		}
 	);
 
 export const tableHeader = (orderBy, handleSort) => (

@@ -96,7 +96,7 @@ export default class SortableTable extends Component {
 					</thead>
 
 					<tbody>
-						{!!results.length && table.tableBody(results)}
+						{!!results.length && table.tableBody(results, this.props)}
 					</tbody>
 				</table>
 

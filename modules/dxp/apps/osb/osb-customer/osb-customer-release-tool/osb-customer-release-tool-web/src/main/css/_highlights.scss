@@ -26,6 +26,24 @@
 
 .lfr-details-column {
 	width: 9%;
+
+	.details {
+		&.importantChanges,
+		&.keyHighlights,
+		&.knownIssues,
+		&.security {
+			> div:not(.fix-pack-details) {
+				display: none;
+			}
+		}
+
+		&.importantChanges div.important-changes,
+		&.keyHighlights div.key-highlights,
+		&.knownIssues div.known-issues,
+		&.security div.security {
+			display: block;
+		}
+	}
 }
 
 .lfr-released-column {

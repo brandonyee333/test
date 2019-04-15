@@ -117,6 +117,7 @@ export default class Highlights extends Component {
 
 				<div className="col-md-9">
 					<TableResults
+						filterByClassName={filterBy.toString().replace(/,/g, ' ')}
 						jsonObject={this.filterResults()}
 						tab={{
 							tabDescription: description,
