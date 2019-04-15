@@ -62,6 +62,8 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 		<%
 		List<AccountCustomer> accountCustomers = ListUtil.copy(AccountCustomerLocalServiceUtil.getAccountCustomers(accountEntryId));
 
+		total = accountCustomers.size();
+
 		accountCustomers.add(0, new AccountCustomerImpl());
 		%>
 
@@ -168,6 +170,17 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 			markupView="lexicon"
 			paginate="<%= false %>"
 		/>
+
+		<small class="search-results">
+			<c:choose>
+				<c:when test="<%= total != 1 %>">
+					<liferay-ui:message arguments="<%= total %>" key="showing-x-results" translateArguments="<%= false %>" />
+				</c:when>
+				<c:otherwise>
+					<liferay-ui:message arguments="<%= total %>" key="showing-x-result" translateArguments="<%= false %>" />
+				</c:otherwise>
+			</c:choose>
+		</small>
 	</liferay-ui:search-container>
 </aui:form>
 

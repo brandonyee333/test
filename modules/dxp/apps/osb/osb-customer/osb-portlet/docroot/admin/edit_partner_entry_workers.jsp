@@ -74,6 +74,8 @@ request.setAttribute("edit_partner_entry_workers.jsp-portletURL", portletURL);
 		<%
 		List<PartnerWorker> partnerWorkers = ListUtil.copy(PartnerWorkerLocalServiceUtil.getPartnerWorkers(partnerEntryId));
 
+		total = partnerWorkers.size();
+
 		partnerWorkers.add(0, new PartnerWorkerImpl());
 		%>
 
@@ -179,6 +181,17 @@ request.setAttribute("edit_partner_entry_workers.jsp-portletURL", portletURL);
 		<liferay-ui:search-iterator
 			markupView="lexicon"
 		/>
+
+		<small class="search-results">
+			<c:choose>
+				<c:when test="<%= total != 1 %>">
+					<liferay-ui:message arguments="<%= total %>" key="showing-x-results" translateArguments="<%= false %>" />
+				</c:when>
+				<c:otherwise>
+					<liferay-ui:message arguments="<%= total %>" key="showing-x-result" translateArguments="<%= false %>" />
+				</c:otherwise>
+			</c:choose>
+		</small>
 	</liferay-ui:search-container>
 </aui:form>
 

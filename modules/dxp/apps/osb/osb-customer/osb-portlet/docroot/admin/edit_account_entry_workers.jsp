@@ -60,6 +60,8 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 		<%
 		List<AccountWorker> accountWorkers = ListUtil.copy(AccountWorkerLocalServiceUtil.getAccountWorkers(accountEntryId));
 
+		total = accountWorkers.size();
+
 		accountWorkers.add(0, new AccountWorkerImpl());
 		%>
 
@@ -168,6 +170,17 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 		<liferay-ui:search-iterator
 			markupView="lexicon"
 		/>
+
+		<small class="search-results">
+			<c:choose>
+				<c:when test="<%= total != 1 %>">
+					<liferay-ui:message arguments="<%= total %>" key="showing-x-results" translateArguments="<%= false %>" />
+				</c:when>
+				<c:otherwise>
+					<liferay-ui:message arguments="<%= total %>" key="showing-x-result" translateArguments="<%= false %>" />
+				</c:otherwise>
+			</c:choose>
+		</small>
 	</liferay-ui:search-container>
 </aui:form>
 
