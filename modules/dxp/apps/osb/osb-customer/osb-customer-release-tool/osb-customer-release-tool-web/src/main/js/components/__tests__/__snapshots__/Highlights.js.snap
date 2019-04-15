@@ -141,7 +141,9 @@ exports[`Highlights renders correctly 1`] = `
           <td
             class="lfr-details-column"
           >
-            <div>
+            <div
+              class=""
+            >
               Content Text
             </div>
           </td>
@@ -158,7 +160,9 @@ exports[`Highlights renders correctly 1`] = `
           <td
             class="lfr-details-column"
           >
-            <div>
+            <div
+              class=""
+            >
               Content 2 Text
             </div>
           </td>
