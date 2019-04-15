@@ -98,9 +98,13 @@ public class OfferingEntryGroupComparator implements Comparator<String> {
 			key2Map.get("productEntryId"));
 
 		try {
-			return compareProductEntry(productEntryId, productEntryId2);
+			value = compareProductEntry(productEntryId, productEntryId2);
 		}
 		catch (Exception e) {
+		}
+
+		if (value != 0) {
+			return value;
 		}
 
 		return key.compareTo(key2);
