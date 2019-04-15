@@ -27,24 +27,19 @@ const setup = () => {
 		results: [
 			{
 				content: 'Content Text',
-				fieldsUsed: {
-					importantChanges: true,
-					keyHighlights: true,
-					knownIssues: true,
-					security: true
-				},
+				fieldsUsed: [
+					'importantChanges',
+					'keyHighlights',
+					'knownIssues',
+					'security'
+				],
 				releaseDate: 'Mar 6, 2019',
 				resourcePrimKey: '118267960',
 				title: 'Fix Pack 2'
 			},
 			{
 				content: 'Content 2 Text',
-				fieldsUsed: {
-					importantChanges: false,
-					keyHighlights: true,
-					knownIssues: false,
-					security: false
-				},
+				fieldsUsed: ['keyHighlights'],
 				releaseDate: 'Mar 1, 2019',
 				resourcePrimKey: '118267952',
 				title: 'Fix Pack1'

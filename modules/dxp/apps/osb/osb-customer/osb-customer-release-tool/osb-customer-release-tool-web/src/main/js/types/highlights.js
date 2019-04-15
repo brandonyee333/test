@@ -15,13 +15,8 @@ export const fixPackJSONObjectType = PropTypes.shape(
 			PropTypes.shape(
 				{
 					content: PropTypes.string,
-					fieldsUsed: PropTypes.shape(
-						{
-							importantChanges: PropTypes.bool,
-							keyHighlights: PropTypes.bool,
-							knownIssues: PropTypes.bool,
-							security: PropTypes.bool
-						}
+					fieldsUsed: PropTypes.arrayOf(
+						PropTypes.string
 					),
 					releaseDate: PropTypes.string,
 					resourcePrimKey: PropTypes.string,

@@ -237,7 +237,7 @@ public class FixPackSearcher extends BaseSearcher {
 
 		jsonObject.put("content", journalArticleDisplay.getContent());
 
-		JSONObject fieldsUsedJSONObject = jsonFactory.createJSONObject();
+		JSONArray fieldsUsedJSONArray = jsonFactory.createJSONArray();
 
 		Fields ddmFields = _journalConverter.getDDMFields(
 			journalArticle.getDDMStructure(), journalArticle.getContent());
@@ -247,14 +247,11 @@ public class FixPackSearcher extends BaseSearcher {
 				ddmFields, ddmFieldName);
 
 			if (Validator.isNotNull(ddmFieldValue)) {
-				fieldsUsedJSONObject.put(ddmFieldName, Boolean.TRUE);
-			}
-			else {
-				fieldsUsedJSONObject.put(ddmFieldName, Boolean.FALSE);
+				fieldsUsedJSONArray.put(ddmFieldName);
 			}
 		}
 
-		jsonObject.put("fieldsUsed", fieldsUsedJSONObject);
+		jsonObject.put("fieldsUsed", fieldsUsedJSONArray);
 
 		String releaseDate = DDMFieldsUtil.getString(ddmFields, "releaseDate");
 

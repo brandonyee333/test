@@ -61,11 +61,9 @@ export default class Highlights extends Component {
 
 		if (jsonObject.results) {
 			const newResults = jsonObject.results.filter(
-				result => {
-					return filterBy.every(
-						filter => result.fieldsUsed[filter]
-					);
-				}
+				result => filterBy.every(
+					filter => result.fieldsUsed.includes(filter)
+				)
 			);
 
 			return {
