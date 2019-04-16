@@ -108,7 +108,7 @@ export default class AccountEnvironments extends React.Component {
 								{!!environment.envSearchLabels.length && (
 									<EnvironmentDetail
 										label={Liferay.Language.get('search')}
-										value={environment.envSearchLabels.toString().replace(',', ', ')}
+										value={environment.envSearchLabels.toString().replace(/,/g, ', ')}
 									/>
 								)}
 

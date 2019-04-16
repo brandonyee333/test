@@ -90,7 +90,7 @@ class TicketDetail extends Component {
 
 							<h3>{Liferay.Language.get('components')}</h3>
 
-							{ticket.components.toString().replace(',', ', ')}
+							{ticket.components.toString().replace(/,/g, ', ')}
 
 							<h3>{Liferay.Language.get('release')}</h3>
 
@@ -103,7 +103,7 @@ class TicketDetail extends Component {
 					</Modal>
 				</td>
 				<td className="lfr-component-column">
-					{ticket.components.toString().replace(',', ', ')}
+					{ticket.components.toString().replace(/,/g, ', ')}
 				</td>
 				<td className="lfr-release-column">
 					{ticket.release}
