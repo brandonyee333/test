@@ -17,7 +17,7 @@ package com.liferay.lcs.client.platform.exception;
 /**
  * @author Igor Beslic
  */
-public class LCSClientInternalException extends Exception {
+public class LCSClientInternalException extends LCSException {
 
 	public LCSClientInternalException(String message, Throwable cause) {
 		super(message, cause);
