@@ -152,6 +152,14 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 			portletRequest, EXPIRATION_DATE_LT_MONTH, -1);
 		expirationDateLTYear = ParamUtil.getInteger(
 			portletRequest, EXPIRATION_DATE_LT_YEAR);
+		hostName = ParamUtil.getString(portletRequest, HOST_NAME);
+		ipAddress = ParamUtil.getString(portletRequest, IP_ADDRESS);
+		key = ParamUtil.getString(portletRequest, KEY);
+		licenseEntryIds = ParamUtil.getLongValues(
+			portletRequest, LICENSE_ENTRY_IDS);
+		licenseKeySetName = ParamUtil.getString(
+			portletRequest, LICENSE_KEY_SET_NAME);
+		macAddress = ParamUtil.getString(portletRequest, MAC_ADDRESS);
 		modifiedDateGTDay = ParamUtil.getInteger(
 			portletRequest, MODIFIED_DATE_GT_DAY);
 		modifiedDateGTMonth = ParamUtil.getInteger(
@@ -167,14 +175,6 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		modifiedUserId = ParamUtil.getLong(portletRequest, MODIFIED_USER_ID);
 		modifiedUserName = ParamUtil.getString(
 			portletRequest, MODIFIED_USER_NAME);
-		hostName = ParamUtil.getString(portletRequest, HOST_NAME);
-		ipAddress = ParamUtil.getString(portletRequest, IP_ADDRESS);
-		key = ParamUtil.getString(portletRequest, KEY);
-		licenseEntryIds = ParamUtil.getLongValues(
-			portletRequest, LICENSE_ENTRY_IDS);
-		licenseKeySetName = ParamUtil.getString(
-			portletRequest, LICENSE_KEY_SET_NAME);
-		macAddress = ParamUtil.getString(portletRequest, MAC_ADDRESS);
 		owner = ParamUtil.getString(portletRequest, OWNER);
 		productEntryIds = ParamUtil.getLongValues(
 			portletRequest, PRODUCT_ENTRY_IDS);
@@ -342,6 +342,10 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 	}
 
 	public int[] getProductVersions() {
+		if (ArrayUtil.contains(productVersions, 0)) {
+			return new int[0];
+		}
+
 		return productVersions;
 	}
 

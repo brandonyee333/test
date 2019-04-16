@@ -163,7 +163,7 @@ Date lastEnabledDate = calendar.getTime();
 						LicenseEntry licenseEntry = licenseEntries.get(j);
 					%>
 
-						<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= licenseEntry.getName() %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
+						<aui:input checked="<%= ArrayUtil.contains(displayTerms.getLicenseEntryIds(), licenseEntry.getLicenseEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(licenseEntry.getName()) %>" name="<%= displayTerms.LICENSE_ENTRY_IDS %>" type="checkbox" value="<%= licenseEntry.getLicenseEntryId() %>" wrapperCssClass="col-sm-3" />
 
 					<%
 					}
@@ -201,7 +201,7 @@ Date lastEnabledDate = calendar.getTime();
 						ProductEntry productEntry = productEntries.get(j);
 					%>
 
-						<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= productEntry.getName() %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
+						<aui:input checked="<%= ArrayUtil.contains(displayTerms.getProductEntryIds(), productEntry.getProductEntryId()) %>" label="<%= HtmlUtil.escapeAttribute(productEntry.getName()) %>" name="<%= displayTerms.PRODUCT_ENTRY_IDS %>" type="checkbox" value="<%= productEntry.getProductEntryId() %>" wrapperCssClass="col-sm-3" />
 
 					<%
 					}
@@ -243,7 +243,7 @@ Date lastEnabledDate = calendar.getTime();
 						ListType productVersionType = productVersionTypes.get(j);
 					%>
 
-						<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= productVersionType.getName() %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
+						<aui:input checked="<%= ArrayUtil.contains(productVersions, productVersionType.getListTypeId()) %>" label="<%= HtmlUtil.escapeAttribute(productVersionType.getName()) %>" name="<%= displayTerms.PRODUCT_VERSIONS %>" type="checkbox" value="<%= productVersionType.getListTypeId() %>" wrapperCssClass="col-sm-3" />
 
 					<%
 					}
