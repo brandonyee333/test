@@ -93,6 +93,11 @@ public class LCSConfigurationDecorator implements LCSConfiguration {
 	}
 
 	@Override
+	public int lcsClientBuildNumber() {
+		return _lcsConfiguration.lcsClientBuildNumber();
+	}
+
+	@Override
 	public String lcsClientVersion() {
 		return _lcsConfiguration.lcsClientVersion();
 	}

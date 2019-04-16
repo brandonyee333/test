@@ -73,6 +73,9 @@ public interface LCSConfiguration {
 	@Meta.AD(deflt = "6.0.0", required = false)
 	public String lcsClientVersion();
 
+	@Meta.AD(deflt = "600", required = false)
+	public int lcsClientBuildNumber();
+
 	@Meta.AD(
 		deflt = "https://web.liferay.com/marketplace/-/mp/application/71774947",
 		required = false
