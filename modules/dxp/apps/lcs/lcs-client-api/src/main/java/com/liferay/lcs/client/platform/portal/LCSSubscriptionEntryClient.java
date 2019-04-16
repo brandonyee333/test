@@ -15,8 +15,8 @@
 package com.liferay.lcs.client.platform.portal;
 
 import com.liferay.lcs.client.platform.exception.LCSClientInternalException;
-import com.liferay.lcs.client.platform.exception.LCSClientRemoteAuthorizationException;
-import com.liferay.lcs.client.platform.exception.LCSClientRemoteException;
+import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
+import com.liferay.lcs.client.platform.exception.LCSPlatformException;
 
 /**
  * @author Igor Beslic
@@ -25,6 +25,6 @@ public interface LCSSubscriptionEntryClient {
 
 	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
 		throws LCSClientInternalException,
-		LCSClientRemoteAuthorizationException, LCSClientRemoteException;
+		LCSClientAuthenticationException, LCSPlatformException;
 
 }

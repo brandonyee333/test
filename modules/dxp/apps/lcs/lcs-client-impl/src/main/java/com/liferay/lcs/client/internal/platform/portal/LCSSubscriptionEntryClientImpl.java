@@ -15,8 +15,8 @@
 package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.platform.exception.LCSClientInternalException;
-import com.liferay.lcs.client.platform.exception.LCSClientRemoteAuthorizationException;
-import com.liferay.lcs.client.platform.exception.LCSClientRemoteException;
+import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
+import com.liferay.lcs.client.platform.exception.LCSPlatformException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
@@ -39,7 +39,7 @@ public class LCSSubscriptionEntryClientImpl
 	@Override
 	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
 		throws LCSClientInternalException,
-			   LCSClientRemoteAuthorizationException, LCSClientRemoteException {
+		LCSClientAuthenticationException, LCSPlatformException {
 
 		try {
 			return _jsonWebServiceClient.doGetToObject(
@@ -51,7 +51,7 @@ public class LCSSubscriptionEntryClientImpl
 				return null;
 			}
 
-			throw new LCSClientRemoteException(
+			throw new LCSPlatformException(
 				"Unable to execute remote request", jsonwsie);
 		}
 		catch (JSONWebServiceSerializeException jsonwsse) {
@@ -71,11 +71,11 @@ public class LCSSubscriptionEntryClientImpl
 				sb.append("rejected. Please regenerate, download, and ");
 				sb.append("install a new token.");
 
-				throw new LCSClientRemoteAuthorizationException(
+				throw new LCSClientAuthenticationException(
 					sb.toString(), jsonwste);
 			}
 
-			throw new LCSClientRemoteException(
+			throw new LCSPlatformException(
 				"Unable to communicate with LCS", jsonwste);
 		}
 	}

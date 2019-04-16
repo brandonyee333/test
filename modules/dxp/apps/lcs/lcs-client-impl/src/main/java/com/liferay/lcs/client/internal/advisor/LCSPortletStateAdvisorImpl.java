@@ -15,7 +15,7 @@
 package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
-import com.liferay.lcs.client.platform.exception.LCSClientRemoteAuthorizationException;
+import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -59,7 +59,7 @@ public class LCSPortletStateAdvisorImpl implements LCSPortletStateAdvisor {
 			return _lastLCSPortletState;
 		}
 		catch (Exception e) {
-			if (e instanceof LCSClientRemoteAuthorizationException) {
+			if (e instanceof LCSClientAuthenticationException) {
 				_lastLCSPortletState = LCSPortletState.NO_CONNECTION;
 			}
 

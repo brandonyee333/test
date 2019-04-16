@@ -17,9 +17,11 @@ package com.liferay.lcs.client.platform.exception;
 /**
  * @author Igor Beslic
  */
-public class LCSClientRemoteException extends Exception {
+public class LCSClientAuthenticationException extends Exception {
 
-	public LCSClientRemoteException(String message, Throwable cause) {
+	public LCSClientAuthenticationException(
+		String message, Throwable cause) {
+
 		super(message, cause);
 	}
 

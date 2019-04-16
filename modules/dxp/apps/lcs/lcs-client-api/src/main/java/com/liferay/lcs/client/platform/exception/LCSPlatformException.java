@@ -17,11 +17,9 @@ package com.liferay.lcs.client.platform.exception;
 /**
  * @author Igor Beslic
  */
-public class LCSClientRemoteAuthorizationException extends Exception {
+public class LCSPlatformException extends Exception {
 
-	public LCSClientRemoteAuthorizationException(
-		String message, Throwable cause) {
-
+	public LCSPlatformException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
