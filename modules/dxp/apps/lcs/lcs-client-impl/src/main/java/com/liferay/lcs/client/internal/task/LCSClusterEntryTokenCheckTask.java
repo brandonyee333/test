@@ -110,8 +110,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 	}
 
 	private void _checkLCSClusterEntryToken() throws Exception {
-		_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken(
-			LCSUtil.getLCSPortletBuildNumber());
+		_lcsClusterEntryTokenAdvisor.processLCSClusterEntryToken();
 
 		if (!_lcsPortalClient.isAuthorized(
 				_lcsClusterEntryTokenAdvisor.getLCSAccessSecret(),

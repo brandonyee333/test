@@ -34,8 +34,7 @@ public interface LCSClusterEntryTokenAdvisor {
 
 	public String getPortalPropertiesBlacklist();
 
-	public LCSClusterEntryToken processLCSClusterEntryToken(
-			int lcsPortletBuildNumber)
+	public LCSClusterEntryToken processLCSClusterEntryToken()
 		throws IOException, LCSClusterEntryTokenDecryptException,
 			   MissingLCSClusterEntryTokenException,
 			   MultipleLCSClusterEntryTokenException;

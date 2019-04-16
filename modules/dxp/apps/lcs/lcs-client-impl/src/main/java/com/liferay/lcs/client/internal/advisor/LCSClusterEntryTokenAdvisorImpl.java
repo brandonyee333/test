@@ -64,7 +64,11 @@ public class LCSClusterEntryTokenAdvisorImpl
 	public LCSClusterEntryTokenAdvisorImpl() {
 	}
 
-	public LCSClusterEntryTokenAdvisorImpl(LCSEventManager lcsEventManager) {
+	public LCSClusterEntryTokenAdvisorImpl(
+		LCSConfigurationProvider lcsConfigurationProvider,
+		LCSEventManager lcsEventManager) {
+
+		_lcsConfigurationProvider = lcsConfigurationProvider;
 		_lcsEventManager = lcsEventManager;
 
 		_initLCSEventManager();
@@ -114,14 +118,13 @@ public class LCSClusterEntryTokenAdvisorImpl
 		}
 	}
 
-	public LCSClusterEntryToken processLCSClusterEntryToken(
-			int lcsPortletBuildNumber)
+	public LCSClusterEntryToken processLCSClusterEntryToken()
 		throws IOException, LCSClusterEntryTokenDecryptException,
 			   MissingLCSClusterEntryTokenException,
 			   MultipleLCSClusterEntryTokenException {
 
 		LCSClusterEntryToken lcsClusterEntryToken =
-			_processLCSClusterEntryTokenFile(lcsPortletBuildNumber);
+			_processLCSClusterEntryTokenFile(_getLCSClientBuildNumber());
 
 		LCSClusterEntryTokenContentAdvisor lcsClusterEntryTokenContentAdvisor =
 			new LCSClusterEntryTokenContentAdvisor(
@@ -268,6 +271,13 @@ public class LCSClusterEntryTokenAdvisorImpl
 			throw new LCSKeystoreException(
 				"Unable to locate LCS certificate " + keyName, kse);
 		}
+	}
+
+	private int _getLCSClientBuildNumber() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		return lcsConfiguration.lcsClientBuildNumber();
 	}
 
 	private KeyStore _getLCSKeystore() {

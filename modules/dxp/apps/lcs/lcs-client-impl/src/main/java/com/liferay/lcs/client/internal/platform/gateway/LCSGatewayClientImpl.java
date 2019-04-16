@@ -19,7 +19,6 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.Message;
@@ -267,9 +266,13 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			return _baseHeaders;
 		}
 
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
 		_baseHeaders.put(
 			"LCS_PORTLET_BUILD_NUMBER",
-			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
+			String.valueOf(lcsConfiguration.lcsClientBuildNumber()));
+
 		_baseHeaders.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
 
 		return _baseHeaders;
