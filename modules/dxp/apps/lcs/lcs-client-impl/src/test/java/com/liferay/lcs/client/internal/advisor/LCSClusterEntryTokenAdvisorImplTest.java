@@ -36,7 +36,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -220,9 +219,7 @@ public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
 			exception
 		).when(
 			lcsClusterEntryTokenAdvisorImpl
-		).processLCSClusterEntryToken(
-			Matchers.anyInt()
-		);
+		).processLCSClusterEntryToken();
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(

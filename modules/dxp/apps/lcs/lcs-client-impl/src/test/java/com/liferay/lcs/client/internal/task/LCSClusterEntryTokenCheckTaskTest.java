@@ -68,9 +68,7 @@ public class LCSClusterEntryTokenCheckTaskTest extends BasePowerMockitoTest {
 			new LCSClusterEntryToken()
 		).when(
 			lcsClusterEntryTokenAdvisorImpl
-		).processLCSClusterEntryToken(
-			Matchers.anyInt()
-		);
+		).processLCSClusterEntryToken();
 
 		LCSPortalClient lcsPortalClient =
 			mockLCSPortalClientIsAuthorizedThrowsException(
@@ -104,9 +102,7 @@ public class LCSClusterEntryTokenCheckTaskTest extends BasePowerMockitoTest {
 			new LCSClusterEntryToken()
 		).when(
 			lcsClusterEntryTokenAdvisorImpl
-		).processLCSClusterEntryToken(
-			Matchers.anyInt()
-		);
+		).processLCSClusterEntryToken();
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(

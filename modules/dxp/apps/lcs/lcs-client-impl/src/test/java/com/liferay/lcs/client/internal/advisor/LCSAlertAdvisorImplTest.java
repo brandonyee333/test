@@ -241,9 +241,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 			new LCSClusterEntryToken()
 		).when(
 			lcsClusterEntryTokenAdvisor
-		).processLCSClusterEntryToken(
-			Matchers.anyInt()
-		);
+		).processLCSClusterEntryToken();
 
 		LCSAlertAdvisorImpl lcsAlertAdvisor = new LCSAlertAdvisorImpl(
 			lcsEventManager);
@@ -271,9 +269,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 			new LCSClusterEntryToken()
 		).when(
 			lcsClusterEntryTokenAdvisor
-		).processLCSClusterEntryToken(
-			Matchers.anyInt()
-		);
+		).processLCSClusterEntryToken();
 
 		LCSAlertAdvisorImpl lcsAlertAdvisor = new LCSAlertAdvisorImpl(
 			lcsEventManager);
@@ -384,7 +380,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
+				companyLocalService, lcsAlertAdvisor, lcsEventManager,
 				lcsGatewayClient, mock(LCSKeyAdvisor.class), null,
 				new UptimeAdvisor(lcsEventManager, null)));
 
@@ -416,9 +412,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 			exception
 		).when(
 			lcsClusterEntryTokenAdvisor
-		).processLCSClusterEntryToken(
-			Matchers.anyInt()
-		);
+		).processLCSClusterEntryToken();
 
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(

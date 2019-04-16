@@ -15,11 +15,13 @@
 package com.liferay.lcs.client.internal;
 
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSClusterEntryTokenAdvisorImpl;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
@@ -47,6 +49,27 @@ import org.powermock.api.mockito.PowerMockito;
  * @author Igor Beslic
  */
 public class BasePowerMockitoTest extends PowerMockito {
+
+	protected LCSConfigurationProvider mockLCSConfigurationProvider() {
+		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
+
+		when(
+			lcsConfiguration.lcsClientBuildNumber()
+		).thenReturn(
+			600
+		);
+
+		LCSConfigurationProvider lcsConfigurationProvider = mock(
+			LCSConfigurationProvider.class);
+
+		when(
+			lcsConfigurationProvider.getLCSConfiguration()
+		).thenReturn(
+			lcsConfiguration
+		);
+
+		return lcsConfigurationProvider;
+	}
 
 	protected LCSPortalClient mockLCSPortalClientIsAuthorized(
 			Boolean returnValue)
@@ -130,7 +153,7 @@ public class BasePowerMockitoTest extends PowerMockito {
 
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
-				companyLocalService, lcsAlertAdvisor, lcsEventManager, 1L,
+				companyLocalService, lcsAlertAdvisor, lcsEventManager,
 				lcsGatewayClient, lcsKeyAdvisor, threadFactory, uptimeAdvisor));
 
 		doReturn(
@@ -148,7 +171,8 @@ public class BasePowerMockitoTest extends PowerMockito {
 		throws Exception {
 
 		LCSClusterEntryTokenAdvisorImpl lcsClusterEntryTokenAdvisorImpl =
-			new LCSClusterEntryTokenAdvisorImpl(lcsEventManager);
+			new LCSClusterEntryTokenAdvisorImpl(
+				mockLCSConfigurationProvider(), lcsEventManager);
 
 		lcsEventManager.unsubscribe(lcsClusterEntryTokenAdvisorImpl);
 
