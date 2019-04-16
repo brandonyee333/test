@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -51,6 +52,18 @@ public class LCSKeyAdvisor {
 		return _key;
 	}
 
+	public synchronized String getTemporaryKey() {
+		if (_temporaryKey != null) {
+			return _temporaryKey;
+		}
+
+		UUID uuid = UUID.randomUUID();
+
+		_temporaryKey = _LCS_KEY_TEMPORARY_PREFIX + uuid.toString();
+
+		return _temporaryKey;
+	}
+
 	public synchronized void updateKey(String key) {
 		String lcsKeyFilePath = getLCSKeyFilePath();
 
@@ -60,6 +73,7 @@ public class LCSKeyAdvisor {
 			FileUtil.write(lcsServerIdFile, key.getBytes());
 
 			_key = key;
+			_temporaryKey = null;
 
 			if (_log.isInfoEnabled()) {
 				_log.info("LCS server key was updated. New value: " + _key);
@@ -129,8 +143,11 @@ public class LCSKeyAdvisor {
 	private static final String _LCS_KEY_FILE_RELATIVE_PATH =
 		"/data/license/server/lcsServerId";
 
+	private static final String _LCS_KEY_TEMPORARY_PREFIX = "TEMP-KEY-";
+
 	private static final Log _log = LogFactoryUtil.getLog(LCSKeyAdvisor.class);
 
 	private String _key;
+	private String _temporaryKey;
 
 }

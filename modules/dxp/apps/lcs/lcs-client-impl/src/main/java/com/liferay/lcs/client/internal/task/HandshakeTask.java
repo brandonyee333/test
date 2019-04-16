@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
@@ -55,7 +56,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
@@ -85,25 +85,16 @@ public class HandshakeTask implements Task {
 	public HandshakeTask(
 		CompanyLocalService companyLocalService,
 		LCSAlertAdvisor lcsAlertAdvisor, LCSEventManager lcsEventManager,
-		long lcsClusterEntryTokenId, LCSGatewayClient lcsGatewayClient,
-		LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
-		UptimeAdvisor uptimeAdvisor) {
+		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
+		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
 
 		_companyLocalService = companyLocalService;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsEventManager = lcsEventManager;
-		_lcsClusterEntryTokenId = lcsClusterEntryTokenId;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
-
-		if (_lcsKeyAdvisor.getKey() != null) {
-			_key = _lcsKeyAdvisor.getKey();
-		}
-		else {
-			_key = _createTemporaryKey();
-		}
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -120,19 +111,22 @@ public class HandshakeTask implements Task {
 			_lcsConfigurationProvider.getLCSConfiguration();
 
 		_heartbeatInterval = lcsConfiguration.communicationHeartbeatInterval();
-		_lcsClientVersion = lcsConfiguration.lcsClientVersion();
 	}
 
 	@Override
 	public void run() {
+		if (_log.isTraceEnabled()) {
+			_log.trace(
+				String.format(
+					_EXECUTION_TRACE_MESSAGE_PATTERN, this, _getKey()));
+		}
+
 		try {
 			if (_log.isInfoEnabled()) {
 				_log.info("Connecting to LCS");
 			}
 
-			if (!_temporaryKey) {
-				_lcsGatewayClient.deleteMessages(_key);
-			}
+			_lcsGatewayClient.deleteMessages(_getKey());
 
 			HandshakeMessage handshakeMessage = _createHandshakeMessage();
 
@@ -247,12 +241,8 @@ public class HandshakeTask implements Task {
 
 			receivedHandshakeResponse = true;
 
-			if (_temporaryKey ||
-				Validator.isNotNull(handshakeResponseMessage.getNewKey())) {
-
+			if (Validator.isNotNull(handshakeResponseMessage.getNewKey())) {
 				_lcsKeyAdvisor.updateKey(handshakeResponseMessage.getNewKey());
-
-				_temporaryKey = false;
 			}
 
 			_submitLCSPortletBuildNumberCheck(
@@ -268,21 +258,30 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setClusterExecutorEnabled(
 			ClusterExecutorUtil.isEnabled());
 		handshakeMessage.setCompanyIdsWebIds(_getCompanyIdsWebIds());
-		handshakeMessage.setHashCode(_key.hashCode());
+
+		String key = _getKey();
+
+		handshakeMessage.setHashCode(key.hashCode());
 
 		handshakeMessage.setHeartbeatInterval(
 			GetterUtil.getLong(_heartbeatInterval, 60000L));
 
-		handshakeMessage.setKey(_key);
-		handshakeMessage.setLCSClusterEntryTokenId(_lcsClusterEntryTokenId);
+		handshakeMessage.setKey(key);
+
+		handshakeMessage.setLCSClusterEntryTokenId(
+			_lcsClusterEntryTokenAdvisor.getLcsClusterEntryTokenId());
 
 		handshakeMessage.setLCSClusterNodeName(
 			LicenseManagerUtil.getHostName() + StringPool.DASH +
 				System.currentTimeMillis());
 
+		LCSConfiguration lcsConfiguration = _getLCSConfiguration();
+
 		handshakeMessage.setLCSPortletBuildNumber(
-			LCSUtil.getLCSPortletBuildNumber());
-		handshakeMessage.setLCSPortletVersion(_lcsClientVersion);
+			lcsConfiguration.lcsClientBuildNumber());
+		handshakeMessage.setLCSPortletVersion(
+			lcsConfiguration.lcsClientVersion());
+
 		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
 
 		if (LCSPatcherUtil.isConfigured()) {
@@ -299,22 +298,6 @@ public class HandshakeTask implements Task {
 		return handshakeMessage;
 	}
 
-	private String _createTemporaryKey() {
-		if (_temporaryKey) {
-			throw new UnsupportedOperationException(
-				"Temporary key is already created");
-		}
-
-		UUID uuid = UUID.randomUUID();
-
-		try {
-			return _LCS_KEY_TEMPORARY_PREFIX + uuid.toString();
-		}
-		finally {
-			_temporaryKey = true;
-		}
-	}
-
 	private Map<Integer, String> _getCompanyIdsWebIds() {
 		Map<Integer, String> companyIdsWebIds = new HashMap<>();
 
@@ -326,6 +309,20 @@ public class HandshakeTask implements Task {
 		}
 
 		return companyIdsWebIds;
+	}
+
+	private String _getKey() {
+		String key = _lcsKeyAdvisor.getKey();
+
+		if (key != null) {
+			return key;
+		}
+
+		return _lcsKeyAdvisor.getTemporaryKey();
+	}
+
+	private LCSConfiguration _getLCSConfiguration() {
+		return _lcsConfigurationProvider.getLCSConfiguration();
 	}
 
 	private List<Map<String, Long>> _getPortalUptimeEntries() {
@@ -383,7 +380,7 @@ public class HandshakeTask implements Task {
 		List<Message> receivedMessages = null;
 
 		for (int i = 0; i < 12; i++) {
-			receivedMessages = _lcsGatewayClient.getMessages(_key);
+			receivedMessages = _lcsGatewayClient.getMessages(_getKey());
 
 			if (receivedMessages.isEmpty()) {
 				try {
@@ -435,7 +432,8 @@ public class HandshakeTask implements Task {
 		}
 	}
 
-	private static final String _LCS_KEY_TEMPORARY_PREFIX = "TEMP-KEY-";
+	private static final String _EXECUTION_TRACE_MESSAGE_PATTERN =
+		"Executing %s with registration key %s";
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
 
@@ -443,13 +441,12 @@ public class HandshakeTask implements Task {
 	private CompanyLocalService _companyLocalService;
 
 	private int _heartbeatInterval;
-	private String _key;
 
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;
 
-	private String _lcsClientVersion;
-	private long _lcsClusterEntryTokenId;
+	@Reference
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
@@ -462,8 +459,6 @@ public class HandshakeTask implements Task {
 
 	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
-
-	private boolean _temporaryKey;
 
 	@Reference
 	private ThreadFactory _threadFactory;
