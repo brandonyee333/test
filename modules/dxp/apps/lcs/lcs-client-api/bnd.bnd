@@ -9,6 +9,7 @@ Export-Package:\
 	com.liferay.lcs.client.constants,\
 	com.liferay.lcs.client.event,\
 	com.liferay.lcs.client.exception,\
+	com.liferay.lcs.client.platform.exception,\
 	com.liferay.lcs.client.platform.gateway,\
 	com.liferay.lcs.client.platform.portal,\
 	com.liferay.lcs.client.task.advisor,\
