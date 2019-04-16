@@ -17,12 +17,12 @@ package com.liferay.osb.license.search;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.portal.kernel.dao.search.DisplayTerms;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -62,12 +62,135 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 		};
 
 	public LicenseKeySearch(
-		PortletRequest portletRequest, DisplayTerms displayTerms,
-		DisplayTerms searchTerms, PortletURL iteratorURL) {
+		PortletRequest portletRequest, PortletURL iteratorURL) {
 
 		super(
-			portletRequest, displayTerms, searchTerms, DEFAULT_CUR_PARAM,
+			portletRequest, new LicenseKeyDisplayTerms(portletRequest),
+			new LicenseKeySearchTerms(portletRequest), DEFAULT_CUR_PARAM,
 			DEFAULT_DELTA, iteratorURL, headerNames, EMPTY_RESULTS_MESSAGE);
+
+		LicenseKeyDisplayTerms displayTerms =
+			(LicenseKeyDisplayTerms)getDisplayTerms();
+
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.ACCOUNT_ENTRY_NAME,
+			displayTerms.getAccountEntryName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.ACTIVE,
+			String.valueOf(displayTerms.getActive()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_DATE_GT_DAY,
+			String.valueOf(displayTerms.getCreateDateGTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_DATE_GT_MONTH,
+			String.valueOf(displayTerms.getCreateDateGTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_DATE_GT_YEAR,
+			String.valueOf(displayTerms.getCreateDateGTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_DATE_LT_DAY,
+			String.valueOf(displayTerms.getCreateDateLTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_DATE_LT_MONTH,
+			String.valueOf(displayTerms.getCreateDateLTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_DATE_LT_YEAR,
+			String.valueOf(displayTerms.getCreateDateLTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_USER_ID,
+			String.valueOf(displayTerms.getCreateUserId()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.CREATE_USER_NAME,
+			displayTerms.getCreateUserName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.DESCRIPTION, displayTerms.getDescription());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_GT_DAY,
+			String.valueOf(displayTerms.getExpirationDateGTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_GT_MONTH,
+			String.valueOf(displayTerms.getExpirationDateGTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_GT_YEAR,
+			String.valueOf(displayTerms.getExpirationDateGTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_LT_DAY,
+			String.valueOf(displayTerms.getExpirationDateLTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_LT_MONTH,
+			String.valueOf(displayTerms.getExpirationDateLTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.EXPIRATION_DATE_LT_YEAR,
+			String.valueOf(displayTerms.getExpirationDateLTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_DATE_GT_DAY,
+			String.valueOf(displayTerms.getModifiedDateGTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_DATE_GT_MONTH,
+			String.valueOf(displayTerms.getModifiedDateGTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_DATE_GT_YEAR,
+			String.valueOf(displayTerms.getModifiedDateGTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_DATE_LT_DAY,
+			String.valueOf(displayTerms.getModifiedDateLTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_DATE_LT_MONTH,
+			String.valueOf(displayTerms.getModifiedDateLTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_DATE_LT_YEAR,
+			String.valueOf(displayTerms.getModifiedDateLTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_USER_ID,
+			String.valueOf(displayTerms.getModifiedUserId()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MODIFIED_USER_NAME,
+			displayTerms.getModifiedUserName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.HOST_NAME, displayTerms.getHostName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.IP_ADDRESS, displayTerms.getIpAddress());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.KEY, displayTerms.getKey());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.LICENSE_ENTRY_IDS,
+			ArrayUtil.toStringArray(displayTerms.getLicenseEntryIds()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.LICENSE_KEY_SET_NAME,
+			displayTerms.getLicenseKeySetName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.MAC_ADDRESS, displayTerms.getMacAddress());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.OWNER, displayTerms.getOwner());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.PRODUCT_ENTRY_IDS,
+			ArrayUtil.toStringArray(displayTerms.getProductEntryIds()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.PRODUCT_ENTRY_NAME,
+			displayTerms.getProductEntryName());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.PRODUCT_VERSIONS,
+			ArrayUtil.toStringArray(displayTerms.getProductVersions()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.SERVER_ID, displayTerms.getServerId());
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.START_DATE_GT_DAY,
+			String.valueOf(displayTerms.getStartDateGTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.START_DATE_GT_MONTH,
+			String.valueOf(displayTerms.getStartDateGTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.START_DATE_GT_YEAR,
+			String.valueOf(displayTerms.getStartDateGTYear()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.START_DATE_LT_DAY,
+			String.valueOf(displayTerms.getStartDateLTDay()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.START_DATE_LT_MONTH,
+			String.valueOf(displayTerms.getStartDateLTMonth()));
+		iteratorURL.setParameter(
+			LicenseKeyDisplayTerms.START_DATE_LT_YEAR,
+			String.valueOf(displayTerms.getStartDateLTYear()));
 
 		try {
 			PortalPreferences preferences =
@@ -110,14 +233,6 @@ public class LicenseKeySearch extends SearchContainer<LicenseKey> {
 		catch (Exception e) {
 			_log.error(e);
 		}
-	}
-
-	public LicenseKeySearch(
-		PortletRequest portletRequest, PortletURL iteratorURL) {
-
-		this(
-			portletRequest, new LicenseKeyDisplayTerms(portletRequest),
-			new LicenseKeySearchTerms(portletRequest), iteratorURL);
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(LicenseKeySearch.class);
