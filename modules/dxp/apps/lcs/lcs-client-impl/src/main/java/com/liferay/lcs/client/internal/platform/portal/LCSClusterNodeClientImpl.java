@@ -14,16 +14,11 @@
 
 package com.liferay.lcs.client.internal.platform.portal;
 
+import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.portal.LCSClusterNode;
 import com.liferay.lcs.client.platform.portal.LCSClusterNodeClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,36 +27,19 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSClusterNodeClient.class)
 public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 
 	@Override
-	public LCSClusterNode fetchLCSClusterNode(String key)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
-
-		try {
-			return _lcsPortalClient.doGetToObject(
-				LCSClusterNode.class, _URL_LCS_CLUSTER_NODE + "/" + key);
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
-				return null;
-			}
-
-			throw jsonwsie;
-		}
+	public LCSClusterNode fetchLCSClusterNode(String key) throws LCSException {
+		return _lcsPortalClient.doGetToObject(
+			LCSClusterNode.class, _URL_LCS_CLUSTER_NODE + "/" + key);
 	}
 
 	@Override
 	public List<LCSClusterNode> getLCSClusterEntryLCSClusterNodes(
 			long lcsClusterEntryId)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
-
-		List<LCSClusterNode> remoteLCSClusterNodes = null;
+		throws LCSException {
 
 		StringBuilder sb = new StringBuilder(5);
 
@@ -71,17 +49,9 @@ public class LCSClusterNodeClientImpl implements LCSClusterNodeClient {
 		sb.append("/");
 		sb.append(-1);
 
-		remoteLCSClusterNodes = _lcsPortalClient.doGetToList(
+		return _lcsPortalClient.doGetToList(
 			LCSClusterNode.class, sb.toString(), "lcsClusterEntryId",
 			String.valueOf(lcsClusterEntryId));
-
-		List<LCSClusterNode> lcsClusterNodes = new ArrayList<>();
-
-		for (LCSClusterNode lcsClusterNode : remoteLCSClusterNodes) {
-			lcsClusterNodes.add(lcsClusterNode);
-		}
-
-		return lcsClusterNodes;
 	}
 
 	private static final String _URL_LCS_CLUSTER_NODE =

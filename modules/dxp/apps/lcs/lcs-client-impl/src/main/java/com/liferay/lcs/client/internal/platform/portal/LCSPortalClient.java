@@ -14,9 +14,7 @@
 
 package com.liferay.lcs.client.internal.platform.portal;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.lcs.client.platform.exception.LCSException;
 
 import java.util.List;
 
@@ -27,25 +25,18 @@ public interface LCSPortalClient {
 
 	public <V, T> List<V> doGetToList(
 			Class<T> clazz, String url, String... parametersArray)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException;
+		throws LCSException;
 
 	public <T> T doGetToObject(
 			Class<T> clazz, String url, String... parametersArray)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException;
+		throws LCSException;
 
 	public boolean isAuthorized(
 			String oauthAccessSecret, String oauthAccessToken)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException;
+		throws LCSException;
 
 	public void resetHttpClient();
 
-	public void testOAuthRequest()
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceTransportException;
+	public void testOAuthRequest() throws LCSException;
 
 }

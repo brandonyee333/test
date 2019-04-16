@@ -14,11 +14,9 @@
 
 package com.liferay.lcs.client.internal.platform.portal;
 
+import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntry;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -27,24 +25,29 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSClusterEntryClient.class)
 public class LCSClusterEntryClientImpl implements LCSClusterEntryClient {
 
 	@Override
 	public LCSClusterEntry getLCSClusterEntry(long lcsClusterEntryId)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
+		throws LCSException {
 
-		return _jsonWebServiceClient.doGetToObject(
+		LCSClusterEntry lcsClusterEntry = _lcsPortalClient.doGetToObject(
 			LCSClusterEntry.class,
 			_URL_LCS_CLUSTER_ENTRY + "/" + lcsClusterEntryId);
+
+		if (lcsClusterEntry == null) {
+			throw new LCSException(
+				"Unable to find LCS cluster entry ID " + lcsClusterEntry);
+		}
+
+		return lcsClusterEntry;
 	}
 
 	private static final String _URL_LCS_CLUSTER_ENTRY =
 		"/o/osb-lcs-rest/LCSClusterEntry";
 
 	@Reference
-	private LCSPortalClient _jsonWebServiceClient;
+	private LCSPortalClient _lcsPortalClient;
 
 }

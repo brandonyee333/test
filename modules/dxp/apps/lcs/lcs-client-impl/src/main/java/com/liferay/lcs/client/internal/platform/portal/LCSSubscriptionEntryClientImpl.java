@@ -14,17 +14,9 @@
 
 package com.liferay.lcs.client.internal.platform.portal;
 
-import com.liferay.lcs.client.platform.exception.LCSClientInternalException;
-import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
-import com.liferay.lcs.client.platform.exception.LCSPlatformException;
+import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-import com.liferay.portal.kernel.util.StringBundler;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,58 +24,23 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSSubscriptionEntryClient.class)
 public class LCSSubscriptionEntryClientImpl
 	implements LCSSubscriptionEntryClient {
 
 	@Override
 	public LCSSubscriptionEntry fetchLCSSubscriptionEntry(String key)
-		throws LCSClientInternalException,
-		LCSClientAuthenticationException, LCSPlatformException {
+		throws LCSException {
 
-		try {
-			return _jsonWebServiceClient.doGetToObject(
-				LCSSubscriptionEntry.class,
-				_URL_LCS_SUBSCRIPTION_ENTRY + "/find/" + key);
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
-				return null;
-			}
-
-			throw new LCSPlatformException(
-				"Unable to execute remote request", jsonwsie);
-		}
-		catch (JSONWebServiceSerializeException jsonwsse) {
-			throw new LCSClientInternalException(
-				"Error communicating with LCS. A message in an unexpected " +
-					"format caused a serialization error.",
-				jsonwsse);
-		}
-		catch (JSONWebServiceTransportException jsonwste) {
-			if (jsonwste instanceof
-					JSONWebServiceTransportException.AuthenticationFailure) {
-
-				StringBundler sb = new StringBundler(4);
-
-				sb.append("Unable to communicate with LCS. The user");
-				sb.append("credentials in the environment token were ");
-				sb.append("rejected. Please regenerate, download, and ");
-				sb.append("install a new token.");
-
-				throw new LCSClientAuthenticationException(
-					sb.toString(), jsonwste);
-			}
-
-			throw new LCSPlatformException(
-				"Unable to communicate with LCS", jsonwste);
-		}
+		return _lcsPortalClient.doGetToObject(
+			LCSSubscriptionEntry.class,
+			_URL_LCS_SUBSCRIPTION_ENTRY + "/find/" + key);
 	}
 
 	private static final String _URL_LCS_SUBSCRIPTION_ENTRY =
 		"/o/osb-lcs-rest/LCSSubscriptionEntry";
 
 	@Reference
-	private LCSPortalClient _jsonWebServiceClient;
+	private LCSPortalClient _lcsPortalClient;
 
 }

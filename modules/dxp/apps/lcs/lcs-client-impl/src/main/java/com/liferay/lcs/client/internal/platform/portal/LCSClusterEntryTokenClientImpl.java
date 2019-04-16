@@ -14,13 +14,9 @@
 
 package com.liferay.lcs.client.internal.platform.portal;
 
+import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryTokenClient;
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -28,33 +24,18 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component
+@Component(immediate = true, service = LCSClusterEntryTokenClient.class)
 public class LCSClusterEntryTokenClientImpl
 	implements LCSClusterEntryTokenClient {
 
 	@Override
 	public LCSClusterEntryToken fetchLCSClusterEntryToken(
 			long lcsClusterEntryTokenId)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException {
+		throws LCSException {
 
-		try {
-			LCSClusterEntryToken lcsClusterEntryToken =
-				_lcsPortalClient.doGetToObject(
-					LCSClusterEntryToken.class,
-					_URL_LCS_CLUSTER_ENTRY_TOKEN + "/" +
-						lcsClusterEntryTokenId);
-
-			return lcsClusterEntryToken;
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
-				return null;
-			}
-
-			throw jsonwsie;
-		}
+		return _lcsPortalClient.doGetToObject(
+			LCSClusterEntryToken.class,
+			_URL_LCS_CLUSTER_ENTRY_TOKEN + "/" + lcsClusterEntryTokenId);
 	}
 
 	private static final String _URL_LCS_CLUSTER_ENTRY_TOKEN =
