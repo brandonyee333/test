@@ -15,6 +15,7 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeAccountEntry;
+import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeCountry;
 import com.liferay.osb.hook.upgrade.v5_0_7.UpgradeListType;
 
 /**
@@ -30,6 +31,7 @@ public class UpgradeProcess_5_0_7 extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeAccountEntry.class);
+		upgrade(UpgradeCountry.class);
 		upgrade(UpgradeListType.class);
 	}
 
