@@ -12,16 +12,14 @@
  *
  */
 
-package com.liferay.lcs.client.platform.portal;
+package com.liferay.lcs.client.platform.exception;
 
 /**
  * @author Igor Beslic
  */
-public class LCSClientRemoteAuthorizationException extends Exception {
+public class LCSClientRemoteException extends Exception {
 
-	public LCSClientRemoteAuthorizationException(
-		String message, Throwable cause) {
-
+	public LCSClientRemoteException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

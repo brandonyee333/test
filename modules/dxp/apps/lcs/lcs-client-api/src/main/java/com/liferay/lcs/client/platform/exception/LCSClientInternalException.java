@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.client.platform.portal;
+package com.liferay.lcs.client.platform.exception;
 
 /**
  * @author Igor Beslic

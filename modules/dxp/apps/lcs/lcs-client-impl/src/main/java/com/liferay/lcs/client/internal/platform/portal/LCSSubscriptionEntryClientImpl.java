@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.platform.portal;
 
-import com.liferay.lcs.client.platform.portal.LCSClientInternalException;
-import com.liferay.lcs.client.platform.portal.LCSClientRemoteAuthorizationException;
-import com.liferay.lcs.client.platform.portal.LCSClientRemoteException;
+import com.liferay.lcs.client.platform.exception.LCSClientInternalException;
+import com.liferay.lcs.client.platform.exception.LCSClientRemoteAuthorizationException;
+import com.liferay.lcs.client.platform.exception.LCSClientRemoteException;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntry;
 import com.liferay.lcs.client.platform.portal.LCSSubscriptionEntryClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
