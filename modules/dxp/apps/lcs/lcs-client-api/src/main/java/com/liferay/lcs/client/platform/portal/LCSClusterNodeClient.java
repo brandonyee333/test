@@ -14,9 +14,7 @@
 
 package com.liferay.lcs.client.platform.portal;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.lcs.client.platform.exception.LCSException;
 
 import java.util.List;
 
@@ -26,15 +24,10 @@ import java.util.List;
  */
 public interface LCSClusterNodeClient {
 
-	public LCSClusterNode fetchLCSClusterNode(String key)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException;
+	public LCSClusterNode fetchLCSClusterNode(String key) throws LCSException;
 
 	public List<LCSClusterNode> getLCSClusterEntryLCSClusterNodes(
 			long lcsClusterEntryId)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException;
+		throws LCSException;
 
 }

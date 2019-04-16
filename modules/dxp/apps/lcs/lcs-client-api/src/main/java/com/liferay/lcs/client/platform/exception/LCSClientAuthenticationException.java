@@ -19,9 +19,7 @@ package com.liferay.lcs.client.platform.exception;
  */
 public class LCSClientAuthenticationException extends LCSException {
 
-	public LCSClientAuthenticationException(
-		String message, Throwable cause) {
-
+	public LCSClientAuthenticationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 

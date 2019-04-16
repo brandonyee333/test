@@ -19,6 +19,10 @@ package com.liferay.lcs.client.platform.exception;
  */
 public class LCSException extends Exception {
 
+	public LCSException(String message) {
+		super(message);
+	}
+
 	public LCSException(String message, Throwable cause) {
 		super(message, cause);
 	}

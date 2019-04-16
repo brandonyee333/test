@@ -14,9 +14,7 @@
 
 package com.liferay.lcs.client.platform.portal;
 
-import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
-import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
+import com.liferay.lcs.client.platform.exception.LCSException;
 
 /**
  * @author Ivica Cardic
@@ -26,8 +24,6 @@ public interface LCSClusterEntryTokenClient {
 
 	public LCSClusterEntryToken fetchLCSClusterEntryToken(
 			long lcsClusterEntryId)
-		throws JSONWebServiceInvocationException,
-			   JSONWebServiceSerializeException,
-			   JSONWebServiceTransportException;
+		throws LCSException;
 
 }
