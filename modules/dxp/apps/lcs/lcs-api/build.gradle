@@ -14,7 +14,6 @@ dependencies {
 deployDependencies {
 	from configurations.compileOnly
 
-	include "com.liferay.petra.json.web.service.client-*.jar"
 	include "jackson-annotations-*.jar"
 	include "jackson-core-*.jar"
 	include "jackson-databind-*.jar"
