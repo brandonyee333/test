@@ -88,6 +88,17 @@ public class DLFileEntryAssetRenderer
 		_dlFileEntryLocalService = dlFileEntryLocalService;
 	}
 
+	public String doGetURLViewInContext(
+		LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletResponse liferayPortletResponse,
+		String noSuchEntryRedirect) {
+
+		return getURLViewInContext(
+			liferayPortletRequest, noSuchEntryRedirect,
+			"/document_library/find_file_entry", "fileEntryId",
+			_fileEntry.getFileEntryId());
+	}
+
 	@Override
 	public FileEntry getAssetObject() {
 		return _fileEntry;
@@ -331,10 +342,10 @@ public class DLFileEntryAssetRenderer
 		LiferayPortletResponse liferayPortletResponse,
 		String noSuchEntryRedirect) {
 
-		return getURLViewInContext(
-			liferayPortletRequest, noSuchEntryRedirect,
-			"/document_library/find_file_entry", "fileEntryId",
-			_fileEntry.getFileEntryId());
+		String urlViewInContext = DLUtil.getURLViewInContext(
+			this, liferayPortletRequest, noSuchEntryRedirect);
+
+		return urlViewInContext;
 	}
 
 	@Override
