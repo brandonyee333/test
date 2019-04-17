@@ -43,14 +43,15 @@ public abstract class BaseSearcher {
 		try {
 			double productVersion = ParamUtil.getDouble(
 				portletRequest, "productVersion");
-			double fromFixPackVersion = ParamUtil.getDouble(
-				portletRequest, "fromFixPackVersion");
-			double toFixPackVersion = ParamUtil.getDouble(
-				portletRequest, "toFixPackVersion");
 
 			if (productVersion <= 0) {
 				return emptySearch();
 			}
+
+			double fromFixPackVersion = ParamUtil.getDouble(
+				portletRequest, "fromFixPackVersion");
+			double toFixPackVersion = ParamUtil.getDouble(
+				portletRequest, "toFixPackVersion");
 
 			validateQueryRange(fromFixPackVersion, toFixPackVersion);
 
