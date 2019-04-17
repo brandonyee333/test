@@ -37,7 +37,7 @@ import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
-import com.liferay.portal.kernel.util.InetAddressProviderUtil;
+import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.SocketUtil;
@@ -100,8 +100,7 @@ public class HttpClientSPIAgentTest {
 
 	@Before
 	public void setUp() {
-		InetAddressProviderUtil.setInetAddressProvider(
-			new InetAddressProviderImpl());
+		InetAddressUtil.setInetAddressProvider(new InetAddressProviderImpl());
 
 		RegistryUtil.setRegistry(new BasicRegistryImpl());
 
@@ -127,7 +126,7 @@ public class HttpClientSPIAgentTest {
 
 		ServerSocketChannel serverSocketChannel =
 			SocketUtil.createServerSocketChannel(
-				InetAddressProviderUtil.getLoopbackInetAddress(),
+				InetAddressUtil.getLoopbackInetAddress(),
 				_spiConfiguration.getConnectorPort(), null);
 
 		serverSocketChannel.configureBlocking(true);
@@ -189,7 +188,7 @@ public class HttpClientSPIAgentTest {
 				List<LogRecord> logRecords = captureHandler.getLogRecords();
 
 				socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				socket.shutdownInput();
@@ -215,7 +214,7 @@ public class HttpClientSPIAgentTest {
 				logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
 				socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				socket.shutdownInput();
@@ -286,7 +285,7 @@ public class HttpClientSPIAgentTest {
 
 		Assert.assertEquals(
 			new InetSocketAddress(
-				InetAddressProviderUtil.getLoopbackInetAddress(),
+				InetAddressUtil.getLoopbackInetAddress(),
 				_spiConfiguration.getConnectorPort()),
 			httpClientSPIAgent.socketAddress);
 
@@ -393,14 +392,14 @@ public class HttpClientSPIAgentTest {
 
 			ServerSocketChannel serverSocketChannel =
 				SocketUtil.createServerSocketChannel(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort(), null);
 
 			serverSocketChannel.configureBlocking(true);
 
 			try (ServerSocket serverSocket = serverSocketChannel.socket()) {
 				Socket socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				SocketImpl socketImpl = swapSocketImpl(socket, null);
@@ -433,7 +432,7 @@ public class HttpClientSPIAgentTest {
 				socketBlockingQueue = httpClientSPIAgent.socketBlockingQueue;
 
 				socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				socketImpl = swapSocketImpl(socket, null);
@@ -466,7 +465,7 @@ public class HttpClientSPIAgentTest {
 				socketBlockingQueue = httpClientSPIAgent.socketBlockingQueue;
 
 				socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				socketBlockingQueue.add(socket);
@@ -628,7 +627,7 @@ public class HttpClientSPIAgentTest {
 
 		ServerSocketChannel serverSocketChannel =
 			SocketUtil.createServerSocketChannel(
-				InetAddressProviderUtil.getLoopbackInetAddress(),
+				InetAddressUtil.getLoopbackInetAddress(),
 				_spiConfiguration.getConnectorPort(), null);
 
 		serverSocketChannel.configureBlocking(true);
@@ -663,7 +662,7 @@ public class HttpClientSPIAgentTest {
 				List<LogRecord> logRecords = captureHandler.getLogRecords();
 
 				socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				SocketImpl socketImpl = swapSocketImpl(socket, null);
@@ -683,7 +682,7 @@ public class HttpClientSPIAgentTest {
 				logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
 				socket = new Socket(
-					InetAddressProviderUtil.getLoopbackInetAddress(),
+					InetAddressUtil.getLoopbackInetAddress(),
 					_spiConfiguration.getConnectorPort());
 
 				socketImpl = swapSocketImpl(socket, null);
@@ -791,7 +790,7 @@ public class HttpClientSPIAgentTest {
 
 		ServerSocketChannel serverSocketChannel =
 			SocketUtil.createServerSocketChannel(
-				InetAddressProviderUtil.getLoopbackInetAddress(),
+				InetAddressUtil.getLoopbackInetAddress(),
 				_spiConfiguration.getConnectorPort(), null);
 
 		serverSocketChannel.configureBlocking(true);
@@ -841,7 +840,7 @@ public class HttpClientSPIAgentTest {
 			List<LogRecord> logRecords = captureHandler.getLogRecords();
 
 			socket = new Socket(
-				InetAddressProviderUtil.getLoopbackInetAddress(),
+				InetAddressUtil.getLoopbackInetAddress(),
 				_spiConfiguration.getConnectorPort());
 
 			SocketImpl socketImpl = swapSocketImpl(socket, null);
@@ -876,7 +875,7 @@ public class HttpClientSPIAgentTest {
 			logRecords = captureHandler.resetLogLevel(Level.WARNING);
 
 			socket = new Socket(
-				InetAddressProviderUtil.getLoopbackInetAddress(),
+				InetAddressUtil.getLoopbackInetAddress(),
 				_spiConfiguration.getConnectorPort());
 
 			socketImpl = swapSocketImpl(socket, null);

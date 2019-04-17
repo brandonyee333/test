@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.test.rule.CodeCoverageAssertor;
 import com.liferay.portal.kernel.test.rule.NewEnv;
 import com.liferay.portal.kernel.test.rule.NewEnvTestRule;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
-import com.liferay.portal.kernel.util.InetAddressProviderUtil;
+import com.liferay.portal.kernel.util.InetAddressUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.util.InetAddressProviderImpl;
 
@@ -55,8 +55,7 @@ public class SocketWelderTest {
 
 	@Before
 	public void setUp() {
-		InetAddressProviderUtil.setInetAddressProvider(
-			new InetAddressProviderImpl());
+		InetAddressUtil.setInetAddressProvider(new InetAddressProviderImpl());
 
 		_properties = new HashMap<String, Object>() {
 			{
@@ -100,6 +99,8 @@ public class SocketWelderTest {
 
 	@Test
 	public void testConstructor() throws Exception {
+		InetAddressUtil.setInetAddressProvider(new InetAddressProviderImpl());
+
 		SocketWelder socketWelder = new SocketWelder();
 
 		new SocketWelder.Configuration();
