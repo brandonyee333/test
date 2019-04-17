@@ -163,7 +163,8 @@ export default class Changelog extends Component {
 			}
 		);
 
-		this.changelogPaginationRef.current.handleClick(1,
+		this.changelogPaginationRef.current.handleClick(
+			1,
 			{
 				orderBy: currentOrderBy
 			}
