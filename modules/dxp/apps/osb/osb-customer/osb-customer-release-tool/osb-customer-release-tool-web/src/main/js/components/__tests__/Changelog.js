@@ -98,6 +98,30 @@ describe('Changelog', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	it('renders page one of new results when Release column is sorted', () => {
+		const {changelogJSONObjSize51, filters} = setup();
+
+		const {container, getByRole} = render(
+			<Changelog
+				description="description"
+				endpoint="/"
+				filters={filters}
+				jsonObject={changelogJSONObjSize51}
+			/>
+		);
+
+		const pagination = getByRole('navigation');
+		const sortButton = container.querySelector('.sorting-indicator');
+
+		fireEvent.click(pagination.querySelector('[value="2"]'));
+
+		expect(pagination.querySelector('.pagination-current span').innerHTML).toBe('2');
+
+		fireEvent.click(sortButton);
+
+		expect(pagination.querySelector('.pagination-current span').innerHTML).toBe('1');
+	});
+
 	it('renders no results correctly', () => {
 		const {filters, noResults} = setup();
 

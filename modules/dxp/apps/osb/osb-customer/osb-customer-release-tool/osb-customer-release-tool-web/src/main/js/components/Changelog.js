@@ -20,6 +20,7 @@ const ARTICLES_PER_PAGE = 50;
 const FILTER_ON_LOAD = 7;
 
 export default class Changelog extends Component {
+	changelogPaginationRef = React.createRef();
 	changelogTextInputRef = React.createRef();
 
 	static propTypes = {
@@ -132,10 +133,12 @@ export default class Changelog extends Component {
 		);
 	};
 
-	handlePaginationClick = number => {
+	handlePaginationClick = (number, otherProps) => {
 		const {
-			selectedFilters: {components, keywords, orderBy}
+			selectedFilters: {components, keywords}
 		} = this.state;
+
+		const {orderBy} = otherProps;
 
 		// startAt param begins at 0 and not 1
 
@@ -160,14 +163,19 @@ export default class Changelog extends Component {
 			}
 		);
 
-		this.queryJiraIssues(
-			selectedFilters.components,
-			selectedFilters.keywords,
-			currentOrderBy
+		this.changelogPaginationRef.current.handleClick(1,
+			{
+				orderBy: currentOrderBy
+			}
 		);
 	}
 
-	queryJiraIssues = (components = [], keywords = '', orderBy = 'asc', startAt = 0) => {
+	queryJiraIssues = (
+		components = [],
+		keywords = '',
+		orderBy = 'asc',
+		startAt = 0
+	) => {
 		const {endpoint} = this.props;
 
 		const {namespace} = window.ReleaseToolConstants;
@@ -298,6 +306,7 @@ export default class Changelog extends Component {
 
 					{totalPage > 1 && (
 						<Pagination
+							ref={this.changelogPaginationRef}
 							onClick={this.handlePaginationClick}
 							total={totalPage}
 						/>

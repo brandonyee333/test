@@ -15,10 +15,10 @@ class PaginationItem extends React.Component {
 		onClick: PropTypes.func.isRequired
 	};
 
-	handleClick = () => {
+	handleClick = otherProps => {
 		const {number, onClick} = this.props;
 
-		onClick(number);
+		onClick(number, otherProps);
 	};
 
 	render() {
@@ -100,7 +100,7 @@ export default class Pagination extends React.Component {
 		return pages;
 	};
 
-	handleClick = activePage => {
+	handleClick = (activePage, otherProps) => {
 		const {onClick} = this.props;
 
 		this.setState(
@@ -109,7 +109,7 @@ export default class Pagination extends React.Component {
 			}
 		);
 
-		onClick(activePage);
+		onClick(activePage, otherProps);
 	};
 
 	setBuffers = () => {
