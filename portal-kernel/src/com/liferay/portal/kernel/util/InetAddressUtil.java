@@ -14,7 +14,11 @@
 
 package com.liferay.portal.kernel.util;
 
+import com.liferay.portal.kernel.concurrent.DefaultNoticeableFuture;
+import com.liferay.portal.kernel.concurrent.NoticeableFuture;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -22,12 +26,60 @@ import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 
 import java.util.Enumeration;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Michael C. Han
  * @author Shuyang Zhou
+ * @author Marta Medio
  */
 public class InetAddressUtil {
+
+	public static InetAddress getInetAddressByName(String domain)
+		throws UnknownHostException {
+
+		int threadLimit = GetterUtil.getInteger(
+			PropsUtil.get(PropsKeys.DNS_SECURITY_THREAD_LIMIT));
+
+		AtomicInteger atomicInteger = new AtomicInteger(threadLimit);
+
+		InetAddress inetAddress = null;
+
+		try {
+			if (atomicInteger.getAndDecrement() > 0) {
+				Future<InetAddress> result = _submit(
+					"InetAddressUtil", () -> InetAddress.getByName(domain));
+
+				int timeout = GetterUtil.getInteger(
+					PropsUtil.get(
+						PropsKeys.DNS_SECURITY_ADDRESS_TIMEOUT_SECONDS));
+
+				inetAddress = result.get(timeout, TimeUnit.SECONDS);
+			}
+			else {
+				_log.error(
+					"Thread limit exceeded to determine address for host: " +
+						domain);
+			}
+		}
+		catch (ExecutionException | InterruptedException | TimeoutException e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(e, e);
+			}
+
+			throw new UnknownHostException("Unable to resolve URL: " + domain);
+		}
+		finally {
+			atomicInteger.incrementAndGet();
+		}
+
+		return inetAddress;
+	}
 
 	public static String getLocalHostName() throws Exception {
 		return LocalHostNameHolder._LOCAL_HOST_NAME;
@@ -73,6 +125,24 @@ public class InetAddressUtil {
 
 		return false;
 	}
+
+	private static <T> NoticeableFuture<T> _submit(
+		String threadName, Callable<T> callable) {
+
+		DefaultNoticeableFuture<T> defaultNoticeableFuture =
+			new DefaultNoticeableFuture<>(callable);
+
+		Thread thread = new Thread(defaultNoticeableFuture, threadName);
+
+		thread.setDaemon(true);
+
+		thread.start();
+
+		return defaultNoticeableFuture;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		InetAddressUtil.class);
 
 	private static class LocalHostNameHolder {
 
