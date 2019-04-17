@@ -142,7 +142,7 @@ exports[`Highlights renders correctly 1`] = `
             class="lfr-details-column"
           >
             <div
-              class=""
+              class="details "
             >
               Content Text
             </div>
@@ -161,7 +161,7 @@ exports[`Highlights renders correctly 1`] = `
             class="lfr-details-column"
           >
             <div
-              class=""
+              class="details "
             >
               Content 2 Text
             </div>

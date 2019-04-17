@@ -165,7 +165,9 @@ exports[`SortableTable renders highlights table correctly 1`] = `
         <td
           class="lfr-details-column"
         >
-          <div>
+          <div
+            class="details test-filter"
+          >
             Content Text
           </div>
         </td>
@@ -182,7 +184,9 @@ exports[`SortableTable renders highlights table correctly 1`] = `
         <td
           class="lfr-details-column"
         >
-          <div>
+          <div
+            class="details test-filter"
+          >
             Content 2 Text
           </div>
         </td>
@@ -239,7 +243,9 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
         <td
           class="lfr-details-column"
         >
-          <div>
+          <div
+            class="details test-filter"
+          >
             Content 2 Text
           </div>
         </td>
@@ -256,7 +262,9 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
         <td
           class="lfr-details-column"
         >
-          <div>
+          <div
+            class="details test-filter"
+          >
             Content Text
           </div>
         </td>
