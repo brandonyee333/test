@@ -10,4 +10,8 @@
 	@import "_add-ticket-attachment";
 	@import "_accordion";
 	@import "_history";
+
+	h1 {
+		margin-bottom: $margin-default;
+	}
 }
