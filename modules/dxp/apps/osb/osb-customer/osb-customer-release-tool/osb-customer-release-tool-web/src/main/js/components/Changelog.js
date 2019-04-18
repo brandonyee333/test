@@ -135,16 +135,20 @@ export default class Changelog extends Component {
 
 	handlePaginationClick = (number, otherProps) => {
 		const {
-			selectedFilters: {components, keywords}
+			selectedFilters: {components, keywords, orderBy}
 		} = this.state;
 
-		const {orderBy} = otherProps;
+		let newOrderBy = orderBy;
+
+		if (otherProps.orderBy) {
+			newOrderBy = otherProps.orderBy;
+		}
 
 		// startAt param begins at 0 and not 1
 
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
-		this.queryJiraIssues(components, keywords, orderBy, startAt);
+		this.queryJiraIssues(components, keywords, newOrderBy, startAt);
 
 		window.scroll(0, 0);
 	};
