@@ -21,12 +21,21 @@ import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerBoolean;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
+import com.liferay.exportimport.staged.model.repository.StagedModelRepository;
+import com.liferay.exportimport.staged.model.repository.StagedModelRepositoryRegistryUtil;
 import com.liferay.message.boards.kernel.model.MBBan;
 import com.liferay.message.boards.kernel.model.MBCategory;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.model.MBThreadFlag;
+import com.liferay.message.boards.kernel.service.MBBanLocalService;
+import com.liferay.message.boards.kernel.service.MBCategoryLocalService;
+import com.liferay.message.boards.kernel.service.MBMessageLocalService;
+import com.liferay.message.boards.kernel.service.MBStatsUserLocalService;
+import com.liferay.message.boards.kernel.service.MBThreadFlagLocalService;
+import com.liferay.message.boards.kernel.service.MBThreadLocalService;
 import com.liferay.message.boards.web.constants.MBPortletKeys;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.util.PropsValues;
 
@@ -143,6 +152,128 @@ public class MBPortletDataHandler extends BasePortletDataHandler {
 		setImportControls(getExportControls());
 		setPublishToLiveByDefault(
 			PropsValues.MESSAGE_BOARDS_PUBLISH_TO_LIVE_BY_DEFAULT);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #deleteData(PortletDataContext, String, PortletPreferences)}
+	 */
+	@Deprecated
+	@Override
+	protected PortletPreferences doDeleteData(
+			PortletDataContext portletDataContext, String portletId,
+			PortletPreferences portletPreferences)
+		throws Exception {
+
+		return deleteData(portletDataContext, portletId, portletPreferences);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #exportData(PortletDataContext, String, PortletPreferences)}
+	 */
+	@Deprecated
+	@Override
+	protected String doExportData(
+			final PortletDataContext portletDataContext, String portletId,
+			PortletPreferences portletPreferences)
+		throws Exception {
+
+		return exportData(portletDataContext, portletId, portletPreferences);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #importData(PortletDataContext, String, PortletPreferences, String)}
+	 */
+	@Deprecated
+	@Override
+	protected PortletPreferences doImportData(
+			PortletDataContext portletDataContext, String portletId,
+			PortletPreferences portletPreferences, String data)
+		throws Exception {
+
+		return importData(
+			portletDataContext, portletId, portletPreferences, data);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x), replaced by {@link
+	 *             #prepareManifestSummary(PortletDataContext, PortletPreferences)}
+	 */
+	@Deprecated
+	@Override
+	protected void doPrepareManifestSummary(
+			PortletDataContext portletDataContext,
+			PortletPreferences portletPreferences)
+		throws Exception {
+
+		prepareManifestSummary(portletDataContext, portletPreferences);
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected ActionableDynamicQuery getMessageActionableDynamicQuery(
+		final PortletDataContext portletDataContext) {
+
+		StagedModelRepository<?> mbMessageStagedModelRepository =
+			StagedModelRepositoryRegistryUtil.getStagedModelRepository(
+				MBMessage.class.getName());
+
+		ActionableDynamicQuery messageActionableDynamicQuery =
+			mbMessageStagedModelRepository.getExportActionableDynamicQuery(
+				portletDataContext);
+
+		return messageActionableDynamicQuery;
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected void setMBBanLocalService(MBBanLocalService mbBanLocalService) {
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected void setMBCategoryLocalService(
+		MBCategoryLocalService mbCategoryLocalService) {
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected void setMBMessageLocalService(
+		MBMessageLocalService mbMessageLocalService) {
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected void setMBStatsUserLocalService(
+		MBStatsUserLocalService mbStatsUserLocalService) {
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected void setMBThreadFlagLocalService(
+		MBThreadFlagLocalService mbThreadFlagLocalService) {
+	}
+
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
+	protected void setMBThreadLocalService(
+		MBThreadLocalService mbThreadLocalService) {
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
