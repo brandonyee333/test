@@ -1,5 +1,9 @@
 html body {
 	color: $color-body;
+
+	#wrapper {
+		padding-top: 0;
+	}
 }
 
 h1 {
@@ -197,6 +201,7 @@ select {
 
 main {
 	border-bottom: 1px solid $color-divider;
+	padding-top: $navbar-height;
 }
 
 textarea {
@@ -213,10 +218,6 @@ textarea {
 
 .label-sm {
 	@include label-sm;
-}
-
-.main-content {
-	margin-top: $navbar-height;
 }
 
 .no-results {
