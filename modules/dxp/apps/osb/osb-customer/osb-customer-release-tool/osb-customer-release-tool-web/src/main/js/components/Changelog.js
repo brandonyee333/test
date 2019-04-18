@@ -138,11 +138,7 @@ export default class Changelog extends Component {
 			selectedFilters: {components, keywords, orderBy}
 		} = this.state;
 
-		let newOrderBy = orderBy;
-
-		if (otherProps.orderBy) {
-			newOrderBy = otherProps.orderBy;
-		}
+		const newOrderBy =  otherProps.orderBy || orderBy;
 
 		// startAt param begins at 0 and not 1
 
