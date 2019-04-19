@@ -1,9 +1,9 @@
 dependencies {
 	compileInclude group: "com.yammer.metrics", name: "metrics-core", version: "2.2.0"
 
-	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.8.3"
-	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.8.3"
-	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.8.3"
+	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-annotations", version: "2.9.8"
+	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-core", version: "2.9.8"
+	compileOnly group: "com.fasterxml.jackson.core", name: "jackson-databind", version: "2.9.8"
 	compileOnly group: "com.liferay", name: "com.liferay.lcs.api", version: "12.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.lcs.client.api", version: "4.0.0"
 	compileOnly group: "com.liferay", name: "com.liferay.lcs.messaging", version: "12.0.0"
