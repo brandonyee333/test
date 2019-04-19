@@ -14,24 +14,63 @@
 
 package com.liferay.lcs.client.internal.messaging;
 
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.command.CheckHeartbeatCommand;
 import com.liferay.lcs.client.internal.command.Command;
+import com.liferay.lcs.client.internal.command.DownloadPatchCommand;
+import com.liferay.lcs.client.internal.command.ExecuteScriptCommand;
+import com.liferay.lcs.client.internal.command.ScheduleMessageListenersCommand;
+import com.liferay.lcs.client.internal.command.ScheduleTasksCommand;
+import com.liferay.lcs.client.internal.command.SendInstallationEnvironmentCommand;
+import com.liferay.lcs.client.internal.command.SendPatchesCommand;
+import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
+import com.liferay.lcs.client.internal.command.SignOffCommand;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.constants.LCSDestinationNames;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
 import com.liferay.lcs.messaging.CommandMessage;
+import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
 import com.liferay.lcs.messaging.ErrorResponseMessage;
+import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
+import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
+import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
+import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
+import com.liferay.lcs.messaging.SendPatchesCommandMessage;
+import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
+import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.messaging.security.DigitalSignature;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Map;
+
+import org.osgi.service.component.ComponentFactory;
+import org.osgi.service.component.ComponentInstance;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(
+	immediate = true,
+	property = "destination.name=" + LCSDestinationNames.LCS_COMMANDS,
+	service = MessageListener.class
+)
 public class CommandMessageListener implements MessageListener {
+
+	public CommandMessageListener() {
+	}
 
 	public CommandMessageListener(
 		Map<String, Command<? extends CommandMessage>> commands,
@@ -110,6 +149,23 @@ public class CommandMessageListener implements MessageListener {
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_initDigitalSignature(lcsConfiguration);
+
+		_initCommands();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_digitalSignatureComponentInstance != null) {
+			_digitalSignatureComponentInstance.dispose();
+		}
+	}
+
 	protected ErrorResponseMessage getErrorResponseMessage(
 		CommandMessage commandMessage, String errorMessage) {
 
@@ -124,11 +180,98 @@ public class CommandMessageListener implements MessageListener {
 		return errorResponseMessage;
 	}
 
+	private void _initCommands() {
+		_commands.put(
+			CheckHeartbeatCommandMessage.class.getName(),
+			_checkHeartbeatCommand);
+		_commands.put(
+			DownloadPatchCommandMessage.class.getName(), _downloadPatchCommand);
+		_commands.put(
+			ExecuteScriptCommandMessage.class.getName(), _executeScriptCommand);
+		_commands.put(
+			ScheduleMessageListenersCommandMessage.class.getName(),
+			_scheduleMessageListenersCommand);
+		_commands.put(
+			ScheduleTasksCommandMessage.class.getName(), _scheduleTasksCommand);
+		_commands.put(
+			SendInstallationEnvironmentCommandMessage.class.getName(),
+			_sendInstallationEnvironmentCommand);
+		_commands.put(
+			SendPatchesCommandMessage.class.getName(), _sendPatchesCommand);
+		_commands.put(
+			SendPortalPropertiesCommandMessage.class.getName(),
+			_sendPortalPropertiesCommand);
+		_commands.put(SignOffCommandMessage.class.getName(), _signOffCommand);
+	}
+
+	private void _initDigitalSignature(LCSConfiguration lcsConfiguration) {
+		Dictionary<String, String> dictionary =
+			new HashMapDictionary<String, String>() {
+				{
+					put("keyName", lcsConfiguration.digitalSignatureKeyName());
+					put(
+						"keyStorePath",
+						lcsConfiguration.digitalSignatureKeyStorePath());
+					put(
+						"keyStoreType",
+						lcsConfiguration.digitalSignatureKeyStoreType());
+					put(
+						"signingAlgorithm",
+						lcsConfiguration.digitalSignatureSigningAlgorithm());
+				}
+			};
+
+		_digitalSignatureComponentInstance =
+			_digitalSignatureComponentFactory.newInstance(dictionary);
+
+		_digitalSignature =
+			(DigitalSignature)_digitalSignatureComponentInstance.getInstance();
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandMessageListener.class);
 
-	private final Map<String, Command<? extends CommandMessage>> _commands;
-	private final DigitalSignature _digitalSignature;
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private CheckHeartbeatCommand _checkHeartbeatCommand;
+
+	private Map<String, Command<? extends CommandMessage>> _commands =
+		new HashMap<>();
+	private DigitalSignature _digitalSignature;
+
+	@Reference(target = "(component.factory=DigitalSignature)")
+	private ComponentFactory _digitalSignatureComponentFactory;
+
+	private ComponentInstance _digitalSignatureComponentInstance;
+
+	@Reference
+	private DownloadPatchCommand _downloadPatchCommand;
+
+	@Reference
+	private ExecuteScriptCommand _executeScriptCommand;
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private ScheduleMessageListenersCommand _scheduleMessageListenersCommand;
+
+	@Reference
+	private ScheduleTasksCommand _scheduleTasksCommand;
+
+	@Reference
+	private SendInstallationEnvironmentCommand
+		_sendInstallationEnvironmentCommand;
+
+	@Reference
+	private SendPatchesCommand _sendPatchesCommand;
+
+	@Reference
+	private SendPortalPropertiesCommand _sendPortalPropertiesCommand;
+
+	@Reference
+	private SignOffCommand _signOffCommand;
 
 }
