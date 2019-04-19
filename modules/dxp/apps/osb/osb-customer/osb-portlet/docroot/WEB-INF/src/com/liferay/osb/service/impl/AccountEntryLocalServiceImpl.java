@@ -704,7 +704,7 @@ public class AccountEntryLocalServiceImpl
 			offeringEntryPersistence.update(offeringEntry);
 		}
 
-		updateActiveSupport(accountEntry.getAccountEntryId());
+		updateSupportStatus(accountEntry.getAccountEntryId());
 
 		// Dossiera project
 
@@ -1326,8 +1326,6 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntryPersistence.update(accountEntry);
 
-		updateActiveSupport(accountEntryId);
-
 		return accountEntry;
 	}
 
@@ -1659,31 +1657,6 @@ public class AccountEntryLocalServiceImpl
 			oldAccountEntry, workflowServiceContext);
 	}
 
-	public void updateActiveSupport(long accountEntryId)
-		throws PortalException {
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if ((accountEntry.getStatus() == WorkflowConstants.STATUS_PENDING) ||
-			(accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED)) {
-
-			return;
-		}
-
-		boolean activeSupport =
-			offeringEntryLocalService.hasActiveSupportOfferingEntry(
-				accountEntryId, false);
-		boolean activeTicketSupport =
-			offeringEntryLocalService.hasActiveSupportOfferingEntry(
-				accountEntryId, true);
-
-		accountEntry.setActiveSupport(activeSupport);
-		accountEntry.setActiveTicketSupport(activeTicketSupport);
-
-		accountEntryPersistence.update(accountEntry);
-	}
-
 	public AccountEntry updateInstructions(
 			long userId, long accountEntryId, String instructions)
 		throws PortalException {
@@ -1760,39 +1733,6 @@ public class AccountEntryLocalServiceImpl
 				VisibilityConstants.ADMIN, auditLabel, auditValue,
 				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,
 				false);
-		}
-	}
-
-	public void updateStatus(long accountEntryId) throws PortalException {
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		int oldStatus = accountEntry.getStatus();
-
-		if ((oldStatus == WorkflowConstants.STATUS_PENDING) ||
-			(oldStatus == WorkflowConstants.STATUS_REJECTED)) {
-
-			return;
-		}
-
-		accountEntry.setStatus(getStatus(accountEntryId));
-
-		accountEntryPersistence.update(accountEntry);
-
-		if ((oldStatus != accountEntry.getStatus()) &&
-			(accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED)) {
-
-			long classNameId = classNameLocalService.getClassNameId(
-				AccountEntry.class.getName());
-
-			auditEntryLocalService.addAuditEntry(
-				OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK, new Date(),
-				classNameId, accountEntryId, 0, classNameId, accountEntryId,
-				AuditEntryConstants.ACTION_UPDATE,
-				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
-				WorkflowConstants.getStatusLabel(oldStatus),
-				String.valueOf(oldStatus), accountEntry.getStatusLabel(),
-				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
 		}
 	}
 
@@ -2019,6 +1959,53 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		return accountEntry;
+	}
+
+	public void updateSupportStatus(long accountEntryId)
+		throws PortalException {
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		int oldStatus = accountEntry.getStatus();
+
+		if ((oldStatus == WorkflowConstants.STATUS_PENDING) ||
+			(oldStatus == WorkflowConstants.STATUS_REJECTED)) {
+
+			return;
+		}
+
+		boolean activeSupport =
+			offeringEntryLocalService.hasActiveSupportOfferingEntry(
+				accountEntryId, false);
+
+		accountEntry.setActiveSupport(activeSupport);
+
+		boolean activeTicketSupport =
+			offeringEntryLocalService.hasActiveSupportOfferingEntry(
+				accountEntryId, true);
+
+		accountEntry.setActiveTicketSupport(activeTicketSupport);
+
+		accountEntry.setStatus(getStatus(accountEntryId));
+
+		accountEntryPersistence.update(accountEntry);
+
+		if ((oldStatus != accountEntry.getStatus()) &&
+			(accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED)) {
+
+			long classNameId = classNameLocalService.getClassNameId(
+				AccountEntry.class.getName());
+
+			auditEntryLocalService.addAuditEntry(
+				OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK, new Date(),
+				classNameId, accountEntryId, 0, classNameId, accountEntryId,
+				AuditEntryConstants.ACTION_UPDATE,
+				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
+				WorkflowConstants.getStatusLabel(oldStatus),
+				String.valueOf(oldStatus), accountEntry.getStatusLabel(),
+				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
+		}
 	}
 
 	public void validate(AccountEntry accountEntry) throws PortalException {

@@ -115,7 +115,7 @@ public class OfferingEntryLocalServiceImpl
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			accountEntryId);
 
-		accountEntryLocalService.updateStatus(accountEntryId);
+		accountEntryLocalService.updateSupportStatus(accountEntryId);
 
 		checkAnalyticsCloudBasicAccountEntry(
 			offeringEntry.getAccountEntryId(),
@@ -152,9 +152,6 @@ public class OfferingEntryLocalServiceImpl
 					OSBConstants.USER_DEFAULT_USER_ID,
 					offeringEntry.getOfferingEntryId(),
 					OfferingEntryConstants.STATUS_ON_HOLD);
-
-				accountEntryLocalService.updateActiveSupport(
-					offeringEntry.getAccountEntryId());
 
 				if (accountEntryIds.contains(
 						offeringEntry.getAccountEntryId())) {
@@ -206,7 +203,7 @@ public class OfferingEntryLocalServiceImpl
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			offeringEntry.getAccountEntryId());
 
-		accountEntryLocalService.updateStatus(
+		accountEntryLocalService.updateSupportStatus(
 			offeringEntry.getAccountEntryId());
 
 		checkAnalyticsCloudBasicAccountEntry(
@@ -364,6 +361,9 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntryPersistence.update(offeringEntry);
 
+		accountEntryLocalService.updateSupportStatus(
+			offeringEntry.getAccountEntryId());
+
 		checkAnalyticsCloudBasicAccountEntry(
 			offeringEntry.getAccountEntryId(),
 			offeringEntry.getProductEntryId());
@@ -392,7 +392,7 @@ public class OfferingEntryLocalServiceImpl
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			offeringEntry.getAccountEntryId());
 
-		accountEntryLocalService.updateStatus(
+		accountEntryLocalService.updateSupportStatus(
 			offeringEntry.getAccountEntryId());
 
 		checkAnalyticsCloudBasicAccountEntry(
@@ -494,10 +494,7 @@ public class OfferingEntryLocalServiceImpl
 					offeringEntryPersistence.update(curOfferingEntry);
 				}
 
-				accountEntryLocalService.updateStatus(
-					analyticsCloudBasicAccountEntry.getAccountEntryId());
-
-				accountEntryLocalService.updateActiveSupport(
+				accountEntryLocalService.updateSupportStatus(
 					analyticsCloudBasicAccountEntry.getAccountEntryId());
 			}
 		}
@@ -522,10 +519,7 @@ public class OfferingEntryLocalServiceImpl
 					offeringEntryPersistence.update(curOfferingEntry);
 				}
 
-				accountEntryLocalService.updateStatus(
-					analyticsCloudBasicAccountEntry.getAccountEntryId());
-
-				accountEntryLocalService.updateActiveSupport(
+				accountEntryLocalService.updateSupportStatus(
 					analyticsCloudBasicAccountEntry.getAccountEntryId());
 			}
 		}

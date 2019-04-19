@@ -86,10 +86,7 @@ public class CheckStatusAccountEntriesMessageListener
 			}
 
 			try {
-				AccountEntryLocalServiceUtil.updateStatus(
-					accountEntry.getAccountEntryId());
-
-				AccountEntryLocalServiceUtil.updateActiveSupport(
+				AccountEntryLocalServiceUtil.updateSupportStatus(
 					accountEntry.getAccountEntryId());
 
 				if (accountEntry.getType() ==

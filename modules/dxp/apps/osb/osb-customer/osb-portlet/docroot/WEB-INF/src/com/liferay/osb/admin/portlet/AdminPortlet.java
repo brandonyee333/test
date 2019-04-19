@@ -780,8 +780,6 @@ public class AdminPortlet extends OSBPortlet {
 				OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
 			}
 
-			AccountEntryLocalServiceUtil.updateActiveSupport(accountEntryId);
-
 			syncToLCS(actionRequest, actionResponse, accountEntryId);
 
 			jsonObject.put("message", "success");
