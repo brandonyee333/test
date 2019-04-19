@@ -43,7 +43,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 </liferay-portlet:renderURL>
 
 <div class="main-heading">
-	<div class="container-fluid container-fluid-max-xl">
+	<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
 		<h1>
 			<liferay-ui:message key="liferay-dxp-release-notes" />
 		</h1>
@@ -51,18 +51,18 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 		<h5 class="section-subtitle">
 			<liferay-ui:message key="display-the-patching-details-relevant-to-your-liferay-build" />
 		</h5>
-	</div>
+	</aui:container>
 </div>
 
 <div class="container-fluid container-fluid-max-xl fixpack-filters" id="<portlet:namespace />fixpackFilters"></div>
 
-<liferay-ui:tabs
-	cssClass="container-fluid container-fluid-max-xl"
-	names='<%= "highlights,changelog,module-changes" %>'
-	url="<%= portletURL.toString() %>"
-/>
+<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+	<liferay-ui:tabs
+		cssClass="container-fluid container-fluid-max-xl"
+		names='<%= "highlights,changelog,module-changes" %>'
+		url="<%= portletURL.toString() %>"
+	/>
 
-<div class="container-fluid container-fluid-max-xl">
 	<c:choose>
 		<c:when test='<%= tabs1.equals("changelog") %>'>
 			<liferay-util:include page="/changelog.jsp" servletContext="<%= application %>" />
@@ -74,7 +74,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 			<liferay-util:include page="/highlights.jsp" servletContext="<%= application %>" />
 		</c:otherwise>
 	</c:choose>
-</div>
+</aui:container>
 
 <aui:script>
 	ReleaseTool.render(
