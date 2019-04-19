@@ -15,7 +15,9 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.PortalModelMessage;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -33,7 +35,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Eduardo García
  */
-@Component(immediate = true, service = ScheduledTask.class)
+@Component(
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.OrganizationsTask",
+	service = ScheduledTask.class
+)
 public class OrganizationsTask extends BasePortalModelTask {
 
 	@Activate
@@ -41,6 +46,8 @@ public class OrganizationsTask extends BasePortalModelTask {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 		setPauseInterval(lcsConfiguration.scheduledTaskPauseInterval());
 		setPageSize(lcsConfiguration.scheduledTaskPageSize());
 	}
@@ -91,6 +98,12 @@ public class OrganizationsTask extends BasePortalModelTask {
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;

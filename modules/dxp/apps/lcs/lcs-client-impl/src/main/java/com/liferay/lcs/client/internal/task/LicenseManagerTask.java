@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisorImpl;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -27,7 +28,10 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component(immediate = true, service = ScheduledTask.class)
+@Component(
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.LicenseManagerTask",
+	service = ScheduledTask.class
+)
 public class LicenseManagerTask implements ScheduledTask {
 
 	public LicenseManagerTask() {
@@ -98,6 +102,6 @@ public class LicenseManagerTask implements ScheduledTask {
 	private LCSGatewayClient _lcsGatewayClient;
 
 	@Reference
-	private LCSPortletStateAdvisorImpl _lcsPortletStateAdvisor;
+	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 }

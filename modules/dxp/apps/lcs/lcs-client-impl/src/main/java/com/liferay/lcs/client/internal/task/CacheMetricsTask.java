@@ -15,9 +15,11 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.management.MBeanServerService;
 import com.liferay.lcs.client.internal.management.ObjectNameKeyPropertyMapKeyStrategy;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 
@@ -39,7 +41,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(immediate = true, service = ScheduledTask.class)
+@Component(
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.CacheMetricsTask",
+	service = ScheduledTask.class
+)
 public class CacheMetricsTask extends BaseScheduledTask {
 
 	@Activate
@@ -49,6 +54,9 @@ public class CacheMetricsTask extends BaseScheduledTask {
 
 		_multiVMObjectName = lcsConfiguration.cacheMetricsMultiVMObjectName();
 		_singleVMObjectName = lcsConfiguration.cacheMetricsSingleVMObjectName();
+
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	@Override
@@ -152,18 +160,14 @@ public class CacheMetricsTask extends BaseScheduledTask {
 			new ObjectNameKeyPropertyMapKeyStrategy("name"));
 	}
 
-	protected Object getPayload() throws Exception {
-		Map<String, Object> payload = new HashMap<>();
-
-		payload.put("hibernateMetrics", getHibernateMetrics());
-		payload.put("liferayMultiVMMetrics", getLiferayMultiVMMetrics());
-		payload.put("liferaySingleVMMetrics", getLiferaySingleVMMetrics());
-
-		return payload;
-	}
-
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 	@Reference
 	private MBeanServerService _mBeanServerService;

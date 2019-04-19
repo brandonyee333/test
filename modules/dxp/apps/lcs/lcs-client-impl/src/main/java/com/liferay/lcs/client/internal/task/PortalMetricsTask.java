@@ -14,7 +14,9 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.metrics.PortalMetricsAggregator;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.PortalMetricsMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -22,18 +24,28 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Igor Beslic
  */
-@Component(immediate = true, service = ScheduledTask.class)
+@Component(
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.PortalMetricsTask",
+	service = ScheduledTask.class
+)
 public class PortalMetricsTask extends BaseScheduledTask {
 
 	@Override
 	public Scope getScope() {
 		return Scope.NODE;
+	}
+
+	@Activate
+	protected void activate() {
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	@Override
@@ -64,6 +76,12 @@ public class PortalMetricsTask extends BaseScheduledTask {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsTask.class);
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 	@Reference
 	private PortalMetricsAggregator _portalMetricsAggregator;

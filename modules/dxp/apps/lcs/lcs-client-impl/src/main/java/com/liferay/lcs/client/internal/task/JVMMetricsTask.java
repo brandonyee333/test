@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.JVMMetricsMessage;
 
 import com.yammer.metrics.core.VirtualMachineMetrics;
@@ -25,18 +27,29 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(immediate = true, service = ScheduledTask.class)
+@Component(
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.JVMMetricsTask",
+	service = ScheduledTask.class
+)
 public class JVMMetricsTask extends BaseScheduledTask {
 
 	@Override
 	public Scope getScope() {
 		return Scope.NODE;
+	}
+
+	@Activate
+	protected void activate() {
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	@Override
@@ -155,5 +168,11 @@ public class JVMMetricsTask extends BaseScheduledTask {
 
 	private static final VirtualMachineMetrics _virtualMachineMetrics =
 		VirtualMachineMetrics.getInstance();
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

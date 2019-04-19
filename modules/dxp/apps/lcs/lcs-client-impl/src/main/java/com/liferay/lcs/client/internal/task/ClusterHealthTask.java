@@ -14,21 +14,34 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.util.ClusterNodeUtil;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.ClusterHealthMessage;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(immediate = true, service = ScheduledTask.class)
+@Component(
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.ClusterHealthTask",
+	service = ScheduledTask.class
+)
 public class ClusterHealthTask extends BaseScheduledTask {
 
 	@Override
 	public Scope getScope() {
 		return Scope.NODE;
+	}
+
+	@Activate
+	protected void activate() {
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	@Override
@@ -43,5 +56,11 @@ public class ClusterHealthTask extends BaseScheduledTask {
 
 		sendMessage(clusterHealthMessage);
 	}
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }
