@@ -762,12 +762,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void updateActiveSupport(long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.updateActiveSupport(accountEntryId);
-	}
-
-	@Override
 	public void updateLastAuditDate(long userId, long accountEntryId,
 		java.lang.String auditLabel, java.lang.String auditValue)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -784,9 +778,9 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void updateStatus(long accountEntryId)
+	public void updateSupportStatus(long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.updateStatus(accountEntryId);
+		_accountEntryLocalService.updateSupportStatus(accountEntryId);
 	}
 
 	@Override

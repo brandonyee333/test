@@ -500,9 +500,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		Address address, List<OrderEntry> orderEntries, List<User> users,
 		ServiceContext serviceContext) throws PortalException;
 
-	public void updateActiveSupport(long accountEntryId)
-		throws PortalException;
-
 	public void updateLastAuditDate(long userId, long accountEntryId,
 		java.lang.String auditLabel, java.lang.String auditValue)
 		throws PortalException;
@@ -511,7 +508,8 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		java.lang.String auditLabel, java.lang.String auditValue)
 		throws PortalException;
 
-	public void updateStatus(long accountEntryId) throws PortalException;
+	public void updateSupportStatus(long accountEntryId)
+		throws PortalException;
 
 	public void validate(AccountEntry accountEntry) throws PortalException;
 }
