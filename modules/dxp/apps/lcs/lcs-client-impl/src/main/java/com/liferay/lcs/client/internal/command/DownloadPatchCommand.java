@@ -45,12 +45,19 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(service = DownloadPatchCommand.class)
 public class DownloadPatchCommand
 	implements Command<DownloadPatchCommandMessage> {
+
+	public DownloadPatchCommand() {
+	}
 
 	public DownloadPatchCommand(LCSGatewayClient lcsGatewayClient) {
 		_lcsGatewayClient = lcsGatewayClient;
@@ -288,6 +295,7 @@ public class DownloadPatchCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		DownloadPatchCommand.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
 
 }

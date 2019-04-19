@@ -27,7 +27,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component
+@Component(service = SignOffCommand.class)
 public class SignOffCommand implements Command<SignOffCommandMessage> {
 
 	public SignOffCommand() {

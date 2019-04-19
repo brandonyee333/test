@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component
+@Component(service = SendPatchesCommand.class)
 public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 
 	public SendPatchesCommand() {

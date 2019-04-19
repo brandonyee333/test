@@ -31,11 +31,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  */
+@Component(service = ExecuteScriptCommand.class)
 public class ExecuteScriptCommand
 	implements Command<ExecuteScriptCommandMessage> {
+
+	public ExecuteScriptCommand() {
+	}
 
 	public ExecuteScriptCommand(LCSGatewayClient lcsGatewayClient) {
 		_lcsGatewayClient = lcsGatewayClient;
@@ -120,6 +127,7 @@ public class ExecuteScriptCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		ExecuteScriptCommand.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
 
 }

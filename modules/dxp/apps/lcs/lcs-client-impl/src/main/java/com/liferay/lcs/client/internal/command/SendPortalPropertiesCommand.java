@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(immediate = true, service = SendPortalPropertiesCommand.class)
+@Component(service = SendPortalPropertiesCommand.class)
 public class SendPortalPropertiesCommand
 	implements Command<SendPortalPropertiesCommandMessage> {
 

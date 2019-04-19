@@ -23,11 +23,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  */
+@Component(service = ScheduleMessageListenersCommand.class)
 public class ScheduleMessageListenersCommand
 	implements Command<ScheduleMessageListenersCommandMessage> {
+
+	public ScheduleMessageListenersCommand() {
+	}
 
 	public ScheduleMessageListenersCommand(
 		MessageBusListenerAdvisor messageBusListenerAdvisor) {
@@ -67,6 +74,7 @@ public class ScheduleMessageListenersCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		ScheduleMessageListenersCommand.class);
 
-	private final MessageBusListenerAdvisor _messageBusListenerAdvisor;
+	@Reference
+	private MessageBusListenerAdvisor _messageBusListenerAdvisor;
 
 }

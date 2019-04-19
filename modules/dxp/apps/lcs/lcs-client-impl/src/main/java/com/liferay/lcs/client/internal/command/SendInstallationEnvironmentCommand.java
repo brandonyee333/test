@@ -22,11 +22,18 @@ import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component(service = SendInstallationEnvironmentCommand.class)
 public class SendInstallationEnvironmentCommand
 	implements Command<SendInstallationEnvironmentCommandMessage> {
+
+	public SendInstallationEnvironmentCommand() {
+	}
 
 	public SendInstallationEnvironmentCommand(
 		LCSGatewayClient lcsGatewayClient) {
@@ -87,6 +94,7 @@ public class SendInstallationEnvironmentCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendInstallationEnvironmentCommand.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
 
 }

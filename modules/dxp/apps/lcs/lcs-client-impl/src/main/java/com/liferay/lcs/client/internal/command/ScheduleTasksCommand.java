@@ -24,9 +24,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Riccardo Ferrari
  */
+@Component(service = ScheduleTasksCommand.class)
 public class ScheduleTasksCommand
 	implements Command<ScheduleTasksCommandMessage> {
 
@@ -60,12 +64,6 @@ public class ScheduleTasksCommand
 		}
 	}
 
-	public void setTaskSchedulerService(
-		TaskSchedulerService taskSchedulerService) {
-
-		_taskSchedulerService = taskSchedulerService;
-	}
-
 	protected void scheduleTask(Map<String, String> schedulerContext) {
 		_taskSchedulerService.scheduleTask(schedulerContext);
 	}
@@ -73,6 +71,7 @@ public class ScheduleTasksCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		ScheduleTasksCommand.class);
 
+	@Reference
 	private TaskSchedulerService _taskSchedulerService;
 
 }

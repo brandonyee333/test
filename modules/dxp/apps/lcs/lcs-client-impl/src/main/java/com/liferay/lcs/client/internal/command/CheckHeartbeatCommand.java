@@ -21,11 +21,18 @@ import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  */
+@Component(service = CheckHeartbeatCommand.class)
 public class CheckHeartbeatCommand
 	implements Command<CheckHeartbeatCommandMessage> {
+
+	public CheckHeartbeatCommand() {
+	}
 
 	public CheckHeartbeatCommand(
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor) {
@@ -64,7 +71,10 @@ public class CheckHeartbeatCommand
 	private static final Log _log = LogFactoryUtil.getLog(
 		CheckHeartbeatCommand.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final LCSKeyAdvisor _lcsKeyAdvisor;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }
