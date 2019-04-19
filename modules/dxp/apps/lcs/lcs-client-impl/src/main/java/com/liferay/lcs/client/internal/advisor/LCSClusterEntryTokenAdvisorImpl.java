@@ -57,7 +57,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Igor Beslic
  */
-@Component(immediate = true, service = LCSClusterEntryTokenAdvisor.class)
+@Component(service = LCSClusterEntryTokenAdvisor.class)
 public class LCSClusterEntryTokenAdvisorImpl
 	implements LCSClusterEntryTokenAdvisor, LCSEventListener {
 
