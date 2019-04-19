@@ -18,7 +18,7 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.MockPortletPreferencesImpl;
 import com.liferay.lcs.client.internal.advisor.answer.LCSPortletPreferencesUtilAnswer;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.util.LCSPortletPreferencesUtil;
+import com.liferay.lcs.client.internal.util.LCSPortletPreferences;
 
 import java.lang.management.ManagementFactory;
 
@@ -42,16 +42,19 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@PrepareForTest({ManagementFactory.class, LCSPortletPreferencesUtil.class})
+@PrepareForTest(ManagementFactory.class)
 @RunWith(PowerMockRunner.class)
 public class UptimeAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
-		mockStatic(ManagementFactory.class, LCSPortletPreferencesUtil.class);
+		mockStatic(ManagementFactory.class);
+
+		LCSPortletPreferences lcsPortletPreferences = spy(
+			new LCSPortletPreferences());
 
 		when(
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences()
+			lcsPortletPreferences.fetchReadOnlyJxPortletPreferences()
 		).thenReturn(
 			_portletPreferences
 		);
@@ -73,7 +76,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 		doAnswer(
 			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
 		).when(
-			LCSPortletPreferencesUtil.class, "store", Matchers.anyString(),
+			LCSPortletPreferences.class, "store", Matchers.anyString(),
 			Matchers.anyString()
 		);
 
@@ -154,7 +157,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 		doAnswer(
 			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
 		).when(
-			LCSPortletPreferencesUtil.class, "store", Matchers.anyString(),
+			LCSPortletPreferences.class, "store", Matchers.anyString(),
 			Matchers.anyString()
 		);
 
@@ -185,7 +188,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 		doAnswer(
 			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
 		).when(
-			LCSPortletPreferencesUtil.class, "store", Matchers.anyString(),
+			LCSPortletPreferences.class, "store", Matchers.anyString(),
 			Matchers.anyString()
 		);
 
