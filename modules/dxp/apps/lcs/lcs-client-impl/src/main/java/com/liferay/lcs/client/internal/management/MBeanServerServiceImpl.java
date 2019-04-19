@@ -17,6 +17,8 @@ package com.liferay.lcs.client.internal.management;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.lang.management.ManagementFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,8 +29,10 @@ import java.util.Set;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
+import javax.management.MBeanServerFactory;
 import javax.management.ObjectName;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 
 /**
@@ -122,7 +126,33 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 		return objectNamesAttributes;
 	}
 
-	public void setMBeanServer(MBeanServer mBeanServer) {
+	@Activate
+	protected void activate() {
+		MBeanServer mBeanServer = null;
+
+		List<MBeanServer> servers = MBeanServerFactory.findMBeanServer(null);
+
+		if (!servers.isEmpty()) {
+			mBeanServer = servers.get(0);
+		}
+
+		if (mBeanServer == null) {
+			try {
+				mBeanServer = ManagementFactory.getPlatformMBeanServer();
+			}
+			catch (SecurityException se) {
+				throw new IllegalStateException(
+					"No specific MBeanServer found, and not allowed to " +
+						"obtain the Java platform MBeanServer",
+					se);
+			}
+		}
+
+		if (mBeanServer == null) {
+			throw new IllegalStateException(
+				"Unable to locate an MBeanServer instance");
+		}
+
 		_mBeanServer = mBeanServer;
 	}
 
