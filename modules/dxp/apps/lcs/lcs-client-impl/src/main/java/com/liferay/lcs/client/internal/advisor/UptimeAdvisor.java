@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.util.LCSPortletPreferencesUtil;
+import com.liferay.lcs.client.internal.util.LCSPortletPreferences;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -188,7 +188,7 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 
 		PortletPreferences portletPreferences =
-			LCSPortletPreferencesUtil.fetchReadOnlyJxPortletPreferences();
+			_lcsPortletPreferences.fetchReadOnlyJxPortletPreferences();
 
 		String json = portletPreferences.getValue("uptimes-" + key, null);
 
@@ -293,7 +293,7 @@ public class UptimeAdvisor implements LCSEventListener {
 		}
 
 		try {
-			LCSPortletPreferencesUtil.store(
+			_lcsPortletPreferences.store(
 				"uptimes-" + key, arrayNode.toString());
 		}
 		catch (Exception e) {
@@ -320,6 +320,9 @@ public class UptimeAdvisor implements LCSEventListener {
 
 	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
+
+	@Reference
+	private LCSPortletPreferences _lcsPortletPreferences;
 
 	private List<Uptime> _uptimes;
 

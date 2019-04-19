@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
+import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
@@ -31,13 +31,17 @@ import java.util.List;
 
 import javax.portlet.ReadOnlyException;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Mladen Cikara
  * @author Igor Beslic
  */
-public class LCSPortletPreferencesUtil {
+@Component(service = LCSPortletPreferences.class)
+public class LCSPortletPreferences {
 
-	public static synchronized javax.portlet.PortletPreferences
+	public synchronized javax.portlet.PortletPreferences
 		fetchReadOnlyJxPortletPreferences() {
 
 		PortletPreferences portletPreferences = _fetchPortletPreferences();
@@ -65,7 +69,7 @@ public class LCSPortletPreferencesUtil {
 		return null;
 	}
 
-	public static synchronized void store(String key, String value)
+	public synchronized void store(String key, String value)
 		throws ReadOnlyException {
 
 		PortletPreferences portletPreferences = _fetchPortletPreferences();
@@ -81,7 +85,7 @@ public class LCSPortletPreferencesUtil {
 		portletPreferences.setPreferences(
 			PortletPreferencesFactoryUtil.toXML(jxPortletPreferences));
 
-		PortletPreferencesLocalServiceUtil.updatePortletPreferences(
+		_portletPreferencesLocalService.updatePortletPreferences(
 			portletPreferences);
 
 		PortletPreferencesPersistence portletPreferencesPersistence =
@@ -90,7 +94,7 @@ public class LCSPortletPreferencesUtil {
 		portletPreferencesPersistence.clearCache(portletPreferences);
 	}
 
-	private static PortletPreferences _fetchPortletPreferences() {
+	private PortletPreferences _fetchPortletPreferences() {
 		try {
 			DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(
 				PortletPreferences.class,
@@ -108,10 +112,10 @@ public class LCSPortletPreferencesUtil {
 					"portletId", PortletKeys.MONITORING));
 
 			List<PortletPreferences> portletPreferencesList =
-				PortletPreferencesLocalServiceUtil.dynamicQuery(dynamicQuery);
+				_portletPreferencesLocalService.dynamicQuery(dynamicQuery);
 
 			if (portletPreferencesList.isEmpty()) {
-				return PortletPreferencesLocalServiceUtil.addPortletPreferences(
+				return _portletPreferencesLocalService.addPortletPreferences(
 					CompanyConstants.SYSTEM, CompanyConstants.SYSTEM,
 					PortletKeys.PREFS_OWNER_TYPE_COMPANY, 0,
 					PortletKeys.MONITORING, null, null);
@@ -131,12 +135,15 @@ public class LCSPortletPreferencesUtil {
 		return null;
 	}
 
-	private static PortletPreferencesPersistence _getPersistence() {
+	private PortletPreferencesPersistence _getPersistence() {
 		return (PortletPreferencesPersistence)PortalBeanLocatorUtil.locate(
 			PortletPreferencesPersistence.class.getName());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LCSPortletPreferencesUtil.class);
+		LCSPortletPreferences.class);
+
+	@Reference
+	private PortletPreferencesLocalService _portletPreferencesLocalService;
 
 }
