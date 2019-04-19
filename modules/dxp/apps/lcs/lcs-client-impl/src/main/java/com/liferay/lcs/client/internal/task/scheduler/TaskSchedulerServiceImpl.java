@@ -33,8 +33,6 @@ import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.bean.BeanLocator;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -49,6 +47,8 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -172,14 +172,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	@Override
 	public void scheduleTask(Map<String, String> schedulerContext) {
-		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
-			"lcs-portlet");
-
 		String taskName = schedulerContext.get("taskName");
 
 		try {
-			ScheduledTask scheduledTask = (ScheduledTask)beanLocator.locate(
-				taskName);
+			ScheduledTask scheduledTask = _getScheduledTask(taskName);
 
 			if (scheduledTask == null) {
 				if (_log.isDebugEnabled()) {
@@ -253,11 +249,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		String taskName = schedulerContext.get("taskName");
 
-		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
-			"lcs-portlet");
+		ScheduledTask scheduledTask = _getScheduledTask(taskName);
 
-		ScheduledTask scheduledTask = (ScheduledTask)beanLocator.locate(
-			taskName);
 
 		_scheduledFuturesMap.put(
 			taskName,
@@ -386,6 +379,25 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		String interval = schedulerContext.get("interval");
 
 		return GetterUtil.getInteger(interval, _defaultInterval);
+	}
+
+	private ScheduledTask _getScheduledTask(String taskName) {
+		try {
+			ServiceReference<?>[] serviceReferences =
+				_bundleContext.getServiceReferences(
+					ScheduledTask.class.getName(),
+					"(lcs.client.scheduled.task.name=" + taskName + ")");
+
+			if (serviceReferences.length > 0) {
+				return (ScheduledTask)_bundleContext.getService(
+					serviceReferences[0]);
+			}
+		}
+		catch (InvalidSyntaxException ise) {
+			throw new IllegalArgumentException(ise);
+		}
+
+		return null;
 	}
 
 	private void _onLCSGatewayServiceAvailable() {
