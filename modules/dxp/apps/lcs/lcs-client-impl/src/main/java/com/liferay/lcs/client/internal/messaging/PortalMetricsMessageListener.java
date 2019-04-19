@@ -24,11 +24,22 @@ import com.liferay.portal.kernel.monitoring.DataSample;
 
 import java.util.List;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(
+	immediate = true,
+	property = "lcs.client.message.listener.name=messageListener.monitoring",
+	service = MessageListener.class
+)
 public class PortalMetricsMessageListener implements MessageListener {
+
+	public PortalMetricsMessageListener() {
+	}
 
 	public PortalMetricsMessageListener(
 		LCSGatewayClient lcsGatewayClient,
@@ -81,7 +92,10 @@ public class PortalMetricsMessageListener implements MessageListener {
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsMessageListener.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final PortalMetricsAggregator _portalMetricsAggregator;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private PortalMetricsAggregator _portalMetricsAggregator;
 
 }

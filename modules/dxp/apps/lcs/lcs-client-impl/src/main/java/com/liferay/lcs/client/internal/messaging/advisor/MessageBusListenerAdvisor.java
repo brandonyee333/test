@@ -19,8 +19,6 @@ import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.MonitoringAdvisor;
 import com.liferay.lcs.client.internal.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.portal.kernel.bean.BeanLocator;
-import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
@@ -32,13 +30,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component
+@Component(service = MessageBusListenerAdvisor.class)
 public class MessageBusListenerAdvisor implements LCSEventListener {
 
 	public MessageBusListenerAdvisor() {
@@ -76,12 +80,8 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 			return;
 		}
 
-		BeanLocator beanLocator = PortletBeanLocatorUtil.getBeanLocator(
-			"lcs-portlet");
-
-		listenerDescriptor.listenerInstance =
-			(MessageListener)beanLocator.locate(
-				listenerDescriptor.listenerName);
+		listenerDescriptor.listenerInstance = _getMessageListener(
+			listenerDescriptor.listenerName);
 
 		MessageBusUtil.registerMessageListener(
 			listenerDescriptor.destinationName,
@@ -105,7 +105,22 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		}
 	}
 
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		_subscribeToLCSEvents();
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_unregisterAll();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroyed " + this);
+		}
+	}
+
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
@@ -113,6 +128,25 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Finalized " + this);
 		}
+	}
+
+	private MessageListener _getMessageListener(String taskName) {
+		try {
+			ServiceReference<?>[] serviceReferences =
+				_bundleContext.getServiceReferences(
+					MessageListener.class.getName(),
+					"(lcs.client.message.listener.name=" + taskName + ")");
+
+			if (serviceReferences.length > 0) {
+				return (MessageListener)_bundleContext.getService(
+					serviceReferences[0]);
+			}
+		}
+		catch (InvalidSyntaxException ise) {
+			throw new IllegalArgumentException(ise);
+		}
+
+		return null;
 	}
 
 	private void _subscribeToLCSEvents() {
@@ -141,6 +175,8 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MessageBusListenerAdvisor.class);
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	private LCSEventManager _lcsEventManager;
