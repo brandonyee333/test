@@ -19,13 +19,25 @@ import com.liferay.lcs.client.internal.management.MBeanServerService;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ServerDetector;
 import com.liferay.portal.kernel.util.StringBundler;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Riccardo Ferrari
  */
+@Component(immediate = true, service = ServerMetricsTaskFactory.class)
 public class ServerMetricsTaskFactory {
+
+	public ServerMetricsTaskFactory() {
+	}
 
 	public ServerMetricsTaskFactory(
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
@@ -36,7 +48,29 @@ public class ServerMetricsTaskFactory {
 		_mBeanServerService = mBeanServerService;
 	}
 
-	public ServerMetricsTask getInstance() {
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		ServerMetricsTask serverMetricsTask = getInstance();
+
+		_scheduledTaskServiceRegistration = bundleContext.registerService(
+			ScheduledTask.class, serverMetricsTask,
+			new HashMapDictionary<String, String>() {
+				{
+					put(
+						"lcs.client.scheduled.task.name",
+						"com.liferay.lcs.task.ServerMetricsTask");
+				}
+			});
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_scheduledTaskServiceRegistration != null) {
+			_scheduledTaskServiceRegistration.unregister();
+		}
+	}
+
+	protected ServerMetricsTask getInstance() {
 		ServerMetricsTask serverMetricsTask = null;
 
 		if (ServerDetector.isTomcat()) {
@@ -76,8 +110,16 @@ public class ServerMetricsTaskFactory {
 	private static final Log _log = LogFactoryUtil.getLog(
 		ServerMetricsTaskFactory.class);
 
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final LCSKeyAdvisor _lcsKeyAdvisor;
-	private final MBeanServerService _mBeanServerService;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
+
+	@Reference
+	private MBeanServerService _mBeanServerService;
+
+	private ServiceRegistration<ScheduledTask>
+		_scheduledTaskServiceRegistration;
 
 }
