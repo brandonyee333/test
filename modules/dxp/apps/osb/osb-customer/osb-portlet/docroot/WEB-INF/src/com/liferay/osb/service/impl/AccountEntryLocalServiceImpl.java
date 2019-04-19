@@ -704,6 +704,8 @@ public class AccountEntryLocalServiceImpl
 			offeringEntryPersistence.update(offeringEntry);
 		}
 
+		updateActiveSupport(accountEntry.getAccountEntryId());
+
 		// Dossiera project
 
 		if (Validator.isNull(corpProject.getDossieraProjectKey())) {

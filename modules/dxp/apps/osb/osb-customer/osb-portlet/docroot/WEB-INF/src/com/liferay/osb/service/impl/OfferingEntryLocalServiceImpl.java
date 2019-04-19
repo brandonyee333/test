@@ -493,6 +493,12 @@ public class OfferingEntryLocalServiceImpl
 
 					offeringEntryPersistence.update(curOfferingEntry);
 				}
+
+				accountEntryLocalService.updateStatus(
+					analyticsCloudBasicAccountEntry.getAccountEntryId());
+
+				accountEntryLocalService.updateActiveSupport(
+					analyticsCloudBasicAccountEntry.getAccountEntryId());
 			}
 		}
 		else {
@@ -515,6 +521,12 @@ public class OfferingEntryLocalServiceImpl
 
 					offeringEntryPersistence.update(curOfferingEntry);
 				}
+
+				accountEntryLocalService.updateStatus(
+					analyticsCloudBasicAccountEntry.getAccountEntryId());
+
+				accountEntryLocalService.updateActiveSupport(
+					analyticsCloudBasicAccountEntry.getAccountEntryId());
 			}
 		}
 	}

@@ -117,6 +117,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			primaryOfferingEntry.getVersion(),
 			primaryOfferingEntry.getSizing());
 
+		accountEntryLocalService.updateActiveSupport(accountEntryId);
+
 		long licenseKeySetId = 0;
 
 		LicenseKey licenseKey = licenseKeyPersistence.fetchByOEI_C_A_First(
