@@ -45,15 +45,9 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 	}
 
 	public MessageBusListenerAdvisor(LCSEventManager lcsEventManager) {
-		lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
-	}
+		_lcsEventManager = lcsEventManager;
 
-	public void destroy() {
-		_unregisterAll();
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Destroyed " + this);
-		}
+		_subscribeToLCSEvents();
 	}
 
 	@Override
@@ -111,6 +105,7 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		}
 	}
 
+		_subscribeToLCSEvents();
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
@@ -118,6 +113,10 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Finalized " + this);
 		}
+	}
+
+	private void _subscribeToLCSEvents() {
+		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 	}
 
 	private void _unregisterAll() {
@@ -142,6 +141,9 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		MessageBusListenerAdvisor.class);
+
+	@Reference
+	private LCSEventManager _lcsEventManager;
 
 	private final List<ListenerDescriptor> _listenerDescriptors =
 		new ArrayList<>();

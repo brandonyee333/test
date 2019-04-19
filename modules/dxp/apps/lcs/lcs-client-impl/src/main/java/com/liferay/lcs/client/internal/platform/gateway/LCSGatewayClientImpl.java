@@ -257,6 +257,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	public void setJSONWebServiceClient(
 		JSONWebServiceClient jsonWebServiceClient) {
+		_subscribeToLCSEvents();
+
 
 		_jsonWebServiceClient = jsonWebServiceClient;
 	}
@@ -312,6 +314,12 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 
 		throw new LCSGatewayException(message, jsonwse);
+	}
+
+	private void _subscribeToLCSEvents() {
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_FAILED, this);
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
+		_lcsEventManager.subscribe(LCSEvent.SIGNOFF_SUCCESS, this);
 	}
 
 	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";

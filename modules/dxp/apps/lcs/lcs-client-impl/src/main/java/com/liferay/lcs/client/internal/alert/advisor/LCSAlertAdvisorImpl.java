@@ -63,6 +63,7 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
+		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_AVAILABLE, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 	}
 

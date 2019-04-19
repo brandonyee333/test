@@ -487,18 +487,26 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, this);
 		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED, this);
+		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS, this);
 		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
-		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
+		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_AVAILABLE, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
+		_lcsEventManager.subscribe(LCSEvent.SIGNOFF_REQUESTED, this);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
