@@ -23,6 +23,8 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
  */
 public interface ServerMetricsTask extends ScheduledTask {
 
+	public void afterPropertiesSet();
+
 	public boolean isCurrentThreadsMetricsEnabled();
 
 	public boolean isJDBCConnectionPoolsMetricsEnabled();

@@ -25,6 +25,7 @@ import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
+import com.liferay.lcs.client.internal.task.ServerMetricsTask;
 import com.liferay.lcs.client.internal.task.SignOffTask;
 import com.liferay.lcs.client.internal.task.Task;
 import com.liferay.lcs.client.internal.task.UptimeTask;
@@ -251,6 +252,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		ScheduledTask scheduledTask = _getScheduledTask(taskName);
 
+		if (scheduledTask instanceof ServerMetricsTask) {
+			((ServerMetricsTask)scheduledTask).afterPropertiesSet();
+		}
 
 		_scheduledFuturesMap.put(
 			taskName,
