@@ -34,9 +34,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Igor Beslic
  */
+@Component(service = PortalMetricsAggregator.class)
 public class PortalMetricsAggregator {
 
 	public synchronized boolean isEmpty() {
