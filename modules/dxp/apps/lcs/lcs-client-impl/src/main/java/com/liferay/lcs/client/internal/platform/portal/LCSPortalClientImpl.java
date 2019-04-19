@@ -43,6 +43,7 @@ import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -50,51 +51,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = LCSPortalClient.class)
 public class LCSPortalClientImpl implements LCSPortalClient {
-
-	@Activate
-	public void activate() throws Exception {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		Dictionary<String, Object> properties = new Hashtable<>();
-
-		properties.put(
-			"hostName", lcsConfiguration.lcsPlatformPortalHostName());
-		properties.put(
-			"hostPort",
-			String.valueOf(lcsConfiguration.lcsPlatformPortalHostPort()));
-		properties.put(
-			"keyStore",
-			KeyStoreFactory.getInstance(
-				lcsConfiguration.lcsPlatformPortalKeyStorePath(),
-				lcsConfiguration.lcsPlatformPortalKeyStoreType()));
-		properties.put(
-			"oAuthConsumerKey",
-			lcsConfiguration.lcsPlatformPortalOauthConsumerKey());
-		properties.put(
-			"oAuthConsumerSecret",
-			lcsConfiguration.lcsPlatformPortalOauthConsumerSecret());
-		properties.put(
-			"protocol", lcsConfiguration.lcsPlatformPortalProtocol());
-		properties.put("proxyAuthType", lcsConfiguration.proxyAuthType());
-		properties.put("proxyDomain", lcsConfiguration.proxyDomain());
-		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
-		properties.put(
-			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
-		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
-		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
-		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
-
-		ComponentInstance componentInstance =
-			_jsonWebServiceClientComponentFactory.newInstance(properties);
-
-		_jsonWebServiceClient =
-			(JSONWebServiceClient)componentInstance.getInstance();
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Activated " + this);
-		}
-	}
 
 	@Override
 	public <V, T> List<V> doGetToList(
@@ -196,6 +152,57 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		}
 	}
 
+	@Activate
+	protected void activate() throws Exception {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		Dictionary<String, Object> properties = new Hashtable<>();
+
+		properties.put(
+			"hostName", lcsConfiguration.lcsPlatformPortalHostName());
+		properties.put(
+			"hostPort",
+			String.valueOf(lcsConfiguration.lcsPlatformPortalHostPort()));
+		properties.put(
+			"keyStore",
+			KeyStoreFactory.getInstance(
+				lcsConfiguration.lcsPlatformPortalKeyStorePath(),
+				lcsConfiguration.lcsPlatformPortalKeyStoreType()));
+		properties.put(
+			"oAuthConsumerKey",
+			lcsConfiguration.lcsPlatformPortalOauthConsumerKey());
+		properties.put(
+			"oAuthConsumerSecret",
+			lcsConfiguration.lcsPlatformPortalOauthConsumerSecret());
+		properties.put(
+			"protocol", lcsConfiguration.lcsPlatformPortalProtocol());
+		properties.put("proxyAuthType", lcsConfiguration.proxyAuthType());
+		properties.put("proxyDomain", lcsConfiguration.proxyDomain());
+		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
+		properties.put(
+			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
+		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
+		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
+		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
+
+		_jsonWebServiceClientComponentInstance =
+			_jsonWebServiceClientComponentFactory.newInstance(properties);
+
+		_jsonWebServiceClient =
+			(JSONWebServiceClient)
+				_jsonWebServiceClientComponentInstance.getInstance();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_jsonWebServiceClientComponentInstance.dispose();
+	}
+
 	private LCSException _toLCSException(JSONWebServiceException jsonwse)
 		throws LCSException {
 
@@ -245,6 +252,8 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 
 	@Reference(target = "(component.factory=OAuthJSONWebServiceClient)")
 	private ComponentFactory _jsonWebServiceClientComponentFactory;
+
+	private ComponentInstance _jsonWebServiceClientComponentInstance;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;

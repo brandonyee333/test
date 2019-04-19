@@ -43,6 +43,7 @@ import org.osgi.service.component.ComponentFactory;
 import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -57,49 +58,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	public LCSGatewayClientImpl(LCSEventManager lcsEventManager) {
 		_lcsEventManager = lcsEventManager;
-	}
-
-	@Activate
-	public void activate() throws Exception {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		Dictionary<String, Object> properties = new Hashtable<>();
-
-		properties.put(
-			"headers",
-			"OSB_LCS_API_Token=" +
-				lcsConfiguration.osbLCSGatewayWebSecureApiToken());
-		properties.put(
-			"hostName", lcsConfiguration.platformLcsGatewayHostName());
-		properties.put(
-			"hostPort",
-			String.valueOf(lcsConfiguration.platformLcsGatewayHostPort()));
-		properties.put(
-			"keyStore",
-			KeyStoreFactory.getInstance(
-				lcsConfiguration.platformLcsGatewayKeyStorePath(),
-				lcsConfiguration.platformLcsGatewayKeyStoreType()));
-		properties.put(
-			"protocol", lcsConfiguration.platformLcsGatewayWebProtocol());
-		properties.put("proxyAuthType", lcsConfiguration.proxyAuthType());
-		properties.put("proxyDomain", lcsConfiguration.proxyDomain());
-		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
-		properties.put(
-			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
-		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
-		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
-		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
-
-		ComponentInstance componentInstance =
-			_jsonWebServiceClientComponentFactory.newInstance(properties);
-
-		_jsonWebServiceClient =
-			(JSONWebServiceClient)componentInstance.getInstance();
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Activated " + this);
-		}
 	}
 
 	@Override
@@ -255,12 +213,26 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 	}
 
-	public void setJSONWebServiceClient(
-		JSONWebServiceClient jsonWebServiceClient) {
+	@Activate
+	protected void activate() throws Exception {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		_initJSONWebServiceClient(lcsConfiguration);
+
 		_subscribeToLCSEvents();
 
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
+	}
 
-		_jsonWebServiceClient = jsonWebServiceClient;
+	@Deactivate
+	protected void deactivate() {
+		_jsonWebServiceClientComponentInstance.dispose();
+	}
+
+
 	}
 
 	private Map<String, String> _getBaseHeaders() {
@@ -286,6 +258,44 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		String name = messageClass.getName();
 
 		return String.valueOf(name.hashCode());
+	}
+
+	private void _initJSONWebServiceClient(LCSConfiguration lcsConfiguration)
+		throws Exception {
+
+		Dictionary<String, Object> properties = new Hashtable<>();
+
+		properties.put(
+			"headers",
+			"OSB_LCS_API_Token=" +
+				lcsConfiguration.osbLCSGatewayWebSecureApiToken());
+		properties.put(
+			"hostName", lcsConfiguration.platformLcsGatewayHostName());
+		properties.put(
+			"hostPort",
+			String.valueOf(lcsConfiguration.platformLcsGatewayHostPort()));
+		properties.put(
+			"keyStore",
+			KeyStoreFactory.getInstance(
+				lcsConfiguration.platformLcsGatewayKeyStorePath(),
+				lcsConfiguration.platformLcsGatewayKeyStoreType()));
+		properties.put(
+			"protocol", lcsConfiguration.platformLcsGatewayWebProtocol());
+		properties.put("proxyAuthType", lcsConfiguration.proxyAuthType());
+		properties.put("proxyDomain", lcsConfiguration.proxyDomain());
+		properties.put("proxyHostName", lcsConfiguration.proxyHostName());
+		properties.put(
+			"proxyHostPort", String.valueOf(lcsConfiguration.proxyHostPort()));
+		properties.put("proxyLogin", lcsConfiguration.proxyHostLogin());
+		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
+		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
+
+		_jsonWebServiceClientComponentInstance =
+			_jsonWebServiceClientComponentFactory.newInstance(properties);
+
+		_jsonWebServiceClient =
+			(JSONWebServiceClient)
+				_jsonWebServiceClientComponentInstance.getInstance();
 	}
 
 	private void _processJSONWebServiceException(
@@ -343,6 +353,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	@Reference(target = "(component.factory=JSONWebServiceClient)")
 	private ComponentFactory _jsonWebServiceClientComponentFactory;
 
+	private ComponentInstance _jsonWebServiceClientComponentInstance;
 	private long _lastHandshakeSuccess;
 	private long _lastMessageReceived;
 	private long _lastMessageSent;
