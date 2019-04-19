@@ -53,11 +53,24 @@ public class UptimeAdvisorTest extends PowerMockito {
 		LCSPortletPreferences lcsPortletPreferences = spy(
 			new LCSPortletPreferences());
 
-		when(
-			lcsPortletPreferences.fetchReadOnlyJxPortletPreferences()
-		).thenReturn(
+		doReturn(
 			_portletPreferences
-		);
+		).when(
+			lcsPortletPreferences
+		).fetchReadOnlyJxPortletPreferences();
+
+		try {
+			doAnswer(
+				new LCSPortletPreferencesUtilAnswer(_portletPreferences)
+			).when(
+				lcsPortletPreferences
+			).store(
+				Matchers.anyString(), Matchers.anyString()
+			);
+		}
+		catch (Exception e) {
+			System.out.println("remove this to method....");
+		}
 
 		LCSKeyAdvisor lcsKeyAdvisor = spy(new LCSKeyAdvisor());
 
@@ -68,18 +81,12 @@ public class UptimeAdvisorTest extends PowerMockito {
 		).getKey();
 
 		_uptimeAdvisor = spy(
-			new UptimeAdvisor(new LCSEventManager(), lcsKeyAdvisor));
+			new UptimeAdvisor(
+				new LCSEventManager(), lcsKeyAdvisor, lcsPortletPreferences));
 	}
 
 	@Test
 	public void testCheckCurrentUptimeAfterRedeploy() throws Exception {
-		doAnswer(
-			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
-		).when(
-			LCSPortletPreferences.class, "store", Matchers.anyString(),
-			Matchers.anyString()
-		);
-
 		_uptimeAdvisor.activate();
 
 		_uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
@@ -154,13 +161,6 @@ public class UptimeAdvisorTest extends PowerMockito {
 				",{\"startTime\":\"1539099932697\",\"endTime\":" +
 					"\"1539099992697\"}]");
 
-		doAnswer(
-			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
-		).when(
-			LCSPortletPreferences.class, "store", Matchers.anyString(),
-			Matchers.anyString()
-		);
-
 		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
@@ -185,13 +185,6 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testOnUnregisterLCSEvent() throws Exception {
-		doAnswer(
-			new LCSPortletPreferencesUtilAnswer(_portletPreferences)
-		).when(
-			LCSPortletPreferences.class, "store", Matchers.anyString(),
-			Matchers.anyString()
-		);
-
 		_uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =

@@ -382,7 +382,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 			new HandshakeTask(
 				companyLocalService, lcsAlertAdvisor, lcsEventManager,
 				lcsGatewayClient, mock(LCSKeyAdvisor.class), null,
-				new UptimeAdvisor(lcsEventManager, null)));
+				new UptimeAdvisor(lcsEventManager, null, null)));
 
 		doReturn(
 			new HandshakeMessage()
