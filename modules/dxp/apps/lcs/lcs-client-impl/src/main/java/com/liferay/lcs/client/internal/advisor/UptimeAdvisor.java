@@ -55,10 +55,12 @@ public class UptimeAdvisor implements LCSEventListener {
 	}
 
 	public UptimeAdvisor(
-		LCSEventManager lcsEventManager, LCSKeyAdvisor lcsKeyAdvisor) {
+		LCSEventManager lcsEventManager, LCSKeyAdvisor lcsKeyAdvisor,
+		LCSPortletPreferences lcsPortletPreferences) {
 
 		_lcsEventManager = lcsEventManager;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
+		_lcsPortletPreferences = lcsPortletPreferences;
 
 		_subscribeEvents();
 	}
