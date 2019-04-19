@@ -14,6 +14,11 @@
 
 package com.liferay.lcs.client.internal.platform.gateway;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.CompressionException;
@@ -26,12 +31,14 @@ import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
+import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -54,6 +61,11 @@ import org.osgi.service.component.annotations.Reference;
 public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	public LCSGatewayClientImpl() {
+		_objectMapper.configure(
+			DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+		_objectMapper.enableDefaultTypingAsProperty(
+			ObjectMapper.DefaultTyping.JAVA_LANG_OBJECT, "class");
 	}
 
 	public LCSGatewayClientImpl(LCSEventManager lcsEventManager) {
@@ -96,9 +108,10 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 
 		try {
-			List<Message> messages = _jsonWebServiceClient.doGetToList(
-				Message.class, _URL_LCS_GATEWAY_GET_MESSAGES, parameters,
-				headers);
+			String json = _jsonWebServiceClient.doGet(
+				_URL_LCS_GATEWAY_GET_MESSAGES, parameters, headers);
+
+			List<Message> messages = _convertToList(Message.class, json);
 
 			if (_log.isTraceEnabled()) {
 				_log.trace("Received messages: " + messages);
@@ -232,7 +245,35 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		_jsonWebServiceClientComponentInstance.dispose();
 	}
 
+	private <V, T> List<V> _convertToList(Class<T> clazz, String json)
+		throws JSONWebServiceSerializeException {
 
+		if (json == null) {
+			return Collections.emptyList();
+		}
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader classLoader = currentThread.getContextClassLoader();
+
+		try {
+			TypeFactory typeFactory = _objectMapper.getTypeFactory();
+
+			List<V> list = new ArrayList<>();
+
+			JavaType javaType = typeFactory.constructCollectionType(
+				list.getClass(), clazz);
+
+			currentThread.setContextClassLoader(Message.class.getClassLoader());
+
+			return _objectMapper.readValue(json, javaType);
+		}
+		catch (IOException ioe) {
+			throw new JSONWebServiceSerializeException(ioe);
+		}
+		finally {
+			currentThread.setContextClassLoader(classLoader);
+		}
 	}
 
 	private Map<String, String> _getBaseHeaders() {
@@ -363,5 +404,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Reference
 	private LCSEventManager _lcsEventManager;
+
+	private ObjectMapper _objectMapper = new ObjectMapper();
 
 }
