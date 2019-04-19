@@ -74,19 +74,17 @@ if (accountEntryViewDisplayContext.isPartnerManagedSupportWorker()) {
 <liferay-ui:error exception="<%= AccountEnvironmentNameException.class %>" message="please-provide-a-unique-environment-name-for-the-product" />
 <liferay-ui:error exception="<%= DuplicateAccountEnvironmentException.class %>" message="please-provide-a-unique-environment-name" />
 
-<div class="container-fluid-max-xl">
-	<c:choose>
-		<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
-			<liferay-util:include page="/account_entry_details/liferay_contacts.jsp" servletContext="<%= application %>" />
-		</c:when>
-		<c:when test='<%= tabs1.equals("offerings") && accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>'>
-			<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
-		</c:when>
-		<c:when test='<%= tabs1.equals("team-members") %>'>
-			<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
-		</c:when>
-		<c:otherwise>
-			<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />
-		</c:otherwise>
-	</c:choose>
-</div>
+<c:choose>
+	<c:when test='<%= tabs1.equals("liferay-contacts") %>'>
+		<liferay-util:include page="/account_entry_details/liferay_contacts.jsp" servletContext="<%= application %>" />
+	</c:when>
+	<c:when test='<%= tabs1.equals("offerings") && accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>'>
+		<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
+	</c:when>
+	<c:when test='<%= tabs1.equals("team-members") %>'>
+		<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
+	</c:when>
+	<c:otherwise>
+		<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />
+	</c:otherwise>
+</c:choose>
