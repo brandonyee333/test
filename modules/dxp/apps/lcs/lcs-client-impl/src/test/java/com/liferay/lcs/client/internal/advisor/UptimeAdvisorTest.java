@@ -49,58 +49,32 @@ public class UptimeAdvisorTest extends PowerMockito {
 	@Before
 	public void setUp() {
 		mockStatic(ManagementFactory.class);
-
-		LCSPortletPreferences lcsPortletPreferences = spy(
-			new LCSPortletPreferences());
-
-		doReturn(
-			_portletPreferences
-		).when(
-			lcsPortletPreferences
-		).fetchReadOnlyJxPortletPreferences();
-
-		try {
-			doAnswer(
-				new LCSPortletPreferencesUtilAnswer(_portletPreferences)
-			).when(
-				lcsPortletPreferences
-			).store(
-				Matchers.anyString(), Matchers.anyString()
-			);
-		}
-		catch (Exception e) {
-			System.out.println("remove this to method....");
-		}
-
-		LCSKeyAdvisor lcsKeyAdvisor = spy(new LCSKeyAdvisor());
-
-		doReturn(
-			"lcsServerId"
-		).when(
-			lcsKeyAdvisor
-		).getKey();
-
-		_uptimeAdvisor = spy(
-			new UptimeAdvisor(
-				new LCSEventManager(), lcsKeyAdvisor, lcsPortletPreferences));
 	}
 
 	@Test
 	public void testCheckCurrentUptimeAfterRedeploy() throws Exception {
-		_uptimeAdvisor.activate();
+		LCSPortletPreferences lcsPortletPreferences =
+			_spyLCSPortletPreferences();
 
-		_uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", lcsPortletPreferences);
+
+		uptimeAdvisor.activate();
+
+		uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Map<String, Long> beforeRedeploy = uptimeEntries.get(1);
 
-		setUp();
+		uptimeAdvisor.deactivate();
 
-		_uptimeAdvisor.activate();
+		uptimeAdvisor = _spyUptimeAdvisor("lcsServerId", lcsPortletPreferences);
 
-		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+		uptimeAdvisor.activate();
+
+		uptimeEntries = uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptime entries expected size", 3, uptimeEntries.size());
@@ -113,10 +87,13 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testGetUptimes() throws Exception {
-		_uptimeAdvisor.activate();
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", _spyLCSPortletPreferences());
+
+		uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptimeEntries has one uptime entry", 1, uptimeEntries.size());
@@ -130,15 +107,18 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testGetUptimesIfPersistedUptimesAvailable() throws Exception {
-		_portletPreferences.setValue(
-			"uptimes-lcsServerId",
+		LCSPortletPreferences lcsPortletPreferences = _spyLCSPortletPreferences(
+			"lcsServerId",
 			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
 				"]");
 
-		_uptimeAdvisor.activate();
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", lcsPortletPreferences);
+
+		uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptimeEntries has two uptime entries", 2, uptimeEntries.size());
@@ -155,23 +135,26 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testOnHandshakeSuccessLCSEvent() throws Exception {
-		_portletPreferences.setValue(
-			"uptimes-lcsServerId",
+		LCSPortletPreferences lcsPortletPreferences = _spyLCSPortletPreferences(
+			"lcsServerId",
 			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
 				",{\"startTime\":\"1539099932697\",\"endTime\":" +
 					"\"1539099992697\"}]");
 
-		_uptimeAdvisor.activate();
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", lcsPortletPreferences);
+
+		uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"two uptime entries before handshake", 3, uptimeEntries.size());
 
-		_uptimeAdvisor.onLCSEvent(LCSEvent.HANDSHAKE_SUCCESS);
+		uptimeAdvisor.onLCSEvent(LCSEvent.HANDSHAKE_SUCCESS);
 
-		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+		uptimeEntries = uptimeAdvisor.getUptimeEntries();
 
 		Map<String, Long> afterHandshake = uptimeEntries.get(0);
 
@@ -185,17 +168,20 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testOnUnregisterLCSEvent() throws Exception {
-		_uptimeAdvisor.activate();
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", _spyLCSPortletPreferences());
+
+		uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"only one uptime entry before unregister", 1, uptimeEntries.size());
 
-		_uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+		uptimeAdvisor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 
-		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+		uptimeEntries = uptimeAdvisor.getUptimeEntries();
 
 		Map<String, Long> beforeUnregister = uptimeEntries.get(0);
 		Map<String, Long> afterUnregister = uptimeEntries.get(1);
@@ -207,16 +193,19 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testResetCurrentUptimeEndTime() throws Exception {
-		_portletPreferences.setValue(
-			"uptimes-lcsServerId",
+		LCSPortletPreferences lcsPortletPreferences = _spyLCSPortletPreferences(
+			"lcsServerId",
 			"[{\"startTime\":\"1539092605095\",\"endTime\":\"1539098932697\"}" +
 				",{\"startTime\":\"1539099932697\",\"endTime\":" +
 					"\"1539099992697\"}]");
 
-		_uptimeAdvisor.activate();
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", lcsPortletPreferences);
+
+		uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Assert.assertEquals(
 			"uptime entries expected size", 3, uptimeEntries.size());
@@ -227,7 +216,7 @@ public class UptimeAdvisorTest extends PowerMockito {
 			"entry with current uptime has end time defined",
 			uptime.get("endTime"));
 
-		_uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
+		uptimeAdvisor.resetCurrentUptimeEndTime(uptimeEntries);
 
 		uptime = uptimeEntries.get(2);
 
@@ -238,10 +227,13 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 	@Test
 	public void testUpdateCurrentUptime() throws Exception {
-		_uptimeAdvisor.activate();
+		UptimeAdvisor uptimeAdvisor = _spyUptimeAdvisor(
+			"lcsServerId", _spyLCSPortletPreferences());
+
+		uptimeAdvisor.activate();
 
 		List<Map<String, Long>> uptimeEntries =
-			_uptimeAdvisor.getUptimeEntries();
+			uptimeAdvisor.getUptimeEntries();
 
 		Map<String, Long> uptime = uptimeEntries.get(0);
 
@@ -254,9 +246,9 @@ public class UptimeAdvisorTest extends PowerMockito {
 		catch (InterruptedException ie) {
 		}
 
-		_uptimeAdvisor.updateCurrentUptime();
+		uptimeAdvisor.updateCurrentUptime();
 
-		uptimeEntries = _uptimeAdvisor.getUptimeEntries();
+		uptimeEntries = uptimeAdvisor.getUptimeEntries();
 
 		uptime = uptimeEntries.get(0);
 
@@ -273,8 +265,58 @@ public class UptimeAdvisorTest extends PowerMockito {
 			endTimeAfterUpdate > endTimeBeforeUpdate);
 	}
 
-	private final PortletPreferences _portletPreferences =
-		new MockPortletPreferencesImpl();
-	private UptimeAdvisor _uptimeAdvisor;
+	private LCSPortletPreferences _spyLCSPortletPreferences() throws Exception {
+		return _spyLCSPortletPreferences(null, null);
+	}
+
+	private LCSPortletPreferences _spyLCSPortletPreferences(
+			String mockKey, String mockValues)
+		throws Exception {
+
+		LCSPortletPreferences lcsPortletPreferences = spy(
+			new LCSPortletPreferences());
+
+		PortletPreferences portletPreferences =
+			new MockPortletPreferencesImpl();
+
+		if ((mockKey != null) && (mockValues != null)) {
+			portletPreferences.setValue("uptimes-" + mockKey, mockValues);
+		}
+
+		doReturn(
+			portletPreferences
+		).when(
+			lcsPortletPreferences
+		).fetchReadOnlyJxPortletPreferences();
+
+		doAnswer(
+			new LCSPortletPreferencesUtilAnswer(portletPreferences)
+		).when(
+			lcsPortletPreferences
+		).store(
+			Matchers.anyString(), Matchers.anyString()
+		);
+
+		return lcsPortletPreferences;
+	}
+
+	private UptimeAdvisor _spyUptimeAdvisor(
+		String mockKey, LCSPortletPreferences lcsPortletPreferences) {
+
+		LCSKeyAdvisor lcsKeyAdvisor = spy(new LCSKeyAdvisor());
+
+		doReturn(
+			mockKey
+		).when(
+			lcsKeyAdvisor
+		).getKey();
+
+		LCSEventManager lcsEventManager = new LCSEventManager();
+
+		UptimeAdvisor uptimeAdvisor = new UptimeAdvisor(
+			lcsEventManager, lcsKeyAdvisor, lcsPortletPreferences);
+
+		return uptimeAdvisor;
+	}
 
 }
