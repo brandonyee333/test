@@ -182,6 +182,14 @@ public class SearchRequestBuilderImpl implements SearchRequestBuilder {
 	}
 
 	@Override
+	public SearchRequestBuilder from(Integer from) {
+		withSearchRequestImpl(
+			searchRequestImpl -> searchRequestImpl.setFrom(from));
+
+		return this;
+	}
+
+	@Override
 	public SearchRequestBuilder getFederatedSearchRequestBuilder(
 		String federatedSearchKey) {
 
@@ -267,6 +275,14 @@ public class SearchRequestBuilderImpl implements SearchRequestBuilder {
 	public SearchRequestBuilder rescoreQuery(Query query) {
 		withSearchRequestImpl(
 			searchRequestImpl -> searchRequestImpl.setRescoreQuery(query));
+
+		return this;
+	}
+
+	@Override
+	public SearchRequestBuilder size(Integer size) {
+		withSearchRequestImpl(
+			searchRequestImpl -> searchRequestImpl.setSize(size));
 
 		return this;
 	}
