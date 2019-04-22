@@ -56,25 +56,41 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <div class="container-fluid container-fluid-max-xl fixpack-filters" id="<portlet:namespace />fixpackFilters"></div>
 
-<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
-	<liferay-ui:tabs
-		cssClass="container-fluid container-fluid-max-xl"
-		names='<%= "highlights,changelog,module-changes" %>'
-		url="<%= portletURL.toString() %>"
-	/>
+<c:choose>
+	<c:when test="<%= (fromFixPackVersion < 1) && (productVersion < 1) && (toFixPackVersion < 1) %>">
+		<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+			<div class="card main-content-card taglib-empty-result-message">
+				<div class="card-row card-row-padded">
+					<div class="taglib-empty-result-message-header"></div>
+					<div class="text-center text-muted">
+						<liferay-ui:message key="content-collection-is-empty-select-your-settings-above-to-show-details" />
+					</div>
+				</div>
+			</div>
+		</aui:container>
+	</c:when>
+	<c:otherwise>
+		<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+			<liferay-ui:tabs
+				cssClass="container-fluid container-fluid-max-xl"
+				names='<%= "highlights,changelog,module-changes" %>'
+				url="<%= portletURL.toString() %>"
+			/>
 
-	<c:choose>
-		<c:when test='<%= tabs1.equals("changelog") %>'>
-			<liferay-util:include page="/changelog.jsp" servletContext="<%= application %>" />
-		</c:when>
-		<c:when test='<%= tabs1.equals("module-changes") %>'>
-			<liferay-util:include page="/module_changes.jsp" servletContext="<%= application %>" />
-		</c:when>
-		<c:otherwise>
-			<liferay-util:include page="/highlights.jsp" servletContext="<%= application %>" />
-		</c:otherwise>
-	</c:choose>
-</aui:container>
+			<c:choose>
+				<c:when test='<%= tabs1.equals("changelog") %>'>
+					<liferay-util:include page="/changelog.jsp" servletContext="<%= application %>" />
+				</c:when>
+				<c:when test='<%= tabs1.equals("module-changes") %>'>
+					<liferay-util:include page="/module_changes.jsp" servletContext="<%= application %>" />
+				</c:when>
+				<c:otherwise>
+					<liferay-util:include page="/highlights.jsp" servletContext="<%= application %>" />
+				</c:otherwise>
+			</c:choose>
+		</aui:container>
+	</c:otherwise>
+</c:choose>
 
 <aui:script>
 	ReleaseTool.render(
