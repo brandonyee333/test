@@ -27,7 +27,6 @@ import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
 import com.liferay.lcs.client.internal.command.SignOffCommand;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.constants.LCSDestinationNames;
-import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
 import com.liferay.lcs.messaging.CommandMessage;
@@ -74,10 +73,13 @@ public class CommandMessageListener implements MessageListener {
 
 	public CommandMessageListener(
 		Map<String, Command<? extends CommandMessage>> commands,
-		DigitalSignature digitalSignature, LCSGatewayClient lcsGatewayClient) {
+		DigitalSignature digitalSignature,
+		LCSConfigurationProvider lcsConfigurationProvider,
+		LCSGatewayClient lcsGatewayClient) {
 
 		_commands = commands;
 		_digitalSignature = digitalSignature;
+		_lcsConfigurationProvider = lcsConfigurationProvider;
 		_lcsGatewayClient = lcsGatewayClient;
 	}
 
@@ -98,7 +100,7 @@ public class CommandMessageListener implements MessageListener {
 
 		try {
 			if (_digitalSignature.verifyMessage(
-					LCSUtil.getLCSPortletBuildNumber(), commandMessage)) {
+					_getLCSClientBuildNumber(), commandMessage)) {
 
 				if (_log.isTraceEnabled()) {
 					_log.trace("Verified digital signature");
@@ -178,6 +180,13 @@ public class CommandMessageListener implements MessageListener {
 		errorResponseMessage.setKey(commandMessage.getKey());
 
 		return errorResponseMessage;
+	}
+
+	private int _getLCSClientBuildNumber() {
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
+		return lcsConfiguration.lcsClientBuildNumber();
 	}
 
 	private void _initCommands() {

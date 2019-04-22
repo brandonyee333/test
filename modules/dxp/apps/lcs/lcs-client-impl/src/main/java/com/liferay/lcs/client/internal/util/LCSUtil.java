@@ -20,8 +20,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.model.Release;
-import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -34,23 +32,6 @@ import java.util.StringTokenizer;
  * @author Ivica Cardic
  */
 public class LCSUtil {
-
-	public static int getLCSPortletBuildNumber() {
-		int lcsPortletBuildNumber = 0;
-
-		try {
-			Release release = ReleaseLocalServiceUtil.fetchRelease(
-				"lcs-portlet");
-
-			lcsPortletBuildNumber = release.getBuildNumber();
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to resolve LCS client's portlet build number", e);
-		}
-
-		return lcsPortletBuildNumber;
-	}
 
 	public static String getPortalEdition() {
 		try {

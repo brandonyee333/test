@@ -14,7 +14,8 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
-import com.liferay.lcs.client.internal.util.LCSUtil;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
@@ -34,9 +35,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Igor Beslic
  */
+@Component(immediate = true, service = InstallationEnvironmentAdvisor.class)
 public class DefaultInstallationEnvironmentAdvisor
 	implements InstallationEnvironmentAdvisor {
 
@@ -83,9 +88,13 @@ public class DefaultInstallationEnvironmentAdvisor
 			"java.input.arguments",
 			StringUtil.merge(runtimeMXBean.getInputArguments()));
 
+		LCSConfiguration lcsConfiguration =
+			_lcsConfigurationProvider.getLCSConfiguration();
+
 		softwareMetadata.put(
 			"lcs.portlet.build.number",
-			String.valueOf(LCSUtil.getLCSPortletBuildNumber()));
+			String.valueOf(lcsConfiguration.lcsClientBuildNumber()));
+
 		softwareMetadata.put(
 			"patching.tool.agent.present",
 			String.valueOf(isPatchingToolAgentPresent()));
@@ -158,5 +167,8 @@ public class DefaultInstallationEnvironmentAdvisor
 		"file.encoding", "java.vendor", "java.version", "java.vm.name",
 		"os.arch", "os.name", "os.version", "user.timezone"
 	};
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 }

@@ -15,6 +15,7 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.alert.LCSAlert;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
@@ -25,7 +26,6 @@ import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSHandshakeException;
-import com.liferay.lcs.client.internal.runnable.LCSPortletBuildNumberCheckRunnable;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator;
@@ -245,7 +245,7 @@ public class HandshakeTask implements Task {
 				_lcsKeyAdvisor.updateKey(handshakeResponseMessage.getNewKey());
 			}
 
-			_submitLCSPortletBuildNumberCheck(
+			_doLCSClientBuildNumberCheck(
 				handshakeResponseMessage.getLatestLCSPortletBuildNumber());
 		}
 
@@ -296,6 +296,21 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setUptimes(_getPortalUptimeEntries());
 
 		return handshakeMessage;
+	}
+
+	private void _doLCSClientBuildNumberCheck(int latestLCSClientBuildNumber) {
+		LCSConfiguration lcsConfiguration = _getLCSConfiguration();
+
+		if (latestLCSClientBuildNumber >
+				lcsConfiguration.lcsClientBuildNumber()) {
+
+			_lcsAlertAdvisor.add(
+				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
+		}
+		else {
+			_lcsAlertAdvisor.remove(
+				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
+		}
 	}
 
 	private Map<Integer, String> _getCompanyIdsWebIds() {
@@ -361,17 +376,6 @@ public class HandshakeTask implements Task {
 		}
 
 		return false;
-	}
-
-	private void _submitLCSPortletBuildNumberCheck(
-		int latestLCSPortletBuildNumber) {
-
-		Runnable runnable = new LCSPortletBuildNumberCheckRunnable(
-			latestLCSPortletBuildNumber, _lcsAlertAdvisor);
-
-		Thread thread = _threadFactory.newThread(runnable);
-
-		thread.start();
 	}
 
 	private void _waitForHandshakeResponse() throws LCSGatewayException {
