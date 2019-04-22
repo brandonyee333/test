@@ -2,8 +2,8 @@
 
 exports[`AccountEnvironments renders correctly 1`] = `
 <div>
-  <h3
-    class="card-header"
+  <div
+    class="card-header small-title"
   >
     environment-configurations
     <button
@@ -19,7 +19,7 @@ exports[`AccountEnvironments renders correctly 1`] = `
         />
       </svg>
     </button>
-  </h3>
+  </div>
   <div
     aria-orientation="vertical"
     class="panel-group"
@@ -42,21 +42,11 @@ exports[`AccountEnvironments renders correctly 1`] = `
           <div
             class="panel-subtitle"
           >
-            <span>
-              product
-            </span>
-            :
-             
             Liferay DXP Production
           </div>
           <div
             class="panel-subtitle"
           >
-            <span>
-              LR
-            </span>
-            :
-             
             7.1
           </div>
         </div>
@@ -86,21 +76,11 @@ exports[`AccountEnvironments renders correctly 1`] = `
           <div
             class="panel-subtitle"
           >
-            <span>
-              product
-            </span>
-            :
-             
             Liferay DXP Production
           </div>
           <div
             class="panel-subtitle"
           >
-            <span>
-              LR
-            </span>
-            :
-             
             7.1
           </div>
         </div>
@@ -119,11 +99,11 @@ exports[`AccountEnvironments renders correctly 1`] = `
 
 exports[`AccountEnvironments renders details when an environment is clicked 1`] = `
 <div>
-  <h3
-    class="card-header"
+  <div
+    class="card-header small-title"
   >
     environment-configurations
-  </h3>
+  </div>
   <div
     aria-orientation="vertical"
     class="panel-group"
@@ -146,21 +126,11 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
           <div
             class="panel-subtitle"
           >
-            <span>
-              product
-            </span>
-            :
-             
             Liferay DXP Production
           </div>
           <div
             class="panel-subtitle"
           >
-            <span>
-              LR
-            </span>
-            :
-             
             7.1
           </div>
         </div>
@@ -332,21 +302,11 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
           <div
             class="panel-subtitle"
           >
-            <span>
-              product
-            </span>
-            :
-             
             Liferay DXP Production
           </div>
           <div
             class="panel-subtitle"
           >
-            <span>
-              LR
-            </span>
-            :
-             
             7.1
           </div>
         </div>
@@ -365,11 +325,11 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
 
 exports[`AccountEnvironments renders no results message when there is no existing environment 1`] = `
 <div>
-  <h3
-    class="card-header"
+  <div
+    class="card-header small-title"
   >
     environment-configurations
-  </h3>
+  </div>
   <div
     class="no-results"
   >
