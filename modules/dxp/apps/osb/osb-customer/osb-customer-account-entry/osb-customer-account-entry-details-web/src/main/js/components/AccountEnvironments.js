@@ -186,12 +186,10 @@ export default class AccountEnvironments extends React.Component {
 							</h4>
 
 							<div className="panel-subtitle">
-								<span>{Liferay.Language.get('product')}</span>:{' '}
 								{environment.productEntryDisplayName}
 							</div>
 
 							<div className="panel-subtitle">
-								<span>LR</span>:{' '}
 								{environment.envLFRLabel}
 							</div>
 						</React.Fragment>
@@ -204,7 +202,7 @@ export default class AccountEnvironments extends React.Component {
 
 		return (
 			<React.Fragment>
-				<h3 className="card-header">
+				<div className="card-header small-title">
 					{Liferay.Language.get('environment-configurations')}
 
 					{permitAdd && (
@@ -232,7 +230,7 @@ export default class AccountEnvironments extends React.Component {
 							namespace={window.AccountDetailsConstants.namespace}
 						/>
 					</Modal>
-				</h3>
+				</div>
 
 				{!accordionItems.length ? (
 					<div className="no-results">

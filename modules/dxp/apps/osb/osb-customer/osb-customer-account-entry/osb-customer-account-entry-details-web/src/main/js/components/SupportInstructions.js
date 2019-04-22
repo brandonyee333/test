@@ -68,7 +68,7 @@ export default class SupportInstructions extends React.Component {
 
 		return (
 			<React.Fragment>
-				<h3 className="card-header">
+				<div className="card-header small-title">
 					{Liferay.Language.get('support-instructions')}
 
 					{instructions ? (
@@ -106,7 +106,7 @@ export default class SupportInstructions extends React.Component {
 							/>
 						</Modal>
 					)}
-				</h3>
+				</div>
 
 				{instructions ? (
 					<div className="card-body">
