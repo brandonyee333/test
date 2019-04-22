@@ -24,3 +24,30 @@
 		justify-content: center;
 	}
 }
+
+.color-success {
+	color: $color-success;
+}
+
+.secondary-font {
+	font-size: $font-size-md;
+	line-height: $secondary-text-line-height;
+}
+
+.secondary-text-color {
+	color: $secondary-text-color;
+}
+
+.semibold {
+	font-weight: $font-weight-semi-bold;
+}
+
+.small {
+	line-height: $line-height-sm;
+}
+
+.small-title {
+	font-size: $small-title-font-size;
+	font-weight: $font-weight-semi-bold;
+	line-height: 28px;
+}

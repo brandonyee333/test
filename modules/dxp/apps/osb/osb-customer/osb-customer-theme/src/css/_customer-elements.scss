@@ -208,18 +208,6 @@ textarea {
 	height: auto;
 }
 
-.color-success {
-	color: $color-success;
-}
-
-.form-field {
-	margin-bottom: $form-group-margin-bottom;
-}
-
-.label-sm {
-	@include label-sm;
-}
-
 .no-results {
 	background-color: $color-grey;
 	border-radius: $border-radius;
@@ -265,25 +253,12 @@ textarea {
 	}
 }
 
-.secondary-font {
-	font-size: $font-size-md;
-	line-height: $secondary-text-line-height;
-}
+.taglib-empty-result-message {
+	margin-bottom: 64px;
+	padding-bottom: 56px;
+	padding-top: $margin-default;
 
-.secondary-text-color {
-	color: $secondary-text-color;
-}
-
-.semibold {
-	font-weight: $font-weight-semi-bold;
-}
-
-.small {
-	line-height: $line-height-sm;
-}
-
-.small-title {
-	font-size: $small-title-font-size;
-	font-weight: $font-weight-semi-bold;
-	line-height: 28px;
+	.card-row-padded {
+		padding: 0;
+	}
 }

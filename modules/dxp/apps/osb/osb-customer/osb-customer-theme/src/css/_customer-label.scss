@@ -46,3 +46,7 @@
 		padding: 2px 4px 1px;
 	}
 }
+
+.label-sm {
+	@include label-sm;
+}
