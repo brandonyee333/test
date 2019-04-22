@@ -15,9 +15,11 @@
 package com.liferay.lcs.client.internal.task.advisor;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.internal.command.Command;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
+import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.messaging.CommandMessageListener;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
@@ -92,11 +94,11 @@ public class TaskAdvisorImplTest extends PowerMockito {
 
 		mockStatic(LCSUtil.class);
 
-		when(
+		/*when(
 			LCSUtil.getLCSPortletBuildNumber()
 		).thenReturn(
 			500
-		);
+		);*/
 
 		mockStatic(PropsUtil.class);
 
@@ -153,9 +155,10 @@ public class TaskAdvisorImplTest extends PowerMockito {
 			"com.liferay.lcs.messaging.SendPatchesCommandMessage",
 			sendPatchesCommand);
 
-		CommandMessageListener commandMessageListener =
+		CommandMessageListener commandMessageListener = spy(
 			new CommandMessageListener(
-				messageCommands, _digitalSignature, _lcsGatewayClient);
+				messageCommands, _digitalSignature,
+				_spyLCSConfigurationProvider(500), _lcsGatewayClient));
 
 		com.liferay.portal.kernel.messaging.Message message =
 			new com.liferay.portal.kernel.messaging.Message();
@@ -189,6 +192,29 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		Assert.assertTrue(
 			"Fix packs management service present",
 			activeServiceLabels.contains("Fix Packs Management"));
+	}
+
+	private LCSConfigurationProvider _spyLCSConfigurationProvider(
+		int lcsClientBuildNumber) {
+
+		LCSConfigurationProvider lcsConfigurationProvider = mock(
+			LCSConfigurationProvider.class);
+
+		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
+
+		doReturn(
+			lcsClientBuildNumber
+		).when(
+			lcsConfiguration
+		).lcsClientBuildNumber();
+
+		doReturn(
+			lcsConfiguration
+		).when(
+			lcsConfigurationProvider
+		).getLCSConfiguration();
+
+		return lcsConfigurationProvider;
 	}
 
 	private DigitalSignature _digitalSignature;

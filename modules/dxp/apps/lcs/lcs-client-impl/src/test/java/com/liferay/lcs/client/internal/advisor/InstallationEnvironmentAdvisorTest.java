@@ -26,17 +26,16 @@ public class InstallationEnvironmentAdvisorTest {
 
 	@Test
 	public void testGetHardwareMetadata() {
+		InstallationEnvironmentAdvisor installationEnvironmentAdvisor =
+			new DefaultInstallationEnvironmentAdvisor();
+
 		Map<String, String> hardwareMetadata =
-			_installationEnvironmentAdvisor.getHardwareMetadata();
+			installationEnvironmentAdvisor.getHardwareMetadata();
 
 		Assert.assertNotNull(hardwareMetadata.get("cpu.total.cores"));
 		Assert.assertNotNull(hardwareMetadata.get("fs.root"));
 		Assert.assertNotNull(hardwareMetadata.get("fs.root.total.space"));
 		Assert.assertNotNull(hardwareMetadata.get("fs.root.usable.space"));
 	}
-
-	private final InstallationEnvironmentAdvisor
-		_installationEnvironmentAdvisor =
-			InstallationEnvironmentAdvisorFactory.getInstance();
 
 }

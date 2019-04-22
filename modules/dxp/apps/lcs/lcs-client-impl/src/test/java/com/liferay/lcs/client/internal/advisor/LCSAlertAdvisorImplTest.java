@@ -394,7 +394,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 
 		doNothing(
 		).when(
-			handshakeTask, "_submitLCSPortletBuildNumberCheck",
+			handshakeTask, "_doLCSClientBuildNumberCheck",
 			Matchers.anyInt()
 		);
 
