@@ -15,7 +15,6 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
-import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
@@ -77,22 +76,22 @@ public class SendInstallationEnvironmentCommand
 		sendInstallationEnvironmentResponseMessage.setCreateTime(
 			System.currentTimeMillis());
 
-		InstallationEnvironmentAdvisor installationEnvironmentAdvisor =
-			InstallationEnvironmentAdvisorFactory.getInstance();
-
 		sendInstallationEnvironmentResponseMessage.setHardwareMetadata(
-			installationEnvironmentAdvisor.getHardwareMetadata());
+			_installationEnvironmentAdvisor.getHardwareMetadata());
 
 		sendInstallationEnvironmentResponseMessage.setKey(
 			sendInstallationEnvironmentCommandMessage.getKey());
 		sendInstallationEnvironmentResponseMessage.setSoftwareMetadata(
-			installationEnvironmentAdvisor.getSoftwareMetadata());
+			_installationEnvironmentAdvisor.getSoftwareMetadata());
 
 		return sendInstallationEnvironmentResponseMessage;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		SendInstallationEnvironmentCommand.class);
+
+	@Reference
+	private InstallationEnvironmentAdvisor _installationEnvironmentAdvisor;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;

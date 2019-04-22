@@ -20,7 +20,6 @@ import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
-import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisorFactory;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
@@ -350,10 +349,7 @@ public class HandshakeTask implements Task {
 	}
 
 	private int _getProcessorCoresTotal() {
-		InstallationEnvironmentAdvisor installationEnvironmentAdvisor =
-			InstallationEnvironmentAdvisorFactory.getInstance();
-
-		return installationEnvironmentAdvisor.getProcessorCoresTotal();
+		return _installationEnvironmentAdvisor.getProcessorCoresTotal();
 	}
 
 	private boolean _isMonitoringEnabled() {
@@ -445,6 +441,9 @@ public class HandshakeTask implements Task {
 	private CompanyLocalService _companyLocalService;
 
 	private int _heartbeatInterval;
+
+	@Reference
+	private InstallationEnvironmentAdvisor _installationEnvironmentAdvisor;
 
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;
