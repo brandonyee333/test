@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 
 /**
  * @author Igor Beslic
@@ -95,6 +96,15 @@ public class LCSEventManager {
 	protected void activate() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
+		}
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_lcsEventLCSEventListeners.clear();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Deactivated " + this);
 		}
 	}
 
