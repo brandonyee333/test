@@ -244,11 +244,26 @@ public class HandshakeTask implements Task {
 				_lcsKeyAdvisor.updateKey(handshakeResponseMessage.getNewKey());
 			}
 
-			_doLCSClientBuildNumberCheck(
+			_checkLCSClientBuildNumber(
 				handshakeResponseMessage.getLatestLCSPortletBuildNumber());
 		}
 
 		return receivedHandshakeResponse;
+	}
+
+	private void _checkLCSClientBuildNumber(int latestLCSClientBuildNumber) {
+		LCSConfiguration lcsConfiguration = _getLCSConfiguration();
+
+		if (latestLCSClientBuildNumber >
+				lcsConfiguration.lcsClientBuildNumber()) {
+
+			_lcsAlertAdvisor.add(
+				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
+		}
+		else {
+			_lcsAlertAdvisor.remove(
+				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
+		}
 	}
 
 	private HandshakeMessage _createHandshakeMessage() {
@@ -295,21 +310,6 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setUptimes(_getPortalUptimeEntries());
 
 		return handshakeMessage;
-	}
-
-	private void _doLCSClientBuildNumberCheck(int latestLCSClientBuildNumber) {
-		LCSConfiguration lcsConfiguration = _getLCSConfiguration();
-
-		if (latestLCSClientBuildNumber >
-				lcsConfiguration.lcsClientBuildNumber()) {
-
-			_lcsAlertAdvisor.add(
-				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
-		}
-		else {
-			_lcsAlertAdvisor.remove(
-				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
-		}
 	}
 
 	private Map<Integer, String> _getCompanyIdsWebIds() {
