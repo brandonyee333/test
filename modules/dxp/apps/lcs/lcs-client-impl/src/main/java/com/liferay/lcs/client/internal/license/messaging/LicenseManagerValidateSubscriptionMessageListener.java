@@ -14,22 +14,39 @@
 
 package com.liferay.lcs.client.internal.license.messaging;
 
+import com.liferay.lcs.client.internal.constants.LCSDestinationNames;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageListener;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Igor Beslic
  */
+@Component(
+	immediate = true,
+	property = "destination.name=" + LCSDestinationNames.LCS_REQUEST,
+	service = MessageListener.class
+)
 public class LicenseManagerValidateSubscriptionMessageListener
 	extends LicenseManagerBaseMessageListener {
 
 	public LicenseManagerValidateSubscriptionMessageListener() {
 		setAllowedLicenseManagerMessageType(
 			LicenseManagerMessageType.VALIDATE_SUBSCRIPTION);
+	}
+
+	@Activate
+	protected void activate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override
