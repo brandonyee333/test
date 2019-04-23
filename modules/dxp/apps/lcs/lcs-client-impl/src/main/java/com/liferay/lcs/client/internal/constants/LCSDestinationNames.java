@@ -21,4 +21,6 @@ public class LCSDestinationNames {
 
 	public static final String LCS_COMMANDS = "liferay/lcs_commands";
 
+	public static final String LCS_REQUEST = "liferay/lcs_request";
+
 }
