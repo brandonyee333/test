@@ -14,6 +14,8 @@
 
 package com.liferay.lcs.client.internal.management;
 
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -26,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.AttributeNotFoundException;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServer;
@@ -76,10 +79,17 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 		}
 		else {
 			for (String attributeName : attributeNames) {
-				Object attribute = _mBeanServer.getAttribute(
-					objectName, attributeName);
+				try {
+					Object attribute = _mBeanServer.getAttribute(
+						objectName, attributeName);
 
-				objectNameAttributes.put(attributeName, attribute);
+					objectNameAttributes.put(attributeName, attribute);
+				}
+				catch (AttributeNotFoundException anfe) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(anfe.getMessage(), anfe);
+					}
+				}
 			}
 		}
 
@@ -201,6 +211,9 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 
 		return objectNames;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		MBeanServerServiceImpl.class);
 
 	private MBeanServer _mBeanServer;
 
