@@ -1,0 +1,19 @@
+.sidebar-cta {
+	background-color: $color-grey;
+	border-radius: $border-radius;
+	padding: $padding-default;
+
+	.cta-icon {
+		height: 32px;
+		margin-bottom: $margin-md;
+		width: 32px;
+	}
+
+	.cta-msg {
+		padding: $padding-md 0;
+	}
+	
+	.lexicon-icon-arrow-right {
+		padding-left: 8px;
+	}
+}
