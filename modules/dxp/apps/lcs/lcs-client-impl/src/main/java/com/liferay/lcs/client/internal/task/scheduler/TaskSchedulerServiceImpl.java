@@ -91,40 +91,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_subscribeToLCSEvents();
 	}
 
-	@Deactivate
-	public void deactivate() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Destroying " + this);
-		}
-
-		_shutdownPending = true;
-
-		_cancelAllTasks();
-
-		_executeSignOffTask();
-
-		if (_uptimeTaskScheduledFuture != null) {
-			_uptimeTaskScheduledFuture.cancel(true);
-		}
-
-		_scheduledExecutorService.shutdown();
-
-		try {
-			if (!_scheduledExecutorService.awaitTermination(
-					5, TimeUnit.SECONDS)) {
-
-				_scheduledExecutorService.shutdownNow();
-			}
-		}
-		catch (InterruptedException ie) {
-			_scheduledExecutorService.shutdownNow();
-		}
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Destroyed " + this);
-		}
-	}
-
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
 		if (_shutdownPending) {
@@ -230,6 +196,40 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, _threadFactory);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroying " + this);
+		}
+
+		_shutdownPending = true;
+
+		_cancelAllTasks();
+
+		_executeSignOffTask();
+
+		if (_uptimeTaskScheduledFuture != null) {
+			_uptimeTaskScheduledFuture.cancel(true);
+		}
+
+		_scheduledExecutorService.shutdown();
+
+		try {
+			if (!_scheduledExecutorService.awaitTermination(
+					5, TimeUnit.SECONDS)) {
+
+				_scheduledExecutorService.shutdownNow();
+			}
+		}
+		catch (InterruptedException ie) {
+			_scheduledExecutorService.shutdownNow();
+		}
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Destroyed " + this);
+		}
 	}
 
 	@Override
