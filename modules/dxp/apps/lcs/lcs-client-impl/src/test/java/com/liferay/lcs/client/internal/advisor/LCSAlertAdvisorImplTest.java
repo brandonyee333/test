@@ -384,18 +384,18 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTest {
 				lcsGatewayClient, mock(LCSKeyAdvisor.class), null,
 				new UptimeAdvisor(lcsEventManager, null, null)));
 
-		doReturn(
-			new HandshakeMessage()
-		).when(
-			handshakeTask, "_createHandshakeMessage"
-		);
-
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
 			handshakeTask, "_checkLCSClientBuildNumber",
 			Matchers.anyInt()
+		);
+
+		doReturn(
+			new HandshakeMessage()
+		).when(
+			handshakeTask, "_createHandshakeMessage"
 		);
 
 		return handshakeTask;
