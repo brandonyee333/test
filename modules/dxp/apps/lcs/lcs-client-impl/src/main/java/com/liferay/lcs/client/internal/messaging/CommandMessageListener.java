@@ -40,21 +40,17 @@ import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.messaging.security.DigitalSignature;
+import com.liferay.lcs.messaging.security.DigitalSignatureFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.osgi.service.component.ComponentFactory;
-import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -161,13 +157,6 @@ public class CommandMessageListener implements MessageListener {
 		_initCommands();
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		if (_digitalSignatureComponentInstance != null) {
-			_digitalSignatureComponentInstance.dispose();
-		}
-	}
-
 	protected ErrorResponseMessage getErrorResponseMessage(
 		CommandMessage commandMessage, String errorMessage) {
 
@@ -214,27 +203,22 @@ public class CommandMessageListener implements MessageListener {
 	}
 
 	private void _initDigitalSignature(LCSConfiguration lcsConfiguration) {
-		Dictionary<String, String> dictionary =
-			new HashMapDictionary<String, String>() {
-				{
-					put("keyName", lcsConfiguration.digitalSignatureKeyName());
-					put(
-						"keyStorePath",
-						lcsConfiguration.digitalSignatureKeyStorePath());
-					put(
-						"keyStoreType",
-						lcsConfiguration.digitalSignatureKeyStoreType());
-					put(
-						"signingAlgorithm",
-						lcsConfiguration.digitalSignatureSigningAlgorithm());
-				}
-			};
+		Map<String, Object> dictionary = new HashMap<String, Object>() {
+			{
+				put("keyName", lcsConfiguration.digitalSignatureKeyName());
+				put(
+					"keyStorePath",
+					lcsConfiguration.digitalSignatureKeyStorePath());
+				put(
+					"keyStoreType",
+					lcsConfiguration.digitalSignatureKeyStoreType());
+				put(
+					"signingAlgorithm",
+					lcsConfiguration.digitalSignatureSigningAlgorithm());
+			}
+		};
 
-		_digitalSignatureComponentInstance =
-			_digitalSignatureComponentFactory.newInstance(dictionary);
-
-		_digitalSignature =
-			(DigitalSignature)_digitalSignatureComponentInstance.getInstance();
+		_digitalSignature = _digitalSignatureFactory.getInstance(dictionary);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -247,10 +231,8 @@ public class CommandMessageListener implements MessageListener {
 		new HashMap<>();
 	private DigitalSignature _digitalSignature;
 
-	@Reference(target = "(component.factory=DigitalSignature)")
-	private ComponentFactory _digitalSignatureComponentFactory;
-
-	private ComponentInstance _digitalSignatureComponentInstance;
+	@Reference
+	private DigitalSignatureFactory _digitalSignatureFactory;
 
 	@Reference
 	private DownloadPatchCommand _downloadPatchCommand;
