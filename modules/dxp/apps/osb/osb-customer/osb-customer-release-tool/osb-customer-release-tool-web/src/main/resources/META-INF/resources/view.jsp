@@ -56,9 +56,9 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <div class="container-fluid container-fluid-max-xl fixpack-filters" id="<portlet:namespace />fixpackFilters"></div>
 
-<c:choose>
-	<c:when test="<%= (fromFixPackVersion < 1) && (productVersion < 1) && (toFixPackVersion < 1) %>">
-		<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+	<c:choose>
+		<c:when test="<%= (fromFixPackVersion < 1) && (productVersion < 1) && (toFixPackVersion < 1) %>">
 			<div class="card main-content-card taglib-empty-result-message">
 				<div class="card-row card-row-padded">
 					<div class="taglib-empty-result-message-header"></div>
@@ -67,10 +67,8 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 					</div>
 				</div>
 			</div>
-		</aui:container>
-	</c:when>
-	<c:otherwise>
-		<aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
+		</c:when>
+		<c:otherwise>
 			<liferay-ui:tabs
 				cssClass="container-fluid container-fluid-max-xl"
 				names='<%= "highlights,changelog,module-changes" %>'
@@ -88,9 +86,9 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 					<liferay-util:include page="/highlights.jsp" servletContext="<%= application %>" />
 				</c:otherwise>
 			</c:choose>
-		</aui:container>
-	</c:otherwise>
-</c:choose>
+		</c:otherwise>
+	</c:choose>
+</aui:container>
 
 <aui:script>
 	ReleaseTool.render(
