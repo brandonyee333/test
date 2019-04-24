@@ -16,13 +16,12 @@ package com.liferay.lcs.client.platform.portal;
 
 import com.liferay.lcs.client.platform.exception.LCSException;
 
-import java.util.List;
-
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
 public interface LCSProjectClient {
 
-	public List<LCSProject> getUserManageableLCSProjects() throws LCSException;
+	public LCSProject getLCSProject(long lcsProjectId) throws LCSException;
 
 }
