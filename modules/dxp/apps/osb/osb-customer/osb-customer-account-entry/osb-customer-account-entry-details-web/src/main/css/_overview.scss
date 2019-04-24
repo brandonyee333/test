@@ -3,13 +3,13 @@
 }
 
 .details-table {
-	tr {
-		td:first-child {
+	td {
+		&:first-child {
 			color: $secondary-text-color;
 			font-weight: $font-weight-semi-bold;
 		}
 
-		td:last-child {
+		&:last-child {
 			color: $color-default;
 		}
 	}
