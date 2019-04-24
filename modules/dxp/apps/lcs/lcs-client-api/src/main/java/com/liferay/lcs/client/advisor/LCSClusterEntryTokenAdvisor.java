@@ -30,6 +30,8 @@ public interface LCSClusterEntryTokenAdvisor {
 
 	public String getLCSAccessToken();
 
+	public long getLcsClusterEntryId();
+
 	public long getLcsClusterEntryTokenId();
 
 	public String getPortalPropertiesBlacklist();

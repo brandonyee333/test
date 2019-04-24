@@ -19,12 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.lcs.activation.LCSClusterEntryTokenContentAdvisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSKeystoreException;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
@@ -92,6 +92,11 @@ public class LCSClusterEntryTokenAdvisorImpl
 
 	public String getLCSAccessToken() {
 		return _lcsAccessToken;
+	}
+
+	@Override
+	public long getLcsClusterEntryId() {
+		return _lcsClusterEntryId;
 	}
 
 	public long getLcsClusterEntryTokenId() {
