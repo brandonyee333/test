@@ -12,12 +12,19 @@
  *
  */
 
-package com.liferay.lcs.client.internal.util;
+package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.lcs.client.advisor.LCSClientAdvisor;
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.platform.exception.LCSException;
+import com.liferay.lcs.client.platform.portal.LCSClusterEntry;
+import com.liferay.lcs.client.platform.portal.LCSClusterEntryClient;
 import com.liferay.lcs.client.platform.portal.LCSClusterNode;
+import com.liferay.lcs.client.platform.portal.LCSClusterNodeClient;
 import com.liferay.lcs.client.platform.portal.LCSProject;
+import com.liferay.lcs.client.platform.portal.LCSProjectClient;
 import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -34,9 +41,10 @@ import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
+ * @author Igor Beslic
  */
-@Component(immediate = true, service = LCSLayoutBuilder.class)
-public class LCSLayoutBuilder {
+@Component(immediate = true, service = LCSClientAdvisor.class)
+public class LCSClientAdvisorImpl implements LCSClientAdvisor {
 
 	@Activate
 	public void activate() {
@@ -57,8 +65,16 @@ public class LCSLayoutBuilder {
 			lcsConfiguration.lcsPlatformPortalProtocol();
 	}
 
-	public String getLCSClusterEntryLayoutURL(
-		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
+	public String getLCSClusterEntryLayoutURL() throws LCSException {
+		LCSClusterNode lcsClusterNode =
+			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
+
+		LCSClusterEntry lcsClusterEntry =
+			_lcsClusterEntryClient.getLCSClusterEntry(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryId());
+
+		LCSProject lcsProject = _lcsProjectClient.getLCSProject(
+			lcsClusterEntry.getLcsProjectId());
 
 		Map<String, String> publicRenderParameters = new HashMap<>();
 
@@ -73,14 +89,31 @@ public class LCSLayoutBuilder {
 			_lcsPlatformPortalLayoutLCSClusterEntry, publicRenderParameters);
 	}
 
-	public String getLCSClusterNodeLayoutURL(
-		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
+	@Override
+	public String getLCSClusterEntryName() throws LCSException {
+		LCSClusterEntry lcsClusterEntry =
+			_lcsClusterEntryClient.getLCSClusterEntry(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryId());
+
+		return lcsClusterEntry.getName();
+	}
+
+	public String getLCSClusterNodeLayoutURL() throws LCSException {
+		LCSClusterNode lcsClusterNode =
+			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
+
+		LCSClusterEntry lcsClusterEntry =
+			_lcsClusterEntryClient.getLCSClusterEntry(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryId());
+
+		LCSProject lcsProject = _lcsProjectClient.getLCSProject(
+			lcsClusterEntry.getLcsProjectId());
 
 		Map<String, String> publicRenderParameters = new HashMap<>();
 
 		publicRenderParameters.put(
 			_getPublicRenderParameterName("layoutLCSClusterEntryId"),
-			String.valueOf(lcsClusterNode.getLcsClusterEntryId()));
+			String.valueOf(lcsClusterEntry.getLcsClusterEntryId()));
 		publicRenderParameters.put(
 			_getPublicRenderParameterName("layoutLCSClusterNodeId"),
 			String.valueOf(lcsClusterNode.getLcsClusterNodeId()));
@@ -92,7 +125,22 @@ public class LCSLayoutBuilder {
 			_lcsPlatformPortalLayoutLCSClusterNode, publicRenderParameters);
 	}
 
-	public String getLCSProjectLayoutURL(LCSProject lcsProject) {
+	@Override
+	public String getLCSClusterNodeName() throws LCSException {
+		LCSClusterNode lcsClusterNode =
+			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
+
+		return lcsClusterNode.getName();
+	}
+
+	public String getLCSProjectLayoutURL() throws LCSException {
+		LCSClusterEntry lcsClusterEntry =
+			_lcsClusterEntryClient.getLCSClusterEntry(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryId());
+
+		LCSProject lcsProject = _lcsProjectClient.getLCSProject(
+			lcsClusterEntry.getLcsProjectId());
+
 		Map<String, String> publicRenderParameters = new HashMap<>();
 
 		publicRenderParameters.put(
@@ -103,8 +151,28 @@ public class LCSLayoutBuilder {
 			_lcsPlatformPortalLayoutLCSProject, publicRenderParameters);
 	}
 
-	public String getRegistrationLayoutURL(
-		LCSProject lcsProject, LCSClusterNode lcsClusterNode) {
+	@Override
+	public String getLCSProjectName() throws LCSException {
+		LCSClusterEntry lcsClusterEntry =
+			_lcsClusterEntryClient.getLCSClusterEntry(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryId());
+
+		LCSProject lcsProject = _lcsProjectClient.getLCSProject(
+			lcsClusterEntry.getLcsProjectId());
+
+		return lcsProject.getName();
+	}
+
+	public String getRegistrationLayoutURL() throws LCSException {
+		LCSClusterNode lcsClusterNode =
+			_lcsClusterNodeClient.fetchLCSClusterNode(_lcsKeyAdvisor.getKey());
+
+		LCSClusterEntry lcsClusterEntry =
+			_lcsClusterEntryClient.getLCSClusterEntry(
+				_lcsClusterEntryTokenAdvisor.getLcsClusterEntryId());
+
+		LCSProject lcsProject = _lcsProjectClient.getLCSProject(
+			lcsClusterEntry.getLcsProjectId());
 
 		Map<String, String> publicRenderParameters = new HashMap<>();
 
@@ -184,7 +252,19 @@ public class LCSLayoutBuilder {
 	}
 
 	@Reference
+	private LCSClusterEntryClient _lcsClusterEntryClient;
+
+	@Reference
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+
+	@Reference
+	private LCSClusterNodeClient _lcsClusterNodeClient;
+
+	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 	private String _lcsPlatformPortalHostName;
 	private int _lcsPlatformPortalHostPort;
@@ -192,5 +272,8 @@ public class LCSLayoutBuilder {
 	private String _lcsPlatformPortalLayoutLCSClusterNode;
 	private String _lcsPlatformPortalLayoutLCSProject;
 	private String _lcsPlatformPortalProtocol;
+
+	@Reference
+	private LCSProjectClient _lcsProjectClient;
 
 }

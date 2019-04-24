@@ -14,23 +14,25 @@
 
 package com.liferay.lcs.client.advisor;
 
+import com.liferay.lcs.client.platform.exception.LCSException;
+
 /**
  * @author Igor Beslic
  */
 public interface LCSClientAdvisor {
 
-	public String getLCSClusterEntryLayoutURL();
+	public String getLCSClusterEntryLayoutURL() throws LCSException;
 
-	public String getLCSClusterEntryName();
+	public String getLCSClusterEntryName() throws LCSException;
 
-	public String getLCSClusterNodeLayoutURL();
+	public String getLCSClusterNodeLayoutURL() throws LCSException;
 
-	public String getLCSClusterNodeName();
+	public String getLCSClusterNodeName() throws LCSException;
 
-	public String getLCSProjectLayoutURL();
+	public String getLCSProjectLayoutURL() throws LCSException;
 
-	public String getLCSProjectName();
+	public String getLCSProjectName() throws LCSException;
 
-	public String getRegistrationLayoutURL();
+	public String getRegistrationLayoutURL() throws LCSException;
 
 }
