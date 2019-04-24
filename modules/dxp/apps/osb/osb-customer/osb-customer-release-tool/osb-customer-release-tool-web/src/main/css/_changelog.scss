@@ -80,7 +80,6 @@
 		height: 100%;
 		margin: 0;
 		position: absolute;
-		right: 0;
 	}
 
 	@include media-breakpoint-down(sm) {
@@ -92,5 +91,18 @@
 		.modal-body {
 			bottom: 0;
 		}
+	}
+}
+
+.slide-enter {
+	.modal-dialog {
+		right: -600px;
+	}
+}
+
+.slide-enter.slide-enter-active {
+	.modal-dialog {
+		right: 0;
+		transition: right 300ms ease-in;
 	}
 }

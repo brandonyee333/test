@@ -1,6 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import {CSSTransition} from 'react-transition-group';
+
 import Button from './Button';
 import Modal from './Modal';
 
@@ -11,30 +13,35 @@ class Ticket extends Component {
 
 	state = {
 		id: '',
-		showModal: false
+		showModal: false,
+		showTransition: false
 	};
 
 	handleCloseModal = () => {
 		this.setState(
 			{
 				id: '',
-				showModal: false
+				showModal: false,
+				showTransition: false
 			}
 		);
 	};
 
-	handleShowModal = id => {
+	handleShowModal = newId => {
+		const {id} = this.state;
+
 		this.setState(
 			{
-				id: id,
-				showModal: true
+				id: newId,
+				showModal: true,
+				showTransition: id === ''
 			}
 		);
 	};
 
 	render() {
 		const {tickets} = this.props;
-		const {id, showModal} = this.state;
+		const {id, showModal, showTransition} = this.state;
 
 		return tickets.map(
 			ticket => (
@@ -44,6 +51,7 @@ class Ticket extends Component {
 					handleShowModal={this.handleShowModal}
 					id={`${ticket.key}${ticket.release}`}
 					showModal={id === `${ticket.key}${ticket.release}` ? showModal : false}
+					showTransition={showTransition}
 					ticket={ticket}
 				/>
 			)
@@ -57,6 +65,7 @@ class TicketDetail extends Component {
 		handleShowModal: PropTypes.func.isRequired,
 		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		showModal: PropTypes.bool.isRequired,
+		showTransition: PropTypes.bool.isRequired,
 		ticket: PropTypes.object.isRequired
 	};
 
@@ -67,7 +76,13 @@ class TicketDetail extends Component {
 	};
 
 	render() {
-		const {handleCloseModal, id, showModal, ticket} = this.props;
+		const {
+			handleCloseModal,
+			id,
+			showModal,
+			showTransition,
+			ticket
+		} = this.props;
 
 		return (
 			<tr className="journal-article-row" id={id}>
@@ -76,31 +91,38 @@ class TicketDetail extends Component {
 						{ticket.summary}
 					</Button>
 
-					<Modal
-						header={Liferay.Language.get('details')}
-						onClose={handleCloseModal}
-						show={showModal}
+					<CSSTransition
+						classNames="slide"
+						exit={false}
+						in={showTransition}
+						timeout={300}
 					>
-						<div className="ticket-detail">
-							<div className="small-title">{ticket.summary}</div>
+						<Modal
+							header={Liferay.Language.get('details')}
+							onClose={handleCloseModal}
+							show={showModal}
+						>
+							<div className="ticket-detail">
+								<div className="small-title">{ticket.summary}</div>
 
-							<h3>{Liferay.Language.get('description')}</h3>
+								<h3>{Liferay.Language.get('description')}</h3>
 
-							<div dangerouslySetInnerHTML={{__html: ticket.description}} />
+								<div dangerouslySetInnerHTML={{__html: ticket.description}} />
 
-							<h3>{Liferay.Language.get('components')}</h3>
+								<h3>{Liferay.Language.get('components')}</h3>
 
-							{ticket.components.toString().replace(/,/g, ', ')}
+								{ticket.components.toString().replace(/,/g, ', ')}
 
-							<h3>{Liferay.Language.get('release')}</h3>
+								<h3>{Liferay.Language.get('release')}</h3>
 
-							{ticket.release}
+								{ticket.release}
 
-							<h3>{Liferay.Language.get('key')}</h3>
+								<h3>{Liferay.Language.get('key')}</h3>
 
-							<a href={ticket.url}>{ticket.key}</a>
-						</div>
-					</Modal>
+								<a href={ticket.url}>{ticket.key}</a>
+							</div>
+						</Modal>
+					</CSSTransition>
 				</td>
 				<td className="lfr-component-column">
 					{ticket.components.toString().replace(/,/g, ', ')}

@@ -21,7 +21,8 @@
 		"lodash.debounce": "^4.0.8",
 		"lodash.times": "^4.3.2",
 		"react": "^16.4.2",
-		"react-dom": "^16.4.2"
+		"react-dom": "^16.4.2",
+		"react-transition-group": "^4.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
