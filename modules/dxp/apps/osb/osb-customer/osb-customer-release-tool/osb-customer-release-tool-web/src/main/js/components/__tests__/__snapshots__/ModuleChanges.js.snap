@@ -21,7 +21,7 @@ exports[`ModuleChanges renders correctly 1`] = `
         type="text"
       />
       <div
-        class="filter-subsection module-groups semibold"
+        class="filter-subsection module-groups semi-bold"
       >
         group
         <div
@@ -60,7 +60,7 @@ exports[`ModuleChanges renders correctly 1`] = `
         </div>
       </div>
       <div
-        class="filter-subsection module-changes-toggle semibold"
+        class="filter-subsection module-changes-toggle semi-bold"
       >
         only-show
         <div
@@ -227,7 +227,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
         type="text"
       />
       <div
-        class="filter-subsection module-groups semibold"
+        class="filter-subsection module-groups semi-bold"
       >
         group
         <div
@@ -266,7 +266,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
         </div>
       </div>
       <div
-        class="filter-subsection module-changes-toggle semibold"
+        class="filter-subsection module-changes-toggle semi-bold"
       >
         only-show
         <div
