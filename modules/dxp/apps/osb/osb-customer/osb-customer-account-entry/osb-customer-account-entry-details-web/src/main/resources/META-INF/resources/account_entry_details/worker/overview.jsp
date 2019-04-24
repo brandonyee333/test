@@ -33,7 +33,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="project-code" />
 					</td>
 					<td>
-						<%= accountEntry.getAccountEntryId() %>
+						<%= accountEntry.getCode() %>
 					</td>
 				</tr>
 				<tr>
