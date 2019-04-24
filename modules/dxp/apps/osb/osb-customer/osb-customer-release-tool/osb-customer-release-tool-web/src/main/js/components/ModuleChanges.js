@@ -218,7 +218,7 @@ export default class ModuleChanges extends Component {
 								type="text"
 							/>
 
-							<div className="filter-subsection module-groups semibold">
+							<div className="filter-subsection module-groups semi-bold">
 								{Liferay.Language.get('group')}
 
 								{filters.map(
@@ -234,7 +234,7 @@ export default class ModuleChanges extends Component {
 								)}
 							</div>
 
-							<div className="filter-subsection module-changes-toggle semibold">
+							<div className="filter-subsection module-changes-toggle semi-bold">
 								{Liferay.Language.get('only-show')}
 
 								<div className="toggle">

@@ -32,7 +32,7 @@
 		<div class="audit-entry-set">
 			<div class="entry-header">
 				<div class="entry-header-row">
-					<div class="semibold user-display">
+					<div class="semi-bold user-display">
 
 						<%
 						String auditEntryUserName = StringPool.BLANK;
@@ -75,17 +75,17 @@
 				<c:if test="<%= auditEntry.getAction() != AuditEntryConstants.ACTION_AUDIT %>">
 					<thead class="content-header">
 						<tr class="row">
-							<th class="col-md-2 semibold">
+							<th class="col-md-2 semi-bold">
 								<h6>
 									<liferay-ui:message key="field" />
 								</h6>
 							</th>
-							<th class="col-md-5 semibold">
+							<th class="col-md-5 semi-bold">
 								<h6>
 									<liferay-ui:message key="original-value" />
 								</h6>
 							</th>
-							<th class="col-md-5 semibold">
+							<th class="col-md-5 semi-bold">
 								<h6>
 									<liferay-ui:message key="new-value" />
 								</h6>
@@ -148,7 +148,7 @@
 									</td>
 								</c:when>
 								<c:otherwise>
-									<td class="col-md-2 semibold">
+									<td class="col-md-2 semi-bold">
 										<liferay-ui:message key="<%= curAuditEntry.getFieldLabel() %>" />
 									</td>
 									<td class="code col-md-5">

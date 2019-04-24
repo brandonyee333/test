@@ -37,7 +37,7 @@ String message = LanguageUtil.format(request, "a-sales-representative-will-conta
 
 <aui:col cssClass="unit" md="12">
 	<p>
-		<span class="semibold"><%= LanguageUtil.format(request, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></span>
+		<span class="semi-bold"><%= LanguageUtil.format(request, "welcome-x", StringPool.SPACE + HtmlUtil.escape(user.getFullName())) %></span>
 
 		<%
 		String[] arguments = {"<a href=\"mailto:sales@liferay.com\">", "</a>"};

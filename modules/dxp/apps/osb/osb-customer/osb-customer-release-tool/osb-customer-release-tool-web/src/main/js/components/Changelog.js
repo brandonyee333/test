@@ -250,7 +250,7 @@ export default class Changelog extends Component {
 								type="text"
 							/>
 
-							<div className="filter-subsection jira-components semibold">
+							<div className="filter-subsection jira-components semi-bold">
 								{Liferay.Language.get('component')}
 
 								{filters.map(

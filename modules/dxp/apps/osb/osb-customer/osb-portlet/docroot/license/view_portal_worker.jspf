@@ -106,7 +106,7 @@ pageContext.setAttribute("searchURL", searchURL);
 				<liferay-ui:search-container-column-text
 					name="Name / Description"
 				>
-					<div class="semibold">
+					<div class="semi-bold">
 						<%= HtmlUtil.escape(licenseKeySet.getName()) %>
 					</div>
 

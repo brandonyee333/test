@@ -196,12 +196,12 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 						<c:choose>
 							<c:when test="<%= licenseKeySet != null %>">
-								<span class="semibold"><%= HtmlUtil.escape(accountEntry.getName()) %></span>
+								<span class="semi-bold"><%= HtmlUtil.escape(accountEntry.getName()) %></span>
 
 								<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntry.getAccountEntryId() %>" />
 							</c:when>
 							<c:when test="<%= hasUpdateAdmin %>">
-								<span class="account-entry-name semibold" id="<portlet:namespace />accountEntryName"><%= (accountEntry != null) ? HtmlUtil.escape(accountEntry.getName()) : "" %></span>
+								<span class="account-entry-name semi-bold" id="<portlet:namespace />accountEntryName"><%= (accountEntry != null) ? HtmlUtil.escape(accountEntry.getName()) : "" %></span>
 
 								<input class="btn btn-default select-account-entry" onClick="var accountEntryWindow = window.open('<portlet:renderURL windowState="<%= LiferayWindowState.POP_UP.toString() %>"><portlet:param name="mvcPath" value="/license/select_account_entry.jsp" /><portlet:param name="callback" value="selectAccountEntry" /></portlet:renderURL>', 'account-entry', 'directories=no,height=640,location=no,menubar=no,resizable=yes,scrollbars=yes,status=no,toolbar=no,width=680'); void(''); accountEntryWindow.focus();" type="button" value="<liferay-ui:message key="select" />" />
 
@@ -229,7 +229,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 										addLicensePermission = OSBAccountEntryPermission.contains(permissionChecker, accountEntryId, OSBActionKeys.ADD_LICENSE);
 										%>
 
-										<span class="semibold"><%= HtmlUtil.escape(accountEntry.getName()) %></span>
+										<span class="semi-bold"><%= HtmlUtil.escape(accountEntry.getName()) %></span>
 
 										<aui:input label="" name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 									</c:when>
@@ -525,7 +525,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 						<c:choose>
 							<c:when test="<%= licenseKeySet != null %>">
-								<span class="semibold"><%= HtmlUtil.escape(licenseKeySet.getName()) %></span>
+								<span class="semi-bold"><%= HtmlUtil.escape(licenseKeySet.getName()) %></span>
 							</c:when>
 							<c:otherwise>
 								<aui:input bean="<%= licenseKeySet %>" label="" model="<%= LicenseKeySet.class %>" name="name" value="<%= accountEntry.getName() %>" />
@@ -651,7 +651,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 									<c:choose>
 										<c:when test="<%= clusterId > 0 %>">
-											<span class="semibold"><%= maxServers %></span>
+											<span class="semi-bold"><%= maxServers %></span>
 
 											<aui:input name="maxServers" type="hidden" value="<%= maxServers %>" />
 										</c:when>

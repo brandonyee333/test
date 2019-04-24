@@ -64,7 +64,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		%>
 
 		<liferay-ui:search-container-column-text
-			cssClass="semibold"
+			cssClass="semi-bold"
 			name="name"
 			value="<%= curUser.getFullName() %>"
 		/>
