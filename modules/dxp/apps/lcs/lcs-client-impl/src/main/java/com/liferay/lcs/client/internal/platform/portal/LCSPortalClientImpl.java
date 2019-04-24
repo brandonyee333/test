@@ -22,6 +22,7 @@ import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.exception.LCSPlatformException;
 import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
@@ -32,15 +33,13 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.osgi.service.component.ComponentFactory;
-import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -157,7 +156,7 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
-		Dictionary<String, Object> properties = new Hashtable<>();
+		Map<String, Object> properties = new HashMap<>();
 
 		properties.put(
 			"hostName", lcsConfiguration.lcsPlatformPortalHostName());
@@ -186,12 +185,8 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
 		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
 
-		_jsonWebServiceClientComponentInstance =
-			_jsonWebServiceClientComponentFactory.newInstance(properties);
-
-		_jsonWebServiceClient =
-			(JSONWebServiceClient)
-				_jsonWebServiceClientComponentInstance.getInstance();
+		_jsonWebServiceClient = _jsonWebServiceClientFactory.getInstance(
+			properties, true);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
@@ -200,7 +195,9 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 
 	@Deactivate
 	protected void deactivate() {
-		_jsonWebServiceClientComponentInstance.dispose();
+		if (_jsonWebServiceClient != null) {
+			_jsonWebServiceClient.destroy();
+		}
 	}
 
 	private LCSException _toLCSException(JSONWebServiceException jsonwse)
@@ -250,10 +247,8 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 
 	private JSONWebServiceClient _jsonWebServiceClient;
 
-	@Reference(target = "(component.factory=OAuthJSONWebServiceClient)")
-	private ComponentFactory _jsonWebServiceClientComponentFactory;
-
-	private ComponentInstance _jsonWebServiceClientComponentInstance;
+	@Reference
+	private JSONWebServiceClientFactory _jsonWebServiceClientFactory;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;

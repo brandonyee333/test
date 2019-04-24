@@ -30,6 +30,7 @@ import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.security.KeyStoreFactory;
 import com.liferay.lcs.util.CompressionUtil;
 import com.liferay.petra.json.web.service.client.JSONWebServiceClient;
+import com.liferay.petra.json.web.service.client.JSONWebServiceClientFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceSerializeException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
@@ -40,14 +41,10 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import org.osgi.service.component.ComponentFactory;
-import org.osgi.service.component.ComponentInstance;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -242,7 +239,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Deactivate
 	protected void deactivate() {
-		_jsonWebServiceClientComponentInstance.dispose();
+		if (_jsonWebServiceClient != null) {
+			_jsonWebServiceClient.destroy();
+		}
 	}
 
 	private <V, T> List<V> _convertToList(Class<T> clazz, String json)
@@ -304,7 +303,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private void _initJSONWebServiceClient(LCSConfiguration lcsConfiguration)
 		throws Exception {
 
-		Dictionary<String, Object> properties = new Hashtable<>();
+		Map<String, Object> properties = new HashMap<>();
 
 		properties.put(
 			"headers",
@@ -331,12 +330,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		properties.put("proxyPassword", lcsConfiguration.proxyHostPassword());
 		properties.put("proxyWorkstation", lcsConfiguration.proxyWorkstation());
 
-		_jsonWebServiceClientComponentInstance =
-			_jsonWebServiceClientComponentFactory.newInstance(properties);
-
-		_jsonWebServiceClient =
-			(JSONWebServiceClient)
-				_jsonWebServiceClientComponentInstance.getInstance();
+		_jsonWebServiceClient = _jsonWebServiceClientFactory.getInstance(
+			properties, false);
 	}
 
 	private void _processJSONWebServiceException(
@@ -391,10 +386,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private final Map<String, String> _baseHeaders = new HashMap<>();
 	private JSONWebServiceClient _jsonWebServiceClient;
 
-	@Reference(target = "(component.factory=JSONWebServiceClient)")
-	private ComponentFactory _jsonWebServiceClientComponentFactory;
+	@Reference
+	private JSONWebServiceClientFactory _jsonWebServiceClientFactory;
 
-	private ComponentInstance _jsonWebServiceClientComponentInstance;
 	private long _lastHandshakeSuccess;
 	private long _lastMessageReceived;
 	private long _lastMessageSent;
