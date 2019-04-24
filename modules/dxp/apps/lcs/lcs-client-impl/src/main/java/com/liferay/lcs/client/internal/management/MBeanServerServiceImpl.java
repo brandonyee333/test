@@ -87,7 +87,7 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 				}
 				catch (AttributeNotFoundException anfe) {
 					if (_log.isDebugEnabled()) {
-						_log.debug(anfe.getMessage(), anfe);
+						_log.debug(anfe.getMessage());
 					}
 				}
 			}
