@@ -15,6 +15,7 @@
 package com.liferay.lcs.client.internal.configuration;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
 import java.util.Map;
@@ -32,7 +33,7 @@ import org.osgi.service.component.annotations.Deactivate;
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
 	service = LCSConfigurationProvider.class
 )
-public class LCSConfigurationProvider {
+public class LCSConfigurationProviderImpl implements LCSConfigurationProvider {
 
 	public LCSConfiguration getLCSConfiguration() {
 		return new LCSConfigurationDecorator(_lcsConfiguration);
