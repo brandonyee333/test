@@ -313,10 +313,8 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 		LCSEventManager lcsEventManager = new LCSEventManager();
 
-		UptimeAdvisor uptimeAdvisor = new UptimeAdvisor(
+		return new UptimeAdvisor(
 			lcsEventManager, lcsKeyAdvisor, lcsPortletPreferences);
-
-		return uptimeAdvisor;
 	}
 
 }

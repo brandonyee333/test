@@ -107,12 +107,9 @@ public class KaleoDesignerUtil {
 		throws WorkflowException {
 
 		try {
-			WorkflowDefinition workflowDefinition =
-				WorkflowDefinitionManagerUtil.deployWorkflowDefinition(
-					companyId, userId, _getLocalizedTitleXML(titleMap),
-					content.getBytes());
-
-			return workflowDefinition;
+			return WorkflowDefinitionManagerUtil.deployWorkflowDefinition(
+				companyId, userId, _getLocalizedTitleXML(titleMap),
+				content.getBytes());
 		}
 		catch (WorkflowException we) {
 			_log.error(we, we);

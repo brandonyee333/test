@@ -110,9 +110,7 @@ public class CompressionUtil {
 			sb.append(line);
 		}
 
-		String uncompressedString = sb.toString();
-
-		return uncompressedString;
+		return sb.toString();
 	}
 
 	private static final Logger _log = LoggerFactory.getLogger(
