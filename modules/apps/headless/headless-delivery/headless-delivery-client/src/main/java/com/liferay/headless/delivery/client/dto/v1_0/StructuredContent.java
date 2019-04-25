@@ -351,6 +351,27 @@ public class StructuredContent {
 
 	protected Integer numberOfComments;
 
+	public RelatedAsset[] getRelatedAssets() {
+		return relatedAssets;
+	}
+
+	public void setRelatedAssets(RelatedAsset[] relatedAssets) {
+		this.relatedAssets = relatedAssets;
+	}
+
+	public void setRelatedAssets(
+		UnsafeSupplier<RelatedAsset[], Exception> relatedAssetsUnsafeSupplier) {
+
+		try {
+			relatedAssets = relatedAssetsUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected RelatedAsset[] relatedAssets;
+
 	public RenderedContent[] getRenderedContents() {
 		return renderedContents;
 	}

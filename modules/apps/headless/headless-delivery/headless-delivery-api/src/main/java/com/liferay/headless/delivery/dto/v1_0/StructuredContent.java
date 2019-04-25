@@ -493,6 +493,34 @@ public class StructuredContent {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Integer numberOfComments;
 
+	@Schema
+	public RelatedAsset[] getRelatedAssets() {
+		return relatedAssets;
+	}
+
+	public void setRelatedAssets(RelatedAsset[] relatedAssets) {
+		this.relatedAssets = relatedAssets;
+	}
+
+	@JsonIgnore
+	public void setRelatedAssets(
+		UnsafeSupplier<RelatedAsset[], Exception> relatedAssetsUnsafeSupplier) {
+
+		try {
+			relatedAssets = relatedAssetsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	protected RelatedAsset[] relatedAssets;
+
 	@Schema(
 		description = "A list of rendered StructuredContents, the result of using a template to process the content, returning html."
 	)
@@ -941,6 +969,26 @@ public class StructuredContent {
 			sb.append("\"numberOfComments\": ");
 
 			sb.append(numberOfComments);
+		}
+
+		if (relatedAssets != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"relatedAssets\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < relatedAssets.length; i++) {
+				sb.append(String.valueOf(relatedAssets[i]));
+
+				if ((i + 1) < relatedAssets.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
 		}
 
 		if (renderedContents != null) {
