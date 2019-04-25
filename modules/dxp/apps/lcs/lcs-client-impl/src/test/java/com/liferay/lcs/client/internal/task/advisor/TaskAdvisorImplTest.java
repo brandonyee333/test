@@ -16,10 +16,10 @@ package com.liferay.lcs.client.internal.task.advisor;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.command.Command;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
-import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.messaging.CommandMessageListener;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;

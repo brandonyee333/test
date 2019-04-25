@@ -24,7 +24,7 @@ import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
-import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSKeystoreException;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;

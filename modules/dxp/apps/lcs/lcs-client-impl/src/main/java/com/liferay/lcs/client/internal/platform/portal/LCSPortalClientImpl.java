@@ -15,7 +15,7 @@
 package com.liferay.lcs.client.internal.platform.portal;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.platform.exception.LCSClientAuthenticationException;
 import com.liferay.lcs.client.platform.exception.LCSClientInternalException;
 import com.liferay.lcs.client.platform.exception.LCSException;

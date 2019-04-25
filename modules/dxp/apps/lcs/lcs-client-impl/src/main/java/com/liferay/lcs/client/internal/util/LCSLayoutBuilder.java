@@ -15,7 +15,7 @@
 package com.liferay.lcs.client.internal.util;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.platform.portal.LCSClusterNode;
 import com.liferay.lcs.client.platform.portal.LCSProject;
 import com.liferay.portal.kernel.portlet.PortletQName;

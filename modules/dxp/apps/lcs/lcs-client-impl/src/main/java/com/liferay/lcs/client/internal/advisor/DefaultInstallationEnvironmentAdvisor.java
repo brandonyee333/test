@@ -15,7 +15,7 @@
 package com.liferay.lcs.client.internal.advisor;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;

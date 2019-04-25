@@ -15,6 +15,7 @@
 package com.liferay.lcs.client.internal.messaging;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.command.CheckHeartbeatCommand;
 import com.liferay.lcs.client.internal.command.Command;
 import com.liferay.lcs.client.internal.command.DownloadPatchCommand;
@@ -25,7 +26,6 @@ import com.liferay.lcs.client.internal.command.SendInstallationEnvironmentComman
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
 import com.liferay.lcs.client.internal.command.SignOffCommand;
-import com.liferay.lcs.client.internal.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.constants.LCSDestinationNames;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
