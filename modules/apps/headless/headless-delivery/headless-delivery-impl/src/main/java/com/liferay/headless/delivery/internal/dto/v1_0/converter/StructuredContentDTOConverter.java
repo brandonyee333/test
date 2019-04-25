@@ -14,8 +14,11 @@
 
 package com.liferay.headless.delivery.internal.dto.v1_0.converter;
 
+import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
+import com.liferay.asset.kernel.service.AssetEntryLocalService;
+import com.liferay.asset.kernel.service.AssetLinkLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
 import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.document.library.util.DLURLHelper;
@@ -28,6 +31,7 @@ import com.liferay.dynamic.data.mapping.storage.Fields;
 import com.liferay.dynamic.data.mapping.util.FieldsToDDMFormValuesConverter;
 import com.liferay.headless.delivery.dto.v1_0.ContentField;
 import com.liferay.headless.delivery.dto.v1_0.Geo;
+import com.liferay.headless.delivery.dto.v1_0.RelatedAsset;
 import com.liferay.headless.delivery.dto.v1_0.RenderedContent;
 import com.liferay.headless.delivery.dto.v1_0.StructuredContent;
 import com.liferay.headless.delivery.dto.v1_0.StructuredContentLink;
@@ -96,8 +100,41 @@ public class StructuredContentDTOConverter implements DTOConverter {
 
 		DDMStructure ddmStructure = journalArticle.getDDMStructure();
 
+		AssetEntry assetEntry = _assetEntryLocalService.getEntry(
+			JournalArticle.class.getName(),
+			journalArticle.getResourcePrimKey());
+
 		return new StructuredContent() {
 			{
+				relatedAssets = TransformUtil.transformToArray(
+					_assetLinkLocalService.getDirectLinks(
+						assetEntry.getEntryId()),
+					assetLink -> new RelatedAsset() {
+						{
+							AssetEntry relatedAssetEntry =
+								_assetEntryLocalService.getEntry(
+									assetLink.getEntryId2());
+
+							id = relatedAssetEntry.getClassPK();
+							title = relatedAssetEntry.getTitle(
+								dtoConverterContext.getLocale());
+
+							setContentType(
+								() -> {
+									DTOConverter dtoConverter =
+										_dtoConverterRegistry.getDTOConverter(
+											relatedAssetEntry.getClassName());
+
+									if (dtoConverter == null) {
+										return relatedAssetEntry.getClassName();
+									}
+
+									return dtoConverter.getContentType();
+								});
+						}
+					},
+					RelatedAsset.class);
+
 				availableLanguages = LocaleUtil.toW3cLanguageIds(
 					journalArticle.getAvailableLanguageIds());
 				aggregateRating = AggregateRatingUtil.toAggregateRating(
@@ -399,6 +436,12 @@ public class StructuredContentDTOConverter implements DTOConverter {
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
+	private AssetEntryLocalService _assetEntryLocalService;
+
+	@Reference
+	private AssetLinkLocalService _assetLinkLocalService;
+
+	@Reference
 	private AssetTagLocalService _assetTagLocalService;
 
 	@Reference
@@ -409,6 +452,9 @@ public class StructuredContentDTOConverter implements DTOConverter {
 
 	@Reference
 	private DLURLHelper _dlURLHelper;
+
+	@Reference
+	private DTOConverterRegistry _dtoConverterRegistry;
 
 	@Reference
 	private FieldsToDDMFormValuesConverter _fieldsToDDMFormValuesConverter;
