@@ -182,14 +182,6 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 
 		parameters.put("start_time", startTime);
 
-		if (nextPage.contains("end_time")) {
-			String endTime = nextPage.substring(
-				nextPage.indexOf("end_time") + 9,
-				nextPage.indexOf(StringPool.AMPERSAND));
-
-			parameters.put("end_time", endTime);
-		}
-
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "get", parameters, null, "zendesk.metrics.ticket.update");
 

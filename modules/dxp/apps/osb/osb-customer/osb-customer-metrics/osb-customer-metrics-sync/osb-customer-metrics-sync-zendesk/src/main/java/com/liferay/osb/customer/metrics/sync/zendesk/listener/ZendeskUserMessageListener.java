@@ -93,7 +93,6 @@ public class ZendeskUserMessageListener extends BaseMessageListener {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		parameters.put("end_time", String.valueOf(nowSeconds));
 		parameters.put(
 			"start_time", String.valueOf(syncState.getLastRunTime()));
 

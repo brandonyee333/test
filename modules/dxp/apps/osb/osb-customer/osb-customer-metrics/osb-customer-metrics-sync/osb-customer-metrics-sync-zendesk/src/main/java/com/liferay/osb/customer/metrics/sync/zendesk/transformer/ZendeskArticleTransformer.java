@@ -22,7 +22,6 @@ import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -84,12 +83,6 @@ public class ZendeskArticleTransformer extends BaseTransformer {
 				ZendeskRESTEndpoints.INCREMENTAL_ARTICLES;
 
 		Map<String, String> parameters = new HashMap<>();
-
-		String endTime = nextPage.substring(
-			nextPage.indexOf("end_time") + 9,
-			nextPage.indexOf(StringPool.AMPERSAND));
-
-		parameters.put("end_time", endTime);
 
 		String startTime = nextPage.substring(
 			nextPage.indexOf("start_time") + 11);

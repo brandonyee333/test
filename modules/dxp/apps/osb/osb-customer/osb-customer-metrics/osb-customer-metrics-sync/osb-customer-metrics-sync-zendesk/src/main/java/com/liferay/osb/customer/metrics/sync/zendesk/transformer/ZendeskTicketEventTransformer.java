@@ -186,12 +186,6 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 
 		Map<String, String> parameters = new HashMap<>();
 
-		String endTime = nextPage.substring(
-			nextPage.indexOf("end_time") + 9,
-			nextPage.indexOf(StringPool.AMPERSAND));
-
-		parameters.put("end_time", endTime);
-
 		parameters.put("include", "comment_events");
 
 		String startTime = nextPage.substring(
