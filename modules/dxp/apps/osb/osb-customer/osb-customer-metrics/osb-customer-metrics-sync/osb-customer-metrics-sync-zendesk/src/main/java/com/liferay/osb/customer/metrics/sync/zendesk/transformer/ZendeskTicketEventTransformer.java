@@ -22,6 +22,7 @@ import com.liferay.osb.customer.zendesk.connector.service.ZendeskRequest;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketEvent;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -100,6 +101,25 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 		return StringUtil.toLowerCase(name);
 	}
 
+	private JSONArray _processChildEvents(
+			JSONArray jsonArray, long id, long ticketId, String createdAt)
+		throws Exception {
+
+		JSONArray childEventsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject eventJSONObject = jsonArray.getJSONObject(i);
+
+			eventJSONObject.put("audit_id", id);
+			eventJSONObject.put("created_at", createdAt);
+			eventJSONObject.put("ticket_id", ticketId);
+
+			childEventsJSONArray.put(eventJSONObject);
+		}
+
+		return childEventsJSONArray;
+	}
+
 	private void _processEvents(JSONArray jsonArray) throws Exception {
 		Map<String, Object> columnMap = new HashMap<>();
 
@@ -112,8 +132,13 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 				String key = iterator.next();
 
 				if (key.equals("child_events")) {
-					JSONArray childEventJSONArray =
-						eventJSONObject.getJSONArray(key);
+					String createdAt = eventJSONObject.getString("created_at");
+					long id = eventJSONObject.getLong("id");
+					long ticketId = eventJSONObject.getLong("ticket_id");
+
+					JSONArray childEventJSONArray = _processChildEvents(
+						eventJSONObject.getJSONArray(key), id, ticketId,
+						createdAt);
 
 					_processEvents(childEventJSONArray);
 				}
