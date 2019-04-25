@@ -14,8 +14,16 @@
 
 package com.liferay.lcs.client.web.internal.portlet;
 
+import com.liferay.lcs.client.advisor.LCSClientAdvisor;
+import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
+import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.client.configuration.LCSConfiguration;
+import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientWebKeys;
+import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -25,7 +33,12 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
+import java.util.Collections;
+
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -71,6 +84,56 @@ import org.osgi.service.component.annotations.Reference;
 	service = Portlet.class
 )
 public class ConnectedServicesPortlet extends MVCPortlet {
+
+	@Override
+	public void doView(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		renderRequest.setAttribute(
+			LCSClientWebKeys.LCS_ALERTS, _lcsAlertAdvisor.getLCSAlerts());
+		renderRequest.setAttribute(
+			LCSConfiguration.class.getName(),
+			_lcsConfigurationProvider.getLCSConfiguration());
+		renderRequest.setAttribute(
+			LCSClusterEntryTokenAdvisor.class.getName(),
+			_lcsClusterEntryTokenAdvisor);
+		renderRequest.setAttribute(
+			LCSGatewayClient.class.getName(), _lcsGatewayClient);
+		renderRequest.setAttribute(TaskAdvisor.class.getName(), _taskAdvisor);
+		renderRequest.setAttribute(
+			LCSClientWebKeys.CLUSTER_NODE_INFOS, Collections.emptyList());
+
+		try {
+			renderRequest.setAttribute(
+				LCSClientWebKeys.LCS_CLUSTER_ENTRY_LAYOUT_URL,
+				_lcsClientAdvisor.getLCSClusterEntryLayoutURL());
+			renderRequest.setAttribute(
+				LCSClientWebKeys.LCS_CLUSTER_ENTRY_NAME,
+				_lcsClientAdvisor.getLCSClusterEntryName());
+			renderRequest.setAttribute(
+				LCSClientWebKeys.LCS_CLUSTER_NODE_LAYOUT_URL,
+				_lcsClientAdvisor.getLCSClusterNodeLayoutURL());
+			renderRequest.setAttribute(
+				LCSClientWebKeys.LCS_CLUSTER_NODE_NAME,
+				_lcsClientAdvisor.getLCSClusterNodeName());
+			renderRequest.setAttribute(
+				LCSClientWebKeys.LCS_PROJECT_LAYOUT_URL,
+				_lcsClientAdvisor.getLCSProjectLayoutURL());
+			renderRequest.setAttribute(
+				LCSClientWebKeys.LCS_PROJECT_NAME,
+				_lcsClientAdvisor.getLCSProjectName());
+			renderRequest.setAttribute(
+				LCSClientWebKeys.REGISTRATION_LAYOUT_URL,
+				_lcsClientAdvisor.getRegistrationLayoutURL());
+		}
+		catch (LCSException lcse) {
+			throw new PortletException(
+				"Unable to obtain LCS cluster node meta data", lcse);
+		}
+
+		super.doView(renderRequest, renderResponse);
+	}
 
 	@Override
 	public void serveResource(
@@ -127,9 +190,24 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 		ConnectedServicesPortlet.class);
 
 	@Reference
+	private LCSAlertAdvisor _lcsAlertAdvisor;
+
+	@Reference
+	private LCSClientAdvisor _lcsClientAdvisor;
+
+	@Reference
+	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+
+	@Reference
+	private LCSConfigurationProvider _lcsConfigurationProvider;
+
+	@Reference
 	private LCSGatewayClient _lcsGatewayClient;
 
 	@Reference
 	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+
+	@Reference
+	private TaskAdvisor _taskAdvisor;
 
 }
