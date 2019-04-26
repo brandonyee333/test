@@ -15,31 +15,38 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.event.LCSEvent;
-import com.liferay.lcs.client.event.LCSEventListener;
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
+import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
+@Component(
+	immediate = true, name = "com.liferay.lcs.client.internal.task.SignOffTask",
+	service = Task.class
+)
 public class SignOffTask implements Task {
 
+	public SignOffTask() {
+	}
+
 	public SignOffTask(
-		String key, LCSGatewayClient lcsGatewayClient,
-		boolean serverManuallyShutdown) {
+		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
+		LCSKeyAdvisor lcsKeyAdvisor) {
 
-		_key = key;
+		_lcsEventManager = lcsEventManager;
 		_lcsGatewayClient = lcsGatewayClient;
-		_serverManuallyShutdown = serverManuallyShutdown;
-
-		_lcsEventListeners.add(lcsGatewayClient);
+		_lcsKeyAdvisor = lcsKeyAdvisor;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -65,14 +72,31 @@ public class SignOffTask implements Task {
 		doRun();
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		System.out.println(
+			String.format(
+				"%d - Deactivated %s by thread %s", System.currentTimeMillis(),
+				this, Thread.currentThread()));
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Deactivated " + this);
+		}
+	}
+
 	protected void doRun() {
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
-		handshakeMessage.setServerManuallyShutdown(_serverManuallyShutdown);
+		handshakeMessage.setServerManuallyShutdown(true);
 		handshakeMessage.setSignOff(true);
-		handshakeMessage.setKey(_key);
+		handshakeMessage.setKey(_lcsKeyAdvisor.getKey());
 
 		try {
+			System.out.println(
+				String.format(
+					"%d - %s - DO RUN sending message by thread %s",
+					System.currentTimeMillis(), this, Thread.currentThread()));
+
 			if (_log.isTraceEnabled()) {
 				_log.trace("Sending sign out message: " + handshakeMessage);
 			}
@@ -83,7 +107,7 @@ public class SignOffTask implements Task {
 				_log.warn("Signed out and disconnected from LCS");
 			}
 
-			_notifyLCSEventListeners(LCSEvent.SIGNOFF_SUCCESS);
+			_lcsEventManager.publish(LCSEvent.SIGNOFF_SUCCESS);
 		}
 		catch (Exception e) {
 			StringBundler sb = new StringBundler(3);
@@ -94,8 +118,13 @@ public class SignOffTask implements Task {
 
 			_log.error(sb.toString(), e);
 
-			_notifyLCSEventListeners(LCSEvent.SIGNOFF_FAILED);
+			_lcsEventManager.publish(LCSEvent.SIGNOFF_FAILED);
 		}
+
+		System.out.println(
+			String.format(
+				"%d - %s - DO RUN completed by thread %s",
+				System.currentTimeMillis(), this, Thread.currentThread()));
 	}
 
 	@Override
@@ -107,22 +136,15 @@ public class SignOffTask implements Task {
 		}
 	}
 
-	private void _notifyLCSEventListeners(LCSEvent lcsEvent) {
-		for (LCSEventListener lcsEventListener : _lcsEventListeners) {
-			try {
-				lcsEventListener.onLCSEvent(lcsEvent);
-			}
-			catch (Throwable t) {
-				_log.error("Unable to notify listener", t);
-			}
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
-	private final String _key;
-	private final List<LCSEventListener> _lcsEventListeners = new ArrayList<>();
-	private final LCSGatewayClient _lcsGatewayClient;
-	private final boolean _serverManuallyShutdown;
+	@Reference
+	private LCSEventManager _lcsEventManager;
+
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }
