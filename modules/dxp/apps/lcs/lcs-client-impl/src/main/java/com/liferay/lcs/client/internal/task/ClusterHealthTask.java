@@ -14,8 +14,8 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.advisor.ClusterNodeAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.util.ClusterNodeUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.ClusterHealthMessage;
 
@@ -52,10 +52,13 @@ public class ClusterHealthTask extends BaseScheduledTask {
 		clusterHealthMessage.setKey(getKey());
 
 		clusterHealthMessage.setSiblingKeys(
-			ClusterNodeUtil.getRegisteredClusterNodeKeys());
+			_clusterNodeAdvisor.getClusterNodeKeys());
 
 		sendMessage(clusterHealthMessage);
 	}
+
+	@Reference
+	private ClusterNodeAdvisor _clusterNodeAdvisor;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;
