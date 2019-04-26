@@ -26,7 +26,6 @@ import com.liferay.lcs.client.internal.task.HeartbeatTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.ServerMetricsTask;
-import com.liferay.lcs.client.internal.task.SignOffTask;
 import com.liferay.lcs.client.internal.task.Task;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -46,6 +45,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
@@ -60,7 +60,13 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author Riccardo Ferrari
  * @author Igor Beslic
  */
-@Component(immediate = true, service = TaskSchedulerService.class)
+@Component(
+	immediate = true,
+	property = {
+		"osgi.command.scope=lcs", "osgi.command.function=schedulerStatus"
+	},
+	service = TaskSchedulerService.class
+)
 public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	public TaskSchedulerServiceImpl() {
@@ -93,7 +99,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
-		if (_shutdownPending) {
+		if (_shutdownPending.get()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Aborting event processing. Shutdown is in progress.");
@@ -135,6 +141,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		else if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
 			_executeHandshakeTask(true);
 		}
+	}
+
+	public String schedulerStatus() {
+		return "Scheduler Status: " + _scheduledExecutorService;
 	}
 
 	@Override
@@ -200,11 +210,13 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	@Deactivate
 	protected void deactivate() {
+		_lcsEventManager.unsubscribe(this);
+
 		if (_log.isTraceEnabled()) {
-			_log.trace("Destroying " + this);
+			_log.trace("Deactivate " + this);
 		}
 
-		_shutdownPending = true;
+		_shutdownPending.set(true);
 
 		_cancelAllTasks();
 
@@ -228,7 +240,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 
 		if (_log.isTraceEnabled()) {
-			_log.trace("Destroyed " + this);
+			_log.trace("Deactivated " + this);
 		}
 	}
 
@@ -290,7 +302,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	private void _executeHandshakeTask(boolean delayRun) {
-		if (_shutdownPending) {
+		if (_shutdownPending.get()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Aborting handshake. Shutdown is in progress.");
 			}
@@ -312,7 +324,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
-		if (_shutdownPending) {
+		if (_shutdownPending.get()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Aborting environment token processing. Shutdown is in " +
@@ -349,21 +361,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		_signOffPending = true;
 
-		SignOffTask signOffTask = new SignOffTask(
-			_lcsKeyAdvisor.getKey(), _lcsGatewayClient, true);
-
-		Future<?> future = _scheduledExecutorService.submit(signOffTask);
+		Future<?> future = _scheduledExecutorService.submit(_signOffTask);
 
 		while (!future.isDone()) {
-			try {
-				Thread.sleep(100);
-			}
-			catch (InterruptedException ie) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Interrupted while waiting for SignOff task", ie);
-				}
-			}
+			Thread.yield();
 		}
 
 		_signOffPending = false;
@@ -560,8 +561,14 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	private ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
 		new HashMap<>();
-	private volatile boolean _shutdownPending;
+	private AtomicBoolean _shutdownPending = new AtomicBoolean(false);
 	private volatile boolean _signOffPending;
+
+	@Reference(
+		target = "(component.name=com.liferay.lcs.client.internal.task.SignOffTask)",
+		unbind = "-"
+	)
+	private Task _signOffTask;
 
 	@Reference
 	private TaskAdvisor _taskAdvisor;
