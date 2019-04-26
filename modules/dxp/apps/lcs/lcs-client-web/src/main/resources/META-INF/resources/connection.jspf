@@ -260,7 +260,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 									<%= clusterNodeInfo.get("address") %>
 								</div>
 
-								<c:if test='<%= clusterNodeInfo.containsKey("lcsPortletMissing") %>'>
+								<c:if test='<%= !clusterNodeInfo.containsKey("key") %>'>
 									<div class="alert alert-danger">
 										<liferay-ui:message key="this-cluster-node-does-not-have-liferay-connected-services-client-installed" />
 									</div>
