@@ -45,13 +45,13 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(service = MessageBusListenerAdvisor.class)
-public class MessageBusListenerAdvisor implements LCSEventListener {
+@Component(service = MessageBusAdvisor.class)
+public class MessageBusAdvisor implements LCSEventListener {
 
-	public MessageBusListenerAdvisor() {
+	public MessageBusAdvisor() {
 	}
 
-	public MessageBusListenerAdvisor(LCSEventManager lcsEventManager) {
+	public MessageBusAdvisor(LCSEventManager lcsEventManager) {
 		_lcsEventManager = lcsEventManager;
 
 		_subscribeToLCSEvents();
@@ -207,7 +207,7 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MessageBusListenerAdvisor.class);
+		MessageBusAdvisor.class);
 
 	private BundleContext _bundleContext;
 
