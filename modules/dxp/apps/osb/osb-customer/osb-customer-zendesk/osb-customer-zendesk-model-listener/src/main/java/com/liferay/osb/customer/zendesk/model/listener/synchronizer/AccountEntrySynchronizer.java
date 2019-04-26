@@ -208,9 +208,15 @@ public class AccountEntrySynchronizer {
 				classNameId, accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
+		String countryName = StringPool.BLANK;
+
 		Address address = accountEntry.getAddress();
 
-		Country country = address.getCountry();
+		if (address != null) {
+			Country country = address.getCountry();
+
+			countryName = country.getName(LocaleUtil.ENGLISH);
+		}
 
 		String jiraProjectKey = StringPool.BLANK;
 		String partnerEntryCode = StringPool.BLANK;
@@ -240,7 +246,7 @@ public class AccountEntrySynchronizer {
 			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-			accountEntry.getCode(), country.getName(LocaleUtil.ENGLISH),
+			accountEntry.getCode(), countryName,
 			ZendeskModelListenerUtil.convertAddressToString(address),
 			String.valueOf(accountEntry.getAccountEntryId()),
 			accountEntry.getName(), accountEntry.getNotes(),
