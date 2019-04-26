@@ -228,8 +228,6 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 					sb.toString(), jsonwse);
 			}
 
-			// TODO this might be communication exception or pure LCSException
-
 			throw new LCSPlatformException(
 				"Unable to communicate with LCS", jsonwse);
 		}
