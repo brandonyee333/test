@@ -19,9 +19,12 @@ import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.MonitoringAdvisor;
 import com.liferay.lcs.client.internal.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
+import com.liferay.portal.kernel.license.messaging.LCSPortletState;
+import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.util.StringBundler;
 
@@ -60,8 +63,32 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 			_log.trace("Notified on LCS event " + lcsEvent);
 		}
 
-		if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
+		if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
+			processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
+		}
+		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
+			processLCSPortletState(LCSPortletState.NO_CONNECTION);
 			_unregisterAll();
+		}
+		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
+			processLCSPortletState(LCSPortletState.NO_CONNECTION);
+		}
+	}
+
+	public void processLCSPortletState(LCSPortletState lcsPortletState) {
+		Message message = LicenseManagerMessageType.LCS_AVAILABLE.createMessage(
+			lcsPortletState);
+
+		_messageBus.sendMessage(message.getDestinationName(), message);
+
+		if (_log.isTraceEnabled()) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append("Service availability message published for LCS ");
+			sb.append("portlet state ");
+			sb.append(lcsPortletState.name());
+
+			_log.trace(sb.toString());
 		}
 	}
 
@@ -83,7 +110,7 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		listenerDescriptor.listenerInstance = _getMessageListener(
 			listenerDescriptor.listenerName);
 
-		MessageBusUtil.registerMessageListener(
+		_messageBus.registerMessageListener(
 			listenerDescriptor.destinationName,
 			listenerDescriptor.listenerInstance);
 
@@ -110,10 +137,13 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		_bundleContext = bundleContext;
 
 		_subscribeToLCSEvents();
+
+		processLCSPortletState(LCSPortletState.NOT_REGISTERED);
 	}
 
 	@Deactivate
 	protected void deactivate() {
+		_lcsEventManager.unsubscribe(this);
 		_unregisterAll();
 
 		if (_log.isTraceEnabled()) {
@@ -150,7 +180,10 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 	}
 
 	private void _subscribeToLCSEvents() {
+		_lcsEventManager.subscribe(
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
+		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_AVAILABLE, this);
 	}
 
 	private void _unregisterAll() {
@@ -159,7 +192,7 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 		}
 
 		for (ListenerDescriptor listenerDescriptor : _listenerDescriptors) {
-			MessageBusUtil.unregisterMessageListener(
+			_messageBus.unregisterMessageListener(
 				listenerDescriptor.destinationName,
 				listenerDescriptor.listenerInstance);
 
@@ -183,6 +216,9 @@ public class MessageBusListenerAdvisor implements LCSEventListener {
 
 	private final List<ListenerDescriptor> _listenerDescriptors =
 		new ArrayList<>();
+
+	@Reference
+	private MessageBus _messageBus;
 
 	private class ListenerDescriptor {
 

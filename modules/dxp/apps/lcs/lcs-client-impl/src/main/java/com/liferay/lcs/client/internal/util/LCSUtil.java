@@ -14,14 +14,7 @@
 
 package com.liferay.lcs.client.internal.util;
 
-import com.liferay.portal.kernel.license.messaging.LCSPortletState;
-import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
-import com.liferay.portal.kernel.util.StringBundler;
 
 import java.lang.reflect.Field;
 
@@ -51,24 +44,5 @@ public class LCSUtil {
 			throw new RuntimeException(e);
 		}
 	}
-
-	public static void processLCSPortletState(LCSPortletState lcsPortletState) {
-		Message message = LicenseManagerMessageType.LCS_AVAILABLE.createMessage(
-			lcsPortletState);
-
-		MessageBusUtil.sendMessage(message.getDestinationName(), message);
-
-		if (_log.isTraceEnabled()) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append("Service availability message published for LCS ");
-			sb.append("portlet state ");
-			sb.append(lcsPortletState.name());
-
-			_log.trace(sb.toString());
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(LCSUtil.class);
 
 }

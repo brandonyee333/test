@@ -22,8 +22,6 @@ import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.InvalidLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
-import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -58,8 +56,6 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 	@Override
 	public void run() {
-		LCSUtil.processLCSPortletState(LCSPortletState.NOT_REGISTERED);
-
 		try {
 			_checkLCSClusterEntryToken();
 
@@ -120,8 +116,6 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 				"The environment token is invalid. Please regenerate, " +
 					"download, and install a new token.");
 		}
-
-		LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -19,8 +19,6 @@ import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 
 import java.util.Map;
 import java.util.Set;
@@ -113,15 +111,11 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 			add(LCSAlert.ERROR_INVALID_USER_CREDENTIALS);
 		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
-			LCSUtil.processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
-
 			clear();
 
 			add(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID);
 		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
-			LCSUtil.processLCSPortletState(LCSPortletState.NO_CONNECTION);
-
 			clear();
 		}
 	}

@@ -16,8 +16,7 @@ package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSPortletStateAdvisorImpl;
-import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.internal.messaging.advisor.MessageBusListenerAdvisor;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -38,10 +37,10 @@ public class LicenseManagerTask implements ScheduledTask {
 	}
 
 	public LicenseManagerTask(
-		LCSGatewayClient lcsGatewayClient,
+		MessageBusListenerAdvisor messageBusListenerAdvisor,
 		LCSPortletStateAdvisorImpl lcsPortletStateAdvisor) {
 
-		_lcsGatewayClient = lcsGatewayClient;
+		_messageBusListenerAdvisor = messageBusListenerAdvisor;
 		_lcsPortletStateAdvisor = lcsPortletStateAdvisor;
 
 		if (_log.isTraceEnabled()) {
@@ -66,7 +65,7 @@ public class LicenseManagerTask implements ScheduledTask {
 			_lcsPortletStateAdvisor.getLastLicenseCheckTime();
 
 		if ((currentTimeMills - lastLicenseCheckTime) < _LICENSE_CHECK_PERIOD) {
-			LCSUtil.processLCSPortletState(
+			_messageBusListenerAdvisor.processLCSPortletState(
 				_lcsPortletStateAdvisor.getLCSPortletState(false));
 
 			return;
@@ -79,7 +78,7 @@ public class LicenseManagerTask implements ScheduledTask {
 			_log.trace("LCS portlet state: " + lcsPortletState);
 		}
 
-		LCSUtil.processLCSPortletState(lcsPortletState);
+		_messageBusListenerAdvisor.processLCSPortletState(lcsPortletState);
 
 		_lcsPortletStateAdvisor.updateLicenseCheckTime();
 	}
@@ -99,9 +98,9 @@ public class LicenseManagerTask implements ScheduledTask {
 		LicenseManagerTask.class);
 
 	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
+	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
 	@Reference
-	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
+	private MessageBusListenerAdvisor _messageBusListenerAdvisor;
 
 }
