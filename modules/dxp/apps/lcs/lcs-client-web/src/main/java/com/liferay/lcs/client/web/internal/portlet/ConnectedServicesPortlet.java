@@ -14,6 +14,7 @@
 
 package com.liferay.lcs.client.web.internal.portlet;
 
+import com.liferay.lcs.client.advisor.ClusterNodeAdvisor;
 import com.liferay.lcs.client.advisor.LCSClientAdvisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
@@ -32,8 +33,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
-
-import java.util.Collections;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -102,7 +101,11 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 			LCSGatewayClient.class.getName(), _lcsGatewayClient);
 		renderRequest.setAttribute(TaskAdvisor.class.getName(), _taskAdvisor);
 		renderRequest.setAttribute(
-			LCSClientWebKeys.CLUSTER_NODE_INFOS, Collections.emptyList());
+			LCSClientWebKeys.CLUSTER_NODE_INFOS,
+			_clusterNodeAdvisor.getClusterNodeInfos());
+		renderRequest.setAttribute(
+			LCSClientWebKeys.LOCAL_CLUSTER_NODE_ADDRESS,
+			_clusterNodeAdvisor.getLocalClusterNodeAddress());
 
 		try {
 			renderRequest.setAttribute(
@@ -188,6 +191,9 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ConnectedServicesPortlet.class);
+
+	@Reference
+	private ClusterNodeAdvisor _clusterNodeAdvisor;
 
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;
