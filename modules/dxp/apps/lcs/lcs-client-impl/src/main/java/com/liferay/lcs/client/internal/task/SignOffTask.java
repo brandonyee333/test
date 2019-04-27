@@ -74,11 +74,6 @@ public class SignOffTask implements Task {
 
 	@Deactivate
 	protected void deactivate() {
-		System.out.println(
-			String.format(
-				"%d - Deactivated %s by thread %s", System.currentTimeMillis(),
-				this, Thread.currentThread()));
-
 		if (_log.isTraceEnabled()) {
 			_log.trace("Deactivated " + this);
 		}
@@ -92,11 +87,6 @@ public class SignOffTask implements Task {
 		handshakeMessage.setKey(_lcsKeyAdvisor.getKey());
 
 		try {
-			System.out.println(
-				String.format(
-					"%d - %s - DO RUN sending message by thread %s",
-					System.currentTimeMillis(), this, Thread.currentThread()));
-
 			if (_log.isTraceEnabled()) {
 				_log.trace("Sending sign out message: " + handshakeMessage);
 			}
@@ -120,11 +110,6 @@ public class SignOffTask implements Task {
 
 			_lcsEventManager.publish(LCSEvent.SIGNOFF_FAILED);
 		}
-
-		System.out.println(
-			String.format(
-				"%d - %s - DO RUN completed by thread %s",
-				System.currentTimeMillis(), this, Thread.currentThread()));
 	}
 
 	@Override
