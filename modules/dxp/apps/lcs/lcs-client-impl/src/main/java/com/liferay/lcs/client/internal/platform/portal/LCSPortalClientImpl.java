@@ -198,6 +198,8 @@ public class LCSPortalClientImpl implements LCSPortalClient {
 		if (_jsonWebServiceClient != null) {
 			_jsonWebServiceClient.destroy();
 		}
+
+		_lcsAccessTokenNextValidityCheckMillis.set(0);
 	}
 
 	private LCSException _toLCSException(JSONWebServiceException jsonwse)
