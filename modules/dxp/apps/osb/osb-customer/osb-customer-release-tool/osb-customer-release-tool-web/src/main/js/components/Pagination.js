@@ -7,11 +7,11 @@ const PAGE_BUFFER = 5;
 
 class PaginationItem extends React.Component {
 	static propTypes = {
-		active: PropTypes.bool,
+		active: PropTypes.bool.isRequired,
 		label: PropTypes.oneOfType(
 			[PropTypes.number, PropTypes.string]
-		),
-		number: PropTypes.number,
+		).isRequired,
+		number: PropTypes.number.isRequired,
 		onClick: PropTypes.func.isRequired
 	};
 
@@ -75,7 +75,7 @@ export default class Pagination extends React.Component {
 			pages.push(
 				{
 					label: '›',
-					number: (currentPage + 1)
+					number: currentPage + 1
 				},
 				{
 					label: '»',
@@ -92,7 +92,7 @@ export default class Pagination extends React.Component {
 				},
 				{
 					label: '‹',
-					number: (currentPage - 1)
+					number: currentPage - 1
 				}
 			);
 		}

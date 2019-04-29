@@ -51,7 +51,6 @@ if (journalArticle != null) {
 		{
 			description: '<%= HtmlUtil.escapeJS(highlightsDescription) %>',
 			filters: <%= releaseToolDisplayContext.getHightlightsFiltersJSONArray() %>,
-			fixPackResultsURL: '<%= fixPackSearchURL %>',
 			jsonObject: <%= fixPackSearcher.search(renderRequest, renderResponse) %>
 		},
 		document.getElementById('<portlet:namespace />highlights')

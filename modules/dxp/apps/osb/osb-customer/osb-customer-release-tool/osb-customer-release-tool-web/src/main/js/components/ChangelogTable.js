@@ -63,7 +63,7 @@ class TicketDetail extends Component {
 	static propTypes = {
 		handleCloseModal: PropTypes.func.isRequired,
 		handleShowModal: PropTypes.func.isRequired,
-		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+		id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 		showModal: PropTypes.bool.isRequired,
 		showTransition: PropTypes.bool.isRequired,
 		ticket: PropTypes.object.isRequired

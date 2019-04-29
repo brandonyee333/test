@@ -45,7 +45,7 @@ class Downloads extends React.Component {
 	componentDidMount() {
 		const {metadata, requiredAgreement} = this.props;
 
-		if (Object.keys(requiredAgreement).length) {
+		if (Object.keys(requiredAgreement).length > 0) {
 			axios.all(
 				[
 					axios.get(requiredAgreement.agreementContentURL),
@@ -65,7 +65,7 @@ class Downloads extends React.Component {
 					}
 				)
 				.catch(
-					(err) => {
+					err => {
 						if (process.env.NODE_ENV === 'development') {
 							console.log(err);
 						}
@@ -81,7 +81,7 @@ class Downloads extends React.Component {
 	}
 
 	getMetadata = id => {
-		const metadata = this.props.metadata;
+		const {metadata} = this.props;
 
 		return metadata.find(data => data.id === id);
 	};
@@ -257,7 +257,7 @@ class Downloads extends React.Component {
 				</div>
 
 				{details && (
-					<div class="download-details small">
+					<div className="download-details small">
 						{Object.entries(details).map(
 							([key, value], index) => (
 								key && (

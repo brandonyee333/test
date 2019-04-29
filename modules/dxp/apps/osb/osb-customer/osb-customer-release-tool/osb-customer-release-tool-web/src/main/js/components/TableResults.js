@@ -30,7 +30,7 @@ TableResults.propTypes = {
 	table: PropTypes.shape(
 		{
 			tableBody: PropTypes.func,
-			tableHeader: PropTypes.func,
+			tableHeader: PropTypes.func
 		}
 	).isRequired
 };
@@ -47,7 +47,7 @@ const displayTabName = name => {
 	}
 
 	return tabName;
-}
+};
 
 export default function TableResults(props) {
 	const {jsonObject, orderBy, tab, table} = props;

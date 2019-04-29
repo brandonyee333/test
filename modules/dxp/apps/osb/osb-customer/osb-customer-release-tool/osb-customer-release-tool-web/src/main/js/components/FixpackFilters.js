@@ -169,11 +169,12 @@ export default class FixpackFilters extends Component {
 
 				{fixpackURL && (
 					<Button
-						children={fixpackDownloadLinkDescription}
 						display="link"
 						href={fixpackURL}
 						size="lg"
-					/>
+					>
+						{fixpackDownloadLinkDescription}
+					</Button>
 				)}
 			</Fragment>
 		);

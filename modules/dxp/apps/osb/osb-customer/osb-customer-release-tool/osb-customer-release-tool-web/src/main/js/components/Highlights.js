@@ -16,7 +16,6 @@ export default class Highlights extends Component {
 	static propTypes = {
 		description: PropTypes.string.isRequired,
 		filters: fixPackFieldsType.isRequired,
-		fixPackResultsURL: PropTypes.string.isRequired,
 		jsonObject: PropTypes.oneOfType(
 			[errorType, fixPackJSONObjectType]
 		).isRequired
@@ -29,7 +28,7 @@ export default class Highlights extends Component {
 	handleCheckboxChange = event => {
 		const {filterBy} = this.state;
 
-		const value = event.currentTarget.value;
+		const {value} = event.currentTarget;
 
 		const checkedFilters = filterBy;
 

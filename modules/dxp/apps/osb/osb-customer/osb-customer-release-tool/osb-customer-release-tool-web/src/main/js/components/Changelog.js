@@ -58,23 +58,22 @@ export default class Changelog extends Component {
 
 	handleCheckboxChange = event => {
 		const {selectedFilters} = this.state;
+		const {components} = selectedFilters;
 
-		const name = event.currentTarget.name;
-
-		const components = selectedFilters.components;
+		const {name} = event.currentTarget;
 
 		if (!components.includes(name)) {
 			components.push(name);
 		}
 		else {
-			components.splice(selectedFilters.components.indexOf(name), 1);
+			components.splice(components.indexOf(name), 1);
 		}
 
 		this.setState(
 			{
 				selectedFilters: {
 					...selectedFilters,
-					components: components
+					components
 				}
 			}
 		);
@@ -140,7 +139,7 @@ export default class Changelog extends Component {
 
 		const newOrderBy = otherProps.orderBy || orderBy;
 
-		// startAt param begins at 0 and not 1
+		// `startAt` param begins at 0 and not 1
 
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
@@ -169,7 +168,7 @@ export default class Changelog extends Component {
 				orderBy: currentOrderBy
 			}
 		);
-	}
+	};
 
 	queryJiraIssues = (
 		components = [],

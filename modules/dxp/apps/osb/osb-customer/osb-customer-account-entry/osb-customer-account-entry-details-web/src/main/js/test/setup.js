@@ -8,4 +8,4 @@ window.Liferay = {
 	Language: {
 		get: lang
 	}
-}
+};

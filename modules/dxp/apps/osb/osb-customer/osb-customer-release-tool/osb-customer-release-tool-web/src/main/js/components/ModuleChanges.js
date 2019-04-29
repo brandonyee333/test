@@ -20,6 +20,7 @@ import TableResults from './TableResults';
 
 export default class ModuleChanges extends Component {
 	moduleChangesTextInputRef = React.createRef();
+
 	moduleChangesToggleRef = React.createRef();
 
 	static propTypes = {
@@ -59,9 +60,9 @@ export default class ModuleChanges extends Component {
 	handleCheckboxChange = event => {
 		const {selectedFilters} = this.state;
 
-		const value = event.currentTarget.value;
+		const {value} = event.currentTarget;
 
-		const owners = selectedFilters.owners;
+		const {owners} = selectedFilters;
 
 		if (!owners.includes(value)) {
 			owners.push(value);
@@ -74,7 +75,7 @@ export default class ModuleChanges extends Component {
 			{
 				selectedFilters: {
 					...selectedFilters,
-					owners: owners
+					owners
 				}
 			}
 		);
@@ -127,7 +128,7 @@ export default class ModuleChanges extends Component {
 	handleToggleChange = event => {
 		const {selectedFilters} = this.state;
 
-		const checked = event.currentTarget.checked;
+		const {checked} = event.currentTarget;
 
 		this.setState(
 			{
