@@ -66,7 +66,7 @@ public class ClusterNodeAdvisorImpl implements ClusterNodeAdvisor {
 			if (clusterNodeId.equals(localClusterNodeId)) {
 				if (_log.isTraceEnabled()) {
 					_log.trace(
-						"Skipped local cluster node id " + localClusterNodeId);
+						"Skipped local cluster node " + localClusterNodeId);
 				}
 
 				continue;
@@ -192,8 +192,7 @@ public class ClusterNodeAdvisorImpl implements ClusterNodeAdvisor {
 		}
 		catch (Exception e) {
 			_log.error(
-				"Unable to complete cluster request for node ID " +
-					clusterNodeId);
+				"Unable to complete cluster request for node " + clusterNodeId);
 		}
 
 		return key;
