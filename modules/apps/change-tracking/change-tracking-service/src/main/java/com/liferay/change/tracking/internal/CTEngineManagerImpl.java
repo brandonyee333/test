@@ -35,15 +35,18 @@ import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.dao.orm.Disjunction;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
+import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.transaction.Propagation;
@@ -60,8 +63,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -205,6 +212,15 @@ public class CTEngineManagerImpl implements CTEngineManager {
 			return;
 		}
 
+		if (!isChangeTrackingAllowed(companyId)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Change tracking is not allowed in company " + companyId);
+			}
+
+			return;
+		}
+
 		if (isChangeTrackingEnabled(companyId)) {
 			return;
 		}
@@ -226,6 +242,19 @@ public class CTEngineManagerImpl implements CTEngineManager {
 		finally {
 			ChangeTrackingThreadLocal.setModelUpdateInProgress(false);
 		}
+	}
+
+	@Override
+	public Map<Integer, Long> getCTCollectionChangeTypeCounts(
+		long ctCollectionId) {
+
+		List<CTEntry> ctEntries = getCTEntries(ctCollectionId);
+
+		Stream<CTEntry> ctEntriesStream = ctEntries.stream();
+
+		return ctEntriesStream.collect(
+			Collectors.groupingBy(
+				CTEntry::getChangeType, Collectors.counting()));
 	}
 
 	@Override
@@ -288,21 +317,17 @@ public class CTEngineManagerImpl implements CTEngineManager {
 	}
 
 	@Override
-	public List<CTEntryAggregate> getCTEntryAggregates(long ctCollectionId) {
-		return _ctEntryAggregateLocalService.getCTCollectionCTEntryAggregates(
-			ctCollectionId);
+	public int getCTEntriesCount(
+		long ctCollectionId, QueryDefinition<CTEntry> queryDefinition) {
+
+		return _ctEntryLocalService.getCTEntriesCount(
+			ctCollectionId, queryDefinition);
 	}
 
 	@Override
-	public List<CTCollection> getNonproductionCTCollections(
-		long companyId, QueryDefinition<CTCollection> queryDefinition) {
-
-		if (!isChangeTrackingEnabled(companyId)) {
-			return Collections.emptyList();
-		}
-
-		return _ctCollectionLocalService.getCTCollections(
-			companyId, queryDefinition, false);
+	public List<CTEntryAggregate> getCTEntryAggregates(long ctCollectionId) {
+		return _ctEntryAggregateLocalService.getCTCollectionCTEntryAggregates(
+			ctCollectionId);
 	}
 
 	@Override
@@ -339,9 +364,33 @@ public class CTEngineManagerImpl implements CTEngineManager {
 			PortletPreferencesFactoryUtil.getPortalPreferences(
 				userId, !user.isDefaultUser());
 
-		return GetterUtil.getLong(
-			portalPreferences.getValue(
-				CTPortletKeys.CHANGE_LISTS, _RECENT_CT_COLLECTION_ID));
+		Optional<CTCollection> ctCollectionOptional = getCTCollectionOptional(
+			GetterUtil.getLong(
+				portalPreferences.getValue(
+					CTPortletKeys.CHANGE_LISTS, _RECENT_CT_COLLECTION_ID)));
+
+		return ctCollectionOptional.map(
+			CTCollection::getCtCollectionId
+		).orElse(
+			0L
+		);
+	}
+
+	@Override
+	public boolean isChangeTrackingAllowed(long companyId) {
+		List<Group> groups = _groupLocalService.getCompanyGroups(
+			companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		Stream<Group> groupStream = groups.parallelStream();
+
+		Predicate<Group> groupPredicate =
+			group -> group.isStagingGroup() || group.isStaged();
+
+		if (groupStream.anyMatch(groupPredicate)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -377,7 +426,9 @@ public class CTEngineManagerImpl implements CTEngineManager {
 	}
 
 	@Override
-	public void publishCTCollection(long userId, long ctCollectionId) {
+	public void publishCTCollection(
+		long userId, long ctCollectionId, boolean ignoreCollision) {
+
 		long companyId = _getCompanyId(userId);
 
 		if (companyId <= 0) {
@@ -397,7 +448,7 @@ public class CTEngineManagerImpl implements CTEngineManager {
 
 		try {
 			_ctProcessLocalService.addCTProcess(
-				userId, ctCollectionId, new ServiceContext());
+				userId, ctCollectionId, ignoreCollision, new ServiceContext());
 		}
 		catch (Throwable t) {
 			if (_log.isWarnEnabled()) {
@@ -517,6 +568,7 @@ public class CTEngineManagerImpl implements CTEngineManager {
 				userId, ctConfiguration, ctCollection));
 	}
 
+	@SuppressWarnings("unchecked")
 	private void _generateCTEntriesForCTConfiguration(
 		long userId, CTConfiguration ctConfiguration,
 		CTCollection ctCollection) {
@@ -543,6 +595,7 @@ public class CTEngineManagerImpl implements CTEngineManager {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void _generateCTEntriesForResourceEntity(
 		long userId, CTConfiguration ctConfiguration, CTCollection ctCollection,
 		BaseModel resourceEntity, Serializable resourcePrimKey) {
@@ -588,11 +641,12 @@ public class CTEngineManagerImpl implements CTEngineManager {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private <V extends BaseModel, R extends BaseModel> void
 		_generateCTEntryAggregateForCTEntry(
 			long userId, CTConfiguration ctConfiguration,
 			CTCollection ctCollection, CTEntry ctEntry,
-			List<Function<V, R>> versionEntityRelatedEntityFunctions) {
+			List<Function<V, List<R>>> versionEntityRelatedEntitiesFunctions) {
 
 		Function<Long, V> versionEntityByVersionEntityIdFunction =
 			ctConfiguration.getVersionEntityByVersionEntityIdFunction();
@@ -600,24 +654,17 @@ public class CTEngineManagerImpl implements CTEngineManager {
 		V versionEntity = versionEntityByVersionEntityIdFunction.apply(
 			ctEntry.getModelClassPK());
 
-		versionEntityRelatedEntityFunctions.forEach(
-			relatedEntityFunction -> _generateCTEntryAggregateForVersionEntity(
-				userId, ctCollection, ctEntry, versionEntity,
-				relatedEntityFunction));
+		versionEntityRelatedEntitiesFunctions.forEach(
+			relatedEntitiesFunction ->
+				_generateCTEntryAggregateForRelatedEntity(
+					userId, ctCollection, ctEntry, versionEntity,
+					relatedEntitiesFunction));
 	}
 
-	private <V extends BaseModel, R extends BaseModel> void
-		_generateCTEntryAggregateForVersionEntity(
+	private <R extends BaseModel> void
+		_generateCTEntryAggregateForRelatedEntity(
 			long userId, CTCollection ctCollection, CTEntry ctEntry,
-			V versionEntity,
-			Function<V, R> versionEntityRelatedEntityFunction) {
-
-		R relatedEntity = versionEntityRelatedEntityFunction.apply(
-			versionEntity);
-
-		if (relatedEntity == null) {
-			return;
-		}
+			R relatedEntity) {
 
 		long relatedEntityClassPK = (Long)relatedEntity.getPrimaryKeyObj();
 
@@ -663,14 +710,34 @@ public class CTEngineManagerImpl implements CTEngineManager {
 	}
 
 	private <V extends BaseModel, R extends BaseModel> void
+		_generateCTEntryAggregateForRelatedEntity(
+			long userId, CTCollection ctCollection, CTEntry ctEntry,
+			V versionEntity,
+			Function<V, List<R>> versionEntityRelatedEntityFunction) {
+
+		List<R> relatedEntities = versionEntityRelatedEntityFunction.apply(
+			versionEntity);
+
+		Stream<R> relatedEntityStream = relatedEntities.stream();
+
+		relatedEntityStream.filter(
+			Objects::nonNull
+		).forEach(
+			relatedEntity -> _generateCTEntryAggregateForRelatedEntity(
+				userId, ctCollection, ctEntry, relatedEntity)
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <V extends BaseModel, R extends BaseModel> void
 		_generateCTEntryAggregatesForCTConfiguration(
 			long userId, CTConfiguration ctConfiguration,
 			CTCollection ctCollection) {
 
-		List<Function<V, R>> versionEntityRelatedEntityFunctions =
-			ctConfiguration.getVersionEntityRelatedEntityFunctions();
+		List<Function<V, List<R>>> versionEntityRelatedEntitiesFunctions =
+			ctConfiguration.getVersionEntityRelatedEntitiesFunctions();
 
-		if (ListUtil.isEmpty(versionEntityRelatedEntityFunctions)) {
+		if (ListUtil.isEmpty(versionEntityRelatedEntitiesFunctions)) {
 			return;
 		}
 
@@ -682,7 +749,7 @@ public class CTEngineManagerImpl implements CTEngineManager {
 		ctEntries.forEach(
 			ctEntry -> _generateCTEntryAggregateForCTEntry(
 				userId, ctConfiguration, ctCollection, ctEntry,
-				versionEntityRelatedEntityFunctions));
+				versionEntityRelatedEntitiesFunctions));
 	}
 
 	private long _getCompanyId(long userId) {
@@ -782,6 +849,9 @@ public class CTEngineManagerImpl implements CTEngineManager {
 
 	@Reference
 	private CTProcessLocalService _ctProcessLocalService;
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private Portal _portal;

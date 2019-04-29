@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.facet.util.FacetFactory;
@@ -58,17 +59,16 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 
 		facetConfiguration.setClassName(getFacetClassName());
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("frequencyThreshold", 0);
+		JSONObject jsonObject = JSONUtil.put("frequencyThreshold", 0);
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (int i = 0; i < _LABELS.length; i++) {
-			JSONObject range = JSONFactoryUtil.createJSONObject();
-
-			range.put("label", _LABELS[i]);
-			range.put("range", _RANGES[i]);
+			JSONObject range = JSONUtil.put(
+				"label", _LABELS[i]
+			).put(
+				"range", _RANGES[i]
+			);
 
 			jsonArray.put(range);
 		}
@@ -138,8 +138,11 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 			String range = ParamUtil.getString(
 				actionRequest, getClassName() + "range_" + rangesIndex);
 
-			rangeJSONObject.put("label", label);
-			rangeJSONObject.put("range", range);
+			rangeJSONObject.put(
+				"label", label
+			).put(
+				"range", range
+			);
 
 			jsonArray.put(rangeJSONObject);
 		}

@@ -26,6 +26,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.StagedModel;
@@ -134,16 +135,23 @@ public class ImageImportDDMFormFieldValueTransformer
 	protected String toJSON(FileEntry fileEntry, String type, String alt) {
 		JournalArticle article = (JournalArticle)_stagedModel;
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("alt", alt);
-		jsonObject.put("fileEntryId", fileEntry.getFileEntryId());
-		jsonObject.put("groupId", fileEntry.getGroupId());
-		jsonObject.put("name", fileEntry.getFileName());
-		jsonObject.put("resourcePrimKey", article.getResourcePrimKey());
-		jsonObject.put("title", fileEntry.getTitle());
-		jsonObject.put("type", type);
-		jsonObject.put("uuid", fileEntry.getUuid());
+		JSONObject jsonObject = JSONUtil.put(
+			"alt", alt
+		).put(
+			"fileEntryId", fileEntry.getFileEntryId()
+		).put(
+			"groupId", fileEntry.getGroupId()
+		).put(
+			"name", fileEntry.getFileName()
+		).put(
+			"resourcePrimKey", article.getResourcePrimKey()
+		).put(
+			"title", fileEntry.getTitle()
+		).put(
+			"type", type
+		).put(
+			"uuid", fileEntry.getUuid()
+		);
 
 		return jsonObject.toString();
 	}

@@ -443,7 +443,9 @@ class LayoutProvider extends Component {
 	}
 
 	_handleFieldDuplicated(event) {
-		this.setState(handleFieldDuplicated(this.state, event));
+		const {defaultLanguageId} = this.props;
+
+		this.setState(handleFieldDuplicated(this.state, defaultLanguageId, event));
 	}
 
 	_handleFieldEdited(properties) {

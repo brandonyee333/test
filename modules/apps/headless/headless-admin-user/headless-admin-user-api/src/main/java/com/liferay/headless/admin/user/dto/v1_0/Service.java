@@ -43,7 +43,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Service {
 
 	@Schema(
-		description = "A list of hours when the organization is open. Follows https://www.schema.org/OpeningHoursSpecification specification."
+		description = "A list of hours when the organization is open. This follows the [`OpeningHoursSpecification`](https://www.schema.org/OpeningHoursSpecification) specification."
 	)
 	public HoursAvailable[] getHoursAvailable() {
 		return hoursAvailable;
@@ -73,33 +73,7 @@ public class Service {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected HoursAvailable[] hoursAvailable;
 
-	@Schema(description = "The identifier of the resource.")
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@JsonIgnore
-	public void setId(UnsafeSupplier<Long, Exception> idUnsafeSupplier) {
-		try {
-			id = idUnsafeSupplier.get();
-		}
-		catch (RuntimeException re) {
-			throw re;
-		}
-		catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected Long id;
-
-	@Schema(description = "The type of the service provided.")
+	@Schema(description = "The type of service the organization provides.")
 	public String getServiceType() {
 		return serviceType;
 	}
@@ -172,16 +146,6 @@ public class Service {
 			}
 
 			sb.append("]");
-		}
-
-		if (id != null) {
-			if (sb.length() > 1) {
-				sb.append(", ");
-			}
-
-			sb.append("\"id\": ");
-
-			sb.append(id);
 		}
 
 		if (serviceType != null) {

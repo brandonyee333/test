@@ -1,6 +1,6 @@
 import {CLEAR_DROP_TARGET, MOVE_ROW, UPDATE_LAST_SAVE_DATE, UPDATE_SAVING_CHANGES_STATUS, UPDATE_TRANSLATION_STATUS} from '../actions/actions.es';
 import {DEFAULT_COMPONENT_ROW_CONFIG, DEFAULT_SECTION_ROW_CONFIG} from './rowConstants';
-import {FRAGMENTS_EDITOR_ROW_TYPES} from './constants';
+import {FRAGMENTS_EDITOR_DRAGGING_CLASS, FRAGMENTS_EDITOR_ROW_TYPES} from './constants';
 import {getTargetBorder, getWidget, getWidgetPath} from './FragmentsEditorGetUtils.es';
 
 /**
@@ -117,8 +117,8 @@ function moveItem(store, moveItemAction, moveItemPayload) {
 /**
  * Moves a row one position in the given direction
  * @param {number} direction
- * @param {object} row
- * @param {object} store Store instance that dispatches the actions
+ * @param {number} rowIndex
+ * @param {{}} store
  * @param {array} structure
  * @review
  */
@@ -187,11 +187,43 @@ function removeItem(store, removeItemAction, removeItemPayload) {
 }
 
 /**
+ * Set dragging item's position to mouse coordinates
+ * @param {MouseEvent} event
+ */
+function setDraggingItemPosition(event) {
+	const draggingElement = document.body.querySelector(
+		`.${FRAGMENTS_EDITOR_DRAGGING_CLASS}`
+	);
+
+	if (draggingElement instanceof HTMLElement) {
+		const newXPos = event.clientX - draggingElement.offsetWidth / 2;
+		const newYPos = event.clientY - draggingElement.offsetHeight / 2;
+
+		requestAnimationFrame(
+			() => {
+				setElementPosition(draggingElement, newXPos, newYPos);
+			}
+		);
+	}
+}
+
+/**
+ * Set an element's position to new x and y coordinates
+ * @param {HTMLElement} element
+ * @param {number} xPos
+ * @param {number} yPos
+ */
+function setElementPosition(element, xPos, yPos) {
+	element.style.left = `${xPos}px`;
+	element.style.top = `${yPos}px`;
+}
+
+/**
  * Recursively inserts a value inside an object creating
  * a copy of the original target. It the object (or any in the path),
  * it's an Array, it will generate new Arrays, preserving the same structure.
- * @param {!Array|!Object} object Original object that will be copied
- * @param {!Array<string>} keyPath Array of strings used for reaching the deep property
+ * @param {Array|Object} object Original object that will be copied
+ * @param {Array<string>} keyPath Array of strings used for reaching the deep property
  * @param {*} value Value to be inserted
  * @return {Array|Object} Copy of the original object with the new value
  * @review
@@ -209,10 +241,11 @@ function setIn(object, keyPath, value) {
  * a copy of the original target. It the object (or any in the path),
  * it's an Array, it will generate new Arrays, preserving the same structure.
  * Updater receives the previous value or defaultValue and returns a new value.
- * @param {!Array|Object} object Original object that will be copied
- * @param {!Array<string>} keyPath Array of strings used for reaching the deep property
- * @param {!Function} updater
- * @param {*} defaultValue
+ * @param {Array|Object} object Original object that will be copied
+ * @param {Array<string>} keyPath Array of strings used for reaching the deep property
+ * @param {(value: *) => *} updater Update function
+ * @param {*} [defaultValue] Default value to be sent to updater function if
+ *  there is no existing value
  * @return {Object}
  * @review
  */
@@ -326,6 +359,7 @@ export {
 	moveRow,
 	remove,
 	removeItem,
+	setDraggingItemPosition,
 	setIn,
 	updateIn,
 	updateRow,

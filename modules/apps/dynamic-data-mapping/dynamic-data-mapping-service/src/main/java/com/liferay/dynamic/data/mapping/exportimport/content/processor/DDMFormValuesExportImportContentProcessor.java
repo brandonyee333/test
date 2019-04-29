@@ -34,6 +34,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
@@ -366,13 +367,17 @@ public class DDMFormValuesExportImportContentProcessor
 		}
 
 		protected String toJSON(FileEntry fileEntry, String type) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("classPK", fileEntry.getFileEntryId());
-			jsonObject.put("groupId", fileEntry.getGroupId());
-			jsonObject.put("title", fileEntry.getTitle());
-			jsonObject.put("type", type);
-			jsonObject.put("uuid", fileEntry.getUuid());
+			JSONObject jsonObject = JSONUtil.put(
+				"classPK", fileEntry.getFileEntryId()
+			).put(
+				"groupId", fileEntry.getGroupId()
+			).put(
+				"title", fileEntry.getTitle()
+			).put(
+				"type", type
+			).put(
+				"uuid", fileEntry.getUuid()
+			);
 
 			return jsonObject.toString();
 		}
@@ -424,8 +429,11 @@ public class DDMFormValuesExportImportContentProcessor
 				JournalArticle journalArticle =
 					_journalArticleLocalService.fetchLatestArticle(classPK);
 
-				jsonObject.put("groupId", journalArticle.getGroupId());
-				jsonObject.put("uuid", journalArticle.getUuid());
+				jsonObject.put(
+					"groupId", journalArticle.getGroupId()
+				).put(
+					"uuid", journalArticle.getUuid()
+				);
 
 				value.addString(locale, jsonObject.toString());
 
@@ -643,11 +651,13 @@ public class DDMFormValuesExportImportContentProcessor
 		}
 
 		protected String toJSON(Layout layout) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("groupId", layout.getGroupId());
-			jsonObject.put("layoutId", layout.getLayoutId());
-			jsonObject.put("privateLayout", layout.isPrivateLayout());
+			JSONObject jsonObject = JSONUtil.put(
+				"groupId", layout.getGroupId()
+			).put(
+				"layoutId", layout.getLayoutId()
+			).put(
+				"privateLayout", layout.isPrivateLayout()
+			);
 
 			return jsonObject.toString();
 		}

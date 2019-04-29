@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -218,10 +219,7 @@ public class LayoutsAdminDisplayContext {
 			privatePages = selLayout.isPrivateLayout();
 		}
 
-		JSONObject breadcrumbEntryJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		breadcrumbEntryJSONObject.put(
+		JSONObject breadcrumbEntryJSONObject = JSONUtil.put(
 			"title", LanguageUtil.get(_request, "pages"));
 
 		PortletURL portletURL = _liferayPortletResponse.createRenderURL();
@@ -564,11 +562,11 @@ public class LayoutsAdminDisplayContext {
 				}
 			}
 
-			JSONObject layoutJSONObject = JSONFactoryUtil.createJSONObject();
-
-			layoutJSONObject.put(
-				"actionURLs", _getActionURLsJSONObject(layout));
-			layoutJSONObject.put("active", _isActive(layout.getPlid()));
+			JSONObject layoutJSONObject = JSONUtil.put(
+				"actionURLs", _getActionURLsJSONObject(layout)
+			).put(
+				"active", _isActive(layout.getPlid())
+			);
 
 			LayoutTypeController layoutTypeController =
 				LayoutTypeControllerTracker.getLayoutTypeController(
@@ -599,7 +597,8 @@ public class LayoutsAdminDisplayContext {
 					publishDate = modifiedDate;
 				}
 
-				layoutJSONObject.put("draft", modifiedDate.after(publishDate));
+				layoutJSONObject.put(
+					"draft", modifiedDate.getTime() > publishDate.getTime());
 			}
 			else {
 				layoutJSONObject.put("draft", false);
@@ -612,16 +611,19 @@ public class LayoutsAdminDisplayContext {
 			int childLayoutsCount = LayoutLocalServiceUtil.getLayoutsCount(
 				getSelGroup(), layout.isPrivateLayout(), layout.getLayoutId());
 
-			layoutJSONObject.put("hasChild", childLayoutsCount > 0);
-
 			layoutJSONObject.put(
-				"homePageTitle", _getHomePageTitle(privateLayout));
+				"hasChild", childLayoutsCount > 0
+			).put(
+				"homePageTitle", _getHomePageTitle(privateLayout)
+			);
 
 			LayoutType layoutType = layout.getLayoutType();
 
-			layoutJSONObject.put("parentable", layoutType.isParentable());
-
-			layoutJSONObject.put("plid", layout.getPlid());
+			layoutJSONObject.put(
+				"parentable", layoutType.isParentable()
+			).put(
+				"plid", layout.getPlid()
+			);
 
 			PortletURL portletURL = getPortletURL();
 
@@ -633,10 +635,11 @@ public class LayoutsAdminDisplayContext {
 			portletURL.setParameter(
 				"privateLayout", String.valueOf(layout.isPrivateLayout()));
 
-			layoutJSONObject.put("url", portletURL.toString());
-
 			layoutJSONObject.put(
-				"title", layout.getName(_themeDisplay.getLocale()));
+				"url", portletURL.toString()
+			).put(
+				"title", layout.getName(_themeDisplay.getLocale())
+			);
 
 			layoutsJSONArray.put(layoutJSONObject);
 		}
@@ -1497,10 +1500,7 @@ public class LayoutsAdminDisplayContext {
 	private JSONObject _getBreadcrumbEntryJSONObject(
 		long plid, boolean privateLayout, String title) {
 
-		JSONObject breadcrumbEntryJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		breadcrumbEntryJSONObject.put("title", title);
+		JSONObject breadcrumbEntryJSONObject = JSONUtil.put("title", title);
 
 		PortletURL portletURL = getPortletURL();
 
@@ -1515,14 +1515,17 @@ public class LayoutsAdminDisplayContext {
 	private JSONObject _getFirstColumn(boolean privatePages, boolean active)
 		throws PortalException {
 
-		JSONObject pagesJSONObject = JSONFactoryUtil.createJSONObject();
-
-		pagesJSONObject.put(
-			"actionURLs", _getFirstColumnActionURLsJSONObject(privatePages));
-		pagesJSONObject.put("active", active);
-		pagesJSONObject.put("hasChild", true);
-		pagesJSONObject.put("plid", LayoutConstants.DEFAULT_PLID);
-		pagesJSONObject.put("title", getTitle(privatePages));
+		JSONObject pagesJSONObject = JSONUtil.put(
+			"actionURLs", _getFirstColumnActionURLsJSONObject(privatePages)
+		).put(
+			"active", active
+		).put(
+			"hasChild", true
+		).put(
+			"plid", LayoutConstants.DEFAULT_PLID
+		).put(
+			"title", getTitle(privatePages)
+		);
 
 		PortletURL pagesURL = getPortletURL();
 
@@ -1660,16 +1663,17 @@ public class LayoutsAdminDisplayContext {
 				_themeDisplay.getScopeGroupId(), isPrivateLayout());
 
 		for (LayoutSetBranch layoutSetBranch : layoutSetBranches) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put(
+			JSONObject jsonObject = JSONUtil.put(
 				"active",
 				layoutSetBranch.getLayoutSetBranchId() ==
-					_getActiveLayoutSetBranchId());
-			jsonObject.put("hasChild", true);
-			jsonObject.put("plid", LayoutConstants.DEFAULT_PLID);
-			jsonObject.put(
-				"title", LanguageUtil.get(_request, layoutSetBranch.getName()));
+					_getActiveLayoutSetBranchId()
+			).put(
+				"hasChild", true
+			).put(
+				"plid", LayoutConstants.DEFAULT_PLID
+			).put(
+				"title", LanguageUtil.get(_request, layoutSetBranch.getName())
+			);
 
 			PortletURL portletURL = getPortletURL();
 

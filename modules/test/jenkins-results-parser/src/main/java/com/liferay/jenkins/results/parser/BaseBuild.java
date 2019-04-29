@@ -364,9 +364,7 @@ public abstract class BaseBuild implements Build {
 		sb.append(getBuildNumber());
 		sb.append("[\\/]*");
 
-		String buildURLRegex = sb.toString();
-
-		return buildURLRegex;
+		return sb.toString();
 	}
 
 	@Override
@@ -2309,6 +2307,32 @@ public abstract class BaseBuild implements Build {
 		return getGitHubMessageJobResultsElement();
 	}
 
+	protected Map<String, String> getInjectedEnvironmentVariablesMap()
+		throws IOException {
+
+		Map<String, String> injectedEnvironmentVariablesMap;
+
+		String localBuildURL = JenkinsResultsParserUtil.getLocalURL(
+			getBuildURL());
+
+		JSONObject jsonObject = JenkinsResultsParserUtil.toJSONObject(
+			localBuildURL + "/injectedEnvVars/api/json", false);
+
+		JSONObject envMapJSONObject = jsonObject.getJSONObject("envMap");
+
+		Set<String> envMapJSONObjectKeySet = envMapJSONObject.keySet();
+
+		injectedEnvironmentVariablesMap = new HashMap<>(
+			envMapJSONObjectKeySet.size());
+
+		for (String key : envMapJSONObjectKeySet) {
+			injectedEnvironmentVariablesMap.put(
+				key, envMapJSONObject.getString(key));
+		}
+
+		return injectedEnvironmentVariablesMap;
+	}
+
 	protected String getJenkinsReportBuildInfoCellElementTagName() {
 		return "td";
 	}
@@ -2654,13 +2678,40 @@ public abstract class BaseBuild implements Build {
 	}
 
 	protected StopWatchRecordsGroup getStopWatchRecordsGroup() {
-		String consoleText = getConsoleText();
+		String consoleText = null;
+		int consoleTextLength = 0;
+		int retries = 0;
 
-		int consoleTextLength = consoleText.length();
+		while (true) {
+			try {
+				consoleText = getConsoleText();
 
-		if (stopWatchRecordConsoleReadCursor > 0) {
-			consoleText = consoleText.substring(
-				stopWatchRecordConsoleReadCursor);
+				consoleTextLength = consoleText.length();
+
+				if (stopWatchRecordConsoleReadCursor > 0) {
+					consoleText = consoleText.substring(
+						stopWatchRecordConsoleReadCursor);
+				}
+			}
+			catch (StringIndexOutOfBoundsException sioobe) {
+				if (retries == 2) {
+					throw sioobe;
+				}
+
+				System.out.println(
+					JenkinsResultsParserUtil.combine(
+						"Retrying. Console log length (",
+						String.valueOf(consoleTextLength),
+						") is shorter than previous (",
+						String.valueOf(stopWatchRecordConsoleReadCursor),
+						")."));
+
+				retries++;
+
+				JenkinsResultsParserUtil.sleep(1000 * 5);
+			}
+
+			break;
 		}
 
 		for (String line : consoleText.split("\n")) {
@@ -2724,7 +2775,7 @@ public abstract class BaseBuild implements Build {
 		String tempMapURL = getTempMapURL(tempMapName);
 
 		if (tempMapURL == null) {
-			return Collections.emptyMap();
+			return getTempMapFromBuildDatabase(tempMapName);
 		}
 
 		JSONObject tempMapJSONObject = null;
@@ -2740,7 +2791,7 @@ public abstract class BaseBuild implements Build {
 		if ((tempMapJSONObject == null) ||
 			!tempMapJSONObject.has("properties")) {
 
-			return Collections.emptyMap();
+			return getTempMapFromBuildDatabase(tempMapName);
 		}
 
 		JSONArray propertiesJSONArray = tempMapJSONObject.getJSONArray(
@@ -2758,6 +2809,24 @@ public abstract class BaseBuild implements Build {
 
 			if ((value != null) && !value.isEmpty()) {
 				tempMap.put(key, value);
+			}
+		}
+
+		return tempMap;
+	}
+
+	protected Map<String, String> getTempMapFromBuildDatabase(
+		String tempMapName) {
+
+		Map<String, String> tempMap = new HashMap<>();
+
+		if (!fromArchive) {
+			BuildDatabase buildDatabase = BuildDatabaseUtil.getBuildDatabase();
+
+			Properties properties = buildDatabase.getProperties(tempMapName);
+
+			for (String propertyName : properties.stringPropertyNames()) {
+				tempMap.put(propertyName, properties.getProperty(propertyName));
 			}
 		}
 

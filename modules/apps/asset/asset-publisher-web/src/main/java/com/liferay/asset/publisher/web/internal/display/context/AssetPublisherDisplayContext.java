@@ -508,10 +508,14 @@ public class AssetPublisherDisplayContext {
 				queryValues = _assetPublisherWebUtil.filterAssetTagNames(
 					_themeDisplay.getScopeGroupId(), queryValues);
 
-				List<Map<String, String>> selectedItems = new ArrayList<>();
-
 				String[] tagNames = StringUtil.split(
 					queryValues, StringPool.COMMA);
+
+				if (ArrayUtil.isEmpty(tagNames)) {
+					continue;
+				}
+
+				List<Map<String, String>> selectedItems = new ArrayList<>();
 
 				for (String tagName : tagNames) {
 					Map<String, String> item = new HashMap<>();
@@ -529,10 +533,14 @@ public class AssetPublisherDisplayContext {
 					_request, "queryCategoryIds" + queryLogicIndex,
 					queryValues);
 
-				List<HashMap<String, Object>> selectedItems = new ArrayList<>();
-
 				List<AssetCategory> categories = _filterAssetCategories(
 					GetterUtil.getLongValues(queryValues.split(",")));
+
+				if (ListUtil.isEmpty(categories)) {
+					continue;
+				}
+
+				List<HashMap<String, Object>> selectedItems = new ArrayList<>();
 
 				for (AssetCategory category : categories) {
 					HashMap<String, Object> selectedCategory = new HashMap<>();
@@ -551,8 +559,11 @@ public class AssetPublisherDisplayContext {
 				continue;
 			}
 
-			ruleJSONObject.put("queryValues", queryValues);
-			ruleJSONObject.put("type", queryName);
+			ruleJSONObject.put(
+				"queryValues", queryValues
+			).put(
+				"type", queryName
+			);
 
 			rulesJSONArray.put(ruleJSONObject);
 		}
@@ -1337,16 +1348,7 @@ public class AssetPublisherDisplayContext {
 		return false;
 	}
 
-	public boolean isSelectionStyleDynamic() throws PortalException {
-		AssetListEntry assetListEntry = fetchAssetListEntry();
-
-		if (isSelectionStyleAssetList() && (assetListEntry != null) &&
-			(assetListEntry.getType() ==
-				AssetListEntryTypeConstants.TYPE_DYNAMIC)) {
-
-			return true;
-		}
-
+	public boolean isSelectionStyleDynamic() {
 		if (Objects.equals(getSelectionStyle(), "dynamic")) {
 			return true;
 		}

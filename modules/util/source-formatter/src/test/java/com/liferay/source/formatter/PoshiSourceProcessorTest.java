@@ -22,6 +22,13 @@ import org.junit.Test;
 public class PoshiSourceProcessorTest extends BaseSourceProcessorTestCase {
 
 	@Test
+	public void testDuplicatedParameters() throws Exception {
+		test(
+			"PoshiDuplicatedParameters.testmacro",
+			"Duplicate parameter 'userScreenName'", 4);
+	}
+
+	@Test
 	public void testIncorrectAnnotationsOrder() throws Exception {
 		test("IncorrectAnnotationsOrder.testmacro");
 	}
@@ -36,7 +43,12 @@ public class PoshiSourceProcessorTest extends BaseSourceProcessorTestCase {
 				"There should be a line break after ';'",
 				"There should be a line break after ';'"
 			},
-			new Integer[] {2, 3, 18, 19});
+			new Integer[] {2, 3, 17, 18});
+	}
+
+	@Test
+	public void testIncorrectParameterOrder() throws Exception {
+		test("PoshiIncorrectParameterOrder.testmacro");
 	}
 
 	@Test

@@ -33,11 +33,15 @@ import com.liferay.portal.vulcan.yaml.YAMLUtil;
 import com.liferay.portal.vulcan.yaml.config.Application;
 import com.liferay.portal.vulcan.yaml.config.ConfigYAML;
 import com.liferay.portal.vulcan.yaml.openapi.Components;
+import com.liferay.portal.vulcan.yaml.openapi.Content;
 import com.liferay.portal.vulcan.yaml.openapi.Info;
+import com.liferay.portal.vulcan.yaml.openapi.Items;
 import com.liferay.portal.vulcan.yaml.openapi.OpenAPIYAML;
 import com.liferay.portal.vulcan.yaml.openapi.Operation;
 import com.liferay.portal.vulcan.yaml.openapi.Parameter;
 import com.liferay.portal.vulcan.yaml.openapi.PathItem;
+import com.liferay.portal.vulcan.yaml.openapi.RequestBody;
+import com.liferay.portal.vulcan.yaml.openapi.Response;
 import com.liferay.portal.vulcan.yaml.openapi.Schema;
 
 import java.io.File;
@@ -137,7 +141,9 @@ public class RESTBuilder {
 
 		if (Validator.isNotNull(_configYAML.getClientDir())) {
 			_createClientBaseJSONParserFile(context);
+			_createClientHttpInvokerFile(context);
 			_createClientPageFile(context);
+			_createClientPaginationFile(context);
 			_createClientUnsafeSupplierFile(context);
 		}
 
@@ -254,17 +260,21 @@ public class RESTBuilder {
 	private void _checkOpenAPIYAMLFile(FreeMarkerTool freeMarkerTool, File file)
 		throws Exception {
 
-		String content = _fixOpenAPIPathParameters(FileUtil.read(file));
+		String s = _fixOpenAPIPathParameters(FileUtil.read(file));
 
 		if (_configYAML.isForcePredictableOperationId()) {
-			content = _fixOpenAPIOperationIds(freeMarkerTool, content);
+			s = _fixOpenAPIOperationIds(freeMarkerTool, s);
+		}
+
+		if (_configYAML.isForcePredictableContentApplicationXML()) {
+			s = _fixOpenAPIContentApplicationXML(s);
 		}
 
 		if (_configYAML.isWarningsEnabled()) {
-			_validate(content);
+			_validate(s);
 		}
 
-		FileUtil.write(file, content);
+		FileUtil.write(file, s);
 	}
 
 	private void _createApplicationFile(Map<String, Object> context)
@@ -411,6 +421,30 @@ public class RESTBuilder {
 				_copyrightFile, "client_dto", context));
 	}
 
+	private void _createClientHttpInvokerFile(Map<String, Object> context)
+		throws Exception {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(_configYAML.getClientDir());
+		sb.append("/");
+
+		String apiPackagePath = _configYAML.getApiPackagePath();
+
+		sb.append(apiPackagePath.replace('.', '/'));
+
+		sb.append("/client/http/HttpInvoker.java");
+
+		File file = new File(sb.toString());
+
+		_files.add(file);
+
+		FileUtil.write(
+			file,
+			FreeMarkerUtil.processTemplate(
+				_copyrightFile, "client_http_invoker", context));
+	}
+
 	private void _createClientPageFile(Map<String, Object> context)
 		throws Exception {
 
@@ -433,6 +467,30 @@ public class RESTBuilder {
 			file,
 			FreeMarkerUtil.processTemplate(
 				_copyrightFile, "client_page", context));
+	}
+
+	private void _createClientPaginationFile(Map<String, Object> context)
+		throws Exception {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(_configYAML.getClientDir());
+		sb.append("/");
+
+		String apiPackagePath = _configYAML.getApiPackagePath();
+
+		sb.append(apiPackagePath.replace('.', '/'));
+
+		sb.append("/client/pagination/Pagination.java");
+
+		File file = new File(sb.toString());
+
+		_files.add(file);
+
+		FileUtil.write(
+			file,
+			FreeMarkerUtil.processTemplate(
+				_copyrightFile, "client_pagination", context));
 	}
 
 	private void _createClientResourceFile(
@@ -776,12 +834,119 @@ public class RESTBuilder {
 				_copyrightFile, "resource_test", context));
 	}
 
+	private String _fixOpenAPIContentApplicationXML(
+		Map<String, Content> contents, int index, String s) {
+
+		if (contents == null) {
+			return s;
+		}
+
+		Set<String> mediaTypes = contents.keySet();
+
+		if (!mediaTypes.contains("application/json") ||
+			mediaTypes.contains("application/xml")) {
+
+			return s;
+		}
+
+		Content content = contents.get("application/json");
+
+		String reference = null;
+
+		if (content.getSchema() != null) {
+			Schema schema = content.getSchema();
+
+			reference = schema.getReference();
+
+			if (schema.getItems() != null) {
+				Items items = schema.getItems();
+
+				reference = items.getReference();
+			}
+		}
+
+		if (reference == null) {
+			return s;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		int x = s.lastIndexOf("\n", s.indexOf("application/json", index)) + 1;
+
+		String line = s.substring(x, s.indexOf("\n", x));
+
+		String leadingWhitespace = line.replaceAll("^(\\s+).+", "$1");
+
+		while (line.startsWith(leadingWhitespace)) {
+			sb.append(line);
+			sb.append("\n");
+
+			x = s.indexOf("\n", x) + 1;
+
+			line = s.substring(x, s.indexOf("\n", x));
+		}
+
+		String oldSub = sb.toString();
+
+		String newSub =
+			oldSub + oldSub.replace("application/json", "application/xml");
+
+		return StringUtil.replaceFirst(s, oldSub, newSub, index);
+	}
+
+	private String _fixOpenAPIContentApplicationXML(String s) {
+		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(s);
+
+		Map<String, PathItem> pathItems = openAPIYAML.getPathItems();
+
+		for (Map.Entry<String, PathItem> entry1 : pathItems.entrySet()) {
+			String path = entry1.getKey();
+
+			int x = s.indexOf(StringUtil.quote(path, '"') + ":");
+
+			if (x == -1) {
+				x = s.indexOf(path + ":");
+			}
+
+			for (Operation operation : _getOperations(entry1.getValue())) {
+				RequestBody requestBody = operation.getRequestBody();
+
+				String httpMethod = OpenAPIParserUtil.getHTTPMethod(operation);
+
+				int y = s.indexOf(httpMethod + ":", x);
+
+				if (requestBody != null) {
+					Map<String, Content> contents = requestBody.getContent();
+					int index = s.indexOf("requestBody:", y);
+
+					s = _fixOpenAPIContentApplicationXML(contents, index, s);
+				}
+
+				Map<Integer, Response> responses = operation.getResponses();
+
+				for (Map.Entry<Integer, Response> entry2 :
+						responses.entrySet()) {
+
+					Response response = entry2.getValue();
+
+					Map<String, Content> contents = response.getContent();
+
+					int index = s.indexOf(entry2.getKey() + ":", y);
+
+					s = _fixOpenAPIContentApplicationXML(contents, index, s);
+				}
+			}
+		}
+
+		return s;
+	}
+
 	private String _fixOpenAPIOperationIds(
-		FreeMarkerTool freeMarkerTool, String content) {
+		FreeMarkerTool freeMarkerTool, String s) {
 
-		content = content.replaceAll("\n\\s+operationId:.+", "");
+		s = s.replaceAll("\n\\s+operationId:.+", "");
 
-		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(content);
+		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(s);
 
 		Components components = openAPIYAML.getComponents();
 
@@ -795,28 +960,27 @@ public class RESTBuilder {
 			for (JavaMethodSignature javaMethodSignature :
 					javaMethodSignatures) {
 
-				int x = content.indexOf(
+				int x = s.indexOf(
 					StringUtil.quote(javaMethodSignature.getPath(), '"') + ":");
 
 				if (x == -1) {
-					x = content.indexOf(javaMethodSignature.getPath() + ":");
+					x = s.indexOf(javaMethodSignature.getPath() + ":");
 				}
 
-				String pathLine = content.substring(
-					content.lastIndexOf("\n", x) + 1, content.indexOf("\n", x));
+				String pathLine = s.substring(
+					s.lastIndexOf("\n", x) + 1, s.indexOf("\n", x));
 
 				String httpMethod = OpenAPIParserUtil.getHTTPMethod(
 					javaMethodSignature.getOperation());
 
-				int y = content.indexOf(httpMethod + ":", x);
+				int y = s.indexOf(httpMethod + ":", x);
 
-				String httpMethodLine = content.substring(
-					content.lastIndexOf("\n", y) + 1, content.indexOf("\n", y));
+				String httpMethodLine = s.substring(
+					s.lastIndexOf("\n", y) + 1, s.indexOf("\n", y));
 
-				int z = content.indexOf('\n', y);
+				int z = s.indexOf('\n', y);
 
-				String line = content.substring(
-					z + 1, content.indexOf("\n", z + 1));
+				String line = s.substring(z + 1, s.indexOf("\n", z + 1));
 
 				if (line.contains("operationId:")) {
 					continue;
@@ -824,42 +988,42 @@ public class RESTBuilder {
 
 				StringBuilder sb = new StringBuilder();
 
-				sb.append(content.substring(0, z + 1));
+				sb.append(s.substring(0, z + 1));
 				sb.append(pathLine.replaceAll("^(\\s+).+", "$1"));
 				sb.append(httpMethodLine.replaceAll("^(\\s+).+", "$1"));
 				sb.append("operationId: ");
 				sb.append(javaMethodSignature.getMethodName());
 				sb.append("\n");
-				sb.append(content.substring(z + 1));
+				sb.append(s.substring(z + 1));
 
-				content = sb.toString();
+				s = sb.toString();
 			}
 		}
 
-		return content;
+		return s;
 	}
 
-	private String _fixOpenAPIPathParameters(String content) {
-		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(content);
+	private String _fixOpenAPIPathParameters(String s) {
+		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(s);
 
 		Map<String, PathItem> pathItems = openAPIYAML.getPathItems();
 
 		for (Map.Entry<String, PathItem> entry : pathItems.entrySet()) {
 			String path = entry.getKey();
 
-			int x = content.indexOf(StringUtil.quote(path, '"') + ":");
+			int x = s.indexOf(StringUtil.quote(path, '"') + ":");
 
 			if (x == -1) {
-				x = content.indexOf(path + ":");
+				x = s.indexOf(path + ":");
 			}
 
-			String pathLine = content.substring(
-				content.lastIndexOf("\n", x) + 1, content.indexOf("\n", x));
+			String pathLine = s.substring(
+				s.lastIndexOf("\n", x) + 1, s.indexOf("\n", x));
 
 			// /blogs/{blog-id}/blogs --> /blogs/{blogId}/blogs
 
 			for (Operation operation : _getOperations(entry.getValue())) {
-				int y = content.indexOf(
+				int y = s.indexOf(
 					OpenAPIParserUtil.getHTTPMethod(operation) + ":", x);
 
 				for (Parameter parameter : operation.getParameters()) {
@@ -870,23 +1034,22 @@ public class RESTBuilder {
 						String newParameterName = CamelCaseUtil.toCamelCase(
 							parameterName);
 
-						int z = content.indexOf(" " + parameterName + "\n", y);
+						int z = s.indexOf(" " + parameterName + "\n", y);
 
 						StringBuilder sb = new StringBuilder();
 
-						sb.append(content.substring(0, z + 1));
+						sb.append(s.substring(0, z + 1));
 						sb.append(newParameterName);
 						sb.append("\n");
-						sb.append(
-							content.substring(z + parameterName.length() + 2));
+						sb.append(s.substring(z + parameterName.length() + 2));
 
-						content = sb.toString();
+						s = sb.toString();
 
 						String newPathLine = pathLine.replace(
 							"{" + parameterName + "}",
 							"{" + newParameterName + "}");
 
-						content = content.replace(pathLine, newPathLine);
+						s = s.replace(pathLine, newPathLine);
 					}
 				}
 			}
@@ -914,18 +1077,19 @@ public class RESTBuilder {
 			selParameterName = selParameterName.substring(
 				1, selParameterName.length() - 1);
 
-			String s = CamelCaseUtil.fromCamelCase(selParameterName);
+			String text = CamelCaseUtil.fromCamelCase(selParameterName);
 
-			s = TextFormatter.formatPlural(s.substring(0, s.length() - 3));
+			text = TextFormatter.formatPlural(
+				text.substring(0, text.length() - 3));
 
 			StringBuilder sb = new StringBuilder();
 
 			sb.append('/');
-			sb.append(s);
+			sb.append(text);
 			sb.append('/');
 			sb.append(pathSegments.get(1));
 			sb.append('/');
-			sb.append(s);
+			sb.append(text);
 
 			if (!path.equals(sb.toString()) &&
 				!path.equals(sb.toString() + "/")) {
@@ -937,7 +1101,7 @@ public class RESTBuilder {
 				"parent" + StringUtil.upperCaseFirstLetter(selParameterName);
 
 			for (Operation operation : _getOperations(entry.getValue())) {
-				int y = content.indexOf(
+				int y = s.indexOf(
 					OpenAPIParserUtil.getHTTPMethod(operation) + ":", x);
 
 				for (Parameter parameter : operation.getParameters()) {
@@ -947,23 +1111,22 @@ public class RESTBuilder {
 					if (in.equals("path") &&
 						parameterName.equals(selParameterName)) {
 
-						int z = content.indexOf(" " + parameterName + "\n", y);
+						int z = s.indexOf(" " + parameterName + "\n", y);
 
 						sb.setLength(0);
 
-						sb.append(content.substring(0, z + 1));
+						sb.append(s.substring(0, z + 1));
 						sb.append(newParameterName);
 						sb.append("\n");
-						sb.append(
-							content.substring(z + parameterName.length() + 2));
+						sb.append(s.substring(z + parameterName.length() + 2));
 
-						content = sb.toString();
+						s = sb.toString();
 
 						String newPathLine = pathLine.replace(
 							"{" + parameterName + "}",
 							"{" + newParameterName + "}");
 
-						content = content.replace(pathLine, newPathLine);
+						s = s.replace(pathLine, newPathLine);
 					}
 				}
 			}
@@ -971,10 +1134,10 @@ public class RESTBuilder {
 			String newPathLine = pathLine.replace(
 				"{" + selParameterName + "}", "{" + newParameterName + "}");
 
-			content = content.replace(pathLine, newPathLine);
+			s = s.replace(pathLine, newPathLine);
 		}
 
-		return content;
+		return s;
 	}
 
 	private List<Operation> _getOperations(PathItem pathItem) {
@@ -1027,8 +1190,8 @@ public class RESTBuilder {
 			"schemaVarNames", TextFormatter.formatPlural(schemaVarName));
 	}
 
-	private void _validate(String content) {
-		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(content);
+	private void _validate(String s) {
+		OpenAPIYAML openAPIYAML = YAMLUtil.loadOpenAPIYAML(s);
 
 		Components components = openAPIYAML.getComponents();
 

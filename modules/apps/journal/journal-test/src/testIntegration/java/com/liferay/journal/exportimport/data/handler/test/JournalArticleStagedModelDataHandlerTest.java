@@ -36,6 +36,7 @@ import com.liferay.journal.service.JournalArticleResourceLocalServiceUtil;
 import com.liferay.journal.service.JournalFolderLocalServiceUtil;
 import com.liferay.journal.service.persistence.JournalArticleResourceUtil;
 import com.liferay.journal.test.util.JournalTestUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedModel;
@@ -60,6 +61,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -150,6 +152,12 @@ public class JournalArticleStagedModelDataHandlerTest
 		journalArticle = JournalTestUtil.updateArticle(journalArticle);
 
 		exportImportStagedModel(journalArticle);
+	}
+
+	@Ignore
+	@Test
+	public void testCleanAssetCategoriesAndTags() throws Exception {
+		super.testCleanAssetCategoriesAndTags();
 	}
 
 	@Test
@@ -375,14 +383,11 @@ public class JournalArticleStagedModelDataHandlerTest
 	}
 
 	@Override
-	protected StagedModel getStagedModel(String uuid, Group group) {
-		try {
-			return JournalArticleLocalServiceUtil.
-				getJournalArticleByUuidAndGroupId(uuid, group.getGroupId());
-		}
-		catch (Exception e) {
-			return null;
-		}
+	protected StagedModel getStagedModel(String uuid, Group group)
+		throws PortalException {
+
+		return JournalArticleLocalServiceUtil.getJournalArticleByUuidAndGroupId(
+			uuid, group.getGroupId());
 	}
 
 	@Override

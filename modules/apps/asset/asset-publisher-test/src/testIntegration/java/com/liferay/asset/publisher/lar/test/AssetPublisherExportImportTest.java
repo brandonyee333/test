@@ -78,6 +78,7 @@ import com.liferay.portal.util.test.LayoutTestUtil;
 import java.io.Serializable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -469,7 +470,6 @@ public class AssetPublisherExportImportTest
 		testExportImportAssetEntries(layoutGroup);
 	}
 
-	@Ignore
 	@Test
 	public void testExportImportSeveralScopedAssetEntries() throws Exception {
 		List<Group> groups = new ArrayList<>();
@@ -828,7 +828,6 @@ public class AssetPublisherExportImportTest
 					"classTypeIdsJournalArticleAssetRendererFactory", null)));
 	}
 
-	@Ignore
 	@Test
 	public void testSeveralLayoutScopeIds() throws Exception {
 		Company company = CompanyLocalServiceUtil.getCompany(
@@ -881,7 +880,6 @@ public class AssetPublisherExportImportTest
 			StringUtil.merge(portletPreferences.getValues("scopeIds", null)));
 	}
 
-	@Ignore
 	@Test
 	public void testSeveralLegacyLayoutScopeIds() throws Exception {
 		Layout secondLayout = LayoutTestUtil.addLayout(group);
@@ -1141,11 +1139,7 @@ public class AssetPublisherExportImportTest
 	protected void testExportImportAssetEntries(Group scopeGroup)
 		throws Exception {
 
-		List<Group> groups = new ArrayList<>();
-
-		groups.add(scopeGroup);
-
-		testExportImportAssetEntries(groups);
+		testExportImportAssetEntries(Arrays.asList(scopeGroup));
 	}
 
 	protected void testExportImportAssetEntries(List<Group> scopeGroups)

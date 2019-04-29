@@ -17,6 +17,7 @@ package com.liferay.portlet.configuration.css.web.internal.portlet;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -183,36 +184,40 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 		String backgroundColor = ParamUtil.getString(
 			actionRequest, "backgroundColor");
 
-		bgDataJSONObject.put("backgroundColor", backgroundColor);
-
-		bgDataJSONObject.put("backgroundImage", StringPool.BLANK);
+		bgDataJSONObject.put(
+			"backgroundColor", backgroundColor
+		).put(
+			"backgroundImage", StringPool.BLANK
+		);
 
 		JSONObject backgroundPositionJSONObject =
 			JSONFactoryUtil.createJSONObject();
 
-		JSONObject backgroundPositionLeftJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		backgroundPositionLeftJSONObject.put("unit", StringPool.BLANK);
-		backgroundPositionLeftJSONObject.put("value", StringPool.BLANK);
+		JSONObject backgroundPositionLeftJSONObject = JSONUtil.put(
+			"unit", StringPool.BLANK
+		).put(
+			"value", StringPool.BLANK
+		);
 
 		backgroundPositionJSONObject.put(
 			"left", backgroundPositionLeftJSONObject);
 
-		JSONObject backgroundPositionTopJSONObject =
-			JSONFactoryUtil.createJSONObject();
-
-		backgroundPositionTopJSONObject.put("unit", StringPool.BLANK);
-		backgroundPositionTopJSONObject.put("value", StringPool.BLANK);
+		JSONObject backgroundPositionTopJSONObject = JSONUtil.put(
+			"unit", StringPool.BLANK
+		).put(
+			"value", StringPool.BLANK
+		);
 
 		backgroundPositionJSONObject.put(
 			"top", backgroundPositionTopJSONObject);
 
 		bgDataJSONObject.put(
-			"backgroundPosition", backgroundPositionJSONObject);
-
-		bgDataJSONObject.put("backgroundRepeat", StringPool.BLANK);
-		bgDataJSONObject.put("useBgImage", false);
+			"backgroundPosition", backgroundPositionJSONObject
+		).put(
+			"backgroundRepeat", StringPool.BLANK
+		).put(
+			"useBgImage", false
+		);
 
 		return bgDataJSONObject;
 	}
@@ -351,16 +356,17 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 	}
 
 	protected String getCSS(ActionRequest actionRequest) {
-		JSONObject cssJSONObject = JSONFactoryUtil.createJSONObject();
-
-		cssJSONObject.put(
-			"advancedData", getAdvancedDataJSONObject(actionRequest));
-		cssJSONObject.put("bgData", getBgDataJSONObject(actionRequest));
-		cssJSONObject.put("borderData", getBorderDataJSONObject(actionRequest));
-		cssJSONObject.put(
-			"spacingData", getSpacingDataJSONObject(actionRequest));
-
-		cssJSONObject.put("textData", getTextDataJSONObject(actionRequest));
+		JSONObject cssJSONObject = JSONUtil.put(
+			"advancedData", getAdvancedDataJSONObject(actionRequest)
+		).put(
+			"bgData", getBgDataJSONObject(actionRequest)
+		).put(
+			"borderData", getBorderDataJSONObject(actionRequest)
+		).put(
+			"spacingData", getSpacingDataJSONObject(actionRequest)
+		).put(
+			"textData", getTextDataJSONObject(actionRequest)
+		);
 
 		return cssJSONObject.toString();
 	}

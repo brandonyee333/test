@@ -16,6 +16,7 @@ package com.liferay.portal.search.web.internal.facet;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.facet.config.FacetConfiguration;
 import com.liferay.portal.kernel.search.facet.util.FacetFactory;
@@ -48,11 +49,13 @@ public class ScopeSearchFacet extends BaseJSPSearchFacet {
 
 		facetConfiguration.setClassName(getFacetClassName());
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("frequencyThreshold", 1);
-		jsonObject.put("maxTerms", 10);
-		jsonObject.put("showAssetCount", true);
+		JSONObject jsonObject = JSONUtil.put(
+			"frequencyThreshold", 1
+		).put(
+			"maxTerms", 10
+		).put(
+			"showAssetCount", true
+		);
 
 		facetConfiguration.setDataJSONObject(jsonObject);
 
@@ -91,9 +94,13 @@ public class ScopeSearchFacet extends BaseJSPSearchFacet {
 		boolean showAssetCount = ParamUtil.getBoolean(
 			actionRequest, getClassName() + "showAssetCount", true);
 
-		jsonObject.put("frequencyThreshold", frequencyThreshold);
-		jsonObject.put("maxTerms", maxTerms);
-		jsonObject.put("showAssetCount", showAssetCount);
+		jsonObject.put(
+			"frequencyThreshold", frequencyThreshold
+		).put(
+			"maxTerms", maxTerms
+		).put(
+			"showAssetCount", showAssetCount
+		);
 
 		return jsonObject;
 	}

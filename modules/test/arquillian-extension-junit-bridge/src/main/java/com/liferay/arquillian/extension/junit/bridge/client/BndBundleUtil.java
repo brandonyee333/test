@@ -22,8 +22,7 @@ import aQute.bnd.osgi.Jar;
 
 import com.liferay.arquillian.extension.junit.bridge.constants.Headers;
 import com.liferay.arquillian.extension.junit.bridge.server.TestBundleActivator;
-import com.liferay.petra.string.StringPool;
-import com.liferay.petra.string.StringUtil;
+import com.liferay.arquillian.extension.junit.bridge.util.StringUtil;
 
 import java.io.File;
 
@@ -38,6 +37,7 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -46,8 +46,8 @@ import java.util.Set;
 public class BndBundleUtil {
 
 	public static Path createBundle(
-			String className, List<String> filteredMethods, String hostAddress,
-			int port, long passCode)
+			Map<String, List<String>> filteredMethodNamesMap,
+			String hostAddress, int port, long passCode)
 		throws Exception {
 
 		File buildDir = new File(System.getProperty("user.dir"));
@@ -55,8 +55,7 @@ public class BndBundleUtil {
 		try (Workspace workspace = new Workspace(buildDir);
 			Project project = new Project(workspace, buildDir);
 			ProjectBuilder projectBuilder = _createProjectBuilder(
-				project, className, filteredMethods, hostAddress, port,
-				passCode);
+				project, filteredMethodNamesMap, hostAddress, port, passCode);
 			Jar jar = projectBuilder.build();
 			Analyzer analyzer = new Analyzer()) {
 
@@ -74,14 +73,34 @@ public class BndBundleUtil {
 	}
 
 	private static ProjectBuilder _createProjectBuilder(
-			Project project, String className, List<String> filteredMethods,
+			Project project, Map<String, List<String>> filteredMethodNamesMap,
 			String hostAddress, int port, long passCode)
 		throws Exception {
 
-		project.setProperty(Headers.TEST_BRIDGE_CLASS_NAME, className);
-		project.setProperty(
-			Headers.TEST_BRIDGE_FILTERED_METHOD_NAMES,
-			StringUtil.merge(filteredMethods, StringPool.COMMA));
+		if (filteredMethodNamesMap != null) {
+			StringBuilder sb = new StringBuilder();
+
+			for (Map.Entry<String, List<String>> entry :
+					filteredMethodNamesMap.entrySet()) {
+
+				sb.append(entry.getKey());
+				sb.append(":");
+
+				for (String methodName : entry.getValue()) {
+					sb.append(methodName);
+					sb.append(",");
+				}
+
+				sb.setLength(sb.length() - 1);
+				sb.append(";");
+			}
+
+			sb.setLength(sb.length() - 1);
+
+			project.setProperty(
+				Headers.TEST_BRIDGE_FILTERED_METHOD_NAMES, sb.toString());
+		}
+
 		project.setProperty(
 			Headers.TEST_BRIDGE_REPORT_SERVER_HOST_NAME, hostAddress);
 		project.setProperty(
@@ -95,7 +114,6 @@ public class BndBundleUtil {
 
 		importPackages.add("!aQute.bnd.build");
 		importPackages.add("!aQute.bnd.osgi");
-		importPackages.add("*");
 
 		String importPackageString = project.getProperty("Import-Package");
 
@@ -103,9 +121,10 @@ public class BndBundleUtil {
 			importPackages.addAll(StringUtil.split(importPackageString));
 		}
 
+		importPackages.add("*");
+
 		project.setProperty(
-			"Import-Package",
-			StringUtil.merge(importPackages, StringPool.COMMA));
+			"Import-Package", StringUtil.merge(importPackages, ","));
 
 		Set<String> includeResources = new LinkedHashSet<>();
 
@@ -129,8 +148,7 @@ public class BndBundleUtil {
 		}
 
 		project.setProperty(
-			"-includeresource",
-			StringUtil.merge(includeResources, StringPool.COMMA));
+			"-includeresource", StringUtil.merge(includeResources, ","));
 
 		ProjectBuilder projectBuilder = new ProjectBuilder(project);
 

@@ -5,11 +5,12 @@ import {Config} from 'metal-state';
 import {Drag, DragDrop} from 'metal-drag-drop';
 
 import '../floating_toolbar/FloatingToolbar.es';
+import './FragmentEntryLink.es';
 import './FragmentEntryLinkListRow.es';
 import {CLEAR_DROP_TARGET, MOVE_FRAGMENT_ENTRY_LINK, MOVE_ROW, UPDATE_DROP_TARGET} from '../../actions/actions.es';
-import {FRAGMENT_ENTRY_LINK_TYPES, FRAGMENTS_EDITOR_ITEM_BORDERS, FRAGMENTS_EDITOR_ITEM_TYPES} from '../../utils/constants';
+import {FRAGMENTS_EDITOR_DRAGGING_CLASS, FRAGMENTS_EDITOR_ITEM_BORDERS, FRAGMENTS_EDITOR_ITEM_TYPES, FRAGMENTS_EDITOR_ROW_TYPES} from '../../utils/constants';
 import {initializeDragDrop} from '../../utils/FragmentsEditorDragDrop.es';
-import {moveItem, setIn} from '../../utils/FragmentsEditorUpdateUtils.es';
+import {moveItem, setDraggingItemPosition, setIn} from '../../utils/FragmentsEditorUpdateUtils.es';
 import {shouldUpdatePureComponent} from '../../utils/FragmentsEditorComponentUtils.es';
 import getConnectedComponent from '../../store/ConnectedComponent.es';
 import templates from './FragmentEntryLinkList.soy';
@@ -22,13 +23,25 @@ class FragmentEntryLinkList extends Component {
 
 	/**
 	 * Adds drop target types to state
-	 * @param {Object} _state
+	 * @param {Object} state
 	 * @private
 	 * @return {Object}
 	 * @static
 	 */
-	static _addDropTargetItemTypesToState(_state) {
-		return setIn(_state, ['dropTargetItemTypes'], FRAGMENTS_EDITOR_ITEM_TYPES);
+	static _addDropTargetItemTypesToState(state) {
+		let nextState = state;
+
+		nextState = setIn(nextState,
+			['dropTargetItemTypes'],
+			FRAGMENTS_EDITOR_ITEM_TYPES
+		);
+
+		nextState = setIn(nextState,
+			['fragmentsEditorRowTypes'],
+			FRAGMENTS_EDITOR_ROW_TYPES
+		);
+
+		return nextState;
 	}
 
 	/**
@@ -55,7 +68,7 @@ class FragmentEntryLinkList extends Component {
 			);
 		}
 		else if (sourceItemData.itemType === FRAGMENTS_EDITOR_ITEM_TYPES.fragment) {
-			if (sourceItemData.fragmentEntryLinkType === FRAGMENT_ENTRY_LINK_TYPES.section) {
+			if (sourceItemData.fragmentEntryLinkRowType === FRAGMENTS_EDITOR_ROW_TYPES.sectionRow) {
 				dropValid = (
 					(targetItemData.itemType) &&
 					(sourceItemData.itemId !== targetItemData.itemId) &&
@@ -93,7 +106,7 @@ class FragmentEntryLinkList extends Component {
 			}
 			else if ('fragmentEntryLinkId' in itemDataset) {
 				itemData = {
-					fragmentEntryLinkType: itemDataset.fragmentEntryLinkType,
+					fragmentEntryLinkRowType: itemDataset.fragmentEntryLinkRowType,
 					itemId: itemDataset.fragmentEntryLinkId,
 					itemType: FRAGMENTS_EDITOR_ITEM_TYPES.fragment
 				};
@@ -214,6 +227,8 @@ class FragmentEntryLinkList extends Component {
 	 * @review
 	 */
 	_handleDrag(eventData) {
+		setDraggingItemPosition(eventData.originalEvent);
+
 		if (FragmentEntryLinkList._dropValid(eventData)) {
 			const mouseY = eventData.originalEvent.clientY;
 			const targetItem = eventData.target;
@@ -290,7 +305,7 @@ class FragmentEntryLinkList extends Component {
 				moveItemAction = MOVE_FRAGMENT_ENTRY_LINK;
 				moveItemPayload = {
 					fragmentEntryLinkId: itemData.itemId,
-					fragmentEntryLinkType: itemData.fragmentEntryLinkType,
+					fragmentEntryLinkRowType: itemData.fragmentEntryLinkRowType,
 					targetBorder: this.dropTargetBorder,
 					targetItemId: this.dropTargetItemId,
 					targetItemType: this.dropTargetItemType
@@ -313,6 +328,7 @@ class FragmentEntryLinkList extends Component {
 		this._dragDrop = initializeDragDrop(
 			{
 				autoScroll: true,
+				draggingClass: FRAGMENTS_EDITOR_DRAGGING_CLASS,
 				dragPlaceholder: Drag.Placeholder.CLONE,
 				handles: '.fragments-editor__drag-handler',
 				sources: '.fragments-editor__drag-source--fragment, .fragments-editor__drag-source--layout',
