@@ -24,6 +24,9 @@ import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
+import com.liferay.osb.customer.zendesk.web.service.search.Query;
+import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
+import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -104,7 +107,7 @@ public class AccountEntrySynchronizer {
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
 
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
-			getDefaultUserEmail(accountEntry.getCode()));
+			getDefaultUserEmail(accountEntry.getAccountEntryId()));
 
 		List<ZendeskTicket> zendeskTickets =
 			_zendeskTicketWebService.getZendeskTickets(criteria);
@@ -140,11 +143,21 @@ public class AccountEntrySynchronizer {
 				"You cannot delete projects with tickets");
 		}
 
-		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
-			getDefaultUserEmail(accountEntry.getCode()));
+		Query query = _queryFactory.createQuery();
 
-		_asyncZendeskUserWebService.deleteZendeskUser(
-			zendeskUser.getZendeskUserId());
+		query.addCriterion("organization_id:" + zendeskOrganizationId);
+		query.addCriterion("user:no-reply@*");
+		query.setPage(1);
+
+		SearchHits<ZendeskUser> searchHits =
+			_zendeskUserWebService.getZendeskUsers(query);
+
+		List<ZendeskUser> zendeskUsers = searchHits.getResults();
+
+		for (ZendeskUser zendeskUser : zendeskUsers) {
+			_asyncZendeskUserWebService.deleteZendeskUser(
+				zendeskUser.getZendeskUserId());
+		}
 
 		removeAccountCustomers(accountEntry);
 
@@ -260,14 +273,14 @@ public class AccountEntrySynchronizer {
 
 		if (!externalIdMappers) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				null, getDefaultUserEmail(accountEntry.getCode()),
+				null, getDefaultUserEmail(accountEntry.getAccountEntryId()),
 				ZendeskLocales.US, accountEntry.getCode(),
 				accountEntry.getName(), null);
 		}
 	}
 
-	protected String getDefaultUserEmail(String accountCode) {
-		return "no-reply@" + accountCode + ".com.broken";
+	protected String getDefaultUserEmail(long accountEntryId) {
+		return "no-reply@" + String.valueOf(accountEntryId) + ".com.broken";
 	}
 
 	protected Set<String> getTags(AccountEntry accountEntry)
@@ -327,6 +340,9 @@ public class AccountEntrySynchronizer {
 
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
+
+	@Reference
+	private QueryFactory _queryFactory;
 
 	@Reference
 	private UserLocalService _userLocalService;
