@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -60,12 +61,12 @@ public class DiffVersionComparatorTag extends ComponentRendererTag {
 
 		diffVersionJSONObject.put(
 			"displayDate",
-			LanguageUtil.format(request, "x-ago", timeDescription, false));
-
-		diffVersionJSONObject.put(
+			LanguageUtil.format(request, "x-ago", timeDescription, false)
+		).put(
 			"inRange",
 			(diffVersion.getVersion() > _sourceVersion) &&
-			(diffVersion.getVersion() <= _targetVersion));
+			(diffVersion.getVersion() <= _targetVersion)
+		);
 
 		String diffVersionString = String.valueOf(diffVersion.getVersion());
 
@@ -83,10 +84,13 @@ public class DiffVersionComparatorTag extends ComponentRendererTag {
 
 		User user = UserLocalServiceUtil.getUser(diffVersion.getUserId());
 
-		diffVersionJSONObject.put("userInitials", user.getInitials());
-		diffVersionJSONObject.put("userName", user.getFullName());
-
-		diffVersionJSONObject.put("version", diffVersionString);
+		diffVersionJSONObject.put(
+			"userInitials", user.getInitials()
+		).put(
+			"userName", user.getFullName()
+		).put(
+			"version", diffVersionString
+		);
 
 		return diffVersionJSONObject;
 	}
@@ -193,14 +197,12 @@ public class DiffVersionComparatorTag extends ComponentRendererTag {
 		JSONArray availableLocalesJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (Locale availableLocale : availableLocales) {
-			JSONObject availableLocaleJSONObject =
-				JSONFactoryUtil.createJSONObject();
-
-			availableLocaleJSONObject.put(
+			JSONObject availableLocaleJSONObject = JSONUtil.put(
 				"displayName",
-				availableLocale.getDisplayName(themeDisplay.getLocale()));
-			availableLocaleJSONObject.put(
-				"languageId", LocaleUtil.toLanguageId(availableLocale));
+				availableLocale.getDisplayName(themeDisplay.getLocale())
+			).put(
+				"languageId", LocaleUtil.toLanguageId(availableLocale)
+			);
 
 			availableLocalesJSONArray.put(availableLocaleJSONObject);
 		}

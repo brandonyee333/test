@@ -16,7 +16,10 @@ package com.liferay.arquillian.extension.junit.bridge.server;
 
 import com.liferay.arquillian.extension.junit.bridge.command.RunNotifierCommand;
 
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import java.lang.annotation.Annotation;
@@ -25,7 +28,9 @@ import java.lang.reflect.Method;
 
 import java.net.Socket;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +41,7 @@ import org.junit.AssumptionViolatedException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.internal.runners.statements.FailOnTimeout;
@@ -45,6 +51,7 @@ import org.junit.internal.runners.statements.RunBefores;
 import org.junit.rules.RunRules;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
+import org.junit.runners.model.FrameworkField;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.MultipleFailureException;
 import org.junit.runners.model.Statement;
@@ -59,36 +66,54 @@ import org.osgi.framework.BundleException;
 public class TestExecutorRunnable implements Runnable {
 
 	public TestExecutorRunnable(
-		Bundle bundle, TestClass testClass, Socket socket, long passCode) {
+		Bundle bundle, Map<String, List<String>> filteredMethodNamesMap,
+		String reportServerHostName, int reportServerPort, long passCode) {
 
 		_bundle = bundle;
-		_testClass = testClass;
-		_socket = socket;
+		_filteredMethodNamesMap = filteredMethodNamesMap;
+		_reportServerHostName = reportServerHostName;
+		_reportServerPort = reportServerPort;
 		_passCode = passCode;
 	}
 
 	@Override
 	public void run() {
-		try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-				_socket.getOutputStream())) {
+		try (Socket socket = new Socket(
+				_reportServerHostName, _reportServerPort);
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+				socket.getOutputStream());
+			ObjectInputStream objectInputStream = new ObjectInputStream(
+				socket.getInputStream())) {
 
 			objectOutputStream.writeLong(_passCode);
 
-			_execute(_testClass, objectOutputStream);
+			objectOutputStream.flush();
+
+			while (true) {
+				String testClass = objectInputStream.readUTF();
+
+				_execute(_createTestClass(testClass), objectOutputStream);
+
+				objectOutputStream.writeObject(null);
+
+				objectOutputStream.flush();
+			}
 		}
-		catch (IOException ioe) {
+		catch (EOFException eofe) {
+		}
+		catch (Exception e) {
 			try {
 				_bundle.uninstall();
 			}
 			catch (BundleException be) {
-				ioe.addSuppressed(be);
+				e.addSuppressed(be);
 			}
 
 			_logger.log(
 				Level.SEVERE,
 				"Unable to report back to client. Uninstalled test bundle " +
 					"and abort test.",
-				ioe);
+				e);
 		}
 	}
 
@@ -270,16 +295,40 @@ public class TestExecutorRunnable implements Runnable {
 			MultipleFailureException mfe = (MultipleFailureException)throwable;
 
 			for (Throwable t : mfe.getFailures()) {
-				objectOutputStream.writeObject(
-					RunNotifierCommand.testFailure(description, t));
+				_processThrowable(objectOutputStream, description, t);
 			}
 		}
 		else {
-			objectOutputStream.writeObject(
-				RunNotifierCommand.testFailure(description, throwable));
+			_processThrowable(objectOutputStream, description, throwable);
 		}
 
 		objectOutputStream.flush();
+	}
+
+	private static void _processThrowable(
+			ObjectOutputStream objectOutputStream, Description description,
+			Throwable t)
+		throws IOException {
+
+		try {
+			objectOutputStream.writeObject(
+				RunNotifierCommand.testFailure(description, t));
+		}
+		catch (NotSerializableException nse) {
+			objectOutputStream.reset();
+
+			Class<? extends Throwable> clazz = t.getClass();
+
+			Exception serializableException = new Exception(
+				clazz.getName() + ": " + t.getMessage());
+
+			serializableException.setStackTrace(t.getStackTrace());
+
+			nse.initCause(serializableException);
+
+			objectOutputStream.writeObject(
+				RunNotifierCommand.testFailure(description, nse));
+		}
 	}
 
 	private static Statement _withAfters(
@@ -342,12 +391,54 @@ public class TestExecutorRunnable implements Runnable {
 		return builder.build(statement);
 	}
 
+	private TestClass _createTestClass(String testClassName)
+		throws ClassNotFoundException {
+
+		return new TestClass(_bundle.loadClass(testClassName)) {
+
+			@Override
+			protected void scanAnnotatedMembers(
+				Map<Class<? extends Annotation>, List<FrameworkMethod>>
+					frameworkMethodsMap,
+				Map<Class<? extends Annotation>, List<FrameworkField>>
+					frameworkFieldsMap) {
+
+				super.scanAnnotatedMembers(
+					frameworkMethodsMap, frameworkFieldsMap);
+
+				List<FrameworkMethod> testFrameworkMethods =
+					frameworkMethodsMap.get(Test.class);
+
+				List<FrameworkMethod> ignoreFrameworkMethods =
+					frameworkMethodsMap.get(Ignore.class);
+
+				if (ignoreFrameworkMethods != null) {
+					testFrameworkMethods.removeAll(ignoreFrameworkMethods);
+				}
+
+				List<String> filteredMethodNames = _filteredMethodNamesMap.get(
+					getName());
+
+				if (filteredMethodNames != null) {
+					testFrameworkMethods.removeIf(
+						frameworkMethod -> filteredMethodNames.contains(
+							frameworkMethod.getName()));
+				}
+
+				testFrameworkMethods.sort(
+					Comparator.comparing(FrameworkMethod::getName));
+			}
+
+		};
+	}
+
 	private static final Logger _logger = Logger.getLogger(
 		TestExecutorRunnable.class.getName());
 
 	private final Bundle _bundle;
+	private final Map<String, List<String>> _filteredMethodNamesMap;
 	private final long _passCode;
-	private final Socket _socket;
-	private final TestClass _testClass;
+	private final String _reportServerHostName;
+	private final int _reportServerPort;
 
 }

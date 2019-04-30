@@ -30,6 +30,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandler;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerUtil;
 import com.liferay.exportimport.test.util.lar.BaseStagedModelDataHandlerTestCase;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.StagedModel;
@@ -44,7 +45,7 @@ import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.repository.liferayrepository.model.LiferayFolder;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -223,13 +224,9 @@ public class FolderStagedModelDataHandlerTest
 
 		DLFolderLocalServiceUtil.updateDLFolder(dlFolder);
 
-		List<Long> dlFileEntryTypeIds = new ArrayList<>();
-
-		dlFileEntryTypeIds.add(dlFileEntryType.getFileEntryTypeId());
-
 		DLFileEntryTypeLocalServiceUtil.updateFolderFileEntryTypes(
-			dlFolder, dlFileEntryTypeIds, dlFileEntryType.getFileEntryTypeId(),
-			serviceContext);
+			dlFolder, Arrays.asList(dlFileEntryType.getFileEntryTypeId()),
+			dlFileEntryType.getFileEntryTypeId(), serviceContext);
 
 		return folder;
 	}
@@ -260,17 +257,14 @@ public class FolderStagedModelDataHandlerTest
 	}
 
 	@Override
-	protected StagedModel getStagedModel(String uuid, Group group) {
-		try {
-			DLFolder dlFolder =
-				DLFolderLocalServiceUtil.getDLFolderByUuidAndGroupId(
-					uuid, group.getGroupId());
+	protected StagedModel getStagedModel(String uuid, Group group)
+		throws PortalException {
 
-			return new LiferayFolder(dlFolder);
-		}
-		catch (Exception e) {
-			return null;
-		}
+		DLFolder dlFolder =
+			DLFolderLocalServiceUtil.getDLFolderByUuidAndGroupId(
+				uuid, group.getGroupId());
+
+		return new LiferayFolder(dlFolder);
 	}
 
 	@Override

@@ -25,6 +25,7 @@ import com.liferay.portal.json.JSONFactoryImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 
 import java.lang.reflect.Field;
 
@@ -80,12 +81,15 @@ public class DDMFormFieldTypesJSONSerializerTest extends BaseDDMTestCase {
 	protected String createExpectedJSON() {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("icon", "my-icon");
-		jsonObject.put("javaScriptClass", "myJavaScriptClass");
-		jsonObject.put("javaScriptModule", "myJavaScriptModule");
-		jsonObject.put("name", "Text");
+		JSONObject jsonObject = JSONUtil.put(
+			"icon", "my-icon"
+		).put(
+			"javaScriptClass", "myJavaScriptClass"
+		).put(
+			"javaScriptModule", "myJavaScriptModule"
+		).put(
+			"name", "Text"
+		);
 
 		jsonArray.put(jsonObject);
 

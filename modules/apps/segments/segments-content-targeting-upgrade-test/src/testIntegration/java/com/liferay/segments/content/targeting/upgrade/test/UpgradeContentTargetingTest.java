@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -393,13 +394,9 @@ public class UpgradeContentTargetingTest {
 
 		long contentTargetingUserSegmentId = -1L;
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+		JSONObject jsonObject = JSONUtil.put("value", "liferay");
 
-		jsonObject.put("value", "liferay");
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		jsonArray.put(jsonObject);
+		JSONArray jsonArray = JSONUtil.put(jsonObject);
 
 		insertContentTargetingRuleInstance(
 			contentTargetingUserSegmentId, "PreviousVisitedSiteRule",
@@ -762,10 +759,11 @@ public class UpgradeContentTargetingTest {
 	private String _getCustomFieldRuleTypeSettings(
 		ExpandoColumn expandoColumn, String expandoValue) {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("attributeName", expandoColumn.getName());
-		jsonObject.put("value", expandoValue);
+		JSONObject jsonObject = JSONUtil.put(
+			"attributeName", expandoColumn.getName()
+		).put(
+			"value", expandoValue
+		);
 
 		return jsonObject.toString();
 	}
@@ -781,17 +779,20 @@ public class UpgradeContentTargetingTest {
 
 		jsonObject.put(
 			"startDate",
-			dateFormat.format(Date.from(startZonedDateTime.toInstant())));
-
-		jsonObject.put("startDateTimeZoneId", timeZoneId);
-		jsonObject.put("type", type);
+			dateFormat.format(Date.from(startZonedDateTime.toInstant()))
+		).put(
+			"startDateTimeZoneId", timeZoneId
+		).put(
+			"type", type
+		);
 
 		if (type.equals("between")) {
 			jsonObject.put(
 				"endDate",
-				dateFormat.format(Date.from(endZonedDateTime.toInstant())));
-
-			jsonObject.put("endDateTimeZoneId", timeZoneId);
+				dateFormat.format(Date.from(endZonedDateTime.toInstant()))
+			).put(
+				"endDateTimeZoneId", timeZoneId
+			);
 		}
 
 		return jsonObject.toString();

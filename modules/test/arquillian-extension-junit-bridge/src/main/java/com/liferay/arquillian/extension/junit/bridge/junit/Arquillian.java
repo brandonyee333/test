@@ -14,37 +14,15 @@
 
 package com.liferay.arquillian.extension.junit.bridge.junit;
 
-import com.liferay.arquillian.extension.junit.bridge.client.BndBundleUtil;
-import com.liferay.arquillian.extension.junit.bridge.client.MBeans;
-import com.liferay.arquillian.extension.junit.bridge.command.RunNotifierCommand;
-
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import com.liferay.arquillian.extension.junit.bridge.client.ClientState;
 
 import java.lang.annotation.Annotation;
 
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URI;
-import java.net.URL;
-
-import java.nio.channels.ServerSocketChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-import java.security.SecureRandom;
-
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -59,8 +37,6 @@ import org.junit.runners.model.FrameworkField;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.TestClass;
 
-import org.osgi.jmx.framework.FrameworkMBean;
-
 /**
  * @author Shuyang Zhou
  */
@@ -70,10 +46,6 @@ public class Arquillian extends Runner implements Filterable {
 		_clazz = clazz;
 
 		_filteredSortedTestClass = new FilteredSortedTestClass(_clazz, null);
-
-		Random random = new SecureRandom();
-
-		_passCode = random.nextLong();
 	}
 
 	@Override
@@ -86,6 +58,34 @@ public class Arquillian extends Runner implements Filterable {
 		if (frameworkMethods.isEmpty()) {
 			throw new NoTestsRemainException();
 		}
+
+		_clientState.filterTestClasses(
+			_clazz,
+			testClass -> {
+				FilteredSortedTestClass filteredSortedTestClass =
+					new FilteredSortedTestClass(testClass, filter);
+
+				List<FrameworkMethod> curFrameworkMethods =
+					filteredSortedTestClass.getAnnotatedMethods(Test.class);
+
+				if (curFrameworkMethods.isEmpty()) {
+					return true;
+				}
+
+				List<String> filteredMethodNames =
+					filteredSortedTestClass._filteredMethodNames;
+
+				if (!filteredMethodNames.isEmpty()) {
+					if (_filteredMethodNamesMap == null) {
+						_filteredMethodNamesMap = new HashMap<>();
+					}
+
+					_filteredMethodNamesMap.put(
+						testClass.getName(), filteredMethodNames);
+				}
+
+				return false;
+			});
 	}
 
 	@Override
@@ -113,6 +113,8 @@ public class Arquillian extends Runner implements Filterable {
 			});
 
 		if (frameworkMethods.isEmpty()) {
+			_clientState.removeTestClass(_clazz);
+
 			return;
 		}
 
@@ -127,102 +129,23 @@ public class Arquillian extends Runner implements Filterable {
 			return;
 		}
 
-		FrameworkMBean frameworkMBean = MBeans.getFrameworkMBean();
+		try (ClientState.Connection connection = _clientState.open(
+				_clazz, _filteredMethodNamesMap)) {
 
-		try (ServerSocket serverSocket = _getServerSocket()) {
-			long bundleId = _installBundle(
-				frameworkMBean, serverSocket.getLocalPort());
-
-			try {
-				frameworkMBean.startBundle(bundleId);
-
-				while (true) {
-					try (Socket socket = serverSocket.accept();
-						InputStream inputStream = socket.getInputStream();
-						ObjectInputStream objectInputStream =
-							new ObjectInputStream(inputStream)) {
-
-						if (_passCode != objectInputStream.readLong()) {
-							_logger.log(
-								Level.WARNING,
-								"Pass code mismatch, dropped connection from " +
-									socket.getRemoteSocketAddress());
-
-							continue;
-						}
-
-						while (true) {
-							RunNotifierCommand runNotifierCommand =
-								(RunNotifierCommand)
-									objectInputStream.readObject();
-
-							runNotifierCommand.execute(runNotifier);
-						}
-					}
-					catch (EOFException eofe) {
-						break;
-					}
-				}
-			}
-			finally {
-				frameworkMBean.uninstallBundle(bundleId);
-			}
+			connection.execute(
+				_clazz.getName(),
+				runNotifierCommand -> runNotifierCommand.execute(runNotifier));
 		}
-		catch (Throwable t) {
-			runNotifier.fireTestFailure(new Failure(getDescription(), t));
+		catch (Exception e) {
+			runNotifier.fireTestFailure(new Failure(getDescription(), e));
 		}
 	}
 
-	private static ServerSocket _getServerSocket() throws IOException {
-		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
-
-		int port = _START_PORT;
-
-		while (true) {
-			try {
-				ServerSocket serverSocket = serverSocketChannel.socket();
-
-				serverSocket.bind(new InetSocketAddress(_inetAddress, port));
-
-				return serverSocket;
-			}
-			catch (IOException ioe) {
-				port++;
-			}
-		}
-	}
-
-	private long _installBundle(FrameworkMBean frameworkMBean, int port)
-		throws Exception {
-
-		Path path = BndBundleUtil.createBundle(
-			_clazz.getName(), _filteredSortedTestClass._filteredMethodNames,
-			_inetAddress.getHostAddress(), port, _passCode);
-
-		URI uri = path.toUri();
-
-		URL url = uri.toURL();
-
-		try {
-			return frameworkMBean.installBundleFromURL(
-				url.getPath(), url.toExternalForm());
-		}
-		finally {
-			Files.delete(path);
-		}
-	}
-
-	private static final int _START_PORT = 32764;
-
-	private static final Logger _logger = Logger.getLogger(
-		Arquillian.class.getName());
-
-	private static final InetAddress _inetAddress =
-		InetAddress.getLoopbackAddress();
+	private static final ClientState _clientState = new ClientState();
 
 	private final Class<?> _clazz;
+	private Map<String, List<String>> _filteredMethodNamesMap;
 	private FilteredSortedTestClass _filteredSortedTestClass;
-	private final long _passCode;
 
 	private class FilteredSortedTestClass extends TestClass {
 
@@ -251,7 +174,7 @@ public class Arquillian extends Runner implements Filterable {
 
 						if (filter.shouldRun(
 								Description.createTestDescription(
-									_clazz, methodName))) {
+									clazz, methodName))) {
 
 							return false;
 						}

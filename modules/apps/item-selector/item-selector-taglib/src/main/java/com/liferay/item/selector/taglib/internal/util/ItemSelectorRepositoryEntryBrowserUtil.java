@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -103,27 +104,19 @@ public class ItemSelectorRepositoryEntryBrowserUtil {
 
 		JSONObject firstTabJSONObject = JSONFactoryUtil.createJSONObject();
 
-		JSONArray firstTabDataJSONArray = JSONFactoryUtil.createJSONArray();
-
 		FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
-
-		firstTabDataJSONArray.put(
-			_createJSONObject(
-				LanguageUtil.get(locale, "format"),
-				HtmlUtil.escape(latestFileVersion.getExtension())));
-
-		firstTabDataJSONArray.put(
-			_createJSONObject(
-				LanguageUtil.get(locale, "size"),
-				TextFormatter.formatStorageSize(fileEntry.getSize(), locale)));
-		firstTabDataJSONArray.put(
-			_createJSONObject(
-				LanguageUtil.get(locale, "name"),
-				HtmlUtil.escape(DLUtil.getTitleWithExtension(fileEntry))));
-
 		Date modifiedDate = fileEntry.getModifiedDate();
 
-		firstTabDataJSONArray.put(
+		JSONArray firstTabDataJSONArray = JSONUtil.putAll(
+			_createJSONObject(
+				LanguageUtil.get(locale, "format"),
+				HtmlUtil.escape(latestFileVersion.getExtension())),
+			_createJSONObject(
+				LanguageUtil.get(locale, "size"),
+				TextFormatter.formatStorageSize(fileEntry.getSize(), locale)),
+			_createJSONObject(
+				LanguageUtil.get(locale, "name"),
+				HtmlUtil.escape(DLUtil.getTitleWithExtension(fileEntry))),
 			_createJSONObject(
 				LanguageUtil.get(locale, "modified"),
 				LanguageUtil.format(
@@ -136,29 +129,27 @@ public class ItemSelectorRepositoryEntryBrowserUtil {
 						HtmlUtil.escape(fileEntry.getUserName())
 					})));
 
-		firstTabJSONObject.put("data", firstTabDataJSONArray);
-
-		firstTabJSONObject.put("title", LanguageUtil.get(locale, "file-info"));
+		firstTabJSONObject.put(
+			"data", firstTabDataJSONArray
+		).put(
+			"title", LanguageUtil.get(locale, "file-info")
+		);
 
 		groupsJSONArray.put(firstTabJSONObject);
 
-		JSONObject secondTabJSONObject = JSONFactoryUtil.createJSONObject();
-
-		JSONArray secondTabDataJSONArray = JSONFactoryUtil.createJSONArray();
-
-		secondTabDataJSONArray.put(
-			_createJSONObject(
-				LanguageUtil.get(locale, "version"),
-				HtmlUtil.escape(latestFileVersion.getVersion())));
-		secondTabDataJSONArray.put(
-			_createJSONObject(
-				LanguageUtil.get(locale, "status"),
-				WorkflowConstants.getStatusLabel(
-					latestFileVersion.getStatus())));
-
-		secondTabJSONObject.put("data", secondTabDataJSONArray);
-
-		secondTabJSONObject.put("title", LanguageUtil.get(locale, "version"));
+		JSONObject secondTabJSONObject = JSONUtil.put(
+			"data",
+			JSONUtil.putAll(
+				_createJSONObject(
+					LanguageUtil.get(locale, "version"),
+					HtmlUtil.escape(latestFileVersion.getVersion())),
+				_createJSONObject(
+					LanguageUtil.get(locale, "status"),
+					WorkflowConstants.getStatusLabel(
+						latestFileVersion.getStatus())))
+		).put(
+			"title", LanguageUtil.get(locale, "version")
+		);
 
 		groupsJSONArray.put(secondTabJSONObject);
 
@@ -230,12 +221,11 @@ public class ItemSelectorRepositoryEntryBrowserUtil {
 	}
 
 	private static JSONObject _createJSONObject(String key, String value) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("key", key);
-		jsonObject.put("value", value);
-
-		return jsonObject;
+		return JSONUtil.put(
+			"key", key
+		).put(
+			"value", value
+		);
 	}
 
 }

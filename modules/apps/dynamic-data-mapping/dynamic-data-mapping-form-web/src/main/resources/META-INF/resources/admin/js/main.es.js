@@ -352,7 +352,7 @@ class Form extends Component {
 		);
 
 		this._eventHandler.add(
-			dom.on('.back-url-link', 'click', this._handleBackButtonClicked),
+			dom.on(`#${namespace}ControlMenu *[data-title="Back"]`, 'click', this._handleBackButtonClicked),
 			dom.on('.forms-management-bar li', 'click', this._handleFormNavClicked)
 		);
 
@@ -723,7 +723,7 @@ class Form extends Component {
 			event.preventDefault();
 			event.stopPropagation();
 
-			const href = event.delegateTarget.href;
+			const href = event.delegateTarget.firstElementChild.href;
 
 			this.refs.discardChangesModal.visible = true;
 

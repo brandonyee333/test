@@ -54,11 +54,15 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 
 	@Override
 	@GET
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "formRecordId")}
+	)
 	@Path("/form-records/{formRecordId}")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "FormRecord")})
 	public FormRecord getFormRecord(
-			@NotNull @PathParam("formRecordId") Long formRecordId)
+			@NotNull @Parameter(hidden = true) @PathParam("formRecordId") Long
+				formRecordId)
 		throws Exception {
 
 		return new FormRecord();
@@ -68,15 +72,16 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 	@GET
 	@Parameters(
 		value = {
+			@Parameter(in = ParameterIn.PATH, name = "formId"),
 			@Parameter(in = ParameterIn.QUERY, name = "page"),
 			@Parameter(in = ParameterIn.QUERY, name = "pageSize")
 		}
 	)
 	@Path("/forms/{formId}/form-records")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "FormRecord")})
 	public Page<FormRecord> getFormFormRecordsPage(
-			@NotNull @PathParam("formId") Long formId,
+			@NotNull @Parameter(hidden = true) @PathParam("formId") Long formId,
 			@Context Pagination pagination)
 		throws Exception {
 
@@ -85,11 +90,12 @@ public abstract class BaseFormRecordResourceImpl implements FormRecordResource {
 
 	@Override
 	@GET
+	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}/form-records/by-latest-draft")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "FormRecord")})
 	public FormRecord getFormFormRecordByLatestDraft(
-			@NotNull @PathParam("formId") Long formId)
+			@NotNull @Parameter(hidden = true) @PathParam("formId") Long formId)
 		throws Exception {
 
 		return new FormRecord();

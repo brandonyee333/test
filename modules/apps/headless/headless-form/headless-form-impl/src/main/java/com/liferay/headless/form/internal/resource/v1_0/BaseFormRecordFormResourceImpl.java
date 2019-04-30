@@ -22,6 +22,9 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.tags.Tags;
 
@@ -51,13 +54,17 @@ public abstract class BaseFormRecordFormResourceImpl
 	implements FormRecordFormResource {
 
 	@Override
-	@Consumes("application/json")
+	@Consumes({"application/json", "application/xml"})
 	@PUT
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "formRecordId")}
+	)
 	@Path("/form-records/{formRecordId}")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "FormRecordForm")})
 	public FormRecord putFormRecord(
-			@NotNull @PathParam("formRecordId") Long formRecordId,
+			@NotNull @Parameter(hidden = true) @PathParam("formRecordId") Long
+				formRecordId,
 			FormRecordForm formRecordForm)
 		throws Exception {
 
@@ -65,13 +72,14 @@ public abstract class BaseFormRecordFormResourceImpl
 	}
 
 	@Override
-	@Consumes("application/json")
+	@Consumes({"application/json", "application/xml"})
 	@POST
+	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "formId")})
 	@Path("/forms/{formId}/form-records")
-	@Produces("application/json")
+	@Produces({"application/json", "application/xml"})
 	@Tags(value = {@Tag(name = "FormRecordForm")})
 	public FormRecord postFormFormRecord(
-			@NotNull @PathParam("formId") Long formId,
+			@NotNull @Parameter(hidden = true) @PathParam("formId") Long formId,
 			FormRecordForm formRecordForm)
 		throws Exception {
 

@@ -26,12 +26,13 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormTestUtil;
 import com.liferay.dynamic.data.mapping.test.util.DDMFormValuesTestUtil;
 import com.liferay.portal.json.JSONFactoryImpl;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONObjectUtil;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -196,10 +197,11 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 	}
 
 	protected Value createImageValue(int index) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("alt", "This is a image description. " + index);
-		jsonObject.put("data", "base64Value" + index);
+		JSONObject jsonObject = JSONUtil.put(
+			"alt", "This is a image description. " + index
+		).put(
+			"data", "base64Value" + index
+		);
 
 		return new UnlocalizedValue(
 			JSONObjectUtil.toOrderedJSONString(jsonObject));
@@ -233,12 +235,7 @@ public class DDMFormValuesJSONSerializerTest extends BaseDDMTestCase {
 	protected List<DDMFormFieldValue> createSeparatorNestedDDMFormFieldValues(
 		int index, String instanceId) {
 
-		List<DDMFormFieldValue> ddmFormFieldValues = new ArrayList<>();
-
-		ddmFormFieldValues.add(
-			createTextBoxDDMFormFieldValue(index, instanceId));
-
-		return ddmFormFieldValues;
+		return Arrays.asList(createTextBoxDDMFormFieldValue(index, instanceId));
 	}
 
 	protected DDMFormFieldValue createTextBoxDDMFormFieldValue(

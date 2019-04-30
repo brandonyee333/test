@@ -55,6 +55,7 @@ import com.liferay.gradle.plugins.jasper.jspc.JspCPlugin;
 import com.liferay.gradle.plugins.js.transpiler.JSTranspilerPlugin;
 import com.liferay.gradle.plugins.jsdoc.JSDocPlugin;
 import com.liferay.gradle.plugins.jsdoc.JSDocTask;
+import com.liferay.gradle.plugins.lang.builder.LangBuilderPlugin;
 import com.liferay.gradle.plugins.node.tasks.PublishNodeModuleTask;
 import com.liferay.gradle.plugins.patcher.PatchTask;
 import com.liferay.gradle.plugins.rest.builder.BuildRESTTask;
@@ -452,6 +453,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			project, liferayExtension, deployToAppServerLibs, deployToTools);
 		_configureEclipse(project);
 		_configureJavaPlugin(project);
+		_configureLocalPortalTool(
+			project, portalRootDir, LangBuilderPlugin.CONFIGURATION_NAME,
+			_LANG_BUILDER_PORTAL_TOOL_NAME);
 		_configureLocalPortalTool(
 			project, portalRootDir, SourceFormatterPlugin.CONFIGURATION_NAME,
 			_SOURCE_FORMATTER_PORTAL_TOOL_NAME);
@@ -2665,12 +2669,12 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			portalRootDir = new File(portalRootDirValue);
 		}
 
+		Logger logger = project.getLogger();
+
 		File dir = new File(
 			portalRootDir, "tools/sdk/dependencies/" + portalToolName + "/lib");
 
 		if (!dir.exists()) {
-			Logger logger = project.getLogger();
-
 			if (logger.isWarnEnabled()) {
 				logger.warn(
 					"Unable to find {}, using default version of {}", dir,
@@ -2678,6 +2682,10 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			}
 
 			return;
+		}
+
+		if (logger.isLifecycleEnabled()) {
+			logger.lifecycle("Using local portal tool: {}", dir);
 		}
 
 		Configuration configuration = GradleUtil.getConfiguration(
@@ -4615,6 +4623,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	private static final String _GROUP_PORTAL = "com.liferay.portal";
 
 	private static final JavaVersion _JAVA_VERSION = JavaVersion.VERSION_1_8;
+
+	private static final String _LANG_BUILDER_PORTAL_TOOL_NAME =
+		"com.liferay.lang.builder";
 
 	private static final String _PMD_PORTAL_TOOL_NAME = "com.liferay.pmd";
 

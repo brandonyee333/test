@@ -17,14 +17,14 @@
 <%@ include file="/init.jsp" %>
 
 <%
+SearchContainer<CTCollection> ctCollectionSearchContainer = changeListsDisplayContext.getSearchContainer();
+
+DisplayTerms displayTerms = ctCollectionSearchContainer.getDisplayTerms();
+
 String title = LanguageUtil.get(request, "select-change-list");
 
 portletDisplay.setTitle(title);
 renderResponse.setTitle(title);
-
-SearchContainer<CTCollection> ctCollectionSearchContainer = changeListsDisplayContext.getSearchContainer();
-
-DisplayTerms displayTerms = ctCollectionSearchContainer.getDisplayTerms();
 %>
 
 <liferay-ui:success key='<%= portletDisplay.getPortletName() + "checkoutProductionSuccess" %>' message="production-checked-out-success-message" />
@@ -135,16 +135,18 @@ DisplayTerms displayTerms = ctCollectionSearchContainer.getDisplayTerms();
 									url="<%= editCollectionURL %>"
 								/>
 
-								<liferay-portlet:actionURL name="/change_lists/publish_ct_collection" var="publishCollectionURL">
-									<portlet:param name="ctCollectionId" value="<%= String.valueOf(curCTCollection.getCtCollectionId()) %>" />
-								</liferay-portlet:actionURL>
+								<liferay-portlet:renderURL var="publishModalURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+									<liferay-portlet:param name="mvcRenderCommandName" value="/change_lists/publish_modal" />
+									<liferay-portlet:param name="ctCollectionId" value="<%= String.valueOf(curCTCollection.getCtCollectionId()) %>" />
+								</liferay-portlet:renderURL>
 
 								<liferay-ui:icon
 									message="publish"
-									url="<%= publishCollectionURL %>"
+									onClick='<%= "javascript:" + renderResponse.getNamespace() + "handleClickPublish(\'" + publishModalURL.toString() + "\');" %>'
+									url="#"
 								/>
 
-								<liferay-portlet:actionURL var="deleteCollectionURL">
+								<liferay-portlet:actionURL name="/change_lists/delete_ct_collection" var="deleteCollectionURL">
 									<portlet:param name="ctCollectionId" value="<%= String.valueOf(curCTCollection.getCtCollectionId()) %>" />
 								</liferay-portlet:actionURL>
 
@@ -247,19 +249,32 @@ DisplayTerms displayTerms = ctCollectionSearchContainer.getDisplayTerms();
 											<div class="select-card-sheet-block">
 												<span class="card-h4"><liferay-ui:message key="changes" /></span>
 
+												<%
+												Map<Integer, Long> changeTypeCounts = changeListsDisplayContext.getCTCollectionChangeTypeCounts(curCTCollection.getCtCollectionId());
+												%>
+
 												<div class="changes-row">
 													<div class="changes">
-														<div class="big-number" data-qa-id="changesAdded">0</div>
+														<div class="big-number" data-qa-id="changesAdded">
+															<%= changeTypeCounts.getOrDefault(CTConstants.CT_CHANGE_TYPE_ADDITION, 0L) %>
+														</div>
+
 														<div class=""><liferay-ui:message key="added" /></div>
 													</div>
 
 													<div class="changes">
-														<div class="big-number" data-qa-id="changesModified">0</div>
+														<div class="big-number" data-qa-id="changesModified">
+															<%= changeTypeCounts.getOrDefault(CTConstants.CT_CHANGE_TYPE_MODIFICATION, 0L) %>
+														</div>
+
 														<div class=""><liferay-ui:message key="modified" /></div>
 													</div>
 
 													<div class="changes">
-														<div class="big-number" data-qa-id="changesDeleted">0</div>
+														<div class="big-number" data-qa-id="changesDeleted">
+															<%= changeTypeCounts.getOrDefault(CTConstants.CT_CHANGE_TYPE_DELETION, 0L) %>
+														</div>
+
 														<div class=""><liferay-ui:message key="deleted" /></div>
 													</div>
 												</div>
@@ -284,16 +299,18 @@ DisplayTerms displayTerms = ctCollectionSearchContainer.getDisplayTerms();
 													url="<%= editCollectionURL %>"
 												/>
 
-												<liferay-portlet:actionURL name="/change_lists/publish_ct_collection" var="publishCollectionURL">
-													<portlet:param name="ctCollectionId" value="<%= String.valueOf(curCTCollection.getCtCollectionId()) %>" />
-												</liferay-portlet:actionURL>
+												<liferay-portlet:renderURL var="publishModalURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+													<liferay-portlet:param name="mvcRenderCommandName" value="/change_lists/publish_modal" />
+													<liferay-portlet:param name="ctCollectionId" value="<%= String.valueOf(curCTCollection.getCtCollectionId()) %>" />
+												</liferay-portlet:renderURL>
 
 												<liferay-ui:icon
 													message="publish"
-													url="<%= publishCollectionURL %>"
+													onClick='<%= "javascript:" + renderResponse.getNamespace() + "handleClickPublish(\'" + publishModalURL.toString() + "\');" %>'
+													url="#"
 												/>
 
-												<liferay-portlet:actionURL var="deleteCollectionURL">
+												<liferay-portlet:actionURL name="/change_lists/delete_ct_collection" var="deleteCollectionURL">
 													<portlet:param name="ctCollectionId" value="<%= String.valueOf(curCTCollection.getCtCollectionId()) %>" />
 												</liferay-portlet:actionURL>
 
@@ -317,3 +334,32 @@ DisplayTerms displayTerms = ctCollectionSearchContainer.getDisplayTerms();
 		</c:when>
 	</c:choose>
 </div>
+
+<script>
+	Liferay.on(
+		'<portlet:namespace/>refreshSelectChangeList',
+		function(event) {
+			setTimeout(
+				function() {
+					Liferay.Util.navigate('<%= PortletURLFactoryUtil.create(request, CTPortletKeys.CHANGE_LISTS_HISTORY, PortletRequest.RENDER_PHASE) %>');
+				},
+				1000);
+	});
+
+	function <portlet:namespace/>handleClickPublish(url) {
+		Liferay.Util.openWindow(
+			{
+				dialog: {
+					destroyOnHide: false,
+					height: 400,
+					width: 500
+				},
+				dialogIframe: {
+					bodyCssClass: 'dialog-with-footer'
+				},
+				id: '<portlet:namespace/>publishIconDialog',
+				title: '<%= LanguageUtil.get(request, "publish-change-list") %>',
+				uri: url
+			});
+	}
+</script>

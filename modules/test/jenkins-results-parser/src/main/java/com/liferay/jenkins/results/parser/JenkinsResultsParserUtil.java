@@ -1793,6 +1793,66 @@ public class JenkinsResultsParserUtil {
 		return Lists.partition(list, partitionSize);
 	}
 
+	public static void printTable(String[][] table) {
+		if (table.length == 0) {
+			return;
+		}
+
+		int[] maxColumnWidth = new int[table[0].length];
+
+		for (String[] row : table) {
+			for (int columnNumber = 0; columnNumber < row.length;
+				 columnNumber++) {
+
+				String item = row[columnNumber];
+
+				if (maxColumnWidth[columnNumber] <= item.length()) {
+					maxColumnWidth[columnNumber] = item.length();
+				}
+			}
+		}
+
+		StringBuilder rowsStringBuilder = new StringBuilder();
+
+		for (String[] row : table) {
+			for (int columnNumber = 0; columnNumber < row.length;
+				 columnNumber++) {
+
+				String cellText = row[columnNumber];
+
+				rowsStringBuilder.append(
+					String.format(
+						combine(
+							"| %-",
+							String.valueOf(maxColumnWidth[columnNumber]), "s "),
+						cellText));
+			}
+
+			rowsStringBuilder.append("|\n");
+		}
+
+		int rowTotalSize = rowsStringBuilder.indexOf("\n");
+
+		StringBuilder tableStringBuilder = new StringBuilder();
+
+		for (int columnNumber = 0; columnNumber < rowTotalSize;
+			 columnNumber++) {
+
+			tableStringBuilder.append("-");
+		}
+
+		tableStringBuilder.append("\n");
+		tableStringBuilder.append(rowsStringBuilder);
+
+		for (int columnNumber = 0; columnNumber < rowTotalSize;
+			 columnNumber++) {
+
+			tableStringBuilder.append("-");
+		}
+
+		System.out.println(tableStringBuilder.toString());
+	}
+
 	public static String read(File file) throws IOException {
 		return new String(Files.readAllBytes(Paths.get(file.toURI())));
 	}
