@@ -1761,6 +1761,7 @@ AUI.add(
 			var notificationsViewTpl = instance.get('viewTemplate');
 
 			var inputTpl = Template.get('input');
+			var selectMultipleTpl = Template.get('select-multiple');
 			var selectTpl = Template.get('select');
 			var textareaTpl = Template.get('textarea');
 
@@ -1811,13 +1812,14 @@ AUI.add(
 						}
 					),
 
-					selectTpl.parse(
+					selectMultipleTpl.parse(
 						{
 							auiCssClass: 'form-control input-sm',
 							auiLabelCssClass: 'celleditor-label',
 							id: A.guid(),
 							label: strings.notificationType,
-							name: 'notificationType',
+							multiple: true,
+							name: 'notificationTypes',
 							options: instance.get('notificationTypes')
 						}
 					)
