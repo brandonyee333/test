@@ -131,8 +131,12 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 				_lcsClientAdvisor.getRegistrationLayoutURL());
 		}
 		catch (LCSException lcse) {
-			throw new PortletException(
-				"Unable to obtain LCS cluster node meta data", lcse);
+			if (_log.isDebugEnabled()) {
+				_log.debug(lcse.getMessage(), lcse);
+			}
+			else if (_log.isWarnEnabled()) {
+				_log.warn(lcse.getMessage());
+			}
 		}
 
 		super.doView(renderRequest, renderResponse);
