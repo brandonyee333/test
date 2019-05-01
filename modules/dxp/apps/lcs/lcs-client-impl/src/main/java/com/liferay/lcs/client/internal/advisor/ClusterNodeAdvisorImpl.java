@@ -52,6 +52,10 @@ public class ClusterNodeAdvisorImpl implements ClusterNodeAdvisor {
 
 	@Override
 	public List<Map<String, Object>> getClusterNodeInfos() {
+		if (!_clusterExecutor.isEnabled()) {
+			return Collections.emptyList();
+		}
+
 		List<Map<String, Object>> clusterNodeInfos = new ArrayList<>();
 
 		ClusterNode localClusterNode = _clusterExecutor.getLocalClusterNode();
@@ -117,6 +121,10 @@ public class ClusterNodeAdvisorImpl implements ClusterNodeAdvisor {
 
 	@Override
 	public String getLocalClusterNodeAddress() {
+		if (!_clusterExecutor.isEnabled()) {
+			return null;
+		}
+
 		ClusterNode localClusterNode = _clusterExecutor.getLocalClusterNode();
 
 		InetAddress inetAddress = localClusterNode.getBindInetAddress();
