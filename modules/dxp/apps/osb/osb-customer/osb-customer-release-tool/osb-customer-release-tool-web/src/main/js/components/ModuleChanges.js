@@ -191,7 +191,7 @@ export default class ModuleChanges extends Component {
 
 		return (
 			<Fragment>
-				<div className="col-md-3 module-changes-filter">
+				<div className="col-md-3 module-changes-sidebar">
 					{!!filters && (
 						<div className="refine-by-filters">
 							<div className="filter-header">
@@ -252,6 +252,22 @@ export default class ModuleChanges extends Component {
 							</div>
 						</div>
 					)}
+
+					<div className="sidebar-cta">
+						<h4>{Liferay.Language.get('upgrading-to-a-new-liferay-dxp-version')}</h4>
+
+						<div className="cta-msg">
+							{Liferay.Language.get('use-this-tool-to-identify-module-version-changes-between-major-liferay-dxp-releases')}
+						</div>
+
+						<Button display="link" href="/">
+							{Liferay.Language.get('view-module-version-changes')}
+
+							<svg className="lexicon-icon lexicon-icon-arrow-right">
+								<use xlinkHref="#arrow-right" />
+							</svg>
+						</Button>
+					</div>
 				</div>
 
 				<div className="col-md-9">
