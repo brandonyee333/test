@@ -3,7 +3,7 @@
 exports[`ModuleChanges renders correctly 1`] = `
 <div>
   <div
-    class="col-md-3 module-changes-filter"
+    class="col-md-3 module-changes-sidebar"
   >
     <div
       class="refine-by-filters"
@@ -83,6 +83,32 @@ exports[`ModuleChanges renders correctly 1`] = `
           changes
         </div>
       </div>
+    </div>
+    <div
+      class="sidebar-cta"
+    >
+      <h4>
+        upgrading-to-a-new-liferay-dxp-version
+      </h4>
+      <div
+        class="cta-msg"
+      >
+        use-this-tool-to-identify-module-version-changes-between-major-liferay-dxp-releases
+      </div>
+      <a
+        class="btn btn-md btn-link"
+        href="/"
+        role="link"
+      >
+        view-module-version-changes
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </a>
     </div>
   </div>
   <div
@@ -209,7 +235,7 @@ exports[`ModuleChanges renders correctly 1`] = `
 exports[`ModuleChanges renders no results correctly 1`] = `
 <div>
   <div
-    class="col-md-3 module-changes-filter"
+    class="col-md-3 module-changes-sidebar"
   >
     <div
       class="refine-by-filters"
@@ -289,6 +315,32 @@ exports[`ModuleChanges renders no results correctly 1`] = `
           changes
         </div>
       </div>
+    </div>
+    <div
+      class="sidebar-cta"
+    >
+      <h4>
+        upgrading-to-a-new-liferay-dxp-version
+      </h4>
+      <div
+        class="cta-msg"
+      >
+        use-this-tool-to-identify-module-version-changes-between-major-liferay-dxp-releases
+      </div>
+      <a
+        class="btn btn-md btn-link"
+        href="/"
+        role="link"
+      >
+        view-module-version-changes
+        <svg
+          class="lexicon-icon lexicon-icon-arrow-right"
+        >
+          <use
+            xlink:href="#arrow-right"
+          />
+        </svg>
+      </a>
     </div>
   </div>
   <div
