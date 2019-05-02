@@ -77,6 +77,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
@@ -1350,11 +1351,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
 		}
 		else {
-			List<LicenseKey> clusterLicenseKeys = new ArrayList<>();
-
-			clusterLicenseKeys.add(licenseKey);
-
-			return clusterLicenseKeys;
+			return Arrays.asList(licenseKey);
 		}
 	}
 
