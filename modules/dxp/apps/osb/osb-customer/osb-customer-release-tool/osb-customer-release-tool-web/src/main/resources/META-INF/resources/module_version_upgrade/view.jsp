@@ -15,3 +15,39 @@
 --%>
 
 <%@ include file="/init.jsp" %>
+
+<%
+String product = ParamUtil.getString(request, "product");
+double fromProductVersion = ParamUtil.getDouble(request, "fromProductVersion");
+double toProductVersion = ParamUtil.getDouble(request, "toProductVersion");
+double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
+double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
+
+PortletURL portletURL = renderResponse.createRenderURL();
+
+portletURL.setParameter("product", product);
+portletURL.setParameter("fromProductVersion", String.valueOf(fromProductVersion));
+portletURL.setParameter("toProductVersion", String.valueOf(toProductVersion));
+portletURL.setParameter("fromFixPackVersion", String.valueOf(fromFixPackVersion));
+portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
+
+String moduleChangesDescription = StringPool.BLANK;
+
+JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesJournalArticleId);
+
+if (journalArticle != null) {
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+
+	moduleChangesDescription = journalArticleDisplay.getContent();
+}
+%>
+
+<liferay-portlet:renderURL var="upgradeArtifactVersionSearchURL">
+	<portlet:param name="product" value="<%= product %>" />
+	<portlet:param name="fromProductVersion" value="<%= String.valueOf(fromProductVersion) %>" />
+	<portlet:param name="toProductVersion" value="<%= String.valueOf(toProductVersion) %>" />
+	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
+	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
+</liferay-portlet:renderURL>
+
+<div class="container-fluid row" id="<portlet:namespace />upgradeModuleChanges"></div>

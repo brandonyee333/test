@@ -27,9 +27,9 @@ double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("tabs1", tabs1);
-portletURL.setParameter("fromFixPackVersion", String.valueOf(fromFixPackVersion));
 portletURL.setParameter("product", product);
 portletURL.setParameter("productVersion", String.valueOf(productVersion));
+portletURL.setParameter("fromFixPackVersion", String.valueOf(fromFixPackVersion));
 portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 %>
 
