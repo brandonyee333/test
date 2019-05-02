@@ -72,7 +72,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.copy-request-parameters=true",
 		"javax.portlet.init-param.add-process-action-success-action=false",
 		"javax.portlet.init-param.view-jsp=/view.jsp",
-		"javax.portlet.name=com_liferay_lcs_client_web_internal_portlet_LCSPortlet",
+		"javax.portlet.name=com_liferay_lcs_client_web_internal_portlet_LCSClientPortlet",
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=layoutLCSClusterEntryId",
