@@ -12,6 +12,5 @@ dependencies {
 
 deployDependencies {
 	from configurations.compileOnly
-	include "com.liferay.lcs.security-*.jar"
 	include "validation-api-*.jar"
 }
