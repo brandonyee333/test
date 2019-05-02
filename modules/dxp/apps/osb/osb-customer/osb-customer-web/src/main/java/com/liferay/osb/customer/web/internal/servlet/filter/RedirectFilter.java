@@ -169,10 +169,8 @@ public class RedirectFilter implements Filter {
 
 		if (Validator.isNull(friendlyURL)) {
 			try {
-				long plid = _layoutLocalService.getDefaultPlid(
+				return _layoutLocalService.getDefaultPlid(
 					groupId, privateLayout);
-
-				return plid;
 			}
 			catch (Exception e) {
 				_log.warn(e, e);
