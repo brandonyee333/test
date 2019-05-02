@@ -21,10 +21,14 @@ header:not(.has-control-panel) + main {
 	}
 }
 
+.osb-module-version-upgrade-portlet,
+.osb-release-tool-portlet {
+	@import "_general";
+	@import "_module-changes";
+}
+
 .osb-release-tool-portlet {
 	@import "_changelog";
 	@import "_fixpack-filters";
-	@import "_general";
 	@import "_highlights";
-	@import "_module-changes";
 }
