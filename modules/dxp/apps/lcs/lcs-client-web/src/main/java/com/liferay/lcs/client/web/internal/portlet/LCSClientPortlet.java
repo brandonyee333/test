@@ -82,7 +82,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = Portlet.class
 )
-public class ConnectedServicesPortlet extends MVCPortlet {
+public class LCSClientPortlet extends MVCPortlet {
 
 	@Override
 	public void doView(
@@ -194,7 +194,7 @@ public class ConnectedServicesPortlet extends MVCPortlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ConnectedServicesPortlet.class);
+		LCSClientPortlet.class);
 
 	@Reference
 	private ClusterNodeAdvisor _clusterNodeAdvisor;
