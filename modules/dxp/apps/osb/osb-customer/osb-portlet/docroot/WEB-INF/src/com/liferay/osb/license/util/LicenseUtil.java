@@ -79,9 +79,7 @@ public class LicenseUtil {
 
 		String licenseFileDecoded = PropertiesUtil.toString(licenseProperties);
 
-		String licenseFileEncoded = Base64.objectToString(licenseFileDecoded);
-
-		return licenseFileEncoded;
+		return Base64.objectToString(licenseFileDecoded);
 	}
 
 	public static File exportToFile(LicenseKey licenseKey) throws Exception {
