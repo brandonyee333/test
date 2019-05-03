@@ -93,13 +93,15 @@ public class FolderSearchFacet extends BaseJSPSearchFacet {
 		boolean showAssetCount = ParamUtil.getBoolean(
 			actionRequest, getClassName() + "showAssetCount", true);
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"frequencyThreshold", frequencyThreshold
 		).put(
 			"maxTerms", maxTerms
 		).put(
 			"showAssetCount", showAssetCount
 		);
+
+		return jsonObject;
 	}
 
 	@Override

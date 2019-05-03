@@ -179,11 +179,13 @@ public class AlloyEditorCreoleConfigContributor
 		JSONObject stylesJSONObject = JSONUtil.put(
 			"styles", getStyleFormatsJSONArray(locale));
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"cfg", stylesJSONObject
 		).put(
 			"name", "styles"
 		);
+
+		return jsonObject;
 	}
 
 	protected JSONObject getToolbarsAddJSONObject() {
@@ -196,11 +198,13 @@ public class AlloyEditorCreoleConfigContributor
 			"name", "table"
 		);
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"buttons", JSONUtil.putAll("image", buttonJSONObject, "hline")
 		).put(
 			"tabIndex", 2
 		);
+
+		return jsonObject;
 	}
 
 	protected JSONObject getToolbarsJSONObject(Locale locale) {
@@ -252,13 +256,15 @@ public class AlloyEditorCreoleConfigContributor
 			"name", "linkEditBrowse"
 		);
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"buttons", JSONUtil.put(linkEditJSONObject)
 		).put(
 			"name", "link"
 		).put(
 			"test", "AlloyEditor.SelectionTest.link"
 		);
+
+		return jsonObject;
 	}
 
 	protected JSONObject getToolbarsStylesSelectionsTableJSONObject() {

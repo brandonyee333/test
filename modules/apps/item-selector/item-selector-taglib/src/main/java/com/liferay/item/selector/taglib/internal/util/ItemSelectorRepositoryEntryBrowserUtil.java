@@ -146,7 +146,10 @@ public class ItemSelectorRepositoryEntryBrowserUtil {
 
 		groupsJSONArray.put(secondTabJSONObject);
 
-		return JSONUtil.put("groups", groupsJSONArray);
+		JSONObject itemMetadataJSONObject = JSONUtil.put(
+			"groups", groupsJSONArray);
+
+		return itemMetadataJSONObject;
 	}
 
 	public static String getItemSelectorReturnTypeClassName(

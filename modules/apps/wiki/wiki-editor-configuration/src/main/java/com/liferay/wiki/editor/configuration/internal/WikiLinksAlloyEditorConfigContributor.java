@@ -84,11 +84,13 @@ public class WikiLinksAlloyEditorConfigContributor
 	protected JSONObject getWikiLinkButtonJSONObject(String buttonName) {
 		JSONObject cfgJSONObject = JSONUtil.put("appendProtocol", false);
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"cfg", cfgJSONObject
 		).put(
 			"name", buttonName
 		);
+
+		return jsonObject;
 	}
 
 	protected JSONArray updateButtonsJSONArray(JSONArray oldButtonsJSONArray) {

@@ -106,11 +106,13 @@ public class FileEntryAMImageURLItemSelectorReturnTypeResolver
 				condition.getAttribute(), condition.getValue());
 		}
 
-		return JSONUtil.put(
+		JSONObject sourceJSONObject = JSONUtil.put(
 			"attributes", attributesJSONObject
 		).put(
 			"src", mediaQuery.getSrc()
 		);
+
+		return sourceJSONObject;
 	}
 
 	@Reference

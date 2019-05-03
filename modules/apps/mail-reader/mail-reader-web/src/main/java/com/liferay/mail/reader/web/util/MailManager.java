@@ -420,10 +420,12 @@ public class MailManager {
 			"useLocalPartAsLogin", false
 		);
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"accounts",
 			JSONUtil.putAll(
 				gmailAccountJSONObject, customMailAccontJSONObject));
+
+		return jsonObject;
 	}
 
 	public List<Folder> getFolders(

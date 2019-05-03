@@ -97,7 +97,7 @@ public class AssetCategoriesSearchFacet extends BaseJSPSearchFacet {
 		boolean showAssetCount = ParamUtil.getBoolean(
 			actionRequest, getClassName() + "showAssetCount", true);
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"displayStyle", displayStyleFacet
 		).put(
 			"frequencyThreshold", frequencyThreshold
@@ -106,6 +106,8 @@ public class AssetCategoriesSearchFacet extends BaseJSPSearchFacet {
 		).put(
 			"showAssetCount", showAssetCount
 		);
+
+		return jsonObject;
 	}
 
 	@Override
