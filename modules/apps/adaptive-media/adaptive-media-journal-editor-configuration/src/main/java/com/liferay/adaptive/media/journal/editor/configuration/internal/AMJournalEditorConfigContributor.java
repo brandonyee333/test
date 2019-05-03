@@ -125,10 +125,9 @@ public class AMJournalEditorConfigContributor
 				new ItemSelectorCriterion[itemSelectorCriteria.size()]));
 
 		jsonObject.put(
-			"filebrowserImageBrowseLinkUrl", itemSelectorPortletURL.toString()
-		).put(
-			"filebrowserImageBrowseUrl", itemSelectorPortletURL.toString()
-		);
+			"filebrowserImageBrowseLinkUrl", itemSelectorPortletURL.toString());
+		jsonObject.put(
+			"filebrowserImageBrowseUrl", itemSelectorPortletURL.toString());
 	}
 
 	protected void addAMImageFileEntryItemSelectorReturnType(

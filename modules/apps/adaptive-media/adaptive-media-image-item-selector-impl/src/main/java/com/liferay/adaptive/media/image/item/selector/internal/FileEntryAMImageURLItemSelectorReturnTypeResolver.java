@@ -75,11 +75,9 @@ public class FileEntryAMImageURLItemSelectorReturnTypeResolver
 				themeDisplay, fileEntry, "&imagePreview=1", false);
 		}
 
-		fileEntryJSONObject.put(
-			"defaultSource", previewURL
-		).put(
-			"fileEntryId", fileEntry.getFileEntryId()
-		);
+		fileEntryJSONObject.put("defaultSource", previewURL);
+
+		fileEntryJSONObject.put("fileEntryId", fileEntry.getFileEntryId());
 
 		JSONArray sourcesArray = JSONFactoryUtil.createJSONArray();
 
@@ -109,11 +107,9 @@ public class FileEntryAMImageURLItemSelectorReturnTypeResolver
 				condition.getAttribute(), condition.getValue());
 		}
 
-		sourceJSONObject.put(
-			"attributes", attributesJSONObject
-		).put(
-			"src", mediaQuery.getSrc()
-		);
+		sourceJSONObject.put("attributes", attributesJSONObject);
+
+		sourceJSONObject.put("src", mediaQuery.getSrc());
 
 		return sourceJSONObject;
 	}
