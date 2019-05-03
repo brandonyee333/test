@@ -753,7 +753,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         attribute), asset category IDs, asset tag names, and expando
 	 *         bridge attributes for the user.
 	 * @return the new user
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #addUser(long,
+	 *             long, boolean, String, String, boolean, String, String,
+	 *             Locale, String, String, String, long, long, boolean, int,
+	 *             int, int, String, long[], long[], long[], long[], boolean,
+	 *             ServiceContext)}
 	 */
+	@Deprecated
 	@Override
 	public User addUser(
 			long creatorUserId, long companyId, boolean autoPassword,
@@ -919,9 +925,14 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         attribute), asset category IDs, asset tag names, and expando
 	 *         bridge attributes for the user.
 	 * @return the new user
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 *             #addUserWithWorkflow(long, long, boolean, String, String,
+	 *             boolean, String, String, Locale, String, String, String,
+	 *             long, long, boolean, int, int, int, String, long[], long[],
+	 *             long[], long[], boolean, ServiceContext)}
 	 */
+	@Deprecated
 	@Override
-	@SuppressWarnings("deprecation")
 	public User addUserWithWorkflow(
 			long creatorUserId, long companyId, boolean autoPassword,
 			String password1, String password2, boolean autoScreenName,
@@ -2065,7 +2076,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  facebookId the user's Facebook ID
 	 * @return the user with the Facebook ID, or <code>null</code> if a user
 	 *         with the Facebook ID could not be found
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public User fetchUserByFacebookId(long companyId, long facebookId) {
 		return userPersistence.fetchByC_FID(companyId, facebookId);
@@ -2103,7 +2116,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  openId the user's OpenID
 	 * @return the user with the OpenID, or <code>null</code> if a user with the
 	 *         OpenID could not be found
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public User fetchUserByOpenId(long companyId, String openId) {
 		return userPersistence.fetchByC_O(companyId, openId);
@@ -2709,7 +2724,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  companyId the primary key of the user's company
 	 * @param  facebookId the user's Facebook ID
 	 * @return the user with the Facebook ID
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public User getUserByFacebookId(long companyId, long facebookId)
 		throws PortalException {
@@ -2762,7 +2779,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  companyId the primary key of the user's company
 	 * @param  openId the user's OpenID
 	 * @return the user with the OpenID
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public User getUserByOpenId(long companyId, String openId)
 		throws PortalException {
@@ -4472,7 +4491,13 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         <code>null</code>). Can set expando bridge attributes for the
 	 *         user.
 	 * @return the user
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link
+	 *             #updateIncompleteUser(long, long, boolean, String, String,
+	 *             boolean, String, String, Locale, String, String, String,
+	 *             long, long, boolean, int, int, int, String, boolean, boolean,
+	 *             ServiceContext)}
 	 */
+	@Deprecated
 	@Override
 	public User updateIncompleteUser(
 			long creatorUserId, long companyId, boolean autoPassword,
@@ -4807,7 +4832,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  userId the primary key of the user
 	 * @param  openId the new OpenID
 	 * @return the user
+	 * @deprecated As of Mueller (7.2.x), with no direct replacement
 	 */
+	@Deprecated
 	@Override
 	public User updateOpenId(long userId, String openId)
 		throws PortalException {
@@ -5200,9 +5227,15 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         attribute), asset category IDs, asset tag names, and expando
 	 *         bridge attributes for the user.
 	 * @return the user
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #updateUser(long,
+	 *             String, String, String, boolean, String, String, String,
+	 *             String, boolean, byte[], String, String, String, String,
+	 *             String, String, String, long, long, boolean, int, int, int,
+	 *             String, String, String, String, String, String, long[],
+	 *             long[], long[], List<UserGroupRole>, long[], ServiceContext)}
 	 */
+	@Deprecated
 	@Override
-	@SuppressWarnings("deprecation")
 	public User updateUser(
 			long userId, String oldPassword, String newPassword1,
 			String newPassword2, boolean passwordReset,
