@@ -80,7 +80,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.lock.DuplicateLockException;
 import com.liferay.portal.kernel.lock.Lock;
@@ -735,6 +734,9 @@ public class StagingImpl implements Staging {
 		Locale locale, Exception e,
 		ExportImportConfiguration exportImportConfiguration) {
 
+		JSONObject exceptionMessagesJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
 		String errorMessage = StringPool.BLANK;
 		JSONArray errorMessagesJSONArray = null;
 		int errorType = 0;
@@ -1306,11 +1308,13 @@ public class StagingImpl implements Staging {
 				lpe.getMissingLayoutPrototypes();
 
 			for (Tuple missingLayoutPrototype : missingLayoutPrototypes) {
+				JSONObject errorMessageJSONObject =
+					JSONFactoryUtil.createJSONObject();
+
 				String layoutPrototypeUuid =
 					(String)missingLayoutPrototype.getObject(1);
 
-				JSONObject errorMessageJSONObject = JSONUtil.put(
-					"info", layoutPrototypeUuid);
+				errorMessageJSONObject.put("info", layoutPrototypeUuid);
 
 				String layoutPrototypeName =
 					(String)missingLayoutPrototype.getObject(2);
@@ -1681,8 +1685,7 @@ public class StagingImpl implements Staging {
 			errorType = ServletResponseConstants.SC_FILE_CUSTOM_EXCEPTION;
 		}
 
-		JSONObject exceptionMessagesJSONObject = JSONUtil.put(
-			"message", errorMessage);
+		exceptionMessagesJSONObject.put("message", errorMessage);
 
 		if ((errorMessagesJSONArray != null) &&
 			(errorMessagesJSONArray.length() > 0)) {

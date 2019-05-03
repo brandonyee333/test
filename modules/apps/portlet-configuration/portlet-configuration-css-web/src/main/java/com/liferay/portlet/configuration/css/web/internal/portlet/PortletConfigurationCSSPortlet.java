@@ -15,6 +15,7 @@
 package com.liferay.portlet.configuration.css.web.internal.portlet;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -163,10 +164,11 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 	protected JSONObject getAdvancedDataJSONObject(
 		ActionRequest actionRequest) {
 
+		JSONObject advancedDataJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String customCSS = ParamUtil.getString(actionRequest, "customCSS");
 
-		JSONObject advancedDataJSONObject = JSONUtil.put(
-			"customCSS", customCSS);
+		advancedDataJSONObject.put("customCSS", customCSS);
 
 		String customCSSClassName = ParamUtil.getString(
 			actionRequest, "customCSSClassName");
@@ -177,14 +179,19 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 	}
 
 	protected JSONObject getBgDataJSONObject(ActionRequest actionRequest) {
+		JSONObject bgDataJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String backgroundColor = ParamUtil.getString(
 			actionRequest, "backgroundColor");
 
-		JSONObject bgDataJSONObject = JSONUtil.put(
+		bgDataJSONObject.put(
 			"backgroundColor", backgroundColor
 		).put(
 			"backgroundImage", StringPool.BLANK
 		);
+
+		JSONObject backgroundPositionJSONObject =
+			JSONFactoryUtil.createJSONObject();
 
 		JSONObject backgroundPositionLeftJSONObject = JSONUtil.put(
 			"unit", StringPool.BLANK
@@ -192,7 +199,7 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 			"value", StringPool.BLANK
 		);
 
-		JSONObject backgroundPositionJSONObject = JSONUtil.put(
+		backgroundPositionJSONObject.put(
 			"left", backgroundPositionLeftJSONObject);
 
 		JSONObject backgroundPositionTopJSONObject = JSONUtil.put(
@@ -216,11 +223,14 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 	}
 
 	protected JSONObject getBorderDataJSONObject(ActionRequest actionRequest) {
+		JSONObject borderDataJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject borderColorJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String borderColorBottom = ParamUtil.getString(
 			actionRequest, "borderColorBottom");
 
-		JSONObject borderColorJSONObject = JSONUtil.put(
-			"bottom", borderColorBottom);
+		borderColorJSONObject.put("bottom", borderColorBottom);
 
 		String borderColorLeft = ParamUtil.getString(
 			actionRequest, "borderColorLeft");
@@ -242,14 +252,14 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		borderColorJSONObject.put("top", borderColorTop);
 
-		JSONObject borderDataJSONObject = JSONUtil.put(
-			"borderColor", borderColorJSONObject);
+		borderDataJSONObject.put("borderColor", borderColorJSONObject);
+
+		JSONObject borderStyleJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String borderStyleBottom = ParamUtil.getString(
 			actionRequest, "borderStyleBottom");
 
-		JSONObject borderStyleJSONObject = JSONUtil.put(
-			"bottom", borderStyleBottom);
+		borderStyleJSONObject.put("bottom", borderStyleBottom);
 
 		String borderStyleLeft = ParamUtil.getString(
 			actionRequest, "borderStyleLeft");
@@ -273,25 +283,30 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		borderDataJSONObject.put("borderStyle", borderStyleJSONObject);
 
+		JSONObject borderWidthJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject borderWidthBottomJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
 		String borderWidthBottomUnit = ParamUtil.getString(
 			actionRequest, "borderWidthBottomUnit");
 
-		JSONObject borderWidthBottomJSONObject = JSONUtil.put(
-			"unit", borderWidthBottomUnit);
+		borderWidthBottomJSONObject.put("unit", borderWidthBottomUnit);
 
 		String borderWidthBottom = ParamUtil.getString(
 			actionRequest, "borderWidthBottom");
 
 		borderWidthBottomJSONObject.put("value", borderWidthBottom);
 
-		JSONObject borderWidthJSONObject = JSONUtil.put(
-			"bottom", borderWidthBottomJSONObject);
+		borderWidthJSONObject.put("bottom", borderWidthBottomJSONObject);
+
+		JSONObject borderWidthLeftJSONObject =
+			JSONFactoryUtil.createJSONObject();
 
 		String borderWidthLeftUnit = ParamUtil.getString(
 			actionRequest, "borderWidthLeftUnit");
 
-		JSONObject borderWidthLeftJSONObject = JSONUtil.put(
-			"unit", borderWidthLeftUnit);
+		borderWidthLeftJSONObject.put("unit", borderWidthLeftUnit);
 
 		String borderWidthLeft = ParamUtil.getString(
 			actionRequest, "borderWidthLeft");
@@ -300,11 +315,13 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		borderWidthJSONObject.put("left", borderWidthLeftJSONObject);
 
+		JSONObject borderWidthRightJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
 		String borderWidthRightUnit = ParamUtil.getString(
 			actionRequest, "borderWidthRightUnit");
 
-		JSONObject borderWidthRightJSONObject = JSONUtil.put(
-			"unit", borderWidthRightUnit);
+		borderWidthRightJSONObject.put("unit", borderWidthRightUnit);
 
 		String borderWidthRight = ParamUtil.getString(
 			actionRequest, "borderWidthRight");
@@ -318,11 +335,13 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		borderWidthJSONObject.put("sameForAll", useForAllWidth);
 
+		JSONObject borderWidthTopJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
 		String borderWidthTopUnit = ParamUtil.getString(
 			actionRequest, "borderWidthTopUnit");
 
-		JSONObject borderWidthTopJSONObject = JSONUtil.put(
-			"unit", borderWidthTopUnit);
+		borderWidthTopJSONObject.put("unit", borderWidthTopUnit);
 
 		String borderWidthTop = ParamUtil.getString(
 			actionRequest, "borderWidthTop");
@@ -353,24 +372,30 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 	}
 
 	protected JSONObject getSpacingDataJSONObject(ActionRequest actionRequest) {
+		JSONObject spacingDataJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject marginJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject marginBottomJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String marginBottomUnit = ParamUtil.getString(
 			actionRequest, "marginBottomUnit");
 
-		JSONObject marginBottomJSONObject = JSONUtil.put(
-			"unit", marginBottomUnit);
+		marginBottomJSONObject.put("unit", marginBottomUnit);
 
 		String marginBottom = ParamUtil.getString(
 			actionRequest, "marginBottom");
 
 		marginBottomJSONObject.put("value", marginBottom);
 
-		JSONObject marginJSONObject = JSONUtil.put(
-			"bottom", marginBottomJSONObject);
+		marginJSONObject.put("bottom", marginBottomJSONObject);
+
+		JSONObject marginLeftJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String marginLeftUnit = ParamUtil.getString(
 			actionRequest, "marginLeftUnit");
 
-		JSONObject marginLeftJSONObject = JSONUtil.put("unit", marginLeftUnit);
+		marginLeftJSONObject.put("unit", marginLeftUnit);
 
 		String marginLeft = ParamUtil.getString(actionRequest, "marginLeft");
 
@@ -378,11 +403,12 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		marginJSONObject.put("left", marginLeftJSONObject);
 
+		JSONObject marginRightJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String marginRightUnit = ParamUtil.getString(
 			actionRequest, "marginRightUnit");
 
-		JSONObject marginRightJSONObject = JSONUtil.put(
-			"unit", marginRightUnit);
+		marginRightJSONObject.put("unit", marginRightUnit);
 
 		String marginRight = ParamUtil.getString(actionRequest, "marginRight");
 
@@ -395,10 +421,12 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		marginJSONObject.put("sameForAll", useForAllMargin);
 
+		JSONObject marginTopJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String marginTopUnit = ParamUtil.getString(
 			actionRequest, "marginTopUnit");
 
-		JSONObject marginTopJSONObject = JSONUtil.put("unit", marginTopUnit);
+		marginTopJSONObject.put("unit", marginTopUnit);
 
 		String marginTop = ParamUtil.getString(actionRequest, "marginTop");
 
@@ -406,28 +434,30 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		marginJSONObject.put("top", marginTopJSONObject);
 
-		JSONObject spacingDataJSONObject = JSONUtil.put(
-			"margin", marginJSONObject);
+		spacingDataJSONObject.put("margin", marginJSONObject);
+
+		JSONObject paddingJSONObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject paddingBottomJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String paddingBottomUnit = ParamUtil.getString(
 			actionRequest, "paddingBottomUnit");
 
-		JSONObject paddingBottomJSONObject = JSONUtil.put(
-			"unit", paddingBottomUnit);
+		paddingBottomJSONObject.put("unit", paddingBottomUnit);
 
 		String paddingBottom = ParamUtil.getString(
 			actionRequest, "paddingBottom");
 
 		paddingBottomJSONObject.put("value", paddingBottom);
 
-		JSONObject paddingJSONObject = JSONUtil.put(
-			"bottom", paddingBottomJSONObject);
+		paddingJSONObject.put("bottom", paddingBottomJSONObject);
+
+		JSONObject paddingLeftJSONObject = JSONFactoryUtil.createJSONObject();
 
 		String paddingLeftUnit = ParamUtil.getString(
 			actionRequest, "paddingLeftUnit");
 
-		JSONObject paddingLeftJSONObject = JSONUtil.put(
-			"unit", paddingLeftUnit);
+		paddingLeftJSONObject.put("unit", paddingLeftUnit);
 
 		String paddingLeft = ParamUtil.getString(actionRequest, "paddingLeft");
 
@@ -435,11 +465,12 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		paddingJSONObject.put("left", paddingLeftJSONObject);
 
+		JSONObject paddingRightJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String paddingRightUnit = ParamUtil.getString(
 			actionRequest, "paddingRightUnit");
 
-		JSONObject paddingRightJSONObject = JSONUtil.put(
-			"unit", paddingRightUnit);
+		paddingRightJSONObject.put("unit", paddingRightUnit);
 
 		String paddingRight = ParamUtil.getString(
 			actionRequest, "paddingRight");
@@ -453,10 +484,12 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 
 		paddingJSONObject.put("sameForAll", useForAllPadding);
 
+		JSONObject paddingTopJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String paddingTopUnit = ParamUtil.getString(
 			actionRequest, "paddingTopUnit");
 
-		JSONObject paddingTopJSONObject = JSONUtil.put("unit", paddingTopUnit);
+		paddingTopJSONObject.put("unit", paddingTopUnit);
 
 		String paddingTop = ParamUtil.getString(actionRequest, "paddingTop");
 
@@ -470,9 +503,11 @@ public class PortletConfigurationCSSPortlet extends MVCPortlet {
 	}
 
 	protected JSONObject getTextDataJSONObject(ActionRequest actionRequest) {
+		JSONObject textDataJSONObject = JSONFactoryUtil.createJSONObject();
+
 		String fontColor = ParamUtil.getString(actionRequest, "fontColor");
 
-		JSONObject textDataJSONObject = JSONUtil.put("color", fontColor);
+		textDataJSONObject.put("color", fontColor);
 
 		String fontFamily = ParamUtil.getString(actionRequest, "fontFamily");
 

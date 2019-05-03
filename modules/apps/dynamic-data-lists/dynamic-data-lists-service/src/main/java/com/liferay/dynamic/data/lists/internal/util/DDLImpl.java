@@ -195,9 +195,11 @@ public class DDLImpl implements DDL {
 		for (DDMFormField ddmFormField : ddmFormFields) {
 			String name = ddmFormField.getName();
 
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			String dataType = ddmFormField.getDataType();
 
-			JSONObject jsonObject = JSONUtil.put("dataType", dataType);
+			jsonObject.put("dataType", dataType);
 
 			boolean readOnly = ddmFormField.isReadOnly();
 

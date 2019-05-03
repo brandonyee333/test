@@ -119,6 +119,9 @@ public class ManageCollaboratorsViewMVCRenderCommand
 				User sharingEntryToUser = _userLocalService.fetchUser(
 					sharingEntry.getToUserId());
 
+				JSONObject collaboratorJSONObject =
+					JSONFactoryUtil.createJSONObject();
+
 				String portraitURL = StringPool.BLANK;
 
 				if (sharingEntryToUser.getPortraitId() > 0) {
@@ -126,7 +129,7 @@ public class ManageCollaboratorsViewMVCRenderCommand
 						themeDisplay);
 				}
 
-				JSONObject collaboratorJSONObject = JSONUtil.put(
+				collaboratorJSONObject.put(
 					"portraitURL", portraitURL
 				).put(
 					"fullName", sharingEntryToUser.getFullName()

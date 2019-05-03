@@ -163,11 +163,12 @@ public class AssetEntriesSearchFacet extends BaseJSPSearchFacet {
 
 	@Override
 	public JSONObject getJSONData(ActionRequest actionRequest) {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		int frequencyThreshold = ParamUtil.getInteger(
 			actionRequest, getClassName() + "frequencyThreshold", 1);
 
-		JSONObject jsonObject = JSONUtil.put(
-			"frequencyThreshold", frequencyThreshold);
+		jsonObject.put("frequencyThreshold", frequencyThreshold);
 
 		String[] assetTypes = StringUtil.split(
 			ParamUtil.getString(actionRequest, getClassName() + "assetTypes"));

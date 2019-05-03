@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +54,8 @@ public class RowMover {
 	}
 
 	public String toJSON() throws PortalException {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		JSONArray rowMoverDropTargetsJSONArray =
 			JSONFactoryUtil.createJSONArray();
 
@@ -68,7 +69,7 @@ public class RowMover {
 			rowMoverDropTargetsJSONArray.put(rowMoverDropTargetJSONObject);
 		}
 
-		JSONObject jsonObject = JSONUtil.put(
+		jsonObject.put(
 			"dropTargets", rowMoverDropTargetsJSONArray
 		).put(
 			"rowSelector", _rowSelector

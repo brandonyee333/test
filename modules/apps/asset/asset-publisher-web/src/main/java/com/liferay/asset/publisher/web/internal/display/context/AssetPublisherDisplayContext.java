@@ -53,7 +53,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -480,12 +479,13 @@ public class AssetPublisherDisplayContext {
 		JSONArray rulesJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (int queryLogicIndex : queryLogicIndexes) {
+			JSONObject ruleJSONObject = JSONFactoryUtil.createJSONObject();
+
 			boolean queryAndOperator = PrefsParamUtil.getBoolean(
 				_portletPreferences, _request,
 				"queryAndOperator" + queryLogicIndex);
 
-			JSONObject ruleJSONObject = JSONUtil.put(
-				"queryAndOperator", queryAndOperator);
+			ruleJSONObject.put("queryAndOperator", queryAndOperator);
 
 			boolean queryContains = PrefsParamUtil.getBoolean(
 				_portletPreferences, _request,

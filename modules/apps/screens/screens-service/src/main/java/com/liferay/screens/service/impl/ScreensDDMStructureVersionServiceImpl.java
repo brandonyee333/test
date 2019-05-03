@@ -19,7 +19,6 @@ import com.liferay.dynamic.data.mapping.model.DDMStructureVersion;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.screens.service.base.ScreensDDMStructureVersionServiceBaseImpl;
 
 /**
@@ -32,6 +31,9 @@ public class ScreensDDMStructureVersionServiceImpl
 	public JSONObject getDDMStructureVersion(long structureId)
 		throws PortalException {
 
+		JSONObject ddmStructureVersionJSONObject =
+			JSONFactoryUtil.createJSONObject();
+
 		DDMStructureVersion ddmStructureVersion =
 			ddmStructureVersionService.getLatestStructureVersion(structureId);
 
@@ -40,7 +42,7 @@ public class ScreensDDMStructureVersionServiceImpl
 		JSONObject ddmFormLayoutJSONObject = JSONFactoryUtil.createJSONObject(
 			JSONFactoryUtil.looseSerializeDeep(ddmFormLayout));
 
-		JSONObject ddmStructureVersionJSONObject = JSONUtil.put(
+		ddmStructureVersionJSONObject.put(
 			"ddmFormLayout", ddmFormLayoutJSONObject);
 
 		JSONObject ddmStructureJSONObject = JSONFactoryUtil.createJSONObject(

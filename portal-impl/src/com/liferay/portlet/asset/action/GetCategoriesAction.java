@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.struts.JSONAction;
 
@@ -46,11 +45,13 @@ public class GetCategoriesAction extends JSONAction {
 		List<AssetCategory> categories = getCategories(request);
 
 		for (AssetCategory category : categories) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			List<AssetCategory> childCategories =
 				AssetCategoryServiceUtil.getChildCategories(
 					category.getCategoryId());
 
-			JSONObject jsonObject = JSONUtil.put(
+			jsonObject.put(
 				"categoryId", category.getCategoryId()
 			).put(
 				"childrenCount", childCategories.size()

@@ -110,6 +110,8 @@ public class GetPersonalMenuItemsMVCResourceCommand
 		Locale userLocale = user.getLocale();
 
 		if (!realUserLocale.equals(userLocale)) {
+			JSONObject jsonObject2 = JSONFactoryUtil.createJSONObject();
+
 			String changeLanguageLabel = null;
 			String doAsUserLanguageId = null;
 
@@ -141,7 +143,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 					StringPool.UNDERLINE);
 			}
 
-			JSONObject jsonObject2 = JSONUtil.put(
+			jsonObject2.put(
 				"href",
 				_http.setParameter(
 					ParamUtil.getString(portletRequest, "currentURL"),
@@ -175,9 +177,11 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				continue;
 			}
 
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			String portletId = ParamUtil.getString(portletRequest, "portletId");
 
-			JSONObject jsonObject = JSONUtil.put(
+			jsonObject.put(
 				"active",
 				personalMenuEntry.isActive(portletRequest, portletId));
 
@@ -237,6 +241,8 @@ public class GetPersonalMenuItemsMVCResourceCommand
 		}
 
 		for (int i = 0; i < groupedPersonalMenuEntries.size(); i++) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			JSONArray personalMenuEntriesJSONArray =
 				_getPersonalMenuEntriesJSONArray(
 					portletRequest, groupedPersonalMenuEntries.get(i));
@@ -245,8 +251,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				continue;
 			}
 
-			JSONObject jsonObject = JSONUtil.put(
-				"items", personalMenuEntriesJSONArray);
+			jsonObject.put("items", personalMenuEntriesJSONArray);
 
 			if (i < (groupedPersonalMenuEntries.size() - 1)) {
 				jsonObject.put("separator", true);

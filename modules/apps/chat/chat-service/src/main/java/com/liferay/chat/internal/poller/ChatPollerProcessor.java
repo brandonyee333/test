@@ -134,11 +134,13 @@ public class ChatPollerProcessor extends BasePollerProcessor {
 			long userId = (Long)buddy[8];
 			String userUuid = (String)buddy[9];
 
+			JSONObject curUserJSONObject = JSONFactoryUtil.createJSONObject();
+
 			Status buddyStatus = StatusLocalServiceUtil.getUserStatus(userId);
 
 			awake = buddyStatus.isAwake();
 
-			JSONObject curUserJSONObject = JSONUtil.put("awake", awake);
+			curUserJSONObject.put("awake", awake);
 
 			String displayURL = StringPool.BLANK;
 

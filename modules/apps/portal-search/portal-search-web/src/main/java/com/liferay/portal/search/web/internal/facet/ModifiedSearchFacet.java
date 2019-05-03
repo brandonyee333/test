@@ -117,11 +117,12 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 
 	@Override
 	public JSONObject getJSONData(ActionRequest actionRequest) {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		int frequencyThreshold = ParamUtil.getInteger(
 			actionRequest, getClassName() + "frequencyThreshold", 1);
 
-		JSONObject jsonObject = JSONUtil.put(
-			"frequencyThreshold", frequencyThreshold);
+		jsonObject.put("frequencyThreshold", frequencyThreshold);
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
@@ -130,12 +131,14 @@ public class ModifiedSearchFacet extends BaseJSPSearchFacet {
 				actionRequest, getClassName() + "rangesIndexes"));
 
 		for (String rangesIndex : rangesIndexes) {
+			JSONObject rangeJSONObject = JSONFactoryUtil.createJSONObject();
+
 			String label = ParamUtil.getString(
 				actionRequest, getClassName() + "label_" + rangesIndex);
 			String range = ParamUtil.getString(
 				actionRequest, getClassName() + "range_" + rangesIndex);
 
-			JSONObject rangeJSONObject = JSONUtil.put(
+			rangeJSONObject.put(
 				"label", label
 			).put(
 				"range", range

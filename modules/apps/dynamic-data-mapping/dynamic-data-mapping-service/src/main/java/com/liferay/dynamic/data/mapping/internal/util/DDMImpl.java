@@ -684,9 +684,11 @@ public class DDMImpl implements DDM {
 			ddmFormField.getDDMFormFieldOptions();
 
 		for (String optionValue : ddmFormFieldOptions.getOptionsValues()) {
+			JSONObject optionJSONObject = JSONFactoryUtil.createJSONObject();
+
 			String name = fieldName.concat(StringUtil.randomString());
 
-			JSONObject optionJSONObject = JSONUtil.put(
+			optionJSONObject.put(
 				"id", name
 			).put(
 				"name", name

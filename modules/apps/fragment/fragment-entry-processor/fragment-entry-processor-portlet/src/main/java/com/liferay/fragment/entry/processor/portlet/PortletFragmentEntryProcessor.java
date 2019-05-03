@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
@@ -113,6 +112,8 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 		for (String alias : _portletRegistry.getPortletAliases()) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			StringBundler sb = new StringBundler(5);
 
 			sb.append("<lfr-widget-");
@@ -121,7 +122,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 			sb.append(alias);
 			sb.append(">");
 
-			JSONObject jsonObject = JSONUtil.put(
+			jsonObject.put(
 				"content", sb.toString()
 			).put(
 				"name", "lfr-widget-" + alias

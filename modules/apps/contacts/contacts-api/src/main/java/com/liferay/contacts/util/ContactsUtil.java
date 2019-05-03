@@ -20,6 +20,7 @@ import com.liferay.contacts.model.Entry;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Address;
@@ -105,10 +106,12 @@ public class ContactsUtil {
 	public static JSONObject getUserJSONObject(long userId, User user)
 		throws PortalException {
 
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		boolean block = SocialRelationLocalServiceUtil.hasRelation(
 			userId, user.getUserId(), SocialRelationConstants.TYPE_UNI_ENEMY);
 
-		JSONObject jsonObject = JSONUtil.put(
+		jsonObject.put(
 			"block", block
 		).put(
 			"contactId", String.valueOf(user.getContactId())

@@ -210,13 +210,15 @@ public class FragmentEntryLinkRichTextEditorConfigContributor
 	}
 
 	protected JSONObject getToolbarsJSONObject(Locale locale) {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		JSONObject toolbarJSONObject = JSONUtil.put(
 			"buttons", toJSONArray("['image', 'hline']")
 		).put(
 			"tabIndex", 1
 		);
 
-		JSONObject jsonObject = JSONUtil.put(
+		jsonObject.put(
 			"add", toolbarJSONObject
 		).put(
 			"styles", getToolbarsStylesJSONObject(locale)

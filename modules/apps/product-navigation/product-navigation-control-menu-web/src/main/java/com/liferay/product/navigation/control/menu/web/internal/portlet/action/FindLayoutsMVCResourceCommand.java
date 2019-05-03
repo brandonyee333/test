@@ -19,7 +19,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
@@ -101,6 +100,8 @@ public class FindLayoutsMVCResourceCommand extends BaseMVCResourceCommand {
 			0, 10, null);
 
 		for (Layout layout : layouts) {
+			JSONObject layoutJSONObject = JSONFactoryUtil.createJSONObject();
+
 			StringBundler sb = new StringBundler(5);
 
 			sb.append(layout.getName(themeDisplay.getLocale()));
@@ -117,7 +118,7 @@ public class FindLayoutsMVCResourceCommand extends BaseMVCResourceCommand {
 
 			sb.append(StringPool.CLOSE_PARENTHESIS);
 
-			JSONObject layoutJSONObject = JSONUtil.put(
+			layoutJSONObject.put(
 				"name", sb.toString()
 			).put(
 				"url", _portal.getLayoutFullURL(layout, themeDisplay)

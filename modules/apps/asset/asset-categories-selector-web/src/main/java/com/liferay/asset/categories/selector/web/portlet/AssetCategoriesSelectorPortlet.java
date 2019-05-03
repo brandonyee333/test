@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -83,11 +82,13 @@ public class AssetCategoriesSelectorPortlet extends MVCPortlet {
 				List<AssetCategory> categories = getCategories(resourceRequest);
 
 				for (AssetCategory category : categories) {
+					JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 					List<AssetCategory> childCategories =
 						_assetCategoryService.getChildCategories(
 							category.getCategoryId());
 
-					JSONObject jsonObject = JSONUtil.put(
+					jsonObject.put(
 						"categoryId", category.getCategoryId()
 					).put(
 						"childrenCount", childCategories.size()

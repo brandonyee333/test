@@ -16,8 +16,8 @@ package com.liferay.adaptive.media.web.internal.portlet.action;
 
 import com.liferay.adaptive.media.image.service.AMImageEntryLocalService;
 import com.liferay.adaptive.media.web.internal.constants.AMPortletKeys;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -50,6 +50,8 @@ public class AdaptedImagesPercentageMVCResourceCommand
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -63,7 +65,7 @@ public class AdaptedImagesPercentageMVCResourceCommand
 		int expectedEntriesCount =
 			_amImageEntryLocalService.getExpectedAMImageEntriesCount(companyId);
 
-		JSONObject jsonObject = JSONUtil.put(
+		jsonObject.put(
 			"adaptedImages",
 			String.valueOf(Math.min(entriesCount, expectedEntriesCount))
 		).put(

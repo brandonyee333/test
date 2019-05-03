@@ -15,6 +15,7 @@
 package com.liferay.sharing.web.internal.portlet.action;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -103,6 +104,8 @@ public class ManageCollaboratorsMVCActionCommand extends BaseMVCActionCommand {
 
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			String errorMessage =
 				"an-unexpected-error-occurred-while-updating-permissions";
 
@@ -111,7 +114,7 @@ public class ManageCollaboratorsMVCActionCommand extends BaseMVCActionCommand {
 					"you-do-not-have-permission-to-update-these-permissions";
 			}
 
-			JSONObject jsonObject = JSONUtil.put(
+			jsonObject.put(
 				"errorMessage", LanguageUtil.get(resourceBundle, errorMessage));
 
 			JSONPortletResponseUtil.writeJSON(

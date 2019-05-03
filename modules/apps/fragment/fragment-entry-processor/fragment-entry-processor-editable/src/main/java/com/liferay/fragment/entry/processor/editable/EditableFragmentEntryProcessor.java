@@ -85,6 +85,8 @@ public class EditableFragmentEntryProcessor implements FragmentEntryProcessor {
 				continue;
 			}
 
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
 			StringBundler sb = new StringBundler(
 				2 + (5 * _REQUIRED_ATTRIBUTE_NAMES.length));
 
@@ -107,7 +109,7 @@ public class EditableFragmentEntryProcessor implements FragmentEntryProcessor {
 
 			sb.append("></lfr-editable>");
 
-			JSONObject jsonObject = JSONUtil.put(
+			jsonObject.put(
 				"content", sb.toString()
 			).put(
 				"name", "lfr-editable:" + editableElementParser.getKey()
