@@ -59,7 +59,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"com.liferay.portlet.instanceable=false",
 		"com.liferay.portlet.css-class-wrapper=lcs-portlet",
-		"com.liferay.portlet.display-category=category.lcs",
+		"com.liferay.portlet.display-category=category.hidden",
 		"com.liferay.portlet.footer-portlet-javascript=/js/main.js",
 		"com.liferay.portlet.layout-cacheable=true",
 		"com.liferay.portlet.scopeable=true",
