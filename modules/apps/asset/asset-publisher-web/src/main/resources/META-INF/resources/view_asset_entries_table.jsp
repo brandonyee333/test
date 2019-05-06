@@ -18,6 +18,7 @@
 
 <%
 long previewAssetEntryId = ParamUtil.getLong(request, "previewAssetEntryId");
+int previewAssetEntryType = ParamUtil.getInteger(request, "previewAssetEntryType");
 
 AssetEntryResult assetEntryResult = (AssetEntryResult)request.getAttribute("view.jsp-assetEntryResult");
 
@@ -78,7 +79,7 @@ if (stageableGroup.isLayout()) {
 
 						try {
 							if (previewAssetEntryId == assetEntry.getEntryId()) {
-								assetRenderer = assetRendererFactory.getAssetRenderer(assetEntry.getClassPK(), AssetRendererFactory.TYPE_LATEST);
+								assetRenderer = assetRendererFactory.getAssetRenderer(assetEntry.getClassPK(), previewAssetEntryType);
 							}
 							else {
 								assetRenderer = assetRendererFactory.getAssetRenderer(assetEntry.getClassPK());
@@ -90,7 +91,7 @@ if (stageableGroup.isLayout()) {
 							}
 						}
 
-						if ((assetRenderer == null) || (!assetRenderer.isDisplayable() && Validator.isNull(previewAssetEntryId))) {
+						if ((assetRenderer == null) || (!assetRenderer.isDisplayable() && (previewAssetEntryId <= 0))) {
 							continue;
 						}
 
@@ -100,7 +101,7 @@ if (stageableGroup.isLayout()) {
 						request.setAttribute("view.jsp-assetRenderer", assetRenderer);
 					%>
 
-						<tr>
+						<tr class="<%= (previewAssetEntryId == assetEntry.getEntryId()) ? "table-active" : StringPool.BLANK %>">
 							<td class="table-cell-expand table-title">
 								<span class="asset-anchor lfr-asset-anchor" id="<%= assetEntry.getEntryId() %>"></span>
 

@@ -90,8 +90,6 @@ public class GetPersonalMenuItemsMVCResourceCommand
 	private JSONArray _getImpersonationItemsJSONArray(
 		PortletRequest portletRequest, ThemeDisplay themeDisplay) {
 
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
 		JSONObject jsonObject1 = JSONUtil.put(
 			"href",
 			_http.removeParameter(
@@ -103,7 +101,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 			LanguageUtil.get(themeDisplay.getLocale(), "be-yourself-again")
 		);
 
-		jsonArray.put(jsonObject1);
+		JSONArray jsonArray = JSONUtil.put(jsonObject1);
 
 		User realUser = themeDisplay.getRealUser();
 		User user = themeDisplay.getUser();
@@ -112,8 +110,6 @@ public class GetPersonalMenuItemsMVCResourceCommand
 		Locale userLocale = user.getLocale();
 
 		if (!realUserLocale.equals(userLocale)) {
-			JSONObject jsonObject2 = JSONFactoryUtil.createJSONObject();
-
 			String changeLanguageLabel = null;
 			String doAsUserLanguageId = null;
 
@@ -145,7 +141,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 					StringPool.UNDERLINE);
 			}
 
-			jsonObject2.put(
+			JSONObject jsonObject2 = JSONUtil.put(
 				"href",
 				_http.setParameter(
 					ParamUtil.getString(portletRequest, "currentURL"),
@@ -179,11 +175,9 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				continue;
 			}
 
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 			String portletId = ParamUtil.getString(portletRequest, "portletId");
 
-			jsonObject.put(
+			JSONObject jsonObject = JSONUtil.put(
 				"active",
 				personalMenuEntry.isActive(portletRequest, portletId));
 
@@ -243,8 +237,6 @@ public class GetPersonalMenuItemsMVCResourceCommand
 		}
 
 		for (int i = 0; i < groupedPersonalMenuEntries.size(); i++) {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 			JSONArray personalMenuEntriesJSONArray =
 				_getPersonalMenuEntriesJSONArray(
 					portletRequest, groupedPersonalMenuEntries.get(i));
@@ -253,7 +245,8 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				continue;
 			}
 
-			jsonObject.put("items", personalMenuEntriesJSONArray);
+			JSONObject jsonObject = JSONUtil.put(
+				"items", personalMenuEntriesJSONArray);
 
 			if (i < (groupedPersonalMenuEntries.size() - 1)) {
 				jsonObject.put("separator", true);

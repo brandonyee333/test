@@ -16,6 +16,7 @@ package com.liferay.headless.delivery.client.serdes.v1_0;
 
 import com.liferay.headless.delivery.client.dto.v1_0.AdaptedImage;
 import com.liferay.headless.delivery.client.dto.v1_0.Document;
+import com.liferay.headless.delivery.client.dto.v1_0.RelatedContent;
 import com.liferay.headless.delivery.client.dto.v1_0.TaxonomyCategory;
 import com.liferay.headless.delivery.client.json.BaseJSONParser;
 
@@ -23,8 +24,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import javax.annotation.Generated;
@@ -240,6 +243,26 @@ public class DocumentSerDes {
 			sb.append(document.getNumberOfComments());
 		}
 
+		if (document.getRelatedContents() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"relatedContents\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < document.getRelatedContents().length; i++) {
+				sb.append(String.valueOf(document.getRelatedContents()[i]));
+
+				if ((i + 1) < document.getRelatedContents().length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
 		if (document.getSizeInBytes() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -321,6 +344,12 @@ public class DocumentSerDes {
 		sb.append("}");
 
 		return sb.toString();
+	}
+
+	public static Map<String, Object> toMap(String json) {
+		DocumentJSONParser documentJSONParser = new DocumentJSONParser();
+
+		return documentJSONParser.parseToMap(json);
 	}
 
 	public static Map<String, String> toMap(Document document) {
@@ -427,6 +456,15 @@ public class DocumentSerDes {
 				String.valueOf(document.getNumberOfComments()));
 		}
 
+		if (document.getRelatedContents() == null) {
+			map.put("relatedContents", null);
+		}
+		else {
+			map.put(
+				"relatedContents",
+				String.valueOf(document.getRelatedContents()));
+		}
+
 		if (document.getSizeInBytes() == null) {
 			map.put("sizeInBytes", null);
 		}
@@ -473,6 +511,35 @@ public class DocumentSerDes {
 		String string = String.valueOf(object);
 
 		return string.replaceAll("\"", "\\\\\"");
+	}
+
+	private static String _toJSON(Map<String, ?> map) {
+		StringBuilder sb = new StringBuilder("{");
+
+		@SuppressWarnings("unchecked")
+		Set set = map.entrySet();
+
+		@SuppressWarnings("unchecked")
+		Iterator<Map.Entry<String, ?>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<String, ?> entry = iterator.next();
+
+			sb.append("\"");
+			sb.append(entry.getKey());
+			sb.append("\":");
+			sb.append("\"");
+			sb.append(entry.getValue());
+			sb.append("\"");
+
+			if (iterator.hasNext()) {
+				sb.append(",");
+			}
+		}
+
+		sb.append("}");
+
+		return sb.toString();
 	}
 
 	private static class DocumentJSONParser extends BaseJSONParser<Document> {
@@ -570,6 +637,18 @@ public class DocumentSerDes {
 				if (jsonParserFieldValue != null) {
 					document.setNumberOfComments(
 						Integer.valueOf((String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "relatedContents")) {
+				if (jsonParserFieldValue != null) {
+					document.setRelatedContents(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> RelatedContentSerDes.toDTO((String)object)
+						).toArray(
+							size -> new RelatedContent[size]
+						));
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "sizeInBytes")) {

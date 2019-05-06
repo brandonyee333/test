@@ -32,7 +32,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.Generated;
 
@@ -450,6 +453,35 @@ public class Document {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Integer numberOfComments;
 
+	@Schema
+	public RelatedContent[] getRelatedContents() {
+		return relatedContents;
+	}
+
+	public void setRelatedContents(RelatedContent[] relatedContents) {
+		this.relatedContents = relatedContents;
+	}
+
+	@JsonIgnore
+	public void setRelatedContents(
+		UnsafeSupplier<RelatedContent[], Exception>
+			relatedContentsUnsafeSupplier) {
+
+		try {
+			relatedContents = relatedContentsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+	protected RelatedContent[] relatedContents;
+
 	@Schema(description = "The document's size in bytes.")
 	public Long getSizeInBytes() {
 		return sizeInBytes;
@@ -812,6 +844,26 @@ public class Document {
 			sb.append(numberOfComments);
 		}
 
+		if (relatedContents != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"relatedContents\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < relatedContents.length; i++) {
+				sb.append(String.valueOf(relatedContents[i]));
+
+				if ((i + 1) < relatedContents.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
 		if (sizeInBytes != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -899,6 +951,35 @@ public class Document {
 		String string = String.valueOf(object);
 
 		return string.replaceAll("\"", "\\\\\"");
+	}
+
+	private static String _toJSON(Map<String, ?> map) {
+		StringBuilder sb = new StringBuilder("{");
+
+		@SuppressWarnings("unchecked")
+		Set set = map.entrySet();
+
+		@SuppressWarnings("unchecked")
+		Iterator<Map.Entry<String, ?>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<String, ?> entry = iterator.next();
+
+			sb.append("\"");
+			sb.append(entry.getKey());
+			sb.append("\":");
+			sb.append("\"");
+			sb.append(entry.getValue());
+			sb.append("\"");
+
+			if (iterator.hasNext()) {
+				sb.append(",");
+			}
+		}
+
+		sb.append("}");
+
+		return sb.toString();
 	}
 
 }

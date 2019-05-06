@@ -1246,7 +1246,9 @@ war.path=${app.server.portal.dir}/</echo>
 		<attribute name="task" />
 
 		<sequential>
-			<update-gradle-properties />
+			<propertyfile file="${project.dir}/.gradle/gradle.properties">
+				<entry key="sdk.dir" value="${sdk.dir}" />
+			</propertyfile>
 
 			<if>
 				<contains string="${env.CI_TEST_SUITE}" substring="poshi" />
@@ -1399,6 +1401,12 @@ war.path=${app.server.portal.dir}/</echo>
 							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
 							token="liferay.home=${liferay.home}"
 							value="liferay.home=${test.app.server.parent.dir}"
+						/>
+
+						<replace
+							file="${test.app.server.classes.portal.dir}/portal-ext.properties"
+							token="web.server.http.port=8080"
+							value="web.server.http.port=${test.app.server.leading.port.number}080"
 						/>
 
 						<math
@@ -2500,9 +2508,17 @@ tell application "Safari" to quit
 			</if>
 
 			<if>
-				<matches pattern="https?://" string="${test.build.bundle.wildfly.zip.url}" />
+				<or>
+					<and>
+						<equals arg1="${test.build.bundle.wildfly}" arg2="true" />
+						<matches pattern="https?://" string="${test.build.portal.war.url}" />
+					</and>
+					<matches pattern="https?://" string="${test.build.bundle.wildfly.zip.url}" />
+				</or>
 				<then>
 					<antcall inheritAll="false" target="prepare-test-bundle">
+						<param name="app.server.lib.global.dir" value="${app.server.wildfly.lib.global.dir}" />
+						<param name="app.server.portal.dir" value="${app.server.wildfly.portal.dir}" />
 						<param name="app.server.type" value="wildfly" />
 						<param name="test.app.server.bin.dir" value="${app.server.wildfly.bin.dir}" />
 						<param name="test.build.bundle.zip.url" value="${test.build.bundle.wildfly.zip.url}" />

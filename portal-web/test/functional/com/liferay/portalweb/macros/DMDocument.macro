@@ -640,6 +640,8 @@ definition {
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
 			value1 = "${dmDocumentTitle}");
 
+		DMDocument.expandInfo();
+
 		AssertClick.assertPartialTextClickAt(
 			locator1 = "Button#DOWNLOAD",
 			value1 = "Download");
@@ -1261,6 +1263,10 @@ definition {
 		AssertElementNotPresent(locator1 = "HOME_MENULIST_ADD_REPOSITORY");
 	}
 
+	macro viewCardTitle {
+		LexiconCard.viewCardTitle(card = "${dmDocumentTitle}");
+	}
+
 	macro viewCategories {
 		Panel.expandPanel(panel = "Categorization");
 
@@ -1661,9 +1667,15 @@ definition {
 		var key_dmDocumentDescription = "${dmDocumentDescription}";
 		var key_dmDocumentTitle = "${dmDocumentTitle}";
 
+		DMDocument.expandInfo();
+
 		AssertTextEquals(
 			locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_TITLE",
 			value1 = "${dmDocumentTitle} (Version ${dmDocumentVersionNumber})");
+
+		AssertTextEquals(
+			locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_DESCRIPTION",
+			value1 = "${dmDocumentDescription}");
 
 		DMDocument.viewDocumentVersionNumberCmdPG(dmDocumentVersionNumber = "${dmDocumentVersionNumber}");
 	}
@@ -1938,9 +1950,5 @@ definition {
 				locator1 = "DocumentsAndMedia#TAG",
 				value1 = "${tagName}");
 		}
-	}
-
-	macro viewCardTitle {
-		LexiconCard.viewCardTitle(card = "${dmDocumentTitle}");
 	}
 }

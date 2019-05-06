@@ -15,7 +15,9 @@
 package com.liferay.talend.service;
 
 import com.liferay.talend.data.store.GenericDataStore;
+import com.liferay.talend.data.store.OutputDataStore;
 import com.liferay.talend.dataset.InputDataSet;
+import com.liferay.talend.dataset.OutputDataSet;
 import com.liferay.talend.util.StringUtils;
 
 import java.util.ArrayList;
@@ -48,25 +50,28 @@ public class UIActionService {
 		return _dataStoreChecker.checkGenericDataStore(genericDataStore);
 	}
 
-	@Suggestions(family = "Liferay", value = "fetchEndpoints")
-	public SuggestionValues fetchEndpoints(
+	@Suggestions(family = "Liferay", value = "fetchInputEndpoints")
+	public SuggestionValues fetchInputEndpoints(
 		@Option("genericDataStore") final GenericDataStore genericDataStore) {
 
 		InputDataSet inputDataSet = new InputDataSet();
 
 		inputDataSet.setGenericDataStore(genericDataStore);
 
-		List<String> endpoints = _liferayService.getPageableEndpoints(
-			inputDataSet);
+		return _toSuggestionValues(
+			_liferayService.getPageableEndpoints(inputDataSet));
+	}
 
-		List<SuggestionValues.Item> items = new ArrayList<>();
+	@Suggestions(family = "Liferay", value = "fetchOutputEndpoints")
+	public SuggestionValues fetchOutputEndpoints(
+		@Option("outputDataStore") final OutputDataStore outputDataStore) {
 
-		endpoints.forEach(
-			path -> {
-				items.add(new SuggestionValues.Item(path, path));
-			});
+		OutputDataSet outputDataSet = new OutputDataSet();
 
-		return new SuggestionValues(true, items);
+		outputDataSet.setOutputDataStore(outputDataStore);
+
+		return _toSuggestionValues(
+			_liferayService.getUpdatableEndpoints(outputDataSet));
 	}
 
 	@DiscoverSchema(family = "Liferay", value = "guessInputSchema")
@@ -86,6 +91,17 @@ public class UIActionService {
 		}
 
 		return new ValidationResult(ValidationResult.Status.OK, null);
+	}
+
+	private SuggestionValues _toSuggestionValues(List<String> values) {
+		List<SuggestionValues.Item> items = new ArrayList<>();
+
+		values.forEach(
+			path -> {
+				items.add(new SuggestionValues.Item(path, path));
+			});
+
+		return new SuggestionValues(true, items);
 	}
 
 	@Service

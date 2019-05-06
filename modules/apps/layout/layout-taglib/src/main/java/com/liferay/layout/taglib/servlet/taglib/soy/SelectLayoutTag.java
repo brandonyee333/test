@@ -176,8 +176,6 @@ public class SelectLayoutTag extends ComponentRendererTag {
 	}
 
 	private JSONArray _getLayoutsJSONArray() throws Exception {
-		JSONArray layoutsJSONArray = JSONFactoryUtil.createJSONArray();
-
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -200,9 +198,7 @@ public class SelectLayoutTag extends ComponentRendererTag {
 			"name", themeDisplay.getScopeGroupName()
 		);
 
-		layoutsJSONArray.put(jsonObject);
-
-		return layoutsJSONArray;
+		return JSONUtil.put(jsonObject);
 	}
 
 	private JSONArray _getLayoutsJSONArray(

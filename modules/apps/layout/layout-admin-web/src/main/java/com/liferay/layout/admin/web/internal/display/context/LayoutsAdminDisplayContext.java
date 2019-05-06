@@ -120,9 +120,6 @@ public class LayoutsAdminDisplayContext {
 		_layoutCopyHelper =
 			(LayoutCopyHelper)_liferayPortletRequest.getAttribute(
 				LayoutAdminWebKeys.LAYOUT_COPY_HELPER);
-
-		_liferayPortletRequest.setAttribute(
-			WebKeys.LAYOUT_DESCRIPTIONS, getLayoutDescriptions());
 	}
 
 	public List<DropdownItem> getAddLayoutDropdownItems() {
@@ -208,9 +205,6 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public JSONArray getBreadcrumbEntriesJSONArray() throws PortalException {
-		JSONArray breadcrumbEntriesJSONArray =
-			JSONFactoryUtil.createJSONArray();
-
 		boolean privatePages = isPrivateLayout();
 
 		Layout selLayout = getSelLayout();
@@ -238,7 +232,8 @@ public class LayoutsAdminDisplayContext {
 
 		breadcrumbEntryJSONObject.put("url", portletURL.toString());
 
-		breadcrumbEntriesJSONArray.put(breadcrumbEntryJSONObject);
+		JSONArray breadcrumbEntriesJSONArray = JSONUtil.put(
+			breadcrumbEntryJSONObject);
 
 		if (isFirstColumn()) {
 			return breadcrumbEntriesJSONArray;
@@ -402,7 +397,8 @@ public class LayoutsAdminDisplayContext {
 	public String getFirstColumnConfigureLayoutURL(boolean privatePages) {
 		PortletURL editLayoutSetURL = _liferayPortletResponse.createRenderURL();
 
-		editLayoutSetURL.setParameter("mvcPath", "/edit_layout_set.jsp");
+		editLayoutSetURL.setParameter(
+			"mvcRenderCommandName", "/layout/edit_layout_set");
 		editLayoutSetURL.setParameter(
 			"redirect", _themeDisplay.getURLCurrent());
 		editLayoutSetURL.setParameter("backURL", _themeDisplay.getURLCurrent());
@@ -563,6 +559,8 @@ public class LayoutsAdminDisplayContext {
 			}
 
 			JSONObject layoutJSONObject = JSONUtil.put(
+				"actions", _getAvailableActions(layout)
+			).put(
 				"actionURLs", _getActionURLsJSONObject(layout)
 			).put(
 				"active", _isActive(layout.getPlid())
@@ -604,18 +602,10 @@ public class LayoutsAdminDisplayContext {
 				layoutJSONObject.put("draft", false);
 			}
 
-			layoutJSONObject.put(
-				"homePage",
-				_getHomePagePlid(privateLayout) == layout.getPlid());
-
 			int childLayoutsCount = LayoutLocalServiceUtil.getLayoutsCount(
 				getSelGroup(), layout.isPrivateLayout(), layout.getLayoutId());
 
-			layoutJSONObject.put(
-				"hasChild", childLayoutsCount > 0
-			).put(
-				"homePageTitle", _getHomePageTitle(privateLayout)
-			);
+			layoutJSONObject.put("hasChild", childLayoutsCount > 0);
 
 			LayoutType layoutType = layout.getLayoutType();
 
@@ -636,9 +626,9 @@ public class LayoutsAdminDisplayContext {
 				"privateLayout", String.valueOf(layout.isPrivateLayout()));
 
 			layoutJSONObject.put(
-				"url", portletURL.toString()
-			).put(
 				"title", layout.getName(_themeDisplay.getLocale())
+			).put(
+				"url", portletURL.toString()
 			);
 
 			layoutsJSONArray.put(layoutJSONObject);
@@ -722,20 +712,6 @@ public class LayoutsAdminDisplayContext {
 
 	public Long getLiveGroupId() {
 		return _groupDisplayContextHelper.getLiveGroupId();
-	}
-
-	public String getMarkAsHomePageLayoutURL(Layout layout) {
-		PortletURL markAsHomePageLayoutURL =
-			_liferayPortletResponse.createActionURL();
-
-		markAsHomePageLayoutURL.setParameter(
-			ActionRequest.ACTION_NAME, "/layout/mark_as_home_page_layout");
-		markAsHomePageLayoutURL.setParameter(
-			"redirect", _themeDisplay.getURLCurrent());
-		markAsHomePageLayoutURL.setParameter(
-			"selPlid", String.valueOf(layout.getPlid()));
-
-		return markAsHomePageLayoutURL.toString();
 	}
 
 	public String getMoveLayoutColumnItemURL() {
@@ -1322,23 +1298,6 @@ public class LayoutsAdminDisplayContext {
 		return true;
 	}
 
-	public boolean isShowMarkAsHomePageLayout(Layout layout)
-		throws PortalException {
-
-		if (!isShowConfigureAction(layout)) {
-			return false;
-		}
-
-		if ((layout.getParentLayoutId() !=
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID) ||
-			(_getHomePagePlid(isPrivateLayout()) == layout.getPlid())) {
-
-			return false;
-		}
-
-		return true;
-	}
-
 	public boolean isShowOrphanPortletsAction(Layout layout)
 		throws PortalException {
 
@@ -1424,11 +1383,6 @@ public class LayoutsAdminDisplayContext {
 			jsonObject.put("editLayoutURL", getEditLayoutURL(layout));
 		}
 
-		if (isShowMarkAsHomePageLayout(layout)) {
-			jsonObject.put(
-				"markAsHomePageLayoutURL", getMarkAsHomePageLayoutURL(layout));
-		}
-
 		if (isShowOrphanPortletsAction(layout)) {
 			jsonObject.put("orphanPortletsURL", getOrphanPortletsURL(layout));
 		}
@@ -1485,6 +1439,20 @@ public class LayoutsAdminDisplayContext {
 		}
 
 		return _activeLayoutSetBranchId;
+	}
+
+	private String _getAvailableActions(Layout layout) throws PortalException {
+		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		if (LayoutPermissionUtil.contains(
+				themeDisplay.getPermissionChecker(), layout,
+				ActionKeys.DELETE)) {
+
+			return "deleteSelectedPages";
+		}
+
+		return StringPool.BLANK;
 	}
 
 	private String _getBackURL() {
@@ -1556,33 +1524,7 @@ public class LayoutsAdminDisplayContext {
 		return jsonObject;
 	}
 
-	private long _getHomePagePlid(boolean privateLayout) {
-		if (_homePagePlid != null) {
-			return _homePagePlid;
-		}
-
-		_homePagePlid = LayoutLocalServiceUtil.getDefaultPlid(
-			getSelGroupId(), privateLayout);
-
-		return _homePagePlid;
-	}
-
-	private String _getHomePageTitle(boolean privateLayout) {
-		if (_homePageTitle != null) {
-			return _homePageTitle;
-		}
-
-		Layout defaultLayout = LayoutLocalServiceUtil.fetchDefaultLayout(
-			getSelGroupId(), privateLayout);
-
-		_homePageTitle = defaultLayout.getName(_themeDisplay.getLocale());
-
-		return _homePageTitle;
-	}
-
 	private JSONArray _getLayoutColumnsJSONArray() throws Exception {
-		JSONArray layoutColumnsJSONArray = JSONFactoryUtil.createJSONArray();
-
 		JSONArray firstColumnJSONArray = JSONFactoryUtil.createJSONArray();
 
 		Layout selLayout = getSelLayout();
@@ -1617,7 +1559,7 @@ public class LayoutsAdminDisplayContext {
 			firstColumnJSONArray.put(_getFirstColumn(true, active));
 		}
 
-		layoutColumnsJSONArray.put(firstColumnJSONArray);
+		JSONArray layoutColumnsJSONArray = JSONUtil.put(firstColumnJSONArray);
 
 		if (isFirstColumn()) {
 			return layoutColumnsJSONArray;
@@ -1743,8 +1685,6 @@ public class LayoutsAdminDisplayContext {
 	private String _displayStyle;
 	private Boolean _firstColumn;
 	private final GroupDisplayContextHelper _groupDisplayContextHelper;
-	private Long _homePagePlid;
-	private String _homePageTitle;
 	private String _keywords;
 	private final LayoutCopyHelper _layoutCopyHelper;
 	private List<LayoutDescription> _layoutDescriptions;

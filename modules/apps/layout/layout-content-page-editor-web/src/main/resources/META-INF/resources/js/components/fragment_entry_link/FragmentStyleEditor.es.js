@@ -83,7 +83,7 @@ class FragmentStyleEditor extends State {
 
 	/**
 	 * Handles click events for tooltip buttons.
-	 * @param {MouseEvent} event The tooltip button click.
+	 * @param {{buttonId: string}} event The tooltip button click.
 	 */
 	_handleButtonClick(event) {
 		if (this._styleEditor) {
@@ -106,13 +106,13 @@ class FragmentStyleEditor extends State {
 	_handleChangeStyle(event) {
 		if (event.eventType === 'map') {
 			this.store
-				.dispatchAction(
-					OPEN_MAPPING_FIELDS_DIALOG,
+				.dispatch(
 					{
 						editableId: `${this.selectorText} ${event.name}`,
 						editableType: event.type,
 						fragmentEntryLinkId: this.fragmentEntryLinkId,
-						mappedFieldId: ''
+						mappedFieldId: '',
+						type: OPEN_MAPPING_FIELDS_DIALOG
 					}
 				);
 

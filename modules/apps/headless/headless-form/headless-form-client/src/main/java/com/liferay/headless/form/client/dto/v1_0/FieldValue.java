@@ -28,47 +28,47 @@ import javax.annotation.Generated;
 @Generated("")
 public class FieldValue {
 
-	public FormDocument getDocument() {
-		return document;
+	public FormDocument getFormDocument() {
+		return formDocument;
 	}
 
-	public void setDocument(FormDocument document) {
-		this.document = document;
+	public void setFormDocument(FormDocument formDocument) {
+		this.formDocument = formDocument;
 	}
 
-	public void setDocument(
-		UnsafeSupplier<FormDocument, Exception> documentUnsafeSupplier) {
+	public void setFormDocument(
+		UnsafeSupplier<FormDocument, Exception> formDocumentUnsafeSupplier) {
 
 		try {
-			document = documentUnsafeSupplier.get();
+			formDocument = formDocumentUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected FormDocument document;
+	protected FormDocument formDocument;
 
-	public Long getDocumentId() {
-		return documentId;
+	public Long getFormDocumentId() {
+		return formDocumentId;
 	}
 
-	public void setDocumentId(Long documentId) {
-		this.documentId = documentId;
+	public void setFormDocumentId(Long formDocumentId) {
+		this.formDocumentId = formDocumentId;
 	}
 
-	public void setDocumentId(
-		UnsafeSupplier<Long, Exception> documentIdUnsafeSupplier) {
+	public void setFormDocumentId(
+		UnsafeSupplier<Long, Exception> formDocumentIdUnsafeSupplier) {
 
 		try {
-			documentId = documentIdUnsafeSupplier.get();
+			formDocumentId = formDocumentIdUnsafeSupplier.get();
 		}
 		catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	protected Long documentId;
+	protected Long formDocumentId;
 
 	public Long getId() {
 		return id;

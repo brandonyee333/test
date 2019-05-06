@@ -37,8 +37,6 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -365,10 +363,6 @@ public class MailManager {
 	}
 
 	public JSONObject getDefaultAccountsJSONObject() {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
 		JSONObject gmailAccountJSONObject = JSONUtil.put(
 			"address", "@gmail.com"
 		).put(
@@ -398,8 +392,6 @@ public class MailManager {
 			"useLocalPartAsLogin", true
 		);
 
-		jsonArray.put(gmailAccountJSONObject);
-
 		JSONObject customMailAccontJSONObject = JSONUtil.put(
 			"address", ""
 		).put(
@@ -428,11 +420,10 @@ public class MailManager {
 			"useLocalPartAsLogin", false
 		);
 
-		jsonArray.put(customMailAccontJSONObject);
-
-		jsonObject.put("accounts", jsonArray);
-
-		return jsonObject;
+		return JSONUtil.put(
+			"accounts",
+			JSONUtil.putAll(
+				gmailAccountJSONObject, customMailAccontJSONObject));
 	}
 
 	public List<Folder> getFolders(
@@ -868,12 +859,10 @@ public class MailManager {
 	protected JSONObject createJSONResult(
 		String status, String message, String value) {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		ResourceBundle resourceBundle = _portletConfig.getResourceBundle(
 			_user.getLocale());
 
-		jsonObject.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"message", LanguageUtil.get(resourceBundle, message)
 		).put(
 			"status", status

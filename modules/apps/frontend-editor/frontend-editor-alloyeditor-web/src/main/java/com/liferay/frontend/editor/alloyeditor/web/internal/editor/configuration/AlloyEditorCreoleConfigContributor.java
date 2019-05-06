@@ -77,15 +77,14 @@ public class AlloyEditorCreoleConfigContributor
 			}
 		}
 
-		JSONObject buttonCfgJSONObject = JSONFactoryUtil.createJSONObject();
-
 		JSONObject linkEditJSONObject = JSONUtil.put(
 			"appendProtocol", false
 		).put(
 			"showTargetSelector", false
 		);
 
-		buttonCfgJSONObject.put("linkEditBrowse", linkEditJSONObject);
+		JSONObject buttonCfgJSONObject = JSONUtil.put(
+			"linkEditBrowse", linkEditJSONObject);
 
 		jsonObject.put(
 			"buttonCfg", buttonCfgJSONObject
@@ -177,41 +176,31 @@ public class AlloyEditorCreoleConfigContributor
 	}
 
 	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		JSONObject stylesJSONObject = JSONUtil.put(
 			"styles", getStyleFormatsJSONArray(locale));
 
-		jsonObject.put(
+		return JSONUtil.put(
 			"cfg", stylesJSONObject
 		).put(
 			"name", "styles"
 		);
-
-		return jsonObject;
 	}
 
 	protected JSONObject getToolbarsAddJSONObject() {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		JSONObject buttonJSONObject = JSONFactoryUtil.createJSONObject();
-
 		JSONObject cfgJSONObject = JSONUtil.put(
 			"tableAttributes", JSONFactoryUtil.createJSONObject());
 
-		buttonJSONObject.put(
+		JSONObject buttonJSONObject = JSONUtil.put(
 			"cfg", cfgJSONObject
 		).put(
 			"name", "table"
 		);
 
-		jsonObject.put(
+		return JSONUtil.put(
 			"buttons", JSONUtil.putAll("image", buttonJSONObject, "hline")
 		).put(
 			"tabIndex", 2
 		);
-
-		return jsonObject;
 	}
 
 	protected JSONObject getToolbarsJSONObject(Locale locale) {
@@ -251,35 +240,25 @@ public class AlloyEditorCreoleConfigContributor
 	}
 
 	protected JSONObject getToolbarsStylesSelectionsLinkJSONObject() {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		JSONArray linkButtonsJSONArray = JSONFactoryUtil.createJSONArray();
-
-		JSONObject linkEditJSONObject = JSONFactoryUtil.createJSONObject();
-
 		JSONObject cfgJSONObject = JSONUtil.put(
 			"appendProtocol", false
 		).put(
 			"showTargetSelector", false
 		);
 
-		linkEditJSONObject.put(
+		JSONObject linkEditJSONObject = JSONUtil.put(
 			"cfg", cfgJSONObject
 		).put(
 			"name", "linkEditBrowse"
 		);
 
-		linkButtonsJSONArray.put(linkEditJSONObject);
-
-		jsonObject.put(
-			"buttons", linkButtonsJSONArray
+		return JSONUtil.put(
+			"buttons", JSONUtil.put(linkEditJSONObject)
 		).put(
 			"name", "link"
 		).put(
 			"test", "AlloyEditor.SelectionTest.link"
 		);
-
-		return jsonObject;
 	}
 
 	protected JSONObject getToolbarsStylesSelectionsTableJSONObject() {

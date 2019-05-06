@@ -684,11 +684,9 @@ public class DDMImpl implements DDM {
 			ddmFormField.getDDMFormFieldOptions();
 
 		for (String optionValue : ddmFormFieldOptions.getOptionsValues()) {
-			JSONObject optionJSONObject = JSONFactoryUtil.createJSONObject();
-
 			String name = fieldName.concat(StringUtil.randomString());
 
-			optionJSONObject.put(
+			JSONObject optionJSONObject = JSONUtil.put(
 				"id", name
 			).put(
 				"name", name
@@ -856,12 +854,12 @@ public class DDMImpl implements DDM {
 			}
 
 			jsonObject.put(
-				"localizationMap", localizationMapJSONObject
-			).put(
 				"fields",
 				getDDMFormFieldsJSONArray(
 					ddmFormField.getNestedDDMFormFields(), availableLocales,
 					defaultLocale)
+			).put(
+				"localizationMap", localizationMapJSONObject
 			);
 
 			ddmFormFieldsJSONArray.put(jsonObject);

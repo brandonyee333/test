@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -99,18 +99,16 @@ public class CalendarStagingTestUtil {
 
 		Group stagingGroup = liveGroup.getStagingGroup();
 
-		List<String> portletIds = null;
+		List<String> portletIds = new ArrayList<>();
 
-		if (enableCalendarStaging) {
-			portletIds = Arrays.asList(CalendarPortletKeys.CALENDAR);
-		}
+		portletIds.add(CalendarPortletKeys.CALENDAR);
 
 		Map<String, String[]> parameters =
 			ExportImportConfigurationParameterMapFactoryUtil.buildParameterMap(
 				PortletDataHandlerKeys.DATA_STRATEGY_MIRROR_OVERWRITE, true,
 				false, true, false, false, true, true, true, true, false, null,
-				true, false, portletIds, false, null,
-				ExportImportDateUtil.RANGE_ALL, true, true,
+				true, false, enableCalendarStaging ? portletIds : null, false,
+				null, ExportImportDateUtil.RANGE_ALL, true, true,
 				UserIdStrategy.CURRENT_USER_ID);
 
 		StagingUtil.publishLayouts(

@@ -26,7 +26,10 @@ import graphql.annotations.annotationTypes.GraphQLName;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.Generated;
 
@@ -43,20 +46,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class FieldValue {
 
 	@Schema
-	public FormDocument getDocument() {
-		return document;
+	public FormDocument getFormDocument() {
+		return formDocument;
 	}
 
-	public void setDocument(FormDocument document) {
-		this.document = document;
+	public void setFormDocument(FormDocument formDocument) {
+		this.formDocument = formDocument;
 	}
 
 	@JsonIgnore
-	public void setDocument(
-		UnsafeSupplier<FormDocument, Exception> documentUnsafeSupplier) {
+	public void setFormDocument(
+		UnsafeSupplier<FormDocument, Exception> formDocumentUnsafeSupplier) {
 
 		try {
-			document = documentUnsafeSupplier.get();
+			formDocument = formDocumentUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -68,23 +71,23 @@ public class FieldValue {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	protected FormDocument document;
+	protected FormDocument formDocument;
 
 	@Schema
-	public Long getDocumentId() {
-		return documentId;
+	public Long getFormDocumentId() {
+		return formDocumentId;
 	}
 
-	public void setDocumentId(Long documentId) {
-		this.documentId = documentId;
+	public void setFormDocumentId(Long formDocumentId) {
+		this.formDocumentId = formDocumentId;
 	}
 
 	@JsonIgnore
-	public void setDocumentId(
-		UnsafeSupplier<Long, Exception> documentIdUnsafeSupplier) {
+	public void setFormDocumentId(
+		UnsafeSupplier<Long, Exception> formDocumentIdUnsafeSupplier) {
 
 		try {
-			documentId = documentIdUnsafeSupplier.get();
+			formDocumentId = formDocumentIdUnsafeSupplier.get();
 		}
 		catch (RuntimeException re) {
 			throw re;
@@ -96,7 +99,7 @@ public class FieldValue {
 
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	protected Long documentId;
+	protected Long formDocumentId;
 
 	@Schema
 	public Long getId() {
@@ -121,7 +124,7 @@ public class FieldValue {
 	}
 
 	@GraphQLField
-	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Long id;
 
 	@Schema
@@ -205,24 +208,24 @@ public class FieldValue {
 
 		sb.append("{");
 
-		if (document != null) {
+		if (formDocument != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"document\": ");
+			sb.append("\"formDocument\": ");
 
-			sb.append(String.valueOf(document));
+			sb.append(String.valueOf(formDocument));
 		}
 
-		if (documentId != null) {
+		if (formDocumentId != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"documentId\": ");
+			sb.append("\"formDocumentId\": ");
 
-			sb.append(documentId);
+			sb.append(formDocumentId);
 		}
 
 		if (id != null) {
@@ -272,6 +275,35 @@ public class FieldValue {
 		String string = String.valueOf(object);
 
 		return string.replaceAll("\"", "\\\\\"");
+	}
+
+	private static String _toJSON(Map<String, ?> map) {
+		StringBuilder sb = new StringBuilder("{");
+
+		@SuppressWarnings("unchecked")
+		Set set = map.entrySet();
+
+		@SuppressWarnings("unchecked")
+		Iterator<Map.Entry<String, ?>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<String, ?> entry = iterator.next();
+
+			sb.append("\"");
+			sb.append(entry.getKey());
+			sb.append("\":");
+			sb.append("\"");
+			sb.append(entry.getValue());
+			sb.append("\"");
+
+			if (iterator.hasNext()) {
+				sb.append(",");
+			}
+		}
+
+		sb.append("}");
+
+		return sb.toString();
 	}
 
 }

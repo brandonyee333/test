@@ -53,6 +53,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -479,13 +480,12 @@ public class AssetPublisherDisplayContext {
 		JSONArray rulesJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (int queryLogicIndex : queryLogicIndexes) {
-			JSONObject ruleJSONObject = JSONFactoryUtil.createJSONObject();
-
 			boolean queryAndOperator = PrefsParamUtil.getBoolean(
 				_portletPreferences, _request,
 				"queryAndOperator" + queryLogicIndex);
 
-			ruleJSONObject.put("queryAndOperator", queryAndOperator);
+			JSONObject ruleJSONObject = JSONUtil.put(
+				"queryAndOperator", queryAndOperator);
 
 			boolean queryContains = PrefsParamUtil.getBoolean(
 				_portletPreferences, _request,
@@ -1712,15 +1712,18 @@ public class AssetPublisherDisplayContext {
 		}
 	}
 
-	public void setPageKeywords() throws PortalException {
+	public void setPageKeywords() {
 		if (getAssetCategoryId() > 0) {
 			AssetCategory assetCategory =
-				AssetCategoryLocalServiceUtil.getCategory(getAssetCategoryId());
+				AssetCategoryLocalServiceUtil.fetchAssetCategory(
+					getAssetCategoryId());
 
-			PortalUtil.setPageKeywords(
-				HtmlUtil.escape(
-					assetCategory.getTitle(_themeDisplay.getLocale())),
-				_request);
+			if (assetCategory != null) {
+				PortalUtil.setPageKeywords(
+					HtmlUtil.escape(
+						assetCategory.getTitle(_themeDisplay.getLocale())),
+					_request);
+			}
 		}
 
 		if (Validator.isNotNull(getAssetTagName())) {

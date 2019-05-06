@@ -123,7 +123,7 @@ function openImageSelector(
 }
 
 /**
- * @param {{dispatchAction: Function}} store
+ * @param {{dispatch: Function}} store
  * @review
  */
 function startListeningWidgetConfigurationChange(store) {
@@ -143,10 +143,10 @@ function startListeningWidgetConfigurationChange(store) {
 			submitFormHandler = event.win.Liferay.on(
 				'submitForm',
 				() => {
-					store.dispatchAction(
-						UPDATE_LAST_SAVE_DATE,
+					store.dispatch(
 						{
-							lastSaveDate: new Date()
+							lastSaveDate: new Date(),
+							type: UPDATE_LAST_SAVE_DATE
 						}
 					);
 				}

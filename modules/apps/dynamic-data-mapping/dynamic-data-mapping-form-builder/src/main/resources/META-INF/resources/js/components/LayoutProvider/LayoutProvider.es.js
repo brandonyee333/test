@@ -380,7 +380,10 @@ class LayoutProvider extends Component {
 						activePage,
 						defaultLanguageId,
 						editingLanguageId,
-						events: this.getEvents(),
+						events: {
+							...this.getEvents(),
+							...child.props.events
+						},
 						focusedField: this.getFocusedField(),
 						pages: this.getPages(),
 						paginationMode,
@@ -590,6 +593,8 @@ class LayoutProvider extends Component {
 				]
 			}
 		);
+
+		this.emit('ruleAdded', rule);
 	}
 
 	_handleRuleDeleted({ruleId}) {
@@ -607,21 +612,21 @@ class LayoutProvider extends Component {
 		const logicalOperator = event['logical-operator'];
 		const {rules} = this.state;
 
-		rules.splice(
-			ruleEditedIndex,
-			1,
-			{
-				actions,
-				conditions,
-				'logical-operator': logicalOperator
-			}
-		);
+		const newRule = {
+			actions,
+			conditions,
+			'logical-operator': logicalOperator
+		};
+
+		rules.splice(ruleEditedIndex, 1, newRule);
 
 		this.setState(
 			{
 				rules
 			}
 		);
+
+		this.emit('ruleSaved', newRule);
 	}
 
 	_handleSidebarFieldBlurred() {

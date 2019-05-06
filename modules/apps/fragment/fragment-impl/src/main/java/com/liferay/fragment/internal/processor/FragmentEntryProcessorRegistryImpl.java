@@ -14,6 +14,7 @@
 
 package com.liferay.fragment.internal.processor;
 
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.FragmentEntryProcessor;
 import com.liferay.fragment.processor.FragmentEntryProcessorRegistry;
@@ -45,6 +46,10 @@ public class FragmentEntryProcessorRegistryImpl
 	@Override
 	public void deleteFragmentEntryLinkData(
 		FragmentEntryLink fragmentEntryLink) {
+
+		if (ExportImportThreadLocal.isImportInProcess()) {
+			return;
+		}
 
 		for (FragmentEntryProcessor fragmentEntryProcessor :
 				_serviceTrackerList) {
@@ -100,7 +105,7 @@ public class FragmentEntryProcessorRegistryImpl
 	@Override
 	public String processFragmentEntryLinkCSS(
 			FragmentEntryLink fragmentEntryLink, String mode, Locale locale,
-			long[] segmentsExperienceIds, long previewClassPK)
+			long[] segmentsExperienceIds, long previewClassPK, int previewType)
 		throws PortalException {
 
 		String css = fragmentEntryLink.getCss();
@@ -110,7 +115,7 @@ public class FragmentEntryProcessorRegistryImpl
 
 			css = fragmentEntryProcessor.processFragmentEntryLinkCSS(
 				fragmentEntryLink, css, mode, locale, segmentsExperienceIds,
-				previewClassPK);
+				previewClassPK, previewType);
 		}
 
 		return css;
@@ -119,7 +124,7 @@ public class FragmentEntryProcessorRegistryImpl
 	@Override
 	public String processFragmentEntryLinkHTML(
 			FragmentEntryLink fragmentEntryLink, String mode, Locale locale,
-			long[] segmentsExperienceIds, long previewClassPK)
+			long[] segmentsExperienceIds, long previewClassPK, int previewType)
 		throws PortalException {
 
 		String html = fragmentEntryLink.getHtml();
@@ -129,7 +134,7 @@ public class FragmentEntryProcessorRegistryImpl
 
 			html = fragmentEntryProcessor.processFragmentEntryLinkHTML(
 				fragmentEntryLink, html, mode, locale, segmentsExperienceIds,
-				previewClassPK);
+				previewClassPK, previewType);
 		}
 
 		return html;

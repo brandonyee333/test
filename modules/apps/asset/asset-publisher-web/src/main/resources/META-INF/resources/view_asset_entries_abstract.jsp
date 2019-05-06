@@ -18,6 +18,7 @@
 
 <%
 long previewAssetEntryId = ParamUtil.getLong(request, "previewAssetEntryId");
+int previewAssetEntryType = ParamUtil.getInteger(request, "previewAssetEntryType");
 
 AssetEntryResult assetEntryResult = (AssetEntryResult)request.getAttribute("view.jsp-assetEntryResult");
 
@@ -32,7 +33,7 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 
 	try {
 		if (previewAssetEntryId == assetEntry.getEntryId()) {
-			assetRenderer = assetRendererFactory.getAssetRenderer(assetEntry.getClassPK(), AssetRendererFactory.TYPE_LATEST);
+			assetRenderer = assetRendererFactory.getAssetRenderer(assetEntry.getClassPK(), previewAssetEntryType);
 		}
 		else {
 			assetRenderer = assetRendererFactory.getAssetRenderer(assetEntry.getClassPK());
@@ -44,7 +45,7 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 		}
 	}
 
-	if ((assetRenderer == null) || (!assetRenderer.isDisplayable() && Validator.isNull(previewAssetEntryId))) {
+	if ((assetRenderer == null) || (!assetRenderer.isDisplayable() && (previewAssetEntryId <= 0))) {
 		continue;
 	}
 
@@ -57,7 +58,7 @@ for (AssetEntry assetEntry : assetEntryResult.getAssetEntries()) {
 		String viewURL = assetPublisherHelper.getAssetViewURL(liferayPortletRequest, liferayPortletResponse, assetRenderer, assetEntry, assetPublisherDisplayContext.isAssetLinkBehaviorViewInPortlet());
 %>
 
-		<div class="asset-abstract mb-5 <%= assetPublisherWebUtil.isDefaultAssetPublisher(layout, portletDisplay.getId(), assetPublisherDisplayContext.getPortletResource()) ? "default-asset-publisher" : StringPool.BLANK %>">
+		<div class="asset-abstract mb-5 <%= assetPublisherWebUtil.isDefaultAssetPublisher(layout, portletDisplay.getId(), assetPublisherDisplayContext.getPortletResource()) ? "default-asset-publisher" : StringPool.BLANK %> <%= (previewAssetEntryId == assetEntry.getEntryId()) ? "p-1 preview-asset-entry" : StringPool.BLANK %>">
 			<span class="asset-anchor lfr-asset-anchor" id="<%= assetEntry.getEntryId() %>"></span>
 
 			<div class="mb-2">

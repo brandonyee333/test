@@ -18,8 +18,10 @@ import com.liferay.headless.form.client.dto.v1_0.FieldValue;
 import com.liferay.headless.form.client.json.BaseJSONParser;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.Generated;
 
@@ -51,24 +53,24 @@ public class FieldValueSerDes {
 
 		sb.append("{");
 
-		if (fieldValue.getDocument() != null) {
+		if (fieldValue.getFormDocument() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"document\": ");
+			sb.append("\"formDocument\": ");
 
-			sb.append(String.valueOf(fieldValue.getDocument()));
+			sb.append(String.valueOf(fieldValue.getFormDocument()));
 		}
 
-		if (fieldValue.getDocumentId() != null) {
+		if (fieldValue.getFormDocumentId() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
 			}
 
-			sb.append("\"documentId\": ");
+			sb.append("\"formDocumentId\": ");
 
-			sb.append(fieldValue.getDocumentId());
+			sb.append(fieldValue.getFormDocumentId());
 		}
 
 		if (fieldValue.getId() != null) {
@@ -114,6 +116,12 @@ public class FieldValueSerDes {
 		return sb.toString();
 	}
 
+	public static Map<String, Object> toMap(String json) {
+		FieldValueJSONParser fieldValueJSONParser = new FieldValueJSONParser();
+
+		return fieldValueJSONParser.parseToMap(json);
+	}
+
 	public static Map<String, String> toMap(FieldValue fieldValue) {
 		if (fieldValue == null) {
 			return null;
@@ -121,18 +129,21 @@ public class FieldValueSerDes {
 
 		Map<String, String> map = new HashMap<>();
 
-		if (fieldValue.getDocument() == null) {
-			map.put("document", null);
+		if (fieldValue.getFormDocument() == null) {
+			map.put("formDocument", null);
 		}
 		else {
-			map.put("document", String.valueOf(fieldValue.getDocument()));
+			map.put(
+				"formDocument", String.valueOf(fieldValue.getFormDocument()));
 		}
 
-		if (fieldValue.getDocumentId() == null) {
-			map.put("documentId", null);
+		if (fieldValue.getFormDocumentId() == null) {
+			map.put("formDocumentId", null);
 		}
 		else {
-			map.put("documentId", String.valueOf(fieldValue.getDocumentId()));
+			map.put(
+				"formDocumentId",
+				String.valueOf(fieldValue.getFormDocumentId()));
 		}
 
 		if (fieldValue.getId() == null) {
@@ -165,6 +176,35 @@ public class FieldValueSerDes {
 		return string.replaceAll("\"", "\\\\\"");
 	}
 
+	private static String _toJSON(Map<String, ?> map) {
+		StringBuilder sb = new StringBuilder("{");
+
+		@SuppressWarnings("unchecked")
+		Set set = map.entrySet();
+
+		@SuppressWarnings("unchecked")
+		Iterator<Map.Entry<String, ?>> iterator = set.iterator();
+
+		while (iterator.hasNext()) {
+			Map.Entry<String, ?> entry = iterator.next();
+
+			sb.append("\"");
+			sb.append(entry.getKey());
+			sb.append("\":");
+			sb.append("\"");
+			sb.append(entry.getValue());
+			sb.append("\"");
+
+			if (iterator.hasNext()) {
+				sb.append(",");
+			}
+		}
+
+		sb.append("}");
+
+		return sb.toString();
+	}
+
 	private static class FieldValueJSONParser
 		extends BaseJSONParser<FieldValue> {
 
@@ -183,15 +223,15 @@ public class FieldValueSerDes {
 			FieldValue fieldValue, String jsonParserFieldName,
 			Object jsonParserFieldValue) {
 
-			if (Objects.equals(jsonParserFieldName, "document")) {
+			if (Objects.equals(jsonParserFieldName, "formDocument")) {
 				if (jsonParserFieldValue != null) {
-					fieldValue.setDocument(
+					fieldValue.setFormDocument(
 						FormDocumentSerDes.toDTO((String)jsonParserFieldValue));
 				}
 			}
-			else if (Objects.equals(jsonParserFieldName, "documentId")) {
+			else if (Objects.equals(jsonParserFieldName, "formDocumentId")) {
 				if (jsonParserFieldValue != null) {
-					fieldValue.setDocumentId(
+					fieldValue.setFormDocumentId(
 						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}

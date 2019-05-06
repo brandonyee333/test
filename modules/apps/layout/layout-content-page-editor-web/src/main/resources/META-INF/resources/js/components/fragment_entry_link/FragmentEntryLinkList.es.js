@@ -31,12 +31,14 @@ class FragmentEntryLinkList extends Component {
 	static _addDropTargetItemTypesToState(state) {
 		let nextState = state;
 
-		nextState = setIn(nextState,
+		nextState = setIn(
+			nextState,
 			['dropTargetItemTypes'],
 			FRAGMENTS_EDITOR_ITEM_TYPES
 		);
 
-		nextState = setIn(nextState,
+		nextState = setIn(
+			nextState,
 			['fragmentsEditorRowTypes'],
 			FRAGMENTS_EDITOR_ROW_TYPES
 		);
@@ -247,12 +249,12 @@ class FragmentEntryLinkList extends Component {
 				targetBorder = FRAGMENTS_EDITOR_ITEM_BORDERS.top;
 			}
 
-			this.store.dispatchAction(
-				UPDATE_DROP_TARGET,
+			this.store.dispatch(
 				{
 					dropTargetBorder: targetBorder,
 					dropTargetItemId: dropTargetItemData.itemId,
-					dropTargetItemType: dropTargetItemData.itemType
+					dropTargetItemType: dropTargetItemData.itemType,
+					type: UPDATE_DROP_TARGET
 				}
 			);
 		}
@@ -264,8 +266,10 @@ class FragmentEntryLinkList extends Component {
 	 * @review
 	 */
 	_handleDragEnd() {
-		this.store.dispatchAction(
-			CLEAR_DROP_TARGET
+		this.store.dispatch(
+			{
+				type: CLEAR_DROP_TARGET
+			}
 		);
 	}
 

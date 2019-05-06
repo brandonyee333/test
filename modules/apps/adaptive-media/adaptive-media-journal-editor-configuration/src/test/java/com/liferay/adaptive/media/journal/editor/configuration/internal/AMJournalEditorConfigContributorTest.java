@@ -31,10 +31,13 @@ import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import javax.portlet.PortletURL;
 
@@ -231,9 +234,7 @@ public class AMJournalEditorConfigContributorTest extends PowerMockito {
 	}
 
 	@Test
-	public void testAddAMImageFileEntryItemSelectorReturnType()
-		throws Exception {
-
+	public void testAddAMImageFileEntryItemSelectorReturnType() {
 		AMJournalEditorConfigContributor amJournalEditorConfigContributor =
 			new AMJournalEditorConfigContributor();
 
@@ -254,18 +255,16 @@ public class AMJournalEditorConfigContributorTest extends PowerMockito {
 			desiredItemSelectorReturnTypes.toString(), 2,
 			desiredItemSelectorReturnTypes.size());
 
-		ItemSelectorReturnType itemSelectorReturnType0 =
-			desiredItemSelectorReturnTypes.get(0);
-
-		Assert.assertTrue(
-			itemSelectorReturnType0 instanceof
+		_assertContains(
+			desiredItemSelectorReturnTypes,
+			itemSelectorReturnType -> itemSelectorReturnType instanceof
 				AMImageFileEntryItemSelectorReturnType);
 
-		ItemSelectorReturnType itemSelectorReturnType1 =
-			desiredItemSelectorReturnTypes.get(1);
-
-		Assert.assertTrue(
-			itemSelectorReturnType1 instanceof FileEntryItemSelectorReturnType);
+		_assertContains(
+			desiredItemSelectorReturnTypes,
+			itemSelectorReturnType ->
+				itemSelectorReturnType instanceof
+					FileEntryItemSelectorReturnType);
 	}
 
 	@Test
@@ -524,6 +523,14 @@ public class AMJournalEditorConfigContributorTest extends PowerMockito {
 		);
 	}
 
+	private <T> void _assertContains(
+		Collection<T> collection, Predicate<T> predicate) {
+
+		Stream<T> stream = collection.stream();
+
+		Assert.assertTrue(stream.anyMatch(predicate));
+	}
+
 	private List<ItemSelectorCriterion>
 		_getAudioItemSelectorCriterionFileEntryItemSelectorReturnType() {
 
@@ -533,7 +540,7 @@ public class AMJournalEditorConfigContributorTest extends PowerMockito {
 		audioItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 			new FileEntryItemSelectorReturnType());
 
-		return Arrays.asList(audioItemSelectorCriterion);
+		return Collections.singletonList(audioItemSelectorCriterion);
 	}
 
 	private List<ItemSelectorCriterion>
@@ -545,7 +552,7 @@ public class AMJournalEditorConfigContributorTest extends PowerMockito {
 		journalItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 			new FileEntryItemSelectorReturnType());
 
-		return Arrays.asList(journalItemSelectorCriterion);
+		return Collections.singletonList(journalItemSelectorCriterion);
 	}
 
 	private List<ItemSelectorCriterion>
@@ -557,7 +564,7 @@ public class AMJournalEditorConfigContributorTest extends PowerMockito {
 		fileItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 			new FileEntryItemSelectorReturnType());
 
-		return Arrays.asList(fileItemSelectorCriterion);
+		return Collections.singletonList(fileItemSelectorCriterion);
 	}
 
 	private final Map<String, Object> _inputEditorTaglibAttributes =

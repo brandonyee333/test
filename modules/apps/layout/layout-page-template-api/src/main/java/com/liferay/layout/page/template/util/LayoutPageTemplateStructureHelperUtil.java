@@ -34,16 +34,10 @@ public class LayoutPageTemplateStructureHelperUtil {
 	public static JSONObject generateContentLayoutStructure(
 		List<FragmentEntryLink> fragmentEntryLinks) {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		JSONArray structureJSONArray = JSONFactoryUtil.createJSONArray();
 
 		for (int i = 0; i < fragmentEntryLinks.size(); i++) {
 			FragmentEntryLink fragmentEntryLink = fragmentEntryLinks.get(i);
-
-			JSONObject structureJSONObject = JSONFactoryUtil.createJSONObject();
-
-			JSONArray columnJSONArray = JSONFactoryUtil.createJSONArray();
 
 			JSONObject columnJSONObject = JSONUtil.put(
 				"columnId", String.valueOf(i)
@@ -54,10 +48,8 @@ public class LayoutPageTemplateStructureHelperUtil {
 				"size", StringPool.BLANK
 			);
 
-			columnJSONArray.put(columnJSONObject);
-
-			structureJSONObject.put(
-				"columns", columnJSONArray
+			JSONObject structureJSONObject = JSONUtil.put(
+				"columns", JSONUtil.put(columnJSONObject)
 			).put(
 				"rowId", String.valueOf(i)
 			).put(
@@ -67,7 +59,7 @@ public class LayoutPageTemplateStructureHelperUtil {
 			structureJSONArray.put(structureJSONObject);
 		}
 
-		jsonObject.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"config", JSONFactoryUtil.createJSONObject()
 		).put(
 			"nextColumnId", fragmentEntryLinks.size()

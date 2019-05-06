@@ -5,8 +5,9 @@ import position from 'metal-position';
 import Soy from 'metal-soy';
 
 import './FragmentsEditorSidebarCard.es';
-import {ADD_FRAGMENT_ENTRY_LINK, CLEAR_DROP_TARGET, UPDATE_DROP_TARGET, UPDATE_LAST_SAVE_DATE, UPDATE_SAVING_CHANGES_STATUS} from '../../../actions/actions.es';
 import {FRAGMENTS_EDITOR_DRAGGING_CLASS, FRAGMENTS_EDITOR_ITEM_BORDERS, FRAGMENTS_EDITOR_ITEM_TYPES, FRAGMENTS_EDITOR_ROW_TYPES} from '../../../utils/constants';
+import {ADD_FRAGMENT_ENTRY_LINK, CLEAR_DROP_TARGET, UPDATE_DROP_TARGET} from '../../../actions/actions.es';
+import {disableSavingChangesStatusAction, enableSavingChangesStatusAction, updateLastSaveDateAction} from '../../../actions/saveChanges.es';
 import {getConnectedComponent} from '../../../store/ConnectedComponent.es';
 import {initializeDragDrop} from '../../../utils/FragmentsEditorDragDrop.es';
 import {setDraggingItemPosition} from '../../../utils/FragmentsEditorUpdateUtils.es';
@@ -86,12 +87,12 @@ class SidebarAvailableSections extends Component {
 			}
 
 			if (dropTargetItemId && dropTargetItemType) {
-				this.store.dispatchAction(
-					UPDATE_DROP_TARGET,
+				this.store.dispatch(
 					{
 						dropTargetBorder: nearestBorder,
 						dropTargetItemId,
-						dropTargetItemType
+						dropTargetItemType,
+						type: UPDATE_DROP_TARGET
 					}
 				);
 			}
@@ -104,8 +105,10 @@ class SidebarAvailableSections extends Component {
 	 * @review
 	 */
 	_handleDragEnd() {
-		this.store.dispatchAction(
-			CLEAR_DROP_TARGET
+		this.store.dispatch(
+			{
+				type: CLEAR_DROP_TARGET
+			}
 		);
 	}
 
@@ -129,34 +132,21 @@ class SidebarAvailableSections extends Component {
 			);
 
 			this.store
-				.dispatchAction(
-					UPDATE_SAVING_CHANGES_STATUS,
-					{
-						savingChanges: true
-					}
-				)
-				.dispatchAction(
-					ADD_FRAGMENT_ENTRY_LINK,
+				.dispatch(enableSavingChangesStatusAction())
+				.dispatch(
 					{
 						fragmentEntryKey: itemId,
 						fragmentEntryLinkRowType: FRAGMENTS_EDITOR_ROW_TYPES.sectionRow,
-						fragmentName: itemName
+						fragmentName: itemName,
+						type: ADD_FRAGMENT_ENTRY_LINK
 					}
 				)
-				.dispatchAction(
-					UPDATE_LAST_SAVE_DATE,
+				.dispatch(updateLastSaveDateAction())
+				.dispatch(disableSavingChangesStatusAction())
+				.dispatch(
 					{
-						lastSaveDate: new Date()
+						type: CLEAR_DROP_TARGET
 					}
-				)
-				.dispatchAction(
-					UPDATE_SAVING_CHANGES_STATUS,
-					{
-						savingChanges: false
-					}
-				)
-				.dispatchAction(
-					CLEAR_DROP_TARGET
 				);
 		}
 	}
@@ -171,32 +161,17 @@ class SidebarAvailableSections extends Component {
 	 */
 	_handleEntryClick(event) {
 		this.store
-			.dispatchAction(
-				UPDATE_SAVING_CHANGES_STATUS,
-				{
-					savingChanges: true
-				}
-			)
-			.dispatchAction(
-				ADD_FRAGMENT_ENTRY_LINK,
+			.dispatch(enableSavingChangesStatusAction())
+			.dispatch(
 				{
 					fragmentEntryKey: event.itemId,
 					fragmentEntryLinkRowType: FRAGMENTS_EDITOR_ROW_TYPES.sectionRow,
-					fragmentName: event.itemName
+					fragmentName: event.itemName,
+					type: ADD_FRAGMENT_ENTRY_LINK
 				}
 			)
-			.dispatchAction(
-				UPDATE_LAST_SAVE_DATE,
-				{
-					lastSaveDate: new Date()
-				}
-			)
-			.dispatchAction(
-				UPDATE_SAVING_CHANGES_STATUS,
-				{
-					savingChanges: false
-				}
-			);
+			.dispatch(updateLastSaveDateAction())
+			.dispatch(disableSavingChangesStatusAction());
 	}
 
 	/**

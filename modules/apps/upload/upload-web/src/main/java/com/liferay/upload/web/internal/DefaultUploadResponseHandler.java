@@ -23,7 +23,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.editor.EditorConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil;
@@ -116,8 +115,6 @@ public class DefaultUploadResponseHandler implements UploadResponseHandler {
 			UploadPortletRequest uploadPortletRequest, FileEntry fileEntry)
 		throws PortalException {
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		JSONObject imageJSONObject = JSONUtil.put(
 			"attributeDataImageId", EditorConstants.ATTRIBUTE_DATA_IMAGE_ID
 		).put(
@@ -151,13 +148,11 @@ public class DefaultUploadResponseHandler implements UploadResponseHandler {
 			"uuid", fileEntry.getUuid()
 		);
 
-		jsonObject.put(
+		return JSONUtil.put(
 			"file", imageJSONObject
 		).put(
 			"success", Boolean.TRUE
 		);
-
-		return jsonObject;
 	}
 
 	@Activate

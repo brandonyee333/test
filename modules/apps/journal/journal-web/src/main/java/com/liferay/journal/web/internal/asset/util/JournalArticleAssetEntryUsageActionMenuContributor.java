@@ -14,8 +14,8 @@
 
 package com.liferay.journal.web.internal.asset.util;
 
-import com.liferay.asset.constants.AssetEntryUsageConstants;
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.asset.model.AssetEntryUsage;
 import com.liferay.asset.util.AssetEntryUsageActionMenuContributor;
@@ -25,6 +25,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.web.internal.security.permission.resource.JournalArticlePermission;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -40,7 +41,6 @@ import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -69,10 +69,6 @@ public class JournalArticleAssetEntryUsageActionMenuContributor
 	public List<DropdownItem> getAssetEntryUsageActionMenu(
 		AssetEntryUsage assetEntryUsage, HttpServletRequest request) {
 
-		if (assetEntryUsage.getType() != AssetEntryUsageConstants.TYPE_LAYOUT) {
-			return Collections.emptyList();
-		}
-
 		AssetEntry assetEntry = _assetEntryLocalService.fetchEntry(
 			assetEntryUsage.getAssetEntryId());
 
@@ -97,7 +93,10 @@ public class JournalArticleAssetEntryUsageActionMenuContributor
 					add(
 						dropdownItem -> {
 							dropdownItem.setHref(
-								_getURL(assetEntryUsage, 0, request));
+								_getURL(
+									assetEntryUsage,
+									AssetRendererFactory.TYPE_LATEST_APPROVED,
+									request));
 							dropdownItem.setLabel(
 								LanguageUtil.get(
 									resourceBundle, "view-in-page"));
@@ -129,7 +128,7 @@ public class JournalArticleAssetEntryUsageActionMenuContributor
 									dropdownItem.setHref(
 										_getURL(
 											assetEntryUsage,
-											assetEntryUsage.getAssetEntryId(),
+											AssetRendererFactory.TYPE_LATEST,
 											request));
 									dropdownItem.setLabel(label);
 								});
@@ -144,7 +143,7 @@ public class JournalArticleAssetEntryUsageActionMenuContributor
 	}
 
 	private String _getURL(
-			AssetEntryUsage assetEntryUsage, long previewAssetEntryId,
+			AssetEntryUsage assetEntryUsage, int previewAssetEntryType,
 			HttpServletRequest request)
 		throws PortalException {
 
@@ -161,21 +160,23 @@ public class JournalArticleAssetEntryUsageActionMenuContributor
 
 			layoutURL = _portal.getLayoutFriendlyURL(layout, themeDisplay);
 
-			if (previewAssetEntryId > 0) {
-				layoutURL = _http.setParameter(
-					layoutURL, "previewAssetEntryId",
-					String.valueOf(previewAssetEntryId));
-			}
+			layoutURL = _http.setParameter(
+				layoutURL, "previewAssetEntryId",
+				String.valueOf(assetEntryUsage.getAssetEntryId()));
+			layoutURL = _http.setParameter(
+				layoutURL, "previewAssetEntryType",
+				String.valueOf(previewAssetEntryType));
 		}
 		else {
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				request, assetEntryUsage.getContainerKey(),
 				assetEntryUsage.getPlid(), PortletRequest.RENDER_PHASE);
 
-			if (previewAssetEntryId > 0) {
-				portletURL.setParameter(
-					"previewAssetEntryId", String.valueOf(previewAssetEntryId));
-			}
+			portletURL.setParameter(
+				"previewAssetEntryId",
+				String.valueOf(assetEntryUsage.getAssetEntryId()));
+			portletURL.setParameter(
+				"previewAssetEntryType", String.valueOf(previewAssetEntryType));
 
 			layoutURL = portletURL.toString();
 		}
@@ -201,6 +202,10 @@ public class JournalArticleAssetEntryUsageActionMenuContributor
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
+
+	@Reference
+	private LayoutPageTemplateEntryLocalService
+		_layoutPageTemplateEntryLocalService;
 
 	@Reference
 	private Portal _portal;

@@ -14,8 +14,11 @@
 
 package com.liferay.talend.service;
 
+import com.liferay.talend.configuration.OperationAction;
 import com.liferay.talend.data.store.GenericDataStore;
+import com.liferay.talend.data.store.OutputDataStore;
 import com.liferay.talend.dataset.InputDataSet;
+import com.liferay.talend.dataset.OutputDataSet;
 import com.liferay.talend.http.client.exception.MalformedURLException;
 import com.liferay.talend.util.StringUtils;
 
@@ -30,6 +33,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.json.JsonObject;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 
 import org.talend.sdk.component.api.record.Schema;
 import org.talend.sdk.component.api.service.Service;
@@ -100,7 +105,7 @@ public class LiferayService {
 		String endpoint = inputDataSet.getEndpoint();
 
 		JsonObject openAPISpecJsonObject = _getOpenAPISpecJsonObject(
-			inputDataSet);
+			inputDataSet.getGenericDataStore());
 
 		Map<String, String> pathResponseEntities = _mapKeysToPatternEvaluations(
 			_GET_METHOD_RESPONSE_REGEX,
@@ -137,13 +142,29 @@ public class LiferayService {
 
 	public List<String> getPageableEndpoints(InputDataSet inputDataSet) {
 		JsonObject openAPISpecJsonObject = _getOpenAPISpecJsonObject(
-			inputDataSet);
+			inputDataSet.getGenericDataStore());
 
 		if (openAPISpecJsonObject == null) {
 			return Collections.emptyList();
 		}
 
 		return getPageableEndpoints(openAPISpecJsonObject);
+	}
+
+	public List<String> getUpdatableEndpoints(OutputDataSet outputDataSet) {
+		OutputDataStore outputDataStore = outputDataSet.getOutputDataStore();
+
+		JsonObject openAPISpecJsonObject = _getOpenAPISpecJsonObject(
+			outputDataStore);
+
+		if (openAPISpecJsonObject == null) {
+			return Collections.emptyList();
+		}
+
+		OperationAction operationAction = outputDataStore.getOperationAction();
+
+		return getMethodEndpoints(
+			operationAction.getHttpMethod(), openAPISpecJsonObject);
 	}
 
 	public boolean isValidOpenAPISpecURL(String endpointURL) {
@@ -162,6 +183,19 @@ public class LiferayService {
 				"Provided Open API Specification URL does not match pattern: " +
 					_openAPISpecURLPattern.pattern());
 		}
+	}
+
+	protected List<String> getMethodEndpoints(
+		String method, JsonObject openAPISpecJsonObject) {
+
+		Map<String, String> pathResponseEntities = _mapKeysToPatternEvaluations(
+			method, openAPISpecJsonObject.getJsonObject("paths"));
+
+		List<String> endpoints = new ArrayList<>(pathResponseEntities.keySet());
+
+		Collections.sort(endpoints);
+
+		return endpoints;
 	}
 
 	protected List<String> getPageableEndpoints(
@@ -190,25 +224,19 @@ public class LiferayService {
 	 *         otherwise
 	 */
 	private String _evaluatePattern(String pattern, JsonObject jsonObject) {
-		int delimiterIdx = pattern.indexOf(">");
+		JsonValue jsonValue = _findByPattern(pattern, jsonObject);
 
-		if (delimiterIdx == -1) {
-			if (jsonObject.containsKey(pattern)) {
-				return jsonObject.getString(pattern);
-			}
-
+		if (jsonValue == null) {
 			return null;
 		}
 
-		String substring = pattern.substring(0, delimiterIdx);
-
-		if (!jsonObject.containsKey(substring)) {
-			return null;
+		if (jsonValue.getValueType() != JsonValue.ValueType.STRING) {
+			return jsonValue.toString();
 		}
 
-		return _evaluatePattern(
-			pattern.substring(delimiterIdx + 1),
-			jsonObject.getJsonObject(substring));
+		JsonString jsonString = (JsonString)jsonValue;
+
+		return jsonString.getString();
 	}
 
 	private List<String> _filterPageableEndpoints(
@@ -243,8 +271,44 @@ public class LiferayService {
 		return pageableEndpoints;
 	}
 
-	private JsonObject _getOpenAPISpecJsonObject(InputDataSet inputDataSet) {
-		GenericDataStore genericDataStore = inputDataSet.getGenericDataStore();
+	/**
+	 * Gets json node pointed by given <code>pattern</code>.
+	 *
+	 * Method recursively resolves value searched by given pattern.
+	 *
+	 * <code>pattern</code> must match key1>key2>...>keyN syntax where key is
+	 * expected key value in given json structure.
+	 *
+	 * @param  pattern
+	 * @param  jsonObject
+	 * @return keyN string value of (N-1)th <code>jsonObject</code> if keyN is
+	 *         reachable through given <code>pattern</code>, <code>null</code>
+	 *         otherwise
+	 */
+	private JsonValue _findByPattern(String pattern, JsonObject jsonObject) {
+		int delimiterIdx = pattern.indexOf(">");
+
+		if (delimiterIdx == -1) {
+			if (jsonObject.containsKey(pattern)) {
+				return jsonObject.get(pattern);
+			}
+
+			return null;
+		}
+
+		String substring = pattern.substring(0, delimiterIdx);
+
+		if (!jsonObject.containsKey(substring)) {
+			return null;
+		}
+
+		return _findByPattern(
+			pattern.substring(delimiterIdx + 1),
+			jsonObject.getJsonObject(substring));
+	}
+
+	private JsonObject _getOpenAPISpecJsonObject(
+		GenericDataStore genericDataStore) {
 
 		URL openAPISpecURL = genericDataStore.getOpenAPISpecURL();
 
@@ -252,7 +316,8 @@ public class LiferayService {
 
 		String endpoint = extractEndpointPathSegment(openAPISpecURL);
 
-		return _connectionService.getResponseJsonObject(inputDataSet, endpoint);
+		return _connectionService.getResponseJsonObject(
+			genericDataStore, endpoint);
 	}
 
 	/**

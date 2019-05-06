@@ -33,6 +33,7 @@ import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
 import com.liferay.fragment.service.FragmentEntryLocalServiceUtil;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorWebKeys;
+import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
@@ -70,17 +71,11 @@ import javax.portlet.RenderResponse;
 public class AssetEntryUsagesDisplayContext {
 
 	public AssetEntryUsagesDisplayContext(
-		RenderRequest renderRequest, RenderResponse renderResponse) {
+		RenderRequest renderRequest, RenderResponse renderResponse,
+		String className, long classPK) {
 
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
-
-		long classPK = GetterUtil.getLong(
-			(String)_renderRequest.getAttribute(
-				"liferay-asset:asset-entry-usages:classPK"));
-		String className = GetterUtil.getString(
-			_renderRequest.getAttribute(
-				"liferay-asset:asset-entry-usages:className"));
 
 		_assetEntry = AssetEntryLocalServiceUtil.fetchEntry(className, classPK);
 
@@ -106,9 +101,7 @@ public class AssetEntryUsagesDisplayContext {
 	public List<DropdownItem> getAssetEntryUsageActionDropdownItems(
 		AssetEntryUsage assetEntryUsage) {
 
-		if (assetEntryUsage.getType() ==
-				AssetEntryUsageConstants.TYPE_DISPLAY_PAGE_TEMPLATE) {
-
+		if (!isShowPreview(assetEntryUsage)) {
 			return Collections.emptyList();
 		}
 
@@ -352,6 +345,48 @@ public class AssetEntryUsagesDisplayContext {
 		return _searchContainer;
 	}
 
+	public boolean isShowPreview(AssetEntryUsage assetEntryUsage) {
+		if (assetEntryUsage.getType() == AssetEntryUsageConstants.TYPE_LAYOUT) {
+			return true;
+		}
+
+		if (assetEntryUsage.getType() ==
+				AssetEntryUsageConstants.TYPE_DISPLAY_PAGE_TEMPLATE) {
+
+			return false;
+		}
+
+		if (assetEntryUsage.getType() !=
+				AssetEntryUsageConstants.TYPE_PAGE_TEMPLATE) {
+
+			return false;
+		}
+
+		long plid = assetEntryUsage.getPlid();
+
+		Layout layout = LayoutLocalServiceUtil.fetchLayout(plid);
+
+		if ((layout.getClassNameId() > 0) && (layout.getClassPK() > 0)) {
+			plid = layout.getClassPK();
+		}
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			LayoutPageTemplateEntryLocalServiceUtil.
+				fetchLayoutPageTemplateEntryByPlid(plid);
+
+		if (layoutPageTemplateEntry == null) {
+			return false;
+		}
+
+		if (layoutPageTemplateEntry.getType() ==
+				LayoutPageTemplateEntryTypeConstants.TYPE_WIDGET_PAGE) {
+
+			return false;
+		}
+
+		return true;
+	}
+
 	private String _getFragmentEntryName(FragmentEntryLink fragmentEntryLink) {
 		FragmentEntry fragmentEntry =
 			FragmentEntryLocalServiceUtil.fetchFragmentEntry(
@@ -367,12 +402,11 @@ public class AssetEntryUsagesDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		Map<String, FragmentEntry> fragmentCollectionContributorEntries =
-			_fragmentCollectionContributorTracker.
-				getFragmentCollectionContributorEntries();
+		Map<String, FragmentEntry> fragmentEntries =
+			_fragmentCollectionContributorTracker.getFragmentEntries();
 
-		FragmentEntry contributedFragmentEntry =
-			fragmentCollectionContributorEntries.get(rendererKey);
+		FragmentEntry contributedFragmentEntry = fragmentEntries.get(
+			rendererKey);
 
 		if (contributedFragmentEntry != null) {
 			return contributedFragmentEntry.getName();
@@ -426,12 +460,11 @@ public class AssetEntryUsagesDisplayContext {
 			return 0;
 		}
 
-		Map<String, FragmentEntry> fragmentCollectionContributorEntries =
-			_fragmentCollectionContributorTracker.
-				getFragmentCollectionContributorEntries();
+		Map<String, FragmentEntry> fragmentEntries =
+			_fragmentCollectionContributorTracker.getFragmentEntries();
 
-		FragmentEntry contributedFragmentEntry =
-			fragmentCollectionContributorEntries.get(rendererKey);
+		FragmentEntry contributedFragmentEntry = fragmentEntries.get(
+			rendererKey);
 
 		if (contributedFragmentEntry != null) {
 			return contributedFragmentEntry.getType();

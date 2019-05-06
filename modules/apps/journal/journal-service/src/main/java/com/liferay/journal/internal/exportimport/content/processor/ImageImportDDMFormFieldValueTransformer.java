@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.StagedModel;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.HtmlUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.DocumentException;
 import com.liferay.portal.kernel.xml.Element;
@@ -82,7 +83,8 @@ public class ImageImportDDMFormFieldValueTransformer
 				valueString);
 
 			FileEntry importedFileEntry = fetchImportedFileEntry(
-				_portletDataContext, jsonObject.getLong("fileEntryId"));
+				_portletDataContext, jsonObject.getLong("fileEntryId"),
+				jsonObject.getString("uuid"));
 
 			if (importedFileEntry == null) {
 				continue;
@@ -116,7 +118,7 @@ public class ImageImportDDMFormFieldValueTransformer
 	}
 
 	protected FileEntry fetchImportedFileEntry(
-			PortletDataContext portletDataContext, long oldClassPK)
+			PortletDataContext portletDataContext, long oldClassPK, String uuid)
 		throws PortalException {
 
 		Map<Long, Long> fileEntryPKs =
@@ -126,6 +128,11 @@ public class ImageImportDDMFormFieldValueTransformer
 		Long classPK = fileEntryPKs.get(oldClassPK);
 
 		if (classPK == null) {
+			if (Validator.isNotNull(uuid)) {
+				return _dlAppService.getFileEntryByUuidAndGroupId(
+					uuid, portletDataContext.getScopeGroupId());
+			}
+
 			return null;
 		}
 

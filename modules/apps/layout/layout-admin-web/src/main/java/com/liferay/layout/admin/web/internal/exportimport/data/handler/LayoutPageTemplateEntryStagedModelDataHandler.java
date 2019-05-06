@@ -103,6 +103,14 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 			StagedModelDataHandlerUtil.exportReferenceStagedModel(
 				portletDataContext, layoutPageTemplateEntry, layout,
 				PortletDataContext.REFERENCE_TYPE_DEPENDENCY);
+
+			Element layoutPageTemplateEntryElement =
+				portletDataContext.getExportDataElement(
+					layoutPageTemplateEntry);
+
+			portletDataContext.addReferenceElement(
+				layoutPageTemplateEntry, layoutPageTemplateEntryElement, layout,
+				PortletDataContext.REFERENCE_TYPE_DEPENDENCY, false);
 		}
 
 		_exportAssetDisplayPages(portletDataContext, layoutPageTemplateEntry);
@@ -166,7 +174,7 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 		}
 		else {
 			existingLayoutPageTemplateEntry = fetchExistingTemplate(
-				uuid, groupId, name, preloaded);
+				uuid, groupId, name, 0L, preloaded);
 		}
 
 		if (existingLayoutPageTemplateEntry == null) {
@@ -298,7 +306,7 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 				fetchExistingTemplate(
 					layoutPageTemplateEntry.getUuid(),
 					portletDataContext.getScopeGroupId(),
-					layoutPageTemplateEntry.getName(), preloaded);
+					layoutPageTemplateEntry.getName(), plid, preloaded);
 
 			if (existingLayoutPageTemplateEntry == null) {
 				importedLayoutPageTemplateEntry =
@@ -330,7 +338,7 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 	}
 
 	protected LayoutPageTemplateEntry fetchExistingTemplate(
-		String uuid, long groupId, String name, boolean preloaded) {
+		String uuid, long groupId, String name, long plid, boolean preloaded) {
 
 		LayoutPageTemplateEntry existingTemplate = null;
 
@@ -339,7 +347,13 @@ public class LayoutPageTemplateEntryStagedModelDataHandler
 				_stagedModelRepository.fetchStagedModelByUuidAndGroupId(
 					uuid, groupId);
 		}
-		else {
+		else if (plid > 0) {
+			existingTemplate =
+				_layoutPageTemplateEntryLocalService.
+					fetchLayoutPageTemplateEntryByPlid(plid);
+		}
+
+		if ((existingTemplate == null) && preloaded) {
 			existingTemplate =
 				_layoutPageTemplateEntryLocalService.
 					fetchLayoutPageTemplateEntry(groupId, name);

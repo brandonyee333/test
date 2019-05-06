@@ -4,7 +4,8 @@ import Soy from 'metal-soy';
 import {Config} from 'metal-state';
 import {Drag, DragDrop} from 'metal-drag-drop';
 
-import {ADD_PORTLET, CLEAR_DROP_TARGET, UPDATE_DROP_TARGET, UPDATE_LAST_SAVE_DATE, UPDATE_SAVING_CHANGES_STATUS} from '../../../actions/actions.es';
+import {ADD_PORTLET, CLEAR_DROP_TARGET, UPDATE_DROP_TARGET} from '../../../actions/actions.es';
+import {disableSavingChangesStatusAction, enableSavingChangesStatusAction, updateLastSaveDateAction} from '../../../actions/saveChanges.es';
 import {FRAGMENTS_EDITOR_DRAGGING_CLASS, FRAGMENTS_EDITOR_ITEM_BORDERS, FRAGMENTS_EDITOR_ITEM_TYPES} from '../../../utils/constants';
 import {getConnectedComponent} from '../../../store/ConnectedComponent.es';
 import {initializeDragDrop} from '../../../utils/FragmentsEditorDragDrop.es';
@@ -208,12 +209,12 @@ class SidebarWidgetsPanel extends Component {
 				dropTargetItemType = FRAGMENTS_EDITOR_ITEM_TYPES.row;
 			}
 
-			this.store.dispatchAction(
-				UPDATE_DROP_TARGET,
+			this.store.dispatch(
 				{
 					dropTargetBorder: nearestBorder,
 					dropTargetItemId,
-					dropTargetItemType
+					dropTargetItemType,
+					type: UPDATE_DROP_TARGET
 				}
 			);
 		}
@@ -225,8 +226,10 @@ class SidebarWidgetsPanel extends Component {
 	 * @review
 	 */
 	_handleDragEnd() {
-		this.store.dispatchAction(
-			CLEAR_DROP_TARGET
+		this.store.dispatch(
+			{
+				type: CLEAR_DROP_TARGET
+			}
 		);
 	}
 
@@ -266,33 +269,20 @@ class SidebarWidgetsPanel extends Component {
 			);
 
 			this.store
-				.dispatchAction(
-					UPDATE_SAVING_CHANGES_STATUS,
-					{
-						savingChanges: true
-					}
-				)
-				.dispatchAction(
-					ADD_PORTLET,
+				.dispatch(enableSavingChangesStatusAction())
+				.dispatch(
 					{
 						instanceable,
-						portletId
+						portletId,
+						type: ADD_PORTLET
 					}
 				)
-				.dispatchAction(
-					UPDATE_LAST_SAVE_DATE,
+				.dispatch(updateLastSaveDateAction())
+				.dispatch(disableSavingChangesStatusAction())
+				.dispatch(
 					{
-						lastSaveDate: new Date()
+						type: CLEAR_DROP_TARGET
 					}
-				)
-				.dispatchAction(
-					UPDATE_SAVING_CHANGES_STATUS,
-					{
-						savingChanges: false
-					}
-				)
-				.dispatchAction(
-					CLEAR_DROP_TARGET
 				);
 		}
 	}

@@ -648,8 +648,6 @@ public class CalendarPortlet extends MVCPortlet {
 				themeDisplay, calendarBooking, timeZone);
 		}
 		catch (PortalException pe) {
-			jsonObject = JSONFactoryUtil.createJSONObject();
-
 			String errorMessage = "";
 
 			if (pe instanceof AssetCategoryException) {
@@ -658,7 +656,7 @@ public class CalendarPortlet extends MVCPortlet {
 				errorMessage = getErrorMessageForException(ace, themeDisplay);
 			}
 
-			jsonObject.put("exception", errorMessage);
+			jsonObject = JSONUtil.put("exception", errorMessage);
 		}
 
 		hideDefaultSuccessMessage(actionRequest);
@@ -1607,14 +1605,13 @@ public class CalendarPortlet extends MVCPortlet {
 		java.util.Calendar startTimeJCalendar = getJCalendar(
 			resourceRequest, "startTime");
 
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
 		boolean result =
 			_calendarBookingLocalService.hasExclusiveCalendarBooking(
 				calendar, startTimeJCalendar.getTimeInMillis(),
 				endTimeJCalendar.getTimeInMillis());
 
-		jsonObject.put("hasExclusiveCalendarBooking", result);
+		JSONObject jsonObject = JSONUtil.put(
+			"hasExclusiveCalendarBooking", result);
 
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}

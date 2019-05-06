@@ -198,6 +198,97 @@ definition {
 		}
 	}
 
+	@description = "This is a test for LPS-95045. A user should be able to add an image fragment and change the image in the fragment."
+	@priority = "5"
+	test AddContentPageWithImageFragment {
+		property portal.acceptance = "true";
+
+		task ("Add a content page") {
+			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+			ContentPages.addPage(pageName = "Test Content Page Name");
+		}
+
+		task ("Add an Image fragment to the content page") {
+			PageEditor.addFragment(
+				collectionName = "Collection Name",
+				fragmentName = "Image");
+		}
+
+		task ("Edit the Image fragment's image") {
+			PageEditor.editFragmentImage(
+				fileName = "Document_1.png",
+				fragmentName = "Image",
+				id = "image");
+		}
+
+		task ("Assert the Image fragment's image was changed") {
+			AssertVisible(
+				key_fragmentClass = "image",
+				key_image = "Document_1.png",
+				key_position = "1",
+				locator1 = "Fragment#PAGE_EDITOR_FRAGMENT_IMAGE");
+		}
+
+		task ("Publish the content page") {
+			PageEditor.clickPublish();
+		}
+
+		task ("Navigate to the content page") {
+			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/test-content-page-name");
+		}
+
+		task ("Assert the Image fragment appears with the image") {
+			AssertVisible(
+				key_fragmentClass = "image",
+				key_image = "Document_1.png",
+				key_position = "1",
+				locator1 = "Fragment#FRAGMENT_IMAGE");
+		}
+
+		task ("Navigate to the content page's 'Edit Mode'") {
+			ContentPages.clickPencil();
+		}
+
+		task ("Assert the Image fragment's image has persisted") {
+			AssertVisible(
+				key_fragmentClass = "image",
+				key_image = "Document_1.png",
+				key_position = "1",
+				locator1 = "Fragment#PAGE_EDITOR_FRAGMENT_IMAGE");
+		}
+	}
+
+	@description = "This is a test for LPS-95042. Liferay should come out of the box with fragments."
+	@priority = "5"
+	test AddContentPageWithOOTBFragment {
+		property portal.acceptance = "true";
+
+		task ("Add a content page") {
+			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+			ContentPages.addPage(pageName = "Test Content Page Name");
+		}
+
+		task ("Add a Title fragment to the content page") {
+			PageEditor.addFragment(
+				collectionName = "Basic Sections",
+				fragmentName = "Banner Center");
+		}
+
+		task ("Publish the content page") {
+			PageEditor.clickPublish();
+		}
+
+		task ("Navigate to the content page") {
+			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/test-content-page-name");
+		}
+
+		task ("Assert the Banner Center fragment is on the page") {
+			AssertVisible(locator1 = "//section//div[contains(@class,'banner')]");
+		}
+	}
+
 	@description = "Users can only edit content pages in edit mode."
 	@priority = "5"
 	test CannotEditInViewMode {
@@ -232,13 +323,86 @@ definition {
 		}
 	}
 
-	@description = "This is a test for LPS-78726. Discarding a draft will revert a content page back to its most recent published version."
+	@description = "This is a test for LPS-91000 and LPS-95002. User can edit number of columns a section has as well as padding options."
 	@priority = "5"
-	test DiscardContentPageDraft {
+	test ChangeLayoutSectionProperties {
+		property portal.acceptance = "true";
+
 		task ("Add a content page") {
 			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
 
 			ContentPages.addPage(pageName = "Test Content Page Name");
+		}
+
+		task ("Add a 2 column layout") {
+			PageEditor.addLayoutSection(columnCount = "2");
+		}
+
+		task ("Assert the layout has exacty 2 columns") {
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-6')][1]");
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-6')][2]");
+			AssertElementNotPresent(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-6')][3]");
+		}
+
+		task ("Assert the layout by default has vertical padding x1") {
+			AssertVisible(locator1 = "//section[contains(@class,'py-3')]");
+		}
+
+		task ("Assert the layout by default has horizontal padding x1") {
+			AssertVisible(locator1 = "//section[contains(@class,'px-3')]");
+		}
+
+		task ("Assert the layout by default has space between columns") {
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'row')][not(contains(@class,'no-gutters'))]");
+		}
+
+		task ("Edit the layout's spacing properties") {
+			PageEditor.editLayoutSectionSpacing(
+				numberOfColumns = "3",
+				paddingH = "x10",
+				paddingV = "x4",
+				spaceBetweenColumns = "false");
+		}
+
+		task ("Assert the layout now has exacty 2 columns") {
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-4')][1]");
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-4')][2]");
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-4')][3]");
+			AssertElementNotPresent(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'col-4')][4]");
+		}
+
+		task ("Assert the layout now has vertical padding x4") {
+			AssertVisible(locator1 = "//section[contains(@class,'py-5')]");
+		}
+
+		task ("Assert the layout now has horizontal padding x10") {
+			AssertVisible(locator1 = "//section[contains(@class,'px-8')]");
+		}
+
+		task ("Assert the layout now has no space between columns") {
+			AssertVisible(locator1 = "//section[contains(@class,'fragment-entry-link')]//div[contains(@class,'row')][contains(@class,'no-gutters')]");
+		}
+	}
+
+	@description = "This is a test for LPS-78726. Discarding a draft will revert a content page back to its most recent published version."
+	@priority = "5"
+	test DiscardContentPageDraft {
+		property portal.acceptance = "true";
+
+		task ("Add a content page") {
+			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+			ContentPages.addPage(pageName = "Test Content Page Name");
+		}
+
+		task ("Assert the Discard Draft and Publish buttons start off disabled") {
+			AssertVisible(
+				key_text = "Discard Draft",
+				locator1 = "Button#ANY_DISABLED");
+
+			AssertVisible(
+				key_text = "Publish",
+				locator1 = "Button#ANY_DISABLED");
 		}
 
 		task ("Add a Title fragment to the content page") {
@@ -259,7 +423,23 @@ definition {
 				locator1 = "Fragment#FRAGMENT");
 		}
 
-		task ("Assert the Discard Draft and Publish buttons are still enabled") {
+		task ("Assert the Discard Draft and Publish buttons are now disabled") {
+			AssertVisible(
+				key_text = "Discard Draft",
+				locator1 = "Button#ANY_DISABLED");
+
+			AssertVisible(
+				key_text = "Publish",
+				locator1 = "Button#ANY_DISABLED");
+		}
+
+		task ("Add a Title fragment to the content page") {
+			PageEditor.addFragment(
+				collectionName = "Collection Name",
+				fragmentName = "Title");
+		}
+
+		task ("Assert the Discard Draft and Publish buttons are now enabled") {
 			AssertVisible(
 				key_text = "Discard Draft",
 				locator1 = "Button#ANY_ENABLED");
@@ -267,12 +447,6 @@ definition {
 			AssertVisible(
 				key_text = "Publish",
 				locator1 = "Button#ANY_ENABLED");
-		}
-
-		task ("Add a Title fragment to the content page") {
-			PageEditor.addFragment(
-				collectionName = "Collection Name",
-				fragmentName = "Title");
 		}
 
 		task ("Publish the content page") {

@@ -46,6 +46,14 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro gotoDelete {
+		Click.waitForMenuToggleJSClick(
+			key_rowEntry = "${rowEntry}",
+			locator1 = "Icon#TABLE_VERTICAL_ELLIPSIS");
+
+		MenuItem.click(menuItem = "Delete");
+	}
+
 	macro publishChangeList {
 		Click(locator1 = "Button#PUBLISH");
 
@@ -149,23 +157,21 @@ definition {
 			value1 = "${nbrOfDeletedItems}");
 	}
 
-	macro viewNoStagingMenuitemsNotAvailable {
-		AssertElementNotPresent(locator1 = "Icon#HEADER_VERTICAL_ELLIPSIS");
-
-		ProductMenuHelper.expandPanel(panel = "Site Administration");
-
-		ProductMenuHelper.expandCategory(category = "Publishing");
-
-		AssertElementNotPresent(
-			key_portlet = "Staging",
-			locator1 = "ProductMenu#PORTLET",
-			value1 = "Staging");
-	}
-
 	macro viewModifiedItemCounter {
 		AssertTextEquals(
 			locator1 = "ChangeList#CHANGE_LIST_MODIFIED",
 			value1 = "${nbrOfModifiedItems}");
+	}
+
+	macro viewNoStagingMenuitemsNotAvailable {
+		AssertElementNotPresent(locator1 = "Icon#HEADER_VERTICAL_ELLIPSIS");
+
+		ProductMenu.gotoPortlet(
+			category = "Publishing",
+			panel = "Site Administration",
+			portlet = "Staging");
+
+		Alert.viewWarningSpecific(warningMessage = "Change lists are enabled for the current virtual instance. Staging and change lists cannot be used together.");
 	}
 
 	macro viewPublishedChangeListDetails {

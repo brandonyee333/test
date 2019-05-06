@@ -1429,7 +1429,7 @@ definition {
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+		WebContentNavigator.gotoEditCP(webContentTitle = "Untitled");
 
 		WebContent.editCP(
 			webContentContentEdit = "WC WebContent Content Edit",
@@ -1443,10 +1443,6 @@ definition {
 		WebContentTemplates.addNullCP();
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		Navigator.gotoNavItem(navItem = "Templates");
-
-		WebContentTemplates.addNullCP();
 
 		WebContent.openWebContentAdmin(siteURLKey = "test-site-name");
 
