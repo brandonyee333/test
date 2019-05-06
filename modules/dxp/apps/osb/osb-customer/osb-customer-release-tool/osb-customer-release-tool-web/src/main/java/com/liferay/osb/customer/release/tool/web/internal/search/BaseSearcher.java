@@ -41,10 +41,10 @@ public abstract class BaseSearcher {
 		PortletRequest portletRequest, MimeResponse mimeResponse) {
 
 		try {
-			double productVersion = ParamUtil.getDouble(
-				portletRequest, "productVersion");
+			double fromProductVersion = ParamUtil.getDouble(
+				portletRequest, "fromProductVersion");
 
-			if (productVersion <= 0) {
+			if (fromProductVersion <= 0) {
 				return emptySearch();
 			}
 

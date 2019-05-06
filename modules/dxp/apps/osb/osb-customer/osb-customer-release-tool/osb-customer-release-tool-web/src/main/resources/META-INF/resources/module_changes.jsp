@@ -21,7 +21,7 @@ String tabs1 = ParamUtil.getString(request, "tabs1");
 
 double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 String product = ParamUtil.getString(request, "product");
-double productVersion = ParamUtil.getDouble(request, "productVersion");
+double fromProductVersion = ParamUtil.getDouble(request, "fromProductVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
 String moduleChangesDescription = StringPool.BLANK;
@@ -39,7 +39,7 @@ if (journalArticle != null) {
 	<portlet:param name="tabs1" value="<%= tabs1 %>" />
 	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="product" value="<%= product %>" />
-	<portlet:param name="productVersion" value="<%= String.valueOf(productVersion) %>" />
+	<portlet:param name="fromProductVersion" value="<%= String.valueOf(fromProductVersion) %>" />
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 

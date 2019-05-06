@@ -33,6 +33,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	property = {
 		"javax.portlet.name=" + ReleaseToolPortletKeys.RELEASE_TOOL,
+		"javax.portlet.name=" + ReleaseToolPortletKeys.MODULE_VERSION_UPGRADE,
 		"mvc.command.name=/artifact_versions"
 	},
 	service = MVCResourceCommand.class

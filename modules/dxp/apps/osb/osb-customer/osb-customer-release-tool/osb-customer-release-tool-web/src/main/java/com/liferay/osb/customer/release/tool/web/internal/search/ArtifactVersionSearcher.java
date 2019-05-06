@@ -45,10 +45,12 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 		throws Exception {
 
 		String product = ParamUtil.getString(portletRequest, "product");
-		double productVersion = ParamUtil.getDouble(
-			portletRequest, "productVersion");
+		double fromProductVersion = ParamUtil.getDouble(
+			portletRequest, "fromProductVersion");
 		double fromFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "fromFixPackVersion");
+		double toProductVersion = ParamUtil.getDouble(
+			portletRequest, "toProductVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "toFixPackVersion");
 		String keywords = ParamUtil.getString(portletRequest, "keywords");
@@ -56,16 +58,28 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 		boolean changesOnly = ParamUtil.getBoolean(
 			portletRequest, "changesOnly");
 
-		AssetCategory productAssetCategory =
+		AssetCategory fromProductAssetCategory =
 			_releasesAssetCategoryUtil.getProductAssetCategory(
-				product, productVersion);
+				product, fromProductVersion);
 
 		AssetCategory fromFixPackAssetCategory =
 			_releasesAssetCategoryUtil.getFixPackAssetCategory(
-				productAssetCategory.getCategoryId(), fromFixPackVersion);
+				fromProductAssetCategory.getCategoryId(), fromFixPackVersion);
+
+		AssetCategory toProductAssetCategory = null;
+
+		if (toProductVersion > 0) {
+			toProductAssetCategory =
+				_releasesAssetCategoryUtil.getProductAssetCategory(
+					product, toProductVersion);
+		}
+		else {
+			toProductAssetCategory = fromProductAssetCategory;
+		}
+
 		AssetCategory toFixPackAssetCategory =
 			_releasesAssetCategoryUtil.getFixPackAssetCategory(
-				productAssetCategory.getCategoryId(), toFixPackVersion);
+				toProductAssetCategory.getCategoryId(), toFixPackVersion);
 
 		List<ArtifactVersionRange> artifactVersionRanges =
 			_artifactVersionLocalService.getArtifactVersionRanges(

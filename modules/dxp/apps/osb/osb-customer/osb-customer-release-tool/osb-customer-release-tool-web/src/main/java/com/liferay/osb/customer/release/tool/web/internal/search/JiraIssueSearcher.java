@@ -104,8 +104,8 @@ public class JiraIssueSearcher extends BaseSearcher {
 		throws Exception {
 
 		String product = ParamUtil.getString(portletRequest, "product");
-		double productVersion = ParamUtil.getDouble(
-			portletRequest, "productVersion");
+		double fromProductVersion = ParamUtil.getDouble(
+			portletRequest, "fromProductVersion");
 		double fromFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "fromFixPackVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
@@ -121,7 +121,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		AssetCategory productAssetCategory =
 			_releasesAssetCategoryUtil.getProductAssetCategory(
-				product, productVersion);
+				product, fromProductVersion);
 
 		String jiraFixPackCustomField =
 			_releasesAssetCategoryUtil.getPropertyValue(

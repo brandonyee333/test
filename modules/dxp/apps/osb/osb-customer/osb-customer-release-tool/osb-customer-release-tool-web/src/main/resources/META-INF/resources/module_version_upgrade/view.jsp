@@ -42,12 +42,12 @@ if (journalArticle != null) {
 }
 %>
 
-<liferay-portlet:renderURL var="upgradeArtifactVersionSearchURL">
+<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/artifact_versions" var="upgradeArtifactVersionSearchURL">
 	<portlet:param name="product" value="<%= product %>" />
 	<portlet:param name="fromProductVersion" value="<%= String.valueOf(fromProductVersion) %>" />
 	<portlet:param name="toProductVersion" value="<%= String.valueOf(toProductVersion) %>" />
 	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
-</liferay-portlet:renderURL>
+</liferay-portlet:resourceURL>
 
 <div class="container-fluid row" id="<portlet:namespace />upgradeModuleChanges"></div>

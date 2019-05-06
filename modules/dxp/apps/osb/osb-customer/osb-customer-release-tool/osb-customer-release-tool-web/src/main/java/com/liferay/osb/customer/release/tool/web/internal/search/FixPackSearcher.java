@@ -144,8 +144,8 @@ public class FixPackSearcher extends BaseSearcher {
 			WebKeys.THEME_DISPLAY);
 
 		String product = ParamUtil.getString(portletRequest, "product");
-		double productVersion = ParamUtil.getDouble(
-			portletRequest, "productVersion");
+		double fromProductVersion = ParamUtil.getDouble(
+			portletRequest, "fromProductVersion");
 		double fromFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "fromFixPackVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
@@ -157,7 +157,7 @@ public class FixPackSearcher extends BaseSearcher {
 			themeDisplay, orderByType);
 
 		BooleanQuery fullQuery = buildFullQuery(
-			product, productVersion, fromFixPackVersion, toFixPackVersion);
+			product, fromProductVersion, fromFixPackVersion, toFixPackVersion);
 
 		Hits hits = _indexSearcherHelper.search(searchContext, fullQuery);
 

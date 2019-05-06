@@ -15,11 +15,19 @@
 package com.liferay.osb.customer.release.tool.web.internal.portlet;
 
 import com.liferay.osb.customer.release.tool.web.internal.constants.ReleaseToolPortletKeys;
+import com.liferay.osb.customer.release.tool.web.internal.search.ArtifactVersionSearcher;
+import com.liferay.osb.customer.release.tool.web.internal.util.ReleasesAssetCategoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
+import java.io.IOException;
+
 import javax.portlet.Portlet;
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -43,4 +51,25 @@ import org.osgi.service.component.annotations.Component;
 	service = Portlet.class
 )
 public class ModuleVersionUpgradePortlet extends MVCPortlet {
+
+	@Override
+	public void render(
+			RenderRequest renderRequest, RenderResponse renderResponse)
+		throws IOException, PortletException {
+
+		renderRequest.setAttribute(
+			ArtifactVersionSearcher.class.getName(), _artifactVersionSearcher);
+		renderRequest.setAttribute(
+			ReleasesAssetCategoryUtil.class.getName(),
+			_releasesAssetCategoryUtil);
+
+		super.render(renderRequest, renderResponse);
+	}
+
+	@Reference
+	private ArtifactVersionSearcher _artifactVersionSearcher;
+
+	@Reference
+	private ReleasesAssetCategoryUtil _releasesAssetCategoryUtil;
+
 }
