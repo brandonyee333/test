@@ -41,10 +41,15 @@ public abstract class BaseSearcher {
 		PortletRequest portletRequest, MimeResponse mimeResponse) {
 
 		try {
-			double fromProductVersion = ParamUtil.getDouble(
-				portletRequest, "fromProductVersion");
+			double productVersion = ParamUtil.getDouble(
+				portletRequest, "productVersion");
 
-			if (fromProductVersion <= 0) {
+			double fromProductVersion = ParamUtil.getDouble(
+				portletRequest, "fromProductVersion", productVersion);
+			double toProductVersion = ParamUtil.getDouble(
+				portletRequest, "toProductVersion", productVersion);
+
+			if ((fromProductVersion <= 0) || (toProductVersion <= 0)) {
 				return emptySearch();
 			}
 
@@ -53,7 +58,9 @@ public abstract class BaseSearcher {
 			double toFixPackVersion = ParamUtil.getDouble(
 				portletRequest, "toFixPackVersion");
 
-			validateQueryRange(fromFixPackVersion, toFixPackVersion);
+			validateQueryRange(
+				fromProductVersion, toProductVersion, fromFixPackVersion,
+				toFixPackVersion);
 
 			return doSearch(portletRequest, mimeResponse);
 		}
@@ -104,11 +111,18 @@ public abstract class BaseSearcher {
 	}
 
 	protected void validateQueryRange(
+			double fromProductVersion, double toProductVersion,
 			double fromFixPackVersion, double toFixPackVersion)
 		throws PortalException {
 
-		if (fromFixPackVersion > toFixPackVersion) {
+		if (fromProductVersion > toProductVersion) {
 			throw new VersionRangeException();
+		}
+
+		if (fromProductVersion == toProductVersion) {
+			if (fromFixPackVersion > toFixPackVersion) {
+				throw new VersionRangeException();
+			}
 		}
 	}
 

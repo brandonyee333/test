@@ -20,7 +20,7 @@
 String tabs1 = ParamUtil.getString(request, "tabs1");
 
 String product = ParamUtil.getString(request, "product");
-double fromProductVersion = ParamUtil.getDouble(request, "fromProductVersion");
+double productVersion = ParamUtil.getDouble(request, "productVersion");
 double fromFixPackVersion = ParamUtil.getDouble(request, "fromFixPackVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
@@ -28,7 +28,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("tabs1", tabs1);
 portletURL.setParameter("product", product);
-portletURL.setParameter("fromProductVersion", String.valueOf(fromProductVersion));
+portletURL.setParameter("productVersion", String.valueOf(productVersion));
 portletURL.setParameter("fromFixPackVersion", String.valueOf(fromFixPackVersion));
 portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 %>
@@ -38,7 +38,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 	<portlet:param name="fromFixPackVersion" value="<%= String.valueOf(fromFixPackVersion) %>" />
 	<portlet:param name="orderByType" value="desc" />
 	<portlet:param name="product" value="<%= product %>" />
-	<portlet:param name="fromProductVersion" value="<%= String.valueOf(fromProductVersion) %>" />
+	<portlet:param name="productVersion" value="<%= String.valueOf(productVersion) %>" />
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:renderURL>
 
@@ -58,7 +58,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 
 <aui:container cssClass="container-fluid-max-xl" fluid="<%= true %>">
 	<c:choose>
-		<c:when test="<%= (fromFixPackVersion < 1) && (fromProductVersion < 1) && (toFixPackVersion < 1) %>">
+		<c:when test="<%= (fromFixPackVersion < 1) && (productVersion < 1) && (toFixPackVersion < 1) %>">
 			<div class="card main-content-card taglib-empty-result-message">
 				<div class="card-row card-row-padded">
 					<div class="taglib-empty-result-message-header"></div>
@@ -96,9 +96,9 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 		{
 			actionURL: '<%= fixPacksURL %>',
 			filtersJSON: <%= releaseToolDisplayContext.getFixPackFiltersJSONArray() %>,
-			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, fromProductVersion, toFixPackVersion) %>',
+			fixpackURL: '<%= releaseToolDisplayContext.getFixPackDownloadURL(product, productVersion, toFixPackVersion) %>',
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
-			productVersion: '<%= String.valueOf(fromProductVersion) %>',
+			productVersion: '<%= String.valueOf(productVersion) %>',
 			tabName: '<%= HtmlUtil.escape(tabs1) %>',
 			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
 		},
