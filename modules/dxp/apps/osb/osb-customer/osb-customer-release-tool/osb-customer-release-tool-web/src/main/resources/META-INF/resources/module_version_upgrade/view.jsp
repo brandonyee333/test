@@ -50,4 +50,19 @@ if (journalArticle != null) {
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<div class="container-fluid row" id="<portlet:namespace />upgradeModuleChanges"></div>
+<div class="container-fluid container-fluid-max-xl upgrade-module-changes-container" id="<portlet:namespace />upgradeModuleChanges"></div>
+
+<aui:script>
+	ReleaseTool.render(
+		ReleaseTool.ModuleChanges,
+		{
+			description: '<%= HtmlUtil.escapeJS(moduleChangesDescription) %>',
+			endpoint: '<%= upgradeArtifactVersionSearchURL %>',
+			filters: <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>,
+			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
+			jsonObject: <%= artifactVersionSearcher.search(renderRequest, renderResponse) %>,
+			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
+		},
+		document.getElementById('<portlet:namespace />upgradeModuleChanges')
+	);
+</aui:script>
