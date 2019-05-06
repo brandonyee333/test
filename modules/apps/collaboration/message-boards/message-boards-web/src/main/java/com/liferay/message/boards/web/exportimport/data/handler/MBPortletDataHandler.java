@@ -222,11 +222,8 @@ public class MBPortletDataHandler extends BasePortletDataHandler {
 			StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 				MBMessage.class.getName());
 
-		ActionableDynamicQuery messageActionableDynamicQuery =
-			mbMessageStagedModelRepository.getExportActionableDynamicQuery(
-				portletDataContext);
-
-		return messageActionableDynamicQuery;
+		return mbMessageStagedModelRepository.getExportActionableDynamicQuery(
+			portletDataContext);
 	}
 
 	/**
