@@ -6,7 +6,7 @@ import 'core-js/fn/array/includes';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 
-import {errorType} from '../types/generic';
+import {errorType, filtersJSONObjectType} from '../types/generic';
 import {
 	artifactVersionFiltersType,
 	artifactVersionJSONObjectType
@@ -15,6 +15,7 @@ import {
 import * as moduleChangesTable from './ModuleChangesTable';
 
 import Button from './Button';
+import CompareVersionFilters from './CompareVersionFilters';
 import FilterCheckbox from './FilterCheckbox';
 import TableResults from './TableResults';
 
@@ -26,11 +27,12 @@ export default class ModuleChanges extends Component {
 	static defaultProps = {
 		cta: '',
 		fromProductVersion: '',
-		product: '',
 		toProductVersion: ''
 	};
 
 	static propTypes = {
+		compareVersionActionURL: PropTypes.string,
+		compareVersionFiltersJSON: filtersJSONObjectType,
 		cta: PropTypes.string,
 		description: PropTypes.string.isRequired,
 		endpoint: PropTypes.string.isRequired,
@@ -40,7 +42,6 @@ export default class ModuleChanges extends Component {
 		jsonObject: PropTypes.oneOfType(
 			[errorType, artifactVersionJSONObjectType]
 		).isRequired,
-		product: PropTypes.string,
 		toFixPackVersion: PropTypes.string.isRequired,
 		toProductVersion: PropTypes.string
 	};
@@ -189,12 +190,13 @@ export default class ModuleChanges extends Component {
 
 	render() {
 		const {
+			compareVersionActionURL,
+			compareVersionFiltersJSON,
 			cta,
 			description,
 			filters,
 			fromFixPackVersion,
 			fromProductVersion,
-			product,
 			toFixPackVersion,
 			toProductVersion
 		} = this.props;
@@ -207,6 +209,17 @@ export default class ModuleChanges extends Component {
 		return (
 			<Fragment>
 				<div className="col-md-3 module-changes-sidebar">
+					{compareVersionActionURL && compareVersionFiltersJSON && (
+						<CompareVersionFilters
+							actionURL={compareVersionActionURL}
+							filtersJSON={compareVersionFiltersJSON}
+							fromFixPackVersion={fromFixPackVersion}
+							fromProductVersion={fromProductVersion}
+							toFixPackVersion={toFixPackVersion}
+							toProductVersion={toProductVersion}
+						/>
+					)}
+
 					{!!filters && (
 						<div className="sidebar-filters">
 							<div className="filter-header">
@@ -278,7 +291,6 @@ export default class ModuleChanges extends Component {
 						fromFixPackVersion={fromFixPackVersion}
 						fromProductVersion={fromProductVersion}
 						jsonObject={jsonObject}
-						product={product}
 						tab={{
 							tabDescription: description,
 							tabName: 'module-changes'

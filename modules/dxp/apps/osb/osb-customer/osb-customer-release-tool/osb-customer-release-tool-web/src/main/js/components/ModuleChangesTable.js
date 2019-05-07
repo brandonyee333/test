@@ -29,7 +29,6 @@ export const tableHeader = (orderBy, handleSort, props) => {
 	const {
 		fromFixPackVersion,
 		fromProductVersion,
-		product,
 		toFixPackVersion,
 		toProductVersion
 	} = props;
@@ -47,11 +46,11 @@ export const tableHeader = (orderBy, handleSort, props) => {
 			</th>
 			<th className="lfr-group-column">{Liferay.Language.get('group')}</th>
 			<th className="lfr-from-version-column">
-				{showProductVersion ? `${product} ${fromProductVersion} ` : ''}
+				{showProductVersion ? `DXP ${fromProductVersion} ` : ''}
 				{Liferay.Language.get('fixpack')} {fromFixPackVersion}
 			</th>
 			<th className="lfr-to-version-column">
-				{showProductVersion ? `${product} ${toProductVersion} ` : ''}
+				{showProductVersion ? `DXP ${toProductVersion} ` : ''}
 				{Liferay.Language.get('fixpack')} {toFixPackVersion}
 			</th>
 		</Fragment>

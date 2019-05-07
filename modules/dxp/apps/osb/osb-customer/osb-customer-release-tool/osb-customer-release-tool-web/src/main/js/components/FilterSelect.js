@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 export default class FilterSelect extends Component {
 	static defaultProps = {
 		autopopulate: false,
+		cssClass: '',
 		disabled: false,
 		label: '',
 		selected: ''
@@ -11,6 +12,7 @@ export default class FilterSelect extends Component {
 
 	static propTypes = {
 		autopopulate: PropTypes.bool,
+		cssClass: PropTypes.string,
 		disabled: PropTypes.bool,
 		id: PropTypes.string.isRequired,
 		label: PropTypes.string,
@@ -39,7 +41,15 @@ export default class FilterSelect extends Component {
 	};
 
 	render() {
-		const {disabled, id, label, options, placeholder, selected} = this.props;
+		const {
+			cssClass,
+			disabled,
+			id,
+			label,
+			options,
+			placeholder,
+			selected
+		} = this.props;
 
 		return (
 			<div className="filter">
@@ -49,7 +59,7 @@ export default class FilterSelect extends Component {
 					</label>
 				)}
 
-				<select className="form-control" disabled={disabled} id={id} name={id} onChange={this.handleChange} value={selected || this.displayCurrentValue()}>
+				<select className={`form-control ${cssClass}`} disabled={disabled} id={id} name={id} onChange={this.handleChange} value={selected || this.displayCurrentValue()}>
 					<option value="">{placeholder}</option>
 
 					{!!options.length && options.map(

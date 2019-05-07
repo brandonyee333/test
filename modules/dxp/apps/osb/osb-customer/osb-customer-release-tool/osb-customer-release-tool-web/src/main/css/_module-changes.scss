@@ -1,4 +1,8 @@
 .module-changes-sidebar {
+	form .filter {
+		margin-top: $margin-default;
+	}
+
 	.sidebar-cta {
 		background-color: transparent;
 		border: 1px solid $color-border;
@@ -28,7 +32,7 @@
 
 	.lfr-from-version-column,
 	.lfr-to-version-column {
-		width: 15%;
+		width: 18%;
 	}
 
 	.lfr-group-column {
