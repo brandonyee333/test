@@ -25,7 +25,7 @@ export default class ModuleChanges extends Component {
 
 	static defaultProps = {
 		cta: ''
-	}
+	};
 
 	static propTypes = {
 		cta: PropTypes.string,
