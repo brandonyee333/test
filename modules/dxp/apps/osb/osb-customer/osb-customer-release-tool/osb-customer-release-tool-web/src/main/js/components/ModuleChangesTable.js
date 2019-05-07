@@ -26,7 +26,19 @@ export const tableBody = results =>
 	);
 
 export const tableHeader = (orderBy, handleSort, props) => {
-	const {fromFixPackVersion, toFixPackVersion} = props;
+	const {
+		fromFixPackVersion,
+		fromProductVersion,
+		product,
+		toFixPackVersion,
+		toProductVersion
+	} = props;
+
+	let showProductVersion = false;
+
+	if (fromProductVersion && toProductVersion) {
+		showProductVersion = true;
+	}
 
 	return (
 		<Fragment>
@@ -35,9 +47,11 @@ export const tableHeader = (orderBy, handleSort, props) => {
 			</th>
 			<th className="lfr-group-column">{Liferay.Language.get('group')}</th>
 			<th className="lfr-from-version-column">
+				{showProductVersion ? `${product} ${fromProductVersion} ` : ''}
 				{Liferay.Language.get('fixpack')} {fromFixPackVersion}
 			</th>
 			<th className="lfr-to-version-column">
+				{showProductVersion ? `${product} ${toProductVersion} ` : ''}
 				{Liferay.Language.get('fixpack')} {toFixPackVersion}
 			</th>
 		</Fragment>

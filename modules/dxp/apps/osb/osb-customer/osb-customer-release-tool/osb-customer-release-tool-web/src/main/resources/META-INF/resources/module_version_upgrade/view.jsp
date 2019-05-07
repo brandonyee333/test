@@ -60,8 +60,11 @@ if (journalArticle != null) {
 			endpoint: '<%= upgradeArtifactVersionSearchURL %>',
 			filters: <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>,
 			fromFixPackVersion: '<%= String.valueOf(fromFixPackVersion) %>',
+			fromProductVersion: '<%= String.valueOf(fromProductVersion) %>',
 			jsonObject: <%= artifactVersionSearcher.search(renderRequest, renderResponse) %>,
-			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>'
+			product: '<%= HtmlUtil.escape(product) %>',
+			toFixPackVersion: '<%= String.valueOf(toFixPackVersion) %>',
+			toProductVersion: '<%= String.valueOf(toProductVersion) %>'
 		},
 		document.getElementById('<portlet:namespace />upgradeModuleChanges')
 	);

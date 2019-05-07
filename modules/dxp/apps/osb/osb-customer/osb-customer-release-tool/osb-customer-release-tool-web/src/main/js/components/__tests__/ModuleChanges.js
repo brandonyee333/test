@@ -83,6 +83,27 @@ describe('ModuleChanges', () => {
 		expect(container).toMatchSnapshot();
 	});
 
+	it('renders product name and version in table header correctly for cross version changes', () => {
+		const {filters, jsonObject} = setup();
+
+		const {container} = render(
+			<ModuleChanges
+				cta="<div>CTA</div>"
+				description="Description for Module Changes tab."
+				endpoint="/"
+				filters={filters}
+				fromFixPackVersion="1.0.2"
+				fromProductVersion="7.0"
+				jsonObject={jsonObject}
+				product="DXP"
+				toFixPackVersion="1.0.3"
+				toProductVersion="7.2"
+			/>
+		);
+
+		expect(container).toMatchSnapshot();
+	});
+
 	it('renders no results correctly', () => {
 		const {filters, noResults} = setup();
 

@@ -24,7 +24,10 @@ export default class ModuleChanges extends Component {
 	moduleChangesToggleRef = React.createRef();
 
 	static defaultProps = {
-		cta: ''
+		cta: '',
+		fromProductVersion: '',
+		product: '',
+		toProductVersion: ''
 	};
 
 	static propTypes = {
@@ -33,10 +36,13 @@ export default class ModuleChanges extends Component {
 		endpoint: PropTypes.string.isRequired,
 		filters: artifactVersionFiltersType.isRequired,
 		fromFixPackVersion: PropTypes.string.isRequired,
+		fromProductVersion: PropTypes.string,
 		jsonObject: PropTypes.oneOfType(
 			[errorType, artifactVersionJSONObjectType]
 		).isRequired,
-		toFixPackVersion: PropTypes.string.isRequired
+		product: PropTypes.string,
+		toFixPackVersion: PropTypes.string.isRequired,
+		toProductVersion: PropTypes.string
 	};
 
 	state = {
@@ -187,7 +193,10 @@ export default class ModuleChanges extends Component {
 			description,
 			filters,
 			fromFixPackVersion,
-			toFixPackVersion
+			fromProductVersion,
+			product,
+			toFixPackVersion,
+			toProductVersion
 		} = this.props;
 
 		const {
@@ -267,13 +276,16 @@ export default class ModuleChanges extends Component {
 				<div className="col-md-9">
 					<TableResults
 						fromFixPackVersion={fromFixPackVersion}
+						fromProductVersion={fromProductVersion}
 						jsonObject={jsonObject}
+						product={product}
 						tab={{
 							tabDescription: description,
 							tabName: 'module-changes'
 						}}
 						table={moduleChangesTable}
 						toFixPackVersion={toFixPackVersion}
+						toProductVersion={toProductVersion}
 					/>
 				</div>
 			</Fragment>
