@@ -7,6 +7,7 @@ import 'core-js/fn/array/find-index';
 import {filtersJSONObjectType} from '../types/generic';
 
 import Button from './Button';
+import FilterSelect from './FilterSelect';
 
 const PORTLET_ID =
 	'com_liferay_osb_customer_release_tool_web_portlet_ReleaseToolPortlet';
@@ -130,7 +131,7 @@ export default class FixpackFilters extends Component {
 
 					<div className="search-filters">
 						<div className="search-filter-container">
-							<Filter
+							<FilterSelect
 								id={`${namespace}productVersion`}
 								label={Liferay.Language.get('product')}
 								onChange={this.handleProductVersionOnChange}
@@ -141,7 +142,7 @@ export default class FixpackFilters extends Component {
 						</div>
 
 						<div className="search-filter-container">
-							<Filter
+							<FilterSelect
 								autopopulate
 								disabled={!productVersion}
 								id={`${namespace}fromFixPackVersion`}
@@ -154,7 +155,7 @@ export default class FixpackFilters extends Component {
 						</div>
 
 						<div className="search-filter-container">
-							<Filter
+							<FilterSelect
 								disabled={!fromFixPackVersion || !productVersion}
 								id={`${namespace}toFixPackVersion`}
 								label={Liferay.Language.get('to')}
@@ -177,76 +178,6 @@ export default class FixpackFilters extends Component {
 					</Button>
 				)}
 			</Fragment>
-		);
-	}
-}
-
-class Filter extends Component {
-	static defaultProps = {
-		autopopulate: false,
-		disabled: false,
-		label: '',
-		selected: ''
-	};
-
-	static propTypes = {
-		autopopulate: PropTypes.bool,
-		disabled: PropTypes.bool,
-		id: PropTypes.string.isRequired,
-		label: PropTypes.string,
-		onChange: PropTypes.func.isRequired,
-		options: PropTypes.array.isRequired,
-		placeholder: PropTypes.string.isRequired,
-		selected: PropTypes.string
-	};
-
-	displayCurrentValue = () => {
-		const {autopopulate, options} = this.props;
-
-		let currentValue = '';
-
-		if (autopopulate && options.length === 1) {
-			currentValue = options[0].version;
-		}
-
-		return currentValue;
-	};
-
-	handleChange = event => {
-		const {onChange} = this.props;
-
-		onChange(event.currentTarget.value);
-	};
-
-	render() {
-		const {disabled, id, label, options, placeholder, selected} = this.props;
-
-		return (
-			<div className="filter">
-				{label && (
-					<label className="control-label" htmlFor={id}>
-						{`${label}:`}
-					</label>
-				)}
-
-				<select className="form-control" disabled={disabled} id={id} name={id} onChange={this.handleChange} value={selected || this.displayCurrentValue()}>
-					<option value="">{placeholder}</option>
-
-					{!!options.length && options.map(
-						option => {
-							return (
-								<option
-									key={option.version}
-									label={option.name}
-									value={option.version}
-								>
-									{option.name}
-								</option>
-							);
-						}
-					)}
-				</select>
-			</div>
 		);
 	}
 }
