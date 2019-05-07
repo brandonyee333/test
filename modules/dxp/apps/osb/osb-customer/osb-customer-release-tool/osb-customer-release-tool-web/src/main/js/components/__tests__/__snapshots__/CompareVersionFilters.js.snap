@@ -1,0 +1,449 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CompareVersionFilters renders filters correctly 1`] = `
+<div>
+  <div
+    class="sidebar-filters"
+  >
+    <h3>
+      compare
+    </h3>
+    <form
+      action="/"
+      method="get"
+    >
+      <input
+        name="p_p_id"
+        type="hidden"
+        value="com_liferay_osb_customer_release_tool_web_portlet_ModuleVersionUpgradePortlet"
+      />
+      <input
+        name="namespaceproduct"
+        type="hidden"
+        value="dxp"
+      />
+      <input
+        name="namespacefromFixPackVersion"
+        type="hidden"
+        value=""
+      />
+      <input
+        name="namespacefromProductVersion"
+        type="hidden"
+        value=""
+      />
+      <input
+        name="namespacetoFixPackVersion"
+        type="hidden"
+        value=""
+      />
+      <input
+        name="namespacetoProductVersion"
+        type="hidden"
+        value=""
+      />
+      <div
+        class="filter"
+      >
+        <label
+          class="control-label"
+          for="startingVersion"
+        >
+          starting-version:
+        </label>
+        <select
+          class="form-control input-small"
+          id="startingVersion"
+          name="startingVersion"
+        >
+          <option
+            value=""
+          >
+            select-version
+          </option>
+          <option
+            label="DXP 7.0 GA"
+            value="7.0-0.0"
+          >
+            DXP 7.0 GA
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 1"
+            value="7.0-1.0"
+          >
+            DXP 7.0 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 2"
+            value="7.0-2.0"
+          >
+            DXP 7.0 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 GA"
+            value="7.1-0.0"
+          >
+            DXP 7.1 GA
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 1"
+            value="7.1-1.0"
+          >
+            DXP 7.1 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 2"
+            value="7.1-2.0"
+          >
+            DXP 7.1 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 3"
+            value="7.1-3.0"
+          >
+            DXP 7.1 Fix Pack 3
+          </option>
+        </select>
+      </div>
+      <div
+        class="filter"
+      >
+        <label
+          class="control-label"
+          for="compareToVersion"
+        >
+          check-against:
+        </label>
+        <select
+          class="form-control input-small"
+          disabled=""
+          id="compareToVersion"
+          name="compareToVersion"
+        >
+          <option
+            value=""
+          >
+            select-version
+          </option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`CompareVersionFilters renders preselected filters correctly 1`] = `
+<div>
+  <div
+    class="sidebar-filters"
+  >
+    <h3>
+      compare
+    </h3>
+    <form
+      action="/"
+      method="get"
+    >
+      <input
+        name="p_p_id"
+        type="hidden"
+        value="com_liferay_osb_customer_release_tool_web_portlet_ModuleVersionUpgradePortlet"
+      />
+      <input
+        name="namespaceproduct"
+        type="hidden"
+        value="dxp"
+      />
+      <input
+        name="namespacefromFixPackVersion"
+        type="hidden"
+        value="1.0"
+      />
+      <input
+        name="namespacefromProductVersion"
+        type="hidden"
+        value="7.0"
+      />
+      <input
+        name="namespacetoFixPackVersion"
+        type="hidden"
+        value="2.0"
+      />
+      <input
+        name="namespacetoProductVersion"
+        type="hidden"
+        value="7.1"
+      />
+      <div
+        class="filter"
+      >
+        <label
+          class="control-label"
+          for="startingVersion"
+        >
+          starting-version:
+        </label>
+        <select
+          class="form-control input-small"
+          id="startingVersion"
+          name="startingVersion"
+        >
+          <option
+            value=""
+          >
+            select-version
+          </option>
+          <option
+            label="DXP 7.0 GA"
+            value="7.0-0.0"
+          >
+            DXP 7.0 GA
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 1"
+            value="7.0-1.0"
+          >
+            DXP 7.0 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 2"
+            value="7.0-2.0"
+          >
+            DXP 7.0 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 GA"
+            value="7.1-0.0"
+          >
+            DXP 7.1 GA
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 1"
+            value="7.1-1.0"
+          >
+            DXP 7.1 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 2"
+            value="7.1-2.0"
+          >
+            DXP 7.1 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 3"
+            value="7.1-3.0"
+          >
+            DXP 7.1 Fix Pack 3
+          </option>
+        </select>
+      </div>
+      <div
+        class="filter"
+      >
+        <label
+          class="control-label"
+          for="compareToVersion"
+        >
+          check-against:
+        </label>
+        <select
+          class="form-control input-small"
+          id="compareToVersion"
+          name="compareToVersion"
+        >
+          <option
+            value=""
+          >
+            select-version
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 2"
+            value="7.0-2.0"
+          >
+            DXP 7.0 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 GA"
+            value="7.1-0.0"
+          >
+            DXP 7.1 GA
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 1"
+            value="7.1-1.0"
+          >
+            DXP 7.1 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 2"
+            value="7.1-2.0"
+          >
+            DXP 7.1 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 3"
+            value="7.1-3.0"
+          >
+            DXP 7.1 Fix Pack 3
+          </option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`CompareVersionFilters shows compareToVersionDropdown options of equal or greater value than the selected startingVersionDropdown option 1`] = `
+<div>
+  <div
+    class="sidebar-filters"
+  >
+    <h3>
+      compare
+    </h3>
+    <form
+      action="/"
+      method="get"
+    >
+      <input
+        name="p_p_id"
+        type="hidden"
+        value="com_liferay_osb_customer_release_tool_web_portlet_ModuleVersionUpgradePortlet"
+      />
+      <input
+        name="namespaceproduct"
+        type="hidden"
+        value="dxp"
+      />
+      <input
+        name="namespacefromFixPackVersion"
+        type="hidden"
+        value="2.0"
+      />
+      <input
+        name="namespacefromProductVersion"
+        type="hidden"
+        value="7.0"
+      />
+      <input
+        name="namespacetoFixPackVersion"
+        type="hidden"
+        value=""
+      />
+      <input
+        name="namespacetoProductVersion"
+        type="hidden"
+        value=""
+      />
+      <div
+        class="filter"
+      >
+        <label
+          class="control-label"
+          for="startingVersion"
+        >
+          starting-version:
+        </label>
+        <select
+          class="form-control input-small"
+          id="startingVersion"
+          name="startingVersion"
+        >
+          <option
+            value=""
+          >
+            select-version
+          </option>
+          <option
+            label="DXP 7.0 GA"
+            value="7.0-0.0"
+          >
+            DXP 7.0 GA
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 1"
+            value="7.0-1.0"
+          >
+            DXP 7.0 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.0 Fix Pack 2"
+            value="7.0-2.0"
+          >
+            DXP 7.0 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 GA"
+            value="7.1-0.0"
+          >
+            DXP 7.1 GA
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 1"
+            value="7.1-1.0"
+          >
+            DXP 7.1 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 2"
+            value="7.1-2.0"
+          >
+            DXP 7.1 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 3"
+            value="7.1-3.0"
+          >
+            DXP 7.1 Fix Pack 3
+          </option>
+        </select>
+      </div>
+      <div
+        class="filter"
+      >
+        <label
+          class="control-label"
+          for="compareToVersion"
+        >
+          check-against:
+        </label>
+        <select
+          class="form-control input-small"
+          id="compareToVersion"
+          name="compareToVersion"
+        >
+          <option
+            value=""
+          >
+            select-version
+          </option>
+          <option
+            label="DXP 7.1 GA"
+            value="7.1-0.0"
+          >
+            DXP 7.1 GA
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 1"
+            value="7.1-1.0"
+          >
+            DXP 7.1 Fix Pack 1
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 2"
+            value="7.1-2.0"
+          >
+            DXP 7.1 Fix Pack 2
+          </option>
+          <option
+            label="DXP 7.1 Fix Pack 3"
+            value="7.1-3.0"
+          >
+            DXP 7.1 Fix Pack 3
+          </option>
+        </select>
+      </div>
+    </form>
+  </div>
+</div>
+`;

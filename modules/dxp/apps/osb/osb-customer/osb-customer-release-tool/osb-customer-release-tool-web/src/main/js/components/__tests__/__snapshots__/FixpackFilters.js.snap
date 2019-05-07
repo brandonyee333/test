@@ -37,7 +37,7 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
             product:
           </label>
           <select
-            class="form-control"
+            class="form-control "
             id="namespaceproductVersion"
             name="namespaceproductVersion"
           >
@@ -80,7 +80,7 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
             from:
           </label>
           <select
-            class="form-control"
+            class="form-control "
             disabled=""
             id="namespacefromFixPackVersion"
             name="namespacefromFixPackVersion"
@@ -106,7 +106,7 @@ exports[`FixpackFilters renders empty filters correctly 1`] = `
             to:
           </label>
           <select
-            class="form-control"
+            class="form-control "
             disabled=""
             id="namespacetoFixPackVersion"
             name="namespacetoFixPackVersion"
@@ -162,7 +162,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
             product:
           </label>
           <select
-            class="form-control"
+            class="form-control "
             id="namespaceproductVersion"
             name="namespaceproductVersion"
           >
@@ -205,7 +205,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
             from:
           </label>
           <select
-            class="form-control"
+            class="form-control "
             id="namespacefromFixPackVersion"
             name="namespacefromFixPackVersion"
           >
@@ -248,7 +248,7 @@ exports[`FixpackFilters renders preselected filters with a fix pack download lin
             to:
           </label>
           <select
-            class="form-control"
+            class="form-control "
             id="namespacetoFixPackVersion"
             name="namespacetoFixPackVersion"
           >

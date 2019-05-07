@@ -6,7 +6,7 @@ exports[`Highlights renders correctly 1`] = `
     class="col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -179,7 +179,7 @@ exports[`Highlights renders no results correctly 1`] = `
     class="col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"

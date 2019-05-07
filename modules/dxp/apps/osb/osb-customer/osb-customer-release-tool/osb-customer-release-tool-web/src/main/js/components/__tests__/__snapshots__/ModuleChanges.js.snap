@@ -6,7 +6,7 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
     class="col-md-3 module-changes-sidebar"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -127,6 +127,7 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
           <th
             class="lfr-from-version-column"
           >
+            
             fixpack
              
             1.0.2
@@ -134,6 +135,7 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
           <th
             class="lfr-to-version-column"
           >
+            
             fixpack
              
             1.0.3
@@ -219,7 +221,7 @@ exports[`ModuleChanges renders correctly 1`] = `
     class="col-md-3 module-changes-sidebar"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -333,6 +335,7 @@ exports[`ModuleChanges renders correctly 1`] = `
           <th
             class="lfr-from-version-column"
           >
+            
             fixpack
              
             1.0.1
@@ -340,6 +343,7 @@ exports[`ModuleChanges renders correctly 1`] = `
           <th
             class="lfr-to-version-column"
           >
+            
             fixpack
              
             1.0.8
@@ -425,7 +429,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
     class="col-md-3 module-changes-sidebar"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -539,6 +543,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
           <th
             class="lfr-from-version-column"
           >
+            
             fixpack
              
             1.0.6
@@ -546,6 +551,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
           <th
             class="lfr-to-version-column"
           >
+            
             fixpack
              
             1.0.8
@@ -564,6 +570,221 @@ exports[`ModuleChanges renders no results correctly 1`] = `
         try-modifying-your-criteria
       </h5>
     </div>
+  </div>
+</div>
+`;
+
+exports[`ModuleChanges renders product name and version in table header correctly for cross version changes 1`] = `
+<div>
+  <div
+    class="col-md-3 module-changes-sidebar"
+  >
+    <div
+      class="sidebar-filters"
+    >
+      <div
+        class="filter-header"
+      >
+        <h3>
+          refine-by
+        </h3>
+      </div>
+      <input
+        class="input-small text-filter"
+        placeholder="name"
+        type="text"
+      />
+      <div
+        class="filter-subsection module-groups semi-bold"
+      >
+        group
+        <div
+          class="filter-checkbox-container"
+        >
+          <label>
+            <input
+              class="filter-checkbox"
+              name="Liferay Artifacts"
+              type="checkbox"
+              value="0"
+            />
+            <span
+              class="filter-checkbox-label"
+            >
+              Liferay Artifacts
+            </span>
+          </label>
+        </div>
+        <div
+          class="filter-checkbox-container"
+        >
+          <label>
+            <input
+              class="filter-checkbox"
+              name="Third Party Libraries"
+              type="checkbox"
+              value="1"
+            />
+            <span
+              class="filter-checkbox-label"
+            >
+              Third Party Libraries
+            </span>
+          </label>
+        </div>
+      </div>
+      <div
+        class="filter-subsection module-changes-toggle semi-bold"
+      >
+        only-show
+        <div
+          class="toggle"
+        >
+          <label>
+            <input
+              class="toggle-switch"
+              type="checkbox"
+            />
+            <span
+              aria-hidden="true"
+              class="toggle-switch-bar"
+            >
+              <span
+                class="toggle-switch-handle"
+              />
+            </span>
+          </label>
+          changes
+        </div>
+      </div>
+    </div>
+    <div
+      class="sidebar-cta"
+    >
+      <div>
+        CTA
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-md-9"
+  >
+    <h2>
+      module-version-changes
+    </h2>
+    <h5
+      class="secondary-text-color section-subtitle"
+    >
+      Description for Module Changes tab.
+    </h5>
+    <div
+      class="results-count"
+    >
+      x-results
+    </div>
+    <table
+      class="table module-changes-table table-autofit table-list"
+      role="table"
+    >
+      <thead>
+        <tr>
+          <th
+            class="lfr-name-column table-cell-content"
+          >
+            name
+          </th>
+          <th
+            class="lfr-group-column"
+          >
+            group
+          </th>
+          <th
+            class="lfr-from-version-column"
+          >
+            DXP 7.0 
+            fixpack
+             
+            1.0.2
+          </th>
+          <th
+            class="lfr-to-version-column"
+          >
+            DXP 7.2 
+            fixpack
+             
+            1.0.3
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="journal-article-row "
+          id="1.0.1-1.0.1-0"
+        >
+          <td
+            class="lfr-name-column table-cell-content"
+          >
+            com.liferay.portal.workflow.kaleo.designer.api
+          </td>
+          <td
+            class="lfr-group-column"
+          >
+            com.liferay
+          </td>
+          <td
+            class="lfr-from-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.1
+            </a>
+          </td>
+          <td
+            class="lfr-to-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.1
+            </a>
+          </td>
+        </tr>
+        <tr
+          class="journal-article-row module-changed"
+          id="1.0.6-1.0.8-1"
+        >
+          <td
+            class="lfr-name-column table-cell-content"
+          >
+            com.liferay.announcements.web
+          </td>
+          <td
+            class="lfr-group-column"
+          >
+            com.liferay
+          </td>
+          <td
+            class="lfr-from-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.6
+            </a>
+          </td>
+          <td
+            class="lfr-to-version-column"
+          >
+            <a
+              href="/"
+            >
+              1.0.8
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 `;

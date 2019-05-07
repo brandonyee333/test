@@ -6,7 +6,7 @@ exports[`Changelog does not show a See More option below the filters if seven or
     class="changelog-filter col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -195,7 +195,7 @@ exports[`Changelog renders changelog results correctly 1`] = `
     class="changelog-filter col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -479,7 +479,7 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
     class="changelog-filter col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -2483,7 +2483,7 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
     class="changelog-filter col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -2838,7 +2838,7 @@ exports[`Changelog renders no results correctly 1`] = `
     class="changelog-filter col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
@@ -3063,7 +3063,7 @@ exports[`Changelog updates details modal when a different ticket summary is clic
     class="changelog-filter col-md-3"
   >
     <div
-      class="refine-by-filters"
+      class="sidebar-filters"
     >
       <div
         class="filter-header"
