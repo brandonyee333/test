@@ -45,12 +45,15 @@ public class ArtifactVersionSearcher extends BaseSearcher {
 		throws Exception {
 
 		String product = ParamUtil.getString(portletRequest, "product");
+
 		double productVersion = ParamUtil.getDouble(
 			portletRequest, "productVersion");
+
 		double fromProductVersion = ParamUtil.getDouble(
 			portletRequest, "fromProductVersion", productVersion);
 		double toProductVersion = ParamUtil.getDouble(
 			portletRequest, "toProductVersion", productVersion);
+
 		double fromFixPackVersion = ParamUtil.getDouble(
 			portletRequest, "fromFixPackVersion");
 		double toFixPackVersion = ParamUtil.getDouble(
