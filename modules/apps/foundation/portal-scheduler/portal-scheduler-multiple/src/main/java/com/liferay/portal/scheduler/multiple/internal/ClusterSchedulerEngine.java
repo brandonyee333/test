@@ -886,8 +886,8 @@ public class ClusterSchedulerEngine
 								StringBundler.concat(
 									"Skip scheduling memory clustered job ",
 									schedulerResponse,
-									" cause the trigger is null, it may have ",
-									"been unscheduled or finished."));
+									" with a null trigger. It may have been ",
+									"unscheduled or already finished."));
 						}
 
 						continue;
