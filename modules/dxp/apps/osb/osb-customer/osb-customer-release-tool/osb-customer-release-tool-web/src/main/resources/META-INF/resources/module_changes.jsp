@@ -25,13 +25,22 @@ double productVersion = ParamUtil.getDouble(request, "productVersion");
 double toFixPackVersion = ParamUtil.getDouble(request, "toFixPackVersion");
 
 String moduleChangesDescription = StringPool.BLANK;
+String moduleChangesCTA = StringPool.BLANK;
 
-JournalArticle journalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesJournalArticleId);
+JournalArticle moduleChangesJournalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesJournalArticleId);
 
-if (journalArticle != null) {
-	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(journalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+JournalArticle moduleChangesCTAJournalArticle = JournalArticleLocalServiceUtil.fetchArticle(themeDisplay.getScopeGroupId(), moduleChangesCTAJournalArticleId);
+
+if (moduleChangesJournalArticle != null) {
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(moduleChangesJournalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
 
 	moduleChangesDescription = journalArticleDisplay.getContent();
+}
+
+if (moduleChangesCTAJournalArticle != null) {
+	JournalArticleDisplay journalArticleDisplay = JournalArticleLocalServiceUtil.getArticleDisplay(moduleChangesCTAJournalArticle, null, null, themeDisplay.getLanguageId(), 0, new PortletRequestModel(renderRequest, renderResponse), themeDisplay);
+
+	moduleChangesCTA = journalArticleDisplay.getContent();
 }
 %>
 
@@ -49,6 +58,7 @@ if (journalArticle != null) {
 	ReleaseTool.render(
 		ReleaseTool.ModuleChanges,
 		{
+			cta: '<%= HtmlUtil.escapeJS(moduleChangesCTA) %>',
 			description: '<%= HtmlUtil.escapeJS(moduleChangesDescription) %>',
 			endpoint: '<%= artifactVersionSearchURL %>',
 			filters: <%= releaseToolDisplayContext.getArtifactVersionFiltersJSONArray() %>,

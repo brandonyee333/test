@@ -56,6 +56,7 @@ JiraIssueSearcher jiraIssueSearcher = (JiraIssueSearcher)renderRequest.getAttrib
 String changelogJournalArticleId = portletPreferences.getValue("changelogJournalArticleId", null);
 String highlightsJournalArticleId = portletPreferences.getValue("highlightsJournalArticleId", null);
 String moduleChangesJournalArticleId = portletPreferences.getValue("moduleChangesJournalArticleId", null);
+String moduleChangesCTAJournalArticleId = portletPreferences.getValue("moduleChangesCTAJournalArticleId", null);
 %>
 
 <aui:script>

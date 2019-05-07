@@ -34,6 +34,8 @@
 					<aui:input label="changelog" name="preferences--changelogJournalArticleId--" type="text" value="<%= changelogJournalArticleId %>" />
 
 					<aui:input label="module-changes" name="preferences--moduleChangesJournalArticleId--" type="text" value="<%= moduleChangesJournalArticleId %>" />
+
+					<aui:input label="module-changes-cta" name="preferences--moduleChangesCTAJournalArticleId--" type="text" value="<%= moduleChangesCTAJournalArticleId %>" />
 				</aui:fieldset>
 			</aui:fieldset-group>
 		</div>

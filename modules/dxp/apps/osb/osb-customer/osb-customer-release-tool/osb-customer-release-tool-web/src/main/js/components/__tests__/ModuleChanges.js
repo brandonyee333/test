@@ -53,7 +53,7 @@ const setup = () => {
 		/>
 	);
 
-	return {filters, noResults, ...utils};
+	return {filters, jsonObject, noResults, ...utils};
 };
 
 afterEach(cleanup);
@@ -61,6 +61,24 @@ afterEach(cleanup);
 describe('ModuleChanges', () => {
 	it('renders correctly', () => {
 		const {container} = setup();
+
+		expect(container).toMatchSnapshot();
+	});
+
+	it('renders CTA correctly', () => {
+		const {filters, jsonObject} = setup();
+
+		const {container} = render(
+			<ModuleChanges
+				cta="<div>CTA</div>"
+				description="Description for Module Changes tab."
+				endpoint="/"
+				filters={filters}
+				fromFixPackVersion="1.0.2"
+				jsonObject={jsonObject}
+				toFixPackVersion="1.0.3"
+			/>
+		);
 
 		expect(container).toMatchSnapshot();
 	});
