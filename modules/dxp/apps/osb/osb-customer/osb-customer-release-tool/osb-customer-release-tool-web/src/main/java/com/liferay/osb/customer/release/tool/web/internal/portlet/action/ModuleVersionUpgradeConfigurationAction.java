@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Amos Fong
+ * @author Rebecca Dai
  */
 @Component(
 	immediate = true,
