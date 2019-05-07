@@ -1,8 +1,4 @@
 .module-changes-sidebar {
-	.refine-by-filters {
-		margin-bottom: $margin-default;
-	}
-
 	.sidebar-cta {
 		background-color: transparent;
 		border: 1px solid $color-border;
@@ -16,6 +12,10 @@
 			text-align: left;
 			white-space: pre-wrap;
 		}
+	}
+
+	.sidebar-filters {
+		margin-bottom: $margin-default;
 	}
 }
 

@@ -221,7 +221,7 @@ export default class Changelog extends Component {
 			<Fragment>
 				<div className="changelog-filter col-md-3">
 					{!!filters && (
-						<div className="refine-by-filters">
+						<div className="sidebar-filters">
 							<div className="filter-header">
 								<h3>
 									{Liferay.Language.get('refine-by')}

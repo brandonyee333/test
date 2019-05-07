@@ -7,7 +7,15 @@
 	margin: 32px 0 64px;
 }
 
-.refine-by-filters {
+.results-count {
+	padding: $padding-default 0;
+}
+
+.section-subtitle {
+	padding-top: 8px;
+}
+
+.sidebar-filters {
 	background-color: $color-grey;
 	border: $border-radius;
 	margin: 0 48px 0 -12px;
@@ -57,14 +65,6 @@
 	@include media-breakpoint-down(md) {
 		margin-right: -$margin-sm;
 	}
-}
-
-.results-count {
-	padding: $padding-default 0;
-}
-
-.section-subtitle {
-	padding-top: 8px;
 }
 
 .sorting-indicator {
