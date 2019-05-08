@@ -631,6 +631,21 @@ definition {
 
 		PortalSettings.viewEnabledLDAPSetting(enableSettingList = "${enableSettingList}");
 
+		Navigator.openSpecificURL(url = "http://www.able.com:9080");
+
+		if (IsElementNotPresent(locator1 = "ProductMenu#PRODUCT_MENU_OPENED")) {
+			Navigator.gotoLoginPage();
+		}
+
+		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "SAML Admin");
+
+		SAMLNavigation.gotoServiceProvider();
+
+		SAMLPortlet.configureServiceProvider(enbleLDAPImport = "true");
+
 		Portlet.shutdownServer();
 
 		Portlet.startServer(deleteLiferayHome = "false");
@@ -659,22 +674,11 @@ definition {
 			userEmailAddress = "ldapuseremail@liferay.com",
 			userScreenName = "ldapusercn");
 
+		User.logoutPG();
+
+		User.viewLoggedOutPG();
+
 		Navigator.openSpecificURL(url = "http://www.able.com:9080");
-
-		if (IsElementNotPresent(locator1 = "ProductMenu#PRODUCT_MENU_OPENED")) {
-			Navigator.gotoLoginPage();
-		}
-
-		ProductMenu.gotoPortlet(
-			category = "Configuration",
-			panel = "Control Panel",
-			portlet = "SAML Admin");
-
-		SAMLNavigation.gotoServiceProvider();
-
-		SAMLPortlet.configureServiceProvider(enbleLDAPImport = "true");
-
-		User.logoutPG(specificURL = "http://www.able.com:9080");
 
 		User.loginPG(
 			password = "test",
