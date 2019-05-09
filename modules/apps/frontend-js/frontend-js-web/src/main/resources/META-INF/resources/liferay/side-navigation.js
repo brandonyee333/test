@@ -6,6 +6,39 @@
 * MIT license
 */
 +function($) {
+	/**
+	 * Options:
+	 *
+	 * @property {String|Number}  breakpoint   The window width that defines the desktop size.
+	 * @property {String}         content      The class or ID of the content container.
+	 * @property {String}         container    The class or ID of the sidenav container.
+	 * @property {String|Number}  gutter       The space between the sidenav-slider and the sidenav-content.
+	 * @property {String|Boolean} equalHeight  The height of content and navigation should be equal. This is deprecated.
+	 * @property {String}         heightType   Calculates the height of sidenav when type is relative. Possible values: `fullHeight`, `equalHeight`
+	 * @property {String}         navigation   The class or ID of the navigation container.
+	 * @property {String}         position     The position of the sidenav-slider. Possible values: left, right
+	 * @property {String}         type         The type of sidenav in desktop. Possible values: relative, fixed, fixed-push
+	 * @property {String}         typeMobile   The type of sidenav in mobile. Possible values: relative, fixed, fixed-push
+	 * @property {String|Boolean} useDelegate  The type of reference to use on the toggler event handler. Value false, directly binds click to the toggler.
+	 * @property {String|Object}  url          The URL or $.ajax config object to fetch the content to inject into .sidebar-body
+	 * @property {String|Number}  width        The width of the side navigation.
+	 */
+	var defaults = {
+		breakpoint: 768,
+		content: '.sidenav-content',
+		equalHeight: true, // equalHeight option is deprecated, use heightType instead
+		gutter: '15px',
+		heightType: null,
+		loadingIndicatorTPL: '<div class="loading-animation loading-animation-md"></div>',
+		navigation: '.sidenav-menu-slider',
+		position: 'left',
+		type: 'relative',
+		typeMobile: 'relative',
+		url: null,
+		useDelegate: true,
+		width: '225px'
+	};
+
 	var doc = $(document);
 
 	var listenerAdded = false;
@@ -15,11 +48,11 @@
 
 	var addResizeListener = function() {
 		if (!listenerAdded) {
-			$(window).on(
+			window.addEventListener(
 				'resize',
 				debounce(
 					function(event) {
-						doc.trigger('screenChange.lexicon.sidenav');
+						Liferay.fire('screenChange.lexicon.sidenav');
 					},
 					150
 				)
@@ -109,7 +142,7 @@
 
 			var useDataAttribute = toggler.data('toggle') === 'sidenav';
 
-			options = $.extend({}, $.fn.sideNavigation.defaults, options);
+			options = Object.assign({}, defaults, options);
 
 			options.breakpoint = toInt(options.breakpoint);
 			options.container = options.container || toggler.data('target') || toggler.attr('href');
@@ -147,22 +180,28 @@
 			instance._renderUI();
 		},
 
-		clearStyle: function(attribute) {
-			var instance = this;
+		clearStyle: function(attributes) {
+			var options = this.options;
 
-			var options = instance.options;
+			var container = document.querySelector(options.container);
 
-			var container = $(options.container);
-			var content = container.find(options.content).first();
-			var navigation = container.find(options.navigation).first();
-
-			var menu = container.find('.sidenav-menu').first();
-
-			var els = content.add(navigation).add(menu);
-
-			for (var i = 0; i < attribute.length; i++) {
-				els.css(attribute[i], '');
+			if (!container) {
+				return;
 			}
+
+			var content = container.querySelector(options.content);
+
+			var navigation = container.querySelector(options.navigation);
+
+			var menu = container.querySelector('.sidenav-menu');
+
+			[content, navigation, menu].forEach(function (el) {
+				if (el) {
+					for (var i = 0; i < attributes.length; i++) {
+						el.style[attributes[i]] = '';
+					}
+				}
+			});
 		},
 
 		destroy: function() {
@@ -171,6 +210,11 @@
 			var options = instance.options;
 
 			var container = $(instance.options.container);
+
+			if (this._screenChangeHandle) {
+				this._screenChangeHandle.detach();
+				this._screenChangeHandle = null;
+			}
 
 			// Detach sidenav close
 
@@ -206,28 +250,41 @@
 		hideSidenav: function() {
 			var instance = this;
 			var options = instance.options;
-
-			var container = $(options.container);
-			var content = container.find(options.content).first();
-			var navigation = container.find(options.navigation).first();
-			var menu = navigation.find('.sidenav-menu').first();
-
+			var positionDirection;
 			var sidenavRight = instance._isSidenavRight();
-
-			var positionDirection = options.rtl ? 'right' : 'left';
 
 			if (sidenavRight) {
 				positionDirection = options.rtl ? 'left' : 'right';
 			}
+			else {
+				positionDirection = options.rtl ? 'right' : 'left';
+			}
 
 			var paddingDirection = 'padding-' + positionDirection;
 
-			content.css(paddingDirection, '').css(positionDirection, '');
+			var container = document.querySelector(options.container);
 
-			navigation.css('width', '');
+			if (!container) {
+				return;
+			}
 
-			if (sidenavRight) {
-				menu.css(positionDirection, instance._getSidenavWidth());
+			var content = container.querySelector(options.content);
+
+			if (content) {
+				content.style[paddingDirection] = '';
+				content.style[positionDirection] = '';
+			}
+
+			var navigation = container.querySelector(options.navigation);
+
+			if (navigation) {
+				var menu = navigation.querySelector('.sidenav-menu');
+
+				navigation.style.width = '';
+
+				if (menu && sidenavRight) {
+					menu.style[positionDirection] = instance._getSidenavWidth();
+				}
 			}
 		},
 
@@ -666,12 +723,15 @@
 		},
 
 		_isSidenavRight: function() {
-			var instance = this;
-			var options = instance.options;
+			var options = this.options;
 
-			var container = $(options.container);
-			var isSidenavRight = container.hasClass('sidenav-right');
+			var container = document.querySelector(options.container);
 
+			if (!container) {
+				return false;
+			}
+
+			var isSidenavRight = container.classList.contains('sidenav-right');
 			return isSidenavRight;
 		},
 
@@ -791,7 +851,7 @@
 
 			var screenStartDesktop = instance._setScreenSize();
 
-			doc.on('screenChange.lexicon.sidenav', function(event) {
+			this._screenChangeHandle = Liferay.on('screenChange.lexicon.sidenav', function(event) {
 				var desktop = instance._setScreenSize();
 				var sidenavRight = instance._isSidenavRight();
 				var type = desktop ? options.type : options.typeMobile;
@@ -1038,39 +1098,6 @@
 		$.fn.sideNavigation = old;
 
 		return this;
-	};
-
-	/**
-	 * Plugin options
-	 * @property {String|Number}  breakpoint   The window width that defines the desktop size.
-	 * @property {String}         content      The class or ID of the content container.
-	 * @property {String}         container    The class or ID of the sidenav container.
-	 * @property {String|Number}  gutter       The space between the sidenav-slider and the sidenav-content.
-	 * @property {String|Boolean} equalHeight  The height of content and navigation should be equal. This is deprecated.
-	 * @property {String}         heightType   Calculates the height of sidenav when type is relative. Possible values: `fullHeight`, `equalHeight`
-	 * @property {String}         navigation   The class or ID of the navigation container.
-	 * @property {String}         position     The position of the sidenav-slider. Possible values: left, right
-	 * @property {String}         type         The type of sidenav in desktop. Possible values: relative, fixed, fixed-push
-	 * @property {String}         typeMobile   The type of sidenav in mobile. Possible values: relative, fixed, fixed-push
-	 * @property {String|Boolean} useDelegate  The type of reference to use on the toggler event handler. Value false, directly binds click to the toggler.
-	 * @property {String|Object}  url          The URL or $.ajax config object to fetch the content to inject into .sidebar-body
-	 * @property {String|Number}  width        The width of the side navigation.
-	 */
-
-	Plugin.defaults = {
-		breakpoint: 768,
-		content: '.sidenav-content',
-		equalHeight: true, // equalHeight option is deprecated, use heightType instead
-		gutter: '15px',
-		heightType: null,
-		loadingIndicatorTPL: '<div class="loading-animation loading-animation-md"></div>',
-		navigation: '.sidenav-menu-slider',
-		position: 'left',
-		type: 'relative',
-		typeMobile: 'relative',
-		url: null,
-		useDelegate: true,
-		width: '225px'
 	};
 
 	Plugin.Constructor = SideNavigation;
