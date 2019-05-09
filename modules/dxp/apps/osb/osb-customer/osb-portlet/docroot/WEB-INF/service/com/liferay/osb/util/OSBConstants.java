@@ -44,8 +44,8 @@ public class OSBConstants {
 
 	public static final long GROUP_LICENSE_ID = 2701000;
 
-	public static final long ORGANIZATION_CUSTOMER_COMMERCE_CONNECTORS_ID =
-		3510990;
+	public static final long
+		ORGANIZATION_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID = 3510990;
 
 	public static final long ORGANIZATION_CUSTOMER_COMMERCE_ID = 3510997;
 

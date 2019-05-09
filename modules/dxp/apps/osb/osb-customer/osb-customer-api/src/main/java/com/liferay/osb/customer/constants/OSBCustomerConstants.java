@@ -32,7 +32,8 @@ public class OSBCustomerConstants {
 
 	public static final long ORGANIZATION_PARTNER_ID = 1747324;
 
-	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTORS_ID = 3525738;
+	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID =
+		3525738;
 
 	public static final long ROLE_CUSTOMER_COMMERCE_ID = 3525734;
 

@@ -274,8 +274,8 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 		sb.append(OSBConstants.ROLE_VERIFIED_USER_ID);
 		sb.append("') and (OSB_AccountEntry.type_ != '");
 		sb.append(AccountEntryConstants.TYPE_TRIAL);
-		sb.append("') and (OSB_ProductEntry.name like '%Commerce ");
-		sb.append("Connectors%') and (OSB_OfferingEntry.type_ = '");
+		sb.append("') and (OSB_ProductEntry.name like '%Commerce Connector ");
+		sb.append("to Salesforce%') and (OSB_OfferingEntry.type_ = '");
 		sb.append(OfferingEntryConstants.TYPE_REGULAR);
 		sb.append("') and (OSB_OfferingEntry.status = ");
 		sb.append(OfferingEntryConstants.STATUS_ACTIVE);
@@ -286,7 +286,8 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 		sb.append("'))");
 
 		updateOrganizationUserIds(
-			OSBConstants.ORGANIZATION_CUSTOMER_COMMERCE_CONNECTORS_ID,
+			OSBConstants.
+				ORGANIZATION_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID,
 			sb.toString(), "OSB_AccountCustomer.userId");
 
 		sb = new StringBundler(23);
