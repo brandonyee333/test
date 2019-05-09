@@ -150,8 +150,7 @@ public class SetupWatsonRoles {
 
 					_resourcePermissionLocalService.setResourcePermissions(
 						company.getCompanyId(), name, scope, primKey,
-						role.getRoleId(),
-						actionIds.toArray(new String[actionIds.size()]));
+						role.getRoleId(), actionIds.toArray(new String[0]));
 				}
 				else {
 					for (Element actionKeyElement : actionKeyElements) {

@@ -117,7 +117,7 @@ public class RemoteServiceAdminImpl implements ExtendedRemoteServiceAdmin {
 
 		ServiceRegistration<?> serviceRegistration =
 			_bundleContext.registerService(
-				classNames.toArray(new String[classNames.size()]),
+				classNames.toArray(new String[0]),
 				new ClientProxyServiceFactory(
 					_distributionProvider, classNames, null),
 				null);

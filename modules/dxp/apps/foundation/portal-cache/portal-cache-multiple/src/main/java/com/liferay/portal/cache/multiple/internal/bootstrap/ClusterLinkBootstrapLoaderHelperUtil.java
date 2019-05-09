@@ -292,9 +292,7 @@ public class ClusterLinkBootstrapLoaderHelperUtil {
 				}
 
 				loadCachesFromCluster(
-					entry.getKey(),
-					portalCacheNames.toArray(
-						new String[portalCacheNames.size()]));
+					entry.getKey(), portalCacheNames.toArray(new String[0]));
 			}
 		}
 		catch (Exception e) {

@@ -106,7 +106,7 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 				objectName, null);
 
 			ObjectName[] objectNameArray = objectNames.toArray(
-				new ObjectName[objectNames.size()]);
+				new ObjectName[0]);
 
 			return toObjectNames(objectNameArray, attributeNames);
 		}
