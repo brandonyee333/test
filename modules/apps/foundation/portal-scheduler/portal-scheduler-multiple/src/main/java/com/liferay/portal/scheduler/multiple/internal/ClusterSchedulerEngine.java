@@ -885,7 +885,7 @@ public class ClusterSchedulerEngine
 							_log.info(
 								StringBundler.concat(
 									"Skip scheduling memory clustered job ",
-									schedulerResponse,
+									schedulerResponse.toString(),
 									" with a null trigger. It may have been ",
 									"unscheduled or already finished."));
 						}
