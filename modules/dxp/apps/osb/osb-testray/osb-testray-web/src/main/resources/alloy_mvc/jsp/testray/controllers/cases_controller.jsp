@@ -556,7 +556,11 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 
 		renderRequest.setAttribute("redirect", redirect);
 
-		_search(attributes);
+		List<TestrayCaseComposite> testrayCaseComposites = _search(attributes);
+
+		JSONArray testrayCasesJSONArray = _getTestrayCasesJSONArray(testrayCaseComposites);
+
+		portletRequest.setAttribute("testrayCasesJSONArray", testrayCasesJSONArray);
 	}
 
 	public void selectExport() throws Exception {
@@ -1030,10 +1034,6 @@ public static class AlloyControllerImpl extends TestrayAlloyControllerImpl {
 		List<TestrayCaseComposite> testrayCaseComposites = TestrayCompositeUtil.getComposites(alloySearchResult.getBaseModels(), TestrayCaseComposite.class);
 
 		renderRequest.setAttribute("testrayCaseComposites", testrayCaseComposites);
-
-		JSONArray testrayCasesJSONArray = _getTestrayCasesJSONArray(testrayCaseComposites);
-
-		portletRequest.setAttribute("testrayCasesJSONArray", testrayCasesJSONArray);
 
 		return testrayCaseComposites;
 	}
