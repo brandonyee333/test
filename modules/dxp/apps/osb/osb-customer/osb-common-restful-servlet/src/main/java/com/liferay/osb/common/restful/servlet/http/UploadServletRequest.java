@@ -126,7 +126,7 @@ public class UploadServletRequest extends HttpServletRequestWrapper {
 			files.add(file);
 		}
 
-		return files.toArray(new File[files.size()]);
+		return files.toArray(new File[0]);
 	}
 
 	@Override
@@ -178,7 +178,7 @@ public class UploadServletRequest extends HttpServletRequestWrapper {
 		List<String> values = _regularParams.get(name);
 
 		if (values != null) {
-			parameterValues = values.toArray(new String[values.size()]);
+			parameterValues = values.toArray(new String[0]);
 		}
 
 		String[] parentParameterValues = super.getParameterValues(name);
