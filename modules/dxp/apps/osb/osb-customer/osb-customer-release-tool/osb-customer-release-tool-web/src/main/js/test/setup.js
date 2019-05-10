@@ -11,3 +11,5 @@ window.ReleaseToolConstants = {
 };
 
 window.scroll = () => console.log('scroll');
+
+HTMLFormElement.prototype.submit = () => console.log('submit');
