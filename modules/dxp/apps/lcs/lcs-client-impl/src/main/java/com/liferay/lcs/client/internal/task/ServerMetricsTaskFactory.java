@@ -52,6 +52,10 @@ public class ServerMetricsTaskFactory {
 	protected void activate(BundleContext bundleContext) {
 		ServerMetricsTask serverMetricsTask = getInstance();
 
+		if (serverMetricsTask == null) {
+			return;
+		}
+
 		_scheduledTaskServiceRegistration = bundleContext.registerService(
 			ScheduledTask.class, serverMetricsTask,
 			new HashMapDictionary<String, String>() {
