@@ -61,7 +61,7 @@ export default class CompareVersionFilters extends Component {
 				option => option.version === `${fromProductVersion}-${fromFixPackVersion}`
 			);
 
-			compareToVersionSelectOptions = options.slice(index+1);
+			compareToVersionSelectOptions = options.slice(index + 1);
 		}
 
 		return compareToVersionSelectOptions;
