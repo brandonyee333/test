@@ -53,6 +53,10 @@ public class ServerMetricsTaskFactory {
 		ServerMetricsTask serverMetricsTask = getInstance();
 
 		if (serverMetricsTask == null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to activate " + this);
+			}
+
 			return;
 		}
 
