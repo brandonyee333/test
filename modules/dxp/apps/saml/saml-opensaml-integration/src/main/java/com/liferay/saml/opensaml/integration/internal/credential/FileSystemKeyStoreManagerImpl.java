@@ -80,8 +80,8 @@ public class FileSystemKeyStoreManagerImpl extends BaseKeyStoreManagerImpl {
 		samlKeyStoreFile = samlKeyStoreFile.getAbsoluteFile();
 
 		if (!samlKeyStoreFile.exists()) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					"Creating a new SAML keystore at " + samlKeyStoreFile);
 			}
 
