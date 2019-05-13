@@ -24,11 +24,11 @@ public class UpgradeRole extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
-			"update Role_ set name = 'Customer - Liferay Commerce Connector " +
-				"to Salesforce' where roleId = 3525738");
-		runSQL(
 			"update Organization_ set name = 'Customer - Liferay Commerce " +
 				"Connector to Salesforce' where organizationId = 3510990");
+		runSQL(
+			"update Role_ set name = 'Customer - Liferay Commerce Connector " +
+				"to Salesforce' where roleId = 3525738");
 	}
 
 }
