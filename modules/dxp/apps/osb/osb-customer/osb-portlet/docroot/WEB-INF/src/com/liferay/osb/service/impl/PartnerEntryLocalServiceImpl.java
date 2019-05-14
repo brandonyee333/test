@@ -51,9 +51,7 @@ public class PartnerEntryLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(
-			0, parentPartnerEntryId, dossieraAccountKey, code,
-			WorkflowConstants.STATUS_APPROVED);
+		validate(0, parentPartnerEntryId, dossieraAccountKey, code);
 
 		long partnerEntryId = counterLocalService.increment();
 
@@ -194,10 +192,10 @@ public class PartnerEntryLocalServiceImpl
 		PartnerEntry partnerEntry = partnerEntryPersistence.findByPrimaryKey(
 			partnerEntryId);
 
-		if (status != WorkflowConstants.STATUS_INACTIVE) {
+		if (status == WorkflowConstants.STATUS_APPROVED) {
 			validate(
 				partnerEntryId, partnerEntry.getParentPartnerEntryId(),
-				dossieraAccountKey, code, status);
+				dossieraAccountKey, code);
 		}
 
 		String oldDossieraAccountKey = partnerEntry.getDossieraAccountKey();
@@ -266,7 +264,7 @@ public class PartnerEntryLocalServiceImpl
 
 	protected void validate(
 			long partnerEntryId, long parentPartnerEntryId,
-			String dossieraAccountKey, String code, int status)
+			String dossieraAccountKey, String code)
 		throws PortalException {
 
 		if (parentPartnerEntryId > 0) {
