@@ -590,6 +590,7 @@ definition {
 	test ConfigureSAMLToImportUsersFromLDAP {
 		property apacheds.enabled = "true";
 		property test.name.skip.portal.instance = "SAML#ConfigureSAMLToImportUsersFromLDAP";
+		property portal.acceptance = "Linda";
 
 		SAML.configureLiferaySAMLAsIdP(samlEntityID = "samlidp");
 
