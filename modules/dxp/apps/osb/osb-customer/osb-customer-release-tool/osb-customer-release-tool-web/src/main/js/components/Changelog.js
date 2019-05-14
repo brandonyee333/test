@@ -36,7 +36,7 @@ export default class Changelog extends Component {
 		selectedFilters: {
 			components: [],
 			keywords: '',
-			orderBy: 'asc'
+			orderBy: 'desc'
 		},
 		jsonObject: this.props.jsonObject,
 		seeAllFilterValues: false
@@ -91,7 +91,7 @@ export default class Changelog extends Component {
 				selectedFilters: {
 					components: [],
 					keywords: '',
-					orderBy: 'asc'
+					orderBy: 'desc'
 				}
 			}
 		);
@@ -173,7 +173,7 @@ export default class Changelog extends Component {
 	queryJiraIssues = (
 		components = [],
 		keywords = '',
-		orderBy = 'asc',
+		orderBy = 'desc',
 		startAt = 0
 	) => {
 		const {endpoint} = this.props;

@@ -87,8 +87,8 @@ public class JiraIssueSearcher extends BaseSearcher {
 
 		sb.append(" AND level is empty");
 
-		if (!orderByType.equals("desc")) {
-			orderByType = "asc";
+		if (!orderByType.equals("asc")) {
+			orderByType = "desc";
 		}
 
 		sb.append(" order by ");
