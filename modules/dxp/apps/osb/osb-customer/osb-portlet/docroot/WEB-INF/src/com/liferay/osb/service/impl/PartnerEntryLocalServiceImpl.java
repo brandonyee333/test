@@ -194,9 +194,11 @@ public class PartnerEntryLocalServiceImpl
 		PartnerEntry partnerEntry = partnerEntryPersistence.findByPrimaryKey(
 			partnerEntryId);
 
-		validate(
-			partnerEntryId, partnerEntry.getParentPartnerEntryId(),
-			dossieraAccountKey, code, status);
+		if (status != WorkflowConstants.STATUS_INACTIVE) {
+			validate(
+				partnerEntryId, partnerEntry.getParentPartnerEntryId(),
+				dossieraAccountKey, code, status);
+		}
 
 		String oldDossieraAccountKey = partnerEntry.getDossieraAccountKey();
 		int oldStatus = partnerEntry.getStatus();
