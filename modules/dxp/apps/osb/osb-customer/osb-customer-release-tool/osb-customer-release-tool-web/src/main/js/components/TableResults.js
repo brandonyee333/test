@@ -54,7 +54,7 @@ export default function TableResults(props) {
 
 	return (
 		<Fragment>
-			<h2>
+			<h2 id={displayTabName(tab.tabName).replace(/ /g, '-').toLowerCase()}>
 				{displayTabName(tab.tabName)}
 			</h2>
 

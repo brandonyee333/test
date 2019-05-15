@@ -43,7 +43,7 @@ if (journalArticle != null) {
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<div class="container-fluid row" id="<portlet:namespace />highlights"></div>
+<div class="container-fluid release-tool-body row" id="<portlet:namespace />highlights"></div>
 
 <aui:script>
 	ReleaseTool.render(

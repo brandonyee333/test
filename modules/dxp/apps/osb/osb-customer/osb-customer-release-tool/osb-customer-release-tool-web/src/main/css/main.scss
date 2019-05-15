@@ -4,10 +4,10 @@
 
 header:not(.has-control-panel) + main {
 	.lfr-summary-column .modal.show {
-		top: 64px;
+		top: $navbar-height;
 
 		@include media-breakpoint-down(md) {
-			top: 48px;
+			top: $navbar-mobile-height;
 		}
 	}
 }
