@@ -32,14 +32,21 @@ export default class Changelog extends Component {
 		).isRequired
 	};
 
+	calculateTotalPage = jsonObject => {
+		return jsonObject.total
+			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
+			: 1;
+	}
+
 	state = {
+		jsonObject: this.props.jsonObject,
+		seeAllFilterValues: false,
 		selectedFilters: {
 			components: [],
 			keywords: '',
 			orderBy: 'desc'
 		},
-		jsonObject: this.props.jsonObject,
-		seeAllFilterValues: false
+		totalPage: this.calculateTotalPage(this.props.jsonObject)
 	};
 
 	debounceEvent(...args) {
@@ -148,26 +155,26 @@ export default class Changelog extends Component {
 		window.scroll(0, 0);
 	};
 
-	handleQuerySortedResults = () => {
-		const {selectedFilters} = this.state;
-
-		const currentOrderBy = selectedFilters.orderBy === 'desc' ? 'asc' : 'desc';
+	handleQuerySortedResults = orderBy => {
+		const {selectedFilters, totalPage} = this.state;
 
 		this.setState(
 			{
 				selectedFilters: {
 					...selectedFilters,
-					orderBy: currentOrderBy
+					orderBy: orderBy
 				}
 			}
 		);
 
-		this.changelogPaginationRef.current.handleClick(
-			1,
-			{
-				orderBy: currentOrderBy
-			}
-		);
+		if (totalPage > 1) {
+			this.changelogPaginationRef.current.handleClick(
+				1,
+				{
+					orderBy: orderBy
+				}
+			);
+		}
 	};
 
 	queryJiraIssues = (
@@ -191,7 +198,8 @@ export default class Changelog extends Component {
 				({data}) => {
 					this.setState(
 						{
-							jsonObject: data
+							jsonObject: data,
+							totalPage: this.calculateTotalPage(data)
 						}
 					);
 				}
@@ -210,12 +218,9 @@ export default class Changelog extends Component {
 		const {
 			jsonObject,
 			selectedFilters: {components, keywords, orderBy},
-			seeAllFilterValues
+			seeAllFilterValues,
+			totalPage
 		} = this.state;
-
-		const totalPage = jsonObject.total
-			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
-			: 1;
 
 		return (
 			<Fragment>
@@ -294,9 +299,7 @@ export default class Changelog extends Component {
 					<TableResults
 						jsonObject={jsonObject}
 						orderBy={orderBy}
-						sortingFunction={
-							totalPage > 1 ? this.handleQuerySortedResults : null
-						}
+						sortingFunction={this.handleQuerySortedResults}
 						tab={{
 							tabDescription: description,
 							tabName: 'changelog'

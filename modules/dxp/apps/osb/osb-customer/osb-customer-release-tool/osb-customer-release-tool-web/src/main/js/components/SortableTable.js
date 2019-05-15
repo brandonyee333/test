@@ -33,14 +33,16 @@ export default class SortableTable extends Component {
 		const {sortingFunction} = this.props;
 		const {orderBy} = this.state;
 
+		const currentOrderBy = orderBy === 'desc' ? 'asc' : 'desc';
+
 		this.setState(
 			{
-				orderBy: orderBy === 'desc' ? 'asc' : 'desc'
+				orderBy: currentOrderBy
 			}
 		);
 
 		if (sortingFunction) {
-			sortingFunction();
+			sortingFunction(currentOrderBy);
 		}
 	};
 
