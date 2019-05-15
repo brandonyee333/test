@@ -2,7 +2,9 @@
 
 exports[`TableResults renders content correctly 1`] = `
 <div>
-  <h2>
+  <h2
+    id="changelog"
+  >
     changelog
   </h2>
   <h5
@@ -128,7 +130,9 @@ exports[`TableResults renders content correctly 1`] = `
 
 exports[`TableResults renders error correctly 1`] = `
 <div>
-  <h2>
+  <h2
+    id="changelog"
+  >
     changelog
   </h2>
   <h5

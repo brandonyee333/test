@@ -95,7 +95,9 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="module-version-changes"
+    >
       module-version-changes
     </h2>
     <h5
@@ -303,7 +305,9 @@ exports[`ModuleChanges renders correctly 1`] = `
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="module-version-changes"
+    >
       module-version-changes
     </h2>
     <h5
@@ -511,7 +515,9 @@ exports[`ModuleChanges renders no results correctly 1`] = `
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="module-version-changes"
+    >
       module-version-changes
     </h2>
     <h5
@@ -669,7 +675,9 @@ exports[`ModuleChanges renders product name and version in table header correctl
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="module-version-changes"
+    >
       module-version-changes
     </h2>
     <h5

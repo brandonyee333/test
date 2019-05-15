@@ -64,7 +64,9 @@ exports[`Changelog does not show a See More option below the filters if seven or
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="changelog"
+    >
       changelog
     </h2>
     <h5
@@ -348,7 +350,9 @@ exports[`Changelog renders changelog results correctly 1`] = `
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="changelog"
+    >
       changelog
     </h2>
     <h5
@@ -632,7 +636,9 @@ exports[`Changelog renders changelog with pagination when results exceed 50 item
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="changelog"
+    >
       changelog
     </h2>
     <h5
@@ -2636,7 +2642,9 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="changelog"
+    >
       changelog
     </h2>
     <h5
@@ -2991,7 +2999,9 @@ exports[`Changelog renders no results correctly 1`] = `
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="changelog"
+    >
       changelog
     </h2>
     <h5
@@ -3216,7 +3226,9 @@ exports[`Changelog updates details modal when a different ticket summary is clic
   <div
     class="col-md-9"
   >
-    <h2>
+    <h2
+      id="changelog"
+    >
       changelog
     </h2>
     <h5
