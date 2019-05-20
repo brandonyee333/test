@@ -6,6 +6,8 @@ import 'core-js/fn/array/includes';
 import {errorType} from '../types/generic';
 import {fixPackFieldsType, fixPackJSONObjectType} from '../types/highlights';
 
+import {getSearchParamValue} from '../helpers/url-search-params';
+
 import * as highlightsTable from './HightlightsTable';
 
 import Button from './Button';
@@ -21,8 +23,14 @@ export default class Highlights extends Component {
 		).isRequired
 	};
 
+	getFilterByFromSearchParam = () => {
+		const filterBy = getSearchParamValue('refineBy');
+
+		return filterBy ? filterBy.split(',') : [];
+	};
+
 	state = {
-		filterBy: []
+		filterBy: this.getFilterByFromSearchParam()
 	};
 
 	handleCheckboxChange = event => {
