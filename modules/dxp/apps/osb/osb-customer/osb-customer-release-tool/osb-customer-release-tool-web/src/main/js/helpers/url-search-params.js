@@ -9,11 +9,15 @@ import 'core-js/library/fn/map';
 export function getAllSearchParams() {
 	const query = window.location.search.slice(1);
 
-	const parametersArray = query.split('&');
+	if (query) {
+		const parametersArray = query.split('&');
 
-	const searchParams = parametersArray.map(param => param.split('='));
+		const searchParams = parametersArray.map(param => param.split('='));
 
-	return new Map(searchParams);
+		return new Map(searchParams);
+	} else {
+		return new Map();
+	}
 }
 
 /**
@@ -40,7 +44,7 @@ export function getSearchParamValue(key) {
 export function setSearchParam(key, value) {
 	const parameters = getAllSearchParams();
 
-	if (value) {
+	if (key && value) {
 		parameters.set(key, value);
 	} else if (!value && parameters.has(key)) {
 		parameters.delete(key);
