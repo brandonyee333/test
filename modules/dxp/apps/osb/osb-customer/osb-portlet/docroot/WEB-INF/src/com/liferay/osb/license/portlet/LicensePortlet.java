@@ -344,10 +344,10 @@ public class LicensePortlet extends OSBPortlet {
 				themeDisplay.getUserId(), licenseKeySetId, name,
 				offeringEntryId, licenseEntryId, 0, productVersion, clusterId,
 				owner, maxServers, maxHttpSessions, description,
-				hostNames.toArray(new String[hostNames.size()]),
-				ipAddresses.toArray(new String[ipAddresses.size()]),
-				macAddresses.toArray(new String[macAddresses.size()]),
-				serverIds, startDate, false, true);
+				hostNames.toArray(new String[0]),
+				ipAddresses.toArray(new String[0]),
+				macAddresses.toArray(new String[0]), serverIds, startDate,
+				false, true);
 
 			actionRequest.setAttribute("clusterId", licenseKey.getClusterId());
 			actionRequest.setAttribute(

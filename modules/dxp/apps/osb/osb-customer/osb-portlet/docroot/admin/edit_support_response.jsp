@@ -32,7 +32,6 @@ int severity2Response = BeanParamUtil.getInteger(supportResponse, request, "seve
 int severity2Resolution = BeanParamUtil.getInteger(supportResponse, request, "severity2Resolution");
 int severity3Response = BeanParamUtil.getInteger(supportResponse, request, "severity3Response");
 int severity3Resolution = BeanParamUtil.getInteger(supportResponse, request, "severity3Resolution");
-String languageId = BeanParamUtil.getString(supportResponse, request, "languageId");
 %>
 
 <portlet:actionURL name="updateSupportResponse" var="updateSupportResponseURL">

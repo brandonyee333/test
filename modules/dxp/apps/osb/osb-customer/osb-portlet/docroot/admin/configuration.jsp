@@ -26,7 +26,7 @@ String currentLanguageId = LanguageUtil.getLanguageId(request);
 
 Set<Locale> localesSet = LanguageUtil.getAvailableLocales();
 
-Locale[] locales = localesSet.toArray(new Locale[localesSet.size()]);
+Locale[] locales = localesSet.toArray(new Locale[0]);
 %>
 
 <liferay-portlet:renderURL portletConfiguration="<%= true %>" var="portletURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">

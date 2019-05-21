@@ -19,7 +19,6 @@
 <%
 AccountEntry accountEntry = (AccountEntry)request.getAttribute(OSBWebKeys.ACCOUNT_ENTRY);
 String detailTab = (String)request.getAttribute("edit_account_entry.jsp-detailTab");
-PortletURL portletURL = (PortletURL)request.getAttribute("edit_account_entry.jsp-portletURL");
 
 long corpProjectId = BeanParamUtil.getLong(accountEntry, request, "corpProjectId");
 

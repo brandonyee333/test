@@ -33,9 +33,6 @@ String evaluationEulaUrl = PrefsParamUtil.getString(portletPreferences, request,
 String evaluationEulaVersion = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaVersion_" + currentLanguageId, StringPool.BLANK);
 String evaluationEulaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "evaluationEulaVersionRequired_" + currentLanguageId, StringPool.BLANK);
 
-String fileDirectory = PrefsParamUtil.getString(portletPreferences, request, "fileDirectory", StringPool.BLANK);
-String downloadPage = PrefsParamUtil.getString(portletPreferences, request, "downloadPage", StringPool.BLANK);
-
 String studioEulaUrl = PrefsParamUtil.getString(portletPreferences, request, "studioEulaUrl_" + currentLanguageId, StringPool.BLANK);
 String studioEulaVersion = PrefsParamUtil.getString(portletPreferences, request, "studioEulaVersion_" + currentLanguageId, StringPool.BLANK);
 String studioEulaVersionRequired = PrefsParamUtil.getString(portletPreferences, request, "studioEulaVersionRequired_" + currentLanguageId, StringPool.BLANK);

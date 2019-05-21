@@ -339,8 +339,7 @@ public class UpgradeJournalArticles extends UpgradeProcess {
 			}
 		}
 
-		return ArrayUtil.toArray(
-			assetCategoryIds.toArray(new Long[assetCategoryIds.size()]));
+		return ArrayUtil.toArray(assetCategoryIds.toArray(new Long[0]));
 	}
 
 	protected boolean isHead(JournalArticle journalArticle) throws Exception {
