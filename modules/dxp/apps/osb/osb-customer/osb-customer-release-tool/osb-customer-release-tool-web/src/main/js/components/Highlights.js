@@ -6,7 +6,7 @@ import 'core-js/fn/array/includes';
 import {errorType} from '../types/generic';
 import {fixPackFieldsType, fixPackJSONObjectType} from '../types/highlights';
 
-import {getSearchParamValue} from '../helpers/url-search-params';
+import {getSearchParamValue, setSearchParam} from '../helpers/url-search-params';
 
 import * as highlightsTable from './HightlightsTable';
 
@@ -47,6 +47,8 @@ export default class Highlights extends Component {
 			checkedFilters.splice(filterBy.indexOf(value), 1);
 		}
 
+		setSearchParam('refineBy', checkedFilters.toString());
+
 		this.setState(
 			{
 				filterBy: checkedFilters
@@ -55,6 +57,8 @@ export default class Highlights extends Component {
 	};
 
 	handleClearFilter = () => {
+		setSearchParam('refineBy', '');
+
 		this.setState(
 			{
 				filterBy: []
