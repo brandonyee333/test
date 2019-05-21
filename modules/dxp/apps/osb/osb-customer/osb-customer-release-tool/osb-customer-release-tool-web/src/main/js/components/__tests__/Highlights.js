@@ -106,29 +106,40 @@ describe('Highlights', () => {
 		fireEvent.click(getByLabelText('Security'));
 
 		expect(tbody.querySelectorAll('tr').length).toBe(2);
+
+		// Restore global state
+
+		fireEvent.click(getByLabelText('Key Highlights'));
 	});
 
 	it('shows a Clear All option when a filter is selected and removes the option when all filters are unselected', () => {
-		const {container, queryByText} = setup();
+		const {getByLabelText, queryByText} = setup();
 
-		fireEvent.click(container.querySelector('input[type=checkbox]'));
+		fireEvent.click(getByLabelText('Key Highlights'));
 
 		expect(queryByText('clear-all')).toBeTruthy();
 
-		fireEvent.click(container.querySelector('input[type=checkbox]'));
+		fireEvent.click(getByLabelText('Key Highlights'));
 
 		expect(queryByText('clear-all')).toBeFalsy();
 	});
 
 	it('clears all filter selections when Clear All is clicked', () => {
-		const {container, getByText} = setup();
+		const {getByLabelText, getByText} = setup();
 
-		const checkbox = container.querySelector('input[type=checkbox]');
+		const checkbox = getByLabelText('Key Highlights');
 
 		fireEvent.click(checkbox);
-
 		fireEvent.click(getByText('clear-all'));
 
 		expect(checkbox.checked).toBeFalsy();
+	});
+
+	it('updates the querystring with the selected filter name', () => {
+		const {getByLabelText} = setup();
+
+		fireEvent.click(getByLabelText('Key Highlights'));
+
+		expect(window.location.search).toBe('?refineBy=keyHighlights');
 	});
 });
