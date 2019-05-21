@@ -170,8 +170,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			getUserId(), null, "Trial Activation Key", offeringEntry,
 			licenseEntry, null,
 			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10, 0, owner,
-			0, 5, "Trial Activation Key", new String[0],
-			new String[0], new String[0],
+			0, 5, "Trial Activation Key", new String[0], new String[0],
+			new String[0],
 			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, startDate,
 			expirationDate, StringPool.BLANK, false, true);
 
