@@ -1,7 +1,7 @@
 'use strict';
 
 import dom from 'metal-dom';
-import getCropRegion from '../../../../src/main/resources/META-INF/resources/liferay/util/cropregion/get_crop_region.es';
+import getCropRegion from '../../../src/main/resources/META-INF/resources/liferay/util/get_crop_region.es';
 
 describe(
 	'Liferay.Util.getCropRegion',
