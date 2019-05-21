@@ -141,10 +141,10 @@
 						url: addLocaleParamToURI('${current_locale}', 'categories/360000868172')
 					},
 					{
-						description: '<@liferay.language key="updates-on-products-and-system-improvements" />',
-						name: '<@liferay.language key="announcements" />',
-						svgId: '#announcements',
-						url: addLocaleParamToURI('${current_locale}', 'categories/360000892272')
+						description: '<@liferay.language key="reference-the-latest-changes-for-liferay-dxp" />',
+						name: '<@liferay.language key="dxp-release-notes" />',
+						svgId: '#fixpack',
+						url: 'https://customer.liferay.com/dxp-release-notes'
 					},
 					{
 						description: '<@liferay.language key="learn-more-about-designated-contacts-for-your-project" />',
