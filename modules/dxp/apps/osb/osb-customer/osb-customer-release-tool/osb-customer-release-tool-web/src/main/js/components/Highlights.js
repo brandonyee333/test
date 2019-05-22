@@ -70,9 +70,9 @@ export default class Highlights extends Component {
 		const {jsonObject} = this.props;
 		const {filterBy} = this.state;
 
-		if (jsonObject.results) {
+		if (jsonObject.results && filterBy.length) {
 			const newResults = jsonObject.results.filter(
-				result => filterBy.every(
+				result => filterBy.some(
 					filter => result.fieldsUsed.includes(filter)
 				)
 			);
