@@ -95,11 +95,11 @@ describe('Highlights', () => {
 
 		expect(tbody.querySelectorAll('tr').length).toBe(2);
 
-		// There is only one result with both Key Highlights and Security
+		// Given the filter is performing an OR-like search, the results for both Key Highlights and Security will show
 
 		fireEvent.click(getByLabelText('Security'));
 
-		expect(tbody.querySelectorAll('tr').length).toBe(1);
+		expect(tbody.querySelectorAll('tr').length).toBe(2);
 
 		// Unselecting Key Highlights should show one result for Security
 
