@@ -1,6 +1,13 @@
+Bundle-ClassPath:\
+	.,\
+	lib/com.liferay.knowledge.base.markdown.converter.api.jar,\
+	lib/com.liferay.knowledge.base.markdown.converter.impl.jar
 Bundle-Name: Liferay OSB Customer Zendesk Documentation Sync Service
 Bundle-SymbolicName: com.liferay.osb.customer.zendesk.documentation.sync.service
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.osb.customer.zendesk.documentation.sync.configuration
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true
+-conditionalpackage:\
+	com.liferay.knowledge.base.importer.util.*,\
+	com.vladsch.flexmark.*

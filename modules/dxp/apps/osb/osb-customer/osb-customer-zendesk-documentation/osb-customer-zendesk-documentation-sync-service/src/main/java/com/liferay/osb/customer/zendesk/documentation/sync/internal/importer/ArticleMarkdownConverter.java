@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.importer;
 
 import com.liferay.knowledge.base.markdown.converter.MarkdownConverter;
-import com.liferay.knowledge.base.markdown.converter.factory.MarkdownConverterFactoryUtil;
 import com.liferay.knowledge.base.model.KBArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.petra.string.CharPool;
@@ -53,12 +52,12 @@ public class ArticleMarkdownConverter {
 		throws PortalException {
 
 		MarkdownConverter markdownConverter =
-			MarkdownConverterFactoryUtil.create();
-
-		String html = null;
+			ArticleMarkdownConverterFactoryUtil.create();
 
 		try {
-			html = markdownConverter.convert(markdown);
+			markdownConverter.parse(markdown);
+
+			_html = markdownConverter.convert(markdown);
 		}
 		catch (IOException ioe) {
 			throw new DocumentationImportException(
@@ -67,39 +66,27 @@ public class ArticleMarkdownConverter {
 				ioe);
 		}
 
-		String heading = getHeading(html);
+		String heading = getHeading(markdown);
 
 		if (Validator.isNull(heading)) {
 			throw new DocumentationImportException(
 				"Unable to extract title heading from file: " + zipReaderEntry);
 		}
 
-		_id = getId(heading);
+		_id = markdownConverter.getURLTitle();
 
-		if (Validator.isNull(_id)) {
+		_urlTitle = formatURLTitle(_id);
+
+		if (Validator.isNull(_urlTitle)) {
 			throw new DocumentationImportException(
 				"Missing title heading ID in file: " + zipReaderEntry);
 		}
 
-		_urlTitle = getUrlTitle(heading);
-
-		String title = HtmlUtil.unescape(heading);
-
-		int x = title.indexOf("[](id=");
-
-		if (x != -1) {
-			title = title.substring(0, x);
-		}
-
-		_title = title;
-
-		html = stripIds(html);
-
-		_html = stripHeading(html);
+		_title = HtmlUtil.unescape(heading);
 
 		_sourceURL = buildSourceURL(zipReader, zipReaderEntry);
 
-		processAttachments(zipReader, zipReaderEntry, html);
+		processAttachments(zipReader, zipReaderEntry, _html);
 	}
 
 	public Map<String, byte[]> getAttachments() {
@@ -162,63 +149,7 @@ public class ArticleMarkdownConverter {
 		return sb.toString();
 	}
 
-	protected String getHeading(String html) {
-		int x = html.indexOf("<h1>");
-		int y = html.indexOf("</h1>");
-
-		if ((x == -1) || (y == -1) || (x > y)) {
-			return null;
-		}
-
-		return html.substring(x + 4, y);
-	}
-
-	protected String getId(String heading) {
-		String id = null;
-
-		int x = heading.indexOf("[](id=");
-
-		if (x == -1) {
-			return null;
-		}
-
-		int y = heading.indexOf(StringPool.CLOSE_PARENTHESIS, x);
-
-		if (y > (x + 1)) {
-			int equalsSign = heading.indexOf(StringPool.EQUAL, x);
-
-			id = heading.substring(equalsSign + 1, y);
-
-			id = StringUtil.replace(id, CharPool.SPACE, CharPool.DASH);
-
-			id = StringUtil.toLowerCase(id);
-		}
-
-		return id;
-	}
-
-	protected String getUrlTitle(String heading) {
-		String urlTitle = null;
-
-		int x = heading.indexOf("[](id=");
-
-		if (x == -1) {
-			return null;
-		}
-
-		int y = heading.indexOf(StringPool.CLOSE_PARENTHESIS, x);
-
-		if (y > (x + 1)) {
-			int equalsSign = heading.indexOf(StringPool.EQUAL, x);
-
-			urlTitle = heading.substring(equalsSign + 1, y);
-
-			urlTitle = StringUtil.replace(
-				urlTitle, CharPool.SPACE, CharPool.DASH);
-
-			urlTitle = StringUtil.toLowerCase(urlTitle);
-		}
-
+	protected String formatURLTitle(String urlTitle) {
 		if (urlTitle == null) {
 			return null;
 		}
@@ -242,6 +173,16 @@ public class ArticleMarkdownConverter {
 		}
 
 		return urlTitle;
+	}
+
+	protected String getHeading(String html) {
+		int x = html.indexOf("#");
+
+		int y = html.indexOf(StringPool.NEW_LINE, x);
+
+		String heading = html.substring(x + 1, y);
+
+		return heading.trim();
 	}
 
 	protected void processAttachments(
@@ -302,74 +243,6 @@ public class ArticleMarkdownConverter {
 
 			x += 4;
 		}
-	}
-
-	protected String stripHeading(String html) {
-		int index = html.indexOf("</h1>");
-
-		if (index == -1) {
-			return html;
-		}
-
-		return html.substring(index + 5);
-	}
-
-	protected String stripIds(String content) {
-		int index = content.indexOf("[](id=");
-
-		if (index == -1) {
-			return content;
-		}
-
-		StringBundler sb = new StringBundler();
-
-		do {
-			int x = content.indexOf(StringPool.EQUAL, index);
-
-			int y = content.indexOf(StringPool.CLOSE_PARENTHESIS, x);
-
-			if (y != -1) {
-				int z = content.indexOf("</h", y);
-
-				if (z != (y + 1)) {
-					sb.append(content.substring(0, y + 1));
-				}
-				else {
-					sb.append(
-						StringUtil.trimTrailing(content.substring(0, index)));
-				}
-
-				content = content.substring(y + 1);
-			}
-			else {
-				if (_log.isWarnEnabled()) {
-					String msg = content.substring(index);
-
-					// Get the invalid id text from the content
-
-					int spaceIndex = content.indexOf(StringPool.SPACE);
-
-					if (spaceIndex != -1) {
-						msg = content.substring(index, spaceIndex);
-					}
-
-					_log.warn(
-						"Missing ')' for web content containing header id " +
-							msg);
-				}
-
-				// Since no close parenthesis remains in the content, stop
-				// stripping out IDs and simply include all of the remaining
-				// content
-
-				break;
-			}
-		}
-		while ((index = content.indexOf("[](id=")) != -1);
-
-		sb.append(content);
-
-		return sb.toString();
 	}
 
 	private Map<String, String> _getMetadata(ZipReader zipReader)
