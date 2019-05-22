@@ -67,8 +67,13 @@
 				className: 'card-menu',
 				configs: [
 					{
-						name: '<@liferay.language key="dxp" /> 7.1',
+						name: '<@liferay.language key="dxp" /> 7.2',
 						svgId: '#dxp-logo',
+						url: addLocaleParamToURI('${current_locale}', 'categories/360001749912')
+					},
+					{
+						name: '<@liferay.language key="dxp" /> 7.1',
+						svgId: '#7-1-logo',
 						url: addLocaleParamToURI('${current_locale}', 'categories/360000872531')
 					},
 					{
@@ -100,11 +105,6 @@
 						name: '<@liferay.language key="portal" /> 6.1',
 						svgId: '#6-1-logo',
 						url: addLocaleParamToURI('${current_locale}', 'categories/360000872571')
-					},
-					{
-						name: '<@liferay.language key="portal" /> 6.0',
-						svgId: '#6-0-logo',
-						url: addLocaleParamToURI('${current_locale}', 'categories/360000867992')
 					}
 				]
 			},
