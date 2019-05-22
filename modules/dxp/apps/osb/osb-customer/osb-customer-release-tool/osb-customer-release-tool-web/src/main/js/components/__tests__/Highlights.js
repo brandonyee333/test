@@ -101,15 +101,15 @@ describe('Highlights', () => {
 
 		expect(tbody.querySelectorAll('tr').length).toBe(1);
 
-		// Unselecting Security should show two results for Key Highlights
+		// Unselecting Key Highlights should show one result for Security
 
-		fireEvent.click(getByLabelText('Security'));
+		fireEvent.click(getByLabelText('Key Highlights'));
 
-		expect(tbody.querySelectorAll('tr').length).toBe(2);
+		expect(tbody.querySelectorAll('tr').length).toBe(1);
 
 		// Restore global state
 
-		fireEvent.click(getByLabelText('Key Highlights'));
+		fireEvent.click(getByLabelText('Security'));
 	});
 
 	it('shows a Clear All option when a filter is selected and removes the option when all filters are unselected', () => {
