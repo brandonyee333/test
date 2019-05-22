@@ -50,6 +50,8 @@ portletDisplay.setURLBack(redirect);
 			<aui:input name="articleLabels" />
 
 			<aui:input disabled="<%= zendeskCategory != null %>" label="zendesk-id" name="remoteId" />
+
+			<aui:input label="zendesk-user-segment-id" name="remoteUserSegmentId" />
 		</aui:fieldset>
 	</aui:fieldset-group>
 

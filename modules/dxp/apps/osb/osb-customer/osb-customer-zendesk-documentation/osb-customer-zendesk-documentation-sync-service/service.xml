@@ -74,6 +74,7 @@
 		<column name="documentationOriginalURL" type="String" />
 		<column name="articleLabels" type="String" />
 		<column name="remoteId" type="long" />
+		<column name="remoteUserSegmentId" type="long" />
 
 		<!-- Finder methods -->
 

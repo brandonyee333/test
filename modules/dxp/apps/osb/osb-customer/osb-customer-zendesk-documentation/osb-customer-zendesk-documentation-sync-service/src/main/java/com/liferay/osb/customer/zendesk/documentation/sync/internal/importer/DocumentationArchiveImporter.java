@@ -296,7 +296,8 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 					ZendeskSectionLocalServiceUtil.addZendeskSection(
 						_zendeskCategory.getZendeskCategoryId(),
 						documentationKey, nameMap, Collections.emptyMap(),
-						_zendeskSectionPosition);
+						_zendeskSectionPosition,
+						_zendeskCategory.getRemoteUserSegmentId());
 			}
 			else {
 				zendeskSection =
@@ -304,7 +305,8 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 						zendeskSection.getZendeskSectionId(),
 						_zendeskCategory.getZendeskCategoryId(),
 						documentationKey, nameMap, Collections.emptyMap(),
-						_zendeskSectionPosition);
+						_zendeskSectionPosition,
+						_zendeskCategory.getRemoteUserSegmentId());
 			}
 
 			_zendeskSections.add(zendeskSection);

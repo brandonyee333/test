@@ -27,7 +27,7 @@ public class ZendeskCategoryLocalServiceImpl
 
 	public ZendeskCategory addZendeskCategory(
 			String documentationKey, String documentationOriginalURL,
-			String articleLabels, long remoteId)
+			String articleLabels, long remoteId, long remoteUserSegmentId)
 		throws PortalException {
 
 		long zendeskCategoryId = counterLocalService.increment();
@@ -39,6 +39,7 @@ public class ZendeskCategoryLocalServiceImpl
 		zendeskCategory.setDocumentationOriginalURL(documentationOriginalURL);
 		zendeskCategory.setArticleLabels(articleLabels);
 		zendeskCategory.setRemoteId(remoteId);
+		zendeskCategory.setRemoteUserSegmentId(remoteUserSegmentId);
 
 		return zendeskCategoryPersistence.update(zendeskCategory);
 	}
@@ -62,7 +63,7 @@ public class ZendeskCategoryLocalServiceImpl
 
 	public ZendeskCategory updateZendeskCategory(
 			long zendeskCategoryId, String documentationOriginalURL,
-			String articleLabels)
+			String articleLabels, long remoteUserSegmentId)
 		throws PortalException {
 
 		ZendeskCategory zendeskCategory =
@@ -70,6 +71,7 @@ public class ZendeskCategoryLocalServiceImpl
 
 		zendeskCategory.setDocumentationOriginalURL(documentationOriginalURL);
 		zendeskCategory.setArticleLabels(articleLabels);
+		zendeskCategory.setRemoteUserSegmentId(remoteUserSegmentId);
 
 		return zendeskCategoryPersistence.update(zendeskCategory);
 	}

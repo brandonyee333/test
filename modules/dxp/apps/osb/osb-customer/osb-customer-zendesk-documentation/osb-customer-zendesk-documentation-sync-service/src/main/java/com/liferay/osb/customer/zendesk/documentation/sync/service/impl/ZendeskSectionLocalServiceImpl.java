@@ -43,7 +43,7 @@ public class ZendeskSectionLocalServiceImpl
 	public ZendeskSection addZendeskSection(
 			long zendeskCategoryId, String documentationKey,
 			Map<String, String> nameMap, Map<String, String> descriptionMap,
-			int position)
+			int position, long zendeskUserSegmentId)
 		throws PortalException {
 
 		if (_log.isInfoEnabled()) {
@@ -54,7 +54,8 @@ public class ZendeskSectionLocalServiceImpl
 			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
 
 		JSONObject jsonObject = addRemoteZendeskSection(
-			zendeskCategory.getRemoteId(), nameMap, descriptionMap, position);
+			zendeskCategory.getRemoteId(), nameMap, descriptionMap, position,
+			zendeskUserSegmentId);
 
 		JSONObject sectionJSONObject = jsonObject.getJSONObject("section");
 
@@ -106,10 +107,38 @@ public class ZendeskSectionLocalServiceImpl
 			zendeskCategoryId);
 	}
 
+	public JSONObject updateRemoteZendeskSectionUserSegmentId(
+			long remoteId, long remoteUserSegmentId)
+		throws PortalException {
+
+		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
+
+		if (remoteUserSegmentId > 0) {
+			sectionJSONObject.put("user_segment_id", remoteUserSegmentId);
+		}
+		else {
+			sectionJSONObject.put("user_segment_id", "null");
+		}
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("section", sectionJSONObject);
+
+		String jsonObjectString = jsonObject.toString();
+
+		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
+
+		return _zendeskBaseWebService.put(
+			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
+				remoteId + ".json",
+			jsonObjectString);
+	}
+
 	public ZendeskSection updateZendeskSection(
 			long zendeskSectionId, long zendeskCategoryId,
 			String documentationKey, Map<String, String> nameMap,
-			Map<String, String> descriptionMap, int position)
+			Map<String, String> descriptionMap, int position,
+			long zendeskUserSegmentId)
 		throws PortalException {
 
 		if (_log.isInfoEnabled()) {
@@ -124,7 +153,7 @@ public class ZendeskSectionLocalServiceImpl
 
 		updateRemoteZendeskSection(
 			zendeskSection.getRemoteId(), zendeskCategory.getRemoteId(),
-			position);
+			position, zendeskUserSegmentId);
 
 		updateRemoteZendeskTranslations(
 			zendeskSection.getRemoteId(), nameMap, descriptionMap);
@@ -137,7 +166,8 @@ public class ZendeskSectionLocalServiceImpl
 
 	protected JSONObject addRemoteZendeskSection(
 			long remoteCategoryId, Map<String, String> nameMap,
-			Map<String, String> descriptionMap, int position)
+			Map<String, String> descriptionMap, int position,
+			long remoteUserSegmentId)
 		throws PortalException {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
@@ -160,14 +190,20 @@ public class ZendeskSectionLocalServiceImpl
 
 		sectionJSONObject.put("translations", translationsJSONArray);
 
-		if (!Validator.isBlank(
-				ZendeskDocumentationSyncConfigurationValues.
-					ZENDESK_SECTION_USER_SEGMENT_ID)) {
+		if (remoteUserSegmentId > 0) {
+			sectionJSONObject.put("user_segment_id", remoteUserSegmentId);
+		}
+		else if (!Validator.isBlank(
+					ZendeskDocumentationSyncConfigurationValues.
+						ZENDESK_SECTION_USER_SEGMENT_ID)) {
 
 			sectionJSONObject.put(
 				"user_segment_id",
 				ZendeskDocumentationSyncConfigurationValues.
 					ZENDESK_SECTION_USER_SEGMENT_ID);
+		}
+		else {
+			sectionJSONObject.put("user_segment_id", "null");
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -185,7 +221,8 @@ public class ZendeskSectionLocalServiceImpl
 	}
 
 	protected JSONObject updateRemoteZendeskSection(
-			long remoteId, long remoteCategoryId, int position)
+			long remoteId, long remoteCategoryId, int position,
+			long remoteUserSegmentId)
 		throws PortalException {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
@@ -193,14 +230,20 @@ public class ZendeskSectionLocalServiceImpl
 		sectionJSONObject.put("category_id", remoteCategoryId);
 		sectionJSONObject.put("position", position);
 
-		if (!Validator.isBlank(
-				ZendeskDocumentationSyncConfigurationValues.
-					ZENDESK_SECTION_USER_SEGMENT_ID)) {
+		if (remoteUserSegmentId > 0) {
+			sectionJSONObject.put("user_segment_id", remoteUserSegmentId);
+		}
+		else if (!Validator.isBlank(
+					ZendeskDocumentationSyncConfigurationValues.
+						ZENDESK_SECTION_USER_SEGMENT_ID)) {
 
 			sectionJSONObject.put(
 				"user_segment_id",
 				ZendeskDocumentationSyncConfigurationValues.
 					ZENDESK_SECTION_USER_SEGMENT_ID);
+		}
+		else {
+			sectionJSONObject.put("user_segment_id", "null");
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
