@@ -48,3 +48,6 @@ $navbar-mobile-height: 48px;
 $padding-default: 24px !default;
 $padding-md: 16px !default;
 $padding-sm: 12px !default;
+
+$tab-heading-offset: $navbar-height + $navbar-height + $margin-md;
+$tab-heading-mobile-offset: $navbar-mobile-height + $navbar-height;

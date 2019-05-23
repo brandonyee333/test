@@ -21,6 +21,18 @@ header:not(.has-control-panel) + main {
 	}
 }
 
+.has-control-menu #wrapper h2:target::before {
+	content: '';
+	display: block;
+	height: $tab-heading-mobile-offset;
+	margin-top: -$tab-heading-mobile-offset;
+
+	@include media-breakpoint-up(md) {
+		height: $tab-heading-offset;
+		margin-top: -$tab-heading-offset;
+	}
+}
+
 .osb-module-version-upgrade-portlet,
 .osb-release-tool-portlet {
 	@import "_general";

@@ -52,7 +52,7 @@ if (moduleChangesCTAJournalArticle != null) {
 	<portlet:param name="toFixPackVersion" value="<%= String.valueOf(toFixPackVersion) %>" />
 </liferay-portlet:resourceURL>
 
-<div class="container-fluid release-tool-body row" id="<portlet:namespace />moduleChanges"></div>
+<div class="container-fluid row" id="<portlet:namespace />moduleChanges"></div>
 
 <aui:script>
 	ReleaseTool.render(
