@@ -64,7 +64,7 @@ public interface ZendeskSectionLocalService
 	public ZendeskSection addZendeskSection(
 			long zendeskCategoryId, String documentationKey,
 			Map<String, String> nameMap, Map<String, String> descriptionMap,
-			int position, long remoteUserSegmentId)
+			int position)
 		throws PortalException;
 
 	/**
@@ -244,15 +244,10 @@ public interface ZendeskSectionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getZendeskSectionsCount(long zendeskCategoryId);
 
-	public ZendeskSection updateRemoteUserSegmentId(
-			long zendeskSectionId, long remoteUserSegmentId)
-		throws PortalException;
-
 	public ZendeskSection updateZendeskSection(
 			long zendeskSectionId, long zendeskCategoryId,
 			String documentationKey, Map<String, String> nameMap,
-			Map<String, String> descriptionMap, int position,
-			long remoteUserSegmentId)
+			Map<String, String> descriptionMap, int position)
 		throws PortalException;
 
 	/**

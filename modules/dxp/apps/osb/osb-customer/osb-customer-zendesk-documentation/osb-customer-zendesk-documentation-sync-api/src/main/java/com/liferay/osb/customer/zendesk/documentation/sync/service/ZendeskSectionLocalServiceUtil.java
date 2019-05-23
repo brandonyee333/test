@@ -45,13 +45,12 @@ public class ZendeskSectionLocalServiceUtil {
 				addZendeskSection(
 					long zendeskCategoryId, String documentationKey,
 					java.util.Map<String, String> nameMap,
-					java.util.Map<String, String> descriptionMap, int position,
-					long remoteUserSegmentId)
+					java.util.Map<String, String> descriptionMap, int position)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addZendeskSection(
 			zendeskCategoryId, documentationKey, nameMap, descriptionMap,
-			position, remoteUserSegmentId);
+			position);
 	}
 
 	/**
@@ -310,27 +309,16 @@ public class ZendeskSectionLocalServiceUtil {
 
 	public static
 		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection
-				updateRemoteUserSegmentId(
-					long zendeskSectionId, long remoteUserSegmentId)
-			throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().updateRemoteUserSegmentId(
-			zendeskSectionId, remoteUserSegmentId);
-	}
-
-	public static
-		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection
 				updateZendeskSection(
 					long zendeskSectionId, long zendeskCategoryId,
 					String documentationKey,
 					java.util.Map<String, String> nameMap,
-					java.util.Map<String, String> descriptionMap, int position,
-					long remoteUserSegmentId)
+					java.util.Map<String, String> descriptionMap, int position)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateZendeskSection(
 			zendeskSectionId, zendeskCategoryId, documentationKey, nameMap,
-			descriptionMap, position, remoteUserSegmentId);
+			descriptionMap, position);
 	}
 
 	/**

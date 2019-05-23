@@ -64,8 +64,8 @@ public interface ZendeskArticleLocalService
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,
 			String documentationOriginalURL, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, String[] labelNames,
-			Map<String, byte[]> attachments)
+			Map<String, String> bodyMap, int position, long remoteUserSegmentId,
+			String[] labelNames, Map<String, byte[]> attachments)
 		throws PortalException;
 
 	/**
@@ -249,11 +249,16 @@ public interface ZendeskArticleLocalService
 	public List<ZendeskArticle> getZendeskCategoryArticles(
 		long zendeskCategoryId);
 
+	public ZendeskArticle updateRemoteUserSegmentId(
+			long zendeskArticleId, long remoteUserSegmentId)
+		throws PortalException;
+
 	public ZendeskArticle updateZendeskArticle(
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, String documentationOriginalURL,
 			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, String[] labelNames, Map<String, byte[]> attachments)
+			int position, long remoteUserSegmentId, String[] labelNames,
+			Map<String, byte[]> attachments)
 		throws PortalException;
 
 	/**
