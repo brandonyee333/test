@@ -1478,7 +1478,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 	protected int getProductVersion(int productMinorVersion) {
 		if (productMinorVersion ==
-				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_1) {
+				ProductEntryConstants.DIGITAL_ENTERPRISE_MINOR_VERSION_7_2) {
+
+			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_2_10;
+		}
+		else if (productMinorVersion ==
+					ProductEntryConstants.
+						DIGITAL_ENTERPRISE_MINOR_VERSION_7_1) {
 
 			return ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10;
 		}

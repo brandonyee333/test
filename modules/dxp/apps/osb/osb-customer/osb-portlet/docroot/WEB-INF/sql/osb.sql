@@ -347,11 +347,13 @@ insert into ListType (listTypeId, name, type_) values (40009, 'solr-7', 'com.lif
 
 insert into ListType (listTypeId, name, type_) values (41000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 insert into ListType (listTypeId, name, type_) values (41100, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
+insert into ListType (listTypeId, name, type_) values (41200, '7.2', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 
 insert into ListType (listTypeId, name, type_) values (42000, '7', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMajorVersions');
 
 insert into ListType (listTypeId, name, type_) values (43000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMinorVersions');
 insert into ListType (listTypeId, name, type_) values (43001, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMinorVersions');
+insert into ListType (listTypeId, name, type_) values (43002, '7.2', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseMinorVersions');
 
 insert into ListType (listTypeId, name, type_) values (44000, '1.0', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 insert into ListType (listTypeId, name, type_) values (44020, '1.1', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
