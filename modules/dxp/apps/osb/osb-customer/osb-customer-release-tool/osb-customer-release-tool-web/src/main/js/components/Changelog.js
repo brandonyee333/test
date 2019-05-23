@@ -32,12 +32,6 @@ export default class Changelog extends Component {
 		).isRequired
 	};
 
-	calculateTotalPage = jsonObject => {
-		return jsonObject.total
-			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
-			: 1;
-	}
-
 	state = {
 		jsonObject: this.props.jsonObject,
 		seeAllFilterValues: false,
@@ -45,8 +39,7 @@ export default class Changelog extends Component {
 			components: [],
 			keywords: '',
 			orderBy: 'desc'
-		},
-		totalPage: this.calculateTotalPage(this.props.jsonObject)
+		}
 	};
 
 	debounceEvent(...args) {
@@ -146,7 +139,7 @@ export default class Changelog extends Component {
 
 		const newOrderBy = otherProps.orderBy || orderBy;
 
-		// `startAt` param begins at 0 and not 1
+		// `startAt` param begins at 0 not 1
 
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
@@ -156,7 +149,7 @@ export default class Changelog extends Component {
 	};
 
 	handleQuerySortedResults = orderBy => {
-		const {selectedFilters, totalPage} = this.state;
+		const {selectedFilters} = this.state;
 
 		this.setState(
 			{
@@ -167,14 +160,12 @@ export default class Changelog extends Component {
 			}
 		);
 
-		if (totalPage > 1) {
-			this.changelogPaginationRef.current.handleClick(
-				1,
-				{
-					orderBy: orderBy
-				}
-			);
-		}
+		this.changelogPaginationRef.current.handleClick(
+			1,
+			{
+				orderBy: orderBy
+			}
+		);
 	};
 
 	queryJiraIssues = (
@@ -198,8 +189,7 @@ export default class Changelog extends Component {
 				({data}) => {
 					this.setState(
 						{
-							jsonObject: data,
-							totalPage: this.calculateTotalPage(data)
+							jsonObject: data
 						}
 					);
 				}
@@ -218,9 +208,12 @@ export default class Changelog extends Component {
 		const {
 			jsonObject,
 			selectedFilters: {components, keywords, orderBy},
-			seeAllFilterValues,
-			totalPage
+			seeAllFilterValues
 		} = this.state;
+
+		const totalPage = jsonObject.total
+		? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
+		: 1;
 
 		return (
 			<Fragment>
@@ -307,13 +300,11 @@ export default class Changelog extends Component {
 						table={changelogTable}
 					/>
 
-					{totalPage > 1 && (
-						<Pagination
-							ref={this.changelogPaginationRef}
-							onClick={this.handlePaginationClick}
-							total={totalPage}
-						/>
-					)}
+					<Pagination
+						ref={this.changelogPaginationRef}
+						onClick={this.handlePaginationClick}
+						total={totalPage}
+					/>
 				</div>
 			</Fragment>
 		);
