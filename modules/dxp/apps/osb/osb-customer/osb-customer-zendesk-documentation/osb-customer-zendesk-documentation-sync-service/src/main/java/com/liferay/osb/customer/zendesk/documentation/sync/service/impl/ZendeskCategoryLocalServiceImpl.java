@@ -15,8 +15,8 @@
 package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.RequiredZendeskCategoryException;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
-import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskCategoryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -81,13 +81,13 @@ public class ZendeskCategoryLocalServiceImpl
 		zendeskCategoryPersistence.update(zendeskCategory);
 
 		if (oldRemoteUserSegmentId != remoteUserSegmentId) {
-			List<ZendeskSection> zendeskSections =
-				zendeskSectionLocalService.getZendeskSections(
+			List<ZendeskArticle> zendeskArticles =
+				zendeskArticleLocalService.getZendeskCategoryArticles(
 					zendeskCategoryId);
 
-			for (ZendeskSection zendeskSection : zendeskSections) {
-				zendeskSectionLocalService.updateRemoteUserSegmentId(
-					zendeskSection.getZendeskSectionId(), remoteUserSegmentId);
+			for (ZendeskArticle zendeskArticle : zendeskArticles) {
+				zendeskArticleLocalService.updateRemoteUserSegmentId(
+					zendeskArticle.getZendeskArticleId(), remoteUserSegmentId);
 			}
 		}
 

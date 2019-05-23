@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -46,7 +47,7 @@ public class ZendeskArticleLocalServiceImpl
 			long zendeskSectionId, String documentationKey,
 			String documentationOriginalURL, Map<String, String> titleMap,
 			Map<String, String> bodyMap, int position, String[] labelNames,
-			Map<String, byte[]> attachments)
+			Map<String, byte[]> attachments, long zendeskUserSegmentId)
 		throws PortalException {
 
 		// Zendesk article
@@ -60,7 +61,7 @@ public class ZendeskArticleLocalServiceImpl
 
 		JSONObject jsonObject = addRemoteZendeskArticle(
 			zendeskSection.getRemoteId(), titleMap, bodyMap, position,
-			labelNames);
+			labelNames, zendeskUserSegmentId);
 
 		JSONObject articleJSONObject = jsonObject.getJSONObject("article");
 
@@ -140,11 +141,32 @@ public class ZendeskArticleLocalServiceImpl
 			zendeskCategoryId);
 	}
 
+	public ZendeskArticle updateRemoteUserSegmentId(
+			long zendeskArticleId, long remoteUserSegmentId)
+		throws PortalException {
+
+		ZendeskArticle zendeskArticle =
+			zendeskArticlePersistence.findByPrimaryKey(zendeskArticleId);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Updating article user segment " +
+					zendeskArticle.getDocumentationKey());
+		}
+
+		updateRemoteZendeskArticle(
+			zendeskArticle.getRemoteId(), 0, -1, new String[0],
+			remoteUserSegmentId);
+
+		return zendeskArticle;
+	}
+
 	public ZendeskArticle updateZendeskArticle(
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, String documentationOriginalURL,
 			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, String[] labelNames, Map<String, byte[]> attachments)
+			int position, String[] labelNames, Map<String, byte[]> attachments,
+			long remoteUserSegmentId)
 		throws PortalException {
 
 		// Zendesk article
@@ -161,7 +183,7 @@ public class ZendeskArticleLocalServiceImpl
 
 		updateRemoteZendeskArticle(
 			zendeskArticle.getRemoteId(), zendeskSection.getRemoteId(),
-			position, labelNames);
+			position, labelNames, remoteUserSegmentId);
 
 		// Zendesk article attachments
 
@@ -203,7 +225,8 @@ public class ZendeskArticleLocalServiceImpl
 
 	protected JSONObject addRemoteZendeskArticle(
 			long remoteSectionId, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, String[] labelNames)
+			Map<String, String> bodyMap, int position, String[] labelNames,
+			long remoteUserSegmentId)
 		throws PortalException {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
@@ -235,14 +258,34 @@ public class ZendeskArticleLocalServiceImpl
 
 		articleJSONObject.put("translations", translationsJSONArray);
 
+		if (remoteUserSegmentId > 0) {
+			articleJSONObject.put("user_segment_id", remoteUserSegmentId);
+		}
+		else if (!Validator.isBlank(
+					ZendeskDocumentationSyncConfigurationValues.
+						ZENDESK_ARTICLE_USER_SEGMENT_ID)) {
+
+			articleJSONObject.put(
+				"user_segment_id",
+				ZendeskDocumentationSyncConfigurationValues.
+					ZENDESK_ARTICLE_USER_SEGMENT_ID);
+		}
+		else {
+			articleJSONObject.put("user_segment_id", "null");
+		}
+
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("article", articleJSONObject);
 
+		String jsonObjectString = jsonObject.toString();
+
+		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
+
 		return _zendeskBaseWebService.post(
 			ZendeskRESTEndpoints.URL_API_V2 + "help_center/sections/" +
 				remoteSectionId + "/articles.json",
-			jsonObject.toString());
+			jsonObjectString);
 	}
 
 	protected void transformAttachmentLinks(
@@ -260,7 +303,7 @@ public class ZendeskArticleLocalServiceImpl
 
 	protected JSONObject updateRemoteZendeskArticle(
 			long remoteId, long remoteSectionId, int position,
-			String[] labelNames)
+			String[] labelNames, long remoteUserSegmentId)
 		throws PortalException {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
@@ -284,17 +327,42 @@ public class ZendeskArticleLocalServiceImpl
 					ZENDESK_ARTICLE_PERMISSION_GROUP_ID);
 		}
 
-		articleJSONObject.put("position", position);
-		articleJSONObject.put("section_id", remoteSectionId);
+		if (remoteUserSegmentId > 0) {
+			articleJSONObject.put("user_segment_id", remoteUserSegmentId);
+		}
+		else if (!Validator.isBlank(
+					ZendeskDocumentationSyncConfigurationValues.
+						ZENDESK_ARTICLE_USER_SEGMENT_ID)) {
+
+			articleJSONObject.put(
+				"user_segment_id",
+				ZendeskDocumentationSyncConfigurationValues.
+					ZENDESK_ARTICLE_USER_SEGMENT_ID);
+		}
+		else {
+			articleJSONObject.put("user_segment_id", "null");
+		}
+
+		if (position >= 0) {
+			articleJSONObject.put("position", position);
+		}
+
+		if (remoteSectionId > 0) {
+			articleJSONObject.put("section_id", remoteSectionId);
+		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("article", articleJSONObject);
 
+		String jsonObjectString = jsonObject.toString();
+
+		jsonObjectString = jsonObjectString.replace("\"null\"", "null");
+
 		return _zendeskBaseWebService.put(
 			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles/" +
 				remoteId + ".json",
-			jsonObject.toString());
+			jsonObjectString);
 	}
 
 	protected void updateRemoteZendeskTranslations(

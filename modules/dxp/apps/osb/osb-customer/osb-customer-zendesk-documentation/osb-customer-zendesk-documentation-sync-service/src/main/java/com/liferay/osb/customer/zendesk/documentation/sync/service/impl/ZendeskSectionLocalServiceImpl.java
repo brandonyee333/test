@@ -16,7 +16,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
-import com.liferay.osb.customer.zendesk.documentation.sync.configuration.ZendeskDocumentationSyncConfigurationValues;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskSectionLocalServiceBaseImpl;
@@ -27,7 +26,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -43,7 +41,7 @@ public class ZendeskSectionLocalServiceImpl
 	public ZendeskSection addZendeskSection(
 			long zendeskCategoryId, String documentationKey,
 			Map<String, String> nameMap, Map<String, String> descriptionMap,
-			int position, long remoteUserSegmentId)
+			int position)
 		throws PortalException {
 
 		if (_log.isInfoEnabled()) {
@@ -54,8 +52,7 @@ public class ZendeskSectionLocalServiceImpl
 			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
 
 		JSONObject jsonObject = addRemoteZendeskSection(
-			zendeskCategory.getRemoteId(), nameMap, descriptionMap, position,
-			remoteUserSegmentId);
+			zendeskCategory.getRemoteId(), nameMap, descriptionMap, position);
 
 		JSONObject sectionJSONObject = jsonObject.getJSONObject("section");
 
@@ -107,30 +104,10 @@ public class ZendeskSectionLocalServiceImpl
 			zendeskCategoryId);
 	}
 
-	public ZendeskSection updateRemoteUserSegmentId(
-			long zendeskSectionId, long remoteUserSegmentId)
-		throws PortalException {
-
-		ZendeskSection zendeskSection =
-			zendeskSectionPersistence.findByPrimaryKey(zendeskSectionId);
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"Updating section user segment " +
-					zendeskSection.getDocumentationKey());
-		}
-
-		updateRemoteZendeskSection(
-			zendeskSection.getRemoteId(), 0, -1, remoteUserSegmentId);
-
-		return zendeskSection;
-	}
-
 	public ZendeskSection updateZendeskSection(
 			long zendeskSectionId, long zendeskCategoryId,
 			String documentationKey, Map<String, String> nameMap,
-			Map<String, String> descriptionMap, int position,
-			long remoteUserSegmentId)
+			Map<String, String> descriptionMap, int position)
 		throws PortalException {
 
 		if (_log.isInfoEnabled()) {
@@ -145,7 +122,7 @@ public class ZendeskSectionLocalServiceImpl
 
 		updateRemoteZendeskSection(
 			zendeskSection.getRemoteId(), zendeskCategory.getRemoteId(),
-			position, remoteUserSegmentId);
+			position);
 
 		updateRemoteZendeskTranslations(
 			zendeskSection.getRemoteId(), nameMap, descriptionMap);
@@ -158,8 +135,7 @@ public class ZendeskSectionLocalServiceImpl
 
 	protected JSONObject addRemoteZendeskSection(
 			long remoteCategoryId, Map<String, String> nameMap,
-			Map<String, String> descriptionMap, int position,
-			long remoteUserSegmentId)
+			Map<String, String> descriptionMap, int position)
 		throws PortalException {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
@@ -182,22 +158,6 @@ public class ZendeskSectionLocalServiceImpl
 
 		sectionJSONObject.put("translations", translationsJSONArray);
 
-		if (remoteUserSegmentId > 0) {
-			sectionJSONObject.put("user_segment_id", remoteUserSegmentId);
-		}
-		else if (!Validator.isBlank(
-					ZendeskDocumentationSyncConfigurationValues.
-						ZENDESK_SECTION_USER_SEGMENT_ID)) {
-
-			sectionJSONObject.put(
-				"user_segment_id",
-				ZendeskDocumentationSyncConfigurationValues.
-					ZENDESK_SECTION_USER_SEGMENT_ID);
-		}
-		else {
-			sectionJSONObject.put("user_segment_id", "null");
-		}
-
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 		jsonObject.put("section", sectionJSONObject);
@@ -213,8 +173,7 @@ public class ZendeskSectionLocalServiceImpl
 	}
 
 	protected JSONObject updateRemoteZendeskSection(
-			long remoteId, long remoteCategoryId, int position,
-			long remoteUserSegmentId)
+			long remoteId, long remoteCategoryId, int position)
 		throws PortalException {
 
 		JSONObject sectionJSONObject = JSONFactoryUtil.createJSONObject();
@@ -225,22 +184,6 @@ public class ZendeskSectionLocalServiceImpl
 
 		if (position >= 0) {
 			sectionJSONObject.put("position", position);
-		}
-
-		if (remoteUserSegmentId > 0) {
-			sectionJSONObject.put("user_segment_id", remoteUserSegmentId);
-		}
-		else if (!Validator.isBlank(
-					ZendeskDocumentationSyncConfigurationValues.
-						ZENDESK_SECTION_USER_SEGMENT_ID)) {
-
-			sectionJSONObject.put(
-				"user_segment_id",
-				ZendeskDocumentationSyncConfigurationValues.
-					ZENDESK_SECTION_USER_SEGMENT_ID);
-		}
-		else {
-			sectionJSONObject.put("user_segment_id", "null");
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
