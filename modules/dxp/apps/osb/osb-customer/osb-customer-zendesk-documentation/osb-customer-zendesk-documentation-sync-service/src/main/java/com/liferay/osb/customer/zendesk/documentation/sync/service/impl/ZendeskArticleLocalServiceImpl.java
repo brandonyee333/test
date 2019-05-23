@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -46,8 +45,8 @@ public class ZendeskArticleLocalServiceImpl
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,
 			String documentationOriginalURL, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, String[] labelNames,
-			Map<String, byte[]> attachments, long zendeskUserSegmentId)
+			Map<String, String> bodyMap, int position, long remoteUserSegmentId,
+			String[] labelNames, Map<String, byte[]> attachments)
 		throws PortalException {
 
 		// Zendesk article
@@ -61,7 +60,7 @@ public class ZendeskArticleLocalServiceImpl
 
 		JSONObject jsonObject = addRemoteZendeskArticle(
 			zendeskSection.getRemoteId(), titleMap, bodyMap, position,
-			labelNames, zendeskUserSegmentId);
+			remoteUserSegmentId, labelNames);
 
 		JSONObject articleJSONObject = jsonObject.getJSONObject("article");
 
@@ -155,8 +154,7 @@ public class ZendeskArticleLocalServiceImpl
 		}
 
 		updateRemoteZendeskArticle(
-			zendeskArticle.getRemoteId(), 0, -1, new String[0],
-			remoteUserSegmentId);
+			zendeskArticle.getRemoteId(), 0, -1, remoteUserSegmentId, null);
 
 		return zendeskArticle;
 	}
@@ -165,8 +163,8 @@ public class ZendeskArticleLocalServiceImpl
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, String documentationOriginalURL,
 			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, String[] labelNames, Map<String, byte[]> attachments,
-			long remoteUserSegmentId)
+			int position, long remoteUserSegmentId, String[] labelNames,
+			Map<String, byte[]> attachments)
 		throws PortalException {
 
 		// Zendesk article
@@ -183,7 +181,7 @@ public class ZendeskArticleLocalServiceImpl
 
 		updateRemoteZendeskArticle(
 			zendeskArticle.getRemoteId(), zendeskSection.getRemoteId(),
-			position, labelNames, remoteUserSegmentId);
+			position, remoteUserSegmentId, labelNames);
 
 		// Zendesk article attachments
 
@@ -225,13 +223,13 @@ public class ZendeskArticleLocalServiceImpl
 
 	protected JSONObject addRemoteZendeskArticle(
 			long remoteSectionId, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, String[] labelNames,
-			long remoteUserSegmentId)
+			Map<String, String> bodyMap, int position, long remoteUserSegmentId,
+			String[] labelNames)
 		throws PortalException {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
 
-		if (!ArrayUtil.isEmpty(labelNames)) {
+		if (labelNames != null) {
 			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 			for (String labelName : labelNames) {
@@ -303,12 +301,12 @@ public class ZendeskArticleLocalServiceImpl
 
 	protected JSONObject updateRemoteZendeskArticle(
 			long remoteId, long remoteSectionId, int position,
-			String[] labelNames, long remoteUserSegmentId)
+			long remoteUserSegmentId, String[] labelNames)
 		throws PortalException {
 
 		JSONObject articleJSONObject = JSONFactoryUtil.createJSONObject();
 
-		if (!ArrayUtil.isEmpty(labelNames)) {
+		if (labelNames != null) {
 			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 
 			for (String labelName : labelNames) {
@@ -327,6 +325,14 @@ public class ZendeskArticleLocalServiceImpl
 					ZENDESK_ARTICLE_PERMISSION_GROUP_ID);
 		}
 
+		if (position >= 0) {
+			articleJSONObject.put("position", position);
+		}
+
+		if (remoteSectionId > 0) {
+			articleJSONObject.put("section_id", remoteSectionId);
+		}
+
 		if (remoteUserSegmentId > 0) {
 			articleJSONObject.put("user_segment_id", remoteUserSegmentId);
 		}
@@ -341,14 +347,6 @@ public class ZendeskArticleLocalServiceImpl
 		}
 		else {
 			articleJSONObject.put("user_segment_id", "null");
-		}
-
-		if (position >= 0) {
-			articleJSONObject.put("position", position);
-		}
-
-		if (remoteSectionId > 0) {
-			articleJSONObject.put("section_id", remoteSectionId);
 		}
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();

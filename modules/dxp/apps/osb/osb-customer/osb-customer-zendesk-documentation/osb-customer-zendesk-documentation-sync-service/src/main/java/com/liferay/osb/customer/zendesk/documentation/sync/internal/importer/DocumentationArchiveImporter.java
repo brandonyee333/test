@@ -255,8 +255,9 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 			zendeskArticle = ZendeskArticleLocalServiceUtil.addZendeskArticle(
 				_currentZendeskSection.getZendeskSectionId(), documentationKey,
 				documentationOriginalURL, titleMap, bodyMap,
-				_zendeskArticlePosition, _zendeskCategory.getRemoteLabelNames(),
-				attachments, _zendeskCategory.getRemoteUserSegmentId());
+				_zendeskArticlePosition,
+				_zendeskCategory.getRemoteUserSegmentId(),
+				_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
 		else {
 			zendeskArticle =
@@ -265,8 +266,8 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 					_currentZendeskSection.getZendeskSectionId(),
 					documentationKey, documentationOriginalURL, titleMap,
 					bodyMap, _zendeskArticlePosition,
-					_zendeskCategory.getRemoteLabelNames(), attachments,
-					_zendeskCategory.getRemoteUserSegmentId());
+					_zendeskCategory.getRemoteUserSegmentId(),
+					_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
 
 		if (_iterationCount == 0) {
