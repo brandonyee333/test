@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +36,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class ZendeskCategoryWrapper implements ZendeskCategory,
-	ModelWrapper<ZendeskCategory> {
+public class ZendeskCategoryWrapper
+	implements ZendeskCategory, ModelWrapper<ZendeskCategory> {
+
 	public ZendeskCategoryWrapper(ZendeskCategory zendeskCategory) {
 		_zendeskCategory = zendeskCategory;
 	}
@@ -59,9 +59,11 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 
 		attributes.put("zendeskCategoryId", getZendeskCategoryId());
 		attributes.put("documentationKey", getDocumentationKey());
-		attributes.put("documentationOriginalURL", getDocumentationOriginalURL());
+		attributes.put(
+			"documentationOriginalURL", getDocumentationOriginalURL());
 		attributes.put("articleLabels", getArticleLabels());
 		attributes.put("remoteId", getRemoteId());
+		attributes.put("remoteUserSegmentId", getRemoteUserSegmentId());
 
 		return attributes;
 	}
@@ -81,7 +83,7 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 		}
 
 		String documentationOriginalURL = (String)attributes.get(
-				"documentationOriginalURL");
+			"documentationOriginalURL");
 
 		if (documentationOriginalURL != null) {
 			setDocumentationOriginalURL(documentationOriginalURL);
@@ -98,11 +100,18 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 		if (remoteId != null) {
 			setRemoteId(remoteId);
 		}
+
+		Long remoteUserSegmentId = (Long)attributes.get("remoteUserSegmentId");
+
+		if (remoteUserSegmentId != null) {
+			setRemoteUserSegmentId(remoteUserSegmentId);
+		}
 	}
 
 	@Override
 	public Object clone() {
-		return new ZendeskCategoryWrapper((ZendeskCategory)_zendeskCategory.clone());
+		return new ZendeskCategoryWrapper(
+			(ZendeskCategory)_zendeskCategory.clone());
 	}
 
 	@Override
@@ -111,30 +120,30 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Returns the article labels of this zendesk category.
-	*
-	* @return the article labels of this zendesk category
-	*/
+	 * Returns the article labels of this zendesk category.
+	 *
+	 * @return the article labels of this zendesk category
+	 */
 	@Override
 	public String getArticleLabels() {
 		return _zendeskCategory.getArticleLabels();
 	}
 
 	/**
-	* Returns the documentation key of this zendesk category.
-	*
-	* @return the documentation key of this zendesk category
-	*/
+	 * Returns the documentation key of this zendesk category.
+	 *
+	 * @return the documentation key of this zendesk category
+	 */
 	@Override
 	public String getDocumentationKey() {
 		return _zendeskCategory.getDocumentationKey();
 	}
 
 	/**
-	* Returns the documentation original url of this zendesk category.
-	*
-	* @return the documentation original url of this zendesk category
-	*/
+	 * Returns the documentation original url of this zendesk category.
+	 *
+	 * @return the documentation original url of this zendesk category
+	 */
 	@Override
 	public String getDocumentationOriginalURL() {
 		return _zendeskCategory.getDocumentationOriginalURL();
@@ -146,10 +155,10 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Returns the primary key of this zendesk category.
-	*
-	* @return the primary key of this zendesk category
-	*/
+	 * Returns the primary key of this zendesk category.
+	 *
+	 * @return the primary key of this zendesk category
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _zendeskCategory.getPrimaryKey();
@@ -161,10 +170,10 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Returns the remote ID of this zendesk category.
-	*
-	* @return the remote ID of this zendesk category
-	*/
+	 * Returns the remote ID of this zendesk category.
+	 *
+	 * @return the remote ID of this zendesk category
+	 */
 	@Override
 	public long getRemoteId() {
 		return _zendeskCategory.getRemoteId();
@@ -176,10 +185,20 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Returns the zendesk category ID of this zendesk category.
-	*
-	* @return the zendesk category ID of this zendesk category
-	*/
+	 * Returns the remote user segment ID of this zendesk category.
+	 *
+	 * @return the remote user segment ID of this zendesk category
+	 */
+	@Override
+	public long getRemoteUserSegmentId() {
+		return _zendeskCategory.getRemoteUserSegmentId();
+	}
+
+	/**
+	 * Returns the zendesk category ID of this zendesk category.
+	 *
+	 * @return the zendesk category ID of this zendesk category
+	 */
 	@Override
 	public long getZendeskCategoryId() {
 		return _zendeskCategory.getZendeskCategoryId();
@@ -211,10 +230,10 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Sets the article labels of this zendesk category.
-	*
-	* @param articleLabels the article labels of this zendesk category
-	*/
+	 * Sets the article labels of this zendesk category.
+	 *
+	 * @param articleLabels the article labels of this zendesk category
+	 */
 	@Override
 	public void setArticleLabels(String articleLabels) {
 		_zendeskCategory.setArticleLabels(articleLabels);
@@ -226,20 +245,20 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Sets the documentation key of this zendesk category.
-	*
-	* @param documentationKey the documentation key of this zendesk category
-	*/
+	 * Sets the documentation key of this zendesk category.
+	 *
+	 * @param documentationKey the documentation key of this zendesk category
+	 */
 	@Override
 	public void setDocumentationKey(String documentationKey) {
 		_zendeskCategory.setDocumentationKey(documentationKey);
 	}
 
 	/**
-	* Sets the documentation original url of this zendesk category.
-	*
-	* @param documentationOriginalURL the documentation original url of this zendesk category
-	*/
+	 * Sets the documentation original url of this zendesk category.
+	 *
+	 * @param documentationOriginalURL the documentation original url of this zendesk category
+	 */
 	@Override
 	public void setDocumentationOriginalURL(String documentationOriginalURL) {
 		_zendeskCategory.setDocumentationOriginalURL(documentationOriginalURL);
@@ -248,6 +267,7 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_zendeskCategory.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -267,10 +287,10 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Sets the primary key of this zendesk category.
-	*
-	* @param primaryKey the primary key of this zendesk category
-	*/
+	 * Sets the primary key of this zendesk category.
+	 *
+	 * @param primaryKey the primary key of this zendesk category
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_zendeskCategory.setPrimaryKey(primaryKey);
@@ -282,27 +302,39 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	/**
-	* Sets the remote ID of this zendesk category.
-	*
-	* @param remoteId the remote ID of this zendesk category
-	*/
+	 * Sets the remote ID of this zendesk category.
+	 *
+	 * @param remoteId the remote ID of this zendesk category
+	 */
 	@Override
 	public void setRemoteId(long remoteId) {
 		_zendeskCategory.setRemoteId(remoteId);
 	}
 
 	/**
-	* Sets the zendesk category ID of this zendesk category.
-	*
-	* @param zendeskCategoryId the zendesk category ID of this zendesk category
-	*/
+	 * Sets the remote user segment ID of this zendesk category.
+	 *
+	 * @param remoteUserSegmentId the remote user segment ID of this zendesk category
+	 */
+	@Override
+	public void setRemoteUserSegmentId(long remoteUserSegmentId) {
+		_zendeskCategory.setRemoteUserSegmentId(remoteUserSegmentId);
+	}
+
+	/**
+	 * Sets the zendesk category ID of this zendesk category.
+	 *
+	 * @param zendeskCategoryId the zendesk category ID of this zendesk category
+	 */
 	@Override
 	public void setZendeskCategoryId(long zendeskCategoryId) {
 		_zendeskCategory.setZendeskCategoryId(zendeskCategoryId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ZendeskCategory> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<ZendeskCategory>
+		toCacheModel() {
+
 		return _zendeskCategory.toCacheModel();
 	}
 
@@ -336,10 +368,12 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 			return false;
 		}
 
-		ZendeskCategoryWrapper zendeskCategoryWrapper = (ZendeskCategoryWrapper)obj;
+		ZendeskCategoryWrapper zendeskCategoryWrapper =
+			(ZendeskCategoryWrapper)obj;
 
-		if (Objects.equals(_zendeskCategory,
-					zendeskCategoryWrapper._zendeskCategory)) {
+		if (Objects.equals(
+				_zendeskCategory, zendeskCategoryWrapper._zendeskCategory)) {
+
 			return true;
 		}
 
@@ -367,4 +401,5 @@ public class ZendeskCategoryWrapper implements ZendeskCategory,
 	}
 
 	private final ZendeskCategory _zendeskCategory;
+
 }

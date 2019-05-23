@@ -25,34 +25,42 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskArticleAttachmentModel
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl"
+)
 @ProviderType
-public interface ZendeskArticleAttachment extends ZendeskArticleAttachmentModel,
-	PersistedModel {
+public interface ZendeskArticleAttachment
+	extends PersistedModel, ZendeskArticleAttachmentModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ZendeskArticleAttachment, Long> ZENDESK_ARTICLE_ATTACHMENT_ID_ACCESSOR =
-		new Accessor<ZendeskArticleAttachment, Long>() {
-			@Override
-			public Long get(ZendeskArticleAttachment zendeskArticleAttachment) {
-				return zendeskArticleAttachment.getZendeskArticleAttachmentId();
-			}
+	public static final Accessor<ZendeskArticleAttachment, Long>
+		ZENDESK_ARTICLE_ATTACHMENT_ID_ACCESSOR =
+			new Accessor<ZendeskArticleAttachment, Long>() {
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Long get(
+					ZendeskArticleAttachment zendeskArticleAttachment) {
 
-			@Override
-			public Class<ZendeskArticleAttachment> getTypeClass() {
-				return ZendeskArticleAttachment.class;
-			}
-		};
+					return zendeskArticleAttachment.
+						getZendeskArticleAttachmentId();
+				}
+
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
+
+				@Override
+				public Class<ZendeskArticleAttachment> getTypeClass() {
+					return ZendeskArticleAttachment.class;
+				}
+
+			};
+
 }

@@ -32,12 +32,13 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectio
  * @generated
  */
 @ProviderType
-public abstract class ZendeskSectionBaseImpl extends ZendeskSectionModelImpl
-	implements ZendeskSection {
+public abstract class ZendeskSectionBaseImpl
+	extends ZendeskSectionModelImpl implements ZendeskSection {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a zendesk section model instance should use the {@link ZendeskSection} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a zendesk section model instance should use the <code>ZendeskSection</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +49,5 @@ public abstract class ZendeskSectionBaseImpl extends ZendeskSectionModelImpl
 			ZendeskSectionLocalServiceUtil.updateZendeskSection(this);
 		}
 	}
+
 }

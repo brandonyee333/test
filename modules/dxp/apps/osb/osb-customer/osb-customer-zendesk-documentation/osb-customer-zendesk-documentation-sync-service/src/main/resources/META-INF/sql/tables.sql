@@ -23,7 +23,8 @@ create table OSBCustomer_ZendeskCategory (
 	documentationKey VARCHAR(75) null,
 	documentationOriginalURL VARCHAR(255) null,
 	articleLabels STRING null,
-	remoteId LONG
+	remoteId LONG,
+	remoteUserSegmentId LONG
 );
 
 create table OSBCustomer_ZendeskSection (

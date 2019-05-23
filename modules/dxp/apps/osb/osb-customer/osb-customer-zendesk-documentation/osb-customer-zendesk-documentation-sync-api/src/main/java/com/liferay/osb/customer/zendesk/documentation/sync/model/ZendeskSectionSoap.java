@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class ZendeskSectionSoap implements Serializable {
+
 	public static ZendeskSectionSoap toSoapModel(ZendeskSection model) {
 		ZendeskSectionSoap soapModel = new ZendeskSectionSoap();
 
@@ -53,11 +54,14 @@ public class ZendeskSectionSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ZendeskSectionSoap[][] toSoapModels(ZendeskSection[][] models) {
+	public static ZendeskSectionSoap[][] toSoapModels(
+		ZendeskSection[][] models) {
+
 		ZendeskSectionSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ZendeskSectionSoap[models.length][models[0].length];
+			soapModels =
+				new ZendeskSectionSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ZendeskSectionSoap[0][0];
@@ -70,8 +74,11 @@ public class ZendeskSectionSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ZendeskSectionSoap[] toSoapModels(List<ZendeskSection> models) {
-		List<ZendeskSectionSoap> soapModels = new ArrayList<ZendeskSectionSoap>(models.size());
+	public static ZendeskSectionSoap[] toSoapModels(
+		List<ZendeskSection> models) {
+
+		List<ZendeskSectionSoap> soapModels = new ArrayList<ZendeskSectionSoap>(
+			models.size());
 
 		for (ZendeskSection model : models) {
 			soapModels.add(toSoapModel(model));
@@ -145,4 +152,5 @@ public class ZendeskSectionSoap implements Serializable {
 	private String _documentationKey;
 	private long _remoteId;
 	private String _remoteHtmlURL;
+
 }

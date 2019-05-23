@@ -25,20 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskCategoryModel
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl"
+)
 @ProviderType
-public interface ZendeskCategory extends ZendeskCategoryModel, PersistedModel {
+public interface ZendeskCategory extends PersistedModel, ZendeskCategoryModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ZendeskCategory, Long> ZENDESK_CATEGORY_ID_ACCESSOR =
-		new Accessor<ZendeskCategory, Long>() {
+	public static final Accessor<ZendeskCategory, Long>
+		ZENDESK_CATEGORY_ID_ACCESSOR = new Accessor<ZendeskCategory, Long>() {
+
 			@Override
 			public Long get(ZendeskCategory zendeskCategory) {
 				return zendeskCategory.getZendeskCategoryId();
@@ -53,7 +55,9 @@ public interface ZendeskCategory extends ZendeskCategoryModel, PersistedModel {
 			public Class<ZendeskCategory> getTypeClass() {
 				return ZendeskCategory.class;
 			}
+
 		};
 
 	public String[] getRemoteLabelNames();
+
 }

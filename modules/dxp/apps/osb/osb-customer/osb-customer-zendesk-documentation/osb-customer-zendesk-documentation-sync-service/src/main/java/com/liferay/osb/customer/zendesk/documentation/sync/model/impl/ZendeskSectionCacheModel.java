@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,12 +32,12 @@ import java.util.Date;
  * The cache model class for representing ZendeskSection in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskSection
  * @generated
  */
 @ProviderType
-public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
-	Externalizable {
+public class ZendeskSectionCacheModel
+	implements CacheModel<ZendeskSection>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,7 +48,8 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 			return false;
 		}
 
-		ZendeskSectionCacheModel zendeskSectionCacheModel = (ZendeskSectionCacheModel)obj;
+		ZendeskSectionCacheModel zendeskSectionCacheModel =
+			(ZendeskSectionCacheModel)obj;
 
 		if (zendeskSectionId == zendeskSectionCacheModel.zendeskSectionId) {
 			return true;
@@ -133,8 +133,7 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskSectionId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -163,4 +162,5 @@ public class ZendeskSectionCacheModel implements CacheModel<ZendeskSection>,
 	public String documentationKey;
 	public long remoteId;
 	public String remoteHtmlURL;
+
 }

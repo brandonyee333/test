@@ -30,6 +30,7 @@ import java.util.List;
  */
 @ProviderType
 public class ZendeskArticleSoap implements Serializable {
+
 	public static ZendeskArticleSoap toSoapModel(ZendeskArticle model) {
 		ZendeskArticleSoap soapModel = new ZendeskArticleSoap();
 
@@ -38,7 +39,8 @@ public class ZendeskArticleSoap implements Serializable {
 		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setZendeskSectionId(model.getZendeskSectionId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
-		soapModel.setDocumentationOriginalURL(model.getDocumentationOriginalURL());
+		soapModel.setDocumentationOriginalURL(
+			model.getDocumentationOriginalURL());
 		soapModel.setRemoteId(model.getRemoteId());
 		soapModel.setRemoteHtmlURL(model.getRemoteHtmlURL());
 
@@ -55,11 +57,14 @@ public class ZendeskArticleSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ZendeskArticleSoap[][] toSoapModels(ZendeskArticle[][] models) {
+	public static ZendeskArticleSoap[][] toSoapModels(
+		ZendeskArticle[][] models) {
+
 		ZendeskArticleSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ZendeskArticleSoap[models.length][models[0].length];
+			soapModels =
+				new ZendeskArticleSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ZendeskArticleSoap[0][0];
@@ -72,8 +77,11 @@ public class ZendeskArticleSoap implements Serializable {
 		return soapModels;
 	}
 
-	public static ZendeskArticleSoap[] toSoapModels(List<ZendeskArticle> models) {
-		List<ZendeskArticleSoap> soapModels = new ArrayList<ZendeskArticleSoap>(models.size());
+	public static ZendeskArticleSoap[] toSoapModels(
+		List<ZendeskArticle> models) {
+
+		List<ZendeskArticleSoap> soapModels = new ArrayList<ZendeskArticleSoap>(
+			models.size());
 
 		for (ZendeskArticle model : models) {
 			soapModels.add(toSoapModel(model));
@@ -165,4 +173,5 @@ public class ZendeskArticleSoap implements Serializable {
 	private String _documentationOriginalURL;
 	private long _remoteId;
 	private String _remoteHtmlURL;
+
 }

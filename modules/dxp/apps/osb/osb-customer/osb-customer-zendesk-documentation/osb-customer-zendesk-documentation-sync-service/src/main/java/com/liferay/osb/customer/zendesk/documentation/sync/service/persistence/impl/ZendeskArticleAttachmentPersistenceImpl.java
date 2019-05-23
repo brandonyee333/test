@@ -21,7 +21,6 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleA
 import com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentModelImpl;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticleAttachmentPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -59,56 +58,33 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskArticleAttachmentPersistence
- * @see com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticleAttachmentUtil
  * @generated
  */
 @ProviderType
-public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl<ZendeskArticleAttachment>
+public class ZendeskArticleAttachmentPersistenceImpl
+	extends BasePersistenceImpl<ZendeskArticleAttachment>
 	implements ZendeskArticleAttachmentPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link ZendeskArticleAttachmentUtil} to access the zendesk article attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>ZendeskArticleAttachmentUtil</code> to access the zendesk article attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = ZendeskArticleAttachmentImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskArticleAttachmentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskArticleAttachmentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_ZENDESKARTICLEID =
-		new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskArticleAttachmentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByZendeskArticleId",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKARTICLEID =
-		new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskArticleAttachmentImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"findByZendeskArticleId", new String[] { Long.class.getName() },
-			ZendeskArticleAttachmentModelImpl.ZENDESKARTICLEID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_ZENDESKARTICLEID = new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByZendeskArticleId", new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		ZendeskArticleAttachmentImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByZendeskArticleId;
+	private FinderPath _finderPathWithoutPaginationFindByZendeskArticleId;
+	private FinderPath _finderPathCountByZendeskArticleId;
 
 	/**
 	 * Returns all the zendesk article attachments where zendeskArticleId = &#63;.
@@ -119,15 +95,16 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public List<ZendeskArticleAttachment> findByZendeskArticleId(
 		long zendeskArticleId) {
-		return findByZendeskArticleId(zendeskArticleId, QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, null);
+
+		return findByZendeskArticleId(
+			zendeskArticleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the zendesk article attachments where zendeskArticleId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskArticleAttachmentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param zendeskArticleId the zendesk article ID
@@ -138,6 +115,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public List<ZendeskArticleAttachment> findByZendeskArticleId(
 		long zendeskArticleId, int start, int end) {
+
 		return findByZendeskArticleId(zendeskArticleId, start, end, null);
 	}
 
@@ -145,7 +123,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Returns an ordered range of all the zendesk article attachments where zendeskArticleId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskArticleAttachmentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param zendeskArticleId the zendesk article ID
@@ -158,15 +136,16 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	public List<ZendeskArticleAttachment> findByZendeskArticleId(
 		long zendeskArticleId, int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator) {
-		return findByZendeskArticleId(zendeskArticleId, start, end,
-			orderByComparator, true);
+
+		return findByZendeskArticleId(
+			zendeskArticleId, start, end, orderByComparator, true);
 	}
 
 	/**
 	 * Returns an ordered range of all the zendesk article attachments where zendeskArticleId = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskArticleAttachmentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param zendeskArticleId the zendesk article ID
@@ -181,34 +160,36 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		long zendeskArticleId, int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKARTICLEID;
-			finderArgs = new Object[] { zendeskArticleId };
+			finderPath = _finderPathWithoutPaginationFindByZendeskArticleId;
+			finderArgs = new Object[] {zendeskArticleId};
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_ZENDESKARTICLEID;
+			finderPath = _finderPathWithPaginationFindByZendeskArticleId;
 			finderArgs = new Object[] {
-					zendeskArticleId,
-					
-					start, end, orderByComparator
-				};
+				zendeskArticleId, start, end, orderByComparator
+			};
 		}
 
 		List<ZendeskArticleAttachment> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<ZendeskArticleAttachment>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<ZendeskArticleAttachment>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (ZendeskArticleAttachment zendeskArticleAttachment : list) {
-					if ((zendeskArticleId != zendeskArticleAttachment.getZendeskArticleId())) {
+					if ((zendeskArticleId !=
+							zendeskArticleAttachment.getZendeskArticleId())) {
+
 						list = null;
 
 						break;
@@ -221,8 +202,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 			StringBundler query = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
 				query = new StringBundler(3);
@@ -233,11 +214,10 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 			query.append(_FINDER_COLUMN_ZENDESKARTICLEID_ZENDESKARTICLEID_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
+			else if (pagination) {
 				query.append(ZendeskArticleAttachmentModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -255,16 +235,16 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 				qPos.add(zendeskArticleId);
 
 				if (!pagination) {
-					list = (List<ZendeskArticleAttachment>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<ZendeskArticleAttachment>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<ZendeskArticleAttachment>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<ZendeskArticleAttachment>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -294,11 +274,12 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment findByZendeskArticleId_First(
-		long zendeskArticleId,
-		OrderByComparator<ZendeskArticleAttachment> orderByComparator)
+			long zendeskArticleId,
+			OrderByComparator<ZendeskArticleAttachment> orderByComparator)
 		throws NoSuchZendeskArticleAttachmentException {
-		ZendeskArticleAttachment zendeskArticleAttachment = fetchByZendeskArticleId_First(zendeskArticleId,
-				orderByComparator);
+
+		ZendeskArticleAttachment zendeskArticleAttachment =
+			fetchByZendeskArticleId_First(zendeskArticleId, orderByComparator);
 
 		if (zendeskArticleAttachment != null) {
 			return zendeskArticleAttachment;
@@ -327,8 +308,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	public ZendeskArticleAttachment fetchByZendeskArticleId_First(
 		long zendeskArticleId,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator) {
-		List<ZendeskArticleAttachment> list = findByZendeskArticleId(zendeskArticleId,
-				0, 1, orderByComparator);
+
+		List<ZendeskArticleAttachment> list = findByZendeskArticleId(
+			zendeskArticleId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -347,11 +329,12 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment findByZendeskArticleId_Last(
-		long zendeskArticleId,
-		OrderByComparator<ZendeskArticleAttachment> orderByComparator)
+			long zendeskArticleId,
+			OrderByComparator<ZendeskArticleAttachment> orderByComparator)
 		throws NoSuchZendeskArticleAttachmentException {
-		ZendeskArticleAttachment zendeskArticleAttachment = fetchByZendeskArticleId_Last(zendeskArticleId,
-				orderByComparator);
+
+		ZendeskArticleAttachment zendeskArticleAttachment =
+			fetchByZendeskArticleId_Last(zendeskArticleId, orderByComparator);
 
 		if (zendeskArticleAttachment != null) {
 			return zendeskArticleAttachment;
@@ -380,14 +363,15 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	public ZendeskArticleAttachment fetchByZendeskArticleId_Last(
 		long zendeskArticleId,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator) {
+
 		int count = countByZendeskArticleId(zendeskArticleId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<ZendeskArticleAttachment> list = findByZendeskArticleId(zendeskArticleId,
-				count - 1, count, orderByComparator);
+		List<ZendeskArticleAttachment> list = findByZendeskArticleId(
+			zendeskArticleId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -407,27 +391,30 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment[] findByZendeskArticleId_PrevAndNext(
-		long zendeskArticleAttachmentId, long zendeskArticleId,
-		OrderByComparator<ZendeskArticleAttachment> orderByComparator)
+			long zendeskArticleAttachmentId, long zendeskArticleId,
+			OrderByComparator<ZendeskArticleAttachment> orderByComparator)
 		throws NoSuchZendeskArticleAttachmentException {
-		ZendeskArticleAttachment zendeskArticleAttachment = findByPrimaryKey(zendeskArticleAttachmentId);
+
+		ZendeskArticleAttachment zendeskArticleAttachment = findByPrimaryKey(
+			zendeskArticleAttachmentId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ZendeskArticleAttachment[] array = new ZendeskArticleAttachmentImpl[3];
+			ZendeskArticleAttachment[] array =
+				new ZendeskArticleAttachmentImpl[3];
 
-			array[0] = getByZendeskArticleId_PrevAndNext(session,
-					zendeskArticleAttachment, zendeskArticleId,
-					orderByComparator, true);
+			array[0] = getByZendeskArticleId_PrevAndNext(
+				session, zendeskArticleAttachment, zendeskArticleId,
+				orderByComparator, true);
 
 			array[1] = zendeskArticleAttachment;
 
-			array[2] = getByZendeskArticleId_PrevAndNext(session,
-					zendeskArticleAttachment, zendeskArticleId,
-					orderByComparator, false);
+			array[2] = getByZendeskArticleId_PrevAndNext(
+				session, zendeskArticleAttachment, zendeskArticleId,
+				orderByComparator, false);
 
 			return array;
 		}
@@ -444,11 +431,12 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		long zendeskArticleId,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
 		boolean previous) {
+
 		StringBundler query = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			query = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
@@ -460,7 +448,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		query.append(_FINDER_COLUMN_ZENDESKARTICLEID_ZENDESKARTICLEID_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
 				query.append(WHERE_AND);
@@ -530,8 +519,10 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		qPos.add(zendeskArticleId);
 
 		if (orderByComparator != null) {
-			for (Object orderByConditionValue : orderByComparator.getOrderByConditionValues(
-					zendeskArticleAttachment)) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						zendeskArticleAttachment)) {
+
 				qPos.add(orderByConditionValue);
 			}
 		}
@@ -553,8 +544,11 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public void removeByZendeskArticleId(long zendeskArticleId) {
-		for (ZendeskArticleAttachment zendeskArticleAttachment : findByZendeskArticleId(
-				zendeskArticleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (ZendeskArticleAttachment zendeskArticleAttachment :
+				findByZendeskArticleId(
+					zendeskArticleId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
 			remove(zendeskArticleAttachment);
 		}
 	}
@@ -567,9 +561,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public int countByZendeskArticleId(long zendeskArticleId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_ZENDESKARTICLEID;
+		FinderPath finderPath = _finderPathCountByZendeskArticleId;
 
-		Object[] finderArgs = new Object[] { zendeskArticleId };
+		Object[] finderArgs = new Object[] {zendeskArticleId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -610,22 +604,15 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ZENDESKARTICLEID_ZENDESKARTICLEID_2 =
-		"zendeskArticleAttachment.zendeskArticleId = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_ZAI_FP = new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskArticleAttachmentImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByZAI_FP",
-			new String[] { Long.class.getName(), String.class.getName() },
-			ZendeskArticleAttachmentModelImpl.ZENDESKARTICLEID_COLUMN_BITMASK |
-			ZendeskArticleAttachmentModelImpl.FILEPATH_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_ZAI_FP = new FinderPath(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByZAI_FP",
-			new String[] { Long.class.getName(), String.class.getName() });
+	private static final String
+		_FINDER_COLUMN_ZENDESKARTICLEID_ZENDESKARTICLEID_2 =
+			"zendeskArticleAttachment.zendeskArticleId = ?";
+
+	private FinderPath _finderPathFetchByZAI_FP;
+	private FinderPath _finderPathCountByZAI_FP;
 
 	/**
-	 * Returns the zendesk article attachment where zendeskArticleId = &#63; and filePath = &#63; or throws a {@link NoSuchZendeskArticleAttachmentException} if it could not be found.
+	 * Returns the zendesk article attachment where zendeskArticleId = &#63; and filePath = &#63; or throws a <code>NoSuchZendeskArticleAttachmentException</code> if it could not be found.
 	 *
 	 * @param zendeskArticleId the zendesk article ID
 	 * @param filePath the file path
@@ -633,10 +620,12 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * @throws NoSuchZendeskArticleAttachmentException if a matching zendesk article attachment could not be found
 	 */
 	@Override
-	public ZendeskArticleAttachment findByZAI_FP(long zendeskArticleId,
-		String filePath) throws NoSuchZendeskArticleAttachmentException {
-		ZendeskArticleAttachment zendeskArticleAttachment = fetchByZAI_FP(zendeskArticleId,
-				filePath);
+	public ZendeskArticleAttachment findByZAI_FP(
+			long zendeskArticleId, String filePath)
+		throws NoSuchZendeskArticleAttachmentException {
+
+		ZendeskArticleAttachment zendeskArticleAttachment = fetchByZAI_FP(
+			zendeskArticleId, filePath);
 
 		if (zendeskArticleAttachment == null) {
 			StringBundler msg = new StringBundler(6);
@@ -669,8 +658,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * @return the matching zendesk article attachment, or <code>null</code> if a matching zendesk article attachment could not be found
 	 */
 	@Override
-	public ZendeskArticleAttachment fetchByZAI_FP(long zendeskArticleId,
-		String filePath) {
+	public ZendeskArticleAttachment fetchByZAI_FP(
+		long zendeskArticleId, String filePath) {
+
 		return fetchByZAI_FP(zendeskArticleId, filePath, true);
 	}
 
@@ -683,25 +673,29 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * @return the matching zendesk article attachment, or <code>null</code> if a matching zendesk article attachment could not be found
 	 */
 	@Override
-	public ZendeskArticleAttachment fetchByZAI_FP(long zendeskArticleId,
-		String filePath, boolean retrieveFromCache) {
+	public ZendeskArticleAttachment fetchByZAI_FP(
+		long zendeskArticleId, String filePath, boolean retrieveFromCache) {
+
 		filePath = Objects.toString(filePath, "");
 
-		Object[] finderArgs = new Object[] { zendeskArticleId, filePath };
+		Object[] finderArgs = new Object[] {zendeskArticleId, filePath};
 
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_ZAI_FP,
-					finderArgs, this);
+			result = finderCache.getResult(
+				_finderPathFetchByZAI_FP, finderArgs, this);
 		}
 
 		if (result instanceof ZendeskArticleAttachment) {
-			ZendeskArticleAttachment zendeskArticleAttachment = (ZendeskArticleAttachment)result;
+			ZendeskArticleAttachment zendeskArticleAttachment =
+				(ZendeskArticleAttachment)result;
 
-			if ((zendeskArticleId != zendeskArticleAttachment.getZendeskArticleId()) ||
-					!Objects.equals(filePath,
-						zendeskArticleAttachment.getFilePath())) {
+			if ((zendeskArticleId !=
+					zendeskArticleAttachment.getZendeskArticleId()) ||
+				!Objects.equals(
+					filePath, zendeskArticleAttachment.getFilePath())) {
+
 				result = null;
 			}
 		}
@@ -744,8 +738,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 				List<ZendeskArticleAttachment> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_ZAI_FP,
-						finderArgs, list);
+					finderCache.putResult(
+						_finderPathFetchByZAI_FP, finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
@@ -754,12 +748,13 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 						if (_log.isWarnEnabled()) {
 							_log.warn(
 								"ZendeskArticleAttachmentPersistenceImpl.fetchByZAI_FP(long, String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
-					ZendeskArticleAttachment zendeskArticleAttachment = list.get(0);
+					ZendeskArticleAttachment zendeskArticleAttachment =
+						list.get(0);
 
 					result = zendeskArticleAttachment;
 
@@ -767,7 +762,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_ZAI_FP, finderArgs);
+				finderCache.removeResult(_finderPathFetchByZAI_FP, finderArgs);
 
 				throw processException(e);
 			}
@@ -792,10 +787,12 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * @return the zendesk article attachment that was removed
 	 */
 	@Override
-	public ZendeskArticleAttachment removeByZAI_FP(long zendeskArticleId,
-		String filePath) throws NoSuchZendeskArticleAttachmentException {
-		ZendeskArticleAttachment zendeskArticleAttachment = findByZAI_FP(zendeskArticleId,
-				filePath);
+	public ZendeskArticleAttachment removeByZAI_FP(
+			long zendeskArticleId, String filePath)
+		throws NoSuchZendeskArticleAttachmentException {
+
+		ZendeskArticleAttachment zendeskArticleAttachment = findByZAI_FP(
+			zendeskArticleId, filePath);
 
 		return remove(zendeskArticleAttachment);
 	}
@@ -811,9 +808,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	public int countByZAI_FP(long zendeskArticleId, String filePath) {
 		filePath = Objects.toString(filePath, "");
 
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_ZAI_FP;
+		FinderPath finderPath = _finderPathCountByZAI_FP;
 
-		Object[] finderArgs = new Object[] { zendeskArticleId, filePath };
+		Object[] finderArgs = new Object[] {zendeskArticleId, filePath};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -869,9 +866,14 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_ZAI_FP_ZENDESKARTICLEID_2 = "zendeskArticleAttachment.zendeskArticleId = ? AND ";
-	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_2 = "zendeskArticleAttachment.filePath = ?";
-	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_3 = "(zendeskArticleAttachment.filePath IS NULL OR zendeskArticleAttachment.filePath = '')";
+	private static final String _FINDER_COLUMN_ZAI_FP_ZENDESKARTICLEID_2 =
+		"zendeskArticleAttachment.zendeskArticleId = ? AND ";
+
+	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_2 =
+		"zendeskArticleAttachment.filePath = ?";
+
+	private static final String _FINDER_COLUMN_ZAI_FP_FILEPATH_3 =
+		"(zendeskArticleAttachment.filePath IS NULL OR zendeskArticleAttachment.filePath = '')";
 
 	public ZendeskArticleAttachmentPersistenceImpl() {
 		setModelClass(ZendeskArticleAttachment.class);
@@ -884,15 +886,18 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public void cacheResult(ZendeskArticleAttachment zendeskArticleAttachment) {
-		entityCache.putResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskArticleAttachmentImpl.class,
 			zendeskArticleAttachment.getPrimaryKey(), zendeskArticleAttachment);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_ZAI_FP,
+		finderCache.putResult(
+			_finderPathFetchByZAI_FP,
 			new Object[] {
 				zendeskArticleAttachment.getZendeskArticleId(),
 				zendeskArticleAttachment.getFilePath()
-			}, zendeskArticleAttachment);
+			},
+			zendeskArticleAttachment);
 
 		zendeskArticleAttachment.resetOriginalValues();
 	}
@@ -905,11 +910,15 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public void cacheResult(
 		List<ZendeskArticleAttachment> zendeskArticleAttachments) {
-		for (ZendeskArticleAttachment zendeskArticleAttachment : zendeskArticleAttachments) {
+
+		for (ZendeskArticleAttachment zendeskArticleAttachment :
+				zendeskArticleAttachments) {
+
 			if (entityCache.getResult(
-						ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-						ZendeskArticleAttachmentImpl.class,
-						zendeskArticleAttachment.getPrimaryKey()) == null) {
+					ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+					ZendeskArticleAttachmentImpl.class,
+					zendeskArticleAttachment.getPrimaryKey()) == null) {
+
 				cacheResult(zendeskArticleAttachment);
 			}
 			else {
@@ -922,7 +931,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Clears the cache for all zendesk article attachments.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -938,73 +947,83 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Clears the cache for the zendesk article attachment.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(ZendeskArticleAttachment zendeskArticleAttachment) {
-		entityCache.removeResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskArticleAttachmentImpl.class,
 			zendeskArticleAttachment.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((ZendeskArticleAttachmentModelImpl)zendeskArticleAttachment,
-			true);
+		clearUniqueFindersCache(
+			(ZendeskArticleAttachmentModelImpl)zendeskArticleAttachment, true);
 	}
 
 	@Override
 	public void clearCache(
 		List<ZendeskArticleAttachment> zendeskArticleAttachments) {
+
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (ZendeskArticleAttachment zendeskArticleAttachment : zendeskArticleAttachments) {
-			entityCache.removeResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		for (ZendeskArticleAttachment zendeskArticleAttachment :
+				zendeskArticleAttachments) {
+
+			entityCache.removeResult(
+				ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 				ZendeskArticleAttachmentImpl.class,
 				zendeskArticleAttachment.getPrimaryKey());
 
-			clearUniqueFindersCache((ZendeskArticleAttachmentModelImpl)zendeskArticleAttachment,
+			clearUniqueFindersCache(
+				(ZendeskArticleAttachmentModelImpl)zendeskArticleAttachment,
 				true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		ZendeskArticleAttachmentModelImpl zendeskArticleAttachmentModelImpl) {
-		Object[] args = new Object[] {
-				zendeskArticleAttachmentModelImpl.getZendeskArticleId(),
-				zendeskArticleAttachmentModelImpl.getFilePath()
-			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_ZAI_FP, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_ZAI_FP, args,
-			zendeskArticleAttachmentModelImpl, false);
+		Object[] args = new Object[] {
+			zendeskArticleAttachmentModelImpl.getZendeskArticleId(),
+			zendeskArticleAttachmentModelImpl.getFilePath()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByZAI_FP, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByZAI_FP, args, zendeskArticleAttachmentModelImpl,
+			false);
 	}
 
 	protected void clearUniqueFindersCache(
 		ZendeskArticleAttachmentModelImpl zendeskArticleAttachmentModelImpl,
 		boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					zendeskArticleAttachmentModelImpl.getZendeskArticleId(),
-					zendeskArticleAttachmentModelImpl.getFilePath()
-				};
+				zendeskArticleAttachmentModelImpl.getZendeskArticleId(),
+				zendeskArticleAttachmentModelImpl.getFilePath()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_ZAI_FP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_ZAI_FP, args);
+			finderCache.removeResult(_finderPathCountByZAI_FP, args);
+			finderCache.removeResult(_finderPathFetchByZAI_FP, args);
 		}
 
 		if ((zendeskArticleAttachmentModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_ZAI_FP.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					zendeskArticleAttachmentModelImpl.getOriginalZendeskArticleId(),
-					zendeskArticleAttachmentModelImpl.getOriginalFilePath()
-				};
+			 _finderPathFetchByZAI_FP.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_ZAI_FP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_ZAI_FP, args);
+			Object[] args = new Object[] {
+				zendeskArticleAttachmentModelImpl.getOriginalZendeskArticleId(),
+				zendeskArticleAttachmentModelImpl.getOriginalFilePath()
+			};
+
+			finderCache.removeResult(_finderPathCountByZAI_FP, args);
+			finderCache.removeResult(_finderPathFetchByZAI_FP, args);
 		}
 	}
 
@@ -1016,7 +1035,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment create(long zendeskArticleAttachmentId) {
-		ZendeskArticleAttachment zendeskArticleAttachment = new ZendeskArticleAttachmentImpl();
+		ZendeskArticleAttachment zendeskArticleAttachment =
+			new ZendeskArticleAttachmentImpl();
 
 		zendeskArticleAttachment.setNew(true);
 		zendeskArticleAttachment.setPrimaryKey(zendeskArticleAttachmentId);
@@ -1034,6 +1054,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public ZendeskArticleAttachment remove(long zendeskArticleAttachmentId)
 		throws NoSuchZendeskArticleAttachmentException {
+
 		return remove((Serializable)zendeskArticleAttachmentId);
 	}
 
@@ -1047,21 +1068,23 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public ZendeskArticleAttachment remove(Serializable primaryKey)
 		throws NoSuchZendeskArticleAttachmentException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ZendeskArticleAttachment zendeskArticleAttachment = (ZendeskArticleAttachment)session.get(ZendeskArticleAttachmentImpl.class,
-					primaryKey);
+			ZendeskArticleAttachment zendeskArticleAttachment =
+				(ZendeskArticleAttachment)session.get(
+					ZendeskArticleAttachmentImpl.class, primaryKey);
 
 			if (zendeskArticleAttachment == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchZendeskArticleAttachmentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchZendeskArticleAttachmentException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(zendeskArticleAttachment);
@@ -1080,13 +1103,16 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	protected ZendeskArticleAttachment removeImpl(
 		ZendeskArticleAttachment zendeskArticleAttachment) {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(zendeskArticleAttachment)) {
-				zendeskArticleAttachment = (ZendeskArticleAttachment)session.get(ZendeskArticleAttachmentImpl.class,
+				zendeskArticleAttachment =
+					(ZendeskArticleAttachment)session.get(
+						ZendeskArticleAttachmentImpl.class,
 						zendeskArticleAttachment.getPrimaryKeyObj());
 			}
 
@@ -1111,25 +1137,30 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public ZendeskArticleAttachment updateImpl(
 		ZendeskArticleAttachment zendeskArticleAttachment) {
+
 		boolean isNew = zendeskArticleAttachment.isNew();
 
-		if (!(zendeskArticleAttachment instanceof ZendeskArticleAttachmentModelImpl)) {
+		if (!(zendeskArticleAttachment instanceof
+				ZendeskArticleAttachmentModelImpl)) {
+
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(zendeskArticleAttachment.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(zendeskArticleAttachment);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					zendeskArticleAttachment);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in zendeskArticleAttachment proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom ZendeskArticleAttachment implementation " +
-				zendeskArticleAttachment.getClass());
+					zendeskArticleAttachment.getClass());
 		}
 
-		ZendeskArticleAttachmentModelImpl zendeskArticleAttachmentModelImpl = (ZendeskArticleAttachmentModelImpl)zendeskArticleAttachment;
+		ZendeskArticleAttachmentModelImpl zendeskArticleAttachmentModelImpl =
+			(ZendeskArticleAttachmentModelImpl)zendeskArticleAttachment;
 
 		Session session = null;
 
@@ -1142,7 +1173,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 				zendeskArticleAttachment.setNew(false);
 			}
 			else {
-				zendeskArticleAttachment = (ZendeskArticleAttachment)session.merge(zendeskArticleAttachment);
+				zendeskArticleAttachment =
+					(ZendeskArticleAttachment)session.merge(
+						zendeskArticleAttachment);
 			}
 		}
 		catch (Exception e) {
@@ -1157,45 +1190,47 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		if (!ZendeskArticleAttachmentModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
+		else if (isNew) {
 			Object[] args = new Object[] {
+				zendeskArticleAttachmentModelImpl.getZendeskArticleId()
+			};
+
+			finderCache.removeResult(_finderPathCountByZendeskArticleId, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByZendeskArticleId, args);
+
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		}
+		else {
+			if ((zendeskArticleAttachmentModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByZendeskArticleId.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					zendeskArticleAttachmentModelImpl.
+						getOriginalZendeskArticleId()
+				};
+
+				finderCache.removeResult(
+					_finderPathCountByZendeskArticleId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByZendeskArticleId, args);
+
+				args = new Object[] {
 					zendeskArticleAttachmentModelImpl.getZendeskArticleId()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_ZENDESKARTICLEID, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKARTICLEID,
-				args);
-
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
-		}
-
-		else {
-			if ((zendeskArticleAttachmentModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKARTICLEID.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						zendeskArticleAttachmentModelImpl.getOriginalZendeskArticleId()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ZENDESKARTICLEID,
-					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKARTICLEID,
-					args);
-
-				args = new Object[] {
-						zendeskArticleAttachmentModelImpl.getZendeskArticleId()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_ZENDESKARTICLEID,
-					args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_ZENDESKARTICLEID,
-					args);
+				finderCache.removeResult(
+					_finderPathCountByZendeskArticleId, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByZendeskArticleId, args);
 			}
 		}
 
-		entityCache.putResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskArticleAttachmentImpl.class,
 			zendeskArticleAttachment.getPrimaryKey(), zendeskArticleAttachment,
 			false);
@@ -1209,7 +1244,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	}
 
 	/**
-	 * Returns the zendesk article attachment with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the zendesk article attachment with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the zendesk article attachment
 	 * @return the zendesk article attachment
@@ -1218,22 +1253,24 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public ZendeskArticleAttachment findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchZendeskArticleAttachmentException {
-		ZendeskArticleAttachment zendeskArticleAttachment = fetchByPrimaryKey(primaryKey);
+
+		ZendeskArticleAttachment zendeskArticleAttachment = fetchByPrimaryKey(
+			primaryKey);
 
 		if (zendeskArticleAttachment == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchZendeskArticleAttachmentException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchZendeskArticleAttachmentException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return zendeskArticleAttachment;
 	}
 
 	/**
-	 * Returns the zendesk article attachment with the primary key or throws a {@link NoSuchZendeskArticleAttachmentException} if it could not be found.
+	 * Returns the zendesk article attachment with the primary key or throws a <code>NoSuchZendeskArticleAttachmentException</code> if it could not be found.
 	 *
 	 * @param zendeskArticleAttachmentId the primary key of the zendesk article attachment
 	 * @return the zendesk article attachment
@@ -1241,8 +1278,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment findByPrimaryKey(
-		long zendeskArticleAttachmentId)
+			long zendeskArticleAttachmentId)
 		throws NoSuchZendeskArticleAttachmentException {
+
 		return findByPrimaryKey((Serializable)zendeskArticleAttachmentId);
 	}
 
@@ -1254,14 +1292,16 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public ZendeskArticleAttachment fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-				ZendeskArticleAttachmentImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		ZendeskArticleAttachment zendeskArticleAttachment = (ZendeskArticleAttachment)serializable;
+		ZendeskArticleAttachment zendeskArticleAttachment =
+			(ZendeskArticleAttachment)serializable;
 
 		if (zendeskArticleAttachment == null) {
 			Session session = null;
@@ -1269,20 +1309,23 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 			try {
 				session = openSession();
 
-				zendeskArticleAttachment = (ZendeskArticleAttachment)session.get(ZendeskArticleAttachmentImpl.class,
-						primaryKey);
+				zendeskArticleAttachment =
+					(ZendeskArticleAttachment)session.get(
+						ZendeskArticleAttachmentImpl.class, primaryKey);
 
 				if (zendeskArticleAttachment != null) {
 					cacheResult(zendeskArticleAttachment);
 				}
 				else {
-					entityCache.putResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 						ZendeskArticleAttachmentImpl.class, primaryKey,
 						nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 					ZendeskArticleAttachmentImpl.class, primaryKey);
 
 				throw processException(e);
@@ -1304,24 +1347,28 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	@Override
 	public ZendeskArticleAttachment fetchByPrimaryKey(
 		long zendeskArticleAttachmentId) {
+
 		return fetchByPrimaryKey((Serializable)zendeskArticleAttachmentId);
 	}
 
 	@Override
 	public Map<Serializable, ZendeskArticleAttachment> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, ZendeskArticleAttachment> map = new HashMap<Serializable, ZendeskArticleAttachment>();
+		Map<Serializable, ZendeskArticleAttachment> map =
+			new HashMap<Serializable, ZendeskArticleAttachment>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			ZendeskArticleAttachment zendeskArticleAttachment = fetchByPrimaryKey(primaryKey);
+			ZendeskArticleAttachment zendeskArticleAttachment =
+				fetchByPrimaryKey(primaryKey);
 
 			if (zendeskArticleAttachment != null) {
 				map.put(primaryKey, zendeskArticleAttachment);
@@ -1333,8 +1380,9 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
-					ZendeskArticleAttachmentImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+				ZendeskArticleAttachmentImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1354,8 +1402,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_ZENDESKARTICLEATTACHMENT_WHERE_PKS_IN);
 
@@ -1378,17 +1426,22 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 
 			Query q = session.createQuery(sql);
 
-			for (ZendeskArticleAttachment zendeskArticleAttachment : (List<ZendeskArticleAttachment>)q.list()) {
-				map.put(zendeskArticleAttachment.getPrimaryKeyObj(),
+			for (ZendeskArticleAttachment zendeskArticleAttachment :
+					(List<ZendeskArticleAttachment>)q.list()) {
+
+				map.put(
+					zendeskArticleAttachment.getPrimaryKeyObj(),
 					zendeskArticleAttachment);
 
 				cacheResult(zendeskArticleAttachment);
 
-				uncachedPrimaryKeys.remove(zendeskArticleAttachment.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					zendeskArticleAttachment.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
 					ZendeskArticleAttachmentImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -1416,7 +1469,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Returns a range of all the zendesk article attachments.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskArticleAttachmentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk article attachments
@@ -1432,7 +1485,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Returns an ordered range of all the zendesk article attachments.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskArticleAttachmentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk article attachments
@@ -1441,8 +1494,10 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * @return the ordered range of zendesk article attachments
 	 */
 	@Override
-	public List<ZendeskArticleAttachment> findAll(int start, int end,
+	public List<ZendeskArticleAttachment> findAll(
+		int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1450,7 +1505,7 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Returns an ordered range of all the zendesk article attachments.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskArticleAttachmentModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskArticleAttachmentModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk article attachments
@@ -1460,29 +1515,32 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * @return the ordered range of zendesk article attachments
 	 */
 	@Override
-	public List<ZendeskArticleAttachment> findAll(int start, int end,
+	public List<ZendeskArticleAttachment> findAll(
+		int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<ZendeskArticleAttachment> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<ZendeskArticleAttachment>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<ZendeskArticleAttachment>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -1490,13 +1548,13 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_ZENDESKARTICLEATTACHMENT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -1504,7 +1562,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 				sql = _SQL_SELECT_ZENDESKARTICLEATTACHMENT;
 
 				if (pagination) {
-					sql = sql.concat(ZendeskArticleAttachmentModelImpl.ORDER_BY_JPQL);
+					sql = sql.concat(
+						ZendeskArticleAttachmentModelImpl.ORDER_BY_JPQL);
 				}
 			}
 
@@ -1516,16 +1575,16 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<ZendeskArticleAttachment>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<ZendeskArticleAttachment>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<ZendeskArticleAttachment>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<ZendeskArticleAttachment>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -1563,8 +1622,8 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1572,16 +1631,17 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_ZENDESKARTICLEATTACHMENT);
+				Query q = session.createQuery(
+					_SQL_COUNT_ZENDESKARTICLEATTACHMENT);
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -1602,6 +1662,63 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 	 * Initializes the zendesk article attachment persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskArticleAttachmentImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskArticleAttachmentImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByZendeskArticleId = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskArticleAttachmentImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByZendeskArticleId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByZendeskArticleId = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskArticleAttachmentImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByZendeskArticleId",
+			new String[] {Long.class.getName()},
+			ZendeskArticleAttachmentModelImpl.ZENDESKARTICLEID_COLUMN_BITMASK);
+
+		_finderPathCountByZendeskArticleId = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByZendeskArticleId", new String[] {Long.class.getName()});
+
+		_finderPathFetchByZAI_FP = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskArticleAttachmentImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByZAI_FP",
+			new String[] {Long.class.getName(), String.class.getName()},
+			ZendeskArticleAttachmentModelImpl.ZENDESKARTICLEID_COLUMN_BITMASK |
+			ZendeskArticleAttachmentModelImpl.FILEPATH_COLUMN_BITMASK);
+
+		_finderPathCountByZAI_FP = new FinderPath(
+			ZendeskArticleAttachmentModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskArticleAttachmentModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByZAI_FP",
+			new String[] {Long.class.getName(), String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1613,16 +1730,36 @@ public class ZendeskArticleAttachmentPersistenceImpl extends BasePersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_ZENDESKARTICLEATTACHMENT = "SELECT zendeskArticleAttachment FROM ZendeskArticleAttachment zendeskArticleAttachment";
-	private static final String _SQL_SELECT_ZENDESKARTICLEATTACHMENT_WHERE_PKS_IN =
-		"SELECT zendeskArticleAttachment FROM ZendeskArticleAttachment zendeskArticleAttachment WHERE zendeskArticleAttachmentId IN (";
-	private static final String _SQL_SELECT_ZENDESKARTICLEATTACHMENT_WHERE = "SELECT zendeskArticleAttachment FROM ZendeskArticleAttachment zendeskArticleAttachment WHERE ";
-	private static final String _SQL_COUNT_ZENDESKARTICLEATTACHMENT = "SELECT COUNT(zendeskArticleAttachment) FROM ZendeskArticleAttachment zendeskArticleAttachment";
-	private static final String _SQL_COUNT_ZENDESKARTICLEATTACHMENT_WHERE = "SELECT COUNT(zendeskArticleAttachment) FROM ZendeskArticleAttachment zendeskArticleAttachment WHERE ";
-	private static final String _ORDER_BY_ENTITY_ALIAS = "zendeskArticleAttachment.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ZendeskArticleAttachment exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ZendeskArticleAttachment exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(ZendeskArticleAttachmentPersistenceImpl.class);
+
+	private static final String _SQL_SELECT_ZENDESKARTICLEATTACHMENT =
+		"SELECT zendeskArticleAttachment FROM ZendeskArticleAttachment zendeskArticleAttachment";
+
+	private static final String
+		_SQL_SELECT_ZENDESKARTICLEATTACHMENT_WHERE_PKS_IN =
+			"SELECT zendeskArticleAttachment FROM ZendeskArticleAttachment zendeskArticleAttachment WHERE zendeskArticleAttachmentId IN (";
+
+	private static final String _SQL_SELECT_ZENDESKARTICLEATTACHMENT_WHERE =
+		"SELECT zendeskArticleAttachment FROM ZendeskArticleAttachment zendeskArticleAttachment WHERE ";
+
+	private static final String _SQL_COUNT_ZENDESKARTICLEATTACHMENT =
+		"SELECT COUNT(zendeskArticleAttachment) FROM ZendeskArticleAttachment zendeskArticleAttachment";
+
+	private static final String _SQL_COUNT_ZENDESKARTICLEATTACHMENT_WHERE =
+		"SELECT COUNT(zendeskArticleAttachment) FROM ZendeskArticleAttachment zendeskArticleAttachment WHERE ";
+
+	private static final String _ORDER_BY_ENTITY_ALIAS =
+		"zendeskArticleAttachment.";
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No ZendeskArticleAttachment exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No ZendeskArticleAttachment exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ZendeskArticleAttachmentPersistenceImpl.class);
+
 }

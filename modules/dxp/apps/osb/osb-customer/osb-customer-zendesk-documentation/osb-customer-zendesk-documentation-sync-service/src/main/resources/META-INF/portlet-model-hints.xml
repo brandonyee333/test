@@ -39,6 +39,7 @@
 			<hint-collection name="TEXTAREA" />
 		</field>
 		<field name="remoteId" type="long" />
+		<field name="remoteUserSegmentId" type="long" />
 	</model>
 	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection">
 		<field name="zendeskSectionId" type="long" />

@@ -21,7 +21,6 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory
 import com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryModelImpl;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskCategoryPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -59,46 +58,35 @@ import java.util.Set;
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskCategoryPersistence
- * @see com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskCategoryUtil
  * @generated
  */
 @ProviderType
-public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskCategory>
+public class ZendeskCategoryPersistenceImpl
+	extends BasePersistenceImpl<ZendeskCategory>
 	implements ZendeskCategoryPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link ZendeskCategoryUtil} to access the zendesk category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>ZendeskCategoryUtil</code> to access the zendesk category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = ZendeskCategoryImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskCategoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskCategoryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY = new FinderPath(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED,
-			ZendeskCategoryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByDocumentationKey", new String[] { String.class.getName() },
-			ZendeskCategoryModelImpl.DOCUMENTATIONKEY_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_DOCUMENTATIONKEY = new FinderPath(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByDocumentationKey", new String[] { String.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		ZendeskCategoryImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByDocumentationKey;
+	private FinderPath _finderPathCountByDocumentationKey;
 
 	/**
-	 * Returns the zendesk category where documentationKey = &#63; or throws a {@link NoSuchZendeskCategoryException} if it could not be found.
+	 * Returns the zendesk category where documentationKey = &#63; or throws a <code>NoSuchZendeskCategoryException</code> if it could not be found.
 	 *
 	 * @param documentationKey the documentation key
 	 * @return the matching zendesk category
@@ -107,7 +95,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory findByDocumentationKey(String documentationKey)
 		throws NoSuchZendeskCategoryException {
-		ZendeskCategory zendeskCategory = fetchByDocumentationKey(documentationKey);
+
+		ZendeskCategory zendeskCategory = fetchByDocumentationKey(
+			documentationKey);
 
 		if (zendeskCategory == null) {
 			StringBundler msg = new StringBundler(4);
@@ -148,24 +138,26 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * @return the matching zendesk category, or <code>null</code> if a matching zendesk category could not be found
 	 */
 	@Override
-	public ZendeskCategory fetchByDocumentationKey(String documentationKey,
-		boolean retrieveFromCache) {
+	public ZendeskCategory fetchByDocumentationKey(
+		String documentationKey, boolean retrieveFromCache) {
+
 		documentationKey = Objects.toString(documentationKey, "");
 
-		Object[] finderArgs = new Object[] { documentationKey };
+		Object[] finderArgs = new Object[] {documentationKey};
 
 		Object result = null;
 
 		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY,
-					finderArgs, this);
+			result = finderCache.getResult(
+				_finderPathFetchByDocumentationKey, finderArgs, this);
 		}
 
 		if (result instanceof ZendeskCategory) {
 			ZendeskCategory zendeskCategory = (ZendeskCategory)result;
 
-			if (!Objects.equals(documentationKey,
-						zendeskCategory.getDocumentationKey())) {
+			if (!Objects.equals(
+					documentationKey, zendeskCategory.getDocumentationKey())) {
+
 				result = null;
 			}
 		}
@@ -178,12 +170,14 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			boolean bindDocumentationKey = false;
 
 			if (documentationKey.isEmpty()) {
-				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3);
+				query.append(
+					_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3);
 			}
 			else {
 				bindDocumentationKey = true;
 
-				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2);
+				query.append(
+					_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2);
 			}
 
 			String sql = query.toString();
@@ -204,8 +198,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 				List<ZendeskCategory> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY,
-						finderArgs, list);
+					finderCache.putResult(
+						_finderPathFetchByDocumentationKey, finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
@@ -214,8 +208,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 						if (_log.isWarnEnabled()) {
 							_log.warn(
 								"ZendeskCategoryPersistenceImpl.fetchByDocumentationKey(String, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -227,8 +221,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY,
-					finderArgs);
+				finderCache.removeResult(
+					_finderPathFetchByDocumentationKey, finderArgs);
 
 				throw processException(e);
 			}
@@ -254,7 +248,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory removeByDocumentationKey(String documentationKey)
 		throws NoSuchZendeskCategoryException {
-		ZendeskCategory zendeskCategory = findByDocumentationKey(documentationKey);
+
+		ZendeskCategory zendeskCategory = findByDocumentationKey(
+			documentationKey);
 
 		return remove(zendeskCategory);
 	}
@@ -269,9 +265,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	public int countByDocumentationKey(String documentationKey) {
 		documentationKey = Objects.toString(documentationKey, "");
 
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_DOCUMENTATIONKEY;
+		FinderPath finderPath = _finderPathCountByDocumentationKey;
 
-		Object[] finderArgs = new Object[] { documentationKey };
+		Object[] finderArgs = new Object[] {documentationKey};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
@@ -283,12 +279,14 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			boolean bindDocumentationKey = false;
 
 			if (documentationKey.isEmpty()) {
-				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3);
+				query.append(
+					_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3);
 			}
 			else {
 				bindDocumentationKey = true;
 
-				query.append(_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2);
+				query.append(
+					_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2);
 			}
 
 			String sql = query.toString();
@@ -323,10 +321,13 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2 =
-		"zendeskCategory.documentationKey = ?";
-	private static final String _FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3 =
-		"(zendeskCategory.documentationKey IS NULL OR zendeskCategory.documentationKey = '')";
+	private static final String
+		_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_2 =
+			"zendeskCategory.documentationKey = ?";
+
+	private static final String
+		_FINDER_COLUMN_DOCUMENTATIONKEY_DOCUMENTATIONKEY_3 =
+			"(zendeskCategory.documentationKey IS NULL OR zendeskCategory.documentationKey = '')";
 
 	public ZendeskCategoryPersistenceImpl() {
 		setModelClass(ZendeskCategory.class);
@@ -339,12 +340,14 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 */
 	@Override
 	public void cacheResult(ZendeskCategory zendeskCategory) {
-		entityCache.putResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskCategoryImpl.class, zendeskCategory.getPrimaryKey(),
 			zendeskCategory);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY,
-			new Object[] { zendeskCategory.getDocumentationKey() },
+		finderCache.putResult(
+			_finderPathFetchByDocumentationKey,
+			new Object[] {zendeskCategory.getDocumentationKey()},
 			zendeskCategory);
 
 		zendeskCategory.resetOriginalValues();
@@ -359,9 +362,10 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	public void cacheResult(List<ZendeskCategory> zendeskCategories) {
 		for (ZendeskCategory zendeskCategory : zendeskCategories) {
 			if (entityCache.getResult(
-						ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-						ZendeskCategoryImpl.class,
-						zendeskCategory.getPrimaryKey()) == null) {
+					ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+					ZendeskCategoryImpl.class,
+					zendeskCategory.getPrimaryKey()) == null) {
+
 				cacheResult(zendeskCategory);
 			}
 			else {
@@ -374,7 +378,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * Clears the cache for all zendesk categories.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -390,18 +394,20 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * Clears the cache for the zendesk category.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(ZendeskCategory zendeskCategory) {
-		entityCache.removeResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskCategoryImpl.class, zendeskCategory.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((ZendeskCategoryModelImpl)zendeskCategory, true);
+		clearUniqueFindersCache(
+			(ZendeskCategoryModelImpl)zendeskCategory, true);
 	}
 
 	@Override
@@ -410,45 +416,51 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (ZendeskCategory zendeskCategory : zendeskCategories) {
-			entityCache.removeResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 				ZendeskCategoryImpl.class, zendeskCategory.getPrimaryKey());
 
-			clearUniqueFindersCache((ZendeskCategoryModelImpl)zendeskCategory,
-				true);
+			clearUniqueFindersCache(
+				(ZendeskCategoryModelImpl)zendeskCategory, true);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		ZendeskCategoryModelImpl zendeskCategoryModelImpl) {
-		Object[] args = new Object[] {
-				zendeskCategoryModelImpl.getDocumentationKey()
-			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_DOCUMENTATIONKEY, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY, args,
-			zendeskCategoryModelImpl, false);
+		Object[] args = new Object[] {
+			zendeskCategoryModelImpl.getDocumentationKey()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByDocumentationKey, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByDocumentationKey, args, zendeskCategoryModelImpl,
+			false);
 	}
 
 	protected void clearUniqueFindersCache(
-		ZendeskCategoryModelImpl zendeskCategoryModelImpl, boolean clearCurrent) {
+		ZendeskCategoryModelImpl zendeskCategoryModelImpl,
+		boolean clearCurrent) {
+
 		if (clearCurrent) {
 			Object[] args = new Object[] {
-					zendeskCategoryModelImpl.getDocumentationKey()
-				};
+				zendeskCategoryModelImpl.getDocumentationKey()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_DOCUMENTATIONKEY, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY, args);
+			finderCache.removeResult(_finderPathCountByDocumentationKey, args);
+			finderCache.removeResult(_finderPathFetchByDocumentationKey, args);
 		}
 
 		if ((zendeskCategoryModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					zendeskCategoryModelImpl.getOriginalDocumentationKey()
-				};
+			 _finderPathFetchByDocumentationKey.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_DOCUMENTATIONKEY, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_DOCUMENTATIONKEY, args);
+			Object[] args = new Object[] {
+				zendeskCategoryModelImpl.getOriginalDocumentationKey()
+			};
+
+			finderCache.removeResult(_finderPathCountByDocumentationKey, args);
+			finderCache.removeResult(_finderPathFetchByDocumentationKey, args);
 		}
 	}
 
@@ -478,6 +490,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory remove(long zendeskCategoryId)
 		throws NoSuchZendeskCategoryException {
+
 		return remove((Serializable)zendeskCategoryId);
 	}
 
@@ -491,21 +504,22 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory remove(Serializable primaryKey)
 		throws NoSuchZendeskCategoryException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			ZendeskCategory zendeskCategory = (ZendeskCategory)session.get(ZendeskCategoryImpl.class,
-					primaryKey);
+			ZendeskCategory zendeskCategory = (ZendeskCategory)session.get(
+				ZendeskCategoryImpl.class, primaryKey);
 
 			if (zendeskCategory == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchZendeskCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchZendeskCategoryException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(zendeskCategory);
@@ -529,8 +543,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			session = openSession();
 
 			if (!session.contains(zendeskCategory)) {
-				zendeskCategory = (ZendeskCategory)session.get(ZendeskCategoryImpl.class,
-						zendeskCategory.getPrimaryKeyObj());
+				zendeskCategory = (ZendeskCategory)session.get(
+					ZendeskCategoryImpl.class,
+					zendeskCategory.getPrimaryKeyObj());
 			}
 
 			if (zendeskCategory != null) {
@@ -559,19 +574,21 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			InvocationHandler invocationHandler = null;
 
 			if (ProxyUtil.isProxyClass(zendeskCategory.getClass())) {
-				invocationHandler = ProxyUtil.getInvocationHandler(zendeskCategory);
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					zendeskCategory);
 
 				throw new IllegalArgumentException(
 					"Implement ModelWrapper in zendeskCategory proxy " +
-					invocationHandler.getClass());
+						invocationHandler.getClass());
 			}
 
 			throw new IllegalArgumentException(
 				"Implement ModelWrapper in custom ZendeskCategory implementation " +
-				zendeskCategory.getClass());
+					zendeskCategory.getClass());
 		}
 
-		ZendeskCategoryModelImpl zendeskCategoryModelImpl = (ZendeskCategoryModelImpl)zendeskCategory;
+		ZendeskCategoryModelImpl zendeskCategoryModelImpl =
+			(ZendeskCategoryModelImpl)zendeskCategory;
 
 		Session session = null;
 
@@ -584,7 +601,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 				zendeskCategory.setNew(false);
 			}
 			else {
-				zendeskCategory = (ZendeskCategory)session.merge(zendeskCategory);
+				zendeskCategory = (ZendeskCategory)session.merge(
+					zendeskCategory);
 			}
 		}
 		catch (Exception e) {
@@ -599,14 +617,14 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 		if (!ZendeskCategoryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 			ZendeskCategoryImpl.class, zendeskCategory.getPrimaryKey(),
 			zendeskCategory, false);
 
@@ -619,7 +637,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	}
 
 	/**
-	 * Returns the zendesk category with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the zendesk category with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the zendesk category
 	 * @return the zendesk category
@@ -628,6 +646,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchZendeskCategoryException {
+
 		ZendeskCategory zendeskCategory = fetchByPrimaryKey(primaryKey);
 
 		if (zendeskCategory == null) {
@@ -635,15 +654,15 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchZendeskCategoryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchZendeskCategoryException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return zendeskCategory;
 	}
 
 	/**
-	 * Returns the zendesk category with the primary key or throws a {@link NoSuchZendeskCategoryException} if it could not be found.
+	 * Returns the zendesk category with the primary key or throws a <code>NoSuchZendeskCategoryException</code> if it could not be found.
 	 *
 	 * @param zendeskCategoryId the primary key of the zendesk category
 	 * @return the zendesk category
@@ -652,6 +671,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public ZendeskCategory findByPrimaryKey(long zendeskCategoryId)
 		throws NoSuchZendeskCategoryException {
+
 		return findByPrimaryKey((Serializable)zendeskCategoryId);
 	}
 
@@ -663,8 +683,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 */
 	@Override
 	public ZendeskCategory fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-				ZendeskCategoryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskCategoryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -678,19 +699,21 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			try {
 				session = openSession();
 
-				zendeskCategory = (ZendeskCategory)session.get(ZendeskCategoryImpl.class,
-						primaryKey);
+				zendeskCategory = (ZendeskCategory)session.get(
+					ZendeskCategoryImpl.class, primaryKey);
 
 				if (zendeskCategory != null) {
 					cacheResult(zendeskCategory);
 				}
 				else {
-					entityCache.putResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 						ZendeskCategoryImpl.class, primaryKey, nullModel);
 				}
 			}
 			catch (Exception e) {
-				entityCache.removeResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.removeResult(
+					ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 					ZendeskCategoryImpl.class, primaryKey);
 
 				throw processException(e);
@@ -717,11 +740,13 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	@Override
 	public Map<Serializable, ZendeskCategory> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, ZendeskCategory> map = new HashMap<Serializable, ZendeskCategory>();
+		Map<Serializable, ZendeskCategory> map =
+			new HashMap<Serializable, ZendeskCategory>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -740,8 +765,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
-					ZendeskCategoryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				ZendeskCategoryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -761,8 +787,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler query = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
 		query.append(_SQL_SELECT_ZENDESKCATEGORY_WHERE_PKS_IN);
 
@@ -785,7 +811,9 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 
 			Query q = session.createQuery(sql);
 
-			for (ZendeskCategory zendeskCategory : (List<ZendeskCategory>)q.list()) {
+			for (ZendeskCategory zendeskCategory :
+					(List<ZendeskCategory>)q.list()) {
+
 				map.put(zendeskCategory.getPrimaryKeyObj(), zendeskCategory);
 
 				cacheResult(zendeskCategory);
@@ -794,7 +822,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
 					ZendeskCategoryImpl.class, primaryKey, nullModel);
 			}
 		}
@@ -822,7 +851,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * Returns a range of all the zendesk categories.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskCategoryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk categories
@@ -838,7 +867,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * Returns an ordered range of all the zendesk categories.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskCategoryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk categories
@@ -847,8 +876,10 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * @return the ordered range of zendesk categories
 	 */
 	@Override
-	public List<ZendeskCategory> findAll(int start, int end,
+	public List<ZendeskCategory> findAll(
+		int start, int end,
 		OrderByComparator<ZendeskCategory> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -856,7 +887,7 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * Returns an ordered range of all the zendesk categories.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link ZendeskCategoryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>ZendeskCategoryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of zendesk categories
@@ -866,29 +897,32 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * @return the ordered range of zendesk categories
 	 */
 	@Override
-	public List<ZendeskCategory> findAll(int start, int end,
+	public List<ZendeskCategory> findAll(
+		int start, int end,
 		OrderByComparator<ZendeskCategory> orderByComparator,
 		boolean retrieveFromCache) {
+
 		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
+			(orderByComparator == null)) {
+
 			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
+			finderPath = _finderPathWithoutPaginationFindAll;
 			finderArgs = FINDER_ARGS_EMPTY;
 		}
 		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<ZendeskCategory> list = null;
 
 		if (retrieveFromCache) {
-			list = (List<ZendeskCategory>)finderCache.getResult(finderPath,
-					finderArgs, this);
+			list = (List<ZendeskCategory>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
@@ -896,13 +930,13 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				query = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
 				query.append(_SQL_SELECT_ZENDESKCATEGORY);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
 				sql = query.toString();
 			}
@@ -922,16 +956,16 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 				Query q = session.createQuery(sql);
 
 				if (!pagination) {
-					list = (List<ZendeskCategory>)QueryUtil.list(q,
-							getDialect(), start, end, false);
+					list = (List<ZendeskCategory>)QueryUtil.list(
+						q, getDialect(), start, end, false);
 
 					Collections.sort(list);
 
 					list = Collections.unmodifiableList(list);
 				}
 				else {
-					list = (List<ZendeskCategory>)QueryUtil.list(q,
-							getDialect(), start, end);
+					list = (List<ZendeskCategory>)QueryUtil.list(
+						q, getDialect(), start, end);
 				}
 
 				cacheResult(list);
@@ -969,8 +1003,8 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -982,12 +1016,12 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 
 				count = (Long)q.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
 			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
 				throw processException(e);
 			}
@@ -1008,6 +1042,37 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 	 * Initializes the zendesk category persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskCategoryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskCategoryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByDocumentationKey = new FinderPath(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED,
+			ZendeskCategoryImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByDocumentationKey", new String[] {String.class.getName()},
+			ZendeskCategoryModelImpl.DOCUMENTATIONKEY_COLUMN_BITMASK);
+
+		_finderPathCountByDocumentationKey = new FinderPath(
+			ZendeskCategoryModelImpl.ENTITY_CACHE_ENABLED,
+			ZendeskCategoryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByDocumentationKey", new String[] {String.class.getName()});
 	}
 
 	public void destroy() {
@@ -1019,15 +1084,34 @@ public class ZendeskCategoryPersistenceImpl extends BasePersistenceImpl<ZendeskC
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_ZENDESKCATEGORY = "SELECT zendeskCategory FROM ZendeskCategory zendeskCategory";
-	private static final String _SQL_SELECT_ZENDESKCATEGORY_WHERE_PKS_IN = "SELECT zendeskCategory FROM ZendeskCategory zendeskCategory WHERE zendeskCategoryId IN (";
-	private static final String _SQL_SELECT_ZENDESKCATEGORY_WHERE = "SELECT zendeskCategory FROM ZendeskCategory zendeskCategory WHERE ";
-	private static final String _SQL_COUNT_ZENDESKCATEGORY = "SELECT COUNT(zendeskCategory) FROM ZendeskCategory zendeskCategory";
-	private static final String _SQL_COUNT_ZENDESKCATEGORY_WHERE = "SELECT COUNT(zendeskCategory) FROM ZendeskCategory zendeskCategory WHERE ";
+
+	private static final String _SQL_SELECT_ZENDESKCATEGORY =
+		"SELECT zendeskCategory FROM ZendeskCategory zendeskCategory";
+
+	private static final String _SQL_SELECT_ZENDESKCATEGORY_WHERE_PKS_IN =
+		"SELECT zendeskCategory FROM ZendeskCategory zendeskCategory WHERE zendeskCategoryId IN (";
+
+	private static final String _SQL_SELECT_ZENDESKCATEGORY_WHERE =
+		"SELECT zendeskCategory FROM ZendeskCategory zendeskCategory WHERE ";
+
+	private static final String _SQL_COUNT_ZENDESKCATEGORY =
+		"SELECT COUNT(zendeskCategory) FROM ZendeskCategory zendeskCategory";
+
+	private static final String _SQL_COUNT_ZENDESKCATEGORY_WHERE =
+		"SELECT COUNT(zendeskCategory) FROM ZendeskCategory zendeskCategory WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "zendeskCategory.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No ZendeskCategory exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No ZendeskCategory exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(ZendeskCategoryPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No ZendeskCategory exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No ZendeskCategory exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ZendeskCategoryPersistenceImpl.class);
+
 }

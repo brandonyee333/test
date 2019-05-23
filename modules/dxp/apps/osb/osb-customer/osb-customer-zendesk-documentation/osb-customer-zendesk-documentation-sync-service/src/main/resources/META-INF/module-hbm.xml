@@ -36,6 +36,7 @@
 		<property name="documentationOriginalURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="articleLabels" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="remoteUserSegmentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl" table="OSBCustomer_ZendeskSection">
 		<id name="zendeskSectionId" type="long">

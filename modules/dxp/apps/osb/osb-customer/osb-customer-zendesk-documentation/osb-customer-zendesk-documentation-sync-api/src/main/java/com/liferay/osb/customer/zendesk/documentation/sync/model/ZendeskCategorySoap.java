@@ -29,20 +29,24 @@ import java.util.List;
  */
 @ProviderType
 public class ZendeskCategorySoap implements Serializable {
+
 	public static ZendeskCategorySoap toSoapModel(ZendeskCategory model) {
 		ZendeskCategorySoap soapModel = new ZendeskCategorySoap();
 
 		soapModel.setZendeskCategoryId(model.getZendeskCategoryId());
 		soapModel.setDocumentationKey(model.getDocumentationKey());
-		soapModel.setDocumentationOriginalURL(model.getDocumentationOriginalURL());
+		soapModel.setDocumentationOriginalURL(
+			model.getDocumentationOriginalURL());
 		soapModel.setArticleLabels(model.getArticleLabels());
 		soapModel.setRemoteId(model.getRemoteId());
+		soapModel.setRemoteUserSegmentId(model.getRemoteUserSegmentId());
 
 		return soapModel;
 	}
 
 	public static ZendeskCategorySoap[] toSoapModels(ZendeskCategory[] models) {
-		ZendeskCategorySoap[] soapModels = new ZendeskCategorySoap[models.length];
+		ZendeskCategorySoap[] soapModels =
+			new ZendeskCategorySoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -53,10 +57,12 @@ public class ZendeskCategorySoap implements Serializable {
 
 	public static ZendeskCategorySoap[][] toSoapModels(
 		ZendeskCategory[][] models) {
+
 		ZendeskCategorySoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ZendeskCategorySoap[models.length][models[0].length];
+			soapModels =
+				new ZendeskCategorySoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ZendeskCategorySoap[0][0];
@@ -71,7 +77,9 @@ public class ZendeskCategorySoap implements Serializable {
 
 	public static ZendeskCategorySoap[] toSoapModels(
 		List<ZendeskCategory> models) {
-		List<ZendeskCategorySoap> soapModels = new ArrayList<ZendeskCategorySoap>(models.size());
+
+		List<ZendeskCategorySoap> soapModels =
+			new ArrayList<ZendeskCategorySoap>(models.size());
 
 		for (ZendeskCategory model : models) {
 			soapModels.add(toSoapModel(model));
@@ -131,9 +139,19 @@ public class ZendeskCategorySoap implements Serializable {
 		_remoteId = remoteId;
 	}
 
+	public long getRemoteUserSegmentId() {
+		return _remoteUserSegmentId;
+	}
+
+	public void setRemoteUserSegmentId(long remoteUserSegmentId) {
+		_remoteUserSegmentId = remoteUserSegmentId;
+	}
+
 	private long _zendeskCategoryId;
 	private String _documentationKey;
 	private String _documentationOriginalURL;
 	private String _articleLabels;
 	private long _remoteId;
+	private long _remoteUserSegmentId;
+
 }

@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +30,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ZendeskArticleAttachment in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskArticleAttachment
  * @generated
  */
 @ProviderType
-public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArticleAttachment>,
-	Externalizable {
+public class ZendeskArticleAttachmentCacheModel
+	implements CacheModel<ZendeskArticleAttachment>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,9 +46,12 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 			return false;
 		}
 
-		ZendeskArticleAttachmentCacheModel zendeskArticleAttachmentCacheModel = (ZendeskArticleAttachmentCacheModel)obj;
+		ZendeskArticleAttachmentCacheModel zendeskArticleAttachmentCacheModel =
+			(ZendeskArticleAttachmentCacheModel)obj;
 
-		if (zendeskArticleAttachmentId == zendeskArticleAttachmentCacheModel.zendeskArticleAttachmentId) {
+		if (zendeskArticleAttachmentId ==
+				zendeskArticleAttachmentCacheModel.zendeskArticleAttachmentId) {
+
 			return true;
 		}
 
@@ -84,9 +86,11 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 
 	@Override
 	public ZendeskArticleAttachment toEntityModel() {
-		ZendeskArticleAttachmentImpl zendeskArticleAttachmentImpl = new ZendeskArticleAttachmentImpl();
+		ZendeskArticleAttachmentImpl zendeskArticleAttachmentImpl =
+			new ZendeskArticleAttachmentImpl();
 
-		zendeskArticleAttachmentImpl.setZendeskArticleAttachmentId(zendeskArticleAttachmentId);
+		zendeskArticleAttachmentImpl.setZendeskArticleAttachmentId(
+			zendeskArticleAttachmentId);
 		zendeskArticleAttachmentImpl.setZendeskArticleId(zendeskArticleId);
 
 		if (filePath == null) {
@@ -130,8 +134,7 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskArticleAttachmentId);
 
 		objectOutput.writeLong(zendeskArticleId);
@@ -166,4 +169,5 @@ public class ZendeskArticleAttachmentCacheModel implements CacheModel<ZendeskArt
 	public String checksum;
 	public long remoteId;
 	public String remoteContentURL;
+
 }

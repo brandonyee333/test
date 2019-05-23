@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,8 +37,9 @@ import java.util.Objects;
  * @generated
  */
 @ProviderType
-public class ZendeskSectionWrapper implements ZendeskSection,
-	ModelWrapper<ZendeskSection> {
+public class ZendeskSectionWrapper
+	implements ZendeskSection, ModelWrapper<ZendeskSection> {
+
 	public ZendeskSectionWrapper(ZendeskSection zendeskSection) {
 		_zendeskSection = zendeskSection;
 	}
@@ -109,7 +109,8 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 
 	@Override
 	public Object clone() {
-		return new ZendeskSectionWrapper((ZendeskSection)_zendeskSection.clone());
+		return new ZendeskSectionWrapper(
+			(ZendeskSection)_zendeskSection.clone());
 	}
 
 	@Override
@@ -118,10 +119,10 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Returns the documentation key of this zendesk section.
-	*
-	* @return the documentation key of this zendesk section
-	*/
+	 * Returns the documentation key of this zendesk section.
+	 *
+	 * @return the documentation key of this zendesk section
+	 */
 	@Override
 	public String getDocumentationKey() {
 		return _zendeskSection.getDocumentationKey();
@@ -133,20 +134,20 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Returns the modified date of this zendesk section.
-	*
-	* @return the modified date of this zendesk section
-	*/
+	 * Returns the modified date of this zendesk section.
+	 *
+	 * @return the modified date of this zendesk section
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _zendeskSection.getModifiedDate();
 	}
 
 	/**
-	* Returns the primary key of this zendesk section.
-	*
-	* @return the primary key of this zendesk section
-	*/
+	 * Returns the primary key of this zendesk section.
+	 *
+	 * @return the primary key of this zendesk section
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _zendeskSection.getPrimaryKey();
@@ -158,40 +159,40 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Returns the remote html url of this zendesk section.
-	*
-	* @return the remote html url of this zendesk section
-	*/
+	 * Returns the remote html url of this zendesk section.
+	 *
+	 * @return the remote html url of this zendesk section
+	 */
 	@Override
 	public String getRemoteHtmlURL() {
 		return _zendeskSection.getRemoteHtmlURL();
 	}
 
 	/**
-	* Returns the remote ID of this zendesk section.
-	*
-	* @return the remote ID of this zendesk section
-	*/
+	 * Returns the remote ID of this zendesk section.
+	 *
+	 * @return the remote ID of this zendesk section
+	 */
 	@Override
 	public long getRemoteId() {
 		return _zendeskSection.getRemoteId();
 	}
 
 	/**
-	* Returns the zendesk category ID of this zendesk section.
-	*
-	* @return the zendesk category ID of this zendesk section
-	*/
+	 * Returns the zendesk category ID of this zendesk section.
+	 *
+	 * @return the zendesk category ID of this zendesk section
+	 */
 	@Override
 	public long getZendeskCategoryId() {
 		return _zendeskSection.getZendeskCategoryId();
 	}
 
 	/**
-	* Returns the zendesk section ID of this zendesk section.
-	*
-	* @return the zendesk section ID of this zendesk section
-	*/
+	 * Returns the zendesk section ID of this zendesk section.
+	 *
+	 * @return the zendesk section ID of this zendesk section
+	 */
 	@Override
 	public long getZendeskSectionId() {
 		return _zendeskSection.getZendeskSectionId();
@@ -228,10 +229,10 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Sets the documentation key of this zendesk section.
-	*
-	* @param documentationKey the documentation key of this zendesk section
-	*/
+	 * Sets the documentation key of this zendesk section.
+	 *
+	 * @param documentationKey the documentation key of this zendesk section
+	 */
 	@Override
 	public void setDocumentationKey(String documentationKey) {
 		_zendeskSection.setDocumentationKey(documentationKey);
@@ -240,6 +241,7 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_zendeskSection.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -254,10 +256,10 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Sets the modified date of this zendesk section.
-	*
-	* @param modifiedDate the modified date of this zendesk section
-	*/
+	 * Sets the modified date of this zendesk section.
+	 *
+	 * @param modifiedDate the modified date of this zendesk section
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_zendeskSection.setModifiedDate(modifiedDate);
@@ -269,10 +271,10 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Sets the primary key of this zendesk section.
-	*
-	* @param primaryKey the primary key of this zendesk section
-	*/
+	 * Sets the primary key of this zendesk section.
+	 *
+	 * @param primaryKey the primary key of this zendesk section
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_zendeskSection.setPrimaryKey(primaryKey);
@@ -284,47 +286,49 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	/**
-	* Sets the remote html url of this zendesk section.
-	*
-	* @param remoteHtmlURL the remote html url of this zendesk section
-	*/
+	 * Sets the remote html url of this zendesk section.
+	 *
+	 * @param remoteHtmlURL the remote html url of this zendesk section
+	 */
 	@Override
 	public void setRemoteHtmlURL(String remoteHtmlURL) {
 		_zendeskSection.setRemoteHtmlURL(remoteHtmlURL);
 	}
 
 	/**
-	* Sets the remote ID of this zendesk section.
-	*
-	* @param remoteId the remote ID of this zendesk section
-	*/
+	 * Sets the remote ID of this zendesk section.
+	 *
+	 * @param remoteId the remote ID of this zendesk section
+	 */
 	@Override
 	public void setRemoteId(long remoteId) {
 		_zendeskSection.setRemoteId(remoteId);
 	}
 
 	/**
-	* Sets the zendesk category ID of this zendesk section.
-	*
-	* @param zendeskCategoryId the zendesk category ID of this zendesk section
-	*/
+	 * Sets the zendesk category ID of this zendesk section.
+	 *
+	 * @param zendeskCategoryId the zendesk category ID of this zendesk section
+	 */
 	@Override
 	public void setZendeskCategoryId(long zendeskCategoryId) {
 		_zendeskSection.setZendeskCategoryId(zendeskCategoryId);
 	}
 
 	/**
-	* Sets the zendesk section ID of this zendesk section.
-	*
-	* @param zendeskSectionId the zendesk section ID of this zendesk section
-	*/
+	 * Sets the zendesk section ID of this zendesk section.
+	 *
+	 * @param zendeskSectionId the zendesk section ID of this zendesk section
+	 */
 	@Override
 	public void setZendeskSectionId(long zendeskSectionId) {
 		_zendeskSection.setZendeskSectionId(zendeskSectionId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<ZendeskSection> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<ZendeskSection>
+		toCacheModel() {
+
 		return _zendeskSection.toCacheModel();
 	}
 
@@ -358,10 +362,12 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 			return false;
 		}
 
-		ZendeskSectionWrapper zendeskSectionWrapper = (ZendeskSectionWrapper)obj;
+		ZendeskSectionWrapper zendeskSectionWrapper =
+			(ZendeskSectionWrapper)obj;
 
-		if (Objects.equals(_zendeskSection,
-					zendeskSectionWrapper._zendeskSection)) {
+		if (Objects.equals(
+				_zendeskSection, zendeskSectionWrapper._zendeskSection)) {
+
 			return true;
 		}
 
@@ -389,4 +395,5 @@ public class ZendeskSectionWrapper implements ZendeskSection,
 	}
 
 	private final ZendeskSection _zendeskSection;
+
 }

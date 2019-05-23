@@ -32,12 +32,13 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticl
  * @generated
  */
 @ProviderType
-public abstract class ZendeskArticleBaseImpl extends ZendeskArticleModelImpl
-	implements ZendeskArticle {
+public abstract class ZendeskArticleBaseImpl
+	extends ZendeskArticleModelImpl implements ZendeskArticle {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the {@link ZendeskArticle} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the <code>ZendeskArticle</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +49,5 @@ public abstract class ZendeskArticleBaseImpl extends ZendeskArticleModelImpl
 			ZendeskArticleLocalServiceUtil.updateZendeskArticle(this);
 		}
 	}
+
 }

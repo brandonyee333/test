@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,12 +32,12 @@ import java.util.Date;
  * The cache model class for representing ZendeskArticle in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskArticle
  * @generated
  */
 @ProviderType
-public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
-	Externalizable {
+public class ZendeskArticleCacheModel
+	implements CacheModel<ZendeskArticle>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,7 +48,8 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 			return false;
 		}
 
-		ZendeskArticleCacheModel zendeskArticleCacheModel = (ZendeskArticleCacheModel)obj;
+		ZendeskArticleCacheModel zendeskArticleCacheModel =
+			(ZendeskArticleCacheModel)obj;
 
 		if (zendeskArticleId == zendeskArticleCacheModel.zendeskArticleId) {
 			return true;
@@ -115,7 +115,8 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 			zendeskArticleImpl.setDocumentationOriginalURL("");
 		}
 		else {
-			zendeskArticleImpl.setDocumentationOriginalURL(documentationOriginalURL);
+			zendeskArticleImpl.setDocumentationOriginalURL(
+				documentationOriginalURL);
 		}
 
 		zendeskArticleImpl.setRemoteId(remoteId);
@@ -148,8 +149,7 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskArticleId);
 		objectOutput.writeLong(modifiedDate);
 
@@ -189,4 +189,5 @@ public class ZendeskArticleCacheModel implements CacheModel<ZendeskArticle>,
 	public String documentationOriginalURL;
 	public long remoteId;
 	public String remoteHtmlURL;
+
 }

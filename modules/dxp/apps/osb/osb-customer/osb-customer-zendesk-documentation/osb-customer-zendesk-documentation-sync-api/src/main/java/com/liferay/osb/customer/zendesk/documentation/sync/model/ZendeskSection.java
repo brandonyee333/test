@@ -25,20 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskSectionModel
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl"
+)
 @ProviderType
-public interface ZendeskSection extends ZendeskSectionModel, PersistedModel {
+public interface ZendeskSection extends PersistedModel, ZendeskSectionModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskSectionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ZendeskSection, Long> ZENDESK_SECTION_ID_ACCESSOR =
-		new Accessor<ZendeskSection, Long>() {
+	public static final Accessor<ZendeskSection, Long>
+		ZENDESK_SECTION_ID_ACCESSOR = new Accessor<ZendeskSection, Long>() {
+
 			@Override
 			public Long get(ZendeskSection zendeskSection) {
 				return zendeskSection.getZendeskSectionId();
@@ -53,5 +55,7 @@ public interface ZendeskSection extends ZendeskSectionModel, PersistedModel {
 			public Class<ZendeskSection> getTypeClass() {
 				return ZendeskSection.class;
 			}
+
 		};
+
 }

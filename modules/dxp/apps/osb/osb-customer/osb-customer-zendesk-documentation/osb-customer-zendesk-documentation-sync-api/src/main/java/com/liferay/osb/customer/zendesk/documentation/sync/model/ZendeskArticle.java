@@ -25,20 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see ZendeskArticleModel
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl
- * @see com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl"
+)
 @ProviderType
-public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
+public interface ZendeskArticle extends PersistedModel, ZendeskArticleModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<ZendeskArticle, Long> ZENDESK_ARTICLE_ID_ACCESSOR =
-		new Accessor<ZendeskArticle, Long>() {
+	public static final Accessor<ZendeskArticle, Long>
+		ZENDESK_ARTICLE_ID_ACCESSOR = new Accessor<ZendeskArticle, Long>() {
+
 			@Override
 			public Long get(ZendeskArticle zendeskArticle) {
 				return zendeskArticle.getZendeskArticleId();
@@ -53,6 +55,7 @@ public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
 			public Class<ZendeskArticle> getTypeClass() {
 				return ZendeskArticle.class;
 			}
+
 		};
 
 	public String getRemoteHtmlURL(String locale);
@@ -60,4 +63,5 @@ public interface ZendeskArticle extends ZendeskArticleModel, PersistedModel {
 	public String getRemoteTitle(String locale);
 
 	public void setRemoteTitle(String locale, String remoteTitle);
+
 }

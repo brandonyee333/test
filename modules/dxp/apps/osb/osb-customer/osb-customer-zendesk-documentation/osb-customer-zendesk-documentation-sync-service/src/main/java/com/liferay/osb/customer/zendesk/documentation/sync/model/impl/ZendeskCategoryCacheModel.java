@@ -17,7 +17,6 @@ package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +30,12 @@ import java.io.ObjectOutput;
  * The cache model class for representing ZendeskCategory in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ZendeskCategory
  * @generated
  */
 @ProviderType
-public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
-	Externalizable {
+public class ZendeskCategoryCacheModel
+	implements CacheModel<ZendeskCategory>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,7 +46,8 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 			return false;
 		}
 
-		ZendeskCategoryCacheModel zendeskCategoryCacheModel = (ZendeskCategoryCacheModel)obj;
+		ZendeskCategoryCacheModel zendeskCategoryCacheModel =
+			(ZendeskCategoryCacheModel)obj;
 
 		if (zendeskCategoryId == zendeskCategoryCacheModel.zendeskCategoryId) {
 			return true;
@@ -63,7 +63,7 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(13);
 
 		sb.append("{zendeskCategoryId=");
 		sb.append(zendeskCategoryId);
@@ -75,6 +75,8 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 		sb.append(articleLabels);
 		sb.append(", remoteId=");
 		sb.append(remoteId);
+		sb.append(", remoteUserSegmentId=");
+		sb.append(remoteUserSegmentId);
 		sb.append("}");
 
 		return sb.toString();
@@ -97,7 +99,8 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 			zendeskCategoryImpl.setDocumentationOriginalURL("");
 		}
 		else {
-			zendeskCategoryImpl.setDocumentationOriginalURL(documentationOriginalURL);
+			zendeskCategoryImpl.setDocumentationOriginalURL(
+				documentationOriginalURL);
 		}
 
 		if (articleLabels == null) {
@@ -108,6 +111,7 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 		}
 
 		zendeskCategoryImpl.setRemoteId(remoteId);
+		zendeskCategoryImpl.setRemoteUserSegmentId(remoteUserSegmentId);
 
 		zendeskCategoryImpl.resetOriginalValues();
 
@@ -122,11 +126,12 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 		articleLabels = objectInput.readUTF();
 
 		remoteId = objectInput.readLong();
+
+		remoteUserSegmentId = objectInput.readLong();
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(zendeskCategoryId);
 
 		if (documentationKey == null) {
@@ -151,6 +156,8 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 		}
 
 		objectOutput.writeLong(remoteId);
+
+		objectOutput.writeLong(remoteUserSegmentId);
 	}
 
 	public long zendeskCategoryId;
@@ -158,4 +165,6 @@ public class ZendeskCategoryCacheModel implements CacheModel<ZendeskCategory>,
 	public String documentationOriginalURL;
 	public String articleLabels;
 	public long remoteId;
+	public long remoteUserSegmentId;
+
 }

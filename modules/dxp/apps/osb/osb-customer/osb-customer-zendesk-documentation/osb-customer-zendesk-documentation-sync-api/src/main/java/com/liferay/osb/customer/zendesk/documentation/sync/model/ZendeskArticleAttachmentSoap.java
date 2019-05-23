@@ -29,11 +29,15 @@ import java.util.List;
  */
 @ProviderType
 public class ZendeskArticleAttachmentSoap implements Serializable {
+
 	public static ZendeskArticleAttachmentSoap toSoapModel(
 		ZendeskArticleAttachment model) {
-		ZendeskArticleAttachmentSoap soapModel = new ZendeskArticleAttachmentSoap();
 
-		soapModel.setZendeskArticleAttachmentId(model.getZendeskArticleAttachmentId());
+		ZendeskArticleAttachmentSoap soapModel =
+			new ZendeskArticleAttachmentSoap();
+
+		soapModel.setZendeskArticleAttachmentId(
+			model.getZendeskArticleAttachmentId());
 		soapModel.setZendeskArticleId(model.getZendeskArticleId());
 		soapModel.setFilePath(model.getFilePath());
 		soapModel.setChecksum(model.getChecksum());
@@ -45,7 +49,9 @@ public class ZendeskArticleAttachmentSoap implements Serializable {
 
 	public static ZendeskArticleAttachmentSoap[] toSoapModels(
 		ZendeskArticleAttachment[] models) {
-		ZendeskArticleAttachmentSoap[] soapModels = new ZendeskArticleAttachmentSoap[models.length];
+
+		ZendeskArticleAttachmentSoap[] soapModels =
+			new ZendeskArticleAttachmentSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -56,10 +62,13 @@ public class ZendeskArticleAttachmentSoap implements Serializable {
 
 	public static ZendeskArticleAttachmentSoap[][] toSoapModels(
 		ZendeskArticleAttachment[][] models) {
+
 		ZendeskArticleAttachmentSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new ZendeskArticleAttachmentSoap[models.length][models[0].length];
+			soapModels =
+				new ZendeskArticleAttachmentSoap
+					[models.length][models[0].length];
 		}
 		else {
 			soapModels = new ZendeskArticleAttachmentSoap[0][0];
@@ -74,13 +83,16 @@ public class ZendeskArticleAttachmentSoap implements Serializable {
 
 	public static ZendeskArticleAttachmentSoap[] toSoapModels(
 		List<ZendeskArticleAttachment> models) {
-		List<ZendeskArticleAttachmentSoap> soapModels = new ArrayList<ZendeskArticleAttachmentSoap>(models.size());
+
+		List<ZendeskArticleAttachmentSoap> soapModels =
+			new ArrayList<ZendeskArticleAttachmentSoap>(models.size());
 
 		for (ZendeskArticleAttachment model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new ZendeskArticleAttachmentSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new ZendeskArticleAttachmentSoap[soapModels.size()]);
 	}
 
 	public ZendeskArticleAttachmentSoap() {
@@ -148,4 +160,5 @@ public class ZendeskArticleAttachmentSoap implements Serializable {
 	private String _checksum;
 	private long _remoteId;
 	private String _remoteContentURL;
+
 }
