@@ -16,8 +16,11 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.RequiredZendeskCategoryException;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskCategoryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+
+import java.util.List;
 
 /**
  * @author Amos Fong
@@ -69,11 +72,26 @@ public class ZendeskCategoryLocalServiceImpl
 		ZendeskCategory zendeskCategory =
 			zendeskCategoryPersistence.findByPrimaryKey(zendeskCategoryId);
 
+		long oldRemoteUserSegmentId = zendeskCategory.getRemoteUserSegmentId();
+
 		zendeskCategory.setDocumentationOriginalURL(documentationOriginalURL);
 		zendeskCategory.setArticleLabels(articleLabels);
 		zendeskCategory.setRemoteUserSegmentId(remoteUserSegmentId);
 
-		return zendeskCategoryPersistence.update(zendeskCategory);
+		zendeskCategoryPersistence.update(zendeskCategory);
+
+		if (oldRemoteUserSegmentId != remoteUserSegmentId) {
+			List<ZendeskSection> zendeskSections =
+				zendeskSectionLocalService.getZendeskSections(
+					zendeskCategoryId);
+
+			for (ZendeskSection zendeskSection : zendeskSections) {
+				zendeskSectionLocalService.updateRemoteUserSegmentId(
+					zendeskSection.getZendeskSectionId(), remoteUserSegmentId);
+			}
+		}
+
+		return zendeskCategory;
 	}
 
 }

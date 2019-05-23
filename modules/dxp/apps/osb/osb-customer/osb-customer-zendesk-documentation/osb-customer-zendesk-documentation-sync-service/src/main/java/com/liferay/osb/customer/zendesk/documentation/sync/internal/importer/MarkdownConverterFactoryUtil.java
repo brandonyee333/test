@@ -23,10 +23,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(
-	immediate = true, service = ArticleMarkdownConverterFactoryUtil.class
-)
-public class ArticleMarkdownConverterFactoryUtil {
+@Component(immediate = true, service = MarkdownConverterFactoryUtil.class)
+public class MarkdownConverterFactoryUtil {
 
 	public static MarkdownConverter create() {
 		return _markdownConverterFactory.create();

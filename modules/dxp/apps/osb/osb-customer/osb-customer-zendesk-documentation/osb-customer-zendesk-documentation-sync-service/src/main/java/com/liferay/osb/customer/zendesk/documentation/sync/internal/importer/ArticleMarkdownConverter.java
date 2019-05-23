@@ -52,7 +52,7 @@ public class ArticleMarkdownConverter {
 		throws PortalException {
 
 		MarkdownConverter markdownConverter =
-			ArticleMarkdownConverterFactoryUtil.create();
+			MarkdownConverterFactoryUtil.create();
 
 		try {
 			markdownConverter.parse(markdown);
@@ -175,12 +175,12 @@ public class ArticleMarkdownConverter {
 		return urlTitle;
 	}
 
-	protected String getHeading(String html) {
-		int x = html.indexOf("#");
+	protected String getHeading(String markdown) {
+		int x = markdown.indexOf("#");
 
-		int y = html.indexOf(StringPool.NEW_LINE, x);
+		int y = markdown.indexOf(StringPool.NEW_LINE, x);
 
-		String heading = html.substring(x + 1, y);
+		String heading = markdown.substring(x + 1, y);
 
 		return heading.trim();
 	}
