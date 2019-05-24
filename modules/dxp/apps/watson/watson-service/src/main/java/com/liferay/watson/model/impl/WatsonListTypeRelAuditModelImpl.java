@@ -40,6 +40,9 @@ import com.liferay.watson.model.WatsonListTypeRelAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -229,6 +232,32 @@ public class WatsonListTypeRelAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonListTypeRelAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonListTypeRelAudit.class.getClassLoader(),
+			WatsonListTypeRelAudit.class, ModelWrapper.class);
+
+		try {
+			Constructor<WatsonListTypeRelAudit> constructor =
+				(Constructor<WatsonListTypeRelAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonListTypeRelAudit, Object>>
@@ -1015,8 +1044,7 @@ public class WatsonListTypeRelAuditModelImpl
 	@Override
 	public WatsonListTypeRelAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonListTypeRelAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1250,11 +1278,8 @@ public class WatsonListTypeRelAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonListTypeRelAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonListTypeRelAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonListTypeRelAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonListTypeRelAuditId;
 	private long _groupId;

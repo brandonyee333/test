@@ -34,6 +34,9 @@ import com.liferay.watson.model.WatsonIncidentRelAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -216,6 +219,32 @@ public class WatsonIncidentRelAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonIncidentRelAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonIncidentRelAudit.class.getClassLoader(),
+			WatsonIncidentRelAudit.class, ModelWrapper.class);
+
+		try {
+			Constructor<WatsonIncidentRelAudit> constructor =
+				(Constructor<WatsonIncidentRelAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonIncidentRelAudit, Object>>
@@ -713,8 +742,7 @@ public class WatsonIncidentRelAuditModelImpl
 	@Override
 	public WatsonIncidentRelAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonIncidentRelAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -934,11 +962,8 @@ public class WatsonIncidentRelAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonIncidentRelAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonIncidentRelAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonIncidentRelAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonIncidentRelAuditId;
 	private long _groupId;

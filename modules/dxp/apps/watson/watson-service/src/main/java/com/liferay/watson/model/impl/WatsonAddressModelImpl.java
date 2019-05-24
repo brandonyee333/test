@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonAddressModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -248,6 +251,32 @@ public class WatsonAddressModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonAddress>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonAddress.class.getClassLoader(), WatsonAddress.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonAddress> constructor =
+				(Constructor<WatsonAddress>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonAddress, Object>>
@@ -1669,8 +1698,7 @@ public class WatsonAddressModelImpl
 	@Override
 	public WatsonAddress toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonAddress)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -2006,11 +2034,8 @@ public class WatsonAddressModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonAddress.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonAddress.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonAddress>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonAddressId;
 	private long _groupId;

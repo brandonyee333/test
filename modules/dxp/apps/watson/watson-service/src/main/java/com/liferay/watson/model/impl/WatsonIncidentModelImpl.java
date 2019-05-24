@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonIncidentModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -242,6 +245,32 @@ public class WatsonIncidentModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonIncident>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonIncident.class.getClassLoader(), WatsonIncident.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonIncident> constructor =
+				(Constructor<WatsonIncident>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonIncident, Object>>
@@ -1258,8 +1287,7 @@ public class WatsonIncidentModelImpl
 	@Override
 	public WatsonIncident toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonIncident)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1544,11 +1572,8 @@ public class WatsonIncidentModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonIncident.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonIncident.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonIncident>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonIncidentId;
 	private long _groupId;

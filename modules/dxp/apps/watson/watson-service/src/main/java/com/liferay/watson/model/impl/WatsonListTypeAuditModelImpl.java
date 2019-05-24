@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonListTypeAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -223,6 +226,32 @@ public class WatsonListTypeAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonListTypeAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonListTypeAudit.class.getClassLoader(),
+			WatsonListTypeAudit.class, ModelWrapper.class);
+
+		try {
+			Constructor<WatsonListTypeAudit> constructor =
+				(Constructor<WatsonListTypeAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonListTypeAudit, Object>>
@@ -845,8 +874,7 @@ public class WatsonListTypeAuditModelImpl
 	@Override
 	public WatsonListTypeAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonListTypeAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1066,11 +1094,8 @@ public class WatsonListTypeAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonListTypeAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonListTypeAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonListTypeAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonListTypeAuditId;
 	private long _groupId;

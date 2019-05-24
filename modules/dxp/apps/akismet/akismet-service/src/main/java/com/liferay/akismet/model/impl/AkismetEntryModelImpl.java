@@ -33,6 +33,9 @@ import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -220,6 +223,32 @@ public class AkismetEntryModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, AkismetEntry>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			AkismetEntry.class.getClassLoader(), AkismetEntry.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<AkismetEntry> constructor =
+				(Constructor<AkismetEntry>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<AkismetEntry, Object>>
@@ -654,8 +683,7 @@ public class AkismetEntryModelImpl
 	@Override
 	public AkismetEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (AkismetEntry)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -887,11 +915,8 @@ public class AkismetEntryModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		AkismetEntry.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		AkismetEntry.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, AkismetEntry>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _akismetEntryId;
 	private Date _modifiedDate;

@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonVehicleAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -237,6 +240,32 @@ public class WatsonVehicleAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonVehicleAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonVehicleAudit.class.getClassLoader(), WatsonVehicleAudit.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonVehicleAudit> constructor =
+				(Constructor<WatsonVehicleAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonVehicleAudit, Object>>
@@ -1140,8 +1169,7 @@ public class WatsonVehicleAuditModelImpl
 	@Override
 	public WatsonVehicleAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonVehicleAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1401,11 +1429,8 @@ public class WatsonVehicleAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonVehicleAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonVehicleAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonVehicleAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonVehicleAuditId;
 	private long _groupId;

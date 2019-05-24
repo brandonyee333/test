@@ -34,6 +34,9 @@ import com.liferay.watson.model.WatsonChildAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -233,6 +236,32 @@ public class WatsonChildAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonChildAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonChildAudit.class.getClassLoader(), WatsonChildAudit.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonChildAudit> constructor =
+				(Constructor<WatsonChildAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonChildAudit, Object>>
@@ -1063,8 +1092,7 @@ public class WatsonChildAuditModelImpl
 	@Override
 	public WatsonChildAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonChildAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1344,11 +1372,8 @@ public class WatsonChildAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonChildAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonChildAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonChildAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonChildAuditId;
 	private long _groupId;

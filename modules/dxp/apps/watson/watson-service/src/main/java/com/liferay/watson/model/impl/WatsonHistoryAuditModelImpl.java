@@ -36,6 +36,9 @@ import com.liferay.watson.model.WatsonHistoryAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -217,6 +220,32 @@ public class WatsonHistoryAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonHistoryAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonHistoryAudit.class.getClassLoader(), WatsonHistoryAudit.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonHistoryAudit> constructor =
+				(Constructor<WatsonHistoryAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonHistoryAudit, Object>>
@@ -726,8 +755,7 @@ public class WatsonHistoryAuditModelImpl
 	@Override
 	public WatsonHistoryAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonHistoryAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -936,11 +964,8 @@ public class WatsonHistoryAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonHistoryAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonHistoryAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonHistoryAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonHistoryAuditId;
 	private long _groupId;

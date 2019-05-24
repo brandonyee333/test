@@ -36,6 +36,9 @@ import com.liferay.watson.login.model.WatsonTokenAuthEntrySoap;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -280,6 +283,32 @@ public class WatsonTokenAuthEntryModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonTokenAuthEntry>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonTokenAuthEntry.class.getClassLoader(),
+			WatsonTokenAuthEntry.class, ModelWrapper.class);
+
+		try {
+			Constructor<WatsonTokenAuthEntry> constructor =
+				(Constructor<WatsonTokenAuthEntry>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonTokenAuthEntry, Object>>
@@ -757,8 +786,7 @@ public class WatsonTokenAuthEntryModelImpl
 	@Override
 	public WatsonTokenAuthEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonTokenAuthEntry)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -993,11 +1021,8 @@ public class WatsonTokenAuthEntryModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonTokenAuthEntry.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonTokenAuthEntry.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonTokenAuthEntry>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonTokenAuthEntryId;
 	private long _companyId;

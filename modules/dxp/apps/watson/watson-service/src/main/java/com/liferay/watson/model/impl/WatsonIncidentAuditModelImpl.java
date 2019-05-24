@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonIncidentAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -245,6 +248,32 @@ public class WatsonIncidentAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonIncidentAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonIncidentAudit.class.getClassLoader(),
+			WatsonIncidentAudit.class, ModelWrapper.class);
+
+		try {
+			Constructor<WatsonIncidentAudit> constructor =
+				(Constructor<WatsonIncidentAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonIncidentAudit, Object>>
@@ -1318,8 +1347,7 @@ public class WatsonIncidentAuditModelImpl
 	@Override
 	public WatsonIncidentAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonIncidentAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1613,11 +1641,8 @@ public class WatsonIncidentAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonIncidentAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonIncidentAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonIncidentAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonIncidentAuditId;
 	private long _groupId;

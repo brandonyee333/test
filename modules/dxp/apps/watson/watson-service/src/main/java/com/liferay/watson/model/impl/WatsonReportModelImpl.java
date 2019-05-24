@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonReportModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -232,6 +235,32 @@ public class WatsonReportModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonReport>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonReport.class.getClassLoader(), WatsonReport.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonReport> constructor =
+				(Constructor<WatsonReport>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonReport, Object>>
@@ -1417,8 +1446,7 @@ public class WatsonReportModelImpl
 	@Override
 	public WatsonReport toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonReport)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1686,11 +1714,8 @@ public class WatsonReportModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonReport.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonReport.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonReport>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonReportId;
 	private long _groupId;

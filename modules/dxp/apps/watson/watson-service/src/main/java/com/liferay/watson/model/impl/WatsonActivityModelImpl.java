@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonActivityModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -225,6 +228,32 @@ public class WatsonActivityModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonActivity>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonActivity.class.getClassLoader(), WatsonActivity.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonActivity> constructor =
+				(Constructor<WatsonActivity>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonActivity, Object>>
@@ -904,8 +933,7 @@ public class WatsonActivityModelImpl
 	@Override
 	public WatsonActivity toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonActivity)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1137,11 +1165,8 @@ public class WatsonActivityModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonActivity.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonActivity.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonActivity>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonActivityId;
 	private long _groupId;

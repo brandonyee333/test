@@ -40,6 +40,9 @@ import com.liferay.watson.model.WatsonListTypeRelModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -224,6 +227,32 @@ public class WatsonListTypeRelModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonListTypeRel>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonListTypeRel.class.getClassLoader(), WatsonListTypeRel.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonListTypeRel> constructor =
+				(Constructor<WatsonListTypeRel>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonListTypeRel, Object>>
@@ -932,8 +961,7 @@ public class WatsonListTypeRelModelImpl
 	@Override
 	public WatsonListTypeRel toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonListTypeRel)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1156,11 +1184,8 @@ public class WatsonListTypeRelModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonListTypeRel.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonListTypeRel.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonListTypeRel>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonListTypeRelId;
 	private long _groupId;

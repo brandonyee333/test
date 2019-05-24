@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonPersonAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -253,6 +256,32 @@ public class WatsonPersonAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonPersonAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonPersonAudit.class.getClassLoader(), WatsonPersonAudit.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<WatsonPersonAudit> constructor =
+				(Constructor<WatsonPersonAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonPersonAudit, Object>>
@@ -1653,8 +1682,7 @@ public class WatsonPersonAuditModelImpl
 	@Override
 	public WatsonPersonAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonPersonAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1994,11 +2022,8 @@ public class WatsonPersonAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonPersonAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonPersonAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonPersonAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonPersonAuditId;
 	private long _groupId;

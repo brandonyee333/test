@@ -39,6 +39,9 @@ import com.liferay.watson.model.WatsonActivityAuditModel;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -228,6 +231,32 @@ public class WatsonActivityAuditModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, WatsonActivityAudit>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			WatsonActivityAudit.class.getClassLoader(),
+			WatsonActivityAudit.class, ModelWrapper.class);
+
+		try {
+			Constructor<WatsonActivityAudit> constructor =
+				(Constructor<WatsonActivityAudit>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<WatsonActivityAudit, Object>>
@@ -952,8 +981,7 @@ public class WatsonActivityAuditModelImpl
 	@Override
 	public WatsonActivityAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (WatsonActivityAudit)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1192,11 +1220,8 @@ public class WatsonActivityAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		WatsonActivityAudit.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		WatsonActivityAudit.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, WatsonActivityAudit>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _watsonActivityAuditId;
 	private long _groupId;

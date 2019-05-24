@@ -40,6 +40,9 @@ import com.liferay.portal.workflow.kaleo.designer.model.KaleoDraftDefinitionSoap
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -295,6 +298,32 @@ public class KaleoDraftDefinitionModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, KaleoDraftDefinition>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			KaleoDraftDefinition.class.getClassLoader(),
+			KaleoDraftDefinition.class, ModelWrapper.class);
+
+		try {
+			Constructor<KaleoDraftDefinition> constructor =
+				(Constructor<KaleoDraftDefinition>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<KaleoDraftDefinition, Object>>
@@ -986,8 +1015,7 @@ public class KaleoDraftDefinitionModelImpl
 	@Override
 	public KaleoDraftDefinition toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (KaleoDraftDefinition)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			_escapedModel = _escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1242,11 +1270,8 @@ public class KaleoDraftDefinitionModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		KaleoDraftDefinition.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		KaleoDraftDefinition.class, ModelWrapper.class
-	};
+	private static final Function<InvocationHandler, KaleoDraftDefinition>
+		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
 
 	private long _kaleoDraftDefinitionId;
 	private long _groupId;
