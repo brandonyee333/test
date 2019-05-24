@@ -465,7 +465,8 @@ public class AccountEntryViewDisplayContext {
 
 		if (ProductEntryConstants.isPortalVersion6_2(listTypeId) ||
 			ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
-			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
+			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_2(listTypeId)) {
 
 			List<ListType> envCSListTypes =
 				AccountEnvironmentConstants.getEnvListTypes(
@@ -497,7 +498,8 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("envOS", toJSONArray(envOSListTypes));
 
 		if (ProductEntryConstants.isDigitalEnterpriseVersion7_0(listTypeId) ||
-			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId)) {
+			ProductEntryConstants.isDigitalEnterpriseVersion7_1(listTypeId) ||
+			ProductEntryConstants.isDigitalEnterpriseVersion7_2(listTypeId)) {
 
 			JSONArray envSearchJSONArray = JSONFactoryUtil.createJSONArray();
 

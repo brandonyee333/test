@@ -165,6 +165,8 @@ insert into ListType (listTypeId, name, type_) values (28041, 'amazon-aurora', '
 insert into ListType (listTypeId, name, type_) values (28042, 'db2-11.1', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28043, 'mariadb-10.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28044, 'postgresql-10', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28045, 'mysql-8', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28046, 'sql-server-2017', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'oracle-jdk-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'oracle-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
@@ -173,7 +175,7 @@ insert into ListType (listTypeId, name, type_) values (29003, 'ibm-jdk-6', 'com.
 insert into ListType (listTypeId, name, type_) values (29004, 'ibm-jdk-7', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29005, 'jrocket-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29006, 'oracle-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
-insert into ListType (listTypeId, name, type_) values (29007, 'ibm-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
+insert into ListType (listTypeId, name, type_) values (29007, 'ibm-j9-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29008, 'oracle-openjdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29009, 'oracle-openjdk-11', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29012, 'azul-zulu-jdk-8', 'com.liferay.osb.model.AccountEnvironment.envJVM');
@@ -230,6 +232,11 @@ insert into ListType (listTypeId, name, type_) values (30042, 'ubuntu-lts-16.04'
 insert into ListType (listTypeId, name, type_) values (30043, 'windows-server-2016', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30044, 'debian-9', 'com.liferay.osb.model.AccountEnvironment.envOS');
 insert into ListType (listTypeId, name, type_) values (30045, 'amazon-linux-2', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30046, 'aix-7.x', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30047, 'alpine-linux-3.8', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30048, 'suse-enterprise-linux-15', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30049, 'ubuntu-lts-18.04', 'com.liferay.osb.model.AccountEnvironment.envOS');
+insert into ListType (listTypeId, name, type_) values (30050, 'windows-server-2019', 'com.liferay.osb.model.AccountEnvironment.envOS');
 
 insert into ListType (listTypeId, name, type_) values (34001, 'application-server', 'com.liferay.osb.model.AuditEntry.field');
 insert into ListType (listTypeId, name, type_) values (34004, 'database', 'com.liferay.osb.model.AuditEntry.field');
@@ -320,6 +327,8 @@ insert into ListType (listTypeId, name, type_) values (37017, 'mobile-chrome', '
 insert into ListType (listTypeId, name, type_) values (37018, 'safari-10', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 insert into ListType (listTypeId, name, type_) values (37019, 'firefox-esr-52', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 insert into ListType (listTypeId, name, type_) values (37020, 'safari-11', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
+insert into ListType (listTypeId, name, type_) values (37021, 'chrome-65', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
+insert into ListType (listTypeId, name, type_) values (37022, 'safari-12', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 insert into ListType (listTypeId, name, type_) values (37999, 'other', 'com.liferay.osb.model.AccountEnvironment.envBrowser');
 
 insert into ListType (listTypeId, name, type_) values (38000, 'e-mail', 'com.liferay.osb.model.SalesPartnership.emailAddress');
@@ -343,7 +352,7 @@ insert into ListType (listTypeId, name, type_) values (40005, 'solrcloud', 'com.
 insert into ListType (listTypeId, name, type_) values (40006, 'elasticsearch-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40007, 'kibana-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40008, 'x-pack-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40009, 'solr-7', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40009, 'solr-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 
 insert into ListType (listTypeId, name, type_) values (41000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 insert into ListType (listTypeId, name, type_) values (41100, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
