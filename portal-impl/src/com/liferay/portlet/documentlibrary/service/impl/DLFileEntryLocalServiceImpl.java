@@ -30,7 +30,7 @@ import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandler;
+import com.liferay.document.library.kernel.service.FileVersionPreviewEventListener;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DL;
 import com.liferay.document.library.kernel.util.DLFileVersionPolicy;
@@ -702,7 +702,7 @@ public class DLFileEntryLocalServiceImpl
 
 		// DLFileEntryPreviews
 
-		_dlFileEntryPreviewHandler.deleteDLFileEntryPreviews(
+		_fileVersionPreviewEventListener.deleteDLFileEntryPreviews(
 			dlFileEntry.getFileEntryId());
 
 		// Expando
@@ -2891,11 +2891,11 @@ public class DLFileEntryLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLFileEntryLocalServiceImpl.class);
 
-	private static volatile DLFileEntryPreviewHandler
-		_dlFileEntryPreviewHandler =
+	private static volatile FileVersionPreviewEventListener
+		_fileVersionPreviewEventListener =
 			ServiceProxyFactory.newServiceTrackedInstance(
-				DLFileEntryPreviewHandler.class,
-				DLFileEntryLocalServiceImpl.class, "_dlFileEntryPreviewHandler",
+				FileVersionPreviewEventListener.class,
+				DLFileEntryLocalServiceImpl.class, "_fileVersionPreviewEventListener",
 				false, false);
 	private static final Pattern _fileVersionPattern = Pattern.compile(
 		"\\d+\\.\\d+");
