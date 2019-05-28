@@ -139,7 +139,7 @@ export default class Changelog extends Component {
 
 		const newOrderBy = otherProps.orderBy || orderBy;
 
-		// `startAt` param begins at 0 not 1
+		// `startAt` param begins at 0, not 1
 
 		const startAt = (number - 1) * ARTICLES_PER_PAGE;
 
