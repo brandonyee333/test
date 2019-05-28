@@ -49,7 +49,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 		</h1>
 
 		<h5 class="section-subtitle">
-			<liferay-ui:message key="display-the-patching-details-relevant-to-your-liferay-build" />
+			<liferay-ui:message key="display-the-fix-pack-information-relevant-to-your-liferay-build" />
 		</h5>
 	</aui:container>
 </div>
