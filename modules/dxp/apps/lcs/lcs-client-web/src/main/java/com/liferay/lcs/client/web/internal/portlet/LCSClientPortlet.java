@@ -21,6 +21,7 @@ import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientPortletKeys;
 import com.liferay.lcs.client.constants.LCSClientWebKeys;
 import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -53,8 +54,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"com.liferay.portlet.control-panel-entry-category=control_panel.configuration",
-		"com.liferay.portlet.control-panel-entry-weight=100.0",
 		"com.liferay.portlet.preferences-unique-per-layout=false",
 		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"com.liferay.portlet.instanceable=false",
@@ -72,7 +71,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.init-param.copy-request-parameters=true",
 		"javax.portlet.init-param.add-process-action-success-action=false",
 		"javax.portlet.init-param.view-jsp=/view.jsp",
-		"javax.portlet.name=com_liferay_lcs_client_web_internal_portlet_LCSClientPortlet",
+		"javax.portlet.name=" + LCSClientPortletKeys.CLIENT,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user",
 		"javax.portlet.supported-public-render-parameter=layoutLCSClusterEntryId",
