@@ -4209,3 +4209,58 @@ app.artifacts-7.0.83=\
 app.change.log-7.0.83=LPS-61099 LPS-61420 LPS-62450 LPS-63828 LPS-63948 LPS-64031 LPS-64091 LPS-64092 LPS-64182 LPS-64414 LPS-64419 LPS-65225 LPS-65232 LPS-65786 LPS-66244 LPS-66470 LPS-66853 LPS-67352 LPS-68294 LPS-68841 LPS-68843 LPS-69002 LPS-69140 LPS-69203 LPS-69661 LPS-69811 LPS-70844 LPS-72409 LPS-72505 LPS-72507 LPS-72613 LPS-73562 LPS-74544 LPS-74849 LPS-75010 LPS-75049 LPS-75125 LPS-77683 LPS-77699 LPS-77869 LPS-77992 LPS-78030 LPS-79108 LPS-82771 LPS-84119 LPS-86408 LPS-86460 LPS-91420 
 
 app.git.id-7.0.83=ffe6f4b22c9284e50a7171ec776d8fa0970c8091
+
+#
+# Liferay App Version 7.0.84
+#
+
+app.artifacts-7.0.84=\
+	com.fasterxml.jackson.core.jackson-annotations-2.9.8.jar,\
+	com.fasterxml.jackson.core.jackson-core-2.9.8.jar,\
+	com.fasterxml.jackson.core.jackson-databind-2.9.8.jar,\
+	com.liferay.modules.compat-2.0.14.jar,\
+	com.liferay.osgi.felix.file.install.configuration.cleaner-1.0.6.jar,\
+	com.liferay.osgi.log.service.extender-1.0.1.jar,\
+	com.liferay.osgi.util-3.2.3.jar,\
+	com.liferay.portal.bundle.blacklist-1.1.11.jar,\
+	com.liferay.portal.classloader.tracker-1.0.3.jar,\
+	com.liferay.portal.component.blacklist.api-1.0.1.jar,\
+	com.liferay.portal.component.blacklist.impl-1.0.5.jar,\
+	com.liferay.portal.configuration.metatype-2.0.16.jar,\
+	com.liferay.portal.configuration.persistence-2.2.5.jar,\
+	com.liferay.portal.log4j.extender-2.0.7.jar,\
+	com.liferay.portal.lpkg.deployer-2.1.13.jar,\
+	com.liferay.portal.osgi.web.portlet.tracker-2.0.17.jar,\
+	com.liferay.portal.osgi.web.servlet.context.helper-2.1.24.jar,\
+	com.liferay.portal.osgi.web.servlet.jsp.compiler-2.0.33.jar,\
+	com.liferay.portal.osgi.web.wab.extender-2.0.43.jar,\
+	com.liferay.portal.osgi.web.wab.generator-2.1.66.jar,\
+	com.liferay.portal.osgi.web.wab.reference.support-1.0.9.jar,\
+	com.liferay.portal.profile.api-1.0.2.jar,\
+	com.liferay.portal.profile.impl-1.0.3.jar,\
+	com.liferay.portal.target.platform.indexer-4.0.9.jar,\
+	javax.el-3.0.1-b05.jar,\
+	javax.servlet.jsp-api-2.3.2-b01.jar,\
+	javax.servlet.jsp.jstl-1.2.3.LIFERAY-PATCHED-2.jar,\
+	javax.servlet.jsp.jstl-api-1.2.1.jar,\
+	org.apache.commons.fileupload-1.3.2.jar,\
+	org.apache.commons.io-2.2.0.jar,\
+	org.apache.felix.configadmin-1.8.8.LIFERAY-PATCHED-1.jar,\
+	org.apache.felix.dependencymanager-3.2.0.jar,\
+	org.apache.felix.dependencymanager.shell-3.2.0.jar,\
+	org.apache.felix.eventadmin-1.4.6.jar,\
+	org.apache.felix.fileinstall-3.5.4.LIFERAY-PATCHED-4.jar,\
+	org.apache.felix.gogo.command-0.12.0.jar,\
+	org.apache.felix.gogo.runtime-0.10.0.jar,\
+	org.apache.felix.gogo.shell-0.10.0.jar,\
+	org.apache.felix.log-1.2.0.jar,\
+	org.apache.felix.scr-2.0.6.jar,\
+	org.eclipse.equinox.console-1.1.100-20150308.220103-2-LIFERAY-CACHED.jar,\
+	org.eclipse.equinox.http.servlet-1.2.2.v20180613-2229-LIFERAY-CACHED.jar,\
+	org.eclipse.equinox.metatype-1.4.200-20150831.175616-1-LIFERAY-CACHED.jar,\
+	org.osgi.service.http-3.5.0-20150611.165350-3.LIFERAY-PATCHED-2.jar,\
+	org.osgi.service.metatype-1.3.0.jar
+
+app.change.log-7.0.84=LPS-61099 LPS-61420 LPS-62450 LPS-63828 LPS-63948 LPS-64031 LPS-64091 LPS-64092 LPS-64182 LPS-64414 LPS-64419 LPS-65225 LPS-65232 LPS-65786 LPS-66244 LPS-66470 LPS-66853 LPS-67352 LPS-68294 LPS-68841 LPS-68843 LPS-69002 LPS-69140 LPS-69203 LPS-69661 LPS-69811 LPS-70844 LPS-72409 LPS-72505 LPS-72507 LPS-72613 LPS-73562 LPS-74544 LPS-74849 LPS-75010 LPS-75049 LPS-75125 LPS-77683 LPS-77699 LPS-77869 LPS-77992 LPS-78030 LPS-79108 LPS-82771 LPS-84119 LPS-86408 LPS-86460 LPS-91420 LPS-95330 LPS-95455 
+
+app.git.id-7.0.84=1954283839154a678577429e705504d15d3b1e6e
