@@ -2262,6 +2262,7 @@ public class AccountCustomerPersistenceImpl extends BasePersistenceImpl<AccountC
 		accountCustomerImpl.setUserId(accountCustomer.getUserId());
 		accountCustomerImpl.setAccountEntryId(accountCustomer.getAccountEntryId());
 		accountCustomerImpl.setRole(accountCustomer.getRole());
+		accountCustomerImpl.setClosedWatcher(accountCustomer.isClosedWatcher());
 
 		return accountCustomerImpl;
 	}

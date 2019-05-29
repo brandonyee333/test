@@ -72,7 +72,8 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 			{ "accountCustomerId", Types.BIGINT },
 			{ "userId", Types.BIGINT },
 			{ "accountEntryId", Types.BIGINT },
-			{ "role", Types.INTEGER }
+			{ "role", Types.INTEGER },
+			{ "closedWatcher", Types.BOOLEAN }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -81,9 +82,10 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		TABLE_COLUMNS_MAP.put("userId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("accountEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("role", Types.INTEGER);
+		TABLE_COLUMNS_MAP.put("closedWatcher", Types.BOOLEAN);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountCustomer (accountCustomerId LONG not null primary key,userId LONG,accountEntryId LONG,role INTEGER)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountCustomer (accountCustomerId LONG not null primary key,userId LONG,accountEntryId LONG,role INTEGER,closedWatcher BOOLEAN)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountCustomer";
 	public static final String ORDER_BY_JPQL = " ORDER BY accountCustomer.accountCustomerId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountCustomer.accountCustomerId ASC";
@@ -121,6 +123,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		model.setUserId(soapModel.getUserId());
 		model.setAccountEntryId(soapModel.getAccountEntryId());
 		model.setRole(soapModel.getRole());
+		model.setClosedWatcher(soapModel.getClosedWatcher());
 
 		return model;
 	}
@@ -190,6 +193,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
+		attributes.put("closedWatcher", getClosedWatcher());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -221,6 +225,12 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 		if (role != null) {
 			setRole(role);
+		}
+
+		Boolean closedWatcher = (Boolean)attributes.get("closedWatcher");
+
+		if (closedWatcher != null) {
+			setClosedWatcher(closedWatcher);
 		}
 	}
 
@@ -320,6 +330,23 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		return _originalRole;
 	}
 
+	@JSON
+	@Override
+	public boolean getClosedWatcher() {
+		return _closedWatcher;
+	}
+
+	@JSON
+	@Override
+	public boolean isClosedWatcher() {
+		return _closedWatcher;
+	}
+
+	@Override
+	public void setClosedWatcher(boolean closedWatcher) {
+		_closedWatcher = closedWatcher;
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -355,6 +382,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		accountCustomerImpl.setUserId(getUserId());
 		accountCustomerImpl.setAccountEntryId(getAccountEntryId());
 		accountCustomerImpl.setRole(getRole());
+		accountCustomerImpl.setClosedWatcher(getClosedWatcher());
 
 		accountCustomerImpl.resetOriginalValues();
 
@@ -444,12 +472,14 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 		accountCustomerCacheModel.role = getRole();
 
+		accountCustomerCacheModel.closedWatcher = getClosedWatcher();
+
 		return accountCustomerCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{accountCustomerId=");
 		sb.append(getAccountCustomerId());
@@ -459,6 +489,8 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 		sb.append(getAccountEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
+		sb.append(", closedWatcher=");
+		sb.append(getClosedWatcher());
 		sb.append("}");
 
 		return sb.toString();
@@ -466,7 +498,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(16);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountCustomer");
@@ -488,6 +520,10 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>closedWatcher</column-name><column-value><![CDATA[");
+		sb.append(getClosedWatcher());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -508,6 +544,7 @@ public class AccountCustomerModelImpl extends BaseModelImpl<AccountCustomer>
 	private int _role;
 	private int _originalRole;
 	private boolean _setOriginalRole;
+	private boolean _closedWatcher;
 	private long _columnBitmask;
 	private AccountCustomer _escapedModel;
 }

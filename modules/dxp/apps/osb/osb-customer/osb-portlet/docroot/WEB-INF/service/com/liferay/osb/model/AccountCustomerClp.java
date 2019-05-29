@@ -84,6 +84,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
+		attributes.put("closedWatcher", getClosedWatcher());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -115,6 +116,12 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 
 		if (role != null) {
 			setRole(role);
+		}
+
+		Boolean closedWatcher = (Boolean)attributes.get("closedWatcher");
+
+		if (closedWatcher != null) {
+			setClosedWatcher(closedWatcher);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -223,6 +230,35 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 				Method method = clazz.getMethod("setRole", int.class);
 
 				method.invoke(_accountCustomerRemoteModel, role);
+			}
+			catch (Exception e) {
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	@Override
+	public boolean getClosedWatcher() {
+		return _closedWatcher;
+	}
+
+	@Override
+	public boolean isClosedWatcher() {
+		return _closedWatcher;
+	}
+
+	@Override
+	public void setClosedWatcher(boolean closedWatcher) {
+		_closedWatcher = closedWatcher;
+
+		if (_accountCustomerRemoteModel != null) {
+			try {
+				Class<?> clazz = _accountCustomerRemoteModel.getClass();
+
+				Method method = clazz.getMethod("setClosedWatcher",
+						boolean.class);
+
+				method.invoke(_accountCustomerRemoteModel, closedWatcher);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -343,6 +379,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		clone.setUserId(getUserId());
 		clone.setAccountEntryId(getAccountEntryId());
 		clone.setRole(getRole());
+		clone.setClosedWatcher(getClosedWatcher());
 
 		return clone;
 	}
@@ -405,7 +442,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(9);
+		StringBundler sb = new StringBundler(11);
 
 		sb.append("{accountCustomerId=");
 		sb.append(getAccountCustomerId());
@@ -415,6 +452,8 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 		sb.append(getAccountEntryId());
 		sb.append(", role=");
 		sb.append(getRole());
+		sb.append(", closedWatcher=");
+		sb.append(getClosedWatcher());
 		sb.append("}");
 
 		return sb.toString();
@@ -422,7 +461,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(16);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountCustomer");
@@ -444,6 +483,10 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 			"<column><column-name>role</column-name><column-value><![CDATA[");
 		sb.append(getRole());
 		sb.append("]]></column-value></column>");
+		sb.append(
+			"<column><column-name>closedWatcher</column-name><column-value><![CDATA[");
+		sb.append(getClosedWatcher());
+		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -454,6 +497,7 @@ public class AccountCustomerClp extends BaseModelImpl<AccountCustomer>
 	private long _userId;
 	private long _accountEntryId;
 	private int _role;
+	private boolean _closedWatcher;
 	private BaseModel<?> _accountCustomerRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

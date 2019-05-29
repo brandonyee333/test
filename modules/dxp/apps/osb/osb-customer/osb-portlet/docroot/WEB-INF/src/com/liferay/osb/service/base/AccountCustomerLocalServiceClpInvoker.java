@@ -129,12 +129,14 @@ public class AccountCustomerLocalServiceClpInvoker {
 
 		_methodName175 = "addAccountCustomer";
 
-		_methodParameterTypes175 = new String[] { "long", "long", "long", "int" };
+		_methodParameterTypes175 = new String[] {
+				"long", "long", "long", "int", "boolean"
+			};
 
 		_methodName176 = "addAccountCustomer";
 
 		_methodParameterTypes176 = new String[] {
-				"long", "java.lang.String", "long", "int"
+				"long", "java.lang.String", "long", "int", "boolean"
 			};
 
 		_methodName177 = "deleteAccountCustomer";
@@ -181,7 +183,7 @@ public class AccountCustomerLocalServiceClpInvoker {
 
 		_methodName187 = "updateAccountCustomer";
 
-		_methodParameterTypes187 = new String[] { "long", "long", "int" };
+		_methodParameterTypes187 = new String[] { "long", "long", "int", "boolean" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -298,7 +300,8 @@ public class AccountCustomerLocalServiceClpInvoker {
 			return AccountCustomerLocalServiceUtil.addAccountCustomer(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
-				((Integer)arguments[3]).intValue());
+				((Integer)arguments[3]).intValue(),
+				((Boolean)arguments[4]).booleanValue());
 		}
 
 		if (_methodName176.equals(name) &&
@@ -306,7 +309,8 @@ public class AccountCustomerLocalServiceClpInvoker {
 			return AccountCustomerLocalServiceUtil.addAccountCustomer(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Long)arguments[2]).longValue(),
-				((Integer)arguments[3]).intValue());
+				((Integer)arguments[3]).intValue(),
+				((Boolean)arguments[4]).booleanValue());
 		}
 
 		if (_methodName177.equals(name) &&
@@ -373,7 +377,8 @@ public class AccountCustomerLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes187, parameterTypes)) {
 			return AccountCustomerLocalServiceUtil.updateAccountCustomer(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
-				((Integer)arguments[2]).intValue());
+				((Integer)arguments[2]).intValue(),
+				((Boolean)arguments[3]).booleanValue());
 		}
 
 		throw new UnsupportedOperationException();

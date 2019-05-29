@@ -129,6 +129,27 @@ public interface AccountCustomerModel extends BaseModel<AccountCustomer> {
 	 */
 	public void setRole(int role);
 
+	/**
+	 * Returns the closed watcher of this account customer.
+	 *
+	 * @return the closed watcher of this account customer
+	 */
+	public boolean getClosedWatcher();
+
+	/**
+	 * Returns <code>true</code> if this account customer is closed watcher.
+	 *
+	 * @return <code>true</code> if this account customer is closed watcher; <code>false</code> otherwise
+	 */
+	public boolean isClosedWatcher();
+
+	/**
+	 * Sets whether this account customer is closed watcher.
+	 *
+	 * @param closedWatcher the closed watcher of this account customer
+	 */
+	public void setClosedWatcher(boolean closedWatcher);
+
 	@Override
 	public boolean isNew();
 

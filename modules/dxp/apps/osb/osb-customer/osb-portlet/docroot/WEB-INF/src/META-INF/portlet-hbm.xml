@@ -48,6 +48,7 @@
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="closedWatcher" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEntryImpl" table="OSB_AccountEntry">
 		<id name="accountEntryId" type="long">

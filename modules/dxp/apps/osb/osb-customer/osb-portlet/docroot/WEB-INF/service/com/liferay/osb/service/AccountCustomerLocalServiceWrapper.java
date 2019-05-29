@@ -55,17 +55,19 @@ public class AccountCustomerLocalServiceWrapper
 	@Override
 	public com.liferay.osb.model.AccountCustomer addAccountCustomer(
 		long userId, java.lang.String emailAddress, long accountEntryId,
-		int role) throws com.liferay.portal.kernel.exception.PortalException {
+		int role, boolean closedWatcher)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCustomerLocalService.addAccountCustomer(userId,
-			emailAddress, accountEntryId, role);
+			emailAddress, accountEntryId, role, closedWatcher);
 	}
 
 	@Override
 	public com.liferay.osb.model.AccountCustomer addAccountCustomer(
-		long userId, long customerUserId, long accountEntryId, int role)
+		long userId, long customerUserId, long accountEntryId, int role,
+		boolean closedWatcher)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCustomerLocalService.addAccountCustomer(userId,
-			customerUserId, accountEntryId, role);
+			customerUserId, accountEntryId, role, closedWatcher);
 	}
 
 	/**
@@ -171,10 +173,10 @@ public class AccountCustomerLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.model.AccountCustomer updateAccountCustomer(
-		long userId, long accountCustomerId, int role)
+		long userId, long accountCustomerId, int role, boolean closedWatcher)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountCustomerLocalService.updateAccountCustomer(userId,
-			accountCustomerId, role);
+			accountCustomerId, role, closedWatcher);
 	}
 
 	@Override

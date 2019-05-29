@@ -37,6 +37,7 @@ public class AccountCustomerSoap implements Serializable {
 		soapModel.setUserId(model.getUserId());
 		soapModel.setAccountEntryId(model.getAccountEntryId());
 		soapModel.setRole(model.getRole());
+		soapModel.setClosedWatcher(model.getClosedWatcher());
 
 		return soapModel;
 	}
@@ -123,8 +124,21 @@ public class AccountCustomerSoap implements Serializable {
 		_role = role;
 	}
 
+	public boolean getClosedWatcher() {
+		return _closedWatcher;
+	}
+
+	public boolean isClosedWatcher() {
+		return _closedWatcher;
+	}
+
+	public void setClosedWatcher(boolean closedWatcher) {
+		_closedWatcher = closedWatcher;
+	}
+
 	private long _accountCustomerId;
 	private long _userId;
 	private long _accountEntryId;
 	private int _role;
+	private boolean _closedWatcher;
 }

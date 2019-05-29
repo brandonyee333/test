@@ -14,7 +14,8 @@ create table OSB_AccountCustomer (
 	accountCustomerId LONG not null primary key,
 	userId LONG,
 	accountEntryId LONG,
-	role INTEGER
+	role INTEGER,
+	closedWatcher BOOLEAN
 );
 
 create table OSB_AccountEntries_SupportRegions (

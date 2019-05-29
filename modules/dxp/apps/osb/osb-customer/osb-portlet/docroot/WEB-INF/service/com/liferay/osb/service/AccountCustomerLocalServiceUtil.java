@@ -58,18 +58,20 @@ public class AccountCustomerLocalServiceUtil {
 
 	public static com.liferay.osb.model.AccountCustomer addAccountCustomer(
 		long userId, java.lang.String emailAddress, long accountEntryId,
-		int role) throws com.liferay.portal.kernel.exception.PortalException {
+		int role, boolean closedWatcher)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountCustomer(userId, emailAddress, accountEntryId,
-			role);
+			role, closedWatcher);
 	}
 
 	public static com.liferay.osb.model.AccountCustomer addAccountCustomer(
-		long userId, long customerUserId, long accountEntryId, int role)
+		long userId, long customerUserId, long accountEntryId, int role,
+		boolean closedWatcher)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
 				   .addAccountCustomer(userId, customerUserId, accountEntryId,
-			role);
+			role, closedWatcher);
 	}
 
 	/**
@@ -160,10 +162,11 @@ public class AccountCustomerLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.model.AccountCustomer updateAccountCustomer(
-		long userId, long accountCustomerId, int role)
+		long userId, long accountCustomerId, int role, boolean closedWatcher)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .updateAccountCustomer(userId, accountCustomerId, role);
+				   .updateAccountCustomer(userId, accountCustomerId, role,
+			closedWatcher);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {

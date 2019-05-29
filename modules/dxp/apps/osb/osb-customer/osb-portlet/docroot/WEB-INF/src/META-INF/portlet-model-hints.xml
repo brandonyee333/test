@@ -21,6 +21,7 @@
 		<field name="userId" type="long" />
 		<field name="accountEntryId" type="long" />
 		<field name="role" type="int" />
+		<field name="closedWatcher" type="boolean" />
 	</model>
 	<model name="com.liferay.osb.model.AccountEntry">
 		<field name="accountEntryId" type="long" />

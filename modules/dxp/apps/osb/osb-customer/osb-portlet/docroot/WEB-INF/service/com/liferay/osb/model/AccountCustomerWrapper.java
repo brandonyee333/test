@@ -61,6 +61,7 @@ public class AccountCustomerWrapper implements AccountCustomer,
 		attributes.put("userId", getUserId());
 		attributes.put("accountEntryId", getAccountEntryId());
 		attributes.put("role", getRole());
+		attributes.put("closedWatcher", getClosedWatcher());
 
 		return attributes;
 	}
@@ -90,6 +91,12 @@ public class AccountCustomerWrapper implements AccountCustomer,
 		if (role != null) {
 			setRole(role);
 		}
+
+		Boolean closedWatcher = (Boolean)attributes.get("closedWatcher");
+
+		if (closedWatcher != null) {
+			setClosedWatcher(closedWatcher);
+		}
 	}
 
 	@Override
@@ -108,9 +115,29 @@ public class AccountCustomerWrapper implements AccountCustomer,
 		return _accountCustomer.getAccountEntry();
 	}
 
+	/**
+	* Returns the closed watcher of this account customer.
+	*
+	* @return the closed watcher of this account customer
+	*/
+	@Override
+	public boolean getClosedWatcher() {
+		return _accountCustomer.getClosedWatcher();
+	}
+
 	@Override
 	public boolean isCachedModel() {
 		return _accountCustomer.isCachedModel();
+	}
+
+	/**
+	* Returns <code>true</code> if this account customer is closed watcher.
+	*
+	* @return <code>true</code> if this account customer is closed watcher; <code>false</code> otherwise
+	*/
+	@Override
+	public boolean isClosedWatcher() {
+		return _accountCustomer.isClosedWatcher();
 	}
 
 	@Override
@@ -256,6 +283,16 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_accountCustomer.setCachedModel(cachedModel);
+	}
+
+	/**
+	* Sets whether this account customer is closed watcher.
+	*
+	* @param closedWatcher the closed watcher of this account customer
+	*/
+	@Override
+	public void setClosedWatcher(boolean closedWatcher) {
+		_accountCustomer.setClosedWatcher(closedWatcher);
 	}
 
 	@Override
