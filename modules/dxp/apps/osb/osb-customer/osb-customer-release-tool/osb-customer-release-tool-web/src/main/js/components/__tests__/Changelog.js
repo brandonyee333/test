@@ -76,16 +76,15 @@ afterEach(cleanup);
 
 describe('Changelog', () => {
 	it('renders changelog results correctly', () => {
-		const {container, queryByRole} = setup();
+		const {container} = setup();
 
-		expect(queryByRole('navigation')).toBeFalsy();
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders changelog with pagination when results exceed 50 items', () => {
 		const {changelogJSONObjSize51, filters} = setup();
 
-		const {container, queryByRole} = render(
+		const {container} = render(
 			<Changelog
 				description="description"
 				endpoint="/"
@@ -94,14 +93,13 @@ describe('Changelog', () => {
 			/>
 		);
 
-		expect(queryByRole('navigation')).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders page one of new results when Release column is sorted', () => {
 		const {changelogJSONObjSize51, filters} = setup();
 
-		const {container, getByRole} = render(
+		const {container} = render(
 			<Changelog
 				description="description"
 				endpoint="/"
@@ -110,22 +108,21 @@ describe('Changelog', () => {
 			/>
 		);
 
-		const pagination = getByRole('navigation');
 		const sortButton = container.querySelector('.sorting-indicator');
 
-		fireEvent.click(pagination.querySelector('[value="2"]'));
+		fireEvent.click(container.querySelector('button[value="2"]'));
 
-		expect(pagination.querySelector('.pagination-current span').innerHTML).toBe('2');
+		expect(container.querySelector('.pagination-current span').innerHTML).toBe('2');
 
 		fireEvent.click(sortButton);
 
-		expect(pagination.querySelector('.pagination-current span').innerHTML).toBe('1');
+		expect(container.querySelector('.pagination-current span').innerHTML).toBe('1');
 	});
 
 	it('renders no results correctly', () => {
 		const {filters, noResults} = setup();
 
-		const {container, queryByRole} = render(
+		const {container} = render(
 			<Changelog
 				description="description"
 				endpoint="/"
@@ -134,7 +131,6 @@ describe('Changelog', () => {
 			/>
 		);
 
-		expect(queryByRole('navigation')).toBeFalsy();
 		expect(container).toMatchSnapshot();
 	});
 
