@@ -1,4 +1,10 @@
-<%--
+<%@ page
+	import="com.liferay.document.library.service.DLFileEntryPreviewLocalServiceUtil" %>
+<%@ page
+	import="com.liferay.document.library.constants.DLFileEntryPreviewConstants" %>
+<%@ page import="com.liferay.document.library.model.DLFileEntryPreview" %>
+<%@ page
+	import="com.liferay.document.library.kernel.service.FileVersionPreviewEventListener" %><%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -96,6 +102,11 @@
 		}
 	}
 
+	boolean hasFailedDLFileEntryPreview =
+		DLFileEntryPreviewLocalServiceUtil.hasDLFileEntryPreview(
+			fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
+			FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL.toInteger());
+
 	request.setAttribute("view_file_entry.jsp-randomNamespace", randomNamespace);
 
 	request.setAttribute("view_file_entry.jsp-supportedAudio", String.valueOf(hasAudio));
@@ -106,7 +117,7 @@
 	%>
 
 	<c:choose>
-		<c:when test="<%= emptyPreview %>">
+		<c:when test="<%= emptyPreview || hasFailedDLFileEntryPreview %>">
 			<div class="alert alert-info">
 				<liferay-ui:message arguments="<%= fileEntry.getTitle() %>" key="cannot-generate-preview-for-x" />
 			</div>
