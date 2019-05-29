@@ -63,6 +63,7 @@
 
 		<column name="accountEntryId" type="long" />
 		<column name="role" type="int" />
+		<column name="closedWatcher" type="boolean" />
 
 		<!-- Finder methods -->
 

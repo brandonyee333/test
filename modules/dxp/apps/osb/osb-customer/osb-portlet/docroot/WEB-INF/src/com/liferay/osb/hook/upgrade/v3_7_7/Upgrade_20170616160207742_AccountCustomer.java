@@ -40,7 +40,7 @@ public class Upgrade_20170616160207742_AccountCustomer
 
 		AccountCustomerLocalServiceUtil.addAccountCustomer(
 			OSBConstants.USER_DEFAULT_USER_ID, userId, accountEntryId,
-			AccountCustomerConstants.ROLE_WATCHER);
+			AccountCustomerConstants.ROLE_WATCHER, false);
 	}
 
 	@Override

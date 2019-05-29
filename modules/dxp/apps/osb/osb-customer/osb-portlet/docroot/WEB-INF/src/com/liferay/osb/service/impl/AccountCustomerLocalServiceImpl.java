@@ -54,7 +54,8 @@ public class AccountCustomerLocalServiceImpl
 
 	@Override
 	public AccountCustomer addAccountCustomer(
-			long userId, long customerUserId, long accountEntryId, int role)
+			long userId, long customerUserId, long accountEntryId, int role,
+			boolean closedWatcher)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -70,11 +71,12 @@ public class AccountCustomerLocalServiceImpl
 
 		if (accountCustomer != null) {
 			return updateAccountCustomer(
-				userId, accountCustomer.getAccountCustomerId(), role);
+				userId, accountCustomer.getAccountCustomerId(), role,
+				closedWatcher);
 		}
 
 		accountCustomer = doAddAccountCustomer(
-			customerUserId, accountEntryId, role);
+			customerUserId, accountEntryId, role, closedWatcher);
 
 		long auditSetId = auditEntryLocalService.getNextAuditSetId(
 			AccountEntry.class.getName(), accountEntryId);
@@ -127,7 +129,8 @@ public class AccountCustomerLocalServiceImpl
 
 	@Override
 	public AccountCustomer addAccountCustomer(
-			long userId, String emailAddress, long accountEntryId, int role)
+			long userId, String emailAddress, long accountEntryId, int role,
+			boolean closedWatcher)
 		throws PortalException {
 
 		User user = userLocalService.fetchUserByEmailAddress(
@@ -135,7 +138,7 @@ public class AccountCustomerLocalServiceImpl
 
 		if (user != null) {
 			return addAccountCustomer(
-				userId, user.getUserId(), accountEntryId, role);
+				userId, user.getUserId(), accountEntryId, role, closedWatcher);
 		}
 
 		User remoteUser = remoteUserLocalService.fetchUserByEmailAddress(
@@ -167,7 +170,7 @@ public class AccountCustomerLocalServiceImpl
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return addAccountCustomer(
-			userId, user.getUserId(), accountEntryId, role);
+			userId, user.getUserId(), accountEntryId, role, closedWatcher);
 	}
 
 	@Override
@@ -272,7 +275,8 @@ public class AccountCustomerLocalServiceImpl
 
 	@Override
 	public AccountCustomer updateAccountCustomer(
-			long userId, long accountCustomerId, int role)
+			long userId, long accountCustomerId, int role,
+			boolean closedWatcher)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -284,6 +288,7 @@ public class AccountCustomerLocalServiceImpl
 		int oldRole = accountCustomer.getRole();
 
 		accountCustomer.setRole(role);
+		accountCustomer.setClosedWatcher(closedWatcher);
 
 		accountCustomerPersistence.update(accountCustomer);
 
@@ -346,7 +351,7 @@ public class AccountCustomerLocalServiceImpl
 	}
 
 	protected AccountCustomer doAddAccountCustomer(
-		long userId, long accountEntryId, int role) {
+		long userId, long accountEntryId, int role, boolean closedWatcher) {
 
 		long accountCustomerId = counterLocalService.increment();
 
@@ -356,6 +361,7 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomer.setUserId(userId);
 		accountCustomer.setAccountEntryId(accountEntryId);
 		accountCustomer.setRole(role);
+		accountCustomer.setClosedWatcher(closedWatcher);
 
 		return accountCustomerPersistence.update(accountCustomer);
 	}
@@ -435,7 +441,7 @@ public class AccountCustomerLocalServiceImpl
 		for (long userId : userIds) {
 			doAddAccountCustomer(
 				userId, accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER);
+				AccountCustomerConstants.ROLE_WATCHER, false);
 		}
 	}
 

@@ -382,7 +382,7 @@ public class AccountEntryLocalServiceImpl
 					OSBConstants.USER_DEFAULT_USER_ID,
 					accountCustomer.getUserId(),
 					analyticsCloudAccountEntry.getAccountEntryId(),
-					AccountCustomerConstants.ROLE_WATCHER);
+					AccountCustomerConstants.ROLE_WATCHER, false);
 			}
 		}
 
@@ -492,7 +492,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountCustomerLocalService.addAccountCustomer(
 			userId, userId, accountEntry.getAccountEntryId(),
-			AccountCustomerConstants.ROLE_DEVELOPER);
+			AccountCustomerConstants.ROLE_DEVELOPER, false);
 
 		// Order entry
 
@@ -685,7 +685,7 @@ public class AccountEntryLocalServiceImpl
 				accountCustomerLocalService.updateAccountCustomer(
 					OSBConstants.USER_DEFAULT_USER_ID,
 					accountCustomer.getAccountCustomerId(),
-					AccountCustomerConstants.ROLE_DEVELOPER);
+					AccountCustomerConstants.ROLE_DEVELOPER, false);
 			}
 			else {
 				accountCustomerLocalService.deleteAccountCustomer(
@@ -2043,7 +2043,7 @@ public class AccountEntryLocalServiceImpl
 			accountCustomerLocalService.addAccountCustomer(
 				accountEntry.getUserId(), user.getUserId(),
 				accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER);
+				AccountCustomerConstants.ROLE_WATCHER, false);
 		}
 
 		return missingUsers;

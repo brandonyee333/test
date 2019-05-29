@@ -561,14 +561,18 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "accountEntryId");
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + accountCustomerId);
+		boolean closedWatcher = ParamUtil.getBoolean(
+			actionRequest, "closedWatcher");
 
 		if (accountCustomerId > 0) {
 			AccountCustomerLocalServiceUtil.updateAccountCustomer(
-				themeDisplay.getUserId(), accountCustomerId, role);
+				themeDisplay.getUserId(), accountCustomerId, role,
+				closedWatcher);
 		}
 		else {
 			AccountCustomerLocalServiceUtil.addAccountCustomer(
-				themeDisplay.getUserId(), emailAddress, accountEntryId, role);
+				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
+				closedWatcher);
 		}
 
 		syncToLCS(actionRequest, actionResponse, accountEntryId);
