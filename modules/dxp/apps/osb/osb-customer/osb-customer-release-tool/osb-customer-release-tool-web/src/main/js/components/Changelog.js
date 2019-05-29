@@ -212,8 +212,7 @@ export default class Changelog extends Component {
 		} = this.state;
 
 		const totalPage = jsonObject.total
-		? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
-		: 1;
+			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE) : 1;
 
 		return (
 			<Fragment>
