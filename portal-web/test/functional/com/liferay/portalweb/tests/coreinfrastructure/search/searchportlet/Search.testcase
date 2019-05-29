@@ -276,7 +276,8 @@ definition {
 
 	@priority = "4"
 	test NavigateToSearchResultsViaURL {
-		property portal.acceptance = "true";
+		property portal.acceptance = "false";
+		property portal.suite.search.engine = "disable";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -1660,6 +1661,7 @@ definition {
 
 	@priority = "5"
 	test ViewMultipleFacetURLs {
+		property portal.suite.search.engine = "disable";
 		var searchPage = "Search Page";
 
 		JSONCategory.addVocabulary(

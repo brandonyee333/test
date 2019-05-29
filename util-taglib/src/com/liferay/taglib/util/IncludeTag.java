@@ -186,7 +186,7 @@ public class IncludeTag extends AttributesTagSupport {
 	}
 
 	protected void cleanUpSetAttributes() {
-		if (isCleanUpSetAttributes() && (_trackedRequest != null)) {
+		if (isCleanUpSetAttributes()) {
 			for (String name : _setAttributeNames) {
 				_trackedRequest.removeAttribute(name);
 			}

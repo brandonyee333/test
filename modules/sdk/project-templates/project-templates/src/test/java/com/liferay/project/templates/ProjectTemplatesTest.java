@@ -3415,7 +3415,6 @@ public class ProjectTemplatesTest {
 		_buildProjects(gradleProjectDir, mavenProjectDir);
 	}
 
-	@Ignore
 	@Test
 	public void testBuildTemplateTheme72() throws Exception {
 		File gradleProjectDir = _buildTemplateWithGradle(
@@ -3558,7 +3557,6 @@ public class ProjectTemplatesTest {
 			"build/libs/my.contributor-1.0.0.jar");
 	}
 
-	@Ignore
 	@Test
 	public void testBuildTemplateThemeInWorkspace() throws Exception {
 		File gradleProjectDir = _buildTemplateWithGradle("theme", "theme-test");
@@ -5964,7 +5962,8 @@ public class ProjectTemplatesTest {
 
 		_testContains(
 			gradleProjectDir, "build.gradle", "buildscript {",
-			"apply plugin: \"war\"", "repositories {");
+			"apply plugin: \"war\"", "repositories {", "cssBuilder group",
+			"portalCommonCSS group");
 
 		File workspaceDir = _buildWorkspace();
 
@@ -5972,6 +5971,10 @@ public class ProjectTemplatesTest {
 
 		File workspaceProjectDir = _buildTemplateWithGradle(
 			warsDir, template, name);
+
+		_testContains(
+			workspaceProjectDir, "build.gradle", "cssBuilder group",
+			"portalCommonCSS group");
 
 		_testNotContains(
 			workspaceProjectDir, "build.gradle", "apply plugin: \"war\"");
