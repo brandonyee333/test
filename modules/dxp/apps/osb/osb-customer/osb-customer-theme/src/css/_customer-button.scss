@@ -110,6 +110,7 @@ input[type="submit"] {
 	&,
 	&:focus,
 	&:hover {
+		background-color: $color-white;
 		border-color: $color-primary;
 		color: $color-primary;
 		cursor: pointer;
