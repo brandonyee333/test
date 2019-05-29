@@ -86,7 +86,7 @@ public class AlloyLanguageUtil extends LanguageUtil {
 <liferay-util:html-top>
 	<script data-senna-track="permanent" src="<%= PortalUtil.getStaticResourceURL(request, PortalUtil.getPathContext(request) + "/js/dist/bundle.nocsf.js") %>" type="text/javascript"></script>
 
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </liferay-util:html-top>
 
 <liferay-frontend:defineObjects />
