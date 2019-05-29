@@ -187,6 +187,24 @@ exports[`Changelog does not show a See More option below the filters if seven or
         </tr>
       </tbody>
     </table>
+    <nav
+      aria-label="pagination navigation"
+      class="pagination"
+      role="navigation"
+    >
+      <ul>
+        <li
+          class="pagination-current"
+        >
+          <span
+            aria-current="true"
+            aria-label="current page, page 1"
+          >
+            1
+          </span>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 `;
@@ -473,6 +491,24 @@ exports[`Changelog renders changelog results correctly 1`] = `
         </tr>
       </tbody>
     </table>
+    <nav
+      aria-label="pagination navigation"
+      class="pagination"
+      role="navigation"
+    >
+      <ul>
+        <li
+          class="pagination-current"
+        >
+          <span
+            aria-current="true"
+            aria-label="current page, page 1"
+          >
+            1
+          </span>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 `;
@@ -2836,6 +2872,24 @@ exports[`Changelog renders details modal when a ticket summary is clicked 1`] = 
         </tr>
       </tbody>
     </table>
+    <nav
+      aria-label="pagination navigation"
+      class="pagination"
+      role="navigation"
+    >
+      <ul>
+        <li
+          class="pagination-current"
+        >
+          <span
+            aria-current="true"
+            aria-label="current page, page 1"
+          >
+            1
+          </span>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 `;
@@ -3063,6 +3117,24 @@ exports[`Changelog renders no results correctly 1`] = `
         try-modifying-your-criteria
       </h5>
     </div>
+    <nav
+      aria-label="pagination navigation"
+      class="pagination"
+      role="navigation"
+    >
+      <ul>
+        <li
+          class="pagination-current"
+        >
+          <span
+            aria-current="true"
+            aria-label="current page, page 1"
+          >
+            1
+          </span>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 `;
@@ -3420,6 +3492,24 @@ exports[`Changelog updates details modal when a different ticket summary is clic
         </tr>
       </tbody>
     </table>
+    <nav
+      aria-label="pagination navigation"
+      class="pagination"
+      role="navigation"
+    >
+      <ul>
+        <li
+          class="pagination-current"
+        >
+          <span
+            aria-current="true"
+            aria-label="current page, page 1"
+          >
+            1
+          </span>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 `;
