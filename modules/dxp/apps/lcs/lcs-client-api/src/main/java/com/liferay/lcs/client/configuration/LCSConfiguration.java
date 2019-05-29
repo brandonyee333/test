@@ -22,7 +22,10 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
  * @author Igor Beslic
  */
 @ExtendedObjectClassDefinition(category = "lcs")
-@Meta.OCD(id = "com.liferay.lcs.client.configuration.LCSConfiguration")
+@Meta.OCD(
+	id = "com.liferay.lcs.client.configuration.LCSConfiguration",
+	localization = "content/Language", name = "lcs-configuration-name"
+)
 public interface LCSConfiguration {
 
 	@Meta.AD(deflt = "Hibernate:name=statistics", required = false)
