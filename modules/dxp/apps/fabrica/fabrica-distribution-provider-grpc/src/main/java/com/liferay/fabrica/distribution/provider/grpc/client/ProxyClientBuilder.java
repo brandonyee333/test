@@ -47,7 +47,7 @@ public class ProxyClientBuilder {
 		classesList.add(Client.class);
 
 		Object clientProxy = Proxy.newProxyInstance(
-			classLoader, classesList.toArray(new Class<?>[classesList.size()]),
+			classLoader, classesList.toArray(new Class<?>[0]),
 			invocationHandler);
 
 		return new ClientImpl(clientProxy, _managedChannel);

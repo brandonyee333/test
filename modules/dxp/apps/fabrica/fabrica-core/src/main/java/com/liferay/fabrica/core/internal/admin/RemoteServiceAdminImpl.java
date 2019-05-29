@@ -211,7 +211,7 @@ public class RemoteServiceAdminImpl implements ExtendedRemoteServiceAdmin {
 			}
 		}
 
-		return classes.toArray(new Class<?>[classes.size()]);
+		return classes.toArray(new Class<?>[0]);
 	}
 
 	@Activate
