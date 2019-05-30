@@ -335,6 +335,11 @@ public class AccountCustomerLocalServiceUtil {
 		getService().deleteAccountEntryAccountCustomers(accountEntryId);
 	}
 
+	public static void resetClosedWorkers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		getService().resetClosedWorkers(accountEntryId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

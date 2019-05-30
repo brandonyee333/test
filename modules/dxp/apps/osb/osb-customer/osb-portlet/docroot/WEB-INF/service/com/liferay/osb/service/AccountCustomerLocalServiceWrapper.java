@@ -369,6 +369,12 @@ public class AccountCustomerLocalServiceWrapper
 	}
 
 	@Override
+	public void resetClosedWorkers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		_accountCustomerLocalService.resetClosedWorkers(accountEntryId);
+	}
+
+	@Override
 	public AccountCustomerLocalService getWrappedService() {
 		return _accountCustomerLocalService;
 	}

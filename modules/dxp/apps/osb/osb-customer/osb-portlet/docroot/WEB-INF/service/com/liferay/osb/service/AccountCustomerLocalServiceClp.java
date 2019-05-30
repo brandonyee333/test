@@ -186,6 +186,10 @@ public class AccountCustomerLocalServiceClp
 		_methodName33 = "deleteAccountEntryAccountCustomers";
 
 		_methodParameterTypes33 = new String[] { "long" };
+
+		_methodName34 = "resetClosedWorkers";
+
+		_methodParameterTypes34 = new String[] { "long" };
 	}
 
 	@Override
@@ -1098,6 +1102,30 @@ public class AccountCustomerLocalServiceClp
 		}
 	}
 
+	@Override
+	public void resetClosedWorkers(long accountEntryId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		try {
+			_invokableLocalService.invokeMethod(_methodName34,
+				_methodParameterTypes34, new Object[] { accountEntryId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+	}
+
 	private InvokableLocalService _invokableLocalService;
 	private String _methodName0;
 	private String[] _methodParameterTypes0;
@@ -1165,4 +1193,6 @@ public class AccountCustomerLocalServiceClp
 	private String[] _methodParameterTypes32;
 	private String _methodName33;
 	private String[] _methodParameterTypes33;
+	private String _methodName34;
+	private String[] _methodParameterTypes34;
 }

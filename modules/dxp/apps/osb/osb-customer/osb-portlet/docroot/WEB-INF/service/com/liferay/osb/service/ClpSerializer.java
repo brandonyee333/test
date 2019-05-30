@@ -1600,6 +1600,12 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
+					"com.liferay.osb.exception.AccountCustomerClosedWatcherException")) {
+			return new com.liferay.osb.exception.AccountCustomerClosedWatcherException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
 					"com.liferay.osb.exception.AccountEntryCodeException")) {
 			return new com.liferay.osb.exception.AccountEntryCodeException(throwable.getMessage(),
 				throwable.getCause());

@@ -181,9 +181,13 @@ public class AccountCustomerLocalServiceClpInvoker {
 
 		_methodParameterTypes186 = new String[] { "long", "long" };
 
-		_methodName187 = "updateAccountCustomer";
+		_methodName187 = "resetClosedWorkers";
 
-		_methodParameterTypes187 = new String[] { "long", "long", "int", "boolean" };
+		_methodParameterTypes187 = new String[] { "long" };
+
+		_methodName188 = "updateAccountCustomer";
+
+		_methodParameterTypes188 = new String[] { "long", "long", "int", "boolean" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -375,6 +379,13 @@ public class AccountCustomerLocalServiceClpInvoker {
 
 		if (_methodName187.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes187, parameterTypes)) {
+			AccountCustomerLocalServiceUtil.resetClosedWorkers(((Long)arguments[0]).longValue());
+
+			return null;
+		}
+
+		if (_methodName188.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes188, parameterTypes)) {
 			return AccountCustomerLocalServiceUtil.updateAccountCustomer(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -450,4 +461,6 @@ public class AccountCustomerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes186;
 	private String _methodName187;
 	private String[] _methodParameterTypes187;
+	private String _methodName188;
+	private String[] _methodParameterTypes188;
 }

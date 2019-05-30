@@ -276,4 +276,7 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 
 	public void deleteAccountEntryAccountCustomers(long accountEntryId)
 		throws PortalException;
+
+	public void resetClosedWorkers(long accountEntryId)
+		throws PortalException;
 }
