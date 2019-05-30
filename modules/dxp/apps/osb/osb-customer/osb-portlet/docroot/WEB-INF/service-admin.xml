@@ -914,6 +914,7 @@
 		<exception>AccountEnvironmentEnvSearch</exception>
 		<exception>AccountEnvironmentName</exception>
 		<exception>AccountProjectName</exception>
+		<exception>ClosedWatcher</exception>
 		<exception>DuplicateAccountAttachment</exception>
 		<exception>DuplicateAccountEntry</exception>
 		<exception>DuplicateAccountEnvironment</exception>

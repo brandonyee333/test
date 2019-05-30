@@ -16,6 +16,7 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
+import com.liferay.osb.exception.ClosedWatcherException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
@@ -64,7 +65,7 @@ public class AccountCustomerLocalServiceImpl
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
-		validate(accountEntryId);
+		validate(accountEntryId, closedWatcher);
 
 		AccountCustomer accountCustomer = fetchAccountCustomer(
 			customerUserId, accountEntryId);
@@ -273,6 +274,18 @@ public class AccountCustomerLocalServiceImpl
 		}
 	}
 
+	public void resetClosedWorkers(long accountEntryId) throws PortalException {
+		List<AccountCustomer> accountCustomers =
+			accountCustomerPersistence.findByAccountEntryId(accountEntryId);
+
+		for (AccountCustomer accountCustomer : accountCustomers) {
+			updateAccountCustomer(
+				accountCustomer.getUserId(),
+				accountCustomer.getAccountCustomerId(),
+				accountCustomer.getRole(), false);
+		}
+	}
+
 	@Override
 	public AccountCustomer updateAccountCustomer(
 			long userId, long accountCustomerId, int role,
@@ -284,6 +297,8 @@ public class AccountCustomerLocalServiceImpl
 
 		AccountCustomer accountCustomer =
 			accountCustomerPersistence.findByPrimaryKey(accountCustomerId);
+
+		validate(accountCustomer.getAccountEntryId(), closedWatcher);
 
 		int oldRole = accountCustomer.getRole();
 
@@ -486,7 +501,9 @@ public class AccountCustomerLocalServiceImpl
 			StringPool.BLANK, StringPool.BLANK);
 	}
 
-	protected void validate(long accountEntryId) throws PortalException {
+	protected void validate(long accountEntryId, boolean closedWatcher)
+		throws PortalException {
+
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
@@ -499,6 +516,10 @@ public class AccountCustomerLocalServiceImpl
 
 		if ((accountEntryCustomersCount + 1) > accountEntry.getMaxCustomers()) {
 			throw new AccountEntryMaximumCustomersException();
+		}
+
+		if (accountEntry.isApproved() && closedWatcher) {
+			throw new ClosedWatcherException();
 		}
 	}
 

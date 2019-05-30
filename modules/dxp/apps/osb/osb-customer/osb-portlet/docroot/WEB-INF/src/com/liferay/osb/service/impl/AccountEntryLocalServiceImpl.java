@@ -1757,6 +1757,8 @@ public class AccountEntryLocalServiceImpl
 				accountEntry.getPartnerEntryId(),
 				accountEntry.getMaxCustomers(), accountEntry.getLanguageIds(),
 				accountEntry.getSupportRegionIds());
+
+			accountCustomerLocalService.resetClosedWorkers(accountEntryId);
 		}
 
 		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
@@ -1973,6 +1975,10 @@ public class AccountEntryLocalServiceImpl
 			(oldStatus == WorkflowConstants.STATUS_REJECTED)) {
 
 			return;
+		}
+
+		if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			accountCustomerLocalService.resetClosedWorkers(accountEntryId);
 		}
 
 		boolean activeSupport =
