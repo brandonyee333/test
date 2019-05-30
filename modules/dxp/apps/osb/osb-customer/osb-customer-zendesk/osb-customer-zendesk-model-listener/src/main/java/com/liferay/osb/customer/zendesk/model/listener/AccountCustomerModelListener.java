@@ -50,6 +50,9 @@ public class AccountCustomerModelListener
 				_accountCustomerSynchronizer.addOrganizationSubscription(
 					accountCustomer);
 			}
+			else if (accountCustomer.isClosedWatcher()) {
+				_accountCustomerSynchronizer.add(accountCustomer);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e);

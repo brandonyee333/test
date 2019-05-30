@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -51,9 +52,15 @@ public class AccountCustomerSynchronizer {
 
 		AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
+		String name = accountEntry.getName();
+
+		if (!accountEntry.isActiveSupport()) {
+			name = StringPool.BLANK;
+		}
+
 		Set<String> tags = getTags(accountCustomer);
 
-		_userSynchronizer.update(user, accountEntry.getName(), tags);
+		_userSynchronizer.update(user, name, tags);
 	}
 
 	public void addOrganizationSubscription(AccountCustomer accountCustomer)
@@ -178,8 +185,9 @@ public class AccountCustomerSynchronizer {
 
 			Set<String> removeTags = new HashSet<>();
 
-			if (accountCustomer.getRole() !=
-					AccountCustomerConstants.ROLE_WATCHER) {
+			if (!accountCustomer.isClosedWatcher() &&
+				(accountCustomer.getRole() !=
+					AccountCustomerConstants.ROLE_WATCHER)) {
 
 				long zendeskOrganizationId =
 					_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -204,26 +212,34 @@ public class AccountCustomerSynchronizer {
 
 		Set<String> tags = new HashSet<>();
 
-		if (accountCustomer.getRole() ==
-				AccountCustomerConstants.ROLE_WATCHER) {
-
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(
-					accountCustomer.getAccountEntryId());
-
-			if (zendeskOrganizationId > 0) {
-				tags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-			}
+		if (accountEntry.getActiveSupport()) {
+			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 		}
-		else {
-			if (accountEntry.getActiveTicketSupport()) {
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountCustomer.getAccountEntryId());
+
+		if (accountEntry.getActiveTicketSupport()) {
+			if (accountCustomer.getRole() ==
+					AccountCustomerConstants.ROLE_WATCHER) {
+
+				if (zendeskOrganizationId > 0) {
+					tags.add(
+						ZendeskTagConstants.getWatcherTag(
+							zendeskOrganizationId));
+				}
+			}
+			else {
 				tags.add(ZendeskTagConstants.OSB_CUSTOMER);
 			}
 		}
 
-		if (accountEntry.getActiveSupport()) {
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		if (accountCustomer.isClosedWatcher()) {
+			if (zendeskOrganizationId > 0) {
+				tags.add(
+					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
+			}
 		}
 
 		return tags;
@@ -235,8 +251,9 @@ public class AccountCustomerSynchronizer {
 
 		Set<String> removeTags = new HashSet<>();
 
-		if (accountCustomer.getRole() ==
-				AccountCustomerConstants.ROLE_WATCHER) {
+		if (accountCustomer.isClosedWatcher() ||
+			(accountCustomer.getRole() ==
+				AccountCustomerConstants.ROLE_WATCHER)) {
 
 			removeTags.add(
 				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
