@@ -91,9 +91,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 				_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
 
 				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
-
-				_accountEntrySynchronizer.removePartnerManagedSupport(
-					oldAccountEntry);
 			}
 
 			if (oldAccountEntry.isActiveSupport() &&
@@ -111,11 +108,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 				}
 
-				if (accountEntry.isActiveTicketSupport() &&
-					accountEntry.isPartnerManagedSupport()) {
-
+				if (accountEntry.isPartnerManagedSupport()) {
 					if (!_zendeskOrganization.get() ||
-						!oldAccountEntry.isActiveTicketSupport() ||
 						!oldAccountEntry.isPartnerManagedSupport() ||
 						(oldAccountEntry.getPartnerEntryId() !=
 							accountEntry.getPartnerEntryId())) {
