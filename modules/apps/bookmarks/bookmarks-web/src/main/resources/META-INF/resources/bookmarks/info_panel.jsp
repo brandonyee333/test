@@ -72,6 +72,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(entries)) {
 						add(
 							navigationItem -> {
 								navigationItem.setActive(true);
+								navigationItem.setHref(StringPool.BLANK);
 								navigationItem.setLabel(LanguageUtil.get(request, "details"));
 							});
 					}
@@ -140,6 +141,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(entries)) {
 						add(
 							navigationItem -> {
 								navigationItem.setActive(true);
+								navigationItem.setHref(StringPool.BLANK);
 								navigationItem.setLabel(LanguageUtil.get(request, "details"));
 							});
 					}
@@ -237,6 +239,7 @@ if (ListUtil.isEmpty(folders) && ListUtil.isEmpty(entries)) {
 						add(
 							navigationItem -> {
 								navigationItem.setActive(true);
+								navigationItem.setHref(StringPool.BLANK);
 								navigationItem.setLabel(LanguageUtil.get(request, "details"));
 							});
 					}
