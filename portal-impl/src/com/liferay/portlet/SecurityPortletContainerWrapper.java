@@ -365,7 +365,8 @@ public class SecurityPortletContainerWrapper implements PortletContainer {
 		if (_log.isWarnEnabled()) {
 			_log.warn(
 				String.format(
-					"User %s is not allowed to access URL %s and portlet %s: %s",
+					"User %s is not allowed to access URL %s and portlet %s: " +
+						"%s",
 					PortalUtil.getUserId(request), url,
 					portlet.getPortletId(), pe.getMessage()));
 		}
