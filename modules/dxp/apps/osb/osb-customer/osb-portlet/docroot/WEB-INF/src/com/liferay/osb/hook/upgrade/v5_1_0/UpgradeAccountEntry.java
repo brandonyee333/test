@@ -61,7 +61,6 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 			while (rs.next()) {
 				long accountEntryId = rs.getLong("accountEntryId");
 				long corpProjectId = rs.getLong("corpProjectId");
-
 				String dossieraAccountKey = rs.getString("dossieraAccountKey");
 				String name = rs.getString("name");
 
@@ -143,7 +142,7 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				long accountEntryId = rs.getLong("accountEntryId");
 
 				AccountEntry accountEntry =
@@ -157,8 +156,6 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 				SupportRegionLocalServiceUtil.setAccountEntrySupportRegions(
 					analyticsCloudAccountEntryId,
 					accountEntry.getSupportRegionIds());
-
-				break;
 			}
 		}
 		finally {
