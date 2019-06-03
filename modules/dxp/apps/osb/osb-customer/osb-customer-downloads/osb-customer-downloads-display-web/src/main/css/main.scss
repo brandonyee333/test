@@ -6,6 +6,12 @@
 @import "components/panels";
 
 .osb-downloads-display-portlet {
+	margin-left: $margin-default;
+
+	@include media-breakpoint-down(md) {
+		margin-left: 0;
+	}
+
 	@import "_eula";
 	@import "_results-display";
 }

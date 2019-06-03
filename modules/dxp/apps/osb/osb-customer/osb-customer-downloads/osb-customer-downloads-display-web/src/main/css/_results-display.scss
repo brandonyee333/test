@@ -1,5 +1,9 @@
 h1 {
 	margin-top: 80px;
+
+	@include media-breakpoint-down(md) {
+		margin-top: 0;
+	}
 }
 
 .commerce-logo-full,
