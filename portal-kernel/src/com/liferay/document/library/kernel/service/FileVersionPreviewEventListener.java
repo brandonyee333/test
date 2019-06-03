@@ -26,6 +26,9 @@ public interface FileVersionPreviewEventListener {
 	public void deleteDLFileVersionPreviews(long fileEntryId)
 		throws PortalException;
 
+	public long getDLFileVersionPreviewId(
+		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus);
+
 	public void onFailure(FileVersion fileVersion);
 
 	public void onSuccess(FileVersion fileVersion);

@@ -51,6 +51,23 @@ public class FileVersionPreviewEventListenerImpl
 	}
 
 	@Override
+	public long getDLFileVersionPreviewId(
+		long fileEntryId, long fileVersionId,
+		int fileVersionPreviewStatus) {
+
+		FileVersionPreview dlFileVersionPreview =
+			_fileVersionPreviewLocalService.fetchFileVersionPreview(
+				fileEntryId, fileVersionId,
+				fileVersionPreviewStatus);
+
+		if (dlFileVersionPreview == null) {
+			return 0;
+		}
+
+		return dlFileVersionPreview.getFileVersionPreviewId();
+	}
+
+	@Override
 	public void onFailure(FileVersion fileVersion) {
 		_addDLFileEntryPreview(
 			fileVersion, FileVersionPreviewConstants.FAILURE);
