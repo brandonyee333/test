@@ -233,7 +233,7 @@ public class UserSynchronizer {
 
 			AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-			if (accountEntry.getActiveTicketSupport()) {
+			if (accountEntry.isActiveTicketSupport()) {
 				customer = true;
 
 				break;

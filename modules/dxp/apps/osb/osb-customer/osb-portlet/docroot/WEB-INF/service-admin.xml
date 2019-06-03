@@ -894,6 +894,7 @@
 	</entity>
 	<exceptions>
 		<exception>AccountAttachmentSize</exception>
+		<exception>AccountCustomerClosedWatcher</exception>
 		<exception>AccountEntryCode</exception>
 		<exception>AccountEntryCorpProject</exception>
 		<exception>AccountEntryIndustry</exception>
@@ -914,7 +915,6 @@
 		<exception>AccountEnvironmentEnvSearch</exception>
 		<exception>AccountEnvironmentName</exception>
 		<exception>AccountProjectName</exception>
-		<exception>ClosedWatcher</exception>
 		<exception>DuplicateAccountAttachment</exception>
 		<exception>DuplicateAccountEntry</exception>
 		<exception>DuplicateAccountEnvironment</exception>

@@ -74,7 +74,7 @@ public class AccountEntrySynchronizer {
 
 			_accountCustomerSynchronizer.add(accountCustomer);
 
-			if (accountEntry.getActiveTicketSupport()) {
+			if (accountEntry.isActiveTicketSupport()) {
 				_accountCustomerSynchronizer.addOrganizationSubscription(
 					accountCustomer);
 			}

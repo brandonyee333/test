@@ -212,7 +212,7 @@ public class AccountCustomerSynchronizer {
 
 		Set<String> tags = new HashSet<>();
 
-		if (accountEntry.getActiveSupport()) {
+		if (accountEntry.isActiveSupport()) {
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 		}
 
@@ -220,7 +220,7 @@ public class AccountCustomerSynchronizer {
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountCustomer.getAccountEntryId());
 
-		if (accountEntry.getActiveTicketSupport()) {
+		if (accountEntry.isActiveTicketSupport()) {
 			if (accountCustomer.getRole() ==
 					AccountCustomerConstants.ROLE_WATCHER) {
 

@@ -15,8 +15,8 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.osb.exception.AccountCustomerClosedWatcherException;
 import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
-import com.liferay.osb.exception.ClosedWatcherException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
@@ -519,7 +519,7 @@ public class AccountCustomerLocalServiceImpl
 		}
 
 		if (accountEntry.isApproved() && closedWatcher) {
-			throw new ClosedWatcherException();
+			throw new AccountCustomerClosedWatcherException();
 		}
 	}
 

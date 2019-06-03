@@ -45,7 +45,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			if (!accountEntry.getActiveSupport()) {
+			if (!accountEntry.isActiveSupport()) {
 				return;
 			}
 

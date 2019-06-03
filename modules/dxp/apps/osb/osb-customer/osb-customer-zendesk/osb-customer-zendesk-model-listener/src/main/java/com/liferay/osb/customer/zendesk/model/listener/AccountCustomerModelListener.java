@@ -44,7 +44,7 @@ public class AccountCustomerModelListener
 		try {
 			AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-			if (accountEntry.getActiveSupport()) {
+			if (accountEntry.isActiveSupport()) {
 				_accountCustomerSynchronizer.add(accountCustomer);
 
 				_accountCustomerSynchronizer.addOrganizationSubscription(
