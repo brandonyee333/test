@@ -505,6 +505,8 @@ public class OfferingEntryLocalServiceImpl
 				accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(
 					accountEntry.getDossieraAccountKey(),
 					accountEntry.getCorpEntryName(), accountEntry.getName(),
+					accountEntry.getLanguageIds(),
+					accountEntry.getSupportRegionIds(),
 					offeringEntry.getSupportEndDate());
 			}
 			else {

@@ -336,17 +336,20 @@ public class AccountEntryLocalServiceImpl
 
 	public void addAnalyticsCloudBasicAccountEntry(
 			String dossieraAccountKey, String corpEntryName,
-			String accountEntryName, Date supportEndDate)
+			String accountEntryName, String[] languageIds,
+			long[] supportRegionIds, Date supportEndDate)
 		throws PortalException {
 
 		String name = StringPool.BLANK;
 
 		if (Validator.isNotNull(corpEntryName)) {
-			name = corpEntryName + " Basic AC Tier";
+			name = corpEntryName + " - Analytics Cloud";
 		}
 		else {
-			name = accountEntryName + " Basic AC Tier";
+			name = accountEntryName + " - Analytics Cloud";
 		}
+
+		name = getName(name);
 
 		// Corp project
 
@@ -356,8 +359,13 @@ public class AccountEntryLocalServiceImpl
 
 		// Account entry
 
-		String[] languageIds = {LocaleUtil.toLanguageId(LocaleUtil.US)};
-		long[] supportRegionIds = {OSBConstants.SUPPORT_REGION_US_ID};
+		if (languageIds.length == 0) {
+			languageIds = new String[] {LocaleUtil.toLanguageId(LocaleUtil.US)};
+		}
+
+		if (supportRegionIds.length == 0) {
+			supportRegionIds = new long[] {OSBConstants.SUPPORT_REGION_US_ID};
+		}
 
 		AccountEntry analyticsCloudAccountEntry = doAddAccountEntry(
 			OSBConstants.USER_DEFAULT_USER_ID, corpProject.getUuid(),
@@ -2218,6 +2226,18 @@ public class AccountEntryLocalServiceImpl
 		return missingUsers;
 	}
 
+	protected String getName(String name) {
+		int count = 1;
+
+		while (isDuplicateName(name)) {
+			name = name + StringPool.SPACE + count;
+
+			count++;
+		}
+
+		return name;
+	}
+
 	protected ArrayList<User> getNewUsers(
 		AccountEntry accountEntry, List<User> users) {
 
@@ -2296,7 +2316,7 @@ public class AccountEntryLocalServiceImpl
 
 		int count = 1;
 
-		while (isDuplicateTrialName(trialName)) {
+		while (isDuplicateName(trialName)) {
 			trialName = "Trial - " + name + StringPool.SPACE + count;
 
 			count++;
@@ -2314,7 +2334,7 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	protected boolean isDuplicateTrialName(String name) {
+	protected boolean isDuplicateName(String name) {
 		if (accountEntryPersistence.countByName(name) > 0) {
 			return true;
 		}
