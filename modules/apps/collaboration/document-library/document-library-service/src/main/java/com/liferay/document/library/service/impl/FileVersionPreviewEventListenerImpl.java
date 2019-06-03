@@ -37,15 +37,16 @@ public class FileVersionPreviewEventListenerImpl
 	implements FileVersionPreviewEventListener {
 
 	@Override
-	public void deleteDLFileEntryPreviews(long fileEntryId)
+	public void deleteDLFileVersionPreviews(long fileEntryId)
 		throws PortalException {
 
-		List<DLFileEntryPreview> fileEntryPreviews =
-			_dlFileEntryPreviewLocalService.getDLFileEntryPreviews(fileEntryId);
+		List<FileVersionPreview> fileVersionPreviews =
+			_fileVersionPreviewLocalService.getFileEntryFileVersionPreviews(
+				fileEntryId);
 
-		for (DLFileEntryPreview fileEntryPreview : fileEntryPreviews) {
-			_dlFileEntryPreviewLocalService.deleteDLFileEntryPreview(
-				fileEntryPreview.getFileEntryPreviewId());
+		for (FileVersionPreview fileEntryPreview : fileVersionPreviews) {
+			_fileVersionPreviewLocalService.deleteFileVersionPreview(
+				fileEntryPreview.getFileVersionPreviewId());
 		}
 	}
 
