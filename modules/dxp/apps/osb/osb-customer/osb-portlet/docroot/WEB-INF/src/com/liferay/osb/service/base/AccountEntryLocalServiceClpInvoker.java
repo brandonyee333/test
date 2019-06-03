@@ -230,7 +230,7 @@ public class AccountEntryLocalServiceClpInvoker {
 
 		_methodParameterTypes208 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.util.Date"
+				"java.lang.String[][]", "long[][]", "java.util.Date"
 			};
 
 		_methodName209 = "addTrialAccountEntry";
@@ -741,7 +741,8 @@ public class AccountEntryLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes208, parameterTypes)) {
 			AccountEntryLocalServiceUtil.addAnalyticsCloudBasicAccountEntry((java.lang.String)arguments[0],
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
-				(java.util.Date)arguments[3]);
+				(java.lang.String[])arguments[3], (long[])arguments[4],
+				(java.util.Date)arguments[5]);
 
 			return null;
 		}

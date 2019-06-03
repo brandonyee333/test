@@ -628,10 +628,12 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	@Override
 	public void addAnalyticsCloudBasicAccountEntry(
 		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String accountEntryName, java.util.Date supportEndDate)
+		java.lang.String accountEntryName, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.util.Date supportEndDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(dossieraAccountKey,
-			corpEntryName, accountEntryName, supportEndDate);
+			corpEntryName, accountEntryName, languageIds, supportRegionIds,
+			supportEndDate);
 	}
 
 	@Override

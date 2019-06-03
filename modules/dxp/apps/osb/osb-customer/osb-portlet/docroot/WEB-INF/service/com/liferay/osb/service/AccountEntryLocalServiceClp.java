@@ -355,7 +355,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 		_methodParameterTypes61 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
-				"java.util.Date"
+				"java.lang.String[][]", "long[][]", "java.util.Date"
 			};
 
 		_methodName62 = "addSupportRegionAccountEntries";
@@ -2417,7 +2417,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public void addAnalyticsCloudBasicAccountEntry(
 		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String accountEntryName, java.util.Date supportEndDate)
+		java.lang.String accountEntryName, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.util.Date supportEndDate)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			_invokableLocalService.invokeMethod(_methodName61,
@@ -2428,6 +2429,10 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 				ClpSerializer.translateInput(corpEntryName),
 					
 				ClpSerializer.translateInput(accountEntryName),
+					
+				ClpSerializer.translateInput(languageIds),
+					
+				ClpSerializer.translateInput(supportRegionIds),
 					
 				ClpSerializer.translateInput(supportEndDate)
 				});

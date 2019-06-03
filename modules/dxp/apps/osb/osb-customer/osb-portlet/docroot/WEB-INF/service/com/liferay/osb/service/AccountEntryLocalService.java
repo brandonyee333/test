@@ -443,8 +443,8 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void addAnalyticsCloudBasicAccountEntry(
 		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String accountEntryName, Date supportEndDate)
-		throws PortalException;
+		java.lang.String accountEntryName, java.lang.String[] languageIds,
+		long[] supportRegionIds, Date supportEndDate) throws PortalException;
 
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		List<AccountEntry> accountEntries);
