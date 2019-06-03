@@ -8,13 +8,13 @@
 			</a>
 
 			<a href="${site_name_url}" title="${site_name}">
-				<h2 class="site-name">
+				<h2 class="site-name small-title">
 					${site_name}
 				</h2>
 			</a>
 		</div>
 
-		<div class="col-md-5 header-content header-menu-list secondary-text-color">
+		<div class="col-md-5 header-content header-menu-list">
 			<div class="hide list-item">
 				<h5>
 					<@liferay.language key="products" />

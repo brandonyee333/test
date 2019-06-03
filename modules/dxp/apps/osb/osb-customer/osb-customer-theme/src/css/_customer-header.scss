@@ -1,5 +1,6 @@
 .header {
-	background-color: $color-white;
+	background-color: $color-brand;
+	color: $color-white;
 	left: 0;
 	margin: auto;
 	position: fixed;
@@ -41,7 +42,7 @@
 		}
 
 		.site-name {
-			color: $color-default;
+			color: $color-white;
 			margin: 0;
 
 			span {
