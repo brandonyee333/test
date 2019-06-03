@@ -16,7 +16,7 @@ Liferay.Loader.require(
 							var header = document.querySelector('header');
 
 							if (header) {
-								if (window.scrollY >= 64) {
+								if (window.scrollY >= 56) {
 									dom.addClasses(header, 'has-scroll-shadow');
 								}
 								else {

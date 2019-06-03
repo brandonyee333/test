@@ -38,6 +38,8 @@ $font-weight-semi-bold: 600 !default;
 $font-size-default: 16px !default;
 $font-size-md: 14px !default;
 
+$header-height: 56px !default;
+
 $margin-default: 24px !default;
 $margin-md: 16px !default;
 $margin-sm: 12px !default;
@@ -49,5 +51,5 @@ $padding-default: 24px !default;
 $padding-md: 16px !default;
 $padding-sm: 12px !default;
 
-$tab-heading-offset: $navbar-height + $navbar-height + $margin-md;
-$tab-heading-mobile-offset: $navbar-mobile-height + $navbar-height;
+$tab-heading-offset: $navbar-height + $header-height + $margin-md;
+$tab-heading-mobile-offset: $navbar-mobile-height + $header-height;
