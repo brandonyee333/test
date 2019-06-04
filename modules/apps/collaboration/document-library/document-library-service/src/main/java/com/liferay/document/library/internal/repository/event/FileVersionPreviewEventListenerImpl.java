@@ -16,6 +16,7 @@ package com.liferay.document.library.internal.repository.event;
 
 import com.liferay.document.library.constants.DLFileVersionPreviewConstants;
 import com.liferay.document.library.model.DLFileVersionPreview;
+import com.liferay.document.library.model.FileVersionPreview;
 import com.liferay.document.library.service.DLFileVersionPreviewLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -40,13 +41,13 @@ public class FileVersionPreviewEventListenerImpl
 	public void deleteDLFileVersionPreviews(long fileEntryId)
 		throws PortalException {
 
-		List<FileVersionPreview> fileVersionPreviews =
-			_fileVersionPreviewLocalService.getFileEntryFileVersionPreviews(
+		List<DLFileVersionPreview> fileVersionPreviews =
+			_dlFileVersionPreviewLocalService.getFileEntryDLFileVersionPreviews(
 				fileEntryId);
 
-		for (FileVersionPreview fileEntryPreview : fileVersionPreviews) {
-			_fileVersionPreviewLocalService.deleteFileVersionPreview(
-				fileEntryPreview.getFileVersionPreviewId());
+		for (DLFileVersionPreview dlFileVersionPreview : fileVersionPreviews) {
+			_dlFileVersionPreviewLocalService.deleteDLFileEntryFileVersionPreviews(
+				dlFileVersionPreview.getDlFileVersionPreviewId());
 		}
 	}
 
@@ -54,15 +55,15 @@ public class FileVersionPreviewEventListenerImpl
 	public long getDLFileVersionPreviewId(
 		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus) {
 
-		FileVersionPreview dlFileVersionPreview =
-			_fileVersionPreviewLocalService.fetchFileVersionPreview(
+		DLFileVersionPreview dlFileVersionPreview =
+			_dlFileVersionPreviewLocalService.fetchDLFileVersionPreview(
 				fileEntryId, fileVersionId, fileVersionPreviewStatus);
 
 		if (dlFileVersionPreview == null) {
 			return 0;
 		}
 
-		return dlFileVersionPreview.getFileVersionPreviewId();
+		return dlFileVersionPreview.getDlFileVersionPreviewId();
 	}
 
 	@Override
