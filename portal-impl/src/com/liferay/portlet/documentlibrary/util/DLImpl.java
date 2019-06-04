@@ -753,8 +753,7 @@ public class DLImpl implements DL {
 	@Override
 	public String getThumbnailSrc(
 			FileEntry fileEntry, FileVersion fileVersion,
-			ThemeDisplay themeDisplay)
-		throws Exception {
+			ThemeDisplay themeDisplay) {
 
 		long fileVersionPreviewId =
 			_fileVersionPreviewEventListener.getDLFileVersionPreviewId(
