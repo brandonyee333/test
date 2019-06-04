@@ -69,13 +69,13 @@ public class FileVersionPreviewEventListenerImpl
 	@Override
 	public void onFailure(FileVersion fileVersion) {
 		_addDLFileEntryPreview(
-			fileVersion, DLFileVersionPreviewConstants.FAILURE);
+			fileVersion, DLFileVersionPreviewConstants.STATUS_FAILURE);
 	}
 
 	@Override
 	public void onSuccess(FileVersion fileVersion) {
 		_addDLFileEntryPreview(
-			fileVersion, DLFileVersionPreviewConstants.SUCCESS);
+			fileVersion, DLFileVersionPreviewConstants.STATUS_SUCCESS);
 	}
 
 	private void _addDLFileEntryPreview(

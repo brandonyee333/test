@@ -96,7 +96,7 @@
 		}
 	}
 
-	boolean hasFailedDLFileEntryPreview = DLFileVersionPreviewLocalServiceUtil.hasDLFileVersionPreview(fileVersion.getFileEntryId(), fileVersion.getFileVersionId(), DLFileVersionPreviewConstants.FAILURE);
+	boolean hasFailedDLFileEntryPreview = DLFileVersionPreviewLocalServiceUtil.hasDLFileVersionPreview(fileVersion.getFileEntryId(), fileVersion.getFileVersionId(), DLFileVersionPreviewConstants.STATUS_FAILURE);
 
 	request.setAttribute("view_file_entry.jsp-randomNamespace", randomNamespace);
 
