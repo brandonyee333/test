@@ -45,25 +45,6 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
-	macro addSubcategoryCP {
-		var key_categoryName = "${categoryName}";
-		var key_subCategoryName = "${subCategoryName}";
-
-		AssertClick(
-			locator1 = "MessageBoards#CATEGORY_LIST_CATEGORY",
-			value1 = "${categoryName}");
-
-		LexiconEntry.gotoAdd();
-
-		MenuItem.click(menuItem = "Subcategory");
-
-		PortletEntry.inputName(name = "${subCategoryName}");
-
-		PortletEntry.inputDescription(description = "${subCategoryDescription}");
-
-		PortletEntry.save();
-	}
-
 	macro addSubcategoryPG {
 		var key_categoryName = "${categoryName}";
 
