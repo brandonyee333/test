@@ -31,7 +31,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Vishal Reddy
  */
-@Component(immediate = true)
+@Component(immediate = true, service = MessagePublisher.class)
 public class MessagePublisherImpl implements MessagePublisher {
 
 	@Override

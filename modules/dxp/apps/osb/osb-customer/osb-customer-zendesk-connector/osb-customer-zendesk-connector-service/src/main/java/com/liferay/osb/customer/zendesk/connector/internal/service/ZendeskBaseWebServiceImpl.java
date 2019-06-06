@@ -58,7 +58,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Kyle Bischof
  */
-@Component(immediate = true)
+@Component(immediate = true, service = ZendeskBaseWebService.class)
 public class ZendeskBaseWebServiceImpl
 	extends BaseJSONWebServiceClientImpl implements ZendeskBaseWebService {
 

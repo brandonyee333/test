@@ -32,7 +32,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true)
+@Component(immediate = true, service = MessageRouterRegistry.class)
 public class MessageRouterRegistryImpl implements MessageRouterRegistry {
 
 	@Override

@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Amos Fong
  * @author Vishal Reddy
  */
-@Component(immediate = true)
+@Component(immediate = true, service = ConnectionManager.class)
 public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Activate

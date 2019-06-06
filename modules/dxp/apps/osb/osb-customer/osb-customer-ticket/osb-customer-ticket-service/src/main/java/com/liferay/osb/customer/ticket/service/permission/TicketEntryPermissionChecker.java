@@ -35,7 +35,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Amos Fong
  */
-@Component(immediate = true)
+@Component(immediate = true, service = {})
 public class TicketEntryPermissionChecker {
 
 	public static void check(

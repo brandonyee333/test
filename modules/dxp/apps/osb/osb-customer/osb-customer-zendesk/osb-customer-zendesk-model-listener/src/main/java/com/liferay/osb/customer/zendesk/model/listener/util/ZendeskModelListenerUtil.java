@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Kyle Bischof
  */
-@Component(immediate = true)
+@Component(immediate = true, service = {})
 public class ZendeskModelListenerUtil {
 
 	public static String convertAddressToString(Address address) {

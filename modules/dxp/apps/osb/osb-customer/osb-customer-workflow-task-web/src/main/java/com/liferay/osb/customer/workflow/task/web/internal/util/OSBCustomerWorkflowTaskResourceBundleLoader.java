@@ -33,7 +33,8 @@ import org.osgi.service.component.annotations.Component;
 		"bundle.symbolic.name=com.liferay.portal.workflow.task.web",
 		"resource.bundle.base.name=content.Language",
 		"servlet.context.name=portal-workflow-task-web"
-	}
+	},
+	service = ResourceBundleLoader.class
 )
 public class OSBCustomerWorkflowTaskResourceBundleLoader
 	implements ResourceBundleLoader {

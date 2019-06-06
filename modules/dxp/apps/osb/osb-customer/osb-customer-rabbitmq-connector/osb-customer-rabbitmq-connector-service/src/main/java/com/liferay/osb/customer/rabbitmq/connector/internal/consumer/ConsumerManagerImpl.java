@@ -36,7 +36,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  * @author Vishal Reddy
  */
-@Component(immediate = true)
+@Component(immediate = true, service = ConsumerManager.class)
 public class ConsumerManagerImpl implements ConsumerManager {
 
 	@Override

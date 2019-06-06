@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true)
+@Component(immediate = true, service = MetricsModelRegistry.class)
 public class MetricsModelRegistryImpl implements MetricsModelRegistry {
 
 	@Override
