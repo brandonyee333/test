@@ -24,8 +24,8 @@ public interface ZendeskLocales {
 	public static final String JAPAN = "ja";
 
 	public static final String[] LOCALES_ENABLED = {
-		ZendeskLocales.CHINA, ZendeskLocales.JAPAN, ZendeskLocales.PORTUGAL,
-		ZendeskLocales.SPAIN, ZendeskLocales.US
+		CHINA, JAPAN, ZendeskLocales.PORTUGAL, ZendeskLocales.SPAIN,
+		ZendeskLocales.US
 	};
 
 	public static final String PORTUGAL = "pt";
