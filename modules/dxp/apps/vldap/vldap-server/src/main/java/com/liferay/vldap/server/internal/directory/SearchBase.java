@@ -108,9 +108,8 @@ public class SearchBase {
 		if (_company == null) {
 			return CompanyLocalServiceUtil.getCompanies();
 		}
-		else {
-			return Arrays.asList(_company);
-		}
+
+		return Arrays.asList(_company);
 	}
 
 	public Company getCompany() {

@@ -592,10 +592,8 @@ public class DocumentumRepository
 
 						throw new NoSuchFolderException(extRepositoryObjectKey);
 					}
-					else {
-						throw new NoSuchFileEntryException(
-							extRepositoryObjectKey);
-					}
+
+					throw new NoSuchFileEntryException(extRepositoryObjectKey);
 				}
 
 				return toExtRepositoryObject(

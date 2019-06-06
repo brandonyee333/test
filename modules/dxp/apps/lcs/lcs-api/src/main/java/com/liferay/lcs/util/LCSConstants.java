@@ -183,9 +183,8 @@ public class LCSConstants {
 		if (lcsClusterEntryType == LCS_CLUSTER_ENTRY_TYPE_CLUSTER) {
 			return LABEL_CLUSTER;
 		}
-		else {
-			return LABEL_ENVIRONMENT;
-		}
+
+		return LABEL_ENVIRONMENT;
 	}
 
 	/**
@@ -199,9 +198,8 @@ public class LCSConstants {
 		if (monitoringStatus == MONITORING_UNAVAILABLE) {
 			return LABEL_MONITORING_UNAVAILABLE;
 		}
-		else {
-			return LABEL_MONITORING_ONLINE;
-		}
+
+		return LABEL_MONITORING_ONLINE;
 	}
 
 	/**
@@ -216,9 +214,8 @@ public class LCSConstants {
 		if (patchingToolStatus == PATCHING_TOOL_UNAVAILABLE) {
 			return LABEL_PATCHING_TOOL_UNAVAILABLE;
 		}
-		else {
-			return LABEL_PATCHING_TOOL_AVAILABLE;
-		}
+
+		return LABEL_PATCHING_TOOL_AVAILABLE;
 	}
 
 	/**

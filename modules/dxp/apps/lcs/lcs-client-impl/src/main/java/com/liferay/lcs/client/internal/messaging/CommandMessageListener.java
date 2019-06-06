@@ -119,10 +119,9 @@ public class CommandMessageListener implements MessageListener {
 
 				return;
 			}
-			else {
-				responseErrorMessage =
-					"Unable to verify digital signature of a message";
-			}
+
+			responseErrorMessage =
+				"Unable to verify digital signature of a message";
 		}
 		catch (Exception e) {
 			responseErrorMessage = e.getMessage();

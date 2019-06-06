@@ -53,9 +53,8 @@ public class KaleoDraftDefinitionActivePredicateFilter
 			if (_status == WorkflowConstants.STATUS_APPROVED) {
 				return kaleoDefinition.isActive();
 			}
-			else {
-				return !kaleoDefinition.isActive();
-			}
+
+			return !kaleoDefinition.isActive();
 		}
 		catch (PortalException pe) {
 			if (_log.isDebugEnabled()) {
@@ -65,9 +64,8 @@ public class KaleoDraftDefinitionActivePredicateFilter
 			if (_status == WorkflowConstants.STATUS_DRAFT) {
 				return true;
 			}
-			else {
-				return false;
-			}
+
+			return false;
 		}
 	}
 

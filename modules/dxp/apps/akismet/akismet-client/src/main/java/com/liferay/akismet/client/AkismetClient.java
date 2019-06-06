@@ -225,9 +225,8 @@ public class AkismetClient {
 		if (response.equals("valid")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	private String _getPortalURL(long companyId) throws PortalException {

@@ -196,11 +196,10 @@ public class SearchLdapHandler extends BaseLdapHandler {
 
 			return isMatchLeafNode(directory, leafNode);
 		}
-		else {
-			BranchNode branchNode = (BranchNode)exprNode;
 
-			return isMatchBranchNode(directory, branchNode);
-		}
+		BranchNode branchNode = (BranchNode)exprNode;
+
+		return isMatchBranchNode(directory, branchNode);
 	}
 
 	protected boolean isMatchBranchNode(
@@ -220,9 +219,8 @@ public class SearchLdapHandler extends BaseLdapHandler {
 				if (!isMatch(directory, exprNode)) {
 					return true;
 				}
-				else {
-					return false;
-				}
+
+				return false;
 			}
 
 			return false;
@@ -254,9 +252,8 @@ public class SearchLdapHandler extends BaseLdapHandler {
 			if (directory.hasAttribute(attributeId, value.getString())) {
 				return true;
 			}
-			else {
-				return false;
-			}
+
+			return false;
 		}
 		else if (leafNode instanceof GreaterEqNode<?>) {
 		}
@@ -270,9 +267,8 @@ public class SearchLdapHandler extends BaseLdapHandler {
 			if (directory.hasAttribute(attributeId)) {
 				return true;
 			}
-			else {
-				return false;
-			}
+
+			return false;
 		}
 		else if (leafNode instanceof SubstringNode) {
 		}

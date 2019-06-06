@@ -532,9 +532,8 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 
 				throw new StatusException(childStatusCode.getValue());
 			}
-			else {
-				throw new StatusException(statusCodeURI);
-			}
+
+			throw new StatusException(statusCodeURI);
 		}
 
 		verifyInResponseTo(samlResponse);
@@ -1540,22 +1539,20 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 					"SAML assertion " + messageKey + " replayed from IdP " +
 						idpEntityId);
 			}
-			else {
-				if (samlSpMessage != null) {
-					_samlSpMessageLocalService.deleteSamlSpMessage(
-						samlSpMessage);
-				}
 
-				ServiceContext serviceContext = new ServiceContext();
-
-				long companyId = CompanyThreadLocal.getCompanyId();
-
-				serviceContext.setCompanyId(companyId);
-
-				_samlSpMessageLocalService.addSamlSpMessage(
-					idpEntityId, messageKey, notOnOrAfterDateTime.toDate(),
-					serviceContext);
+			if (samlSpMessage != null) {
+				_samlSpMessageLocalService.deleteSamlSpMessage(samlSpMessage);
 			}
+
+			ServiceContext serviceContext = new ServiceContext();
+
+			long companyId = CompanyThreadLocal.getCompanyId();
+
+			serviceContext.setCompanyId(companyId);
+
+			_samlSpMessageLocalService.addSamlSpMessage(
+				idpEntityId, messageKey, notOnOrAfterDateTime.toDate(),
+				serviceContext);
 		}
 		catch (SystemException se) {
 			throw new SamlException(se);
@@ -1634,11 +1631,9 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 				if (Validator.isNull(subjectConfirmationData.getRecipient())) {
 					continue;
 				}
-				else {
-					verifyDestination(
-						samlMessageContext,
-						subjectConfirmationData.getRecipient());
-				}
+
+				verifyDestination(
+					samlMessageContext, subjectConfirmationData.getRecipient());
 
 				NameID nameID = subject.getNameID();
 

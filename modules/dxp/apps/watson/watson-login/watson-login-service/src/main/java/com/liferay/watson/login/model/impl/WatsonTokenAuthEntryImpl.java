@@ -30,9 +30,8 @@ public class WatsonTokenAuthEntryImpl extends WatsonTokenAuthEntryBaseImpl {
 		if ((expirationDate != null) && expirationDate.before(new Date())) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

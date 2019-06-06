@@ -86,11 +86,9 @@ public class DQLParameterValueUtil {
 				"', 'yyyy/mm/dd hh:mi:ss')"
 			);
 		}
-		else {
-			if (wildcard) {
-				value = StringUtil.replace(
-					value, CharPool.STAR, CharPool.PERCENT);
-			}
+
+		if (wildcard) {
+			value = StringUtil.replace(value, CharPool.STAR, CharPool.PERCENT);
 		}
 
 		return value;

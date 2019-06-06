@@ -49,9 +49,8 @@ public class LCSHandshakeException extends RuntimeException {
 		if (_errorCode != -1) {
 			return super.getMessage() + ", errorCode is " + _errorCode;
 		}
-		else {
-			return super.getMessage();
-		}
+
+		return super.getMessage();
 	}
 
 	private int _errorCode = -1;

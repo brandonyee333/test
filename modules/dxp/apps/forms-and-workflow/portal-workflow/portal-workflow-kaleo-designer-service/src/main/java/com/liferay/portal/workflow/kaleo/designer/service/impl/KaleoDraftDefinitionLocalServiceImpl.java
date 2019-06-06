@@ -641,9 +641,8 @@ public class KaleoDraftDefinitionLocalServiceImpl
 			if (we.getCause() instanceof KaleoDefinitionValidationException) {
 				throw (KaleoDefinitionValidationException)we.getCause();
 			}
-			else {
-				throw new WorkflowException(we);
-			}
+
+			throw new WorkflowException(we);
 		}
 	}
 

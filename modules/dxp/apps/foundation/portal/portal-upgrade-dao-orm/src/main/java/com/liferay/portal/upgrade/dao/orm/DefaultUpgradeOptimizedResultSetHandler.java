@@ -120,9 +120,8 @@ public class DefaultUpgradeOptimizedResultSetHandler
 				if (doubleValue == 0.0) {
 					return false;
 				}
-				else {
-					return true;
-				}
+
+				return true;
 			}
 		}
 		else if (methodName.equals("getDouble")) {
@@ -169,19 +168,17 @@ public class DefaultUpgradeOptimizedResultSetHandler
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
 				return GetterUtil.getShort(returnValue);
 			}
-			else {
-				Number number = (Number)returnValue;
 
-				return number.shortValue();
-			}
+			Number number = (Number)returnValue;
+
+			return number.shortValue();
 		}
 		else if (methodName.equals("getString")) {
 			if ((returnValue == null) || (returnValue instanceof String)) {
 				return returnValue;
 			}
-			else {
-				return String.valueOf(returnValue);
-			}
+
+			return String.valueOf(returnValue);
 		}
 
 		return returnValue;
