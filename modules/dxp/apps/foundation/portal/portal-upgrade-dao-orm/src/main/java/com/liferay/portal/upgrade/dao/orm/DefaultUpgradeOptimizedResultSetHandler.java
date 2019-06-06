@@ -112,57 +112,52 @@ public class DefaultUpgradeOptimizedResultSetHandler
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
 				return GetterUtil.getBoolean(returnValue);
 			}
-			else {
-				Number number = (Number)returnValue;
 
-				double doubleValue = number.doubleValue();
+			Number number = (Number)returnValue;
 
-				if (doubleValue == 0.0) {
-					return false;
-				}
+			double doubleValue = number.doubleValue();
 
-				return true;
+			if (doubleValue == 0.0) {
+				return false;
 			}
+
+			return true;
 		}
 		else if (methodName.equals("getDouble")) {
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
 				return GetterUtil.getDouble(returnValue);
 			}
-			else {
-				Number number = (Number)returnValue;
 
-				return number.doubleValue();
-			}
+			Number number = (Number)returnValue;
+
+			return number.doubleValue();
 		}
 		else if (methodName.equals("getFloat")) {
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
 				return GetterUtil.getFloat(returnValue);
 			}
-			else {
-				Number number = (Number)returnValue;
 
-				return number.floatValue();
-			}
+			Number number = (Number)returnValue;
+
+			return number.floatValue();
 		}
 		else if (methodName.equals("getInt")) {
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
 				return GetterUtil.getInteger(returnValue);
 			}
-			else {
-				Number number = (Number)returnValue;
 
-				return number.intValue();
-			}
+			Number number = (Number)returnValue;
+
+			return number.intValue();
 		}
 		else if (methodName.equals("getLong")) {
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
 				return GetterUtil.getLong(returnValue);
 			}
-			else {
-				Number number = (Number)returnValue;
 
-				return number.longValue();
-			}
+			Number number = (Number)returnValue;
+
+			return number.longValue();
 		}
 		else if (methodName.equals("getShort")) {
 			if ((returnValue == null) || !(returnValue instanceof Number)) {
