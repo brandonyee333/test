@@ -44,7 +44,6 @@ definition {
 
 		Alert.viewSuccessMessage();
 	}
-
 	macro deleteCP {
 		if (IsElementPresent(locator1 = "Checkbox#LEXICON_SELECT_ALL_CONTAINER")) {
 			PortletEntry.selectAll();
