@@ -258,10 +258,7 @@ public class ArticleMarkdownConverter {
 		sb.append("[TOC levels=1-4]");
 		sb.append(StringPool.NEW_LINE);
 
-		markdown = StringUtil.replace(
-			markdown, sb.toString(), StringPool.BLANK);
-
-		return markdown;
+		return StringUtil.replace(markdown, sb.toString(), StringPool.BLANK);
 	}
 
 	private Map<String, String> _getMetadata(ZipReader zipReader)
