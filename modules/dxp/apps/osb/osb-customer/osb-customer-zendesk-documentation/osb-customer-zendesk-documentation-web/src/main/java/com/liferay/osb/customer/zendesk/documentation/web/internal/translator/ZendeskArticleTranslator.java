@@ -41,9 +41,8 @@ public class ZendeskArticleTranslator extends BaseTranslator<ZendeskArticle> {
 		if (stopDate.after(zendeskArticle.getUpdateDate())) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	protected String getSortBy() {

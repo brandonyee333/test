@@ -90,18 +90,16 @@ public class PartnerEntryDisplayTerms extends DisplayTerms {
 		if (childPartnerEntries == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public boolean hasManagingSupport() {
 		if (managingSupport == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	@Override
@@ -117,9 +115,8 @@ public class PartnerEntryDisplayTerms extends DisplayTerms {
 		if (childPartnerEntries == null) {
 			return false;
 		}
-		else {
-			return childPartnerEntries.booleanValue();
-		}
+
+		return childPartnerEntries.booleanValue();
 	}
 
 	public boolean isManagingSupport() {

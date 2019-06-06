@@ -27,9 +27,8 @@ public class EventConstants {
 		if (type == TYPE_DOWNLOAD_ATTACHMENT) {
 			return "download-attachment";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 }

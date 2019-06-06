@@ -80,10 +80,9 @@ public class WorkflowConstants
 		if (label.equals(LABEL_PENDING_VALIDATION)) {
 			return STATUS_PENDING_VALIDATION;
 		}
-		else {
-			return com.liferay.portal.kernel.workflow.WorkflowConstants.
-				getLabelStatus(label);
-		}
+
+		return com.liferay.portal.kernel.workflow.WorkflowConstants.
+			getLabelStatus(label);
 	}
 
 	public static String getStatusLabel(int status) {

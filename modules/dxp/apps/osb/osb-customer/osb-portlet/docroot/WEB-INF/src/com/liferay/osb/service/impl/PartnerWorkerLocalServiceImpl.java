@@ -175,18 +175,16 @@ public class PartnerWorkerLocalServiceImpl
 		if (partnerWorkerPersistence.countByUserId(userId) > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
 		if (partnerWorkerPersistence.countByU_PEI(userId, partnerEntryId) > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasPartnerWorkerRole(long userId, int role) {

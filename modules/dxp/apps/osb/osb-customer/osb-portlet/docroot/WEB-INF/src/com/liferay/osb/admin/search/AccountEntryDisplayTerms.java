@@ -467,27 +467,24 @@ public class AccountEntryDisplayTerms extends DisplayTerms {
 		if (expiredSupport == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public boolean hasPartnerManagedSupport() {
 		if (partnerManagedSupport == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public boolean hasTicketSupport() {
 		if (ticketSupport == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	@Override

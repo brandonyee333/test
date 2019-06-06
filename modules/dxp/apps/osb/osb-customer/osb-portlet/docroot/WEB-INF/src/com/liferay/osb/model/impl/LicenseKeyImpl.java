@@ -93,9 +93,8 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 		if (now.after(getExpirationDate())) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

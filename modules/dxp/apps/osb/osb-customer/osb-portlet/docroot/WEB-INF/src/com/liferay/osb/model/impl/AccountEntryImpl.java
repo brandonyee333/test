@@ -129,9 +129,8 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 
 			return externalIdMapper.getExternalId();
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public String getIndustryLabel() {

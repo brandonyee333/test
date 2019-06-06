@@ -99,27 +99,26 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 			return "/view_download.jsp";
 		}
-		else {
-			AssetCategory productAssetCategory = getProductAssetCategory(
-				renderRequest);
 
-			if (productAssetCategory != null) {
+		AssetCategory productAssetCategory = getProductAssetCategory(
+			renderRequest);
+
+		if (productAssetCategory != null) {
+			renderRequest.setAttribute(
+				DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT,
+				productAssetCategory);
+
+			AssetCategory fileTypeAssetCategory = getFileTypeAssetCategory(
+				renderRequest, productAssetCategory.getCategoryId());
+
+			if (fileTypeAssetCategory != null) {
 				renderRequest.setAttribute(
-					DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT,
-					productAssetCategory);
-
-				AssetCategory fileTypeAssetCategory = getFileTypeAssetCategory(
-					renderRequest, productAssetCategory.getCategoryId());
-
-				if (fileTypeAssetCategory != null) {
-					renderRequest.setAttribute(
-						DownloadsDisplayWebKeys.ASSET_CATEGORY_FILE_TYPE,
-						fileTypeAssetCategory);
-				}
+					DownloadsDisplayWebKeys.ASSET_CATEGORY_FILE_TYPE,
+					fileTypeAssetCategory);
 			}
-
-			return "/view.jsp";
 		}
+
+		return "/view.jsp";
 	}
 
 	protected AssetCategory getFileTypeAssetCategory(

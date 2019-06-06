@@ -210,9 +210,8 @@ public class ZendeskTicketEventTransformer extends BaseTransformer {
 			if (value.equals("t")) {
 				return true;
 			}
-			else {
-				return false;
-			}
+
+			return false;
 		}
 
 		return value;

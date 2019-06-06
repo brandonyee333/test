@@ -87,18 +87,16 @@ public class ZendeskRequest {
 		if (_parameters != null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasResponseRoutingKey() {
 		if (Validator.isNotNull(_responseRoutingKey)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public JSONObject toJSONObject() {

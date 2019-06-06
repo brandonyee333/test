@@ -72,9 +72,8 @@ public class OrderEntryImpl extends OrderEntryBaseImpl {
 
 			return externalIdMapper.getExternalId();
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public String getStatusLabel() {

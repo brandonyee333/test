@@ -209,9 +209,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			return SupportResponseLocalServiceUtil.fetchSupportResponseByName(
 				"Platinum");
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	protected SupportResponse fetchSupportResponse(String name) {
@@ -347,11 +346,10 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 			return industryListTypeId;
 		}
-		else {
-			_logWarning("Unable to find industry: " + industry);
 
-			return AccountEntryConstants.INDUSTRY_OTHER;
-		}
+		_logWarning("Unable to find industry: " + industry);
+
+		return AccountEntryConstants.INDUSTRY_OTHER;
 	}
 
 	protected String getLanguageId(JSONObject jsonObject, String countryA3) {
@@ -385,17 +383,15 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			if (Validator.isNotNull(countryA3) && countryA3.equals("BRA")) {
 				return AccountEntryConstants.LANGUAGE_ID_PORTUGUESE;
 			}
-			else {
-				return AccountEntryConstants.LANGUAGE_ID_SPANISH;
-			}
+
+			return AccountEntryConstants.LANGUAGE_ID_SPANISH;
 		}
 		else if (soldBy.equals("Liferay China")) {
 			if (Validator.isNotNull(countryA3) && countryA3.equals("CHN")) {
 				return AccountEntryConstants.LANGUAGE_ID_CHINESE;
 			}
-			else {
-				return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
-			}
+
+			return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 		}
 		else if (soldBy.equals("Liferay Japan")) {
 			return AccountEntryConstants.LANGUAGE_ID_JAPANESE;
@@ -407,9 +403,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 				return AccountEntryConstants.LANGUAGE_ID_ENGLISH;
 			}
-			else {
-				return AccountEntryConstants.LANGUAGE_ID_SPANISH;
-			}
+
+			return AccountEntryConstants.LANGUAGE_ID_SPANISH;
 		}
 
 		_logWarning(
@@ -429,13 +424,11 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 				return false;
 			}
-			else {
-				return true;
-			}
+
+			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected String getNotes(
@@ -743,9 +736,8 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 
 				return "Hungary";
 			}
-			else {
-				return "Spain";
-			}
+
+			return "Spain";
 		}
 
 		_logWarning(

@@ -50,9 +50,8 @@ public class OrderEntryAssetRenderer extends AccountEntryAssetRenderer {
 
 			return "/admin/asset/order_entry/" + template + ".jsp";
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	@Override

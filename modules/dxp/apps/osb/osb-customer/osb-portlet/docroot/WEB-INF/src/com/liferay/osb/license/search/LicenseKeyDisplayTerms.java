@@ -381,9 +381,8 @@ public class LicenseKeyDisplayTerms extends DisplayTerms {
 		if (active == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public boolean isActive() {

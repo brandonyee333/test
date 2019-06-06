@@ -39,9 +39,8 @@ public class SearchHitsImpl<T> implements SearchHits<T> {
 		if (_nextPage > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public void setCount(int count) {

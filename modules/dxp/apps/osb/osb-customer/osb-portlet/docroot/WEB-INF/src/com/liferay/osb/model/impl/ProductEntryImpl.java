@@ -135,9 +135,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Analytics Cloud")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isAnalyticsCloudBusiness() {
@@ -146,9 +145,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.equals("Liferay Analytics Cloud Business")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isAnalyticsCloudEnterprise() {
@@ -157,9 +155,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.equals("Liferay Analytics Cloud Enterprise")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isCommerce() {
@@ -168,9 +165,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Commerce")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isDeveloperTools() {
@@ -179,9 +175,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Developer Tools")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isDeviceDetection() {
@@ -190,9 +185,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Device Detection")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isDigitalEnterprise() {
@@ -201,9 +195,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains(ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isDXPCloud() {
@@ -212,9 +205,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("DXP Cloud")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isEnterpriseSearch() {
@@ -223,9 +215,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Enterprise Search")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isEnterpriseSearchPremium() {
@@ -234,9 +225,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Enterprise Search") && name.contains("Premium")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isEnterpriseSearchStandard() {
@@ -245,9 +235,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Enterprise Search") && name.contains("Standard")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isExtendedPremiumSupport() {
@@ -256,9 +245,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Extended Premium Support")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isManagementTools() {
@@ -267,9 +255,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Management Tools")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isMobileExperience() {
@@ -278,9 +265,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Mobile Experience")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isPortal() {
@@ -289,9 +275,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains(ProductEntryConstants.ROOT_NAME_PORTAL)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isProductivityTools() {
@@ -300,9 +285,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Productivity Tools")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isSocialOffice() {
@@ -311,9 +295,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Social Office")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isUnlimitedEnterpriseWide() {
@@ -322,9 +305,8 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		if (name.contains("Unlimited Enterprise-Wide")) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

@@ -70,9 +70,8 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	@Reference(unbind = "-")

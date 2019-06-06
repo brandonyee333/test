@@ -31,18 +31,16 @@ public class LicenseKeySearchTerms extends LicenseKeyDisplayTerms {
 		if (createUserId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(createUserId);
-		}
+
+		return Long.valueOf(createUserId);
 	}
 
 	public Long getModifiedUserIdObj() {
 		if (modifiedUserId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(modifiedUserId);
-		}
+
+		return Long.valueOf(modifiedUserId);
 	}
 
 	public LinkedHashMap<String, Object> getParams() {

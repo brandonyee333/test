@@ -351,9 +351,8 @@ public class ProductEntryConstants {
 
 			return "limited";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getTypeLabel(int type) {
@@ -374,9 +373,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isDigitalEnterpriseMajorVersion7(
@@ -387,9 +385,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isDigitalEnterpriseVersion7_0(
@@ -400,9 +397,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isDigitalEnterpriseVersion7_1(
@@ -411,9 +407,8 @@ public class ProductEntryConstants {
 		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_1_10) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isDigitalEnterpriseVersion7_2(
@@ -422,9 +417,8 @@ public class ProductEntryConstants {
 		if (digitalEnterpriseVersion == DIGITAL_ENTERPRISE_VERSION_7_2_10) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isPortalVersion(long portalVersion) {
@@ -433,9 +427,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isPortalVersion5_1(long portalVersion) {
@@ -444,9 +437,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isPortalVersion5_2(long portalVersion) {
@@ -455,9 +447,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isPortalVersion6_0(long portalVersion) {
@@ -466,9 +457,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isPortalVersion6_1(long portalVersion) {
@@ -477,9 +467,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean isPortalVersion6_2(long portalVersion) {
@@ -488,9 +477,8 @@ public class ProductEntryConstants {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

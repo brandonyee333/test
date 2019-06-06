@@ -175,9 +175,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		if (externalIdMappers) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected boolean isUpdateAccountEntry(

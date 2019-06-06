@@ -62,9 +62,8 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 		if (isLiferayIncOrg(themeDisplay.getUserId())) {
 			return "/account_entry_details/worker/view_account_entry.jsp";
 		}
-		else {
-			return "/account_entry_details/customer/view_account_entry.jsp";
-		}
+
+		return "/account_entry_details/customer/view_account_entry.jsp";
 	}
 
 	@Reference(

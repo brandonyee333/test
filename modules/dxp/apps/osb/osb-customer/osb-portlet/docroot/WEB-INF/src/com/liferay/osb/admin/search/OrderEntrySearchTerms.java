@@ -31,27 +31,24 @@ public class OrderEntrySearchTerms extends OrderEntryDisplayTerms {
 		if (accountEntryId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(accountEntryId);
-		}
+
+		return Long.valueOf(accountEntryId);
 	}
 
 	public Long getCreateUserIdObj() {
 		if (createUserId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(createUserId);
-		}
+
+		return Long.valueOf(createUserId);
 	}
 
 	public Long getModifiedUserIdObj() {
 		if (modifiedUserId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(modifiedUserId);
-		}
+
+		return Long.valueOf(modifiedUserId);
 	}
 
 	public LinkedHashMap<String, Object> getParams() {

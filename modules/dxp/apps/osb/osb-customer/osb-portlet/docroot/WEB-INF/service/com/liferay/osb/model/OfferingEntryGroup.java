@@ -183,18 +183,16 @@ public class OfferingEntryGroup {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasAvailableSupportTickets() {
 		if (_availableSupportOfferingEntry != null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean isSupportTickets() {

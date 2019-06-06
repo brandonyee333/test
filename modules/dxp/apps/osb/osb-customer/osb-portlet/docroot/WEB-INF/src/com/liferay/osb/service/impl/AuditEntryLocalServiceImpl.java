@@ -180,9 +180,8 @@ public class AuditEntryLocalServiceImpl extends AuditEntryLocalServiceBaseImpl {
 		if (ArrayUtil.contains(AuditEntryConstants.FIELDS_I18N, field)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

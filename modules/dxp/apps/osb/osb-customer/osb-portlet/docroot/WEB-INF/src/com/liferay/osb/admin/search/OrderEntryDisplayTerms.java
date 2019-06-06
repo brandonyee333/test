@@ -317,9 +317,8 @@ public class OrderEntryDisplayTerms extends DisplayTerms {
 		if (prorated == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	@Override

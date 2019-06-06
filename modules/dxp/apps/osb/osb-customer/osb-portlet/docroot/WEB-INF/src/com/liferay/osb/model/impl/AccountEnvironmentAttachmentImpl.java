@@ -40,9 +40,8 @@ public class AccountEnvironmentAttachmentImpl
 		if (getFileSize() > Integer.MAX_VALUE) {
 			return 0;
 		}
-		else {
-			return (int)getFileSize();
-		}
+
+		return (int)getFileSize();
 	}
 
 	public String getFileDir() {

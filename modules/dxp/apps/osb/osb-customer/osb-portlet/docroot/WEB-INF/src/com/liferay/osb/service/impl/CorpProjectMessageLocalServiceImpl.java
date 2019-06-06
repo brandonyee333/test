@@ -176,9 +176,8 @@ public class CorpProjectMessageLocalServiceImpl
 		if (corpProjectMessages.isEmpty()) {
 			return null;
 		}
-		else {
-			return corpProjectMessages.get(0);
-		}
+
+		return corpProjectMessages.get(0);
 	}
 
 	public CorpProjectMessage getCorpProjectMessageByUuid(String uuid)

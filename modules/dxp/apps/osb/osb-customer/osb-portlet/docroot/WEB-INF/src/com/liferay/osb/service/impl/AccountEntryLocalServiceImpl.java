@@ -1129,9 +1129,8 @@ public class AccountEntryLocalServiceImpl
 		if (accountEntryFinder.countByKeywords(null, params) > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasValidSupportAccountEntry(
@@ -1149,9 +1148,8 @@ public class AccountEntryLocalServiceImpl
 		if (accountEntryFinder.countByKeywords(null, params) > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public void recalculateHighestSupportResponse(long accountEntryId)
@@ -2303,9 +2301,8 @@ public class AccountEntryLocalServiceImpl
 			if (now.before(cal.getTime())) {
 				return WorkflowConstants.STATUS_APPROVED;
 			}
-			else {
-				status = WorkflowConstants.STATUS_EXPIRED;
-			}
+
+			status = WorkflowConstants.STATUS_EXPIRED;
 		}
 
 		return status;
@@ -2329,18 +2326,16 @@ public class AccountEntryLocalServiceImpl
 		if (accountEntryPersistence.countByCode(code) > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected boolean isDuplicateName(String name) {
 		if (accountEntryPersistence.countByName(name) > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected void sendAnalyticsCloudWelcomeEmail(List<User> users) {

@@ -90,27 +90,24 @@ public class PartnerEntrySearchTerms extends PartnerEntryDisplayTerms {
 		if (managingSupport != null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableStatusValues() {
 		if (statuses.length > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableSupportRegionValues() {
 		if (supportRegionIds.length > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableValues() {
@@ -120,9 +117,8 @@ public class PartnerEntrySearchTerms extends PartnerEntryDisplayTerms {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

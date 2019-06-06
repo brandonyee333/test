@@ -59,9 +59,8 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 
 			return "/account_entry_details/customer/view_account_entry.jsp";
 		}
-		else {
-			return "/account_entry_details/search.jsp";
-		}
+
+		return "/account_entry_details/search.jsp";
 	}
 
 	protected AccountEntry getAccountEntry(RenderRequest renderRequest)

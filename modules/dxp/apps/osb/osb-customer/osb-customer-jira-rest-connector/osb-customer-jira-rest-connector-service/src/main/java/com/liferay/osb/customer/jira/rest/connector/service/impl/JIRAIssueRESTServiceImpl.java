@@ -150,9 +150,8 @@ public class JIRAIssueRESTServiceImpl implements JIRAIssueRESTService {
 		if (errorMessage.equals("Issue Does Not Exist")) {
 			throw new JIRAResponseIssueNotFoundException(errorMessage);
 		}
-		else {
-			throw new JIRAResponseException(errorMessage);
-		}
+
+		throw new JIRAResponseException(errorMessage);
 	}
 
 	protected void validate(String ticketKey) throws PortalException {

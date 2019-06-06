@@ -314,11 +314,10 @@ public class AdminUtil {
 				AdminUtil.class.getClassLoader(),
 				templateDirName + templateName);
 		}
-		else {
-			return ContentUtil.get(
-				AdminUtil.class.getClassLoader(),
-				templateDirName + defaultTemplateName);
-		}
+
+		return ContentUtil.get(
+			AdminUtil.class.getClassLoader(),
+			templateDirName + defaultTemplateName);
 	}
 
 	private static String _getManualUpgradeProcessClassPath(int buildNumber) {

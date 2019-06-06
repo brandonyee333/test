@@ -105,9 +105,8 @@ public class AccountEntryConstants {
 
 			return locale.getDisplayLanguage();
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 	public static String getTierLabel(int tier) {

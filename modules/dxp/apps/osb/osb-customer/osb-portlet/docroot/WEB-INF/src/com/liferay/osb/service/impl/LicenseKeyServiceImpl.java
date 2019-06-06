@@ -338,9 +338,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		if (activeLicensesCount > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	@JSONWebService

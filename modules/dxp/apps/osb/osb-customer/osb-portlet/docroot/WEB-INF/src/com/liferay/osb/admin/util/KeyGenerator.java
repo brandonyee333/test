@@ -443,9 +443,8 @@ public class KeyGenerator {
 
 			return _interweaveDigest(digests);
 		}
-		else {
-			return _digestsToString(digests);
-		}
+
+		return _digestsToString(digests);
 	}
 
 	private String _getAlgorithm(String productId, int i) {
@@ -454,9 +453,8 @@ public class KeyGenerator {
 
 			return _ALGORITHMS[i % _ALGORITHMS.length];
 		}
-		else {
-			return _ALGORITHMS[2];
-		}
+
+		return _ALGORITHMS[2];
 	}
 
 	private String _getServerId(

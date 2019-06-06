@@ -86,10 +86,9 @@ public class OfferingDefinitionLocalServiceImpl
 		if ((productEntryIds.length <= 0) && (supportResponseIds.length <= 0)) {
 			return offeringDefinitionPersistence.findAll(start, end);
 		}
-		else {
-			return offeringDefinitionPersistence.findByPEI_SRI(
-				productEntryIds, supportResponseIds, start, end, null);
-		}
+
+		return offeringDefinitionPersistence.findByPEI_SRI(
+			productEntryIds, supportResponseIds, start, end, null);
 	}
 
 	public int getOfferingDefinitionsCount(
@@ -98,10 +97,9 @@ public class OfferingDefinitionLocalServiceImpl
 		if ((productEntryIds.length <= 0) && (supportResponseIds.length <= 0)) {
 			return offeringDefinitionPersistence.countAll();
 		}
-		else {
-			return offeringDefinitionPersistence.countByPEI_SRI(
-				productEntryIds, supportResponseIds);
-		}
+
+		return offeringDefinitionPersistence.countByPEI_SRI(
+			productEntryIds, supportResponseIds);
 	}
 
 	public List<OfferingDefinition> getProductEntryOfferingDefinitions(

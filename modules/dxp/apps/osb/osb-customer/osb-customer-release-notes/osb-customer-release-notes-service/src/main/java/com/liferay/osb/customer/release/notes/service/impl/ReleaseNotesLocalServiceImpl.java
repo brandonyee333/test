@@ -96,9 +96,8 @@ public class ReleaseNotesLocalServiceImpl
 		if (releaseNotes.isEmpty()) {
 			throw new NoSuchReleaseNotesException();
 		}
-		else {
-			return releaseNotes.get(0);
-		}
+
+		return releaseNotes.get(0);
 	}
 
 	public List<ReleaseNotes> search(String name, int start, int end) {
@@ -107,9 +106,8 @@ public class ReleaseNotesLocalServiceImpl
 
 			return releaseNotesPersistence.findByLikeName(name, start, end);
 		}
-		else {
-			return releaseNotesPersistence.findAll(start, end);
-		}
+
+		return releaseNotesPersistence.findAll(start, end);
 	}
 
 	public int searchCount(String name) {
@@ -118,9 +116,8 @@ public class ReleaseNotesLocalServiceImpl
 
 			return releaseNotesPersistence.countByLikeName(name);
 		}
-		else {
-			return releaseNotesPersistence.countAll();
-		}
+
+		return releaseNotesPersistence.countAll();
 	}
 
 	public ReleaseNotes updateReleaseNotes(

@@ -484,9 +484,8 @@ public class LicensePortlet extends OSBPortlet {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected void serveLicenseKey(

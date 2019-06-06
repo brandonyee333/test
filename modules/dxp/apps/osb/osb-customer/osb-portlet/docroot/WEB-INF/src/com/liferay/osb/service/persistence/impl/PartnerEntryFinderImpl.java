@@ -379,47 +379,46 @@ public class PartnerEntryFinderImpl
 			if (key.equals("childPartnerEntry")) {
 				continue;
 			}
-			else {
-				Object value = entry.getValue();
 
-				if (value instanceof Boolean) {
-					Boolean valueBoolean = (Boolean)value;
+			Object value = entry.getValue();
 
-					if (Validator.isNotNull(valueBoolean)) {
-						qPos.add(valueBoolean);
+			if (value instanceof Boolean) {
+				Boolean valueBoolean = (Boolean)value;
+
+				if (Validator.isNotNull(valueBoolean)) {
+					qPos.add(valueBoolean);
+				}
+			}
+			else if (value instanceof int[]) {
+				int[] valueArray = (int[])value;
+
+				for (int valueInt : valueArray) {
+					if (Validator.isNotNull(valueInt)) {
+						qPos.add(valueInt);
 					}
 				}
-				else if (value instanceof int[]) {
-					int[] valueArray = (int[])value;
+			}
+			else if (value instanceof Integer) {
+				Integer valueInteger = (Integer)value;
 
-					for (int valueInt : valueArray) {
-						if (Validator.isNotNull(valueInt)) {
-							qPos.add(valueInt);
-						}
-					}
+				if (Validator.isNotNull(valueInteger)) {
+					qPos.add(valueInteger);
 				}
-				else if (value instanceof Integer) {
-					Integer valueInteger = (Integer)value;
+			}
+			else if (value instanceof long[]) {
+				long[] valueArray = (long[])value;
 
-					if (Validator.isNotNull(valueInteger)) {
-						qPos.add(valueInteger);
-					}
-				}
-				else if (value instanceof long[]) {
-					long[] valueArray = (long[])value;
-
-					for (long valueLong : valueArray) {
-						if (Validator.isNotNull(valueLong)) {
-							qPos.add(valueLong);
-						}
-					}
-				}
-				else if (value instanceof Long) {
-					Long valueLong = (Long)value;
-
+				for (long valueLong : valueArray) {
 					if (Validator.isNotNull(valueLong)) {
 						qPos.add(valueLong);
 					}
+				}
+			}
+			else if (value instanceof Long) {
+				Long valueLong = (Long)value;
+
+				if (Validator.isNotNull(valueLong)) {
+					qPos.add(valueLong);
 				}
 			}
 		}

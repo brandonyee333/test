@@ -224,9 +224,8 @@ public class AccountWorkerLocalServiceImpl
 		if (accountWorker == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public boolean hasAccountWorkerRole(long userId, int role) {
@@ -236,9 +235,8 @@ public class AccountWorkerLocalServiceImpl
 		if (accountWorkers.isEmpty()) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public AccountWorker updateAccountWorker(

@@ -104,9 +104,8 @@ public class CorpProjectLocalServiceImpl
 		if (corpProjects.isEmpty()) {
 			return null;
 		}
-		else {
-			return corpProjects.get(0);
-		}
+
+		return corpProjects.get(0);
 	}
 
 	public CorpProject getCorpProjectByUuid(String uuid)

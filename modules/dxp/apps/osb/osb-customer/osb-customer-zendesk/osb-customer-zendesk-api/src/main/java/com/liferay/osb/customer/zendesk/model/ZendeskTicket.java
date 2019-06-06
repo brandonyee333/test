@@ -52,9 +52,8 @@ public class ZendeskTicket {
 		if (_status.equals(ZendeskTicketConstants.STATUS_CLOSED)) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public void setDescription(String description) {

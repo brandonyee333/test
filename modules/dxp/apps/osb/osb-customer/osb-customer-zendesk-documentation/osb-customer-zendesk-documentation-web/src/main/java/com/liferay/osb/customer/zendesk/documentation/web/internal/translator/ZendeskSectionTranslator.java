@@ -37,9 +37,8 @@ public class ZendeskSectionTranslator extends BaseTranslator<ZendeskSection> {
 		if (stopDate.after(zendeskSection.getCreateDate())) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	protected String getSortBy() {

@@ -122,9 +122,8 @@ public class JIRAComponentRESTServiceImpl implements JIRAComponentRESTService {
 
 			return JSONFactoryUtil.createJSONArray(response);
 		}
-		else {
-			return JSONFactoryUtil.createJSONArray();
-		}
+
+		return JSONFactoryUtil.createJSONArray();
 	}
 
 	protected void validate(String project) throws PortalException {

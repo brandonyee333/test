@@ -82,17 +82,16 @@ public class MetricsBaseModelUtil {
 
 			return createTableSQL.substring(y, z + 1);
 		}
-		else {
-			int y = createTableSQL.lastIndexOf(StringPool.COMMA, x);
 
-			if (y == -1) {
-				y = createTableSQL.lastIndexOf(StringPool.OPEN_PARENTHESIS, x);
-			}
+		int y = createTableSQL.lastIndexOf(StringPool.COMMA, x);
 
-			int z = createTableSQL.indexOf(StringPool.SPACE, y);
-
-			return createTableSQL.substring(y + 1, z);
+		if (y == -1) {
+			y = createTableSQL.lastIndexOf(StringPool.OPEN_PARENTHESIS, x);
 		}
+
+		int z = createTableSQL.indexOf(StringPool.SPACE, y);
+
+		return createTableSQL.substring(y + 1, z);
 	}
 
 	protected Class getModelImplClass(MetricsModel metricsModel)

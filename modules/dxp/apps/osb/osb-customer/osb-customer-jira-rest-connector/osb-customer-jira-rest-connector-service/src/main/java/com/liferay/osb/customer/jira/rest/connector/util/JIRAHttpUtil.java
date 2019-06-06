@@ -172,9 +172,8 @@ public class JIRAHttpUtil {
 		if (Validator.isNotNull(response)) {
 			return JSONFactoryUtil.createJSONArray(response);
 		}
-		else {
-			return JSONFactoryUtil.createJSONArray();
-		}
+
+		return JSONFactoryUtil.createJSONArray();
 	}
 
 	private static JSONObject _sendToJSONObject(
@@ -186,9 +185,8 @@ public class JIRAHttpUtil {
 		if (Validator.isNotNull(response)) {
 			return JSONFactoryUtil.createJSONObject(response);
 		}
-		else {
-			return JSONFactoryUtil.createJSONObject();
-		}
+
+		return JSONFactoryUtil.createJSONObject();
 	}
 
 	private static String _toURI(String endpoint) {

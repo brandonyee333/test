@@ -204,14 +204,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				startDate, expirationDate, additionalInfo, complimentary,
 				active);
 		}
-		else {
-			return doAddLicenseKey(
-				now, user, licenseKeySet, name, accountEntry, offeringEntry,
-				licenseEntry, productEntry, licenseEntryType, licenseVersion,
-				productVersion, clusterId, owner, maxServers, description,
-				serverIds, startDate, expirationDate, additionalInfo,
-				complimentary, active);
-		}
+
+		return doAddLicenseKey(
+			now, user, licenseKeySet, name, accountEntry, offeringEntry,
+			licenseEntry, productEntry, licenseEntryType, licenseVersion,
+			productVersion, clusterId, owner, maxServers, description,
+			serverIds, startDate, expirationDate, additionalInfo, complimentary,
+			active);
 	}
 
 	public LicenseKey addLicenseKey(
@@ -367,9 +366,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		if (licenseKeys.isEmpty()) {
 			throw new NoSuchLicenseKeyException("{uuid=" + uuid + "}");
 		}
-		else {
-			return licenseKeys.get(0);
-		}
+
+		return licenseKeys.get(0);
 	}
 
 	public List<LicenseKey> getLicenseKeys(long userId, long accountEntryId) {
@@ -1350,9 +1348,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			return licenseKeyPersistence.findByOEI_CI(
 				licenseKey.getOfferingEntryId(), licenseKey.getClusterId());
 		}
-		else {
-			return Arrays.asList(licenseKey);
-		}
+
+		return Arrays.asList(licenseKey);
 	}
 
 	protected String getCounterName(long offeringEntryId) {

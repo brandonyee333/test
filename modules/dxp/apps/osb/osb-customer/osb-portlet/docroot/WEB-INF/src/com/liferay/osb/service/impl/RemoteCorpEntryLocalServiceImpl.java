@@ -34,9 +34,8 @@ public class RemoteCorpEntryLocalServiceImpl
 		if (jsonObject.length() > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

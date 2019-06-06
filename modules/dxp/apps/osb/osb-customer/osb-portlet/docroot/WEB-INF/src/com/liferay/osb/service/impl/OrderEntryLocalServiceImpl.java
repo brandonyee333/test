@@ -428,9 +428,8 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		if (orderEntries.isEmpty()) {
 			throw new NoSuchOrderEntryException();
 		}
-		else {
-			return orderEntries.get(0);
-		}
+
+		return orderEntries.get(0);
 	}
 
 	public OrderEntry renewOrderEntry(

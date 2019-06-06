@@ -69,9 +69,8 @@ public class AccountEntryAssetRenderer
 
 			return "/admin/asset/account_entry/" + template + ".jsp";
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	@Override

@@ -424,9 +424,8 @@ public class ReleaseNotesPortlet extends MVCPortlet {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected String mergeFiles(String[] fileNames) {

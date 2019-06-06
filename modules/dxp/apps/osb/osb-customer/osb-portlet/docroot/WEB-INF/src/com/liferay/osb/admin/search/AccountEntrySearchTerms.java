@@ -61,27 +61,24 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 		if (countryId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(countryId);
-		}
+
+		return Long.valueOf(countryId);
 	}
 
 	public Long getCreateUserIdObj() {
 		if (createUserId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(createUserId);
-		}
+
+		return Long.valueOf(createUserId);
 	}
 
 	public Long getModifiedUserIdObj() {
 		if (modifiedUserId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(modifiedUserId);
-		}
+
+		return Long.valueOf(modifiedUserId);
 	}
 
 	public LinkedHashMap<String, Object> getParams() {
@@ -184,45 +181,40 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 		if (regionId == 0) {
 			return null;
 		}
-		else {
-			return Long.valueOf(regionId);
-		}
+
+		return Long.valueOf(regionId);
 	}
 
 	public boolean hasSearchableIndustryValues() {
 		if (industries.length > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableStatusValues() {
 		if (statuses.length > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableSupportRegionValues() {
 		if (supportRegionIds.length > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableTierValues() {
 		if (tiers.length > 0) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public boolean hasSearchableValues() {
@@ -232,9 +224,8 @@ public class AccountEntrySearchTerms extends AccountEntryDisplayTerms {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 }

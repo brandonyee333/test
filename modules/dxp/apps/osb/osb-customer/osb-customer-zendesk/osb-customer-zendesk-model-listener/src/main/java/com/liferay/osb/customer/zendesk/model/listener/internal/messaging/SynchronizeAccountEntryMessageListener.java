@@ -128,9 +128,8 @@ public class SynchronizeAccountEntryMessageListener
 		if (externalIdMappers) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	@Reference(

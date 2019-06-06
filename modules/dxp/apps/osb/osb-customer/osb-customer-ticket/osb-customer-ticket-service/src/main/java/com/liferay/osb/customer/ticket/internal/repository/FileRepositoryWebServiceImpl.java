@@ -63,9 +63,8 @@ public class FileRepositoryWebServiceImpl implements FileRepositoryWebService {
 		if ((key != null) && !key.startsWith("No key exists")) {
 			return fileRepositoryURL + StringPool.SLASH + key;
 		}
-		else {
-			return null;
-		}
+
+		return null;
 	}
 
 	public String getToken(String fileRepositoryId, long zendeskTicketId)

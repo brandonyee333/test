@@ -60,9 +60,8 @@ public class AssetCategoryPropertyComparator extends OrderByComparator {
 		if (_ascending) {
 			return value;
 		}
-		else {
-			return -value;
-		}
+
+		return -value;
 	}
 
 	@Override

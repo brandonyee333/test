@@ -101,18 +101,16 @@ public class OfferingDefinitionConstants {
 		if (maxConcurrentUsers <= 0) {
 			return "unlimited";
 		}
-		else {
-			return String.valueOf(maxConcurrentUsers);
-		}
+
+		return String.valueOf(maxConcurrentUsers);
 	}
 
 	public static String getMaxUsersLabel(long maxUsers) {
 		if (maxUsers <= 0) {
 			return "unlimited";
 		}
-		else {
-			return String.valueOf(maxUsers);
-		}
+
+		return String.valueOf(maxUsers);
 	}
 
 }

@@ -37,9 +37,8 @@ public class OfferingDefinitionImpl extends OfferingDefinitionBaseImpl {
 		if (!isLicenses()) {
 			return StringPool.BLANK;
 		}
-		else {
-			return String.valueOf(getQuantity());
-		}
+
+		return String.valueOf(getQuantity());
 	}
 
 	public String getMaxConcurrentUsersLabel() {
@@ -61,9 +60,8 @@ public class OfferingDefinitionImpl extends OfferingDefinitionBaseImpl {
 		if (isUnlimitedLicenses()) {
 			return OfferingEntryConstants.QUANTITY_UNLIMITED;
 		}
-		else {
-			return 1;
-		}
+
+		return 1;
 	}
 
 	public SupportResponse getSupportResponse() throws PortalException {
@@ -75,9 +73,8 @@ public class OfferingDefinitionImpl extends OfferingDefinitionBaseImpl {
 		if (isSupportTickets()) {
 			return "unlimited";
 		}
-		else {
-			return StringPool.BLANK;
-		}
+
+		return StringPool.BLANK;
 	}
 
 }

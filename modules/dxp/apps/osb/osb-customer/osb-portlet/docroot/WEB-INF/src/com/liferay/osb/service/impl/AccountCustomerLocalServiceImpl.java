@@ -269,9 +269,8 @@ public class AccountCustomerLocalServiceImpl
 		if (accountCustomer == null) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	public void resetClosedWorkers(long accountEntryId) throws PortalException {

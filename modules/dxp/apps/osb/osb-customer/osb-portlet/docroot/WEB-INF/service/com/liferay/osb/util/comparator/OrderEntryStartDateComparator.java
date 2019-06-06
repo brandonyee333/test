@@ -48,9 +48,8 @@ public class OrderEntryStartDateComparator extends OrderByComparator {
 		if (_asc) {
 			return value;
 		}
-		else {
-			return -value;
-		}
+
+		return -value;
 	}
 
 	@Override
@@ -58,9 +57,8 @@ public class OrderEntryStartDateComparator extends OrderByComparator {
 		if (_asc) {
 			return ORDER_BY_ASC;
 		}
-		else {
-			return ORDER_BY_DESC;
-		}
+
+		return ORDER_BY_DESC;
 	}
 
 	@Override

@@ -37,9 +37,8 @@ public class ZendeskCategoryTranslator extends BaseTranslator<ZendeskCategory> {
 		if (stopDate.after(zendeskCategory.getCreateDate())) {
 			return false;
 		}
-		else {
-			return true;
-		}
+
+		return true;
 	}
 
 	protected String getSortBy() {

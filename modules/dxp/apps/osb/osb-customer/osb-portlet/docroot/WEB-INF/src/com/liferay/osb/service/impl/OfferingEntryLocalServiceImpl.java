@@ -549,9 +549,8 @@ public class OfferingEntryLocalServiceImpl
 		if (key.equals(offeringEntry.getKey())) {
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	protected void validate(

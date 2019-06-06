@@ -34,9 +34,8 @@ public class AgreementUtil {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean hasEvaluationEULA(long userId, double versionRequired)
@@ -48,9 +47,8 @@ public class AgreementUtil {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean hasLiferaySyncEULA(long userId)
@@ -67,9 +65,8 @@ public class AgreementUtil {
 
 			return true;
 		}
-		else {
-			return false;
-		}
+
+		return false;
 	}
 
 	public static boolean hasTrialEULA(long userId) throws PortalException {
