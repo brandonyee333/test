@@ -6,6 +6,7 @@
 		<suppress checks="MapIterationCheck" files="osb-customer-zendesk-documentation-sync-service/src/main/java/com/liferay/osb/customer/zendesk/documentation/sync/service/impl/ZendeskSectionLocalServiceImpl\.java" />
 	</checkstyle>
 	<source-check>
+		<suppress checks="BNDImportsCheck" files="osb-customer-zendesk-documentation/osb-customer-zendesk-documentation-sync-service/bnd\.bnd" />
 		<suppress checks="SQLLongNamesCheck" files="osb-customer-zendesk-documentation-sync-service/src/main/resources/META-INF/sql/tables\.sql" />
 	</source-check>
 </suppressions>
