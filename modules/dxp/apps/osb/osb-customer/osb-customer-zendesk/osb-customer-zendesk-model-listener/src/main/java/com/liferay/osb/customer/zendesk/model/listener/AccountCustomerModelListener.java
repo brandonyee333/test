@@ -56,7 +56,7 @@ public class AccountCustomerModelListener
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -79,7 +79,7 @@ public class AccountCustomerModelListener
 			_accountCustomerSynchronizer.remove(accountCustomer);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -120,7 +120,7 @@ public class AccountCustomerModelListener
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}

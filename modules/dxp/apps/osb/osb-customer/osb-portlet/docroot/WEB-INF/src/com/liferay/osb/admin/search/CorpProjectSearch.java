@@ -86,7 +86,7 @@ public class CorpProjectSearch extends SearchContainer<CorpProject> {
 			setOrderByComparator(orderByComparator);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 		}
 	}
 

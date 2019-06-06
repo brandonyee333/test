@@ -52,7 +52,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_accountEntrySynchronizer.update(accountEntry);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -121,7 +121,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -135,7 +135,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_accountEntrySynchronizer.remove(accountEntry);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -155,7 +155,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			_zendeskOrganization.set(hasZendeskOrganization(accountEntry));
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}

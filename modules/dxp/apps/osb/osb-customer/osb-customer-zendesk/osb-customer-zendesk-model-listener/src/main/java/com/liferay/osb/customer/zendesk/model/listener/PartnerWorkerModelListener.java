@@ -46,7 +46,7 @@ public class PartnerWorkerModelListener
 			_partnerWorkerSynchronizer.add(partnerWorker);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -60,7 +60,7 @@ public class PartnerWorkerModelListener
 			_partnerWorkerSynchronizer.remove(partnerWorker);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -82,7 +82,7 @@ public class PartnerWorkerModelListener
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -100,7 +100,7 @@ public class PartnerWorkerModelListener
 			_oldRole.set(oldPartnerWorker.getRole());
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}

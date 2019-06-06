@@ -49,7 +49,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -71,7 +71,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -89,7 +89,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}

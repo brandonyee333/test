@@ -66,7 +66,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -91,7 +91,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -119,7 +119,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -153,7 +153,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			_zendeskUserWebService.deleteZendeskUser(zendeskUserId);
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
@@ -165,7 +165,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			_oldUser.set(_userLocalService.getUser(user.getUserId()));
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}

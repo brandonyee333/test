@@ -51,7 +51,7 @@ public class PartnerEntryModelListener extends BaseModelListener<PartnerEntry> {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
