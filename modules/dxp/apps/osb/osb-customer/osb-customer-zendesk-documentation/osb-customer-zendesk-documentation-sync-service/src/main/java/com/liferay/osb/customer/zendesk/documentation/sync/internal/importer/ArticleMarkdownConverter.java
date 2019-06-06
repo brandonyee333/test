@@ -54,7 +54,16 @@ public class ArticleMarkdownConverter {
 		MarkdownConverter markdownConverter =
 			MarkdownConverterFactoryUtil.create();
 
+		String heading = getHeading(markdown);
+
+		if (Validator.isNull(heading)) {
+			throw new DocumentationImportException(
+				"Unable to extract title heading from file: " + zipReaderEntry);
+		}
+
 		try {
+			markdown = removeHeadingTOC(heading, markdown);
+
 			markdownConverter.parse(markdown);
 
 			_html = markdownConverter.convert(markdown);
@@ -64,13 +73,6 @@ public class ArticleMarkdownConverter {
 				"Unable to convert Markdown to HTML: " +
 					ioe.getLocalizedMessage(),
 				ioe);
-		}
-
-		String heading = getHeading(markdown);
-
-		if (Validator.isNull(heading)) {
-			throw new DocumentationImportException(
-				"Unable to extract title heading from file: " + zipReaderEntry);
 		}
 
 		_id = markdownConverter.getURLTitle();
@@ -243,6 +245,23 @@ public class ArticleMarkdownConverter {
 
 			x += 4;
 		}
+	}
+
+	protected String removeHeadingTOC(String heading, String markdown) {
+		StringBundler sb = new StringBundler(7);
+
+		sb.append(StringPool.NEW_LINE);
+		sb.append("# ");
+		sb.append(heading);
+		sb.append(StringPool.NEW_LINE);
+		sb.append(StringPool.NEW_LINE);
+		sb.append("[TOC levels=1-4]");
+		sb.append(StringPool.NEW_LINE);
+
+		markdown = StringUtil.replace(
+			markdown, sb.toString(), StringPool.BLANK);
+
+		return markdown;
 	}
 
 	private Map<String, String> _getMetadata(ZipReader zipReader)
