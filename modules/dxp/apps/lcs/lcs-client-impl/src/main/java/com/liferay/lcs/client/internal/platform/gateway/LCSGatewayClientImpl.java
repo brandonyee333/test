@@ -371,13 +371,13 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";
 
 	private static final String _URL_LCS_GATEWAY_DELETE_MESSAGES =
-		LCSGatewayClientImpl._URL_LCS_GATEWAY + "/delete-messages";
+		_URL_LCS_GATEWAY + "/delete-messages";
 
 	private static final String _URL_LCS_GATEWAY_GET_MESSAGES =
-		LCSGatewayClientImpl._URL_LCS_GATEWAY + "/v12/get-messages";
+		_URL_LCS_GATEWAY + "/v12/get-messages";
 
 	private static final String _URL_LCS_GATEWAY_SEND_MESSAGE =
-		LCSGatewayClientImpl._URL_LCS_GATEWAY + "/send-message";
+		_URL_LCS_GATEWAY + "/send-message";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSGatewayClientImpl.class);
