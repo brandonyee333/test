@@ -15,7 +15,7 @@
 		</div>
 
 		<div class="col-md-5 header-content header-menu-list">
-			<div class="hide list-item">
+			<div class="hide list-item" id="menuItemProducts">
 				<h5>
 					<@liferay.language key="products" />
 
@@ -27,7 +27,7 @@
 				<div class="header-menu" id="megaMenuProducts"></div>
 			</div>
 
-			<div class="hide list-item">
+			<div class="hide list-item" id="menuItemResources">
 				<h5>
 					<@liferay.language key="resources" />
 
@@ -39,7 +39,7 @@
 				<div class="header-menu" id="megaMenuResources"></div>
 			</div>
 
-			<div class="hide list-item">
+			<div class="hide list-item" id="menuItemSecurity">
 				<h5>
 					<@liferay.language key="security" />
 
@@ -51,7 +51,7 @@
 				<div class="header-menu" id="megaMenuSecurity"></div>
 			</div>
 
-			<div class="hide list-item">
+			<div class="hide list-item" id="menuItemSupport">
 				<h5>
 					<@liferay.language key="support" />
 
