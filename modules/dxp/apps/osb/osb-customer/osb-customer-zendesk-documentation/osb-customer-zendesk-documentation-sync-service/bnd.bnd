@@ -10,4 +10,5 @@ Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true
 -conditionalpackage:\
 	com.liferay.knowledge.base.importer.util.*,\
+	\
 	com.vladsch.flexmark.*
