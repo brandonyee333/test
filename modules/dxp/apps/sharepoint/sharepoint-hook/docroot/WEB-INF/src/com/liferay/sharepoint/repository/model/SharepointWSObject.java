@@ -18,7 +18,6 @@ import com.liferay.document.library.repository.external.ExtRepositoryModel;
 import com.liferay.document.library.repository.external.ExtRepositoryObject;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.sharepoint.connector.SharepointObject;
-import com.liferay.sharepoint.connector.SharepointObject.Permission;
 
 import java.util.Date;
 import java.util.EnumMap;
@@ -46,14 +45,16 @@ public abstract class SharepointWSObject
 			return false;
 		}
 
-		Permission permission = _permissions.get(extRepositoryPermission);
+		SharepointObject.Permission permission = _permissions.get(
+			extRepositoryPermission);
 
 		if (permission == null) {
 			throw new UnsupportedOperationException(
 				"Unsupported permission " + extRepositoryPermission);
 		}
 
-		Set<Permission> permissions = sharepointObject.getPermissions();
+		Set<SharepointObject.Permission> permissions =
+			sharepointObject.getPermissions();
 
 		return permissions.contains(permission);
 	}
@@ -99,8 +100,9 @@ public abstract class SharepointWSObject
 
 	protected SharepointObject sharepointObject;
 
-	private static final Map<ExtRepositoryPermission, Permission> _permissions =
-		new EnumMap<>(ExtRepositoryPermission.class);
+	private static final Map
+		<ExtRepositoryPermission, SharepointObject.Permission> _permissions =
+			new EnumMap<>(ExtRepositoryPermission.class);
 	private static final Set<ExtRepositoryPermission>
 		_unsupportedExtRepositoryPermissions = EnumSet.of(
 			ExtRepositoryPermission.ADD_DISCUSSION,
@@ -111,19 +113,26 @@ public abstract class SharepointWSObject
 
 	static {
 		_permissions.put(
-			ExtRepositoryPermission.ACCESS, Permission.VIEW_LIST_ITEMS);
+			ExtRepositoryPermission.ACCESS,
+			SharepointObject.Permission.VIEW_LIST_ITEMS);
 		_permissions.put(
-			ExtRepositoryPermission.ADD_DOCUMENT, Permission.ADD_LIST_ITEMS);
+			ExtRepositoryPermission.ADD_DOCUMENT,
+			SharepointObject.Permission.ADD_LIST_ITEMS);
 		_permissions.put(
-			ExtRepositoryPermission.ADD_FOLDER, Permission.ADD_LIST_ITEMS);
+			ExtRepositoryPermission.ADD_FOLDER,
+			SharepointObject.Permission.ADD_LIST_ITEMS);
 		_permissions.put(
-			ExtRepositoryPermission.ADD_SUBFOLDER, Permission.ADD_LIST_ITEMS);
+			ExtRepositoryPermission.ADD_SUBFOLDER,
+			SharepointObject.Permission.ADD_LIST_ITEMS);
 		_permissions.put(
-			ExtRepositoryPermission.DELETE, Permission.DELETE_LIST_ITEMS);
+			ExtRepositoryPermission.DELETE,
+			SharepointObject.Permission.DELETE_LIST_ITEMS);
 		_permissions.put(
-			ExtRepositoryPermission.UPDATE, Permission.EDIT_LIST_ITEMS);
+			ExtRepositoryPermission.UPDATE,
+			SharepointObject.Permission.EDIT_LIST_ITEMS);
 		_permissions.put(
-			ExtRepositoryPermission.VIEW, Permission.VIEW_LIST_ITEMS);
+			ExtRepositoryPermission.VIEW,
+			SharepointObject.Permission.VIEW_LIST_ITEMS);
 	}
 
 }

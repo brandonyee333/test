@@ -19,7 +19,6 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.JVMMetricsMessage;
 
 import com.yammer.metrics.core.VirtualMachineMetrics;
-import com.yammer.metrics.core.VirtualMachineMetrics.BufferPoolStats;
 import com.yammer.metrics.core.VirtualMachineMetrics.GarbageCollectorStats;
 
 import java.util.HashMap;
@@ -94,13 +93,14 @@ public class JVMMetricsTask extends BaseScheduledTask {
 	protected Map<String, Map<String, Long>> getBufferPoolMetrics() {
 		Map<String, Map<String, Long>> bufferPoolMetrics = new HashMap<>();
 
-		Map<String, BufferPoolStats> bufferPoolStatsMap =
+		Map<String, VirtualMachineMetrics.BufferPoolStats> bufferPoolStatsMap =
 			_virtualMachineMetrics.getBufferPoolStats();
 
-		for (Map.Entry<String, BufferPoolStats> entry :
+		for (Map.Entry<String, VirtualMachineMetrics.BufferPoolStats> entry :
 				bufferPoolStatsMap.entrySet()) {
 
-			BufferPoolStats bufferPoolStats = entry.getValue();
+			VirtualMachineMetrics.BufferPoolStats bufferPoolStats =
+				entry.getValue();
 
 			Map<String, Long> value = new HashMap<>();
 
