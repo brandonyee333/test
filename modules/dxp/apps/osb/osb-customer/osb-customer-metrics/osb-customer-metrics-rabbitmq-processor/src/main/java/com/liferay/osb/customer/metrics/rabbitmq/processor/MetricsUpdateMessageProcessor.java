@@ -31,7 +31,6 @@ import java.sql.PreparedStatement;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.naming.Context;
@@ -65,12 +64,12 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 		columnValueSB.append(StringPool.OPEN_PARENTHESIS);
 
-		Set<Entry<String, Object>> entrySet = columnMap.entrySet();
+		Set<Map.Entry<String, Object>> entrySet = columnMap.entrySet();
 
-		Iterator<Entry<String, Object>> iterator = entrySet.iterator();
+		Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
 
 		while (iterator.hasNext()) {
-			Entry<String, Object> entry = iterator.next();
+			Map.Entry<String, Object> entry = iterator.next();
 
 			columnNamesSB.append(entry.getKey());
 
@@ -218,14 +217,14 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 			ps = connection.prepareStatement(sql);
 
-			Set<Entry<String, Object>> entrySet = columnMap.entrySet();
+			Set<Map.Entry<String, Object>> entrySet = columnMap.entrySet();
 
-			Iterator<Entry<String, Object>> iterator = entrySet.iterator();
+			Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
 
 			int i = 1;
 
 			while (iterator.hasNext()) {
-				Entry<String, Object> entry = iterator.next();
+				Map.Entry<String, Object> entry = iterator.next();
 
 				Object columnValue = entry.getValue();
 

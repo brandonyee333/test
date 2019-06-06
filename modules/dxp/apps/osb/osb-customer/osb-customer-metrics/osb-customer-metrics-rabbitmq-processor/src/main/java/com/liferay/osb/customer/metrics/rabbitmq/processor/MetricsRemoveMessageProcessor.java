@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
@@ -42,12 +41,12 @@ public class MetricsRemoveMessageProcessor extends BaseMessageProcessor {
 		sb.append(tableName);
 		sb.append(" where ");
 
-		Set<Entry<String, Object>> entrySet = columnMap.entrySet();
+		Set<Map.Entry<String, Object>> entrySet = columnMap.entrySet();
 
-		Iterator<Entry<String, Object>> iterator = entrySet.iterator();
+		Iterator<Map.Entry<String, Object>> iterator = entrySet.iterator();
 
 		while (iterator.hasNext()) {
-			Entry<String, Object> entry = iterator.next();
+			Map.Entry<String, Object> entry = iterator.next();
 
 			sb.append(entry.getKey());
 
