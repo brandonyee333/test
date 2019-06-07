@@ -64,7 +64,7 @@
 		</div>
 	</main>
 
-	<footer class="container-fluid container-fluid-max-xl footer secondary-font">
+	<footer class="footer secondary-font">
 		<#include "${full_templates_path}/footer.ftl" />
 	</footer>
 </div>

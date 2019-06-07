@@ -11,10 +11,9 @@
 	}
 
 	.copyright {
-		border-top: 1px solid $color-divider;
+		background-color: $color-grey;
 		margin-top: 64px;
-		padding-bottom: 56px;
-		padding-top: $padding-default;
+		padding: $padding-default 0;
 		text-transform: uppercase;
 	}
 
@@ -27,7 +26,7 @@
 			margin-bottom: $margin-md;
 
 			a {
-				color: $secondary-text-color;
+				color: $color-body;
 			}
 		}
 	}
