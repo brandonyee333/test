@@ -1985,10 +1985,6 @@ public class AccountEntryLocalServiceImpl
 			return;
 		}
 
-		if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
-			accountCustomerLocalService.resetClosedWorkers(accountEntryId);
-		}
-
 		boolean activeSupport =
 			offeringEntryLocalService.hasActiveSupportOfferingEntry(
 				accountEntryId, false);
@@ -2002,6 +1998,10 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setActiveTicketSupport(activeTicketSupport);
 
 		accountEntry.setStatus(getStatus(accountEntryId));
+
+		if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			accountCustomerLocalService.resetClosedWorkers(accountEntryId);
+		}
 
 		accountEntryPersistence.update(accountEntry);
 
