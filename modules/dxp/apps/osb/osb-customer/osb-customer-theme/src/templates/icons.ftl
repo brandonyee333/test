@@ -204,9 +204,10 @@
 	</symbol>
 
 	<symbol id="project-details" viewBox="0 0 32 32">
-		<circle cx="16" cy="16" r="16" fill="#F2F5F7"/>
+		<circle cx="16" cy="16" fill="#F2F5F7" r="16" />
+
 		<path d="M17 11h-6v3h6v-3zM11 15h6v6h-6v-6zM21 15h-3v6h3v-6z" fill="#09101D"/>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M9.98 8H21l3 3v11c0 1.094-1.043 1.98-2.137 1.98H9.98A1.98 1.98 0 0 1 8 22V9.98A1.98 1.98 0 0 1 9.98 8zm11.883 13.98a.26.26 0 0 0 .137-.062V14h-4v-4h-8v11.98h11.863zM20 12v-2l2 2h-2z" fill="#09101D"/>
+		<path clip-rule="evenodd" d="M9.98 8H21l3 3v11c0 1.094-1.043 1.98-2.137 1.98H9.98A1.98 1.98 0 0 1 8 22V9.98A1.98 1.98 0 0 1 9.98 8zm11.883 13.98a.26.26 0 0 0 .137-.062V14h-4v-4h-8v11.98h11.863zM20 12v-2l2 2h-2z" fill="#09101D" fill-rule="evenodd" />
 	</symbol>
 
 	<symbol id="report-security-issues" viewBox="0 0 32 32">
@@ -288,7 +289,7 @@
 	</symbol>
 
 	<symbol id="submit-ticket" viewBox="0 0 32 32">
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M10 8h12c1.103 0 2 .897 2 2v12c0 1.103-.897 2-2 2H10c-1.103 0-2-.897-2-2V10c0-1.103.897-2 2-2zm0 14h12V10H10v12zm10-10h-5a.999.999 0 1 0 0 2h5a.999.999 0 1 0 0-2zm-7 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 2h-5a.999.999 0 1 0 0 2h5a.999.999 0 1 0 0-2zm-7 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 2h-5a.999.999 0 1 0 0 2h5a.999.999 0 1 0 0-2zm-7 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#09101D"/>
+		<path clip-rule="evenodd" d="M10 8h12c1.103 0 2 .897 2 2v12c0 1.103-.897 2-2 2H10c-1.103 0-2-.897-2-2V10c0-1.103.897-2 2-2zm0 14h12V10H10v12zm10-10h-5a.999.999 0 1 0 0 2h5a.999.999 0 1 0 0-2zm-7 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 2h-5a.999.999 0 1 0 0 2h5a.999.999 0 1 0 0-2zm-7 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 2h-5a.999.999 0 1 0 0 2h5a.999.999 0 1 0 0-2zm-7 1a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#09101D" fill-rule="evenodd" />
 	</symbol>
 
 	<symbol id="support-coverage" viewBox="0 0 32 32">
@@ -306,9 +307,10 @@
 	</symbol>
 
 	<symbol id="ticket" viewBox="0 0 32 32">
-		<circle cx="16" cy="16" r="16" fill="#F2F5F7"/>
+		<circle cx="16" cy="16" fill="#F2F5F7" r="16" />
+
 		<path d="M11 17a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2h-8a1 1 0 0 1-1-1zm6 2h-5a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2zm0-7a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" fill="#09101D"/>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M22 8H10c-1.104 0-2 .897-2 2v12c0 1.103.896 2 2 2h12c1.104 0 2-.897 2-2V10c0-1.103-.896-2-2-2zm0 2v12H10V10h12z" fill="#09101D"/>
+		<path clip-rule="evenodd" d="M22 8H10c-1.104 0-2 .897-2 2v12c0 1.103.896 2 2 2h12c1.104 0 2-.897 2-2V10c0-1.103-.896-2-2-2zm0 2v12H10V10h12z" fill="#09101D" fill-rule="evenodd" />
 	</symbol>
 
 	<symbol id="times" viewBox="0 0 512 512">
