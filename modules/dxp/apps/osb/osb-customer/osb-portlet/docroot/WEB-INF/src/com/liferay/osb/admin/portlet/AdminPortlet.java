@@ -562,7 +562,7 @@ public class AdminPortlet extends OSBPortlet {
 		int role = ParamUtil.getInteger(
 			actionRequest, "role_" + accountCustomerId);
 		boolean closedWatcher = ParamUtil.getBoolean(
-			actionRequest, "closedWatcher");
+			actionRequest, "closedWatcher_" + accountCustomerId);
 
 		if (accountCustomerId > 0) {
 			AccountCustomerLocalServiceUtil.updateAccountCustomer(

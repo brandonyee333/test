@@ -164,7 +164,7 @@ request.setAttribute("edit_account_entry_customers.jsp-portletURL", portletURL);
 				<liferay-ui:search-container-column-text
 					name="closed-watcher"
 				>
-					<aui:input checked="<%= accountCustomer.isClosedWatcher() %>" label="" name="closedWatcher" type="checkbox" />
+					<aui:input checked="<%= accountCustomer.isClosedWatcher() %>" label="" name='<%= "closedWatcher_" + accountCustomer.getAccountCustomerId() %>' type="checkbox" />
 				</liferay-ui:search-container-column-text>
 			</c:if>
 
