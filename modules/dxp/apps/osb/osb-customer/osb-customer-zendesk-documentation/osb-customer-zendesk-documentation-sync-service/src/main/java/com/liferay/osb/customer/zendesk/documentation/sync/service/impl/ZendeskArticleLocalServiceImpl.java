@@ -239,6 +239,15 @@ public class ZendeskArticleLocalServiceImpl
 			articleJSONObject.put("label_names", jsonArray);
 		}
 
+		if (ZendeskDocumentationSyncConfigurationValues.
+				ZENDESK_ARTICLE_PERMISSION_GROUP_ID > 0) {
+
+			articleJSONObject.put(
+				"permission_group_id",
+				ZendeskDocumentationSyncConfigurationValues.
+					ZENDESK_ARTICLE_PERMISSION_GROUP_ID);
+		}
+
 		articleJSONObject.put("position", position);
 
 		JSONArray translationsJSONArray = JSONFactoryUtil.createJSONArray();
