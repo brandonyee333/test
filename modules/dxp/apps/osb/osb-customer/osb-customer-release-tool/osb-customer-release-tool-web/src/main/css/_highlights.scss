@@ -25,7 +25,7 @@
 }
 
 .lfr-details-column {
-	width: 6%;
+	width: auto;
 
 	.details {
 		&.importantChanges,
@@ -52,6 +52,7 @@
 
 .lfr-released-column {
 	vertical-align: top;
+	width: 10%;
 }
 
 .no-highlights {
