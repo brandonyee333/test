@@ -1,6 +1,6 @@
 .lfr-nav.nav.nav-tabs {
 	line-height: 24px;
-	margin-bottom: 48px;
+	margin-bottom: $margin-default;
 
 	> li {
 		> a {
@@ -14,6 +14,7 @@
 			a:focus,
 			a:hover,
 			a:active {
+				background-color: transparent;
 				border-bottom-color: $color-divider;
 				border-width: 0;
 

@@ -61,7 +61,7 @@ h6 {
 
 h2 {
 	font-size: $h2-font-size;
-	margin: $margin-default 0 0;
+	margin: 0;
 }
 
 h3 {
@@ -92,7 +92,7 @@ h5 {
 
 	&.section-subtitle {
 		font-weight: $font-weight-normal;
-		margin-bottom: $margin-default;
+		margin-bottom: $margin-md;
 		margin-top: 8px;
 	}
 }
@@ -200,7 +200,7 @@ select {
 
 main {
 	border-bottom: 1px solid $color-divider;
-	padding-top: $navbar-height;
+	margin-top: $navbar-height;
 }
 
 textarea {

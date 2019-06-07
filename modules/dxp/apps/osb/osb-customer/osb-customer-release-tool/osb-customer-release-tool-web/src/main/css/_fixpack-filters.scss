@@ -39,7 +39,7 @@
 @include media-breakpoint-down(lg) {
 	.search-filters .search-filter-container {
 		border-left-width: 0;
-		border-radius: unset;
+		border-radius: initial;
 	}
 }
 
