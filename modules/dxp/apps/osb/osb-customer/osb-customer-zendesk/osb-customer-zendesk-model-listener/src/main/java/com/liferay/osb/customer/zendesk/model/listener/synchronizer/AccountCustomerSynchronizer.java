@@ -31,7 +31,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -52,15 +51,9 @@ public class AccountCustomerSynchronizer {
 
 		AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-		String name = accountEntry.getName();
-
-		if (!accountEntry.isActiveSupport()) {
-			name = StringPool.BLANK;
-		}
-
 		Set<String> tags = getTags(accountCustomer);
 
-		_userSynchronizer.update(user, name, tags);
+		_userSynchronizer.update(user, accountEntry.getName(), tags);
 	}
 
 	public void addOrganizationSubscription(AccountCustomer accountCustomer)

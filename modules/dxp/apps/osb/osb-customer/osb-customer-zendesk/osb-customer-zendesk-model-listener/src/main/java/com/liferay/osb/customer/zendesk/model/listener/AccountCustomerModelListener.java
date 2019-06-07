@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrat
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -89,7 +90,34 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			_accountCustomerSynchronizer.update(accountCustomer);
+			if (accountCustomer.isClosedWatcher()) {
+				_accountCustomerSynchronizer.add(accountCustomer);
+			}
+			else {
+				_accountCustomerSynchronizer.update(accountCustomer);
+			}
+		}
+		catch (Exception e) {
+			_log.error(e);
+
+			throw new ZendeskIntegrationException(e);
+		}
+	}
+
+	@Override
+	public void onBeforeUpdate(AccountCustomer accountCustomer)
+		throws ModelListenerException {
+
+		try {
+			AccountCustomer oldAccountCustomer =
+				AccountCustomerLocalServiceUtil.getAccountCustomer(
+					accountCustomer.getAccountCustomerId());
+
+			if (oldAccountCustomer.isClosedWatcher() &&
+				!accountCustomer.isClosedWatcher()) {
+
+				_accountCustomerSynchronizer.remove(oldAccountCustomer);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e);
