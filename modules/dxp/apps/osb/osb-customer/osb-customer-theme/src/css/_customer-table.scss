@@ -4,7 +4,7 @@
 		padding: $padding-sm $padding-default;
 
 		> tr > td {
-			padding: $padding-sm 0;
+			padding: 8px 0;
 			width: 50%;
 		}
 	}
@@ -32,6 +32,7 @@
 
 	> tbody > tr > td {
 		font-size: $font-size-md;
+		padding: 8px;
 
 		&:first-child {
 			font-weight: $font-weight-semi-bold;
