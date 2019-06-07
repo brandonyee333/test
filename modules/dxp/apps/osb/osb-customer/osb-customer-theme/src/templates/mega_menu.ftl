@@ -207,6 +207,51 @@
 		}
 	];
 
+	function addMenuClickOutsideListener(event) {
+		var body = document.querySelector('body');
+
+		body.removeEventListener('click', handleMenuClickOutside);
+		body.addEventListener('click', handleMenuClickOutside);
+	}
+
+	function checkClickOutside(event, nodelist) {
+		var target = event.target;
+		var containsNode = [];
+
+		if (nodelist) {
+			Array.prototype.forEach.call(
+				nodelist,
+				function(node) {
+					containsNode.push(node.contains(target));
+				}
+			);
+		}
+
+		return !containsNode.some(
+			function(node) {
+				return node === true;
+			}
+		);
+	}
+
+	function checkSelectLanguageToggle() {
+		var languageToggle = document.querySelector('.language');
+
+		var selectLanguage = false;
+
+		if (hasLanguageToggle && !languageToggle) {
+			hasLanguageToggle = false;
+			selectLanguage = true;
+		}
+
+		if (!hasLanguageToggle && languageToggle) {
+			hasLanguageToggle = true;
+			selectLanguage = true;
+		}
+
+		return selectLanguage;
+	}
+
 	function instantiateMegaMenu(event) {
 		var currentTargetId = event.currentTarget.id;
 
@@ -233,6 +278,19 @@
 		}
 
 		renderMegaMenu(name, id, configs);
+
+		addMenuClickOutsideListener(event);
+	}
+
+	function handleMenuClickOutside(event) {
+		var headerMenus = document.querySelectorAll('.header-menu');
+
+		if (checkClickOutside(event, menuItems)
+			&& checkClickOutside(event, headerMenus)
+			&& !checkSelectLanguageToggle()
+		) {
+			removeActiveClasses();
+		}
 	}
 
 	function removeActiveClasses() {
@@ -260,6 +318,8 @@
 			document.getElementById(id)
 		);
 	}
+
+	var hasLanguageToggle = true;
 
 	var menuItems = document.querySelectorAll('.header-menu-list .list-item');
 
