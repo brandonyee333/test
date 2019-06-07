@@ -12,32 +12,28 @@
 		return '${zendesk_url}/hc/${zendesk_locale_util.convertToZendeskLocale(locale)}/' + urn;
 	}
 
-	var accountLinks = {
-		className: 'account-links',
-		configs: [
-			{
-				name: '<@liferay.language key="my-requests" />',
-				url: addLocaleParamToURI('${current_locale}', 'requests')
-			},
-			{
-				name: '<@liferay.language key="project-details" />',
-				url: '/project-details'
-			}
-		]
-	};
-
 	var highlightedLinks = {
 		className: 'highlighted',
 		configs: [
 			{
 				name: '<@liferay.language key="submit-a-ticket" />',
-				svgId: '#ticket',
+				svgId: '#submit-ticket',
 				url: addLocaleParamToURI('${current_locale}', 'requests/new')
 			},
 			{
 				name: '<@liferay.language key="contact-us" />',
 				svgId: '#contact',
 				url: addLocaleParamToURI('${current_locale}', 'articles/360017784212')
+			},
+			{
+				name: '<@liferay.language key="view-my-tickets" />',
+				svgId: '#ticket',
+				url: addLocaleParamToURI('${current_locale}', 'requests')
+			},
+			{
+				name: '<@liferay.language key="see-project-details" />',
+				svgId: '#project-details',
+				url: '/project-details'
 			}
 		]
 	};
@@ -306,7 +302,6 @@
 		theme.render(
 			theme.MegaMenu,
 			{
-				accountLinks: accountLinks,
 				cardMenuItems: {
 					className: 'card-menu',
 					configs: configs

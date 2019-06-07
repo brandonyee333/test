@@ -109,6 +109,9 @@
 
 			.submenu {
 				border-left: 1px solid $color-divider;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
 				padding: 8px 0;
 
 				&.language-selection {
@@ -130,18 +133,6 @@
 
 						.current {
 							color: $color-default;
-						}
-					}
-				}
-
-				.account-links {
-					padding: $padding-default $padding-md 40px;
-
-					.nav-card {
-						padding: $padding-sm $padding-default;
-
-						.title {
-							font-weight: $font-weight-normal;
 						}
 					}
 				}
