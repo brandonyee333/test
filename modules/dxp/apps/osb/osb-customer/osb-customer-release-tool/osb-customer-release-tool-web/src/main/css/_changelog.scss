@@ -64,8 +64,7 @@
 
 	.modal-body {
 		max-height: 82vh;
-		padding: $padding-default;
-		padding-bottom: 48px;
+		padding: $padding-default $padding-default 48px;
 	}
 
 	.modal-content {
