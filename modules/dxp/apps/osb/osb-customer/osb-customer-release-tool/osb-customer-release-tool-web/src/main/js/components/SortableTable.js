@@ -69,7 +69,7 @@ export default class SortableTable extends Component {
 
 		return (
 			<Fragment>
-				<div className="results-count">
+				<div className="results-count secondary-font">
 					{total === 1
 						? langSub(
 							Liferay.Language.get('x-result'),
