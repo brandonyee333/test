@@ -41,12 +41,6 @@
 
 	.lfr-name-column {
 		padding-left: $padding-sm;
-
-		&:before {
-			content: '';
-			margin-left: -$margin-sm;
-			margin-right: $margin-sm;
-		}
 	}
 
 	.module-changed {
@@ -54,10 +48,6 @@
 
 		a {
 			color: $color-primary;
-		}
-
-		.lfr-name-column:before {
-			border-left: 2.5px solid $color-success;
 		}
 	}
 }
