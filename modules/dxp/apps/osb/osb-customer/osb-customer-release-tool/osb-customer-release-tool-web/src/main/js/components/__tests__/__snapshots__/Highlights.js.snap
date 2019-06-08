@@ -99,7 +99,7 @@ exports[`Highlights renders correctly 1`] = `
       Description for Highlights tab.
     </h5>
     <div
-      class="results-count"
+      class="results-count secondary-font"
     >
       x-results
     </div>
@@ -274,7 +274,7 @@ exports[`Highlights renders no results correctly 1`] = `
       Description for No Results Highlights tab.
     </h5>
     <div
-      class="results-count"
+      class="results-count secondary-font"
     >
       x-results
     </div>

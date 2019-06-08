@@ -106,7 +106,7 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
       Description for Module Changes tab.
     </h5>
     <div
-      class="results-count"
+      class="results-count secondary-font"
     >
       x-results
     </div>
@@ -316,7 +316,7 @@ exports[`ModuleChanges renders correctly 1`] = `
       Description for Module Changes tab.
     </h5>
     <div
-      class="results-count"
+      class="results-count secondary-font"
     >
       x-results
     </div>
@@ -526,7 +526,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
       Description for Module Changes tab.
     </h5>
     <div
-      class="results-count"
+      class="results-count secondary-font"
     >
       x-results
     </div>
@@ -686,7 +686,7 @@ exports[`ModuleChanges renders product name and version in table header correctl
       Description for Module Changes tab.
     </h5>
     <div
-      class="results-count"
+      class="results-count secondary-font"
     >
       x-results
     </div>

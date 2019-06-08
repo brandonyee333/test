@@ -3,7 +3,7 @@
 exports[`SortableTable renders changelog table correctly 1`] = `
 <div>
   <div
-    class="results-count"
+    class="results-count secondary-font"
   >
     x-results
   </div>
@@ -121,7 +121,7 @@ exports[`SortableTable renders changelog table correctly 1`] = `
 exports[`SortableTable renders highlights table correctly 1`] = `
 <div>
   <div
-    class="results-count"
+    class="results-count secondary-font"
   >
     x-results
   </div>
@@ -199,7 +199,7 @@ exports[`SortableTable renders highlights table correctly 1`] = `
 exports[`SortableTable renders in reverse order when sorting indicator is clicked 1`] = `
 <div>
   <div
-    class="results-count"
+    class="results-count secondary-font"
   >
     x-results
   </div>
@@ -277,7 +277,7 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
 exports[`SortableTable renders no results message 1`] = `
 <div>
   <div
-    class="results-count"
+    class="results-count secondary-font"
   >
     x-results
   </div>
@@ -326,7 +326,7 @@ exports[`SortableTable renders no results message 1`] = `
 exports[`SortableTable renders the singular x-result language key when there is only one result 1`] = `
 <div>
   <div
-    class="results-count"
+    class="results-count secondary-font"
   >
     x-result
   </div>

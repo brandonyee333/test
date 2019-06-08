@@ -13,7 +13,7 @@ exports[`TableResults renders content correctly 1`] = `
     description for the tab
   </h5>
   <div
-    class="results-count"
+    class="results-count secondary-font"
   >
     x-results
   </div>
