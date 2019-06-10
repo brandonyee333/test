@@ -12,21 +12,16 @@
  *
  */
 
-package com.liferay.osb.hook.upgrade.v5_1_0;
+package com.liferay.osb.hook.upgrade.v5_1_1;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.AccountEntryLanguageLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
-import com.liferay.osb.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
-import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
+import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -55,9 +50,6 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 			rs = ps.executeQuery();
 
-			long classNameId = ClassNameLocalServiceUtil.getClassNameId(
-				AccountEntry.class);
-
 			while (rs.next()) {
 				long accountEntryId = rs.getLong("accountEntryId");
 				long corpProjectId = rs.getLong("corpProjectId");
@@ -75,19 +67,7 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 					updateAccountEntryName(accountEntryId, corpProjectId, name);
 				}
 
-				boolean externalIdMappers =
-					ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
-						classNameId, accountEntryId,
-						ExternalIdMapperConstants.TYPE_ZENDESK);
-
-				if (externalIdMappers) {
-					Message message = new Message();
-
-					message.put("accountEntryId", accountEntryId);
-
-					MessageBusUtil.sendMessage(
-						"liferay/zendesk_account_entry_sync", message);
-				}
+				Thread.sleep(300);
 			}
 		}
 		finally {
@@ -149,13 +129,34 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 					AccountEntryLocalServiceUtil.getAccountEntry(
 						accountEntryId);
 
-				AccountEntryLanguageLocalServiceUtil.setAccountEntryLanguageIds(
-					analyticsCloudAccountEntryId,
-					accountEntry.getLanguageIds());
+				AccountEntry analyticsCloudAccountEntry =
+					AccountEntryLocalServiceUtil.getAccountEntry(
+						analyticsCloudAccountEntryId);
 
-				SupportRegionLocalServiceUtil.setAccountEntrySupportRegions(
-					analyticsCloudAccountEntryId,
-					accountEntry.getSupportRegionIds());
+				Address address = accountEntry.getAddress();
+
+				AccountEntryLocalServiceUtil.updateAccountEntry(
+					OSBConstants.USER_DEFAULT_USER_ID,
+					analyticsCloudAccountEntry.getAccountEntryId(),
+					analyticsCloudAccountEntry.getCorpProjectUuid(),
+					analyticsCloudAccountEntry.getDossieraAccountKey(),
+					analyticsCloudAccountEntry.getCorpEntryName(),
+					analyticsCloudAccountEntry.getName(),
+					analyticsCloudAccountEntry.getCode(),
+					analyticsCloudAccountEntry.getType(),
+					accountEntry.getIndustry(),
+					analyticsCloudAccountEntry.getPartnerEntryId(),
+					analyticsCloudAccountEntry.getPartnerManagedSupport(),
+					analyticsCloudAccountEntry.getTier(),
+					analyticsCloudAccountEntry.getMaxCustomers(),
+					analyticsCloudAccountEntry.getInstructions(),
+					analyticsCloudAccountEntry.getNotes(),
+					accountEntry.getLanguageIds(),
+					accountEntry.getSupportRegionIds(), address.getAddressId(),
+					address.getStreet1(), address.getStreet2(),
+					address.getStreet3(), address.getCity(), address.getZip(),
+					address.getRegionId(), address.getCountryId(),
+					analyticsCloudAccountEntry.getEWSADossieraProjectKey());
 			}
 		}
 		finally {
@@ -175,27 +176,16 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 			count++;
 		}
 
-		PreparedStatement ps = null;
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
-		try {
-			String sql =
-				"update OSB_AccountEntry set name = ?  where (accountEntryId " +
-					"= ?)";
+		accountEntry.setName(name);
 
-			ps = connection.prepareStatement(sql);
+		AccountEntryLocalServiceUtil.updateAccountEntry(accountEntry);
 
-			ps.setString(1, name);
-			ps.setLong(2, accountEntryId);
-
-			ps.executeUpdate();
-
-			if (corpProjectId > 0) {
-				RemoteCorpProjectLocalServiceUtil.updateCorpProject(
-					corpProjectId, name);
-			}
-		}
-		finally {
-			DataAccess.cleanUp(ps);
+		if (corpProjectId > 0) {
+			RemoteCorpProjectLocalServiceUtil.updateCorpProject(
+				corpProjectId, name);
 		}
 	}
 
