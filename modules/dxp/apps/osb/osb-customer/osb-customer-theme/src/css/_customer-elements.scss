@@ -3,13 +3,13 @@ html body {
 
 	&.has-control-menu {
 		main {
-			margin-top: ($navbar-height + $header-height -1);
+			margin-top: ($navbar-height + $header-height - 1);
 		}
 	}
 
 	#wrapper {
 		padding-top: 0;
-	} 
+	}
 }
 
 h1 {
