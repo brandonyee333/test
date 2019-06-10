@@ -116,7 +116,7 @@ public class ZendeskRequest {
 			jsonObject.put(_FIELD_PARAMETERS, parametersJSONObject);
 		}
 
-		if (Validator.isNotNull(_body)) {
+		if (_body != null) {
 			jsonObject.put(_FIELD_BODY, _body);
 		}
 

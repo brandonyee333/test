@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
 import com.liferay.portal.kernel.workflow.WorkflowTaskAssignee;
 import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
@@ -148,7 +147,7 @@ public class WorkflowTaskIndexer extends BaseIndexer<WorkflowTask> {
 			accountEntry = orderEntry.getAccountEntry();
 		}
 
-		if (Validator.isNotNull(accountEntry)) {
+		if (accountEntry != null) {
 			String salesforceOpportunityAction = GetterUtil.getString(
 				workflowContext.get(
 					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));

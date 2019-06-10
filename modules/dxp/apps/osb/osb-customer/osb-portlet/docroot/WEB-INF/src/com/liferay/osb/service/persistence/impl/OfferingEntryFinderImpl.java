@@ -365,7 +365,7 @@ public class OfferingEntryFinderImpl
 			else if (value instanceof Integer) {
 				Integer valueInteger = (Integer)value;
 
-				if (Validator.isNotNull(valueInteger)) {
+				if (valueInteger != null) {
 					qPos.add(valueInteger);
 				}
 			}

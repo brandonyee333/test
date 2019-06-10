@@ -184,7 +184,7 @@ public class JIRAIssue {
 			fieldsJSONObject.put("issuetype", issueTypeJSONObject);
 		}
 
-		if (Validator.isNotNull(_labels)) {
+		if (_labels != null) {
 			JSONArray labelsJSONArray = JSONFactoryUtil.createJSONArray();
 
 			for (String label : _labels) {

@@ -385,7 +385,7 @@ public class PartnerEntryFinderImpl
 			if (value instanceof Boolean) {
 				Boolean valueBoolean = (Boolean)value;
 
-				if (Validator.isNotNull(valueBoolean)) {
+				if (valueBoolean != null) {
 					qPos.add(valueBoolean);
 				}
 			}
@@ -401,7 +401,7 @@ public class PartnerEntryFinderImpl
 			else if (value instanceof Integer) {
 				Integer valueInteger = (Integer)value;
 
-				if (Validator.isNotNull(valueInteger)) {
+				if (valueInteger != null) {
 					qPos.add(valueInteger);
 				}
 			}
