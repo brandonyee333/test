@@ -31,7 +31,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<%
 		if (accountEntry.getType() != AccountEntryConstants.TYPE_INDIVIDUAL) {
-			results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, searchContainer.getStart(), searchContainer.getEnd());
+			results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			searchContainer.setTotal(results.size());
 			searchContainer.setResults(results);

@@ -65,6 +65,7 @@ page import="com.liferay.osb.util.OSBActionKeys" %><%@
 page import="com.liferay.osb.util.OSBConstants" %><%@
 page import="com.liferay.osb.util.VisibilityConstants" %><%@
 page import="com.liferay.osb.util.comparator.AccountEntryNameComparator" %><%@
+page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
