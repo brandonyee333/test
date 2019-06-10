@@ -1,0 +1,26 @@
+@component-name = "portal-web-smoke"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Smoke";
+
+	@description = "Ensure that the super admin can login successful."
+	@priority = "5"
+	test SuperAdminLogin {
+		MyFirstMacro.login(
+			userEmailAddress = "test@liferay.com",
+			userPassWord = "test");
+
+		if (IsElementPresent(locator1 = "JCTermsOfUse#TERMS_TITLE_FIELD")) {
+			MyFirstMacro.terms();
+		}
+
+		if (IsElementPresent(locator1 = "JCPasswordReminder#PASSWORD_REMINDER_TITLE_FIELD")) {
+			MyFirstMacro.passwordreminder(userPasswordReminder = "test");
+		}
+
+		MyFirstMacro.viewLogin();
+		User.logoutPG();
+	}
+}
