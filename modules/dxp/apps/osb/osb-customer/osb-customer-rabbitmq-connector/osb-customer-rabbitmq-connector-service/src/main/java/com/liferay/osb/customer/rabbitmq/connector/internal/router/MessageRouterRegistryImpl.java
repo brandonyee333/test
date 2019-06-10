@@ -48,8 +48,7 @@ public class MessageRouterRegistryImpl implements MessageRouterRegistry {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unregisterMessageRouter"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected synchronized void registerMessageRouter(
 			MessageRouter messageRouter, Map<String, Object> properties)

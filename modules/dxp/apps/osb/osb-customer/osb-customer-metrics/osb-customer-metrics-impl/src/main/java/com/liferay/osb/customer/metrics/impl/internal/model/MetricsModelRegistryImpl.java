@@ -45,8 +45,7 @@ public class MetricsModelRegistryImpl implements MetricsModelRegistry {
 	@Reference(
 		cardinality = ReferenceCardinality.MULTIPLE,
 		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		unbind = "unregisterMetricsModel"
+		policyOption = ReferencePolicyOption.GREEDY
 	)
 	protected void registerMetricsModel(
 			MetricsModel<?> metricsModel, Map<String, Object> properties)
