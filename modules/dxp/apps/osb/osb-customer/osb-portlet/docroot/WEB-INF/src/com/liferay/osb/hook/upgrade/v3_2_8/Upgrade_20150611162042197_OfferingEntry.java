@@ -91,7 +91,9 @@ public class Upgrade_20150611162042197_OfferingEntry
 				orderEntryId);
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
-			/*if (offeringEntry.getType() == OfferingEntryConstants.TYPE_TRIAL) {
+			/*if (offeringEntry.getType() ==
+			OfferingEntryConstants.TYPE_TRIAL) {
+
 				continue;
 			}
 
