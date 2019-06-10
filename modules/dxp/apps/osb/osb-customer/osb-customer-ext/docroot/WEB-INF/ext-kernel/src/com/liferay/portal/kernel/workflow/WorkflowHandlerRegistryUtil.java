@@ -18,9 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.WorkflowDefinitionLink;
-import com.liferay.portal.kernel.model.WorkflowInstanceLink;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalServiceUtil;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -251,29 +249,6 @@ public class WorkflowHandlerRegistryUtil {
 
 	private List<WorkflowHandler<?>> _getWorkflowHandlers() {
 		return ListUtil.fromMapValues(_workflowHandlerMap);
-	}
-
-	private boolean _hasWorkflowInstanceInProgress(
-			long companyId, long groupId, String className, long classPK)
-		throws PortalException {
-
-		WorkflowInstanceLink workflowInstanceLink =
-			WorkflowInstanceLinkLocalServiceUtil.fetchWorkflowInstanceLink(
-				companyId, groupId, className, classPK);
-
-		if (workflowInstanceLink == null) {
-			return false;
-		}
-
-		WorkflowInstance workflowInstance =
-			WorkflowInstanceManagerUtil.getWorkflowInstance(
-				companyId, workflowInstanceLink.getWorkflowInstanceId());
-
-		if (!workflowInstance.isComplete()) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private void _register(WorkflowHandler<?> workflowHandler) {
