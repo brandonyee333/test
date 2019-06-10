@@ -254,7 +254,8 @@ public class LicensePortlet extends OSBPortlet {
 			if (Validator.isNull(resourceID)) {
 				return;
 			}
-			else if (resourceID.equals("licenseKeySet")) {
+
+			if (resourceID.equals("licenseKeySet")) {
 				serveLicenseKeySet(resourceRequest, resourceResponse);
 			}
 			else {
