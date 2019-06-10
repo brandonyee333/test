@@ -63,7 +63,7 @@
 	}
 
 	.modal-body {
-		max-height: 82vh;
+		max-height: 100%;
 		padding: $padding-default $padding-default 48px;
 	}
 
@@ -79,6 +79,7 @@
 		border-top: 1px solid $color-divider;
 		height: 100%;
 		margin: 0;
+		overflow: auto;
 		position: absolute;
 	}
 
