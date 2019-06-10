@@ -9,7 +9,11 @@
 	z-index: 1034;
 
 	&.has-control-menu {
-		top: $navbar-height;
+		top: $navbar-desktop-height;
+
+		@include media-breakpoint-down(sm) {
+			top: $navbar-height;
+		}
 
 		.header-menu {
 			top: 120px;
