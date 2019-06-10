@@ -37,7 +37,7 @@
 	</#if>
 </head>
 
-<body class="${css_class}">
+<body class="${has_view_control_panel?string(css_class, '')}">
 
 <#if validator.isNotNull(google_tag_manager_id)>
 	<noscript>
@@ -54,7 +54,7 @@
 <div id="wrapper">
 	<#include "${full_templates_path}/icons.ftl" parse=false />
 
-	<header class="header ${has_view_control_panel?string('has-control-panel', '')}" id="banner">
+	<header class="header ${has_view_control_panel?string('has-control-menu', '')}" id="banner">
 		<#include "${full_templates_path}/navigation.ftl" />
 	</header>
 

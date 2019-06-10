@@ -1,9 +1,15 @@
 html body {
 	color: $color-body;
 
+	&.has-control-menu {
+		main {
+			margin-top: ($navbar-height + $header-height -1);
+		}
+	}
+
 	#wrapper {
 		padding-top: 0;
-	}
+	} 
 }
 
 h1 {
@@ -200,7 +206,7 @@ select {
 
 main {
 	border-bottom: 1px solid $color-divider;
-	margin-top: $navbar-height;
+	margin-top: $header-height;
 }
 
 textarea {

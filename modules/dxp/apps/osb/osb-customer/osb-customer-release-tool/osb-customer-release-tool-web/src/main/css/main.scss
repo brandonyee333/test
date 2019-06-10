@@ -2,9 +2,9 @@
 
 @import "base-variables";
 
-header:not(.has-control-panel) + main {
+.has-control-menu main {
 	.lfr-summary-column .modal.show {
-		top: $header-height;
+		top: ($navbar-height + $header-height -1);
 	}
 }
 
