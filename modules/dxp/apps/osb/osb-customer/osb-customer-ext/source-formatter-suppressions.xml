@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/ext-kernel/src/com/liferay/portal/kernel/workflow/WorkflowHandlerRegistryUtil\.java" />
+	</source-check>
+</suppressions>
