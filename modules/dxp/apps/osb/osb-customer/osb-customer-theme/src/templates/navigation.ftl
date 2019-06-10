@@ -1,6 +1,6 @@
 <div class="container-fluid container-fluid-max-xl">
 	<div class="header-inner row">
-		<div class="col-md-3 header-content">
+		<div class="col-sm-3 header-content">
 			<a class="header-link" href="${site_logo_url}" title="Home">
 				<svg alt="<@liferay.language key="liferay-help-center" />" class="header-logo">
 					<use xlink:href="#liferay-waffle" />
@@ -14,7 +14,7 @@
 			</a>
 		</div>
 
-		<div class="col-md-5 header-content header-menu-list">
+		<div class="col-sm-5 header-content header-menu-list">
 			<div class="hide list-item" id="menuItemProducts">
 				<h5>
 					<@liferay.language key="products" />
@@ -64,7 +64,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-4 header-content user-wrapper">
+		<div class="col-sm-4 header-content user-wrapper">
 			<div class="user">
 				<#if is_signed_in>
 					<div class="user-personal-bar" data-toggle="dropdown">
