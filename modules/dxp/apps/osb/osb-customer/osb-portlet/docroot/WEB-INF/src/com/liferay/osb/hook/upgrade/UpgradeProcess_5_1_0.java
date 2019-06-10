@@ -17,8 +17,8 @@ package com.liferay.osb.hook.upgrade;
 import com.liferay.osb.hook.upgrade.v5_1_0.UpgradeAccountCustomer;
 import com.liferay.osb.hook.upgrade.v5_1_0.UpgradeAccountEntry;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.ListUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,11 +27,7 @@ import java.util.List;
 public class UpgradeProcess_5_1_0 extends BaseUpgradeProcess {
 
 	public List<UpgradeProcess> getManualUpgradeProcessClasses() {
-		List<UpgradeProcess> manualUpgrades = new ArrayList<>();
-
-		manualUpgrades.add(new UpgradeAccountEntry());
-
-		return manualUpgrades;
+		return ListUtil.toList(new UpgradeAccountEntry());
 	}
 
 	@Override
