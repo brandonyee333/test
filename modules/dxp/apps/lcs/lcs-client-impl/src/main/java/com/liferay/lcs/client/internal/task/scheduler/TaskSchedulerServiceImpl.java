@@ -19,7 +19,6 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.exception.InitializationException;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
@@ -54,7 +53,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * @author Riccardo Ferrari
@@ -451,29 +449,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_cancelAllTasks();
 
 		_executeLCSClusterEntryTokenCheckTask(false);
-	}
-
-	private <T> T _resolve(Class<T> clazz) throws InitializationException {
-		ServiceTracker<T, T> serviceTracker = new ServiceTracker<>(
-			_bundleContext, clazz, null);
-
-		int allowedAttempts = 5;
-
-		serviceTracker.open();
-
-		while (allowedAttempts-- > 0) {
-			try {
-				return serviceTracker.waitForService(5 * 1000L);
-			}
-			catch (InterruptedException ie) {
-				if (_log.isTraceEnabled()) {
-					_log.error("Waiting for service " + clazz);
-				}
-			}
-		}
-
-		throw new InitializationException(
-			"LCS Client encountered  timeout while waiting for " + clazz);
 	}
 
 	private void _restart() {
