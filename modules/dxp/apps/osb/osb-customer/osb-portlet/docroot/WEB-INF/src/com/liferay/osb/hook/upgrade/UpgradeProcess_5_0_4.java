@@ -18,8 +18,8 @@ import com.liferay.osb.hook.upgrade.v5_0_4.Upgrade_20190122115519440_ListType;
 import com.liferay.osb.hook.upgrade.v5_0_4.Upgrade_20190124135600134_AccountEnvironment;
 import com.liferay.osb.hook.upgrade.v5_0_4.Upgrade_20190129102524044_AuditEntry;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.ListUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +28,11 @@ import java.util.List;
 public class UpgradeProcess_5_0_4 extends BaseUpgradeProcess {
 
 	public List<UpgradeProcess> getManualUpgradeProcessClasses() {
-		return ListUtil.toList(new Upgrade_20190129102524044_AuditEntry());
+		List<UpgradeProcess> manualUpgrades = new ArrayList<>();
+
+		manualUpgrades.add(new Upgrade_20190129102524044_AuditEntry());
+
+		return manualUpgrades;
 	}
 
 	@Override
