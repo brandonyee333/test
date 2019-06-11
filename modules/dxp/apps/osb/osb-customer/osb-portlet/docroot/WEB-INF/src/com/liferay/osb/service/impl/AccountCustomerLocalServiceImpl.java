@@ -65,7 +65,7 @@ public class AccountCustomerLocalServiceImpl
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
-		validate(accountEntryId, closedWatcher);
+		validate(accountEntryId);
 
 		AccountCustomer accountCustomer = fetchAccountCustomer(
 			customerUserId, accountEntryId);
@@ -500,9 +500,7 @@ public class AccountCustomerLocalServiceImpl
 			StringPool.BLANK, StringPool.BLANK);
 	}
 
-	protected void validate(long accountEntryId, boolean closedWatcher)
-		throws PortalException {
-
+	protected void validate(long accountEntryId) throws PortalException {
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
@@ -516,6 +514,13 @@ public class AccountCustomerLocalServiceImpl
 		if ((accountEntryCustomersCount + 1) > accountEntry.getMaxCustomers()) {
 			throw new AccountEntryMaximumCustomersException();
 		}
+	}
+
+	protected void validate(long accountEntryId, boolean closedWatcher)
+		throws PortalException {
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
 
 		if (accountEntry.isApproved() && closedWatcher) {
 			throw new AccountCustomerClosedWatcherException();
