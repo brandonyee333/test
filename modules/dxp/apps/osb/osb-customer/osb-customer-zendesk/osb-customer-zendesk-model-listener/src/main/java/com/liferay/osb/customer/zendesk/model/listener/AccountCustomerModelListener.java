@@ -98,7 +98,7 @@ public class AccountCustomerModelListener
 			}
 		}
 		catch (Exception e) {
-			_log.error(e);
+			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
 		}
