@@ -17,7 +17,6 @@ package com.liferay.lcs.client.internal.management;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.lang.management.ManagementFactory;
 
@@ -123,7 +122,7 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 		Map<String, Map<String, Object>> objectNamesAttributes =
 			new HashMap<>();
 
-		if (Validator.isNull(mapKeyStrategy)) {
+		if (mapKeyStrategy == null) {
 			mapKeyStrategy = new CanonicalNameMapKeyStrategy();
 		}
 
@@ -178,7 +177,7 @@ public class MBeanServerServiceImpl implements MBeanServerService {
 
 		Set<ObjectName> objectNames = new HashSet<>();
 
-		if (Validator.isNull(attributeNames)) {
+		if (attributeNames == null) {
 			attributeNames = new ArrayList<>();
 		}
 

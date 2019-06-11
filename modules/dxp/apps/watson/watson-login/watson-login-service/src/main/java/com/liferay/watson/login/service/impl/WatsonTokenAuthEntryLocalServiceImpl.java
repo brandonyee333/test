@@ -58,8 +58,7 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
 
-		if (Validator.isNotNull(watsonTokenAuthEntry) &&
-			watsonTokenAuthEntry.isActive() &&
+		if ((watsonTokenAuthEntry != null) && watsonTokenAuthEntry.isActive() &&
 			!watsonTokenAuthEntry.isExpired() &&
 			loginIP.equals(watsonTokenAuthEntry.getLoginIP())) {
 
@@ -84,8 +83,7 @@ public class WatsonTokenAuthEntryLocalServiceImpl
 		WatsonTokenAuthEntry watsonTokenAuthEntry = fetchWatsonTokenAuthEntry(
 			user);
 
-		if (Validator.isNotNull(watsonTokenAuthEntry) &&
-			watsonTokenAuthEntry.isActive() &&
+		if ((watsonTokenAuthEntry != null) && watsonTokenAuthEntry.isActive() &&
 			!watsonTokenAuthEntry.isExpired() &&
 			(watsonTokenAuthEntry.getStatus() ==
 				WatsonTokenAuthEntryConstants.AUTHORIZATION_STATUS_APPROVED)) {
