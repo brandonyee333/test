@@ -87,9 +87,7 @@ public class LCSEventManager {
 
 	public void unsubscribe(LCSEventListener lcsEventListener) {
 		_lcsEventLCSEventListeners.forEach(
-			(key, value) -> {
-				value.remove(lcsEventListener);
-			});
+			(key, value) -> value.remove(lcsEventListener));
 	}
 
 	@Activate
