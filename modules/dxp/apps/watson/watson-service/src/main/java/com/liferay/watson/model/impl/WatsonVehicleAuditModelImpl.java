@@ -1169,7 +1169,12 @@ public class WatsonVehicleAuditModelImpl
 	@Override
 	public WatsonVehicleAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonVehicleAudit>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1429,8 +1434,12 @@ public class WatsonVehicleAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonVehicleAudit>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonVehicleAudit>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonVehicleAuditId;
 	private long _groupId;

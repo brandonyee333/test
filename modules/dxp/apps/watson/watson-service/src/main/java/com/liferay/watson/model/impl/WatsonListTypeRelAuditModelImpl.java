@@ -1044,7 +1044,12 @@ public class WatsonListTypeRelAuditModelImpl
 	@Override
 	public WatsonListTypeRelAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonListTypeRelAudit>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1278,8 +1283,12 @@ public class WatsonListTypeRelAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonListTypeRelAudit>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonListTypeRelAudit>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonListTypeRelAuditId;
 	private long _groupId;

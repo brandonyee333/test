@@ -755,7 +755,12 @@ public class WatsonHistoryAuditModelImpl
 	@Override
 	public WatsonHistoryAudit toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonHistoryAudit>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -964,8 +969,12 @@ public class WatsonHistoryAuditModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonHistoryAudit>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonHistoryAudit>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonHistoryAuditId;
 	private long _groupId;

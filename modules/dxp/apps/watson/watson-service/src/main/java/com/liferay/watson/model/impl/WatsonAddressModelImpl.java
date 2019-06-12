@@ -1698,7 +1698,12 @@ public class WatsonAddressModelImpl
 	@Override
 	public WatsonAddress toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonAddress>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -2034,8 +2039,12 @@ public class WatsonAddressModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonAddress>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonAddress>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonAddressId;
 	private long _groupId;

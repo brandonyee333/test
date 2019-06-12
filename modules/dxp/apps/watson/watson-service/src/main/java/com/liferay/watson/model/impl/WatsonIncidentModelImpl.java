@@ -1287,7 +1287,12 @@ public class WatsonIncidentModelImpl
 	@Override
 	public WatsonIncident toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonIncident>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1572,8 +1577,12 @@ public class WatsonIncidentModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonIncident>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonIncident>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonIncidentId;
 	private long _groupId;

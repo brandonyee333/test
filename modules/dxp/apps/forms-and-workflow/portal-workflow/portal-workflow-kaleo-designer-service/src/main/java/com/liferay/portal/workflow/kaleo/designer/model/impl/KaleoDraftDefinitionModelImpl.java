@@ -1015,7 +1015,12 @@ public class KaleoDraftDefinitionModelImpl
 	@Override
 	public KaleoDraftDefinition toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, KaleoDraftDefinition>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1270,8 +1275,12 @@ public class KaleoDraftDefinitionModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, KaleoDraftDefinition>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, KaleoDraftDefinition>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _kaleoDraftDefinitionId;
 	private long _groupId;

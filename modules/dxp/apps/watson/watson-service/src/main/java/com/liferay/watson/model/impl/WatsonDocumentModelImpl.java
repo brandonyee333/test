@@ -807,7 +807,12 @@ public class WatsonDocumentModelImpl
 	@Override
 	public WatsonDocument toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonDocument>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1037,8 +1042,12 @@ public class WatsonDocumentModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonDocument>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonDocument>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonDocumentId;
 	private long _groupId;

@@ -808,7 +808,12 @@ public class WatsonRelationshipModelImpl
 	@Override
 	public WatsonRelationship toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonRelationship>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1031,8 +1036,12 @@ public class WatsonRelationshipModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonRelationship>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonRelationship>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonRelationshipId;
 	private long _groupId;

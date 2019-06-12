@@ -961,7 +961,12 @@ public class WatsonListTypeRelModelImpl
 	@Override
 	public WatsonListTypeRel toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonListTypeRel>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1184,8 +1189,12 @@ public class WatsonListTypeRelModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonListTypeRel>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonListTypeRel>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonListTypeRelId;
 	private long _groupId;

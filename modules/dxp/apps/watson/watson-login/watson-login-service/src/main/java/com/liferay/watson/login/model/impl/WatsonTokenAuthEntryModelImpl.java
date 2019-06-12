@@ -786,7 +786,12 @@ public class WatsonTokenAuthEntryModelImpl
 	@Override
 	public WatsonTokenAuthEntry toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = _escapedModelProxyProviderFunction.apply(
+			Function<InvocationHandler, WatsonTokenAuthEntry>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -1021,8 +1026,12 @@ public class WatsonTokenAuthEntryModelImpl
 		return sb.toString();
 	}
 
-	private static final Function<InvocationHandler, WatsonTokenAuthEntry>
-		_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, WatsonTokenAuthEntry>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _watsonTokenAuthEntryId;
 	private long _companyId;
