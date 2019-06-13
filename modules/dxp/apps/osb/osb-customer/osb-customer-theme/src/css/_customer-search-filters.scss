@@ -3,7 +3,7 @@
 	overflow: auto;
 
 	.form-control {
-		border-color: transparent;
+		background-color: $color-white;
 		display: inline-block;
 		padding-right: 40px;
 
@@ -33,6 +33,11 @@
 		&:last-child {
 			border-bottom-right-radius: $border-radius;
 			border-top-right-radius: $border-radius;
+		}
+
+		select {
+			background-color: $color-white;
+			border-width: 0;
 		}
 
 		.control-label {

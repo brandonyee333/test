@@ -1,27 +1,9 @@
-select.form-control {
-	border: 1px solid $input-border-color;
-
-	&,
-	&:active,
-	&:disabled,
-	&:focus {
-		background-color: $color-white;
-	}
-}
-
 .borderless.form-control {
 	border-color: transparent;
 
 	&:active,
 	&:focus {
 		border: 1px solid $input-border-focus;
-	}
-}
-
-.form-control {
-	&:disabled {
-		background-color: $color-divider;
-		color: $color-default-disabled;
 	}
 }
 
@@ -32,7 +14,6 @@ select.form-control {
 .form-group {
 	.control-label {
 		color: $color-default;
-		font-weight: $font-weight-normal;
 		text-transform: initial;
 
 		.lexicon-icon-asterisk {
@@ -45,8 +26,8 @@ select.form-control {
 	}
 
 	.form-control {
-		background-color: $color-white;
-		border-color: $color-border;
+		background-color: $color-input-grey;
+		border-color: transparent;
 	}
 }
 

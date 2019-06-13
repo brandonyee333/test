@@ -31,6 +31,12 @@
 		margin: 0;
 	}
 
+	select,
+	.text-filter {
+		background-color: $color-white;
+		border: 1px solid $input-border-color;
+	}
+
 	.filter-checkbox {
 		margin-right: 8px;
 	}
