@@ -75,7 +75,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 				</aui:col>
 
 				<aui:col width="<%= 20 %>">
-					<aui:button id="activationKeyDownloadButton" onClick='<%= renderResponse.getNamespace() + "generateLicenseKey();" %>' value="download" />
+					<aui:button cssClass="btn-primary" id="activationKeyDownloadButton" onClick='<%= renderResponse.getNamespace() + "generateLicenseKey();" %>' value="download" />
 				</aui:col>
 			</aui:row>
 		</div>
