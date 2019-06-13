@@ -226,42 +226,6 @@ textarea {
 	text-align: center;
 }
 
-.search-lg,
-.search-nav {
-	input[type="search"] {
-		background-image: clay-icon(search, $color-primary);
-		background-repeat: no-repeat;
-		box-shadow: 0 8px 16px -8px rgba(39, 40, 51, 0.05);
-
-		&:focus {
-			background-image: clay-icon(times, $color-default);
-			background-size: 10px;
-		}
-	}
-}
-
-.search-lg {
-	input[type="search"] {
-		background-position: right 24px center;
-		background-size: 16px;
-		height: $input-height-lg;
-		padding-left: $padding-default;
-		padding-right: 44.8px;
-	}
-}
-
-.search-nav {
-	max-width: 232px;
-
-	input[type="search"] {
-		background-position: right 11.2px center;
-		background-size: 12px;
-		font-size: $h5-font-size;
-		height: 36px;
-		padding-right: 20px;
-	}
-}
-
 .taglib-empty-result-message {
 	margin-bottom: 64px;
 	padding-bottom: 56px;
