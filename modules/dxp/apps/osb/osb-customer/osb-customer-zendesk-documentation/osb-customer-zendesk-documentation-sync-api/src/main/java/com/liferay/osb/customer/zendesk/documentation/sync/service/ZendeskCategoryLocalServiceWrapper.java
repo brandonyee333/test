@@ -319,13 +319,14 @@ public class ZendeskCategoryLocalServiceWrapper
 	public
 		com.liferay.osb.customer.zendesk.documentation.sync.model.
 			ZendeskCategory updateZendeskCategory(
-					long zendeskCategoryId, String documentationOriginalURL,
-					String articleLabels, long remoteUserSegmentId)
+					long zendeskCategoryId, String documentationKey,
+					String documentationOriginalURL, String articleLabels,
+					long remoteUserSegmentId)
 				throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _zendeskCategoryLocalService.updateZendeskCategory(
-			zendeskCategoryId, documentationOriginalURL, articleLabels,
-			remoteUserSegmentId);
+			zendeskCategoryId, documentationKey, documentationOriginalURL,
+			articleLabels, remoteUserSegmentId);
 	}
 
 	/**

@@ -235,8 +235,9 @@ public interface ZendeskCategoryLocalService
 		throws PortalException;
 
 	public ZendeskCategory updateZendeskCategory(
-			long zendeskCategoryId, String documentationOriginalURL,
-			String articleLabels, long remoteUserSegmentId)
+			long zendeskCategoryId, String documentationKey,
+			String documentationOriginalURL, String articleLabels,
+			long remoteUserSegmentId)
 		throws PortalException;
 
 	/**

@@ -31,6 +31,9 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -217,6 +220,32 @@ public class ZendeskArticleAttachmentModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, ZendeskArticleAttachment>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			ZendeskArticleAttachment.class.getClassLoader(),
+			ZendeskArticleAttachment.class, ModelWrapper.class);
+
+		try {
+			Constructor<ZendeskArticleAttachment> constructor =
+				(Constructor<ZendeskArticleAttachment>)
+					proxyClass.getConstructor(InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<ZendeskArticleAttachment, Object>>
@@ -513,10 +542,13 @@ public class ZendeskArticleAttachmentModelImpl
 	@Override
 	public ZendeskArticleAttachment toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel =
-				(ZendeskArticleAttachment)ProxyUtil.newProxyInstance(
-					_classLoader, _escapedModelInterfaces,
-					new AutoEscapeBeanHandler(this));
+			Function<InvocationHandler, ZendeskArticleAttachment>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
+				new AutoEscapeBeanHandler(this));
 		}
 
 		return _escapedModel;
@@ -716,11 +748,14 @@ public class ZendeskArticleAttachmentModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		ZendeskArticleAttachment.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		ZendeskArticleAttachment.class, ModelWrapper.class
-	};
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function
+			<InvocationHandler, ZendeskArticleAttachment>
+				_escapedModelProxyProviderFunction =
+					_getProxyProviderFunction();
+
+	}
 
 	private long _zendeskArticleAttachmentId;
 	private long _zendeskArticleId;

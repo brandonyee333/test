@@ -31,6 +31,9 @@ import com.liferay.portal.kernel.util.StringBundler;
 
 import java.io.Serializable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
+
 import java.sql.Types;
 
 import java.util.Collections;
@@ -215,6 +218,32 @@ public class ZendeskSectionModelImpl
 		getAttributeSetterBiConsumers() {
 
 		return _attributeSetterBiConsumers;
+	}
+
+	private static Function<InvocationHandler, ZendeskSection>
+		_getProxyProviderFunction() {
+
+		Class<?> proxyClass = ProxyUtil.getProxyClass(
+			ZendeskSection.class.getClassLoader(), ZendeskSection.class,
+			ModelWrapper.class);
+
+		try {
+			Constructor<ZendeskSection> constructor =
+				(Constructor<ZendeskSection>)proxyClass.getConstructor(
+					InvocationHandler.class);
+
+			return invocationHandler -> {
+				try {
+					return constructor.newInstance(invocationHandler);
+				}
+				catch (ReflectiveOperationException roe) {
+					throw new InternalError(roe);
+				}
+			};
+		}
+		catch (NoSuchMethodException nsme) {
+			throw new InternalError(nsme);
+		}
 	}
 
 	private static final Map<String, Function<ZendeskSection, Object>>
@@ -481,8 +510,12 @@ public class ZendeskSectionModelImpl
 	@Override
 	public ZendeskSection toEscapedModel() {
 		if (_escapedModel == null) {
-			_escapedModel = (ZendeskSection)ProxyUtil.newProxyInstance(
-				_classLoader, _escapedModelInterfaces,
+			Function<InvocationHandler, ZendeskSection>
+				escapedModelProxyProviderFunction =
+					EscapedModelProxyProviderFunctionHolder.
+						_escapedModelProxyProviderFunction;
+
+			_escapedModel = escapedModelProxyProviderFunction.apply(
 				new AutoEscapeBeanHandler(this));
 		}
 
@@ -674,11 +707,12 @@ public class ZendeskSectionModelImpl
 		return sb.toString();
 	}
 
-	private static final ClassLoader _classLoader =
-		ZendeskSection.class.getClassLoader();
-	private static final Class<?>[] _escapedModelInterfaces = new Class[] {
-		ZendeskSection.class, ModelWrapper.class
-	};
+	private static class EscapedModelProxyProviderFunctionHolder {
+
+		private static final Function<InvocationHandler, ZendeskSection>
+			_escapedModelProxyProviderFunction = _getProxyProviderFunction();
+
+	}
 
 	private long _zendeskSectionId;
 	private Date _modifiedDate;
