@@ -171,8 +171,8 @@ public class AdminPortlet extends MVCPortlet {
 
 		if (zendeskCategoryId > 0) {
 			_zendeskCategoryLocalService.updateZendeskCategory(
-				zendeskCategoryId, documentationOriginalURL, articleLabels,
-				remoteUserSegmentId);
+				zendeskCategoryId, documentationKey, documentationOriginalURL,
+				articleLabels, remoteUserSegmentId);
 		}
 		else {
 			_zendeskCategoryLocalService.addZendeskCategory(

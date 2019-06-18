@@ -65,8 +65,9 @@ public class ZendeskCategoryLocalServiceImpl
 	}
 
 	public ZendeskCategory updateZendeskCategory(
-			long zendeskCategoryId, String documentationOriginalURL,
-			String articleLabels, long remoteUserSegmentId)
+			long zendeskCategoryId, String documentationKey,
+			String documentationOriginalURL, String articleLabels,
+			long remoteUserSegmentId)
 		throws PortalException {
 
 		ZendeskCategory zendeskCategory =
@@ -74,6 +75,7 @@ public class ZendeskCategoryLocalServiceImpl
 
 		long oldRemoteUserSegmentId = zendeskCategory.getRemoteUserSegmentId();
 
+		zendeskCategory.setDocumentationKey(documentationKey);
 		zendeskCategory.setDocumentationOriginalURL(documentationOriginalURL);
 		zendeskCategory.setArticleLabels(articleLabels);
 		zendeskCategory.setRemoteUserSegmentId(remoteUserSegmentId);

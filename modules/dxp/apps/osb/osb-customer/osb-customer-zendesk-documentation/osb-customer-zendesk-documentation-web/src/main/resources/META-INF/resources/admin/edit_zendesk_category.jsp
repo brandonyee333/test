@@ -43,7 +43,7 @@ portletDisplay.setURLBack(redirect);
 
 	<aui:fieldset-group markupView="lexicon">
 		<aui:fieldset>
-			<aui:input disabled="<%= zendeskCategory != null %>" label="documentation-guide-zip-file" name="documentationKey" />
+			<aui:input label="documentation-guide-zip-file" name="documentationKey" />
 
 			<aui:input name="documentationOriginalURL" />
 
