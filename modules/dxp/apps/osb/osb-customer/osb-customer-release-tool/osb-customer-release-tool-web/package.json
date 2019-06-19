@@ -68,7 +68,7 @@
 		"lint": "xo",
 		"lint:fix": "xo --fix",
 		"start": "webpack-dev-server --config webpack.dev.js",
-		"test_DISABLED": "jest",
+		"test": "jest",
 		"webpack": "webpack --config webpack.prod.js"
 	},
 	"version": "1.0.0",
