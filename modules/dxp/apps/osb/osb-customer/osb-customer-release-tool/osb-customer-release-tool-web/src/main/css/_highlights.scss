@@ -19,6 +19,10 @@
 	}
 }
 
+.highlights-table {
+	table-layout: fixed;
+}
+
 .lfr-details-column,
 .lfr-released-column {
 	padding-top: $padding-default;
@@ -52,7 +56,7 @@
 
 .lfr-released-column {
 	vertical-align: top;
-	width: 10%;
+	width: 12%;
 }
 
 .no-highlights {
