@@ -112,7 +112,7 @@ exports[`Highlights renders correctly 1`] = `
           <th
             class="lfr-released-column"
           >
-            release
+            date
              
             <svg
               class="arrow-up desc lexicon-icon sorting-indicator"
@@ -126,7 +126,7 @@ exports[`Highlights renders correctly 1`] = `
           <th
             class="lfr-details-column"
           >
-            details
+            release
           </th>
         </tr>
       </thead>
@@ -287,7 +287,7 @@ exports[`Highlights renders no results correctly 1`] = `
           <th
             class="lfr-released-column"
           >
-            release
+            date
              
             <svg
               class="arrow-up desc lexicon-icon sorting-indicator"
@@ -301,7 +301,7 @@ exports[`Highlights renders no results correctly 1`] = `
           <th
             class="lfr-details-column"
           >
-            details
+            release
           </th>
         </tr>
       </thead>

@@ -134,7 +134,7 @@ exports[`SortableTable renders highlights table correctly 1`] = `
         <th
           class="lfr-released-column"
         >
-          release
+          date
            
           <svg
             class="arrow-up desc lexicon-icon sorting-indicator"
@@ -148,7 +148,7 @@ exports[`SortableTable renders highlights table correctly 1`] = `
         <th
           class="lfr-details-column"
         >
-          details
+          release
         </th>
       </tr>
     </thead>
@@ -212,7 +212,7 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
         <th
           class="lfr-released-column"
         >
-          release
+          date
            
           <svg
             class="arrow-up asc lexicon-icon sorting-indicator"
@@ -226,7 +226,7 @@ exports[`SortableTable renders in reverse order when sorting indicator is clicke
         <th
           class="lfr-details-column"
         >
-          details
+          release
         </th>
       </tr>
     </thead>
@@ -290,7 +290,7 @@ exports[`SortableTable renders no results message 1`] = `
         <th
           class="lfr-released-column"
         >
-          release
+          date
            
           <svg
             class="arrow-up desc lexicon-icon sorting-indicator"
@@ -304,7 +304,7 @@ exports[`SortableTable renders no results message 1`] = `
         <th
           class="lfr-details-column"
         >
-          details
+          release
         </th>
       </tr>
     </thead>
