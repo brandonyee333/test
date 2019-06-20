@@ -1,7 +1,7 @@
 {
 	"dependencies": {
 		"clay-css": "^2.2.0",
-		"liferay-help-center-megamenu": "github:rdai10/liferay-help-center-megamenu#v1.2.0"
+		"liferay-help-center-megamenu": "github:rdai10/liferay-help-center-megamenu#v1.3.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.1.2",
