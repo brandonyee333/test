@@ -261,7 +261,7 @@
 	}
 
 	function handleMenuClickOutside(event) {
-		if (checkClickOutside(event, menuItems) && !languageToggleSelected) {
+		if (!languageToggleSelected && checkClickOutside(event, menuItems)) {
 			removeActiveClasses();
 		} else if (languageToggleSelected) {
 			languageToggleSelected = false;
@@ -295,15 +295,16 @@
 
 	function validateCurrentActiveMenu(target) {
 		var targetParentNode = target.parentNode;
+
 		var activeHeading = targetParentNode && targetParentNode.classList.contains('active');
 
 		var isMenuCaret = target.classList.contains('lexicon-icon-menu-caret');
-		var targetGrandParentNode = isMenuCaret ? target.parentNode.parentNode : null;
+		var targetGrandParentNode = isMenuCaret ? targetParentNode.parentNode : null;
 		var activeMenuCaret = targetGrandParentNode && targetGrandParentNode.classList.contains('active');
 
 		var activeMenuItem = target.classList.contains('active');
 
-		return (activeMenuItem || activeHeading || activeMenuCaret);
+		return (activeHeading || activeMenuCaret || activeMenuItem);
 	}
 
 	function validateLanguageToggleSelection() {
@@ -337,8 +338,10 @@
 
 						var languageToggle = item.querySelector('#languageToggle');
 
-						languageToggle.removeEventListener('click', validateLanguageToggleSelection);
-						languageToggle.addEventListener('click', validateLanguageToggleSelection);
+						if (languageToggle) {
+							languageToggle.removeEventListener('click', validateLanguageToggleSelection);
+							languageToggle.addEventListener('click', validateLanguageToggleSelection);
+						}
 					}
 				}
 			);
