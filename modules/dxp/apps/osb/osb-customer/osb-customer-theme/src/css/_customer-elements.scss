@@ -163,6 +163,7 @@ textarea {
 	background-clip: border-box;
 	background-color: $color-input-grey;
 	border-radius: $input-border-radius;
+	border-width: 0;
 	color: $color-default;
 	display: block;
 	font-size: $font-size-base;
