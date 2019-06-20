@@ -230,24 +230,6 @@
 		);
 	}
 
-	function checkSelectLanguageToggle() {
-		var languageToggle = document.querySelector('.language');
-
-		var selectLanguage = false;
-
-		if (hasLanguageToggle && !languageToggle) {
-			hasLanguageToggle = false;
-			selectLanguage = true;
-		}
-
-		if (!hasLanguageToggle && languageToggle) {
-			hasLanguageToggle = true;
-			selectLanguage = true;
-		}
-
-		return selectLanguage;
-	}
-
 	function instantiateMegaMenu(event) {
 		var currentTargetId = event.currentTarget.id;
 
@@ -279,13 +261,10 @@
 	}
 
 	function handleMenuClickOutside(event) {
-		var headerMenus = document.querySelectorAll('.header-menu');
-
-		if (checkClickOutside(event, menuItems)
-			&& checkClickOutside(event, headerMenus)
-			&& !checkSelectLanguageToggle()
-		) {
+		if (checkClickOutside(event, menuItems) && !languageToggleSelected) {
 			removeActiveClasses();
+		} else if (languageToggleSelected) {
+			languageToggleSelected = false;
 		}
 	}
 
@@ -314,26 +293,55 @@
 		);
 	}
 
-	var hasLanguageToggle = true;
+	function validateCurrentActiveMenu(target) {
+		var targetParentNode = target.parentNode;
+		var activeHeading = targetParentNode && targetParentNode.classList.contains('active');
+
+		var isMenuCaret = target.classList.contains('lexicon-icon-menu-caret');
+		var targetGrandParentNode = isMenuCaret ? target.parentNode.parentNode : null;
+		var activeMenuCaret = targetGrandParentNode && targetGrandParentNode.classList.contains('active');
+
+		var activeMenuItem = target.classList.contains('active');
+
+		return (activeMenuItem || activeHeading || activeMenuCaret);
+	}
+
+	function validateLanguageToggleSelection() {
+		languageToggleSelected = true;
+	}
+
+	var languageToggleSelected = false;
 
 	var menuItems = document.querySelectorAll('.header-menu-list .list-item');
 
 	Array.prototype.forEach.call(
 		menuItems,
 		function(item) {
-			item.classList.remove('hide');
+			item.classList.remove('d-none');
 
-			item.addEventListener('click', function(event) {
-				if (!item.classList.contains('active')) {
-					removeActiveClasses();
+			item.addEventListener(
+				'click',
+				function(event) {
+					var target = event.target;
 
-					item.classList.add('active');
+					if (validateCurrentActiveMenu(target)) {
+						item.classList.remove('active');
+					} else {
+						removeActiveClasses();
 
-					if (!item.querySelector('.header-menu-content')) {
-						instantiateMegaMenu(event);
+						item.classList.add('active');
+
+						if (!item.querySelector('.header-menu-content')) {
+							instantiateMegaMenu(event);
+						}
+
+						var languageToggle = item.querySelector('#languageToggle');
+
+						languageToggle.removeEventListener('click', validateLanguageToggleSelection);
+						languageToggle.addEventListener('click', validateLanguageToggleSelection);
 					}
 				}
-			});
+			);
 		}
 	);
 </script>
