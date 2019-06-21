@@ -62,6 +62,7 @@ public class UserSynchronizer {
 		Set<String> tags = new HashSet<>();
 
 		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
+		tags.add(ZendeskTagConstants.OSB_LIFERAY_EMPLOYEE);
 
 		update(user, null, tags);
 	}
@@ -244,6 +245,20 @@ public class UserSynchronizer {
 			tags.add(ZendeskTagConstants.OSB_CUSTOMER);
 		}
 
+		// Liferay Employee
+
+		boolean liferayEmployee = false;
+
+		if (_organizationLocalService.hasUserOrganization(
+				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+			liferayEmployee = true;
+		}
+
+		if (!liferayEmployee) {
+			tags.add(ZendeskTagConstants.OSB_LIFERAY_EMPLOYEE);
+		}
+
 		// Partner
 
 		boolean partnerManagedSupportDeveloper = false;
@@ -276,9 +291,7 @@ public class UserSynchronizer {
 
 		// Knowledge base
 
-		if (!customer && partnerWorkers.isEmpty() &&
-			!_organizationLocalService.hasUserOrganization(
-				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) &&
+		if (!customer && partnerWorkers.isEmpty() && !liferayEmployee &&
 			!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
 				userId, false)) {
 
