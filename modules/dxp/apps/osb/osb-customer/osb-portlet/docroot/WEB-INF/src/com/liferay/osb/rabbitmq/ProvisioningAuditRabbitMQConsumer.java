@@ -76,7 +76,7 @@ public class ProvisioningAuditRabbitMQConsumer
 			orderEntries.addAll(parseOrderEntries(jsonObject));
 		}
 
-		return SupportUtil.getOfferingEntriesMap(orderEntries);
+		return SupportUtil.getOfferingEntriesMap(orderEntries, false);
 	}
 
 	protected int[] getOutOfSyncFields(

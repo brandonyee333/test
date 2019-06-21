@@ -121,7 +121,7 @@ public class SupportUtil {
 	}
 
 	public static Map<String, Integer> getOfferingEntriesMap(
-		List<OrderEntry> orderEntries) {
+		List<OrderEntry> orderEntries, boolean ignorePastEndDate) {
 
 		Map<String, Integer> offeringEntriesMap = new HashMap<>();
 
@@ -130,6 +130,14 @@ public class SupportUtil {
 				orderEntry.getOfferingEntries();
 
 			for (OfferingEntry offeringEntry : offeringEntries) {
+				if (ignorePastEndDate) {
+					Date now = new Date();
+
+					if (now.after(offeringEntry.getSupportEndDate())) {
+						continue;
+					}
+				}
+
 				String key = getKey(offeringEntry);
 
 				Integer quantity = offeringEntriesMap.get(key);
@@ -155,7 +163,7 @@ public class SupportUtil {
 			OrderEntryLocalServiceUtil.getAccountEntryOrderEntries(
 				accountEntryId);
 
-		return getOfferingEntriesMap(orderEntries);
+		return getOfferingEntriesMap(orderEntries, false);
 	}
 
 	public static Set<String> getSelfProvisioningProducts(long accountEntryId)

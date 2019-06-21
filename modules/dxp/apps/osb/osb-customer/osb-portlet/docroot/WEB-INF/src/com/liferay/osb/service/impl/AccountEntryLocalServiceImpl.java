@@ -1355,8 +1355,74 @@ public class AccountEntryLocalServiceImpl
 				"No orders found with key " + salesforceOpportunityKey);
 		}
 
+		List<OrderEntry> externalIdMapperOrderEntries = new ArrayList<>();
+
+		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
+			OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
+				externalIdMapper.getClassPK());
+
+			externalIdMapperOrderEntries.add(orderEntry);
+		}
+
+		Map<String, Integer> oldOfferingEntriesMap =
+			SupportUtil.getOfferingEntriesMap(externalIdMapperOrderEntries, true);
+
+		Map<String, Integer> offeringEntriesMap =
+			SupportUtil.getOfferingEntriesMap(orderEntries, true);
+
+		if (offeringEntriesMap.isEmpty()) {
+			return;
+		}
+
 		AccountEntry oldAccountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntry.getAccountEntryId());
+
+		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
+		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
+
+		if (partnerEntry != null) {
+			if (oldAccountEntry.getPartnerEntryId() !=
+					partnerEntry.getPartnerEntryId()) {
+
+				oldAccountEntryAttributes.put(
+					"partnerEntryId",
+					String.valueOf(oldAccountEntry.getPartnerEntryId()));
+				newAccountEntryAttributes.put(
+					"partnerEntryId",
+					String.valueOf(partnerEntry.getPartnerEntryId()));
+			}
+		}
+		else if (oldAccountEntry.getPartnerEntryId() > 0) {
+			oldAccountEntryAttributes.put(
+				"partnerEntryId",
+				String.valueOf(oldAccountEntry.getPartnerEntryId()));
+			newAccountEntryAttributes.put("partnerEntryId", StringPool.BLANK);
+		}
+
+		if (oldAccountEntry.getPartnerManagedSupport() !=
+				accountEntry.getPartnerManagedSupport()) {
+
+			oldAccountEntryAttributes.put(
+				"partnerManagedSupport",
+				String.valueOf(oldAccountEntry.getPartnerManagedSupport()));
+			newAccountEntryAttributes.put(
+				"partnerManagedSupport",
+				String.valueOf(accountEntry.getPartnerManagedSupport()));
+		}
+
+		int salesforceOpportunityType = GetterUtil.getInteger(
+			serviceContext.getAttribute("salesforceOpportunityType"));
+
+		if (salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL) {
+
+			if (!newAccountEntryAttributes.containsKey("partnerEntryId") &&
+				!newAccountEntryAttributes.containsKey(
+					"partnerManagedSupport")) {
+
+				return;
+			}
+		}
 
 		Address oldAddress = oldAccountEntry.getAddress();
 
@@ -1418,39 +1484,6 @@ public class AccountEntryLocalServiceImpl
 
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
-		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
-		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
-
-		if (partnerEntry != null) {
-			if (oldAccountEntry.getPartnerEntryId() !=
-					partnerEntry.getPartnerEntryId()) {
-
-				oldAccountEntryAttributes.put(
-					"partnerEntryId",
-					String.valueOf(oldAccountEntry.getPartnerEntryId()));
-				newAccountEntryAttributes.put(
-					"partnerEntryId",
-					String.valueOf(partnerEntry.getPartnerEntryId()));
-			}
-		}
-		else if (oldAccountEntry.getPartnerEntryId() > 0) {
-			oldAccountEntryAttributes.put(
-				"partnerEntryId",
-				String.valueOf(oldAccountEntry.getPartnerEntryId()));
-			newAccountEntryAttributes.put("partnerEntryId", StringPool.BLANK);
-		}
-
-		if (oldAccountEntry.getPartnerManagedSupport() !=
-				accountEntry.getPartnerManagedSupport()) {
-
-			oldAccountEntryAttributes.put(
-				"partnerManagedSupport",
-				String.valueOf(oldAccountEntry.getPartnerManagedSupport()));
-			newAccountEntryAttributes.put(
-				"partnerManagedSupport",
-				String.valueOf(accountEntry.getPartnerManagedSupport()));
-		}
-
 		String[] oldLanguageIds = oldAccountEntry.getLanguageIds();
 		String[] languageIds = accountEntry.getLanguageIds();
 
@@ -1490,21 +1523,6 @@ public class AccountEntryLocalServiceImpl
 				"ewsaDossieraProjectKey",
 				accountEntry.getEWSADossieraProjectKey());
 		}
-
-		List<OrderEntry> externalIdMapperOrderEntries = new ArrayList<>();
-
-		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-			OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
-				externalIdMapper.getClassPK());
-
-			externalIdMapperOrderEntries.add(orderEntry);
-		}
-
-		Map<String, Integer> oldOfferingEntriesMap =
-			SupportUtil.getOfferingEntriesMap(externalIdMapperOrderEntries);
-
-		Map<String, Integer> offeringEntriesMap =
-			SupportUtil.getOfferingEntriesMap(orderEntries);
 
 		if (!oldOfferingEntriesMap.equals(offeringEntriesMap)) {
 			workflowContext.put(
@@ -1580,9 +1598,6 @@ public class AccountEntryLocalServiceImpl
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
 			Constants.UPDATE);
-
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			serviceContext.getAttribute("salesforceOpportunityType"));
 
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
