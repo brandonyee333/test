@@ -319,7 +319,9 @@ public class AccountEntryViewDisplayContext {
 		for (ListType listType : productEntry.getAllVersionsListTypes()) {
 			if (ArrayUtil.contains(deprecatedTypes, listType.getListTypeId()) ||
 				(listType.getListTypeId() ==
-					(long)ProductEntryConstants.PORTAL_VERSION_OTHER)) {
+					(long)ProductEntryConstants.PORTAL_VERSION_OTHER) ||
+				(listType.getListTypeId() ==
+					(long)ProductEntryConstants.COMMERCE_VERSION_1_0)) {
 
 				continue;
 			}

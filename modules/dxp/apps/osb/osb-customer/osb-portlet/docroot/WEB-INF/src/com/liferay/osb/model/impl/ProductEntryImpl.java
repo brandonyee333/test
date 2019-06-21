@@ -40,6 +40,11 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	}
 
 	public List<ListType> getAllVersionsListTypes() {
+		if (isCommerce()) {
+			return ListTypeServiceUtil.getListTypes(
+				ProductEntryConstants.LIST_TYPE_COMMERCE_ALL_VERSIONS);
+		}
+
 		if (isPortal()) {
 			return ListTypeServiceUtil.getListTypes(
 				ProductEntryConstants.LIST_TYPE_PORTAL_ALL_VERSIONS);
