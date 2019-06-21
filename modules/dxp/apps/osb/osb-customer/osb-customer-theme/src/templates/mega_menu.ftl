@@ -307,10 +307,6 @@
 		return (activeHeading || activeMenuCaret || activeMenuItem);
 	}
 
-	function validateLanguageToggleSelection() {
-		languageToggleSelected = true;
-	}
-
 	var languageToggleSelected = false;
 
 	var menuItems = document.querySelectorAll('.header-menu-list .list-item');
@@ -339,6 +335,10 @@
 						var languageToggle = item.querySelector('#languageToggle');
 
 						if (languageToggle) {
+							var validateLanguageToggleSelection = function() {
+								languageToggleSelected = true;
+							}
+
 							languageToggle.removeEventListener('click', validateLanguageToggleSelection);
 							languageToggle.addEventListener('click', validateLanguageToggleSelection);
 						}
