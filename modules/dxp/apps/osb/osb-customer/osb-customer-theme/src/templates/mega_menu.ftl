@@ -298,13 +298,9 @@
 
 		var activeHeading = targetParentNode && targetParentNode.classList.contains('active');
 
-		var isMenuCaret = target.classList.contains('lexicon-icon-menu-caret');
-		var targetGrandParentNode = isMenuCaret ? targetParentNode.parentNode : null;
-		var activeMenuCaret = targetGrandParentNode && targetGrandParentNode.classList.contains('active');
-
 		var activeMenuItem = target.classList.contains('active');
 
-		return (activeHeading || activeMenuCaret || activeMenuItem);
+		return (activeHeading || activeMenuItem);
 	}
 
 	var languageToggleSelected = false;
