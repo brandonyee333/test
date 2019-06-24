@@ -1365,7 +1365,8 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		Map<String, Integer> oldOfferingEntriesMap =
-			SupportUtil.getOfferingEntriesMap(externalIdMapperOrderEntries, true);
+			SupportUtil.getOfferingEntriesMap(
+				externalIdMapperOrderEntries, true);
 
 		Map<String, Integer> offeringEntriesMap =
 			SupportUtil.getOfferingEntriesMap(orderEntries, true);
@@ -1598,10 +1599,12 @@ public class AccountEntryLocalServiceImpl
 		workflowContext.put(
 			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
 			Constants.UPDATE);
-
 		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
-			salesforceOpportunityType);
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
+			salesforceOpportunityKey);
+		workflowContext.put(
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
+			serviceContext.getAttribute("salesforceOpportunityStageName"));
 
 		String salesforceOpportunityTaskName =
 			SalesforceConstants.getOpportunityTaskName(
@@ -1612,11 +1615,8 @@ public class AccountEntryLocalServiceImpl
 			salesforceOpportunityTaskName);
 
 		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
-			salesforceOpportunityKey);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
+			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
+			salesforceOpportunityType);
 
 		List<SupportRegion> supportRegions =
 			oldAccountEntry.getSupportRegions();
