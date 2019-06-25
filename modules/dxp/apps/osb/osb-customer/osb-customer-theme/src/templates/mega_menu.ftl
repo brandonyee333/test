@@ -1,13 +1,8 @@
 <script>
 	(function() {
-		var menuItems = document.querySelectorAll('.header-menu-list .list-item');
+		var languageToggleSelected = false;
 
-		Array.prototype.forEach.call(
-			menuItems,
-			function(item) {
-				item.classList.remove('hide');
-			}
-		);
+		var menuItems = document.querySelectorAll('.header-menu-list .list-item');
 
 		function addLocaleParamToURI(locale, urn) {
 			return '${zendesk_url}/hc/${zendesk_locale_util.convertToZendeskLocale(locale)}/' + urn;
@@ -207,19 +202,20 @@
 		function addMenuClickOutsideListener(event) {
 			var body = document.querySelector('body');
 
-			body.removeEventListener('click', handleMenuClickOutside);
-			body.addEventListener('click', handleMenuClickOutside);
+			if (body) {
+				body.removeEventListener('click', handleMenuClickOutside);
+				body.addEventListener('click', handleMenuClickOutside);
+			}
 		}
 
 		function checkClickOutside(event, nodelist) {
-			var target = event.target;
 			var containsNode = [];
 
 			if (nodelist) {
 				Array.prototype.forEach.call(
 					nodelist,
 					function(node) {
-						containsNode.push(node.contains(target));
+						containsNode.push(node.contains(event.target));
 					}
 				);
 			}
@@ -304,21 +300,15 @@
 			return (activeHeading || activeMenuItem);
 		}
 
-		var languageToggleSelected = false;
-
-		var menuItems = document.querySelectorAll('.header-menu-list .list-item');
-
 		Array.prototype.forEach.call(
 			menuItems,
 			function(item) {
-				item.classList.remove('d-none');
+				item.classList.remove('hide');
 
 				item.addEventListener(
 					'click',
 					function(event) {
-						var target = event.target;
-
-						if (validateCurrentActiveMenu(target)) {
+						if (validateCurrentActiveMenu(event.target)) {
 							item.classList.remove('active');
 						} else {
 							removeActiveClasses();
