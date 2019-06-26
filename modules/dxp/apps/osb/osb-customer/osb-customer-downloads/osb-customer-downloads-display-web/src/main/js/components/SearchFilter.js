@@ -92,6 +92,7 @@ export default class SearchFilters extends React.Component {
 						label={Liferay.Language.get('product')}
 						onSelectChange={this.handleProductChange}
 						options={productsJSONArray}
+						placeholder={Liferay.Language.get('select-product')}
 						selectedOption={productAssetCategoryId}
 					/>
 
@@ -100,6 +101,7 @@ export default class SearchFilters extends React.Component {
 						label={Liferay.Language.get('file-type')}
 						onSelectChange={this.handleFileTypeChange}
 						options={availableFileTypes}
+						placeholder={Liferay.Language.get('select-file-type')}
 						selectedOption={fileTypeAssetCategoryId}
 					/>
 				</div>
@@ -113,6 +115,7 @@ Filter.propTypes = {
 	label: PropTypes.string.isRequired,
 	onSelectChange: PropTypes.func.isRequired,
 	options: PropTypes.array.isRequired,
+	placeholder: PropTypes.string.isRequired,
 	selectedOption: PropTypes.string.isRequired
 };
 
@@ -125,7 +128,7 @@ function Filter(props) {
 
 			<select className="form-control" id={props.id} name={props.id} onChange={props.onSelectChange} value={props.selectedOption}>
 				<option value="">
-					{`${Liferay.Language.get('select')} ${props.label}`}
+					{props.placeholder}
 				</option>
 
 				{props.options.map(option => {
