@@ -14,6 +14,8 @@
 
 package com.liferay.osb.customer.zendesk.connector.internal.service;
 
+import com.liferay.mail.kernel.model.MailMessage;
+import com.liferay.mail.kernel.service.MailService;
 import com.liferay.osb.customer.zendesk.connector.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpDelete;
 import com.liferay.osb.customer.zendesk.connector.internal.http.ZendeskHttpGet;
@@ -29,14 +31,21 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
+import com.liferay.portal.kernel.util.StackTraceUtil;
+import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 
 import java.nio.charset.StandardCharsets;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -80,7 +89,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(url, parameters.toString(), response);
+			processError(e, url, parameters.toString(), response);
 
 			throw new PortalException(e);
 		}
@@ -105,7 +114,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(endpoint, json, response);
+			processError(e, endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -122,7 +131,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(url, parameters.toString(), response);
+			processError(e, url, parameters.toString(), response);
 
 			throw new PortalException(e);
 		}
@@ -152,7 +161,7 @@ public class ZendeskBaseWebServiceImpl
 			throw new PortalException(jsonwsie);
 		}
 		catch (Exception e) {
-			processError(endpoint, json, response);
+			processError(e, endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -196,7 +205,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(endpoint, parameters.toString(), response);
+			processError(e, endpoint, parameters.toString(), response);
 
 			throw new PortalException(e);
 		}
@@ -221,7 +230,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(endpoint, json, response);
+			processError(e, endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -244,7 +253,7 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(endpoint, json, response);
+			processError(e, endpoint, json, response);
 
 			throw new PortalException(e);
 		}
@@ -307,14 +316,57 @@ public class ZendeskBaseWebServiceImpl
 		return stringEntity;
 	}
 
-	protected void processError(String url, String data, String response)
+	protected void processError(
+			Exception e, String url, String data, String response)
 		throws PortalException {
+
+		if (e instanceof
+				JSONWebServiceTransportException.CommunicationFailure) {
+
+			JSONWebServiceTransportException.CommunicationFailure cf =
+				(JSONWebServiceTransportException.CommunicationFailure)e;
+
+			if ((cf.getStatus() == 422) && url.contains("/identities/")) {
+				sendEmail(e, url, data);
+			}
+		}
 
 		_log.error("Request failed for " + url);
 		_log.error("Data: " + data);
 
 		if (response != null) {
 			_log.error("Error parsing response: " + response);
+		}
+	}
+
+	protected void sendEmail(Exception e, String url, String data) {
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("<strong>URL</strong><br />");
+		sb.append(url);
+		sb.append("<br /><strong>Parameters: </strong><br />");
+		sb.append(data);
+		sb.append("<br /><br /><strong>Stack Trace:</strong><br />");
+
+		String stackTrace = StackTraceUtil.getStackTrace(e);
+
+		sb.append(StringUtil.replace(stackTrace, CharPool.NEW_LINE, "<br />"));
+
+		try {
+			InternetAddress from = new InternetAddress("noreply@liferay.com");
+			InternetAddress to = new InternetAddress(
+				ZendeskConnectorConfigurationValues.
+					ZENDESK_API_ERROR_EMAIL_ADDRESS);
+
+			String mailSubject = "Auto Generated Zendesk API Error Message";
+
+			MailMessage mailMessage = new MailMessage(
+				from, to, mailSubject, sb.toString(), true);
+
+			_mailService.sendEmail(mailMessage);
+		}
+		catch (AddressException ae) {
+			_log.error(ae, ae);
 		}
 	}
 
@@ -349,5 +401,8 @@ public class ZendeskBaseWebServiceImpl
 				put("Content-Type", "application/json");
 			}
 		};
+
+	@Reference
+	private MailService _mailService;
 
 }

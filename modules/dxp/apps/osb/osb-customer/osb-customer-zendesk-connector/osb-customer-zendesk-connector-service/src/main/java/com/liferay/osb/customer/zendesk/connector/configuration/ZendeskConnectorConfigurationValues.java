@@ -21,6 +21,11 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskConnectorConfigurationValues {
 
+	public static final String ZENDESK_API_ERROR_EMAIL_ADDRESS =
+		GetterUtil.getString(
+			ZendeskConnectorConfigurationUtil.get(
+				"zendesk.api.error.email.address"));
+
 	public static final String ZENDESK_API_TOKEN = GetterUtil.getString(
 		ZendeskConnectorConfigurationUtil.get("zendesk.api.token"));
 
