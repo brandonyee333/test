@@ -20,8 +20,9 @@ By default all of the following fields show up when a user is looking at a parti
 * _Commerce_ products will include a new _Commerce Version_ field.
   * _Commerce_ products can contain different environment configuration dropdown options than other products.
 * Only product version _6.2_ and above will have the _Cloud Services_ field.
-* Only _DXP_ products will have the _Search_ field.
+* Only _DXP_ (including _Commerce_) products will have the _Search_ field.
 _Special fields are only displayed when there is value in it's associated field._
+  * _Commerce_ products are limited to _DXP_ offerings (ie. 7.1 and 7.2) and currently not released individually so when selecting _Commerce_ and a _DXP_ version, the search field should appear.
 
 ---
 

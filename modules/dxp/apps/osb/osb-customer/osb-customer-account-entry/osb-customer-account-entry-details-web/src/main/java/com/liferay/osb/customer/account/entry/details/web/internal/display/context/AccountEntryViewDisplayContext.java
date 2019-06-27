@@ -565,7 +565,7 @@ public class AccountEntryViewDisplayContext {
 
 		jsonObject.put("displayName", productEntry.getDisplayName());
 
-		if (productEntry.isDigitalEnterprise()) {
+		if (productEntry.isCommerce() || productEntry.isDigitalEnterprise()) {
 			boolean enterpriseSearch =
 				_accountEntry.hasEnterpriseSearchOffering(
 					productEntry.getEnvironment());
