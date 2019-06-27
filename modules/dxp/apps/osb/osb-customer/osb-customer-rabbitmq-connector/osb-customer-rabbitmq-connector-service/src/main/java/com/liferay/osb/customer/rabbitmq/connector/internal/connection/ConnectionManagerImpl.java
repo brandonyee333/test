@@ -73,7 +73,7 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
 	@Override
 	public Channel createChannel() throws IOException {
-		return createChannel(1);
+		return createChannel(10);
 	}
 
 	@Override
