@@ -520,8 +520,7 @@ public class DLImpl implements DL {
 		long fileVersionPreviewId =
 			_fileVersionPreviewEventListener.getDLFileVersionPreviewId(
 				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL.
-					toInteger());
+				DLFileEntryPreviewType.FAIL.toInteger());
 
 		if (fileVersionPreviewId > 0) {
 			return StringPool.BLANK;
@@ -759,8 +758,7 @@ public class DLImpl implements DL {
 		long fileVersionPreviewId =
 			_fileVersionPreviewEventListener.getDLFileVersionPreviewId(
 				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL.
-					toInteger());
+				DLFileEntryPreviewType.FAIL.toInteger());
 
 		if (fileVersionPreviewId > 0) {
 			return StringPool.BLANK;
@@ -1303,6 +1301,33 @@ public class DLImpl implements DL {
 		for (String genericName : genericNames) {
 			_populateGenericNamesMap(genericName);
 		}
+	}
+
+	private enum DLFileEntryPreviewType {
+
+		FAIL(0), NOT_GENERATED(1), SUCCESS(2);
+
+		public static DLFileEntryPreviewType fromInteger(int value) {
+			for (DLFileEntryPreviewType dlFileEntryPreviewType : values()) {
+				if (dlFileEntryPreviewType.toInteger() == value) {
+					return dlFileEntryPreviewType;
+				}
+			}
+
+			throw new IllegalArgumentException(
+				"No DLFileEntryPreviewType exists with value " + value);
+		}
+
+		public int toInteger() {
+			return _value;
+		}
+
+		private DLFileEntryPreviewType(int value) {
+			_value = value;
+		}
+
+		private final int _value;
+
 	}
 
 }
