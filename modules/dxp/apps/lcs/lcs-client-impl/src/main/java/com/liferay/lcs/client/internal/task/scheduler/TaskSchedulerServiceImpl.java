@@ -19,7 +19,6 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
@@ -404,26 +403,13 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	private void _onLCSGatewayServiceAvailable() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Scheduling command message task");
-		}
-
-		Class<?> clazz = CommandMessageTask.class;
-
-		_scheduledFuturesMap.put(
-			clazz.getName(),
-			_scheduledExecutorService.scheduleAtFixedRate(
-				new CommandMessageTask(
-					_lcsKeyAdvisor.getKey(), _lcsGatewayClient),
-				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
-				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
-				TimeUnit.SECONDS));
+		_scheduleCommandMessageTask();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling heartbeat task");
 		}
 
-		clazz = HeartbeatTask.class;
+		Class<?> clazz = HeartbeatTask.class;
 
 		_scheduledFuturesMap.put(
 			clazz.getName(),
@@ -461,6 +447,27 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_executeSignOffTask();
 
 		_executeLCSClusterEntryTokenCheckTask(true);
+	}
+
+	private void _scheduleCommandMessageTask() {
+		Map<String, String> schedulerContext = new HashMap<>();
+
+		schedulerContext.put(
+			"initialDelay",
+			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
+		schedulerContext.put(
+			"interval",
+			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
+		schedulerContext.put(
+			"taskName",
+			"lcs.client.scheduled.task.name=" +
+				"com.liferay.lcs.task.CommandMessageTask");
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Scheduling command message task");
+		}
+
+		scheduleLocalScheduledTask(schedulerContext);
 	}
 
 	private void _scheduleUptimeMonitoringTask() {
