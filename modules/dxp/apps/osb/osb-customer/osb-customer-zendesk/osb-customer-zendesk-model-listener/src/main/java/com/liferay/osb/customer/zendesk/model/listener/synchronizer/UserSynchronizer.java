@@ -141,8 +141,8 @@ public class UserSynchronizer {
 
 		if (zendeskUserId != 0) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				user.getUuid(), StringPool.BLANK, locale,
-				user.getFullName(), organizationName, null);
+				user.getUuid(), StringPool.BLANK, locale, user.getFullName(),
+				organizationName, null);
 
 			if ((tags != null) && !tags.isEmpty()) {
 				_asyncZendeskUserWebService.addZendeskUserTags(
