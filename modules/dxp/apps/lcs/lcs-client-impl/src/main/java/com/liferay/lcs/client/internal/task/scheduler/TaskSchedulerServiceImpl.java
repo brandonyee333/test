@@ -19,6 +19,7 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
+import com.liferay.lcs.client.internal.lifecycle.LCSModuleLifecycle;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
@@ -203,6 +204,12 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		_scheduledExecutorService = Executors.newScheduledThreadPool(
 			10, _threadFactory);
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
+
+		start();
 	}
 
 	@Deactivate
@@ -539,6 +546,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
+
+	@Reference
+	private LCSModuleLifecycle _lcsModuleLifecycle;
 
 	private ScheduledExecutorService _scheduledExecutorService;
 	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =

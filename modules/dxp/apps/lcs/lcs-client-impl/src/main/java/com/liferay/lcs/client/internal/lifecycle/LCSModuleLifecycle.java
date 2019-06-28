@@ -16,7 +16,6 @@ package com.liferay.lcs.client.internal.lifecycle;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -41,8 +40,6 @@ public class LCSModuleLifecycle {
 				"LCS client " + _lcsConfiguration.lcsClientVersion() +
 					" activated");
 		}
-
-		_taskSchedulerService.start();
 	}
 
 	@Deactivate
@@ -64,8 +61,5 @@ public class LCSModuleLifecycle {
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
-
-	@Reference
-	private TaskSchedulerService _taskSchedulerService;
 
 }
