@@ -44,10 +44,6 @@ public class LCSMessagingConfigurator {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceRegistrations.put(
-			LCSDestinationNames.LCS_COMMANDS,
-			_registerDestination(
-				bundleContext, LCSDestinationNames.LCS_COMMANDS));
-		_serviceRegistrations.put(
 			LCSDestinationNames.LCS_REQUEST,
 			_registerDestination(
 				bundleContext, LCSDestinationNames.LCS_REQUEST));
