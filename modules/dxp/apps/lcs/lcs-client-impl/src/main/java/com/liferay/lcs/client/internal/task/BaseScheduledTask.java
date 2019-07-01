@@ -39,28 +39,28 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 			return;
 		}
 
-		if (ClusterMasterExecutorUtil.isEnabled()) {
-			if (getScope() == Scope.CLUSTER) {
-				if (!ClusterMasterExecutorUtil.isMaster()) {
-					if (_log.isDebugEnabled()) {
-						StringBundler sb = new StringBundler(4);
+		if (ClusterMasterExecutorUtil.isEnabled() &&
+			(getScope() == Scope.CLUSTER)) {
 
-						sb.append("Aborting ");
-						sb.append(getClass());
-						sb.append(". It is a task with cluster scope, and ");
-						sb.append("this node is not master.");
-
-						_log.debug(sb.toString());
-					}
-
-					return;
-				}
-
+			if (!ClusterMasterExecutorUtil.isMaster()) {
 				if (_log.isDebugEnabled()) {
-					_log.debug(
-						"Executing cluster scoped task " + getClass() +
-							" on master node");
+					StringBundler sb = new StringBundler(4);
+
+					sb.append("Aborting ");
+					sb.append(getClass());
+					sb.append(". It is a task with cluster scope, and ");
+					sb.append("this node is not master.");
+
+					_log.debug(sb.toString());
 				}
+
+				return;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"Executing cluster scoped task " + getClass() +
+						" on master node");
 			}
 		}
 
