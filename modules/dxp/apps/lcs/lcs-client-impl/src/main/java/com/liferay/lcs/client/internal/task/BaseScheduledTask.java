@@ -48,8 +48,8 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 
 					sb.append("Aborting ");
 					sb.append(getClass());
-					sb.append(". It is a task with cluster scope, and ");
-					sb.append("this node is not master.");
+					sb.append(". It is a task with cluster scope, and this ");
+					sb.append("node is not master.");
 
 					_log.debug(sb.toString());
 				}
