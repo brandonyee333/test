@@ -65,14 +65,13 @@ public class TicketEntryPermissionChecker {
 			AccountCustomerLocalServiceUtil.fetchAccountCustomer(
 				permissionChecker.getUserId(), accountEntryId);
 
-		if (accountCustomer != null) {
-			if ((accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_DEVELOPER) ||
-				(accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_MANAGER)) {
+		if ((accountCustomer != null) &&
+			((accountCustomer.getRole() ==
+				AccountCustomerConstants.ROLE_DEVELOPER) ||
+			 (accountCustomer.getRole() ==
+				 AccountCustomerConstants.ROLE_MANAGER))) {
 
-				return true;
-			}
+			return true;
 		}
 
 		AccountEntry accountEntry =
@@ -84,14 +83,13 @@ public class TicketEntryPermissionChecker {
 					permissionChecker.getUserId(),
 					accountEntry.getPartnerEntryId());
 
-			if (partnerWorker != null) {
-				if ((partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MANAGER) ||
-					(partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MEMBER)) {
+			if ((partnerWorker != null) &&
+				((partnerWorker.getRole() ==
+					PartnerWorkerConstants.ROLE_MANAGER) ||
+				 (partnerWorker.getRole() ==
+					 PartnerWorkerConstants.ROLE_MEMBER))) {
 
-					return true;
-				}
+				return true;
 			}
 		}
 

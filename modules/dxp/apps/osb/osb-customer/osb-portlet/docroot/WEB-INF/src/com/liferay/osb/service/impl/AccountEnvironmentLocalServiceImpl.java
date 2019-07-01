@@ -324,22 +324,20 @@ public class AccountEnvironmentLocalServiceImpl
 			}
 		}
 
-		if (envCommerce > 0) {
-			if (!isValidListType(
-					envCommerce,
-					ProductEntryConstants.LIST_TYPE_COMMERCE_ALL_VERSIONS)) {
+		if ((envCommerce > 0) &&
+			!isValidListType(
+				envCommerce,
+				ProductEntryConstants.LIST_TYPE_COMMERCE_ALL_VERSIONS)) {
 
-				throw new AccountEnvironmentEnvCommerceException();
-			}
+			throw new AccountEnvironmentEnvCommerceException();
 		}
 
-		if (envBrowser > 0) {
-			if (!isValidListType(
-					envBrowser,
-					AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER)) {
+		if ((envBrowser > 0) &&
+			!isValidListType(
+				envBrowser,
+				AccountEnvironmentConstants.LIST_TYPE_ENV_BROWSER)) {
 
-				throw new AccountEnvironmentEnvBrowserException();
-			}
+			throw new AccountEnvironmentEnvBrowserException();
 		}
 
 		if (envCS > 0) {

@@ -235,10 +235,10 @@ public class ProductEntryLocalServiceImpl
 			throw new ProductEntryEnvironmentException();
 		}
 
-		if (Validator.isNotNull(zendeskTag)) {
-			if (!zendeskTag.matches("^[a-z0-9_-]*$")) {
-				throw new ZendeskTagException();
-			}
+		if (Validator.isNotNull(zendeskTag) &&
+			!zendeskTag.matches("^[a-z0-9_-]*$")) {
+
+			throw new ZendeskTagException();
 		}
 	}
 

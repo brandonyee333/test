@@ -108,15 +108,14 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 					_accountEntrySynchronizer.addAccountCustomers(accountEntry);
 				}
 
-				if (accountEntry.isPartnerManagedSupport()) {
-					if (!_zendeskOrganization.get() ||
-						!oldAccountEntry.isPartnerManagedSupport() ||
-						(oldAccountEntry.getPartnerEntryId() !=
-							accountEntry.getPartnerEntryId())) {
+				if (accountEntry.isPartnerManagedSupport() &&
+					(!_zendeskOrganization.get() ||
+					 !oldAccountEntry.isPartnerManagedSupport() ||
+					 (oldAccountEntry.getPartnerEntryId() !=
+						 accountEntry.getPartnerEntryId()))) {
 
-						_accountEntrySynchronizer.addPartnerManagedSupport(
-							accountEntry);
-					}
+					_accountEntrySynchronizer.addPartnerManagedSupport(
+						accountEntry);
 				}
 			}
 		}

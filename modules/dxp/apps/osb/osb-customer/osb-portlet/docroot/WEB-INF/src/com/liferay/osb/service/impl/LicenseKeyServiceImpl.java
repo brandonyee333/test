@@ -102,25 +102,22 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			(licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
 			 licenseEntryType.equals(
 				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
-			(maxHttpSessions != 5)) {
+			(maxHttpSessions != 5) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
-			if (!roleLocalService.hasUserRole(
-					getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
-				!roleLocalService.hasUserRole(
-					getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-
-				throw new PrincipalException();
-			}
+			throw new PrincipalException();
 		}
 
-		if (startDate != null) {
-			if (!roleLocalService.hasUserRole(
-					getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
-				!roleLocalService.hasUserRole(
-					getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+		if ((startDate != null) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
-				throw new PrincipalException();
-			}
+			throw new PrincipalException();
 		}
 
 		return licenseKeyLocalService.addLicenseKey(

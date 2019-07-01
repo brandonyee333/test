@@ -228,11 +228,8 @@ public class AccountCustomerSynchronizer {
 			}
 		}
 
-		if (accountCustomer.isClosedWatcher()) {
-			if (zendeskOrganizationId > 0) {
-				tags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-			}
+		if (accountCustomer.isClosedWatcher() && (zendeskOrganizationId > 0)) {
+			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
 		}
 
 		return tags;

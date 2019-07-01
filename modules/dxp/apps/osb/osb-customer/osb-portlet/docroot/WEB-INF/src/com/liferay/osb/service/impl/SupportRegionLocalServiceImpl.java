@@ -118,10 +118,10 @@ public class SupportRegionLocalServiceImpl
 		SupportRegion supportRegion = supportRegionPersistence.fetchByName(
 			name);
 
-		if (supportRegion != null) {
-			if (supportRegion.getSupportRegionId() != supportRegionId) {
-				throw new DuplicateSupportRegionException();
-			}
+		if ((supportRegion != null) &&
+			(supportRegion.getSupportRegionId() != supportRegionId)) {
+
+			throw new DuplicateSupportRegionException();
 		}
 	}
 

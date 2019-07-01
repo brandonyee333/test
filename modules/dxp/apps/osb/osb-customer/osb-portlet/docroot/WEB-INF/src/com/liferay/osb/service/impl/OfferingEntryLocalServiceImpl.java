@@ -567,10 +567,10 @@ public class OfferingEntryLocalServiceImpl
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
 
-		if (productEntry.isDigitalEnterprise() || productEntry.isPortal()) {
-			if (sizing <= 0) {
-				throw new OfferingEntrySizingException();
-			}
+		if ((productEntry.isDigitalEnterprise() || productEntry.isPortal()) &&
+			(sizing <= 0)) {
+
+			throw new OfferingEntrySizingException();
 		}
 
 		if (quantity <= 0) {

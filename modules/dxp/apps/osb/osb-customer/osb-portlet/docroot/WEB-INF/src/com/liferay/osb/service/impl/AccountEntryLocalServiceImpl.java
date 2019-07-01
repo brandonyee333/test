@@ -1414,15 +1414,12 @@ public class AccountEntryLocalServiceImpl
 		int salesforceOpportunityType = GetterUtil.getInteger(
 			serviceContext.getAttribute("salesforceOpportunityType"));
 
-		if (salesforceOpportunityType ==
-				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL) {
+		if ((salesforceOpportunityType ==
+				SalesforceConstants.OPPORTUNITY_TYPE_RENEWAL) &&
+			!newAccountEntryAttributes.containsKey("partnerEntryId") &&
+			!newAccountEntryAttributes.containsKey("partnerManagedSupport")) {
 
-			if (!newAccountEntryAttributes.containsKey("partnerEntryId") &&
-				!newAccountEntryAttributes.containsKey(
-					"partnerManagedSupport")) {
-
-				return;
-			}
+			return;
 		}
 
 		Address oldAddress = oldAccountEntry.getAddress();
@@ -2291,12 +2288,11 @@ public class AccountEntryLocalServiceImpl
 				continue;
 			}
 
-			if (accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) {
-				if (offeringEntry.getType() !=
-						OfferingEntryConstants.TYPE_REGULAR) {
+			if ((accountEntry.getType() != AccountEntryConstants.TYPE_TRIAL) &&
+				(offeringEntry.getType() !=
+					OfferingEntryConstants.TYPE_REGULAR)) {
 
-					continue;
-				}
+				continue;
 			}
 
 			ProductEntry productEntry = offeringEntry.getProductEntry();

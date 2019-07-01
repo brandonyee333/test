@@ -119,10 +119,10 @@ public abstract class BaseSearcher {
 			throw new VersionRangeException();
 		}
 
-		if (fromProductVersion == toProductVersion) {
-			if (fromFixPackVersion > toFixPackVersion) {
-				throw new VersionRangeException();
-			}
+		if ((fromProductVersion == toProductVersion) &&
+			(fromFixPackVersion > toFixPackVersion)) {
+
+			throw new VersionRangeException();
 		}
 	}
 

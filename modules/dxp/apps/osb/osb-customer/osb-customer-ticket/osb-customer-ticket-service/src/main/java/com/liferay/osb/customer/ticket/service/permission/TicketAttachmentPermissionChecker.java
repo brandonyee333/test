@@ -77,14 +77,13 @@ public class TicketAttachmentPermissionChecker {
 					permissionChecker.getUserId(),
 					accountEntry.getPartnerEntryId());
 
-			if (partnerWorker != null) {
-				if ((partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MANAGER) ||
-					(partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MEMBER)) {
+			if ((partnerWorker != null) &&
+				((partnerWorker.getRole() ==
+					PartnerWorkerConstants.ROLE_MANAGER) ||
+				 (partnerWorker.getRole() ==
+					 PartnerWorkerConstants.ROLE_MEMBER))) {
 
-					return true;
-				}
+				return true;
 			}
 		}
 

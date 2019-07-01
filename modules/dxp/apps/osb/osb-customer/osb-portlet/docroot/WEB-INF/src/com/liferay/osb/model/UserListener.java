@@ -116,13 +116,12 @@ public class UserListener extends BaseModelListener<User> {
 		List<PartnerWorker> partnerWorkers =
 			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
 
-		if (!partnerWorkers.isEmpty()) {
-			if (!OrganizationLocalServiceUtil.hasUserOrganization(
-					userId, OSBConstants.ORGANIZATION_PARTNER_ID)) {
+		if (!partnerWorkers.isEmpty() &&
+			!OrganizationLocalServiceUtil.hasUserOrganization(
+				userId, OSBConstants.ORGANIZATION_PARTNER_ID)) {
 
-				RemoteUserLocalServiceUtil.addOrganizationUsers(
-					OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
-			}
+			RemoteUserLocalServiceUtil.addOrganizationUsers(
+				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
 		}
 	}
 

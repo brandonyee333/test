@@ -912,11 +912,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		if (licenseKey.getLicenseVersion() >= 3) {
 			if (!licenseKey.isActive() && active &&
-				type.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+				type.equals(LicenseEntryConstants.TYPE_CLUSTER) &&
+				(licenseKey.getMaxServers() <= activeClusterCount)) {
 
-				if (licenseKey.getMaxServers() <= activeClusterCount) {
-					throw new MaximumLicenseKeyException();
-				}
+				throw new MaximumLicenseKeyException();
 			}
 
 			doUpdateLicenseKeyVersion3(
@@ -1015,12 +1014,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int availableServers = offeringEntry.getAvailableServers();
 
 		for (int i = 0; i < serverIds.length; i++) {
-			if (availableServers <= 0) {
-				if (!availableOfferingEntries.isEmpty()) {
-					offeringEntry = availableOfferingEntries.remove(0);
+			if ((availableServers <= 0) &&
+				!availableOfferingEntries.isEmpty()) {
 
-					availableServers = offeringEntry.getAvailableServers();
-				}
+				offeringEntry = availableOfferingEntries.remove(0);
+
+				availableServers = offeringEntry.getAvailableServers();
 			}
 
 			licenseKey = doAddLicenseKey(
@@ -1179,12 +1178,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		int availableServers = offeringEntry.getAvailableServers();
 
 		for (int i = 0; i < keyCount; i++) {
-			if (availableServers <= 0) {
-				if (!availableOfferingEntries.isEmpty()) {
-					offeringEntry = availableOfferingEntries.remove(0);
+			if ((availableServers <= 0) &&
+				!availableOfferingEntries.isEmpty()) {
 
-					availableServers = offeringEntry.getAvailableServers();
-				}
+				offeringEntry = availableOfferingEntries.remove(0);
+
+				availableServers = offeringEntry.getAvailableServers();
 			}
 
 			int sizing = 0;
@@ -1590,22 +1589,19 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		String type = licenseEntry.getType();
 
 		if ((licenseVersion >= 3) &&
-			type.equals(LicenseEntryConstants.TYPE_CLUSTER)) {
+			type.equals(LicenseEntryConstants.TYPE_CLUSTER) &&
+			((maxServers <= 0) || !offeringEntry.isLicenses() ||
+			 (maxServers > offeringEntry.getQuantity()))) {
 
-			if ((maxServers <= 0) || !offeringEntry.isLicenses() ||
-				(maxServers > offeringEntry.getQuantity())) {
-
-				throw new LicenseKeyMaxServersException();
-			}
+			throw new LicenseKeyMaxServersException();
 		}
 
 		if ((licenseVersion == 2) &&
 			(type.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
-			 type.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER))) {
+			 type.equals(LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
+			(maxServers <= 0)) {
 
-			if (maxServers <= 0) {
-				throw new LicenseKeyMaxServersException();
-			}
+			throw new LicenseKeyMaxServersException();
 		}
 
 		if (Validator.isNull(description)) {
