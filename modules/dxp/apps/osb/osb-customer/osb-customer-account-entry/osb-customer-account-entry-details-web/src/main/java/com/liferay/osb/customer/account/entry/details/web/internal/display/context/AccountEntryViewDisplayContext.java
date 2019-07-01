@@ -16,6 +16,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.util.AccountEntryDetailsRequestHelper;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
@@ -38,6 +39,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -240,6 +242,17 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("products", productsJSONArray);
 
 		return jsonObject;
+	}
+
+	public boolean isLiferayIncOrg() {
+		if (OrganizationLocalServiceUtil.hasUserOrganization(
+				_themeDisplay.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean isPartnerManagedSupportWorker() {

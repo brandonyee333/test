@@ -31,7 +31,12 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<%
 		if (accountEntry.getType() != AccountEntryConstants.TYPE_INDIVIDUAL) {
-			results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			if (accountEntryViewDisplayContext.isLiferayIncOrg() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker()) {
+				results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			}
+			else {
+				results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+			}
 
 			searchContainer.setTotal(results.size());
 			searchContainer.setResults(results);
