@@ -1322,7 +1322,7 @@ public abstract class BaseAssetSearchTestCase {
 			QueryUtil.ALL_POS);
 
 		return _assetHelper.getAssetEntries(results);
-	}
+	} 
 
 	protected int searchCount(
 			AssetEntryQuery assetEntryQuery, SearchContext searchContext,
