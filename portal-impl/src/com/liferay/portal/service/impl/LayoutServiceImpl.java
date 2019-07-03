@@ -1412,11 +1412,11 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 		GroupPermissionUtil.check(
 			getPermissionChecker(), targetGroupId, ActionKeys.PUBLISH_STAGING);
 
-		String timeZoneId = MapUtil.getString(parameterMap, "timeZoneId");
-
 		Trigger trigger = TriggerFactoryUtil.createTrigger(
 			PortalUUIDUtil.generate(), groupName, schedulerStartDate,
-			schedulerEndDate, cronText, TimeZone.getTimeZone(timeZoneId));
+			schedulerEndDate, cronText,
+			TimeZone.getTimeZone(
+				MapUtil.getString(parameterMap, "timeZoneId")));
 
 		User user = userPersistence.findByPrimaryKey(getUserId());
 
@@ -1523,11 +1523,11 @@ public class LayoutServiceImpl extends LayoutServiceBaseImpl {
 		GroupPermissionUtil.check(
 			getPermissionChecker(), sourceGroupId, ActionKeys.PUBLISH_STAGING);
 
-		String timeZoneId = MapUtil.getString(parameterMap, "timeZoneId");
-
 		Trigger trigger = TriggerFactoryUtil.createTrigger(
 			PortalUUIDUtil.generate(), groupName, schedulerStartDate,
-			schedulerEndDate, cronText, TimeZone.getTimeZone(timeZoneId));
+			schedulerEndDate, cronText,
+			TimeZone.getTimeZone(
+				MapUtil.getString(parameterMap, "timeZoneId")));
 
 		User user = userPersistence.findByPrimaryKey(getUserId());
 
