@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet;
 
-import com.liferay.osb.customer.account.entry.details.web.configuration.AccountEntryDetailsConfiguration;
+import com.liferay.osb.customer.account.entry.details.web.internal.configuration.AccountEntryDetailsConfiguration;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryManager;
 import com.liferay.osb.customer.ticket.repository.FileRepositoryWebService;
@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	configurationPid = "com.liferay.osb.customer.account.entry.details.web.configuration.AccountEntryDetailsConfiguration",
+	configurationPid = "com.liferay.osb.customer.account.entry.details.web.internal.configuration.AccountEntryDetailsConfiguration",
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, immediate = true,
 	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-account-entry-details-portlet",

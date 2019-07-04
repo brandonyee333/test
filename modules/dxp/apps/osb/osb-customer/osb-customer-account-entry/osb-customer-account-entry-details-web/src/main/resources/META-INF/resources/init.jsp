@@ -25,7 +25,7 @@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %><%@
 taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
-<%@ page import="com.liferay.osb.customer.account.entry.details.web.configuration.AccountEntryDetailsConfiguration" %><%@
+<%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.configuration.AccountEntryDetailsConfiguration" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@

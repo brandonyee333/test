@@ -21,7 +21,7 @@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.osb.customer.users.admin.web.constants.OSBPortletKeys" %><%@
+<%@ page import="com.liferay.osb.customer.users.admin.web.internal.constants.OSBPortletKeys" %><%@
 page import="com.liferay.osb.model.AccountCustomer" %><%@
 page import="com.liferay.osb.model.AccountWorker" %><%@
 page import="com.liferay.osb.model.PartnerEntry" %><%@

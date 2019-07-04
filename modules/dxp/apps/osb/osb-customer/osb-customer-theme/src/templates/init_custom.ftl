@@ -34,6 +34,6 @@
 	zendesk_url = themeDisplay.getThemeSetting("zendesk-url")
 />
 
-<#if is_signed_in && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil")?? && serviceLocator.findService("com.liferay.osb.customer.help.center.web.util.HelpCenterThemeUtil").hasMegaMenu(user.getUserId())>
+<#if is_signed_in && serviceLocator.findService("com.liferay.osb.customer.help.center.web.internal.util.HelpCenterThemeUtil")?? && serviceLocator.findService("com.liferay.osb.customer.help.center.web.internal.util.HelpCenterThemeUtil").hasMegaMenu(user.getUserId())>
 	<#assign has_mega_menu = true />
 </#if>
