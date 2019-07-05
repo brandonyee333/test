@@ -31,6 +31,9 @@ public class PortletPropsValues {
 	public static final String CORP_PROJECT_LINK = PortletProps.get(
 		PortletPropsKeys.CORP_PROJECT_LINK);
 
+	public static final String DOSSIERA_ACCOUNT_LINK = PortletProps.get(
+		PortletPropsKeys.DOSSIERA_ACCOUNT_LINK);
+
 	public static final String[]
 		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
 			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);

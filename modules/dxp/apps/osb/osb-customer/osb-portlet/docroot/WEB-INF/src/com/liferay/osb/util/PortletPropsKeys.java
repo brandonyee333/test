@@ -26,6 +26,8 @@ public interface PortletPropsKeys {
 
 	public static final String CORP_PROJECT_LINK = "corp.project.link";
 
+	public static final String DOSSIERA_ACCOUNT_LINK = "dossiera.account.link";
+
 	public static final String PROVISIONING_EMAIL_ADDRESS =
 		"provisioning.email.address";
 

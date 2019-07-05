@@ -37,6 +37,7 @@ import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
@@ -44,6 +45,7 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
 
@@ -113,6 +115,17 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		}
 
 		return null;
+	}
+
+	public String getDossieraAccountURL() {
+		String dossieraAccountKey = getDossieraAccountKey();
+
+		if (Validator.isNotNull(dossieraAccountKey)) {
+			return PortletPropsValues.DOSSIERA_ACCOUNT_LINK +
+				dossieraAccountKey;
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public String getEWSADossieraProjectKey() {

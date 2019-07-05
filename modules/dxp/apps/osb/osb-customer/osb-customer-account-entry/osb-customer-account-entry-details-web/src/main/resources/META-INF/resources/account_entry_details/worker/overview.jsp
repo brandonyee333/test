@@ -38,6 +38,28 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 				</tr>
 				<tr>
 					<td>
+						<liferay-ui:message key="dossiera-account" />
+					</td>
+
+					<%
+					String dossieraAccountURL = accountEntry.getDossieraAccountURL();
+					%>
+
+					<c:choose>
+						<c:when test="<%= Validator.isNotNull(dossieraAccountURL) %>">
+							<td>
+								<aui:a href="<%= dossieraAccountURL %>" label="<%= HtmlUtil.escape(accountEntry.getCorpEntryName()) %>" target="_blank" />
+							</td>
+						</c:when>
+						<c:otherwise>
+							<td>
+								<%= HtmlUtil.escape(accountEntry.getCorpEntryName()) %>
+							</td>
+						</c:otherwise>
+					</c:choose>
+				</tr>
+				<tr>
+					<td>
 						<liferay-ui:message key="status" />
 					</td>
 					<td>
