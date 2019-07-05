@@ -63,6 +63,8 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public com.liferay.portal.kernel.model.Address getAddress();
 
+	public java.lang.String getDossieraAccountURL();
+
 	public java.lang.String getEWSADossieraProjectKey();
 
 	public java.lang.String getIndustryLabel();

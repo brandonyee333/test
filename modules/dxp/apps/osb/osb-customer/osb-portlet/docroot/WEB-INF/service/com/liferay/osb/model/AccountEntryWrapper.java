@@ -610,6 +610,11 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
+	public java.lang.String getDossieraAccountURL() {
+		return _accountEntry.getDossieraAccountURL();
+	}
+
+	@Override
 	public java.lang.String getEWSADossieraProjectKey() {
 		return _accountEntry.getEWSADossieraProjectKey();
 	}

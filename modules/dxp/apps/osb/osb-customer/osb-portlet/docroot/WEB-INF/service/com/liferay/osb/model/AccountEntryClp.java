@@ -1270,6 +1270,25 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
+	public java.lang.String getDossieraAccountURL() {
+		try {
+			String methodName = "getDossieraAccountURL";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public java.lang.String getEWSADossieraProjectKey() {
 		try {
 			String methodName = "getEWSADossieraProjectKey";
