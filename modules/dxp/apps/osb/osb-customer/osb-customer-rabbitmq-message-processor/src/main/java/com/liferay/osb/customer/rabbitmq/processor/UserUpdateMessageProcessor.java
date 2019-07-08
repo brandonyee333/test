@@ -118,7 +118,7 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 				curPhone = _phoneLocalService.updatePhone(
 					curPhone.getPhoneId(), curPhone.getNumber(),
 					curPhone.getExtension(), curPhone.getTypeId(),
-					curPhone.getPrimary());
+					curPhone.isPrimary());
 			}
 
 			phoneIds.add(curPhone.getPhoneId());

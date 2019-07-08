@@ -313,8 +313,8 @@ public class RemoteUserLocalServiceImpl extends RemoteUserLocalServiceBaseImpl {
 
 				phone.setCompanyId(OSBConstants.COMPANY_ID);
 				phone.setClassNameId(classNameId);
-				phone.setExtension(phoneJSONObject.getString("extension"));
 				phone.setNumber(phoneJSONObject.getString("number"));
+				phone.setExtension(phoneJSONObject.getString("extension"));
 				phone.setPrimary(phoneJSONObject.getBoolean("primary"));
 
 				List<ListType> listTypes = listTypeLocalService.getListTypes(
