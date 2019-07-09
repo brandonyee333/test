@@ -19,6 +19,7 @@ import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.OrderEntryStartDateException;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.ExternalIdMapper;
@@ -27,6 +28,7 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.base.OrderEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
@@ -87,7 +89,15 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		String street1 = address.getStreet1();
 
-		if (!street1.equals("N/A")) {
+		boolean analyticsCloudBasic = false;
+
+		if (accountEntry.getType() ==
+				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
+
+			analyticsCloudBasic = true;
+		}
+
+		if (!street1.equals("N/A") && !analyticsCloudBasic) {
 			oldAddress.setStreet1(address.getStreet1());
 			oldAddress.setCity(address.getCity());
 			oldAddress.setZip(address.getZip());
@@ -103,23 +113,35 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		sb.append("\n\n--------------------------------------------------\n\n");
 		sb.append(accountEntry.getNotes());
 
-		accountEntryLocalService.updateAccountEntry(
-			OSBConstants.USER_DEFAULT_USER_ID,
-			oldAccountEntry.getAccountEntryId(),
-			oldAccountEntry.getCorpProjectUuid(),
-			accountEntry.getDossieraAccountKey(),
-			accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
-			oldAccountEntry.getCode(), oldAccountEntry.getType(),
-			accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
-			oldAccountEntry.getPartnerManagedSupport(),
-			oldAccountEntry.getTier(), oldAccountEntry.getMaxCustomers(),
-			oldAccountEntry.getInstructions(), sb.toString(),
-			oldAccountEntry.getLanguageIds(),
-			oldAccountEntry.getSupportRegionIds(), oldAddress.getAddressId(),
-			oldAddress.getStreet1(), oldAddress.getStreet2(),
-			oldAddress.getStreet3(), oldAddress.getCity(), oldAddress.getZip(),
-			oldAddress.getRegionId(), oldAddress.getCountryId(),
-			oldAccountEntry.getEWSADossieraProjectKey());
+		if (analyticsCloudBasic) {
+			oldAccountEntry.setDossieraAccountKey(
+				accountEntry.getDossieraAccountKey());
+			oldAccountEntry.setCorpEntryName(accountEntry.getCorpEntryName());
+			oldAccountEntry.setIndustry(accountEntry.getIndustry());
+			oldAccountEntry.setNotes(sb.toString());
+
+			accountEntryLocalService.updateAccountEntry(oldAccountEntry);
+		}
+		else {
+			accountEntryLocalService.updateAccountEntry(
+				OSBConstants.USER_DEFAULT_USER_ID,
+				oldAccountEntry.getAccountEntryId(),
+				oldAccountEntry.getCorpProjectUuid(),
+				accountEntry.getDossieraAccountKey(),
+				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
+				oldAccountEntry.getCode(), oldAccountEntry.getType(),
+				accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
+				oldAccountEntry.getPartnerManagedSupport(),
+				oldAccountEntry.getTier(), oldAccountEntry.getMaxCustomers(),
+				oldAccountEntry.getInstructions(), sb.toString(),
+				oldAccountEntry.getLanguageIds(),
+				oldAccountEntry.getSupportRegionIds(),
+				oldAddress.getAddressId(), oldAddress.getStreet1(),
+				oldAddress.getStreet2(), oldAddress.getStreet3(),
+				oldAddress.getCity(), oldAddress.getZip(),
+				oldAddress.getRegionId(), oldAddress.getCountryId(),
+				oldAccountEntry.getEWSADossieraProjectKey());
+		}
 
 		// Account worker
 
@@ -751,17 +773,39 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByOrderEntryId(orderEntryId);
 
+		AccountEntry accountEntry = orderEntry.getAccountEntry();
+
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			offeringEntryLocalService.updateStatus(
 				userId, offeringEntry.getOfferingEntryId(),
 				offeringEntryStatus);
+
+			if ((status == WorkflowConstants.STATUS_APPROVED) &&
+				(accountEntry.getType() ==
+					AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)) {
+
+				ProductEntry productEntry = offeringEntry.getProductEntry();
+
+				if (productEntry.isAnalyticsCloudBusiness() ||
+					productEntry.isAnalyticsCloudEnterprise()) {
+
+					accountEntry.setType(AccountEntryConstants.TYPE_GROUP);
+
+					accountEntryLocalService.updateAccountEntry(accountEntry);
+
+					accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(
+						accountEntry.getDossieraAccountKey(),
+						accountEntry.getCorpEntryName(), accountEntry.getName(),
+						accountEntry.getLanguageIds(),
+						accountEntry.getSupportRegionIds(),
+						offeringEntry.getSupportEndDate());
+				}
+			}
 		}
 
 		// Account entry
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
-			AccountEntry accountEntry = orderEntry.getAccountEntry();
-
 			if (accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED) {
 				accountEntryLocalService.updateStatus(
 					userId, accountEntry.getAccountEntryId(), status,

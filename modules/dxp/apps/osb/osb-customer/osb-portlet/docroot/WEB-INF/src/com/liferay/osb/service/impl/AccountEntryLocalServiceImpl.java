@@ -343,10 +343,14 @@ public class AccountEntryLocalServiceImpl
 		String name = StringPool.BLANK;
 
 		if (Validator.isNotNull(corpEntryName)) {
-			name = corpEntryName + " - Analytics Cloud";
+			name = corpEntryName;
 		}
 		else {
-			name = accountEntryName + " - Analytics Cloud";
+			name = accountEntryName;
+		}
+
+		if (!name.contains(" - Analytics Cloud")) {
+			name = name + " - Analytics Cloud";
 		}
 
 		name = getName(name);
