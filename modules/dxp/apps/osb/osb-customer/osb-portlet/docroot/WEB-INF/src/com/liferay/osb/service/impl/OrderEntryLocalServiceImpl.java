@@ -89,15 +89,10 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		String street1 = address.getStreet1();
 
-		boolean analyticsCloudBasic = false;
+		if (!street1.equals("N/A") &&
+			(accountEntry.getType() !=
+				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)) {
 
-		if (accountEntry.getType() ==
-				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
-
-			analyticsCloudBasic = true;
-		}
-
-		if (!street1.equals("N/A") && !analyticsCloudBasic) {
 			oldAddress.setStreet1(address.getStreet1());
 			oldAddress.setCity(address.getCity());
 			oldAddress.setZip(address.getZip());
@@ -113,7 +108,9 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		sb.append("\n\n--------------------------------------------------\n\n");
 		sb.append(accountEntry.getNotes());
 
-		if (analyticsCloudBasic) {
+		if (accountEntry.getType() ==
+				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
+
 			oldAccountEntry.setDossieraAccountKey(
 				accountEntry.getDossieraAccountKey());
 			oldAccountEntry.setCorpEntryName(accountEntry.getCorpEntryName());
