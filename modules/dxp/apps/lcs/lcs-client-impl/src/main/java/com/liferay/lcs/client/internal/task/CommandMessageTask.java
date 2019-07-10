@@ -16,6 +16,7 @@ package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.command.CheckHeartbeatCommand;
 import com.liferay.lcs.client.internal.command.Command;
 import com.liferay.lcs.client.internal.command.CommandValidationResult;
@@ -65,9 +66,30 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class CommandMessageTask extends BaseScheduledTask {
 
-	public CommandMessageTask(String key, LCSGatewayClient lcsGatewayClient) {
-		_key = key;
+	public CommandMessageTask() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
+	}
+
+	public CommandMessageTask(
+		DigitalSignature digitalSignature,
+		LCSConfigurationProvider lcsConfigurationProvider,
+		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
+		SendPatchesCommand sendPatchesCommand,
+		SendPortalPropertiesCommand sendPortalPropertiesCommand) {
+
+		_digitalSignature = digitalSignature;
+		_lcsConfigurationProvider = lcsConfigurationProvider;
 		_lcsGatewayClient = lcsGatewayClient;
+		_lcsKeyAdvisor = lcsKeyAdvisor;
+		_sendPatchesCommand = sendPatchesCommand;
+		_sendPortalPropertiesCommand = sendPortalPropertiesCommand;
+
+		_initCommands();
+
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -104,6 +126,9 @@ public class CommandMessageTask extends BaseScheduledTask {
 		_initDigitalSignature(lcsConfiguration);
 
 		_initCommands();
+
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	protected void doRun() throws Exception {
@@ -121,11 +146,13 @@ public class CommandMessageTask extends BaseScheduledTask {
 			return;
 		}
 
+		String key = getKey();
+
 		if (_log.isTraceEnabled()) {
-			_log.trace("Checking messages for " + _key);
+			_log.trace("Checking messages for " + key);
 		}
 
-		List<Message> messages = _lcsGatewayClient.getMessages(_key);
+		List<Message> messages = _lcsGatewayClient.getMessages(key);
 
 		for (Message message : messages) {
 			if (!(message instanceof CommandMessage)) {
@@ -294,12 +321,14 @@ public class CommandMessageTask extends BaseScheduledTask {
 	@Reference
 	private ExecuteScriptCommand _executeScriptCommand;
 
-	private final String _key;
-
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
 
-	private final LCSGatewayClient _lcsGatewayClient;
+	@Reference
+	private LCSGatewayClient _lcsGatewayClient;
+
+	@Reference
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 	@Reference
 	private ScheduleMessageListenersCommand _scheduleMessageListenersCommand;
