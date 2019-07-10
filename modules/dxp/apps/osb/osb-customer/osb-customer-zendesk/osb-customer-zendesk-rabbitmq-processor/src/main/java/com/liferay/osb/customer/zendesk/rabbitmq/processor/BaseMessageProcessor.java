@@ -23,8 +23,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -46,17 +44,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 			_log.error(message);
 
 			_log.error(e, e);
-
-			if (_isRetryRequest(e)) {
-				try {
-					Thread.sleep(90000);
-				}
-				catch (InterruptedException ie) {
-					_log.error(ie, ie);
-				}
-
-				process(routingKey, message, properties);
-			}
 		}
 	}
 
@@ -80,27 +67,6 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	protected JSONFactory jsonFactory;
-
-	private boolean _isRetryRequest(Exception e) {
-		String detailMessage = e.getMessage();
-
-		int pos = detailMessage.indexOf("Server returned status");
-
-		if (pos < 0) {
-			return false;
-		}
-
-		int statusCode = Integer.valueOf(detailMessage.substring(pos + 23));
-
-		if ((statusCode == 429) ||
-			(statusCode == HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ||
-			(statusCode == HttpServletResponse.SC_SERVICE_UNAVAILABLE)) {
-
-			return true;
-		}
-
-		return false;
-	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageProcessor.class);

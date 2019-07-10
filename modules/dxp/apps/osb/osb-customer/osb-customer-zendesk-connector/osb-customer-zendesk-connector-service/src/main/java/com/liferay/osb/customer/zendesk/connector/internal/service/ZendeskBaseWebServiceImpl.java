@@ -50,6 +50,7 @@ import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -89,6 +90,21 @@ public class ZendeskBaseWebServiceImpl
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
+		catch (JSONWebServiceTransportException jsonwste) {
+			if (jsonwste.getStatus() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				return delete(url, parameters);
+			}
+
+			throw new PortalException(jsonwste);
+		}
 		catch (Exception e) {
 			processError(e, url, parameters.toString(), response);
 
@@ -114,6 +130,21 @@ public class ZendeskBaseWebServiceImpl
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
+		catch (JSONWebServiceTransportException jsonwste) {
+			if (jsonwste.getStatus() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				return delete(endpoint, json);
+			}
+
+			throw new PortalException(jsonwste);
+		}
 		catch (Exception e) {
 			processError(e, endpoint, json, response);
 
@@ -130,6 +161,21 @@ public class ZendeskBaseWebServiceImpl
 			response = doGet(url, parameters, _authHeader);
 
 			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (JSONWebServiceTransportException jsonwste) {
+			if (jsonwste.getStatus() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				return get(url, parameters);
+			}
+
+			throw new PortalException(jsonwste);
 		}
 		catch (Exception e) {
 			processError(e, url, parameters.toString(), response);
@@ -153,6 +199,21 @@ public class ZendeskBaseWebServiceImpl
 			response = execute(httpGet);
 
 			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (JSONWebServiceTransportException jsonwste) {
+			if (jsonwste.getStatus() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				return get(endpoint, json);
+			}
+
+			throw new PortalException(jsonwste);
 		}
 		catch (JSONWebServiceInvocationException jsonwsie) {
 			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
@@ -201,6 +262,20 @@ public class ZendeskBaseWebServiceImpl
 
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 
+			StatusLine statusLine = httpResponse.getStatusLine();
+
+			if (statusLine.getStatusCode() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				post(endpoint, parameters, fileName, bytes);
+			}
+
 			response = EntityUtils.toString(httpResponse.getEntity());
 
 			return JSONFactoryUtil.createJSONObject(response);
@@ -230,6 +305,21 @@ public class ZendeskBaseWebServiceImpl
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
+		catch (JSONWebServiceTransportException jsonwste) {
+			if (jsonwste.getStatus() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				return post(endpoint, json);
+			}
+
+			throw new PortalException(jsonwste);
+		}
 		catch (Exception e) {
 			processError(e, endpoint, json, response);
 
@@ -252,6 +342,21 @@ public class ZendeskBaseWebServiceImpl
 			response = execute(httpPut);
 
 			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (JSONWebServiceTransportException jsonwste) {
+			if (jsonwste.getStatus() == 429) {
+				try {
+					Thread.sleep(
+						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+				}
+				catch (InterruptedException ie) {
+					_log.error(ie, ie);
+				}
+
+				return put(endpoint, json);
+			}
+
+			throw new PortalException(jsonwste);
 		}
 		catch (Exception e) {
 			processError(e, endpoint, json, response);
