@@ -17,24 +17,24 @@ package com.liferay.lcs.client.internal.task.advisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
-import com.liferay.lcs.client.internal.command.Command;
+import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
+import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.internal.security.DigitalSignatureImpl;
 import com.liferay.lcs.messaging.security.DigitalSignature;
+import com.liferay.lcs.messaging.security.exception.DigitalSignatureException;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Properties;
 import java.util.Set;
 
@@ -44,6 +44,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.mockito.Matchers;
+import org.mockito.Mockito;
 
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -51,6 +52,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Igor Beslic
+ * @author Ivica Cartdic
  */
 @PrepareForTest(
 	{DigesterUtil.class, LCSPatcherUtil.class, LCSUtil.class, PropsUtil.class}
@@ -60,6 +62,83 @@ public class TaskAdvisorImplTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
+		_mockDigesterUtil();
+
+		_mockDigitalSignature();
+
+		_mockLCSConfigurationProvider(500);
+
+		_mockLCSGatewayClient();
+
+		_mockLCSKeyAdvisor();
+
+		_mockLCSPatcherUtil();
+
+		_mockPropsUtil();
+	}
+
+	@Test
+	public void testGetActiveServiceLabels() throws Exception {
+		TaskAdvisorImpl taskAdvisor = new TaskAdvisorImpl();
+
+		SendPortalPropertiesCommand sendPortalPropertiesCommand =
+			new SendPortalPropertiesCommand(
+				mock(LCSClusterEntryTokenAdvisor.class), _lcsGatewayClient,
+				taskAdvisor);
+
+		SendPortalPropertiesCommandMessage sendPortalPropertiesCommandMessage =
+			new SendPortalPropertiesCommandMessage();
+
+		SendPatchesCommandMessage sendPatchesCommandMessage =
+			new SendPatchesCommandMessage();
+
+		SendPatchesCommand sendPatchesCommand = new SendPatchesCommand(
+			_lcsGatewayClient, taskAdvisor);
+
+		CommandMessageTask commandMessageTask = new CommandMessageTask(
+			_digitalSignature, _lcsConfigurationProvider, _lcsGatewayClient,
+			_lcsKeyAdvisor, sendPatchesCommand, sendPortalPropertiesCommand);
+
+		when(
+			_lcsGatewayClient.getMessages(Mockito.anyString())
+		).thenReturn(
+			Collections.singletonList(sendPortalPropertiesCommandMessage)
+		);
+
+		commandMessageTask.run();
+
+		Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
+
+		Assert.assertTrue(
+			"Portal properties analysis service present",
+			activeServiceLabels.contains("Portal Properties Analysis"));
+
+		Assert.assertFalse(
+			"Fix packs management service absent",
+			activeServiceLabels.contains("Fix Packs Management"));
+		Assert.assertFalse(
+			"Portal analytics service absent",
+			activeServiceLabels.contains("Portal Analytics"));
+		Assert.assertFalse(
+			"Subscription management service absent",
+			activeServiceLabels.contains("Subscription Management"));
+
+		when(
+			_lcsGatewayClient.getMessages(Mockito.anyString())
+		).thenReturn(
+			Collections.singletonList(sendPatchesCommandMessage)
+		);
+
+		commandMessageTask.run();
+
+		activeServiceLabels = taskAdvisor.getActiveServiceLabels();
+
+		Assert.assertTrue(
+			"Fix packs management service present",
+			activeServiceLabels.contains("Fix Packs Management"));
+	}
+
+	private void _mockDigesterUtil() {
 		mockStatic(DigesterUtil.class);
 
 		when(
@@ -67,7 +146,59 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		).thenReturn(
 			"md5-mock-digest"
 		);
+	}
 
+	private void _mockDigitalSignature() throws DigitalSignatureException {
+		_digitalSignature = mock(DigitalSignatureImpl.class);
+
+		doReturn(
+			Boolean.TRUE
+		).when(
+			_digitalSignature
+		).verifyMessage(
+			Matchers.eq(500), Matchers.any(Message.class)
+		);
+	}
+
+	private void _mockLCSConfigurationProvider(int lcsClientBuildNumber) {
+		_lcsConfigurationProvider = mock(LCSConfigurationProvider.class);
+
+		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
+
+		doReturn(
+			lcsClientBuildNumber
+		).when(
+			lcsConfiguration
+		).lcsClientBuildNumber();
+
+		doReturn(
+			lcsConfiguration
+		).when(
+			_lcsConfigurationProvider
+		).getLCSConfiguration();
+	}
+
+	private void _mockLCSGatewayClient() {
+		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
+
+		doReturn(
+			true
+		).when(
+			_lcsGatewayClient
+		).isAvailable();
+	}
+
+	private void _mockLCSKeyAdvisor() {
+		_lcsKeyAdvisor = mock(LCSKeyAdvisor.class);
+
+		when(
+			_lcsKeyAdvisor.getKey()
+		).thenReturn(
+			"key1"
+		);
+	}
+
+	private void _mockLCSPatcherUtil() {
 		mockStatic(LCSPatcherUtil.class);
 
 		when(
@@ -90,15 +221,9 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		).thenReturn(
 			2011
 		);
+	}
 
-		mockStatic(LCSUtil.class);
-
-		/*when(
-			LCSUtil.getLCSPortletBuildNumber()
-		).thenReturn(
-			500
-		);*/
-
+	private void _mockPropsUtil() {
 		mockStatic(PropsUtil.class);
 
 		Properties properties = new Properties();
@@ -110,113 +235,11 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		).thenReturn(
 			properties
 		);
-
-		_digitalSignature = mock(DigitalSignatureImpl.class);
-
-		doReturn(
-			Boolean.TRUE
-		).when(
-			_digitalSignature
-		).verifyMessage(
-			Matchers.eq(500), Matchers.any(Message.class)
-		);
-
-		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
-
-		doNothing(
-		).when(
-			_lcsGatewayClient
-		).sendMessage(
-			Matchers.any(Message.class)
-		);
-	}
-
-	@Test
-	public void testGetActiveServiceLabels() {
-		Map<String, Command<? extends CommandMessage>> messageCommands =
-			new HashMap<>();
-
-		TaskAdvisorImpl taskAdvisor = new TaskAdvisorImpl();
-
-		Command<? extends CommandMessage> sendPortalPropertiesCommand =
-			new SendPortalPropertiesCommand(
-				mock(LCSClusterEntryTokenAdvisor.class), _lcsGatewayClient,
-				taskAdvisor);
-
-		messageCommands.put(
-			"com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage",
-			sendPortalPropertiesCommand);
-
-		Command<? extends CommandMessage> sendPatchesCommand =
-			new SendPatchesCommand(_lcsGatewayClient, taskAdvisor);
-
-		messageCommands.put(
-			"com.liferay.lcs.messaging.SendPatchesCommandMessage",
-			sendPatchesCommand);
-
-		CommandMessageListener commandMessageListener = spy(
-			new CommandMessageListener(
-				messageCommands, _digitalSignature,
-				_spyLCSConfigurationProvider(500), _lcsGatewayClient));
-
-		com.liferay.portal.kernel.messaging.Message message =
-			new com.liferay.portal.kernel.messaging.Message();
-
-		message.setPayload(new SendPortalPropertiesCommandMessage());
-
-		commandMessageListener.receive(message);
-
-		Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
-
-		Assert.assertTrue(
-			"Portal properties analysis service present",
-			activeServiceLabels.contains("Portal Properties Analysis"));
-
-		Assert.assertFalse(
-			"Fix packs management service absent",
-			activeServiceLabels.contains("Fix Packs Management"));
-		Assert.assertFalse(
-			"Portal analytics service absent",
-			activeServiceLabels.contains("Portal Analytics"));
-		Assert.assertFalse(
-			"Subscription management service absent",
-			activeServiceLabels.contains("Subscription Management"));
-
-		message.setPayload(new SendPatchesCommandMessage());
-
-		commandMessageListener.receive(message);
-
-		activeServiceLabels = taskAdvisor.getActiveServiceLabels();
-
-		Assert.assertTrue(
-			"Fix packs management service present",
-			activeServiceLabels.contains("Fix Packs Management"));
-	}
-
-	private LCSConfigurationProvider _spyLCSConfigurationProvider(
-		int lcsClientBuildNumber) {
-
-		LCSConfigurationProvider lcsConfigurationProvider = mock(
-			LCSConfigurationProvider.class);
-
-		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
-
-		doReturn(
-			lcsClientBuildNumber
-		).when(
-			lcsConfiguration
-		).lcsClientBuildNumber();
-
-		doReturn(
-			lcsConfiguration
-		).when(
-			lcsConfigurationProvider
-		).getLCSConfiguration();
-
-		return lcsConfigurationProvider;
 	}
 
 	private DigitalSignature _digitalSignature;
+	private LCSConfigurationProvider _lcsConfigurationProvider;
 	private LCSGatewayClient _lcsGatewayClient;
+	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }
