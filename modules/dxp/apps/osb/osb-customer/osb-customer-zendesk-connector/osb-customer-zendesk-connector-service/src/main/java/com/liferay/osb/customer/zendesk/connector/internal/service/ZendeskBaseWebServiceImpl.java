@@ -94,7 +94,8 @@ public class ZendeskBaseWebServiceImpl
 			if (jsonwste.getStatus() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -103,12 +104,11 @@ public class ZendeskBaseWebServiceImpl
 				return delete(url, parameters);
 			}
 
-			throw new PortalException(jsonwste);
+			throw processedException(
+				jsonwste, url, parameters.toString(), response);
 		}
 		catch (Exception e) {
-			processError(e, url, parameters.toString(), response);
-
-			throw new PortalException(e);
+			throw processedException(e, url, parameters.toString(), response);
 		}
 	}
 
@@ -134,7 +134,8 @@ public class ZendeskBaseWebServiceImpl
 			if (jsonwste.getStatus() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -143,12 +144,10 @@ public class ZendeskBaseWebServiceImpl
 				return delete(endpoint, json);
 			}
 
-			throw new PortalException(jsonwste);
+			throw processedException(jsonwste, endpoint, json, response);
 		}
 		catch (Exception e) {
-			processError(e, endpoint, json, response);
-
-			throw new PortalException(e);
+			throw processedException(e, endpoint, json, response);
 		}
 	}
 
@@ -166,7 +165,8 @@ public class ZendeskBaseWebServiceImpl
 			if (jsonwste.getStatus() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -175,12 +175,11 @@ public class ZendeskBaseWebServiceImpl
 				return get(url, parameters);
 			}
 
-			throw new PortalException(jsonwste);
+			throw processedException(
+				jsonwste, url, parameters.toString(), response);
 		}
 		catch (Exception e) {
-			processError(e, url, parameters.toString(), response);
-
-			throw new PortalException(e);
+			throw processedException(e, url, parameters.toString(), response);
 		}
 	}
 
@@ -200,11 +199,19 @@ public class ZendeskBaseWebServiceImpl
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
+		catch (JSONWebServiceInvocationException jsonwsie) {
+			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
+				throw new NoSuchModelException(jsonwsie);
+			}
+
+			throw new PortalException(jsonwsie);
+		}
 		catch (JSONWebServiceTransportException jsonwste) {
 			if (jsonwste.getStatus() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -213,19 +220,10 @@ public class ZendeskBaseWebServiceImpl
 				return get(endpoint, json);
 			}
 
-			throw new PortalException(jsonwste);
-		}
-		catch (JSONWebServiceInvocationException jsonwsie) {
-			if (jsonwsie.getStatus() == HttpServletResponse.SC_NOT_FOUND) {
-				throw new NoSuchModelException(jsonwsie);
-			}
-
-			throw new PortalException(jsonwsie);
+			throw processedException(jsonwste, endpoint, json, response);
 		}
 		catch (Exception e) {
-			processError(e, endpoint, json, response);
-
-			throw new PortalException(e);
+			throw processedException(e, endpoint, json, response);
 		}
 	}
 
@@ -267,13 +265,14 @@ public class ZendeskBaseWebServiceImpl
 			if (statusLine.getStatusCode() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
 				}
 
-				post(endpoint, parameters, fileName, bytes);
+				return post(endpoint, parameters, fileName, bytes);
 			}
 
 			response = EntityUtils.toString(httpResponse.getEntity());
@@ -281,9 +280,8 @@ public class ZendeskBaseWebServiceImpl
 			return JSONFactoryUtil.createJSONObject(response);
 		}
 		catch (Exception e) {
-			processError(e, endpoint, parameters.toString(), response);
-
-			throw new PortalException(e);
+			throw processedException(
+				e, endpoint, parameters.toString(), response);
 		}
 	}
 
@@ -309,7 +307,8 @@ public class ZendeskBaseWebServiceImpl
 			if (jsonwste.getStatus() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -318,12 +317,10 @@ public class ZendeskBaseWebServiceImpl
 				return post(endpoint, json);
 			}
 
-			throw new PortalException(jsonwste);
+			throw processedException(jsonwste, endpoint, json, response);
 		}
 		catch (Exception e) {
-			processError(e, endpoint, json, response);
-
-			throw new PortalException(e);
+			throw processedException(e, endpoint, json, response);
 		}
 	}
 
@@ -347,7 +344,8 @@ public class ZendeskBaseWebServiceImpl
 			if (jsonwste.getStatus() == 429) {
 				try {
 					Thread.sleep(
-						ZendeskConnectorConfigurationValues.ERROR_SLEEP_MILLIS);
+						ZendeskConnectorConfigurationValues.
+							ZENDESK_API_RETRY_WAIT_TIME);
 				}
 				catch (InterruptedException ie) {
 					_log.error(ie, ie);
@@ -356,12 +354,10 @@ public class ZendeskBaseWebServiceImpl
 				return put(endpoint, json);
 			}
 
-			throw new PortalException(jsonwste);
+			throw processedException(jsonwste, endpoint, json, response);
 		}
 		catch (Exception e) {
-			processError(e, endpoint, json, response);
-
-			throw new PortalException(e);
+			throw processedException(e, endpoint, json, response);
 		}
 	}
 
@@ -422,7 +418,7 @@ public class ZendeskBaseWebServiceImpl
 		return stringEntity;
 	}
 
-	protected void processError(
+	protected PortalException processedException(
 			Exception e, String url, String data, String response)
 		throws PortalException {
 
@@ -443,6 +439,8 @@ public class ZendeskBaseWebServiceImpl
 		if (response != null) {
 			_log.error("Error parsing response: " + response);
 		}
+
+		return new PortalException(e);
 	}
 
 	protected void sendEmail(Exception e, String url, String data) {

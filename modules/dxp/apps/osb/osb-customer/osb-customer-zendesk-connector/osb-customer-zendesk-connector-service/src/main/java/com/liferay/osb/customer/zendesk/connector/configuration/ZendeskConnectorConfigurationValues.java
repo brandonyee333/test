@@ -21,13 +21,13 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class ZendeskConnectorConfigurationValues {
 
-	public static final long ERROR_SLEEP_MILLIS = GetterUtil.getLong(
-		ZendeskConnectorConfigurationUtil.get("error.sleep.millis"));
-
 	public static final String ZENDESK_API_ERROR_EMAIL_ADDRESS =
 		GetterUtil.getString(
 			ZendeskConnectorConfigurationUtil.get(
 				"zendesk.api.error.email.address"));
+
+	public static final long ZENDESK_API_RETRY_WAIT_TIME = GetterUtil.getLong(
+		ZendeskConnectorConfigurationUtil.get("zendesk.api.retry.wait.time"));
 
 	public static final String ZENDESK_API_TOKEN = GetterUtil.getString(
 		ZendeskConnectorConfigurationUtil.get("zendesk.api.token"));
