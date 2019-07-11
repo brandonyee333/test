@@ -2,10 +2,10 @@
 
 ### General Information
 
-* requires integration from customer.liferay.com, web.liferay.com, and Zendesk
-  * creates an OSB project and order workflow tasks on customer.liferay.com
-  * validates and handles corp projects via integration to web.liferay.com
-  * once workflow updates offerings on an OSB project, the project is then synced to Zendesk through our model listeners
+* Requires integration from customer.liferay.com, web.liferay.com, and Zendesk
+  * Creates a Support Project and order workflow tasks on customer.liferay.com
+  * Validates and handles corp projects via integration to web.liferay.com
+  * Once workflow updates offerings on a Support Project, the Support Project is then synced to Zendesk through our model listeners
 
 #### RabbitMQ Debugger Tab
 
@@ -13,13 +13,13 @@
 
 * Routing Key
   * dossiera.provisioning.create
-    * used for creating new projects and opportunities/orders
+    * Used for creating new Support Projects and orders
   * dossiera.provisioning.update
-    * used for updating project information
+    * Used for updating certain Support Project information and displaying updates to orders
 
 ##### RabbitMQ fields
 
-* "_account": OSB AccountEntry / Project
+* "_account": Support Project
   * "_dossieraAccountKey": should be unique
   * "_name": must be the same as the current project unless doing an update
 * "_bundledProducts": OSB OrderEntry
@@ -27,7 +27,7 @@
     * "_name" : OSB ProductEntry, use a Dossiera ID mapping, but if not available, use the name of the product
     * "_productType": Salesforce product types
       * Possible Values: "Add to", "New", "Renewal", "Renewal Downgrade", "Renewal Migration", "Renewal Upgrade"
-* "_contacts": should contain existing users
+* "_contacts": should contain existing users, a warning will show if they don't exist
   * "_role": role of the user, if testing Analytics Cloud, a user should have the "Analytics Cloud Owner" role
 * "_partnerAccount": OSB PartnerEntry
   * "_dossieraAccountKey": should be unique and match the value on Customer (identifier to grab the OSB partner)
