@@ -16,8 +16,8 @@ package com.liferay.osb.customer.metrics.sync.liferay.model;
 
 import com.liferay.osb.customer.account.entry.details.constants.EventConstants;
 import com.liferay.osb.customer.account.entry.details.model.Event;
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 
 import java.util.Map;

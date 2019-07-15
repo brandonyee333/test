@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.metrics.impl.internal.model;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModelRegistry;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

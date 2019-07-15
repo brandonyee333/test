@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.metrics.impl.internal.util;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.util.CharPool;

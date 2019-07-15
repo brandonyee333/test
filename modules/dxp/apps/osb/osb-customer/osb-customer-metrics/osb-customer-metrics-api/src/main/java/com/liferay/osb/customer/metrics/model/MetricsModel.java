@@ -12,17 +12,34 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.model;
+package com.liferay.osb.customer.metrics.model;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Jenny Chen
  */
-public interface MetricsModelRegistry {
+public interface MetricsModel<T> {
 
-	public MetricsModel<?> getMetricsModel(String modelClassName);
+	public boolean allowDeleteAll();
 
-	public Map<String, MetricsModel<?>> getMetricsModelsMap();
+	public void deleteAll() throws Exception;
+
+	public Map<String, Object> getAttributes(T model);
+
+	public String[] getMappingTables();
+
+	public List<Map<String, Object>> getMappingValues(T model);
+
+	public Class<T> getModelClass();
+
+	public String getModelName();
+
+	public String getModelPrimaryKeyName();
+
+	public boolean hasMapping();
+
+	public void resyncAll() throws Exception;
 
 }

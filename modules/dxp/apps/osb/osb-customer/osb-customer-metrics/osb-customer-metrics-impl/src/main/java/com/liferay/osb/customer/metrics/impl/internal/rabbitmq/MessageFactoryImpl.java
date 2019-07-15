@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
-import com.liferay.osb.customer.metrics.api.rabbitmq.MessageFactory;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.rabbitmq.MessageFactory;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

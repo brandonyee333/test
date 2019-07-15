@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.metrics.web.internal.portlet;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModelRegistry;
 import com.liferay.osb.customer.metrics.web.internal.constants.MetricsPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.util.ParamUtil;

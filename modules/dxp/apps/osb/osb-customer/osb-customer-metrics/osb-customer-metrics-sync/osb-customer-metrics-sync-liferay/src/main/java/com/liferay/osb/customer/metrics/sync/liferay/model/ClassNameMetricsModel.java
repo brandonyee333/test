@@ -14,9 +14,9 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.model;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.api.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

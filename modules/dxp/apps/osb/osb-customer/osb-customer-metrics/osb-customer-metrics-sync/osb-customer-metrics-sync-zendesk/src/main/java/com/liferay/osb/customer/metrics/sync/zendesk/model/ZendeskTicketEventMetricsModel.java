@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.metrics.sync.zendesk.model;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicketEvent;
 
 import org.osgi.service.component.annotations.Component;

@@ -23,8 +23,8 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.osb.customer.metrics.api.model.MetricsModel" %><%@
-page import="com.liferay.osb.customer.metrics.api.model.MetricsModelRegistryUtil" %><%@
+<%@ page import="com.liferay.osb.customer.metrics.model.MetricsModel" %><%@
+page import="com.liferay.osb.customer.metrics.model.MetricsModelRegistryUtil" %><%@
 page import="com.liferay.portal.kernel.util.ListUtil" %>
 
 <%@ page import="java.util.Map" %>

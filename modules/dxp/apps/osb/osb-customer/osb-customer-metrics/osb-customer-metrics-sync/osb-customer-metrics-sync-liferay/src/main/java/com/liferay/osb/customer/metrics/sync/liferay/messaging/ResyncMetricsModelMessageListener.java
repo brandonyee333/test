@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.messaging;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.api.model.MetricsModelRegistry;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.model.MetricsModelRegistry;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;

@@ -12,17 +12,17 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.rabbitmq;
+package com.liferay.osb.customer.metrics.model;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONObject;
+import java.util.Map;
 
 /**
  * @author Jenny Chen
  */
-public interface MessagePublisher {
+public interface MetricsModelRegistry {
 
-	public void sendMessage(String routingKey, JSONObject jsonObject)
-		throws PortalException;
+	public MetricsModel<?> getMetricsModel(String modelClassName);
+
+	public Map<String, MetricsModel<?>> getMetricsModelsMap();
 
 }

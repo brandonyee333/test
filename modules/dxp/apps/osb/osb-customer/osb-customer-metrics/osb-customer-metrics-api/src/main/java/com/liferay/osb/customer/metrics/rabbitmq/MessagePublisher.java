@@ -12,24 +12,17 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.rabbitmq;
+package com.liferay.osb.customer.metrics.rabbitmq;
 
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Jenny Chen
  */
-public interface MessageFactory {
+public interface MessagePublisher {
 
-	public JSONObject createDropJSONObject(String modelClassName)
-		throws Exception;
-
-	public JSONObject createRemoveJSONObject(
-			String modelClassName, Object model)
-		throws Exception;
-
-	public JSONObject createUpdateJSONObject(
-			String modelClassName, Object model)
-		throws Exception;
+	public void sendMessage(String routingKey, JSONObject jsonObject)
+		throws PortalException;
 
 }

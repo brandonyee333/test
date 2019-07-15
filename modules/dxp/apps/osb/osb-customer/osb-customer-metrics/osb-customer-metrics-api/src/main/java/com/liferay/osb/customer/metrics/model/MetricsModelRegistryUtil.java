@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.api.model;
+package com.liferay.osb.customer.metrics.model;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
 

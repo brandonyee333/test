@@ -14,8 +14,8 @@
 
 package com.liferay.osb.customer.metrics.impl.internal.rabbitmq;
 
-import com.liferay.osb.customer.metrics.api.rabbitmq.MessagePublisher;
 import com.liferay.osb.customer.metrics.impl.configuration.MetricsConfigurationValues;
+import com.liferay.osb.customer.metrics.rabbitmq.MessagePublisher;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 

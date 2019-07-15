@@ -14,11 +14,11 @@
 
 package com.liferay.osb.customer.metrics.impl.model;
 
-import com.liferay.osb.customer.metrics.api.model.MetricsModel;
-import com.liferay.osb.customer.metrics.api.rabbitmq.MessageFactory;
-import com.liferay.osb.customer.metrics.api.rabbitmq.MessagePublisher;
-import com.liferay.osb.customer.metrics.api.rabbitmq.constants.RoutingKeys;
 import com.liferay.osb.customer.metrics.impl.internal.util.MetricsBaseModelUtil;
+import com.liferay.osb.customer.metrics.model.MetricsModel;
+import com.liferay.osb.customer.metrics.rabbitmq.MessageFactory;
+import com.liferay.osb.customer.metrics.rabbitmq.MessagePublisher;
+import com.liferay.osb.customer.metrics.rabbitmq.constants.RoutingKeys;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.BaseModel;
