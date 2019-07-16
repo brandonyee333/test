@@ -802,12 +802,12 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		// Account entry
 
-		if (status == WorkflowConstants.STATUS_APPROVED) {
-			if (accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED) {
-				accountEntryLocalService.updateStatus(
-					userId, accountEntry.getAccountEntryId(), status,
-					serviceContext);
-			}
+		if ((accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED) &&
+			(status == WorkflowConstants.STATUS_APPROVED)) {
+
+			accountEntryLocalService.updateStatus(
+				userId, accountEntry.getAccountEntryId(), status,
+				serviceContext);
 		}
 
 		return orderEntry;
