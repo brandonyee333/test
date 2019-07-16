@@ -85,9 +85,11 @@ Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseD
 	</aui:alert>
 </c:if>
 
-<div class="additional-notes">
-	<%= additionalNotes %>
-</div>
+<c:if test="<%= Validator.isNotNull(additionalNotes) %>">
+	<div class="additional-notes">
+		<%= additionalNotes %>
+	</div>
+</c:if>
 
 <div class="downloads" id="<portlet:namespace />downloads<%= journalArticle.getResourcePrimKey() %>"></div>
 
