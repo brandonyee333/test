@@ -151,6 +151,7 @@ export const tableHeader = (orderBy, handleSort) => (
 		<th className="lfr-release-column">
 			{Liferay.Language.get('release')}{' '}
 			<svg
+				aria-label="Sort"
 				className={`arrow-down ${orderBy} lexicon-icon sorting-indicator`}
 				onClick={handleSort}
 				role="button"
