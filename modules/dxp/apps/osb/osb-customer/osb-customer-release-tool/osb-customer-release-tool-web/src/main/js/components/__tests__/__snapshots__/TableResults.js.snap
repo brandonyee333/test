@@ -39,6 +39,7 @@ exports[`TableResults renders content correctly 1`] = `
           release
            
           <svg
+            aria-label="Sort"
             class="arrow-down desc lexicon-icon sorting-indicator"
             role="button"
           >

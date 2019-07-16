@@ -115,6 +115,7 @@ exports[`Highlights renders correctly 1`] = `
             date
              
             <svg
+              aria-label="Sort"
               class="arrow-up desc lexicon-icon sorting-indicator"
               role="button"
             >
@@ -290,6 +291,7 @@ exports[`Highlights renders no results correctly 1`] = `
             date
              
             <svg
+              aria-label="Sort"
               class="arrow-up desc lexicon-icon sorting-indicator"
               role="button"
             >

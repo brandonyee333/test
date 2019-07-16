@@ -16,6 +16,7 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
         </h3>
       </div>
       <input
+        aria-label="Refine By Term"
         class="input-small text-filter"
         placeholder="name"
         type="text"
@@ -68,6 +69,7 @@ exports[`ModuleChanges renders CTA correctly 1`] = `
         >
           <label>
             <input
+              aria-label="Toggle Module Changes"
               class="toggle-switch"
               type="checkbox"
             />
@@ -233,6 +235,7 @@ exports[`ModuleChanges renders correctly 1`] = `
         </h3>
       </div>
       <input
+        aria-label="Refine By Term"
         class="input-small text-filter"
         placeholder="name"
         type="text"
@@ -285,6 +288,7 @@ exports[`ModuleChanges renders correctly 1`] = `
         >
           <label>
             <input
+              aria-label="Toggle Module Changes"
               class="toggle-switch"
               type="checkbox"
             />
@@ -443,6 +447,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
         </h3>
       </div>
       <input
+        aria-label="Refine By Term"
         class="input-small text-filter"
         placeholder="name"
         type="text"
@@ -495,6 +500,7 @@ exports[`ModuleChanges renders no results correctly 1`] = `
         >
           <label>
             <input
+              aria-label="Toggle Module Changes"
               class="toggle-switch"
               type="checkbox"
             />
@@ -596,6 +602,7 @@ exports[`ModuleChanges renders product name and version in table header correctl
         </h3>
       </div>
       <input
+        aria-label="Refine By Term"
         class="input-small text-filter"
         placeholder="name"
         type="text"
@@ -648,6 +655,7 @@ exports[`ModuleChanges renders product name and version in table header correctl
         >
           <label>
             <input
+              aria-label="Toggle Module Changes"
               class="toggle-switch"
               type="checkbox"
             />
