@@ -21,6 +21,7 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
+import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.petra.content.ContentUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -204,6 +205,28 @@ public class SupportUtil {
 		}
 
 		return selfProvisioningProducts;
+	}
+
+	public static boolean hasRenewalOfferingEntry(
+		List<OrderEntry> orderEntries) {
+
+		for (OrderEntry orderEntry : orderEntries) {
+			List<OfferingEntry> offeringEntries =
+				orderEntry.getOfferingEntries();
+
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				String productType = offeringEntry.getProductType();
+
+				if (Validator.isNotNull(productType) &&
+					productType.equals(
+						SalesforceConstants.PRODUCT_TYPE_RENEWAL)) {
+
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {
