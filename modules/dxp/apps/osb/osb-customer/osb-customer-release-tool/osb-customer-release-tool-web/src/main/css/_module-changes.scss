@@ -24,11 +24,7 @@
 }
 
 .module-changes-table {
-	color: $color-default-disabled;
-
-	a {
-		color: $color-disabled;
-	}
+	color: $secondary-text-color;
 
 	.lfr-from-version-column,
 	.lfr-to-version-column {
@@ -45,10 +41,6 @@
 
 	.module-changed {
 		color: $color-default;
-
-		a {
-			color: $color-primary;
-		}
 	}
 }
 
