@@ -33,7 +33,7 @@
 				<div class="social-links">
 					<#if validator.isNotNull(social_link_one_name) && validator.isNotNull(social_link_one_url)>
 						<div class="social-icon">
-							<a href="${social_link_one_url}">
+							<a aria-label="${social_link_one_name}" href="${social_link_one_url}">
 								<svg class="lexicon-icon lexicon-icon-social-${social_link_one_name}">
 									<use xlink:href="#social-${social_link_one_name}" />
 								</svg>
@@ -43,7 +43,7 @@
 
 					<#if validator.isNotNull(social_link_two_url) && validator.isNotNull(social_link_two_name)>
 						<div class="social-icon">
-							<a href="${social_link_two_url}">
+							<a aria-label="${social_link_two_name}" href="${social_link_two_url}">
 								<svg class="lexicon-icon lexicon-icon-${social_link_two_name}">
 									<use xlink:href="#social-${social_link_two_name}" />
 								</svg>
@@ -53,7 +53,7 @@
 
 					<#if validator.isNotNull(social_link_three_name) && validator.isNotNull(social_link_three_url)>
 						<div class="social-icon">
-							<a href="${social_link_three_url}">
+							<a aria-label="${social_link_three_name}" href="${social_link_three_url}">
 								<svg class="lexicon-icon lexicon-icon-${social_link_three_name}">
 									<use xlink:href="#social-${social_link_three_name}" />
 								</svg>

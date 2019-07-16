@@ -1,7 +1,7 @@
 <div class="container-fluid container-fluid-max-xl">
 	<div class="header-inner row">
 		<div class="col-sm-3 header-content">
-			<a class="header-link" href="${site_logo_url}" title="Home">
+			<a aria-label="Home" class="header-link" href="${site_logo_url}" title="Home">
 				<svg alt="<@liferay.language key="liferay-help-center" />" class="header-logo">
 					<use xlink:href="#liferay-waffle" />
 				</svg>
