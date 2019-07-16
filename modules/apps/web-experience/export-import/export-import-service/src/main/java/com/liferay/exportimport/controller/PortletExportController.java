@@ -1064,15 +1064,7 @@ public class PortletExportController implements ExportController {
 			return;
 		}
 
-		LayoutTypePortlet layoutTypePortlet = null;
-
-		if (layout != null) {
-			layoutTypePortlet = (LayoutTypePortlet)layout.getLayoutType();
-		}
-
-		if ((layoutTypePortlet == null) ||
-			layoutTypePortlet.hasPortletId(portletId)) {
-
+		if (_hasPortletId(layout, portletId, ownerType)) {
 			exportPortletPreference(
 				portletDataContext, ownerId, ownerType, defaultUser,
 				portletPreferences, portletId, plid, parentElement);
@@ -1348,6 +1340,43 @@ public class PortletExportController implements ExportController {
 	@Reference(unbind = "-")
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		_userLocalService = userLocalService;
+	}
+
+	private boolean _hasPortletId(
+		Layout layout, String portletId, int ownerType) {
+
+		if (layout == null) {
+			return true;
+		}
+
+		LayoutTypePortlet layoutTypePortlet =
+			(LayoutTypePortlet)layout.getLayoutType();
+
+		if (layoutTypePortlet == null) {
+			return true;
+		}
+
+		boolean rootPortletId = false;
+
+		if ((ownerType == PortletKeys.PREFS_OWNER_TYPE_GROUP) ||
+			(ownerType == PortletKeys.PREFS_OWNER_TYPE_COMPANY)) {
+
+			rootPortletId = true;
+		}
+
+		if (!rootPortletId) {
+			return layoutTypePortlet.hasPortletId(portletId);
+		}
+
+		List<Portlet> allPortlets = layoutTypePortlet.getAllPortlets(false);
+
+		for (Portlet portlet : allPortlets) {
+			if (portletId.equals(portlet.getRootPortletId())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
