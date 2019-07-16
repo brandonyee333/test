@@ -23,9 +23,6 @@ import com.liferay.portal.kernel.repository.model.FileVersion;
  */
 public interface FileVersionPreviewEventListener {
 
-	public void deleteDLFileVersionPreviews(long fileEntryId)
-		throws PortalException;
-
 	public void onFailure(FileVersion fileVersion);
 
 	public void onSuccess(FileVersion fileVersion);

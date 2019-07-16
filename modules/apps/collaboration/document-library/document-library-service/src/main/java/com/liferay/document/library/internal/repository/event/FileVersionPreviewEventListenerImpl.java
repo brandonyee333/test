@@ -37,19 +37,6 @@ public class FileVersionPreviewEventListenerImpl
 	implements FileVersionPreviewEventListener {
 
 	@Override
-	public void deleteDLFileVersionPreviews(long fileEntryId) {
-		List<DLFileVersionPreview> fileVersionPreviews =
-			_dlFileVersionPreviewLocalService.getFileEntryDLFileVersionPreviews(
-				fileEntryId);
-
-		for (DLFileVersionPreview dlFileVersionPreview : fileVersionPreviews) {
-			_dlFileVersionPreviewLocalService.
-				deleteDLFileEntryFileVersionPreviews(
-					dlFileVersionPreview.getDlFileVersionPreviewId());
-		}
-	}
-
-	@Override
 	public void onFailure(FileVersion fileVersion) {
 		_addDLFileEntryPreview(
 			fileVersion, DLFileVersionPreviewConstants.STATUS_FAILURE);
