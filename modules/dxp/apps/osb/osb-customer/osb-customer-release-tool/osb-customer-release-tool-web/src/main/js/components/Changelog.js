@@ -237,6 +237,7 @@ export default class Changelog extends Component {
 
 							<input
 								ref={this.changelogTextInputRef}
+								aria-label="Refine By Term"
 								className="input-small text-filter"
 								onKeyUp={this.debounceEvent(
 									this.handleFilterTextInputKeyUp,

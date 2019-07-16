@@ -238,6 +238,7 @@ export default class ModuleChanges extends Component {
 
 							<input
 								ref={this.moduleChangesTextInputRef}
+								aria-label="Refine By Term"
 								className="input-small text-filter"
 								onKeyUp={this.debounceEvent(
 									this.handleFilterTextInputKeyUp,
@@ -268,7 +269,13 @@ export default class ModuleChanges extends Component {
 
 								<div className="toggle">
 									<label>
-										<input ref={this.moduleChangesToggleRef} className="toggle-switch" onChange={this.handleToggleChange} type="checkbox" />
+										<input
+											ref={this.moduleChangesToggleRef}
+											aria-label="Toggle Module Changes"
+											className="toggle-switch"
+											onChange={this.handleToggleChange}
+											type="checkbox"
+										/>
 
 										<span aria-hidden="true" className="toggle-switch-bar">
 											<span className="toggle-switch-handle" />
