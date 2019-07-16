@@ -114,6 +114,11 @@ h1 {
 		.alert-message {
 			display: inline-block;
 
+			a {
+				color: $color-primary;
+				font-weight: $font-weight-semi-bold;
+			}
+
 			p {
 				margin: 0;
 			}
