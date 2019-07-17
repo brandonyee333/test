@@ -1359,10 +1359,25 @@ public class AccountEntryLocalServiceImpl
 				"No orders found with key " + salesforceOpportunityKey);
 		}
 
+		String salesforceOpportunityStageName = GetterUtil.getString(
+			serviceContext.getAttribute("salesforceOpportunityStageName"));
+
+		HashMap<String, Serializable> workflowContext = new HashMap<>();
+
+		if (!salesforceOpportunityStageName.equals(
+				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&
+			!salesforceOpportunityStageName.equals(
+				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON)) {
+
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
+				serviceContext.getAttribute("salesforceOpportunityStageName"));
+		}
+
 		Map<String, Integer> offeringEntriesMap =
 			SupportUtil.getOfferingEntriesMap(orderEntries, true);
 
-		if (offeringEntriesMap.isEmpty()) {
+		if (offeringEntriesMap.isEmpty() && workflowContext.isEmpty()) {
 			return;
 		}
 
@@ -1460,11 +1475,9 @@ public class AccountEntryLocalServiceImpl
 				String.valueOf(accountEntry.getPartnerManagedSupport()));
 		}
 
-		boolean renewalOffering = SupportUtil.hasRenewalOfferingEntry(
-			orderEntries);
-
-		if (renewalOffering && oldAccountEntryAttributes.isEmpty() &&
-			newAccountEntryAttributes.isEmpty()) {
+		if (SupportUtil.hasRenewalOnly(orderEntries) &&
+			oldAccountEntryAttributes.isEmpty() &&
+			newAccountEntryAttributes.isEmpty() && workflowContext.isEmpty()) {
 
 			return;
 		}
@@ -1521,8 +1534,6 @@ public class AccountEntryLocalServiceImpl
 		Map<String, Integer> oldOfferingEntriesMap =
 			SupportUtil.getOfferingEntriesMap(
 				externalIdMapperOrderEntries, true);
-
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		if (!oldOfferingEntriesMap.equals(offeringEntriesMap)) {
 			workflowContext.put(

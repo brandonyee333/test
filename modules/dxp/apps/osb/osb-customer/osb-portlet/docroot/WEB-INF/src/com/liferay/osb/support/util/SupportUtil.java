@@ -207,8 +207,10 @@ public class SupportUtil {
 		return selfProvisioningProducts;
 	}
 
-	public static boolean hasRenewalOfferingEntry(
-		List<OrderEntry> orderEntries) {
+	public static boolean hasRenewalOnly(List<OrderEntry> orderEntries) {
+		if (orderEntries.isEmpty()) {
+			return false;
+		}
 
 		for (OrderEntry orderEntry : orderEntries) {
 			List<OfferingEntry> offeringEntries =
@@ -218,15 +220,15 @@ public class SupportUtil {
 				String productType = offeringEntry.getProductType();
 
 				if (Validator.isNotNull(productType) &&
-					productType.equals(
+					!productType.equals(
 						SalesforceConstants.PRODUCT_TYPE_RENEWAL)) {
 
-					return true;
+					return false;
 				}
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {
