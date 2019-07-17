@@ -5,7 +5,8 @@
 		}
 
 		.btn {
-			&:active, &:focus {
+			&:active,
+			&:focus {
 				outline: 0;
 			}
 		}
@@ -26,7 +27,7 @@
 
 		.list-group-item {
 			&:hover {
-				background-color: #F5F5F5;
+				background-color: #f5f5f5;
 			}
 
 			&.indent {
@@ -52,7 +53,7 @@
 		}
 
 		.title {
-			color: #1C75B9;
+			color: #1c75b9;
 			font-size: 3em;
 			font-weight: lighter;
 			vertical-align: middle;
@@ -60,7 +61,7 @@
 	}
 
 	.footer {
-		border-top: 1px solid #E3E6E8;
+		border-top: 1px solid #e3e6e8;
 		padding: 8px 16px;
 	}
 }
