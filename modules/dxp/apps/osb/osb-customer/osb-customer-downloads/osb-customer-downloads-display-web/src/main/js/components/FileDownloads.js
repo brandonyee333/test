@@ -187,17 +187,23 @@ class Downloads extends React.Component {
 			<React.Fragment>
 				<div className="dropdown-row">
 					{showDropdown && (
-						<select className="download-dropdown form-control" onChange={this.handleSelectChange}>
+						<select
+							aria-label="File Download Dropdown"
+							className="download-dropdown form-control"
+							onChange={this.handleSelectChange}
+						>
 							{children.map(
 								(child, childIndex) => (
 									<optgroup key={childIndex} label={child.downloadGroupName}>
-										{child.downloads.map(
-											(download, downloadIndex) => (
-												<option key={downloadIndex} id={`${journalArticleId}-${childIndex}-${downloadIndex}`} value={download.downloadName}>
-													{download.downloadName}
-												</option>
-											)
-										)}
+										{child.downloads.map((download, downloadIndex) => (
+											<option
+												key={downloadIndex}
+												id={`${journalArticleId}-${childIndex}-${downloadIndex}`}
+												value={download.downloadName}
+											>
+												{download.downloadName}
+											</option>
+										))}
 									</optgroup>
 								)
 							)}
