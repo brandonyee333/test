@@ -320,7 +320,7 @@ export default class DynamicUploaderForm extends React.Component {
 				<div className="row">
 					<div className="col-md-12">
 						<div className="form-group" id={`${namespace}uploadContainer`}>
-							<label className="control-label">
+							<label className="control-label" htmlFor={`${namespace}selectButton`}>
 								{Liferay.Language.get('attachment')}
 
 								<svg className="lexicon-icon lexicon-icon-asterisk">
@@ -362,7 +362,10 @@ export default class DynamicUploaderForm extends React.Component {
 										</div>
 
 										{!this.state.toolbar.paused && (
-											<div className="btn form-control toolbar-control-container" onClick={this.handlePause}>
+											<div
+												className="btn form-control toolbar-control-container"
+												onClick={this.handlePause}
+											>
 												<svg className="lexicon-icon lexicon-icon-pause">
 													<use xlinkHref="#pause" />
 												</svg>
@@ -370,7 +373,10 @@ export default class DynamicUploaderForm extends React.Component {
 										)}
 
 										{this.state.toolbar.paused && (
-											<div className="btn form-control toolbar-control-container" onClick={this.handlePlay}>
+											<div
+												className="btn form-control toolbar-control-container"
+												onClick={this.handlePlay}
+											>
 												<svg className="lexicon-icon lexicon-icon-play">
 													<use xlinkHref="#play" />
 												</svg>
@@ -390,11 +396,17 @@ export default class DynamicUploaderForm extends React.Component {
 
 					<div className="col-md-12">
 						<div className="form-group">
-							<label className="control-label">
+							<label className="control-label" htmlFor={`${namespace}comment`}>
 								{Liferay.Language.get('leave-a-comment')}
 							</label>
 
-							<textarea className="form-control" id={`${namespace}comment`} name={`${namespace}comment`} onChange={this.handleUpdateComment} value={this.state.comment} />
+							<textarea
+								className="form-control"
+								id={`${namespace}comment`}
+								name={`${namespace}comment`}
+								onChange={this.handleUpdateComment}
+								value={this.state.comment}
+							/>
 						</div>
 					</div>
 				</div>
