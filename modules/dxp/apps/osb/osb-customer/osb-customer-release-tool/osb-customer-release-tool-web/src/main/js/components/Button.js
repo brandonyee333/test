@@ -52,7 +52,14 @@ export default class Button extends React.Component {
 				{children}
 			</a>
 		) : (
-			<button className={className} disabled={disabled} onClick={onClick} type={type} value={value}>
+			<button
+				aria-label={icon ? value : null}
+				className={className}
+				disabled={disabled}
+				onClick={onClick}
+				type={type}
+				value={value}
+			>
 				{children}
 			</button>
 		);
