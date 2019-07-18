@@ -6,6 +6,7 @@ exports[`FileDownloads renders multiple downloads correctly 1`] = `
     class="dropdown-row"
   >
     <select
+      aria-label="File Download Dropdown"
       class="download-dropdown form-control"
     >
       <optgroup
