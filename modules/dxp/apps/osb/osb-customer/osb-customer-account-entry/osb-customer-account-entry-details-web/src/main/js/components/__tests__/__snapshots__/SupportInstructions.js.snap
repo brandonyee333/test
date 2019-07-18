@@ -31,6 +31,7 @@ exports[`SupportInstructions renders no results message when there is no existin
   >
     support-instructions
     <button
+      aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
       type="button"
       value="add"
