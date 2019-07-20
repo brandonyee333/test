@@ -1,0 +1,22 @@
+.mobile-label {
+	display: none;
+}
+
+@include media-breakpoint-down(sm) {
+	thead .project-name-column,
+	.lfr-status-column {
+		display: none;
+	}
+
+	.mobile-label {
+		display: inline;
+	}
+
+	.project-name {
+		display: block;
+	}
+
+	.table-responsive > .table > tbody > tr > td .project-name {
+		white-space: normal;
+	}
+}

@@ -75,10 +75,13 @@ PortletURL portletURL = renderResponse.createRenderURL();
 			</liferay-portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
-				cssClass="project-name"
-				href="<%= rowURL %>"
-				property="name"
-			/>
+				cssClass="project-name-column"
+				name="name"
+			>
+				<aui:a cssClass="project-name" href="<%= rowURL.toString() %>" label="<%= accountEntry.getName() %>" />
+
+				<span class="label label-sm label-<%= accountEntry.getStatusLabel() %> mobile-label"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
+			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="status"
