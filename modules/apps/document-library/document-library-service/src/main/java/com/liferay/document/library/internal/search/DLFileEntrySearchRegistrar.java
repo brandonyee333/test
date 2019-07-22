@@ -16,6 +16,7 @@ package com.liferay.document.library.internal.search;
 
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
@@ -27,6 +28,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Michael C. Han
@@ -46,6 +49,8 @@ public class DLFileEntrySearchRegistrar {
 					Field.TITLE, Field.UID);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 				modelSearchDefinition.setModelVisibilityContributor(
 					modelVisibilityContributor);
 				modelSearchDefinition.setModelSummaryContributor(
@@ -63,6 +68,12 @@ public class DLFileEntrySearchRegistrar {
 	)
 	protected ModelIndexerWriterContributor<DLFileEntry>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.document.library.kernel.model.DLFileEntry)"
+	)
+	protected ModelDocumentContributor<DLFileEntry>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

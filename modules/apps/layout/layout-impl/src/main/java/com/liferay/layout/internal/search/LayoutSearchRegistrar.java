@@ -16,6 +16,7 @@ package com.liferay.layout.internal.search;
 
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
@@ -26,6 +27,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Vagner B.C
@@ -47,6 +50,8 @@ public class LayoutSearchRegistrar {
 					Field.CONTENT, Field.TITLE);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 				modelSearchDefinition.setModelSummaryContributor(
 					modelSummaryContributor);
 			});
@@ -61,6 +66,11 @@ public class LayoutSearchRegistrar {
 		target = "(indexer.class.name=com.liferay.portal.kernel.model.Layout)"
 	)
 	protected ModelIndexerWriterContributor<Layout> modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.portal.kernel.model.Layout)"
+	)
+	protected ModelDocumentContributor<Layout> modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

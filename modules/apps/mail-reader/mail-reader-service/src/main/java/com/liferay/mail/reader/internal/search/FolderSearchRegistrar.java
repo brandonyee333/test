@@ -16,6 +16,7 @@ package com.liferay.mail.reader.internal.search;
 
 import com.liferay.mail.reader.model.Folder;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 
@@ -25,6 +26,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Scott Lee
@@ -44,6 +47,8 @@ public class FolderSearchRegistrar {
 					Field.ENTRY_CLASS_PK);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 			});
 	}
 
@@ -56,6 +61,11 @@ public class FolderSearchRegistrar {
 		target = "(indexer.class.name=com.liferay.mail.reader.model.Folder)"
 	)
 	protected ModelIndexerWriterContributor<Folder> modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.mail.reader.model.Folder)"
+	)
+	protected ModelDocumentContributor<Folder> modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

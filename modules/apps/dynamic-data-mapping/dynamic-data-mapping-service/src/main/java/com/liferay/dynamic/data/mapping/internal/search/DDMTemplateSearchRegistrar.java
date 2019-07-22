@@ -16,6 +16,7 @@ package com.liferay.dynamic.data.mapping.internal.search;
 
 import com.liferay.dynamic.data.mapping.model.DDMTemplate;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 
@@ -25,6 +26,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Rafael Praxedes
@@ -44,6 +47,8 @@ public class DDMTemplateSearchRegistrar {
 					Field.DESCRIPTION, Field.NAME);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 			});
 	}
 
@@ -57,6 +62,12 @@ public class DDMTemplateSearchRegistrar {
 	)
 	protected ModelIndexerWriterContributor<DDMTemplate>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.dynamic.data.mapping.model.DDMTemplate)"
+	)
+	protected ModelDocumentContributor<DDMTemplate>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

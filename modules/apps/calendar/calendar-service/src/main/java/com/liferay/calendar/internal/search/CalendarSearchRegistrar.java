@@ -16,6 +16,7 @@ package com.liferay.calendar.internal.search;
 
 import com.liferay.calendar.model.Calendar;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
@@ -26,6 +27,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Michael C. Han
@@ -45,6 +48,8 @@ public class CalendarSearchRegistrar {
 					Field.DESCRIPTION, Field.NAME, CalendarField.RESOURCE_NAME);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 				modelSearchDefinition.setModelSummaryContributor(
 					modelSummaryContributor);
 				modelSearchDefinition.setSelectAllLocales(true);
@@ -61,6 +66,12 @@ public class CalendarSearchRegistrar {
 	)
 	protected ModelIndexerWriterContributor<Calendar>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.calendar.model.Calendar)"
+	)
+	protected ModelDocumentContributor<Calendar>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

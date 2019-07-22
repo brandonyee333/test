@@ -16,6 +16,7 @@ package com.liferay.message.boards.internal.search;
 
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 
@@ -25,6 +26,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Luan Maoski
@@ -42,6 +45,8 @@ public class MBThreadSearcherRegistrar {
 					Field.ENTRY_CLASS_NAME, Field.ENTRY_CLASS_PK, Field.UID);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 			});
 	}
 
@@ -55,6 +60,12 @@ public class MBThreadSearcherRegistrar {
 	)
 	protected ModelIndexerWriterContributor<MBThread>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.message.boards.model.MBThread)"
+	)
+	protected ModelDocumentContributor<MBThread>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

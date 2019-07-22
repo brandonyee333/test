@@ -16,6 +16,7 @@ package com.liferay.message.boards.internal.search;
 
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
@@ -27,6 +28,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Luan Maoski
@@ -48,6 +51,8 @@ public class MBMessageSearcherRegistrar {
 					Field.CONTENT, Field.TITLE);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 				modelSearchDefinition.setModelSummaryContributor(
 					modelSummaryContributor);
 				modelSearchDefinition.setModelVisibilityContributor(
@@ -65,6 +70,12 @@ public class MBMessageSearcherRegistrar {
 	)
 	protected ModelIndexerWriterContributor<MBMessage>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.message.boards.model.MBMessage)"
+	)
+	protected ModelDocumentContributor<MBMessage>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

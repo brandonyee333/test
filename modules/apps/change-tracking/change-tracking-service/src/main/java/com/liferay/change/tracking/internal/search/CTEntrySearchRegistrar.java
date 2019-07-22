@@ -16,6 +16,7 @@ package com.liferay.change.tracking.internal.search;
 
 import com.liferay.change.tracking.model.CTEntry;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 
@@ -25,6 +26,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Daniel Kocsis
@@ -41,6 +44,8 @@ public class CTEntrySearchRegistrar {
 					Field.COMPANY_ID, Field.ENTRY_CLASS_PK);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 			});
 	}
 
@@ -54,6 +59,12 @@ public class CTEntrySearchRegistrar {
 	)
 	protected ModelIndexerWriterContributor<CTEntry>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.change.tracking.model.CTEntry)"
+	)
+	protected ModelDocumentContributor<CTEntry>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

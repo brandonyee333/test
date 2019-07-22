@@ -16,6 +16,7 @@ package com.liferay.users.admin.internal.search;
 
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
@@ -26,6 +27,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Luan Maoski
@@ -45,6 +48,8 @@ public class UserSearchRegistrar {
 					Field.UID, Field.USER_ID);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 				modelSearchDefinition.setModelSummaryContributor(
 					modelSummaryContributor);
 			});
@@ -59,6 +64,11 @@ public class UserSearchRegistrar {
 		target = "(indexer.class.name=com.liferay.portal.kernel.model.User)"
 	)
 	protected ModelIndexerWriterContributor<User> modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.portal.kernel.model.User)"
+	)
+	protected ModelDocumentContributor<User> modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

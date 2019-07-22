@@ -16,6 +16,7 @@ package com.liferay.asset.tags.internal.search;
 
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
 
@@ -25,6 +26,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Luan Maoski
@@ -43,6 +46,8 @@ public class AssetTagSearchRegistrar {
 					Field.ENTRY_CLASS_NAME, Field.GROUP_ID, Field.UID);
 				modelSearchDefinition.setModelIndexWriteContributor(
 					modelIndexWriterContributor);
+				modelSearchDefinition.setModelDocumentContributors(
+					Collections.singleton(modelDocumentContributor));
 			});
 	}
 
@@ -56,6 +61,12 @@ public class AssetTagSearchRegistrar {
 	)
 	protected ModelIndexerWriterContributor<AssetTag>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.asset.kernel.model.AssetTag)"
+	)
+	protected ModelDocumentContributor<AssetTag>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;

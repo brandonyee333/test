@@ -14,6 +14,7 @@
 
 package com.liferay.portal.search.spi.model.registrar;
 
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.result.contributor.ModelSummaryContributor;
 import com.liferay.portal.search.spi.model.result.contributor.ModelVisibilityContributor;
@@ -46,4 +47,6 @@ public interface ModelSearchDefinition {
 
 	public void setSelectAllLocales(boolean selectAllLocales);
 
+	public void setModelDocumentContributors(
+		Iterable<ModelDocumentContributor> modelDocumentContributors);
 }

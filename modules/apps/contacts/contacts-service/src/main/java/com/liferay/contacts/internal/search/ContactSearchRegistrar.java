@@ -15,6 +15,7 @@
 package com.liferay.contacts.internal.search;
 
 import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.search.spi.model.index.contributor.ModelDocumentContributor;
 import com.liferay.portal.search.spi.model.index.contributor.ModelIndexerWriterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchDefinition;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
@@ -27,6 +28,8 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.Collections;
 
 /**
  * @author Lucas Marques de Paula
@@ -46,6 +49,8 @@ public class ContactSearchRegistrar {
 
 					modelSearchDefinition.setModelIndexWriteContributor(
 						modelIndexWriterContributor);
+					modelSearchDefinition.setModelDocumentContributors(
+						Collections.singleton(modelDocumentContributor));
 					modelSearchDefinition.setModelSummaryContributor(
 						modelSummaryContributor);
 				}
@@ -63,6 +68,12 @@ public class ContactSearchRegistrar {
 	)
 	protected ModelIndexerWriterContributor<Contact>
 		modelIndexWriterContributor;
+
+	@Reference(
+		target = "(indexer.class.name=com.liferay.portal.kernel.model.Contact)"
+	)
+	protected ModelDocumentContributor<Contact>
+		modelDocumentContributor;
 
 	@Reference
 	protected ModelSearchRegistrarHelper modelSearchRegistrarHelper;
