@@ -2,6 +2,18 @@
 	display: none;
 }
 
+.table {
+	> thead > tr > th {
+		&.lfr-product-column {
+			width: 2%;
+		}
+
+		&.project-name-column {
+			width: 8%;
+		}
+	}
+}
+
 @include media-breakpoint-down(sm) {
 	thead .project-name-column,
 	.lfr-status-column {
