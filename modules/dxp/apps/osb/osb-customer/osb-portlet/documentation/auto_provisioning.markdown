@@ -21,12 +21,16 @@
 
 * "_account": Support Project
   * "_dossieraAccountKey": should be unique
-  * "_name": must be the same as the current project unless doing an update
+  * "_industry": must be a valid industry in the OSB Admin project drop down
+  * "_name": must be the same as the current project unless doing an update, updates Dossiera Account Name field
+* "_billingAddress": if no shipping address is available, will look at this field to update Support Project address
 * "_bundledProducts": OSB OrderEntry
   * "_purchasedProducts": OSB OfferingEntry
     * "_name" : OSB ProductEntry, use a Dossiera ID mapping, but if not available, use the name of the product
     * "_productType": Salesforce product types
       * Possible Values: "Add to", "New", "Renewal", "Renewal Downgrade", "Renewal Migration", "Renewal Upgrade"
+      * "Renewal" types are for update messages only (currently removing renewal offerings from create messages)
+      * https://grow.liferay.com/share/2019+Salesforce+Product+Type+Classifications+-+Provisioning
 * "_contacts": should contain existing users, a warning will show if they don't exist
   * "_role": role of the user, if testing Analytics Cloud, a user should have the "Analytics Cloud Owner" role
 * "_partnerAccount": OSB PartnerEntry
@@ -37,9 +41,13 @@
   * "_name": should be the same as the WEB corp project value
 * "_salesforceAccountKey": should be unique
 * "_salesforceOpportunityKey": should be unique to create a new OSB OrderEntry
-* "_salesforceOpportunityType": Salesforce opportunity types
-  * Possible Values: "Existing Business", "New Business", "New Project Existing Business", "Renewal"
+* "_salesforceOpportunityStageName": Salesforce opportunity stages
+  * Possible Values: "Closed Lost", "Closed Won"
+  * any other values that aren't from the possible list comes a message from Dossiera (ie. "Committed")
+* "_salesforceOpportunityType": Salesforce opportunity types (Renewal is no longer used, refer to "_productType")
+  * Possible Values: "Existing Business", "New Business", "New Project Existing Business"
 * "_salesforceProjectKey": should be unique to the value on WEB's corp project
+* "_shippingAddress": will look at this field to update Support Project address
 
 ##### Example Messages
 
