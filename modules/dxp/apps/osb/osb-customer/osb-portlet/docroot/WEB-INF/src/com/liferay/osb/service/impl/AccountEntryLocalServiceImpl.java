@@ -1892,9 +1892,7 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
-		if ((status != WorkflowConstants.STATUS_APPROVED) &&
-			(status != WorkflowConstants.STATUS_REJECTED)) {
-
+		if (status != WorkflowConstants.STATUS_APPROVED) {
 			return accountEntry;
 		}
 
@@ -1929,11 +1927,6 @@ public class AccountEntryLocalServiceImpl
 
 				indexer.reindex(workflowTask);
 			}
-		}
-
-		if ((accountEntry.getStatus() == WorkflowConstants.STATUS_PENDING) ||
-			((accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED) &&
-			 (status == WorkflowConstants.STATUS_APPROVED))) {
 
 			updateStatus(userId, accountEntryId, status, serviceContext);
 		}
