@@ -1881,6 +1881,20 @@ public class AccountEntryLocalServiceImpl
 			sendAnalyticsCloudWelcomeEmail(analyticsCloudUsers);
 		}
 
+		if (accountEntry.getStatus() != status) {
+			long classNameId = classNameLocalService.getClassNameId(
+				AccountEntry.class.getName());
+
+			auditEntryLocalService.addAuditEntry(
+				OSBConstants.USER_DEFAULT_USER_ID, StringPool.BLANK, new Date(),
+				classNameId, accountEntryId, 0, classNameId, accountEntryId,
+				AuditEntryConstants.ACTION_UPDATE,
+				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
+				WorkflowConstants.getStatusLabel(status),
+				String.valueOf(status), accountEntry.getStatusLabel(),
+				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
+		}
+
 		return accountEntry;
 	}
 
@@ -2024,9 +2038,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntryPersistence.update(accountEntry);
 
-		if ((oldStatus != accountEntry.getStatus()) &&
-			(accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED)) {
-
+		if (oldStatus != accountEntry.getStatus()) {
 			long classNameId = classNameLocalService.getClassNameId(
 				AccountEntry.class.getName());
 
