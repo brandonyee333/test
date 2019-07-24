@@ -1832,12 +1832,7 @@ public class LayoutTypePortletImpl
 		String[] columnValues = StringUtil.split(columnValue);
 
 		for (String nonstaticPortletId : columnValues) {
-			String decodedNonStaticPortletName =
-				PortletIdCodec.decodePortletName(nonstaticPortletId);
-
-			if (nonstaticPortletId.equals(portletId) ||
-				decodedNonStaticPortletName.equals(portletId)) {
-
+			if (nonstaticPortletId.equals(portletId)) {
 				return true;
 			}
 		}
@@ -1853,23 +1848,13 @@ public class LayoutTypePortletImpl
 			PropsKeys.LAYOUT_STATIC_PORTLETS_END + columnId);
 
 		for (String staticPortletId : staticPortletIdsStart) {
-			String decodedStaticPortletName = PortletIdCodec.decodePortletName(
-				staticPortletId);
-
-			if (staticPortletId.equals(portletId) ||
-				decodedStaticPortletName.equals(portletId)) {
-
+			if (staticPortletId.equals(portletId)) {
 				return true;
 			}
 		}
 
 		for (String staticPortletId : staticPortletIdsEnd) {
-			String decodedStaticPortletName = PortletIdCodec.decodePortletName(
-				staticPortletId);
-
-			if (staticPortletId.equals(portletId) ||
-				decodedStaticPortletName.equals(portletId)) {
-
+			if (staticPortletId.equals(portletId)) {
 				return true;
 			}
 		}
