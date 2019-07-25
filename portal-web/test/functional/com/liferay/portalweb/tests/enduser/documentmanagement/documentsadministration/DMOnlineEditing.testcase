@@ -283,7 +283,7 @@ definition {
 		AssertTextEquals(
 			key_dmDocumentTitle = "${dmDocumentTitle}",
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
-			value1 = "${dmDocumentTitle}");
+			value1 = '''Special Characters Title 12345`~!@#$%_&_(){}[],.<>/?|''');
 	}
 
 	@description = "This test ensures a Google Sheet title can be changed through the editor"
