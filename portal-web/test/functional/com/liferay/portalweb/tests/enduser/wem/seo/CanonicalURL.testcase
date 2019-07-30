@@ -25,6 +25,8 @@ definition {
 
 	@priority = "5"
 	test SetDefaultURLAtSystemLevel {
+		property test.name.skip.portal.instance = "CanonicalURL#SetDefaultURLAtSystemLevel";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		User.logoutPG();
@@ -65,6 +67,8 @@ definition {
 
 	@priority = "5"
 	test SetLocalizedURLAtSystemLevel {
+		property test.name.skip.portal.instance = "CanonicalURL#SetLocalizedURLAtSystemLevel";
+
 		var portalURL = PropsUtil.get("portal.url");
 
 		User.logoutPG();
