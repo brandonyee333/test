@@ -82,8 +82,8 @@ public class DDMIndexerImpl implements DDMIndexer {
 					continue;
 				}
 
-				String name;
-				Serializable value;
+				String name = null;
+				Serializable value = null;
 
 				if (GetterUtil.getBoolean(
 						ddmStructure.getFieldProperty(
@@ -93,7 +93,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 						name = encodeName(
 							ddmStructure.getStructureId(), field.getName(),
 							locale, indexType);
-
 						value = field.getValue(locale);
 
 						addToDocument(document, field, name, value, indexType);
@@ -103,7 +102,6 @@ public class DDMIndexerImpl implements DDMIndexer {
 					name = encodeName(
 						ddmStructure.getStructureId(), field.getName(), null,
 						indexType);
-
 					value = field.getValue(ddmFormValues.getDefaultLocale());
 
 					addToDocument(document, field, name, value, indexType);
