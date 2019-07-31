@@ -51,6 +51,7 @@
 		"node-sass": "^4.12.0",
 		"optimize-css-assets-webpack-plugin": "^5.0.0",
 		"postcss-loader": "^2.1.6",
+		"prettier": "^1.18.2",
 		"prop-types": "^15.7.2",
 		"react-axe": "^3.2.0",
 		"sass-loader": "^7.1.0",
@@ -70,11 +71,20 @@
 	},
 	"license": "UNLICENSED",
 	"name": "osb-customer-release-tool",
+	"prettier": {
+		"bracketSpacing": false,
+		"endOfLine": "lf",
+		"jsxSingleQuote": true,
+		"singleQuote": true,
+		"tabWidth": 4,
+		"useTabs": true
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/liferay/com-liferay-osb-customer-private.git"
 	},
 	"scripts": {
+		"format": "prettier --write 'documentation/*.md' 'src/main/js/**/*.js'",
 		"lint": "eslint 'src/main/js/**/*.js'",
 		"start": "webpack-dev-server --config webpack.dev.js",
 		"test": "jest",
