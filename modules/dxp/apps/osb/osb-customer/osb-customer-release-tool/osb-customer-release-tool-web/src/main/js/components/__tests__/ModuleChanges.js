@@ -44,12 +44,12 @@ const setup = () => {
 
 	const utils = render(
 		<ModuleChanges
-			description="Description for Module Changes tab."
-			endpoint="/"
+			description='Description for Module Changes tab.'
+			endpoint='/'
 			filters={filters}
-			fromFixPackVersion="1.0.1"
+			fromFixPackVersion='1.0.1'
 			jsonObject={jsonObject}
-			toFixPackVersion="1.0.8"
+			toFixPackVersion='1.0.8'
 		/>
 	);
 
@@ -70,13 +70,13 @@ describe('ModuleChanges', () => {
 
 		const {container} = render(
 			<ModuleChanges
-				cta="<div>CTA</div>"
-				description="Description for Module Changes tab."
-				endpoint="/"
+				cta='<div>CTA</div>'
+				description='Description for Module Changes tab.'
+				endpoint='/'
 				filters={filters}
-				fromFixPackVersion="1.0.2"
+				fromFixPackVersion='1.0.2'
 				jsonObject={jsonObject}
-				toFixPackVersion="1.0.3"
+				toFixPackVersion='1.0.3'
 			/>
 		);
 
@@ -88,16 +88,16 @@ describe('ModuleChanges', () => {
 
 		const {container} = render(
 			<ModuleChanges
-				cta="<div>CTA</div>"
-				description="Description for Module Changes tab."
-				endpoint="/"
+				cta='<div>CTA</div>'
+				description='Description for Module Changes tab.'
+				endpoint='/'
 				filters={filters}
-				fromFixPackVersion="1.0.2"
-				fromProductVersion="7.0"
+				fromFixPackVersion='1.0.2'
+				fromProductVersion='7.0'
 				jsonObject={jsonObject}
-				product="DXP"
-				toFixPackVersion="1.0.3"
-				toProductVersion="7.2"
+				product='DXP'
+				toFixPackVersion='1.0.3'
+				toProductVersion='7.2'
 			/>
 		);
 
@@ -109,12 +109,12 @@ describe('ModuleChanges', () => {
 
 		const {container} = render(
 			<ModuleChanges
-				description="Description for Module Changes tab."
-				endpoint="/"
+				description='Description for Module Changes tab.'
+				endpoint='/'
 				filters={filters}
-				fromFixPackVersion="1.0.6"
+				fromFixPackVersion='1.0.6'
 				jsonObject={noResults}
-				toFixPackVersion="1.0.8"
+				toFixPackVersion='1.0.8'
 			/>
 		);
 

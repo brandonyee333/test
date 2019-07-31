@@ -23,18 +23,18 @@ export default class FilterCheckbox extends Component {
 		const {checked, label, value} = this.props;
 
 		return (
-			<div className="filter-checkbox-container">
+			<div className='filter-checkbox-container'>
 				<label>
 					<input
-						className="filter-checkbox"
+						className='filter-checkbox'
 						checked={checked}
 						name={label}
 						onChange={this.handleOnChange}
-						type="checkbox"
+						type='checkbox'
 						value={value}
 					/>
 
-					<span className="filter-checkbox-label">{label}</span>
+					<span className='filter-checkbox-label'>{label}</span>
 				</label>
 			</div>
 		);

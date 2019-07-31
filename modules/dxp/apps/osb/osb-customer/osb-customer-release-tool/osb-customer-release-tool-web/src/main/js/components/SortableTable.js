@@ -11,18 +11,17 @@ export default class SortableTable extends Component {
 	};
 
 	static propTypes = {
-		jsonObject: PropTypes.oneOfType(
-			[fixPackJSONObjectType, jiraIssueJSONObjectType]
-		).isRequired,
+		jsonObject: PropTypes.oneOfType([
+			fixPackJSONObjectType,
+			jiraIssueJSONObjectType
+		]).isRequired,
 		name: PropTypes.string.isRequired,
 		orderBy: PropTypes.oneOf(['asc', 'desc']).isRequired,
 		sortingFunction: PropTypes.func,
-		table: PropTypes.shape(
-			{
-				tableBody: PropTypes.func,
-				tableHeader: PropTypes.func,
-			}
-		).isRequired
+		table: PropTypes.shape({
+			tableBody: PropTypes.func,
+			tableHeader: PropTypes.func
+		}).isRequired
 	};
 
 	state = {
@@ -35,11 +34,9 @@ export default class SortableTable extends Component {
 
 		const currentOrderBy = orderBy === 'desc' ? 'asc' : 'desc';
 
-		this.setState(
-			{
-				orderBy: currentOrderBy
-			}
-		);
+		this.setState({
+			orderBy: currentOrderBy
+		});
 
 		if (sortingFunction) {
 			sortingFunction(currentOrderBy);
@@ -69,24 +66,20 @@ export default class SortableTable extends Component {
 
 		return (
 			<Fragment>
-				<div className="results-count secondary-font">
+				<div className='results-count secondary-font'>
 					{total === 1
-						? langSub(
-							Liferay.Language.get('x-result'),
-							[
+						? langSub(Liferay.Language.get('x-result'), [
 								total.toString()
-							]
-						)
-						: langSub(
-							Liferay.Language.get('x-results'),
-							[
+						  ])
+						: langSub(Liferay.Language.get('x-results'), [
 								total.toString()
-							]
-						)
-					}
+						  ])}
 				</div>
 
-				<table className={`table ${name}-table table-autofit table-list`} role="table">
+				<table
+					className={`table ${name}-table table-autofit table-list`}
+					role='table'
+				>
 					<thead>
 						<tr>
 							{table.tableHeader(
@@ -98,15 +91,20 @@ export default class SortableTable extends Component {
 					</thead>
 
 					<tbody>
-						{!!results.length && table.tableBody(results, this.props)}
+						{!!results.length &&
+							table.tableBody(results, this.props)}
 					</tbody>
 				</table>
 
 				{!results.length && (
-					<div className="no-results">
-						{Liferay.Language.get('no-results-found-to-match-your-selection')}
-						<h5 className="secondary-text-color">
-							{Liferay.Language.get('try-modifying-your-criteria')}
+					<div className='no-results'>
+						{Liferay.Language.get(
+							'no-results-found-to-match-your-selection'
+						)}
+						<h5 className='secondary-text-color'>
+							{Liferay.Language.get(
+								'try-modifying-your-criteria'
+							)}
 						</h5>
 					</div>
 				)}

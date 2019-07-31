@@ -13,26 +13,20 @@ TableResults.defaultProps = {
 };
 
 TableResults.propTypes = {
-	jsonObject: PropTypes.oneOfType(
-		[
-			errorType,
-			fixPackJSONObjectType,
-			jiraIssueJSONObjectType
-		]
-	).isRequired,
+	jsonObject: PropTypes.oneOfType([
+		errorType,
+		fixPackJSONObjectType,
+		jiraIssueJSONObjectType
+	]).isRequired,
 	orderBy: PropTypes.oneOf(['asc', 'desc']),
-	tab: PropTypes.shape(
-		{
-			tabDescription: PropTypes.string,
-			tabName: PropTypes.string
-		}
-	).isRequired,
-	table: PropTypes.shape(
-		{
-			tableBody: PropTypes.func,
-			tableHeader: PropTypes.func
-		}
-	).isRequired
+	tab: PropTypes.shape({
+		tabDescription: PropTypes.string,
+		tabName: PropTypes.string
+	}).isRequired,
+	table: PropTypes.shape({
+		tableBody: PropTypes.func,
+		tableHeader: PropTypes.func
+	}).isRequired
 };
 
 const displayTabName = name => {
@@ -54,19 +48,23 @@ export default function TableResults(props) {
 
 	return (
 		<Fragment>
-			<h2 id={displayTabName(tab.tabName).replace(/ /g, '-').toLowerCase()}>
+			<h2
+				id={displayTabName(tab.tabName)
+					.replace(/ /g, '-')
+					.toLowerCase()}
+			>
 				{displayTabName(tab.tabName)}
 			</h2>
 
 			{!!tab.tabDescription && (
 				<h5
-					className="secondary-text-color section-subtitle"
+					className='secondary-text-color section-subtitle'
 					dangerouslySetInnerHTML={{__html: tab.tabDescription}}
 				/>
 			)}
 
 			{!!jsonObject.error && (
-				<Alert type="danger">{jsonObject.error.message}</Alert>
+				<Alert type='danger'>{jsonObject.error.message}</Alert>
 			)}
 
 			{!!jsonObject.results && (

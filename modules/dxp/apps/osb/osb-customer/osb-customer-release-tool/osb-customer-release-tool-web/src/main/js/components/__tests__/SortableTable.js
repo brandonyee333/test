@@ -13,7 +13,8 @@ const setup = () => {
 				description: 'description',
 				key: 'LPS-90100',
 				release: 'GA',
-				summary: 'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
+				summary:
+					'IE11 Web Image Resizing Does not Maintain Initial Aspect Ratio',
 				url: '/'
 			},
 			{
@@ -60,10 +61,10 @@ const setup = () => {
 
 	const utils = render(
 		<SortableTable
-			filterByClassName="test-filter"
+			filterByClassName='test-filter'
 			jsonObject={highlightsJSONObj}
-			name="highlights"
-			orderBy="desc"
+			name='highlights'
+			orderBy='desc'
 			table={highlightsTable}
 		/>
 	);
@@ -90,8 +91,8 @@ describe('SortableTable', () => {
 		const {container} = render(
 			<SortableTable
 				jsonObject={changelogJSONObj}
-				name="changelog"
-				orderBy="asc"
+				name='changelog'
+				orderBy='asc'
 				table={changelogTable}
 			/>
 		);
@@ -104,10 +105,10 @@ describe('SortableTable', () => {
 
 		rerender(
 			<SortableTable
-				filterByClassName="test-filter"
+				filterByClassName='test-filter'
 				jsonObject={noResults}
-				name="highlights"
-				orderBy="desc"
+				name='highlights'
+				orderBy='desc'
 				table={highlightsTable}
 			/>
 		);
@@ -144,8 +145,8 @@ describe('SortableTable', () => {
 		const {container, getByText} = render(
 			<SortableTable
 				jsonObject={singleResult}
-				name="changelog"
-				orderBy="asc"
+				name='changelog'
+				orderBy='asc'
 				table={changelogTable}
 			/>
 		);

@@ -37,9 +37,10 @@ export default class ModuleChanges extends Component {
 		filters: artifactVersionFiltersType.isRequired,
 		fromFixPackVersion: PropTypes.string.isRequired,
 		fromProductVersion: PropTypes.string,
-		jsonObject: PropTypes.oneOfType(
-			[errorType, artifactVersionJSONObjectType]
-		).isRequired,
+		jsonObject: PropTypes.oneOfType([
+			errorType,
+			artifactVersionJSONObjectType
+		]).isRequired,
 		toFixPackVersion: PropTypes.string.isRequired,
 		toProductVersion: PropTypes.string
 	};
@@ -76,19 +77,16 @@ export default class ModuleChanges extends Component {
 
 		if (!owners.includes(value)) {
 			owners.push(value);
-		}
-		else {
+		} else {
 			owners.splice(selectedFilters.owners.indexOf(value), 1);
 		}
 
-		this.setState(
-			{
-				selectedFilters: {
-					...selectedFilters,
-					owners
-				}
+		this.setState({
+			selectedFilters: {
+				...selectedFilters,
+				owners
 			}
-		);
+		});
 
 		this.queryArtifactVersionResults(
 			owners,
@@ -98,15 +96,13 @@ export default class ModuleChanges extends Component {
 	};
 
 	handleClearFilter = () => {
-		this.setState(
-			{
-				selectedFilters: {
-					changesOnly: false,
-					keywords: '',
-					owners: []
-				}
+		this.setState({
+			selectedFilters: {
+				changesOnly: false,
+				keywords: '',
+				owners: []
 			}
-		);
+		});
 
 		this.queryArtifactVersionResults();
 
@@ -118,14 +114,12 @@ export default class ModuleChanges extends Component {
 		const {selectedFilters} = this.state;
 
 		if (event.keyCode === 13) {
-			this.setState(
-				{
-					selectedFilters: {
-						...selectedFilters,
-						keywords: event.target.value
-					}
+			this.setState({
+				selectedFilters: {
+					...selectedFilters,
+					keywords: event.target.value
 				}
-			);
+			});
 
 			this.queryArtifactVersionResults(
 				selectedFilters.owners,
@@ -140,14 +134,12 @@ export default class ModuleChanges extends Component {
 
 		const {checked} = event.currentTarget;
 
-		this.setState(
-			{
-				selectedFilters: {
-					...selectedFilters,
-					changesOnly: checked
-				}
+		this.setState({
+			selectedFilters: {
+				...selectedFilters,
+				changesOnly: checked
 			}
-		);
+		});
 
 		this.queryArtifactVersionResults(
 			selectedFilters.owners,
@@ -156,7 +148,11 @@ export default class ModuleChanges extends Component {
 		);
 	};
 
-	queryArtifactVersionResults = (owners = [], keywords = '', changesOnly = false) => {
+	queryArtifactVersionResults = (
+		owners = [],
+		keywords = '',
+		changesOnly = false
+	) => {
 		const {endpoint} = this.props;
 
 		const {namespace} = window.ReleaseToolConstants;
@@ -168,22 +164,16 @@ export default class ModuleChanges extends Component {
 			.get(
 				`${endpoint}&${namespace}owners=${encodedOwnersParam}&${namespace}keywords=${encodedKeywordsParam}&${namespace}changesOnly=${changesOnly}`
 			)
-			.then(
-				({data}) => {
-					this.setState(
-						{
-							jsonObject: data
-						}
-					);
+			.then(({data}) => {
+				this.setState({
+					jsonObject: data
+				});
+			})
+			.catch(err => {
+				if (process.env.NODE_ENV === 'development') {
+					console.log(err);
 				}
-			)
-			.catch(
-				(err) => {
-					if (process.env.NODE_ENV === 'development') {
-						console.log(err);
-					}
-				}
-			);
+			});
 	};
 
 	render() {
@@ -206,7 +196,7 @@ export default class ModuleChanges extends Component {
 
 		return (
 			<Fragment>
-				<div className="col-md-3 module-changes-sidebar">
+				<div className='col-md-3 module-changes-sidebar'>
 					{compareVersionActionURL && compareVersionFiltersJSON && (
 						<CompareVersionFilters
 							actionURL={compareVersionActionURL}
@@ -219,15 +209,19 @@ export default class ModuleChanges extends Component {
 					)}
 
 					{!!filters && (
-						<div className="sidebar-filters">
-							<div className="filter-header">
+						<div className='sidebar-filters'>
+							<div className='filter-header'>
 								<h3>{Liferay.Language.get('refine-by')}</h3>
 
-								{!!(changesOnly || keywords || owners.length) && (
+								{!!(
+									changesOnly ||
+									keywords ||
+									owners.length
+								) && (
 									<Button
-										display="link"
+										display='link'
 										onClick={this.handleClearFilter}
-										type="button"
+										type='button'
 									>
 										{Liferay.Language.get('clear-all')}
 									</Button>
@@ -236,47 +230,52 @@ export default class ModuleChanges extends Component {
 
 							<input
 								ref={this.moduleChangesTextInputRef}
-								aria-label="Refine By Term"
-								className="input-small text-filter"
+								aria-label='Refine By Term'
+								className='input-small text-filter'
 								onKeyUp={this.debounceEvent(
 									this.handleFilterTextInputKeyUp,
 									500
 								)}
 								placeholder={Liferay.Language.get('name')}
-								type="text"
+								type='text'
 							/>
 
-							<div className="filter-subsection module-groups semi-bold">
+							<div className='filter-subsection module-groups semi-bold'>
 								{Liferay.Language.get('group')}
 
-								{filters.map(
-									checkbox => (
-										<FilterCheckbox
-											key={checkbox.value}
-											checked={!!owners.includes(checkbox.value)}
-											handleOnChange={this.handleCheckboxChange}
-											label={checkbox.label}
-											value={checkbox.value}
-										/>
-									)
-								)}
+								{filters.map(checkbox => (
+									<FilterCheckbox
+										key={checkbox.value}
+										checked={
+											!!owners.includes(checkbox.value)
+										}
+										handleOnChange={
+											this.handleCheckboxChange
+										}
+										label={checkbox.label}
+										value={checkbox.value}
+									/>
+								))}
 							</div>
 
-							<div className="filter-subsection module-changes-toggle semi-bold">
+							<div className='filter-subsection module-changes-toggle semi-bold'>
 								{Liferay.Language.get('only-show')}
 
-								<div className="toggle">
+								<div className='toggle'>
 									<label>
 										<input
 											ref={this.moduleChangesToggleRef}
-											aria-label="Toggle Module Changes"
-											className="toggle-switch"
+											aria-label='Toggle Module Changes'
+											className='toggle-switch'
 											onChange={this.handleToggleChange}
-											type="checkbox"
+											type='checkbox'
 										/>
 
-										<span aria-hidden="true" className="toggle-switch-bar">
-											<span className="toggle-switch-handle" />
+										<span
+											aria-hidden='true'
+											className='toggle-switch-bar'
+										>
+											<span className='toggle-switch-handle' />
 										</span>
 									</label>
 
@@ -287,11 +286,14 @@ export default class ModuleChanges extends Component {
 					)}
 
 					{!!cta && (
-						<div className="sidebar-cta" dangerouslySetInnerHTML={{__html: cta}}></div>
+						<div
+							className='sidebar-cta'
+							dangerouslySetInnerHTML={{__html: cta}}
+						></div>
 					)}
 				</div>
 
-				<div className="col-md-9">
+				<div className='col-md-9'>
 					<TableResults
 						fromFixPackVersion={fromFixPackVersion}
 						fromProductVersion={fromProductVersion}

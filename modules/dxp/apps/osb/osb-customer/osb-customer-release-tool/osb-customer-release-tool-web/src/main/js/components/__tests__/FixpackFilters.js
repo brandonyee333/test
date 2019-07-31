@@ -49,7 +49,7 @@ const setup = () => {
 	];
 
 	const utils = render(
-		<FixpackFilters actionURL="/" filtersJSON={JSONArray} tabName="tab" />
+		<FixpackFilters actionURL='/' filtersJSON={JSONArray} tabName='tab' />
 	);
 
 	const fromFixPackDropdown = utils.container.querySelectorAll('select')[1];
@@ -82,13 +82,13 @@ describe('FixpackFilters', () => {
 
 		const {container, getAllByText, getByRole} = render(
 			<FixpackFilters
-				actionURL="/"
+				actionURL='/'
 				filtersJSON={JSONArray}
-				fixpackURL="/"
-				fromFixPackVersion="1.0"
-				productVersion="7.0"
-				tabName="tab"
-				toFixPackVersion="2.0"
+				fixpackURL='/'
+				fromFixPackVersion='1.0'
+				productVersion='7.0'
+				tabName='tab'
+				toFixPackVersion='2.0'
 			/>
 		);
 
@@ -147,7 +147,11 @@ describe('FixpackFilters', () => {
 	});
 
 	it('shows toFixPackDropdown options of equal or greater value than the selected fromFixPackDropdown option', () => {
-		const {fromFixPackDropdown, productDropdown, toFixPackDropdown} = setup();
+		const {
+			fromFixPackDropdown,
+			productDropdown,
+			toFixPackDropdown
+		} = setup();
 
 		fireEvent.change(productDropdown, {
 			target: {value: '7.0'}
@@ -185,13 +189,13 @@ describe('FixpackFilters', () => {
 
 		const {container} = render(
 			<FixpackFilters
-				actionURL="/"
+				actionURL='/'
 				filtersJSON={JSONArray}
-				fixpackURL="/"
-				fromFixPackVersion="2.0"
-				productVersion="7.0"
-				tabName="tab"
-				toFixPackVersion="3.0"
+				fixpackURL='/'
+				fromFixPackVersion='2.0'
+				productVersion='7.0'
+				tabName='tab'
+				toFixPackVersion='3.0'
 			/>
 		);
 
@@ -212,13 +216,13 @@ describe('FixpackFilters', () => {
 
 		const {container} = render(
 			<FixpackFilters
-				actionURL="/"
+				actionURL='/'
 				filtersJSON={JSONArray}
-				fixpackURL="/"
-				fromFixPackVersion="2.0"
-				productVersion="7.0"
-				tabName="tab"
-				toFixPackVersion="3.0"
+				fixpackURL='/'
+				fromFixPackVersion='2.0'
+				productVersion='7.0'
+				tabName='tab'
+				toFixPackVersion='3.0'
 			/>
 		);
 
@@ -235,13 +239,13 @@ describe('FixpackFilters', () => {
 
 		const {container, queryByRole} = render(
 			<FixpackFilters
-				actionURL="/"
+				actionURL='/'
 				filtersJSON={JSONArray}
-				fixpackURL="/"
-				fromFixPackVersion="2.0"
-				productVersion="7.0"
-				tabName="tab"
-				toFixPackVersion="3.0"
+				fixpackURL='/'
+				fromFixPackVersion='2.0'
+				productVersion='7.0'
+				tabName='tab'
+				toFixPackVersion='3.0'
 			/>
 		);
 

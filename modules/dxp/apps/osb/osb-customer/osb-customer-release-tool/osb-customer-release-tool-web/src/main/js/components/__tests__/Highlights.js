@@ -55,7 +55,7 @@ const setup = () => {
 
 	const utils = render(
 		<Highlights
-			description="Description for Highlights tab."
+			description='Description for Highlights tab.'
 			filters={filters}
 			jsonObject={highlightsJSONObj}
 		/>
@@ -78,7 +78,7 @@ describe('Highlights', () => {
 
 		const {container} = render(
 			<Highlights
-				description="Description for No Results Highlights tab."
+				description='Description for No Results Highlights tab.'
 				filters={filters}
 				jsonObject={noResults}
 			/>

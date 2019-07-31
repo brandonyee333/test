@@ -9,8 +9,8 @@ const setup = () => {
 	const utils = render(
 		<FilterCheckbox
 			handleOnChange={handleOnChange}
-			label="test label"
-			value="checkbox value"
+			label='test label'
+			value='checkbox value'
 		/>
 	);
 

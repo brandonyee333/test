@@ -56,8 +56,8 @@ const setup = () => {
 
 	const utils = render(
 		<Changelog
-			description="description"
-			endpoint="/"
+			description='description'
+			endpoint='/'
 			filters={filters}
 			jsonObject={changelogJSONObj}
 		/>
@@ -86,8 +86,8 @@ describe('Changelog', () => {
 
 		const {container} = render(
 			<Changelog
-				description="description"
-				endpoint="/"
+				description='description'
+				endpoint='/'
 				filters={filters}
 				jsonObject={changelogJSONObjSize51}
 			/>
@@ -101,8 +101,8 @@ describe('Changelog', () => {
 
 		const {container} = render(
 			<Changelog
-				description="description"
-				endpoint="/"
+				description='description'
+				endpoint='/'
 				filters={filters}
 				jsonObject={changelogJSONObjSize51}
 			/>
@@ -112,11 +112,15 @@ describe('Changelog', () => {
 
 		fireEvent.click(container.querySelector('button[value="2"]'));
 
-		expect(container.querySelector('.pagination-current span').innerHTML).toBe('2');
+		expect(
+			container.querySelector('.pagination-current span').innerHTML
+		).toBe('2');
 
 		fireEvent.click(sortButton);
 
-		expect(container.querySelector('.pagination-current span').innerHTML).toBe('1');
+		expect(
+			container.querySelector('.pagination-current span').innerHTML
+		).toBe('1');
 	});
 
 	it('renders no results correctly', () => {
@@ -124,8 +128,8 @@ describe('Changelog', () => {
 
 		const {container} = render(
 			<Changelog
-				description="description"
-				endpoint="/"
+				description='description'
+				endpoint='/'
 				filters={filters}
 				jsonObject={noResults}
 			/>
@@ -170,8 +174,8 @@ describe('Changelog', () => {
 
 		const {container} = render(
 			<Changelog
-				description="description"
-				endpoint="/"
+				description='description'
+				endpoint='/'
 				filters={[
 					{
 						name: 'component 1',
