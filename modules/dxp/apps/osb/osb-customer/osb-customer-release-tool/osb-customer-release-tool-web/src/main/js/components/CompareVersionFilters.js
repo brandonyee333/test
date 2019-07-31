@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import 'core-js/fn/array/find-index';
-import 'core-js/fn/array/flat-map';
-
 import {filtersJSONObjectType} from '../types/generic';
 
 import FilterSelect from './FilterSelect';
