@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import 'core-js/fn/array/find';
-
 const PORTLET_ID =
 	'com_liferay_osb_customer_downloads_display_web_DownloadsDisplayPortlet';
 
