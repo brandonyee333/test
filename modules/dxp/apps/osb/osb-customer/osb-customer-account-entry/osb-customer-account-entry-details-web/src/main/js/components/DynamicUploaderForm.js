@@ -50,143 +50,112 @@ export default class DynamicUploaderForm extends React.Component {
 
 		const {namespace} = window.AccountDetailsConstants;
 
-		const resumable = new Resumable(
-			{
-				chunkSize: 25 * 1024 * 1024,
-				headers: {
-					'Content-Type': 'multipart/form-data;charset=utf-8'
-				},
-				maxFiles: 1,
-				maxFileSize: 35 * 1024 * 1024 * 1024,
-				method: 'octet',
-				query: (resumableFile, resumableChunk) => {
-					const queryParam = {
-						token: this.state.token
-					};
+		const resumable = new Resumable({
+			chunkSize: 25 * 1024 * 1024,
+			headers: {
+				'Content-Type': 'multipart/form-data;charset=utf-8'
+			},
+			maxFiles: 1,
+			maxFileSize: 35 * 1024 * 1024 * 1024,
+			method: 'octet',
+			query: (resumableFile, resumableChunk) => {
+				const queryParam = {
+					token: this.state.token
+				};
 
-					return queryParam;
-				},
-				simultaneousUploads: 1,
-				target: uploadURL,
-				testChunks: true,
-				throttleProgressCallbacks: 1
-			}
-		);
+				return queryParam;
+			},
+			simultaneousUploads: 1,
+			target: uploadURL,
+			testChunks: true,
+			throttleProgressCallbacks: 1
+		});
 
 		if (!resumable.support) {
-			this.setState(
-				{
-					message: {
-						content: Liferay.Language.get('this-browser-is-not-supported'),
-						type: 'error'
-					}
+			this.setState({
+				message: {
+					content: Liferay.Language.get(
+						'this-browser-is-not-supported'
+					),
+					type: 'error'
 				}
-			);
-		}
-		else {
+			});
+		} else {
 			resumable.assignBrowse(this.selectButtonRef.current);
 			resumable.assignDrop(this.uploadAreaRef.current);
 
-			resumable.on(
-				'fileAdded',
-				(file) => {
-					this.generateToken(resumable, file)
-						.then(
-							response => {
-								this.setState(
-									{
-										message: {
-											content: Liferay.Language.get('loading'),
-											type: 'pending'
-										},
-										token: response.data.token,
-										toolbar: {
-											visible: true
-										}
-									}
-								);
-
-								resumable.upload();
-							}
-						)
-						.catch(
-							err => {
-								this.setState(
-									{
-										message: {
-											content: err.message,
-											type: 'error'
-										}
-									}
-								);
-							}
-						);
-				}
-			);
-
-			resumable.on(
-				'fileError',
-				(file, message) => {
-					const response = handleFileError(file, message);
-
-					this.setState(
-						{
+			resumable.on('fileAdded', file => {
+				this.generateToken(resumable, file)
+					.then(response => {
+						this.setState({
 							message: {
-								content: response.message,
+								content: Liferay.Language.get('loading'),
+								type: 'pending'
+							},
+							token: response.data.token,
+							toolbar: {
+								visible: true
+							}
+						});
+
+						resumable.upload();
+					})
+					.catch(err => {
+						this.setState({
+							message: {
+								content: err.message,
 								type: 'error'
-							},
-							toolbar: {
-								visible: true
 							}
-						}
-					);
-				}
-			);
+						});
+					});
+			});
 
-			resumable.on(
-				'fileProgress',
-				(file) => {
-					this.setState(
-						{
-							toolbar: {
-								progress: getFileProgress(file),
-								visible: true
-							}
-						}
-					);
-				}
-			);
+			resumable.on('fileError', (file, message) => {
+				const response = handleFileError(file, message);
 
-			resumable.on(
-				'fileSuccess',
-				(file, message) => {
-					const resumableFile = handleFileSuccess(file, message);
+				this.setState({
+					message: {
+						content: response.message,
+						type: 'error'
+					},
+					toolbar: {
+						visible: true
+					}
+				});
+			});
 
-					this.setState(
-						{
-							file: {
-								fileName: file.fileName,
-								fileSize: file.size
-							},
-							fileObj: file,
-							message: {
-								content: resumableFile.message,
-								type: 'success'
-							},
-							toolbar: {
-								visible: false
-							}
-						}
-					);
-				}
-			);
+			resumable.on('fileProgress', file => {
+				this.setState({
+					toolbar: {
+						progress: getFileProgress(file),
+						visible: true
+					}
+				});
+			});
 
-			this.setState(
-				{
-					namespace,
-					resumable
-				}
-			);
+			resumable.on('fileSuccess', (file, message) => {
+				const resumableFile = handleFileSuccess(file, message);
+
+				this.setState({
+					file: {
+						fileName: file.fileName,
+						fileSize: file.size
+					},
+					fileObj: file,
+					message: {
+						content: resumableFile.message,
+						type: 'success'
+					},
+					toolbar: {
+						visible: false
+					}
+				});
+			});
+
+			this.setState({
+				namespace,
+				resumable
+			});
 		}
 	}
 
@@ -197,90 +166,77 @@ export default class DynamicUploaderForm extends React.Component {
 	handleClear = () => {
 		this.state.resumable.cancel();
 
-		this.setState(
-			{
-				comment: '',
-				file: '',
-				fileObj: '',
-				toolbar: {
-					visible: false
-				}
+		this.setState({
+			comment: '',
+			file: '',
+			fileObj: '',
+			toolbar: {
+				visible: false
 			}
-		);
+		});
 	};
 
 	handleClearAccepted = () => {
 		this.state.resumable.removeFile(this.state.fileObj);
 
-		this.setState(
-			{
-				file: {
-					fileName: '',
-					fileSize: ''
-				},
-				fileObj: ''
-			}
-		);
+		this.setState({
+			file: {
+				fileName: '',
+				fileSize: ''
+			},
+			fileObj: ''
+		});
 	};
 
 	handlePause = () => {
 		this.state.resumable.pause();
 
-		this.setState(
-			{
-				toolbar: {
-					paused: true,
-					visible: true
-				}
+		this.setState({
+			toolbar: {
+				paused: true,
+				visible: true
 			}
-		);
+		});
 	};
 
 	handlePlay = () => {
 		this.state.resumable.upload();
 
-		this.setState(
-			{
-				toolbar: {
-					paused: false,
-					visible: true
-				}
+		this.setState({
+			toolbar: {
+				paused: false,
+				visible: true
 			}
-		);
+		});
 	};
 
-	handleSubmit = (event) => {
+	handleSubmit = event => {
 		event.preventDefault();
 
 		if (this.validateForm()) {
-			this.setState(
-				{
-					submitting: true
-				}
-			);
+			this.setState({
+				submitting: true
+			});
 
 			this.updateActionUrl();
 
 			this.formRef.current.submit();
-		}
-		else {
-			this.setState(
-				{
-					message: {
-						content: Liferay.Language.get('error-validating-file-attachment-please-reupload-file'),
-						type: 'error'
-					}
+		} else {
+			this.setState({
+				message: {
+					content: Liferay.Language.get(
+						'error-validating-file-attachment-please-reupload-file'
+					),
+					type: 'error'
 				}
-			);
+			});
 		}
 	};
 
-	handleUpdateComment = (event) => {
-		this.setState(
-			{
-				comment: event.currentTarget.value
-			}
-		);
+	handleUpdateComment = event => {
+		this.setState({
+			comment: event.currentTarget.value
+		});
 	};
 
 	updateActionUrl = () => {
@@ -292,93 +248,126 @@ export default class DynamicUploaderForm extends React.Component {
 
 		let actionUrl = addTicketAttachmentURL;
 
-		formFields.forEach(
-			key => {
-				actionUrl += `&${namespace}${key}=${encodeURIComponent(this.state.file[key])}`;
-			}
-		);
+		formFields.forEach(key => {
+			actionUrl += `&${namespace}${key}=${encodeURIComponent(
+				this.state.file[key]
+			)}`;
+		});
 
-		actionUrl += `&${namespace}comment=${encodeURIComponent(this.state.comment)}`;
+		actionUrl += `&${namespace}comment=${encodeURIComponent(
+			this.state.comment
+		)}`;
 
 		this.formRef.current.action = actionUrl;
 	};
 
 	validateForm = () => {
-		const {
-			fileName,
-			fileSize
-		} = this.state.file;
+		const {fileName, fileSize} = this.state.file;
 
-		return (fileName && fileSize);
+		return fileName && fileSize;
 	};
 
 	render() {
 		const {namespace} = this.state;
 
 		return (
-			<form ref={this.formRef} method="post" onSubmit={this.handleSubmit}>
-				<div className="row">
-					<div className="col-md-12">
-						<div className="form-group" id={`${namespace}uploadContainer`}>
-							<label className="control-label" htmlFor={`${namespace}selectButton`}>
+			<form ref={this.formRef} method='post' onSubmit={this.handleSubmit}>
+				<div className='row'>
+					<div className='col-md-12'>
+						<div
+							className='form-group'
+							id={`${namespace}uploadContainer`}
+						>
+							<label
+								className='control-label'
+								htmlFor={`${namespace}selectButton`}
+							>
 								{Liferay.Language.get('attachment')}
 
-								<svg className="lexicon-icon lexicon-icon-asterisk">
-									<use xlinkHref="#asterisk" />
+								<svg className='lexicon-icon lexicon-icon-asterisk'>
+									<use xlinkHref='#asterisk' />
 								</svg>
 							</label>
 
-							<div ref={this.uploadAreaRef} className="form-control upload-area" id={`${namespace}uploadArea`}>
-								<input ref={this.selectButtonRef} className="attachment" id={`${namespace}selectButton`} name={`${namespace}attachment`} type="file" />
+							<div
+								ref={this.uploadAreaRef}
+								className='form-control upload-area'
+								id={`${namespace}uploadArea`}
+							>
+								<input
+									ref={this.selectButtonRef}
+									className='attachment'
+									id={`${namespace}selectButton`}
+									name={`${namespace}attachment`}
+									type='file'
+								/>
 
-								<div className="upload-area-label">
-									<svg className="lexicon-icon lexicon-icon-paperclip">
-										<use xlinkHref="#paperclip" />
+								<div className='upload-area-label'>
+									<svg className='lexicon-icon lexicon-icon-paperclip'>
+										<use xlinkHref='#paperclip' />
 									</svg>
 
-									{Liferay.Language.get('add-file-or-drop-file-here')}
+									{Liferay.Language.get(
+										'add-file-or-drop-file-here'
+									)}
 								</div>
 							</div>
 
-							<div className="toolbar" id={`${namespace}toolbar`}>
+							<div className='toolbar' id={`${namespace}toolbar`}>
 								{this.state.file.fileName && (
-									<div className="attachment" onClick={this.handleClearAccepted}>
-										<svg className="lexicon-icon lexicon-icon-paperclip">
-											<use xlinkHref="#paperclip" />
+									<div
+										className='attachment'
+										onClick={this.handleClearAccepted}
+									>
+										<svg className='lexicon-icon lexicon-icon-paperclip'>
+											<use xlinkHref='#paperclip' />
 										</svg>
 
-										<span className="attachment-name">{this.state.file.fileName}</span>
+										<span className='attachment-name'>
+											{this.state.file.fileName}
+										</span>
 
-										<svg className="lexicon-icon lexicon-icon-times">
-											<use xlinkHref="#times" />
+										<svg className='lexicon-icon lexicon-icon-times'>
+											<use xlinkHref='#times' />
 										</svg>
 									</div>
 								)}
 
 								{this.state.toolbar.visible && (
-									<div className="progress-bar-container">
-										<div className="progress-bar form-control" id={`${namespace}progressBar`}>
-											<div className="progress" id={`${namespace}progress`} style={{width: this.state.toolbar.progress + '%'}}></div>
+									<div className='progress-bar-container'>
+										<div
+											className='progress-bar form-control'
+											id={`${namespace}progressBar`}
+										>
+											<div
+												className='progress'
+												id={`${namespace}progress`}
+												style={{
+													width:
+														this.state.toolbar
+															.progress + '%'
+												}}
+											></div>
 										</div>
 
 										{!this.state.toolbar.paused && (
 											<div
-												className="btn form-control toolbar-control-container"
+												className='btn form-control toolbar-control-container'
 												onClick={this.handlePause}
 											>
-												<svg className="lexicon-icon lexicon-icon-pause">
-													<use xlinkHref="#pause" />
+												<svg className='lexicon-icon lexicon-icon-pause'>
+													<use xlinkHref='#pause' />
 												</svg>
 											</div>
 										)}
 
 										{this.state.toolbar.paused && (
 											<div
-												className="btn form-control toolbar-control-container"
+												className='btn form-control toolbar-control-container'
 												onClick={this.handlePlay}
 											>
-												<svg className="lexicon-icon lexicon-icon-play">
-													<use xlinkHref="#play" />
+												<svg className='lexicon-icon lexicon-icon-play'>
+													<use xlinkHref='#play' />
 												</svg>
 											</div>
 										)}
@@ -388,20 +377,23 @@ export default class DynamicUploaderForm extends React.Component {
 						</div>
 
 						{this.state.message.type === 'error' && (
-							<Alert type="danger">
+							<Alert type='danger'>
 								{this.state.message.content}
 							</Alert>
 						)}
 					</div>
 
-					<div className="col-md-12">
-						<div className="form-group">
-							<label className="control-label" htmlFor={`${namespace}comment`}>
+					<div className='col-md-12'>
+						<div className='form-group'>
+							<label
+								className='control-label'
+								htmlFor={`${namespace}comment`}
+							>
 								{Liferay.Language.get('leave-a-comment')}
 							</label>
 
 							<textarea
-								className="form-control"
+								className='form-control'
 								id={`${namespace}comment`}
 								name={`${namespace}comment`}
 								onChange={this.handleUpdateComment}
@@ -411,18 +403,15 @@ export default class DynamicUploaderForm extends React.Component {
 					</div>
 				</div>
 
-				<div className="btn-row">
-					<Button
-						disabled={this.state.submitting}
-						type="submit"
-					>
+				<div className='btn-row'>
+					<Button disabled={this.state.submitting} type='submit'>
 						{Liferay.Language.get('submit')}
 					</Button>
 
 					<Button
-						display="outline"
+						display='outline'
 						onClick={this.handleClear}
-						type="button"
+						type='button'
 					>
 						{Liferay.Language.get('clear')}
 					</Button>

@@ -29,7 +29,8 @@ describe('AccountEnvironments', () => {
 			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
 			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
 			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
+			portalExtAccountEnvironmentAttachmentURL:
+				'/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '111'
 		},
@@ -50,7 +51,8 @@ describe('AccountEnvironments', () => {
 			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
 			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
 			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
+			portalExtAccountEnvironmentAttachmentURL:
+				'/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '222'
 		}
@@ -84,7 +86,7 @@ describe('AccountEnvironments', () => {
 	it('renders correctly', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 				permitAdd
@@ -99,7 +101,7 @@ describe('AccountEnvironments', () => {
 	it('renders no results message when there is no existing environment', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={[]}
 			/>
@@ -114,7 +116,7 @@ describe('AccountEnvironments', () => {
 	it('renders details when an environment is clicked', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 			/>
@@ -130,7 +132,7 @@ describe('AccountEnvironments', () => {
 	it('does not show add button when user does not have permission for it', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 			/>
@@ -144,7 +146,7 @@ describe('AccountEnvironments', () => {
 	it('shows add button when user has add environment permission', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 				permitAdd
@@ -159,7 +161,7 @@ describe('AccountEnvironments', () => {
 	it('does not show edit button when user has no edit environment permission', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 			/>
@@ -177,7 +179,7 @@ describe('AccountEnvironments', () => {
 	it('shows edit button when user has edit environment permission', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 				permitEdit
@@ -196,7 +198,7 @@ describe('AccountEnvironments', () => {
 	it('does not show delete link when user has no delete environment permission', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 			/>
@@ -214,7 +216,7 @@ describe('AccountEnvironments', () => {
 	it('shows delete link when user has delete environment permission', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 				permitDelete
@@ -233,7 +235,7 @@ describe('AccountEnvironments', () => {
 	it('shows all configurations for environments containing all options', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 			/>
@@ -244,13 +246,11 @@ describe('AccountEnvironments', () => {
 
 		let allSelectionTab;
 
-		tabs.forEach(
-			tab => {
-				if (tab.contains(heading)) {
-					allSelectionTab = tab;
-				}
+		tabs.forEach(tab => {
+			if (tab.contains(heading)) {
+				allSelectionTab = tab;
 			}
-		);
+		});
 
 		fireEvent.click(allSelectionTab);
 
@@ -266,7 +266,7 @@ describe('AccountEnvironments', () => {
 	it('does not show cloud services, commerce, and search configuration for environments containing these selections', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 			/>
@@ -280,13 +280,11 @@ describe('AccountEnvironments', () => {
 
 		let noSelectionTab;
 
-		tabs.forEach(
-			tab => {
-				if (tab.contains(heading)) {
-					noSelectionTab = tab;
-				}
+		tabs.forEach(tab => {
+			if (tab.contains(heading)) {
+				noSelectionTab = tab;
 			}
-		);
+		});
 
 		fireEvent.click(noSelectionTab);
 
@@ -302,7 +300,7 @@ describe('AccountEnvironments', () => {
 	it('opens a modal when add button is clicked', () => {
 		const {container} = render(
 			<AccountEnvironments
-				addEnvironmentURL="/url"
+				addEnvironmentURL='/url'
 				environmentConfiguration={environmentConfigJSON}
 				environments={accountEnvironmentsJSON}
 				permitAdd

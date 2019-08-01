@@ -13,9 +13,9 @@ describe('SupportInstructions', () => {
 	it('renders correctly', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 
@@ -25,9 +25,9 @@ describe('SupportInstructions', () => {
 	it('renders no results message when there is no existing instruction', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions=""
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions=''
 			/>
 		);
 
@@ -40,9 +40,9 @@ describe('SupportInstructions', () => {
 	it('renders add button when there is no existing instruction', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions=""
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions=''
 			/>
 		);
 
@@ -54,9 +54,9 @@ describe('SupportInstructions', () => {
 	it('renders edit button when there is an existing instruction', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 
@@ -68,9 +68,9 @@ describe('SupportInstructions', () => {
 	it('renders modal when edit button is clicked', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 
@@ -86,9 +86,9 @@ describe('SupportInstructions', () => {
 	it('renders cancel button in modal when editor is activated', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 
@@ -104,9 +104,9 @@ describe('SupportInstructions', () => {
 	it('renders save button in modal when editor is activated', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 
@@ -122,9 +122,9 @@ describe('SupportInstructions', () => {
 	it('closes modal when cancel button is clicked', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 
@@ -147,9 +147,9 @@ describe('SupportInstructions', () => {
 	it('closes modal when x on modal header is clicked', () => {
 		const {container} = render(
 			<SupportInstructions
-				accountEntryId="accountEntryId"
-				editInstructionsURL="/"
-				instructions="instructions"
+				accountEntryId='accountEntryId'
+				editInstructionsURL='/'
+				instructions='instructions'
 			/>
 		);
 

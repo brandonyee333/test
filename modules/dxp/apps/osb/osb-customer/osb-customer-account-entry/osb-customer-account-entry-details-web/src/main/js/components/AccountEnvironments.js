@@ -16,18 +16,14 @@ export default class AccountEnvironments extends React.Component {
 
 	static propTypes = {
 		addEnvironmentURL: PropTypes.string.isRequired,
-		environmentConfiguration: PropTypes.shape(
-			{
-				envCommerce: PropTypes.shape(
-					{
-						envCommerceVersions: PropTypes.arrayOf(PropTypes.object),
-						envLFRVersions: PropTypes.arrayOf(PropTypes.object)
-					}
-				),
-				envLFRVersions: PropTypes.arrayOf(PropTypes.object),
-				products: PropTypes.arrayOf(PropTypes.object)
-			}
-		).isRequired,
+		environmentConfiguration: PropTypes.shape({
+			envCommerce: PropTypes.shape({
+				envCommerceVersions: PropTypes.arrayOf(PropTypes.object),
+				envLFRVersions: PropTypes.arrayOf(PropTypes.object)
+			}),
+			envLFRVersions: PropTypes.arrayOf(PropTypes.object),
+			products: PropTypes.arrayOf(PropTypes.object)
+		}).isRequired,
 		environments: PropTypes.arrayOf(PropTypes.object).isRequired,
 		permitAdd: PropTypes.bool,
 		permitDelete: PropTypes.bool,
@@ -40,33 +36,31 @@ export default class AccountEnvironments extends React.Component {
 	};
 
 	handleCloseModal = () =>
-		this.setState(
-			{
-				showModal: false
-			}
-		);
+		this.setState({
+			showModal: false
+		});
 
 	handleDeleteEnvironment = event => {
-		if (!confirm(Liferay.Language.get('are-you-sure-you-want-to-delete-this'))) {
+		if (
+			!confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
 			event.preventDefault();
 		}
 	};
 
 	handleDisplayEditModal = environment =>
-		this.setState(
-			{
-				environment: environment,
-				showModal: true
-			}
-		);
+		this.setState({
+			environment: environment,
+			showModal: true
+		});
 
 	handleDisplayNewModal = () =>
-		this.setState(
-			{
-				environment: null,
-				showModal: true
-			}
-		);
+		this.setState({
+			environment: null,
+			showModal: true
+		});
 
 	render() {
 		const {
@@ -80,139 +74,145 @@ export default class AccountEnvironments extends React.Component {
 
 		const {environment, showModal} = this.state;
 
-		const accordionItems = environments.map(
-			(environment, index) => (
-				{
-					body: (
-						<React.Fragment
-							key={index}
-						>
-							<div className="col-sm-6">
-								{(environment.envCommerceLabel !== 'N/A') && (
-									<EnvironmentDetail
-										label={Liferay.Language.get('commerce-version')}
-										value={environment.envCommerceLabel}
-									/>
-								)}
+		const accordionItems = environments.map((environment, index) => ({
+			body: (
+				<React.Fragment key={index}>
+					<div className='col-sm-6'>
+						{environment.envCommerceLabel !== 'N/A' && (
+							<EnvironmentDetail
+								label={Liferay.Language.get('commerce-version')}
+								value={environment.envCommerceLabel}
+							/>
+						)}
 
-								<EnvironmentDetail
-									label={Liferay.Language.get('operating-system')}
-									value={environment.envOSLabel}
-								/>
+						<EnvironmentDetail
+							label={Liferay.Language.get('operating-system')}
+							value={environment.envOSLabel}
+						/>
 
-								<EnvironmentDetail
-									label={Liferay.Language.get('application-server')}
-									value={environment.envASLabel}
-								/>
+						<EnvironmentDetail
+							label={Liferay.Language.get('application-server')}
+							value={environment.envASLabel}
+						/>
 
-								{!!environment.envSearchLabels.length && (
-									<EnvironmentDetail
-										label={Liferay.Language.get('search')}
-										value={environment.envSearchLabels.toString().replace(/,/g, ', ')}
-									/>
-								)}
+						{!!environment.envSearchLabels.length && (
+							<EnvironmentDetail
+								label={Liferay.Language.get('search')}
+								value={environment.envSearchLabels
+									.toString()
+									.replace(/,/g, ', ')}
+							/>
+						)}
 
-								{(environment.envCSLabel !== 'N/A') && (
-									<EnvironmentDetail
-										label={Liferay.Language.get('cloud-services')}
-										value={environment.envCSLabel}
-									/>
-								)}
+						{environment.envCSLabel !== 'N/A' && (
+							<EnvironmentDetail
+								label={Liferay.Language.get('cloud-services')}
+								value={environment.envCSLabel}
+							/>
+						)}
 
-								<EnvironmentDetail
-									href={environment.portalExtAccountEnvironmentAttachmentURL}
-									label={Liferay.Language.get('portal-ext')}
-									value={environment.portalExtAccountEnvironmentAttachmentFileName}
-								/>
-							</div>
+						<EnvironmentDetail
+							href={
+								environment.portalExtAccountEnvironmentAttachmentURL
+							}
+							label={Liferay.Language.get('portal-ext')}
+							value={
+								environment.portalExtAccountEnvironmentAttachmentFileName
+							}
+						/>
+					</div>
 
-							<div className="col-sm-6">
-								<EnvironmentDetail
-									label={Liferay.Language.get('java-version')}
-									value={environment.envJVMLabel}
-								/>
+					<div className='col-sm-6'>
+						<EnvironmentDetail
+							label={Liferay.Language.get('java-version')}
+							value={environment.envJVMLabel}
+						/>
 
-								<EnvironmentDetail
-									label={Liferay.Language.get('database')}
-									value={environment.envDBLabel}
-								/>
+						<EnvironmentDetail
+							label={Liferay.Language.get('database')}
+							value={environment.envDBLabel}
+						/>
 
-								<EnvironmentDetail
-									label={Liferay.Language.get('browser')}
-									value={environment.envBrowserLabel}
-								/>
+						<EnvironmentDetail
+							label={Liferay.Language.get('browser')}
+							value={environment.envBrowserLabel}
+						/>
 
-								<EnvironmentDetail
-									href={environment.patchLevelAccountEnvironmentAttachmentURL}
-									label={Liferay.Language.get('patch-info')}
-									value={environment.patchLevelAccountEnvironmentAttachmentFileName}
-								/>
-							</div>
+						<EnvironmentDetail
+							href={
+								environment.patchLevelAccountEnvironmentAttachmentURL
+							}
+							label={Liferay.Language.get('patch-info')}
+							value={
+								environment.patchLevelAccountEnvironmentAttachmentFileName
+							}
+						/>
+					</div>
 
-							{(permitDelete || permitEdit) && (
-								<div className="col-md-12">
-									{permitEdit && (
-										<Button
-											display="link"
-											onClick={() => this.handleDisplayEditModal(environment)}
-											size="sm"
-											type="button"
-											value="edit"
-										>
-											{Liferay.Language.get('edit')}
-										</Button>
-									)}
-
-									{permitDelete && (
-										<Button
-											href={environment.deleteAccountEnvironmentURL}
-											onClick={this.handleDeleteEnvironment}
-											size="sm"
-											value="delete"
-										>
-											{Liferay.Language.get('delete')}
-										</Button>
-									)}
-								</div>
+					{(permitDelete || permitEdit) && (
+						<div className='col-md-12'>
+							{permitEdit && (
+								<Button
+									display='link'
+									onClick={() =>
+										this.handleDisplayEditModal(environment)
+									}
+									size='sm'
+									type='button'
+									value='edit'
+								>
+									{Liferay.Language.get('edit')}
+								</Button>
 							)}
-						</React.Fragment>
-					),
-					title: (
-						<React.Fragment
-							key={index}
-						>
-							<h4>
-								{environment.name}
-							</h4>
 
-							<div className="panel-subtitle">
-								{environment.productEntryDisplayName}
-							</div>
+							{permitDelete && (
+								<Button
+									href={
+										environment.deleteAccountEnvironmentURL
+									}
+									onClick={this.handleDeleteEnvironment}
+									size='sm'
+									value='delete'
+								>
+									{Liferay.Language.get('delete')}
+								</Button>
+							)}
+						</div>
+					)}
+				</React.Fragment>
+			),
+			title: (
+				<React.Fragment key={index}>
+					<h4>{environment.name}</h4>
 
-							<div className="panel-subtitle">
-								{environment.envLFRLabel}
-							</div>
-						</React.Fragment>
-					)
-				}
+					<div className='panel-subtitle'>
+						{environment.productEntryDisplayName}
+					</div>
+
+					<div className='panel-subtitle'>
+						{environment.envLFRLabel}
+					</div>
+				</React.Fragment>
 			)
-		);
+		}));
 
-		const modalHeader = environment ? Liferay.Language.get('edit-environment-configuration') : Liferay.Language.get('new-environment-configuration');
+		const modalHeader = environment
+			? Liferay.Language.get('edit-environment-configuration')
+			: Liferay.Language.get('new-environment-configuration');
 
 		return (
 			<React.Fragment>
-				<div className="card-header small-title">
+				<div className='card-header small-title'>
 					{Liferay.Language.get('environment-configurations')}
 
 					{permitAdd && (
 						<Button
 							icon
 							onClick={this.handleDisplayNewModal}
-							value="add"
+							value='add'
 						>
-							<svg className="lexicon-icon lexicon-icon-plus">
-								<use xlinkHref="#plus" />
+							<svg className='lexicon-icon lexicon-icon-plus'>
+								<use xlinkHref='#plus' />
 							</svg>
 						</Button>
 					)}
@@ -233,7 +233,7 @@ export default class AccountEnvironments extends React.Component {
 				</div>
 
 				{!accordionItems.length ? (
-					<div className="no-results">
+					<div className='no-results'>
 						{Liferay.Language.get('no-environment-details')}
 					</div>
 				) : (
@@ -252,17 +252,15 @@ EnvironmentDetail.propTypes = {
 
 function EnvironmentDetail(props) {
 	return (
-		<div className="environment-detail">
-			<div className="environment-label">{props.label}</div>
+		<div className='environment-detail'>
+			<div className='environment-label'>{props.label}</div>
 
 			{props.value && props.href ? (
-				<a href={props.href} target="blank">
+				<a href={props.href} target='blank'>
 					{props.value}
 				</a>
 			) : (
-				<div>
-					{props.value}
-				</div>
+				<div>{props.value}</div>
 			)}
 		</div>
 	);

@@ -7,11 +7,11 @@ describe('AddTicketAttachment', () => {
 	it('renders correctly', () => {
 		const {container} = render(
 			<AddTicketAttachment
-				addTicketAttachmentURL="/"
-				generateTokenURL="/"
-				uploadURL="/"
-				zendeskTicketId="123"
-				zendeskTicketURL="/"
+				addTicketAttachmentURL='/'
+				generateTokenURL='/'
+				uploadURL='/'
+				zendeskTicketId='123'
+				zendeskTicketURL='/'
 			/>
 		);
 
