@@ -4,7 +4,6 @@ import {
 	queryByLabelText,
 	queryByRole,
 	queryByText,
-	queryByValue,
 	render
 } from '@testing-library/react';
 
@@ -47,7 +46,7 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		expect(addButton).toBeTruthy();
 	});
@@ -61,7 +60,7 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		expect(editButton).toBeTruthy();
 	});
@@ -75,7 +74,7 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		fireEvent.click(editButton);
 
@@ -93,11 +92,11 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		fireEvent.click(editButton);
 
-		const cancelButton = queryByValue(container, 'cancel');
+		const cancelButton = queryByText(container, 'cancel');
 
 		expect(cancelButton).toBeDefined();
 	});
@@ -111,11 +110,11 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		fireEvent.click(editButton);
 
-		const saveButton = queryByValue(container, 'save');
+		const saveButton = queryByText(container, 'save');
 
 		expect(saveButton).toBeDefined();
 	});
@@ -129,11 +128,11 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		fireEvent.click(editButton);
 
-		const cancelButton = queryByValue(container, 'cancel');
+		const cancelButton = queryByText(container, 'cancel');
 		let modal = queryByRole(container, 'dialog');
 
 		expect(modal).toBeDefined();
@@ -154,7 +153,7 @@ describe('SupportInstructions', () => {
 			/>
 		);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		fireEvent.click(editButton);
 

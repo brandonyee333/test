@@ -2,9 +2,9 @@ import React from 'react';
 import {
 	fireEvent,
 	queryAllByRole,
+	queryByLabelText,
 	queryByRole,
 	queryByText,
-	queryByValue,
 	render
 } from '@testing-library/react';
 
@@ -120,7 +120,9 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		const tabs = queryAllByRole(container, 'tab');
+
+		fireEvent.click(tabs[0]);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -134,7 +136,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		expect(addButton).toBeNull();
 	});
@@ -149,7 +151,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		expect(addButton).toBeTruthy();
 	});
@@ -163,9 +165,11 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		const tabs = queryAllByRole(container, 'tab');
 
-		const editButton = queryByValue(container, 'edit');
+		fireEvent.click(tabs[0]);
+
+		const editButton = queryByText(container, 'edit');
 
 		expect(editButton).toBeNull();
 	});
@@ -180,9 +184,11 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		const tabs = queryAllByRole(container, 'tab');
 
-		const editButton = queryByValue(container, 'edit');
+		fireEvent.click(tabs[0]);
+
+		const editButton = queryByText(container, 'edit');
 
 		expect(editButton).toBeTruthy();
 	});
@@ -196,7 +202,9 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		const tabs = queryAllByRole(container, 'tab');
+
+		fireEvent.click(tabs[0]);
 
 		const deleteLink = queryByText(container, 'delete');
 
@@ -213,7 +221,9 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		const tabs = queryAllByRole(container, 'tab');
+
+		fireEvent.click(tabs[0]);
 
 		const deleteLink = queryByText(container, 'delete');
 
@@ -299,7 +309,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		fireEvent.click(addButton);
 
