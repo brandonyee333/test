@@ -9,7 +9,7 @@ export const getFileProgress = (file) => {
 export const handleFileSuccess = (file, message) => {
 	const response = JSON.parse(message);
 
-	let retVal = {
+	const retVal = {
 		file: null,
 		fileAttachment: null,
 		message: response.message,
