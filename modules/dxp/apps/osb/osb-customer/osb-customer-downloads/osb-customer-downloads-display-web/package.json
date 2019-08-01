@@ -4,7 +4,13 @@
 			"@babel/plugin-proposal-class-properties"
 		],
 		"presets": [
-			"@babel/preset-env",
+			[
+				"@babel/preset-env",
+				{
+					"corejs": 3,
+					"useBuiltIns": "usage"
+				}
+			],
 			"@babel/preset-react"
 		]
 	},
@@ -17,14 +23,15 @@
 		"axios": "^0.18.1",
 		"classnames": "^2.2.6",
 		"clay-css": "^2.2.0",
+		"core-js": "^3.1.4",
 		"es6-promise": "^4.2.5",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.1.2",
-		"@babel/plugin-proposal-class-properties": "^7.1.0",
-		"@babel/preset-env": "^7.1.0",
+		"@babel/core": "^7.5.5",
+		"@babel/plugin-proposal-class-properties": "^7.5.5",
+		"@babel/preset-env": "^7.5.5",
 		"@babel/preset-react": "^7.0.0",
 		"@testing-library/react": "^8.0.7",
 		"autoprefixer": "^9.0.1",
