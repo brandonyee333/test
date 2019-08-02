@@ -218,7 +218,7 @@ public class UserTestUtil {
 
 	public static User addUser(
 			long companyId, long userId, String screenName, Locale locale,
-			String firstName, String lastName, long[] groupIds,
+			String firstName, String lastName, String jobTitle, long[] groupIds,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -228,13 +228,25 @@ public class UserTestUtil {
 
 		return addUser(
 			companyId, userId, StringPool.BLANK, emailAddress, screenName,
-			locale, firstName, lastName, groupIds, serviceContext);
+			locale, firstName, lastName, jobTitle, groupIds,
+			serviceContext);
 	}
 
 	public static User addUser(
-			long companyId, long userId, String password, String emailAddress,
-			String screenName, Locale locale, String firstName, String lastName,
-			long[] groupIds, ServiceContext serviceContext)
+		long companyId, long userId, String screenName, Locale locale,
+		String firstName, String lastName, long[] groupIds,
+		ServiceContext serviceContext)
+		throws Exception {
+
+		return addUser(
+			companyId, userId, screenName, locale, firstName, lastName,
+			StringPool.BLANK, groupIds, serviceContext);
+	}
+
+	public static User addUser(
+		long companyId, long userId, String password, String emailAddress,
+		String screenName, Locale locale, String firstName, String lastName,
+		String jobTitle, long[] groupIds, ServiceContext serviceContext)
 		throws Exception {
 
 		User user = UserLocalServiceUtil.fetchUserByScreenName(
@@ -256,7 +268,6 @@ public class UserTestUtil {
 		int birthdayMonth = Calendar.JANUARY;
 		int birthdayDay = 1;
 		int birthdayYear = 1970;
-		String jobTitle = StringPool.BLANK;
 		long[] organizationIds = null;
 		long[] roleIds = null;
 		long[] userGroupIds = null;
