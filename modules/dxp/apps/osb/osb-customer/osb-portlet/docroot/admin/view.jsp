@@ -64,28 +64,30 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 request.setAttribute("view.jsp-portletURL", portletURL);
 %>
 
-<liferay-ui:tabs
-	names="<%= tabsNames %>"
-	param="tabs1"
-	url="<%= portletURL.toString() %>"
-/>
+<div class="col-md-12">
+	<liferay-ui:tabs
+		names="<%= tabsNames %>"
+		param="tabs1"
+		url="<%= portletURL.toString() %>"
+	/>
 
-<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
+	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 
-<c:choose>
-	<c:when test='<%= tabs1.equals("partners") %>'>
-		<liferay-util:include page="/admin/partners.jsp" servletContext="<%= application %>" />
-	</c:when>
-	<c:when test='<%= tabs1.equals("sales") %>'>
-		<liferay-util:include page="/admin/sales.jsp" servletContext="<%= application %>" />
-	</c:when>
-	<c:when test='<%= tabs1.equals("support") %>'>
-		<liferay-util:include page="/admin/support.jsp" servletContext="<%= application %>" />
-	</c:when>
-	<c:when test='<%= tabs1.equals("tools") %>'>
-		<liferay-util:include page="/admin/tools.jsp" servletContext="<%= application %>" />
-	</c:when>
-	<c:otherwise>
-		<liferay-util:include page="/admin/accounts.jsp" servletContext="<%= application %>" />
-	</c:otherwise>
-</c:choose>
+	<c:choose>
+		<c:when test='<%= tabs1.equals("partners") %>'>
+			<liferay-util:include page="/admin/partners.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("sales") %>'>
+			<liferay-util:include page="/admin/sales.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("support") %>'>
+			<liferay-util:include page="/admin/support.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:when test='<%= tabs1.equals("tools") %>'>
+			<liferay-util:include page="/admin/tools.jsp" servletContext="<%= application %>" />
+		</c:when>
+		<c:otherwise>
+			<liferay-util:include page="/admin/accounts.jsp" servletContext="<%= application %>" />
+		</c:otherwise>
+	</c:choose>
+</div>
