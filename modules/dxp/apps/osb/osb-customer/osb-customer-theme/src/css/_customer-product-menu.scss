@@ -6,12 +6,12 @@
 			&,
 			&:focus,
 			&:hover {
-				color: $color-info; 
+				color: $color-info;
 			}
 		}
 
 		@include media-breakpoint-up(md) {
-			top: $header-height + $navbar-desktop-height; 
+			top: $header-height + $navbar-desktop-height;
 		}
 	}
 }
