@@ -88,8 +88,12 @@ body {
 }
 
 .product-menu {
-	.nav a {
+	.nav li a {
 		color: $product-menu-nav-link-color;
+
+		&:hover {
+			color: $product-menu-nav-link-color;
+		}
 	}
 
 	.nav-equal-height {
