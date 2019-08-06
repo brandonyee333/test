@@ -149,14 +149,14 @@ public interface WatsonPersonAuditPersistence
 	 * @param start the lower bound of the range of watson person audits
 	 * @param end the upper bound of the range of watson person audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson person audits
 	 */
 	public java.util.List<WatsonPersonAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonPersonAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson person audits from the database.

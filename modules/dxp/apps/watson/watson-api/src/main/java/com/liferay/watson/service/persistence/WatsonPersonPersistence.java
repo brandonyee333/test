@@ -147,14 +147,14 @@ public interface WatsonPersonPersistence extends BasePersistence<WatsonPerson> {
 	 * @param start the lower bound of the range of watson persons
 	 * @param end the upper bound of the range of watson persons (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson persons
 	 */
 	public java.util.List<WatsonPerson> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonPerson>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson persons from the database.

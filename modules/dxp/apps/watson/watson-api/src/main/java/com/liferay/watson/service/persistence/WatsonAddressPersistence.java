@@ -148,14 +148,14 @@ public interface WatsonAddressPersistence
 	 * @param start the lower bound of the range of watson addresses
 	 * @param end the upper bound of the range of watson addresses (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson addresses
 	 */
 	public java.util.List<WatsonAddress> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonAddress>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson addresses from the database.

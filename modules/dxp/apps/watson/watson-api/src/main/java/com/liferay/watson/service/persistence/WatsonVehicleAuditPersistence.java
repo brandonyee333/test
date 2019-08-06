@@ -149,14 +149,14 @@ public interface WatsonVehicleAuditPersistence
 	 * @param start the lower bound of the range of watson vehicle audits
 	 * @param end the upper bound of the range of watson vehicle audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson vehicle audits
 	 */
 	public java.util.List<WatsonVehicleAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonVehicleAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson vehicle audits from the database.

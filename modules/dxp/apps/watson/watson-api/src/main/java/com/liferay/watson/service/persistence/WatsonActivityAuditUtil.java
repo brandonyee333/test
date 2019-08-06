@@ -257,16 +257,16 @@ public class WatsonActivityAuditUtil {
 	 * @param start the lower bound of the range of watson activity audits
 	 * @param end the upper bound of the range of watson activity audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson activity audits
 	 */
 	public static List<WatsonActivityAudit> findAll(
 		int start, int end,
 		OrderByComparator<WatsonActivityAudit> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

@@ -150,14 +150,14 @@ public interface WatsonDocumentAuditPersistence
 	 * @param start the lower bound of the range of watson document audits
 	 * @param end the upper bound of the range of watson document audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson document audits
 	 */
 	public java.util.List<WatsonDocumentAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonDocumentAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson document audits from the database.

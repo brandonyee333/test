@@ -152,14 +152,14 @@ public interface WatsonRelationshipAuditPersistence
 	 * @param start the lower bound of the range of watson relationship audits
 	 * @param end the upper bound of the range of watson relationship audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson relationship audits
 	 */
 	public java.util.List<WatsonRelationshipAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator
 			<WatsonRelationshipAudit> orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson relationship audits from the database.

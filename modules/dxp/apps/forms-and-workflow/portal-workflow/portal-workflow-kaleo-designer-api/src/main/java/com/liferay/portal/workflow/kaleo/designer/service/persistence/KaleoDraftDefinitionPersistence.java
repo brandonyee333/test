@@ -101,14 +101,14 @@ public interface KaleoDraftDefinitionPersistence
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching kaleo draft definitions
 	 */
 	public java.util.List<KaleoDraftDefinition> findByCompanyId(
 		long companyId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first kaleo draft definition in the ordered set where companyId = &#63;.
@@ -253,14 +253,14 @@ public interface KaleoDraftDefinitionPersistence
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching kaleo draft definitions
 	 */
 	public java.util.List<KaleoDraftDefinition> findByC_N_V(
 		long companyId, String name, int version, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first kaleo draft definition in the ordered set where companyId = &#63; and name = &#63; and version = &#63;.
@@ -392,12 +392,12 @@ public interface KaleoDraftDefinitionPersistence
 	 * @param name the name
 	 * @param version the version
 	 * @param draftVersion the draft version
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	 */
 	public KaleoDraftDefinition fetchByC_N_V_D(
 		long companyId, String name, int version, int draftVersion,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; from the database.
@@ -525,14 +525,14 @@ public interface KaleoDraftDefinitionPersistence
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of kaleo draft definitions
 	 */
 	public java.util.List<KaleoDraftDefinition> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<KaleoDraftDefinition>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the kaleo draft definitions from the database.

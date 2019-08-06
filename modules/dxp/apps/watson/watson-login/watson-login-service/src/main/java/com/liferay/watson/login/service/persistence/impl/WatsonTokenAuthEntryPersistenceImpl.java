@@ -135,18 +135,22 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * Returns the watson token auth entry where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param userId the user ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching watson token auth entry, or <code>null</code> if a matching watson token auth entry could not be found
 	 */
 	@Override
 	public WatsonTokenAuthEntry fetchByUserId(
-		long userId, boolean retrieveFromCache) {
+		long userId, boolean useFinderCache) {
 
-		Object[] finderArgs = new Object[] {userId};
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {userId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			result = finderCache.getResult(
 				_finderPathFetchByUserId, finderArgs, this);
 		}
@@ -183,14 +187,20 @@ public class WatsonTokenAuthEntryPersistenceImpl
 				List<WatsonTokenAuthEntry> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(
-						_finderPathFetchByUserId, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByUserId, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {userId};
+							}
+
 							_log.warn(
 								"WatsonTokenAuthEntryPersistenceImpl.fetchByUserId(long, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
@@ -206,7 +216,10 @@ public class WatsonTokenAuthEntryPersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathFetchByUserId, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByUserId, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -364,14 +377,14 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching watson token auth entries
 	 */
 	@Override
 	public List<WatsonTokenAuthEntry> findByC_U(
 		long companyId, long userId, int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -381,10 +394,13 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByC_U;
-			finderArgs = new Object[] {companyId, userId};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByC_U;
+				finderArgs = new Object[] {companyId, userId};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByC_U;
 			finderArgs = new Object[] {
 				companyId, userId, start, end, orderByComparator
@@ -393,7 +409,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 		List<WatsonTokenAuthEntry> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<WatsonTokenAuthEntry>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
@@ -465,10 +481,14 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -1481,14 +1501,14 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson token auth entries
 	 */
 	@Override
 	public List<WatsonTokenAuthEntry> findAll(
 		int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -1498,17 +1518,20 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonTokenAuthEntry> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<WatsonTokenAuthEntry>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -1559,10 +1582,14 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}

@@ -261,16 +261,16 @@ public class WatsonListTypeRelAuditUtil {
 	 * @param start the lower bound of the range of watson list type rel audits
 	 * @param end the upper bound of the range of watson list type rel audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson list type rel audits
 	 */
 	public static List<WatsonListTypeRelAudit> findAll(
 		int start, int end,
 		OrderByComparator<WatsonListTypeRelAudit> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

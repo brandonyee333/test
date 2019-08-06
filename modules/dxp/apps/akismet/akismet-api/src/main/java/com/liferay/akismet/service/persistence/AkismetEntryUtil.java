@@ -187,16 +187,16 @@ public class AkismetEntryUtil {
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching akismet entries
 	 */
 	public static List<AkismetEntry> findByLtModifiedDate(
 		Date modifiedDate, int start, int end,
 		OrderByComparator<AkismetEntry> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByLtModifiedDate(
-			modifiedDate, start, end, orderByComparator, retrieveFromCache);
+			modifiedDate, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -328,14 +328,14 @@ public class AkismetEntryUtil {
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
 	public static AkismetEntry fetchByC_C(
-		long classNameId, long classPK, boolean retrieveFromCache) {
+		long classNameId, long classPK, boolean useFinderCache) {
 
 		return getPersistence().fetchByC_C(
-			classNameId, classPK, retrieveFromCache);
+			classNameId, classPK, useFinderCache);
 	}
 
 	/**
@@ -482,15 +482,15 @@ public class AkismetEntryUtil {
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of akismet entries
 	 */
 	public static List<AkismetEntry> findAll(
 		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

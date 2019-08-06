@@ -149,14 +149,14 @@ public interface WatsonReportAuditPersistence
 	 * @param start the lower bound of the range of watson report audits
 	 * @param end the upper bound of the range of watson report audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson report audits
 	 */
 	public java.util.List<WatsonReportAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonReportAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson report audits from the database.

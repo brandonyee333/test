@@ -614,13 +614,13 @@ public class WatsonVehiclePersistenceImpl
 	 * @param start the lower bound of the range of watson vehicles
 	 * @param end the upper bound of the range of watson vehicles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson vehicles
 	 */
 	@Override
 	public List<WatsonVehicle> findAll(
 		int start, int end, OrderByComparator<WatsonVehicle> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -630,17 +630,20 @@ public class WatsonVehiclePersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<WatsonVehicle> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<WatsonVehicle>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -690,10 +693,14 @@ public class WatsonVehiclePersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}

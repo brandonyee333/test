@@ -247,15 +247,15 @@ public class WatsonVehicleUtil {
 	 * @param start the lower bound of the range of watson vehicles
 	 * @param end the upper bound of the range of watson vehicles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson vehicles
 	 */
 	public static List<WatsonVehicle> findAll(
 		int start, int end, OrderByComparator<WatsonVehicle> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

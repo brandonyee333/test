@@ -101,14 +101,14 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching akismet entries
 	 */
 	public java.util.List<AkismetEntry> findByLtModifiedDate(
 		Date modifiedDate, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AkismetEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first akismet entry in the ordered set where modifiedDate &lt; &#63;.
@@ -217,11 +217,11 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	 *
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
 	public AkismetEntry fetchByC_C(
-		long classNameId, long classPK, boolean retrieveFromCache);
+		long classNameId, long classPK, boolean useFinderCache);
 
 	/**
 	 * Removes the akismet entry where classNameId = &#63; and classPK = &#63; from the database.
@@ -341,14 +341,14 @@ public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of akismet entries
 	 */
 	public java.util.List<AkismetEntry> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<AkismetEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the akismet entries from the database.

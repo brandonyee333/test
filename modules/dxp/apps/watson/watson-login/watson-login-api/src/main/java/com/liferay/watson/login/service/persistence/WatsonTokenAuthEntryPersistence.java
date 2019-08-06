@@ -71,11 +71,11 @@ public interface WatsonTokenAuthEntryPersistence
 	 * Returns the watson token auth entry where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param userId the user ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching watson token auth entry, or <code>null</code> if a matching watson token auth entry could not be found
 	 */
 	public WatsonTokenAuthEntry fetchByUserId(
-		long userId, boolean retrieveFromCache);
+		long userId, boolean useFinderCache);
 
 	/**
 	 * Removes the watson token auth entry where userId = &#63; from the database.
@@ -151,14 +151,14 @@ public interface WatsonTokenAuthEntryPersistence
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching watson token auth entries
 	 */
 	public java.util.List<WatsonTokenAuthEntry> findByC_U(
 		long companyId, long userId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonTokenAuthEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first watson token auth entry in the ordered set where companyId = &#63; and userId = &#63;.
@@ -350,14 +350,14 @@ public interface WatsonTokenAuthEntryPersistence
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson token auth entries
 	 */
 	public java.util.List<WatsonTokenAuthEntry> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonTokenAuthEntry>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson token auth entries from the database.

@@ -150,14 +150,14 @@ public interface WatsonIncidentAuditPersistence
 	 * @param start the lower bound of the range of watson incident audits
 	 * @param end the upper bound of the range of watson incident audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson incident audits
 	 */
 	public java.util.List<WatsonIncidentAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonIncidentAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson incident audits from the database.

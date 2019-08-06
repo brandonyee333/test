@@ -150,14 +150,14 @@ public interface WatsonListTypeAuditPersistence
 	 * @param start the lower bound of the range of watson list type audits
 	 * @param end the upper bound of the range of watson list type audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson list type audits
 	 */
 	public java.util.List<WatsonListTypeAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonListTypeAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson list type audits from the database.

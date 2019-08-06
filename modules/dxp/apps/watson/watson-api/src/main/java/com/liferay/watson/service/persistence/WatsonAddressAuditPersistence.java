@@ -149,14 +149,14 @@ public interface WatsonAddressAuditPersistence
 	 * @param start the lower bound of the range of watson address audits
 	 * @param end the upper bound of the range of watson address audits (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson address audits
 	 */
 	public java.util.List<WatsonAddressAudit> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<WatsonAddressAudit>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the watson address audits from the database.

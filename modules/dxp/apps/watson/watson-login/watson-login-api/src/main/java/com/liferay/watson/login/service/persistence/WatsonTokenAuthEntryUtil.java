@@ -156,13 +156,13 @@ public class WatsonTokenAuthEntryUtil {
 	 * Returns the watson token auth entry where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param userId the user ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching watson token auth entry, or <code>null</code> if a matching watson token auth entry could not be found
 	 */
 	public static WatsonTokenAuthEntry fetchByUserId(
-		long userId, boolean retrieveFromCache) {
+		long userId, boolean useFinderCache) {
 
-		return getPersistence().fetchByUserId(userId, retrieveFromCache);
+		return getPersistence().fetchByUserId(userId, useFinderCache);
 	}
 
 	/**
@@ -253,17 +253,16 @@ public class WatsonTokenAuthEntryUtil {
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching watson token auth entries
 	 */
 	public static List<WatsonTokenAuthEntry> findByC_U(
 		long companyId, long userId, int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByC_U(
-			companyId, userId, start, end, orderByComparator,
-			retrieveFromCache);
+			companyId, userId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -502,16 +501,16 @@ public class WatsonTokenAuthEntryUtil {
 	 * @param start the lower bound of the range of watson token auth entries
 	 * @param end the upper bound of the range of watson token auth entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of watson token auth entries
 	 */
 	public static List<WatsonTokenAuthEntry> findAll(
 		int start, int end,
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
