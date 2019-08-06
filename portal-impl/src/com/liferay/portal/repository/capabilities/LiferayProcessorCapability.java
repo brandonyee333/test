@@ -15,8 +15,10 @@
 package com.liferay.portal.repository.capabilities;
 
 import com.liferay.document.library.kernel.util.DLProcessorRegistryUtil;
-import com.liferay.document.library.security.io.InputStreamSanitizer;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.LocalRepository;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.capabilities.ProcessorCapability;
@@ -33,8 +35,12 @@ import com.liferay.portal.repository.liferayrepository.LiferayProcessorLocalRepo
 import com.liferay.portal.repository.liferayrepository.LiferayProcessorRepositoryWrapper;
 import com.liferay.portal.repository.util.RepositoryWrapperAware;
 import com.liferay.portlet.preview.DLPreviewHelper;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
 
 import java.io.InputStream;
+
+import java.lang.reflect.Method;
 
 /**
  * @author Adolfo Pérez
@@ -43,12 +49,14 @@ public class LiferayProcessorCapability
 	implements ProcessorCapability, RepositoryEventAware,
 			   RepositoryWrapperAware {
 
+	public LiferayProcessorCapability() {
+		this(ResourceGenerationStrategy.REUSE);
+	}
+
 	public LiferayProcessorCapability(
-		ResourceGenerationStrategy resourceGenerationStrategy,
-		InputStreamSanitizer inputStreamSanitizer) {
+		ResourceGenerationStrategy resourceGenerationStrategy) {
 
 		_resourceGenerationStrategy = resourceGenerationStrategy;
-		_inputStreamSanitizer = inputStreamSanitizer;
 	}
 
 	@Override
@@ -137,12 +145,14 @@ public class LiferayProcessorCapability
 		return new SafeFileVersion(fileVersion);
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		LiferayProcessorCapability.class);
+
 	private static volatile DLPreviewHelper _dlPreviewHelper =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			DLPreviewHelper.class, LiferayProcessorCapability.class,
 			"_dlPreviewHelper", false, true);
 
-	private final InputStreamSanitizer _inputStreamSanitizer;
 	private final ResourceGenerationStrategy _resourceGenerationStrategy;
 
 	private class SafeFileEntry extends FileEntryWrapper {
@@ -153,15 +163,58 @@ public class LiferayProcessorCapability
 
 		@Override
 		public InputStream getContentStream() throws PortalException {
-			return _inputStreamSanitizer.sanitize(super.getContentStream());
+			try {
+				Registry registry = RegistryUtil.getRegistry();
+
+				Object inputStreamSanitizer = registry.getService(
+					"com.liferay.document.library.security.io." +
+						"InputStreamSanitizer");
+
+				Method sanitizeMethod = ReflectionUtil.getDeclaredMethod(
+					inputStreamSanitizer.getClass(), "sanitizeMethod",
+					InputStream.class);
+
+				return (InputStream)sanitizeMethod.invoke(
+					inputStreamSanitizer, super.getContentStream());
+			}
+			catch (Exception e) {
+				if (e instanceof PortalException) {
+					throw new PortalException(e);
+				}
+
+				_log.error(e, e);
+			}
+
+			return null;
 		}
 
 		@Override
 		public InputStream getContentStream(String version)
 			throws PortalException {
 
-			return _inputStreamSanitizer.sanitize(
-				super.getContentStream(version));
+			try {
+				Registry registry = RegistryUtil.getRegistry();
+
+				Object inputStreamSanitizer = registry.getService(
+					"com.liferay.document.library.security.io." +
+						"InputStreamSanitizer");
+
+				Method sanitizeMethod = ReflectionUtil.getDeclaredMethod(
+					inputStreamSanitizer.getClass(), "sanitizeMethod",
+					InputStream.class);
+
+				return (InputStream)sanitizeMethod.invoke(
+					inputStreamSanitizer, super.getContentStream(version));
+			}
+			catch (Exception e) {
+				if (e instanceof PortalException) {
+					throw new PortalException(e);
+				}
+
+				_log.error(e, e);
+			}
+
+			return null;
 		}
 
 		@Override
@@ -200,8 +253,30 @@ public class LiferayProcessorCapability
 		public InputStream getContentStream(boolean incrementCounter)
 			throws PortalException {
 
-			return _inputStreamSanitizer.sanitize(
-				super.getContentStream(incrementCounter));
+			try {
+				Registry registry = RegistryUtil.getRegistry();
+
+				Object inputStreamSanitizer = registry.getService(
+					"com.liferay.document.library.security.io." +
+						"InputStreamSanitizer");
+
+				Method sanitize = ReflectionUtil.getDeclaredMethod(
+					inputStreamSanitizer.getClass(), "sanitize",
+					InputStream.class);
+
+				return (InputStream)sanitize.invoke(
+					inputStreamSanitizer,
+					super.getContentStream(incrementCounter));
+			}
+			catch (Exception e) {
+				if (e instanceof PortalException) {
+					throw new PortalException(e);
+				}
+
+				_log.error(e, e);
+			}
+
+			return null;
 		}
 
 		@Override
