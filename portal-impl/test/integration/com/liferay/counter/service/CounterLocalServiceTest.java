@@ -19,6 +19,8 @@ import com.liferay.petra.process.ClassPathUtil;
 import com.liferay.portal.cache.key.SimpleCacheKeyGenerator;
 import com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.process.ProcessCallable;
 import com.liferay.portal.kernel.process.ProcessChannel;
 import com.liferay.portal.kernel.process.ProcessConfig;
@@ -38,7 +40,6 @@ import com.liferay.registry.BasicRegistryImpl;
 import com.liferay.registry.RegistryUtil;
 
 import java.lang.management.ManagementFactory;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -118,6 +119,8 @@ public class CounterLocalServiceTest {
 
 		List<String> arguments = new ArrayList<>();
 
+		_log.error("####com.liferay.counter.service.CounterLocalServiceTest#### execute");
+
 		arguments.add("-Dliferay.mode=test");
 		arguments.add("-Dsun.zip.disableMemoryMapping=true");
 
@@ -180,6 +183,9 @@ public class CounterLocalServiceTest {
 	private static final int _INCREMENT_COUNT = 10000;
 
 	private static final int _PROCESS_COUNT = 4;
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CounterLocalServiceTest.class);
 
 	@Inject
 	private static final ProcessExecutor _processExecutor = null;
