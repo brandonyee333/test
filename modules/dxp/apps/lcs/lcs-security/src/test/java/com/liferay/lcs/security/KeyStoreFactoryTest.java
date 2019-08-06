@@ -25,7 +25,7 @@ import org.junit.runners.JUnit4;
  * @author Igor Beslic
  */
 @RunWith(JUnit4.class)
-public class KeyStoreFactoryTest extends BaseTest {
+public class KeyStoreFactoryTest extends BaseTestCase {
 
 	@Test
 	public void testGetInstance() throws Exception {

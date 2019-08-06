@@ -27,7 +27,7 @@ import org.junit.runners.JUnit4;
  * @author Igor Beslic
  */
 @RunWith(JUnit4.class)
-public class KeyStoreAdvisorTest extends BaseTest {
+public class KeyStoreAdvisorTest extends BaseTestCase {
 
 	@Test
 	public void testGetKeyAlias() throws Exception {

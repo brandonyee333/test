@@ -16,7 +16,7 @@ package com.liferay.lcs.client.internal.event;
 
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.BasePowerMockitoTest;
+import com.liferay.lcs.client.internal.BasePowerMockitoTestCase;
 
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -31,7 +31,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @author Igor Beslic
  */
 @RunWith(PowerMockRunner.class)
-public class LCSEventManagerTest extends BasePowerMockitoTest {
+public class LCSEventManagerTest extends BasePowerMockitoTestCase {
 
 	@Test
 	public void testSubscribe() {

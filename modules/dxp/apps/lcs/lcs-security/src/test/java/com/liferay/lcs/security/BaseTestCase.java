@@ -27,7 +27,7 @@ import org.junit.Before;
 /**
  * @author Igor Beslic
  */
-public class BaseTest {
+public abstract class BaseTestCase {
 
 	@Before
 	public void setUp() throws Exception {

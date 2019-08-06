@@ -17,7 +17,7 @@ package com.liferay.lcs.client.internal.advisor;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
-import com.liferay.lcs.client.internal.BasePowerMockitoTest;
+import com.liferay.lcs.client.internal.BasePowerMockitoTestCase;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
@@ -52,7 +52,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class LCSClusterEntryTokenAdvisorImplTest extends BasePowerMockitoTest {
+public class LCSClusterEntryTokenAdvisorImplTest
+	extends BasePowerMockitoTestCase {
 
 	@Before
 	public void setUp() {

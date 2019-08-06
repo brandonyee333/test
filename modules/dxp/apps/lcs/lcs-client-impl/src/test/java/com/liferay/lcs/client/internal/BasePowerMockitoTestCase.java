@@ -48,7 +48,7 @@ import org.powermock.api.mockito.PowerMockito;
 /**
  * @author Igor Beslic
  */
-public class BasePowerMockitoTest extends PowerMockito {
+public abstract class BasePowerMockitoTestCase extends PowerMockito {
 
 	protected LCSConfigurationProvider mockLCSConfigurationProvider() {
 		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
