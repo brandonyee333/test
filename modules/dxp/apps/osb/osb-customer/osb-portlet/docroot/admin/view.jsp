@@ -64,7 +64,7 @@ portletURL.setWindowState(WindowState.MAXIMIZED);
 request.setAttribute("view.jsp-portletURL", portletURL);
 %>
 
-<div class="col-md-12">
+<aui:col md="12">
 	<liferay-ui:tabs
 		names="<%= tabsNames %>"
 		param="tabs1"
@@ -90,4 +90,4 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 			<liferay-util:include page="/admin/accounts.jsp" servletContext="<%= application %>" />
 		</c:otherwise>
 	</c:choose>
-</div>
+</aui:col>
