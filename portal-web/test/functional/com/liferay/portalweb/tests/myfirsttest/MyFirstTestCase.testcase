@@ -5,37 +5,17 @@ definition{
 	@description = "Ensure that the super admin can login successful."
 	@priority = "5"
 	test SuperAdminLogin{
-		Open(locator1 = "http://localhost:8080");
 
-		Click(locator1 = "//div[@id='p_p_id_com_liferay_product_navigation_user_personal_bar_web_portlet_ProductNavigationUserPersonalBarPortlet_']");
+		MyFirstMacro.login(
+			signInButton = "Sign In",
+            agreeButton = "I Agree",
+            saveButton = "Save",
+			emailAddress = "test@liferay.com",
+			password = "test"
+			);
 
-		Type(
-			locator1 = "LRLogin#EMAIL_ADDRESS_FIELD", 
-			value1 = "test@liferay.com");
-		Type(
-			locator1 = "LRLogin#PASSWORD_FIELD", 
-			value1 = "test");
-
-		AssertClick(
-			locator1 = "LRLogin#SIGN_IN_BUTTON", 
-			value1 = "Sign In");
-
-		AsseryClick(
-			locator1 = "LRTermsOfUse#AGREE_BUTTON"
-			value1 = "I Agree");
-
-		Type(
-			locator1 = "LRPasswordReminder#PASSWORD_REMINDER_FIELD", 
-			value1 = "ji");
-
-		AssertClick(
-			locator1 = "LRPasswordReminder#SAVE_BUTTON",
-			value1 = "Save");
-
-		Click(locator1 = "LRWelcome#AVATAR_BUTTON");
-
-		AssertTextEquals(
-			locator1 = "LRWelcome#NAME_LI", 
-			value1 = "Test Test"]);
+		MyFirstMacro.assertLogin(
+			assertUser = "Test Test"
+			);
 	}
 }

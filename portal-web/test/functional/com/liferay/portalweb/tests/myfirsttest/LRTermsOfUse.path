@@ -10,7 +10,7 @@
 <tbody>
 <tr>
 	<td>AGREE_BUTTON</td>
-	<td>//button[@id='rsef']</td>
+	<td>//button[contains(.,'${key_buttonName}')]</td>
 	<td></td>
 </tr>
 </tbody>
