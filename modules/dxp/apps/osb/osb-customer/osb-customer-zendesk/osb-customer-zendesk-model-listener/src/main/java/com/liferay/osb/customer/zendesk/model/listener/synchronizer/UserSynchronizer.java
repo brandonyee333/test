@@ -19,6 +19,7 @@ import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
+import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashSet;
 import java.util.List;
@@ -71,8 +73,12 @@ public class UserSynchronizer {
 	public void addPhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
-		_asyncZendeskUserIdentityWebService.createZendeskUserIdentity(
-			zendeskUserId, "phone_number", phone.getNumber());
+		String number = PhoneUtil.convertToE164(phone);
+
+		if (Validator.isNotNull(number)) {
+			_asyncZendeskUserIdentityWebService.createZendeskUserIdentity(
+				zendeskUserId, "phone_number", number);
+		}
 	}
 
 	public void deletePhone(long userId, Phone phone) throws PortalException {
@@ -196,8 +202,12 @@ public class UserSynchronizer {
 		long zendeskUserIdentityId = getExternalId(
 			Phone.class, phone.getPhoneId());
 
-		_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
-			zendeskUserId, zendeskUserIdentityId, phone.getNumber());
+		String number = PhoneUtil.convertToE164(phone);
+
+		if (Validator.isNotNull(number)) {
+			_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
+				zendeskUserId, zendeskUserIdentityId, number);
+		}
 	}
 
 	protected long getExternalId(Class<?> clazz, long classPK) {

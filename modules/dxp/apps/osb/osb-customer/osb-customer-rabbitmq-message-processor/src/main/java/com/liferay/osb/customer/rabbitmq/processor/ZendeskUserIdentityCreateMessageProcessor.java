@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
+import com.liferay.osb.customer.zendesk.util.PhoneUtil;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
@@ -67,7 +68,7 @@ public class ZendeskUserIdentityCreateMessageProcessor
 		User user = userLocalService.getUser(userExternalIdMapper.getClassPK());
 
 		for (Phone phone : user.getPhones()) {
-			if (value.equals(phone.getNumber())) {
+			if (value.equals(PhoneUtil.convertToE164(phone))) {
 				classPK = phone.getPhoneId();
 
 				break;
