@@ -84,8 +84,8 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 				BackgroundTaskConstants.STATUS_IN_PROGRESS, serviceContext);
 
 		if (backgroundTask == null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					"Unable to find background task " + backgroundTaskId);
 			}
 
@@ -137,8 +137,8 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 		catch (DuplicateLockException dle) {
 			status = BackgroundTaskConstants.STATUS_QUEUED;
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(
+			if (_log.isInfoEnabled()) {
+				_log.info(
 					"Unable to acquire lock, queuing background task " +
 						backgroundTaskId,
 					dle);
