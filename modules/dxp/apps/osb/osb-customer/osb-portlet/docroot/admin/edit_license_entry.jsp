@@ -42,7 +42,6 @@ int portalVersionMax = BeanParamUtil.getInteger(licenseEntry, request, "portalVe
 </portlet:actionURL>
 
 <aui:form action="<%= updateLicenseEntryURL %>" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="licenseEntryId" type="hidden" value="<%= licenseEntryId %>" />
 

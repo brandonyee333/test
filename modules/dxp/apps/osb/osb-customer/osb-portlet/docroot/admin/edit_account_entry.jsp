@@ -71,7 +71,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 </portlet:actionURL>
 
 <aui:form action="<%= updateAccountEntryURL %>" enctype="multipart/form-data" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 	<aui:input name="accountProjectId" type="hidden" value="<%= AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID %>" />

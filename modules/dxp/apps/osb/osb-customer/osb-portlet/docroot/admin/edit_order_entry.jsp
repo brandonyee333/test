@@ -190,7 +190,6 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 </portlet:actionURL>
 
 <aui:form action="<%= updateOrderEntryURL %>" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="orderEntryId" type="hidden" value="<%= orderEntryId %>" />
 	<aui:input name="offeringEntriesCount" type="hidden" value="<%= offeringEntries.size() %>" />

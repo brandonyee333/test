@@ -45,7 +45,6 @@ if (offeringBundle != null) {
 </portlet:actionURL>
 
 <aui:form action="<%= updateOfferingBundleURL %>" method="post">
-	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="offeringBundleId" type="hidden" value="<%= offeringBundleId %>" />
 	<aui:input name="offeringDefinitionIds" type="hidden" value="<%= offeringDefinitionIds %>" />
