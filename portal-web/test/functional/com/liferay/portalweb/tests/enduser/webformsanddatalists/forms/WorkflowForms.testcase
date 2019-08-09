@@ -385,7 +385,7 @@ definition {
 			fieldName = "TextTwo",
 			fieldValue = "Text Two Input");
 
-		FormPortlet.clickSubmit();
+		Button.clickSubmitForPublication();
 
 		Alert.viewSuccessMessage();
 
