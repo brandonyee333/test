@@ -640,18 +640,16 @@ public class AdminPortlet extends OSBPortlet {
 					supportRegionIds, street1, street2, street3, city, zip,
 					regionId, countryId, ewsaDossieraProjectKey);
 
-			accountEntryId = accountEntry.getAccountEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter("mvcPath", "/admin/edit_account_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"accountEntryId", String.valueOf(accountEntryId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"accountEntryId",
+				String.valueOf(accountEntry.getAccountEntryId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -723,18 +721,16 @@ public class AdminPortlet extends OSBPortlet {
 					themeDisplay.getUserId(), productEntryId, name, type,
 					portalVersionMin, portalVersionMax);
 
-			licenseEntryId = licenseEntry.getLicenseEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter("mvcPath", "/admin/edit_license_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"licenseEntryId", String.valueOf(licenseEntryId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"licenseEntryId",
+				String.valueOf(licenseEntry.getLicenseEntryId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -768,19 +764,17 @@ public class AdminPortlet extends OSBPortlet {
 				OfferingBundleLocalServiceUtil.addOfferingBundle(
 					themeDisplay.getUserId(), name, offeringDefinitionIds);
 
-			offeringBundleId = offeringBundle.getOfferingBundleId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
 				"mvcPath", "/admin/edit_offering_bundle.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"offeringBundleId", String.valueOf(offeringBundleId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"offeringBundleId",
+				String.valueOf(offeringBundle.getOfferingBundleId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -818,19 +812,17 @@ public class AdminPortlet extends OSBPortlet {
 					productDescription, licenses, unlimitedLicenses,
 					maxConcurrentUsers, maxUsers, supportTickets);
 
-			offeringDefinitionId = offeringDefinition.getOfferingDefinitionId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
 				"mvcPath", "/admin/edit_offering_definition.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"offeringDefinitionId", String.valueOf(offeringDefinitionId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"offeringDefinitionId",
+				String.valueOf(offeringDefinition.getOfferingDefinitionId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -965,18 +957,15 @@ public class AdminPortlet extends OSBPortlet {
 				WorkflowConstants.STATUS_APPROVED, salesforceOpportunityKey,
 				offeringEntries);
 
-			orderEntryId = orderEntry.getOrderEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter("mvcPath", "/admin/edit_order_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"orderEntryId", String.valueOf(orderEntryId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"orderEntryId", String.valueOf(orderEntry.getOrderEntryId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -1022,18 +1011,16 @@ public class AdminPortlet extends OSBPortlet {
 				dossieraAccountKey, jiraProjectKey, code, notes,
 				supportRegionIds);
 
-			partnerEntryId = partnerEntry.getPartnerEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter("mvcPath", "/admin/edit_partner_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"partnerEntryId", String.valueOf(partnerEntryId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"partnerEntryId",
+				String.valueOf(partnerEntry.getPartnerEntryId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -1106,18 +1093,16 @@ public class AdminPortlet extends OSBPortlet {
 					themeDisplay.getUserId(), name, type, environment,
 					versionsListType, dossieraIdMappings, zendeskTag);
 
-			productEntryId = productEntry.getProductEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter("mvcPath", "/admin/edit_product_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"productEntryId", String.valueOf(productEntryId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"productEntryId",
+				String.valueOf(productEntry.getProductEntryId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -1151,19 +1136,17 @@ public class AdminPortlet extends OSBPortlet {
 				SupportRegionLocalServiceUtil.addSupportRegion(
 					themeDisplay.getUserId(), name, description, timeZoneId);
 
-			supportRegionId = supportRegion.getSupportRegionId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
 				"mvcPath", "/admin/edit_support_region.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"supportRegionId", String.valueOf(supportRegionId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"supportRegionId",
+				String.valueOf(supportRegion.getSupportRegionId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
@@ -1202,19 +1185,17 @@ public class AdminPortlet extends OSBPortlet {
 					severity2Resolution, severity3Response,
 					severity3Resolution);
 
-			supportResponseId = supportResponse.getSupportResponseId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
 			PortletURL portletURL = PortletURLFactoryUtil.create(
 				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
 				PortletRequest.RENDER_PHASE);
 
 			portletURL.setParameter(
 				"mvcPath", "/admin/edit_support_response.jsp");
-			portletURL.setParameter("backURL", backURL);
 			portletURL.setParameter(
-				"supportResponseId", String.valueOf(supportResponseId));
+				"backURL", ParamUtil.getString(actionRequest, "backURL"));
+			portletURL.setParameter(
+				"supportResponseId",
+				String.valueOf(supportResponse.getSupportResponseId()));
 
 			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
