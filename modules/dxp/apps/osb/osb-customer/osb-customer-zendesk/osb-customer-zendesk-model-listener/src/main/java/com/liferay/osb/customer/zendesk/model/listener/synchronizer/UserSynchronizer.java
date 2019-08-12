@@ -73,7 +73,7 @@ public class UserSynchronizer {
 	public void addPhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
-		String number = PhoneUtil.convertToE164(phone);
+		String number = _phoneUtil.convertToE164(phone);
 
 		if (Validator.isNotNull(number)) {
 			_asyncZendeskUserIdentityWebService.createZendeskUserIdentity(
@@ -202,7 +202,7 @@ public class UserSynchronizer {
 		long zendeskUserIdentityId = getExternalId(
 			Phone.class, phone.getPhoneId());
 
-		String number = PhoneUtil.convertToE164(phone);
+		String number = _phoneUtil.convertToE164(phone);
 
 		if (Validator.isNotNull(number)) {
 			_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
@@ -323,6 +323,9 @@ public class UserSynchronizer {
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;
+
+	@Reference
+	private PhoneUtil _phoneUtil;
 
 	@Reference
 	private UserLocalService _userLocalService;

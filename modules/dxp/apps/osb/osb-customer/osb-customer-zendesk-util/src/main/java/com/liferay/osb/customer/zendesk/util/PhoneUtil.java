@@ -31,16 +31,14 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = PhoneUtil.class)
 public class PhoneUtil {
 
-	public static String convertToE164(Phone phone) throws PortalException {
+	public String convertToE164(Phone phone) throws PortalException {
 		try {
-			String number = phone.getNumber();
-
 			PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
 
 			Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(
-				number, _UNKNOWN_REGION);
+				phone.getNumber(), _UNKNOWN_REGION);
 
-			number = phoneNumberUtil.format(
+			String number = phoneNumberUtil.format(
 				phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164);
 
 			if (Validator.isNotNull(phone.getExtension())) {

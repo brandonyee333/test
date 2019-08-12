@@ -68,7 +68,7 @@ public class ZendeskUserIdentityCreateMessageProcessor
 		User user = userLocalService.getUser(userExternalIdMapper.getClassPK());
 
 		for (Phone phone : user.getPhones()) {
-			if (value.equals(PhoneUtil.convertToE164(phone))) {
+			if (value.equals(_phoneUtil.convertToE164(phone))) {
 				classPK = phone.getPhoneId();
 
 				break;
@@ -102,5 +102,8 @@ public class ZendeskUserIdentityCreateMessageProcessor
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	@Reference
+	private PhoneUtil _phoneUtil;
 
 }
