@@ -502,6 +502,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			>
 				<aui:input name='<%= "offeringEntryId_" + index %>' type="hidden" value="<%= offeringEntry.getOfferingEntryId() %>" />
 				<aui:input name='<%= "productEntryId_" + index %>' type="hidden" value="<%= offeringEntry.getProductEntryId() %>" />
+				<aui:input name='<%= "type_" + index %>' type="hidden" value="<%= offeringEntry.getType() %>" />
 				<aui:input name='<%= "productDescription_" + index %>' type="hidden" value="<%= offeringEntry.getProductDescription() %>" />
 
 				<%= HtmlUtil.escape(productEntry.getName()) %>
