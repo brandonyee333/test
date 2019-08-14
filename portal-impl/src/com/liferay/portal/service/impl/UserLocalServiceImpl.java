@@ -75,6 +75,8 @@ import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.QueryConfig;
@@ -4338,6 +4340,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  createDate the new creation date
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateCreateDate(long userId, Date createDate)
 		throws PortalException {
@@ -4360,6 +4363,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  emailAddress2 the user's new email address confirmation
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateEmailAddress(
 			long userId, String password, String emailAddress1,
@@ -4400,6 +4404,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 *         remote host, and agent for the user.
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateEmailAddress(
 			long userId, String password, String emailAddress1,
@@ -4446,6 +4451,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  emailAddressVerified whether the user has verified email address
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateEmailAddressVerified(
 			long userId, boolean emailAddressVerified)
@@ -4467,6 +4473,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  facebookId the user's new Facebook ID
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateFacebookId(long userId, long facebookId)
 		throws PortalException {
@@ -4487,6 +4494,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  googleUserId the new Google user ID
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateGoogleUserId(long userId, String googleUserId)
 		throws PortalException {
@@ -4728,6 +4736,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  jobTitle the user's job title
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateJobTitle(long userId, String jobTitle)
 		throws PortalException {
@@ -4875,6 +4884,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  modifiedDate the new modified date
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateModifiedDate(long userId, Date modifiedDate)
 		throws PortalException {
@@ -4895,6 +4905,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  openId the new OpenID
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateOpenId(long userId, String openId)
 		throws PortalException {
@@ -5155,6 +5166,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  screenName the user's new screen name
 	 * @return the user
 	 */
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public User updateScreenName(long userId, String screenName)
 		throws PortalException {
