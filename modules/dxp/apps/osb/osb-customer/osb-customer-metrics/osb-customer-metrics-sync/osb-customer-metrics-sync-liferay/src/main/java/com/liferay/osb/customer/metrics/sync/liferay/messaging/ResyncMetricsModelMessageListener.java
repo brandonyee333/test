@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.model.ClassName;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.Region;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
@@ -72,6 +73,7 @@ public class ResyncMetricsModelMessageListener extends BaseMessageListener {
 		resyncAll(Country.class.getName());
 		resyncAll(ListType.class.getName());
 		resyncAll(Region.class.getName());
+		resyncAll(Role.class.getName());
 	}
 
 	protected void resyncAll(String modelName) throws Exception {
