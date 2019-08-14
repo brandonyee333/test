@@ -865,6 +865,21 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 	}
 
 	@Override
+	public boolean isExportPortletData(PortletDataContext portletDataContext) {
+		if (((portletDataContext.getScopeGroupId() ==
+				portletDataContext.getGroupId()) ||
+			 (portletDataContext.getScopeGroupId() ==
+				 portletDataContext.getCompanyGroupId())) &&
+			(ExportImportThreadLocal.isLayoutExportInProcess() ||
+			 ExportImportThreadLocal.isLayoutStagingInProcess())) {
+
+			return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public boolean isReferenceWithinExportScope(
 		PortletDataContext portletDataContext, StagedModel stagedModel) {
 
