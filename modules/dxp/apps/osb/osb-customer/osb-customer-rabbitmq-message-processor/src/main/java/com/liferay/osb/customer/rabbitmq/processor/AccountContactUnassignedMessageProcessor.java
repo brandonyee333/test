@@ -17,8 +17,6 @@ package com.liferay.osb.customer.rabbitmq.processor;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
@@ -30,45 +28,33 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "routing.key=entity.corpproject.role.unassigned",
-	service = CorpProjectRoleUnassignedMessageProcessor.class
+	property = "routing.key=koroneiki.account.contact.unassigned",
+	service = AccountContactUnassignedMessageProcessor.class
 )
-public class CorpProjectRoleUnassignedMessageProcessor
+public class AccountContactUnassignedMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		User user = fetchUser(userJSONObject);
-
-		if (user == null) {
-			return;
-		}
-
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
+		JSONObject accountJSONObject = jsonObject.getJSONObject("account");
 
 		CorpProject corpProject =
 			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
-				corpProjectJSONObject.getString("uuid"));
+				accountJSONObject.getString("key"));
 
 		if (corpProject == null) {
 			return;
 		}
 
-		Group group = corpProject.getGroup();
+		JSONObject contactJSONObject = jsonObject.getJSONObject("contact");
 
-		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
+		User user = fetchUser(contactJSONObject.getString("uuid"));
 
-		Role role = fetchRole(roleJSONObject);
-
-		if (role == null) {
-			return;
+		if (user == null) {
+			user = addKoroneikiUser(contactJSONObject);
 		}
 
-		userGroupRoleLocalService.deleteUserGroupRoles(
-			user.getUserId(), group.getGroupId(),
-			new long[] {role.getRoleId()});
+		userLocalService.unsetOrganizationUsers(
+			corpProject.getOrganizationId(), new long[] {user.getUserId()});
 	}
 
 	@Reference(

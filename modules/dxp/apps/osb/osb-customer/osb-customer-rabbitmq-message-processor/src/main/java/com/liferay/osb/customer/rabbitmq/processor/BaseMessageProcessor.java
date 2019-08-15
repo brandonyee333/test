@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.processor;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -35,9 +36,12 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Reference;
@@ -74,7 +78,31 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		}
 	}
 
-	protected User addUser(JSONObject jsonObject) throws PortalException {
+	protected User addKoroneikiUser(JSONObject jsonObject)
+		throws PortalException {
+
+		User defaultUser = userLocalService.getUser(
+			OSBCustomerConstants.USER_DEFAULT_USER_ID);
+
+		Locale locale = LocaleUtil.fromLanguageId(
+			jsonObject.getString("languageId"));
+
+		ServiceContext serviceContext = new ServiceContext();
+
+		serviceContext.setUuid(jsonObject.getString("key"));
+
+		return userLocalService.addUser(
+			defaultUser.getUserId(), defaultUser.getCompanyId(), true,
+			StringPool.BLANK, StringPool.BLANK, true, StringPool.BLANK,
+			jsonObject.getString("emailAddress"), 0, StringPool.BLANK, locale,
+			jsonObject.getString("firstName"),
+			jsonObject.getString("middleName"),
+			jsonObject.getString("lastName"), 0, 0, false, 0, 1, 1970,
+			StringPool.BLANK, new long[0], new long[0], new long[0],
+			new long[0], false, serviceContext);
+	}
+
+	protected User addWebUser(JSONObject jsonObject) throws PortalException {
 		User remoteUser = RemoteUserLocalServiceUtil.translate(jsonObject);
 
 		Company company = companyLocalService.getCompany(
@@ -130,12 +158,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return null;
 	}
 
-	protected Role fetchRole(JSONObject jsonObject) {
-		if (jsonObject == null) {
+	protected Role fetchRole(String uuid) {
+		if (Validator.isNull(uuid)) {
 			return null;
 		}
-
-		String uuid = jsonObject.getString("uuid");
 
 		List<Company> companies = companyLocalService.getCompanies();
 
@@ -151,12 +177,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return null;
 	}
 
-	protected User fetchUser(JSONObject jsonObject) {
-		if (jsonObject == null) {
+	protected User fetchUser(String uuid) {
+		if (Validator.isNull(uuid)) {
 			return null;
 		}
-
-		String uuid = jsonObject.getString("uuid");
 
 		List<Company> companies = companyLocalService.getCompanies();
 

@@ -42,7 +42,7 @@ public class OrganizationUnassignmentMessageProcessor
 
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
-		User user = fetchUser(userJSONObject);
+		User user = fetchUser(userJSONObject.getString("uuid"));
 
 		if (user == null) {
 			return;

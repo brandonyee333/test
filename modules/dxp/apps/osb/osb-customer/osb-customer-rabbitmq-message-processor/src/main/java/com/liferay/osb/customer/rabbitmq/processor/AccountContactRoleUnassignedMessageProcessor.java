@@ -17,6 +17,9 @@ package com.liferay.osb.customer.rabbitmq.processor;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
@@ -26,22 +29,46 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = "routing.key=entity.corpproject.delete",
-	service = CorpProjectDeleteMessageProcessor.class
+	immediate = true,
+	property = "routing.key=koroneiki.account.contactrole.unassigned",
+	service = AccountContactRoleUnassignedMessageProcessor.class
 )
-public class CorpProjectDeleteMessageProcessor extends BaseMessageProcessor {
+public class AccountContactRoleUnassignedMessageProcessor
+	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		JSONObject accountJSONObject = jsonObject.getJSONObject("account");
+
 		CorpProject corpProject =
 			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
-				jsonObject.getString("uuid"));
+				accountJSONObject.getString("key"));
 
 		if (corpProject == null) {
 			return;
 		}
 
-		CorpProjectLocalServiceUtil.deleteCorpProject(
-			corpProject.getCorpProjectId());
+		JSONObject contactJSONObject = jsonObject.getJSONObject("contact");
+
+		User user = fetchUser(contactJSONObject.getString("uuid"));
+
+		if (user == null) {
+			user = addKoroneikiUser(contactJSONObject);
+		}
+
+		Group group = corpProject.getGroup();
+
+		JSONObject contactRoleJSONObject = jsonObject.getJSONObject(
+			"contactRole");
+
+		Role role = fetchRole(contactRoleJSONObject.getString("key"));
+
+		if (role == null) {
+			return;
+		}
+
+		userGroupRoleLocalService.deleteUserGroupRoles(
+			user.getUserId(), group.getGroupId(),
+			new long[] {role.getRoleId()});
 	}
 
 	@Reference(

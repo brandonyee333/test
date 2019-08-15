@@ -39,7 +39,9 @@ public class CorpProjectMessageUpdateMessageProcessor
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		long userId = 0;
 
-		User user = fetchUser(jsonObject.getJSONObject("user"));
+		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+
+		User user = fetchUser(userJSONObject.getString("uuid"));
 
 		if (user != null) {
 			userId = user.getUserId();

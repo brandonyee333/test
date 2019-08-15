@@ -32,7 +32,7 @@ public class RoleAssignmentMessageProcessor extends BaseMessageProcessor {
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject roleJSONObject = jsonObject.getJSONObject("role");
 
-		Role role = fetchRole(roleJSONObject);
+		Role role = fetchRole(roleJSONObject.getString("uuid"));
 
 		if (role == null) {
 			return;
@@ -40,7 +40,7 @@ public class RoleAssignmentMessageProcessor extends BaseMessageProcessor {
 
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
-		User user = fetchUser(userJSONObject);
+		User user = fetchUser(userJSONObject.getString("uuid"));
 
 		if (user == null) {
 			return;

@@ -17,10 +17,10 @@ package com.liferay.osb.customer.rabbitmq.processor;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -29,30 +29,46 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = "routing.key=entity.corpproject.update",
-	service = CorpProjectUpdateMessageProcessor.class
+	immediate = true,
+	property = "routing.key=koroneiki.account.contactrole.assigned",
+	service = AccountContactRoleAssignedMessageProcessor.class
 )
-public class CorpProjectUpdateMessageProcessor extends BaseMessageProcessor {
+public class AccountContactRoleAssignedMessageProcessor
+	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		JSONObject accountJSONObject = jsonObject.getJSONObject("account");
+
 		CorpProject corpProject =
 			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
-				jsonObject.getString("uuid"));
+				accountJSONObject.getString("key"));
 
 		if (corpProject == null) {
 			return;
 		}
 
-		ServiceContext serviceContext = new ServiceContext();
+		JSONObject contactJSONObject = jsonObject.getJSONObject("contact");
 
-		serviceContext.setCreateDate(
-			new Date(jsonObject.getLong("modifiedDate")));
+		User user = fetchUser(contactJSONObject.getString("uuid"));
 
-		CorpProjectLocalServiceUtil.updateCorpProject(
-			corpProject.getCorpProjectId(),
-			jsonObject.getString("dossieraProjectKey"),
-			jsonObject.getString("salesforceProjectKey"),
-			jsonObject.getString("name"), serviceContext);
+		if (user == null) {
+			user = addKoroneikiUser(contactJSONObject);
+		}
+
+		Group group = corpProject.getGroup();
+
+		JSONObject contactRoleJSONObject = jsonObject.getJSONObject(
+			"contactRole");
+
+		Role role = fetchRole(contactRoleJSONObject.getString("key"));
+
+		if (role == null) {
+			return;
+		}
+
+		userGroupRoleLocalService.addUserGroupRoles(
+			user.getUserId(), group.getGroupId(),
+			new long[] {role.getRoleId()});
 	}
 
 	@Reference(

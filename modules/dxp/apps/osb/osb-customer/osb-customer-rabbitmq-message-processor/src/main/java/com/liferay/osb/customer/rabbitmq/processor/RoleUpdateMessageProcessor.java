@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Component;
 public class RoleUpdateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		Role role = fetchRole(jsonObject);
+		Role role = fetchRole(jsonObject.getString("uuid"));
 
 		if (role == null) {
 			return;

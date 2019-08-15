@@ -16,9 +16,11 @@ package com.liferay.osb.customer.rabbitmq.processor;
 
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -27,33 +29,50 @@ import org.osgi.service.component.annotations.Reference;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = "routing.key=entity.corpproject.assigned",
-	service = CorpProjectAssignedMessageProcessor.class
+	immediate = true, property = "routing.key=koroneiki.account.update",
+	service = AccountUpdateMessageProcessor.class
 )
-public class CorpProjectAssignedMessageProcessor extends BaseMessageProcessor {
+public class AccountUpdateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		JSONObject corpProjectJSONObject = jsonObject.getJSONObject(
-			"corpProject");
-
 		CorpProject corpProject =
 			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
-				corpProjectJSONObject.getString("uuid"));
+				jsonObject.getString("key"));
 
 		if (corpProject == null) {
 			return;
 		}
 
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
+		String dossieraProjectKey = StringPool.BLANK;
+		String salesforceProjectKey = StringPool.BLANK;
 
-		User user = fetchUser(userJSONObject);
+		JSONArray jsonArray = jsonObject.getJSONArray("externalLinks");
 
-		if (user == null) {
-			user = addUser(userJSONObject);
+		if (jsonArray != null) {
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject externalLinkJSONObject = jsonArray.getJSONObject(i);
+
+				String domain = externalLinkJSONObject.getString("domain");
+				String entityName = externalLinkJSONObject.getString(
+					"entityName");
+
+				if (domain.equals("dossiera") && entityName.equals("project")) {
+					dossieraProjectKey = externalLinkJSONObject.getString(
+						"entityId");
+				}
+				else if (domain.equals("salesforce") &&
+						 entityName.equals("project")) {
+
+					salesforceProjectKey = externalLinkJSONObject.getString(
+						"entityId");
+				}
+			}
 		}
 
-		userLocalService.addOrganizationUser(
-			corpProject.getOrganizationId(), user.getUserId());
+		CorpProjectLocalServiceUtil.updateCorpProject(
+			corpProject.getCorpProjectId(), dossieraProjectKey,
+			salesforceProjectKey, jsonObject.getString("name"),
+			new ServiceContext());
 	}
 
 	@Reference(

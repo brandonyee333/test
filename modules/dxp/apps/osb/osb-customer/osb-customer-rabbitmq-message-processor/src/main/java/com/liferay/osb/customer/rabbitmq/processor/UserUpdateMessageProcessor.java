@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
 public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
-		User user = fetchUser(jsonObject);
+		User user = fetchUser(jsonObject.getString("uuid"));
 
 		if (user == null) {
 			return;

@@ -40,10 +40,10 @@ public class CorpProjectMessageAddMessageProcessor
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject userJSONObject = jsonObject.getJSONObject("user");
 
-		User user = fetchUser(userJSONObject);
+		User user = fetchUser(userJSONObject.getString("uuid"));
 
 		if (user == null) {
-			user = addUser(userJSONObject);
+			user = addWebUser(userJSONObject);
 		}
 
 		CorpProject corpProject =

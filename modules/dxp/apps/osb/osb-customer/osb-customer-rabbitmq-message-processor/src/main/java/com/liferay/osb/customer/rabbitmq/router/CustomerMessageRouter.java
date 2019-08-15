@@ -16,16 +16,16 @@ package com.liferay.osb.customer.rabbitmq.router;
 
 import com.liferay.osb.customer.rabbitmq.connector.router.BaseMessageRouter;
 import com.liferay.osb.customer.rabbitmq.connector.router.MessageRouter;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectAddMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectAssignedMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectDeleteMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountContactAssignedMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountContactRoleAssignedMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountContactRoleUnassignedMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountContactUnassignedMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountCreateMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountDeleteMessageProcessor;
+import com.liferay.osb.customer.rabbitmq.processor.AccountUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.CorpProjectMessageAddMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.CorpProjectMessageDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.CorpProjectMessageUpdateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectRoleAssignedMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectRoleUnassignedMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectUnassignedMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.CorpProjectUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationUpdateMessageProcessor;
@@ -56,27 +56,63 @@ import org.osgi.service.component.annotations.Reference;
 public class CustomerMessageRouter extends BaseMessageRouter {
 
 	@Reference(unbind = "-")
-	protected void setCorpProjectAddMessageProcessor(
-		CorpProjectAddMessageProcessor corpProjectAddMessageProcessor,
+	protected void setAccountContactAssignedMessageProcessor(
+		AccountContactAssignedMessageProcessor
+			accountContactAssignedMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(corpProjectAddMessageProcessor, properties);
+		addRoute(accountContactAssignedMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
-	protected void setCorpProjectAssignedMessageProcessor(
-		CorpProjectAssignedMessageProcessor corpProjectAssignedMessageProcessor,
+	protected void setAccountContactRoleAssignedMessageProcessor(
+		AccountContactRoleAssignedMessageProcessor
+			accountContactRoleAssignedMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(corpProjectAssignedMessageProcessor, properties);
+		addRoute(accountContactRoleAssignedMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
-	protected void setCorpProjectDeleteMessageProcessor(
-		CorpProjectDeleteMessageProcessor corpProjectDeleteMessageProcessor,
+	protected void setAccountContactRoleUnassignedMessageProcessor(
+		AccountContactRoleUnassignedMessageProcessor
+			accountContactRoleUnassignedMessageProcessor,
 		Map<String, Object> properties) {
 
-		addRoute(corpProjectDeleteMessageProcessor, properties);
+		addRoute(accountContactRoleUnassignedMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setAccountContactUnassignedMessageProcessor(
+		AccountContactUnassignedMessageProcessor
+			accountContactUnassignedMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(accountContactUnassignedMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setAccountCreateMessageProcessor(
+		AccountCreateMessageProcessor accountCreateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(accountCreateMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setAccountDeleteMessageProcessor(
+		AccountDeleteMessageProcessor accountDeleteMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(accountDeleteMessageProcessor, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setAccountUpdateMessageProcessor(
+		AccountUpdateMessageProcessor accountUpdateMessageProcessor,
+		Map<String, Object> properties) {
+
+		addRoute(accountUpdateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
@@ -104,41 +140,6 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(corpProjectMessageUpdateMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setCorpProjectRoleAssignedMessageProcessor(
-		CorpProjectRoleAssignedMessageProcessor
-			corpProjectRoleAssignedMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(corpProjectRoleAssignedMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setCorpProjectRoleUnassignedMessageProcessor(
-		CorpProjectRoleUnassignedMessageProcessor
-			corpProjectRoleUnassignedMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(corpProjectRoleUnassignedMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setCorpProjectUnassignedMessageProcessor(
-		CorpProjectUnassignedMessageProcessor
-			corpProjectUnassignedMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(corpProjectUnassignedMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setCorpProjectUpdateMessageProcessor(
-		CorpProjectUpdateMessageProcessor corpProjectUpdateMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(corpProjectUpdateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
