@@ -15,6 +15,14 @@
 	<bean class="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil" id="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil">
 		<property name="DossieraRESTWebService" ref="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl" />
 	</bean>
+	<bean class="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl" id="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl">
+		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.host')}" />
+		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.port')}" />
+		<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.protocol')}" />
+	</bean>
+	<bean class="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceUtil" id="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceUtil">
+		<property name="KoroneikiRESTWebService" ref="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl" />
+	</bean>
 	<bean class="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl" id="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl">
 		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.host')}" />
 		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.port')}" />

@@ -16,16 +16,15 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.impl.CorpProjectImpl;
-import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
+import com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-
-import java.util.Date;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.Validator;
 
 /**
  * @author Amos Fong
@@ -35,58 +34,43 @@ public class RemoteCorpProjectLocalServiceImpl
 
 	@Override
 	public CorpProject addCorpProject(
-			long creatorUserId, long ownerUserId, String dossieraProjectKey,
+			String dossieraAccountKey, String dossieraProjectKey,
 			String salesforceProjectKey, String name)
 		throws PortalException {
 
-		User creatorUser = userLocalService.getUser(creatorUserId);
+		String parentAccountKey = StringPool.BLANK;
 
-		String ownerUserUuid = StringPool.BLANK;
+		if (Validator.isNotNull(dossieraAccountKey)) {
+			JSONObject jsonObject = KoroneikiRESTWebServiceUtil.getAccounts(
+				"dossiera", "account", dossieraAccountKey);
 
-		if (ownerUserId > 0) {
-			User ownerUser = userLocalService.getUser(ownerUserId);
+			JSONArray jsonArray = jsonObject.getJSONArray("items");
 
-			ownerUserUuid = ownerUser.getUuid();
-		}
+			if ((jsonArray != null) && (jsonArray.length() > 0)) {
+				JSONObject accountJSONObject = jsonArray.getJSONObject(0);
 
-		JSONObject jsonObject = WebRESTWebServiceUtil.postCorpProjects(
-			creatorUser.getUuid(), ownerUserUuid, dossieraProjectKey,
-			salesforceProjectKey, name);
-
-		CorpProject corpProject = new CorpProjectImpl();
-
-		corpProject.setCorpProjectId(jsonObject.getLong("corpProjectId"));
-		corpProject.setCreateDate(new Date(jsonObject.getLong("createDate")));
-		corpProject.setDossieraProjectKey(
-			jsonObject.getString("dossieraProjectKey"));
-		corpProject.setModifiedDate(
-			new Date(jsonObject.getLong("modifiedDate")));
-		corpProject.setName(jsonObject.getString("name"));
-
-		JSONObject organizationJSONObject = jsonObject.getJSONObject(
-			"organization");
-
-		if (organizationJSONObject != null) {
-			corpProject.setOrganizationUuid(
-				organizationJSONObject.getString("uuid"));
-		}
-
-		corpProject.setSalesforceProjectKey(
-			jsonObject.getString("salesforceProjectKey"));
-
-		JSONObject userJSONObject = jsonObject.getJSONObject("user");
-
-		if (userJSONObject != null) {
-			User user = userLocalService.fetchUserByUuidAndCompanyId(
-				userJSONObject.getString("uuid"), OSBConstants.COMPANY_ID);
-
-			if (user != null) {
-				corpProject.setUserId(user.getUserId());
-				corpProject.setUserName(user.getFullName());
+				parentAccountKey = accountJSONObject.getString("key");
 			}
 		}
 
-		corpProject.setUuid(jsonObject.getString("uuid"));
+		JSONObject jsonObject = KoroneikiRESTWebServiceUtil.postAccounts(
+			parentAccountKey, name);
+
+		String accountKey = jsonObject.getString("key");
+
+		if (Validator.isNotNull(dossieraProjectKey)) {
+			KoroneikiRESTWebServiceUtil.postAccountExternalLinks(
+				accountKey, "dossiera", "project", dossieraProjectKey);
+		}
+
+		if (Validator.isNotNull(salesforceProjectKey)) {
+			KoroneikiRESTWebServiceUtil.postAccountExternalLinks(
+				accountKey, "salesforce", "project", salesforceProjectKey);
+		}
+
+		CorpProject corpProject = new CorpProjectImpl();
+
+		corpProject.setUuid(accountKey);
 
 		return corpProject;
 	}
@@ -108,8 +92,18 @@ public class RemoteCorpProjectLocalServiceImpl
 		for (long userId : userIds) {
 			User user = userLocalService.getUser(userId);
 
-			WebRESTWebServiceUtil.putCorpProjectsUser(
-				corpProjectUuid, user.getUuid());
+			JSONObject jsonObject = KoroneikiRESTWebServiceUtil.getContacts(
+				user.getUuid());
+
+			if (jsonObject == null) {
+				KoroneikiRESTWebServiceUtil.postContacts(
+					user.getUuid(), user.getEmailAddress(), user.getFirstName(),
+					user.getMiddleName(), user.getLastName(),
+					user.getLanguageId());
+			}
+
+			KoroneikiRESTWebServiceUtil.putAccountContacts(
+				corpProjectUuid, new String[] {user.getUuid()});
 		}
 	}
 
@@ -134,8 +128,8 @@ public class RemoteCorpProjectLocalServiceImpl
 		for (long userId : userIds) {
 			User user = userLocalService.getUser(userId);
 
-			WebRESTWebServiceUtil.putCorpProjectsUserRole(
-				corpProjectUuid, user.getUuid(), role.getUuid());
+			KoroneikiRESTWebServiceUtil.putAccountContactRoles(
+				corpProjectUuid, user.getUuid(), new String[] {role.getUuid()});
 		}
 	}
 
@@ -143,7 +137,7 @@ public class RemoteCorpProjectLocalServiceImpl
 	public void deleteCorpProject(String corpProjectUuid)
 		throws PortalException {
 
-		WebRESTWebServiceUtil.deleteCorpProjects(corpProjectUuid);
+		KoroneikiRESTWebServiceUtil.deleteAccounts(corpProjectUuid);
 	}
 
 	@Override
@@ -153,8 +147,7 @@ public class RemoteCorpProjectLocalServiceImpl
 		CorpProject corpProject = corpProjectLocalService.getCorpProject(
 			corpProjectId);
 
-		WebRESTWebServiceUtil.putCorpProjects(
-			corpProject.getUuid(), null, null, name);
+		KoroneikiRESTWebServiceUtil.putAccounts(corpProject.getUuid(), name);
 	}
 
 }

@@ -46,6 +46,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.HttpClientConnectionManager;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
@@ -210,6 +211,42 @@ public class BaseWebService {
 		return execute(httpHost, httpPost);
 	}
 
+	public String doPostAsJSON(String url, String json)
+		throws RemoteServiceException {
+
+		return doPostAsJSON(url, json, new HashMap<String, String>());
+	}
+
+	public String doPostAsJSON(
+			String url, String json, Map<String, String> headers)
+		throws RemoteServiceException {
+
+		HttpHost httpHost = new HttpHost(_hostName, _hostPort, _protocol);
+
+		HttpPost httpPost = new HttpPost(url);
+
+		addHeaders(httpPost, headers);
+
+		StringEntity stringEntity = new StringEntity(
+			json, StandardCharsets.UTF_8);
+
+		stringEntity.setContentType("application/json");
+
+		httpPost.setEntity(stringEntity);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Sending POST request to " + httpHost.toString() + url);
+			_log.debug("HTTP body: " + json);
+		}
+
+		return execute(httpHost, httpPost);
+	}
+
+	public String doPut(String url) throws RemoteServiceException {
+		return doPut(
+			url, new HashMap<String, String>(), new HashMap<String, String>());
+	}
+
 	public String doPut(String url, Map<String, String> parameters)
 		throws RemoteServiceException {
 
@@ -237,6 +274,37 @@ public class BaseWebService {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Sending PUT request to " + httpHost.toString() + url);
 			_log.debug("HTTP parameters: " + MapUtil.toString(parameters));
+		}
+
+		return execute(httpHost, httpPut);
+	}
+
+	public String doPutAsJSON(String url, String json)
+		throws RemoteServiceException {
+
+		return doPutAsJSON(url, json, new HashMap<String, String>());
+	}
+
+	public String doPutAsJSON(
+			String url, String json, Map<String, String> headers)
+		throws RemoteServiceException {
+
+		HttpHost httpHost = new HttpHost(_hostName, _hostPort, _protocol);
+
+		HttpPut httpPut = new HttpPut(url);
+
+		addHeaders(httpPut, headers);
+
+		StringEntity stringEntity = new StringEntity(
+			json, StandardCharsets.UTF_8);
+
+		stringEntity.setContentType("application/json");
+
+		httpPut.setEntity(stringEntity);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug("Sending PUT request to " + httpHost.toString() + url);
+			_log.debug("HTTP body: " + json);
 		}
 
 		return execute(httpHost, httpPut);
@@ -276,7 +344,12 @@ public class BaseWebService {
 			StatusLine statusLine = httpResponse.getStatusLine();
 
 			if (statusLine.getStatusCode() ==
-					HttpServletResponse.SC_UNAUTHORIZED) {
+					HttpServletResponse.SC_NO_CONTENT) {
+
+				return "";
+			}
+			else if (statusLine.getStatusCode() ==
+						HttpServletResponse.SC_UNAUTHORIZED) {
 
 				throw new RemoteServiceException(
 					statusLine.getStatusCode(),

@@ -163,7 +163,8 @@ public class AccountEntryLocalServiceImpl
 		}
 		else {
 			corpProject = remoteCorpProjectLocalService.addCorpProject(
-				corpProject.getUserId(), 0, corpProject.getDossieraProjectKey(),
+				accountEntry.getDossieraAccountKey(),
+				corpProject.getDossieraProjectKey(),
 				corpProject.getSalesforceProjectKey(), corpProject.getName());
 		}
 
@@ -347,7 +348,10 @@ public class AccountEntryLocalServiceImpl
 		companyName = getTrialName(companyName);
 
 		CorpProject corpProject = remoteCorpProjectLocalService.addCorpProject(
-			userId, userId, StringPool.BLANK, StringPool.BLANK, companyName);
+			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, companyName);
+
+		remoteCorpProjectLocalService.addCorpProjectUsers(
+			corpProject.getUuid(), new long[] {userId});
 
 		remoteCorpProjectLocalService.addUserCorpProjectRoles(
 			corpProject.getUuid(), new long[] {userId},

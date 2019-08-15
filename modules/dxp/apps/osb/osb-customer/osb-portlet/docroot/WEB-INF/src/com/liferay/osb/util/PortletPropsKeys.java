@@ -40,44 +40,24 @@ public interface PortletPropsKeys {
 	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		"remote.json.service.api.lcs.enabled";
 
-	public static final String REMOTE_JSON_SERVICE_API_LCS_HOST =
-		"remote.json.service.api.lcs.host";
-
-	public static final String REMOTE_JSON_SERVICE_API_LCS_PORT =
-		"remote.json.service.api.lcs.port";
-
-	public static final String REMOTE_JSON_SERVICE_API_LCS_PROTOCOL =
-		"remote.json.service.api.lcs.protocol";
-
 	public static final String REMOTE_JSON_SERVICE_API_LCS_TOKEN =
 		"remote.json.service.api.lcs.token";
 
 	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED =
 		"remote.rest.service.api.dossiera.enabled";
 
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_HOST =
-		"remote.rest.service.api.dossiera.host";
-
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_PORT =
-		"remote.rest.service.api.dossiera.port";
-
-	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_PROTOCOL =
-		"remote.rest.service.api.dossiera.protocol";
-
 	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_TOKEN =
 		"remote.rest.service.api.dossiera.token";
 
+	public static final String
+		REMOTE_REST_SERVICE_API_KORONEIKI_ERROR_EMAIL_ADDRESS =
+			"remote.rest.service.api.koroneiki.error.email.address";
+
+	public static final String REMOTE_REST_SERVICE_API_KORONEIKI_TOKEN =
+		"remote.rest.service.api.koroneiki.token";
+
 	public static final String REMOTE_REST_SERVICE_API_WEB_ERROR_EMAIL_ADDRESS =
 		"remote.rest.service.api.web.error.email.address";
-
-	public static final String REMOTE_REST_SERVICE_API_WEB_HOST =
-		"remote.rest.service.api.web.host";
-
-	public static final String REMOTE_REST_SERVICE_API_WEB_PORT =
-		"remote.rest.service.api.web.port";
-
-	public static final String REMOTE_REST_SERVICE_API_WEB_PROTOCOL =
-		"remote.rest.service.api.web.protocol";
 
 	public static final String REMOTE_REST_SERVICE_API_WEB_TOKEN =
 		"remote.rest.service.api.web.token";
