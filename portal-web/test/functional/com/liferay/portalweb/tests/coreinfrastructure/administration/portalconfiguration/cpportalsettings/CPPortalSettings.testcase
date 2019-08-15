@@ -88,8 +88,6 @@ definition {
 
 	@priority = "4"
 	test EditDefaultUserAssociationsRoles {
-		property test.name.skip.portal.instance = "CPPortalSettings#EditDefaultUserAssociationsRoles";
-
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
