@@ -517,11 +517,11 @@ public class DLImpl implements DL {
 		FileEntry fileEntry, FileVersion fileVersion, ThemeDisplay themeDisplay,
 		String queryString, boolean appendVersion, boolean absoluteURL) {
 
-		long fileVersionPreviewId = _dlPreviewHelper.getDLFileVersionPreviewId(
+		long dlFileVersionPreviewId = _dlPreviewHelper.getDLFileVersionPreviewId(
 			fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
 			DLFileEntryPreviewType.FAIL.toInteger());
 
-		if (fileVersionPreviewId > 0) {
+		if (dlFileVersionPreviewId > 0) {
 			return StringPool.BLANK;
 		}
 
@@ -754,11 +754,11 @@ public class DLImpl implements DL {
 		FileEntry fileEntry, FileVersion fileVersion,
 		ThemeDisplay themeDisplay) {
 
-		long fileVersionPreviewId = _dlPreviewHelper.getDLFileVersionPreviewId(
+		long dlFileVersionPreviewId = _dlPreviewHelper.getDLFileVersionPreviewId(
 			fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
 			DLFileEntryPreviewType.FAIL.toInteger());
 
-		if (fileVersionPreviewId > 0) {
+		if (dlFileVersionPreviewId > 0) {
 			return StringPool.BLANK;
 		}
 

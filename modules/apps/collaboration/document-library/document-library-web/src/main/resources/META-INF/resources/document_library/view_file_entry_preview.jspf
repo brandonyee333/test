@@ -96,7 +96,7 @@
 		}
 	}
 
-	boolean hasFailedDLFileEntryPreview = DLFileVersionPreviewLocalServiceUtil.hasDLFileVersionPreview(fileVersion.getFileEntryId(), fileVersion.getFileVersionId(), DLFileVersionPreviewConstants.STATUS_FAILURE);
+	boolean hasFailedDLFileVersionPreview = DLFileVersionPreviewLocalServiceUtil.hasDLFileVersionPreview(fileVersion.getFileEntryId(), fileVersion.getFileVersionId(), DLFileVersionPreviewConstants.STATUS_FAILURE);
 
 	request.setAttribute("view_file_entry.jsp-randomNamespace", randomNamespace);
 
@@ -108,7 +108,7 @@
 	%>
 
 	<c:choose>
-		<c:when test="<%= emptyPreview || hasFailedDLFileEntryPreview %>">
+		<c:when test="<%= emptyPreview || hasFailedDLFileVersionPreview %>">
 			<div class="alert alert-info">
 				<liferay-ui:message arguments="<%= fileEntry.getTitle() %>" key="cannot-generate-preview-for-x" />
 			</div>
