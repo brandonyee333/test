@@ -275,47 +275,49 @@ OrderByComparator<BackgroundTask> orderByComparator = BackgroundTaskComparatorFa
 				</c:when>
 			</c:choose>
 
-			<liferay-ui:search-container-column-text
-				align="right"
-			>
-				<liferay-ui:icon-menu
-					direction="left-side"
-					icon="<%= StringPool.BLANK %>"
-					markupView="lexicon"
-					message="<%= StringPool.BLANK %>"
-					showWhenSingleIcon="<%= true %>"
+			<c:if test="<%= GroupPermissionUtil.contains(permissionChecker, scopeGroupId, ActionKeys.PUBLISH_STAGING) %>">
+				<liferay-ui:search-container-column-text
+					align="right"
 				>
-					<c:if test="<%= !localPublishing || (backgroundTask.getGroupId() != liveGroupId) %>">
-						<portlet:actionURL name="editPublishConfiguration" var="relaunchURL">
-							<portlet:param name="mvcRenderCommandName" value="editPublishConfiguration" />
-							<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RELAUNCH %>" />
-							<portlet:param name="redirect" value="<%= currentURL.toString() %>" />
-							<portlet:param name="backgroundTaskId" value="<%= String.valueOf(backgroundTask.getBackgroundTaskId()) %>" />
-						</portlet:actionURL>
+					<liferay-ui:icon-menu
+						direction="left-side"
+						icon="<%= StringPool.BLANK %>"
+						markupView="lexicon"
+						message="<%= StringPool.BLANK %>"
+						showWhenSingleIcon="<%= true %>"
+					>
+						<c:if test="<%= !localPublishing || (backgroundTask.getGroupId() != liveGroupId) %>">
+							<portlet:actionURL name="editPublishConfiguration" var="relaunchURL">
+								<portlet:param name="mvcRenderCommandName" value="editPublishConfiguration" />
+								<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.RELAUNCH %>" />
+								<portlet:param name="redirect" value="<%= currentURL.toString() %>" />
+								<portlet:param name="backgroundTaskId" value="<%= String.valueOf(backgroundTask.getBackgroundTaskId()) %>" />
+							</portlet:actionURL>
 
-						<liferay-ui:icon
-							message="relaunch"
-							url="<%= relaunchURL %>"
-						/>
-					</c:if>
+							<liferay-ui:icon
+								message="relaunch"
+								url="<%= relaunchURL %>"
+							/>
+						</c:if>
 
-					<c:if test="<%= !backgroundTask.isInProgress() %>">
-						<portlet:actionURL name="deleteBackgroundTasks" var="deleteBackgroundTaskURL">
-							<portlet:param name="redirect" value="<%= currentURL.toString() %>" />
-							<portlet:param name="deleteBackgroundTaskIds" value="<%= String.valueOf(backgroundTask.getBackgroundTaskId()) %>" />
-						</portlet:actionURL>
+						<c:if test="<%= !backgroundTask.isInProgress() %>">
+							<portlet:actionURL name="deleteBackgroundTasks" var="deleteBackgroundTaskURL">
+								<portlet:param name="redirect" value="<%= currentURL.toString() %>" />
+								<portlet:param name="deleteBackgroundTaskIds" value="<%= String.valueOf(backgroundTask.getBackgroundTaskId()) %>" />
+							</portlet:actionURL>
 
-						<%
-						Date completionDate = backgroundTask.getCompletionDate();
-						%>
+							<%
+							Date completionDate = backgroundTask.getCompletionDate();
+							%>
 
-						<liferay-ui:icon
-							message='<%= LanguageUtil.get(request, ((completionDate != null) && completionDate.before(new Date())) ? "clear" : "cancel") %>'
-							url="<%= deleteBackgroundTaskURL %>"
-						/>
-					</c:if>
-				</liferay-ui:icon-menu>
-			</liferay-ui:search-container-column-text>
+							<liferay-ui:icon
+								message='<%= LanguageUtil.get(request, ((completionDate != null) && completionDate.before(new Date())) ? "clear" : "cancel") %>'
+								url="<%= deleteBackgroundTaskURL %>"
+							/>
+						</c:if>
+					</liferay-ui:icon-menu>
+				</liferay-ui:search-container-column-text>
+			</c:if>
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator
