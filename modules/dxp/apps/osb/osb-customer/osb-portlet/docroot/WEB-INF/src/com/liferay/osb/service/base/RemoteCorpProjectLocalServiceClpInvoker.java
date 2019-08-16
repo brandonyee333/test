@@ -33,8 +33,13 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 
 		_methodName157 = "addCorpProject";
 
+<<<<<<< HEAD
 		_methodParameterTypes157 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
+=======
+		_methodParameterTypes153 = new String[] {
+				"java.lang.String", "java.lang.String", "java.lang.String",
+>>>>>>> LHC-1024 regenerate
 				"java.lang.String"
 			};
 
@@ -72,12 +77,20 @@ public class RemoteCorpProjectLocalServiceClpInvoker {
 			return RemoteCorpProjectLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
+<<<<<<< HEAD
 		if (_methodName157.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes157, parameterTypes)) {
 			return RemoteCorpProjectLocalServiceUtil.addCorpProject(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
 				(java.lang.String)arguments[4]);
+=======
+		if (_methodName153.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes153, parameterTypes)) {
+			return RemoteCorpProjectLocalServiceUtil.addCorpProject((java.lang.String)arguments[0],
+				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[3]);
+>>>>>>> LHC-1024 regenerate
 		}
 
 		if (_methodName158.equals(name) &&

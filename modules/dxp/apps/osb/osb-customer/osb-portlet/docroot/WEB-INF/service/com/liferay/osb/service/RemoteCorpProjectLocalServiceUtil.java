@@ -42,13 +42,13 @@ public class RemoteCorpProjectLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static com.liferay.osb.model.CorpProject addCorpProject(
-		long creatorUserId, long ownerUserId,
+		java.lang.String dossieraAccountKey,
 		java.lang.String dossieraProjectKey,
 		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService()
-				   .addCorpProject(creatorUserId, ownerUserId,
-			dossieraProjectKey, salesforceProjectKey, name);
+				   .addCorpProject(dossieraAccountKey, dossieraProjectKey,
+			salesforceProjectKey, name);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,

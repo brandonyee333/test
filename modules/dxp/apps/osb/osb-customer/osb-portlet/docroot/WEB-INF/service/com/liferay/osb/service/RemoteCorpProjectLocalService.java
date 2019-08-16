@@ -47,7 +47,7 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RemoteCorpProjectLocalServiceUtil} to access the remote corp project local service. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public CorpProject addCorpProject(long creatorUserId, long ownerUserId,
+	public CorpProject addCorpProject(java.lang.String dossieraAccountKey,
 		java.lang.String dossieraProjectKey,
 		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws PortalException;

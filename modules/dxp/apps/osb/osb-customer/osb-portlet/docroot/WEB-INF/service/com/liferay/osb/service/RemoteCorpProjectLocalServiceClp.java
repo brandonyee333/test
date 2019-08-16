@@ -32,7 +32,7 @@ public class RemoteCorpProjectLocalServiceClp
 		_methodName0 = "addCorpProject";
 
 		_methodParameterTypes0 = new String[] {
-				"long", "long", "java.lang.String", "java.lang.String",
+				"java.lang.String", "java.lang.String", "java.lang.String",
 				"java.lang.String"
 			};
 
@@ -69,7 +69,7 @@ public class RemoteCorpProjectLocalServiceClp
 
 	@Override
 	public com.liferay.osb.model.CorpProject addCorpProject(
-		long creatorUserId, long ownerUserId,
+		java.lang.String dossieraAccountKey,
 		java.lang.String dossieraProjectKey,
 		java.lang.String salesforceProjectKey, java.lang.String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -79,9 +79,7 @@ public class RemoteCorpProjectLocalServiceClp
 			returnObj = _invokableLocalService.invokeMethod(_methodName0,
 					_methodParameterTypes0,
 					new Object[] {
-						creatorUserId,
-						
-					ownerUserId,
+						ClpSerializer.translateInput(dossieraAccountKey),
 						
 					ClpSerializer.translateInput(dossieraProjectKey),
 						
