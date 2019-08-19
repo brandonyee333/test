@@ -122,7 +122,7 @@ public class MetricsUpdateMessageProcessor extends BaseMessageProcessor {
 
 				String prefix = key.substring(0, key.length() - 6);
 
-				if (key.equals("className")) {
+				if (lowercaseKey.endsWith("classname")) {
 					classNameValue = jsonObject.getString(key);
 
 					prefix = key.substring(0, key.length() - 4);
