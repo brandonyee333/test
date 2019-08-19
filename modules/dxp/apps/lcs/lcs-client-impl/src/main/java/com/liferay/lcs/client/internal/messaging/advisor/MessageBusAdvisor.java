@@ -45,7 +45,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(service = MessageBusAdvisor.class)
+@Component(immediate = true, service = MessageBusAdvisor.class)
 public class MessageBusAdvisor implements LCSEventListener {
 
 	public MessageBusAdvisor() {
