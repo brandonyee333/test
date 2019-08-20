@@ -106,7 +106,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			return;
 		}
 
-		if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
+		if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
+			_executeHandshakeTask(true);
+		}
+		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			_onHandshakeSuccess();
 		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
@@ -135,9 +138,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 				 (lcsEvent == LCSEvent.SIGNOFF_REQUESTED)) {
 
 			_restart();
-		}
-		else if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
-			_executeHandshakeTask(true);
 		}
 	}
 

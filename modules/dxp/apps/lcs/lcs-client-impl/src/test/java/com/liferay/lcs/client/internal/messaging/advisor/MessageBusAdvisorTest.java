@@ -129,10 +129,10 @@ public class MessageBusAdvisorTest extends BasePowerMockitoTestCase {
 		MessageBusAdvisor spyMessageBusAdvisor = spy(messageBusAdvisor);
 
 		lcsEventManager.subscribe(
+			LCSEvent.HANDSHAKE_SUCCESS, spyMessageBusAdvisor);
+		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS,
 			spyMessageBusAdvisor);
-		lcsEventManager.subscribe(
-			LCSEvent.HANDSHAKE_SUCCESS, spyMessageBusAdvisor);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_GATEWAY_UNAVAILABLE, spyMessageBusAdvisor);
 

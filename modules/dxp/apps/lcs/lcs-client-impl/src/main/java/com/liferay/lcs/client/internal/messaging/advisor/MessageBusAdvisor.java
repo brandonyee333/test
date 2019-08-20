@@ -69,12 +69,12 @@ public class MessageBusAdvisor implements LCSEventListener {
 		if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
 		}
+		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
+			processLCSPortletState(LCSPortletState.NO_CONNECTION);
+		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
 			processLCSPortletState(LCSPortletState.NO_CONNECTION);
 			_unregisterAll();
-		}
-		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
-			processLCSPortletState(LCSPortletState.NO_CONNECTION);
 		}
 	}
 
