@@ -67,6 +67,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	public LCSGatewayClientImpl(LCSEventManager lcsEventManager) {
 		_lcsEventManager = lcsEventManager;
+
+		_subscribeToLCSEvents();
 	}
 
 	@Override

@@ -51,8 +51,11 @@ public class MessageBusAdvisor implements LCSEventListener {
 	public MessageBusAdvisor() {
 	}
 
-	public MessageBusAdvisor(LCSEventManager lcsEventManager) {
+	public MessageBusAdvisor(
+		LCSEventManager lcsEventManager, MessageBus messageBus) {
+
 		_lcsEventManager = lcsEventManager;
+		_messageBus = messageBus;
 
 		_subscribeToLCSEvents();
 	}
