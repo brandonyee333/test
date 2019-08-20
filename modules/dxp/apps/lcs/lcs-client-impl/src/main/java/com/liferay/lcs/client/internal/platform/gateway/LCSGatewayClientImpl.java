@@ -160,8 +160,6 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 			_lastHandshakeSuccess = System.currentTimeMillis();
 
-			_lcsEventManager.publish(LCSEvent.LCS_GATEWAY_AVAILABLE);
-
 			return;
 		}
 		else if (lcsEvent == LCSEvent.SIGNOFF_SUCCESS) {

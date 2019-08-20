@@ -61,7 +61,6 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
-		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_AVAILABLE, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 	}
 
@@ -84,6 +83,8 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 		}
 		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			remove(LCSAlert.WARNING_HANDSHAKE_FAILED);
+
+			add(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID);
 		}
 		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
 			add(LCSAlert.SUCCESS_VALID_TOKEN);
@@ -109,11 +110,6 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 					LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) {
 
 			add(LCSAlert.ERROR_INVALID_USER_CREDENTIALS);
-		}
-		else if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
-			clear();
-
-			add(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID);
 		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
 			clear();

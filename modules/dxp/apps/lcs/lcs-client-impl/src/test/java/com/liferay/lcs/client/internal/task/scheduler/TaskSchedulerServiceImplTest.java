@@ -415,7 +415,7 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_onLCSGatewayServiceAvailable"
+			taskSchedulerServiceImpl, "_onHandshakeSuccess"
 		);
 
 		// Skip JavaParser, will fix

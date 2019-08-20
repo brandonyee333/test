@@ -106,8 +106,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			return;
 		}
 
-		if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
-			_onLCSGatewayServiceAvailable();
+		if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
+			_onHandshakeSuccess();
 		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
 			_onLCSGatewayServiceUnavailable();
@@ -409,7 +409,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		return null;
 	}
 
-	private void _onLCSGatewayServiceAvailable() {
+	private void _onHandshakeSuccess() {
 		_scheduleCommandMessageTask();
 
 		if (_log.isTraceEnabled()) {
@@ -508,7 +508,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
-		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_AVAILABLE, this);
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 		_lcsEventManager.subscribe(LCSEvent.SIGNOFF_REQUESTED, this);
 	}

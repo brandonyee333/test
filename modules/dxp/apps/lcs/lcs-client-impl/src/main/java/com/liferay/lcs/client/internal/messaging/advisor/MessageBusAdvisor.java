@@ -66,7 +66,7 @@ public class MessageBusAdvisor implements LCSEventListener {
 			_log.trace("Notified on LCS event " + lcsEvent);
 		}
 
-		if (lcsEvent == LCSEvent.LCS_GATEWAY_AVAILABLE) {
+		if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
 		}
 		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
@@ -183,10 +183,10 @@ public class MessageBusAdvisor implements LCSEventListener {
 	}
 
 	private void _subscribeToLCSEvents() {
+		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
-		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_AVAILABLE, this);
 	}
 
 	private void _unregisterAll() {

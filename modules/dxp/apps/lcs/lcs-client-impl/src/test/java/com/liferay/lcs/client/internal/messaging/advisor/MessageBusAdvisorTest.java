@@ -62,7 +62,7 @@ public class MessageBusAdvisorTest extends BasePowerMockitoTestCase {
 		Mockito.verify(
 			spyMessageBusAdvisor, Mockito.times(1)
 		).onLCSEvent(
-			LCSEvent.LCS_GATEWAY_AVAILABLE
+			LCSEvent.HANDSHAKE_SUCCESS
 		);
 
 		Mockito.verify(
@@ -132,7 +132,7 @@ public class MessageBusAdvisorTest extends BasePowerMockitoTestCase {
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS,
 			spyMessageBusAdvisor);
 		lcsEventManager.subscribe(
-			LCSEvent.LCS_GATEWAY_AVAILABLE, spyMessageBusAdvisor);
+			LCSEvent.HANDSHAKE_SUCCESS, spyMessageBusAdvisor);
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_GATEWAY_UNAVAILABLE, spyMessageBusAdvisor);
 
