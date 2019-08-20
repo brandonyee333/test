@@ -26,7 +26,9 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -57,6 +59,12 @@ public class PartnerWorkerModelListener
 		throws ModelListenerException {
 
 		try {
+			User user = _userLocalService.fetchUser(partnerWorker.getUserId());
+
+			if (user == null) {
+				return;
+			}
+
 			_partnerWorkerSynchronizer.remove(partnerWorker);
 		}
 		catch (Exception e) {
@@ -123,6 +131,9 @@ public class PartnerWorkerModelListener
 
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;

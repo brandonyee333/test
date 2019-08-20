@@ -323,10 +323,12 @@ public class PartnerWorkerLocalServiceImpl
 			long userId, String dossieraAccountKey)
 		throws PortalException {
 
-		User user = userLocalService.getUser(userId);
+		User user = userLocalService.fetchUser(userId);
 
-		WebRESTWebServiceUtil.deleteCorpEntriesUser(
-			dossieraAccountKey, user.getUuid());
+		if (user != null) {
+			WebRESTWebServiceUtil.deleteCorpEntriesUser(
+				dossieraAccountKey, user.getUuid());
+		}
 	}
 
 	protected void unassignOrganizations(long userId) throws PortalException {
