@@ -35,11 +35,11 @@ public class DLPreviewHelperImpl implements DLPreviewHelper {
 
 	@Override
 	public long getDLFileVersionPreviewId(
-		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus) {
+		long fileEntryId, long fileVersionId, int previewStatus) {
 
 		DLFileVersionPreview dlFileVersionPreview =
 			_dlFileVersionPreviewLocalService.fetchDLFileVersionPreview(
-				fileEntryId, fileVersionId, fileVersionPreviewStatus);
+				fileEntryId, fileVersionId, previewStatus);
 
 		if (dlFileVersionPreview == null) {
 			return 0;

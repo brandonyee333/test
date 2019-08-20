@@ -22,6 +22,6 @@ public interface DLPreviewHelper {
 	public void deleteDLFileEntryFileVersionPreviews(long fileEntryId);
 
 	public long getDLFileVersionPreviewId(
-		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus);
+		long fileEntryId, long fileVersionId, int previewStatus);
 
 }
