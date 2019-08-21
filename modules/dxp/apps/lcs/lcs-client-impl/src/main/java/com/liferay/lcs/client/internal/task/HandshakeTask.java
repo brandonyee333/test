@@ -27,11 +27,9 @@ import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSHandshakeException;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.client.platform.portal.LCSRESTError;
-import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
@@ -40,7 +38,6 @@ import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.monitoring.PortalMonitoringControl;
 import com.liferay.portal.kernel.service.CompanyLocalService;
@@ -50,8 +47,6 @@ import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,19 +188,14 @@ public class HandshakeTask implements Task {
 		}
 	}
 
-	protected boolean processResponse(
-		List<Message> receivedMessages, List<Message> delayedMessages) {
-
+	protected boolean processResponse(List<Message> receivedMessages) {
 		boolean receivedHandshakeResponse = false;
 
 		for (Message receivedMessage : receivedMessages) {
 			if (!(receivedMessage instanceof ResponseMessage)) {
 				if (_log.isTraceEnabled()) {
-					_log.trace(
-						"Adding to delayed messages: " + receivedMessage);
+					_log.trace("Unable to process message: " + receivedMessage);
 				}
-
-				delayedMessages.add(receivedMessage);
 
 				continue;
 			}
@@ -376,7 +366,6 @@ public class HandshakeTask implements Task {
 
 	private void _waitForHandshakeResponse() throws LCSGatewayException {
 		boolean handshakeResponseReceived = false;
-		List<Message> delayedMessages = new ArrayList<>();
 		List<Message> receivedMessages = null;
 
 		for (int i = 0; i < 12; i++) {
@@ -398,10 +387,9 @@ public class HandshakeTask implements Task {
 
 			if (_log.isTraceEnabled()) {
 				_log.trace("Received messages: " + receivedMessages);
-				_log.trace("Delayed messages: " + delayedMessages);
 			}
 
-			if (processResponse(receivedMessages, delayedMessages)) {
+			if (processResponse(receivedMessages)) {
 				handshakeResponseReceived = true;
 
 				break;
@@ -411,24 +399,6 @@ public class HandshakeTask implements Task {
 		if (!handshakeResponseReceived) {
 			throw new LCSHandshakeException(
 				"Handshake response was not received within 1 minute");
-		}
-
-		Collections.sort(delayedMessages, new MessagePriorityComparator());
-
-		for (Message delayedMessage : delayedMessages) {
-			if (delayedMessage instanceof CommandMessage) {
-				if (_log.isTraceEnabled()) {
-					_log.trace(
-						"Sending command to message bus: " + delayedMessage);
-				}
-
-				MessageBusUtil.sendMessage(
-					"liferay/lcs_commands", delayedMessage);
-			}
-			else {
-				_log.error(
-					"There are no handlers for message: " + delayedMessage);
-			}
 		}
 	}
 
