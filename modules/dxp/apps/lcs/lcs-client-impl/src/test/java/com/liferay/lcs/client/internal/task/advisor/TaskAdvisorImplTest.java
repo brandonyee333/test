@@ -20,6 +20,7 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
+import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.task.CommandMessageTask;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
@@ -95,9 +96,12 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		SendPatchesCommand sendPatchesCommand = new SendPatchesCommand(
 			_lcsGatewayClient, taskAdvisor);
 
-		CommandMessageTask commandMessageTask = new CommandMessageTask(
+		CommandAdvisor commandAdvisor = new CommandAdvisor(
 			_digitalSignature, _lcsConfigurationProvider, _lcsGatewayClient,
 			_lcsKeyAdvisor, sendPatchesCommand, sendPortalPropertiesCommand);
+
+		CommandMessageTask commandMessageTask = new CommandMessageTask(
+			commandAdvisor, _lcsGatewayClient, _lcsKeyAdvisor);
 
 		when(
 			_lcsGatewayClient.getMessages(Mockito.anyString())

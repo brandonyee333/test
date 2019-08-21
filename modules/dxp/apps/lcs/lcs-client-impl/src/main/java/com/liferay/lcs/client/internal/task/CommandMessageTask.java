@@ -47,8 +47,10 @@ public class CommandMessageTask extends BaseScheduledTask {
 	}
 
 	public CommandMessageTask(
-		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor) {
+		CommandAdvisor commandAdvisor, LCSGatewayClient lcsGatewayClient,
+		LCSKeyAdvisor lcsKeyAdvisor) {
 
+		_commandAdvisor = commandAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 
