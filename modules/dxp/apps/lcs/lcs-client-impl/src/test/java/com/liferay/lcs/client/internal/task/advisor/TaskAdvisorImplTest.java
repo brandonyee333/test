@@ -32,6 +32,7 @@ import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.internal.security.DigitalSignatureImpl;
 import com.liferay.lcs.messaging.security.DigitalSignature;
 import com.liferay.lcs.messaging.security.exception.DigitalSignatureException;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 
@@ -101,7 +102,8 @@ public class TaskAdvisorImplTest extends PowerMockito {
 			_lcsKeyAdvisor, sendPatchesCommand, sendPortalPropertiesCommand);
 
 		CommandMessageTask commandMessageTask = new CommandMessageTask(
-			commandAdvisor, _lcsGatewayClient, _lcsKeyAdvisor);
+			mock(ClusterMasterExecutor.class), commandAdvisor,
+			_lcsGatewayClient, _lcsKeyAdvisor);
 
 		when(
 			_lcsGatewayClient.getMessages(Mockito.anyString())
