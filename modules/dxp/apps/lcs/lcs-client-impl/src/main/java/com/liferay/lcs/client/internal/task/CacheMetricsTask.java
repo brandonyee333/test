@@ -22,6 +22,7 @@ import com.liferay.lcs.client.internal.management.ObjectNameKeyPropertyMapKeyStr
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -55,6 +56,7 @@ public class CacheMetricsTask extends BaseScheduledTask {
 		_multiVMObjectName = lcsConfiguration.cacheMetricsMultiVMObjectName();
 		_singleVMObjectName = lcsConfiguration.cacheMetricsSingleVMObjectName();
 
+		setClusterMasterExecutor(_clusterMasterExecutor);
 		setLCSGatewayService(_lcsGatewayClient);
 		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
@@ -159,6 +161,9 @@ public class CacheMetricsTask extends BaseScheduledTask {
 			new String[] {"CacheHits", "CacheMisses", "ObjectCount"},
 			new ObjectNameKeyPropertyMapKeyStrategy("name"));
 	}
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;

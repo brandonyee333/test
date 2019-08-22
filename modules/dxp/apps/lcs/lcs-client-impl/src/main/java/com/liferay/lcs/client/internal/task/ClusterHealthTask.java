@@ -18,6 +18,7 @@ import com.liferay.lcs.client.advisor.ClusterNodeAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.ClusterHealthMessage;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -40,6 +41,7 @@ public class ClusterHealthTask extends BaseScheduledTask {
 
 	@Activate
 	protected void activate() {
+		setClusterMasterExecutor(_clusterMasterExecutor);
 		setLCSGatewayService(_lcsGatewayClient);
 		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
@@ -56,6 +58,9 @@ public class ClusterHealthTask extends BaseScheduledTask {
 
 		sendMessage(clusterHealthMessage);
 	}
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private ClusterNodeAdvisor _clusterNodeAdvisor;

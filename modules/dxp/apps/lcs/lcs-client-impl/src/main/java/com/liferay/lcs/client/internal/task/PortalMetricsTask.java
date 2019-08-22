@@ -18,6 +18,7 @@ import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.metrics.PortalMetricsAggregator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.PortalMetricsMessage;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -44,12 +45,13 @@ public class PortalMetricsTask extends BaseScheduledTask {
 
 	@Activate
 	protected void activate() {
+		setClusterMasterExecutor(_clusterMasterExecutor);
 		setLCSGatewayService(_lcsGatewayClient);
 		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	@Override
-	protected void doRun() throws Exception {
+	protected void doRun() {
 		if (_portalMetricsAggregator.isEmpty()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("No portal metrics to send");
@@ -76,6 +78,9 @@ public class PortalMetricsTask extends BaseScheduledTask {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsTask.class);
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;

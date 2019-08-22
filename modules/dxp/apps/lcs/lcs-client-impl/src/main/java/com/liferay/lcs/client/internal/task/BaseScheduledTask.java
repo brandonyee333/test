@@ -19,7 +19,7 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -40,10 +40,10 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 			return;
 		}
 
-		if (ClusterMasterExecutorUtil.isEnabled() &&
+		if (_clusterMasterExecutor.isEnabled() &&
 			(getScope() == Scope.CLUSTER)) {
 
-			if (!ClusterMasterExecutorUtil.isMaster()) {
+			if (!_clusterMasterExecutor.isMaster()) {
 				if (_log.isDebugEnabled()) {
 					StringBundler sb = new StringBundler(4);
 
@@ -137,9 +137,16 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 		}
 	}
 
+	protected void setClusterMasterExecutor(
+		ClusterMasterExecutor clusterMasterExecutor) {
+
+		_clusterMasterExecutor = clusterMasterExecutor;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseScheduledTask.class);
 
+	private ClusterMasterExecutor _clusterMasterExecutor;
 	private LCSGatewayClient _lcsGatewayClient;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 

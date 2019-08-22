@@ -19,6 +19,7 @@ import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.Message;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -46,15 +47,16 @@ public class CommandMessageTask extends BaseScheduledTask {
 	}
 
 	public CommandMessageTask(
+		ClusterMasterExecutor clusterMasterExecutor,
 		CommandAdvisor commandAdvisor, LCSGatewayClient lcsGatewayClient,
 		LCSKeyAdvisor lcsKeyAdvisor) {
 
+		_clusterMasterExecutor = clusterMasterExecutor;
 		_commandAdvisor = commandAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
 
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
+		_initBaseScheduledTask();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -68,8 +70,7 @@ public class CommandMessageTask extends BaseScheduledTask {
 
 	@Activate
 	protected void activate() {
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
+		_initBaseScheduledTask();
 	}
 
 	protected void doRun() throws Exception {
@@ -109,8 +110,17 @@ public class CommandMessageTask extends BaseScheduledTask {
 		}
 	}
 
+	private void _initBaseScheduledTask() {
+		setClusterMasterExecutor(_clusterMasterExecutor);
+		setLCSGatewayService(_lcsGatewayClient);
+		setLCSKeyAdvisor(_lcsKeyAdvisor);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandMessageTask.class);
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private CommandAdvisor _commandAdvisor;

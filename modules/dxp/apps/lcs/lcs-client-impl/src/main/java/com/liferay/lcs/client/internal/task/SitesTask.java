@@ -19,6 +19,7 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.PortalModelMessage;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
@@ -49,6 +50,7 @@ public class SitesTask extends BasePortalModelTask {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
+		setClusterMasterExecutor(_clusterMasterExecutor);
 		setLCSGatewayService(_lcsGatewayClient);
 		setLCSKeyAdvisor(_lcsKeyAdvisor);
 		setPauseInterval(lcsConfiguration.scheduledTaskPauseInterval());
@@ -106,6 +108,9 @@ public class SitesTask extends BasePortalModelTask {
 
 		return site;
 	}
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

@@ -17,6 +17,7 @@ package com.liferay.lcs.client.internal.task;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.JVMMetricsMessage;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 
 import com.yammer.metrics.core.VirtualMachineMetrics;
 import com.yammer.metrics.core.VirtualMachineMetrics.GarbageCollectorStats;
@@ -47,6 +48,7 @@ public class JVMMetricsTask extends BaseScheduledTask {
 
 	@Activate
 	protected void activate() {
+		setClusterMasterExecutor(_clusterMasterExecutor);
 		setLCSGatewayService(_lcsGatewayClient);
 		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
@@ -168,6 +170,9 @@ public class JVMMetricsTask extends BaseScheduledTask {
 
 	private static final VirtualMachineMetrics _virtualMachineMetrics =
 		VirtualMachineMetrics.getInstance();
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;

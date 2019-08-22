@@ -34,7 +34,7 @@ import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ResponseMessage;
-import com.liferay.portal.kernel.cluster.ClusterExecutorUtil;
+import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.license.util.LicenseManagerUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -260,7 +260,7 @@ public class HandshakeTask implements Task {
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
 		handshakeMessage.setClusterExecutorEnabled(
-			ClusterExecutorUtil.isEnabled());
+			_clusterExecutor.isEnabled());
 		handshakeMessage.setCompanyIdsWebIds(_getCompanyIdsWebIds());
 
 		String key = _getKey();
@@ -406,6 +406,9 @@ public class HandshakeTask implements Task {
 		"Executing %s with registration key %s";
 
 	private static final Log _log = LogFactoryUtil.getLog(HandshakeTask.class);
+
+	@Reference
+	private ClusterExecutor _clusterExecutor;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

@@ -19,6 +19,7 @@ import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.PortalModelMessage;
+import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.service.UserGroupLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -46,6 +47,7 @@ public class UserGroupsTask extends BasePortalModelTask {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
+		setClusterMasterExecutor(_clusterMasterExecutor);
 		setLCSGatewayService(_lcsGatewayClient);
 		setLCSKeyAdvisor(_lcsKeyAdvisor);
 		setPauseInterval(lcsConfiguration.scheduledTaskPauseInterval());
@@ -90,6 +92,9 @@ public class UserGroupsTask extends BasePortalModelTask {
 
 		return userGroupMap;
 	}
+
+	@Reference
+	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;
