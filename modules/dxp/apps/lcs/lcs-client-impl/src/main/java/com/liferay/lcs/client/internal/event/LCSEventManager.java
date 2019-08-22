@@ -68,7 +68,7 @@ public class LCSEventManager {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					String.format(
-						_LOG_PATTERN_EXISTING_REGISTRATION,
+						_LOG_PATTERN_EXISTING_SUBSCRIPTION,
 						String.valueOf(lcsEventListener), lcsEvent.name()));
 			}
 
@@ -80,7 +80,7 @@ public class LCSEventManager {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				String.format(
-					_LOG_PATTERN_NEW_REGISTRATION,
+					_LOG_PATTERN_NEW_SUBSCRIPTION,
 					String.valueOf(lcsEventListener), lcsEvent.name()));
 		}
 	}
@@ -106,11 +106,11 @@ public class LCSEventManager {
 		}
 	}
 
-	private static final String _LOG_PATTERN_EXISTING_REGISTRATION =
-		"%s already registered for event %s";
+	private static final String _LOG_PATTERN_EXISTING_SUBSCRIPTION =
+		"%s already subscribed for event %s";
 
-	private static final String _LOG_PATTERN_NEW_REGISTRATION =
-		"%s registered for event %s";
+	private static final String _LOG_PATTERN_NEW_SUBSCRIPTION =
+		"%s subscribed for event %s";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSEventManager.class);
