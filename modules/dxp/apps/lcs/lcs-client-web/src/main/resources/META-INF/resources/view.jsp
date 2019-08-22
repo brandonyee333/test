@@ -95,7 +95,7 @@ Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute(LCSClientWebKeys.L
 		</div>
 
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomSupportUrl() %>" key="if-you-have-a-liferay-enterprise-subscription-and-you-have-questions-or-issues-please-open-a-ticket-in-lesa-under-the-liferay-connected-services-component" />
+			<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomSupportUrl() %>" key="if-you-have-a-liferay-enterprise-subscription-and-you-have-questions-or-issues-please-open-a-ticket-in-help-center-under-the-liferay-connected-services-organization" />
 		</div>
 
 		<div class="footer-note">
