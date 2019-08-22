@@ -19,7 +19,6 @@ import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -65,23 +64,6 @@ public class CommandMessageTask extends BaseScheduledTask {
 	@Override
 	public Scope getScope() {
 		return Scope.NODE;
-	}
-
-	@Override
-	public void run() {
-		try {
-			doRun();
-		}
-		catch (Exception e) {
-			String errorMessage = "Unable to get messages from LCS";
-
-			if (e instanceof JSONWebServiceException) {
-				_log.error(errorMessage);
-			}
-			else {
-				_log.error(errorMessage, e);
-			}
-		}
 	}
 
 	@Activate
