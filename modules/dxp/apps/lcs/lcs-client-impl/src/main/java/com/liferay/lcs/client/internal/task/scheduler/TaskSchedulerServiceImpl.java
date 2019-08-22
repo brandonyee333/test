@@ -508,7 +508,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
-		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
 		_lcsEventManager.subscribe(LCSEvent.SIGNOFF_REQUESTED, this);
 	}
