@@ -101,7 +101,7 @@ public interface LCSConfiguration {
 	public String lrdcomSalesEmailAddress();
 
 	@Meta.AD(
-		deflt = "https://web.liferay.com/group/customer/support/-/support/ticket",
+		deflt = "https://help.liferay.com/hc/en-us/requests/new",
 		required = false
 	)
 	public String lrdcomSupportUrl();
