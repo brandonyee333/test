@@ -240,12 +240,7 @@ public class ResourceBundleUtil {
 
 		ResourceBundleLoader resourceBundleLoader = null;
 
-		if (symbolicName != null) {
-			resourceBundleLoader =
-				ResourceBundleLoaderUtil.
-					getResourceBundleLoaderByBundleSymbolicName(symbolicName);
-		}
-		else {
+		if (symbolicName == null) {
 			ClassLoader portalClassLoader =
 				PortalClassLoaderUtil.getClassLoader();
 
@@ -253,6 +248,11 @@ public class ResourceBundleUtil {
 				resourceBundleLoader =
 					ResourceBundleLoaderUtil.getPortalResourceBundleLoader();
 			}
+		}
+		else {
+			resourceBundleLoader =
+				ResourceBundleLoaderUtil.
+					getResourceBundleLoaderByBundleSymbolicName(symbolicName);
 		}
 
 		if (resourceBundleLoader == null) {
