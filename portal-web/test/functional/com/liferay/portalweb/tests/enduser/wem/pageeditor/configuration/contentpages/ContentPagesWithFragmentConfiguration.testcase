@@ -123,4 +123,71 @@ definition {
 		}
 	}
 
+	@description = "This is a test for LPS-96685. User can restore and change fragment configuration value."
+	@priority = "5"
+	test RestoreAndChangeConfigurationFragmentToContentPage {
+		property portal.acceptance = "true";
+
+		task ("Add a section fragment to the fragment collection via JSON") {
+			var htmlSnippet = FragmentsAPI.getFragmentFileContent(fileName = "fragment_configuration.html");
+			var jsonSnippet = FragmentsAPI.getFragmentFileContent(fileName = "fragment_configuration.json");
+
+			JSONFragment.addSection(
+				collectionName = "Collection Name",
+				configuration = "${jsonSnippet}",
+				groupName = "Test Site Name",
+				html = "${htmlSnippet}",
+				name = "Text Fragment Example");
+		}
+
+		SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+
+		ContentPages.addPage(pageName = "Test Content Page Name");
+
+		PageEditor.addFragment(
+			collectionName = "Collection Name",
+			fragmentName = "Text Fragment Example");
+
+		task ("Change the configuration value in the toolbar") {
+			PageEditorConfiguration.checkConfigCheckbox(
+				checkboxName = "Hide Body",
+				fragmentName = "Checkbox Fragment Example");
+		}
+
+		task ("Assert value is changed") {
+			AssertVisible(
+				key_content = "Title-light",
+				key_fragmentClass = "configuration",
+				key_position = "1",
+				locator1 = "Fragment#FRAGMENT");
+		}
+
+		task ("Retore the configuration value in the toolbar") {
+			PageEditorConfiguration.checkConfigCheckbox(
+				checkboxName = "Hide Body",
+				fragmentName = "Checkbox Fragment Example");
+		}
+
+		task ("Assert default valure is displayed") {
+			AssertVisible(
+				key_content = "Title-light",
+				key_fragmentClass = "configuration",
+				key_position = "1",
+				locator1 = "Fragment#FRAGMENT");
+		}
+
+		PageEditor.clickPublish();
+
+		Navigator.gotoSitePage(
+			pageName = "Test Content Page Name",
+			siteName = "Test Site Name");
+
+		task ("Assert default valure is displayed") {
+			AssertVisible(
+				key_content = "Title-light",
+				key_fragmentClass = "configuration",
+				key_position = "1",
+				locator1 = "Fragment#FRAGMENT");
+		}
+	}
 }
