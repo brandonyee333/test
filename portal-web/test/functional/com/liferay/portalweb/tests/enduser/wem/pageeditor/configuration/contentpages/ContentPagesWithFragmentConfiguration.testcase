@@ -149,23 +149,19 @@ definition {
 			fragmentName = "Text Fragment Example");
 
 		task ("Change the configuration value in the toolbar") {
-			PageEditorConfiguration.checkConfigCheckbox(
-				checkboxName = "Hide Body",
-				fragmentName = "Checkbox Fragment Example");
+			PageEditorConfiguration.changeConfigSelection(optionvalue = "dark");
 		}
 
 		task ("Assert value is changed") {
 			AssertVisible(
-				key_content = "Title-light",
+				key_content = "Title-dark",
 				key_fragmentClass = "configuration",
 				key_position = "1",
 				locator1 = "Fragment#FRAGMENT");
 		}
 
 		task ("Retore the configuration value in the toolbar") {
-			PageEditorConfiguration.checkConfigCheckbox(
-				checkboxName = "Hide Body",
-				fragmentName = "Checkbox Fragment Example");
+			PageEditorConfiguration.restoreConfigSelectionValue();
 		}
 
 		task ("Assert default valure is displayed") {
@@ -190,4 +186,5 @@ definition {
 				locator1 = "Fragment#FRAGMENT");
 		}
 	}
+
 }

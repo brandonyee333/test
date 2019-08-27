@@ -1,5 +1,19 @@
 definition {
 
+	macro changeConfigSelection {
+		Click(
+			fragment_name = "${fragmentName}",
+			locator1 = "PageEditor#SECTION_NAME");
+
+		Click(locator1 = "FragmentEditor#FRAGMENTS_EDITOR_FLOATING_TOOLBAR_CONFIGURATION");
+
+		Select(
+			locator1 = "FragmentEditor#FRAGMENTS_EDITOR_FLOATING_TOOLBAR_FIELD_SELECT",
+			value1 = "${optionvalue}");
+
+		AssertElementPresent(locator1 = "Message#SUCCESS");
+	}
+
 	macro changeConfigText {
 		Click(
 			fragment_name = "${fragmentName}",
@@ -23,5 +37,18 @@ definition {
 			checkboxName = "${checkboxName}",
 			locator1 = "Fragment#FRAGMENT_CHECKBOX");
 	}
+
+	macro restoreConfigSelectionValue {
+		Click(
+			fragment_name = "${fragmentName}",
+			locator1 = "PageEditor#SECTION_NAME");
+
+		Click(locator1 = "FragmentEditor#FRAGMENTS_EDITOR_FLOATING_TOOLBAR_CONFIGURATION");
+
+		var key_text = "Restore Values";
+
+		AssertClickNoError(
+			locator1 = "Button#ANY",
+			value1 = "Restore Values");	}
 
 }
