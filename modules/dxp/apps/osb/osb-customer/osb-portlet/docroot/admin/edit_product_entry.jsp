@@ -47,6 +47,7 @@ if (productEntry != null) {
 </portlet:actionURL>
 
 <aui:form action="<%= updateProductEntryURL %>" method="post">
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="productEntryId" type="hidden" value="<%= productEntryId %>" />
 

@@ -39,6 +39,7 @@ int severity3Resolution = BeanParamUtil.getInteger(supportResponse, request, "se
 </portlet:actionURL>
 
 <aui:form action="<%= updateSupportResponseURL %>" method="post">
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="supportResponseId" type="hidden" value="<%= supportResponseId %>" />
 

@@ -41,6 +41,7 @@ User managerUser = null;
 </portlet:actionURL>
 
 <aui:form action="<%= updateSupportRegionURL %>" method="post">
+	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="supportRegionId" type="hidden" value="<%= supportRegionId %>" />
 
