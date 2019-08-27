@@ -61,16 +61,10 @@ import com.liferay.osb.exception.ZendeskTagException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.LicenseEntry;
-import com.liferay.osb.model.OfferingBundle;
-import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.rabbitmq.ProvisioningCreateRabbitMQConsumer;
 import com.liferay.osb.rabbitmq.ProvisioningUpdateRabbitMQConsumer;
@@ -91,7 +85,6 @@ import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.mvc.OSBPortlet;
@@ -121,7 +114,6 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
@@ -162,7 +154,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
@@ -631,29 +622,12 @@ public class AdminPortlet extends OSBPortlet {
 			ParamUtil.getString(actionRequest, "supportRegionIds"), 0L);
 
 		if (accountEntryId <= 0) {
-			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.addAccountEntry(
-					themeDisplay.getUserId(), corpProjectUuid,
-					dossieraAccountKey, StringPool.BLANK, name, code, type,
-					industry, partnerEntryId, partnerManagedSupport, tier,
-					maxCustomers, instructions, notes, languageIds,
-					supportRegionIds, street1, street2, street3, city, zip,
-					regionId, countryId, ewsaDossieraProjectKey);
-
-			accountEntryId = accountEntry.getAccountEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter("mvcPath", "/admin/edit_account_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"accountEntryId", String.valueOf(accountEntryId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			AccountEntryLocalServiceUtil.addAccountEntry(
+				themeDisplay.getUserId(), corpProjectUuid, dossieraAccountKey,
+				StringPool.BLANK, name, code, type, industry, partnerEntryId,
+				partnerManagedSupport, tier, maxCustomers, instructions, notes,
+				languageIds, supportRegionIds, street1, street2, street3, city,
+				zip, regionId, countryId, ewsaDossieraProjectKey);
 		}
 		else {
 			AccountEntry accountEntry =
@@ -718,25 +692,9 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "portalVersionMax");
 
 		if (licenseEntryId <= 0) {
-			LicenseEntry licenseEntry =
-				LicenseEntryLocalServiceUtil.addLicenseEntry(
-					themeDisplay.getUserId(), productEntryId, name, type,
-					portalVersionMin, portalVersionMax);
-
-			licenseEntryId = licenseEntry.getLicenseEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter("mvcPath", "/admin/edit_license_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"licenseEntryId", String.valueOf(licenseEntryId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			LicenseEntryLocalServiceUtil.addLicenseEntry(
+				themeDisplay.getUserId(), productEntryId, name, type,
+				portalVersionMin, portalVersionMax);
 		}
 		else {
 			LicenseEntryLocalServiceUtil.updateLicenseEntry(
@@ -764,25 +722,8 @@ public class AdminPortlet extends OSBPortlet {
 				offeringBundleId, name, offeringDefinitionIds);
 		}
 		else {
-			OfferingBundle offeringBundle =
-				OfferingBundleLocalServiceUtil.addOfferingBundle(
-					themeDisplay.getUserId(), name, offeringDefinitionIds);
-
-			offeringBundleId = offeringBundle.getOfferingBundleId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter(
-				"mvcPath", "/admin/edit_offering_bundle.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"offeringBundleId", String.valueOf(offeringBundleId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			OfferingBundleLocalServiceUtil.addOfferingBundle(
+				themeDisplay.getUserId(), name, offeringDefinitionIds);
 		}
 	}
 
@@ -812,27 +753,10 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "supportTickets");
 
 		if (offeringDefinitionId <= 0) {
-			OfferingDefinition offeringDefinition =
-				OfferingDefinitionLocalServiceUtil.addOfferingDefinition(
-					themeDisplay.getUserId(), productEntryId, supportResponseId,
-					productDescription, licenses, unlimitedLicenses,
-					maxConcurrentUsers, maxUsers, supportTickets);
-
-			offeringDefinitionId = offeringDefinition.getOfferingDefinitionId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter(
-				"mvcPath", "/admin/edit_offering_definition.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"offeringDefinitionId", String.valueOf(offeringDefinitionId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			OfferingDefinitionLocalServiceUtil.addOfferingDefinition(
+				themeDisplay.getUserId(), productEntryId, supportResponseId,
+				productDescription, licenses, unlimitedLicenses,
+				maxConcurrentUsers, maxUsers, supportTickets);
 		}
 		else {
 			OfferingDefinitionLocalServiceUtil.updateOfferingDefinition(
@@ -964,21 +888,6 @@ public class AdminPortlet extends OSBPortlet {
 				actualStartDateMonth, actualStartDateDay, actualStartDateYear,
 				WorkflowConstants.STATUS_APPROVED, salesforceOpportunityKey,
 				offeringEntries);
-
-			orderEntryId = orderEntry.getOrderEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter("mvcPath", "/admin/edit_order_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"orderEntryId", String.valueOf(orderEntryId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
 		else {
 			orderEntry = OrderEntryLocalServiceUtil.updateOrderEntry(
@@ -1021,21 +930,6 @@ public class AdminPortlet extends OSBPortlet {
 				themeDisplay.getUserId(), parentPartnerEntryId,
 				dossieraAccountKey, jiraProjectKey, code, notes,
 				supportRegionIds);
-
-			partnerEntryId = partnerEntry.getPartnerEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter("mvcPath", "/admin/edit_partner_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"partnerEntryId", String.valueOf(partnerEntryId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
 		}
 		else {
 			partnerEntry = PartnerEntryLocalServiceUtil.updatePartnerEntry(
@@ -1101,25 +995,9 @@ public class AdminPortlet extends OSBPortlet {
 		String zendeskTag = ParamUtil.getString(actionRequest, "zendeskTag");
 
 		if (productEntryId <= 0) {
-			ProductEntry productEntry =
-				ProductEntryLocalServiceUtil.addProductEntry(
-					themeDisplay.getUserId(), name, type, environment,
-					versionsListType, dossieraIdMappings, zendeskTag);
-
-			productEntryId = productEntry.getProductEntryId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter("mvcPath", "/admin/edit_product_entry.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"productEntryId", String.valueOf(productEntryId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			ProductEntryLocalServiceUtil.addProductEntry(
+				themeDisplay.getUserId(), name, type, environment,
+				versionsListType, dossieraIdMappings, zendeskTag);
 		}
 		else {
 			ProductEntryLocalServiceUtil.updateProductEntry(
@@ -1147,25 +1025,8 @@ public class AdminPortlet extends OSBPortlet {
 				supportRegionId, name, description, timeZoneId);
 		}
 		else {
-			SupportRegion supportRegion =
-				SupportRegionLocalServiceUtil.addSupportRegion(
-					themeDisplay.getUserId(), name, description, timeZoneId);
-
-			supportRegionId = supportRegion.getSupportRegionId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter(
-				"mvcPath", "/admin/edit_support_region.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"supportRegionId", String.valueOf(supportRegionId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			SupportRegionLocalServiceUtil.addSupportRegion(
+				themeDisplay.getUserId(), name, description, timeZoneId);
 		}
 	}
 
@@ -1195,28 +1056,10 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "severity3Resolution");
 
 		if (supportResponseId <= 0) {
-			SupportResponse supportResponse =
-				SupportResponseLocalServiceUtil.addSupportResponse(
-					themeDisplay.getUserId(), name, supportLevel,
-					severity1Response, severity1Resolution, severity2Response,
-					severity2Resolution, severity3Response,
-					severity3Resolution);
-
-			supportResponseId = supportResponse.getSupportResponseId();
-
-			String backURL = ParamUtil.getString(actionRequest, "backURL");
-
-			PortletURL portletURL = PortletURLFactoryUtil.create(
-				actionRequest, OSBPortletKeys.OSB_ADMIN, themeDisplay.getPlid(),
-				PortletRequest.RENDER_PHASE);
-
-			portletURL.setParameter(
-				"mvcPath", "/admin/edit_support_response.jsp");
-			portletURL.setParameter("backURL", backURL);
-			portletURL.setParameter(
-				"supportResponseId", String.valueOf(supportResponseId));
-
-			actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+			SupportResponseLocalServiceUtil.addSupportResponse(
+				themeDisplay.getUserId(), name, supportLevel, severity1Response,
+				severity1Resolution, severity2Response, severity2Resolution,
+				severity3Response, severity3Resolution);
 		}
 		else {
 			SupportResponseLocalServiceUtil.updateSupportResponse(
