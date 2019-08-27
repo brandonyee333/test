@@ -127,19 +127,23 @@ public class AkismetEntryPersistenceImpl
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>AkismetEntryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findByLtModifiedDate(Date, int, int, OrderByComparator)}
 	 * @param modifiedDate the modified date
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching akismet entries
 	 */
+	@Deprecated
 	@Override
 	public List<AkismetEntry> findByLtModifiedDate(
 		Date modifiedDate, int start, int end,
-		OrderByComparator<AkismetEntry> orderByComparator) {
+		OrderByComparator<AkismetEntry> orderByComparator,
+		boolean useFinderCache) {
 
 		return findByLtModifiedDate(
-			modifiedDate, start, end, orderByComparator, true);
+			modifiedDate, start, end, orderByComparator);
 	}
 
 	/**
@@ -153,14 +157,12 @@ public class AkismetEntryPersistenceImpl
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching akismet entries
 	 */
 	@Override
 	public List<AkismetEntry> findByLtModifiedDate(
 		Date modifiedDate, int start, int end,
-		OrderByComparator<AkismetEntry> orderByComparator,
-		boolean useFinderCache) {
+		OrderByComparator<AkismetEntry> orderByComparator) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -171,21 +173,17 @@ public class AkismetEntryPersistenceImpl
 			_getTime(modifiedDate), start, end, orderByComparator
 		};
 
-		List<AkismetEntry> list = null;
+		List<AkismetEntry> list = (List<AkismetEntry>)finderCache.getResult(
+			finderPath, finderArgs, this);
 
-		if (useFinderCache) {
-			list = (List<AkismetEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
+		if ((list != null) && !list.isEmpty()) {
+			for (AkismetEntry akismetEntry : list) {
+				if ((modifiedDate.getTime() <=
+						akismetEntry.getModifiedDate().getTime())) {
 
-			if ((list != null) && !list.isEmpty()) {
-				for (AkismetEntry akismetEntry : list) {
-					if ((modifiedDate.getTime() <=
-							akismetEntry.getModifiedDate().getTime())) {
+					list = null;
 
-						list = null;
-
-						break;
-					}
+					break;
 				}
 			}
 		}
@@ -252,14 +250,10 @@ public class AkismetEntryPersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+				finderCache.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
@@ -670,15 +664,20 @@ public class AkismetEntryPersistenceImpl
 	}
 
 	/**
-	 * Returns the akismet entry where classNameId = &#63; and classPK = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 * Returns the akismet entry where classNameId = &#63; and classPK = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #fetchByC_C(long,long)}
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
+	@Deprecated
 	@Override
-	public AkismetEntry fetchByC_C(long classNameId, long classPK) {
-		return fetchByC_C(classNameId, classPK, true);
+	public AkismetEntry fetchByC_C(
+		long classNameId, long classPK, boolean useFinderCache) {
+
+		return fetchByC_C(classNameId, classPK);
 	}
 
 	/**
@@ -690,21 +689,11 @@ public class AkismetEntryPersistenceImpl
 	 * @return the matching akismet entry, or <code>null</code> if a matching akismet entry could not be found
 	 */
 	@Override
-	public AkismetEntry fetchByC_C(
-		long classNameId, long classPK, boolean useFinderCache) {
+	public AkismetEntry fetchByC_C(long classNameId, long classPK) {
+		Object[] finderArgs = new Object[] {classNameId, classPK};
 
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {classNameId, classPK};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByC_C, finderArgs, this);
-		}
+		Object result = finderCache.getResult(
+			_finderPathFetchByC_C, finderArgs, this);
 
 		if (result instanceof AkismetEntry) {
 			AkismetEntry akismetEntry = (AkismetEntry)result;
@@ -743,22 +732,14 @@ public class AkismetEntryPersistenceImpl
 				List<AkismetEntry> list = q.list();
 
 				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByC_C, finderArgs, list);
-					}
+					finderCache.putResult(
+						_finderPathFetchByC_C, finderArgs, list);
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {
-									classNameId, classPK
-								};
-							}
-
 							_log.warn(
 								"AkismetEntryPersistenceImpl.fetchByC_C(long, long, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
@@ -774,9 +755,7 @@ public class AkismetEntryPersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				if (useFinderCache) {
-					finderCache.removeResult(_finderPathFetchByC_C, finderArgs);
-				}
+				finderCache.removeResult(_finderPathFetchByC_C, finderArgs);
 
 				throw processException(e);
 			}
@@ -1425,16 +1404,20 @@ public class AkismetEntryPersistenceImpl
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>AkismetEntryModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
+	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findAll(int, int, OrderByComparator)}
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of akismet entries
 	 */
+	@Deprecated
 	@Override
 	public List<AkismetEntry> findAll(
-		int start, int end, OrderByComparator<AkismetEntry> orderByComparator) {
+		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
+		boolean useFinderCache) {
 
-		return findAll(start, end, orderByComparator, true);
+		return findAll(start, end, orderByComparator);
 	}
 
 	/**
@@ -1447,13 +1430,11 @@ public class AkismetEntryPersistenceImpl
 	 * @param start the lower bound of the range of akismet entries
 	 * @param end the upper bound of the range of akismet entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of akismet entries
 	 */
 	@Override
 	public List<AkismetEntry> findAll(
-		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
-		boolean useFinderCache) {
+		int start, int end, OrderByComparator<AkismetEntry> orderByComparator) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -1463,23 +1444,16 @@ public class AkismetEntryPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-
-			if (useFinderCache) {
-				finderPath = _finderPathWithoutPaginationFindAll;
-				finderArgs = FINDER_ARGS_EMPTY;
-			}
+			finderPath = _finderPathWithoutPaginationFindAll;
+			finderArgs = FINDER_ARGS_EMPTY;
 		}
-		else if (useFinderCache) {
+		else {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
-		List<AkismetEntry> list = null;
-
-		if (useFinderCache) {
-			list = (List<AkismetEntry>)finderCache.getResult(
-				finderPath, finderArgs, this);
-		}
+		List<AkismetEntry> list = (List<AkismetEntry>)finderCache.getResult(
+			finderPath, finderArgs, this);
 
 		if (list == null) {
 			StringBundler query = null;
@@ -1526,14 +1500,10 @@ public class AkismetEntryPersistenceImpl
 
 				cacheResult(list);
 
-				if (useFinderCache) {
-					finderCache.putResult(finderPath, finderArgs, list);
-				}
+				finderCache.putResult(finderPath, finderArgs, list);
 			}
 			catch (Exception e) {
-				if (useFinderCache) {
-					finderCache.removeResult(finderPath, finderArgs);
-				}
+				finderCache.removeResult(finderPath, finderArgs);
 
 				throw processException(e);
 			}
