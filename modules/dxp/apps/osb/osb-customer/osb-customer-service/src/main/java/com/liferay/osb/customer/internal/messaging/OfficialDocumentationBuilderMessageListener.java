@@ -56,7 +56,7 @@ public class OfficialDocumentationBuilderMessageListener
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null, "0 0 8 ? * MON");
+			className, className, null, null, "0 0 12 ? * SAT");
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
 			className, trigger);
