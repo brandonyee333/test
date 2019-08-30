@@ -16,7 +16,9 @@ package com.liferay.osb.customer.zendesk.util;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
+import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskUserException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
@@ -25,9 +27,13 @@ import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Contact;
+import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
+import com.liferay.portal.kernel.service.ContactLocalService;
+import com.liferay.portal.kernel.service.PhoneLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
@@ -104,6 +110,67 @@ public class ZendeskMapperUtil {
 		return zendeskUser.getZendeskUserId();
 	}
 
+	public long fetchZendeskUserIdentityId(long phoneId)
+		throws PortalException {
+
+		long classNameId = _classNameLocalService.getClassNameId(Phone.class);
+
+		List<ExternalIdMapper> externalIdMappers =
+			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				classNameId, phoneId, ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (!externalIdMappers.isEmpty()) {
+			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
+
+			return GetterUtil.getLong(externalIdMapper.getExternalId());
+		}
+
+		Phone phone = _phoneLocalService.getPhone(phoneId);
+
+		Contact contact = _contactLocalService.fetchContact(phone.getClassPK());
+
+		if (contact == null) {
+			return 0;
+		}
+
+		User user = _userLocalService.getUser(contact.getClassPK());
+
+		ZendeskUser zendeskUser =
+			_zendeskUserWebService.getZendeskUserByExternalId(user.getUuid());
+
+		if (zendeskUser == null) {
+			return 0;
+		}
+
+		List<ZendeskUserIdentity> zendeskUserIdentities =
+			_zendeskUserIdentityWebService.getZendeskUserIdentities(
+				zendeskUser.getZendeskUserId());
+
+		long zendeskUserIdentityId = 0;
+
+		for (ZendeskUserIdentity zendeskUserIdentity : zendeskUserIdentities) {
+			String type = zendeskUserIdentity.getType();
+			String value = zendeskUserIdentity.getValue();
+
+			if (type.equals("phone_number") &&
+				value.equals(_phoneUtil.convertToE164(phone))) {
+
+				zendeskUserIdentityId =
+					zendeskUserIdentity.getZendeskUserIdentityId();
+
+				break;
+			}
+		}
+
+		if (zendeskUserIdentityId > 0) {
+			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+				classNameId, phoneId, ExternalIdMapperConstants.TYPE_ZENDESK,
+				String.valueOf(zendeskUserIdentityId));
+		}
+
+		return zendeskUserIdentityId;
+	}
+
 	public long getAccountEntryId(long zendeskOrganizationId)
 		throws PortalException {
 
@@ -165,10 +232,22 @@ public class ZendeskMapperUtil {
 	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
+	private ContactLocalService _contactLocalService;
+
+	@Reference
+	private PhoneLocalService _phoneLocalService;
+
+	@Reference
+	private PhoneUtil _phoneUtil;
+
+	@Reference
 	private UserLocalService _userLocalService;
 
 	@Reference
 	private ZendeskOrganizationWebService _zendeskOrganizationWebService;
+
+	@Reference
+	private ZendeskUserIdentityWebService _zendeskUserIdentityWebService;
 
 	@Reference
 	private ZendeskUserWebService _zendeskUserWebService;

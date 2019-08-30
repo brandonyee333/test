@@ -98,7 +98,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 	protected long getContactUserId(long contactId) throws PortalException {
 		Contact contact = _contactLocalService.getContact(contactId);
 
-		return contact.getUserId();
+		return contact.getClassPK();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

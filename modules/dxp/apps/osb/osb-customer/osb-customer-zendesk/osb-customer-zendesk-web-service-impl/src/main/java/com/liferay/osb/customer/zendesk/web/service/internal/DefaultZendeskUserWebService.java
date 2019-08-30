@@ -74,7 +74,9 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 		messagePublisherUtil.sendEventNotification(
 			"zendesk.user.create.or.update", responseJSONObject);
 
-		return zendeskConverter.toZendeskUser(responseJSONObject);
+		JSONObject userJSONObject = responseJSONObject.getJSONObject("user");
+
+		return zendeskConverter.toZendeskUser(userJSONObject);
 	}
 
 	public void createZendeskUserOrganizationSubscription(

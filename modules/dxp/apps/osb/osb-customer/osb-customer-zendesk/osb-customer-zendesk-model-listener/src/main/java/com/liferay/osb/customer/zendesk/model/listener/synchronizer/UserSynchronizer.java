@@ -27,14 +27,11 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
@@ -75,7 +72,7 @@ public class UserSynchronizer {
 
 		String number = _phoneUtil.convertToE164(phone);
 
-		if (Validator.isNotNull(number)) {
+		if ((zendeskUserId > 0) && Validator.isNotNull(number)) {
 			_asyncZendeskUserIdentityWebService.createZendeskUserIdentity(
 				zendeskUserId, "phone_number", number);
 		}
@@ -83,8 +80,8 @@ public class UserSynchronizer {
 
 	public void deletePhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-		long zendeskUserIdentityId = getExternalId(
-			Phone.class, phone.getPhoneId());
+		long zendeskUserIdentityId =
+			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
 
 		_asyncZendeskUserIdentityWebService.deleteZendeskUserIdentity(
 			zendeskUserId, zendeskUserIdentityId, "phone_number");
@@ -163,6 +160,10 @@ public class UserSynchronizer {
 					user.getFullName(), organizationName, tags);
 
 			zendeskUserId = zendeskUser.getZendeskUserId();
+
+			for (Phone phone : user.getPhones()) {
+				addPhone(user.getUserId(), phone);
+			}
 		}
 
 		return zendeskUserId;
@@ -199,8 +200,8 @@ public class UserSynchronizer {
 
 	public void updatePhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
-		long zendeskUserIdentityId = getExternalId(
-			Phone.class, phone.getPhoneId());
+		long zendeskUserIdentityId =
+			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
 
 		String number = _phoneUtil.convertToE164(phone);
 
@@ -208,22 +209,6 @@ public class UserSynchronizer {
 			_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
 				zendeskUserId, zendeskUserIdentityId, number);
 		}
-	}
-
-	protected long getExternalId(Class<?> clazz, long classPK) {
-		long classNameId = _classNameLocalService.getClassNameId(clazz);
-
-		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK);
-
-		if (externalIdMappers.isEmpty()) {
-			return 0;
-		}
-
-		ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
-
-		return Long.valueOf(externalIdMapper.getExternalId());
 	}
 
 	protected Set<String> getObsoleteTags(long userId) throws PortalException {
