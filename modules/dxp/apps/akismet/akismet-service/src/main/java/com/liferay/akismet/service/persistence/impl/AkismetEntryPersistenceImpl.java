@@ -296,7 +296,7 @@ public class AkismetEntryPersistenceImpl
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("modifiedDate=");
+		msg.append("modifiedDate<");
 		msg.append(modifiedDate);
 
 		msg.append("}");
@@ -350,7 +350,7 @@ public class AkismetEntryPersistenceImpl
 
 		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("modifiedDate=");
+		msg.append("modifiedDate<");
 		msg.append(modifiedDate);
 
 		msg.append("}");
