@@ -164,22 +164,18 @@ public class KaleoDraftDefinitionUtil {
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findByCompanyId(long, int, int, OrderByComparator)}
 	 * @param companyId the company ID
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching kaleo draft definitions
 	 */
-	@Deprecated
 	public static List<KaleoDraftDefinition> findByCompanyId(
 		long companyId, int start, int end,
-		OrderByComparator<KaleoDraftDefinition> orderByComparator,
-		boolean useFinderCache) {
+		OrderByComparator<KaleoDraftDefinition> orderByComparator) {
 
 		return getPersistence().findByCompanyId(
-			companyId, start, end, orderByComparator, useFinderCache);
+			companyId, start, end, orderByComparator);
 	}
 
 	/**
@@ -193,14 +189,16 @@ public class KaleoDraftDefinitionUtil {
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching kaleo draft definitions
 	 */
 	public static List<KaleoDraftDefinition> findByCompanyId(
 		long companyId, int start, int end,
-		OrderByComparator<KaleoDraftDefinition> orderByComparator) {
+		OrderByComparator<KaleoDraftDefinition> orderByComparator,
+		boolean useFinderCache) {
 
 		return getPersistence().findByCompanyId(
-			companyId, start, end, orderByComparator);
+			companyId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -349,25 +347,20 @@ public class KaleoDraftDefinitionUtil {
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findByC_N_V(long,String,int, int, int, OrderByComparator)}
 	 * @param companyId the company ID
 	 * @param name the name
 	 * @param version the version
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching kaleo draft definitions
 	 */
-	@Deprecated
 	public static List<KaleoDraftDefinition> findByC_N_V(
 		long companyId, String name, int version, int start, int end,
-		OrderByComparator<KaleoDraftDefinition> orderByComparator,
-		boolean useFinderCache) {
+		OrderByComparator<KaleoDraftDefinition> orderByComparator) {
 
 		return getPersistence().findByC_N_V(
-			companyId, name, version, start, end, orderByComparator,
-			useFinderCache);
+			companyId, name, version, start, end, orderByComparator);
 	}
 
 	/**
@@ -383,14 +376,17 @@ public class KaleoDraftDefinitionUtil {
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching kaleo draft definitions
 	 */
 	public static List<KaleoDraftDefinition> findByC_N_V(
 		long companyId, String name, int version, int start, int end,
-		OrderByComparator<KaleoDraftDefinition> orderByComparator) {
+		OrderByComparator<KaleoDraftDefinition> orderByComparator,
+		boolean useFinderCache) {
 
 		return getPersistence().findByC_N_V(
-			companyId, name, version, start, end, orderByComparator);
+			companyId, name, version, start, end, orderByComparator,
+			useFinderCache);
 	}
 
 	/**
@@ -533,23 +529,19 @@ public class KaleoDraftDefinitionUtil {
 	}
 
 	/**
-	 * Returns the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 * Returns the kaleo draft definition where companyId = &#63; and name = &#63; and version = &#63; and draftVersion = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
 	 *
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link #fetchByC_N_V_D(long,String,int,int)}
 	 * @param companyId the company ID
 	 * @param name the name
 	 * @param version the version
 	 * @param draftVersion the draft version
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	 */
-	@Deprecated
 	public static KaleoDraftDefinition fetchByC_N_V_D(
-		long companyId, String name, int version, int draftVersion,
-		boolean useFinderCache) {
+		long companyId, String name, int version, int draftVersion) {
 
 		return getPersistence().fetchByC_N_V_D(
-			companyId, name, version, draftVersion, useFinderCache);
+			companyId, name, version, draftVersion);
 	}
 
 	/**
@@ -563,10 +555,11 @@ public class KaleoDraftDefinitionUtil {
 	 * @return the matching kaleo draft definition, or <code>null</code> if a matching kaleo draft definition could not be found
 	 */
 	public static KaleoDraftDefinition fetchByC_N_V_D(
-		long companyId, String name, int version, int draftVersion) {
+		long companyId, String name, int version, int draftVersion,
+		boolean useFinderCache) {
 
 		return getPersistence().fetchByC_N_V_D(
-			companyId, name, version, draftVersion);
+			companyId, name, version, draftVersion, useFinderCache);
 	}
 
 	/**
@@ -711,21 +704,16 @@ public class KaleoDraftDefinitionUtil {
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>KaleoDraftDefinitionModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
 	 * </p>
 	 *
-	 * @deprecated As of Mueller (7.2.x), replaced by {@link #findAll(int, int, OrderByComparator)}
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of kaleo draft definitions
 	 */
-	@Deprecated
 	public static List<KaleoDraftDefinition> findAll(
 		int start, int end,
-		OrderByComparator<KaleoDraftDefinition> orderByComparator,
-		boolean useFinderCache) {
+		OrderByComparator<KaleoDraftDefinition> orderByComparator) {
 
-		return getPersistence().findAll(
-			start, end, orderByComparator, useFinderCache);
+		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
@@ -738,13 +726,16 @@ public class KaleoDraftDefinitionUtil {
 	 * @param start the lower bound of the range of kaleo draft definitions
 	 * @param end the upper bound of the range of kaleo draft definitions (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of kaleo draft definitions
 	 */
 	public static List<KaleoDraftDefinition> findAll(
 		int start, int end,
-		OrderByComparator<KaleoDraftDefinition> orderByComparator) {
+		OrderByComparator<KaleoDraftDefinition> orderByComparator,
+		boolean useFinderCache) {
 
-		return getPersistence().findAll(start, end, orderByComparator);
+		return getPersistence().findAll(
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
