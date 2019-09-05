@@ -59,6 +59,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
+import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -126,7 +127,10 @@ public class BaseExportImportContentProcessorTest {
 
 		_liveGroup = GroupTestUtil.addGroup();
 
-		GroupTestUtil.enableLocalStaging(_liveGroup);
+		UserTestUtil.setUser(TestPropsValues.getUser());
+
+		GroupTestUtil.enableLocalStaging(
+			_liveGroup, TestPropsValues.getUserId());
 
 		_stagingGroup = _liveGroup.getStagingGroup();
 
