@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
@@ -66,7 +64,6 @@ import java.util.function.Function;
  * @see WatsonPersonAuditImpl
  * @generated
  */
-@ProviderType
 public class WatsonPersonAuditModelImpl
 	extends BaseModelImpl<WatsonPersonAudit> implements WatsonPersonAuditModel {
 

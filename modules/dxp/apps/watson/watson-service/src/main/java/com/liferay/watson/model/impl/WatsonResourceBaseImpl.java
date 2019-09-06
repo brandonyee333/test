@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonResource;
 import com.liferay.watson.service.WatsonResourceLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonResourceLocalServiceUtil;
  * @see WatsonResource
  * @generated
  */
-@ProviderType
 public abstract class WatsonResourceBaseImpl
 	extends WatsonResourceModelImpl implements WatsonResource {
 

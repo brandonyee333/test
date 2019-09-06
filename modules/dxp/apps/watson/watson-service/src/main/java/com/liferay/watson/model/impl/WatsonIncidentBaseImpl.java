@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonIncident;
 import com.liferay.watson.service.WatsonIncidentLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonIncidentLocalServiceUtil;
  * @see WatsonIncident
  * @generated
  */
-@ProviderType
 public abstract class WatsonIncidentBaseImpl
 	extends WatsonIncidentModelImpl implements WatsonIncident {
 

@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
@@ -66,7 +64,6 @@ import java.util.function.Function;
  * @see WatsonListTypeImpl
  * @generated
  */
-@ProviderType
 public class WatsonListTypeModelImpl
 	extends BaseModelImpl<WatsonListType> implements WatsonListTypeModel {
 

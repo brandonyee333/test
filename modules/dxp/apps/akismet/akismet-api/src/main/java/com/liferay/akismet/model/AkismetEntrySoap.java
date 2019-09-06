@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.List;
  * @author Jamie Sammons
  * @generated
  */
-@ProviderType
 public class AkismetEntrySoap implements Serializable {
 
 	public static AkismetEntrySoap toSoapModel(AkismetEntry model) {

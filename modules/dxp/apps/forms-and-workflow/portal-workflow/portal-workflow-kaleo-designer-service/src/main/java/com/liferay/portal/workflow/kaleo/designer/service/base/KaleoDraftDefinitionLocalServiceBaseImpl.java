@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.designer.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -62,7 +60,6 @@ import javax.sql.DataSource;
  * @see com.liferay.portal.workflow.kaleo.designer.service.impl.KaleoDraftDefinitionLocalServiceImpl
  * @generated
  */
-@ProviderType
 public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements KaleoDraftDefinitionLocalService, IdentifiableOSGiService {

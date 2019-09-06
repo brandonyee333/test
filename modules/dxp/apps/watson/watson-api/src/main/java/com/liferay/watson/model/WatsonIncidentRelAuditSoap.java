@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.List;
  * @author Steven Smith
  * @generated
  */
-@ProviderType
 public class WatsonIncidentRelAuditSoap implements Serializable {
 
 	public static WatsonIncidentRelAuditSoap toSoapModel(

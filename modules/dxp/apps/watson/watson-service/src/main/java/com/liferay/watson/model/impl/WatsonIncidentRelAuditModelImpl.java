@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
@@ -58,7 +56,6 @@ import java.util.function.Function;
  * @see WatsonIncidentRelAuditImpl
  * @generated
  */
-@ProviderType
 public class WatsonIncidentRelAuditModelImpl
 	extends BaseModelImpl<WatsonIncidentRelAudit>
 	implements WatsonIncidentRelAuditModel {

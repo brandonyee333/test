@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonPerson;
 import com.liferay.watson.service.WatsonPersonLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonPersonLocalServiceUtil;
  * @see WatsonPerson
  * @generated
  */
-@ProviderType
 public abstract class WatsonPersonBaseImpl
 	extends WatsonPersonModelImpl implements WatsonPerson {
 

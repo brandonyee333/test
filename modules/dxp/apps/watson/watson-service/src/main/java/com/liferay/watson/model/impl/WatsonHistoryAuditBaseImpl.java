@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonHistoryAudit;
 import com.liferay.watson.service.WatsonHistoryAuditLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonHistoryAuditLocalServiceUtil;
  * @see WatsonHistoryAudit
  * @generated
  */
-@ProviderType
 public abstract class WatsonHistoryAuditBaseImpl
 	extends WatsonHistoryAuditModelImpl implements WatsonHistoryAudit {
 

@@ -14,8 +14,6 @@
 
 package com.liferay.watson.login.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,7 +23,6 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see WatsonTokenAuthEntryService
  * @generated
  */
-@ProviderType
 public class WatsonTokenAuthEntryServiceWrapper
 	implements WatsonTokenAuthEntryService,
 			   ServiceWrapper<WatsonTokenAuthEntryService> {

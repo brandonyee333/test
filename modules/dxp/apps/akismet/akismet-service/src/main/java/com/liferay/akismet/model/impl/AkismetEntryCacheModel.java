@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -34,7 +32,6 @@ import java.util.Date;
  * @author Jamie Sammons
  * @generated
  */
-@ProviderType
 public class AkismetEntryCacheModel
 	implements CacheModel<AkismetEntry>, Externalizable {
 

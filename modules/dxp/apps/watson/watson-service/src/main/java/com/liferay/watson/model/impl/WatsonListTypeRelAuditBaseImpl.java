@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonListTypeRelAudit;
 import com.liferay.watson.service.WatsonListTypeRelAuditLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonListTypeRelAuditLocalServiceUtil;
  * @see WatsonListTypeRelAudit
  * @generated
  */
-@ProviderType
 public abstract class WatsonListTypeRelAuditBaseImpl
 	extends WatsonListTypeRelAuditModelImpl implements WatsonListTypeRelAudit {
 

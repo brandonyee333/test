@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonResourceAudit;
 import com.liferay.watson.service.WatsonResourceAuditLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonResourceAuditLocalServiceUtil;
  * @see WatsonResourceAudit
  * @generated
  */
-@ProviderType
 public abstract class WatsonResourceAuditBaseImpl
 	extends WatsonResourceAuditModelImpl implements WatsonResourceAudit {
 

@@ -14,8 +14,6 @@
 
 package com.liferay.watson.login.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.login.model.WatsonTokenAuthEntry;
 import com.liferay.watson.login.service.WatsonTokenAuthEntryLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.login.service.WatsonTokenAuthEntryLocalServiceUtil;
  * @see WatsonTokenAuthEntry
  * @generated
  */
-@ProviderType
 public abstract class WatsonTokenAuthEntryBaseImpl
 	extends WatsonTokenAuthEntryModelImpl implements WatsonTokenAuthEntry {
 

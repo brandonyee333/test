@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.designer.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
@@ -70,7 +68,6 @@ import java.util.function.Function;
  * @generated
  */
 @JSON(strict = true)
-@ProviderType
 public class KaleoDraftDefinitionModelImpl
 	extends BaseModelImpl<KaleoDraftDefinition>
 	implements KaleoDraftDefinitionModel {

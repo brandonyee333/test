@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonDocument;
 import com.liferay.watson.service.WatsonDocumentLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonDocumentLocalServiceUtil;
  * @see WatsonDocument
  * @generated
  */
-@ProviderType
 public abstract class WatsonDocumentBaseImpl
 	extends WatsonDocumentModelImpl implements WatsonDocument {
 

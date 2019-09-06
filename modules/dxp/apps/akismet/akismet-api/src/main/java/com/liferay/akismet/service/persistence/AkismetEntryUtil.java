@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -43,7 +41,6 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see AkismetEntryPersistence
  * @generated
  */
-@ProviderType
 public class AkismetEntryUtil {
 
 	/*

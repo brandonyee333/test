@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,7 +23,6 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see AkismetEntryLocalService
  * @generated
  */
-@ProviderType
 public class AkismetEntryLocalServiceWrapper
 	implements AkismetEntryLocalService,
 			   ServiceWrapper<AkismetEntryLocalService> {

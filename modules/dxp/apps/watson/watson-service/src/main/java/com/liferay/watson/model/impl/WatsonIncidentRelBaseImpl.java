@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonIncidentRel;
 import com.liferay.watson.service.WatsonIncidentRelLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonIncidentRelLocalServiceUtil;
  * @see WatsonIncidentRel
  * @generated
  */
-@ProviderType
 public abstract class WatsonIncidentRelBaseImpl
 	extends WatsonIncidentRelModelImpl implements WatsonIncidentRel {
 

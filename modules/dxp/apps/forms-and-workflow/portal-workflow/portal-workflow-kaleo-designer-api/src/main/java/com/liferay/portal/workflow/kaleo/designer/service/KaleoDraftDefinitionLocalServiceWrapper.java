@@ -14,8 +14,6 @@
 
 package com.liferay.portal.workflow.kaleo.designer.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,7 +23,6 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see KaleoDraftDefinitionLocalService
  * @generated
  */
-@ProviderType
 public class KaleoDraftDefinitionLocalServiceWrapper
 	implements KaleoDraftDefinitionLocalService,
 			   ServiceWrapper<KaleoDraftDefinitionLocalService> {

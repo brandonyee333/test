@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.service.AkismetEntryLocalService;
 import com.liferay.akismet.service.persistence.AkismetEntryPersistence;
@@ -62,7 +60,6 @@ import javax.sql.DataSource;
  * @see com.liferay.akismet.service.impl.AkismetEntryLocalServiceImpl
  * @generated
  */
-@ProviderType
 public abstract class AkismetEntryLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements AkismetEntryLocalService, IdentifiableOSGiService {

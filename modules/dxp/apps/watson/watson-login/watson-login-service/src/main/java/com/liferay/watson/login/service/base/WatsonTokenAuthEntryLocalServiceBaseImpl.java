@@ -14,8 +14,6 @@
 
 package com.liferay.watson.login.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -62,7 +60,6 @@ import javax.sql.DataSource;
  * @see com.liferay.watson.login.service.impl.WatsonTokenAuthEntryLocalServiceImpl
  * @generated
  */
-@ProviderType
 public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements WatsonTokenAuthEntryLocalService, IdentifiableOSGiService {

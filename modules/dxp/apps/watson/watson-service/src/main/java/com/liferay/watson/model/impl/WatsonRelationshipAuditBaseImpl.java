@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonRelationshipAudit;
 import com.liferay.watson.service.WatsonRelationshipAuditLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonRelationshipAuditLocalServiceUtil;
  * @see WatsonRelationshipAudit
  * @generated
  */
-@ProviderType
 public abstract class WatsonRelationshipAuditBaseImpl
 	extends WatsonRelationshipAuditModelImpl
 	implements WatsonRelationshipAudit {

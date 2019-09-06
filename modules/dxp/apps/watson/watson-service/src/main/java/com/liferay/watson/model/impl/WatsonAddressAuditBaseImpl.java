@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonAddressAudit;
 import com.liferay.watson.service.WatsonAddressAuditLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonAddressAuditLocalServiceUtil;
  * @see WatsonAddressAudit
  * @generated
  */
-@ProviderType
 public abstract class WatsonAddressAuditBaseImpl
 	extends WatsonAddressAuditModelImpl implements WatsonAddressAudit {
 

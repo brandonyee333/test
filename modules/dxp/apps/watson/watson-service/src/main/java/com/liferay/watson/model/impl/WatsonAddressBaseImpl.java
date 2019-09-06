@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonAddress;
 import com.liferay.watson.service.WatsonAddressLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonAddressLocalServiceUtil;
  * @see WatsonAddress
  * @generated
  */
-@ProviderType
 public abstract class WatsonAddressBaseImpl
 	extends WatsonAddressModelImpl implements WatsonAddress {
 

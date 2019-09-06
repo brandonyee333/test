@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonVehicle;
 import com.liferay.watson.service.WatsonVehicleLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonVehicleLocalServiceUtil;
  * @see WatsonVehicle
  * @generated
  */
-@ProviderType
 public abstract class WatsonVehicleBaseImpl
 	extends WatsonVehicleModelImpl implements WatsonVehicle {
 

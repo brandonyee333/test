@@ -14,8 +14,6 @@
 
 package com.liferay.watson.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,7 +23,6 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see WatsonDocumentLocalService
  * @generated
  */
-@ProviderType
 public class WatsonDocumentLocalServiceWrapper
 	implements WatsonDocumentLocalService,
 			   ServiceWrapper<WatsonDocumentLocalService> {

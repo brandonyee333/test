@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.service.AkismetEntryLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.akismet.service.AkismetEntryLocalServiceUtil;
  * @see AkismetEntry
  * @generated
  */
-@ProviderType
 public abstract class AkismetEntryBaseImpl
 	extends AkismetEntryModelImpl implements AkismetEntry {
 

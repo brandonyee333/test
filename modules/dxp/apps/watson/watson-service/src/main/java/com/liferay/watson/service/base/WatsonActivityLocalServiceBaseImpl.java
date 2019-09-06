@@ -14,8 +14,6 @@
 
 package com.liferay.watson.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -89,7 +87,6 @@ import javax.sql.DataSource;
  * @see com.liferay.watson.service.impl.WatsonActivityLocalServiceImpl
  * @generated
  */
-@ProviderType
 public abstract class WatsonActivityLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements WatsonActivityLocalService, IdentifiableOSGiService {

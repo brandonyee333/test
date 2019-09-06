@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonReport;
 import com.liferay.watson.service.WatsonReportLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonReportLocalServiceUtil;
  * @see WatsonReport
  * @generated
  */
-@ProviderType
 public abstract class WatsonReportBaseImpl
 	extends WatsonReportModelImpl implements WatsonReport {
 

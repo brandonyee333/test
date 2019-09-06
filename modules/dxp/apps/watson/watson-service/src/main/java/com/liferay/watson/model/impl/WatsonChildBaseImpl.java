@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonChild;
 import com.liferay.watson.service.WatsonChildLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonChildLocalServiceUtil;
  * @see WatsonChild
  * @generated
  */
-@ProviderType
 public abstract class WatsonChildBaseImpl
 	extends WatsonChildModelImpl implements WatsonChild {
 

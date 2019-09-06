@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.model.AkismetEntryModel;
 import com.liferay.expando.kernel.model.ExpandoBridge;
@@ -57,7 +55,6 @@ import java.util.function.Function;
  * @see AkismetEntryImpl
  * @generated
  */
-@ProviderType
 public class AkismetEntryModelImpl
 	extends BaseModelImpl<AkismetEntry> implements AkismetEntryModel {
 

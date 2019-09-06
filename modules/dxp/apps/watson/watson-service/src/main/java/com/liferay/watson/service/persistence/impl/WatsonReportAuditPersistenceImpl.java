@@ -14,8 +14,6 @@
 
 package com.liferay.watson.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -63,7 +61,6 @@ import java.util.Set;
  * @author Steven Smith
  * @generated
  */
-@ProviderType
 public class WatsonReportAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonReportAudit>
 	implements WatsonReportAuditPersistence {

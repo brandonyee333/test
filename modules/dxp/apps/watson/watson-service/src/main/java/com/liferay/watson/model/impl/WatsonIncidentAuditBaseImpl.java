@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonIncidentAudit;
 import com.liferay.watson.service.WatsonIncidentAuditLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonIncidentAuditLocalServiceUtil;
  * @see WatsonIncidentAudit
  * @generated
  */
-@ProviderType
 public abstract class WatsonIncidentAuditBaseImpl
 	extends WatsonIncidentAuditModelImpl implements WatsonIncidentAudit {
 

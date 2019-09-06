@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonActivity;
 import com.liferay.watson.service.WatsonActivityLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonActivityLocalServiceUtil;
  * @see WatsonActivity
  * @generated
  */
-@ProviderType
 public abstract class WatsonActivityBaseImpl
 	extends WatsonActivityModelImpl implements WatsonActivity {
 

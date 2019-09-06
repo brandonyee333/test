@@ -14,8 +14,6 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.watson.model.WatsonListTypeRel;
 import com.liferay.watson.service.WatsonListTypeRelLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.watson.service.WatsonListTypeRelLocalServiceUtil;
  * @see WatsonListTypeRel
  * @generated
  */
-@ProviderType
 public abstract class WatsonListTypeRelBaseImpl
 	extends WatsonListTypeRelModelImpl implements WatsonListTypeRel {
 

@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.akismet.exception.NoSuchAkismetEntryException;
 import com.liferay.akismet.model.AkismetEntry;
 import com.liferay.akismet.model.impl.AkismetEntryImpl;
@@ -64,7 +62,6 @@ import java.util.Set;
  * @author Jamie Sammons
  * @generated
  */
-@ProviderType
 public class AkismetEntryPersistenceImpl
 	extends BasePersistenceImpl<AkismetEntry>
 	implements AkismetEntryPersistence {

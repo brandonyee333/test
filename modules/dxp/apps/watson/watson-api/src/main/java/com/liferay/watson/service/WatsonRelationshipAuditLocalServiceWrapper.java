@@ -14,8 +14,6 @@
 
 package com.liferay.watson.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,7 +23,6 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see WatsonRelationshipAuditLocalService
  * @generated
  */
-@ProviderType
 public class WatsonRelationshipAuditLocalServiceWrapper
 	implements WatsonRelationshipAuditLocalService,
 			   ServiceWrapper<WatsonRelationshipAuditLocalService> {
