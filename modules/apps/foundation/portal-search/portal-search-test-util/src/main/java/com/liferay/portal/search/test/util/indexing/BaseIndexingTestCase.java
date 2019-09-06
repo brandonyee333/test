@@ -270,6 +270,10 @@ public abstract class BaseIndexingTestCase {
 			consumer.accept(_hits);
 		}
 
+		public void verifyGroupByResponses(Consumer<SearchContext> consumer) {
+			consumer.accept(_searchContext);
+		}
+
 		protected Query getQuery() {
 			Query query = _query;
 
