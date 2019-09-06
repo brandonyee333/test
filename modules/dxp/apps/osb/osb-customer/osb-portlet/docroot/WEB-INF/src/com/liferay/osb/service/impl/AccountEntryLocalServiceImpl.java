@@ -1365,8 +1365,6 @@ public class AccountEntryLocalServiceImpl
 		HashMap<String, Serializable> workflowContext = new HashMap<>();
 
 		if (!salesforceOpportunityStageName.equals(
-				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_LOST) &&
-			!salesforceOpportunityStageName.equals(
 				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON)) {
 
 			workflowContext.put(

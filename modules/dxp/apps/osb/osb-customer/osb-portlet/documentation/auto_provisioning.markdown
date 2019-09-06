@@ -42,8 +42,8 @@
 * "_salesforceAccountKey": should be unique
 * "_salesforceOpportunityKey": should be unique to create a new OSB OrderEntry
 * "_salesforceOpportunityStageName": Salesforce opportunity stages
-  * Possible Values: "Closed Lost", "Closed Won"
-  * any other values that aren't from the possible list comes a message from Dossiera (ie. "Committed")
+  * Possible Values: "Committed", "Closed Lost", "Closed Won", "Elastic Subscription", "Justification / Vendor Selection", "Legal Review / Purchasing", "Qualifying", "Rolled into Opportunity", "Uncommitted Renewal"
+  * any value besides "Closed Won" may not contain any product information in the RabbitMQ message from Dossiera
 * "_salesforceOpportunityType": Salesforce opportunity types (Renewal is no longer used, refer to "_productType")
   * Possible Values: "Existing Business", "New Business", "New Project Existing Business"
 * "_salesforceProjectKey": should be unique to the value on WEB's corp project
