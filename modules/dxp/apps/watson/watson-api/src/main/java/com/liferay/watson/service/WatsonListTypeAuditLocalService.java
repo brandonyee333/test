@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonListTypeAuditLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeAuditLocalServiceUtil} to access the watson list type audit local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonListTypeAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

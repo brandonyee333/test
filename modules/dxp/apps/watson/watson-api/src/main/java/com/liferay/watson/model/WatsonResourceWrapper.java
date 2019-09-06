@@ -506,6 +506,11 @@ public class WatsonResourceWrapper
 		return _watsonResource.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson resource model instance should use the <code>WatsonResource</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonResource.persist();

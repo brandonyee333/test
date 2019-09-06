@@ -91,7 +91,7 @@ public abstract class WatsonAddressLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements WatsonAddressLocalService, IdentifiableOSGiService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>WatsonAddressLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonAddressLocalServiceUtil</code>.

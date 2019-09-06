@@ -478,6 +478,11 @@ public class WatsonListTypeRelAuditWrapper
 		return _watsonListTypeRelAudit.isPrimary();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson list type rel audit model instance should use the <code>WatsonListTypeRelAudit</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonListTypeRelAudit.persist();

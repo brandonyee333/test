@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonRelationshipLocalServiceUtil;
 public abstract class WatsonRelationshipBaseImpl
 	extends WatsonRelationshipModelImpl implements WatsonRelationship {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson relationship model instance should use the <code>WatsonRelationship</code> interface instead.

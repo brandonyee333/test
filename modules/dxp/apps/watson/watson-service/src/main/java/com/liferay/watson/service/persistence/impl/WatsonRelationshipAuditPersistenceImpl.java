@@ -63,7 +63,7 @@ public class WatsonRelationshipAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonRelationshipAudit>
 	implements WatsonRelationshipAuditPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonRelationshipAuditUtil</code> to access the watson relationship audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

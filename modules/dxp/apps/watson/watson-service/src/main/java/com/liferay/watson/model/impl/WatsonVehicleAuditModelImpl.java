@@ -68,7 +68,7 @@ public class WatsonVehicleAuditModelImpl
 	extends BaseModelImpl<WatsonVehicleAudit>
 	implements WatsonVehicleAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson vehicle audit model instance should use the <code>WatsonVehicleAudit</code> interface instead.

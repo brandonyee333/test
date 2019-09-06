@@ -328,6 +328,11 @@ public class WatsonTokenAuthEntryWrapper
 		return _watsonTokenAuthEntry.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson token auth entry model instance should use the <code>WatsonTokenAuthEntry</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonTokenAuthEntry.persist();

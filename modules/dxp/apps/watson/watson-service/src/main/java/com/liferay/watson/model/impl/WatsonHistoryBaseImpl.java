@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonHistoryLocalServiceUtil;
 public abstract class WatsonHistoryBaseImpl
 	extends WatsonHistoryModelImpl implements WatsonHistory {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson history model instance should use the <code>WatsonHistory</code> interface instead.

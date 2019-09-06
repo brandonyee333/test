@@ -63,7 +63,7 @@ public class WatsonResourceAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonResourceAudit>
 	implements WatsonResourceAuditPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonResourceAuditUtil</code> to access the watson resource audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

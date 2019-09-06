@@ -59,7 +59,7 @@ import java.util.function.Function;
 public class WatsonChildModelImpl
 	extends BaseModelImpl<WatsonChild> implements WatsonChildModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson child model instance should use the <code>WatsonChild</code> interface instead.

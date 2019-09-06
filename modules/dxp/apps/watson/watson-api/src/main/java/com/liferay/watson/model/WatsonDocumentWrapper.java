@@ -392,6 +392,11 @@ public class WatsonDocumentWrapper
 		return _watsonDocument.isOriginalDocument();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson document model instance should use the <code>WatsonDocument</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonDocument.persist();

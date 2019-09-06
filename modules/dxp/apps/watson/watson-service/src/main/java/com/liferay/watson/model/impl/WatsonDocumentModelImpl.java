@@ -59,7 +59,7 @@ import java.util.function.Function;
 public class WatsonDocumentModelImpl
 	extends BaseModelImpl<WatsonDocument> implements WatsonDocumentModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson document model instance should use the <code>WatsonDocument</code> interface instead.

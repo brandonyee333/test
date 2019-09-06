@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface WatsonAddressAudit
 	extends PersistedModel, WatsonAddressAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonAddressAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

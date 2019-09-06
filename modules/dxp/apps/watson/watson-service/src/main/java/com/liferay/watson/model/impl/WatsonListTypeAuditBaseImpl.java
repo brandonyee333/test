@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonListTypeAuditLocalServiceUtil;
 public abstract class WatsonListTypeAuditBaseImpl
 	extends WatsonListTypeAuditModelImpl implements WatsonListTypeAudit {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type audit model instance should use the <code>WatsonListTypeAudit</code> interface instead.

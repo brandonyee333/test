@@ -65,7 +65,7 @@ public class WatsonListTypeRelPersistenceImpl
 	extends BasePersistenceImpl<WatsonListTypeRel>
 	implements WatsonListTypeRelPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonListTypeRelUtil</code> to access the watson list type rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface WatsonResourceAudit
 	extends PersistedModel, WatsonResourceAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonResourceAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

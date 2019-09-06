@@ -65,7 +65,7 @@ public class WatsonTokenAuthEntryModelImpl
 	extends BaseModelImpl<WatsonTokenAuthEntry>
 	implements WatsonTokenAuthEntryModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson token auth entry model instance should use the <code>WatsonTokenAuthEntry</code> interface instead.

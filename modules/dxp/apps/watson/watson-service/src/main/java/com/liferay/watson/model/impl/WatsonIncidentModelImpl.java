@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonIncidentModelImpl
 	extends BaseModelImpl<WatsonIncident> implements WatsonIncidentModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident model instance should use the <code>WatsonIncident</code> interface instead.

@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonResourcePersistence
 	extends BasePersistence<WatsonResource> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonResourceUtil} to access the watson resource persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

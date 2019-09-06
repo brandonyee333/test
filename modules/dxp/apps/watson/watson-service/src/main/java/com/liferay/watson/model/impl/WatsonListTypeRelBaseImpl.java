@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonListTypeRelLocalServiceUtil;
 public abstract class WatsonListTypeRelBaseImpl
 	extends WatsonListTypeRelModelImpl implements WatsonListTypeRel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type rel model instance should use the <code>WatsonListTypeRel</code> interface instead.

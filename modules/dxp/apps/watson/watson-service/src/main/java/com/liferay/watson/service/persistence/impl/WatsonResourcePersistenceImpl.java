@@ -63,7 +63,7 @@ public class WatsonResourcePersistenceImpl
 	extends BasePersistenceImpl<WatsonResource>
 	implements WatsonResourcePersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonResourceUtil</code> to access the watson resource persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

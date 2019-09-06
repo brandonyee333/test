@@ -63,7 +63,7 @@ public class WatsonVehicleAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonVehicleAudit>
 	implements WatsonVehicleAuditPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonVehicleAuditUtil</code> to access the watson vehicle audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

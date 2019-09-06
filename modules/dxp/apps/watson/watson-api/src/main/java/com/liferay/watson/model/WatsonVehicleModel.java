@@ -48,7 +48,7 @@ public interface WatsonVehicleModel
 	extends BaseModel<WatsonVehicle>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson vehicle model instance should use the {@link WatsonVehicle} interface instead.

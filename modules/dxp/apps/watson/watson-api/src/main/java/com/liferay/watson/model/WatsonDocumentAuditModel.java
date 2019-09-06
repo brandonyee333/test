@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WatsonDocumentAuditModel
 	extends BaseModel<WatsonDocumentAudit>, GroupedModel, ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson document audit model instance should use the {@link WatsonDocumentAudit} interface instead.

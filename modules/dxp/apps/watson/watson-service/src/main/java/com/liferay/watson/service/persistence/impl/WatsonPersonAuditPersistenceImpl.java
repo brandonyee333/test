@@ -63,7 +63,7 @@ public class WatsonPersonAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonPersonAudit>
 	implements WatsonPersonAuditPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonPersonAuditUtil</code> to access the watson person audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

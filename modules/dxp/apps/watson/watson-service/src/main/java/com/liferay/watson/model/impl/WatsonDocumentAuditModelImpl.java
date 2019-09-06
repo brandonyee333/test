@@ -60,7 +60,7 @@ public class WatsonDocumentAuditModelImpl
 	extends BaseModelImpl<WatsonDocumentAudit>
 	implements WatsonDocumentAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson document audit model instance should use the <code>WatsonDocumentAudit</code> interface instead.

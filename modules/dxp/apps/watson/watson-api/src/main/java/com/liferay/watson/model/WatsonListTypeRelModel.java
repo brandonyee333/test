@@ -49,7 +49,7 @@ public interface WatsonListTypeRelModel
 	extends AttachedModel, BaseModel<WatsonListTypeRel>, GroupedModel,
 			LocalizedModel, ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson list type rel model instance should use the {@link WatsonListTypeRel} interface instead.

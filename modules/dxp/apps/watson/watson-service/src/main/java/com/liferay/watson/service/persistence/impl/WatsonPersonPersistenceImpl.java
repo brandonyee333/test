@@ -63,7 +63,7 @@ public class WatsonPersonPersistenceImpl
 	extends BasePersistenceImpl<WatsonPerson>
 	implements WatsonPersonPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonPersonUtil</code> to access the watson person persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

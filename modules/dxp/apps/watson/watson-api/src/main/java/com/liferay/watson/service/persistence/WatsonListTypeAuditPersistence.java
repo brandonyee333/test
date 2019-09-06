@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonListTypeAuditPersistence
 	extends BasePersistence<WatsonListTypeAudit> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeAuditUtil} to access the watson list type audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

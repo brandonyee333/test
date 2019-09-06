@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonPersonAuditModelImpl
 	extends BaseModelImpl<WatsonPersonAudit> implements WatsonPersonAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson person audit model instance should use the <code>WatsonPersonAudit</code> interface instead.

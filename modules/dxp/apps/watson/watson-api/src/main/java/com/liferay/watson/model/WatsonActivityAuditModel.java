@@ -48,7 +48,7 @@ public interface WatsonActivityAuditModel
 	extends BaseModel<WatsonActivityAudit>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson activity audit model instance should use the {@link WatsonActivityAudit} interface instead.

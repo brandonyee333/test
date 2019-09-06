@@ -65,7 +65,7 @@ public class WatsonAddressPersistenceImpl
 	extends BasePersistenceImpl<WatsonAddress>
 	implements WatsonAddressPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonAddressUtil</code> to access the watson address persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

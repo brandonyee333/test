@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonActivityLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonActivityLocalServiceUtil} to access the watson activity local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonActivityLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

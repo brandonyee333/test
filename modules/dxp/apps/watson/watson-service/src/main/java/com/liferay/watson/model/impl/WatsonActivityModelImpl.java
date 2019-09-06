@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonActivityModelImpl
 	extends BaseModelImpl<WatsonActivity> implements WatsonActivityModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson activity model instance should use the <code>WatsonActivity</code> interface instead.

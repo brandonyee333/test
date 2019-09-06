@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonIncidentRelAuditLocalServiceUtil;
 public abstract class WatsonIncidentRelAuditBaseImpl
 	extends WatsonIncidentRelAuditModelImpl implements WatsonIncidentRelAudit {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident rel audit model instance should use the <code>WatsonIncidentRelAudit</code> interface instead.

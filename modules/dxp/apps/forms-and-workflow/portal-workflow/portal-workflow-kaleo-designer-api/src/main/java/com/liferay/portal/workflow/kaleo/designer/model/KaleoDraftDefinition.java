@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface KaleoDraftDefinition
 	extends KaleoDraftDefinitionModel, PersistedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.portal.workflow.kaleo.designer.model.impl.KaleoDraftDefinitionImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

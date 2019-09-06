@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonChildAuditPersistence
 	extends BasePersistence<WatsonChildAudit> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonChildAuditUtil} to access the watson child audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

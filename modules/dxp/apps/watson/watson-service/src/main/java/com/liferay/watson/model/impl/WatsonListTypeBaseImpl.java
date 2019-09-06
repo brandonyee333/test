@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonListTypeLocalServiceUtil;
 public abstract class WatsonListTypeBaseImpl
 	extends WatsonListTypeModelImpl implements WatsonListType {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type model instance should use the <code>WatsonListType</code> interface instead.

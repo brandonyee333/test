@@ -48,7 +48,7 @@ public interface WatsonVehicleAuditModel
 	extends BaseModel<WatsonVehicleAudit>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson vehicle audit model instance should use the {@link WatsonVehicleAudit} interface instead.

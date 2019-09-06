@@ -91,7 +91,7 @@ public abstract class WatsonVehicleAuditLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements WatsonVehicleAuditLocalService, IdentifiableOSGiService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>WatsonVehicleAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonVehicleAuditLocalServiceUtil</code>.

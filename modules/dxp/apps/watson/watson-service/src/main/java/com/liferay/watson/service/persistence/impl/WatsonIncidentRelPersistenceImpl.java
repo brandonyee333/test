@@ -65,7 +65,7 @@ public class WatsonIncidentRelPersistenceImpl
 	extends BasePersistenceImpl<WatsonIncidentRel>
 	implements WatsonIncidentRelPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonIncidentRelUtil</code> to access the watson incident rel persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

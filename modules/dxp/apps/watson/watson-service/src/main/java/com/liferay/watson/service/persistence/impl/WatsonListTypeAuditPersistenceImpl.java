@@ -65,7 +65,7 @@ public class WatsonListTypeAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonListTypeAudit>
 	implements WatsonListTypeAuditPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonListTypeAuditUtil</code> to access the watson list type audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

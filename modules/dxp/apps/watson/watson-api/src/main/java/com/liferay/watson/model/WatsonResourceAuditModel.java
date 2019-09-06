@@ -48,7 +48,7 @@ public interface WatsonResourceAuditModel
 	extends BaseModel<WatsonResourceAudit>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson resource audit model instance should use the {@link WatsonResourceAudit} interface instead.

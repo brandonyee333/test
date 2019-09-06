@@ -68,7 +68,7 @@ public class WatsonListTypeAuditModelImpl
 	extends BaseModelImpl<WatsonListTypeAudit>
 	implements WatsonListTypeAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type audit model instance should use the <code>WatsonListTypeAudit</code> interface instead.

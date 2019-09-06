@@ -527,6 +527,11 @@ public class WatsonVehicleWrapper
 		return _watsonVehicle.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson vehicle model instance should use the <code>WatsonVehicle</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonVehicle.persist();

@@ -48,7 +48,7 @@ public interface WatsonPersonModel
 	extends BaseModel<WatsonPerson>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson person model instance should use the {@link WatsonPerson} interface instead.

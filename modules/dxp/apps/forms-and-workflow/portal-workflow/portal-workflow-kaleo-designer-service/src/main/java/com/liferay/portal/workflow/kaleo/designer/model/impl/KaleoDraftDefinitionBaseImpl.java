@@ -32,7 +32,7 @@ import com.liferay.portal.workflow.kaleo.designer.service.KaleoDraftDefinitionLo
 public abstract class KaleoDraftDefinitionBaseImpl
 	extends KaleoDraftDefinitionModelImpl implements KaleoDraftDefinition {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a kaleo draft definition model instance should use the <code>KaleoDraftDefinition</code> interface instead.

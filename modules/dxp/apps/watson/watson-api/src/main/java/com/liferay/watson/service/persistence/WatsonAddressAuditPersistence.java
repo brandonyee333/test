@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonAddressAuditPersistence
 	extends BasePersistence<WatsonAddressAudit> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonAddressAuditUtil} to access the watson address audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

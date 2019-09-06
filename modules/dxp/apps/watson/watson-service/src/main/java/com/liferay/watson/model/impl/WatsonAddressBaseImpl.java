@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonAddressLocalServiceUtil;
 public abstract class WatsonAddressBaseImpl
 	extends WatsonAddressModelImpl implements WatsonAddress {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson address model instance should use the <code>WatsonAddress</code> interface instead.

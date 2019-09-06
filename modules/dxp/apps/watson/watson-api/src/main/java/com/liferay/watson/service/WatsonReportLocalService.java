@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonReportLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonReportLocalServiceUtil} to access the watson report local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonReportLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

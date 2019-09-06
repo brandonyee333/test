@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonReportAuditPersistence
 	extends BasePersistence<WatsonReportAudit> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonReportAuditUtil} to access the watson report audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

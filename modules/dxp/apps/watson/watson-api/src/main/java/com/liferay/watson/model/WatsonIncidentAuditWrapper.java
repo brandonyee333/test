@@ -630,6 +630,11 @@ public class WatsonIncidentAuditWrapper
 		return _watsonIncidentAudit.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson incident audit model instance should use the <code>WatsonIncidentAudit</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonIncidentAudit.persist();

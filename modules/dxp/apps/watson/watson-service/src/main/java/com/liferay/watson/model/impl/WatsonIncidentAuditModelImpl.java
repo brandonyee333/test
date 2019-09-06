@@ -68,7 +68,7 @@ public class WatsonIncidentAuditModelImpl
 	extends BaseModelImpl<WatsonIncidentAudit>
 	implements WatsonIncidentAuditModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident audit model instance should use the <code>WatsonIncidentAudit</code> interface instead.

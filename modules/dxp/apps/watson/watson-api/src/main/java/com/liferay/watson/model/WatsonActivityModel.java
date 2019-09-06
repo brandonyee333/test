@@ -48,7 +48,7 @@ public interface WatsonActivityModel
 	extends BaseModel<WatsonActivity>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson activity model instance should use the {@link WatsonActivity} interface instead.

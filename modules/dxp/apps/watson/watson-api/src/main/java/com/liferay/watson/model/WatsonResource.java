@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface WatsonResource extends PersistedModel, WatsonResourceModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonResourceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

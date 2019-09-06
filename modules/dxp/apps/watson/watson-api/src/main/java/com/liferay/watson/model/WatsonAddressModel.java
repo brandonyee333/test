@@ -48,7 +48,7 @@ public interface WatsonAddressModel
 	extends BaseModel<WatsonAddress>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson address model instance should use the {@link WatsonAddress} interface instead.

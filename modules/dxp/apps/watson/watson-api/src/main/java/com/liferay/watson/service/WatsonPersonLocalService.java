@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonPersonLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonPersonLocalServiceUtil} to access the watson person local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonPersonLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

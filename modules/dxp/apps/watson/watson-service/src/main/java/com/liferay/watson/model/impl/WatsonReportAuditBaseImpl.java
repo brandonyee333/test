@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonReportAuditLocalServiceUtil;
 public abstract class WatsonReportAuditBaseImpl
 	extends WatsonReportAuditModelImpl implements WatsonReportAudit {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson report audit model instance should use the <code>WatsonReportAudit</code> interface instead.

@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonIncidentRelLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentRelLocalServiceUtil} to access the watson incident rel local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonIncidentRelLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

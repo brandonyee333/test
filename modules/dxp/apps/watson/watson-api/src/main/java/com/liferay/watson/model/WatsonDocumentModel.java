@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WatsonDocumentModel
 	extends BaseModel<WatsonDocument>, GroupedModel, ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson document model instance should use the {@link WatsonDocument} interface instead.

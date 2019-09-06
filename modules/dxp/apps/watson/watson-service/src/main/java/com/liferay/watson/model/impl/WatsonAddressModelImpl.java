@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonAddressModelImpl
 	extends BaseModelImpl<WatsonAddress> implements WatsonAddressModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson address model instance should use the <code>WatsonAddress</code> interface instead.

@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonIncidentPersistence
 	extends BasePersistence<WatsonIncident> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentUtil} to access the watson incident persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

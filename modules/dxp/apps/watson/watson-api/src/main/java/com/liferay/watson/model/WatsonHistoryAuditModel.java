@@ -45,7 +45,7 @@ public interface WatsonHistoryAuditModel
 	extends AttachedModel, BaseModel<WatsonHistoryAudit>, GroupedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson history audit model instance should use the {@link WatsonHistoryAudit} interface instead.

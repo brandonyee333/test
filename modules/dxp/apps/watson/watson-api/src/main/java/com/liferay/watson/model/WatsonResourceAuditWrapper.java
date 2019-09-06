@@ -524,6 +524,11 @@ public class WatsonResourceAuditWrapper
 		return _watsonResourceAudit.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson resource audit model instance should use the <code>WatsonResourceAudit</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonResourceAudit.persist();

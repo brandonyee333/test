@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonVehicleAuditLocalServiceUtil;
 public abstract class WatsonVehicleAuditBaseImpl
 	extends WatsonVehicleAuditModelImpl implements WatsonVehicleAudit {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson vehicle audit model instance should use the <code>WatsonVehicleAudit</code> interface instead.

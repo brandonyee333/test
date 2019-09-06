@@ -60,7 +60,7 @@ public class WatsonRelationshipModelImpl
 	extends BaseModelImpl<WatsonRelationship>
 	implements WatsonRelationshipModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson relationship model instance should use the <code>WatsonRelationship</code> interface instead.

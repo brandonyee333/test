@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WatsonRelationshipAuditModel
 	extends BaseModel<WatsonRelationshipAudit>, GroupedModel, ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson relationship audit model instance should use the {@link WatsonRelationshipAudit} interface instead.

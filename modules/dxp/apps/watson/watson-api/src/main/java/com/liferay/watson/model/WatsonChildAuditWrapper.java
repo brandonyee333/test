@@ -527,6 +527,11 @@ public class WatsonChildAuditWrapper
 		return _watsonChildAudit.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson child audit model instance should use the <code>WatsonChildAudit</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonChildAudit.persist();

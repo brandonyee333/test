@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonIncidentLocalServiceUtil;
 public abstract class WatsonIncidentBaseImpl
 	extends WatsonIncidentModelImpl implements WatsonIncident {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson incident model instance should use the <code>WatsonIncident</code> interface instead.

@@ -63,7 +63,7 @@ public class WatsonRelationshipPersistenceImpl
 	extends BasePersistenceImpl<WatsonRelationship>
 	implements WatsonRelationshipPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonRelationshipUtil</code> to access the watson relationship persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

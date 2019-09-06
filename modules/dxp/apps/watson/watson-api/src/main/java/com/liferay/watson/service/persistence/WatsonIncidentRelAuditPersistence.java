@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonIncidentRelAuditPersistence
 	extends BasePersistence<WatsonIncidentRelAudit> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentRelAuditUtil} to access the watson incident rel audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

@@ -457,6 +457,11 @@ public class WatsonListTypeRelWrapper
 		return _watsonListTypeRel.isPrimary();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a watson list type rel model instance should use the <code>WatsonListTypeRel</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_watsonListTypeRel.persist();

@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonAddressPersistence
 	extends BasePersistence<WatsonAddress> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonAddressUtil} to access the watson address persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

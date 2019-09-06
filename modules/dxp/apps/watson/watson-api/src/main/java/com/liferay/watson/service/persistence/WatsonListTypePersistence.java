@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonListTypePersistence
 	extends BasePersistence<WatsonListType> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonListTypeUtil} to access the watson list type persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

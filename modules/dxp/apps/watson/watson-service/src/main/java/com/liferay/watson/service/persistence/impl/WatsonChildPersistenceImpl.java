@@ -62,7 +62,7 @@ import java.util.Set;
 public class WatsonChildPersistenceImpl
 	extends BasePersistenceImpl<WatsonChild> implements WatsonChildPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonChildUtil</code> to access the watson child persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

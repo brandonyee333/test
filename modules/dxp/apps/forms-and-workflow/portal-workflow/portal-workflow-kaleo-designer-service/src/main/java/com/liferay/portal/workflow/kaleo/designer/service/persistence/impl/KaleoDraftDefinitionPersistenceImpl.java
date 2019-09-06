@@ -65,7 +65,7 @@ public class KaleoDraftDefinitionPersistenceImpl
 	extends BasePersistenceImpl<KaleoDraftDefinition>
 	implements KaleoDraftDefinitionPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>KaleoDraftDefinitionUtil</code> to access the kaleo draft definition persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonIncidentAuditLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonIncidentAuditLocalServiceUtil} to access the watson incident audit local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonIncidentAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

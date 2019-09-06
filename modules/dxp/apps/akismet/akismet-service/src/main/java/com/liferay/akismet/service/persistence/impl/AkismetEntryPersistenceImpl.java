@@ -66,7 +66,7 @@ public class AkismetEntryPersistenceImpl
 	extends BasePersistenceImpl<AkismetEntry>
 	implements AkismetEntryPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>AkismetEntryUtil</code> to access the akismet entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

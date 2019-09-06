@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonReportLocalServiceUtil;
 public abstract class WatsonReportBaseImpl
 	extends WatsonReportModelImpl implements WatsonReport {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson report model instance should use the <code>WatsonReport</code> interface instead.

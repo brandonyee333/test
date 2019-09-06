@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonDocumentLocalServiceUtil;
 public abstract class WatsonDocumentBaseImpl
 	extends WatsonDocumentModelImpl implements WatsonDocument {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson document model instance should use the <code>WatsonDocument</code> interface instead.

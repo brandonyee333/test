@@ -48,7 +48,7 @@ public interface WatsonListTypeAuditModel
 	extends BaseModel<WatsonListTypeAudit>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson list type audit model instance should use the {@link WatsonListTypeAudit} interface instead.

@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonVehicleModelImpl
 	extends BaseModelImpl<WatsonVehicle> implements WatsonVehicleModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson vehicle model instance should use the <code>WatsonVehicle</code> interface instead.
