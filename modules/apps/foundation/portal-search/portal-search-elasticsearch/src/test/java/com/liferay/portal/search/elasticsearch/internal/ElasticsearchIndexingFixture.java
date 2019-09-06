@@ -62,6 +62,8 @@ import com.liferay.portal.search.elasticsearch.internal.stats.DefaultStatsTransl
 import com.liferay.portal.search.elasticsearch.internal.suggest.ElasticsearchSuggesterTranslator;
 import com.liferay.portal.search.elasticsearch.internal.suggest.PhraseSuggesterTranslatorImpl;
 import com.liferay.portal.search.elasticsearch.internal.suggest.TermSuggesterTranslatorImpl;
+import com.liferay.portal.search.internal.groupby.GroupByResponseFactoryImpl;
+import com.liferay.portal.search.internal.legacy.groupby.GroupByRequestFactoryImpl;
 import com.liferay.portal.search.test.util.indexing.IndexingFixture;
 import com.liferay.portal.util.DigesterImpl;
 import com.liferay.portal.util.LocalizationImpl;
@@ -251,6 +253,8 @@ public class ElasticsearchIndexingFixture implements IndexingFixture {
 					elasticsearchConnectionManager1;
 				facetProcessor = _facetProcessor;
 				filterTranslator = createElasticsearchFilterTranslator();
+				groupByRequestFactory = new GroupByRequestFactoryImpl();
+				groupByResponseFactory = new GroupByResponseFactoryImpl();
 				groupByTranslator = new DefaultGroupByTranslator();
 				indexNameBuilder = indexNameBuilder1;
 				props = createProps();
