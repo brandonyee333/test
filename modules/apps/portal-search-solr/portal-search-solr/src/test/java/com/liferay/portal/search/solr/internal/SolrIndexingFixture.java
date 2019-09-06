@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.Props;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.search.internal.groupby.GroupByResponseFactoryImpl;
+import com.liferay.portal.search.internal.legacy.groupby.GroupByRequestFactoryImpl;
 import com.liferay.portal.search.solr.connection.SolrClientManager;
 import com.liferay.portal.search.solr.connection.TestSolrClientManager;
 import com.liferay.portal.search.solr.document.SolrUpdateDocumentCommand;
@@ -178,6 +180,8 @@ public class SolrIndexingFixture implements IndexingFixture {
 
 				setFacetProcessor(new DefaultFacetProcessor());
 				setFilterTranslator(createSolrFilterTranslator());
+				setGroupByRequestFactory(new GroupByRequestFactoryImpl());
+				setGroupByResponseFactory(new GroupByResponseFactoryImpl());
 				setGroupByTranslator(new DefaultGroupByTranslator());
 				setQuerySuggester(createSolrQuerySuggester(solrClientManager));
 				setQueryTranslator(createSolrQueryTranslator());
