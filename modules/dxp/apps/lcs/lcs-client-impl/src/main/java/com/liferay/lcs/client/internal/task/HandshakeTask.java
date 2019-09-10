@@ -23,6 +23,7 @@ import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
+import com.liferay.lcs.client.internal.command.queue.CommandQueue;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.exception.LCSHandshakeException;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
@@ -196,6 +197,8 @@ public class HandshakeTask implements Task {
 				if (_log.isTraceEnabled()) {
 					_log.trace("Unable to process message: " + receivedMessage);
 				}
+
+				_commandQueue.add(receivedMessage);
 
 				continue;
 			}
@@ -409,6 +412,9 @@ public class HandshakeTask implements Task {
 
 	@Reference
 	private ClusterExecutor _clusterExecutor;
+
+	@Reference
+	private CommandQueue _commandQueue;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
