@@ -45,8 +45,8 @@
 		<property name="portletId" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="pageURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="reportParameters" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="errorMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.portal.reports.engine.console.model.impl.SourceImpl" table="Reports_Source">
 		<id name="sourceId" type="long">
