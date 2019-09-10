@@ -410,7 +410,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	private void _onHandshakeSuccess() {
-		_scheduleCommandMessageTask();
+		_scheduleCommandMessageCheckTask();
+
+		_scheduleCommandQueueCheckTask();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling heartbeat task");
@@ -456,7 +458,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_executeLCSClusterEntryTokenCheckTask(true);
 	}
 
-	private void _scheduleCommandMessageTask() {
+	private void _scheduleCommandMessageCheckTask() {
 		Map<String, String> schedulerContext = new HashMap<>();
 
 		schedulerContext.put(
@@ -470,6 +472,25 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling command message task");
+		}
+
+		scheduleLocalScheduledTask(schedulerContext);
+	}
+
+	private void _scheduleCommandQueueCheckTask() {
+		Map<String, String> schedulerContext = new HashMap<>();
+
+		schedulerContext.put(
+			"initialDelay",
+			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
+		schedulerContext.put(
+			"interval",
+			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
+		schedulerContext.put(
+			"taskName", "com.liferay.lcs.task.CommandQueueCheckTask");
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Scheduling command queue task");
 		}
 
 		scheduleLocalScheduledTask(schedulerContext);
