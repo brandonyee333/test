@@ -1354,7 +1354,7 @@ public class LayoutTypePortletImpl
 			return null;
 		}
 
-		if (isCustomizable()) {
+		if (isColumnCustomizable(columnId)) {
 			if (isColumnDisabled(columnId)) {
 				return null;
 			}
