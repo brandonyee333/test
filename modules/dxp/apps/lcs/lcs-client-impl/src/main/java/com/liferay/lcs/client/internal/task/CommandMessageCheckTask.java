@@ -35,18 +35,18 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  */
 @Component(
-	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.CommandMessageTask",
+	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.CommandMessageCheckTask",
 	service = ScheduledTask.class
 )
-public class CommandMessageTask extends BaseScheduledTask {
+public class CommandMessageCheckTask extends BaseScheduledTask {
 
-	public CommandMessageTask() {
+	public CommandMessageCheckTask() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
 		}
 	}
 
-	public CommandMessageTask(
+	public CommandMessageCheckTask(
 		ClusterMasterExecutor clusterMasterExecutor,
 		CommandAdvisor commandAdvisor, LCSGatewayClient lcsGatewayClient,
 		LCSKeyAdvisor lcsKeyAdvisor) {
@@ -117,7 +117,7 @@ public class CommandMessageTask extends BaseScheduledTask {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommandMessageTask.class);
+		CommandMessageCheckTask.class);
 
 	@Reference
 	private ClusterMasterExecutor _clusterMasterExecutor;

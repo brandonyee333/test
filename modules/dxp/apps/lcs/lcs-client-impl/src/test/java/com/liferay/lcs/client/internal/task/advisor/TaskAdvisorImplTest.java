@@ -22,7 +22,7 @@ import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
 import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
-import com.liferay.lcs.client.internal.task.CommandMessageTask;
+import com.liferay.lcs.client.internal.task.CommandMessageCheckTask;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -101,9 +101,10 @@ public class TaskAdvisorImplTest extends PowerMockito {
 			_digitalSignature, _lcsConfigurationProvider, _lcsGatewayClient,
 			_lcsKeyAdvisor, sendPatchesCommand, sendPortalPropertiesCommand);
 
-		CommandMessageTask commandMessageTask = new CommandMessageTask(
-			mock(ClusterMasterExecutor.class), commandAdvisor,
-			_lcsGatewayClient, _lcsKeyAdvisor);
+		CommandMessageCheckTask commandMessageCheckTask =
+			new CommandMessageCheckTask(
+				mock(ClusterMasterExecutor.class), commandAdvisor,
+				_lcsGatewayClient, _lcsKeyAdvisor);
 
 		when(
 			_lcsGatewayClient.getMessages(Mockito.anyString())
@@ -111,7 +112,7 @@ public class TaskAdvisorImplTest extends PowerMockito {
 			Collections.singletonList(sendPortalPropertiesCommandMessage)
 		);
 
-		commandMessageTask.run();
+		commandMessageCheckTask.run();
 
 		Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
@@ -135,7 +136,7 @@ public class TaskAdvisorImplTest extends PowerMockito {
 			Collections.singletonList(sendPatchesCommandMessage)
 		);
 
-		commandMessageTask.run();
+		commandMessageCheckTask.run();
 
 		activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 

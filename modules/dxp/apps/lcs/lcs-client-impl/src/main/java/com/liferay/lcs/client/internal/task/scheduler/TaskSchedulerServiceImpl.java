@@ -466,7 +466,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			"interval",
 			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
 		schedulerContext.put(
-			"taskName", "com.liferay.lcs.task.CommandMessageTask");
+			"taskName", "com.liferay.lcs.task.CommandMessageCheckTask");
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling command message task");
