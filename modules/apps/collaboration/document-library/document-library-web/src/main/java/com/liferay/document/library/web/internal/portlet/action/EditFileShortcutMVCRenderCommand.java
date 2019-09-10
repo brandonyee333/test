@@ -19,8 +19,11 @@ import com.liferay.document.library.kernel.exception.NoSuchFileShortcutException
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.repository.model.FileShortcut;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portlet.documentlibrary.service.permission.DLFileShortcutPermission;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -51,6 +54,13 @@ public class EditFileShortcutMVCRenderCommand implements MVCRenderCommand {
 		try {
 			FileShortcut fileShortcut = ActionUtil.getFileShortcut(
 				renderRequest);
+
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			DLFileShortcutPermission.check(
+				themeDisplay.getPermissionChecker(), fileShortcut,
+				ActionKeys.UPDATE);
 
 			renderRequest.setAttribute(
 				WebKeys.DOCUMENT_LIBRARY_FILE_SHORTCUT, fileShortcut);

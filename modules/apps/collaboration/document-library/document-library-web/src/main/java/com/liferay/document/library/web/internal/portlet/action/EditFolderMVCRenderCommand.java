@@ -15,7 +15,12 @@
 package com.liferay.document.library.web.internal.portlet.action;
 
 import com.liferay.document.library.constants.DLPortletKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.repository.model.Folder;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -35,6 +40,14 @@ import org.osgi.service.component.annotations.Component;
 	service = MVCRenderCommand.class
 )
 public class EditFolderMVCRenderCommand extends GetFolderMVCRenderCommand {
+
+	@Override
+	protected void checkPermissions(
+			PermissionChecker permissionChecker, Folder folder)
+		throws PortalException {
+
+		DLFolderPermission.check(permissionChecker, folder, ActionKeys.UPDATE);
+	}
 
 	@Override
 	protected String getPath() {
