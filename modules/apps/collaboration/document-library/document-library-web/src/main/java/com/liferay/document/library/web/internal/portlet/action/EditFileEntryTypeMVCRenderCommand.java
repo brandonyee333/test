@@ -24,10 +24,13 @@ import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portlet.documentlibrary.service.permission.DLFileEntryTypePermission;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
@@ -66,6 +69,13 @@ public class EditFileEntryTypeMVCRenderCommand implements MVCRenderCommand {
 
 			DLFileEntryType dlFileEntryType =
 				_dlFileEntryTypeService.getFileEntryType(fileEntryTypeId);
+
+			ThemeDisplay themeDisplay =
+				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			DLFileEntryTypePermission.check(
+				themeDisplay.getPermissionChecker(), dlFileEntryType,
+				ActionKeys.UPDATE);
 
 			renderRequest.setAttribute(
 				WebKeys.DOCUMENT_LIBRARY_FILE_ENTRY_TYPE, dlFileEntryType);
