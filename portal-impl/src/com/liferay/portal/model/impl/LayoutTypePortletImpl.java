@@ -787,10 +787,8 @@ public class LayoutTypePortletImpl
 
 	@Override
 	public boolean isCustomizable() {
-		String customizableLayout = getTypeSettingsProperty(
-			LayoutConstants.CUSTOMIZABLE_LAYOUT);
-
-		return GetterUtil.getBoolean(customizableLayout);
+		return GetterUtil.getBoolean(
+			getTypeSettingsProperty(LayoutConstants.CUSTOMIZABLE_LAYOUT));
 	}
 
 	@Override
