@@ -21,8 +21,10 @@ import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
 import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
+import com.liferay.lcs.client.internal.command.queue.CommandQueue;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.task.CommandMessageCheckTask;
+import com.liferay.lcs.client.internal.task.CommandQueueCheckTask;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -83,36 +85,40 @@ public class TaskAdvisorImplTest extends PowerMockito {
 	public void testGetActiveServiceLabels() throws Exception {
 		TaskAdvisorImpl taskAdvisor = new TaskAdvisorImpl();
 
+		SendPatchesCommand sendPatchesCommand = new SendPatchesCommand(
+			_lcsGatewayClient, taskAdvisor);
+
 		SendPortalPropertiesCommand sendPortalPropertiesCommand =
 			new SendPortalPropertiesCommand(
 				mock(LCSClusterEntryTokenAdvisor.class), _lcsGatewayClient,
 				taskAdvisor);
 
-		SendPortalPropertiesCommandMessage sendPortalPropertiesCommandMessage =
-			new SendPortalPropertiesCommandMessage();
-
-		SendPatchesCommandMessage sendPatchesCommandMessage =
-			new SendPatchesCommandMessage();
-
-		SendPatchesCommand sendPatchesCommand = new SendPatchesCommand(
-			_lcsGatewayClient, taskAdvisor);
-
 		CommandAdvisor commandAdvisor = new CommandAdvisor(
 			_digitalSignature, _lcsConfigurationProvider, _lcsGatewayClient,
 			_lcsKeyAdvisor, sendPatchesCommand, sendPortalPropertiesCommand);
 
+		ClusterMasterExecutor mockClusterMasterExecutor = mock(
+			ClusterMasterExecutor.class);
+
+		CommandQueue commandQueue = new CommandQueue();
+
 		CommandMessageCheckTask commandMessageCheckTask =
 			new CommandMessageCheckTask(
-				mock(ClusterMasterExecutor.class), commandAdvisor,
-				_lcsGatewayClient, _lcsKeyAdvisor);
+				mockClusterMasterExecutor, commandQueue, _lcsGatewayClient,
+				_lcsKeyAdvisor);
+
+		CommandQueueCheckTask commandQueueCheckTask = new CommandQueueCheckTask(
+			mockClusterMasterExecutor, commandAdvisor, commandQueue,
+			_lcsGatewayClient, _lcsKeyAdvisor);
 
 		when(
 			_lcsGatewayClient.getMessages(Mockito.anyString())
 		).thenReturn(
-			Collections.singletonList(sendPortalPropertiesCommandMessage)
+			Collections.singletonList(new SendPortalPropertiesCommandMessage())
 		);
 
 		commandMessageCheckTask.run();
+		commandQueueCheckTask.run();
 
 		Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
@@ -133,10 +139,11 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		when(
 			_lcsGatewayClient.getMessages(Mockito.anyString())
 		).thenReturn(
-			Collections.singletonList(sendPatchesCommandMessage)
+			Collections.singletonList(new SendPatchesCommandMessage())
 		);
 
 		commandMessageCheckTask.run();
+		commandQueueCheckTask.run();
 
 		activeServiceLabels = taskAdvisor.getActiveServiceLabels();
 
