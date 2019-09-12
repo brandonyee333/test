@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Security Audit Web
 Bundle-SymbolicName: com.liferay.portal.security.audit.web
-Bundle-Version: 1.0.24
+Bundle-Version: 1.0.25
 Liferay-Releng-Module-Group-Title: Audit
 Web-ContextPath: /portal-security-audit-web
 -include: ../../../../../../modules/apps/foundation/app.bnd
