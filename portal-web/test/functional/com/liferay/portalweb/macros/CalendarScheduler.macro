@@ -5,6 +5,8 @@ definition {
 
 		ScrollWebElementIntoView(locator1 = "Calendar#SCHEDULER_REGULAR_EVENT_SPECIFIC_CURRENT_DAY_VIA_DAY_OR_WEEK_VIEW");
 
+		Refresh();
+
 		AssertClick.assertPartialTextClickAt(
 			locator1 = "Calendar#SCHEDULER_REGULAR_EVENT_SPECIFIC_CURRENT_DAY_VIA_DAY_OR_WEEK_VIEW",
 			value1 = "${eventTitle}");
