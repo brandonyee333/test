@@ -84,14 +84,10 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject ticketJSONObject = jsonArray.getJSONObject(i);
 
-			long generatedTimestamp =
-				ticketJSONObject.getLong("generated_timestamp");
-
-			String updatedAt = ticketJSONObject.getString("updated_at");
-
 			if (_isSystemUpdate(
-					generatedTimestamp, syncState.getLastRunTime(),
-					updatedAt)) {
+					ticketJSONObject.getLong("generated_timestamp"),
+					syncState.getLastRunTime(),
+					ticketJSONObject.getString("updated_at"))) {
 
 				continue;
 			}
@@ -164,15 +160,17 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 			long generatedTimestamp, long startTime, String updatedAt)
 		throws Exception {
 
-		Instant instant = Instant.parse(updatedAt);
-
-		if ((instant.getEpochSecond() < startTime) &&
-			(generatedTimestamp < startTime)) {
-
-			return true;
+		if (generatedTimestamp >= startTime) {
+			return false;
 		}
 
-		return false;
+		Instant instant = Instant.parse(updatedAt);
+
+		if (instant.getEpochSecond() >= startTime) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private void _processNextPage(String nextPage) throws PortalException {
