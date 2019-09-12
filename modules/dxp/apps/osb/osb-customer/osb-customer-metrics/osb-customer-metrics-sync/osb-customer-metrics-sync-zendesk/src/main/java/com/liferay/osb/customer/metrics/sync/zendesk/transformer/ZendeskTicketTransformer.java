@@ -84,9 +84,15 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject ticketJSONObject = jsonArray.getJSONObject(i);
 
+			long generatedTimestamp =
+				ticketJSONObject.getLong("generated_timestamp");
+
 			String updatedAt = ticketJSONObject.getString("updated_at");
 
-			if (_isSystemUpdate(syncState.getLastRunTime(), updatedAt)) {
+			if (_isSystemUpdate(
+					generatedTimestamp, syncState.getLastRunTime(),
+					updatedAt)) {
+
 				continue;
 			}
 
@@ -154,12 +160,15 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 		return StringUtil.toLowerCase(name);
 	}
 
-	private boolean _isSystemUpdate(long startTime, String updatedAt)
+	private boolean _isSystemUpdate(
+			long generatedTimestamp, long startTime, String updatedAt)
 		throws Exception {
 
 		Instant instant = Instant.parse(updatedAt);
 
-		if (instant.getEpochSecond() < startTime) {
+		if ((instant.getEpochSecond() < startTime) &&
+			(generatedTimestamp < startTime)) {
+
 			return true;
 		}
 
