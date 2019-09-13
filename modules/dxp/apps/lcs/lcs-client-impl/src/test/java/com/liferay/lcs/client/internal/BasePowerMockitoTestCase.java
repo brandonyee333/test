@@ -53,12 +53,6 @@ public abstract class BasePowerMockitoTestCase extends PowerMockito {
 	protected LCSConfigurationProvider mockLCSConfigurationProvider() {
 		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
 
-		when(
-			lcsConfiguration.lcsClientBuildNumber()
-		).thenReturn(
-			600
-		);
-
 		LCSConfigurationProvider lcsConfigurationProvider = mock(
 			LCSConfigurationProvider.class);
 

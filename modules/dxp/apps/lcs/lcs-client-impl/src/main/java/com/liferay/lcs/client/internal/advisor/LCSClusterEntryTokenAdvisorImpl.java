@@ -20,6 +20,7 @@ import com.liferay.lcs.activation.LCSClusterEntryTokenContentAdvisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.exception.LCSClusterEntryTokenDecryptException;
@@ -129,7 +130,8 @@ public class LCSClusterEntryTokenAdvisorImpl
 			   MultipleLCSClusterEntryTokenException {
 
 		LCSClusterEntryToken lcsClusterEntryToken =
-			_processLCSClusterEntryTokenFile(_getLCSClientBuildNumber());
+			_processLCSClusterEntryTokenFile(
+				LCSClientConstants.LCS_CLIENT_BUILD_NUMBER);
 
 		LCSClusterEntryTokenContentAdvisor lcsClusterEntryTokenContentAdvisor =
 			new LCSClusterEntryTokenContentAdvisor(
@@ -276,13 +278,6 @@ public class LCSClusterEntryTokenAdvisorImpl
 			throw new LCSKeystoreException(
 				"Unable to locate LCS certificate " + keyName, kse);
 		}
-	}
-
-	private int _getLCSClientBuildNumber() {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		return lcsConfiguration.lcsClientBuildNumber();
 	}
 
 	private KeyStore _getLCSKeystore() {

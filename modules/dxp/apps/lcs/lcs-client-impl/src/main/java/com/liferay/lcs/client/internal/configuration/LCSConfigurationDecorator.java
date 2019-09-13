@@ -48,11 +48,6 @@ public class LCSConfigurationDecorator implements LCSConfiguration {
 	}
 
 	@Override
-	public int communicationHeartbeatInterval() {
-		return _lcsConfiguration.communicationHeartbeatInterval();
-	}
-
-	@Override
 	public String digitalSignatureKeyName() {
 		return _lcsConfiguration.digitalSignatureKeyName();
 	}
@@ -90,16 +85,6 @@ public class LCSConfigurationDecorator implements LCSConfiguration {
 	@Override
 	public String keyGeneratorKeyStoreType() {
 		return _lcsConfiguration.keyGeneratorKeyStoreType();
-	}
-
-	@Override
-	public int lcsClientBuildNumber() {
-		return _lcsConfiguration.lcsClientBuildNumber();
-	}
-
-	@Override
-	public String lcsClientVersion() {
-		return _lcsConfiguration.lcsClientVersion();
 	}
 
 	@Override

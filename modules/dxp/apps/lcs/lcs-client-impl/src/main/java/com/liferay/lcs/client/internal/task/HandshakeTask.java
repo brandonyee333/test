@@ -17,8 +17,7 @@ package com.liferay.lcs.client.internal.task;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.alert.LCSAlert;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
@@ -43,7 +42,6 @@ import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.monitoring.PortalMonitoringControl;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.servlet.LiferayFilter;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ReleaseInfo;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -101,11 +99,6 @@ public class HandshakeTask implements Task {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
 		}
-
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_heartbeatInterval = lcsConfiguration.communicationHeartbeatInterval();
 	}
 
 	@Override
@@ -245,10 +238,8 @@ public class HandshakeTask implements Task {
 	}
 
 	private void _checkLCSClientBuildNumber(int latestLCSClientBuildNumber) {
-		LCSConfiguration lcsConfiguration = _getLCSConfiguration();
-
 		if (latestLCSClientBuildNumber >
-				lcsConfiguration.lcsClientBuildNumber()) {
+				LCSClientConstants.LCS_CLIENT_BUILD_NUMBER) {
 
 			_lcsAlertAdvisor.add(
 				LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE);
@@ -271,7 +262,7 @@ public class HandshakeTask implements Task {
 		handshakeMessage.setHashCode(key.hashCode());
 
 		handshakeMessage.setHeartbeatInterval(
-			GetterUtil.getLong(_heartbeatInterval, 60000L));
+			LCSClientConstants.HEARTBEAT_INTERVAL);
 
 		handshakeMessage.setKey(key);
 
@@ -282,12 +273,10 @@ public class HandshakeTask implements Task {
 			LicenseManagerUtil.getHostName() + StringPool.DASH +
 				System.currentTimeMillis());
 
-		LCSConfiguration lcsConfiguration = _getLCSConfiguration();
-
 		handshakeMessage.setLCSPortletBuildNumber(
-			lcsConfiguration.lcsClientBuildNumber());
+			LCSClientConstants.LCS_CLIENT_BUILD_NUMBER);
 		handshakeMessage.setLCSPortletVersion(
-			lcsConfiguration.lcsClientVersion());
+			LCSClientConstants.LCS_CLIENT_VERSION);
 
 		handshakeMessage.setMonitoringEnabled(_isMonitoringEnabled());
 
@@ -326,10 +315,6 @@ public class HandshakeTask implements Task {
 		}
 
 		return _lcsKeyAdvisor.getTemporaryKey();
-	}
-
-	private LCSConfiguration _getLCSConfiguration() {
-		return _lcsConfigurationProvider.getLCSConfiguration();
 	}
 
 	private List<Map<String, Long>> _getPortalUptimeEntries() {
@@ -419,8 +404,6 @@ public class HandshakeTask implements Task {
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private int _heartbeatInterval;
-
 	@Reference
 	private InstallationEnvironmentAdvisor _installationEnvironmentAdvisor;
 
@@ -429,9 +412,6 @@ public class HandshakeTask implements Task {
 
 	@Reference
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-
-	@Reference
-	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 	@Reference
 	private LCSEventManager _lcsEventManager;

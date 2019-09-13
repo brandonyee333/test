@@ -16,6 +16,7 @@ package com.liferay.lcs.client.internal.command.advisor;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.command.CheckHeartbeatCommand;
 import com.liferay.lcs.client.internal.command.Command;
@@ -107,10 +108,7 @@ public class CommandAdvisor {
 
 	@Activate
 	protected void activate() {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_initDigitalSignature(lcsConfiguration);
+		_initDigitalSignature(_lcsConfigurationProvider.getLCSConfiguration());
 
 		_initCommands();
 	}
@@ -194,7 +192,8 @@ public class CommandAdvisor {
 
 		try {
 			if (_digitalSignature.verifyMessage(
-					_getLCSClientBuildNumber(), commandMessage)) {
+					LCSClientConstants.LCS_CLIENT_BUILD_NUMBER,
+					commandMessage)) {
 
 				return new CommandValidator(CommandValidationResult.VALID);
 			}
@@ -209,13 +208,6 @@ public class CommandAdvisor {
 				CommandValidationResult.UNABLE_TO_VERIFY_DIGITAL_SIGNATURE,
 				e.getMessage());
 		}
-	}
-
-	private int _getLCSClientBuildNumber() {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		return lcsConfiguration.lcsClientBuildNumber();
 	}
 
 	private void _initCommands() {

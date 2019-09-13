@@ -16,6 +16,7 @@ package com.liferay.lcs.client.internal.task.scheduler;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
@@ -197,7 +198,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		LCSConfiguration lcsConfiguration =
 			_lcsConfigurationProvider.getLCSConfiguration();
 
-		_heartbeatInterval = lcsConfiguration.communicationHeartbeatInterval();
 		_defaultInterval = lcsConfiguration.commandScheduleDefaultInterval();
 
 		_subscribeToLCSEvents();
@@ -424,7 +424,8 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			clazz.getName(),
 			_scheduledExecutorService.scheduleAtFixedRate(
 				new HeartbeatTask(_lcsKeyAdvisor.getKey(), _lcsGatewayClient),
-				10000L, _heartbeatInterval, TimeUnit.MILLISECONDS));
+				10000L, LCSClientConstants.HEARTBEAT_INTERVAL,
+				TimeUnit.MILLISECONDS));
 	}
 
 	private void _onLCSGatewayServiceUnavailable() {
@@ -544,8 +545,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		unbind = "-"
 	)
 	private Task _handshakeTask;
-
-	private int _heartbeatInterval;
 
 	@Reference(
 		target = "(component.name=com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask)",

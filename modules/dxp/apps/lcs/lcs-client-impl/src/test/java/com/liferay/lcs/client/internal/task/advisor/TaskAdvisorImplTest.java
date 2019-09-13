@@ -17,6 +17,7 @@ package com.liferay.lcs.client.internal.task.advisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
@@ -70,7 +71,7 @@ public class TaskAdvisorImplTest extends PowerMockito {
 
 		_mockDigitalSignature();
 
-		_mockLCSConfigurationProvider(500);
+		_mockLCSConfigurationProvider();
 
 		_mockLCSGatewayClient();
 
@@ -170,20 +171,15 @@ public class TaskAdvisorImplTest extends PowerMockito {
 		).when(
 			_digitalSignature
 		).verifyMessage(
-			Matchers.eq(500), Matchers.any(Message.class)
+			Matchers.eq(LCSClientConstants.LCS_CLIENT_BUILD_NUMBER),
+			Matchers.any(Message.class)
 		);
 	}
 
-	private void _mockLCSConfigurationProvider(int lcsClientBuildNumber) {
+	private void _mockLCSConfigurationProvider() {
 		_lcsConfigurationProvider = mock(LCSConfigurationProvider.class);
 
 		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
-
-		doReturn(
-			lcsClientBuildNumber
-		).when(
-			lcsConfiguration
-		).lcsClientBuildNumber();
 
 		doReturn(
 			lcsConfiguration

@@ -14,8 +14,7 @@
 
 package com.liferay.lcs.client.internal.lifecycle;
 
-import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -33,31 +32,23 @@ public class LCSModuleLifecycle {
 
 	@Activate
 	protected void activate() {
-		_lcsConfiguration = _lcsConfigurationProvider.getLCSConfiguration();
-
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				"LCS client " + _lcsConfiguration.lcsClientVersion() +
-					" activated");
+			_log.info(_LCS_CLIENT_FULL_NAME + " activated");
 		}
 	}
 
 	@Deactivate
 	protected void deactivate() {
 		if (_log.isWarnEnabled()) {
-			_log.warn(
-				"LCS client " + _lcsConfiguration.lcsClientVersion() +
-					" deactivated");
+			_log.warn(_LCS_CLIENT_FULL_NAME + " deactivated");
 		}
 	}
 
+	private static final String _LCS_CLIENT_FULL_NAME =
+		"LCS Client " + LCSClientConstants.LCS_CLIENT_VERSION;
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSModuleLifecycle.class);
-
-	private LCSConfiguration _lcsConfiguration;
-
-	@Reference
-	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;

@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
+import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
@@ -225,10 +226,8 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 	@Activate
 	protected void activate() throws Exception {
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_initJSONWebServiceClient(lcsConfiguration);
+		_initJSONWebServiceClient(
+			_lcsConfigurationProvider.getLCSConfiguration());
 
 		_subscribeToLCSEvents();
 
@@ -280,12 +279,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			return _baseHeaders;
 		}
 
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
 		_baseHeaders.put(
 			"LCS_PORTLET_BUILD_NUMBER",
-			String.valueOf(lcsConfiguration.lcsClientBuildNumber()));
+			String.valueOf(LCSClientConstants.LCS_CLIENT_BUILD_NUMBER));
 
 		_baseHeaders.put("PROTOCOL_VERSION", Message.PROTOCOL_VERSION_CURRENT);
 
