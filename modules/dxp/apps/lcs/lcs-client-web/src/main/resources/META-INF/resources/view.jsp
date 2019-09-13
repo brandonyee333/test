@@ -91,7 +91,7 @@ Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute(LCSClientWebKeys.L
 <footer class="footer">
 	<div class="container-fluid-1280">
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= lcsConfiguration.lcsClientVersion() %>" key="liferay-connected-services-client-x" />
+			<liferay-ui:message arguments="<%= LCSClientConstants.LCS_CLIENT_VERSION %>" key="liferay-connected-services-client-x" />
 		</div>
 
 		<div class="footer-note">
