@@ -46,9 +46,6 @@ public interface LCSConfiguration {
 	@Meta.AD(deflt = "86400", required = false)
 	public int commandScheduleDefaultInterval();
 
-	@Meta.AD(deflt = "60000", required = false)
-	public int communicationHeartbeatInterval();
-
 	@Meta.AD(deflt = "localhost", required = false)
 	public String digitalSignatureKeyName();
 
@@ -72,12 +69,6 @@ public interface LCSConfiguration {
 
 	@Meta.AD(deflt = "JCEKS", required = false)
 	public String keyGeneratorKeyStoreType();
-
-	@Meta.AD(deflt = "6.0.0", required = false)
-	public String lcsClientVersion();
-
-	@Meta.AD(deflt = "600", required = false)
-	public int lcsClientBuildNumber();
 
 	@Meta.AD(
 		deflt = "https://web.liferay.com/marketplace/-/mp/application/71774947",
