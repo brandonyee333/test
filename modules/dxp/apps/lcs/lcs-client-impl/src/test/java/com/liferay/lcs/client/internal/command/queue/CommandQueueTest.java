@@ -34,22 +34,21 @@ public class CommandQueueTest {
 	public void testAdd() {
 		CommandQueue commandQueue = new CommandQueue();
 
-		String queueStatus = commandQueue.commandStatus();
+		Assert.assertNull("Returned value if queue empty", commandQueue.next());
 
-		Assert.assertTrue(
-			"Command queue is empty",
-			queueStatus.contains("queued commands = 0"));
+		Assert.assertEquals(
+			"Consumed commands count", 0L, commandQueue.getConsumedCount());
+
+		Assert.assertEquals(
+			"Queued commands count", 0L, commandQueue.getQueuedCount());
 
 		commandQueue.add(new SendPortalPropertiesCommandMessage());
 
-		queueStatus = commandQueue.commandStatus();
+		Assert.assertEquals(
+			"Consumed commands count", 0L, commandQueue.getConsumedCount());
 
-		Assert.assertTrue(
-			"Command queue has 1 command queued",
-			queueStatus.contains("queued commands = 1"));
-		Assert.assertTrue(
-			"Command queue has 0 command consumed",
-			queueStatus.contains("consumed = 0"));
+		Assert.assertEquals(
+			"Queued commands count", 1L, commandQueue.getQueuedCount());
 	}
 
 	@Test
@@ -60,11 +59,11 @@ public class CommandQueueTest {
 
 		Assert.assertNull("Command queue is empty", commandQueue.next());
 
-		String queueStatus = commandQueue.commandStatus();
+		Assert.assertEquals(
+			"Consumed commands count", 20L, commandQueue.getConsumedCount());
 
-		Assert.assertTrue(
-			"Command queue has 20 command queued and 20 consumed",
-			queueStatus.contains("queued commands = 20, consumed = 20"));
+		Assert.assertEquals(
+			"Queued commands count", 20L, commandQueue.getQueuedCount());
 	}
 
 	@Test
@@ -73,31 +72,22 @@ public class CommandQueueTest {
 
 		commandQueue.add(new SendPortalPropertiesCommandMessage());
 
-		String queueStatus = commandQueue.commandStatus();
+		Assert.assertEquals(
+			"Consumed commands count", 0L, commandQueue.getConsumedCount());
 
-		Assert.assertTrue(
-			"Command queue has 1 command queued",
-			queueStatus.contains("queued commands = 1"));
-		Assert.assertTrue(
-			"Command queue has 0 command consumed",
-			queueStatus.contains("consumed = 0"));
+		Assert.assertEquals(
+			"Queued commands count", 1L, commandQueue.getQueuedCount());
 
 		commandQueue.next();
 
-		queueStatus = commandQueue.commandStatus();
-
-		Assert.assertTrue(
-			"Command queue has 1 command consumed",
-			queueStatus.contains("consumed = 1"));
+		Assert.assertEquals(
+			"Consumed commands count", 1L, commandQueue.getConsumedCount());
 
 		Assert.assertNull("Returned value if queue empty", commandQueue.next());
 
-		queueStatus = commandQueue.commandStatus();
-
-		Assert.assertTrue(
-			"Command queue has unchanged consumed value on next call on " +
-				"empty queue",
-			queueStatus.contains("consumed = 1"));
+		Assert.assertEquals(
+			"Consumed commands count after `next` call on empty queue", 1L,
+			commandQueue.getConsumedCount());
 	}
 
 	private void _runInThreads(int threadCount, CommandQueue commandQueue) {
