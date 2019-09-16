@@ -137,6 +137,9 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 				try {
 					RemoteUserLocalServiceUtil.addOrganizationUsers(
 						organizationId, new long[] {userId});
+
+					UserLocalServiceUtil.addOrganizationUser(
+						organizationId, userId);
 				}
 				catch (Exception e) {
 					_log.error(e, e);
@@ -178,6 +181,8 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 				try {
 					RemoteUserLocalServiceUtil.addRoleUsers(
 						roleId, new long[] {userId});
+
+					UserLocalServiceUtil.addRoleUser(roleId, userId);
 				}
 				catch (Exception e) {
 					_log.error(e, e);
@@ -541,6 +546,9 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 				try {
 					RemoteUserLocalServiceUtil.unsetOrganizationUsers(
 						organizationId, new long[] {userId});
+
+					UserLocalServiceUtil.unsetOrganizationUsers(
+						organizationId, new long[] {userId});
 				}
 				catch (Exception e) {
 					_log.error(e, e);
@@ -584,6 +592,8 @@ public class SynchronizeUsersMessageListener extends BaseMessageListener {
 
 				try {
 					RemoteUserLocalServiceUtil.deleteRoleUser(roleId, userId);
+
+					UserLocalServiceUtil.deleteRoleUser(roleId, userId);
 				}
 				catch (Exception e) {
 					_log.error(e, e);
