@@ -363,6 +363,10 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 			return;
 		}
 
+		if (_log.isTraceEnabled()) {
+			_log.trace("Executing sign off task");
+		}
+
 		_signOffPending = true;
 
 		Future<?> future = _scheduledExecutorService.submit(_signOffTask);
@@ -372,10 +376,6 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 
 		_signOffPending = false;
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Sign out task executed");
-		}
 	}
 
 	private int _getInitialDelay(Map<String, String> schedulerContext) {
