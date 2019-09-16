@@ -14,12 +14,9 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Eddie Olson
  */
-@ProviderType
 public class WatsonActivityImpl extends WatsonActivityBaseImpl {
 
 	public WatsonActivityImpl() {

@@ -14,12 +14,9 @@
 
 package com.liferay.watson.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Steven Smith
  */
-@ProviderType
 public class WatsonDocumentImpl extends WatsonDocumentBaseImpl {
 
 	public WatsonDocumentImpl() {

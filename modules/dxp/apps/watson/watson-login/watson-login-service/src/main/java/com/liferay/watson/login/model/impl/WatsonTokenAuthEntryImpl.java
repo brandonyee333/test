@@ -14,14 +14,11 @@
 
 package com.liferay.watson.login.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.util.Date;
 
 /**
  * @author Steven Smith
  */
-@ProviderType
 public class WatsonTokenAuthEntryImpl extends WatsonTokenAuthEntryBaseImpl {
 
 	public boolean isExpired() {

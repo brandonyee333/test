@@ -14,14 +14,11 @@
 
 package com.liferay.akismet.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Jamie Sammons
  */
-@ProviderType
 public class NoSuchAkismetEntryException extends NoSuchModelException {
 
 	public NoSuchAkismetEntryException() {

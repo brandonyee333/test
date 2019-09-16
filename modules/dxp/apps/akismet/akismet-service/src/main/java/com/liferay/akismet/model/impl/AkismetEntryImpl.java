@@ -14,8 +14,6 @@
 
 package com.liferay.akismet.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * The extended model implementation for the AkismetEntry service. Represents a row in the &quot;OSBCommunity_AkismetEntry&quot; database table, with each column mapped to a property of this class.
  *
@@ -25,7 +23,6 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Jamie Sammons
  */
-@ProviderType
 public class AkismetEntryImpl extends AkismetEntryBaseImpl {
 
 	/**

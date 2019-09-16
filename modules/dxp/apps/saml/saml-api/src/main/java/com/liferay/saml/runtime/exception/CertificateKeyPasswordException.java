@@ -14,14 +14,11 @@
 
 package com.liferay.saml.runtime.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Mika Koivisto
  */
-@ProviderType
 public class CertificateKeyPasswordException extends PortalException {
 
 	public CertificateKeyPasswordException() {

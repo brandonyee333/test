@@ -14,14 +14,11 @@
 
 package com.liferay.watson.login.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Steven Smith
  */
-@ProviderType
 public class NoSuchWatsonTokenAuthEntryException extends NoSuchModelException {
 
 	public NoSuchWatsonTokenAuthEntryException() {
