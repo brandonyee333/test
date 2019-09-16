@@ -139,7 +139,7 @@ public class CommandQueue {
 	private void _add(Message message) {
 		if (!(message instanceof CommandMessage)) {
 			if (_log.isWarnEnabled()) {
-				_log.warn("Unable to queue non command message " + message);
+				_log.warn("Unable to queue noncommand message " + message);
 
 				return;
 			}
