@@ -43,6 +43,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -90,8 +91,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		_threadFactory = threadFactory;
 		_uptimeTask = uptimeTask;
 
-		_scheduledExecutorService = Executors.newScheduledThreadPool(
-			10, _threadFactory);
+		_initExecutorService();
 
 		_subscribeToLCSEvents();
 	}
@@ -200,10 +200,9 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 
 		_defaultInterval = lcsConfiguration.commandScheduleDefaultInterval();
 
-		_subscribeToLCSEvents();
+		_initExecutorService();
 
-		_scheduledExecutorService = Executors.newScheduledThreadPool(
-			10, _threadFactory);
+		_subscribeToLCSEvents();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
@@ -407,6 +406,16 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 
 		return null;
+	}
+
+	private void _initExecutorService() {
+		_scheduledExecutorService = Executors.newScheduledThreadPool(
+			10, _threadFactory);
+
+		ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
+			(ScheduledThreadPoolExecutor)_scheduledExecutorService;
+
+		scheduledThreadPoolExecutor.setRemoveOnCancelPolicy(true);
 	}
 
 	private void _onHandshakeSuccess() {
