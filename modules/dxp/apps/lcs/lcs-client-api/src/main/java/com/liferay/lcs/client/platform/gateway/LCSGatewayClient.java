@@ -34,9 +34,23 @@ public interface LCSGatewayClient extends LCSEventListener {
 
 	public long getLastMessageSent();
 
+	public List<Message> getMessages(
+			boolean checkGatewayAvailability, String key)
+		throws LCSGatewayException;
+
 	public List<Message> getMessages(String key) throws LCSGatewayException;
 
+	/**
+	 * @return     <code>true</code> if access to LCS Gateway is available,
+	 *             otherwise <code>false</code>
+	 * @deprecated As of Mueller (7.2.x), see {@link
+	 *             LCSAlertAdvisor#getLCSAlerts()}
+	 */
+	@Deprecated
 	public boolean isAvailable();
+
+	public void sendMessage(boolean checkGatewayAvailability, Message message)
+		throws CompressionException, LCSGatewayException;
 
 	public void sendMessage(Message message)
 		throws CompressionException, LCSGatewayException;
