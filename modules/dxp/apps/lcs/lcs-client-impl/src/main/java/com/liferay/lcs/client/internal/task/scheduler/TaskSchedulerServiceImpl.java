@@ -302,6 +302,12 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 		}
 
 		_scheduledFuturesMap.clear();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace(
+				"Scheduled executor service status after cancellation " +
+					_scheduledExecutorService);
+		}
 	}
 
 	private void _executeHandshakeTask(boolean delayRun) {
