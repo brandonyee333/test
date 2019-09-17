@@ -122,7 +122,7 @@ public class HandshakeTask implements Task {
 				_log.trace("Sending handshake message: " + handshakeMessage);
 			}
 
-			_lcsGatewayClient.sendMessage(handshakeMessage);
+			_lcsGatewayClient.sendMessage(false, handshakeMessage);
 
 			_waitForHandshakeResponse();
 
@@ -357,7 +357,7 @@ public class HandshakeTask implements Task {
 		List<Message> receivedMessages = null;
 
 		for (int i = 0; i < 12; i++) {
-			receivedMessages = _lcsGatewayClient.getMessages(_getKey());
+			receivedMessages = _lcsGatewayClient.getMessages(false, _getKey());
 
 			if (receivedMessages.isEmpty()) {
 				try {
