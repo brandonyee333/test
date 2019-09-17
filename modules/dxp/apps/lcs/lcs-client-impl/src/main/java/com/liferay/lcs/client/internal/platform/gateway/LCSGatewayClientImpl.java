@@ -73,7 +73,9 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public void deleteMessages(String key) throws LCSGatewayException {
+	public synchronized void deleteMessages(String key)
+		throws LCSGatewayException {
+
 		try {
 			_jsonWebServiceClient.doGet(
 				_URL_LCS_GATEWAY_DELETE_MESSAGES, "key", key);
@@ -96,7 +98,10 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public List<Message> getMessages(String key) throws LCSGatewayException {
+	public List<Message> getMessages(
+			boolean checkGatewayAvailability, String key)
+		throws LCSGatewayException {
+
 		Map<String, String> parameters = new HashMap<>();
 
 		parameters.put("key", key);
@@ -107,32 +112,16 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 			_log.trace("Getting messages from gateway");
 		}
 
-		try {
-			String json = _jsonWebServiceClient.doGet(
-				_URL_LCS_GATEWAY_GET_MESSAGES, parameters, headers);
+		return _getMessages(checkGatewayAvailability, parameters, headers);
+	}
 
-			List<Message> messages = _convertToList(Message.class, json);
-
-			if (_log.isTraceEnabled()) {
-				_log.trace("Received messages: " + messages);
-			}
-
-			_lastMessageReceived = System.currentTimeMillis();
-
-			return messages;
-		}
-		catch (JSONWebServiceException jsonwse) {
-			_processJSONWebServiceException(jsonwse);
-		}
-
-		return Collections.emptyList();
+	public List<Message> getMessages(String key) throws LCSGatewayException {
+		return getMessages(true, key);
 	}
 
 	@Override
-	public boolean isAvailable() {
-		synchronized (this) {
-			return _available;
-		}
+	public synchronized boolean isAvailable() {
+		return _available;
 	}
 
 	@Override
@@ -179,7 +168,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	}
 
 	@Override
-	public void sendMessage(Message message)
+	public void sendMessage(boolean checkGatewayAvailability, Message message)
 		throws CompressionException, LCSGatewayException {
 
 		String json = message.toJSON();
@@ -213,15 +202,14 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		headers.put("KEY", key);
 		headers.put("MESSAGE_TYPE_CODE", _getMessageNameHashCode(message));
 
-		try {
-			_jsonWebServiceClient.doPost(
-				_URL_LCS_GATEWAY_SEND_MESSAGE, parameters, headers);
+		_sendMessage(checkGatewayAvailability, parameters, headers);
+	}
 
-			_lastMessageSent = System.currentTimeMillis();
-		}
-		catch (JSONWebServiceException jsonwse) {
-			_processJSONWebServiceException(jsonwse);
-		}
+	@Override
+	public void sendMessage(Message message)
+		throws CompressionException, LCSGatewayException {
+
+		sendMessage(true, message);
 	}
 
 	@Activate
@@ -296,6 +284,40 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		return String.valueOf(name.hashCode());
 	}
 
+	private synchronized List<Message> _getMessages(
+			boolean checkGatewayAvailability, Map<String, String> parameters,
+			Map<String, String> headers)
+		throws LCSGatewayException {
+
+		if (checkGatewayAvailability && !_available) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Aborting. LCS gateway is not available.");
+			}
+
+			return Collections.emptyList();
+		}
+
+		try {
+			String json = _jsonWebServiceClient.doGet(
+				_URL_LCS_GATEWAY_GET_MESSAGES, parameters, headers);
+
+			List<Message> messages = _convertToList(Message.class, json);
+
+			if (_log.isTraceEnabled()) {
+				_log.trace("Received messages: " + messages);
+			}
+
+			_lastMessageReceived = System.currentTimeMillis();
+
+			return messages;
+		}
+		catch (JSONWebServiceException jsonwse) {
+			_processJSONWebServiceException(jsonwse);
+		}
+
+		return Collections.emptyList();
+	}
+
 	private void _initJSONWebServiceClient(LCSConfiguration lcsConfiguration)
 		throws Exception {
 
@@ -356,6 +378,30 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 		}
 
 		throw new LCSGatewayException(message, jsonwse);
+	}
+
+	private synchronized void _sendMessage(
+			boolean checkGatewayAvailability, Map<String, String> parameters,
+			Map<String, String> headers)
+		throws LCSGatewayException {
+
+		if (checkGatewayAvailability && !_available) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Aborting. LCS gateway is not available.");
+			}
+
+			return;
+		}
+
+		try {
+			_jsonWebServiceClient.doPost(
+				_URL_LCS_GATEWAY_SEND_MESSAGE, parameters, headers);
+
+			_lastMessageSent = System.currentTimeMillis();
+		}
+		catch (JSONWebServiceException jsonwse) {
+			_processJSONWebServiceException(jsonwse);
+		}
 	}
 
 	private void _subscribeToLCSEvents() {
