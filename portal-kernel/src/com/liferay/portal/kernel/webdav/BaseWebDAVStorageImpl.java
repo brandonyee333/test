@@ -163,6 +163,10 @@ public abstract class BaseWebDAVStorageImpl implements WebDAVStorage {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of Judson (7.1.x)
+	 */
+	@Deprecated
 	protected boolean isAddGuestPermissions(long groupId) throws Exception {
 		Group group = GroupLocalServiceUtil.getGroup(groupId);
 
