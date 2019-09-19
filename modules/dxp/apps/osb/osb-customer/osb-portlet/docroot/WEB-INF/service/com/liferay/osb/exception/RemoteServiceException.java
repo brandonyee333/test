@@ -15,6 +15,7 @@
 package com.liferay.osb.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Amos Fong
@@ -22,7 +23,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 public class RemoteServiceException extends PortalException {
 
 	public RemoteServiceException(int statusCode, String msg) {
-		super(msg);
+		super(statusCode + StringPool.COLON + msg);
 
 		_statusCode = statusCode;
 	}
