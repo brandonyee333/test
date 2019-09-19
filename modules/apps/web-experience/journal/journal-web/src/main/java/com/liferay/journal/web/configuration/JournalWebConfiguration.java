@@ -35,6 +35,13 @@ public interface JournalWebConfiguration {
 	)
 	public boolean changeableDefaultLanguage();
 
+	@Meta.AD(
+		deflt = "true",
+		description = "enable-ddm-structure-field-indexable-description",
+		name = "enable-ddm-structure-field-indexable", required = false
+	)
+	public boolean enableDDMStructureFieldIndexable();
+
 	@Meta.AD(deflt = "15", required = false)
 	public int checkInterval();
 
