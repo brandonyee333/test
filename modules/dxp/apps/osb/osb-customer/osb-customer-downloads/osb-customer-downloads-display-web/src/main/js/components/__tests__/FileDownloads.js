@@ -4,7 +4,7 @@ import {
 	getByValue,
 	queryByText,
 	render
-} from '@testing-library/react';
+} from 'react-testing-library';
 
 import FileDownloads from '../FileDownloads';
 
