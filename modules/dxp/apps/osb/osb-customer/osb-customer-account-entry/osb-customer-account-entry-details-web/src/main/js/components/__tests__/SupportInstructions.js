@@ -6,7 +6,7 @@ import {
 	queryByText,
 	queryByValue,
 	render
-} from '@testing-library/react';
+} from 'react-testing-library';
 
 import SupportInstructions from '../SupportInstructions';
 
