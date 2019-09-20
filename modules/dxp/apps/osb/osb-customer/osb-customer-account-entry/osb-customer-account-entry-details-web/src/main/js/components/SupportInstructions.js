@@ -19,21 +19,25 @@ export default class SupportInstructions extends React.Component {
 	};
 
 	handleCloseModal = () =>
-		this.setState({
-			showModal: false
-		});
+		this.setState(
+			{
+				showModal: false
+			}
+		);
 
 	handleShowModal = () =>
-		this.setState({
-			showModal: true
-		});
+		this.setState(
+			{
+				showModal: true
+			}
+		);
 
 	handleUpdate = () =>
-		this.setState({
-			instructions: CKEDITOR.instances.editor1.document
-				.getBody()
-				.getHtml()
-		});
+		this.setState(
+			{
+				instructions: CKEDITOR.instances.editor1.document.getBody().getHtml()
+			}
+		);
 
 	render() {
 		const {accountEntryId, editInstructionsURL} = this.props;
@@ -41,33 +45,21 @@ export default class SupportInstructions extends React.Component {
 		const {namespace} = window.AccountDetailsConstants;
 
 		const modalFooter = (
-			<form
-				action={editInstructionsURL}
-				onSubmit={this.handleUpdate}
-				method='post'
-			>
-				<input
-					name={`${namespace}accountEntryId`}
-					type='hidden'
-					value={accountEntryId}
-				/>
-				<input
-					name={`${namespace}instructions`}
-					type='hidden'
-					value={instructions}
-				/>
+			<form action={editInstructionsURL} onSubmit={this.handleUpdate} method="post">
+				<input name={`${namespace}accountEntryId`} type="hidden" value={accountEntryId} />
+				<input name={`${namespace}instructions`} type="hidden" value={instructions} />
 
-				<div className='btn-row'>
+				<div className="btn-row">
 					<Button
-						display='default'
+						display="default"
 						onClick={this.handleCloseModal}
-						type='reset'
-						value='cancel'
+						type="reset"
+						value="cancel"
 					>
 						{Liferay.Language.get('cancel')}
 					</Button>
 
-					<Button type='submit' value='save'>
+					<Button type="submit" value="save">
 						{Liferay.Language.get('save')}
 					</Button>
 				</div>
@@ -76,16 +68,16 @@ export default class SupportInstructions extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className='card-header small-title'>
+				<div className="card-header small-title">
 					{Liferay.Language.get('support-instructions')}
 
 					{instructions ? (
 						<Button
-							display='default'
+							display="default"
 							onClick={this.handleShowModal}
-							size='sm'
-							type='button'
-							value='edit'
+							size="sm"
+							type="button"
+							value="edit"
 						>
 							{Liferay.Language.get('edit')}
 						</Button>
@@ -93,11 +85,11 @@ export default class SupportInstructions extends React.Component {
 						<Button
 							icon
 							onClick={this.handleShowModal}
-							type='button'
-							value='add'
+							type="button"
+							value="add"
 						>
-							<svg className='lexicon-icon lexicon-icon-plus'>
-								<use xlinkHref='#plus' />
+							<svg className="lexicon-icon lexicon-icon-plus">
+								<use xlinkHref="#plus" />
 							</svg>
 						</Button>
 					)}
@@ -105,23 +97,23 @@ export default class SupportInstructions extends React.Component {
 					{showModal && (
 						<Modal
 							footer={modalFooter}
-							header={Liferay.Language.get(
-								'edit-support-instructions'
-							)}
+							header={Liferay.Language.get('edit-support-instructions')}
 							onClose={this.handleCloseModal}
 							show={showModal}
 						>
-							<CKEditor content={instructions} />
+							<CKEditor
+								content={instructions}
+							/>
 						</Modal>
 					)}
 				</div>
 
 				{instructions ? (
-					<div className='card-body'>
+					<div className="card-body">
 						<div dangerouslySetInnerHTML={{__html: instructions}} />
 					</div>
 				) : (
-					<div className='no-results'>
+					<div className="no-results">
 						{Liferay.Language.get('no-support-instructions')}
 					</div>
 				)}

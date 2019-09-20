@@ -13,11 +13,13 @@ export default class ErrorBoundary extends React.Component {
 	};
 
 	componentDidCatch(error, info) {
-		this.setState({
-			error,
-			hasError: true,
-			info
-		});
+		this.setState(
+			{
+				error,
+				hasError: true,
+				info
+			}
+		);
 
 		if (process.env.NODE_ENV === 'development') {
 			console.log(`Error: ${error}`);
@@ -27,7 +29,7 @@ export default class ErrorBoundary extends React.Component {
 
 	render() {
 		return this.state.hasError ? (
-			<div className='alert alert-danger' role='alert'>
+			<div className="alert alert-danger" role="alert">
 				{Liferay.Language.get('your-request-failed-to-complete')}
 			</div>
 		) : (

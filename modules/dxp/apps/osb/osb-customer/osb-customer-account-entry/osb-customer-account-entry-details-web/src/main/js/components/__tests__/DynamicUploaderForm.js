@@ -7,9 +7,9 @@ describe('DynamicUploaderForm', () => {
 	it('renders correctly', () => {
 		const {container} = render(
 			<DynamicUploaderForm
-				addTicketAttachmentURL='/'
-				generateTokenURL='/'
-				uploadURL='/'
+				addTicketAttachmentURL="/"
+				generateTokenURL="/"
+				uploadURL="/"
 			/>
 		);
 
