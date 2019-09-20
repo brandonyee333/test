@@ -18,7 +18,7 @@ describe('Modal', () => {
 
 	it('renders with a footer correctly', () => {
 		const {container} = render(
-			<Modal footer='footer' onClose={handleClose} show>
+			<Modal footer="footer" onClose={handleClose} show>
 				Modal with Footer
 			</Modal>
 		);
@@ -28,7 +28,7 @@ describe('Modal', () => {
 
 	it('renders with a header correctly', () => {
 		const {container} = render(
-			<Modal header='header' onClose={handleClose} show>
+			<Modal header="header" onClose={handleClose} show>
 				Modal with Header
 			</Modal>
 		);
@@ -38,7 +38,7 @@ describe('Modal', () => {
 
 	it('renders with a certain size correctly', () => {
 		const {container} = render(
-			<Modal onClose={handleClose} show size='lg'>
+			<Modal onClose={handleClose} show size="lg">
 				Large Modal
 			</Modal>
 		);
@@ -48,7 +48,7 @@ describe('Modal', () => {
 
 	it('does something when close button in header is clicked', () => {
 		const {container} = render(
-			<Modal header='header' onClose={handleClose} show size='lg'>
+			<Modal header="header" onClose={handleClose} show size="lg">
 				Large Modal
 			</Modal>
 		);

@@ -25,8 +25,9 @@ export default class Changelog extends Component {
 		description: PropTypes.string.isRequired,
 		endpoint: PropTypes.string.isRequired,
 		filters: jiraComponentsType.isRequired,
-		jsonObject: PropTypes.oneOfType([errorType, jiraIssueJSONObjectType])
-			.isRequired
+		jsonObject: PropTypes.oneOfType(
+			[errorType, jiraIssueJSONObjectType]
+		).isRequired
 	};
 
 	state = {
@@ -61,16 +62,19 @@ export default class Changelog extends Component {
 
 		if (!components.includes(name)) {
 			components.push(name);
-		} else {
+		}
+		else {
 			components.splice(components.indexOf(name), 1);
 		}
 
-		this.setState({
-			selectedFilters: {
-				...selectedFilters,
-				components
+		this.setState(
+			{
+				selectedFilters: {
+					...selectedFilters,
+					components
+				}
 			}
-		});
+		);
 
 		this.queryJiraIssues(
 			components,
@@ -80,13 +84,15 @@ export default class Changelog extends Component {
 	};
 
 	handleClearFilter = () => {
-		this.setState({
-			selectedFilters: {
-				components: [],
-				keywords: '',
-				orderBy: 'desc'
+		this.setState(
+			{
+				selectedFilters: {
+					components: [],
+					keywords: '',
+					orderBy: 'desc'
+				}
 			}
-		});
+		);
 
 		this.queryJiraIssues();
 
@@ -97,12 +103,14 @@ export default class Changelog extends Component {
 		const {selectedFilters} = this.state;
 
 		if (event.keyCode === 13) {
-			this.setState({
-				selectedFilters: {
-					...selectedFilters,
-					keywords: event.target.value
+			this.setState(
+				{
+					selectedFilters: {
+						...selectedFilters,
+						keywords: event.target.value
+					}
 				}
-			});
+			);
 
 			this.queryJiraIssues(
 				selectedFilters.components,
@@ -115,9 +123,11 @@ export default class Changelog extends Component {
 	handleTogglingFilterValues = () => {
 		const {seeAllFilterValues} = this.state;
 
-		this.setState({
-			seeAllFilterValues: !seeAllFilterValues
-		});
+		this.setState(
+			{
+				seeAllFilterValues: !seeAllFilterValues
+			}
+		);
 	};
 
 	handlePaginationClick = (number, otherProps) => {
@@ -139,16 +149,21 @@ export default class Changelog extends Component {
 	handleQuerySortedResults = orderBy => {
 		const {selectedFilters} = this.state;
 
-		this.setState({
-			selectedFilters: {
-				...selectedFilters,
+		this.setState(
+			{
+				selectedFilters: {
+					...selectedFilters,
+					orderBy: orderBy
+				}
+			}
+		);
+
+		this.changelogPaginationRef.current.handleClick(
+			1,
+			{
 				orderBy: orderBy
 			}
-		});
-
-		this.changelogPaginationRef.current.handleClick(1, {
-			orderBy: orderBy
-		});
+		);
 	};
 
 	queryJiraIssues = (
@@ -161,25 +176,29 @@ export default class Changelog extends Component {
 
 		const {namespace} = window.ReleaseToolConstants;
 
-		const encodedComponentsParam = encodeURIComponent(
-			components.toString()
-		);
+		const encodedComponentsParam = encodeURIComponent(components.toString());
 		const encodedKeywordsParam = encodeURIComponent(keywords);
 
 		axios
 			.get(
 				`${endpoint}&${namespace}components=${encodedComponentsParam}&${namespace}keywords=${encodedKeywordsParam}&${namespace}orderByType=${orderBy}&${namespace}startAt=${startAt}`
 			)
-			.then(({data}) => {
-				this.setState({
-					jsonObject: data
-				});
-			})
-			.catch(err => {
-				if (process.env.NODE_ENV === 'development') {
-					console.log(err);
+			.then(
+				({data}) => {
+					this.setState(
+						{
+							jsonObject: data
+						}
+					);
 				}
-			});
+			)
+			.catch(
+				(err) => {
+					if (process.env.NODE_ENV === 'development') {
+						console.log(err);
+					}
+				}
+			);
 	};
 
 	render() {
@@ -191,22 +210,23 @@ export default class Changelog extends Component {
 		} = this.state;
 
 		const totalPage = jsonObject.total
-			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE)
-			: 1;
+			? Math.ceil(jsonObject.total / ARTICLES_PER_PAGE) : 1;
 
 		return (
 			<Fragment>
-				<div className='changelog-filter col-md-3'>
+				<div className="changelog-filter col-md-3">
 					{!!filters && (
-						<div className='sidebar-filters'>
-							<div className='filter-header'>
-								<h3>{Liferay.Language.get('refine-by')}</h3>
+						<div className="sidebar-filters">
+							<div className="filter-header">
+								<h3>
+									{Liferay.Language.get('refine-by')}
+								</h3>
 
 								{!!(keywords || components.length) && (
 									<Button
-										display='link'
+										display="link"
 										onClick={this.handleClearFilter}
-										type='button'
+										type="button"
 									>
 										{Liferay.Language.get('clear-all')}
 									</Button>
@@ -215,54 +235,46 @@ export default class Changelog extends Component {
 
 							<input
 								ref={this.changelogTextInputRef}
-								aria-label='Refine By Term'
-								className='input-small text-filter'
+								aria-label="Refine By Term"
+								className="input-small text-filter"
 								onKeyUp={this.debounceEvent(
 									this.handleFilterTextInputKeyUp,
 									500
 								)}
-								placeholder={Liferay.Language.get(
-									'contains-text'
-								)}
-								type='text'
+								placeholder={Liferay.Language.get('contains-text')}
+								type="text"
 							/>
 
-							<div className='filter-subsection jira-components semi-bold'>
+							<div className="filter-subsection jira-components semi-bold">
 								{Liferay.Language.get('component')}
 
-								{filters.map((checkbox, index) => {
-									if (
-										seeAllFilterValues
-											? seeAllFilterValues
-											: index + 1 <= FILTER_ON_LOAD
-									) {
-										return (
-											<FilterCheckbox
-												key={checkbox.value}
-												checked={
-													!!components.includes(
-														checkbox.name
-													)
-												}
-												handleOnChange={
-													this.handleCheckboxChange
-												}
-												label={checkbox.name}
-												value={checkbox.value}
-											/>
-										);
+								{filters.map(
+									(checkbox, index) => {
+										if (
+											seeAllFilterValues
+												? seeAllFilterValues
+												: index + 1 <= FILTER_ON_LOAD
+										) {
+											return (
+												<FilterCheckbox
+													key={checkbox.value}
+													checked={!!components.includes(checkbox.name)}
+													handleOnChange={this.handleCheckboxChange}
+													label={checkbox.name}
+													value={checkbox.value}
+												/>
+											);
+										}
 									}
-								})}
+								)}
 							</div>
 
 							{filters.length > FILTER_ON_LOAD && (
-								<div className='more-options'>
+								<div className="more-options">
 									<Button
-										display='link'
-										onClick={
-											this.handleTogglingFilterValues
-										}
-										type='button'
+										display="link"
+										onClick={this.handleTogglingFilterValues}
+										type="button"
 									>
 										{seeAllFilterValues
 											? Liferay.Language.get('see-less')
@@ -274,7 +286,7 @@ export default class Changelog extends Component {
 					)}
 				</div>
 
-				<div className='col-md-9'>
+				<div className="col-md-9">
 					<TableResults
 						jsonObject={jsonObject}
 						orderBy={orderBy}

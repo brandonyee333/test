@@ -51,11 +51,7 @@ describe('TableResults', () => {
 
 	it('renders content correctly', () => {
 		const {container, getByRole} = render(
-			<TableResults
-				jsonObject={contentObj}
-				tab={tab}
-				table={changelogTable}
-			/>
+			<TableResults jsonObject={contentObj} tab={tab} table={changelogTable} />
 		);
 
 		expect(getByRole('table')).toBeTruthy();

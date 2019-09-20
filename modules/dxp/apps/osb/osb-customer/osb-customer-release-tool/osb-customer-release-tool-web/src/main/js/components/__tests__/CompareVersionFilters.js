@@ -57,15 +57,13 @@ const setup = () => {
 	];
 
 	const utils = render(
-		<CompareVersionFilters actionURL='/' filtersJSON={JSONArray} />
+		<CompareVersionFilters actionURL="/" filtersJSON={JSONArray} />
 	);
 
 	const compareToVersionDropdown = utils.container.querySelectorAll(
 		'select'
 	)[1];
-	const startingVersionDropdown = utils.container.querySelectorAll(
-		'select'
-	)[0];
+	const startingVersionDropdown = utils.container.querySelectorAll('select')[0];
 
 	return {
 		compareToVersionDropdown,
@@ -104,18 +102,16 @@ describe('CompareVersionFilters', () => {
 
 		const {container} = render(
 			<CompareVersionFilters
-				actionURL='/'
+				actionURL="/"
 				filtersJSON={JSONArray}
-				fromFixPackVersion='1.0'
-				fromProductVersion='7.0'
-				toFixPackVersion='2.0'
-				toProductVersion='7.1'
+				fromFixPackVersion="1.0"
+				fromProductVersion="7.0"
+				toFixPackVersion="2.0"
+				toProductVersion="7.1"
 			/>
 		);
 
-		const compareToVersionDropdown = container.querySelectorAll(
-			'select'
-		)[1];
+		const compareToVersionDropdown = container.querySelectorAll('select')[1];
 		const startingVersionDropdown = container.querySelectorAll('select')[0];
 
 		expect(compareToVersionDropdown.selectedOptions[0].innerHTML).toBe(
@@ -146,9 +142,7 @@ describe('CompareVersionFilters', () => {
 		expect(compareToVersionDropdown.options[0].innerHTML).toBe(
 			'select-version'
 		);
-		expect(compareToVersionDropdown.options[1].innerHTML).toBe(
-			'DXP 7.1 GA'
-		);
+		expect(compareToVersionDropdown.options[1].innerHTML).toBe('DXP 7.1 GA');
 
 		expect(container).toMatchSnapshot();
 	});

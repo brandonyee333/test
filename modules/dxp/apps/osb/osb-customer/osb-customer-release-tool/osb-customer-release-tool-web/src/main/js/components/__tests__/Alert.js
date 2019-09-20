@@ -7,20 +7,20 @@ describe('Alert', () => {
 	const handleClose = jest.fn();
 
 	it('renders correctly', () => {
-		const {container} = render(<Alert type='danger'>Alert Danger</Alert>);
+		const {container} = render(<Alert type="danger">Alert Danger</Alert>);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders info alert correctly', () => {
-		const {container} = render(<Alert type='info'>Alert Info</Alert>);
+		const {container} = render(<Alert type="info">Alert Info</Alert>);
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it('renders with close button correctly', () => {
 		const {container} = render(
-			<Alert onClose={handleClose} type='warning'>
+			<Alert onClose={handleClose} type="warning">
 				Alert Warning
 			</Alert>
 		);
@@ -33,7 +33,7 @@ describe('Alert', () => {
 
 	it('does something when close button is clicked', () => {
 		const {container} = render(
-			<Alert onClose={handleClose} type='danger'>
+			<Alert onClose={handleClose} type="danger">
 				Alert Danger
 			</Alert>
 		);

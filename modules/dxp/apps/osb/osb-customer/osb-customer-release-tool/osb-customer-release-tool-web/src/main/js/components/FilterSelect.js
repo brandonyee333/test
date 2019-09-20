@@ -52,25 +52,18 @@ export default class FilterSelect extends Component {
 		} = this.props;
 
 		return (
-			<div className='filter'>
+			<div className="filter">
 				{label && (
-					<label className='control-label' htmlFor={id}>
+					<label className="control-label" htmlFor={id}>
 						{`${label}:`}
 					</label>
 				)}
 
-				<select
-					className={`form-control ${cssClass}`}
-					disabled={disabled}
-					id={id}
-					name={id}
-					onChange={this.handleChange}
-					value={selected || this.displayCurrentValue()}
-				>
-					<option value=''>{placeholder}</option>
+				<select className={`form-control ${cssClass}`} disabled={disabled} id={id} name={id} onChange={this.handleChange} value={selected || this.displayCurrentValue()}>
+					<option value="">{placeholder}</option>
 
-					{!!options.length &&
-						options.map(option => {
+					{!!options.length && options.map(
+						option => {
 							return (
 								<option
 									key={option.version}
@@ -80,7 +73,8 @@ export default class FilterSelect extends Component {
 									{option.name}
 								</option>
 							);
-						})}
+						}
+					)}
 				</select>
 			</div>
 		);

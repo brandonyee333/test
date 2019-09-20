@@ -8,8 +8,9 @@ const PAGE_BUFFER = 5;
 class PaginationItem extends React.Component {
 	static propTypes = {
 		active: PropTypes.bool.isRequired,
-		label: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-			.isRequired,
+		label: PropTypes.oneOfType(
+			[PropTypes.number, PropTypes.string]
+		).isRequired,
 		number: PropTypes.number.isRequired,
 		onClick: PropTypes.func.isRequired
 	};
@@ -26,24 +27,13 @@ class PaginationItem extends React.Component {
 		return (
 			<li className={active ? 'pagination-current' : ''}>
 				{!active && (
-					<button
-						aria-label={`go to page ${label}`}
-						className='btn-unstyled'
-						onClick={this.handleClick}
-						type='button'
-						value={number}
-					>
+					<button aria-label={`go to page ${label}`} className="btn-unstyled" onClick={this.handleClick} type="button" value={number}>
 						{label}
 					</button>
 				)}
 
 				{active && (
-					<span
-						aria-current='true'
-						aria-label={`current page, page ${label}`}
-					>
-						{label}
-					</span>
+					<span aria-current="true" aria-label={`current page, page ${label}`}>{label}</span>
 				)}
 			</li>
 		);
@@ -69,14 +59,17 @@ export default class Pagination extends React.Component {
 		const startPage = currentPage - prevPageBuffer;
 		const totalPages = nextPageBuffer + prevPageBuffer + 1;
 
-		const pages = times(totalPages, i => {
-			const pageNumber = startPage + i;
+		const pages = times(
+			totalPages,
+			i => {
+				const pageNumber = startPage + i;
 
-			return {
-				label: pageNumber,
-				number: pageNumber
-			};
-		});
+				return {
+					label: pageNumber,
+					number: pageNumber
+				};
+			}
+		);
 
 		if (nextPageBuffer) {
 			pages.push(
@@ -110,9 +103,11 @@ export default class Pagination extends React.Component {
 	handleClick = (activePage, otherProps) => {
 		const {onClick} = this.props;
 
-		this.setState({
-			currentPage: activePage
-		});
+		this.setState(
+			{
+				currentPage: activePage
+			}
+		);
 
 		onClick(activePage, otherProps);
 	};
@@ -122,9 +117,7 @@ export default class Pagination extends React.Component {
 		const {currentPage} = this.state;
 
 		let nextPageBuffer =
-			total - currentPage >= PAGE_BUFFER
-				? PAGE_BUFFER
-				: total - currentPage;
+			total - currentPage >= PAGE_BUFFER ? PAGE_BUFFER : total - currentPage;
 		let prevPageBuffer = 0;
 
 		if (currentPage > 1) {
@@ -144,21 +137,19 @@ export default class Pagination extends React.Component {
 
 	render() {
 		return (
-			<nav
-				aria-label='pagination navigation'
-				className='pagination'
-				role='navigation'
-			>
+			<nav aria-label="pagination navigation" className="pagination" role="navigation">
 				<ul>
-					{this.getPages().map(page => (
-						<PaginationItem
-							key={page.label}
-							active={this.state.currentPage === page.number}
-							label={page.label}
-							number={page.number}
-							onClick={this.handleClick}
-						/>
-					))}
+					{this.getPages().map(
+						page => (
+							<PaginationItem
+								key={page.label}
+								active={this.state.currentPage === page.number}
+								label={page.label}
+								number={page.number}
+								onClick={this.handleClick}
+							/>
+						)
+					)}
 				</ul>
 			</nav>
 		);

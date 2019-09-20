@@ -13,36 +13,40 @@ Modal.propTypes = {
 };
 
 export default function Modal({children, footer, header, onClose, show, size}) {
-	const className = getCN('modal-dialog', `${size ? `modal-${size}` : ''}`);
+	const className = getCN(
+		'modal-dialog',
+		`${size ? `modal-${size}` : ''}`
+	);
 
-	return (
-		show && (
-			<div className='modal show' role='dialog' tabIndex='-1'>
-				<div className={className}>
-					<div className='modal-content'>
-						{header && (
-							<div className='modal-header'>
-								<div className='modal-title'>{header}</div>
-
-								<button
-									aria-label='Close'
-									className='close'
-									onClick={onClose}
-									type='button'
-								>
-									<svg className='lexicon-icon lexicon-icon-times'>
-										<use xlinkHref='#times' />
-									</svg>
-								</button>
+	return show && (
+		<div className="modal show" role="dialog" tabIndex="-1">
+			<div className={className}>
+				<div className="modal-content">
+					{header && (
+						<div className="modal-header">
+							<div className="modal-title">
+								{header}
 							</div>
-						)}
 
-						<div className='modal-body'>{children}</div>
+							<button aria-label="Close" className="close" onClick={onClose} type="button">
+								<svg className="lexicon-icon lexicon-icon-times">
+									<use xlinkHref="#times" />
+								</svg>
+							</button>
+						</div>
+					)}
 
-						{footer && <div className='modal-footer'>{footer}</div>}
+					<div className="modal-body">
+						{children}
 					</div>
+
+					{footer && (
+						<div className="modal-footer">
+							{footer}
+						</div>
+					)}
 				</div>
 			</div>
-		)
+		</div>
 	);
 }
