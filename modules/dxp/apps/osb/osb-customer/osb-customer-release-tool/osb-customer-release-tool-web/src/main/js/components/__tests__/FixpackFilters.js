@@ -80,7 +80,7 @@ describe('FixpackFilters', () => {
 	it('renders preselected filters with a fix pack download link correctly', () => {
 		const {JSONArray} = setup();
 
-		const {container, getAllByText, getByRole} = render(
+		const {container, getByRole, getByText} = render(
 			<FixpackFilters
 				actionURL="/"
 				filtersJSON={JSONArray}
@@ -92,8 +92,8 @@ describe('FixpackFilters', () => {
 			/>
 		);
 
-		expect(getAllByText('Fixpack 1')).toBeDefined();
-		expect(getAllByText('Fixpack 2')).toBeDefined();
+		expect(getByText('Fixpack 1')).toBeDefined();
+		expect(getByText('Fixpack 2')).toBeDefined();
 		expect(getByRole('link')).toBeDefined();
 		expect(getByRole('link').innerHTML).toEqual(
 			expect.stringContaining('get Fixpack 2')
