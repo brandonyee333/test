@@ -1,7 +1,7 @@
 import React from 'react';
 import {
 	fireEvent,
-	getByDisplayValue,
+	getByValue,
 	queryByText,
 	render
 } from '@testing-library/react';
@@ -117,7 +117,7 @@ describe('FileDownloads', () => {
 		);
 
 		const anchor = queryByText(container, 'download');
-		const dropdown = getByDisplayValue(container, 'Download Name 1');
+		const dropdown = getByValue(container, 'Download Name 1');
 
 		expect(anchor).toBeDefined();
 		expect(dropdown).toBeDefined();
