@@ -15,18 +15,22 @@ class Downloads extends React.Component {
 		children: PropTypes.array.isRequired,
 		journalArticleId: PropTypes.number.isRequired,
 		metadata: PropTypes.arrayOf(
-			PropTypes.shape({
-				details: PropTypes.object,
-				id: PropTypes.string,
-				name: PropTypes.string,
-				url: PropTypes.string
-			})
+			PropTypes.shape(
+				{
+					details: PropTypes.object,
+					id: PropTypes.string,
+					name: PropTypes.string,
+					url: PropTypes.string
+				}
+			)
 		).isRequired,
-		requiredAgreement: PropTypes.shape({
-			acceptAgreementURL: PropTypes.string,
-			agreementContentURL: PropTypes.string,
-			verifyAgreementURL: PropTypes.string
-		}).isRequired,
+		requiredAgreement: PropTypes.shape(
+			{
+				acceptAgreementURL: PropTypes.string,
+				agreementContentURL: PropTypes.string,
+				verifyAgreementURL: PropTypes.string
+			}
+		).isRequired,
 		showDropdown: PropTypes.bool.isRequired
 	};
 
@@ -42,29 +46,38 @@ class Downloads extends React.Component {
 		const {metadata, requiredAgreement} = this.props;
 
 		if (Object.keys(requiredAgreement).length > 0) {
-			axios
-				.all([
+			axios.all(
+				[
 					axios.get(requiredAgreement.agreementContentURL),
 					axios.get(requiredAgreement.verifyAgreementURL)
-				])
-				.then(response => {
-					const [content, verification] = response;
+				]
+			)
+				.then(
+					(response) => {
+						const [content, verification] = response;
 
-					this.setState({
-						agreementContent: content.data,
-						showEULA: !verification.data.verified
-					});
-				})
-				.catch(err => {
-					if (process.env.NODE_ENV === 'development') {
-						console.log(err);
+						this.setState(
+							{
+								agreementContent: content.data,
+								showEULA: !verification.data.verified
+							}
+						);
 					}
-				});
+				)
+				.catch(
+					err => {
+						if (process.env.NODE_ENV === 'development') {
+							console.log(err);
+						}
+					}
+				);
 		}
 
-		this.setState({
-			metadata: this.getMetadata(metadata[0].id)
-		});
+		this.setState(
+			{
+				metadata: this.getMetadata(metadata[0].id)
+			}
+		);
 	}
 
 	getMetadata = id => {
@@ -74,54 +87,65 @@ class Downloads extends React.Component {
 	};
 
 	handleAcceptEULA = event => {
-		this.setState({
-			eulaAccepted: event.target.checked
-		});
+		this.setState(
+			{
+				eulaAccepted: event.target.checked
+			}
+		);
 	};
 
 	handleDownload = () => {
 		const {requiredAgreement} = this.props;
 		const {metadata} = this.state;
 
-		axios
-			.post(requiredAgreement.acceptAgreementURL)
-			.then(() => {
-				this.setState(
-					{
-						showEULA: false
-					},
-					() => {
-						window.location = metadata.url;
-					}
-				);
-			})
-			.catch(err => {
-				if (process.env.NODE_ENV === 'development') {
-					console.log(err);
+		axios.post(requiredAgreement.acceptAgreementURL)
+			.then(
+				() => {
+					this.setState(
+						{
+							showEULA: false
+						},
+						() => {
+							window.location = metadata.url;
+						}
+					);
 				}
-			});
+			)
+			.catch(
+				(err) => {
+					if (process.env.NODE_ENV === 'development') {
+						console.log(err);
+					}
+				}
+			);
 	};
 
 	handleCloseModal = () => {
-		this.setState({
-			eulaAccepted: false,
-			showModal: false
-		});
+		this.setState(
+			{
+				eulaAccepted: false,
+				showModal: false
+			}
+		);
 	};
 
 	handleDisplayModal = () =>
-		this.setState({
-			showModal: true
-		});
+		this.setState(
+			{
+				showModal: true
+			}
+		);
 
 	handleSelectChange = event => {
 		const eventTarget = event.target;
 
 		const selectedIndex = eventTarget.selectedIndex;
 
-		this.setState({
-			metadata: this.getMetadata(eventTarget[selectedIndex].id)
-		});
+		this.setState(
+			{
+				metadata: this.getMetadata(eventTarget[selectedIndex].id)
+			}
+		);
 	};
 
 	render() {
@@ -139,20 +163,20 @@ class Downloads extends React.Component {
 		const eulaHeader = Liferay.Language.get('download') + ' ' + name;
 
 		const eulaFooter = (
-			<div className='eula-footer'>
+			<div className="eula-footer">
 				<Button
-					display='outline'
+					display="outline"
 					onClick={this.handleCloseModal}
-					type='button'
+					type="button"
 				>
 					{Liferay.Language.get('cancel')}
 				</Button>
 
 				<Button
 					disabled={!eulaAccepted}
-					display='primary'
+					display="primary"
 					onClick={this.handleDownload}
-					type='button'
+					type="button"
 				>
 					{Liferay.Language.get('download')}
 				</Button>
@@ -161,20 +185,17 @@ class Downloads extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className='dropdown-row'>
+				<div className="dropdown-row">
 					{showDropdown && (
 						<select
-							aria-label='File Download Dropdown'
-							className='download-dropdown form-control'
+							aria-label="File Download Dropdown"
+							className="download-dropdown form-control"
 							onChange={this.handleSelectChange}
 						>
-							{children.map((child, childIndex) => (
-								<optgroup
-									key={childIndex}
-									label={child.downloadGroupName}
-								>
-									{child.downloads.map(
-										(download, downloadIndex) => (
+							{children.map(
+								(child, childIndex) => (
+									<optgroup key={childIndex} label={child.downloadGroupName}>
+										{child.downloads.map((download, downloadIndex) => (
 											<option
 												key={downloadIndex}
 												id={`${journalArticleId}-${childIndex}-${downloadIndex}`}
@@ -182,19 +203,19 @@ class Downloads extends React.Component {
 											>
 												{download.downloadName}
 											</option>
-										)
-									)}
-								</optgroup>
-							))}
+										))}
+									</optgroup>
+								)
+							)}
 						</select>
 					)}
 
 					{!showEULA && url && (
 						<Button
-							display='primary'
+							display="primary"
 							href={url}
-							size='sm'
-							type='button'
+							size="sm"
+							type="button"
 						>
 							{Liferay.Language.get('download')}
 						</Button>
@@ -203,10 +224,10 @@ class Downloads extends React.Component {
 					{showEULA && url && (
 						<React.Fragment>
 							<Button
-								display='primary'
+								display="primary"
 								onClick={this.handleDisplayModal}
-								size='sm'
-								type='button'
+								size="sm"
+								type="button"
 							>
 								{Liferay.Language.get('download')}
 							</Button>
@@ -217,40 +238,23 @@ class Downloads extends React.Component {
 								onClose={this.handleCloseModal}
 								show={showModal}
 							>
-								<h5 className='secondary-text-color section-subtitle'>
-									{Liferay.Language.get(
-										'before-downloading-you-must-agree-to-the-following-terms-and-conditions'
-									)}
+								<h5 className="secondary-text-color section-subtitle">
+									{Liferay.Language.get('before-downloading-you-must-agree-to-the-following-terms-and-conditions')}
 								</h5>
 
-								<div className='agreement-content'>
+								<div className="agreement-content">
 									<h3>
-										{Liferay.Language.get(
-											'terms-and-conditions'
-										)}
+										{Liferay.Language.get('terms-and-conditions')}
 									</h3>
 
-									<div
-										dangerouslySetInnerHTML={{
-											__html: agreementContent
-										}}
-									/>
+									<div dangerouslySetInnerHTML={{__html: agreementContent}} />
 								</div>
 
-								<div className='eula-agree-terms'>
-									<label className='eula-label'>
-										<input
-											className='eula-checkbox'
-											name='eulaCheckbox'
-											onChange={this.handleAcceptEULA}
-											type='checkbox'
-										/>
+								<div className="eula-agree-terms">
+									<label className="eula-label">
+										<input className="eula-checkbox" name="eulaCheckbox" onChange={this.handleAcceptEULA} type="checkbox" />
 
-										<span>
-											{Liferay.Language.get(
-												'i-have-read-and-agree-with-the-above-terms-and-conditions'
-											)}
-										</span>
+										<span>{Liferay.Language.get('i-have-read-and-agree-with-the-above-terms-and-conditions')}</span>
 									</label>
 								</div>
 							</Modal>
@@ -259,20 +263,16 @@ class Downloads extends React.Component {
 				</div>
 
 				{details && (
-					<div className='download-details small'>
+					<div className="download-details small">
 						{Object.entries(details).map(
-							([key, value], index) =>
+							([key, value], index) => (
 								key && (
-									<span key={index} className='details'>
-										<span className='detail-label'>
-											{key}
-										</span>
-										:{' '}
-										<span className='detail-value'>
-											{value}
-										</span>
+									<span key={index} className="details">
+										<span className="detail-label">{key}</span>:{' '}
+										<span className="detail-value">{value}</span>
 									</span>
 								)
+							)
 						)}
 					</div>
 				)}
@@ -283,23 +283,29 @@ class Downloads extends React.Component {
 
 FileDownloads.propTypes = {
 	downloadGroups: PropTypes.arrayOf(
-		PropTypes.shape({
-			downloadGroupName: PropTypes.string,
-			downloads: PropTypes.arrayOf(
-				PropTypes.shape({
-					downloadDetails: PropTypes.object,
-					downloadName: PropTypes.string,
-					downloadURL: PropTypes.string
-				})
-			)
-		})
+		PropTypes.shape(
+			{
+				downloadGroupName: PropTypes.string,
+				downloads: PropTypes.arrayOf(
+					PropTypes.shape(
+						{
+							downloadDetails: PropTypes.object,
+							downloadName: PropTypes.string,
+							downloadURL: PropTypes.string
+						}
+					)
+				)
+			}
+		)
 	).isRequired,
 	journalArticleId: PropTypes.number.isRequired,
-	requiredAgreement: PropTypes.shape({
-		acceptAgreementURL: PropTypes.string,
-		agreementContentURL: PropTypes.string,
-		verifyAgreementURL: PropTypes.string
-	}).isRequired
+	requiredAgreement: PropTypes.shape(
+		{
+			acceptAgreementURL: PropTypes.string,
+			agreementContentURL: PropTypes.string,
+			verifyAgreementURL: PropTypes.string
+		}
+	).isRequired
 };
 
 export default function FileDownloads(props) {
@@ -307,20 +313,23 @@ export default function FileDownloads(props) {
 
 	let showDropdown = true;
 
-	if (
-		downloadGroups.length === 1 &&
-		downloadGroups.every(group => group.downloads.length === 1)
-	) {
+	if (downloadGroups.length === 1 && downloadGroups.every(group => group.downloads.length === 1)) {
 		showDropdown = false;
 	}
 
-	const metadata = downloadGroups.flatMap((group, groupIndex) =>
-		group.downloads.map((download, downloadIndex) => ({
-			details: download.downloadDetails,
-			id: `${journalArticleId}-${groupIndex}-${downloadIndex}`,
-			name: download.downloadName,
-			url: download.downloadURL
-		}))
+	const metadata = downloadGroups.flatMap(
+		(group, groupIndex) => (
+			group.downloads.map(
+				(download, downloadIndex) => (
+					{
+						details: download.downloadDetails,
+						id: `${journalArticleId}-${groupIndex}-${downloadIndex}`,
+						name: download.downloadName,
+						url: download.downloadURL
+					}
+				)
+			)
+		)
 	);
 
 	return (

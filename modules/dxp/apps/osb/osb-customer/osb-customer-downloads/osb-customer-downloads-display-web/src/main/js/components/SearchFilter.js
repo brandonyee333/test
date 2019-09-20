@@ -14,10 +14,12 @@ export default class SearchFilters extends React.Component {
 		currentFileTypeAssetCategoryId: PropTypes.string.isRequired,
 		currentProductAssetCategoryId: PropTypes.string.isRequired,
 		productsJSONArray: PropTypes.arrayOf(
-			PropTypes.shape({
-				name: PropTypes.string,
-				value: PropTypes.string
-			})
+			PropTypes.shape(
+				{
+					name: PropTypes.string,
+					value: PropTypes.string
+				}
+			)
 		).isRequired
 	};
 
@@ -25,8 +27,7 @@ export default class SearchFilters extends React.Component {
 		const {productsJSONArray} = this.props;
 
 		const productEntry = productsJSONArray.find(
-			productAssetCategoryId =>
-				productAssetCategoryId.value === comparator
+			productAssetCategoryId => productAssetCategoryId.value === comparator
 		);
 
 		return productEntry ? productEntry.fileTypes : [];
@@ -54,8 +55,7 @@ export default class SearchFilters extends React.Component {
 		this.setState(
 			{
 				availableFileTypes: fileTypes,
-				fileTypeAssetCategoryId:
-					fileTypes.length === 1 ? fileTypes[0].value : '',
+				fileTypeAssetCategoryId: fileTypes.length === 1 ? fileTypes[0].value : '',
 				productAssetCategoryId: event.target.value
 			},
 			() => this.handleUpdate()
@@ -65,10 +65,7 @@ export default class SearchFilters extends React.Component {
 	handleUpdate = () => {
 		const {fileTypeAssetCategoryId, productAssetCategoryId} = this.state;
 
-		if (
-			!productAssetCategoryId ||
-			(fileTypeAssetCategoryId && productAssetCategoryId)
-		) {
+		if (!productAssetCategoryId || (fileTypeAssetCategoryId && productAssetCategoryId)) {
 			this.handleSubmit();
 		}
 	};
@@ -86,14 +83,10 @@ export default class SearchFilters extends React.Component {
 		const {namespace} = window.DownloadsConstants;
 
 		return (
-			<form
-				ref={this.searchDownloadsFormRef}
-				action={actionURL}
-				method='get'
-			>
-				<input name='p_p_id' type='hidden' value={PORTLET_ID} />
+			<form ref={this.searchDownloadsFormRef} action={actionURL} method="get">
+				<input name="p_p_id" type="hidden" value={PORTLET_ID} />
 
-				<div className='search-filters'>
+				<div className="search-filters">
 					<Filter
 						id={`${namespace}productAssetCategoryId`}
 						label={Liferay.Language.get('product')}
@@ -128,27 +121,19 @@ Filter.propTypes = {
 
 function Filter(props) {
 	return (
-		<div className='search-filter-container'>
-			<label className='control-label' htmlFor={props.id}>
+		<div className="search-filter-container">
+			<label className="control-label" htmlFor={props.id}>
 				{`${props.label}:`}
 			</label>
 
-			<select
-				className='form-control'
-				id={props.id}
-				name={props.id}
-				onChange={props.onSelectChange}
-				value={props.selectedOption}
-			>
-				<option value=''>{props.placeholder}</option>
+			<select className="form-control" id={props.id} name={props.id} onChange={props.onSelectChange} value={props.selectedOption}>
+				<option value="">
+					{props.placeholder}
+				</option>
 
 				{props.options.map(option => {
 					return (
-						<option
-							key={option.value}
-							label={option.name}
-							value={option.value}
-						>
+						<option key={option.value} label={option.name} value={option.value}>
 							{option.name}
 						</option>
 					);

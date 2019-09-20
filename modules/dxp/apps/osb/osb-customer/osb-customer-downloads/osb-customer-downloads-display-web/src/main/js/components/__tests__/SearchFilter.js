@@ -38,9 +38,9 @@ describe('SearchFilter', () => {
 	it('renders correctly with no selection', () => {
 		const {container} = render(
 			<SearchFilter
-				actionURL='/'
-				currentFileType=''
-				currentProduct=''
+				actionURL="/"
+				currentFileType=""
+				currentProduct=""
 				productsJSONArray={productsJsonArray}
 			/>
 		);
@@ -51,9 +51,9 @@ describe('SearchFilter', () => {
 	it('renders correctly with both filters preselected', () => {
 		const {container} = render(
 			<SearchFilter
-				actionURL='/'
-				currentFileType='two'
-				currentProduct='product_two'
+				actionURL="/"
+				currentFileType="two"
+				currentProduct="product_two"
 				productsJSONArray={productsJsonArray}
 			/>
 		);
@@ -64,28 +64,34 @@ describe('SearchFilter', () => {
 	it('populates file type select field with option values when a product is selected', () => {
 		const {getByLabelText} = render(
 			<SearchFilter
-				actionURL='/'
-				currentFileType=''
-				currentProduct=''
+				actionURL="/"
+				currentFileType=""
+				currentProduct=""
 				productsJSONArray={productsJsonArray}
 			/>
 		);
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(productInput, {
-			target: {
-				value: 'product_two'
+		fireEvent.change(
+			productInput,
+			{
+				target: {
+					value: 'product_two'
+				}
 			}
-		});
+		);
 
 		const fileTypeInput = getByLabelText('file-type:');
 
-		fireEvent.change(fileTypeInput, {
-			target: {
-				value: 'three'
+		fireEvent.change(
+			fileTypeInput,
+			{
+				target: {
+					value: 'three'
+				}
 			}
-		});
+		);
 
 		expect(fileTypeInput.value).toBe('three');
 	});
@@ -93,20 +99,23 @@ describe('SearchFilter', () => {
 	it('auto populates file type when product with only one file type is selected', () => {
 		const {getByLabelText} = render(
 			<SearchFilter
-				actionURL='/'
-				currentFileType=''
-				currentProduct=''
+				actionURL="/"
+				currentFileType=""
+				currentProduct=""
 				productsJSONArray={productsJsonArray}
 			/>
 		);
 
 		const productInput = getByLabelText('product:');
 
-		fireEvent.change(productInput, {
-			target: {
-				value: 'product_one'
+		fireEvent.change(
+			productInput,
+			{
+				target: {
+					value: 'product_one'
+				}
 			}
-		});
+		);
 
 		const fileTypeInput = getByLabelText('file-type:');
 
