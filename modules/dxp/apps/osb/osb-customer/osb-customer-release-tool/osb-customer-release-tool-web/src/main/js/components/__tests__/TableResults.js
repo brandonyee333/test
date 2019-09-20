@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from '@testing-library/react';
+import {render} from 'react-testing-library';
 
 import * as changelogTable from '../ChangelogTable';
 import TableResults from '../TableResults';
