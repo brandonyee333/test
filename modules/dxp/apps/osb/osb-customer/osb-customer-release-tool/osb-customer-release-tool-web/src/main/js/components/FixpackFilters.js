@@ -1,6 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import 'core-js/fn/array/find';
+import 'core-js/fn/array/find-index';
+
 import {filtersJSONObjectType} from '../types/generic';
 
 import Button from './Button';

@@ -1,3 +1,6 @@
+import 'core-js/library/fn/array/from';
+import 'core-js/library/fn/map';
+
 /**
  * Parses the current URL for all the search parameters
  * @returns {Map<string,string>} The map of the search parameters as key value pairs

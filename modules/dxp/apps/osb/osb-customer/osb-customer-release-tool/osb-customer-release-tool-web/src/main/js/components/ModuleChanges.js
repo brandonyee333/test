@@ -1,6 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
+import 'core-js/fn/array/includes';
+
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 
