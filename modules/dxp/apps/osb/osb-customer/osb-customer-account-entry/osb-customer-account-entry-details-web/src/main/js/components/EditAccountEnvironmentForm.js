@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import 'core-js/fn/array/find';
+import 'core-js/fn/array/from';
+
 import {Formik} from 'formik';
 import * as yup from 'yup';
 
