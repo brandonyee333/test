@@ -33,8 +33,7 @@
 		"babel-loader": "^8.0.4",
 		"css-loader": "^1.0.0",
 		"eslint": "^5.3.0",
-		"eslint-config-liferay": "^4.5.0",
-		"eslint-plugin-jsx-a11y": "^6.2.3",
+		"eslint-config-xo-react": "^0.17.0",
 		"eslint-plugin-react": "^7.10.0",
 		"jest": "^24.1.0",
 		"liferay-lang-key-dev-loader": "^1.0.3",
@@ -42,7 +41,6 @@
 		"node-sass": "^4.12.0",
 		"optimize-css-assets-webpack-plugin": "^5.0.0",
 		"postcss-loader": "^2.1.6",
-		"prettier": "^1.18.2",
 		"prop-types": "^15.7.2",
 		"react-axe": "^3.2.0",
 		"sass-loader": "^7.1.0",
@@ -50,16 +48,8 @@
 		"webpack": "^4.16.2",
 		"webpack-cli": "^3.1.0",
 		"webpack-dev-server": "^3.7.2",
-		"webpack-merge": "^4.1.3"
-	},
-	"eslintConfig": {
-		"extends": [
-			"liferay/react",
-			"plugin:jsx-a11y/recommended"
-		],
-		"plugins": [
-			"jsx-a11y"
-		]
+		"webpack-merge": "^4.1.3",
+		"xo": "^0.22.0"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [
@@ -68,24 +58,24 @@
 	},
 	"license": "UNLICENSED",
 	"name": "osb-customer-downloads-display",
-	"prettier": {
-		"bracketSpacing": false,
-		"endOfLine": "lf",
-		"jsxSingleQuote": true,
-		"singleQuote": true,
-		"tabWidth": 4,
-		"useTabs": true
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/liferay/com-liferay-osb-customer-private.git"
 	},
 	"scripts": {
-		"format": "prettier --write 'documentation/*.md' 'src/main/js/**/*.js'",
-		"lint": "eslint 'src/main/js/**/*.js'",
+		"lint": "xo",
+		"lint:fix": "xo --fix",
 		"start": "webpack-dev-server --config webpack.dev.js",
 		"test": "jest",
 		"webpack": "webpack --config webpack.prod.js"
 	},
-	"version": "1.0.0"
+	"version": "1.0.0",
+	"xo": {
+		"extends": "xo-react",
+		"globals": [
+			"Liferay"
+		],
+		"parser": "babel-eslint",
+		"prettier": true
+	}
 }
