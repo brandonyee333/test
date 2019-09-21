@@ -875,6 +875,12 @@ AUI.add(
 				repeat() {
 					var instance = this;
 
+					instance.get('definition').fields.forEach(function(item) {
+						if(item.type === "select") {
+							item.options.shift();
+						}
+					});
+
 					instance._getTemplate(function(fieldTemplate) {
 						var field = instance.createField(fieldTemplate);
 
@@ -3595,7 +3601,9 @@ AUI.add(
 
 					var fieldOptions = fieldDefinition.options;
 
-					fieldOptions.unshift(instance._getPlaceholderOption());
+					if (fieldOptions && fieldOptions[0].label[instance.get('displayLocale')]!=='') {
+						fieldOptions.unshift(instance._getPlaceholderOption());
+					}
 
 					return fieldOptions;
 				},
