@@ -25,7 +25,6 @@ import com.liferay.lcs.client.internal.command.CommandValidator;
 import com.liferay.lcs.client.internal.command.DownloadPatchCommand;
 import com.liferay.lcs.client.internal.command.ExecuteScriptCommand;
 import com.liferay.lcs.client.internal.command.ScheduleMessageListenersCommand;
-import com.liferay.lcs.client.internal.command.ScheduleTasksCommand;
 import com.liferay.lcs.client.internal.command.SendInstallationEnvironmentCommand;
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
@@ -291,8 +290,6 @@ public class CommandAdvisor {
 			ScheduleMessageListenersCommandMessage.class.getName(),
 			_scheduleMessageListenersCommand);
 		_commands.put(
-			ScheduleTasksCommandMessage.class.getName(), _scheduleTasksCommand);
-		_commands.put(
 			SendInstallationEnvironmentCommandMessage.class.getName(),
 			_sendInstallationEnvironmentCommand);
 		_commands.put(
@@ -436,9 +433,6 @@ public class CommandAdvisor {
 
 	@Reference
 	private ScheduleMessageListenersCommand _scheduleMessageListenersCommand;
-
-	@Reference
-	private ScheduleTasksCommand _scheduleTasksCommand;
 
 	@Reference
 	private SendInstallationEnvironmentCommand
