@@ -18,6 +18,7 @@ import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
+import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.lifecycle.LCSModuleLifecycle;
@@ -30,7 +31,6 @@ import com.liferay.lcs.client.internal.task.Task;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.task.advisor.TaskAdvisor;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
@@ -63,11 +63,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"osgi.command.scope=lcs", "osgi.command.function=schedulerStatus"
+		"osgi.command.scope=lcs", "osgi.command.function=taskStatus"
 	},
-	service = TaskSchedulerService.class
+	service = LCSTaskExecutor.class
 )
-public class LCSTaskExecutor implements TaskSchedulerService {
+public class LCSTaskExecutor implements LCSEventListener {
 
 	public LCSTaskExecutor() {
 	}
@@ -146,7 +146,6 @@ public class LCSTaskExecutor implements TaskSchedulerService {
 		return "Scheduler Status: " + _scheduledExecutorService;
 	}
 
-	@Override
 	public void scheduleTask(Map<String, String> schedulerContext) {
 		String taskName = schedulerContext.get("taskName");
 
@@ -184,7 +183,6 @@ public class LCSTaskExecutor implements TaskSchedulerService {
 		}
 	}
 
-	@Override
 	public void start() {
 		_scheduleUptimeMonitoringTask();
 
