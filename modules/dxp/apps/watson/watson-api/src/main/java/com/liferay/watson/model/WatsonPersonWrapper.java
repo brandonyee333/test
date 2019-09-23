@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonPersonWrapper
-	implements WatsonPerson, ModelWrapper<WatsonPerson> {
+	implements ModelWrapper<WatsonPerson>, WatsonPerson {
 
 	public WatsonPersonWrapper(WatsonPerson watsonPerson) {
 		_watsonPerson = watsonPerson;

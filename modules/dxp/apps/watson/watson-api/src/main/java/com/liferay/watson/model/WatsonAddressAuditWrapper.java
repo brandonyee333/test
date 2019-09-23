@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonAddressAuditWrapper
-	implements WatsonAddressAudit, ModelWrapper<WatsonAddressAudit> {
+	implements ModelWrapper<WatsonAddressAudit>, WatsonAddressAudit {
 
 	public WatsonAddressAuditWrapper(WatsonAddressAudit watsonAddressAudit) {
 		_watsonAddressAudit = watsonAddressAudit;

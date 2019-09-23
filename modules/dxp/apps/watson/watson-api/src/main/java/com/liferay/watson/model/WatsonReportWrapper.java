@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonReportWrapper
-	implements WatsonReport, ModelWrapper<WatsonReport> {
+	implements ModelWrapper<WatsonReport>, WatsonReport {
 
 	public WatsonReportWrapper(WatsonReport watsonReport) {
 		_watsonReport = watsonReport;

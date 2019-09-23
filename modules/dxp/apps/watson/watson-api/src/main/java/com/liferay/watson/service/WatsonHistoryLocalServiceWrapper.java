@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonHistoryLocalServiceWrapper
-	implements WatsonHistoryLocalService,
-			   ServiceWrapper<WatsonHistoryLocalService> {
+	implements ServiceWrapper<WatsonHistoryLocalService>,
+			   WatsonHistoryLocalService {
 
 	public WatsonHistoryLocalServiceWrapper(
 		WatsonHistoryLocalService watsonHistoryLocalService) {

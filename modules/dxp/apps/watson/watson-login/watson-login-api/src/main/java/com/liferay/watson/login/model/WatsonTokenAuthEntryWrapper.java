@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonTokenAuthEntryWrapper
-	implements WatsonTokenAuthEntry, ModelWrapper<WatsonTokenAuthEntry> {
+	implements ModelWrapper<WatsonTokenAuthEntry>, WatsonTokenAuthEntry {
 
 	public WatsonTokenAuthEntryWrapper(
 		WatsonTokenAuthEntry watsonTokenAuthEntry) {

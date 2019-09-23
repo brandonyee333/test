@@ -45,7 +45,7 @@ import javax.sql.DataSource;
  */
 public abstract class WatsonTokenAuthEntryServiceBaseImpl
 	extends BaseServiceImpl
-	implements WatsonTokenAuthEntryService, IdentifiableOSGiService {
+	implements IdentifiableOSGiService, WatsonTokenAuthEntryService {
 
 	/**
 	 * NOTE FOR DEVELOPERS:

@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonResourceAuditWrapper
-	implements WatsonResourceAudit, ModelWrapper<WatsonResourceAudit> {
+	implements ModelWrapper<WatsonResourceAudit>, WatsonResourceAudit {
 
 	public WatsonResourceAuditWrapper(WatsonResourceAudit watsonResourceAudit) {
 		_watsonResourceAudit = watsonResourceAudit;

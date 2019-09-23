@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonTokenAuthEntryServiceWrapper
-	implements WatsonTokenAuthEntryService,
-			   ServiceWrapper<WatsonTokenAuthEntryService> {
+	implements ServiceWrapper<WatsonTokenAuthEntryService>,
+			   WatsonTokenAuthEntryService {
 
 	public WatsonTokenAuthEntryServiceWrapper(
 		WatsonTokenAuthEntryService watsonTokenAuthEntryService) {

@@ -14,7 +14,6 @@
 
 package com.liferay.watson.login.service.http;
 
-
 /**
  * Provides the HTTP utility for the
  * <code>com.liferay.watson.login.service.WatsonTokenAuthEntryServiceUtil</code> service

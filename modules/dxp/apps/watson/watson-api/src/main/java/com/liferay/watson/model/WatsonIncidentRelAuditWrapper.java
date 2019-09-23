@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonIncidentRelAuditWrapper
-	implements WatsonIncidentRelAudit, ModelWrapper<WatsonIncidentRelAudit> {
+	implements ModelWrapper<WatsonIncidentRelAudit>, WatsonIncidentRelAudit {
 
 	public WatsonIncidentRelAuditWrapper(
 		WatsonIncidentRelAudit watsonIncidentRelAudit) {

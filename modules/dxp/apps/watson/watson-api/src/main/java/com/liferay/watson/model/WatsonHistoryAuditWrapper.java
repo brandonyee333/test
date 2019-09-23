@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonHistoryAuditWrapper
-	implements WatsonHistoryAudit, ModelWrapper<WatsonHistoryAudit> {
+	implements ModelWrapper<WatsonHistoryAudit>, WatsonHistoryAudit {
 
 	public WatsonHistoryAuditWrapper(WatsonHistoryAudit watsonHistoryAudit) {
 		_watsonHistoryAudit = watsonHistoryAudit;

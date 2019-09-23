@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonReportAuditLocalServiceWrapper
-	implements WatsonReportAuditLocalService,
-			   ServiceWrapper<WatsonReportAuditLocalService> {
+	implements ServiceWrapper<WatsonReportAuditLocalService>,
+			   WatsonReportAuditLocalService {
 
 	public WatsonReportAuditLocalServiceWrapper(
 		WatsonReportAuditLocalService watsonReportAuditLocalService) {

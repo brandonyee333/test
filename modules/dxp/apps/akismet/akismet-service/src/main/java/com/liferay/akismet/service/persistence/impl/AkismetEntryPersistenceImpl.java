@@ -176,8 +176,8 @@ public class AkismetEntryPersistenceImpl
 
 			if ((list != null) && !list.isEmpty()) {
 				for (AkismetEntry akismetEntry : list) {
-					if ((modifiedDate.getTime() <=
-							akismetEntry.getModifiedDate().getTime())) {
+					if (modifiedDate.getTime() <=
+							akismetEntry.getModifiedDate().getTime()) {
 
 						list = null;
 

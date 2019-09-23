@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonResourceWrapper
-	implements WatsonResource, ModelWrapper<WatsonResource> {
+	implements ModelWrapper<WatsonResource>, WatsonResource {
 
 	public WatsonResourceWrapper(WatsonResource watsonResource) {
 		_watsonResource = watsonResource;

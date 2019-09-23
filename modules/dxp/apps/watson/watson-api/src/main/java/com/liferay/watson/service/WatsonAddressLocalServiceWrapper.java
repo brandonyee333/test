@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonAddressLocalServiceWrapper
-	implements WatsonAddressLocalService,
-			   ServiceWrapper<WatsonAddressLocalService> {
+	implements ServiceWrapper<WatsonAddressLocalService>,
+			   WatsonAddressLocalService {
 
 	public WatsonAddressLocalServiceWrapper(
 		WatsonAddressLocalService watsonAddressLocalService) {

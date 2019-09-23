@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonVehicleLocalServiceWrapper
-	implements WatsonVehicleLocalService,
-			   ServiceWrapper<WatsonVehicleLocalService> {
+	implements ServiceWrapper<WatsonVehicleLocalService>,
+			   WatsonVehicleLocalService {
 
 	public WatsonVehicleLocalServiceWrapper(
 		WatsonVehicleLocalService watsonVehicleLocalService) {

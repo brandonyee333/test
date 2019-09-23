@@ -156,7 +156,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			WatsonTokenAuthEntry watsonTokenAuthEntry =
 				(WatsonTokenAuthEntry)result;
 
-			if ((userId != watsonTokenAuthEntry.getUserId())) {
+			if (userId != watsonTokenAuthEntry.getUserId()) {
 				result = null;
 			}
 		}

@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonListTypeRelWrapper
-	implements WatsonListTypeRel, ModelWrapper<WatsonListTypeRel> {
+	implements ModelWrapper<WatsonListTypeRel>, WatsonListTypeRel {
 
 	public WatsonListTypeRelWrapper(WatsonListTypeRel watsonListTypeRel) {
 		_watsonListTypeRel = watsonListTypeRel;

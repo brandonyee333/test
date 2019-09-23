@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonDocumentWrapper
-	implements WatsonDocument, ModelWrapper<WatsonDocument> {
+	implements ModelWrapper<WatsonDocument>, WatsonDocument {
 
 	public WatsonDocumentWrapper(WatsonDocument watsonDocument) {
 		_watsonDocument = watsonDocument;

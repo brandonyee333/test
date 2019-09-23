@@ -45,7 +45,7 @@ import javax.sql.DataSource;
  */
 public abstract class KaleoDraftDefinitionServiceBaseImpl
 	extends BaseServiceImpl
-	implements KaleoDraftDefinitionService, IdentifiableOSGiService {
+	implements IdentifiableOSGiService, KaleoDraftDefinitionService {
 
 	/**
 	 * NOTE FOR DEVELOPERS:

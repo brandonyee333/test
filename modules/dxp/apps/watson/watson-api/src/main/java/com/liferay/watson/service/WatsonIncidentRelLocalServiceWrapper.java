@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonIncidentRelLocalServiceWrapper
-	implements WatsonIncidentRelLocalService,
-			   ServiceWrapper<WatsonIncidentRelLocalService> {
+	implements ServiceWrapper<WatsonIncidentRelLocalService>,
+			   WatsonIncidentRelLocalService {
 
 	public WatsonIncidentRelLocalServiceWrapper(
 		WatsonIncidentRelLocalService watsonIncidentRelLocalService) {

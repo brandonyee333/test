@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonIncidentWrapper
-	implements WatsonIncident, ModelWrapper<WatsonIncident> {
+	implements ModelWrapper<WatsonIncident>, WatsonIncident {
 
 	public WatsonIncidentWrapper(WatsonIncident watsonIncident) {
 		_watsonIncident = watsonIncident;

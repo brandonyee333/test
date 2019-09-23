@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonActivityWrapper
-	implements WatsonActivity, ModelWrapper<WatsonActivity> {
+	implements ModelWrapper<WatsonActivity>, WatsonActivity {
 
 	public WatsonActivityWrapper(WatsonActivity watsonActivity) {
 		_watsonActivity = watsonActivity;

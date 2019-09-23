@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonListTypeRelAuditWrapper
-	implements WatsonListTypeRelAudit, ModelWrapper<WatsonListTypeRelAudit> {
+	implements ModelWrapper<WatsonListTypeRelAudit>, WatsonListTypeRelAudit {
 
 	public WatsonListTypeRelAuditWrapper(
 		WatsonListTypeRelAudit watsonListTypeRelAudit) {

@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonRelationshipWrapper
-	implements WatsonRelationship, ModelWrapper<WatsonRelationship> {
+	implements ModelWrapper<WatsonRelationship>, WatsonRelationship {
 
 	public WatsonRelationshipWrapper(WatsonRelationship watsonRelationship) {
 		_watsonRelationship = watsonRelationship;

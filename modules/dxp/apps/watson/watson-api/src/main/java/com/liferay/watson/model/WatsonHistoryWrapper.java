@@ -35,7 +35,7 @@ import java.util.Objects;
  * @generated
  */
 public class WatsonHistoryWrapper
-	implements WatsonHistory, ModelWrapper<WatsonHistory> {
+	implements ModelWrapper<WatsonHistory>, WatsonHistory {
 
 	public WatsonHistoryWrapper(WatsonHistory watsonHistory) {
 		_watsonHistory = watsonHistory;

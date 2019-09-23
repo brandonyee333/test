@@ -24,8 +24,8 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @generated
  */
 public class WatsonDocumentLocalServiceWrapper
-	implements WatsonDocumentLocalService,
-			   ServiceWrapper<WatsonDocumentLocalService> {
+	implements ServiceWrapper<WatsonDocumentLocalService>,
+			   WatsonDocumentLocalService {
 
 	public WatsonDocumentLocalServiceWrapper(
 		WatsonDocumentLocalService watsonDocumentLocalService) {

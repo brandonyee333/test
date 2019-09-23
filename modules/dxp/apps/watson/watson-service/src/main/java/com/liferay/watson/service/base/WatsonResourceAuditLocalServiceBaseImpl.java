@@ -89,7 +89,7 @@ import javax.sql.DataSource;
  */
 public abstract class WatsonResourceAuditLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements WatsonResourceAuditLocalService, IdentifiableOSGiService {
+	implements IdentifiableOSGiService, WatsonResourceAuditLocalService {
 
 	/**
 	 * NOTE FOR DEVELOPERS:
