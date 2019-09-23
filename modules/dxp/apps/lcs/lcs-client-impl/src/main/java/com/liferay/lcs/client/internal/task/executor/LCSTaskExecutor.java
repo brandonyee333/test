@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.client.internal.task.scheduler;
+package com.liferay.lcs.client.internal.task.executor;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;

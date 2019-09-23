@@ -26,9 +26,9 @@ import com.liferay.lcs.client.internal.runnable.LCSThreadFactory;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.UptimeTask;
+import com.liferay.lcs.client.internal.task.executor.LCSTaskExecutor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.task.advisor.TaskAdvisor;
-import com.liferay.lcs.client.task.scheduler.TaskSchedulerService;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
@@ -95,29 +95,29 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 			_uptimeAdvisor);
 
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				lcsEventManager, lcsGatewayClient, handshakeTask);
 
 		lcsEventManager.subscribe(
-			LCSEvent.HANDSHAKE_FAILED, taskSchedulerService);
+			LCSEvent.HANDSHAKE_FAILED, lcsTaskExecutor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			taskSchedulerService
+			lcsTaskExecutor
 		).onLCSEvent(
 			LCSEvent.HANDSHAKE_FAILED
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Matchers.anyBoolean()
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_executeHandshakeTask", Boolean.TRUE
 		);
@@ -136,29 +136,29 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 			_uptimeAdvisor);
 
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				lcsEventManager, lcsGatewayClient, handshakeTask);
 
 		lcsEventManager.subscribe(
-			LCSEvent.HANDSHAKE_FAILED, taskSchedulerService);
+			LCSEvent.HANDSHAKE_FAILED, lcsTaskExecutor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			taskSchedulerService
+			lcsTaskExecutor
 		).onLCSEvent(
 			LCSEvent.HANDSHAKE_FAILED
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Matchers.anyBoolean()
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_executeHandshakeTask", Boolean.TRUE
 		);
@@ -169,20 +169,20 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 		_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 			new LCSEventManager(), null, null);
 
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				new LCSEventManager(), null, null);
 
-		taskSchedulerService.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+		lcsTaskExecutor.onLCSEvent(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_restart"
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Matchers.anyBoolean()
 		);
@@ -190,21 +190,21 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 
 	@Test
 	public void testResetIfTokenInvalidated() throws Exception {
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				new LCSEventManager(), null, null);
 
-		taskSchedulerService.onLCSEvent(
+		lcsTaskExecutor.onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_restart"
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Matchers.anyBoolean()
 		);
@@ -224,29 +224,29 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 			_uptimeAdvisor);
 
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				lcsEventManager, lcsGatewayClient, handshakeTask);
 
 		lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, taskSchedulerService);
+			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, lcsTaskExecutor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			taskSchedulerService
+			lcsTaskExecutor
 		).onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Boolean.TRUE
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeHandshakeTask", Matchers.anyBoolean()
 		);
@@ -266,30 +266,30 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 			_uptimeAdvisor);
 
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				lcsEventManager, lcsGatewayClient, handshakeTask);
 
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH,
-			taskSchedulerService);
+			lcsTaskExecutor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			taskSchedulerService
+			lcsTaskExecutor
 		).onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Boolean.TRUE
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeHandshakeTask", Matchers.anyBoolean()
 		);
@@ -309,30 +309,30 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
 			_uptimeAdvisor);
 
-		TaskSchedulerService taskSchedulerService =
+		LCSTaskExecutor lcsTaskExecutor =
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				lcsEventManager, lcsGatewayClient, handshakeTask);
 
 		lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS,
-			taskSchedulerService);
+			lcsTaskExecutor);
 
 		handshakeTask.run();
 
 		Mockito.verify(
-			taskSchedulerService
+			lcsTaskExecutor
 		).onLCSEvent(
 			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.times(1)
+			lcsTaskExecutor, Mockito.times(1)
 		).invoke(
 			"_executeLCSClusterEntryTokenCheckTask", Boolean.TRUE
 		);
 
 		verifyPrivate(
-			taskSchedulerService, Mockito.never()
+			lcsTaskExecutor, Mockito.never()
 		).invoke(
 			"_executeHandshakeTask", Matchers.anyBoolean()
 		);
@@ -368,13 +368,13 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 		return lcsGatewayClient;
 	}
 
-	private TaskSchedulerService
+	private LCSTaskExecutor
 			_spyTaskSchedulerServiceImplToDoNothingAfterOnEvent(
 				LCSEventManager lcsEventManager,
 				LCSGatewayClient lcsGatewayClient, HandshakeTask handshakeTask)
 		throws Exception {
 
-		LCSTaskExecutor LCSTaskExecutor = spy(
+		LCSTaskExecutor lcsTaskExecutor = spy(
 			new LCSTaskExecutor(
 				1000, handshakeTask, mock(LCSClusterEntryTokenCheckTask.class),
 				_lcsConfigurationProvider, lcsEventManager, lcsGatewayClient,
@@ -385,14 +385,14 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_cancelAllTasks"
+			lcsTaskExecutor, "_cancelAllTasks"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_executeHandshakeTask",
+			lcsTaskExecutor, "_executeHandshakeTask",
 			Matchers.anyBoolean()
 		);
 
@@ -400,7 +400,7 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_executeLCSClusterEntryTokenCheckTask",
+			lcsTaskExecutor, "_executeLCSClusterEntryTokenCheckTask",
 			Matchers.anyBoolean()
 		);
 
@@ -408,31 +408,31 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_executeSignOffTask"
+			lcsTaskExecutor, "_executeSignOffTask"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_onHandshakeSuccess"
+			lcsTaskExecutor, "_onHandshakeSuccess"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_onLCSGatewayServiceUnavailable"
+			lcsTaskExecutor, "_onLCSGatewayServiceUnavailable"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			LCSTaskExecutor, "_restart"
+			lcsTaskExecutor, "_restart"
 		);
 
-		return LCSTaskExecutor;
+		return lcsTaskExecutor;
 	}
 
 	private LCSConfigurationProvider _lcsConfigurationProvider;
