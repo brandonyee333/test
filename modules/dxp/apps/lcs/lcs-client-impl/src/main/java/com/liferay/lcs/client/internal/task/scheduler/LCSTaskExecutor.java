@@ -67,12 +67,12 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = TaskSchedulerService.class
 )
-public class TaskSchedulerServiceImpl implements TaskSchedulerService {
+public class LCSTaskExecutor implements TaskSchedulerService {
 
-	public TaskSchedulerServiceImpl() {
+	public LCSTaskExecutor() {
 	}
 
-	public TaskSchedulerServiceImpl(
+	public LCSTaskExecutor(
 		int defaultInterval, HandshakeTask handshakeTask,
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask,
 		LCSConfigurationProvider lcsConfigurationProvider,
@@ -550,7 +550,7 @@ public class TaskSchedulerServiceImpl implements TaskSchedulerService {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TaskSchedulerServiceImpl.class);
+		LCSTaskExecutor.class);
 
 	private BundleContext _bundleContext;
 	private int _defaultInterval;

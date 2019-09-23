@@ -56,12 +56,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(
 	{
 		ConfigurationFactoryUtil.class, FileUtil.class, HandshakeTask.class,
-		LCSClusterEntryTokenAdvisorImpl.class, TaskSchedulerServiceImpl.class,
+		LCSClusterEntryTokenAdvisorImpl.class, LCSTaskExecutor.class,
 		PortletClassLoaderUtil.class
 	}
 )
 @RunWith(PowerMockRunner.class)
-public class TaskSchedulerServiceImplTest extends BasePowerMockitoTestCase {
+public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 
 	@Before
 	public void setUp() {
@@ -374,8 +374,8 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTestCase {
 				LCSGatewayClient lcsGatewayClient, HandshakeTask handshakeTask)
 		throws Exception {
 
-		TaskSchedulerServiceImpl taskSchedulerServiceImpl = spy(
-			new TaskSchedulerServiceImpl(
+		LCSTaskExecutor LCSTaskExecutor = spy(
+			new LCSTaskExecutor(
 				1000, handshakeTask, mock(LCSClusterEntryTokenCheckTask.class),
 				_lcsConfigurationProvider, lcsEventManager, lcsGatewayClient,
 				_lcsKeyAdvisor, _taskAdvisor, _threadFactory,
@@ -385,14 +385,14 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_cancelAllTasks"
+			LCSTaskExecutor, "_cancelAllTasks"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_executeHandshakeTask",
+			LCSTaskExecutor, "_executeHandshakeTask",
 			Matchers.anyBoolean()
 		);
 
@@ -400,7 +400,7 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_executeLCSClusterEntryTokenCheckTask",
+			LCSTaskExecutor, "_executeLCSClusterEntryTokenCheckTask",
 			Matchers.anyBoolean()
 		);
 
@@ -408,31 +408,31 @@ public class TaskSchedulerServiceImplTest extends BasePowerMockitoTestCase {
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_executeSignOffTask"
+			LCSTaskExecutor, "_executeSignOffTask"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_onHandshakeSuccess"
+			LCSTaskExecutor, "_onHandshakeSuccess"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_onLCSGatewayServiceUnavailable"
+			LCSTaskExecutor, "_onLCSGatewayServiceUnavailable"
 		);
 
 		// Skip JavaParser, will fix
 
 		doNothing(
 		).when(
-			taskSchedulerServiceImpl, "_restart"
+			LCSTaskExecutor, "_restart"
 		);
 
-		return taskSchedulerServiceImpl;
+		return LCSTaskExecutor;
 	}
 
 	private LCSConfigurationProvider _lcsConfigurationProvider;
