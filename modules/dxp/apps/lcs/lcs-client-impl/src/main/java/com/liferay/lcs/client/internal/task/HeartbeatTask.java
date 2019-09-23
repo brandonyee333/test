@@ -48,24 +48,10 @@ public class HeartbeatTask implements Task {
 			_log.trace("Running heartbeat task");
 		}
 
-		if (!_lcsGatewayClient.isAvailable()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Aborting heartbeat sending. LCS gateway is not " +
-						"available.");
-			}
-
-			return;
-		}
-
 		HeartbeatMessage heartbeatMessage = new HeartbeatMessage();
 
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());
 		heartbeatMessage.setKey(_key);
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Sending message: " + heartbeatMessage);
-		}
 
 		try {
 			_lcsGatewayClient.sendMessage(heartbeatMessage);

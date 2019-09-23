@@ -55,31 +55,6 @@ public class SignOffTask implements Task {
 
 	@Override
 	public void run() {
-		if (!_lcsGatewayClient.isAvailable()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Aborting signing out of LCS. LCS gateway is not " +
-						"available.");
-			}
-
-			return;
-		}
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running " + this);
-		}
-
-		doRun();
-	}
-
-	@Deactivate
-	protected void deactivate() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Deactivated " + this);
-		}
-	}
-
-	protected void doRun() {
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
 		handshakeMessage.setServerManuallyShutdown(true);
@@ -109,6 +84,13 @@ public class SignOffTask implements Task {
 			_log.error(sb.toString(), e);
 
 			_lcsEventManager.publish(LCSEvent.SIGNOFF_FAILED);
+		}
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_log.isTraceEnabled()) {
+			_log.trace("Deactivated " + this);
 		}
 	}
 

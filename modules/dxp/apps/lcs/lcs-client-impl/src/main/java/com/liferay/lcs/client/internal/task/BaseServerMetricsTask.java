@@ -205,14 +205,6 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 			_log.trace("Running " + getClass());
 		}
 
-		if (!lcsGatewayClient.isAvailable()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Waiting for LCS gateway handshake");
-			}
-
-			return;
-		}
-
 		ServerMetricsMessage serverMetricsMessage = new ServerMetricsMessage();
 
 		serverMetricsMessage.setCreateTime(System.currentTimeMillis());

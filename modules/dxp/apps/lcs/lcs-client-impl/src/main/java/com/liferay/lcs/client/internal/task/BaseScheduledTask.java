@@ -30,16 +30,6 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 
 	@Override
 	public void run() {
-		if (!_lcsGatewayClient.isAvailable()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Aborting " + getClass() +
-						". LCS gateway is not available.");
-			}
-
-			return;
-		}
-
 		if (_clusterMasterExecutor.isEnabled() &&
 			(getScope() == Scope.CLUSTER)) {
 
@@ -116,19 +106,6 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 	}
 
 	protected void sendMessage(Message message) {
-		if (!_lcsGatewayClient.isAvailable()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Aborting message sending. LCS gateway is not available.");
-			}
-
-			return;
-		}
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Sending message: " + message);
-		}
-
 		try {
 			_lcsGatewayClient.sendMessage(message);
 		}
