@@ -6216,7 +6216,10 @@ public class JournalArticleLocalServiceImpl
 
 			String action = "update";
 
-			if (article.getVersion() == 1.0) {
+			if (article.equals(
+					getOldestArticle(
+						article.getGroupId(), article.getArticleId()))) {
+
 				action = "add";
 			}
 
