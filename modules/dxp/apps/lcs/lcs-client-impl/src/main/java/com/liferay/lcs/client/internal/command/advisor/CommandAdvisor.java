@@ -30,6 +30,11 @@ import com.liferay.lcs.client.internal.command.SendInstallationEnvironmentComman
 import com.liferay.lcs.client.internal.command.SendPatchesCommand;
 import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
 import com.liferay.lcs.client.internal.command.SignOffCommand;
+import com.liferay.lcs.client.internal.task.HeartbeatTask;
+import com.liferay.lcs.client.internal.task.ScheduledTask;
+import com.liferay.lcs.client.internal.task.ServerMetricsTask;
+import com.liferay.lcs.client.internal.task.TaskSchedule;
+import com.liferay.lcs.client.internal.task.executor.LCSTaskExecutor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
 import com.liferay.lcs.messaging.CommandMessage;
@@ -46,13 +51,20 @@ import com.liferay.lcs.messaging.SignOffCommandMessage;
 import com.liferay.lcs.messaging.security.DigitalSignature;
 import com.liferay.lcs.messaging.security.DigitalSignatureFactory;
 import com.liferay.petra.json.web.service.client.JSONWebServiceException;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -101,16 +113,42 @@ public class CommandAdvisor {
 
 				continue;
 			}
+			else if (message instanceof ScheduleTasksCommandMessage) {
+				_scheduleTasksCommand((ScheduleTasksCommandMessage)message);
+
+				continue;
+			}
+			else if (message instanceof SignOffCommandMessage) {
+				_taskSchedules.clear();
+
+				_execute((CommandMessage)message);
+
+				return;
+			}
 
 			_execute((CommandMessage)message);
 		}
 	}
 
+	public void checkTaskSchedules() {
+		for (TaskSchedule taskSchedule : _taskSchedules) {
+			if (!taskSchedule.isOnSchedule()) {
+				continue;
+			}
+
+			_lcsTaskExecutor.submit(taskSchedule);
+		}
+	}
+
 	@Activate
-	protected void activate() {
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
 		_initDigitalSignature(_lcsConfigurationProvider.getLCSConfiguration());
 
 		_initCommands();
+
+		_taskSchedules.add(_getHeartBeatTaskSchedule());
 	}
 
 	@Override
@@ -210,6 +248,37 @@ public class CommandAdvisor {
 		}
 	}
 
+	private ScheduledTask _getScheduledTask(String taskName) {
+		try {
+			ServiceReference<?>[] serviceReferences =
+				_bundleContext.getServiceReferences(
+					ScheduledTask.class.getName(),
+					"(lcs.client.scheduled.task.name=" + taskName + ")");
+
+			if (serviceReferences.length > 0) {
+				return (ScheduledTask)_bundleContext.getService(
+					serviceReferences[0]);
+			}
+		}
+		catch (InvalidSyntaxException ise) {
+			throw new IllegalArgumentException(ise);
+		}
+
+		StringBundler sb = new StringBundler(5);
+
+		sb.append("Unable to create the scheduled task ");
+		sb.append(taskName);
+		sb.append(". This may be because LCS does not support execution ");
+		sb.append("of this task in your installation environment. Please ");
+		sb.append("see LCS documentation or contact Liferay support.");
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(sb.toString());
+		}
+
+		return null;
+	}
+
 	private void _initCommands() {
 		_commands.put(
 			CheckHeartbeatCommandMessage.class.getName(),
@@ -253,7 +322,92 @@ public class CommandAdvisor {
 		_digitalSignature = _digitalSignatureFactory.getInstance(dictionary);
 	}
 
+	private void _scheduleTasksCommand(
+		ScheduleTasksCommandMessage scheduleTasksCommandMessage) {
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Executing schedule tasks command");
+		}
+
+		Map<String, List<Map<String, String>>> prioritySchedulerContexts =
+			scheduleTasksCommandMessage.getPrioritySchedulerContexts();
+
+		List<String> priorityKeys = new ArrayList<>(
+			prioritySchedulerContexts.keySet());
+
+		Collections.sort(priorityKeys);
+
+		for (String priorityKey : priorityKeys) {
+			List<Map<String, String>> schedulerContexts =
+				prioritySchedulerContexts.get(priorityKey);
+
+			if (schedulerContexts == null) {
+				continue;
+			}
+
+			for (Map<String, String> schedulerContext : schedulerContexts) {
+				TaskSchedule taskSchedule = _getTaskSchedule(
+					priorityKey, schedulerContext);
+
+				ScheduledTask scheduledTask = _getScheduledTask(
+					taskSchedule.getTaskName());
+
+				if (scheduledTask instanceof ServerMetricsTask) {
+					try {
+						((ServerMetricsTask)scheduledTask).afterPropertiesSet();
+					}
+					catch (Exception e) {
+						_log.error("Unable to initialize scheduled task", e);
+
+						scheduledTask = null;
+					}
+				}
+
+				taskSchedule.setScheduledTask(scheduledTask);
+
+				if (!taskSchedule.isValidTaskSchedule()) {
+					_log.error(
+						"Ignoring invalid task schedule " + taskSchedule);
+
+					continue;
+				}
+
+				_taskSchedules.add(taskSchedule);
+			}
+		}
+	}
+
+	private TaskSchedule _getTaskSchedule(
+		String priorityKey, Map<String, String> schedulerContext) {
+
+		return new TaskSchedule(
+			GetterUtil.getInteger(
+				schedulerContext.get("interval"), _defaultInterval),
+			GetterUtil.getInteger(schedulerContext.get("initialDelay")),
+			GetterUtil.getInteger(priorityKey),
+			schedulerContext.get("taskName"));
+	}
+
+	private TaskSchedule _getHeartBeatTaskSchedule() {
+		Class<HeartbeatTask> heartbeatTaskClass = HeartbeatTask.class;
+
+		TaskSchedule taskSchedule = new TaskSchedule(
+			LCSClientConstants.HEARTBEAT_INTERVAL, 10000L, 0,
+			heartbeatTaskClass.getName());
+
+		HeartbeatTask heartbeatTask = new HeartbeatTask(
+			_lcsKeyAdvisor.getKey(), _lcsGatewayClient);
+
+		taskSchedule.setScheduledTask(heartbeatTask);
+
+		return taskSchedule;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(CommandAdvisor.class);
+
+	private static final int _defaultInterval = 86400;
+
+	private BundleContext _bundleContext;
 
 	@Reference
 	private CheckHeartbeatCommand _checkHeartbeatCommand;
@@ -298,5 +452,10 @@ public class CommandAdvisor {
 
 	@Reference
 	private SignOffCommand _signOffCommand;
+
+	private List<TaskSchedule> _taskSchedules = new ArrayList<>();
+
+	@Reference
+	private LCSTaskExecutor _lcsTaskExecutor;
 
 }

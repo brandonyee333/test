@@ -22,7 +22,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 /**
  * @author Igor Beslic
  */
-public class HeartbeatTask implements Task {
+public class HeartbeatTask extends BaseScheduledTask {
+
+	@Override
+	public Scope getScope() {
+		return Scope.NODE;
+	}
 
 	public HeartbeatTask(String key, LCSGatewayClient lcsGatewayClient) {
 		_key = key;
@@ -33,21 +38,7 @@ public class HeartbeatTask implements Task {
 		}
 	}
 
-	@Override
-	public void run() {
-		try {
-			doRun();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
-	}
-
 	protected void doRun() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running heartbeat task");
-		}
-
 		HeartbeatMessage heartbeatMessage = new HeartbeatMessage();
 
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());

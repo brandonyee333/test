@@ -16,26 +16,22 @@ package com.liferay.lcs.client.internal.task.executor;
 
 import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
-import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.lifecycle.LCSModuleLifecycle;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
-import com.liferay.lcs.client.internal.task.HeartbeatTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.ScheduledTask;
-import com.liferay.lcs.client.internal.task.ServerMetricsTask;
 import com.liferay.lcs.client.internal.task.Task;
+import com.liferay.lcs.client.internal.task.TaskSchedule;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.task.advisor.TaskAdvisor;
 import com.liferay.lcs.util.LCSConstants;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -146,47 +142,20 @@ public class LCSTaskExecutor implements LCSEventListener {
 		return "Scheduler Status: " + _scheduledExecutorService;
 	}
 
-	public void scheduleTask(Map<String, String> schedulerContext) {
-		String taskName = schedulerContext.get("taskName");
-
-		try {
-			ScheduledTask scheduledTask = _getScheduledTask(taskName);
-
-			if (scheduledTask == null) {
-				if (_log.isDebugEnabled()) {
-					_log.debug("Unable to find task " + taskName);
-				}
-
-				return;
-			}
-
-			scheduleLocalScheduledTask(schedulerContext);
-
-			_taskAdvisor.registerActivity(scheduledTask);
-		}
-		catch (Exception e) {
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("Unable to create the scheduled task ");
-			sb.append(taskName);
-			sb.append(". This may be because LCS does not support execution ");
-			sb.append("of this task in your installation environment. Please ");
-			sb.append("see LCS documentation or contact Liferay support.");
-
-			if (_log.isWarnEnabled()) {
-				_log.warn(sb.toString());
-
-				if (_log.isDebugEnabled()) {
-					_log.debug(e, e);
-				}
-			}
-		}
-	}
-
 	public void start() {
 		_scheduleUptimeMonitoringTask();
 
 		_executeLCSClusterEntryTokenCheckTask(false);
+	}
+
+	public void submit(TaskSchedule taskSchedule) {
+		_scheduledFuturesMap.put(
+			taskSchedule.getTaskName(),
+			_scheduledExecutorService.schedule(
+				taskSchedule.getScheduledTask(), taskSchedule.getInitialDelay(),
+				TimeUnit.SECONDS));
+
+		_taskAdvisor.registerActivity(taskSchedule.getScheduledTask());
 	}
 
 	@Activate
@@ -254,38 +223,9 @@ public class LCSTaskExecutor implements LCSEventListener {
 		}
 	}
 
-	protected void scheduleLocalScheduledTask(
-		Map<String, String> schedulerContext) {
-
-		int initialDelay = _getInitialDelay(schedulerContext);
-
-		int interval = _getInterval(schedulerContext);
-
-		String taskName = schedulerContext.get("taskName");
-
-		ScheduledTask scheduledTask = _getScheduledTask(taskName);
-
-		if (scheduledTask instanceof ServerMetricsTask) {
-			((ServerMetricsTask)scheduledTask).afterPropertiesSet();
-		}
-
-		_scheduledFuturesMap.put(
-			taskName,
-			_scheduledExecutorService.scheduleAtFixedRate(
-				scheduledTask, initialDelay, interval, TimeUnit.SECONDS));
-
-		if (_log.isDebugEnabled()) {
-			_log.debug("Scheduled task " + taskName);
-		}
-	}
-
 	private void _cancelAllTasks() {
 		_taskAdvisor.reset();
 
-		_cancelLocalScheduledTasks();
-	}
-
-	private void _cancelLocalScheduledTasks() {
 		for (String taskName : _scheduledFuturesMap.keySet()) {
 			ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.get(
 				taskName);
@@ -381,18 +321,6 @@ public class LCSTaskExecutor implements LCSEventListener {
 		_signOffPending = false;
 	}
 
-	private int _getInitialDelay(Map<String, String> schedulerContext) {
-		String initialDelay = schedulerContext.get("initialDelay");
-
-		return GetterUtil.getInteger(initialDelay);
-	}
-
-	private int _getInterval(Map<String, String> schedulerContext) {
-		String interval = schedulerContext.get("interval");
-
-		return GetterUtil.getInteger(interval, _defaultInterval);
-	}
-
 	private ScheduledTask _getScheduledTask(String taskName) {
 		try {
 			ServiceReference<?>[] serviceReferences =
@@ -426,19 +354,6 @@ public class LCSTaskExecutor implements LCSEventListener {
 		_scheduleCommandMessageCheckTask();
 
 		_scheduleCommandQueueCheckTask();
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Scheduling heartbeat task");
-		}
-
-		Class<?> clazz = HeartbeatTask.class;
-
-		_scheduledFuturesMap.put(
-			clazz.getName(),
-			_scheduledExecutorService.scheduleAtFixedRate(
-				new HeartbeatTask(_lcsKeyAdvisor.getKey(), _lcsGatewayClient),
-				10000L, LCSClientConstants.HEARTBEAT_INTERVAL,
-				TimeUnit.MILLISECONDS));
 	}
 
 	private void _onLCSGatewayServiceUnavailable() {
@@ -473,41 +388,33 @@ public class LCSTaskExecutor implements LCSEventListener {
 	}
 
 	private void _scheduleCommandMessageCheckTask() {
-		Map<String, String> schedulerContext = new HashMap<>();
-
-		schedulerContext.put(
-			"initialDelay",
-			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
-		schedulerContext.put(
-			"interval",
-			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
-		schedulerContext.put(
-			"taskName", "com.liferay.lcs.task.CommandMessageCheckTask");
-
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling command message task");
 		}
 
-		scheduleLocalScheduledTask(schedulerContext);
+		_scheduledFuturesMap.put(
+			"com.liferay.lcs.task.CommandMessageCheckTask",
+			_scheduledExecutorService.scheduleAtFixedRate(
+				_getScheduledTask(
+					"com.liferay.lcs.task.CommandMessageCheckTask"),
+				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
+				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
+				TimeUnit.SECONDS));
 	}
 
 	private void _scheduleCommandQueueCheckTask() {
-		Map<String, String> schedulerContext = new HashMap<>();
-
-		schedulerContext.put(
-			"initialDelay",
-			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
-		schedulerContext.put(
-			"interval",
-			String.valueOf(LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD));
-		schedulerContext.put(
-			"taskName", "com.liferay.lcs.task.CommandQueueCheckTask");
-
 		if (_log.isTraceEnabled()) {
 			_log.trace("Scheduling command queue task");
 		}
 
-		scheduleLocalScheduledTask(schedulerContext);
+		_scheduledFuturesMap.put(
+			"com.liferay.lcs.task.CommandQueueCheckTask",
+			_scheduledExecutorService.scheduleAtFixedRate(
+				_getScheduledTask(
+					"com.liferay.lcs.task.CommandQueueCheckTask"),
+				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
+				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
+				TimeUnit.SECONDS));
 	}
 
 	private void _scheduleUptimeMonitoringTask() {
