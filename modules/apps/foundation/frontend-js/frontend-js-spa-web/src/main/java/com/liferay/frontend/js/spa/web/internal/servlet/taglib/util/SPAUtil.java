@@ -21,6 +21,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
+import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -187,6 +188,23 @@ public class SPAUtil {
 			!Objects.equals(portletId, singlePageApplicationLastPortletId)) {
 
 			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isDisabled(HttpServletRequest httpServletRequest) {
+		if (BrowserSnifferUtil.isIe(httpServletRequest)) {
+			if (_spaConfiguration.disableInInternetExplorer()) {
+				return true;
+			}
+
+			double majorVersion = BrowserSnifferUtil.getMajorVersion(
+				httpServletRequest);
+
+			if (majorVersion == 11.0) {
+				return _spaConfiguration.disableInInternetExplorer11();
+			}
 		}
 
 		return false;

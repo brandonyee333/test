@@ -36,6 +36,20 @@ public interface SPAConfiguration {
 	public String cacheExpirationTime();
 
 	@Meta.AD(
+		deflt = "false",
+		description = "disable-in-internet-explorer-description",
+		name = "disable-in-internet-explorer", required = false
+	)
+	public boolean disableInInternetExplorer();
+
+	@Meta.AD(
+		deflt = "false",
+		description = "disable-in-internet-explorer-11-description",
+		name = "disable-in-internet-explorer-11", required = false
+	)
+	public boolean disableInInternetExplorer11();
+
+	@Meta.AD(
 		deflt = "${server-property://com.liferay.portal/javascript.single.page.application.timeout}",
 		description = "request-timeout-description",
 		name = "request-timeout-name"
