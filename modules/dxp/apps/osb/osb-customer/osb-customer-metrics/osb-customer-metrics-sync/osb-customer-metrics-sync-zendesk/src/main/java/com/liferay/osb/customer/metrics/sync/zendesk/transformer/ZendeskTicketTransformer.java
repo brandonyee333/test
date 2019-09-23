@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.metrics.sync.zendesk.transformer;
 
-import com.liferay.osb.customer.metrics.sync.model.SyncState;
 import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalService;
 import com.liferay.osb.customer.metrics.sync.zendesk.util.MessagePublisherUtil;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
@@ -28,8 +27,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.time.Instant;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,21 +73,10 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		Map<String, Object> columnMap = new HashMap<>();
 
-		SyncState syncState = _syncStateLocalService.fetchSyncState(
-			ZendeskTicket.class.getName());
-
 		JSONArray jsonArray = jsonObject.getJSONArray("tickets");
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject ticketJSONObject = jsonArray.getJSONObject(i);
-
-			if (_isSystemUpdate(
-					ticketJSONObject.getLong("generated_timestamp"),
-					syncState.getLastRunTime(),
-					ticketJSONObject.getString("updated_at"))) {
-
-				continue;
-			}
 
 			Iterator<String> iterator = ticketJSONObject.keys();
 
@@ -154,23 +140,6 @@ public class ZendeskTicketTransformer extends BaseTransformer {
 			});
 
 		return StringUtil.toLowerCase(name);
-	}
-
-	private boolean _isSystemUpdate(
-			long generatedTimestamp, long startTime, String updatedAt)
-		throws Exception {
-
-		if (generatedTimestamp >= startTime) {
-			return false;
-		}
-
-		Instant instant = Instant.parse(updatedAt);
-
-		if (instant.getEpochSecond() >= startTime) {
-			return false;
-		}
-
-		return true;
 	}
 
 	private void _processNextPage(String nextPage) throws PortalException {
