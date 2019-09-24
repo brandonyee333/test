@@ -15,7 +15,8 @@
 package com.liferay.lcs.client.internal.command;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisorImpl;
+import com.liferay.lcs.client.internal.task.SendPortalPropertiesTask;
+import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.client.internal.util.LCSUtil;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.util.PropsUtil;
@@ -36,7 +37,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  */
 @PrepareForTest({LCSUtil.class, PropsUtil.class})
 @RunWith(PowerMockRunner.class)
-public class SendPortalPropertiesCommandTest extends PowerMockito {
+public class SendPortalPropertiesTaskTest extends PowerMockito {
 
 	@Before
 	public void setUp() {
@@ -89,12 +90,12 @@ public class SendPortalPropertiesCommandTest extends PowerMockito {
 			"blacklist.key.1,blacklist.key.3"
 		);
 
-		SendPortalPropertiesCommand sendPortalPropertiesCommand =
-			new SendPortalPropertiesCommand(
-				lcsClusterEntryTokenAdvisor, null, new TaskAdvisorImpl());
+		SendPortalPropertiesTask sendPortalPropertiesTask =
+			new SendPortalPropertiesTask(
+				lcsClusterEntryTokenAdvisor, null, new TaskAdvisor());
 
 		Properties properties =
-			sendPortalPropertiesCommand.getSecurityInsensitivePropertiesKeys();
+			sendPortalPropertiesTask.getSecurityInsensitivePropertiesKeys();
 
 		for (String portalPropertiesInsensitiveKey :
 				LCSConstants.PORTAL_PROPERTIES_SECURITY_INSENSITIVE) {

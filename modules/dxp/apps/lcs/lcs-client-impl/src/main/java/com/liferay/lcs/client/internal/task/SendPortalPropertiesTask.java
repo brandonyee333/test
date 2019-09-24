@@ -12,11 +12,12 @@
  *
  */
 
-package com.liferay.lcs.client.internal.command;
+package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
+import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
 import com.liferay.lcs.messaging.SendPortalPropertiesResponseMessage;
 import com.liferay.lcs.util.LCSConstants;
@@ -35,46 +36,39 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(service = SendPortalPropertiesCommand.class)
-public class SendPortalPropertiesCommand
-	implements Command<SendPortalPropertiesCommandMessage> {
+public class SendPortalPropertiesTask extends BaseTask {
 
-	public SendPortalPropertiesCommand() {
-	}
-
-	public SendPortalPropertiesCommand(
+	public SendPortalPropertiesTask(
 		LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor,
-		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
+		LCSGatewayClient lcsGatewayClient,
+		SendPortalPropertiesCommandMessage sendPortalPropertiesCommandMessage) {
 
 		_lcsClusterEntryTokenAdvisor = lcsClusterEntryTokenAdvisor;
 		_lcsGatewayClient = lcsGatewayClient;
-		_taskAdvisor = taskAdvisor;
+		_sendPortalPropertiesCommandMessage =
+			sendPortalPropertiesCommandMessage;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public void execute(
-		SendPortalPropertiesCommandMessage sendPortalPropertiesCommandMessage) {
-
+	public void doRun() throws CompressionException, LCSGatewayException {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing send portal properties command");
 		}
-
-		_taskAdvisor.registerActivity(this);
 
 		Properties portalProperties = getSecurityInsensitivePropertiesKeys();
 
 		String installedHashCode = _getHashCode(portalProperties);
 
 		if (installedHashCode.equals(
-				sendPortalPropertiesCommandMessage.getHashCode())) {
+				_sendPortalPropertiesCommandMessage.getHashCode())) {
 
 			return;
 		}
@@ -84,14 +78,23 @@ public class SendPortalPropertiesCommand
 		SendPortalPropertiesResponseMessage
 			sendPortalPropertiesResponseMessage =
 				_getSendPortalPropertiesResponseMessage(
-					sendPortalPropertiesCommandMessage, installedHashCode,
-					portalPropertiesMap);
+					_sendPortalPropertiesCommandMessage.getKey(),
+					installedHashCode, portalPropertiesMap);
 
-		try {
-			_lcsGatewayClient.sendMessage(sendPortalPropertiesResponseMessage);
-		}
-		catch (Exception e) {
-			_log.error("Unable to send portal properties to LCS", e);
+		_lcsGatewayClient.sendMessage(sendPortalPropertiesResponseMessage);
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.COMMAND;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
 	}
 
@@ -169,9 +172,7 @@ public class SendPortalPropertiesCommand
 
 	private SendPortalPropertiesResponseMessage
 		_getSendPortalPropertiesResponseMessage(
-			SendPortalPropertiesCommandMessage
-				sendPortalPropertiesCommandMessage,
-			String hashCode, Map<String, String> portalProperties) {
+			String key, String hashCode, Map<String, String> portalProperties) {
 
 		SendPortalPropertiesResponseMessage
 			sendPortalPropertiesResponseMessage =
@@ -180,8 +181,7 @@ public class SendPortalPropertiesCommand
 		sendPortalPropertiesResponseMessage.setCreateTime(
 			System.currentTimeMillis());
 		sendPortalPropertiesResponseMessage.setHashCode(hashCode);
-		sendPortalPropertiesResponseMessage.setKey(
-			sendPortalPropertiesCommandMessage.getKey());
+		sendPortalPropertiesResponseMessage.setKey(key);
 		sendPortalPropertiesResponseMessage.setPortalProperties(
 			portalProperties);
 
@@ -189,15 +189,11 @@ public class SendPortalPropertiesCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SendPortalPropertiesCommand.class);
+		SendPortalPropertiesTask.class);
 
-	@Reference
-	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-
-	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
-
-	@Reference
-	private TaskAdvisor _taskAdvisor;
+	private final LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
+	private final LCSGatewayClient _lcsGatewayClient;
+	private final SendPortalPropertiesCommandMessage
+		_sendPortalPropertiesCommandMessage;
 
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.client.internal.command;
+package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.internal.messaging.advisor.MessageBusAdvisor;
 import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
@@ -23,36 +23,29 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Ivica Cardic
  */
-@Component(service = ScheduleMessageListenersCommand.class)
-public class ScheduleMessageListenersCommand
-	implements Command<ScheduleMessageListenersCommandMessage> {
+public class ScheduleMessageListenersTask extends BaseTask {
 
-	public ScheduleMessageListenersCommand() {
-	}
-
-	public ScheduleMessageListenersCommand(
-		MessageBusAdvisor messageBusAdvisor) {
-
-		_messageBusAdvisor = messageBusAdvisor;
-	}
-
-	@Override
-	public void execute(
+	public ScheduleMessageListenersTask(
+		MessageBusAdvisor messageBusAdvisor,
 		ScheduleMessageListenersCommandMessage
 			scheduleMessageListenersCommandMessage) {
 
-		if (_log.isTraceEnabled()) {
-			_log.trace("Executing schedule message listeners command");
-		}
+		_messageBusAdvisor = messageBusAdvisor;
+		_scheduleMessageListenersCommandMessage =
+			scheduleMessageListenersCommandMessage;
 
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
+	}
+
+	@Override
+	public void doRun() {
 		List<Map<String, String>> schedulerContexts =
-			scheduleMessageListenersCommandMessage.getSchedulerContexts();
+			_scheduleMessageListenersCommandMessage.getSchedulerContexts();
 
 		if ((schedulerContexts == null) || schedulerContexts.isEmpty()) {
 			return;
@@ -65,6 +58,20 @@ public class ScheduleMessageListenersCommand
 		}
 	}
 
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.COMMAND;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
+		}
+	}
+
 	protected void scheduleMessageListener(
 		Map<String, String> schedulerContext) {
 
@@ -72,9 +79,10 @@ public class ScheduleMessageListenersCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ScheduleMessageListenersCommand.class);
+		ScheduleMessageListenersTask.class);
 
-	@Reference
-	private MessageBusAdvisor _messageBusAdvisor;
+	private final MessageBusAdvisor _messageBusAdvisor;
+	private final ScheduleMessageListenersCommandMessage
+		_scheduleMessageListenersCommandMessage;
 
 }

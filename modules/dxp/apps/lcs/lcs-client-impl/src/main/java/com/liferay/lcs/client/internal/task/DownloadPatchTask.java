@@ -12,13 +12,12 @@
  *
  */
 
-package com.liferay.lcs.client.internal.command;
+package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
-import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchResponseMessage;
 import com.liferay.lcs.util.LCSConstants;
@@ -45,28 +44,26 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(service = DownloadPatchCommand.class)
-public class DownloadPatchCommand
-	implements Command<DownloadPatchCommandMessage> {
+public class DownloadPatchTask extends BaseTask {
 
-	public DownloadPatchCommand() {
-	}
+	public DownloadPatchTask(
+		DownloadPatchCommandMessage downloadPatchCommandMessage,
+		LCSGatewayClient lcsGatewayClient) {
 
-	public DownloadPatchCommand(LCSGatewayClient lcsGatewayClient) {
+		_downloadPatchCommandMessage = downloadPatchCommandMessage;
 		_lcsGatewayClient = lcsGatewayClient;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
 	}
 
 	@Override
-	public void execute(
-		DownloadPatchCommandMessage downloadPatchCommandMessage) {
-
+	public void doRun() throws CompressionException, LCSGatewayException {
 		if (!LCSPatcherUtil.isConfigured() ||
 			(LCSPatcherUtil.getPatchDirectory() == null)) {
 
@@ -77,11 +74,20 @@ public class DownloadPatchCommand
 			return;
 		}
 
-		try {
-			_downloadPatch(downloadPatchCommandMessage);
-		}
-		catch (Exception e) {
-			_log.error("Unable to complete patch download", e);
+		_downloadPatch(_downloadPatchCommandMessage);
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.COMMAND;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
 	}
 
@@ -162,12 +168,12 @@ public class DownloadPatchCommand
 			_log.info("Executing download patches command");
 		}
 
+		String key = downloadPatchCommandMessage.getKey();
 		String patchFileName = downloadPatchCommandMessage.getPatchFileName();
 
 		_lcsGatewayClient.sendMessage(
 			_getDownloadPatchResponseMessage(
-				downloadPatchCommandMessage, patchFileName,
-				LCSConstants.PATCHES_DOWNLOADING));
+				key, patchFileName, LCSConstants.PATCHES_DOWNLOADING));
 
 		File localFile = new File(
 			LCSPatcherUtil.getPatchDirectory(), patchFileName);
@@ -180,8 +186,7 @@ public class DownloadPatchCommand
 
 		DownloadPatchResponseMessage downloadPatchResponseMessage =
 			_getDownloadPatchResponseMessage(
-				downloadPatchCommandMessage, patchFileName,
-				LCSConstants.PATCHES_ERROR);
+				key, patchFileName, LCSConstants.PATCHES_ERROR);
 
 		try {
 			while (!_transferBytes(patchURL, localFile));
@@ -196,8 +201,7 @@ public class DownloadPatchCommand
 			}
 
 			downloadPatchResponseMessage = _getDownloadPatchResponseMessage(
-				downloadPatchCommandMessage, patchFileName,
-				LCSConstants.PATCHES_DOWNLOADED);
+				key, patchFileName, LCSConstants.PATCHES_DOWNLOADED);
 		}
 		catch (IOException ioe) {
 			_log.error("Unable to read downloaded patch file", ioe);
@@ -207,13 +211,13 @@ public class DownloadPatchCommand
 	}
 
 	private DownloadPatchResponseMessage _getDownloadPatchResponseMessage(
-		CommandMessage commandMessage, String patchFileName, int status) {
+		String key, String patchFileName, int status) {
 
 		DownloadPatchResponseMessage downloadPatchResponseMessage =
 			new DownloadPatchResponseMessage();
 
 		downloadPatchResponseMessage.setCreateTime(System.currentTimeMillis());
-		downloadPatchResponseMessage.setKey(commandMessage.getKey());
+		downloadPatchResponseMessage.setKey(key);
 		downloadPatchResponseMessage.setPatchFileName(patchFileName);
 		downloadPatchResponseMessage.setStatus(status);
 
@@ -293,9 +297,9 @@ public class DownloadPatchCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DownloadPatchCommand.class);
+		DownloadPatchTask.class);
 
-	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
+	private final DownloadPatchCommandMessage _downloadPatchCommandMessage;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }

@@ -12,11 +12,12 @@
  *
  */
 
-package com.liferay.lcs.client.internal.command;
+package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.SendPatchesCommandMessage;
 import com.liferay.lcs.messaging.SendPatchesResponseMessage;
 import com.liferay.lcs.util.LCSConstants;
@@ -31,28 +32,26 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(service = SendPatchesCommand.class)
-public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
+public class SendPatchesTask extends BaseTask {
 
-	public SendPatchesCommand() {
-	}
-
-	public SendPatchesCommand(
-		LCSGatewayClient lcsGatewayClient, TaskAdvisor taskAdvisor) {
+	public SendPatchesTask(
+		LCSGatewayClient lcsGatewayClient,
+		SendPatchesCommandMessage sendPatchesCommandMessage) {
 
 		_lcsGatewayClient = lcsGatewayClient;
-		_taskAdvisor = taskAdvisor;
+		_sendPatchesCommandMessage = sendPatchesCommandMessage;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
 	}
 
 	@Override
-	public void execute(SendPatchesCommandMessage sendPatchesCommandMessage) {
+	public void doRun() throws CompressionException, LCSGatewayException {
 		if (!LCSPatcherUtil.isConfigured()) {
 			_log.error(
 				"Aborting patch information sending. The patching tool is " +
@@ -64,8 +63,6 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing send patches command");
 		}
-
-		_taskAdvisor.registerActivity(this);
 
 		String[] installedPatches = LCSPatcherUtil.getInstalledPatches();
 
@@ -90,7 +87,9 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 		String installedHashCode = DigesterUtil.digestHex(
 			Digester.MD5, sb.toString());
 
-		if (installedHashCode.equals(sendPatchesCommandMessage.getHashCode())) {
+		if (installedHashCode.equals(
+				_sendPatchesCommandMessage.getHashCode())) {
+
 			if (_log.isDebugEnabled()) {
 				_log.debug(
 					"Aborting patch information sending. Installed patch " +
@@ -108,19 +107,28 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 
 		SendPatchesResponseMessage sendPatchesResponseMessage =
 			_getSendPatchesResponseMessage(
-				sendPatchesCommandMessage, installedHashCode, patchIdsStatuses);
+				installedHashCode, _sendPatchesCommandMessage.getKey(),
+				patchIdsStatuses);
 
-		try {
-			_lcsGatewayClient.sendMessage(sendPatchesResponseMessage);
-		}
-		catch (Exception e) {
-			_log.error("Unable to send status of patch installation to LCS", e);
+		_lcsGatewayClient.sendMessage(sendPatchesResponseMessage);
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.COMMAND;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
 	}
 
 	private SendPatchesResponseMessage _getSendPatchesResponseMessage(
-		SendPatchesCommandMessage sendPatchesCommandMessage, String hashCode,
-		Map<String, Integer> patchIdsStatuses) {
+		String hashCode, String key, Map<String, Integer> patchIdsStatuses) {
 
 		SendPatchesResponseMessage sendPatchesResponseMessage =
 			new SendPatchesResponseMessage();
@@ -129,19 +137,16 @@ public class SendPatchesCommand implements Command<SendPatchesCommandMessage> {
 		sendPatchesResponseMessage.setFixedIssues(
 			ListUtil.fromArray(LCSPatcherUtil.getFixedIssues()));
 		sendPatchesResponseMessage.setHashCode(hashCode);
-		sendPatchesResponseMessage.setKey(sendPatchesCommandMessage.getKey());
+		sendPatchesResponseMessage.setKey(key);
 		sendPatchesResponseMessage.setPatchIdsStatuses(patchIdsStatuses);
 
 		return sendPatchesResponseMessage;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SendPatchesCommand.class);
+		SendPatchesTask.class);
 
-	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
-
-	@Reference
-	private TaskAdvisor _taskAdvisor;
+	private final LCSGatewayClient _lcsGatewayClient;
+	private final SendPatchesCommandMessage _sendPatchesCommandMessage;
 
 }

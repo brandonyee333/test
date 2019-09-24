@@ -19,34 +19,32 @@ import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.HandshakeMessage;
+import com.liferay.lcs.messaging.SignOffCommandMessage;
+import com.liferay.lcs.messaging.SignOffReasonCode;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-@Component(
-	immediate = true, name = "com.liferay.lcs.client.internal.task.SignOffTask",
-	service = Task.class
-)
-public class SignOffTask implements Task {
+public class SignOffTask implements ScheduledTask {
 
-	public SignOffTask() {
+	@Override
+	public Scope getScope() {
+		return Scope.NODE;
 	}
 
 	public SignOffTask(
 		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
-		LCSKeyAdvisor lcsKeyAdvisor) {
+		LCSKeyAdvisor lcsKeyAdvisor,
+		SignOffCommandMessage signOffCommandMessage) {
 
 		_lcsEventManager = lcsEventManager;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
+		_signOffCommandMessage = signOffCommandMessage;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -55,6 +53,12 @@ public class SignOffTask implements Task {
 
 	@Override
 	public void run() {
+		_processSignOffCommandMessage();
+
+		_sendSignOffMessage();
+	}
+
+	private void _sendSignOffMessage() {
 		HandshakeMessage handshakeMessage = new HandshakeMessage();
 
 		handshakeMessage.setServerManuallyShutdown(true);
@@ -87,11 +91,43 @@ public class SignOffTask implements Task {
 		}
 	}
 
-	@Deactivate
-	protected void deactivate() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Deactivated " + this);
+	private void _processSignOffCommandMessage() {
+		if (_signOffCommandMessage == null) {
+			return;
 		}
+
+		SignOffReasonCode signOffReasonCode = _getSignOffReasonCode();
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Signing server out of LCS with reason code:" +
+					signOffReasonCode);
+
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Sign out command message: " + _signOffCommandMessage);
+			}
+		}
+
+		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
+			_lcsEventManager.publish(
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
+		}
+		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
+			_lcsEventManager.publish(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+		}
+	}
+
+	private SignOffReasonCode _getSignOffReasonCode() {
+		for (SignOffReasonCode signOffReasonCode : SignOffReasonCode.values()) {
+			if (_signOffCommandMessage.getReasonCode() ==
+				signOffReasonCode.getCode()) {
+
+				return signOffReasonCode;
+			}
+		}
+
+		return SignOffReasonCode.UNDEFINED;
 	}
 
 	@Override
@@ -105,13 +141,12 @@ public class SignOffTask implements Task {
 
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
-	@Reference
 	private LCSEventManager _lcsEventManager;
 
-	@Reference
 	private LCSGatewayClient _lcsGatewayClient;
 
-	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
+
+	private final SignOffCommandMessage _signOffCommandMessage;
 
 }

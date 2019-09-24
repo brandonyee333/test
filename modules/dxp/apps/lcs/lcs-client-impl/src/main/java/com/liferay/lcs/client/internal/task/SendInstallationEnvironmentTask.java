@@ -12,39 +12,42 @@
  *
  */
 
-package com.liferay.lcs.client.internal.command;
+package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.exception.CompressionException;
+import com.liferay.lcs.client.internal.advisor.DefaultInstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentResponseMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Igor Beslic
  */
-@Component(service = SendInstallationEnvironmentCommand.class)
-public class SendInstallationEnvironmentCommand
-	implements Command<SendInstallationEnvironmentCommandMessage> {
+public class SendInstallationEnvironmentTask extends BaseTask {
 
-	public SendInstallationEnvironmentCommand() {
-	}
-
-	public SendInstallationEnvironmentCommand(
-		LCSGatewayClient lcsGatewayClient) {
-
-		_lcsGatewayClient = lcsGatewayClient;
-	}
-
-	@Override
-	public void execute(
+	public SendInstallationEnvironmentTask(
+		LCSGatewayClient lcsGatewayClient,
 		SendInstallationEnvironmentCommandMessage
 			sendInstallationEnvironmentCommandMessage) {
 
+		_lcsGatewayClient = lcsGatewayClient;
+		_sendInstallationEnvironmentCommandMessage =
+			sendInstallationEnvironmentCommandMessage;
+
+		_installationEnvironmentAdvisor =
+			new DefaultInstallationEnvironmentAdvisor();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
+	}
+
+	@Override
+	public void doRun() throws CompressionException, LCSGatewayException {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing send installation environment command");
 		}
@@ -52,22 +55,28 @@ public class SendInstallationEnvironmentCommand
 		SendInstallationEnvironmentResponseMessage
 			sendInstallationEnvironmentResponseMessage =
 				_getSendInstallationEnvironmentResponseMessage(
-					sendInstallationEnvironmentCommandMessage);
+					_sendInstallationEnvironmentCommandMessage.getKey());
 
-		try {
-			_lcsGatewayClient.sendMessage(
-				sendInstallationEnvironmentResponseMessage);
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to send installation environment data to LCS", e);
+		_lcsGatewayClient.sendMessage(
+			sendInstallationEnvironmentResponseMessage);
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.COMMAND;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
 		}
 	}
 
 	private SendInstallationEnvironmentResponseMessage
-		_getSendInstallationEnvironmentResponseMessage(
-			SendInstallationEnvironmentCommandMessage
-				sendInstallationEnvironmentCommandMessage) {
+		_getSendInstallationEnvironmentResponseMessage(String key) {
 
 		SendInstallationEnvironmentResponseMessage
 			sendInstallationEnvironmentResponseMessage =
@@ -79,8 +88,7 @@ public class SendInstallationEnvironmentCommand
 		sendInstallationEnvironmentResponseMessage.setHardwareMetadata(
 			_installationEnvironmentAdvisor.getHardwareMetadata());
 
-		sendInstallationEnvironmentResponseMessage.setKey(
-			sendInstallationEnvironmentCommandMessage.getKey());
+		sendInstallationEnvironmentResponseMessage.setKey(key);
 		sendInstallationEnvironmentResponseMessage.setSoftwareMetadata(
 			_installationEnvironmentAdvisor.getSoftwareMetadata());
 
@@ -88,12 +96,12 @@ public class SendInstallationEnvironmentCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SendInstallationEnvironmentCommand.class);
+		SendInstallationEnvironmentTask.class);
 
-	@Reference
-	private InstallationEnvironmentAdvisor _installationEnvironmentAdvisor;
-
-	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
+	private final InstallationEnvironmentAdvisor
+		_installationEnvironmentAdvisor;
+	private final LCSGatewayClient _lcsGatewayClient;
+	private final SendInstallationEnvironmentCommandMessage
+		_sendInstallationEnvironmentCommandMessage;
 
 }

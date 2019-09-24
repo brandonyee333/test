@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.lcs.client.internal.command;
+package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -31,33 +31,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Ivica Cardic
  */
-@Component(service = ExecuteScriptCommand.class)
-public class ExecuteScriptCommand
-	implements Command<ExecuteScriptCommandMessage> {
+public class ExecuteScriptTask extends BaseTask {
 
-	public ExecuteScriptCommand() {
-	}
+	public ExecuteScriptTask(
+		ExecuteScriptCommandMessage executeScriptCommandMessage,
+		LCSGatewayClient lcsGatewayClient) {
 
-	public ExecuteScriptCommand(LCSGatewayClient lcsGatewayClient) {
+		_executeScriptCommandMessage = executeScriptCommandMessage;
 		_lcsGatewayClient = lcsGatewayClient;
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Initialized " + this);
+		}
 	}
 
 	@Override
-	public void execute(
-		ExecuteScriptCommandMessage executeScriptCommandMessage) {
-
+	public void doRun() {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Executing execute script command");
 		}
 
 		try {
-			executeScript(executeScriptCommandMessage);
+			executeScript(_executeScriptCommandMessage);
 		}
 		catch (Exception e) {
 			_log.error("Unable to send script execution result to LCS", e);
@@ -106,6 +104,20 @@ public class ExecuteScriptCommand
 				executeScriptCommandMessage, result, errorMessage));
 	}
 
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.COMMAND;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
+		}
+	}
+
 	private ExecuteScriptResponseMessage _getExecuteScriptResponseMessage(
 		ExecuteScriptCommandMessage executeScriptCommandMessage, String result,
 		String errorMessage) {
@@ -125,9 +137,9 @@ public class ExecuteScriptCommand
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ExecuteScriptCommand.class);
+		ExecuteScriptTask.class);
 
-	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
+	private final ExecuteScriptCommandMessage _executeScriptCommandMessage;
+	private final LCSGatewayClient _lcsGatewayClient;
 
 }
