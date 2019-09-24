@@ -29,7 +29,6 @@ page import="com.liferay.lcs.client.configuration.LCSConfiguration" %><%@
 page import="com.liferay.lcs.client.constants.LCSClientConstants" %><%@
 page import="com.liferay.lcs.client.constants.LCSClientWebKeys" %><%@
 page import="com.liferay.lcs.client.platform.gateway.LCSGatewayClient" %><%@
-page import="com.liferay.lcs.client.task.advisor.TaskAdvisor" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatConstants" %><%@

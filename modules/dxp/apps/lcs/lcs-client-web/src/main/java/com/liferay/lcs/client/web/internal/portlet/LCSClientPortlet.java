@@ -25,7 +25,7 @@ import com.liferay.lcs.client.constants.LCSClientPortletKeys;
 import com.liferay.lcs.client.constants.LCSClientWebKeys;
 import com.liferay.lcs.client.platform.exception.LCSException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.task.TaskStatus;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
@@ -34,6 +34,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
@@ -98,7 +103,8 @@ public class LCSClientPortlet extends MVCPortlet {
 			_lcsClusterEntryTokenAdvisor);
 		renderRequest.setAttribute(
 			LCSGatewayClient.class.getName(), _lcsGatewayClient);
-		renderRequest.setAttribute(TaskAdvisor.class.getName(), _taskAdvisor);
+		renderRequest.setAttribute(
+			LCSClientWebKeys.LCS_ACTIVE_SERVICES, _getLCSActiveServices());
 		renderRequest.setAttribute(
 			LCSClientWebKeys.CLUSTER_NODE_INFOS,
 			_clusterNodeAdvisor.getClusterNodeInfos());
@@ -192,6 +198,25 @@ public class LCSClientPortlet extends MVCPortlet {
 		writeJSON(resourceRequest, resourceResponse, jsonObject);
 	}
 
+	private Set<String> _getLCSActiveServices() {
+		Set<String> activeServiceLabels = new HashSet<>();
+
+		for (String simpleClassName :
+				_taskStatus.getActiveTaskSimpleClassNames()) {
+
+			if (!_taskSimpleClassNamesServiceLabels.containsKey(
+					simpleClassName)) {
+
+				continue;
+			}
+
+			activeServiceLabels.add(
+				_taskSimpleClassNamesServiceLabels.get(simpleClassName));
+		}
+
+		return activeServiceLabels;
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSClientPortlet.class);
 
@@ -216,7 +241,20 @@ public class LCSClientPortlet extends MVCPortlet {
 	@Reference
 	private LCSPortletStateAdvisor _lcsPortletStateAdvisor;
 
+	private final Map<String, String> _taskSimpleClassNamesServiceLabels =
+		new HashMap<String, String>() {
+			{
+				put("CacheMetricsTask", "Portal Analytics");
+				put("JVMMetricsTask", "Portal Analytics");
+				put("LicenseManagerTask", "Subscription Management");
+				put("PortalMetricsTask", "Portal Analytics");
+				put("SendPatchesTask", "Fix Packs Management");
+				put("SendPortalPropertiesTask", "Portal Properties Analysis");
+				put("ServerMetricsTask", "Portal Analytics");
+			}
+		};
+
 	@Reference
-	private TaskAdvisor _taskAdvisor;
+	private TaskStatus _taskStatus;
 
 }

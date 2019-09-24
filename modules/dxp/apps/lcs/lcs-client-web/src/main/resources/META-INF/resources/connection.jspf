@@ -131,26 +131,24 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 			</li>
 
 			<%
-			TaskAdvisor taskAdvisor = (TaskAdvisor)request.getAttribute(TaskAdvisor.class.getName());
-
-			Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
+			Set<String> activeServiceLabels = (Set<String>)request.getAttribute(LCSClientWebKeys.LCS_ACTIVE_SERVICES);
 
 			LCSClusterEntryTokenAdvisor lcsClusterEntryTokenAdvisor = (LCSClusterEntryTokenAdvisor)request.getAttribute(LCSClusterEntryTokenAdvisor.class.getName());
 			%>
 
 			<%
-			for (String activeServiceLabel : activeServiceLabels) {
+			for (String activeTaskLabel : activeServiceLabels) {
 			%>
 
 				<li class="list-group-item">
 					<aui:row>
 						<aui:col width="<%= 100 %>">
-							<liferay-ui:message key="<%= activeServiceLabel %>" />
+							<liferay-ui:message key="<%= activeTaskLabel %>" />
 						</aui:col>
 					</aui:row>
 				</li>
 
-				<c:if test='<%= activeServiceLabel.contains("portal-properties") && Validator.isNotNull(lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist()) %>'>
+				<c:if test='<%= activeTaskLabel.contains("portal-properties") && Validator.isNotNull(lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist()) %>'>
 
 					<%
 					String portalPropertiesBlacklist = lcsClusterEntryTokenAdvisor.getPortalPropertiesBlacklist();
