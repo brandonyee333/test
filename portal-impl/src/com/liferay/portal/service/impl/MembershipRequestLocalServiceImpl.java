@@ -63,7 +63,7 @@ public class MembershipRequestLocalServiceImpl
 			ServiceContext serviceContext)
 		throws PortalException {
 
-		validatePolicy(userId, groupId);
+		validateSiteMembershipPolicy(userId, groupId);
 
 		User user = userPersistence.findByPrimaryKey(userId);
 
@@ -390,23 +390,7 @@ public class MembershipRequestLocalServiceImpl
 		}
 	}
 
-	private static class StatusKeySerializableFunction
-		implements Function<Locale, String>, Serializable {
-
-		public StatusKeySerializableFunction(String statusKey) {
-			_statusKey = statusKey;
-		}
-
-		@Override
-		public String apply(Locale locale) {
-			return LanguageUtil.get(locale, _statusKey);
-		}
-
-		private final String _statusKey;
-
-	}
-
-	private void validatePolicy(long userId, long groupId)
+	protected void validateSiteMembershipPolicy(long userId, long groupId)
 		throws PortalException {
 
 		if (hasMembershipRequest(
@@ -429,6 +413,22 @@ public class MembershipRequestLocalServiceImpl
 					"MembershipRequest not allowed for group ", groupId,
 					" and user ", userId));
 		}
+	}
+
+	private static class StatusKeySerializableFunction
+		implements Function<Locale, String>, Serializable {
+
+		public StatusKeySerializableFunction(String statusKey) {
+			_statusKey = statusKey;
+		}
+
+		@Override
+		public String apply(Locale locale) {
+			return LanguageUtil.get(locale, _statusKey);
+		}
+
+		private final String _statusKey;
+
 	}
 
 }
