@@ -183,7 +183,7 @@ public class KoroneikiRESTWebServiceImpl
 		sb.append(_URL_API_REST_ACCOUNTS);
 		sb.append(StringPool.SLASH);
 		sb.append(accountKey);
-		sb.append("/contacts/");
+		sb.append("/contacts/by-uuid/");
 		sb.append(contactUuid);
 		sb.append("/roles?");
 		sb.append(toUrlParameters("contactRoleKeys", contactRoleKeys));
@@ -200,7 +200,7 @@ public class KoroneikiRESTWebServiceImpl
 		sb.append(_URL_API_REST_ACCOUNTS);
 		sb.append(StringPool.SLASH);
 		sb.append(accountKey);
-		sb.append("/contacts?");
+		sb.append("/contacts/by-uuid?");
 		sb.append(toUrlParameters("contactUuids", contactUuids));
 
 		doPut(sb.toString());
