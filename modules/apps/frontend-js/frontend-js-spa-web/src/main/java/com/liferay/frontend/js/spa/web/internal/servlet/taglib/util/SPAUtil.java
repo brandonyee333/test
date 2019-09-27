@@ -25,6 +25,7 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.PortletLocalService;
+import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.servlet.ServletResponseConstants;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -35,6 +36,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.ResourceBundleLoaderUtil;
+import com.liferay.portal.kernel.util.SessionParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
@@ -175,6 +177,33 @@ public class SPAUtil {
 
 	public boolean isDebugEnabled() {
 		return _log.isDebugEnabled();
+	}
+
+	public boolean isDisabled(HttpServletRequest httpServletRequest) {
+		int loadSPA = SessionParamUtil.getInteger(
+			httpServletRequest, "load_spa", -1);
+
+		if (loadSPA == 0) {
+			return true;
+		}
+		else if (loadSPA == 1) {
+			return false;
+		}
+
+		if (BrowserSnifferUtil.isIe(httpServletRequest)) {
+			if (_spaConfiguration.disableInInternetExplorer()) {
+				return true;
+			}
+
+			double majorVersion = BrowserSnifferUtil.getMajorVersion(
+				httpServletRequest);
+
+			if (majorVersion == 11.0) {
+				return _spaConfiguration.disableInInternetExplorer11();
+			}
+		}
+
+		return false;
 	}
 
 	@Activate
