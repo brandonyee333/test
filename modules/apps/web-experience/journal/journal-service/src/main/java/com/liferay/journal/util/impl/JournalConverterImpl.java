@@ -1247,11 +1247,11 @@ public class JournalConverterImpl implements JournalConverter {
 	private GroupLocalService _groupLocalService;
 
 	@Reference
-	private Http _http;
+	protected Http _http;
 
 	private final Map<String, String> _journalTypesToDDMTypes;
 
 	@Reference(unbind = "-")
-	private LayoutLocalService _layoutLocalService;
+	protected LayoutLocalService _layoutLocalService;
 
 }
