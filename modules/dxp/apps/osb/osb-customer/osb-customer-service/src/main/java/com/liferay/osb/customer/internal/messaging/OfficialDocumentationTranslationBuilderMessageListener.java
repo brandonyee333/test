@@ -39,13 +39,13 @@ import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
- * @author Amos Fong
+ * @author Jenny Chen
  */
 @Component(
 	immediate = true,
-	service = OfficialDocumentationBuilderMessageListener.class
+	service = OfficialDocumentationTranslationBuilderMessageListener.class
 )
-public class OfficialDocumentationBuilderMessageListener
+public class OfficialDocumentationTranslationBuilderMessageListener
 	extends BaseMessageListener {
 
 	@Activate
@@ -56,7 +56,7 @@ public class OfficialDocumentationBuilderMessageListener
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null, "0 0 12 ? * SAT");
+			className, className, null, null, "0 0 18 ? * SAT");
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
 			className, trigger);
@@ -76,7 +76,7 @@ public class OfficialDocumentationBuilderMessageListener
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder(
 				OSBCustomerConfigurationValues.LIFERAY_DOCS_BUILD_SCRIPT,
-				"en");
+				"ja");
 
 			processBuilder.redirectErrorStream(true);
 
@@ -100,7 +100,7 @@ public class OfficialDocumentationBuilderMessageListener
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OfficialDocumentationBuilderMessageListener.class);
+		OfficialDocumentationTranslationBuilderMessageListener.class);
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;
