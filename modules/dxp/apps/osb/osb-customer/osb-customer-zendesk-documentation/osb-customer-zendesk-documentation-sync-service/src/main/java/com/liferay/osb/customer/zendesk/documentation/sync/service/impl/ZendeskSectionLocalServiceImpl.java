@@ -16,20 +16,26 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskSectionLocalServiceBaseImpl;
+import com.liferay.osb.customer.zendesk.documentation.sync.util.ZendeskLocaleUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -67,6 +73,17 @@ public class ZendeskSectionLocalServiceImpl
 		zendeskSection.setRemoteId(sectionJSONObject.getLong("id"));
 		zendeskSection.setRemoteHtmlURL(
 			sectionJSONObject.getString("html_url"));
+
+		Map<Locale, String> remoteNameMap = new HashMap<>();
+
+		for (Map.Entry<String, String> entry : nameMap.entrySet()) {
+			Locale remoteLocale = ZendeskLocaleUtil.convertToLocale(
+				entry.getKey());
+
+			remoteNameMap.put(remoteLocale, entry.getValue());
+		}
+
+		zendeskSection.setRemoteNameMap(remoteNameMap);
 
 		return zendeskSectionPersistence.update(zendeskSection);
 	}
@@ -124,11 +141,58 @@ public class ZendeskSectionLocalServiceImpl
 			zendeskSection.getRemoteId(), zendeskCategory.getRemoteId(),
 			position);
 
+		Map<Locale, String> remoteNameMap = zendeskSection.getRemoteNameMap();
+
+		if (MapUtil.isEmpty(remoteNameMap)) {
+			for (Map.Entry<String, String> entry : nameMap.entrySet()) {
+				Locale remoteLocale = ZendeskLocaleUtil.convertToLocale(
+					entry.getKey());
+
+				remoteNameMap.put(remoteLocale, entry.getValue());
+			}
+		}
+		else {
+			String jpRemoteName = remoteNameMap.get(LocaleUtil.JAPAN);
+			String remoteName = nameMap.get(ZendeskLocales.US);
+
+			if (!remoteName.equals(jpRemoteName)) {
+				descriptionMap.remove(ZendeskLocales.JAPAN);
+				nameMap.remove(ZendeskLocales.JAPAN);
+			}
+
+			remoteNameMap.put(LocaleUtil.US, remoteName);
+		}
+
 		updateRemoteZendeskTranslations(
 			zendeskSection.getRemoteId(), nameMap, descriptionMap);
 
 		zendeskSection.setModifiedDate(new Date());
 		zendeskSection.setZendeskCategoryId(zendeskCategoryId);
+		zendeskSection.setRemoteNameMap(remoteNameMap);
+
+		return zendeskSectionPersistence.update(zendeskSection);
+	}
+
+	public ZendeskSection updateZendeskSectionTranslation(
+			long zendeskSectionId, String locale, String name,
+			String description)
+		throws PortalException {
+
+		ZendeskSection zendeskSection =
+			zendeskSectionPersistence.findByPrimaryKey(zendeskSectionId);
+
+		Map<String, String> descriptionMap = new HashMap<>();
+		Map<String, String> nameMap = new HashMap<>();
+
+		descriptionMap.put(locale, description);
+		nameMap.put(locale, name);
+
+		updateRemoteZendeskTranslations(
+			zendeskSection.getRemoteId(), nameMap, descriptionMap);
+
+		Locale remoteLocale = ZendeskLocaleUtil.convertToLocale(locale);
+
+		zendeskSection.setRemoteName(name, remoteLocale);
 
 		return zendeskSectionPersistence.update(zendeskSection);
 	}

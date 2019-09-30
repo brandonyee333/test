@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.deploy.auto;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
@@ -67,8 +68,21 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 
 		File file = autoDeploymentContext.getFile();
 
+		String documentationKey = file.getName();
+
+		String locale = ZendeskLocales.US;
+
+		if (documentationKey.endsWith("-en.zip")) {
+			documentationKey = documentationKey.replace("-en.zip", ".zip");
+		}
+		else if (documentationKey.endsWith("-ja.zip")) {
+			documentationKey = documentationKey.replace("-ja.zip", ".zip");
+
+			locale = ZendeskLocales.JAPAN;
+		}
+
 		ZendeskCategory zendeskCategory =
-			_zendeskCategoryLocalService.fetchZendeskCategory(file.getName());
+			_zendeskCategoryLocalService.fetchZendeskCategory(documentationKey);
 
 		if (zendeskCategory == null) {
 			_log.error(
@@ -88,7 +102,7 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 
 			DocumentationImporter documentationImporter =
 				_documentationImporterFactory.createDocumentationImporter(
-					zipReader, zendeskCategory);
+					zipReader, zendeskCategory, locale);
 
 			documentationImporter.importArticles();
 		}

@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.web.internal.portlet;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
@@ -120,9 +121,22 @@ public class AdminPortlet extends MVCPortlet {
 				_zendeskCategoryLocalService.getZendeskCategory(
 					zendeskCategoryId);
 
-			if (Validator.isNull(fileName) || (inputStream == null) ||
-				!fileName.equals(zendeskCategory.getDocumentationKey())) {
+			if (Validator.isNull(fileName) || (inputStream == null)) {
+				throw new DocumentationImportException();
+			}
 
+			String locale = ZendeskLocales.US;
+
+			if (fileName.endsWith("-en.zip")) {
+				fileName = fileName.replace("-en.zip", ".zip");
+			}
+			else if (fileName.endsWith("-ja.zip")) {
+				fileName = fileName.replace("-ja.zip", ".zip");
+
+				locale = ZendeskLocales.JAPAN;
+			}
+
+			if (!fileName.equals(zendeskCategory.getDocumentationKey())) {
 				throw new DocumentationImportException();
 			}
 
@@ -134,7 +148,7 @@ public class AdminPortlet extends MVCPortlet {
 
 			DocumentationImporter documentationImporter =
 				_documentationImporterFactory.createDocumentationImporter(
-					zipReader, zendeskCategory);
+					zipReader, zendeskCategory, locale);
 
 			documentationImporter.importArticles();
 		}

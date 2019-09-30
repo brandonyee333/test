@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.zip.ZipReader;
 public interface DocumentationImporterFactory {
 
 	public DocumentationImporter createDocumentationImporter(
-			ZipReader zipReader, ZendeskCategory zendeskCategory)
+			ZipReader zipReader, ZendeskCategory zendeskCategory, String locale)
 		throws PortalException;
 
 }

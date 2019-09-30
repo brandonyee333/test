@@ -19,8 +19,11 @@
 		<column name="zendeskSectionId" type="long" />
 		<column name="documentationKey" type="String" />
 		<column name="documentationOriginalURL" type="String" />
+		<column name="previousArticleDocumentationKey" type="String" />
+		<column name="nextArticleDocumentationKey" type="String" />
 		<column name="remoteId" type="long" />
 		<column name="remoteHtmlURL" type="String" />
+		<column localized="true" name="remoteTitle" type="String" />
 
 		<!-- Finder methods -->
 
@@ -98,6 +101,7 @@
 		<column name="documentationKey" type="String" />
 		<column name="remoteId" type="long" />
 		<column name="remoteHtmlURL" type="String" />
+		<column localized="true" name="remoteName" type="String" />
 
 		<!-- Finder methods -->
 

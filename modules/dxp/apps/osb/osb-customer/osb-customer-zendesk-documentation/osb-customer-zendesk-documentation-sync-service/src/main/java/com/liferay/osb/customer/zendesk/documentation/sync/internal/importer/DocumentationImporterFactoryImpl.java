@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.importer;
 
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.documentation.sync.configuration.ZendeskDocumentationSyncConfiguration;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
@@ -42,11 +43,20 @@ public class DocumentationImporterFactoryImpl
 
 	@Override
 	public DocumentationImporter createDocumentationImporter(
-			ZipReader zipReader, ZendeskCategory zendeskCategory)
+			ZipReader zipReader, ZendeskCategory zendeskCategory, String locale)
 		throws PortalException {
 
+		if (!locale.equals(ZendeskLocales.US)) {
+			return new DocumentationTranslationArchiveImporter(
+				zipReader, zendeskCategory, locale,
+				_zendeskDocumentationSyncConfiguration.
+					markdownImporterArticleExtensions(),
+				_zendeskDocumentationSyncConfiguration.
+					markdownImporterArticleIntro());
+		}
+
 		return new DocumentationArchiveImporter(
-			zipReader, zendeskCategory,
+			zipReader, zendeskCategory, locale,
 			_zendeskDocumentationSyncConfiguration.
 				markdownImporterArticleExtensions(),
 			_zendeskDocumentationSyncConfiguration.

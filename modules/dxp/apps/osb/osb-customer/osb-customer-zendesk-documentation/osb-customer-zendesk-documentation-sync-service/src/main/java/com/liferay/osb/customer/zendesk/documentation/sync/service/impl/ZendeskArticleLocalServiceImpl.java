@@ -16,24 +16,30 @@ package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskRESTEndpoints;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
+import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.documentation.sync.configuration.ZendeskDocumentationSyncConfigurationValues;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskArticleLocalServiceBaseImpl;
+import com.liferay.osb.customer.zendesk.documentation.sync.util.ZendeskLocaleUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -45,8 +51,10 @@ public class ZendeskArticleLocalServiceImpl
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,
 			String documentationOriginalURL, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, long remoteUserSegmentId,
-			String[] labelNames, Map<String, byte[]> attachments)
+			Map<String, String> bodyMap, String previousArticleDocumentationKey,
+			String nextArticleDocumentationKey, int position,
+			long remoteUserSegmentId, String[] labelNames,
+			Map<String, byte[]> attachments)
 		throws PortalException {
 
 		// Zendesk article
@@ -75,9 +83,24 @@ public class ZendeskArticleLocalServiceImpl
 		zendeskArticle.setZendeskSectionId(zendeskSectionId);
 		zendeskArticle.setDocumentationKey(documentationKey);
 		zendeskArticle.setDocumentationOriginalURL(documentationOriginalURL);
+		zendeskArticle.setPreviousArticleDocumentationKey(
+			previousArticleDocumentationKey);
+		zendeskArticle.setNextArticleDocumentationKey(
+			nextArticleDocumentationKey);
 		zendeskArticle.setRemoteId(articleJSONObject.getLong("id"));
 		zendeskArticle.setRemoteHtmlURL(
 			articleJSONObject.getString("html_url"));
+
+		Map<Locale, String> remoteTitleMap = new HashMap<>();
+
+		for (Map.Entry<String, String> entry : titleMap.entrySet()) {
+			Locale remoteLocale = ZendeskLocaleUtil.convertToLocale(
+				entry.getKey());
+
+			remoteTitleMap.put(remoteLocale, entry.getValue());
+		}
+
+		zendeskArticle.setRemoteTitleMap(remoteTitleMap);
 
 		zendeskArticlePersistence.update(zendeskArticle);
 
@@ -163,7 +186,9 @@ public class ZendeskArticleLocalServiceImpl
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, String documentationOriginalURL,
 			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, long remoteUserSegmentId, String[] labelNames,
+			String previousArticleDocumentationKey,
+			String nextArticleDocumentationKey, int position,
+			long remoteUserSegmentId, String[] labelNames,
 			Map<String, byte[]> attachments)
 		throws PortalException {
 
@@ -211,12 +236,88 @@ public class ZendeskArticleLocalServiceImpl
 
 		// Zendesk article translations
 
+		Map<Locale, String> remoteTitleMap = zendeskArticle.getRemoteTitleMap();
+
+		if (MapUtil.isEmpty(remoteTitleMap)) {
+			for (Map.Entry<String, String> entry : titleMap.entrySet()) {
+				Locale remoteLocale = ZendeskLocaleUtil.convertToLocale(
+					entry.getKey());
+
+				remoteTitleMap.put(remoteLocale, entry.getValue());
+			}
+		}
+		else {
+			String jpRemoteTitle = remoteTitleMap.get(LocaleUtil.JAPAN);
+			String remoteTitle = titleMap.get(ZendeskLocales.US);
+
+			if (!remoteTitle.equals(jpRemoteTitle)) {
+				bodyMap.remove(ZendeskLocales.JAPAN);
+				titleMap.remove(ZendeskLocales.JAPAN);
+			}
+
+			remoteTitleMap.put(LocaleUtil.US, remoteTitle);
+		}
+
 		updateRemoteZendeskTranslations(
 			zendeskArticle.getRemoteId(), titleMap, bodyMap);
 
 		zendeskArticle.setModifiedDate(new Date());
 		zendeskArticle.setZendeskSectionId(zendeskSectionId);
 		zendeskArticle.setDocumentationOriginalURL(documentationOriginalURL);
+		zendeskArticle.setPreviousArticleDocumentationKey(
+			previousArticleDocumentationKey);
+		zendeskArticle.setNextArticleDocumentationKey(
+			nextArticleDocumentationKey);
+		zendeskArticle.setRemoteTitleMap(remoteTitleMap);
+
+		return zendeskArticlePersistence.update(zendeskArticle);
+	}
+
+	public ZendeskArticle updateZendeskArticleTranslation(
+			long zendeskArticleId, String locale, String title, String body)
+		throws PortalException {
+
+		// Zendesk article
+
+		ZendeskArticle zendeskArticle =
+			zendeskArticlePersistence.findByPrimaryKey(zendeskArticleId);
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Updating article translation " +
+					zendeskArticle.getDocumentationKey());
+		}
+
+		// Zendesk article attachments
+
+		List<ZendeskArticleAttachment> zendeskArticleAttachments =
+			zendeskArticleAttachmentPersistence.findByZendeskArticleId(
+				zendeskArticleId);
+
+		Map<String, String> bodyMap = new HashMap<>();
+
+		bodyMap.put(locale, body);
+
+		for (ZendeskArticleAttachment zendeskArticleAttachment :
+				zendeskArticleAttachments) {
+
+			transformAttachmentLinks(bodyMap, zendeskArticleAttachment);
+		}
+
+		// Zendesk article translations
+
+		Map<String, String> titleMap = new HashMap<>();
+
+		titleMap.put(locale, title);
+
+		updateRemoteZendeskTranslations(
+			zendeskArticle.getRemoteId(), titleMap, bodyMap);
+
+		zendeskArticle.setModifiedDate(new Date());
+
+		Locale remoteLocale = ZendeskLocaleUtil.convertToLocale(locale);
+
+		zendeskArticle.setRemoteTitle(title, remoteLocale);
 
 		return zendeskArticlePersistence.update(zendeskArticle);
 	}

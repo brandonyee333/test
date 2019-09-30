@@ -48,13 +48,14 @@ import java.util.regex.Pattern;
 public class DocumentationArchiveImporter implements DocumentationImporter {
 
 	public DocumentationArchiveImporter(
-			ZipReader zipReader, ZendeskCategory zendeskCategory,
+			ZipReader zipReader, ZendeskCategory zendeskCategory, String locale,
 			String[] markdownImporterArticleExtensions,
 			String markdownImporterArticleIntro)
 		throws PortalException {
 
 		_zipReader = zipReader;
 		_zendeskCategory = zendeskCategory;
+		_locale = locale;
 		_markdownImporterArticleExtensions = markdownImporterArticleExtensions;
 		_markdownImporterArticleIntro = markdownImporterArticleIntro;
 	}
@@ -213,15 +214,24 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 		ZendeskArticle previousZendeskArticle = null;
 		ZendeskArticle nextZendeskArticle = null;
 
+		String previousArticleDocumentationKey = null;
+		String nextArticleDocumentationKey = null;
+
 		if (_iterationCount > 0) {
 			int index = _zendeskArticles.indexOf(zendeskArticle);
 
 			if (index >= 1) {
 				previousZendeskArticle = _zendeskArticles.get(index - 1);
+
+				previousArticleDocumentationKey =
+					previousZendeskArticle.getDocumentationKey();
 			}
 
 			if (index < (_zendeskArticles.size() - 1)) {
 				nextZendeskArticle = _zendeskArticles.get(index + 1);
+
+				nextArticleDocumentationKey =
+					nextZendeskArticle.getDocumentationKey();
 			}
 		}
 
@@ -255,6 +265,7 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 			zendeskArticle = ZendeskArticleLocalServiceUtil.addZendeskArticle(
 				_currentZendeskSection.getZendeskSectionId(), documentationKey,
 				documentationOriginalURL, titleMap, bodyMap,
+				previousArticleDocumentationKey, nextArticleDocumentationKey,
 				_zendeskArticlePosition,
 				_zendeskCategory.getRemoteUserSegmentId(),
 				_zendeskCategory.getRemoteLabelNames(), attachments);
@@ -265,7 +276,8 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 					zendeskArticle.getZendeskArticleId(),
 					_currentZendeskSection.getZendeskSectionId(),
 					documentationKey, documentationOriginalURL, titleMap,
-					bodyMap, _zendeskArticlePosition,
+					bodyMap, previousArticleDocumentationKey,
+					nextArticleDocumentationKey, _zendeskArticlePosition,
 					_zendeskCategory.getRemoteUserSegmentId(),
 					_zendeskCategory.getRemoteLabelNames(), attachments);
 		}
@@ -356,6 +368,7 @@ public class DocumentationArchiveImporter implements DocumentationImporter {
 
 	private ZendeskSection _currentZendeskSection;
 	private int _iterationCount;
+	private final String _locale;
 	private final String[] _markdownImporterArticleExtensions;
 	private final String _markdownImporterArticleIntro;
 	private int _zendeskArticlePosition;
