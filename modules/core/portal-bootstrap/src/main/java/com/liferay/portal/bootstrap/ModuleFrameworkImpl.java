@@ -1401,6 +1401,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 		frameworkStartLevel.setStartLevel(
 			PropsValues.MODULE_FRAMEWORK_BEGINNING_START_LEVEL);
 
+		bundles.removeIf(bundle -> bundle.getState() == Bundle.UNINSTALLED);
+
 		for (final Bundle bundle : bundles.values()) {
 			if (_isFragmentBundle(bundle)) {
 				continue;
