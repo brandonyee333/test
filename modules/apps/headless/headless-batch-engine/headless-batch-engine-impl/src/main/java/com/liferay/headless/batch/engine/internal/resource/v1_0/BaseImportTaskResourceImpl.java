@@ -23,6 +23,7 @@ import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -65,6 +66,7 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 	@Override
 	@Consumes("multipart/form-data")
 	@DELETE
+	@Operation(description = "Uploads a new file for deleting items in batch.")
 	@Parameters(
 		value = {
 			@Parameter(in = ParameterIn.PATH, name = "className"),
@@ -95,6 +97,9 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 	 */
 	@Override
 	@Consumes("multipart/form-data")
+	@Operation(
+		description = "Uploads a new file for creating new items in batch."
+	)
 	@POST
 	@Parameters(
 		value = {
@@ -126,6 +131,7 @@ public abstract class BaseImportTaskResourceImpl implements ImportTaskResource {
 	 */
 	@Override
 	@Consumes("multipart/form-data")
+	@Operation(description = "Uploads a new file for updating items in batch.")
 	@PUT
 	@Parameters(
 		value = {
