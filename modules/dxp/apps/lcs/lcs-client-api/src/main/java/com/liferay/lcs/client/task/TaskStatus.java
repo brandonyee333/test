@@ -12,19 +12,15 @@
  *
  */
 
-package com.liferay.lcs.client.task.advisor;
+package com.liferay.lcs.client.task;
 
 import java.util.Set;
 
 /**
  * @author Igor Beslic
  */
-public interface TaskAdvisor {
+public interface TaskStatus {
 
-	public Set<String> getActiveServiceLabels();
-
-	public void registerActivity(Object instance);
-
-	public void reset();
+	public Set<String> getActiveTaskSimpleClassNames();
 
 }
