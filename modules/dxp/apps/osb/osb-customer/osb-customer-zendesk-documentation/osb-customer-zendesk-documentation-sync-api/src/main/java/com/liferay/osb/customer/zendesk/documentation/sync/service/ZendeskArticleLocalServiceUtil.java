@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
@@ -32,29 +30,37 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see ZendeskArticleLocalService
  * @generated
  */
-@ProviderType
 public class ZendeskArticleLocalServiceUtil {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
+	 */
+
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleLocalServiceUtil} to access the zendesk article local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static
 		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle
 				addZendeskArticle(
 					long zendeskSectionId, String documentationKey,
 					String documentationOriginalURL,
-					java.util.Map<String, String> titleMap,
-					java.util.Map<String, String> bodyMap, int position,
+					java.util.Map<java.util.Locale, String> remoteTitleMap,
+					java.util.Map<java.util.Locale, String> remoteBodyMap,
+					String previousArticleDocumentationKey,
+					String nextArticleDocumentationKey, int position,
 					long remoteUserSegmentId, String[] labelNames,
 					java.util.Map<String, byte[]> attachments)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addZendeskArticle(
 			zendeskSectionId, documentationKey, documentationOriginalURL,
-			titleMap, bodyMap, position, remoteUserSegmentId, labelNames,
-			attachments);
+			remoteTitleMap, remoteBodyMap, previousArticleDocumentationKey,
+			nextArticleDocumentationKey, position, remoteUserSegmentId,
+			labelNames, attachments);
 	}
 
 	/**
@@ -333,16 +339,19 @@ public class ZendeskArticleLocalServiceUtil {
 				updateZendeskArticle(
 					long zendeskArticleId, long zendeskSectionId,
 					String documentationKey, String documentationOriginalURL,
-					java.util.Map<String, String> titleMap,
-					java.util.Map<String, String> bodyMap, int position,
+					java.util.Map<java.util.Locale, String> remoteTitleMap,
+					java.util.Map<java.util.Locale, String> remoteBodyMap,
+					String previousArticleDocumentationKey,
+					String nextArticleDocumentationKey, int position,
 					long remoteUserSegmentId, String[] labelNames,
 					java.util.Map<String, byte[]> attachments)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateZendeskArticle(
 			zendeskArticleId, zendeskSectionId, documentationKey,
-			documentationOriginalURL, titleMap, bodyMap, position,
-			remoteUserSegmentId, labelNames, attachments);
+			documentationOriginalURL, remoteTitleMap, remoteBodyMap,
+			previousArticleDocumentationKey, nextArticleDocumentationKey,
+			position, remoteUserSegmentId, labelNames, attachments);
 	}
 
 	/**
@@ -358,6 +367,17 @@ public class ZendeskArticleLocalServiceUtil {
 					ZendeskArticle zendeskArticle) {
 
 		return getService().updateZendeskArticle(zendeskArticle);
+	}
+
+	public static
+		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle
+				updateZendeskArticleTranslation(
+					long zendeskArticleId, java.util.Locale locale,
+					String remoteTitle, String remoteBody)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateZendeskArticleTranslation(
+			zendeskArticleId, locale, remoteTitle, remoteBody);
 	}
 
 	public static ZendeskArticleLocalService getService() {

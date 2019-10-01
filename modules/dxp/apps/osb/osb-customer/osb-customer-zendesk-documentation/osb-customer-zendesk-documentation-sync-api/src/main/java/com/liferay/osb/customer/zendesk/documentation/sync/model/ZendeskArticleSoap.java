@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskArticleSoap implements Serializable {
 
 	public static ZendeskArticleSoap toSoapModel(ZendeskArticle model) {
@@ -41,8 +38,13 @@ public class ZendeskArticleSoap implements Serializable {
 		soapModel.setDocumentationKey(model.getDocumentationKey());
 		soapModel.setDocumentationOriginalURL(
 			model.getDocumentationOriginalURL());
+		soapModel.setPreviousArticleDocumentationKey(
+			model.getPreviousArticleDocumentationKey());
+		soapModel.setNextArticleDocumentationKey(
+			model.getNextArticleDocumentationKey());
 		soapModel.setRemoteId(model.getRemoteId());
 		soapModel.setRemoteHtmlURL(model.getRemoteHtmlURL());
+		soapModel.setRemoteTitle(model.getRemoteTitle());
 
 		return soapModel;
 	}
@@ -149,6 +151,26 @@ public class ZendeskArticleSoap implements Serializable {
 		_documentationOriginalURL = documentationOriginalURL;
 	}
 
+	public String getPreviousArticleDocumentationKey() {
+		return _previousArticleDocumentationKey;
+	}
+
+	public void setPreviousArticleDocumentationKey(
+		String previousArticleDocumentationKey) {
+
+		_previousArticleDocumentationKey = previousArticleDocumentationKey;
+	}
+
+	public String getNextArticleDocumentationKey() {
+		return _nextArticleDocumentationKey;
+	}
+
+	public void setNextArticleDocumentationKey(
+		String nextArticleDocumentationKey) {
+
+		_nextArticleDocumentationKey = nextArticleDocumentationKey;
+	}
+
 	public long getRemoteId() {
 		return _remoteId;
 	}
@@ -165,13 +187,24 @@ public class ZendeskArticleSoap implements Serializable {
 		_remoteHtmlURL = remoteHtmlURL;
 	}
 
+	public String getRemoteTitle() {
+		return _remoteTitle;
+	}
+
+	public void setRemoteTitle(String remoteTitle) {
+		_remoteTitle = remoteTitle;
+	}
+
 	private long _zendeskArticleId;
 	private Date _modifiedDate;
 	private long _zendeskCategoryId;
 	private long _zendeskSectionId;
 	private String _documentationKey;
 	private String _documentationOriginalURL;
+	private String _previousArticleDocumentationKey;
+	private String _nextArticleDocumentationKey;
 	private long _remoteId;
 	private String _remoteHtmlURL;
+	private String _remoteTitle;
 
 }

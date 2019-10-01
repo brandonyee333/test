@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ZendeskCategoryPersistence
 	extends BasePersistence<ZendeskCategory> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskCategoryUtil} to access the zendesk category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
@@ -71,11 +71,11 @@ public interface ZendeskCategoryPersistence
 	 * Returns the zendesk category where documentationKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk category, or <code>null</code> if a matching zendesk category could not be found
 	 */
 	public ZendeskCategory fetchByDocumentationKey(
-		String documentationKey, boolean retrieveFromCache);
+		String documentationKey, boolean useFinderCache);
 
 	/**
 	 * Removes the zendesk category where documentationKey = &#63; from the database.
@@ -193,14 +193,14 @@ public interface ZendeskCategoryPersistence
 	 * @param start the lower bound of the range of zendesk categories
 	 * @param end the upper bound of the range of zendesk categories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk categories
 	 */
 	public java.util.List<ZendeskCategory> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ZendeskCategory>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the zendesk categories from the database.

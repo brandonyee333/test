@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -56,16 +57,19 @@ import java.util.Map;
 public interface ZendeskArticleLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleLocalServiceUtil} to access the zendesk article local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ZendeskArticle addZendeskArticle(
 			long zendeskSectionId, String documentationKey,
-			String documentationOriginalURL, Map<String, String> titleMap,
-			Map<String, String> bodyMap, int position, long remoteUserSegmentId,
-			String[] labelNames, Map<String, byte[]> attachments)
+			String documentationOriginalURL, Map<Locale, String> remoteTitleMap,
+			Map<Locale, String> remoteBodyMap,
+			String previousArticleDocumentationKey,
+			String nextArticleDocumentationKey, int position,
+			long remoteUserSegmentId, String[] labelNames,
+			Map<String, byte[]> attachments)
 		throws PortalException;
 
 	/**
@@ -256,8 +260,11 @@ public interface ZendeskArticleLocalService
 	public ZendeskArticle updateZendeskArticle(
 			long zendeskArticleId, long zendeskSectionId,
 			String documentationKey, String documentationOriginalURL,
-			Map<String, String> titleMap, Map<String, String> bodyMap,
-			int position, long remoteUserSegmentId, String[] labelNames,
+			Map<Locale, String> remoteTitleMap,
+			Map<Locale, String> remoteBodyMap,
+			String previousArticleDocumentationKey,
+			String nextArticleDocumentationKey, int position,
+			long remoteUserSegmentId, String[] labelNames,
 			Map<String, byte[]> attachments)
 		throws PortalException;
 
@@ -269,5 +276,10 @@ public interface ZendeskArticleLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public ZendeskArticle updateZendeskArticle(ZendeskArticle zendeskArticle);
+
+	public ZendeskArticle updateZendeskArticleTranslation(
+			long zendeskArticleId, Locale locale, String remoteTitle,
+			String remoteBody)
+		throws PortalException;
 
 }

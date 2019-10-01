@@ -18,13 +18,17 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * The base model interface for the ZendeskSection service. Represents a row in the &quot;OSBCustomer_ZendeskSection&quot; database table, with each column mapped to a property of this class.
@@ -38,9 +42,10 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface ZendeskSectionModel extends BaseModel<ZendeskSection> {
+public interface ZendeskSectionModel
+	extends BaseModel<ZendeskSection>, LocalizedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a zendesk section model instance should use the {@link ZendeskSection} interface instead.
@@ -146,6 +151,107 @@ public interface ZendeskSectionModel extends BaseModel<ZendeskSection> {
 	 */
 	public void setRemoteHtmlURL(String remoteHtmlURL);
 
+	/**
+	 * Returns the remote name of this zendesk section.
+	 *
+	 * @return the remote name of this zendesk section
+	 */
+	public String getRemoteName();
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized remote name of this zendesk section
+	 */
+	@AutoEscape
+	public String getRemoteName(Locale locale);
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote name of this zendesk section. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@AutoEscape
+	public String getRemoteName(Locale locale, boolean useDefault);
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized remote name of this zendesk section
+	 */
+	@AutoEscape
+	public String getRemoteName(String languageId);
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote name of this zendesk section
+	 */
+	@AutoEscape
+	public String getRemoteName(String languageId, boolean useDefault);
+
+	@AutoEscape
+	public String getRemoteNameCurrentLanguageId();
+
+	@AutoEscape
+	public String getRemoteNameCurrentValue();
+
+	/**
+	 * Returns a map of the locales and localized remote names of this zendesk section.
+	 *
+	 * @return the locales and localized remote names of this zendesk section
+	 */
+	public Map<Locale, String> getRemoteNameMap();
+
+	/**
+	 * Sets the remote name of this zendesk section.
+	 *
+	 * @param remoteName the remote name of this zendesk section
+	 */
+	public void setRemoteName(String remoteName);
+
+	/**
+	 * Sets the localized remote name of this zendesk section in the language.
+	 *
+	 * @param remoteName the localized remote name of this zendesk section
+	 * @param locale the locale of the language
+	 */
+	public void setRemoteName(String remoteName, Locale locale);
+
+	/**
+	 * Sets the localized remote name of this zendesk section in the language, and sets the default locale.
+	 *
+	 * @param remoteName the localized remote name of this zendesk section
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	public void setRemoteName(
+		String remoteName, Locale locale, Locale defaultLocale);
+
+	public void setRemoteNameCurrentLanguageId(String languageId);
+
+	/**
+	 * Sets the localized remote names of this zendesk section from the map of locales and localized remote names.
+	 *
+	 * @param remoteNameMap the locales and localized remote names of this zendesk section
+	 */
+	public void setRemoteNameMap(Map<Locale, String> remoteNameMap);
+
+	/**
+	 * Sets the localized remote names of this zendesk section from the map of locales and localized remote names, and sets the default locale.
+	 *
+	 * @param remoteNameMap the locales and localized remote names of this zendesk section
+	 * @param defaultLocale the default locale
+	 */
+	public void setRemoteNameMap(
+		Map<Locale, String> remoteNameMap, Locale defaultLocale);
+
 	@Override
 	public boolean isNew();
 
@@ -178,6 +284,19 @@ public interface ZendeskSectionModel extends BaseModel<ZendeskSection> {
 
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext);
+
+	@Override
+	public String[] getAvailableLanguageIds();
+
+	@Override
+	public String getDefaultLanguageId();
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException;
+
+	@Override
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException;
 
 	@Override
 	public Object clone();

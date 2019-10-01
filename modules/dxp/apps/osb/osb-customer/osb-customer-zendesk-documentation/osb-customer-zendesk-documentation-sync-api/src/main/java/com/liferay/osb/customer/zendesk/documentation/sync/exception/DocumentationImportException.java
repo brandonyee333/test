@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class DocumentationImportException extends PortalException {
 
 	public DocumentationImportException() {

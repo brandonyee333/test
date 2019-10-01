@@ -14,15 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class ZendeskCategoryImpl extends ZendeskCategoryBaseImpl {
 
 	public ZendeskCategoryImpl() {

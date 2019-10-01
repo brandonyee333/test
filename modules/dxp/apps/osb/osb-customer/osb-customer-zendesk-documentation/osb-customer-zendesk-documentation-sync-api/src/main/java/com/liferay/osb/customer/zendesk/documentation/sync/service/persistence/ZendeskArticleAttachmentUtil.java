@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -42,10 +40,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see ZendeskArticleAttachmentPersistence
  * @generated
  */
-@ProviderType
 public class ZendeskArticleAttachmentUtil {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -195,16 +192,16 @@ public class ZendeskArticleAttachmentUtil {
 	 * @param start the lower bound of the range of zendesk article attachments
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk article attachments
 	 */
 	public static List<ZendeskArticleAttachment> findByZendeskArticleId(
 		long zendeskArticleId, int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByZendeskArticleId(
-			zendeskArticleId, start, end, orderByComparator, retrieveFromCache);
+			zendeskArticleId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -345,14 +342,14 @@ public class ZendeskArticleAttachmentUtil {
 	 *
 	 * @param zendeskArticleId the zendesk article ID
 	 * @param filePath the file path
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article attachment, or <code>null</code> if a matching zendesk article attachment could not be found
 	 */
 	public static ZendeskArticleAttachment fetchByZAI_FP(
-		long zendeskArticleId, String filePath, boolean retrieveFromCache) {
+		long zendeskArticleId, String filePath, boolean useFinderCache) {
 
 		return getPersistence().fetchByZAI_FP(
-			zendeskArticleId, filePath, retrieveFromCache);
+			zendeskArticleId, filePath, useFinderCache);
 	}
 
 	/**
@@ -516,16 +513,16 @@ public class ZendeskArticleAttachmentUtil {
 	 * @param start the lower bound of the range of zendesk article attachments
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk article attachments
 	 */
 	public static List<ZendeskArticleAttachment> findAll(
 		int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

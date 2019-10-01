@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ZendeskArticlePersistence
 	extends BasePersistence<ZendeskArticle> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleUtil} to access the zendesk article persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
@@ -102,14 +102,14 @@ public interface ZendeskArticlePersistence
 	 * @param start the lower bound of the range of zendesk articles
 	 * @param end the upper bound of the range of zendesk articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk articles
 	 */
 	public java.util.List<ZendeskArticle> findByZendeskCategoryId(
 		long zendeskCategoryId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ZendeskArticle>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first zendesk article in the ordered set where zendeskCategoryId = &#63;.
@@ -246,14 +246,14 @@ public interface ZendeskArticlePersistence
 	 * @param start the lower bound of the range of zendesk articles
 	 * @param end the upper bound of the range of zendesk articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk articles
 	 */
 	public java.util.List<ZendeskArticle> findByZendeskSectionId(
 		long zendeskSectionId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ZendeskArticle>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first zendesk article in the ordered set where zendeskSectionId = &#63;.
@@ -361,11 +361,11 @@ public interface ZendeskArticlePersistence
 	 * Returns the zendesk article where documentationOriginalURL = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param documentationOriginalURL the documentation original url
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
 	 */
 	public ZendeskArticle fetchByDocumentationOriginalURL(
-		String documentationOriginalURL, boolean retrieveFromCache);
+		String documentationOriginalURL, boolean useFinderCache);
 
 	/**
 	 * Removes the zendesk article where documentationOriginalURL = &#63; from the database.
@@ -412,12 +412,12 @@ public interface ZendeskArticlePersistence
 	 *
 	 * @param zendeskCategoryId the zendesk category ID
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
 	 */
 	public ZendeskArticle fetchByZCI_DK(
 		long zendeskCategoryId, String documentationKey,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes the zendesk article where zendeskCategoryId = &#63; and documentationKey = &#63; from the database.
@@ -538,14 +538,14 @@ public interface ZendeskArticlePersistence
 	 * @param start the lower bound of the range of zendesk articles
 	 * @param end the upper bound of the range of zendesk articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk articles
 	 */
 	public java.util.List<ZendeskArticle> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ZendeskArticle>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the zendesk articles from the database.

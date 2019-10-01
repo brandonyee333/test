@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -35,9 +33,8 @@ import java.util.Objects;
  * @see ZendeskCategory
  * @generated
  */
-@ProviderType
 public class ZendeskCategoryWrapper
-	implements ZendeskCategory, ModelWrapper<ZendeskCategory> {
+	implements ModelWrapper<ZendeskCategory>, ZendeskCategory {
 
 	public ZendeskCategoryWrapper(ZendeskCategory zendeskCategory) {
 		_zendeskCategory = zendeskCategory;
@@ -224,6 +221,11 @@ public class ZendeskCategoryWrapper
 		return _zendeskCategory.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a zendesk category model instance should use the <code>ZendeskCategory</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_zendeskCategory.persist();

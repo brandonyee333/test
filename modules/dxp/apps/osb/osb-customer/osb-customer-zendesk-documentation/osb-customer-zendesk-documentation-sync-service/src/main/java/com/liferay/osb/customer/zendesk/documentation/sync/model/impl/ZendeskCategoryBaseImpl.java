@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCategoryLocalServiceUtil;
 
@@ -31,11 +29,10 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCatego
  * @see ZendeskCategory
  * @generated
  */
-@ProviderType
 public abstract class ZendeskCategoryBaseImpl
 	extends ZendeskCategoryModelImpl implements ZendeskCategory {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk category model instance should use the <code>ZendeskCategory</code> interface instead.

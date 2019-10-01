@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil;
 
@@ -31,12 +29,11 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticl
  * @see ZendeskArticleAttachment
  * @generated
  */
-@ProviderType
 public abstract class ZendeskArticleAttachmentBaseImpl
 	extends ZendeskArticleAttachmentModelImpl
 	implements ZendeskArticleAttachment {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk article attachment model instance should use the <code>ZendeskArticleAttachment</code> interface instead.

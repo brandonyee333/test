@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskArticleAttachmentException;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl;
@@ -60,12 +58,11 @@ import java.util.Set;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskArticleAttachmentPersistenceImpl
 	extends BasePersistenceImpl<ZendeskArticleAttachment>
 	implements ZendeskArticleAttachmentPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ZendeskArticleAttachmentUtil</code> to access the zendesk article attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -152,14 +149,14 @@ public class ZendeskArticleAttachmentPersistenceImpl
 	 * @param start the lower bound of the range of zendesk article attachments
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk article attachments
 	 */
 	@Override
 	public List<ZendeskArticleAttachment> findByZendeskArticleId(
 		long zendeskArticleId, int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -169,10 +166,13 @@ public class ZendeskArticleAttachmentPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindByZendeskArticleId;
-			finderArgs = new Object[] {zendeskArticleId};
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByZendeskArticleId;
+				finderArgs = new Object[] {zendeskArticleId};
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindByZendeskArticleId;
 			finderArgs = new Object[] {
 				zendeskArticleId, start, end, orderByComparator
@@ -181,14 +181,14 @@ public class ZendeskArticleAttachmentPersistenceImpl
 
 		List<ZendeskArticleAttachment> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<ZendeskArticleAttachment>)finderCache.getResult(
 				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
 				for (ZendeskArticleAttachment zendeskArticleAttachment : list) {
-					if ((zendeskArticleId !=
-							zendeskArticleAttachment.getZendeskArticleId())) {
+					if (zendeskArticleId !=
+							zendeskArticleAttachment.getZendeskArticleId()) {
 
 						list = null;
 
@@ -249,10 +249,14 @@ public class ZendeskArticleAttachmentPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -669,20 +673,24 @@ public class ZendeskArticleAttachmentPersistenceImpl
 	 *
 	 * @param zendeskArticleId the zendesk article ID
 	 * @param filePath the file path
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article attachment, or <code>null</code> if a matching zendesk article attachment could not be found
 	 */
 	@Override
 	public ZendeskArticleAttachment fetchByZAI_FP(
-		long zendeskArticleId, String filePath, boolean retrieveFromCache) {
+		long zendeskArticleId, String filePath, boolean useFinderCache) {
 
 		filePath = Objects.toString(filePath, "");
 
-		Object[] finderArgs = new Object[] {zendeskArticleId, filePath};
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {zendeskArticleId, filePath};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			result = finderCache.getResult(
 				_finderPathFetchByZAI_FP, finderArgs, this);
 		}
@@ -738,14 +746,22 @@ public class ZendeskArticleAttachmentPersistenceImpl
 				List<ZendeskArticleAttachment> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(
-						_finderPathFetchByZAI_FP, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByZAI_FP, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									zendeskArticleId, filePath
+								};
+							}
+
 							_log.warn(
 								"ZendeskArticleAttachmentPersistenceImpl.fetchByZAI_FP(long, String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
@@ -762,7 +778,10 @@ public class ZendeskArticleAttachmentPersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(_finderPathFetchByZAI_FP, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByZAI_FP, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -1511,14 +1530,14 @@ public class ZendeskArticleAttachmentPersistenceImpl
 	 * @param start the lower bound of the range of zendesk article attachments
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk article attachments
 	 */
 	@Override
 	public List<ZendeskArticleAttachment> findAll(
 		int start, int end,
 		OrderByComparator<ZendeskArticleAttachment> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -1528,17 +1547,20 @@ public class ZendeskArticleAttachmentPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<ZendeskArticleAttachment> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<ZendeskArticleAttachment>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -1589,10 +1611,14 @@ public class ZendeskArticleAttachmentPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}

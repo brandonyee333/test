@@ -14,12 +14,9 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class ZendeskArticleAttachmentImpl
 	extends ZendeskArticleAttachmentBaseImpl {
 

@@ -15,8 +15,11 @@
 		<property name="zendeskSectionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="documentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="documentationOriginalURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="previousArticleDocumentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="nextArticleDocumentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="remoteHtmlURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="remoteTitle" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl" table="OSBCustomer_ZendeskArticleAttachment">
 		<id name="zendeskArticleAttachmentId" type="long">
@@ -47,5 +50,6 @@
 		<property name="documentationKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="remoteId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="remoteHtmlURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="remoteName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 </hibernate-mapping>

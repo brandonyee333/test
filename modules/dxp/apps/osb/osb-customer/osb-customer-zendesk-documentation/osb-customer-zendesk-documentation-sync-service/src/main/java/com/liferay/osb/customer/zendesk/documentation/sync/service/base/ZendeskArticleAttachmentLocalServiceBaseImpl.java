@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalService;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.ZendeskArticleAttachmentPersistence;
@@ -65,12 +63,11 @@ import javax.sql.DataSource;
  * @see com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl
  * @generated
  */
-@ProviderType
 public abstract class ZendeskArticleAttachmentLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements ZendeskArticleAttachmentLocalService, IdentifiableOSGiService {
+	implements IdentifiableOSGiService, ZendeskArticleAttachmentLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>ZendeskArticleAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleAttachmentLocalServiceUtil</code>.

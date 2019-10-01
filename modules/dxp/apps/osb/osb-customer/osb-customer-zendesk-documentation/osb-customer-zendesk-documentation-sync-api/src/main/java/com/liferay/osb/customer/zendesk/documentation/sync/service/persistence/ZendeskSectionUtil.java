@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -42,10 +40,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see ZendeskSectionPersistence
  * @generated
  */
-@ProviderType
 public class ZendeskSectionUtil {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -189,17 +186,16 @@ public class ZendeskSectionUtil {
 	 * @param start the lower bound of the range of zendesk sections
 	 * @param end the upper bound of the range of zendesk sections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk sections
 	 */
 	public static List<ZendeskSection> findByZendeskCategoryId(
 		long zendeskCategoryId, int start, int end,
 		OrderByComparator<ZendeskSection> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByZendeskCategoryId(
-			zendeskCategoryId, start, end, orderByComparator,
-			retrieveFromCache);
+			zendeskCategoryId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -342,15 +338,15 @@ public class ZendeskSectionUtil {
 	 *
 	 * @param zendeskCategoryId the zendesk category ID
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk section, or <code>null</code> if a matching zendesk section could not be found
 	 */
 	public static ZendeskSection fetchByZCI_DK(
 		long zendeskCategoryId, String documentationKey,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().fetchByZCI_DK(
-			zendeskCategoryId, documentationKey, retrieveFromCache);
+			zendeskCategoryId, documentationKey, useFinderCache);
 	}
 
 	/**
@@ -506,15 +502,15 @@ public class ZendeskSectionUtil {
 	 * @param start the lower bound of the range of zendesk sections
 	 * @param end the upper bound of the range of zendesk sections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk sections
 	 */
 	public static List<ZendeskSection> findAll(
 		int start, int end, OrderByComparator<ZendeskSection> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

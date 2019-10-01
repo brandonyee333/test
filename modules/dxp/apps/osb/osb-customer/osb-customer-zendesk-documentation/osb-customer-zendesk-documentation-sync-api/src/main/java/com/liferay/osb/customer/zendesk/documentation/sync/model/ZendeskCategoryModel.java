@@ -38,7 +38,7 @@ import java.io.Serializable;
 @ProviderType
 public interface ZendeskCategoryModel extends BaseModel<ZendeskCategory> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a zendesk category model instance should use the {@link ZendeskCategory} interface instead.

@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface ZendeskArticleAttachment
 	extends PersistedModel, ZendeskArticleAttachmentModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleAttachmentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

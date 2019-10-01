@@ -12,10 +12,13 @@
 		<field name="documentationOriginalURL" type="String">
 			<hint name="max-length">255</hint>
 		</field>
+		<field name="previousArticleDocumentationKey" type="String" />
+		<field name="nextArticleDocumentationKey" type="String" />
 		<field name="remoteId" type="long" />
 		<field name="remoteHtmlURL" type="String">
 			<hint-collection name="URL" />
 		</field>
+		<field localized="true" name="remoteTitle" type="String" />
 	</model>
 	<model name="com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment">
 		<field name="zendeskArticleAttachmentId" type="long" />
@@ -52,5 +55,6 @@
 		<field name="remoteHtmlURL" type="String">
 			<hint-collection name="URL" />
 		</field>
+		<field localized="true" name="remoteName" type="String" />
 	</model>
 </model-hints>

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,10 +23,9 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see ZendeskArticleAttachmentLocalService
  * @generated
  */
-@ProviderType
 public class ZendeskArticleAttachmentLocalServiceWrapper
-	implements ZendeskArticleAttachmentLocalService,
-			   ServiceWrapper<ZendeskArticleAttachmentLocalService> {
+	implements ServiceWrapper<ZendeskArticleAttachmentLocalService>,
+			   ZendeskArticleAttachmentLocalService {
 
 	public ZendeskArticleAttachmentLocalServiceWrapper(
 		ZendeskArticleAttachmentLocalService
@@ -38,6 +35,11 @@ public class ZendeskArticleAttachmentLocalServiceWrapper
 			zendeskArticleAttachmentLocalService;
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleAttachmentLocalServiceUtil} to access the zendesk article attachment local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 */
 	@Override
 	public com.liferay.osb.customer.zendesk.documentation.sync.model.
 		ZendeskArticleAttachment addZendeskArticleAttachment(

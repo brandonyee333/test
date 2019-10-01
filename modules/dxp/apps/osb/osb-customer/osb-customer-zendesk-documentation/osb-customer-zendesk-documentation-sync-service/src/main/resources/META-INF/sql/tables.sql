@@ -5,8 +5,11 @@ create table OSBCustomer_ZendeskArticle (
 	zendeskSectionId LONG,
 	documentationKey VARCHAR(150) null,
 	documentationOriginalURL VARCHAR(255) null,
+	previousArticleDocumentationKey VARCHAR(75) null,
+	nextArticleDocumentationKey VARCHAR(75) null,
 	remoteId LONG,
-	remoteHtmlURL STRING null
+	remoteHtmlURL STRING null,
+	remoteTitle STRING null
 );
 
 create table OSBCustomer_ZendeskArticleAttachment (
@@ -33,5 +36,6 @@ create table OSBCustomer_ZendeskSection (
 	zendeskCategoryId LONG,
 	documentationKey VARCHAR(150) null,
 	remoteId LONG,
-	remoteHtmlURL STRING null
+	remoteHtmlURL STRING null,
+	remoteName STRING null
 );

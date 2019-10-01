@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ZendeskArticleAttachmentPersistence
 	extends BasePersistence<ZendeskArticleAttachment> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleAttachmentUtil} to access the zendesk article attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
@@ -102,14 +102,14 @@ public interface ZendeskArticleAttachmentPersistence
 	 * @param start the lower bound of the range of zendesk article attachments
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk article attachments
 	 */
 	public java.util.List<ZendeskArticleAttachment> findByZendeskArticleId(
 		long zendeskArticleId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator
 			<ZendeskArticleAttachment> orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first zendesk article attachment in the ordered set where zendeskArticleId = &#63;.
@@ -220,11 +220,11 @@ public interface ZendeskArticleAttachmentPersistence
 	 *
 	 * @param zendeskArticleId the zendesk article ID
 	 * @param filePath the file path
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article attachment, or <code>null</code> if a matching zendesk article attachment could not be found
 	 */
 	public ZendeskArticleAttachment fetchByZAI_FP(
-		long zendeskArticleId, String filePath, boolean retrieveFromCache);
+		long zendeskArticleId, String filePath, boolean useFinderCache);
 
 	/**
 	 * Removes the zendesk article attachment where zendeskArticleId = &#63; and filePath = &#63; from the database.
@@ -349,14 +349,14 @@ public interface ZendeskArticleAttachmentPersistence
 	 * @param start the lower bound of the range of zendesk article attachments
 	 * @param end the upper bound of the range of zendesk article attachments (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk article attachments
 	 */
 	public java.util.List<ZendeskArticleAttachment> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator
 			<ZendeskArticleAttachment> orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the zendesk article attachments from the database.

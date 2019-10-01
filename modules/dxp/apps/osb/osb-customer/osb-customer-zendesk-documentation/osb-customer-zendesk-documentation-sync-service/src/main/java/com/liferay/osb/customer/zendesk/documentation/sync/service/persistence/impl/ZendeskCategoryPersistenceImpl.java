@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.NoSuchZendeskCategoryException;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskCategoryImpl;
@@ -60,12 +58,11 @@ import java.util.Set;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskCategoryPersistenceImpl
 	extends BasePersistenceImpl<ZendeskCategory>
 	implements ZendeskCategoryPersistence {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ZendeskCategoryUtil</code> to access the zendesk category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -134,20 +131,24 @@ public class ZendeskCategoryPersistenceImpl
 	 * Returns the zendesk category where documentationKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk category, or <code>null</code> if a matching zendesk category could not be found
 	 */
 	@Override
 	public ZendeskCategory fetchByDocumentationKey(
-		String documentationKey, boolean retrieveFromCache) {
+		String documentationKey, boolean useFinderCache) {
 
 		documentationKey = Objects.toString(documentationKey, "");
 
-		Object[] finderArgs = new Object[] {documentationKey};
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {documentationKey};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			result = finderCache.getResult(
 				_finderPathFetchByDocumentationKey, finderArgs, this);
 		}
@@ -198,14 +199,21 @@ public class ZendeskCategoryPersistenceImpl
 				List<ZendeskCategory> list = q.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(
-						_finderPathFetchByDocumentationKey, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByDocumentationKey, finderArgs,
+							list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {documentationKey};
+							}
+
 							_log.warn(
 								"ZendeskCategoryPersistenceImpl.fetchByDocumentationKey(String, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
@@ -221,8 +229,10 @@ public class ZendeskCategoryPersistenceImpl
 				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(
-					_finderPathFetchByDocumentationKey, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByDocumentationKey, finderArgs);
+				}
 
 				throw processException(e);
 			}
@@ -893,14 +903,14 @@ public class ZendeskCategoryPersistenceImpl
 	 * @param start the lower bound of the range of zendesk categories
 	 * @param end the upper bound of the range of zendesk categories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk categories
 	 */
 	@Override
 	public List<ZendeskCategory> findAll(
 		int start, int end,
 		OrderByComparator<ZendeskCategory> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		boolean pagination = true;
 		FinderPath finderPath = null;
@@ -910,17 +920,20 @@ public class ZendeskCategoryPersistenceImpl
 			(orderByComparator == null)) {
 
 			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<ZendeskCategory> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<ZendeskCategory>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
@@ -970,10 +983,14 @@ public class ZendeskCategoryPersistenceImpl
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
 			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
 				throw processException(e);
 			}

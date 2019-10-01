@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -56,15 +57,14 @@ import java.util.Map;
 public interface ZendeskSectionLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionLocalServiceUtil} to access the zendesk section local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ZendeskSection addZendeskSection(
 			long zendeskCategoryId, String documentationKey,
-			Map<String, String> nameMap, Map<String, String> descriptionMap,
-			int position)
+			Map<Locale, String> remoteNameMap, int position)
 		throws PortalException;
 
 	/**
@@ -246,8 +246,8 @@ public interface ZendeskSectionLocalService
 
 	public ZendeskSection updateZendeskSection(
 			long zendeskSectionId, long zendeskCategoryId,
-			String documentationKey, Map<String, String> nameMap,
-			Map<String, String> descriptionMap, int position)
+			String documentationKey, Map<Locale, String> remoteNameMap,
+			int position)
 		throws PortalException;
 
 	/**
@@ -258,5 +258,9 @@ public interface ZendeskSectionLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public ZendeskSection updateZendeskSection(ZendeskSection zendeskSection);
+
+	public ZendeskSection updateZendeskSectionTranslation(
+			long zendeskSectionId, Locale locale, String remoteName)
+		throws PortalException;
 
 }

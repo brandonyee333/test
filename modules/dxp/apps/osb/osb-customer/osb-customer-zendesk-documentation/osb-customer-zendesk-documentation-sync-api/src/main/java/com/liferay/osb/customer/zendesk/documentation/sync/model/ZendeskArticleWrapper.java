@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -36,9 +34,8 @@ import java.util.Objects;
  * @see ZendeskArticle
  * @generated
  */
-@ProviderType
 public class ZendeskArticleWrapper
-	implements ZendeskArticle, ModelWrapper<ZendeskArticle> {
+	implements ModelWrapper<ZendeskArticle>, ZendeskArticle {
 
 	public ZendeskArticleWrapper(ZendeskArticle zendeskArticle) {
 		_zendeskArticle = zendeskArticle;
@@ -65,8 +62,14 @@ public class ZendeskArticleWrapper
 		attributes.put("documentationKey", getDocumentationKey());
 		attributes.put(
 			"documentationOriginalURL", getDocumentationOriginalURL());
+		attributes.put(
+			"previousArticleDocumentationKey",
+			getPreviousArticleDocumentationKey());
+		attributes.put(
+			"nextArticleDocumentationKey", getNextArticleDocumentationKey());
 		attributes.put("remoteId", getRemoteId());
 		attributes.put("remoteHtmlURL", getRemoteHtmlURL());
+		attributes.put("remoteTitle", getRemoteTitle());
 
 		return attributes;
 	}
@@ -110,6 +113,20 @@ public class ZendeskArticleWrapper
 			setDocumentationOriginalURL(documentationOriginalURL);
 		}
 
+		String previousArticleDocumentationKey = (String)attributes.get(
+			"previousArticleDocumentationKey");
+
+		if (previousArticleDocumentationKey != null) {
+			setPreviousArticleDocumentationKey(previousArticleDocumentationKey);
+		}
+
+		String nextArticleDocumentationKey = (String)attributes.get(
+			"nextArticleDocumentationKey");
+
+		if (nextArticleDocumentationKey != null) {
+			setNextArticleDocumentationKey(nextArticleDocumentationKey);
+		}
+
 		Long remoteId = (Long)attributes.get("remoteId");
 
 		if (remoteId != null) {
@@ -120,6 +137,12 @@ public class ZendeskArticleWrapper
 
 		if (remoteHtmlURL != null) {
 			setRemoteHtmlURL(remoteHtmlURL);
+		}
+
+		String remoteTitle = (String)attributes.get("remoteTitle");
+
+		if (remoteTitle != null) {
+			setRemoteTitle(remoteTitle);
 		}
 	}
 
@@ -132,6 +155,16 @@ public class ZendeskArticleWrapper
 	@Override
 	public int compareTo(ZendeskArticle zendeskArticle) {
 		return _zendeskArticle.compareTo(zendeskArticle);
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		return _zendeskArticle.getAvailableLanguageIds();
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		return _zendeskArticle.getDefaultLanguageId();
 	}
 
 	/**
@@ -170,6 +203,26 @@ public class ZendeskArticleWrapper
 	}
 
 	/**
+	 * Returns the next article documentation key of this zendesk article.
+	 *
+	 * @return the next article documentation key of this zendesk article
+	 */
+	@Override
+	public String getNextArticleDocumentationKey() {
+		return _zendeskArticle.getNextArticleDocumentationKey();
+	}
+
+	/**
+	 * Returns the previous article documentation key of this zendesk article.
+	 *
+	 * @return the previous article documentation key of this zendesk article
+	 */
+	@Override
+	public String getPreviousArticleDocumentationKey() {
+		return _zendeskArticle.getPreviousArticleDocumentationKey();
+	}
+
+	/**
 	 * Returns the primary key of this zendesk article.
 	 *
 	 * @return the primary key of this zendesk article
@@ -195,8 +248,8 @@ public class ZendeskArticleWrapper
 	}
 
 	@Override
-	public String getRemoteHtmlURL(String locale) {
-		return _zendeskArticle.getRemoteHtmlURL(locale);
+	public String getRemoteHtmlURL(String zendeskLocale) {
+		return _zendeskArticle.getRemoteHtmlURL(zendeskLocale);
 	}
 
 	/**
@@ -209,9 +262,80 @@ public class ZendeskArticleWrapper
 		return _zendeskArticle.getRemoteId();
 	}
 
+	/**
+	 * Returns the remote title of this zendesk article.
+	 *
+	 * @return the remote title of this zendesk article
+	 */
 	@Override
-	public String getRemoteTitle(String locale) {
+	public String getRemoteTitle() {
+		return _zendeskArticle.getRemoteTitle();
+	}
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized remote title of this zendesk article
+	 */
+	@Override
+	public String getRemoteTitle(java.util.Locale locale) {
 		return _zendeskArticle.getRemoteTitle(locale);
+	}
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote title of this zendesk article. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@Override
+	public String getRemoteTitle(java.util.Locale locale, boolean useDefault) {
+		return _zendeskArticle.getRemoteTitle(locale, useDefault);
+	}
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized remote title of this zendesk article
+	 */
+	@Override
+	public String getRemoteTitle(String languageId) {
+		return _zendeskArticle.getRemoteTitle(languageId);
+	}
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote title of this zendesk article
+	 */
+	@Override
+	public String getRemoteTitle(String languageId, boolean useDefault) {
+		return _zendeskArticle.getRemoteTitle(languageId, useDefault);
+	}
+
+	@Override
+	public String getRemoteTitleCurrentLanguageId() {
+		return _zendeskArticle.getRemoteTitleCurrentLanguageId();
+	}
+
+	@Override
+	public String getRemoteTitleCurrentValue() {
+		return _zendeskArticle.getRemoteTitleCurrentValue();
+	}
+
+	/**
+	 * Returns a map of the locales and localized remote titles of this zendesk article.
+	 *
+	 * @return the locales and localized remote titles of this zendesk article
+	 */
+	@Override
+	public Map<java.util.Locale, String> getRemoteTitleMap() {
+		return _zendeskArticle.getRemoteTitleMap();
 	}
 
 	/**
@@ -264,9 +388,29 @@ public class ZendeskArticleWrapper
 		return _zendeskArticle.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the <code>ZendeskArticle</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_zendeskArticle.persist();
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport()
+		throws com.liferay.portal.kernel.exception.LocaleException {
+
+		_zendeskArticle.prepareLocalizedFieldsForImport();
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport(
+			java.util.Locale defaultImportLocale)
+		throws com.liferay.portal.kernel.exception.LocaleException {
+
+		_zendeskArticle.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
 	@Override
@@ -327,6 +471,32 @@ public class ZendeskArticleWrapper
 	}
 
 	/**
+	 * Sets the next article documentation key of this zendesk article.
+	 *
+	 * @param nextArticleDocumentationKey the next article documentation key of this zendesk article
+	 */
+	@Override
+	public void setNextArticleDocumentationKey(
+		String nextArticleDocumentationKey) {
+
+		_zendeskArticle.setNextArticleDocumentationKey(
+			nextArticleDocumentationKey);
+	}
+
+	/**
+	 * Sets the previous article documentation key of this zendesk article.
+	 *
+	 * @param previousArticleDocumentationKey the previous article documentation key of this zendesk article
+	 */
+	@Override
+	public void setPreviousArticleDocumentationKey(
+		String previousArticleDocumentationKey) {
+
+		_zendeskArticle.setPreviousArticleDocumentationKey(
+			previousArticleDocumentationKey);
+	}
+
+	/**
 	 * Sets the primary key of this zendesk article.
 	 *
 	 * @param primaryKey the primary key of this zendesk article
@@ -361,9 +531,71 @@ public class ZendeskArticleWrapper
 		_zendeskArticle.setRemoteId(remoteId);
 	}
 
+	/**
+	 * Sets the remote title of this zendesk article.
+	 *
+	 * @param remoteTitle the remote title of this zendesk article
+	 */
 	@Override
-	public void setRemoteTitle(String locale, String remoteTitle) {
-		_zendeskArticle.setRemoteTitle(locale, remoteTitle);
+	public void setRemoteTitle(String remoteTitle) {
+		_zendeskArticle.setRemoteTitle(remoteTitle);
+	}
+
+	/**
+	 * Sets the localized remote title of this zendesk article in the language.
+	 *
+	 * @param remoteTitle the localized remote title of this zendesk article
+	 * @param locale the locale of the language
+	 */
+	@Override
+	public void setRemoteTitle(String remoteTitle, java.util.Locale locale) {
+		_zendeskArticle.setRemoteTitle(remoteTitle, locale);
+	}
+
+	/**
+	 * Sets the localized remote title of this zendesk article in the language, and sets the default locale.
+	 *
+	 * @param remoteTitle the localized remote title of this zendesk article
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	@Override
+	public void setRemoteTitle(
+		String remoteTitle, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
+
+		_zendeskArticle.setRemoteTitle(remoteTitle, locale, defaultLocale);
+	}
+
+	@Override
+	public void setRemoteTitleCurrentLanguageId(String languageId) {
+		_zendeskArticle.setRemoteTitleCurrentLanguageId(languageId);
+	}
+
+	/**
+	 * Sets the localized remote titles of this zendesk article from the map of locales and localized remote titles.
+	 *
+	 * @param remoteTitleMap the locales and localized remote titles of this zendesk article
+	 */
+	@Override
+	public void setRemoteTitleMap(
+		Map<java.util.Locale, String> remoteTitleMap) {
+
+		_zendeskArticle.setRemoteTitleMap(remoteTitleMap);
+	}
+
+	/**
+	 * Sets the localized remote titles of this zendesk article from the map of locales and localized remote titles, and sets the default locale.
+	 *
+	 * @param remoteTitleMap the locales and localized remote titles of this zendesk article
+	 * @param defaultLocale the default locale
+	 */
+	@Override
+	public void setRemoteTitleMap(
+		Map<java.util.Locale, String> remoteTitleMap,
+		java.util.Locale defaultLocale) {
+
+		_zendeskArticle.setRemoteTitleMap(remoteTitleMap, defaultLocale);
 	}
 
 	/**

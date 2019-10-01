@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -36,9 +34,8 @@ import java.util.Objects;
  * @see ZendeskSection
  * @generated
  */
-@ProviderType
 public class ZendeskSectionWrapper
-	implements ZendeskSection, ModelWrapper<ZendeskSection> {
+	implements ModelWrapper<ZendeskSection>, ZendeskSection {
 
 	public ZendeskSectionWrapper(ZendeskSection zendeskSection) {
 		_zendeskSection = zendeskSection;
@@ -64,6 +61,7 @@ public class ZendeskSectionWrapper
 		attributes.put("documentationKey", getDocumentationKey());
 		attributes.put("remoteId", getRemoteId());
 		attributes.put("remoteHtmlURL", getRemoteHtmlURL());
+		attributes.put("remoteName", getRemoteName());
 
 		return attributes;
 	}
@@ -105,6 +103,12 @@ public class ZendeskSectionWrapper
 		if (remoteHtmlURL != null) {
 			setRemoteHtmlURL(remoteHtmlURL);
 		}
+
+		String remoteName = (String)attributes.get("remoteName");
+
+		if (remoteName != null) {
+			setRemoteName(remoteName);
+		}
 	}
 
 	@Override
@@ -116,6 +120,16 @@ public class ZendeskSectionWrapper
 	@Override
 	public int compareTo(ZendeskSection zendeskSection) {
 		return _zendeskSection.compareTo(zendeskSection);
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		return _zendeskSection.getAvailableLanguageIds();
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		return _zendeskSection.getDefaultLanguageId();
 	}
 
 	/**
@@ -179,6 +193,82 @@ public class ZendeskSectionWrapper
 	}
 
 	/**
+	 * Returns the remote name of this zendesk section.
+	 *
+	 * @return the remote name of this zendesk section
+	 */
+	@Override
+	public String getRemoteName() {
+		return _zendeskSection.getRemoteName();
+	}
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized remote name of this zendesk section
+	 */
+	@Override
+	public String getRemoteName(java.util.Locale locale) {
+		return _zendeskSection.getRemoteName(locale);
+	}
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote name of this zendesk section. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@Override
+	public String getRemoteName(java.util.Locale locale, boolean useDefault) {
+		return _zendeskSection.getRemoteName(locale, useDefault);
+	}
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized remote name of this zendesk section
+	 */
+	@Override
+	public String getRemoteName(String languageId) {
+		return _zendeskSection.getRemoteName(languageId);
+	}
+
+	/**
+	 * Returns the localized remote name of this zendesk section in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote name of this zendesk section
+	 */
+	@Override
+	public String getRemoteName(String languageId, boolean useDefault) {
+		return _zendeskSection.getRemoteName(languageId, useDefault);
+	}
+
+	@Override
+	public String getRemoteNameCurrentLanguageId() {
+		return _zendeskSection.getRemoteNameCurrentLanguageId();
+	}
+
+	@Override
+	public String getRemoteNameCurrentValue() {
+		return _zendeskSection.getRemoteNameCurrentValue();
+	}
+
+	/**
+	 * Returns a map of the locales and localized remote names of this zendesk section.
+	 *
+	 * @return the locales and localized remote names of this zendesk section
+	 */
+	@Override
+	public Map<java.util.Locale, String> getRemoteNameMap() {
+		return _zendeskSection.getRemoteNameMap();
+	}
+
+	/**
 	 * Returns the zendesk category ID of this zendesk section.
 	 *
 	 * @return the zendesk category ID of this zendesk section
@@ -218,9 +308,29 @@ public class ZendeskSectionWrapper
 		return _zendeskSection.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a zendesk section model instance should use the <code>ZendeskSection</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_zendeskSection.persist();
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport()
+		throws com.liferay.portal.kernel.exception.LocaleException {
+
+		_zendeskSection.prepareLocalizedFieldsForImport();
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport(
+			java.util.Locale defaultImportLocale)
+		throws com.liferay.portal.kernel.exception.LocaleException {
+
+		_zendeskSection.prepareLocalizedFieldsForImport(defaultImportLocale);
 	}
 
 	@Override
@@ -303,6 +413,71 @@ public class ZendeskSectionWrapper
 	@Override
 	public void setRemoteId(long remoteId) {
 		_zendeskSection.setRemoteId(remoteId);
+	}
+
+	/**
+	 * Sets the remote name of this zendesk section.
+	 *
+	 * @param remoteName the remote name of this zendesk section
+	 */
+	@Override
+	public void setRemoteName(String remoteName) {
+		_zendeskSection.setRemoteName(remoteName);
+	}
+
+	/**
+	 * Sets the localized remote name of this zendesk section in the language.
+	 *
+	 * @param remoteName the localized remote name of this zendesk section
+	 * @param locale the locale of the language
+	 */
+	@Override
+	public void setRemoteName(String remoteName, java.util.Locale locale) {
+		_zendeskSection.setRemoteName(remoteName, locale);
+	}
+
+	/**
+	 * Sets the localized remote name of this zendesk section in the language, and sets the default locale.
+	 *
+	 * @param remoteName the localized remote name of this zendesk section
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	@Override
+	public void setRemoteName(
+		String remoteName, java.util.Locale locale,
+		java.util.Locale defaultLocale) {
+
+		_zendeskSection.setRemoteName(remoteName, locale, defaultLocale);
+	}
+
+	@Override
+	public void setRemoteNameCurrentLanguageId(String languageId) {
+		_zendeskSection.setRemoteNameCurrentLanguageId(languageId);
+	}
+
+	/**
+	 * Sets the localized remote names of this zendesk section from the map of locales and localized remote names.
+	 *
+	 * @param remoteNameMap the locales and localized remote names of this zendesk section
+	 */
+	@Override
+	public void setRemoteNameMap(Map<java.util.Locale, String> remoteNameMap) {
+		_zendeskSection.setRemoteNameMap(remoteNameMap);
+	}
+
+	/**
+	 * Sets the localized remote names of this zendesk section from the map of locales and localized remote names, and sets the default locale.
+	 *
+	 * @param remoteNameMap the locales and localized remote names of this zendesk section
+	 * @param defaultLocale the default locale
+	 */
+	@Override
+	public void setRemoteNameMap(
+		Map<java.util.Locale, String> remoteNameMap,
+		java.util.Locale defaultLocale) {
+
+		_zendeskSection.setRemoteNameMap(remoteNameMap, defaultLocale);
 	}
 
 	/**

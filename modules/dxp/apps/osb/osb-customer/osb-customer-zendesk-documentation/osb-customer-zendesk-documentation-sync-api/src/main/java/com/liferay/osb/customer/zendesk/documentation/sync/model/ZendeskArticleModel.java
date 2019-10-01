@@ -18,13 +18,17 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.bean.AutoEscape;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
+import com.liferay.portal.kernel.model.LocalizedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
 
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * The base model interface for the ZendeskArticle service. Represents a row in the &quot;OSBCustomer_ZendeskArticle&quot; database table, with each column mapped to a property of this class.
@@ -38,9 +42,10 @@ import java.util.Date;
  * @generated
  */
 @ProviderType
-public interface ZendeskArticleModel extends BaseModel<ZendeskArticle> {
+public interface ZendeskArticleModel
+	extends BaseModel<ZendeskArticle>, LocalizedModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a zendesk article model instance should use the {@link ZendeskArticle} interface instead.
@@ -147,6 +152,38 @@ public interface ZendeskArticleModel extends BaseModel<ZendeskArticle> {
 	public void setDocumentationOriginalURL(String documentationOriginalURL);
 
 	/**
+	 * Returns the previous article documentation key of this zendesk article.
+	 *
+	 * @return the previous article documentation key of this zendesk article
+	 */
+	@AutoEscape
+	public String getPreviousArticleDocumentationKey();
+
+	/**
+	 * Sets the previous article documentation key of this zendesk article.
+	 *
+	 * @param previousArticleDocumentationKey the previous article documentation key of this zendesk article
+	 */
+	public void setPreviousArticleDocumentationKey(
+		String previousArticleDocumentationKey);
+
+	/**
+	 * Returns the next article documentation key of this zendesk article.
+	 *
+	 * @return the next article documentation key of this zendesk article
+	 */
+	@AutoEscape
+	public String getNextArticleDocumentationKey();
+
+	/**
+	 * Sets the next article documentation key of this zendesk article.
+	 *
+	 * @param nextArticleDocumentationKey the next article documentation key of this zendesk article
+	 */
+	public void setNextArticleDocumentationKey(
+		String nextArticleDocumentationKey);
+
+	/**
 	 * Returns the remote ID of this zendesk article.
 	 *
 	 * @return the remote ID of this zendesk article
@@ -174,6 +211,107 @@ public interface ZendeskArticleModel extends BaseModel<ZendeskArticle> {
 	 * @param remoteHtmlURL the remote html url of this zendesk article
 	 */
 	public void setRemoteHtmlURL(String remoteHtmlURL);
+
+	/**
+	 * Returns the remote title of this zendesk article.
+	 *
+	 * @return the remote title of this zendesk article
+	 */
+	public String getRemoteTitle();
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the locale of the language
+	 * @return the localized remote title of this zendesk article
+	 */
+	@AutoEscape
+	public String getRemoteTitle(Locale locale);
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param locale the local of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote title of this zendesk article. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+	 */
+	@AutoEscape
+	public String getRemoteTitle(Locale locale, boolean useDefault);
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language. Uses the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @return the localized remote title of this zendesk article
+	 */
+	@AutoEscape
+	public String getRemoteTitle(String languageId);
+
+	/**
+	 * Returns the localized remote title of this zendesk article in the language, optionally using the default language if no localization exists for the requested language.
+	 *
+	 * @param languageId the ID of the language
+	 * @param useDefault whether to use the default language if no localization exists for the requested language
+	 * @return the localized remote title of this zendesk article
+	 */
+	@AutoEscape
+	public String getRemoteTitle(String languageId, boolean useDefault);
+
+	@AutoEscape
+	public String getRemoteTitleCurrentLanguageId();
+
+	@AutoEscape
+	public String getRemoteTitleCurrentValue();
+
+	/**
+	 * Returns a map of the locales and localized remote titles of this zendesk article.
+	 *
+	 * @return the locales and localized remote titles of this zendesk article
+	 */
+	public Map<Locale, String> getRemoteTitleMap();
+
+	/**
+	 * Sets the remote title of this zendesk article.
+	 *
+	 * @param remoteTitle the remote title of this zendesk article
+	 */
+	public void setRemoteTitle(String remoteTitle);
+
+	/**
+	 * Sets the localized remote title of this zendesk article in the language.
+	 *
+	 * @param remoteTitle the localized remote title of this zendesk article
+	 * @param locale the locale of the language
+	 */
+	public void setRemoteTitle(String remoteTitle, Locale locale);
+
+	/**
+	 * Sets the localized remote title of this zendesk article in the language, and sets the default locale.
+	 *
+	 * @param remoteTitle the localized remote title of this zendesk article
+	 * @param locale the locale of the language
+	 * @param defaultLocale the default locale
+	 */
+	public void setRemoteTitle(
+		String remoteTitle, Locale locale, Locale defaultLocale);
+
+	public void setRemoteTitleCurrentLanguageId(String languageId);
+
+	/**
+	 * Sets the localized remote titles of this zendesk article from the map of locales and localized remote titles.
+	 *
+	 * @param remoteTitleMap the locales and localized remote titles of this zendesk article
+	 */
+	public void setRemoteTitleMap(Map<Locale, String> remoteTitleMap);
+
+	/**
+	 * Sets the localized remote titles of this zendesk article from the map of locales and localized remote titles, and sets the default locale.
+	 *
+	 * @param remoteTitleMap the locales and localized remote titles of this zendesk article
+	 * @param defaultLocale the default locale
+	 */
+	public void setRemoteTitleMap(
+		Map<Locale, String> remoteTitleMap, Locale defaultLocale);
 
 	@Override
 	public boolean isNew();
@@ -207,6 +345,19 @@ public interface ZendeskArticleModel extends BaseModel<ZendeskArticle> {
 
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext);
+
+	@Override
+	public String[] getAvailableLanguageIds();
+
+	@Override
+	public String getDefaultLanguageId();
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException;
+
+	@Override
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException;
 
 	@Override
 	public Object clone();

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
@@ -32,25 +30,29 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see ZendeskSectionLocalService
  * @generated
  */
-@ProviderType
 public class ZendeskSectionLocalServiceUtil {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
+	 */
+
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionLocalServiceUtil} to access the zendesk section local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskSectionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static
 		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection
 				addZendeskSection(
 					long zendeskCategoryId, String documentationKey,
-					java.util.Map<String, String> nameMap,
-					java.util.Map<String, String> descriptionMap, int position)
+					java.util.Map<java.util.Locale, String> remoteNameMap,
+					int position)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addZendeskSection(
-			zendeskCategoryId, documentationKey, nameMap, descriptionMap,
-			position);
+			zendeskCategoryId, documentationKey, remoteNameMap, position);
 	}
 
 	/**
@@ -312,13 +314,13 @@ public class ZendeskSectionLocalServiceUtil {
 				updateZendeskSection(
 					long zendeskSectionId, long zendeskCategoryId,
 					String documentationKey,
-					java.util.Map<String, String> nameMap,
-					java.util.Map<String, String> descriptionMap, int position)
+					java.util.Map<java.util.Locale, String> remoteNameMap,
+					int position)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateZendeskSection(
-			zendeskSectionId, zendeskCategoryId, documentationKey, nameMap,
-			descriptionMap, position);
+			zendeskSectionId, zendeskCategoryId, documentationKey,
+			remoteNameMap, position);
 	}
 
 	/**
@@ -334,6 +336,17 @@ public class ZendeskSectionLocalServiceUtil {
 					ZendeskSection zendeskSection) {
 
 		return getService().updateZendeskSection(zendeskSection);
+	}
+
+	public static
+		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection
+				updateZendeskSectionTranslation(
+					long zendeskSectionId, java.util.Locale locale,
+					String remoteName)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateZendeskSectionTranslation(
+			zendeskSectionId, locale, remoteName);
 	}
 
 	public static ZendeskSectionLocalService getService() {

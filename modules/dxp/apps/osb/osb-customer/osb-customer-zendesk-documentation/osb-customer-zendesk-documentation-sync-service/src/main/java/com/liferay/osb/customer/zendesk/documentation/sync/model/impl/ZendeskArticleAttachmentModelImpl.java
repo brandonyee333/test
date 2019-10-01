@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
@@ -54,12 +52,11 @@ import java.util.function.Function;
  * @see ZendeskArticleAttachmentImpl
  * @generated
  */
-@ProviderType
 public class ZendeskArticleAttachmentModelImpl
 	extends BaseModelImpl<ZendeskArticleAttachment>
 	implements ZendeskArticleAttachmentModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk article attachment model instance should use the <code>ZendeskArticleAttachment</code> interface instead.

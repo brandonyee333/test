@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,10 +23,9 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see ZendeskArticleLocalService
  * @generated
  */
-@ProviderType
 public class ZendeskArticleLocalServiceWrapper
-	implements ZendeskArticleLocalService,
-			   ServiceWrapper<ZendeskArticleLocalService> {
+	implements ServiceWrapper<ZendeskArticleLocalService>,
+			   ZendeskArticleLocalService {
 
 	public ZendeskArticleLocalServiceWrapper(
 		ZendeskArticleLocalService zendeskArticleLocalService) {
@@ -36,22 +33,30 @@ public class ZendeskArticleLocalServiceWrapper
 		_zendeskArticleLocalService = zendeskArticleLocalService;
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. Always use {@link ZendeskArticleLocalServiceUtil} to access the zendesk article local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskArticleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 */
 	@Override
 	public
 		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle
 				addZendeskArticle(
 					long zendeskSectionId, String documentationKey,
 					String documentationOriginalURL,
-					java.util.Map<String, String> titleMap,
-					java.util.Map<String, String> bodyMap, int position,
+					java.util.Map<java.util.Locale, String> remoteTitleMap,
+					java.util.Map<java.util.Locale, String> remoteBodyMap,
+					String previousArticleDocumentationKey,
+					String nextArticleDocumentationKey, int position,
 					long remoteUserSegmentId, String[] labelNames,
 					java.util.Map<String, byte[]> attachments)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _zendeskArticleLocalService.addZendeskArticle(
 			zendeskSectionId, documentationKey, documentationOriginalURL,
-			titleMap, bodyMap, position, remoteUserSegmentId, labelNames,
-			attachments);
+			remoteTitleMap, remoteBodyMap, previousArticleDocumentationKey,
+			nextArticleDocumentationKey, position, remoteUserSegmentId,
+			labelNames, attachments);
 	}
 
 	/**
@@ -359,16 +364,19 @@ public class ZendeskArticleLocalServiceWrapper
 				updateZendeskArticle(
 					long zendeskArticleId, long zendeskSectionId,
 					String documentationKey, String documentationOriginalURL,
-					java.util.Map<String, String> titleMap,
-					java.util.Map<String, String> bodyMap, int position,
+					java.util.Map<java.util.Locale, String> remoteTitleMap,
+					java.util.Map<java.util.Locale, String> remoteBodyMap,
+					String previousArticleDocumentationKey,
+					String nextArticleDocumentationKey, int position,
 					long remoteUserSegmentId, String[] labelNames,
 					java.util.Map<String, byte[]> attachments)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _zendeskArticleLocalService.updateZendeskArticle(
 			zendeskArticleId, zendeskSectionId, documentationKey,
-			documentationOriginalURL, titleMap, bodyMap, position,
-			remoteUserSegmentId, labelNames, attachments);
+			documentationOriginalURL, remoteTitleMap, remoteBodyMap,
+			previousArticleDocumentationKey, nextArticleDocumentationKey,
+			position, remoteUserSegmentId, labelNames, attachments);
 	}
 
 	/**
@@ -385,6 +393,18 @@ public class ZendeskArticleLocalServiceWrapper
 					ZendeskArticle zendeskArticle) {
 
 		return _zendeskArticleLocalService.updateZendeskArticle(zendeskArticle);
+	}
+
+	@Override
+	public
+		com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle
+				updateZendeskArticleTranslation(
+					long zendeskArticleId, java.util.Locale locale,
+					String remoteTitle, String remoteBody)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _zendeskArticleLocalService.updateZendeskArticleTranslation(
+			zendeskArticleId, locale, remoteTitle, remoteBody);
 	}
 
 	@Override

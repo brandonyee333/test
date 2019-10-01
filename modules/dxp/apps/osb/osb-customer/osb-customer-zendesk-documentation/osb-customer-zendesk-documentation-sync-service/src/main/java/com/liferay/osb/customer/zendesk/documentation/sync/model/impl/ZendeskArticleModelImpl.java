@@ -14,20 +14,23 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleModel;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -40,7 +43,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -55,11 +61,10 @@ import java.util.function.Function;
  * @see ZendeskArticleImpl
  * @generated
  */
-@ProviderType
 public class ZendeskArticleModelImpl
 	extends BaseModelImpl<ZendeskArticle> implements ZendeskArticleModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the <code>ZendeskArticle</code> interface instead.
@@ -70,8 +75,11 @@ public class ZendeskArticleModelImpl
 		{"zendeskArticleId", Types.BIGINT}, {"modifiedDate", Types.TIMESTAMP},
 		{"zendeskCategoryId", Types.BIGINT}, {"zendeskSectionId", Types.BIGINT},
 		{"documentationKey", Types.VARCHAR},
-		{"documentationOriginalURL", Types.VARCHAR}, {"remoteId", Types.BIGINT},
-		{"remoteHtmlURL", Types.VARCHAR}
+		{"documentationOriginalURL", Types.VARCHAR},
+		{"previousArticleDocumentationKey", Types.VARCHAR},
+		{"nextArticleDocumentationKey", Types.VARCHAR},
+		{"remoteId", Types.BIGINT}, {"remoteHtmlURL", Types.VARCHAR},
+		{"remoteTitle", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -84,12 +92,15 @@ public class ZendeskArticleModelImpl
 		TABLE_COLUMNS_MAP.put("zendeskSectionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("documentationKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("documentationOriginalURL", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("previousArticleDocumentationKey", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("nextArticleDocumentationKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("remoteId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("remoteHtmlURL", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("remoteTitle", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSBCustomer_ZendeskArticle (zendeskArticleId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,zendeskSectionId LONG,documentationKey VARCHAR(150) null,documentationOriginalURL VARCHAR(255) null,remoteId LONG,remoteHtmlURL STRING null)";
+		"create table OSBCustomer_ZendeskArticle (zendeskArticleId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,zendeskSectionId LONG,documentationKey VARCHAR(150) null,documentationOriginalURL VARCHAR(255) null,previousArticleDocumentationKey VARCHAR(75) null,nextArticleDocumentationKey VARCHAR(75) null,remoteId LONG,remoteHtmlURL STRING null,remoteTitle STRING null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSBCustomer_ZendeskArticle";
@@ -401,6 +412,54 @@ public class ZendeskArticleModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"previousArticleDocumentationKey",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getPreviousArticleDocumentationKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"previousArticleDocumentationKey",
+			new BiConsumer<ZendeskArticle, Object>() {
+
+				@Override
+				public void accept(
+					ZendeskArticle zendeskArticle,
+					Object previousArticleDocumentationKey) {
+
+					zendeskArticle.setPreviousArticleDocumentationKey(
+						(String)previousArticleDocumentationKey);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"nextArticleDocumentationKey",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getNextArticleDocumentationKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"nextArticleDocumentationKey",
+			new BiConsumer<ZendeskArticle, Object>() {
+
+				@Override
+				public void accept(
+					ZendeskArticle zendeskArticle,
+					Object nextArticleDocumentationKey) {
+
+					zendeskArticle.setNextArticleDocumentationKey(
+						(String)nextArticleDocumentationKey);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"remoteId",
 			new Function<ZendeskArticle, Object>() {
 
@@ -441,6 +500,28 @@ public class ZendeskArticleModelImpl
 					ZendeskArticle zendeskArticle, Object remoteHtmlURL) {
 
 					zendeskArticle.setRemoteHtmlURL((String)remoteHtmlURL);
+				}
+
+			});
+		attributeGetterFunctions.put(
+			"remoteTitle",
+			new Function<ZendeskArticle, Object>() {
+
+				@Override
+				public Object apply(ZendeskArticle zendeskArticle) {
+					return zendeskArticle.getRemoteTitle();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"remoteTitle",
+			new BiConsumer<ZendeskArticle, Object>() {
+
+				@Override
+				public void accept(
+					ZendeskArticle zendeskArticle, Object remoteTitle) {
+
+					zendeskArticle.setRemoteTitle((String)remoteTitle);
 				}
 
 			});
@@ -566,6 +647,40 @@ public class ZendeskArticleModelImpl
 	}
 
 	@Override
+	public String getPreviousArticleDocumentationKey() {
+		if (_previousArticleDocumentationKey == null) {
+			return "";
+		}
+		else {
+			return _previousArticleDocumentationKey;
+		}
+	}
+
+	@Override
+	public void setPreviousArticleDocumentationKey(
+		String previousArticleDocumentationKey) {
+
+		_previousArticleDocumentationKey = previousArticleDocumentationKey;
+	}
+
+	@Override
+	public String getNextArticleDocumentationKey() {
+		if (_nextArticleDocumentationKey == null) {
+			return "";
+		}
+		else {
+			return _nextArticleDocumentationKey;
+		}
+	}
+
+	@Override
+	public void setNextArticleDocumentationKey(
+		String nextArticleDocumentationKey) {
+
+		_nextArticleDocumentationKey = nextArticleDocumentationKey;
+	}
+
+	@Override
 	public long getRemoteId() {
 		return _remoteId;
 	}
@@ -590,6 +705,113 @@ public class ZendeskArticleModelImpl
 		_remoteHtmlURL = remoteHtmlURL;
 	}
 
+	@Override
+	public String getRemoteTitle() {
+		if (_remoteTitle == null) {
+			return "";
+		}
+		else {
+			return _remoteTitle;
+		}
+	}
+
+	@Override
+	public String getRemoteTitle(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getRemoteTitle(languageId);
+	}
+
+	@Override
+	public String getRemoteTitle(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getRemoteTitle(languageId, useDefault);
+	}
+
+	@Override
+	public String getRemoteTitle(String languageId) {
+		return LocalizationUtil.getLocalization(getRemoteTitle(), languageId);
+	}
+
+	@Override
+	public String getRemoteTitle(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getRemoteTitle(), languageId, useDefault);
+	}
+
+	@Override
+	public String getRemoteTitleCurrentLanguageId() {
+		return _remoteTitleCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getRemoteTitleCurrentValue() {
+		Locale locale = getLocale(_remoteTitleCurrentLanguageId);
+
+		return getRemoteTitle(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getRemoteTitleMap() {
+		return LocalizationUtil.getLocalizationMap(getRemoteTitle());
+	}
+
+	@Override
+	public void setRemoteTitle(String remoteTitle) {
+		_remoteTitle = remoteTitle;
+	}
+
+	@Override
+	public void setRemoteTitle(String remoteTitle, Locale locale) {
+		setRemoteTitle(remoteTitle, locale, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setRemoteTitle(
+		String remoteTitle, Locale locale, Locale defaultLocale) {
+
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(remoteTitle)) {
+			setRemoteTitle(
+				LocalizationUtil.updateLocalization(
+					getRemoteTitle(), "RemoteTitle", remoteTitle, languageId,
+					defaultLanguageId));
+		}
+		else {
+			setRemoteTitle(
+				LocalizationUtil.removeLocalization(
+					getRemoteTitle(), "RemoteTitle", languageId));
+		}
+	}
+
+	@Override
+	public void setRemoteTitleCurrentLanguageId(String languageId) {
+		_remoteTitleCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setRemoteTitleMap(Map<Locale, String> remoteTitleMap) {
+		setRemoteTitleMap(remoteTitleMap, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setRemoteTitleMap(
+		Map<Locale, String> remoteTitleMap, Locale defaultLocale) {
+
+		if (remoteTitleMap == null) {
+			return;
+		}
+
+		setRemoteTitle(
+			LocalizationUtil.updateLocalization(
+				remoteTitleMap, getRemoteTitle(), "RemoteTitle",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -605,6 +827,74 @@ public class ZendeskArticleModelImpl
 		ExpandoBridge expandoBridge = getExpandoBridge();
 
 		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
+
+		Map<Locale, String> remoteTitleMap = getRemoteTitleMap();
+
+		for (Map.Entry<Locale, String> entry : remoteTitleMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		String xml = getRemoteTitle();
+
+		if (xml == null) {
+			return "";
+		}
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException {
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
+
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
+
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			ZendeskArticle.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
+
+		prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException {
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		String modelDefaultLanguageId = getDefaultLanguageId();
+
+		String remoteTitle = getRemoteTitle(defaultLocale);
+
+		if (Validator.isNull(remoteTitle)) {
+			setRemoteTitle(
+				getRemoteTitle(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setRemoteTitle(
+				getRemoteTitle(defaultLocale), defaultLocale, defaultLocale);
+		}
 	}
 
 	@Override
@@ -633,8 +923,13 @@ public class ZendeskArticleModelImpl
 		zendeskArticleImpl.setDocumentationKey(getDocumentationKey());
 		zendeskArticleImpl.setDocumentationOriginalURL(
 			getDocumentationOriginalURL());
+		zendeskArticleImpl.setPreviousArticleDocumentationKey(
+			getPreviousArticleDocumentationKey());
+		zendeskArticleImpl.setNextArticleDocumentationKey(
+			getNextArticleDocumentationKey());
 		zendeskArticleImpl.setRemoteId(getRemoteId());
 		zendeskArticleImpl.setRemoteHtmlURL(getRemoteHtmlURL());
+		zendeskArticleImpl.setRemoteTitle(getRemoteTitle());
 
 		zendeskArticleImpl.resetOriginalValues();
 
@@ -756,6 +1051,30 @@ public class ZendeskArticleModelImpl
 			zendeskArticleCacheModel.documentationOriginalURL = null;
 		}
 
+		zendeskArticleCacheModel.previousArticleDocumentationKey =
+			getPreviousArticleDocumentationKey();
+
+		String previousArticleDocumentationKey =
+			zendeskArticleCacheModel.previousArticleDocumentationKey;
+
+		if ((previousArticleDocumentationKey != null) &&
+			(previousArticleDocumentationKey.length() == 0)) {
+
+			zendeskArticleCacheModel.previousArticleDocumentationKey = null;
+		}
+
+		zendeskArticleCacheModel.nextArticleDocumentationKey =
+			getNextArticleDocumentationKey();
+
+		String nextArticleDocumentationKey =
+			zendeskArticleCacheModel.nextArticleDocumentationKey;
+
+		if ((nextArticleDocumentationKey != null) &&
+			(nextArticleDocumentationKey.length() == 0)) {
+
+			zendeskArticleCacheModel.nextArticleDocumentationKey = null;
+		}
+
 		zendeskArticleCacheModel.remoteId = getRemoteId();
 
 		zendeskArticleCacheModel.remoteHtmlURL = getRemoteHtmlURL();
@@ -764,6 +1083,14 @@ public class ZendeskArticleModelImpl
 
 		if ((remoteHtmlURL != null) && (remoteHtmlURL.length() == 0)) {
 			zendeskArticleCacheModel.remoteHtmlURL = null;
+		}
+
+		zendeskArticleCacheModel.remoteTitle = getRemoteTitle();
+
+		String remoteTitle = zendeskArticleCacheModel.remoteTitle;
+
+		if ((remoteTitle != null) && (remoteTitle.length() == 0)) {
+			zendeskArticleCacheModel.remoteTitle = null;
 		}
 
 		return zendeskArticleCacheModel;
@@ -851,8 +1178,12 @@ public class ZendeskArticleModelImpl
 	private String _originalDocumentationKey;
 	private String _documentationOriginalURL;
 	private String _originalDocumentationOriginalURL;
+	private String _previousArticleDocumentationKey;
+	private String _nextArticleDocumentationKey;
 	private long _remoteId;
 	private String _remoteHtmlURL;
+	private String _remoteTitle;
+	private String _remoteTitleCurrentLanguageId;
 	private long _columnBitmask;
 	private ZendeskArticle _escapedModel;
 

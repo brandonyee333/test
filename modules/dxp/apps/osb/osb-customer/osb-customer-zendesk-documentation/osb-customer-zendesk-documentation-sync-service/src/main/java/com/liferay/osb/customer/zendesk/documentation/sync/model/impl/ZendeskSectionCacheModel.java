@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -34,7 +32,6 @@ import java.util.Date;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskSectionCacheModel
 	implements CacheModel<ZendeskSection>, Externalizable {
 
@@ -65,7 +62,7 @@ public class ZendeskSectionCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(15);
 
 		sb.append("{zendeskSectionId=");
 		sb.append(zendeskSectionId);
@@ -79,6 +76,8 @@ public class ZendeskSectionCacheModel
 		sb.append(remoteId);
 		sb.append(", remoteHtmlURL=");
 		sb.append(remoteHtmlURL);
+		sb.append(", remoteName=");
+		sb.append(remoteName);
 		sb.append("}");
 
 		return sb.toString();
@@ -115,6 +114,13 @@ public class ZendeskSectionCacheModel
 			zendeskSectionImpl.setRemoteHtmlURL(remoteHtmlURL);
 		}
 
+		if (remoteName == null) {
+			zendeskSectionImpl.setRemoteName("");
+		}
+		else {
+			zendeskSectionImpl.setRemoteName(remoteName);
+		}
+
 		zendeskSectionImpl.resetOriginalValues();
 
 		return zendeskSectionImpl;
@@ -130,6 +136,7 @@ public class ZendeskSectionCacheModel
 
 		remoteId = objectInput.readLong();
 		remoteHtmlURL = objectInput.readUTF();
+		remoteName = objectInput.readUTF();
 	}
 
 	@Override
@@ -154,6 +161,13 @@ public class ZendeskSectionCacheModel
 		else {
 			objectOutput.writeUTF(remoteHtmlURL);
 		}
+
+		if (remoteName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(remoteName);
+		}
 	}
 
 	public long zendeskSectionId;
@@ -162,5 +176,6 @@ public class ZendeskSectionCacheModel
 	public String documentationKey;
 	public long remoteId;
 	public String remoteHtmlURL;
+	public String remoteName;
 
 }

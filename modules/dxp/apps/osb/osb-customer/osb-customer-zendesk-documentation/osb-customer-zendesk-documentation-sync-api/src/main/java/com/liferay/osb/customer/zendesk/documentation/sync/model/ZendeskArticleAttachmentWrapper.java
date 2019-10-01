@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -35,10 +33,9 @@ import java.util.Objects;
  * @see ZendeskArticleAttachment
  * @generated
  */
-@ProviderType
 public class ZendeskArticleAttachmentWrapper
-	implements ZendeskArticleAttachment,
-			   ModelWrapper<ZendeskArticleAttachment> {
+	implements ModelWrapper<ZendeskArticleAttachment>,
+			   ZendeskArticleAttachment {
 
 	public ZendeskArticleAttachmentWrapper(
 		ZendeskArticleAttachment zendeskArticleAttachment) {
@@ -222,6 +219,11 @@ public class ZendeskArticleAttachmentWrapper
 		return _zendeskArticleAttachment.isNew();
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this class directly. All methods that expect a zendesk article attachment model instance should use the <code>ZendeskArticleAttachment</code> interface instead.
+	 */
 	@Override
 	public void persist() {
 		_zendeskArticleAttachment.persist();

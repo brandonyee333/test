@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskSectionSoap implements Serializable {
 
 	public static ZendeskSectionSoap toSoapModel(ZendeskSection model) {
@@ -40,6 +37,7 @@ public class ZendeskSectionSoap implements Serializable {
 		soapModel.setDocumentationKey(model.getDocumentationKey());
 		soapModel.setRemoteId(model.getRemoteId());
 		soapModel.setRemoteHtmlURL(model.getRemoteHtmlURL());
+		soapModel.setRemoteName(model.getRemoteName());
 
 		return soapModel;
 	}
@@ -146,11 +144,20 @@ public class ZendeskSectionSoap implements Serializable {
 		_remoteHtmlURL = remoteHtmlURL;
 	}
 
+	public String getRemoteName() {
+		return _remoteName;
+	}
+
+	public void setRemoteName(String remoteName) {
+		_remoteName = remoteName;
+	}
+
 	private long _zendeskSectionId;
 	private Date _modifiedDate;
 	private long _zendeskCategoryId;
 	private String _documentationKey;
 	private long _remoteId;
 	private String _remoteHtmlURL;
+	private String _remoteName;
 
 }

@@ -14,20 +14,23 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSectionModel;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.LocaleException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
@@ -40,7 +43,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -55,11 +61,10 @@ import java.util.function.Function;
  * @see ZendeskSectionImpl
  * @generated
  */
-@ProviderType
 public class ZendeskSectionModelImpl
 	extends BaseModelImpl<ZendeskSection> implements ZendeskSectionModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk section model instance should use the <code>ZendeskSection</code> interface instead.
@@ -70,7 +75,7 @@ public class ZendeskSectionModelImpl
 		{"zendeskSectionId", Types.BIGINT}, {"modifiedDate", Types.TIMESTAMP},
 		{"zendeskCategoryId", Types.BIGINT},
 		{"documentationKey", Types.VARCHAR}, {"remoteId", Types.BIGINT},
-		{"remoteHtmlURL", Types.VARCHAR}
+		{"remoteHtmlURL", Types.VARCHAR}, {"remoteName", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -83,10 +88,11 @@ public class ZendeskSectionModelImpl
 		TABLE_COLUMNS_MAP.put("documentationKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("remoteId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("remoteHtmlURL", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("remoteName", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSBCustomer_ZendeskSection (zendeskSectionId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL STRING null)";
+		"create table OSBCustomer_ZendeskSection (zendeskSectionId LONG not null primary key,modifiedDate DATE null,zendeskCategoryId LONG,documentationKey VARCHAR(150) null,remoteId LONG,remoteHtmlURL STRING null,remoteName STRING null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSBCustomer_ZendeskSection";
@@ -391,6 +397,28 @@ public class ZendeskSectionModelImpl
 				}
 
 			});
+		attributeGetterFunctions.put(
+			"remoteName",
+			new Function<ZendeskSection, Object>() {
+
+				@Override
+				public Object apply(ZendeskSection zendeskSection) {
+					return zendeskSection.getRemoteName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"remoteName",
+			new BiConsumer<ZendeskSection, Object>() {
+
+				@Override
+				public void accept(
+					ZendeskSection zendeskSection, Object remoteName) {
+
+					zendeskSection.setRemoteName((String)remoteName);
+				}
+
+			});
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -490,6 +518,113 @@ public class ZendeskSectionModelImpl
 		_remoteHtmlURL = remoteHtmlURL;
 	}
 
+	@Override
+	public String getRemoteName() {
+		if (_remoteName == null) {
+			return "";
+		}
+		else {
+			return _remoteName;
+		}
+	}
+
+	@Override
+	public String getRemoteName(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getRemoteName(languageId);
+	}
+
+	@Override
+	public String getRemoteName(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getRemoteName(languageId, useDefault);
+	}
+
+	@Override
+	public String getRemoteName(String languageId) {
+		return LocalizationUtil.getLocalization(getRemoteName(), languageId);
+	}
+
+	@Override
+	public String getRemoteName(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getRemoteName(), languageId, useDefault);
+	}
+
+	@Override
+	public String getRemoteNameCurrentLanguageId() {
+		return _remoteNameCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getRemoteNameCurrentValue() {
+		Locale locale = getLocale(_remoteNameCurrentLanguageId);
+
+		return getRemoteName(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getRemoteNameMap() {
+		return LocalizationUtil.getLocalizationMap(getRemoteName());
+	}
+
+	@Override
+	public void setRemoteName(String remoteName) {
+		_remoteName = remoteName;
+	}
+
+	@Override
+	public void setRemoteName(String remoteName, Locale locale) {
+		setRemoteName(remoteName, locale, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setRemoteName(
+		String remoteName, Locale locale, Locale defaultLocale) {
+
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(remoteName)) {
+			setRemoteName(
+				LocalizationUtil.updateLocalization(
+					getRemoteName(), "RemoteName", remoteName, languageId,
+					defaultLanguageId));
+		}
+		else {
+			setRemoteName(
+				LocalizationUtil.removeLocalization(
+					getRemoteName(), "RemoteName", languageId));
+		}
+	}
+
+	@Override
+	public void setRemoteNameCurrentLanguageId(String languageId) {
+		_remoteNameCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setRemoteNameMap(Map<Locale, String> remoteNameMap) {
+		setRemoteNameMap(remoteNameMap, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setRemoteNameMap(
+		Map<Locale, String> remoteNameMap, Locale defaultLocale) {
+
+		if (remoteNameMap == null) {
+			return;
+		}
+
+		setRemoteName(
+			LocalizationUtil.updateLocalization(
+				remoteNameMap, getRemoteName(), "RemoteName",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -505,6 +640,73 @@ public class ZendeskSectionModelImpl
 		ExpandoBridge expandoBridge = getExpandoBridge();
 
 		expandoBridge.setAttributes(serviceContext);
+	}
+
+	@Override
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
+
+		Map<Locale, String> remoteNameMap = getRemoteNameMap();
+
+		for (Map.Entry<Locale, String> entry : remoteNameMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		String xml = getRemoteName();
+
+		if (xml == null) {
+			return "";
+		}
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException {
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
+
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
+
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			ZendeskSection.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
+
+		prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException {
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		String modelDefaultLanguageId = getDefaultLanguageId();
+
+		String remoteName = getRemoteName(defaultLocale);
+
+		if (Validator.isNull(remoteName)) {
+			setRemoteName(getRemoteName(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setRemoteName(
+				getRemoteName(defaultLocale), defaultLocale, defaultLocale);
+		}
 	}
 
 	@Override
@@ -532,6 +734,7 @@ public class ZendeskSectionModelImpl
 		zendeskSectionImpl.setDocumentationKey(getDocumentationKey());
 		zendeskSectionImpl.setRemoteId(getRemoteId());
 		zendeskSectionImpl.setRemoteHtmlURL(getRemoteHtmlURL());
+		zendeskSectionImpl.setRemoteName(getRemoteName());
 
 		zendeskSectionImpl.resetOriginalValues();
 
@@ -641,6 +844,14 @@ public class ZendeskSectionModelImpl
 			zendeskSectionCacheModel.remoteHtmlURL = null;
 		}
 
+		zendeskSectionCacheModel.remoteName = getRemoteName();
+
+		String remoteName = zendeskSectionCacheModel.remoteName;
+
+		if ((remoteName != null) && (remoteName.length() == 0)) {
+			zendeskSectionCacheModel.remoteName = null;
+		}
+
 		return zendeskSectionCacheModel;
 	}
 
@@ -723,6 +934,8 @@ public class ZendeskSectionModelImpl
 	private String _originalDocumentationKey;
 	private long _remoteId;
 	private String _remoteHtmlURL;
+	private String _remoteName;
+	private String _remoteNameCurrentLanguageId;
 	private long _columnBitmask;
 	private ZendeskSection _escapedModel;
 

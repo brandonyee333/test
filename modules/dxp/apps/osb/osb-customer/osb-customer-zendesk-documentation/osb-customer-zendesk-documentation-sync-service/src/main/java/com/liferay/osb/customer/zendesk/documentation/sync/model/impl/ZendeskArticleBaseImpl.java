@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalServiceUtil;
 
@@ -31,11 +29,10 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticl
  * @see ZendeskArticle
  * @generated
  */
-@ProviderType
 public abstract class ZendeskArticleBaseImpl
 	extends ZendeskArticleModelImpl implements ZendeskArticle {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the <code>ZendeskArticle</code> interface instead.

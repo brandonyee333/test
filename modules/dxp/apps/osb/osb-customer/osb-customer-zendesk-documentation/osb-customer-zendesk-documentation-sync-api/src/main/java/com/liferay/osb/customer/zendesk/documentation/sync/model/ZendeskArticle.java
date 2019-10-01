@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface ZendeskArticle extends PersistedModel, ZendeskArticleModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.model.impl.ZendeskArticleImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
@@ -58,10 +58,6 @@ public interface ZendeskArticle extends PersistedModel, ZendeskArticleModel {
 
 		};
 
-	public String getRemoteHtmlURL(String locale);
-
-	public String getRemoteTitle(String locale);
-
-	public void setRemoteTitle(String locale, String remoteTitle);
+	public String getRemoteHtmlURL(String zendeskLocale);
 
 }

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
@@ -54,11 +52,10 @@ import java.util.function.Function;
  * @see ZendeskCategoryImpl
  * @generated
  */
-@ProviderType
 public class ZendeskCategoryModelImpl
 	extends BaseModelImpl<ZendeskCategory> implements ZendeskCategoryModel {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk category model instance should use the <code>ZendeskCategory</code> interface instead.

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -42,10 +40,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see ZendeskArticlePersistence
  * @generated
  */
-@ProviderType
 public class ZendeskArticleUtil {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -189,17 +186,16 @@ public class ZendeskArticleUtil {
 	 * @param start the lower bound of the range of zendesk articles
 	 * @param end the upper bound of the range of zendesk articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk articles
 	 */
 	public static List<ZendeskArticle> findByZendeskCategoryId(
 		long zendeskCategoryId, int start, int end,
 		OrderByComparator<ZendeskArticle> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByZendeskCategoryId(
-			zendeskCategoryId, start, end, orderByComparator,
-			retrieveFromCache);
+			zendeskCategoryId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -369,16 +365,16 @@ public class ZendeskArticleUtil {
 	 * @param start the lower bound of the range of zendesk articles
 	 * @param end the upper bound of the range of zendesk articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk articles
 	 */
 	public static List<ZendeskArticle> findByZendeskSectionId(
 		long zendeskSectionId, int start, int end,
 		OrderByComparator<ZendeskArticle> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findByZendeskSectionId(
-			zendeskSectionId, start, end, orderByComparator, retrieveFromCache);
+			zendeskSectionId, start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
@@ -518,14 +514,14 @@ public class ZendeskArticleUtil {
 	 * Returns the zendesk article where documentationOriginalURL = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param documentationOriginalURL the documentation original url
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
 	 */
 	public static ZendeskArticle fetchByDocumentationOriginalURL(
-		String documentationOriginalURL, boolean retrieveFromCache) {
+		String documentationOriginalURL, boolean useFinderCache) {
 
 		return getPersistence().fetchByDocumentationOriginalURL(
-			documentationOriginalURL, retrieveFromCache);
+			documentationOriginalURL, useFinderCache);
 	}
 
 	/**
@@ -592,15 +588,15 @@ public class ZendeskArticleUtil {
 	 *
 	 * @param zendeskCategoryId the zendesk category ID
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk article, or <code>null</code> if a matching zendesk article could not be found
 	 */
 	public static ZendeskArticle fetchByZCI_DK(
 		long zendeskCategoryId, String documentationKey,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().fetchByZCI_DK(
-			zendeskCategoryId, documentationKey, retrieveFromCache);
+			zendeskCategoryId, documentationKey, useFinderCache);
 	}
 
 	/**
@@ -756,15 +752,15 @@ public class ZendeskArticleUtil {
 	 * @param start the lower bound of the range of zendesk articles
 	 * @param end the upper bound of the range of zendesk articles (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk articles
 	 */
 	public static List<ZendeskArticle> findAll(
 		int start, int end, OrderByComparator<ZendeskArticle> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**

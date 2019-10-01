@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,10 +23,9 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see ZendeskCategoryLocalService
  * @generated
  */
-@ProviderType
 public class ZendeskCategoryLocalServiceWrapper
-	implements ZendeskCategoryLocalService,
-			   ServiceWrapper<ZendeskCategoryLocalService> {
+	implements ServiceWrapper<ZendeskCategoryLocalService>,
+			   ZendeskCategoryLocalService {
 
 	public ZendeskCategoryLocalServiceWrapper(
 		ZendeskCategoryLocalService zendeskCategoryLocalService) {
@@ -36,6 +33,11 @@ public class ZendeskCategoryLocalServiceWrapper
 		_zendeskCategoryLocalService = zendeskCategoryLocalService;
 	}
 
+	/**
+	 * NOTE FOR DEVELOPERS:
+	 *
+	 * Never modify or reference this interface directly. Always use {@link ZendeskCategoryLocalServiceUtil} to access the zendesk category local service. Add custom service methods to <code>com.liferay.osb.customer.zendesk.documentation.sync.service.impl.ZendeskCategoryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 */
 	@Override
 	public
 		com.liferay.osb.customer.zendesk.documentation.sync.model.

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -23,7 +21,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class ZendeskArticleImpl extends ZendeskArticleBaseImpl {
 
 	public ZendeskArticleImpl() {

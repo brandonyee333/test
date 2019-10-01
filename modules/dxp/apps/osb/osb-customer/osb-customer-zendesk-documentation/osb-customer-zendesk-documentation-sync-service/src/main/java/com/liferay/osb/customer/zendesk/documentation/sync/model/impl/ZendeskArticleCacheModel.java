@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -34,7 +32,6 @@ import java.util.Date;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class ZendeskArticleCacheModel
 	implements CacheModel<ZendeskArticle>, Externalizable {
 
@@ -65,7 +62,7 @@ public class ZendeskArticleCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(17);
+		StringBundler sb = new StringBundler(23);
 
 		sb.append("{zendeskArticleId=");
 		sb.append(zendeskArticleId);
@@ -79,10 +76,16 @@ public class ZendeskArticleCacheModel
 		sb.append(documentationKey);
 		sb.append(", documentationOriginalURL=");
 		sb.append(documentationOriginalURL);
+		sb.append(", previousArticleDocumentationKey=");
+		sb.append(previousArticleDocumentationKey);
+		sb.append(", nextArticleDocumentationKey=");
+		sb.append(nextArticleDocumentationKey);
 		sb.append(", remoteId=");
 		sb.append(remoteId);
 		sb.append(", remoteHtmlURL=");
 		sb.append(remoteHtmlURL);
+		sb.append(", remoteTitle=");
+		sb.append(remoteTitle);
 		sb.append("}");
 
 		return sb.toString();
@@ -119,6 +122,22 @@ public class ZendeskArticleCacheModel
 				documentationOriginalURL);
 		}
 
+		if (previousArticleDocumentationKey == null) {
+			zendeskArticleImpl.setPreviousArticleDocumentationKey("");
+		}
+		else {
+			zendeskArticleImpl.setPreviousArticleDocumentationKey(
+				previousArticleDocumentationKey);
+		}
+
+		if (nextArticleDocumentationKey == null) {
+			zendeskArticleImpl.setNextArticleDocumentationKey("");
+		}
+		else {
+			zendeskArticleImpl.setNextArticleDocumentationKey(
+				nextArticleDocumentationKey);
+		}
+
 		zendeskArticleImpl.setRemoteId(remoteId);
 
 		if (remoteHtmlURL == null) {
@@ -126,6 +145,13 @@ public class ZendeskArticleCacheModel
 		}
 		else {
 			zendeskArticleImpl.setRemoteHtmlURL(remoteHtmlURL);
+		}
+
+		if (remoteTitle == null) {
+			zendeskArticleImpl.setRemoteTitle("");
+		}
+		else {
+			zendeskArticleImpl.setRemoteTitle(remoteTitle);
 		}
 
 		zendeskArticleImpl.resetOriginalValues();
@@ -143,9 +169,12 @@ public class ZendeskArticleCacheModel
 		zendeskSectionId = objectInput.readLong();
 		documentationKey = objectInput.readUTF();
 		documentationOriginalURL = objectInput.readUTF();
+		previousArticleDocumentationKey = objectInput.readUTF();
+		nextArticleDocumentationKey = objectInput.readUTF();
 
 		remoteId = objectInput.readLong();
 		remoteHtmlURL = objectInput.readUTF();
+		remoteTitle = objectInput.readUTF();
 	}
 
 	@Override
@@ -171,6 +200,20 @@ public class ZendeskArticleCacheModel
 			objectOutput.writeUTF(documentationOriginalURL);
 		}
 
+		if (previousArticleDocumentationKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(previousArticleDocumentationKey);
+		}
+
+		if (nextArticleDocumentationKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(nextArticleDocumentationKey);
+		}
+
 		objectOutput.writeLong(remoteId);
 
 		if (remoteHtmlURL == null) {
@@ -178,6 +221,13 @@ public class ZendeskArticleCacheModel
 		}
 		else {
 			objectOutput.writeUTF(remoteHtmlURL);
+		}
+
+		if (remoteTitle == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(remoteTitle);
 		}
 	}
 
@@ -187,7 +237,10 @@ public class ZendeskArticleCacheModel
 	public long zendeskSectionId;
 	public String documentationKey;
 	public String documentationOriginalURL;
+	public String previousArticleDocumentationKey;
+	public String nextArticleDocumentationKey;
 	public long remoteId;
 	public String remoteHtmlURL;
+	public String remoteTitle;
 
 }

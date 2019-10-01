@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ZendeskSectionPersistence
 	extends BasePersistence<ZendeskSection> {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ZendeskSectionUtil} to access the zendesk section persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.
@@ -102,14 +102,14 @@ public interface ZendeskSectionPersistence
 	 * @param start the lower bound of the range of zendesk sections
 	 * @param end the upper bound of the range of zendesk sections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching zendesk sections
 	 */
 	public java.util.List<ZendeskSection> findByZendeskCategoryId(
 		long zendeskCategoryId, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ZendeskSection>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Returns the first zendesk section in the ordered set where zendeskCategoryId = &#63;.
@@ -220,12 +220,12 @@ public interface ZendeskSectionPersistence
 	 *
 	 * @param zendeskCategoryId the zendesk category ID
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk section, or <code>null</code> if a matching zendesk section could not be found
 	 */
 	public ZendeskSection fetchByZCI_DK(
 		long zendeskCategoryId, String documentationKey,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes the zendesk section where zendeskCategoryId = &#63; and documentationKey = &#63; from the database.
@@ -346,14 +346,14 @@ public interface ZendeskSectionPersistence
 	 * @param start the lower bound of the range of zendesk sections
 	 * @param end the upper bound of the range of zendesk sections (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk sections
 	 */
 	public java.util.List<ZendeskSection> findAll(
 		int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator<ZendeskSection>
 			orderByComparator,
-		boolean retrieveFromCache);
+		boolean useFinderCache);
 
 	/**
 	 * Removes all the zendesk sections from the database.

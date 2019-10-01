@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -42,10 +40,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * @see ZendeskCategoryPersistence
  * @generated
  */
-@ProviderType
 public class ZendeskCategoryUtil {
 
-	/*
+	/**
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
@@ -157,14 +154,14 @@ public class ZendeskCategoryUtil {
 	 * Returns the zendesk category where documentationKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param documentationKey the documentation key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching zendesk category, or <code>null</code> if a matching zendesk category could not be found
 	 */
 	public static ZendeskCategory fetchByDocumentationKey(
-		String documentationKey, boolean retrieveFromCache) {
+		String documentationKey, boolean useFinderCache) {
 
 		return getPersistence().fetchByDocumentationKey(
-			documentationKey, retrieveFromCache);
+			documentationKey, useFinderCache);
 	}
 
 	/**
@@ -314,16 +311,16 @@ public class ZendeskCategoryUtil {
 	 * @param start the lower bound of the range of zendesk categories
 	 * @param end the upper bound of the range of zendesk categories (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of zendesk categories
 	 */
 	public static List<ZendeskCategory> findAll(
 		int start, int end,
 		OrderByComparator<ZendeskCategory> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
 		return getPersistence().findAll(
-			start, end, orderByComparator, retrieveFromCache);
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
