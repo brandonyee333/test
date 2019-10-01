@@ -28,7 +28,7 @@ public interface ZendeskLocales {
 	public static final String JAPAN = "ja";
 
 	public static final Locale[] LOCALES_ENABLED = {
-		LocaleUtil.CHINA, LocaleUtil.JAPAN, LocaleUtil.PORTUGAL,
+		LocaleUtil.BRAZIL, LocaleUtil.CHINA, LocaleUtil.JAPAN,
 		LocaleUtil.SPAIN, LocaleUtil.US
 	};
 
