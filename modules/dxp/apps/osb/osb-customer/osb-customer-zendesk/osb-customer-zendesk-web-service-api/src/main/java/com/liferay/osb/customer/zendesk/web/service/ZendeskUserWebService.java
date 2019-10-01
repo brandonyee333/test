@@ -34,7 +34,7 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public ZendeskUser createOrUpdateZendeskUser(
-			String externalId, String email, String locale, String name,
+			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
 		throws PortalException;
 

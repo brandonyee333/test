@@ -19,10 +19,6 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Amos Fong
@@ -33,33 +29,17 @@ public class ZendeskArticleImpl extends ZendeskArticleBaseImpl {
 	public ZendeskArticleImpl() {
 	}
 
-	public String getRemoteHtmlURL(String locale) {
+	public String getRemoteHtmlURL(String zendeskLocale) {
 		String remoteHtmlUrl = getRemoteHtmlURL();
 
-		if (locale.equals(ZendeskLocales.US)) {
+		if (zendeskLocale.equals(ZendeskLocales.US)) {
 			return remoteHtmlUrl;
 		}
 
 		return StringUtil.replace(
 			remoteHtmlUrl,
 			StringPool.SLASH + ZendeskLocales.US + StringPool.SLASH,
-			StringPool.SLASH + locale + StringPool.SLASH);
+			StringPool.SLASH + zendeskLocale + StringPool.SLASH);
 	}
-
-	public String getRemoteTitle(String locale) {
-		String remoteTitle = _remoteTitleMap.get(locale);
-
-		if (Validator.isNull(remoteTitle)) {
-			remoteTitle = _remoteTitleMap.get(ZendeskLocales.US);
-		}
-
-		return remoteTitle;
-	}
-
-	public void setRemoteTitle(String locale, String remoteTitle) {
-		_remoteTitleMap.put(locale, remoteTitle);
-	}
-
-	private Map<String, String> _remoteTitleMap = new HashMap<>();
 
 }

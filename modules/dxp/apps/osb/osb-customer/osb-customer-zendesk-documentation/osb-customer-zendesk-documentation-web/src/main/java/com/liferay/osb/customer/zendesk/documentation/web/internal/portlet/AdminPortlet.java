@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.web.internal.portlet;
 
-import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTranslationConstants;
 import com.liferay.osb.customer.zendesk.documentation.sync.exception.DocumentationImportException;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
@@ -30,6 +29,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StreamUtil;
@@ -38,6 +38,8 @@ import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 
 import java.io.InputStream;
+
+import java.util.Locale;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -125,7 +127,7 @@ public class AdminPortlet extends MVCPortlet {
 				throw new DocumentationImportException();
 			}
 
-			String locale = ZendeskLocales.US;
+			Locale locale = LocaleUtil.US;
 
 			if (fileName.endsWith("-en.zip")) {
 				fileName = fileName.replace("-en.zip", ".zip");
@@ -133,7 +135,7 @@ public class AdminPortlet extends MVCPortlet {
 			else if (fileName.endsWith("-ja.zip")) {
 				fileName = fileName.replace("-ja.zip", ".zip");
 
-				locale = ZendeskLocales.JAPAN;
+				locale = LocaleUtil.JAPAN;
 			}
 
 			if (!fileName.equals(zendeskCategory.getDocumentationKey())) {

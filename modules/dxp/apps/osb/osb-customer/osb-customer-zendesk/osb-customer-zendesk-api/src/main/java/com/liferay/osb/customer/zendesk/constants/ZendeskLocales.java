@@ -14,6 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.constants;
 
+import com.liferay.portal.kernel.util.LocaleUtil;
+
+import java.util.Locale;
+
 /**
  * @author Amos Fong
  */
@@ -23,9 +27,9 @@ public interface ZendeskLocales {
 
 	public static final String JAPAN = "ja";
 
-	public static final String[] LOCALES_ENABLED = {
-		CHINA, JAPAN, ZendeskLocales.PORTUGAL, ZendeskLocales.SPAIN,
-		ZendeskLocales.US
+	public static final Locale[] LOCALES_ENABLED = {
+		LocaleUtil.CHINA, LocaleUtil.JAPAN, LocaleUtil.PORTUGAL,
+		LocaleUtil.SPAIN, LocaleUtil.US
 	};
 
 	public static final String PORTUGAL = "pt";
@@ -33,5 +37,9 @@ public interface ZendeskLocales {
 	public static final String SPAIN = "es";
 
 	public static final String US = "en-us";
+
+	public static final String[] ZENDESK_LOCALES_ENABLED = {
+		CHINA, JAPAN, PORTUGAL, SPAIN, US
+	};
 
 }

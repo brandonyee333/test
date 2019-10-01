@@ -59,11 +59,11 @@ public class ZendeskArticleTranslator extends BaseTranslator<ZendeskArticle> {
 	}
 
 	protected boolean isManualTranslation(
-		ZendeskArticle zendeskArticle, String locale) {
+		ZendeskArticle zendeskArticle, String zendeskLocale) {
 
 		Set<String> labelNames = zendeskArticle.getLabelNames();
 
-		if (labelNames.contains(locale)) {
+		if (labelNames.contains(zendeskLocale)) {
 			return true;
 		}
 

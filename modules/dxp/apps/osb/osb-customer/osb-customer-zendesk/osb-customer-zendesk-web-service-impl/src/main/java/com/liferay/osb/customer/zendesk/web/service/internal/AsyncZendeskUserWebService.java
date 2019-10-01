@@ -63,7 +63,7 @@ public class AsyncZendeskUserWebService
 
 	@Override
 	public ZendeskUser createOrUpdateZendeskUser(
-			String externalId, String email, String locale, String name,
+			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
 		throws PortalException {
 
@@ -72,7 +72,7 @@ public class AsyncZendeskUserWebService
 				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
 		JSONObject jsonObject = getZendeskUserJSONObject(
-			externalId, email, locale, name, organizationName, tags);
+			externalId, email, zendeskLocale, name, organizationName, tags);
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
 			endpoint, "post", null, jsonObject,

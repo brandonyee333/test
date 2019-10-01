@@ -57,7 +57,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	public ZendeskUser createOrUpdateZendeskUser(
-			String externalId, String email, String locale, String name,
+			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
 		throws PortalException {
 
@@ -66,7 +66,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 				ZendeskRESTEndpoints.USERS_CREATE_OR_UPDATE;
 
 		JSONObject jsonObject = getZendeskUserJSONObject(
-			externalId, email, locale, name, organizationName, tags);
+			externalId, email, zendeskLocale, name, organizationName, tags);
 
 		JSONObject responseJSONObject = zendeskBaseWebService.post(
 			endpoint, jsonObject.toString());
@@ -175,7 +175,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	protected JSONObject getZendeskUserJSONObject(
-		String externalId, String email, String locale, String name,
+		String externalId, String email, String zendeskLocale, String name,
 		String organizationName, Set<String> tags) {
 
 		JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
@@ -190,8 +190,8 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			userJSONObject.put("external_id", externalId);
 		}
 
-		if (Validator.isNotNull(locale)) {
-			userJSONObject.put("locale", locale);
+		if (Validator.isNotNull(zendeskLocale)) {
+			userJSONObject.put("locale", zendeskLocale);
 		}
 
 		if (Validator.isNotNull(organizationName)) {

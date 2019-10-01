@@ -41,8 +41,8 @@ public class DefaultZendeskTranslationWebService
 	implements ZendeskTranslationWebService {
 
 	public ZendeskTranslation addZendeskTranslation(
-			String sourceType, long sourceId, String locale, String title,
-			String body)
+			String sourceType, long sourceId, String zendeskLocale,
+			String title, String body)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -62,8 +62,8 @@ public class DefaultZendeskTranslationWebService
 	}
 
 	public ZendeskTranslation updateZendeskTranslation(
-			String sourceType, long sourceId, String locale, String title,
-			String body)
+			String sourceType, long sourceId, String zendeskLocale,
+			String title, String body)
 		throws PortalException {
 
 		throw new UnsupportedOperationException();
@@ -97,14 +97,14 @@ public class DefaultZendeskTranslationWebService
 	}
 
 	protected JSONObject getZendeskTranslationJSONObject(
-		String locale, String title, String body) {
+		String zendeskLocale, String title, String body) {
 
 		JSONObject translationJSONObject = JSONFactoryUtil.createJSONObject();
 
 		translationJSONObject.put("body", body);
 
-		if (Validator.isNotNull(locale)) {
-			translationJSONObject.put("locale", locale);
+		if (Validator.isNotNull(zendeskLocale)) {
+			translationJSONObject.put("locale", zendeskLocale);
 		}
 
 		translationJSONObject.put("title", title);

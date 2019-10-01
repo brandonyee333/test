@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.internal.deploy.auto;
 
-import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporter;
 import com.liferay.osb.customer.zendesk.documentation.sync.importer.DocumentationImporterFactory;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
@@ -24,6 +23,7 @@ import com.liferay.portal.kernel.deploy.auto.AutoDeployer;
 import com.liferay.portal.kernel.deploy.auto.context.AutoDeploymentContext;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StreamUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
@@ -31,6 +31,8 @@ import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import java.util.Locale;
 
 /**
  * @author Amos Fong
@@ -70,7 +72,7 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 
 		String documentationKey = file.getName();
 
-		String locale = ZendeskLocales.US;
+		Locale locale = LocaleUtil.US;
 
 		if (documentationKey.endsWith("-en.zip")) {
 			documentationKey = documentationKey.replace("-en.zip", ".zip");
@@ -78,7 +80,7 @@ public class ZendeskDocumentationSyncAutoDeployer implements AutoDeployer {
 		else if (documentationKey.endsWith("-ja.zip")) {
 			documentationKey = documentationKey.replace("-ja.zip", ".zip");
 
-			locale = ZendeskLocales.JAPAN;
+			locale = LocaleUtil.JAPAN;
 		}
 
 		ZendeskCategory zendeskCategory =

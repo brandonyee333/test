@@ -75,8 +75,7 @@ public class OfficialDocumentationBuilderMessageListener
 
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder(
-				OSBCustomerConfigurationValues.LIFERAY_DOCS_BUILD_SCRIPT,
-				"en");
+				OSBCustomerConfigurationValues.LIFERAY_DOCS_BUILD_SCRIPT, "en");
 
 			processBuilder.redirectErrorStream(true);
 

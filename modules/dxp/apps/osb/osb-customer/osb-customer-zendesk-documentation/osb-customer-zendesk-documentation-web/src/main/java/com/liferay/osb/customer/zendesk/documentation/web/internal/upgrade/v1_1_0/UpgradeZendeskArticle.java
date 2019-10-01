@@ -24,14 +24,14 @@ public class UpgradeZendeskArticle extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(
-			"alter table OSBCustomer_ZendeskArticle add column remoteTitle " +
-				"longtext");
-		runSQL(
 			"alter table OSBCustomer_ZendeskArticle add column " +
 				"previousArticleDocumentationKey VARCHAR(150)");
 		runSQL(
 			"alter table OSBCustomer_ZendeskArticle add column " +
 				"nextArticleDocumentationKey VARCHAR(150)");
+		runSQL(
+			"alter table OSBCustomer_ZendeskArticle add column remoteTitle " +
+				"longtext");
 
 		runSQL(
 			"alter table OSBCustomer_ZendeskSection add column remoteName " +

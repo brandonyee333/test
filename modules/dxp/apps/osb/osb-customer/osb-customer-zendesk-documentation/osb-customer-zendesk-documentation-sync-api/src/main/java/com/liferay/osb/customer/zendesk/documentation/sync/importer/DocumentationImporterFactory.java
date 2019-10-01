@@ -18,13 +18,15 @@ import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.zip.ZipReader;
 
+import java.util.Locale;
+
 /**
  * @author Amos Fong
  */
 public interface DocumentationImporterFactory {
 
 	public DocumentationImporter createDocumentationImporter(
-			ZipReader zipReader, ZendeskCategory zendeskCategory, String locale)
+			ZipReader zipReader, ZendeskCategory zendeskCategory, Locale locale)
 		throws PortalException;
 
 }

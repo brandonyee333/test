@@ -115,13 +115,14 @@ public class UserSynchronizer {
 
 		String emailAddress = user.getEmailAddress();
 		String fullName = user.getFullName();
-		String locale = _zendeskLocaleUtil.convertToZendeskLocale(
+		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
 
 		if (!StringUtil.equalsIgnoreCase(
 				emailAddress, zendeskUser.getEmail()) ||
 			!StringUtil.equalsIgnoreCase(fullName, zendeskUser.getName()) ||
-			!StringUtil.equalsIgnoreCase(locale, zendeskUser.getLocale())) {
+			!StringUtil.equalsIgnoreCase(
+				zendeskLocale, zendeskUser.getLocale())) {
 
 			update(user, null, null);
 		}
@@ -137,7 +138,7 @@ public class UserSynchronizer {
 	public long update(User user, String organizationName, Set<String> tags)
 		throws PortalException {
 
-		String locale = _zendeskLocaleUtil.convertToZendeskLocale(
+		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
 
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
@@ -145,8 +146,8 @@ public class UserSynchronizer {
 
 		if (zendeskUserId != 0) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				user.getUuid(), StringPool.BLANK, locale, user.getFullName(),
-				organizationName, null);
+				user.getUuid(), StringPool.BLANK, zendeskLocale,
+				user.getFullName(), organizationName, null);
 
 			if ((tags != null) && !tags.isEmpty()) {
 				_asyncZendeskUserWebService.addZendeskUserTags(
@@ -156,7 +157,7 @@ public class UserSynchronizer {
 		else {
 			ZendeskUser zendeskUser =
 				_zendeskUserWebService.createOrUpdateZendeskUser(
-					user.getUuid(), user.getEmailAddress(), locale,
+					user.getUuid(), user.getEmailAddress(), zendeskLocale,
 					user.getFullName(), organizationName, tags);
 
 			zendeskUserId = zendeskUser.getZendeskUserId();

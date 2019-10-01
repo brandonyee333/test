@@ -15,7 +15,10 @@
 package com.liferay.osb.customer.zendesk.util;
 
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -25,20 +28,41 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = ZendeskLocaleUtil.class)
 public class ZendeskLocaleUtil {
 
-	public String convertToZendeskLocale(String locale) {
-		if (locale.equals("en_US")) {
+	public String convertToZendeskLocale(Locale locale) {
+		if (locale.equals(LocaleUtil.US)) {
 			return ZendeskLocales.US;
 		}
-		else if (locale.equals("es_ES")) {
+		else if (locale.equals(LocaleUtil.SPAIN)) {
 			return ZendeskLocales.SPAIN;
 		}
-		else if (locale.equals("ja_JP")) {
+		else if (locale.equals(LocaleUtil.JAPAN)) {
 			return ZendeskLocales.JAPAN;
 		}
-		else if (locale.equals("pt_BR")) {
+		else if (locale.equals(LocaleUtil.BRAZIL)) {
 			return ZendeskLocales.PORTUGAL;
 		}
-		else if (locale.equals("zh_CN")) {
+		else if (locale.equals(LocaleUtil.CHINA)) {
+			return ZendeskLocales.CHINA;
+		}
+		else {
+			return StringPool.BLANK;
+		}
+	}
+
+	public String convertToZendeskLocale(String languageId) {
+		if (languageId.equals("en_US")) {
+			return ZendeskLocales.US;
+		}
+		else if (languageId.equals("es_ES")) {
+			return ZendeskLocales.SPAIN;
+		}
+		else if (languageId.equals("ja_JP")) {
+			return ZendeskLocales.JAPAN;
+		}
+		else if (languageId.equals("pt_BR")) {
+			return ZendeskLocales.PORTUGAL;
+		}
+		else if (languageId.equals("zh_CN")) {
 			return ZendeskLocales.CHINA;
 		}
 		else {

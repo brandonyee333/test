@@ -28,8 +28,8 @@ import java.util.List;
 public interface ZendeskTranslationWebService {
 
 	public ZendeskTranslation addZendeskTranslation(
-			String sourceType, long sourceId, String locale, String title,
-			String body)
+			String sourceType, long sourceId, String zendeskLocale,
+			String title, String body)
 		throws PortalException;
 
 	public List<ZendeskTranslation> getZendeskTranslations(
@@ -37,8 +37,8 @@ public interface ZendeskTranslationWebService {
 		throws PortalException;
 
 	public ZendeskTranslation updateZendeskTranslation(
-			String sourceType, long sourceId, String locale, String title,
-			String body)
+			String sourceType, long sourceId, String zendeskLocale,
+			String title, String body)
 		throws PortalException;
 
 }

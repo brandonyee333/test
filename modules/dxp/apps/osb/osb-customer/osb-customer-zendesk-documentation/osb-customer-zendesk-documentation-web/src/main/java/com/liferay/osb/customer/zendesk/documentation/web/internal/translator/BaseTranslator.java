@@ -99,13 +99,13 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 	}
 
 	protected void addZendeskTranslations(T model) throws PortalException {
-		for (String locale : ZendeskLocales.LOCALES_ENABLED) {
-			if (locale.equals(ZendeskLocales.US)) {
+		for (String zendeskLocale : ZendeskLocales.ZENDESK_LOCALES_ENABLED) {
+			if (zendeskLocale.equals(ZendeskLocales.US)) {
 				continue;
 			}
 
 			zendeskTranslationWebService.addZendeskTranslation(
-				model.getSourceType(), model.getSourceId(), locale,
+				model.getSourceType(), model.getSourceId(), zendeskLocale,
 				model.getTitle(), model.getBody());
 		}
 	}
@@ -124,16 +124,16 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 
 		ZendeskTranslation zendeskTranslation = zendeskTranslations.get(0);
 
-		String locale = zendeskTranslation.getLocale();
+		String zendeskLocale = zendeskTranslation.getLocale();
 
-		if (!locale.equals(ZendeskLocales.US)) {
+		if (!zendeskLocale.equals(ZendeskLocales.US)) {
 			return false;
 		}
 
 		return true;
 	}
 
-	protected boolean isManualTranslation(T model, String locale) {
+	protected boolean isManualTranslation(T model, String zendeskLocale) {
 		return false;
 	}
 
@@ -148,7 +148,7 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 		for (Map.Entry<String, List<T>> entry :
 				manualTranslationModels.entrySet()) {
 
-			String locale = entry.getKey();
+			String zendeskLocale = entry.getKey();
 			List<T> models = entry.getValue();
 
 			SubscriptionSender subscriptionSender = new SubscriptionSender();
@@ -170,7 +170,7 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 
 			body = StringUtil.replace(
 				body, new String[] {"[$LOCALE$]", "[$ZENDESK_ARTICLES$]"},
-				new String[] {locale, sb.toString()});
+				new String[] {zendeskLocale, sb.toString()});
 
 			subscriptionSender.setBody(body);
 
@@ -186,14 +186,14 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 				"com/liferay/osb/customer/zendesk/documentation/sync" +
 					"/dependencies/email_article_updated_subject.tmpl");
 
-			subject = StringUtil.replace(subject, "[$LOCALE$]", locale);
+			subject = StringUtil.replace(subject, "[$LOCALE$]", zendeskLocale);
 
 			subscriptionSender.setSubject(subject);
 
 			String emailAddress = ZendeskDocumentationSyncConfigurationUtil.get(
 				ZendeskDocumentationSyncConfigurationKeys.
 					ZENDESK_DOCUMENTATION_TRANSLATOR,
-				new Filter(locale));
+				new Filter(zendeskLocale));
 
 			if (Validator.isNull(emailAddress)) {
 				emailAddress = ZendeskDocumentationSyncConfigurationUtil.get(
@@ -222,9 +222,9 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 			model.getZendeskTranslations();
 
 		for (ZendeskTranslation zendeskTranslation : zendeskTranslations) {
-			String locale = zendeskTranslation.getLocale();
+			String zendeskLocale = zendeskTranslation.getLocale();
 
-			if (locale.equals(ZendeskLocales.US)) {
+			if (zendeskLocale.equals(ZendeskLocales.US)) {
 				continue;
 			}
 
@@ -237,27 +237,27 @@ public abstract class BaseTranslator<T extends TranslatableModel> {
 				continue;
 			}
 
-			if (isManualTranslation(model, locale)) {
-				manualTranslationLocales.add(locale);
+			if (isManualTranslation(model, zendeskLocale)) {
+				manualTranslationLocales.add(zendeskLocale);
 
 				continue;
 			}
 
 			zendeskTranslationWebService.updateZendeskTranslation(
-				model.getSourceType(), model.getSourceId(), locale,
+				model.getSourceType(), model.getSourceId(), zendeskLocale,
 				model.getTitle(), model.getBody());
 
 			translationUpdated = true;
 		}
 
 		if (translationUpdated) {
-			for (String locale : manualTranslationLocales) {
-				List<T> models = manualTranslationModels.get(locale);
+			for (String zendeskLocale : manualTranslationLocales) {
+				List<T> models = manualTranslationModels.get(zendeskLocale);
 
 				if (models == null) {
 					models = new ArrayList<>();
 
-					manualTranslationModels.put(locale, models);
+					manualTranslationModels.put(zendeskLocale, models);
 				}
 
 				models.add(model);
