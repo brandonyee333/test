@@ -19,8 +19,8 @@ import com.liferay.lcs.client.configuration.LCSConfiguration;
 import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.command.SendPatchesCommand;
-import com.liferay.lcs.client.internal.command.SendPortalPropertiesCommand;
+import com.liferay.lcs.client.internal.task.SendPatchesTask;
+import com.liferay.lcs.client.internal.task.SendPortalPropertiesTask;
 import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.command.queue.CommandQueue;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
@@ -63,7 +63,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 	{DigesterUtil.class, LCSPatcherUtil.class, LCSUtil.class, PropsUtil.class}
 )
 @RunWith(PowerMockRunner.class)
-public class TaskAdvisorImplTest extends PowerMockito {
+public class TaskAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
@@ -84,19 +84,19 @@ public class TaskAdvisorImplTest extends PowerMockito {
 
 	@Test
 	public void testGetActiveServiceLabels() throws Exception {
-		TaskAdvisorImpl taskAdvisor = new TaskAdvisorImpl();
+		TaskAdvisor taskAdvisor = new TaskAdvisor();
 
-		SendPatchesCommand sendPatchesCommand = new SendPatchesCommand(
+		SendPatchesTask sendPatchesTask = new SendPatchesTask(
 			_lcsGatewayClient, taskAdvisor);
 
-		SendPortalPropertiesCommand sendPortalPropertiesCommand =
-			new SendPortalPropertiesCommand(
+		SendPortalPropertiesTask sendPortalPropertiesTask =
+			new SendPortalPropertiesTask(
 				mock(LCSClusterEntryTokenAdvisor.class), _lcsGatewayClient,
 				taskAdvisor);
 
 		CommandAdvisor commandAdvisor = new CommandAdvisor(
 			_digitalSignature, _lcsConfigurationProvider, _lcsGatewayClient,
-			_lcsKeyAdvisor, sendPatchesCommand, sendPortalPropertiesCommand);
+			_lcsKeyAdvisor, sendPatchesTask, sendPortalPropertiesTask);
 
 		ClusterMasterExecutor mockClusterMasterExecutor = mock(
 			ClusterMasterExecutor.class);

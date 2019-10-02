@@ -28,7 +28,7 @@ import com.liferay.lcs.client.internal.task.Task;
 import com.liferay.lcs.client.internal.task.TaskSchedule;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.util.LCSConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

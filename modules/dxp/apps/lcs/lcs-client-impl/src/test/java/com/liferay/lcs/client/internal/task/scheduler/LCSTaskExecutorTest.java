@@ -28,7 +28,7 @@ import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.task.UptimeTask;
 import com.liferay.lcs.client.internal.task.executor.LCSTaskExecutor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
 import com.liferay.lcs.messaging.Message;
 import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
