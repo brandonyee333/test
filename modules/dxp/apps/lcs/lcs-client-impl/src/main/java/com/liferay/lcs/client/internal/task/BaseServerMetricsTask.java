@@ -45,7 +45,8 @@ import org.osgi.framework.ServiceReference;
  * @author Riccardo Ferrari
  * @author Mladen Cikara
  */
-public abstract class BaseServerMetricsTask implements ServerMetricsTask {
+public abstract class BaseServerMetricsTask
+	extends BaseTask implements ServerMetricsTask {
 
 	public void afterPropertiesSet() {
 		try {
@@ -148,8 +149,8 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	}
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Override
@@ -160,16 +161,6 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 	@Override
 	public boolean isJDBCConnectionPoolsMetricsEnabled() {
 		return _jdbcConnectionPoolsMetricsEnabled;
-	}
-
-	@Override
-	public void run() {
-		try {
-			doRun();
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-		}
 	}
 
 	public void setCurrentThreadsObjectNames(
@@ -200,11 +191,8 @@ public abstract class BaseServerMetricsTask implements ServerMetricsTask {
 		this.mBeanServerService = mBeanServerService;
 	}
 
+	@Override
 	protected void doRun() throws Exception {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running " + getClass());
-		}
-
 		ServerMetricsMessage serverMetricsMessage = new ServerMetricsMessage();
 
 		serverMetricsMessage.setCreateTime(System.currentTimeMillis());

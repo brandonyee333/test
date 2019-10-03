@@ -17,7 +17,6 @@ package com.liferay.lcs.client.internal.task;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.petra.json.web.service.client.JSONWebServiceException;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
@@ -26,7 +25,8 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 /**
  * @author Igor Beslic
  */
-public abstract class BaseScheduledTask implements ScheduledTask {
+public abstract class BaseScheduledTask
+	extends BaseTask implements ScheduledTask {
 
 	@Override
 	public void run() {
@@ -55,40 +55,7 @@ public abstract class BaseScheduledTask implements ScheduledTask {
 			}
 		}
 
-		try {
-			if (_log.isTraceEnabled()) {
-				_log.trace("Running task " + getClass());
-			}
-
-			long startTimeMillis = System.currentTimeMillis();
-
-			doRun();
-
-			if (_log.isDebugEnabled()) {
-				long taskExecutionMillis =
-					System.currentTimeMillis() - startTimeMillis;
-
-				StringBundler sb = new StringBundler(5);
-
-				sb.append("Executed LCS task ");
-				sb.append(getClass());
-				sb.append(" in ");
-				sb.append(taskExecutionMillis);
-				sb.append("ms");
-
-				_log.debug(sb.toString());
-			}
-		}
-		catch (Exception e) {
-			String errorMessage = "Unable to run task";
-
-			if (e instanceof JSONWebServiceException) {
-				_log.error(errorMessage);
-			}
-			else {
-				_log.error(errorMessage, e);
-			}
-		}
+		super.run();
 	}
 
 	public void setLCSGatewayService(LCSGatewayClient lcsGatewayClient) {

@@ -60,8 +60,8 @@ public class ServerMetricsTaskFactory {
 			return;
 		}
 
-		_scheduledTaskServiceRegistration = bundleContext.registerService(
-			ScheduledTask.class, serverMetricsTask,
+		_metricsTaskServiceRegistration = bundleContext.registerService(
+			Task.class, serverMetricsTask,
 			new HashMapDictionary<String, String>() {
 				{
 					put(
@@ -73,8 +73,8 @@ public class ServerMetricsTaskFactory {
 
 	@Deactivate
 	protected void deactivate() {
-		if (_scheduledTaskServiceRegistration != null) {
-			_scheduledTaskServiceRegistration.unregister();
+		if (_metricsTaskServiceRegistration != null) {
+			_metricsTaskServiceRegistration.unregister();
 		}
 	}
 
@@ -127,7 +127,6 @@ public class ServerMetricsTaskFactory {
 	@Reference
 	private MBeanServerService _mBeanServerService;
 
-	private ServiceRegistration<ScheduledTask>
-		_scheduledTaskServiceRegistration;
+	private ServiceRegistration<Task> _metricsTaskServiceRegistration;
 
 }

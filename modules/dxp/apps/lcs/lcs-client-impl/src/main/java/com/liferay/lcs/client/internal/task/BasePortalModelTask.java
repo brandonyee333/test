@@ -31,6 +31,11 @@ public abstract class BasePortalModelTask extends BaseScheduledTask {
 		return Scope.CLUSTER;
 	}
 
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
+	}
+
 	public void setPageSize(int pageSize) {
 		_pageSize = pageSize;
 	}

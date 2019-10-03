@@ -21,7 +21,7 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 /**
  * @author Riccardo Ferrari
  */
-public interface ServerMetricsTask extends ScheduledTask {
+public interface ServerMetricsTask extends Task {
 
 	public void afterPropertiesSet();
 

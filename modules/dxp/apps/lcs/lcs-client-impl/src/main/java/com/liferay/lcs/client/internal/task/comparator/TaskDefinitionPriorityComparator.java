@@ -12,14 +12,31 @@
  *
  */
 
-package com.liferay.lcs.client.internal.task;
+package com.liferay.lcs.client.internal.task.comparator;
+
+import com.liferay.lcs.client.internal.task.TaskDefinition;
+
+import java.util.Comparator;
 
 /**
- * @author Riccardo Ferrari
  * @author Igor Beslic
  */
-public interface Task extends Runnable {
+public class TaskDefinitionPriorityComparator
+	implements Comparator<TaskDefinition> {
 
-	public TaskType getTaskType();
+	@Override
+	public int compare(
+		TaskDefinition taskDefinition1, TaskDefinition taskDefinition2) {
+
+		if (taskDefinition1.equals(taskDefinition2)) {
+			return 0;
+		}
+
+		if (taskDefinition1.getPriority() <= taskDefinition2.getPriority()) {
+			return -1;
+		}
+
+		return 1;
+	}
 
 }

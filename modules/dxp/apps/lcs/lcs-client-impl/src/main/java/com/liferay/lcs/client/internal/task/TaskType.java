@@ -15,11 +15,10 @@
 package com.liferay.lcs.client.internal.task;
 
 /**
- * @author Riccardo Ferrari
  * @author Igor Beslic
  */
-public interface Task extends Runnable {
+public enum TaskType {
 
-	public TaskType getTaskType();
+	COMMAND, MANAGEABLE, ONLINE_REQUIRED, REQUIRED
 
 }
