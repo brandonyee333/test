@@ -14,12 +14,18 @@
 
 package com.liferay.lcs.client.constants;
 
+import com.liferay.portal.kernel.util.Time;
+
 /**
  * @author Igor Beslic
  */
 public class LCSClientConstants {
 
-	public static final long HEARTBEAT_INTERVAL = 60000;
+	public static final long COMMAND_MESSAGE_CHECK_INTERVAL = 20 * Time.SECOND;
+
+	public static final long COMMAND_QUEUE_CHECK_INTERVAL = 330;
+
+	public static final long HEARTBEAT_INTERVAL = Time.MINUTE;
 
 	public static final int LCS_CLIENT_BUILD_NUMBER = 610;
 
