@@ -347,12 +347,14 @@ insert into ListType (listTypeId, name, type_) values (40000, 'elasticsearch-2.x
 insert into ListType (listTypeId, name, type_) values (40001, 'kibana-4.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40002, 'marvel-2.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40003, 'shield-2.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40004, 'solr', 'com.liferay.osb.model.AccountEnvironment.envSearch');
-insert into ListType (listTypeId, name, type_) values (40005, 'solrcloud', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40004, 'solr-5.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40006, 'elasticsearch-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40007, 'kibana-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40008, 'x-pack-6.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40009, 'solr-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40010, 'elasticsearch-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40011, 'kibana-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40012, 'x-pack-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 
 insert into ListType (listTypeId, name, type_) values (41000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 insert into ListType (listTypeId, name, type_) values (41100, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');

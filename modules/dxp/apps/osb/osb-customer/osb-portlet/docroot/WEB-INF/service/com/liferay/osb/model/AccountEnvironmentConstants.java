@@ -460,21 +460,25 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_SEARCH_ELASTICSEARCH_6_X = 40006;
 
+	public static final long ENV_SEARCH_ELASTICSEARCH_7_X = 40010;
+
 	public static final long ENV_SEARCH_KIBANA_4_X = 40001;
 
 	public static final long ENV_SEARCH_KIBANA_6_X = 40007;
+
+	public static final long ENV_SEARCH_KIBANA_7_X = 40011;
 
 	public static final long ENV_SEARCH_MARVEL_2_X = 40002;
 
 	public static final long ENV_SEARCH_SHIELD_2_X = 40003;
 
-	public static final long ENV_SEARCH_SOLR = 40004;
+	public static final long ENV_SEARCH_SOLR_5_X = 40004;
 
 	public static final long ENV_SEARCH_SOLR_7_X = 40009;
 
-	public static final long ENV_SEARCH_SOLRCLOUD = 40005;
-
 	public static final long ENV_SEARCH_X_PACK_6_X = 40008;
+
+	public static final long ENV_SEARCH_X_PACK_7_X = 40012;
 
 	public static final String LIST_TYPE_ENV_AS =
 		AccountEnvironment.class.getName() + ".envAS";
@@ -930,7 +934,7 @@ public class AccountEnvironmentConstants {
 	private static final long[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_0_STANDARD = {
 			ENV_SEARCH_ELASTICSEARCH_2_X, ENV_SEARCH_ELASTICSEARCH_6_X,
-			ENV_SEARCH_SOLR, ENV_SEARCH_SOLRCLOUD
+			ENV_SEARCH_SOLR_5_X
 		};
 
 	private static final long[]
@@ -951,12 +955,20 @@ public class AccountEnvironmentConstants {
 
 	private static final long[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_2_ENTERPRISE = {
-			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_7_X
+			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_ELASTICSEARCH_7_X,
+			ENV_SEARCH_KIBANA_6_X, ENV_SEARCH_KIBANA_7_X, ENV_SEARCH_X_PACK_6_X,
+			ENV_SEARCH_X_PACK_7_X
 		};
 
 	private static final long[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_2_STANDARD = {
-			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_SOLR_7_X
+			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_ELASTICSEARCH_7_X,
+			ENV_SEARCH_SOLR_7_X
+		};
+
+	private static final long[]
+		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_2_STANDARD_COMMERCE = {
+			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_ELASTICSEARCH_7_X
 		};
 
 	private static final Map<String, long[]> _envCommerce11 = new HashMap<>();
@@ -1081,6 +1093,9 @@ public class AccountEnvironmentConstants {
 		_envDigitalEnterpriseVersion72.put(
 			LIST_TYPE_ENV_SEARCH + ".standard",
 			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_2_STANDARD);
+		_envDigitalEnterpriseVersion72.put(
+			LIST_TYPE_ENV_SEARCH + ".standard.commerce",
+			_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_2_STANDARD_COMMERCE);
 
 		_envPortalVersionOther.put(
 			LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_OTHER);
