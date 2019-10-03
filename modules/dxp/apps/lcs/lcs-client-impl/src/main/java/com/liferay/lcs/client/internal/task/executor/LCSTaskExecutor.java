@@ -14,29 +14,24 @@
 
 package com.liferay.lcs.client.internal.task.executor;
 
-import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.lifecycle.LCSModuleLifecycle;
-import com.liferay.lcs.client.internal.task.HandshakeTask;
-import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
-import com.liferay.lcs.client.internal.task.ScheduledTask;
 import com.liferay.lcs.client.internal.task.Task;
-import com.liferay.lcs.client.internal.task.TaskSchedule;
-import com.liferay.lcs.client.internal.task.UptimeTask;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
-import com.liferay.lcs.util.LCSConstants;
+import com.liferay.lcs.client.internal.task.TaskDefinition;
+import com.liferay.lcs.client.internal.task.TaskType;
+import com.liferay.lcs.client.task.TaskStatus;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -44,9 +39,6 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -58,115 +50,105 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = {
-		"osgi.command.scope=lcs", "osgi.command.function=taskStatus"
-	},
-	service = LCSTaskExecutor.class
+	property = {"osgi.command.scope=lcs", "osgi.command.function=taskStatus"},
+	service = {LCSTaskExecutor.class, TaskStatus.class}
 )
-public class LCSTaskExecutor implements LCSEventListener {
+public class LCSTaskExecutor implements LCSEventListener, TaskStatus {
 
 	public LCSTaskExecutor() {
 	}
 
 	public LCSTaskExecutor(
-		int defaultInterval, HandshakeTask handshakeTask,
-		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask,
-		LCSConfigurationProvider lcsConfigurationProvider,
-		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
-		LCSKeyAdvisor lcsKeyAdvisor, TaskAdvisor taskAdvisor,
-		ThreadFactory threadFactory, UptimeTask uptimeTask) {
+		LCSEventManager lcsEventManager, ThreadFactory threadFactory) {
 
-		_defaultInterval = defaultInterval;
-		_handshakeTask = handshakeTask;
-		_lcsClusterEntryTokenCheckTask = lcsClusterEntryTokenCheckTask;
-		_lcsConfigurationProvider = lcsConfigurationProvider;
 		_lcsEventManager = lcsEventManager;
-		_lcsGatewayClient = lcsGatewayClient;
-		_lcsKeyAdvisor = lcsKeyAdvisor;
-		_taskAdvisor = taskAdvisor;
 		_threadFactory = threadFactory;
-		_uptimeTask = uptimeTask;
 
 		_initExecutorService();
 
 		_subscribeToLCSEvents();
 	}
 
+	public void flush() {
+		for (TaskDefinition delayedTaskDefinition : _delayedTaskDefinitions) {
+			submit(delayedTaskDefinition);
+		}
+
+		for (TaskDefinition taskDefinition : _repeatableTaskDefinitions) {
+			submit(taskDefinition);
+		}
+	}
+
+	@Override
+	public Set<String> getActiveTaskSimpleClassNames() {
+		return new HashSet<>(_activeTaskClassNames);
+	}
+
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
-		if (_shutdownPending.get()) {
+		if (_deactivatePending.get()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Aborting event processing. Shutdown is in progress.");
+					"Aborting event processing. Deactivate is in progress.");
 			}
 
 			return;
 		}
 
-		if (lcsEvent == LCSEvent.HANDSHAKE_FAILED) {
-			_executeHandshakeTask(true);
-		}
-		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
-			_onHandshakeSuccess();
-		}
-		else if (lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) {
-			_onLCSGatewayServiceUnavailable();
-		}
-		else if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED) ||
-				 (lcsEvent ==
-					 LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED) ||
-				 (lcsEvent ==
-					 LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH) ||
-				 (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID) ||
-				 (lcsEvent ==
-					 LCSEvent.
-						 LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS) ||
-				 (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING) ||
-				 (lcsEvent ==
-					 LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS)) {
+		if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
+			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED) ||
+			(lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) ||
+			(lcsEvent == LCSEvent.SIGNOFF_SUCCESS)) {
 
-			_executeLCSClusterEntryTokenCheckTask(true);
-		}
-		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
-			_executeHandshakeTask(false);
-		}
-		else if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
-				 (lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED) ||
-				 (lcsEvent == LCSEvent.SIGNOFF_REQUESTED)) {
-
-			_restart();
+			_cancelNonRequiredTasks();
 		}
 	}
 
-	public String schedulerStatus() {
+	public void process(Set<TaskDefinition> taskDefinitions) {
+		for (TaskDefinition taskDefinition : taskDefinitions) {
+			submit(taskDefinition);
+		}
+	}
+
+	public void submit(TaskDefinition taskDefinition) {
+		if (taskDefinition.isTaskType(TaskType.REQUIRED) ||
+			taskDefinition.isTaskType(TaskType.ONLINE_REQUIRED)) {
+
+			_submitImmediatelyToParentExecutorService(taskDefinition);
+
+			return;
+		}
+
+		if (!taskDefinition.isOnSchedule()) {
+			if (!_delayedTaskDefinitions.contains(taskDefinition)) {
+				_delayedTaskDefinitions.add(taskDefinition);
+			}
+
+			return;
+		}
+
+		_delayedTaskDefinitions.remove(taskDefinition);
+
+		_commonFutures.put(
+			taskDefinition.getTaskName(),
+			_scheduledExecutorService.schedule(
+				taskDefinition.getTask(), 0, TimeUnit.MILLISECONDS));
+
+		if (taskDefinition.isRepeatable() &&
+			!_repeatableTaskDefinitions.contains(taskDefinition)) {
+
+			_repeatableTaskDefinitions.add(taskDefinition);
+		}
+
+		_registerTaskExecution(taskDefinition);
+	}
+
+	public String taskStatus() {
 		return "Scheduler Status: " + _scheduledExecutorService;
 	}
 
-	public void start() {
-		_scheduleUptimeMonitoringTask();
-
-		_executeLCSClusterEntryTokenCheckTask(false);
-	}
-
-	public void submit(TaskSchedule taskSchedule) {
-		_scheduledFuturesMap.put(
-			taskSchedule.getTaskName(),
-			_scheduledExecutorService.schedule(
-				taskSchedule.getScheduledTask(), taskSchedule.getInitialDelay(),
-				TimeUnit.SECONDS));
-
-		_taskAdvisor.registerActivity(taskSchedule.getScheduledTask());
-	}
-
 	@Activate
-	protected void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
-
-		LCSConfiguration lcsConfiguration =
-			_lcsConfigurationProvider.getLCSConfiguration();
-
-		_defaultInterval = lcsConfiguration.commandScheduleDefaultInterval();
-
+	protected void activate() {
 		_initExecutorService();
 
 		_subscribeToLCSEvents();
@@ -174,27 +156,19 @@ public class LCSTaskExecutor implements LCSEventListener {
 		if (_log.isTraceEnabled()) {
 			_log.trace("Activated " + this);
 		}
-
-		start();
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_lcsEventManager.unsubscribe(this);
+		_deactivatePending.set(true);
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Deactivate " + this);
 		}
 
-		_shutdownPending.set(true);
-
 		_cancelAllTasks();
 
-		_executeSignOffTask();
-
-		if (_uptimeTaskScheduledFuture != null) {
-			_uptimeTaskScheduledFuture.cancel(true);
-		}
+		_lcsEventManager.unsubscribe(this);
 
 		_scheduledExecutorService.shutdown();
 
@@ -208,6 +182,15 @@ public class LCSTaskExecutor implements LCSEventListener {
 		catch (InterruptedException ie) {
 			_scheduledExecutorService.shutdownNow();
 		}
+
+		_activeTaskClassNames.clear();
+		_commonFutures.clear();
+		_delayedTaskDefinitions.clear();
+		_onlineFutures.clear();
+		_repeatableTaskDefinitions.clear();
+		_requiredFutures.clear();
+
+		_scheduledExecutorService = null;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Deactivated " + this);
@@ -224,11 +207,26 @@ public class LCSTaskExecutor implements LCSEventListener {
 	}
 
 	private void _cancelAllTasks() {
-		_taskAdvisor.reset();
+		_cancelNonRequiredTasks();
 
-		for (String taskName : _scheduledFuturesMap.keySet()) {
-			ScheduledFuture<?> scheduledFuture = _scheduledFuturesMap.get(
-				taskName);
+		_cancelTasks(_requiredFutures);
+	}
+
+	private void _cancelNonRequiredTasks() {
+		_delayedTaskDefinitions.clear();
+		_repeatableTaskDefinitions.clear();
+
+		_cancelTasks(_onlineFutures);
+		_cancelTasks(_commonFutures);
+	}
+
+	private void _cancelTasks(Map<String, ScheduledFuture<?>> futures) {
+		for (String taskName : futures.keySet()) {
+			ScheduledFuture<?> scheduledFuture = futures.get(taskName);
+
+			if (scheduledFuture.isDone()) {
+				continue;
+			}
 
 			while (!scheduledFuture.isCancelled()) {
 				scheduledFuture.cancel(true);
@@ -239,105 +237,13 @@ public class LCSTaskExecutor implements LCSEventListener {
 			}
 		}
 
-		_scheduledFuturesMap.clear();
+		futures.clear();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace(
 				"Scheduled executor service status after cancellation " +
 					_scheduledExecutorService);
 		}
-	}
-
-	private void _executeHandshakeTask(boolean delayRun) {
-		if (_shutdownPending.get()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug("Aborting handshake. Shutdown is in progress.");
-			}
-
-			return;
-		}
-
-		if (delayRun) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Retrying connection in 60 seconds");
-			}
-
-			_scheduledExecutorService.schedule(
-				_handshakeTask, 60, TimeUnit.SECONDS);
-		}
-		else {
-			_scheduledExecutorService.submit(_handshakeTask);
-		}
-	}
-
-	private void _executeLCSClusterEntryTokenCheckTask(boolean delayRun) {
-		if (_shutdownPending.get()) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Aborting environment token processing. Shutdown is in " +
-						"progress.");
-			}
-
-			return;
-		}
-
-		long delay = 0;
-
-		if (delayRun) {
-			delay = 60;
-
-			if (_log.isInfoEnabled()) {
-				_log.info(
-					String.format(
-						"Checking environment token in %d seconds", delay));
-			}
-		}
-
-		_scheduledExecutorService.schedule(
-			_lcsClusterEntryTokenCheckTask, delay, TimeUnit.SECONDS);
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Executed " + _lcsClusterEntryTokenCheckTask);
-		}
-	}
-
-	private void _executeSignOffTask() {
-		if (_signOffPending) {
-			return;
-		}
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Executing sign off task");
-		}
-
-		_signOffPending = true;
-
-		Future<?> future = _scheduledExecutorService.submit(_signOffTask);
-
-		while (!future.isDone()) {
-			Thread.yield();
-		}
-
-		_signOffPending = false;
-	}
-
-	private ScheduledTask _getScheduledTask(String taskName) {
-		try {
-			ServiceReference<?>[] serviceReferences =
-				_bundleContext.getServiceReferences(
-					ScheduledTask.class.getName(),
-					"(lcs.client.scheduled.task.name=" + taskName + ")");
-
-			if (serviceReferences.length > 0) {
-				return (ScheduledTask)_bundleContext.getService(
-					serviceReferences[0]);
-			}
-		}
-		catch (InvalidSyntaxException ise) {
-			throw new IllegalArgumentException(ise);
-		}
-
-		return null;
 	}
 
 	private void _initExecutorService() {
@@ -347,170 +253,83 @@ public class LCSTaskExecutor implements LCSEventListener {
 		ScheduledThreadPoolExecutor scheduledThreadPoolExecutor =
 			(ScheduledThreadPoolExecutor)_scheduledExecutorService;
 
+		scheduledThreadPoolExecutor.
+			setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
+		scheduledThreadPoolExecutor.
+			setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
 		scheduledThreadPoolExecutor.setRemoveOnCancelPolicy(true);
 	}
 
-	private void _onHandshakeSuccess() {
-		_scheduleCommandMessageCheckTask();
+	private void _registerTaskExecution(TaskDefinition taskDefinition) {
+		taskDefinition.setExecuted();
 
-		_scheduleCommandQueueCheckTask();
+		Task task = taskDefinition.getTask();
+
+		Class<?> clazz = task.getClass();
+
+		_activeTaskClassNames.add(clazz.getSimpleName());
 	}
 
-	private void _onLCSGatewayServiceUnavailable() {
-		if (_signOffPending) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Aborting connection recovery. Sign-out is in progress.");
-			}
+	private void _submitImmediatelyToParentExecutorService(
+		TaskDefinition taskDefinition) {
+
+		ScheduledFuture<?> scheduledFuture = null;
+
+		if (taskDefinition.isRepeatable()) {
+			scheduledFuture = _scheduledExecutorService.scheduleAtFixedRate(
+				taskDefinition.getTask(), taskDefinition.getInitialDelay(),
+				taskDefinition.getPeriod(), TimeUnit.MILLISECONDS);
+		}
+		else {
+			scheduledFuture = _scheduledExecutorService.schedule(
+				taskDefinition.getTask(), taskDefinition.getInitialDelay(),
+				TimeUnit.MILLISECONDS);
+		}
+
+		if (scheduledFuture == null) {
+			_log.error("Unable to submit " + taskDefinition);
 
 			return;
 		}
 
-		if (_log.isInfoEnabled()) {
-			_log.info("Starting connection recovery");
+		if (taskDefinition.isTaskType(TaskType.REQUIRED)) {
+			_requiredFutures.put(taskDefinition.getTaskName(), scheduledFuture);
+		}
+		else {
+			_onlineFutures.put(taskDefinition.getTaskName(), scheduledFuture);
 		}
 
-		_cancelAllTasks();
-
-		_executeLCSClusterEntryTokenCheckTask(false);
-	}
-
-	private void _restart() {
-		if (_log.isDebugEnabled()) {
-			_log.debug("Restarting LCS lifecycle");
-		}
-
-		_cancelAllTasks();
-
-		_executeSignOffTask();
-
-		_executeLCSClusterEntryTokenCheckTask(true);
-	}
-
-	private void _scheduleCommandMessageCheckTask() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Scheduling command message task");
-		}
-
-		_scheduledFuturesMap.put(
-			"com.liferay.lcs.task.CommandMessageCheckTask",
-			_scheduledExecutorService.scheduleAtFixedRate(
-				_getScheduledTask(
-					"com.liferay.lcs.task.CommandMessageCheckTask"),
-				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
-				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
-				TimeUnit.SECONDS));
-	}
-
-	private void _scheduleCommandQueueCheckTask() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Scheduling command queue task");
-		}
-
-		_scheduledFuturesMap.put(
-			"com.liferay.lcs.task.CommandQueueCheckTask",
-			_scheduledExecutorService.scheduleAtFixedRate(
-				_getScheduledTask(
-					"com.liferay.lcs.task.CommandQueueCheckTask"),
-				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
-				LCSConstants.COMMAND_MESSAGE_TASK_SCHEDULE_PERIOD,
-				TimeUnit.SECONDS));
-	}
-
-	private void _scheduleUptimeMonitoringTask() {
-		_uptimeTaskScheduledFuture =
-			_scheduledExecutorService.scheduleAtFixedRate(
-				_uptimeTask, 1, 1, TimeUnit.MINUTES);
-
-		if (_log.isTraceEnabled()) {
-			_log.trace(_uptimeTask.toString() + " scheduled");
-		}
+		_registerTaskExecution(taskDefinition);
 	}
 
 	private void _subscribeToLCSEvents() {
-		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_FAILED, this);
-		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_TOKEN_CORRUPTED, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MULTIPLE_TOKENS, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_ENVIRONMENT_MISMATCH, this);
-		_lcsEventManager.subscribe(
-			LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALID_USER_CREDENTIALS, this);
 		_lcsEventManager.subscribe(
 			LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED, this);
 		_lcsEventManager.subscribe(LCSEvent.LCS_GATEWAY_UNAVAILABLE, this);
-		_lcsEventManager.subscribe(LCSEvent.SIGNOFF_REQUESTED, this);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSTaskExecutor.class);
 
-	private BundleContext _bundleContext;
-	private int _defaultInterval;
-
-	@Reference(
-		target = "(component.name=com.liferay.lcs.client.internal.task.HandshakeTask)",
-		unbind = "-"
-	)
-	private Task _handshakeTask;
-
-	@Reference(
-		target = "(component.name=com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask)",
-		unbind = "-"
-	)
-	private Task _lcsClusterEntryTokenCheckTask;
-
-	@Reference
-	private LCSConfigurationProvider _lcsConfigurationProvider;
+	private final Set<String> _activeTaskClassNames = new HashSet<>();
+	private final Map<String, ScheduledFuture<?>> _commonFutures =
+		new HashMap<>();
+	private AtomicBoolean _deactivatePending = new AtomicBoolean(false);
+	private List<TaskDefinition> _delayedTaskDefinitions =
+		new CopyOnWriteArrayList<>();
 
 	@Reference
 	private LCSEventManager _lcsEventManager;
 
-	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
-
-	@Reference
-	private LCSKeyAdvisor _lcsKeyAdvisor;
-
-	@Reference
-	private LCSModuleLifecycle _lcsModuleLifecycle;
-
-	private ScheduledExecutorService _scheduledExecutorService;
-	private final Map<String, ScheduledFuture<?>> _scheduledFuturesMap =
+	private final Map<String, ScheduledFuture<?>> _onlineFutures =
 		new HashMap<>();
-	private AtomicBoolean _shutdownPending = new AtomicBoolean(false);
-	private volatile boolean _signOffPending;
-
-	@Reference(
-		target = "(component.name=com.liferay.lcs.client.internal.task.SignOffTask)",
-		unbind = "-"
-	)
-	private Task _signOffTask;
-
-	@Reference
-	private TaskAdvisor _taskAdvisor;
+	private final List<TaskDefinition> _repeatableTaskDefinitions =
+		new ArrayList<>();
+	private final Map<String, ScheduledFuture<?>> _requiredFutures =
+		new HashMap<>();
+	private ScheduledExecutorService _scheduledExecutorService;
 
 	@Reference
 	private ThreadFactory _threadFactory;
-
-	@Reference(
-		target = "(component.name=com.liferay.lcs.client.internal.task.UptimeTask)",
-		unbind = "-"
-	)
-	private Task _uptimeTask;
-
-	private ScheduledFuture<?> _uptimeTaskScheduledFuture;
 
 }
