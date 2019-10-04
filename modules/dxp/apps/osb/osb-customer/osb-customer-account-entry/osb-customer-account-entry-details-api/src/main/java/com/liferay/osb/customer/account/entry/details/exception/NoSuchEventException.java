@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.account.entry.details.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class NoSuchEventException extends NoSuchModelException {
 
 	public NoSuchEventException() {

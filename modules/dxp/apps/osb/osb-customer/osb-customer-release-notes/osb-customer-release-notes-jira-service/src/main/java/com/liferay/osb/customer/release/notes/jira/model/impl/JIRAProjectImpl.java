@@ -14,12 +14,9 @@
 
 package com.liferay.osb.customer.release.notes.jira.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class JIRAProjectImpl extends JIRAProjectBaseImpl {
 
 	public JIRAProjectImpl() {

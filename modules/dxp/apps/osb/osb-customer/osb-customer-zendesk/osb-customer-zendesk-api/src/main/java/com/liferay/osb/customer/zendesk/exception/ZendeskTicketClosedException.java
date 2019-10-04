@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class ZendeskTicketClosedException extends PortalException {
 
 	public ZendeskTicketClosedException() {

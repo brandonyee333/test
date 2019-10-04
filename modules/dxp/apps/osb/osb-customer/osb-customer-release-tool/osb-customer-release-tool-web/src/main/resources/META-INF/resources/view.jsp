@@ -71,7 +71,7 @@ portletURL.setParameter("toFixPackVersion", String.valueOf(toFixPackVersion));
 		<c:otherwise>
 			<liferay-ui:tabs
 				cssClass="container-fluid container-fluid-max-xl"
-				names='<%= "highlights,changelog,module-changes" %>'
+				names="highlights,changelog,module-changes"
 				url="<%= portletURL.toString() %>"
 			/>
 

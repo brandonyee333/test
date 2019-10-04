@@ -28,8 +28,8 @@ public interface ZendeskLocales {
 	public static final String JAPAN = "ja";
 
 	public static final Locale[] LOCALES_ENABLED = {
-		LocaleUtil.BRAZIL, LocaleUtil.CHINA, LocaleUtil.JAPAN,
-		LocaleUtil.SPAIN, LocaleUtil.US
+		LocaleUtil.BRAZIL, LocaleUtil.CHINA, LocaleUtil.JAPAN, LocaleUtil.SPAIN,
+		LocaleUtil.US
 	};
 
 	public static final String PORTUGAL = "pt";

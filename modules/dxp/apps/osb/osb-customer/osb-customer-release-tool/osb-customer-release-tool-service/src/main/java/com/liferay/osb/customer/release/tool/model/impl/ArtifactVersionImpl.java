@@ -14,12 +14,9 @@
 
 package com.liferay.osb.customer.release.tool.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class ArtifactVersionImpl extends ArtifactVersionBaseImpl {
 
 	public ArtifactVersionImpl() {

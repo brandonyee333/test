@@ -14,14 +14,11 @@
 
 package com.liferay.osb.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class RequiredPartnerEntryException extends PortalException {
 
 	public static final int REFERENCED_ACCOUNT_ENTRY = 1;

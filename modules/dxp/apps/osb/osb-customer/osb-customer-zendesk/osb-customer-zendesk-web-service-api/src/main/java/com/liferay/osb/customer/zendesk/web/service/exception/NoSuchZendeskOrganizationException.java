@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.web.service.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Jenny Chen
  */
-@ProviderType
 public class NoSuchZendeskOrganizationException extends PortalException {
 
 	public NoSuchZendeskOrganizationException() {

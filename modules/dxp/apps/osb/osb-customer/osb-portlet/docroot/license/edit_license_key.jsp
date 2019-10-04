@@ -443,7 +443,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 												dayValue="<%= cal.get(Calendar.DAY_OF_MONTH) %>"
 												firstDayOfWeek="<%= cal.getFirstDayOfWeek() %>"
 												firstEnabledDate="<%= firstEnabledDate %>"
-												formName='<%= "fm" %>'
+												formName="fm"
 												lastEnabledDate="<%= lastEnabledDate %>"
 												monthParam='<%= availableOfferingEntry.getOfferingEntryId() + "startDateMonth" %>'
 												monthValue="<%= cal.get(Calendar.MONTH) %>"

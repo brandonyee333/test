@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.release.tool.web.internal.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class VersionRangeException extends PortalException {
 
 	public VersionRangeException() {

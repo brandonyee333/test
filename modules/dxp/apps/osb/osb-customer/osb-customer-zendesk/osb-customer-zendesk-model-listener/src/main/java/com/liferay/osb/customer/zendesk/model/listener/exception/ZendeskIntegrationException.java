@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.ModelListenerException;
 
 /**
  * @author Jenny Chen
  */
-@ProviderType
 public class ZendeskIntegrationException extends ModelListenerException {
 
 	public ZendeskIntegrationException() {

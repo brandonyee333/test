@@ -14,14 +14,11 @@
 
 package com.liferay.osb.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class DuplicateOfferingDefinitionException extends PortalException {
 
 	public DuplicateOfferingDefinitionException() {

@@ -14,14 +14,11 @@
 
 package com.liferay.osb.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.model.CorpProjectMessageConstants;
 
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class CorpProjectMessageImpl extends CorpProjectMessageBaseImpl {
 
 	public CorpProjectMessageImpl() {

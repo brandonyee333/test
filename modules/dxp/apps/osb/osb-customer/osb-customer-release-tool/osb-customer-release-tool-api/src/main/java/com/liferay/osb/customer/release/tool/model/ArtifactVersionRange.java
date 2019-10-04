@@ -14,12 +14,9 @@
 
 package com.liferay.osb.customer.release.tool.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class ArtifactVersionRange {
 
 	public ArtifactVersionRange() {

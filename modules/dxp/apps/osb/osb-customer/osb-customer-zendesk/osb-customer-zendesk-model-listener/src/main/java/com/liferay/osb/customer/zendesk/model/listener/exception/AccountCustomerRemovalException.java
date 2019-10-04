@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Kyle Bischof
  */
-@ProviderType
 public class AccountCustomerRemovalException extends PortalException {
 
 	public AccountCustomerRemovalException() {

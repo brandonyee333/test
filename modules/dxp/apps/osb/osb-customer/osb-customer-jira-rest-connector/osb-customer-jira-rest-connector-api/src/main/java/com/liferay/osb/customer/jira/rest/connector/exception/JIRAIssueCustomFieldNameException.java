@@ -14,14 +14,11 @@
 
 package com.liferay.osb.customer.jira.rest.connector.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Noah Sherrill
  */
-@ProviderType
 public class JIRAIssueCustomFieldNameException extends PortalException {
 
 	public JIRAIssueCustomFieldNameException() {

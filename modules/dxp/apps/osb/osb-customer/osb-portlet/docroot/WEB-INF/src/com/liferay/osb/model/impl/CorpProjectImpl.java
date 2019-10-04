@@ -14,8 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -36,7 +34,6 @@ import java.util.List;
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class CorpProjectImpl extends CorpProjectBaseImpl {
 
 	public CorpProjectImpl() {

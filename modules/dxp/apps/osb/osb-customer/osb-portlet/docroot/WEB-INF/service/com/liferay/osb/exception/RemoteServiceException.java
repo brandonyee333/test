@@ -14,14 +14,11 @@
 
 package com.liferay.osb.exception;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Amos Fong
  */
-@ProviderType
 public class RemoteServiceException extends PortalException {
 
 	public RemoteServiceException(int statusCode, String msg) {
