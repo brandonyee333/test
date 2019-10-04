@@ -93,22 +93,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	}
 
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountWorker.getAccountEntry();
-	}
-
-	@Override
-	public AccountWorker toEscapedModel() {
-		return new AccountWorkerWrapper(_accountWorker.toEscapedModel());
-	}
-
-	@Override
-	public AccountWorker toUnescapedModel() {
-		return new AccountWorkerWrapper(_accountWorker.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _accountWorker.isCachedModel();
 	}
@@ -126,6 +110,22 @@ public class AccountWorkerWrapper implements AccountWorker,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountWorker.getExpandoBridge();
+	}
+
+	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountWorker.getAccountEntry();
+	}
+
+	@Override
+	public AccountWorker toEscapedModel() {
+		return new AccountWorkerWrapper(_accountWorker.toEscapedModel());
+	}
+
+	@Override
+	public AccountWorker toUnescapedModel() {
+		return new AccountWorkerWrapper(_accountWorker.toUnescapedModel());
 	}
 
 	@Override

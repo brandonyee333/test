@@ -129,16 +129,6 @@ public class ProductEntryWrapper implements ProductEntry,
 	}
 
 	@Override
-	public ProductEntry toEscapedModel() {
-		return new ProductEntryWrapper(_productEntry.toEscapedModel());
-	}
-
-	@Override
-	public ProductEntry toUnescapedModel() {
-		return new ProductEntryWrapper(_productEntry.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isAnalyticsCloud() {
 		return _productEntry.isAnalyticsCloud();
 	}
@@ -246,6 +236,16 @@ public class ProductEntryWrapper implements ProductEntry,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _productEntry.getExpandoBridge();
+	}
+
+	@Override
+	public ProductEntry toEscapedModel() {
+		return new ProductEntryWrapper(_productEntry.toEscapedModel());
+	}
+
+	@Override
+	public ProductEntry toUnescapedModel() {
+		return new ProductEntryWrapper(_productEntry.toUnescapedModel());
 	}
 
 	@Override

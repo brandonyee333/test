@@ -164,21 +164,6 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public PartnerEntry toEscapedModel() {
-		return new PartnerEntryWrapper(_partnerEntry.toEscapedModel());
-	}
-
-	@Override
-	public PartnerEntry toUnescapedModel() {
-		return new PartnerEntryWrapper(_partnerEntry.toUnescapedModel());
-	}
-
-	@Override
-	public SupportRegion getSupportRegion() {
-		return _partnerEntry.getSupportRegion();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _partnerEntry.isCachedModel();
 	}
@@ -202,6 +187,21 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	public PartnerEntry getParentPartnerEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _partnerEntry.getParentPartnerEntry();
+	}
+
+	@Override
+	public PartnerEntry toEscapedModel() {
+		return new PartnerEntryWrapper(_partnerEntry.toEscapedModel());
+	}
+
+	@Override
+	public PartnerEntry toUnescapedModel() {
+		return new PartnerEntryWrapper(_partnerEntry.toUnescapedModel());
+	}
+
+	@Override
+	public SupportRegion getSupportRegion() {
+		return _partnerEntry.getSupportRegion();
 	}
 
 	@Override
