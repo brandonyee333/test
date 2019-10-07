@@ -202,11 +202,11 @@ public class AdminPortlet extends OSBPortlet {
 				objectInputStream = new ProtectedObjectInputStream(
 					new Base64InputStream(fileInputStream));
 
-				int licenseVersion = objectInputStream.readInt();
+				int binaryLicenseVersion = objectInputStream.readInt();
 
-				if (licenseVersion == 3) {
+				if (binaryLicenseVersion >= 3) {
 					Properties properties = getLicenseProperties(
-						objectInputStream);
+						binaryLicenseVersion, objectInputStream);
 
 					actionRequest.setAttribute("licenseProperties", properties);
 				}
@@ -1070,7 +1070,7 @@ public class AdminPortlet extends OSBPortlet {
 	}
 
 	protected Properties getLicenseProperties(
-			ObjectInputStream objectInputStream)
+			int binaryLicenseVersion, ObjectInputStream objectInputStream)
 		throws ClassNotFoundException, IOException {
 
 		String accountEntryName = objectInputStream.readUTF();
@@ -1088,6 +1088,13 @@ public class AdminPortlet extends OSBPortlet {
 		int maxServers = objectInputStream.readInt();
 		long maxConcurrentUsers = objectInputStream.readLong();
 		long maxUsers = objectInputStream.readLong();
+
+		String instanceSize = StringPool.BLANK;
+
+		if (binaryLicenseVersion >= 4) {
+			instanceSize = objectInputStream.readUTF();
+		}
+
 		String owner = objectInputStream.readUTF();
 		String productEntryName = objectInputStream.readUTF();
 		String productId = objectInputStream.readUTF();
@@ -1107,6 +1114,7 @@ public class AdminPortlet extends OSBPortlet {
 		properties.put("hostNames", StringUtil.merge(hostNames));
 		properties.put("ipAddresses", StringUtil.merge(ipAddresses));
 		properties.put("key", key);
+		properties.put("instanceSize", instanceSize);
 		properties.put("lastAccessedTime", lastAccessedTime);
 		properties.put("licenseEntryName", licenseEntryName);
 		properties.put("licenseEntryType", licenseEntryType);

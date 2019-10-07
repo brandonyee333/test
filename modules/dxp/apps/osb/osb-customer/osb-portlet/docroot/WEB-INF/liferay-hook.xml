@@ -75,6 +75,7 @@
 	</servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>OSB Secure WeDeploy JSON Filter</servlet-filter-name>
+		<url-pattern>/api/jsonws/osb-portlet.licensekey/generate-commerce-license-key/*</url-pattern>
 		<url-pattern>/api/jsonws/osb-portlet.licensekey/generate-we-deploy-license-key/*</url-pattern>
 		<dispatcher>FORWARD</dispatcher>
 		<dispatcher>REQUEST</dispatcher>

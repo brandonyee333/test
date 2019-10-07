@@ -39,15 +39,24 @@ import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.io.Base64OutputStream;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -146,6 +155,25 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			productEntryName, productId, productVersion, owner, maxUsers,
 			description, hostName, ipAddresses, macAddresses, serverId,
 			startDate, expirationDate);
+	}
+
+	@JSONWebService
+	public String generateCommerceLicenseKey(
+			String owner, Date startDate, long licenseLifetime)
+		throws Exception {
+
+		validateJSONWebServicePermissions();
+
+		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
+
+		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
+			getUserId(), StringPool.BLANK,
+			LicenseEntryConstants.TYPE_ENTERPRISE, "Liferay Commerce",
+			ProductEntryConstants.PRODUCT_ID_COMMERCE, 1, owner, 0,
+			"Trial Activation Key", StringPool.BLANK, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
+
+		return exportToLI(licenseKey);
 	}
 
 	@JSONWebService
@@ -636,6 +664,98 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		params.put("active", Boolean.TRUE);
+	}
+
+	protected String exportToLI(LicenseKey licenseKey) throws IOException {
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+		ObjectOutputStream objectOutputStream = null;
+
+		try {
+			objectOutputStream = new ObjectOutputStream(
+				new Base64OutputStream(unsyncByteArrayOutputStream));
+
+			objectOutputStream.writeInt(4);
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getAccountEntryName()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getDescription()));
+			objectOutputStream.writeObject(licenseKey.getExpirationDate());
+
+			String[] hostNames = null;
+
+			if (Validator.isNotNull(licenseKey.getHostName())) {
+				hostNames = new String[] {licenseKey.getHostName()};
+			}
+			else {
+				hostNames = new String[0];
+			}
+
+			objectOutputStream.writeObject(hostNames);
+
+			objectOutputStream.writeObject(
+				StringUtil.split(licenseKey.getIpAddresses()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getKey()));
+			objectOutputStream.writeLong(System.currentTimeMillis());
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getLicenseEntryName()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getLicenseEntryType()));
+			objectOutputStream.writeUTF(
+				String.valueOf(licenseKey.getLicenseVersion()));
+
+			objectOutputStream.writeObject(
+				StringUtil.split(licenseKey.getMacAddresses()));
+			objectOutputStream.writeInt(licenseKey.getMaxHttpSessions());
+			objectOutputStream.writeInt(licenseKey.getMaxServers());
+			objectOutputStream.writeLong(licenseKey.getMaxConcurrentUsers());
+			objectOutputStream.writeLong(licenseKey.getMaxUsers());
+
+			String sizing = StringPool.BLANK;
+
+			if (licenseKey.getSizing() > 0) {
+				sizing = LanguageUtil.get(
+					LocaleUtil.US,
+					OfferingEntryConstants.getSizingLabel(
+						licenseKey.getSizing()));
+			}
+
+			objectOutputStream.writeUTF(sizing);
+
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getOwner()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getProductEntryName()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getProductId()));
+			objectOutputStream.writeUTF(
+				String.valueOf(licenseKey.getProductVersion()));
+
+			String[] serverIds = null;
+
+			if (Validator.isNotNull(licenseKey.getServerId())) {
+				serverIds = new String[] {licenseKey.getServerId()};
+			}
+			else {
+				serverIds = new String[0];
+			}
+
+			objectOutputStream.writeObject(serverIds);
+
+			objectOutputStream.writeObject(licenseKey.getStartDate());
+
+			return new String(unsyncByteArrayOutputStream.toByteArray());
+		}
+		finally {
+			if (objectOutputStream != null) {
+				objectOutputStream.close();
+			}
+
+			if (unsyncByteArrayOutputStream != null) {
+				unsyncByteArrayOutputStream.close();
+			}
+		}
 	}
 
 	protected List<LicenseKey> filterLicenseKeys(List<LicenseKey> licenseKeys)

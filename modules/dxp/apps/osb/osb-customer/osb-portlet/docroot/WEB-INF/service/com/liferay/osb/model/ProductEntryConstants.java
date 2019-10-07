@@ -185,6 +185,9 @@ public class ProductEntryConstants {
 
 	public static final int PORTAL_VERSION_OTHER = 20999;
 
+	public static final String PRODUCT_ID_COMMERCE =
+		"9a473157-06a6-44b6-b017-a360ffaf5f38";
+
 	public static final String PRODUCT_ID_PORTAL = "Portal";
 
 	public static final String ROOT_NAME_DIGITAL_ENTERPRISE =

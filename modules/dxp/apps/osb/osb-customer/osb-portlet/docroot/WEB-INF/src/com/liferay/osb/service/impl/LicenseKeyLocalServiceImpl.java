@@ -267,7 +267,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		startDate = DateUtils.round(startDate, Calendar.SECOND);
 		expirationDate = DateUtils.round(expirationDate, Calendar.SECOND);
 
-		validate(owner, description, hostName, ipAddresses, macAddresses);
+		validate(
+			licenseEntryType, owner, description, hostName, ipAddresses,
+			macAddresses);
 
 		String key = KeyGenerator.generate(
 			StringPool.BLANK, StringPool.BLANK, licenseEntryType,
@@ -1666,8 +1668,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	}
 
 	protected void validate(
-			String owner, String description, String hostName,
-			String ipAddresses, String macAddresses)
+			String licenseEntryType, String owner, String description,
+			String hostName, String ipAddresses, String macAddresses)
 		throws PortalException {
 
 		if (Validator.isNull(owner)) {
@@ -1678,38 +1680,40 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			throw new LicenseKeyDescriptionException();
 		}
 
-		Set<String> distinctIpAddresses = new HashSet<>();
+		if (!licenseEntryType.equals(LicenseEntryConstants.TYPE_ENTERPRISE)) {
+			Set<String> distinctIpAddresses = new HashSet<>();
 
-		String[] curIpAddresses = StringUtil.split(ipAddresses);
+			String[] curIpAddresses = StringUtil.split(ipAddresses);
 
-		for (String ipAddress : curIpAddresses) {
-			validateIpAddress(ipAddress);
+			for (String ipAddress : curIpAddresses) {
+				validateIpAddress(ipAddress);
 
-			if (distinctIpAddresses.contains(ipAddress)) {
-				throw new DuplicateIPAddressException();
+				if (distinctIpAddresses.contains(ipAddress)) {
+					throw new DuplicateIPAddressException();
+				}
+
+				distinctIpAddresses.add(ipAddress);
 			}
 
-			distinctIpAddresses.add(ipAddress);
-		}
+			Set<String> distinctMacAddresses = new HashSet<>();
 
-		Set<String> distinctMacAddresses = new HashSet<>();
+			String[] curMacAddresses = StringUtil.split(macAddresses);
 
-		String[] curMacAddresses = StringUtil.split(macAddresses);
+			for (String macAddress : curMacAddresses) {
+				validateMacAddress(macAddress);
 
-		for (String macAddress : curMacAddresses) {
-			validateMacAddress(macAddress);
+				if (distinctMacAddresses.contains(macAddress)) {
+					throw new DuplicateMACAddressException();
+				}
 
-			if (distinctMacAddresses.contains(macAddress)) {
-				throw new DuplicateMACAddressException();
+				distinctMacAddresses.add(macAddress);
 			}
 
-			distinctMacAddresses.add(macAddress);
-		}
+			if (Validator.isNull(hostName) && distinctIpAddresses.isEmpty() &&
+				distinctMacAddresses.isEmpty()) {
 
-		if (Validator.isNull(hostName) && distinctIpAddresses.isEmpty() &&
-			distinctMacAddresses.isEmpty()) {
-
-			throw new LicenseKeyServerInfoException();
+				throw new LicenseKeyServerInfoException();
+			}
 		}
 	}
 
