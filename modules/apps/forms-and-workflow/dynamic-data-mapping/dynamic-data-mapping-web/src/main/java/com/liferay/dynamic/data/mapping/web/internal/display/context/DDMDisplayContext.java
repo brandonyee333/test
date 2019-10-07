@@ -140,6 +140,10 @@ public class DDMDisplayContext {
 		return _ddmTemplateHelper.isAutocompleteEnabled(language);
 	}
 
+	public boolean isStructureFieldIndexableEnable() {
+		return _ddmWebConfiguration.structureFieldIndexableEnable();
+	}
+
 	public String[] smallImageExtensions() {
 		DDMGroupServiceConfiguration ddmGroupServiceConfiguration =
 			_ddmWebRequestHelper.getDDMGroupServiceConfiguration();
