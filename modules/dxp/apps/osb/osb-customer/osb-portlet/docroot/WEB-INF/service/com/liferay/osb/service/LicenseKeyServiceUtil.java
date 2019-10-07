@@ -209,6 +209,13 @@ public class LicenseKeyServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static java.lang.String generateCommerceLicenseKey(
+		java.lang.String owner, java.util.Date startDate, long licenseLifetime)
+		throws java.lang.Exception {
+		return getService()
+				   .generateCommerceLicenseKey(owner, startDate, licenseLifetime);
+	}
+
 	public static java.lang.String generateWeDeployLicenseKey(
 		java.lang.String owner, java.util.Date startDate, long licenseLifetime)
 		throws java.lang.Exception {

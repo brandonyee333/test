@@ -192,6 +192,16 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	}
 
 	@Override
+	public AccountEnvironment toEscapedModel() {
+		return new AccountEnvironmentWrapper(_accountEnvironment.toEscapedModel());
+	}
+
+	@Override
+	public AccountEnvironment toUnescapedModel() {
+		return new AccountEnvironmentWrapper(_accountEnvironment.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountEnvironment.isCachedModel();
 	}
@@ -209,16 +219,6 @@ public class AccountEnvironmentWrapper implements AccountEnvironment,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountEnvironment.getExpandoBridge();
-	}
-
-	@Override
-	public AccountEnvironment toEscapedModel() {
-		return new AccountEnvironmentWrapper(_accountEnvironment.toEscapedModel());
-	}
-
-	@Override
-	public AccountEnvironment toUnescapedModel() {
-		return new AccountEnvironmentWrapper(_accountEnvironment.toUnescapedModel());
 	}
 
 	@Override

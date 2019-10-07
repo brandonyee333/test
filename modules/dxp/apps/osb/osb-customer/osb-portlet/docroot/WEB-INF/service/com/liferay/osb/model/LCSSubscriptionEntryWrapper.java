@@ -193,6 +193,16 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 		}
 	}
 
+	@Override
+	public LCSSubscriptionEntry toEscapedModel() {
+		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toEscapedModel());
+	}
+
+	@Override
+	public LCSSubscriptionEntry toUnescapedModel() {
+		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toUnescapedModel());
+	}
+
 	/**
 	* Returns the active of this lcs subscription entry.
 	*
@@ -231,16 +241,6 @@ public class LCSSubscriptionEntryWrapper implements LCSSubscriptionEntry,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _lcsSubscriptionEntry.getExpandoBridge();
-	}
-
-	@Override
-	public LCSSubscriptionEntry toEscapedModel() {
-		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toEscapedModel());
-	}
-
-	@Override
-	public LCSSubscriptionEntry toUnescapedModel() {
-		return new LCSSubscriptionEntryWrapper(_lcsSubscriptionEntry.toUnescapedModel());
 	}
 
 	@Override

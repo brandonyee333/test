@@ -115,6 +115,22 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseKeySet.getAccountEntry();
+	}
+
+	@Override
+	public LicenseKeySet toEscapedModel() {
+		return new LicenseKeySetWrapper(_licenseKeySet.toEscapedModel());
+	}
+
+	@Override
+	public LicenseKeySet toUnescapedModel() {
+		return new LicenseKeySetWrapper(_licenseKeySet.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _licenseKeySet.isCachedModel();
 	}
@@ -132,22 +148,6 @@ public class LicenseKeySetWrapper implements LicenseKeySet,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _licenseKeySet.getExpandoBridge();
-	}
-
-	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeySet.getAccountEntry();
-	}
-
-	@Override
-	public LicenseKeySet toEscapedModel() {
-		return new LicenseKeySetWrapper(_licenseKeySet.toEscapedModel());
-	}
-
-	@Override
-	public LicenseKeySet toUnescapedModel() {
-		return new LicenseKeySetWrapper(_licenseKeySet.toUnescapedModel());
 	}
 
 	@Override

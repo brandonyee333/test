@@ -133,6 +133,16 @@ public class AccountEnvironmentAttachmentWrapper
 	}
 
 	@Override
+	public AccountEnvironmentAttachment toEscapedModel() {
+		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toEscapedModel());
+	}
+
+	@Override
+	public AccountEnvironmentAttachment toUnescapedModel() {
+		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toUnescapedModel());
+	}
+
+	@Override
 	public boolean fileExists()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEnvironmentAttachment.fileExists();
@@ -156,16 +166,6 @@ public class AccountEnvironmentAttachmentWrapper
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountEnvironmentAttachment.getExpandoBridge();
-	}
-
-	@Override
-	public AccountEnvironmentAttachment toEscapedModel() {
-		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toEscapedModel());
-	}
-
-	@Override
-	public AccountEnvironmentAttachment toUnescapedModel() {
-		return new AccountEnvironmentAttachmentWrapper(_accountEnvironmentAttachment.toUnescapedModel());
 	}
 
 	@Override

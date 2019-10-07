@@ -207,6 +207,14 @@ public class LicenseKeyServiceWrapper implements LicenseKeyService,
 	}
 
 	@Override
+	public java.lang.String generateCommerceLicenseKey(java.lang.String owner,
+		java.util.Date startDate, long licenseLifetime)
+		throws java.lang.Exception {
+		return _licenseKeyService.generateCommerceLicenseKey(owner, startDate,
+			licenseLifetime);
+	}
+
+	@Override
 	public java.lang.String generateWeDeployLicenseKey(java.lang.String owner,
 		java.util.Date startDate, long licenseLifetime)
 		throws java.lang.Exception {

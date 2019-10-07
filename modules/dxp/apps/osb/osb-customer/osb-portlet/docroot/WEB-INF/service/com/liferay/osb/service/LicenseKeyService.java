@@ -159,6 +159,10 @@ public interface LicenseKeyService extends BaseService, InvokableService {
 		throws java.lang.Throwable;
 
 	@JSONWebService
+	public java.lang.String generateCommerceLicenseKey(java.lang.String owner,
+		Date startDate, long licenseLifetime) throws java.lang.Exception;
+
+	@JSONWebService
 	public java.lang.String generateWeDeployLicenseKey(java.lang.String owner,
 		Date startDate, long licenseLifetime) throws java.lang.Exception;
 
