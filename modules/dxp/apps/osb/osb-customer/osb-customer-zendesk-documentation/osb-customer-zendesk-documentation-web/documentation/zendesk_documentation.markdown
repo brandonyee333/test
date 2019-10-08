@@ -11,13 +11,14 @@
 #### Category Menu
 
 * Import Documentation Guide
-* Import Translation
+  * Used to manually upload an Official Documentation ZIP file
 * Remove
   * Only viewable if an official documentation guide has not been imported
 
 #### Category Fields
 
 * "Documentation Guide Zip File": the name of the ZIP file built from the official documentation
+  * Save the file name without the translation language (e.g. the built ZIP file name is lp-dxp-7.2-.-user-en.zip, should save as lp-dxp-7.2-.-user.zip) as the backend will parse through different locales so long as the beginning file name matches
 * "Documentation Original URL": the relative URL to the documentation guide's articles; it's used to generate links to Zendesk articles in this guide.
   * All articles within a documentation guide will share the same relative URL. For example, in the 7.2 User Admin guide all article URLs will start with _/docs/7-2/user/-/knowledge_base/u/_.
   * https://docs.google.com/spreadsheets/d/165Nio1Qtwr-Tz6k-r1dV2wsXApW6nxhUedoeG2LlE7o/edit?ts=5cb46a6f#gid=0
@@ -33,7 +34,7 @@
 
 #### Broken Links
 
-Broken links may need to be investigated with a specific check or a combination of them. An initial check can usually be done on the article itself by checking the article create date within Zendesk or seeing if the Documentation Original URL is correct. If the article create date is recent and the URL format is correct, generally a re-import should resolve the issue. (Pending https://issues.liferay.com/browse/LHC-1151)
+Broken links may need to be investigated with a specific check or a combination of them. An initial check can usually be done on the article itself by checking the article create date within Zendesk or seeing if the Documentation Original URL is correct. If the article create date is recent and the URL format is correct, generally a re-import should resolve the issue.
 
 ##### Documentation Build Check
 
