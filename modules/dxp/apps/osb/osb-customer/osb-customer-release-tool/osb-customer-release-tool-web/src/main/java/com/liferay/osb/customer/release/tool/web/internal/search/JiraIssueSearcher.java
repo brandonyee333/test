@@ -55,7 +55,7 @@ public class JiraIssueSearcher extends BaseSearcher {
 		String jiraFixPackJQLField =
 			"cf[" + jiraFixPackCustomField.substring(pos + 1) + "]";
 
-		StringBundler sb = new StringBundler(23);
+		StringBundler sb = new StringBundler(27);
 
 		sb.append("project in (\"");
 		sb.append(
@@ -79,10 +79,23 @@ public class JiraIssueSearcher extends BaseSearcher {
 			sb.append(")");
 		}
 
+		for (int i = 0; i < components.length; i++) {
+			if (i == 0) {
+				sb.append(" AND (");
+			}
+			else {
+				sb.append(" OR ");
+			}
+
+			sb.append("component in subcomponents(LPS, \"");
+			sb.append(components[i]);
+			sb.append("\", \"true\")");
+		}
+
 		if (!ArrayUtil.isEmpty(components)) {
-			sb.append(" AND component in (\"");
-			sb.append(StringUtil.merge(components, "\",\""));
-			sb.append("\")");
+			sb.append(" OR component in componentMatch(\"");
+			sb.append(StringUtil.merge(components, "|"));
+			sb.append("\"))");
 		}
 
 		sb.append(" AND level is empty");
