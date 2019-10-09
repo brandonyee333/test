@@ -636,14 +636,11 @@ public class WatsonDocumentAuditPersistenceImpl
 		OrderByComparator<WatsonDocumentAudit> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -680,10 +677,7 @@ public class WatsonDocumentAuditPersistenceImpl
 			else {
 				sql = _SQL_SELECT_WATSONDOCUMENTAUDIT;
 
-				if (pagination) {
-					sql = sql.concat(
-						WatsonDocumentAuditModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(WatsonDocumentAuditModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -693,18 +687,8 @@ public class WatsonDocumentAuditPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<WatsonDocumentAudit>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WatsonDocumentAudit>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WatsonDocumentAudit>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

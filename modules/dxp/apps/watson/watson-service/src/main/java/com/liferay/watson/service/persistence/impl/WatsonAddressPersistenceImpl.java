@@ -639,14 +639,11 @@ public class WatsonAddressPersistenceImpl
 		int start, int end, OrderByComparator<WatsonAddress> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -683,9 +680,7 @@ public class WatsonAddressPersistenceImpl
 			else {
 				sql = _SQL_SELECT_WATSONADDRESS;
 
-				if (pagination) {
-					sql = sql.concat(WatsonAddressModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(WatsonAddressModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -695,18 +690,8 @@ public class WatsonAddressPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<WatsonAddress>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WatsonAddress>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WatsonAddress>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

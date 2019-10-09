@@ -159,7 +159,6 @@ public class AkismetEntryPersistenceImpl
 		OrderByComparator<AkismetEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
@@ -215,7 +214,7 @@ public class AkismetEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(AkismetEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -234,18 +233,8 @@ public class AkismetEntryPersistenceImpl
 					qPos.add(new Timestamp(modifiedDate.getTime()));
 				}
 
-				if (!pagination) {
-					list = (List<AkismetEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AkismetEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AkismetEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1452,14 +1441,11 @@ public class AkismetEntryPersistenceImpl
 		int start, int end, OrderByComparator<AkismetEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -1496,9 +1482,7 @@ public class AkismetEntryPersistenceImpl
 			else {
 				sql = _SQL_SELECT_AKISMETENTRY;
 
-				if (pagination) {
-					sql = sql.concat(AkismetEntryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(AkismetEntryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1508,18 +1492,8 @@ public class AkismetEntryPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<AkismetEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<AkismetEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<AkismetEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

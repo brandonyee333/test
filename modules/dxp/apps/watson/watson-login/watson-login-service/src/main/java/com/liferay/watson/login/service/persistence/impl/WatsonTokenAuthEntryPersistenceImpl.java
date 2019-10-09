@@ -383,14 +383,11 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByC_U;
@@ -444,7 +441,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -463,18 +460,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 				qPos.add(userId);
 
-				if (!pagination) {
-					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1507,14 +1494,11 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		OrderByComparator<WatsonTokenAuthEntry> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -1551,10 +1535,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 			else {
 				sql = _SQL_SELECT_WATSONTOKENAUTHENTRY;
 
-				if (pagination) {
-					sql = sql.concat(
-						WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(WatsonTokenAuthEntryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1564,18 +1545,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WatsonTokenAuthEntry>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

@@ -158,14 +158,11 @@ public class KaleoDraftDefinitionPersistenceImpl
 		OrderByComparator<KaleoDraftDefinition> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByCompanyId;
@@ -215,7 +212,7 @@ public class KaleoDraftDefinitionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoDraftDefinitionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -232,18 +229,8 @@ public class KaleoDraftDefinitionPersistenceImpl
 
 				qPos.add(companyId);
 
-				if (!pagination) {
-					list = (List<KaleoDraftDefinition>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoDraftDefinition>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoDraftDefinition>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -697,14 +684,11 @@ public class KaleoDraftDefinitionPersistenceImpl
 
 		name = Objects.toString(name, "");
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindByC_N_V;
@@ -770,7 +754,7 @@ public class KaleoDraftDefinitionPersistenceImpl
 				appendOrderByComparator(
 					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else if (pagination) {
+			else {
 				query.append(KaleoDraftDefinitionModelImpl.ORDER_BY_JPQL);
 			}
 
@@ -793,18 +777,8 @@ public class KaleoDraftDefinitionPersistenceImpl
 
 				qPos.add(version);
 
-				if (!pagination) {
-					list = (List<KaleoDraftDefinition>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoDraftDefinition>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoDraftDefinition>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2251,14 +2225,11 @@ public class KaleoDraftDefinitionPersistenceImpl
 		OrderByComparator<KaleoDraftDefinition> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -2295,10 +2266,7 @@ public class KaleoDraftDefinitionPersistenceImpl
 			else {
 				sql = _SQL_SELECT_KALEODRAFTDEFINITION;
 
-				if (pagination) {
-					sql = sql.concat(
-						KaleoDraftDefinitionModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(KaleoDraftDefinitionModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -2308,18 +2276,8 @@ public class KaleoDraftDefinitionPersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<KaleoDraftDefinition>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<KaleoDraftDefinition>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<KaleoDraftDefinition>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 

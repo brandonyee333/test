@@ -642,14 +642,11 @@ public class WatsonListTypePersistenceImpl
 		int start, int end, OrderByComparator<WatsonListType> orderByComparator,
 		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
-
-			pagination = false;
 
 			if (useFinderCache) {
 				finderPath = _finderPathWithoutPaginationFindAll;
@@ -686,9 +683,7 @@ public class WatsonListTypePersistenceImpl
 			else {
 				sql = _SQL_SELECT_WATSONLISTTYPE;
 
-				if (pagination) {
-					sql = sql.concat(WatsonListTypeModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(WatsonListTypeModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -698,18 +693,8 @@ public class WatsonListTypePersistenceImpl
 
 				Query q = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<WatsonListType>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<WatsonListType>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<WatsonListType>)QueryUtil.list(
+					q, getDialect(), start, end);
 
 				cacheResult(list);
 
