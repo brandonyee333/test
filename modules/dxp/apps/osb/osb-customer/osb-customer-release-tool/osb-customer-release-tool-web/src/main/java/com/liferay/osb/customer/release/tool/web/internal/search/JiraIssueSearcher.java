@@ -79,21 +79,16 @@ public class JiraIssueSearcher extends BaseSearcher {
 			sb.append(")");
 		}
 
-		for (int i = 0; i < components.length; i++) {
-			if (i == 0) {
-				sb.append(" AND (");
-			}
-			else {
-				sb.append(" OR ");
-			}
-
-			sb.append("component in subcomponents(LPS, \"");
-			sb.append(components[i]);
-			sb.append("\", \"true\")");
-		}
-
 		if (!ArrayUtil.isEmpty(components)) {
-			sb.append(" OR component in componentMatch(\"");
+			sb.append(" AND (");
+
+			for (String component : components) {
+				sb.append("component in subcomponents(LPS, \"");
+				sb.append(component);
+				sb.append("\", \"true\") OR ");
+			}
+
+			sb.append("component in componentMatch(\"");
 			sb.append(StringUtil.merge(components, "|"));
 			sb.append("\"))");
 		}
