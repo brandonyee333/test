@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.GeoDistanceSort;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
-import com.liferay.portal.kernel.search.HitsImpl;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
@@ -57,6 +56,7 @@ import com.liferay.portal.search.elasticsearch.internal.facet.FacetCollectorFact
 import com.liferay.portal.search.elasticsearch.internal.facet.FacetProcessor;
 import com.liferay.portal.search.elasticsearch.internal.groupby.GroupByTranslator;
 import com.liferay.portal.search.elasticsearch.internal.index.IndexNameBuilder;
+import com.liferay.portal.search.elasticsearch.internal.search.response.HitsImpl;
 import com.liferay.portal.search.elasticsearch.internal.stats.StatsTranslator;
 import com.liferay.portal.search.elasticsearch.internal.util.DocumentTypes;
 import com.liferay.portal.search.groupby.GroupByRequest;
