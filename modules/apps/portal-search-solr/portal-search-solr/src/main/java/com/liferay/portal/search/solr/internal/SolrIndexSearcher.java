@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
-import com.liferay.portal.kernel.search.HitsImpl;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.Query;
 import com.liferay.portal.kernel.search.QueryConfig;
@@ -64,6 +63,7 @@ import com.liferay.portal.search.solr.groupby.GroupByTranslator;
 import com.liferay.portal.search.solr.internal.facet.CompositeFacetProcessor;
 import com.liferay.portal.search.solr.internal.facet.SolrFacetFieldCollector;
 import com.liferay.portal.search.solr.internal.facet.SolrFacetQueryCollector;
+import com.liferay.portal.search.solr.internal.search.response.HitsImpl;
 import com.liferay.portal.search.solr.stats.StatsTranslator;
 
 import java.util.ArrayList;
