@@ -24,6 +24,7 @@ import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
 import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
+import com.liferay.lcs.client.internal.platform.gateway.MockLCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.platform.portal.LCSPortalClient;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
@@ -36,7 +37,6 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 
 import java.net.UnknownHostException;
 
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import org.mockito.Matchers;
@@ -99,39 +99,15 @@ public abstract class BasePowerMockitoTestCase extends PowerMockito {
 	}
 
 	protected LCSGatewayClient spyGetMessagesToReturnHandshakeResponseMessage(
-			int errorCode, LCSEventManager lcsEventManager)
-		throws Exception {
+		int errorCode, LCSEventManager lcsEventManager) {
 
-		LCSGatewayClient lcsGatewayClient = spy(
-			new LCSGatewayClientImpl(lcsEventManager));
+		MockLCSGatewayClientImpl mockLCSGatewayClient =
+			new MockLCSGatewayClientImpl(lcsEventManager);
 
-		doNothing(
-		).when(
-			lcsGatewayClient
-		).deleteMessages(
-			Matchers.anyString()
-		);
+		mockLCSGatewayClient.addMockMessage(
+			_createHandshakeResponseMessage(errorCode));
 
-		doNothing(
-		).when(
-			lcsGatewayClient
-		).sendMessage(
-			Matchers.any(Message.class)
-		);
-
-		doReturn(
-			new ArrayList<Message>() {
-				{
-					add(_createHandshakeResponseMessage(errorCode));
-				}
-			}
-		).when(
-			lcsGatewayClient
-		).getMessages(
-			Matchers.anyString()
-		);
-
-		return lcsGatewayClient;
+		return mockLCSGatewayClient;
 	}
 
 	protected HandshakeTask spyHandshakeTask(

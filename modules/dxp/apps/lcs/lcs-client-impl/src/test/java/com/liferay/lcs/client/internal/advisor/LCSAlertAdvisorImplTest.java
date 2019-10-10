@@ -22,7 +22,7 @@ import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.BasePowerMockitoTestCase;
 import com.liferay.lcs.client.internal.alert.advisor.LCSAlertAdvisorImpl;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
-import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
+import com.liferay.lcs.client.internal.platform.gateway.MockLCSGatewayClientImpl;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
 import com.liferay.lcs.client.internal.util.LCSUtil;
@@ -30,7 +30,6 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.client.platform.portal.LCSClusterEntryToken;
 import com.liferay.lcs.messaging.HandshakeMessage;
 import com.liferay.lcs.messaging.HandshakeResponseMessage;
-import com.liferay.lcs.messaging.Message;
 import com.liferay.petra.encryptor.EncryptorException;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -38,7 +37,6 @@ import com.liferay.portal.kernel.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -183,7 +181,8 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 		lcsAlertAdvisor.add(LCSAlert.WARNING_HANDSHAKE_FAILED);
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
-			lcsEventManager, _mockGetMessagesToReturnHandshakeSuccessMessage());
+			lcsEventManager,
+			_mockGetMessagesToReturnHandshakeSuccessMessage(lcsEventManager));
 
 		handshakeTask.run();
 
@@ -297,7 +296,8 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsEventManager,
-			_mockGetMessagesToReturnHandshakeExpiredResponseMessage());
+			_mockGetMessagesToReturnHandshakeExpiredResponseMessage(
+				lcsEventManager));
 
 		handshakeTask.run();
 
@@ -330,44 +330,28 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 	}
 
 	private LCSGatewayClient
-			_mockGetMessagesToReturnHandshakeExpiredResponseMessage()
-		throws Exception {
+		_mockGetMessagesToReturnHandshakeExpiredResponseMessage(
+			LCSEventManager lcsEventManager) {
 
-		LCSGatewayClient lcsGatewayClient = mock(LCSGatewayClientImpl.class);
+		MockLCSGatewayClientImpl mockLCSGatewayClientImpl =
+			new MockLCSGatewayClientImpl(lcsEventManager);
 
-		doReturn(
-			new ArrayList<Message>() {
-				{
-					add(_createHandshakeResponseExpiredMessage());
-				}
-			}
-		).when(
-			lcsGatewayClient
-		).getMessages(
-			Matchers.anyString()
-		);
+		mockLCSGatewayClientImpl.addMockMessage(
+			_createHandshakeResponseExpiredMessage());
 
-		return lcsGatewayClient;
+		return mockLCSGatewayClientImpl;
 	}
 
-	private LCSGatewayClient _mockGetMessagesToReturnHandshakeSuccessMessage()
-		throws Exception {
+	private LCSGatewayClient _mockGetMessagesToReturnHandshakeSuccessMessage(
+		LCSEventManager lcsEventManager) {
 
-		LCSGatewayClient lcsGatewayClient = mock(LCSGatewayClientImpl.class);
+		MockLCSGatewayClientImpl mockLCSGatewayClientImpl =
+			new MockLCSGatewayClientImpl(lcsEventManager);
 
-		doReturn(
-			new ArrayList<Message>() {
-				{
-					add(_createHandshakeResponseSuccessMessage());
-				}
-			}
-		).when(
-			lcsGatewayClient
-		).getMessages(
-			Matchers.anyString()
-		);
+		mockLCSGatewayClientImpl.addMockMessage(
+			_createHandshakeResponseSuccessMessage());
 
-		return lcsGatewayClient;
+		return mockLCSGatewayClientImpl;
 	}
 
 	private HandshakeTask _spyHandshakeTask(
@@ -381,7 +365,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
 				companyLocalService, lcsAlertAdvisor, lcsEventManager,
-				lcsGatewayClient, mock(LCSKeyAdvisor.class), null,
+				lcsGatewayClient, mock(LCSKeyAdvisor.class),
 				new UptimeAdvisor(lcsEventManager, null, null)));
 
 		// Skip JavaParser, will fix

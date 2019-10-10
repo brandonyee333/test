@@ -14,242 +14,171 @@
 
 package com.liferay.lcs.client.internal.task.advisor;
 
-import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
-import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
-import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.task.SendPatchesTask;
-import com.liferay.lcs.client.internal.task.SendPortalPropertiesTask;
-import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
-import com.liferay.lcs.client.internal.command.queue.CommandQueue;
-import com.liferay.lcs.client.internal.platform.gateway.LCSGatewayClientImpl;
+import com.liferay.lcs.client.internal.osgi.framework.MockBundleContext;
 import com.liferay.lcs.client.internal.task.CommandMessageCheckTask;
 import com.liferay.lcs.client.internal.task.CommandQueueCheckTask;
-import com.liferay.lcs.client.internal.util.LCSPatcherUtil;
-import com.liferay.lcs.client.internal.util.LCSUtil;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
-import com.liferay.lcs.messaging.Message;
-import com.liferay.lcs.messaging.SendPatchesCommandMessage;
-import com.liferay.lcs.messaging.SendPortalPropertiesCommandMessage;
-import com.liferay.lcs.messaging.internal.security.DigitalSignatureImpl;
-import com.liferay.lcs.messaging.security.DigitalSignature;
-import com.liferay.lcs.messaging.security.exception.DigitalSignatureException;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
-import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.lcs.client.internal.task.HandshakeTask;
+import com.liferay.lcs.client.internal.task.HeartbeatTask;
+import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
+import com.liferay.lcs.client.internal.task.Task;
+import com.liferay.lcs.client.internal.task.TaskDefinition;
+import com.liferay.lcs.client.internal.task.UptimeTask;
+import com.liferay.portal.kernel.util.Time;
 
-import java.util.Collections;
+import java.util.Dictionary;
 import java.util.Properties;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Matchers;
-import org.mockito.Mockito;
+import org.osgi.framework.BundleContext;
 
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * @author Igor Beslic
  * @author Ivica Cartdic
  */
-@PrepareForTest(
-	{DigesterUtil.class, LCSPatcherUtil.class, LCSUtil.class, PropsUtil.class}
-)
 @RunWith(PowerMockRunner.class)
 public class TaskAdvisorTest extends PowerMockito {
 
 	@Before
 	public void setUp() throws Exception {
-		_mockDigesterUtil();
+		_bundleContext = new MockBundleContext<>();
 
-		_mockDigitalSignature();
-
-		_mockLCSConfigurationProvider();
-
-		_mockLCSGatewayClient();
-
-		_mockLCSKeyAdvisor();
-
-		_mockLCSPatcherUtil();
-
-		_mockPropsUtil();
-	}
-
-	@Test
-	public void testGetActiveServiceLabels() throws Exception {
-		TaskAdvisor taskAdvisor = new TaskAdvisor();
-
-		SendPatchesTask sendPatchesTask = new SendPatchesTask(
-			_lcsGatewayClient, taskAdvisor);
-
-		SendPortalPropertiesTask sendPortalPropertiesTask =
-			new SendPortalPropertiesTask(
-				mock(LCSClusterEntryTokenAdvisor.class), _lcsGatewayClient,
-				taskAdvisor);
-
-		CommandAdvisor commandAdvisor = new CommandAdvisor(
-			_digitalSignature, _lcsConfigurationProvider, _lcsGatewayClient,
-			_lcsKeyAdvisor, sendPatchesTask, sendPortalPropertiesTask);
-
-		ClusterMasterExecutor mockClusterMasterExecutor = mock(
-			ClusterMasterExecutor.class);
-
-		CommandQueue commandQueue = new CommandQueue();
-
-		CommandMessageCheckTask commandMessageCheckTask =
-			new CommandMessageCheckTask(
-				mockClusterMasterExecutor, commandQueue, _lcsGatewayClient,
-				_lcsKeyAdvisor);
-
-		CommandQueueCheckTask commandQueueCheckTask = new CommandQueueCheckTask(
-			mockClusterMasterExecutor, commandAdvisor, commandQueue,
-			_lcsGatewayClient, _lcsKeyAdvisor);
-
-		when(
-			_lcsGatewayClient.getMessages(Mockito.anyString())
-		).thenReturn(
-			Collections.singletonList(new SendPortalPropertiesCommandMessage())
-		);
-
-		commandMessageCheckTask.run();
-		commandQueueCheckTask.run();
-
-		Set<String> activeServiceLabels = taskAdvisor.getActiveServiceLabels();
-
-		Assert.assertTrue(
-			"Portal properties analysis service present",
-			activeServiceLabels.contains("Portal Properties Analysis"));
-
-		Assert.assertFalse(
-			"Fix packs management service absent",
-			activeServiceLabels.contains("Fix Packs Management"));
-		Assert.assertFalse(
-			"Portal analytics service absent",
-			activeServiceLabels.contains("Portal Analytics"));
-		Assert.assertFalse(
-			"Subscription management service absent",
-			activeServiceLabels.contains("Subscription Management"));
-
-		when(
-			_lcsGatewayClient.getMessages(Mockito.anyString())
-		).thenReturn(
-			Collections.singletonList(new SendPatchesCommandMessage())
-		);
-
-		commandMessageCheckTask.run();
-		commandQueueCheckTask.run();
-
-		activeServiceLabels = taskAdvisor.getActiveServiceLabels();
-
-		Assert.assertTrue(
-			"Fix packs management service present",
-			activeServiceLabels.contains("Fix Packs Management"));
-	}
-
-	private void _mockDigesterUtil() {
-		mockStatic(DigesterUtil.class);
-
-		when(
-			DigesterUtil.digestHex(Matchers.eq("MD5"), Matchers.anyString())
-		).thenReturn(
-			"md5-mock-digest"
-		);
-	}
-
-	private void _mockDigitalSignature() throws DigitalSignatureException {
-		_digitalSignature = mock(DigitalSignatureImpl.class);
-
-		doReturn(
-			Boolean.TRUE
-		).when(
-			_digitalSignature
-		).verifyMessage(
-			Matchers.eq(LCSClientConstants.LCS_CLIENT_BUILD_NUMBER),
-			Matchers.any(Message.class)
-		);
-	}
-
-	private void _mockLCSConfigurationProvider() {
-		_lcsConfigurationProvider = mock(LCSConfigurationProvider.class);
-
-		LCSConfiguration lcsConfiguration = mock(LCSConfiguration.class);
-
-		doReturn(
-			lcsConfiguration
-		).when(
-			_lcsConfigurationProvider
-		).getLCSConfiguration();
-	}
-
-	private void _mockLCSGatewayClient() {
-		_lcsGatewayClient = mock(LCSGatewayClientImpl.class);
-
-		doReturn(
-			true
-		).when(
-			_lcsGatewayClient
-		).isAvailable();
-	}
-
-	private void _mockLCSKeyAdvisor() {
-		_lcsKeyAdvisor = mock(LCSKeyAdvisor.class);
-
-		when(
-			_lcsKeyAdvisor.getKey()
-		).thenReturn(
-			"key1"
-		);
-	}
-
-	private void _mockLCSPatcherUtil() {
-		mockStatic(LCSPatcherUtil.class);
-
-		when(
-			LCSPatcherUtil.isConfigured()
-		).thenReturn(
-			Boolean.TRUE
-		);
-
-		when(
-			LCSPatcherUtil.getInstalledPatches()
-		).thenReturn(
-			new String[] {
-				"LPS-2001", "LPS-2001", "LPS-2003", "LPS-2004", "LPS-2005",
-				"LPS-2006", "LPS-2007", "LPS-2009", "LPS-2010", "LPS-2011"
-			}
-		);
-
-		when(
-			LCSPatcherUtil.getPatchingToolVersion()
-		).thenReturn(
-			2011
-		);
-	}
-
-	private void _mockPropsUtil() {
-		mockStatic(PropsUtil.class);
+		CommandQueueCheckTask commandQueueCheckTask =
+			new CommandQueueCheckTask();
 
 		Properties properties = new Properties();
 
-		properties.put("key1", "value1");
+		properties.put("component.name", CommandQueueCheckTask.class.getName());
 
-		when(
-			PropsUtil.getProperties()
-		).thenReturn(
-			properties
-		);
+		_bundleContext.registerService(
+			Task.class.getName(), commandQueueCheckTask,
+			(Dictionary)properties);
+
+		_lcsKeyAdvisor = mock(LCSKeyAdvisor.class);
 	}
 
-	private DigitalSignature _digitalSignature;
-	private LCSConfigurationProvider _lcsConfigurationProvider;
-	private LCSGatewayClient _lcsGatewayClient;
+	@Test
+	public void testGetCommandMessageCheckTaskDefinition() {
+		TaskAdvisor taskAdvisor = _getTaskAdvisor();
+
+		TaskDefinition taskDefinition =
+			taskAdvisor.getCommandMessageCheckTaskDefinition();
+
+		Task task = taskDefinition.getTask();
+
+		Assert.assertEquals(
+			"Task class value", CommandMessageCheckTask.class, task.getClass());
+	}
+
+	@Test
+	public void testGetCommandQueueCheckTaskDefinition() {
+		TaskAdvisor taskAdvisor = _getTaskAdvisor();
+
+		TaskDefinition taskDefinition =
+			taskAdvisor.getCommandQueueCheckTaskDefinition();
+
+		Task task = taskDefinition.getTask();
+
+		Assert.assertEquals(
+			"Task class value", CommandQueueCheckTask.class, task.getClass());
+	}
+
+	@Test
+	public void testGetHandshakeTaskDefinition() {
+		TaskAdvisor taskAdvisor = _getTaskAdvisor();
+
+		TaskDefinition taskDefinition = taskAdvisor.getHandshakeTaskDefinition(
+			false);
+
+		Task task = taskDefinition.getTask();
+
+		Assert.assertEquals(
+			"Task class value", HandshakeTask.class, task.getClass());
+
+		Assert.assertEquals(
+			"Task definition initial delay value", 0,
+			taskDefinition.getInitialDelay());
+
+		taskDefinition = taskAdvisor.getHandshakeTaskDefinition(true);
+
+		Assert.assertEquals(
+			"Task definition initial delay value", Time.MINUTE,
+			taskDefinition.getInitialDelay());
+	}
+
+	@Test
+	public void testGetHeartBeatTaskDefinition() {
+		TaskAdvisor taskAdvisor = _getTaskAdvisor();
+
+		TaskDefinition taskDefinition =
+			taskAdvisor.getHeartBeatTaskDefinition();
+
+		Task task = taskDefinition.getTask();
+
+		Assert.assertEquals(
+			"Task class value", HeartbeatTask.class, task.getClass());
+	}
+
+	@Test
+	public void testGetLCSClusterEntryTokenCheckTaskDefinition() {
+		TaskAdvisor taskAdvisor = _getTaskAdvisor();
+
+		TaskDefinition taskDefinition =
+			taskAdvisor.getLCSClusterEntryTokenCheckTaskDefinition(false);
+
+		Task task = taskDefinition.getTask();
+
+		Assert.assertEquals(
+			"Task class value", LCSClusterEntryTokenCheckTask.class,
+			task.getClass());
+
+		Assert.assertEquals(
+			"Task definition initial delay value", 0,
+			taskDefinition.getInitialDelay());
+
+		taskDefinition = taskAdvisor.getLCSClusterEntryTokenCheckTaskDefinition(
+			true);
+
+		Assert.assertEquals(
+			"Task definition initial delay value", Time.MINUTE,
+			taskDefinition.getInitialDelay());
+	}
+
+	@Test
+	public void testGetUptimeTaskDefinition() {
+		TaskAdvisor taskAdvisor = _getTaskAdvisor();
+
+		TaskDefinition taskDefinition = taskAdvisor.getUptimeTaskDefinition();
+
+		Task task = taskDefinition.getTask();
+
+		Assert.assertEquals(
+			"Task class value", UptimeTask.class, task.getClass());
+
+		Assert.assertEquals(
+			"Task definition initial delay value", 10 * Time.SECOND,
+			taskDefinition.getInitialDelay());
+
+		Assert.assertEquals(
+			"Task definition period value", Time.MINUTE,
+			taskDefinition.getPeriod());
+	}
+
+	private TaskAdvisor _getTaskAdvisor() {
+		return new TaskAdvisor(
+			_bundleContext, new CommandMessageCheckTask(), new HandshakeTask(),
+			new LCSClusterEntryTokenCheckTask(), _lcsKeyAdvisor,
+			new UptimeTask());
+	}
+
+	private BundleContext _bundleContext;
 	private LCSKeyAdvisor _lcsKeyAdvisor;
 
 }

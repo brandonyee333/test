@@ -102,8 +102,7 @@ public class LCSClusterEntryTokenAdvisorImplTest
 			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		HandshakeTask handshakeTask = spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-			_uptimeAdvisor);
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _uptimeAdvisor);
 
 		handshakeTask.run();
 
@@ -134,8 +133,7 @@ public class LCSClusterEntryTokenAdvisorImplTest
 			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		HandshakeTask handshakeTask = spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-			_uptimeAdvisor);
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _uptimeAdvisor);
 
 		handshakeTask.run();
 
@@ -166,8 +164,7 @@ public class LCSClusterEntryTokenAdvisorImplTest
 			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		HandshakeTask handshakeTask = spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-			_uptimeAdvisor);
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _uptimeAdvisor);
 
 		handshakeTask.run();
 
@@ -195,8 +192,7 @@ public class LCSClusterEntryTokenAdvisorImplTest
 			spyLCSClusterEntryTokenAdvisorToDoNothingOnDelete(lcsEventManager);
 
 		HandshakeTask handshakeTask = spyHandshakeTask(
-			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _threadFactory,
-			_uptimeAdvisor);
+			lcsEventManager, lcsGatewayClient, _lcsKeyAdvisor, _uptimeAdvisor);
 
 		handshakeTask.run();
 
