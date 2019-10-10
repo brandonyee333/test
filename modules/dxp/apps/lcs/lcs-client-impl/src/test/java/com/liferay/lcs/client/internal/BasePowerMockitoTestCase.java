@@ -38,7 +38,6 @@ import java.net.UnknownHostException;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ThreadFactory;
 
 import org.mockito.Matchers;
 import org.mockito.Mockito;
@@ -137,8 +136,7 @@ public abstract class BasePowerMockitoTestCase extends PowerMockito {
 
 	protected HandshakeTask spyHandshakeTask(
 			LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
-			LCSKeyAdvisor lcsKeyAdvisor, ThreadFactory threadFactory,
-			UptimeAdvisor uptimeAdvisor)
+			LCSKeyAdvisor lcsKeyAdvisor, UptimeAdvisor uptimeAdvisor)
 		throws Exception {
 
 		CompanyLocalService companyLocalService = mock(
@@ -148,7 +146,7 @@ public abstract class BasePowerMockitoTestCase extends PowerMockito {
 		HandshakeTask handshakeTask = spy(
 			new HandshakeTask(
 				companyLocalService, lcsAlertAdvisor, lcsEventManager,
-				lcsGatewayClient, lcsKeyAdvisor, threadFactory, uptimeAdvisor));
+				lcsGatewayClient, lcsKeyAdvisor, uptimeAdvisor));
 
 		doReturn(
 			new HandshakeMessage()

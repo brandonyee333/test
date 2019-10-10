@@ -62,10 +62,6 @@ public class MessageBusAdvisor implements LCSEventListener {
 
 	@Override
 	public void onLCSEvent(LCSEvent lcsEvent) {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Notified on LCS event " + lcsEvent);
-		}
-
 		if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
 			processLCSPortletState(LCSPortletState.NO_SUBSCRIPTION);
 		}
@@ -147,10 +143,11 @@ public class MessageBusAdvisor implements LCSEventListener {
 	@Deactivate
 	protected void deactivate() {
 		_lcsEventManager.unsubscribe(this);
+
 		_unregisterAll();
 
 		if (_log.isTraceEnabled()) {
-			_log.trace("Destroyed " + this);
+			_log.trace("Deactivated " + this);
 		}
 	}
 

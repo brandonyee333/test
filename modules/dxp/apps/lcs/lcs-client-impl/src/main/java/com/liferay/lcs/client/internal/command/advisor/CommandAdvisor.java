@@ -89,6 +89,10 @@ public class CommandAdvisor {
 	@Activate
 	protected void activate() {
 		_initDigitalSignature(_lcsConfigurationProvider.getLCSConfiguration());
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override
