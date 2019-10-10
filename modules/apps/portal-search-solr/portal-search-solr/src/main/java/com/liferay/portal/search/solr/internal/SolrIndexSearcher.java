@@ -53,6 +53,10 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.search.groupby.GroupByRequest;
+import com.liferay.portal.search.groupby.GroupByResponse;
+import com.liferay.portal.search.groupby.GroupByResponseFactory;
+import com.liferay.portal.search.legacy.groupby.GroupByRequestFactory;
 import com.liferay.portal.search.solr.configuration.SolrConfiguration;
 import com.liferay.portal.search.solr.connection.SolrClientManager;
 import com.liferay.portal.search.solr.facet.FacetProcessor;
@@ -259,15 +263,29 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 	}
 
 	protected void addGroupBy(
-		SolrQuery solrQuery, SearchContext searchContext, int start, int end) {
+		SolrQuery solrQuery, SearchContext searchContext) {
 
 		GroupBy groupBy = searchContext.getGroupBy();
 
-		if (groupBy == null) {
-			return;
-		}
+		if (groupBy != null) {
+			GroupByRequest groupByRequest =
+				_groupByRequestFactory.getGroupByRequest(groupBy);
 
-		_groupByTranslator.translate(solrQuery, searchContext, start, end);
+			_groupByTranslator.translate(
+				solrQuery, groupByRequest, searchContext);
+		}
+	}
+
+	protected void addGroupByRequests(
+		SolrQuery solrQuery, SearchContext searchContext) {
+
+		List<GroupByRequest> groupByRequests =
+			(List<GroupByRequest>)searchContext.getAttribute("groupByRequests");
+
+		if (ListUtil.isNotEmpty(groupByRequests)) {
+			_groupByTranslator.translate(
+				solrQuery, groupByRequests.get(0), searchContext);
+		}
 	}
 
 	protected void addHighlightedField(
@@ -313,7 +331,11 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 
 		GroupBy groupBy = searchContext.getGroupBy();
 
-		if (groupBy != null) {
+		if ((groupBy != null) ||
+			ListUtil.isNotEmpty(
+				(List<GroupByRequest>)searchContext.getAttribute(
+					"groupByRequests"))) {
+
 			return;
 		}
 
@@ -441,7 +463,8 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 
 		if (!count) {
 			addFacets(solrQuery, searchContext);
-			addGroupBy(solrQuery, searchContext, start, end);
+			addGroupBy(solrQuery, searchContext);
+			addGroupByRequests(solrQuery, searchContext);
 			addHighlights(solrQuery, searchContext, queryConfig);
 			addPagination(solrQuery, searchContext, start, end);
 			addSelectedFields(solrQuery, queryConfig);
@@ -642,6 +665,20 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 	}
 
 	@Reference(unbind = "-")
+	protected void setGroupByRequestFactory(
+		GroupByRequestFactory groupByRequestFactory) {
+
+		_groupByRequestFactory = groupByRequestFactory;
+	}
+
+	@Reference(unbind = "-")
+	protected void setGroupByResponseFactory(
+		GroupByResponseFactory groupByResponseFactory) {
+
+		_groupByResponseFactory = groupByResponseFactory;
+	}
+
+	@Reference(unbind = "-")
 	protected void setGroupByTranslator(GroupByTranslator groupByTranslator) {
 		_groupByTranslator = groupByTranslator;
 	}
@@ -699,16 +736,24 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 		Hits hits) {
 
 		GroupBy groupBy = searchContext.getGroupBy();
+		List<GroupByRequest> groupByRequests =
+			(List<GroupByRequest>)searchContext.getAttribute("groupByRequests");
 
-		if (groupBy == null) {
+		if ((groupBy == null) && ListUtil.isEmpty(groupByRequests)) {
 			return;
 		}
+
+		ArrayList<GroupByResponse> groupByResponses = new ArrayList<>();
 
 		GroupResponse groupResponse = queryResponse.getGroupResponse();
 
 		List<GroupCommand> groupCommands = groupResponse.getValues();
 
 		for (GroupCommand groupCommand : groupCommands) {
+			GroupByResponse groupByResponse =
+				_groupByResponseFactory.getGroupByResponse(
+					groupCommand.getName());
+
 			List<Group> groups = groupCommand.getValues();
 
 			for (Group group : groups) {
@@ -723,8 +768,14 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 
 				hits.setDocs(docs);
 				hits.setLength(docs.length);
+
+				groupByResponse.putHits(group.getGroupValue(), groupedHits);
 			}
+
+			groupByResponses.add(groupByResponse);
 		}
+
+		searchContext.setAttribute("groupByResponses", groupByResponses);
 	}
 
 	protected void updateStatsResults(
@@ -765,6 +816,8 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 
 	private FacetProcessor<SolrQuery> _facetProcessor;
 	private FilterTranslator<String> _filterTranslator;
+	private GroupByRequestFactory _groupByRequestFactory;
+	private GroupByResponseFactory _groupByResponseFactory;
 	private GroupByTranslator _groupByTranslator;
 	private boolean _logExceptionsOnly;
 	private QueryTranslator<String> _queryTranslator;
