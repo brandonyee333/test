@@ -91,7 +91,7 @@ public class LCSClusterEntryTokenCheckTask extends BaseTask {
 
 	@Override
 	public TaskType getTaskType() {
-		return TaskType.MANAGEABLE;
+		return TaskType.REQUIRED;
 	}
 
 	@Activate

@@ -50,7 +50,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import org.osgi.framework.Bundle;
@@ -80,14 +79,13 @@ public class HandshakeTask extends BaseTask {
 		CompanyLocalService companyLocalService,
 		LCSAlertAdvisor lcsAlertAdvisor, LCSEventManager lcsEventManager,
 		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor,
-		ThreadFactory threadFactory, UptimeAdvisor uptimeAdvisor) {
+		UptimeAdvisor uptimeAdvisor) {
 
 		_companyLocalService = companyLocalService;
 		_lcsAlertAdvisor = lcsAlertAdvisor;
 		_lcsEventManager = lcsEventManager;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
-		_threadFactory = threadFactory;
 		_uptimeAdvisor = uptimeAdvisor;
 
 		if (_log.isTraceEnabled()) {
@@ -176,7 +174,7 @@ public class HandshakeTask extends BaseTask {
 
 	@Override
 	public TaskType getTaskType() {
-		return TaskType.MANAGEABLE;
+		return TaskType.REQUIRED;
 	}
 
 	@Override
@@ -360,10 +358,10 @@ public class HandshakeTask extends BaseTask {
 
 	private void _waitForHandshakeResponse() throws LCSGatewayException {
 		boolean handshakeResponseReceived = false;
-		List<Message> receivedMessages = null;
 
 		for (int i = 0; i < 12; i++) {
-			receivedMessages = _lcsGatewayClient.getMessages(false, _getKey());
+			List<Message> receivedMessages = _lcsGatewayClient.getMessages(
+				false, _getKey());
 
 			if (receivedMessages.isEmpty()) {
 				try {
@@ -428,9 +426,6 @@ public class HandshakeTask extends BaseTask {
 
 	@Reference
 	private LCSKeyAdvisor _lcsKeyAdvisor;
-
-	@Reference
-	private ThreadFactory _threadFactory;
 
 	@Reference
 	private UptimeAdvisor _uptimeAdvisor;
