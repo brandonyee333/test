@@ -1306,6 +1306,10 @@ public class LayoutImportController implements ImportController {
 		PortletDataContext portletDataContext, List<Element> layoutElements,
 		boolean privateLayout) {
 
+		if (ExportImportThreadLocal.isInitialLayoutStagingInProcess()) {
+			return;
+		}
+
 		Map<Long, Layout> layouts =
 			(Map<Long, Layout>)portletDataContext.getNewPrimaryKeysMap(
 				Layout.class + ".layout");

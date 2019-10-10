@@ -17,6 +17,7 @@ package com.liferay.layout.admin.web.internal.exportimport.data.handler;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.exportimport.kernel.lar.ExportImportPathUtil;
 import com.liferay.exportimport.kernel.lar.ExportImportProcessCallbackRegistry;
+import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.PortletDataHandlerKeys;
@@ -629,20 +630,27 @@ public class LayoutStagedModelDataHandler
 
 		if (existingLayout == null) {
 			try {
-				final long finalParentLayoutId = parentLayoutId;
+				int priority = layout.getPriority();
 
-				int priority = TransactionInvokerUtil.invoke(
-					_transactionConfig,
-					new Callable<Integer>() {
+				if (!ExportImportThreadLocal.
+						isInitialLayoutStagingInProcess()) {
 
-						@Override
-						public Integer call() throws Exception {
-							return _layoutLocalServiceHelper.getNextPriority(
-								groupId, privateLayout, finalParentLayoutId,
-								null, -1);
-						}
+					final long finalParentLayoutId = parentLayoutId;
 
-					});
+					priority = TransactionInvokerUtil.invoke(
+						_transactionConfig,
+						new Callable<Integer>() {
+
+							@Override
+							public Integer call() throws Exception {
+								return _layoutLocalServiceHelper.
+									getNextPriority(
+										groupId, privateLayout,
+										finalParentLayoutId, null, -1);
+							}
+
+						});
+				}
 
 				importedLayout.setPriority(priority);
 			}
