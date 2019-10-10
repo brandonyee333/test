@@ -84,6 +84,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.zip.ZipReader;
 import com.liferay.portal.kernel.zip.ZipReaderFactoryUtil;
+import com.liferay.portal.service.impl.LayoutLocalServiceHelper;
 import com.liferay.sites.kernel.util.Sites;
 import com.liferay.sites.kernel.util.SitesUtil;
 
@@ -1138,6 +1139,13 @@ public class LayoutImportController implements ImportController {
 	}
 
 	@Reference(unbind = "-")
+	protected void setLayoutLocalServiceHelper(
+		LayoutLocalServiceHelper layoutLocalServiceHelper) {
+
+		_layoutLocalServiceHelper = layoutLocalServiceHelper;
+	}
+
+	@Reference(unbind = "-")
 	protected void setLayoutPrototypeLocalService(
 		LayoutPrototypeLocalService layoutPrototypeLocalService) {
 
@@ -1351,6 +1359,11 @@ public class LayoutImportController implements ImportController {
 
 				int layoutPriority = GetterUtil.getInteger(
 					layoutElement.attributeValue("layout-priority"));
+
+				layoutPriority = _layoutLocalServiceHelper.getNextPriority(
+					layout.getGroupId(), layout.isPrivateLayout(),
+					layout.getParentLayoutId(),
+					layout.getSourcePrototypeLayoutUuid(), layoutPriority);
 
 				layoutPriorities.put(layout.getPlid(), layoutPriority);
 			}
@@ -1752,6 +1765,7 @@ public class LayoutImportController implements ImportController {
 	private ExportImportLifecycleManager _exportImportLifecycleManager;
 	private GroupLocalService _groupLocalService;
 	private LayoutLocalService _layoutLocalService;
+	private LayoutLocalServiceHelper _layoutLocalServiceHelper;
 	private LayoutPrototypeLocalService _layoutPrototypeLocalService;
 	private LayoutSetLocalService _layoutSetLocalService;
 	private LayoutSetPrototypeLocalService _layoutSetPrototypeLocalService;
