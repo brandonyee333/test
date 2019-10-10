@@ -15,6 +15,7 @@
 package com.liferay.portal.search.elasticsearch6.internal.groupby;
 
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.search.groupby.GroupByRequest;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
@@ -23,12 +24,14 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
  */
 public interface GroupByTranslator {
 
+	public static final String BUCKET_SORT_AGGREGATION_NAME = "_bucketSort";
+
 	public static final String GROUP_BY_AGGREGATION_PREFIX = "GroupBy_";
 
 	public static final String TOP_HITS_AGGREGATION_NAME = "_topHits";
 
 	public void translate(
 		SearchRequestBuilder searchRequestBuilder, SearchContext searchContext,
-		int start, int end);
+		GroupByRequest groupByRequest);
 
 }
