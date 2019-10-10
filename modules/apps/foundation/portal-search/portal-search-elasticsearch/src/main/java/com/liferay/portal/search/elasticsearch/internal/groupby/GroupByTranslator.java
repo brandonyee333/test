@@ -15,6 +15,7 @@
 package com.liferay.portal.search.elasticsearch.internal.groupby;
 
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.search.groupby.GroupByRequest;
 
 import org.elasticsearch.action.search.SearchRequestBuilder;
 
@@ -29,6 +30,6 @@ public interface GroupByTranslator {
 
 	public void translate(
 		SearchRequestBuilder searchRequestBuilder, SearchContext searchContext,
-		int start, int end);
+		GroupByRequest groupByRequest);
 
 }

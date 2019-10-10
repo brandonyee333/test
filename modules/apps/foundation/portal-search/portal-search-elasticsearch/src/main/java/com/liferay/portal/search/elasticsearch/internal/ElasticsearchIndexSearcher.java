@@ -59,6 +59,10 @@ import com.liferay.portal.search.elasticsearch.internal.groupby.GroupByTranslato
 import com.liferay.portal.search.elasticsearch.internal.index.IndexNameBuilder;
 import com.liferay.portal.search.elasticsearch.internal.stats.StatsTranslator;
 import com.liferay.portal.search.elasticsearch.internal.util.DocumentTypes;
+import com.liferay.portal.search.groupby.GroupByRequest;
+import com.liferay.portal.search.groupby.GroupByResponse;
+import com.liferay.portal.search.groupby.GroupByResponseFactory;
+import com.liferay.portal.search.legacy.groupby.GroupByRequestFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -253,8 +257,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 	}
 
 	protected void addGroupBy(
-		SearchRequestBuilder searchRequestBuilder, SearchContext searchContext,
-		int start, int end) {
+		SearchRequestBuilder searchRequestBuilder,
+		SearchContext searchContext) {
 
 		GroupBy groupBy = searchContext.getGroupBy();
 
@@ -263,7 +267,22 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		}
 
 		groupByTranslator.translate(
-			searchRequestBuilder, searchContext, start, end);
+			searchRequestBuilder, searchContext, translate(groupBy));
+	}
+
+	protected void addGroupByRequests(
+		SearchRequestBuilder searchRequestBuilder,
+		SearchContext searchContext) {
+
+		List<GroupByRequest> groupByRequests =
+			(ArrayList<GroupByRequest>)searchContext.getAttribute(
+				"groupByRequests");
+
+		if (groupByRequests != null) {
+			groupByRequests.forEach(
+				groupByRequest -> groupByTranslator.translate(
+					searchRequestBuilder, searchContext, groupByRequest));
+		}
 	}
 
 	protected void addHighlightedField(
@@ -482,7 +501,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 		if (!count) {
 			addFacets(searchRequestBuilder, searchContext);
-			addGroupBy(searchRequestBuilder, searchContext, start, end);
+			addGroupBy(searchRequestBuilder, searchContext);
+			addGroupByRequests(searchRequestBuilder, searchContext);
 			addHighlights(searchRequestBuilder, searchContext, queryConfig);
 			addPagination(searchRequestBuilder, start, end);
 			addSelectedFields(searchRequestBuilder, queryConfig);
@@ -654,6 +674,10 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		return hits;
 	}
 
+	protected GroupByRequest translate(GroupBy groupBy) {
+		return groupByRequestFactory.getGroupByRequest(groupBy);
+	}
+
 	protected void updateFacetCollectors(
 		SearchContext searchContext, SearchResponse searchResponse) {
 
@@ -687,20 +711,53 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 		SearchResponse searchResponse, SearchContext searchContext, Query query,
 		Hits hits) {
 
+		List<GroupByRequest> groupByRequests =
+			(ArrayList<GroupByRequest>)searchContext.getAttribute(
+				"groupByRequests");
+
+		if (groupByRequests != null) {
+			for (GroupByRequest groupByRequest : groupByRequests) {
+				updateGroupedHits(
+					searchResponse, searchContext, query,
+					groupByRequest.getField(), hits);
+			}
+		}
+
 		GroupBy groupBy = searchContext.getGroupBy();
 
-		if (groupBy == null) {
-			return;
+		if (groupBy != null) {
+			updateGroupedHits(
+				searchResponse, searchContext, query, groupBy.getField(), hits);
 		}
+	}
+
+	protected void updateGroupedHits(
+		SearchResponse searchResponse, SearchContext searchContext, Query query,
+		String field, Hits hits) {
+
+		ArrayList<GroupByResponse> groupByResponses =
+			(ArrayList<GroupByResponse>)searchContext.getAttribute(
+				"groupByResponses");
+
+		if (groupByResponses == null) {
+			groupByResponses = new ArrayList<>();
+		}
+
+		GroupByResponse groupByResponse =
+			groupByResponseFactory.getGroupByResponse(field);
+
+		groupByResponses.add(groupByResponse);
+
+		searchContext.setAttribute("groupByResponses", groupByResponses);
 
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		Map<String, Aggregation> aggregationsMap = aggregations.getAsMap();
 
 		Terms terms = (Terms)aggregationsMap.get(
-			GroupByTranslator.GROUP_BY_AGGREGATION_PREFIX + groupBy.getField());
+			GroupByTranslator.GROUP_BY_AGGREGATION_PREFIX + field);
 
-		List<Terms.Bucket> buckets = terms.getBuckets();
+		List<? extends Terms.Bucket> buckets = terms.getBuckets();
 
 		for (Terms.Bucket bucket : buckets) {
 			Aggregations bucketAggregations = bucket.getAggregations();
@@ -717,6 +774,8 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 			groupedHits.setLength((int)groupedSearchHits.getTotalHits());
 
 			hits.addGroupedHits(bucket.getKeyAsString(), groupedHits);
+
+			groupByResponse.putHits(bucket.getKeyAsString(), groupedHits);
 		}
 	}
 
@@ -757,6 +816,12 @@ public class ElasticsearchIndexSearcher extends BaseIndexSearcher {
 
 	@Reference(target = "(search.engine.impl=Elasticsearch)")
 	protected FilterTranslator<QueryBuilder> filterTranslator;
+
+	@Reference
+	protected GroupByRequestFactory groupByRequestFactory;
+
+	@Reference
+	protected GroupByResponseFactory groupByResponseFactory;
 
 	@Reference
 	protected GroupByTranslator groupByTranslator;
