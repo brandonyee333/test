@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.metrics.impl.internal.util;
+package com.liferay.osb.customer.metrics.impl.util;
 
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;

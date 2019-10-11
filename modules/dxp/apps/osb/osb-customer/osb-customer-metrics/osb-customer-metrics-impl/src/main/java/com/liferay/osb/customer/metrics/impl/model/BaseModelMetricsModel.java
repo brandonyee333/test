@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.metrics.impl.model;
 
-import com.liferay.osb.customer.metrics.impl.internal.util.MetricsBaseModelUtil;
+import com.liferay.osb.customer.metrics.impl.util.MetricsBaseModelUtil;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.rabbitmq.MessageFactory;
 import com.liferay.osb.customer.metrics.rabbitmq.MessagePublisher;
