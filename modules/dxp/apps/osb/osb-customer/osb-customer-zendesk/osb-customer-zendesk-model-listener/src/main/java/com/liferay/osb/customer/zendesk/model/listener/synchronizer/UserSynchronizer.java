@@ -200,13 +200,14 @@ public class UserSynchronizer {
 	}
 
 	public void updatePhone(long userId, Phone phone) throws PortalException {
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 		long zendeskUserIdentityId =
 			_zendeskMapperUtil.fetchZendeskUserIdentityId(phone.getPhoneId());
 
-		String number = _phoneUtil.convertToE164(phone);
-
 		if (zendeskUserIdentityId > 0) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+
+			String number = _phoneUtil.convertToE164(phone);
+
 			if (Validator.isNotNull(number)) {
 				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
 					zendeskUserId, zendeskUserIdentityId, number);
