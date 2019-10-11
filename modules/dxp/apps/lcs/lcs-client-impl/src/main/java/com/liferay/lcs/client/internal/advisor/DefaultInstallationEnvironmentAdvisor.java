@@ -34,12 +34,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.osgi.service.component.annotations.Component;
-
 /**
  * @author Igor Beslic
  */
-@Component(immediate = true, service = InstallationEnvironmentAdvisor.class)
 public class DefaultInstallationEnvironmentAdvisor
 	implements InstallationEnvironmentAdvisor {
 
