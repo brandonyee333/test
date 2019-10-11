@@ -291,7 +291,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 		if (checkGatewayAvailability && !_available) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Aborting. LCS gateway is not available.");
+				_log.debug("Aborting because LCS gateway is not available");
 			}
 
 			return Collections.emptyList();
