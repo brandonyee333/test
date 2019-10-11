@@ -152,7 +152,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 
 			return;
 		}
-		else if (lcsEvent == LCSEvent.SIGNOFF_SUCCESS) {
+		else if (lcsEvent == LCSEvent.SIGN_OFF_SUCCESS) {
 			synchronized (this) {
 				if (!_available) {
 					return;
@@ -407,7 +407,7 @@ public class LCSGatewayClientImpl implements LCSGatewayClient {
 	private void _subscribeToLCSEvents() {
 		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_FAILED, this);
 		_lcsEventManager.subscribe(LCSEvent.HANDSHAKE_SUCCESS, this);
-		_lcsEventManager.subscribe(LCSEvent.SIGNOFF_SUCCESS, this);
+		_lcsEventManager.subscribe(LCSEvent.SIGN_OFF_SUCCESS, this);
 	}
 
 	private static final String _URL_LCS_GATEWAY = "/api/lcsgateway";

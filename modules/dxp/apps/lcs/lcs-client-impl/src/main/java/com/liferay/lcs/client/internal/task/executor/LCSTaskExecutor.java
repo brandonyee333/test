@@ -98,7 +98,7 @@ public class LCSTaskExecutor implements LCSEventListener, TaskStatus {
 		if ((lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED) ||
 			(lcsEvent == LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED) ||
 			(lcsEvent == LCSEvent.LCS_GATEWAY_UNAVAILABLE) ||
-			(lcsEvent == LCSEvent.SIGNOFF_SUCCESS)) {
+			(lcsEvent == LCSEvent.SIGN_OFF_SUCCESS)) {
 
 			_cancelNonRequiredTasks();
 		}

@@ -56,7 +56,7 @@ public class LCSTaskExecutorTest extends BasePowerMockitoTestCase {
 		cancelingEvents.add(LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
 		cancelingEvents.add(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
 		cancelingEvents.add(LCSEvent.LCS_GATEWAY_UNAVAILABLE);
-		cancelingEvents.add(LCSEvent.SIGNOFF_SUCCESS);
+		cancelingEvents.add(LCSEvent.SIGN_OFF_SUCCESS);
 
 		Assert.assertFalse(
 			"LCS event list is not empty", cancelingEvents.isEmpty());
