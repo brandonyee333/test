@@ -206,9 +206,14 @@ public class UserSynchronizer {
 
 		String number = _phoneUtil.convertToE164(phone);
 
-		if (Validator.isNotNull(number)) {
-			_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
-				zendeskUserId, zendeskUserIdentityId, number);
+		if (zendeskUserIdentityId > 0) {
+			if (Validator.isNotNull(number)) {
+				_asyncZendeskUserIdentityWebService.updateZendeskUserIdentity(
+					zendeskUserId, zendeskUserIdentityId, number);
+			}
+		}
+		else {
+			addPhone(userId, phone);
 		}
 	}
 
