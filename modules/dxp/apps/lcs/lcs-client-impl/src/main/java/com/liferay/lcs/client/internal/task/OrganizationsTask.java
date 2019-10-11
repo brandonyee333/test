@@ -38,7 +38,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.OrganizationsTask",
-	service = ScheduledTask.class
+	service = Task.class
 )
 public class OrganizationsTask extends BasePortalModelTask {
 

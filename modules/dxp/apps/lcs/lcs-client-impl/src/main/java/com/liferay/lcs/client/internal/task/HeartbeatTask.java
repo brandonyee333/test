@@ -14,7 +14,9 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.HeartbeatMessage;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -22,12 +24,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 /**
  * @author Igor Beslic
  */
-public class HeartbeatTask extends BaseScheduledTask {
-
-	@Override
-	public Scope getScope() {
-		return Scope.NODE;
-	}
+public class HeartbeatTask extends BaseTask {
 
 	public HeartbeatTask(String key, LCSGatewayClient lcsGatewayClient) {
 		_key = key;
@@ -38,18 +35,18 @@ public class HeartbeatTask extends BaseScheduledTask {
 		}
 	}
 
-	protected void doRun() {
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
+	}
+
+	protected void doRun() throws CompressionException, LCSGatewayException {
 		HeartbeatMessage heartbeatMessage = new HeartbeatMessage();
 
 		heartbeatMessage.setCreateTime(System.currentTimeMillis());
 		heartbeatMessage.setKey(_key);
 
-		try {
-			_lcsGatewayClient.sendMessage(heartbeatMessage);
-		}
-		catch (Exception e) {
-			_log.error("Unable to send heartbeat message to LCS", e);
-		}
+		_lcsGatewayClient.sendMessage(heartbeatMessage);
 	}
 
 	@Override

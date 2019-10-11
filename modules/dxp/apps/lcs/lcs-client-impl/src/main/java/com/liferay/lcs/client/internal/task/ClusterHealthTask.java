@@ -15,10 +15,13 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.advisor.ClusterNodeAdvisor;
+import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.ClusterHealthMessage;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -30,37 +33,37 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.ClusterHealthTask",
-	service = ScheduledTask.class
+	service = Task.class
 )
-public class ClusterHealthTask extends BaseScheduledTask {
+public class ClusterHealthTask extends BaseTask {
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Activate
 	protected void activate() {
-		setClusterMasterExecutor(_clusterMasterExecutor);
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override
-	protected void doRun() {
+	protected void doRun() throws CompressionException, LCSGatewayException {
 		ClusterHealthMessage clusterHealthMessage = new ClusterHealthMessage();
 
 		clusterHealthMessage.setCreateTime(System.currentTimeMillis());
-		clusterHealthMessage.setKey(getKey());
+		clusterHealthMessage.setKey(_lcsKeyAdvisor.getKey());
 
 		clusterHealthMessage.setSiblingKeys(
 			_clusterNodeAdvisor.getClusterNodeKeys());
 
-		sendMessage(clusterHealthMessage);
+		_lcsGatewayClient.sendMessage(clusterHealthMessage);
 	}
 
-	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
+	private static final Log _log = LogFactoryUtil.getLog(
+		ClusterHealthTask.class);
 
 	@Reference
 	private ClusterNodeAdvisor _clusterNodeAdvisor;

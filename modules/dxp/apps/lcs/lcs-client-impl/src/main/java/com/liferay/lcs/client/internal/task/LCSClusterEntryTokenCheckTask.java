@@ -37,7 +37,7 @@ import org.osgi.service.component.annotations.Reference;
 	name = "com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask",
 	service = Task.class
 )
-public class LCSClusterEntryTokenCheckTask implements Task {
+public class LCSClusterEntryTokenCheckTask extends BaseTask {
 
 	public LCSClusterEntryTokenCheckTask() {
 		if (_log.isTraceEnabled()) {
@@ -55,7 +55,7 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 	}
 
 	@Override
-	public void run() {
+	public void doRun() {
 		try {
 			_checkLCSClusterEntryToken();
 
@@ -87,6 +87,11 @@ public class LCSClusterEntryTokenCheckTask implements Task {
 
 			_lcsEventManager.publish(lcsEvent);
 		}
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Activate

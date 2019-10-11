@@ -29,12 +29,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  * @author Ivica Cardic
  * @author Igor Beslic
  */
-public class SignOffTask implements ScheduledTask {
-
-	@Override
-	public Scope getScope() {
-		return Scope.NODE;
-	}
+public class SignOffTask extends BaseTask {
 
 	public SignOffTask(
 		LCSEventManager lcsEventManager, LCSGatewayClient lcsGatewayClient,
@@ -52,10 +47,63 @@ public class SignOffTask implements ScheduledTask {
 	}
 
 	@Override
-	public void run() {
+	public void doRun() {
 		_processSignOffCommandMessage();
 
 		_sendSignOffMessage();
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+
+		if (_log.isTraceEnabled()) {
+			_log.trace("Finalized " + this);
+		}
+	}
+
+	private SignOffReasonCode _getSignOffReasonCode() {
+		for (SignOffReasonCode signOffReasonCode : SignOffReasonCode.values()) {
+			if (_signOffCommandMessage.getReasonCode() ==
+					signOffReasonCode.getCode()) {
+
+				return signOffReasonCode;
+			}
+		}
+
+		return SignOffReasonCode.UNDEFINED;
+	}
+
+	private void _processSignOffCommandMessage() {
+		if (_signOffCommandMessage == null) {
+			return;
+		}
+
+		SignOffReasonCode signOffReasonCode = _getSignOffReasonCode();
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				"Signing server out of LCS with reason code:" +
+					signOffReasonCode);
+
+			if (_log.isTraceEnabled()) {
+				_log.trace(
+					"Sign out command message: " + _signOffCommandMessage);
+			}
+		}
+
+		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
+			_lcsEventManager.publish(
+				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
+		}
+		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
+			_lcsEventManager.publish(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
+		}
 	}
 
 	private void _sendSignOffMessage() {
@@ -91,62 +139,11 @@ public class SignOffTask implements ScheduledTask {
 		}
 	}
 
-	private void _processSignOffCommandMessage() {
-		if (_signOffCommandMessage == null) {
-			return;
-		}
-
-		SignOffReasonCode signOffReasonCode = _getSignOffReasonCode();
-
-		if (_log.isInfoEnabled()) {
-			_log.info(
-				"Signing server out of LCS with reason code:" +
-					signOffReasonCode);
-
-			if (_log.isTraceEnabled()) {
-				_log.trace(
-					"Sign out command message: " + _signOffCommandMessage);
-			}
-		}
-
-		if (signOffReasonCode == SignOffReasonCode.INVALIDATE_TOKEN) {
-			_lcsEventManager.publish(
-				LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_INVALIDATED);
-		}
-		else if (signOffReasonCode == SignOffReasonCode.UNREGISTER) {
-			_lcsEventManager.publish(LCSEvent.LCS_CLUSTER_NODE_UNREGISTERED);
-		}
-	}
-
-	private SignOffReasonCode _getSignOffReasonCode() {
-		for (SignOffReasonCode signOffReasonCode : SignOffReasonCode.values()) {
-			if (_signOffCommandMessage.getReasonCode() ==
-				signOffReasonCode.getCode()) {
-
-				return signOffReasonCode;
-			}
-		}
-
-		return SignOffReasonCode.UNDEFINED;
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		super.finalize();
-
-		if (_log.isTraceEnabled()) {
-			_log.trace("Finalized " + this);
-		}
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(SignOffTask.class);
 
-	private LCSEventManager _lcsEventManager;
-
-	private LCSGatewayClient _lcsGatewayClient;
-
-	private LCSKeyAdvisor _lcsKeyAdvisor;
-
+	private final LCSEventManager _lcsEventManager;
+	private final LCSGatewayClient _lcsGatewayClient;
+	private final LCSKeyAdvisor _lcsKeyAdvisor;
 	private final SignOffCommandMessage _signOffCommandMessage;
 
 }

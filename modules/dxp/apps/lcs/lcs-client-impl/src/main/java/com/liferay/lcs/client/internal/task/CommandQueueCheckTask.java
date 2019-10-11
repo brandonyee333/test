@@ -14,19 +14,18 @@
 
 package com.liferay.lcs.client.internal.task;
 
-import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
-import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.command.queue.CommandQueue;
-import com.liferay.lcs.client.internal.util.comparator.MessagePriorityComparator;
-import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.internal.task.advisor.TaskAdvisor;
+import com.liferay.lcs.client.internal.task.comparator.TaskDefinitionPriorityComparator;
+import com.liferay.lcs.client.internal.task.executor.LCSTaskExecutor;
+import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -36,10 +35,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  */
 @Component(
-	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.CommandQueueCheckTask",
-	service = ScheduledTask.class
+	name = "com.liferay.lcs.client.internal.task.CommandQueueCheckTask",
+	service = Task.class
 )
-public class CommandQueueCheckTask extends BaseScheduledTask {
+public class CommandQueueCheckTask extends BaseTask {
 
 	public CommandQueueCheckTask() {
 		if (_log.isTraceEnabled()) {
@@ -48,17 +47,12 @@ public class CommandQueueCheckTask extends BaseScheduledTask {
 	}
 
 	public CommandQueueCheckTask(
-		ClusterMasterExecutor clusterMasterExecutor,
-		CommandAdvisor commandAdvisor, CommandQueue commandQueue,
-		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor) {
+		CommandQueue commandQueue, LCSTaskExecutor lcsTaskExecutor,
+		TaskAdvisor taskAdvisor) {
 
-		_clusterMasterExecutor = clusterMasterExecutor;
-		_commandAdvisor = commandAdvisor;
 		_commandQueue = commandQueue;
-		_lcsGatewayClient = lcsGatewayClient;
-		_lcsKeyAdvisor = lcsKeyAdvisor;
-
-		_initBaseScheduledTask();
+		_lcsTaskExecutor = lcsTaskExecutor;
+		_taskAdvisor = taskAdvisor;
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -66,13 +60,15 @@ public class CommandQueueCheckTask extends BaseScheduledTask {
 	}
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.ONLINE_REQUIRED;
 	}
 
 	@Activate
 	protected void activate() {
-		_initBaseScheduledTask();
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	protected void doRun() {
@@ -80,25 +76,40 @@ public class CommandQueueCheckTask extends BaseScheduledTask {
 			_log.trace("Checking command message queue");
 		}
 
-		List<Message> messages = new ArrayList<>();
+		Set<TaskDefinition> taskDefinitions = new TreeSet<>(
+			new TaskDefinitionPriorityComparator());
 
 		Message message = null;
 
 		while ((message = _commandQueue.next()) != null) {
-			messages.add(message);
-		}
+			List<TaskDefinition> commandTaskDefinitions =
+				_taskAdvisor.getTaskDefinitions((CommandMessage)message);
 
-		if (messages.isEmpty()) {
-			if (_log.isTraceEnabled()) {
-				_log.trace("Command message queue empty");
+			TaskDefinition signOffTaskDefinition =
+				_taskAdvisor.findSignOffTaskDefinition(commandTaskDefinitions);
+
+			if (signOffTaskDefinition != null) {
+				taskDefinitions.clear();
+
+				taskDefinitions.add(signOffTaskDefinition);
+
+				_lcsTaskExecutor.process(taskDefinitions);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("SignOff task encounter. Leaving queue check.");
+				}
+
+				return;
 			}
 
-			return;
+			taskDefinitions.addAll(commandTaskDefinitions);
 		}
 
-		Collections.sort(messages, new MessagePriorityComparator());
+		if (!taskDefinitions.isEmpty()) {
+			_lcsTaskExecutor.process(taskDefinitions);
+		}
 
-		_commandAdvisor.execute(messages);
+		_notifyLCSTaskExecutor();
 	}
 
 	@Override
@@ -110,28 +121,20 @@ public class CommandQueueCheckTask extends BaseScheduledTask {
 		}
 	}
 
-	private void _initBaseScheduledTask() {
-		setClusterMasterExecutor(_clusterMasterExecutor);
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
+	private void _notifyLCSTaskExecutor() {
+		_lcsTaskExecutor.flush();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandQueueCheckTask.class);
 
 	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
-
-	@Reference
-	private CommandAdvisor _commandAdvisor;
-
-	@Reference
 	private CommandQueue _commandQueue;
 
 	@Reference
-	private LCSGatewayClient _lcsGatewayClient;
+	private LCSTaskExecutor _lcsTaskExecutor;
 
 	@Reference
-	private LCSKeyAdvisor _lcsKeyAdvisor;
+	private TaskAdvisor _taskAdvisor;
 
 }

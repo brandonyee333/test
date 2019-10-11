@@ -19,6 +19,7 @@ import com.liferay.lcs.client.alert.LCSAlert;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
 import com.liferay.lcs.client.constants.LCSClientConstants;
 import com.liferay.lcs.client.event.LCSEvent;
+import com.liferay.lcs.client.internal.advisor.DefaultInstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.InstallationEnvironmentAdvisor;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.advisor.UptimeAdvisor;
@@ -70,7 +71,7 @@ import org.osgi.service.component.annotations.Reference;
 	name = "com.liferay.lcs.client.internal.task.HandshakeTask",
 	service = Task.class
 )
-public class HandshakeTask implements Task {
+public class HandshakeTask extends BaseTask {
 
 	public HandshakeTask() {
 	}
@@ -102,7 +103,7 @@ public class HandshakeTask implements Task {
 	}
 
 	@Override
-	public void run() {
+	public void doRun() {
 		if (_log.isTraceEnabled()) {
 			_log.trace(
 				String.format(
@@ -171,6 +172,11 @@ public class HandshakeTask implements Task {
 
 			_lcsEventManager.publish(lcsEvent);
 		}
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Override
@@ -404,8 +410,9 @@ public class HandshakeTask implements Task {
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	@Reference
-	private InstallationEnvironmentAdvisor _installationEnvironmentAdvisor;
+	private final InstallationEnvironmentAdvisor
+		_installationEnvironmentAdvisor =
+			new DefaultInstallationEnvironmentAdvisor();
 
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;

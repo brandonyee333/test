@@ -14,11 +14,12 @@
 
 package com.liferay.lcs.client.internal.task;
 
+import com.liferay.lcs.client.exception.CompressionException;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.internal.metrics.PortalMetricsAggregator;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.client.platform.gateway.LCSGatewayException;
 import com.liferay.lcs.messaging.PortalMetricsMessage;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -34,24 +35,24 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.PortalMetricsTask",
-	service = ScheduledTask.class
+	service = Task.class
 )
-public class PortalMetricsTask extends BaseScheduledTask {
+public class PortalMetricsTask extends BaseTask {
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Activate
 	protected void activate() {
-		setClusterMasterExecutor(_clusterMasterExecutor);
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override
-	protected void doRun() {
+	protected void doRun() throws CompressionException, LCSGatewayException {
 		if (_portalMetricsAggregator.isEmpty()) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("No portal metrics to send");
@@ -63,7 +64,7 @@ public class PortalMetricsTask extends BaseScheduledTask {
 		PortalMetricsMessage portalMetricsMessage = new PortalMetricsMessage();
 
 		portalMetricsMessage.setCreateTime(System.currentTimeMillis());
-		portalMetricsMessage.setKey(getKey());
+		portalMetricsMessage.setKey(_lcsKeyAdvisor.getKey());
 
 		List<Map<String, Object>>[] performanceMetrics =
 			_portalMetricsAggregator.pop();
@@ -73,14 +74,11 @@ public class PortalMetricsTask extends BaseScheduledTask {
 		portalMetricsMessage.setPortletPerformanceMetricsList(
 			performanceMetrics[1]);
 
-		sendMessage(portalMetricsMessage);
+		_lcsGatewayClient.sendMessage(portalMetricsMessage);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalMetricsTask.class);
-
-	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;

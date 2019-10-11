@@ -22,7 +22,6 @@ import com.liferay.lcs.client.internal.management.ObjectNameKeyPropertyMapKeyStr
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CacheMetricsMessage;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -44,9 +43,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.CacheMetricsTask",
-	service = ScheduledTask.class
+	service = Task.class
 )
-public class CacheMetricsTask extends BaseScheduledTask {
+public class CacheMetricsTask extends BaseTask {
 
 	@Activate
 	public void activate() {
@@ -55,15 +54,11 @@ public class CacheMetricsTask extends BaseScheduledTask {
 
 		_multiVMObjectName = lcsConfiguration.cacheMetricsMultiVMObjectName();
 		_singleVMObjectName = lcsConfiguration.cacheMetricsSingleVMObjectName();
-
-		setClusterMasterExecutor(_clusterMasterExecutor);
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
 	}
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	protected void doRun() throws Exception {
@@ -71,13 +66,13 @@ public class CacheMetricsTask extends BaseScheduledTask {
 
 		cacheMetricsMessage.setCreateTime(System.currentTimeMillis());
 		cacheMetricsMessage.setHibernateMetrics(getHibernateMetrics());
-		cacheMetricsMessage.setKey(getKey());
+		cacheMetricsMessage.setKey(_lcsKeyAdvisor.getKey());
 		cacheMetricsMessage.setLiferayMultiVMMetrics(
 			getLiferayMultiVMMetrics());
 		cacheMetricsMessage.setLiferaySingleVMMetrics(
 			getLiferaySingleVMMetrics());
 
-		sendMessage(cacheMetricsMessage);
+		_lcsGatewayClient.sendMessage(cacheMetricsMessage);
 	}
 
 	protected Map<String, Object> getHibernateMetrics() throws Exception {
@@ -161,9 +156,6 @@ public class CacheMetricsTask extends BaseScheduledTask {
 			new String[] {"CacheHits", "CacheMisses", "ObjectCount"},
 			new ObjectNameKeyPropertyMapKeyStrategy("name"));
 	}
-
-	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSConfigurationProvider _lcsConfigurationProvider;

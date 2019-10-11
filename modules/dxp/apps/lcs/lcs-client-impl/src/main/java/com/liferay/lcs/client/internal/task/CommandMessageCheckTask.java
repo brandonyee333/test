@@ -15,13 +15,15 @@
 package com.liferay.lcs.client.internal.task;
 
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
+import com.liferay.lcs.client.internal.command.advisor.CommandAdvisor;
 import com.liferay.lcs.client.internal.command.queue.CommandQueue;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
+import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.Message;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Activate;
@@ -33,10 +35,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Igor Beslic
  */
 @Component(
-	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.CommandMessageCheckTask",
-	service = ScheduledTask.class
+	name = "com.liferay.lcs.client.internal.task.CommandMessageCheckTask",
+	service = Task.class
 )
-public class CommandMessageCheckTask extends BaseScheduledTask {
+public class CommandMessageCheckTask extends BaseTask {
 
 	public CommandMessageCheckTask() {
 		if (_log.isTraceEnabled()) {
@@ -45,15 +47,12 @@ public class CommandMessageCheckTask extends BaseScheduledTask {
 	}
 
 	public CommandMessageCheckTask(
-		ClusterMasterExecutor clusterMasterExecutor, CommandQueue commandQueue,
-		LCSGatewayClient lcsGatewayClient, LCSKeyAdvisor lcsKeyAdvisor) {
+		CommandQueue commandQueue, LCSGatewayClient lcsGatewayClient,
+		LCSKeyAdvisor lcsKeyAdvisor) {
 
-		_clusterMasterExecutor = clusterMasterExecutor;
 		_commandQueue = commandQueue;
 		_lcsGatewayClient = lcsGatewayClient;
 		_lcsKeyAdvisor = lcsKeyAdvisor;
-
-		_initBaseScheduledTask();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Initialized " + this);
@@ -61,23 +60,49 @@ public class CommandMessageCheckTask extends BaseScheduledTask {
 	}
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.ONLINE_REQUIRED;
 	}
 
 	@Activate
 	protected void activate() {
-		_initBaseScheduledTask();
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	protected void doRun() throws Exception {
-		String key = getKey();
+		String key = _lcsKeyAdvisor.getKey();
 
 		if (_log.isTraceEnabled()) {
 			_log.trace("Checking messages for " + key);
 		}
 
 		List<Message> messages = _lcsGatewayClient.getMessages(key);
+
+		Iterator<Message> iterator = messages.iterator();
+
+		while (iterator.hasNext()) {
+			Message message = iterator.next();
+
+			if (!(message instanceof CommandMessage)) {
+				_log.error("Unknown message " + message);
+
+				iterator.remove();
+
+				continue;
+			}
+
+			if (!_commandAdvisor.isValid((CommandMessage)message)) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Skip invalid command message " + message);
+				}
+
+				iterator.remove();
+
+				continue;
+			}
+		}
 
 		_commandQueue.add(messages);
 	}
@@ -91,17 +116,11 @@ public class CommandMessageCheckTask extends BaseScheduledTask {
 		}
 	}
 
-	private void _initBaseScheduledTask() {
-		setClusterMasterExecutor(_clusterMasterExecutor);
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommandMessageCheckTask.class);
 
 	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
+	private CommandAdvisor _commandAdvisor;
 
 	@Reference
 	private CommandQueue _commandQueue;

@@ -39,6 +39,11 @@ public class UptimeTask implements Task {
 	}
 
 	@Override
+	public TaskType getTaskType() {
+		return TaskType.REQUIRED;
+	}
+
+	@Override
 	public void run() {
 		try {
 			if (_log.isTraceEnabled()) {

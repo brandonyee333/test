@@ -29,9 +29,9 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.LicenseManagerTask",
-	service = ScheduledTask.class
+	service = Task.class
 )
-public class LicenseManagerTask implements ScheduledTask {
+public class LicenseManagerTask extends BaseTask {
 
 	public LicenseManagerTask() {
 	}
@@ -49,16 +49,7 @@ public class LicenseManagerTask implements ScheduledTask {
 	}
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
-	}
-
-	@Override
-	public void run() {
-		if (_log.isTraceEnabled()) {
-			_log.trace("Running license manager task");
-		}
-
+	public void doRun() {
 		long currentTimeMills = System.currentTimeMillis();
 
 		long lastLicenseCheckTime =
@@ -81,6 +72,11 @@ public class LicenseManagerTask implements ScheduledTask {
 		_messageBusAdvisor.processLCSPortletState(lcsPortletState);
 
 		_lcsPortletStateAdvisor.updateLicenseCheckTime();
+	}
+
+	@Override
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Override

@@ -17,7 +17,8 @@ package com.liferay.lcs.client.internal.task;
 import com.liferay.lcs.client.internal.advisor.LCSKeyAdvisor;
 import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.JVMMetricsMessage;
-import com.liferay.portal.kernel.cluster.ClusterMasterExecutor;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import com.yammer.metrics.core.VirtualMachineMetrics;
 import com.yammer.metrics.core.VirtualMachineMetrics.GarbageCollectorStats;
@@ -37,20 +38,20 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	property = "lcs.client.scheduled.task.name=com.liferay.lcs.task.JVMMetricsTask",
-	service = ScheduledTask.class
+	service = Task.class
 )
-public class JVMMetricsTask extends BaseScheduledTask {
+public class JVMMetricsTask extends BaseTask {
 
 	@Override
-	public Scope getScope() {
-		return Scope.NODE;
+	public TaskType getTaskType() {
+		return TaskType.MANAGEABLE;
 	}
 
 	@Activate
 	protected void activate() {
-		setClusterMasterExecutor(_clusterMasterExecutor);
-		setLCSGatewayService(_lcsGatewayClient);
-		setLCSKeyAdvisor(_lcsKeyAdvisor);
+		if (_log.isTraceEnabled()) {
+			_log.trace("Activated " + this);
+		}
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class JVMMetricsTask extends BaseScheduledTask {
 		jvmMetricsMessage.setHeapMax(_virtualMachineMetrics.heapMax());
 		jvmMetricsMessage.setHeapUsage(_virtualMachineMetrics.heapUsage());
 		jvmMetricsMessage.setHeapUsed(_virtualMachineMetrics.heapUsed());
-		jvmMetricsMessage.setKey(getKey());
+		jvmMetricsMessage.setKey(_lcsKeyAdvisor.getKey());
 		jvmMetricsMessage.setMemoryPoolUsage(
 			new HashMap<>(_virtualMachineMetrics.memoryPoolUsage()));
 		jvmMetricsMessage.setName(_virtualMachineMetrics.name());
@@ -89,7 +90,7 @@ public class JVMMetricsTask extends BaseScheduledTask {
 		jvmMetricsMessage.setUptime((int)_virtualMachineMetrics.uptime());
 		jvmMetricsMessage.setVersion(_virtualMachineMetrics.version());
 
-		sendMessage(jvmMetricsMessage);
+		_lcsGatewayClient.sendMessage(jvmMetricsMessage);
 	}
 
 	protected Map<String, Map<String, Long>> getBufferPoolMetrics() {
@@ -168,11 +169,10 @@ public class JVMMetricsTask extends BaseScheduledTask {
 		return threadStatePercentages;
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(JVMMetricsTask.class);
+
 	private static final VirtualMachineMetrics _virtualMachineMetrics =
 		VirtualMachineMetrics.getInstance();
-
-	@Reference
-	private ClusterMasterExecutor _clusterMasterExecutor;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;
