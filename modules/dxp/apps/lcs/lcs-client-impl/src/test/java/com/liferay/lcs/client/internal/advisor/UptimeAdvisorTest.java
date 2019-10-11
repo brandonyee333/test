@@ -70,6 +70,8 @@ public class UptimeAdvisorTest extends PowerMockito {
 
 		uptimeAdvisor.deactivate();
 
+		Thread.sleep(200);
+
 		uptimeAdvisor = _spyUptimeAdvisor("lcsServerId", lcsPortletPreferences);
 
 		uptimeAdvisor.activate();
