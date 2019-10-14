@@ -1061,6 +1061,10 @@ definition {
 	test ExportImportSiteWithCommentsAndRatingsUnderBlogsEntry {
 		property portal.acceptance ="joyce";
 
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "Blogs Page");
+
 		JSONLayout.addWidgetToPublicLayout(
 			column = "1",
 			groupName = "Guest",
