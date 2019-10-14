@@ -283,10 +283,10 @@ public class WatsonListTypeRelModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRel watsonListTypeRel,
-					Object watsonListTypeRelId) {
+					Object watsonListTypeRelIdObject) {
 
 					watsonListTypeRel.setWatsonListTypeRelId(
-						(Long)watsonListTypeRelId);
+						(Long)watsonListTypeRelIdObject);
 				}
 
 			});
@@ -306,9 +306,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object groupId) {
+					WatsonListTypeRel watsonListTypeRel, Object groupIdObject) {
 
-					watsonListTypeRel.setGroupId((Long)groupId);
+					watsonListTypeRel.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -328,9 +328,10 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object companyId) {
+					WatsonListTypeRel watsonListTypeRel,
+					Object companyIdObject) {
 
-					watsonListTypeRel.setCompanyId((Long)companyId);
+					watsonListTypeRel.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -350,9 +351,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object userId) {
+					WatsonListTypeRel watsonListTypeRel, Object userIdObject) {
 
-					watsonListTypeRel.setUserId((Long)userId);
+					watsonListTypeRel.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -372,9 +373,10 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object userName) {
+					WatsonListTypeRel watsonListTypeRel,
+					Object userNameObject) {
 
-					watsonListTypeRel.setUserName((String)userName);
+					watsonListTypeRel.setUserName((String)userNameObject);
 				}
 
 			});
@@ -394,9 +396,10 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object createDate) {
+					WatsonListTypeRel watsonListTypeRel,
+					Object createDateObject) {
 
-					watsonListTypeRel.setCreateDate((Date)createDate);
+					watsonListTypeRel.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -416,9 +419,10 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object modifiedDate) {
+					WatsonListTypeRel watsonListTypeRel,
+					Object modifiedDateObject) {
 
-					watsonListTypeRel.setModifiedDate((Date)modifiedDate);
+					watsonListTypeRel.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -439,10 +443,10 @@ public class WatsonListTypeRelModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRel watsonListTypeRel,
-					Object watsonListTypeId) {
+					Object watsonListTypeIdObject) {
 
 					watsonListTypeRel.setWatsonListTypeId(
-						(Long)watsonListTypeId);
+						(Long)watsonListTypeIdObject);
 				}
 
 			});
@@ -462,9 +466,10 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object classNameId) {
+					WatsonListTypeRel watsonListTypeRel,
+					Object classNameIdObject) {
 
-					watsonListTypeRel.setClassNameId((Long)classNameId);
+					watsonListTypeRel.setClassNameId((Long)classNameIdObject);
 				}
 
 			});
@@ -484,9 +489,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object classPK) {
+					WatsonListTypeRel watsonListTypeRel, Object classPKObject) {
 
-					watsonListTypeRel.setClassPK((Long)classPK);
+					watsonListTypeRel.setClassPK((Long)classPKObject);
 				}
 
 			});
@@ -506,9 +511,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object primary) {
+					WatsonListTypeRel watsonListTypeRel, Object primaryObject) {
 
-					watsonListTypeRel.setPrimary((Boolean)primary);
+					watsonListTypeRel.setPrimary((Boolean)primaryObject);
 				}
 
 			});
@@ -528,9 +533,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object value) {
+					WatsonListTypeRel watsonListTypeRel, Object valueObject) {
 
-					watsonListTypeRel.setValue((String)value);
+					watsonListTypeRel.setValue((String)valueObject);
 				}
 
 			});
@@ -550,9 +555,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object type) {
+					WatsonListTypeRel watsonListTypeRel, Object typeObject) {
 
-					watsonListTypeRel.setType((String)type);
+					watsonListTypeRel.setType((String)typeObject);
 				}
 
 			});
@@ -572,9 +577,9 @@ public class WatsonListTypeRelModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeRel watsonListTypeRel, Object status) {
+					WatsonListTypeRel watsonListTypeRel, Object statusObject) {
 
-					watsonListTypeRel.setStatus((Integer)status);
+					watsonListTypeRel.setStatus((Integer)statusObject);
 				}
 
 			});

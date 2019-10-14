@@ -287,9 +287,9 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object watsonChildId) {
+					WatsonChild watsonChild, Object watsonChildIdObject) {
 
-					watsonChild.setWatsonChildId((Long)watsonChildId);
+					watsonChild.setWatsonChildId((Long)watsonChildIdObject);
 				}
 
 			});
@@ -308,8 +308,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object groupId) {
-					watsonChild.setGroupId((Long)groupId);
+				public void accept(
+					WatsonChild watsonChild, Object groupIdObject) {
+
+					watsonChild.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -328,8 +330,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object companyId) {
-					watsonChild.setCompanyId((Long)companyId);
+				public void accept(
+					WatsonChild watsonChild, Object companyIdObject) {
+
+					watsonChild.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -348,8 +352,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object userId) {
-					watsonChild.setUserId((Long)userId);
+				public void accept(
+					WatsonChild watsonChild, Object userIdObject) {
+
+					watsonChild.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -368,8 +374,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object userName) {
-					watsonChild.setUserName((String)userName);
+				public void accept(
+					WatsonChild watsonChild, Object userNameObject) {
+
+					watsonChild.setUserName((String)userNameObject);
 				}
 
 			});
@@ -388,8 +396,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object createDate) {
-					watsonChild.setCreateDate((Date)createDate);
+				public void accept(
+					WatsonChild watsonChild, Object createDateObject) {
+
+					watsonChild.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -409,9 +419,9 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object modifiedDate) {
+					WatsonChild watsonChild, Object modifiedDateObject) {
 
-					watsonChild.setModifiedDate((Date)modifiedDate);
+					watsonChild.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -431,9 +441,9 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object birthCountryId) {
+					WatsonChild watsonChild, Object birthCountryIdObject) {
 
-					watsonChild.setBirthCountryId((Long)birthCountryId);
+					watsonChild.setBirthCountryId((Long)birthCountryIdObject);
 				}
 
 			});
@@ -454,10 +464,10 @@ public class WatsonChildModelImpl
 				@Override
 				public void accept(
 					WatsonChild watsonChild,
-					Object citizenshipWatsonListTypeId) {
+					Object citizenshipWatsonListTypeIdObject) {
 
 					watsonChild.setCitizenshipWatsonListTypeId(
-						(Long)citizenshipWatsonListTypeId);
+						(Long)citizenshipWatsonListTypeIdObject);
 				}
 
 			});
@@ -477,10 +487,11 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object countryWatsonListTypeId) {
+					WatsonChild watsonChild,
+					Object countryWatsonListTypeIdObject) {
 
 					watsonChild.setCountryWatsonListTypeId(
-						(Long)countryWatsonListTypeId);
+						(Long)countryWatsonListTypeIdObject);
 				}
 
 			});
@@ -500,10 +511,11 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object dischargeWatsonListTypeId) {
+					WatsonChild watsonChild,
+					Object dischargeWatsonListTypeIdObject) {
 
 					watsonChild.setDischargeWatsonListTypeId(
-						(Long)dischargeWatsonListTypeId);
+						(Long)dischargeWatsonListTypeIdObject);
 				}
 
 			});
@@ -523,10 +535,11 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object ethnicityWatsonListTypeId) {
+					WatsonChild watsonChild,
+					Object ethnicityWatsonListTypeIdObject) {
 
 					watsonChild.setEthnicityWatsonListTypeId(
-						(Long)ethnicityWatsonListTypeId);
+						(Long)ethnicityWatsonListTypeIdObject);
 				}
 
 			});
@@ -546,10 +559,11 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object originalWatsonPersonId) {
+					WatsonChild watsonChild,
+					Object originalWatsonPersonIdObject) {
 
 					watsonChild.setOriginalWatsonPersonId(
-						(Long)originalWatsonPersonId);
+						(Long)originalWatsonPersonIdObject);
 				}
 
 			});
@@ -569,10 +583,10 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object sexWatsonListTypeId) {
+					WatsonChild watsonChild, Object sexWatsonListTypeIdObject) {
 
 					watsonChild.setSexWatsonListTypeId(
-						(Long)sexWatsonListTypeId);
+						(Long)sexWatsonListTypeIdObject);
 				}
 
 			});
@@ -593,10 +607,10 @@ public class WatsonChildModelImpl
 				@Override
 				public void accept(
 					WatsonChild watsonChild,
-					Object sourceSubtypeWatsonListTypeId) {
+					Object sourceSubtypeWatsonListTypeIdObject) {
 
 					watsonChild.setSourceSubtypeWatsonListTypeId(
-						(Long)sourceSubtypeWatsonListTypeId);
+						(Long)sourceSubtypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -616,10 +630,11 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object sourceWatsonListTypeId) {
+					WatsonChild watsonChild,
+					Object sourceWatsonListTypeIdObject) {
 
 					watsonChild.setSourceWatsonListTypeId(
-						(Long)sourceWatsonListTypeId);
+						(Long)sourceWatsonListTypeIdObject);
 				}
 
 			});
@@ -639,10 +654,11 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object typeWatsonListTypeId) {
+					WatsonChild watsonChild,
+					Object typeWatsonListTypeIdObject) {
 
 					watsonChild.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -662,9 +678,9 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object dateAccepted) {
+					WatsonChild watsonChild, Object dateAcceptedObject) {
 
-					watsonChild.setDateAccepted((Date)dateAccepted);
+					watsonChild.setDateAccepted((Date)dateAcceptedObject);
 				}
 
 			});
@@ -684,9 +700,9 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object dateDischarged) {
+					WatsonChild watsonChild, Object dateDischargedObject) {
 
-					watsonChild.setDateDischarged((Date)dateDischarged);
+					watsonChild.setDateDischarged((Date)dateDischargedObject);
 				}
 
 			});
@@ -706,9 +722,9 @@ public class WatsonChildModelImpl
 
 				@Override
 				public void accept(
-					WatsonChild watsonChild, Object dateFollowUp) {
+					WatsonChild watsonChild, Object dateFollowUpObject) {
 
-					watsonChild.setDateFollowUp((Date)dateFollowUp);
+					watsonChild.setDateFollowUp((Date)dateFollowUpObject);
 				}
 
 			});
@@ -727,8 +743,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object source) {
-					watsonChild.setSource((String)source);
+				public void accept(
+					WatsonChild watsonChild, Object sourceObject) {
+
+					watsonChild.setSource((String)sourceObject);
 				}
 
 			});
@@ -747,8 +765,10 @@ public class WatsonChildModelImpl
 			new BiConsumer<WatsonChild, Object>() {
 
 				@Override
-				public void accept(WatsonChild watsonChild, Object status) {
-					watsonChild.setStatus((Integer)status);
+				public void accept(
+					WatsonChild watsonChild, Object statusObject) {
+
+					watsonChild.setStatus((Integer)statusObject);
 				}
 
 			});

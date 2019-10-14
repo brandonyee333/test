@@ -289,9 +289,10 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object watsonVehicleId) {
+					WatsonVehicle watsonVehicle, Object watsonVehicleIdObject) {
 
-					watsonVehicle.setWatsonVehicleId((Long)watsonVehicleId);
+					watsonVehicle.setWatsonVehicleId(
+						(Long)watsonVehicleIdObject);
 				}
 
 			});
@@ -311,9 +312,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object groupId) {
+					WatsonVehicle watsonVehicle, Object groupIdObject) {
 
-					watsonVehicle.setGroupId((Long)groupId);
+					watsonVehicle.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -333,9 +334,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object companyId) {
+					WatsonVehicle watsonVehicle, Object companyIdObject) {
 
-					watsonVehicle.setCompanyId((Long)companyId);
+					watsonVehicle.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -354,8 +355,10 @@ public class WatsonVehicleModelImpl
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object userId) {
-					watsonVehicle.setUserId((Long)userId);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object userIdObject) {
+
+					watsonVehicle.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -375,9 +378,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object userName) {
+					WatsonVehicle watsonVehicle, Object userNameObject) {
 
-					watsonVehicle.setUserName((String)userName);
+					watsonVehicle.setUserName((String)userNameObject);
 				}
 
 			});
@@ -397,9 +400,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object createDate) {
+					WatsonVehicle watsonVehicle, Object createDateObject) {
 
-					watsonVehicle.setCreateDate((Date)createDate);
+					watsonVehicle.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -419,9 +422,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object modifiedDate) {
+					WatsonVehicle watsonVehicle, Object modifiedDateObject) {
 
-					watsonVehicle.setModifiedDate((Date)modifiedDate);
+					watsonVehicle.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -441,10 +444,11 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object colorWatsonListTypeId) {
+					WatsonVehicle watsonVehicle,
+					Object colorWatsonListTypeIdObject) {
 
 					watsonVehicle.setColorWatsonListTypeId(
-						(Long)colorWatsonListTypeId);
+						(Long)colorWatsonListTypeIdObject);
 				}
 
 			});
@@ -464,10 +468,11 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object makeWatsonListTypeId) {
+					WatsonVehicle watsonVehicle,
+					Object makeWatsonListTypeIdObject) {
 
 					watsonVehicle.setMakeWatsonListTypeId(
-						(Long)makeWatsonListTypeId);
+						(Long)makeWatsonListTypeIdObject);
 				}
 
 			});
@@ -487,10 +492,11 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object modelWatsonListTypeId) {
+					WatsonVehicle watsonVehicle,
+					Object modelWatsonListTypeIdObject) {
 
 					watsonVehicle.setModelWatsonListTypeId(
-						(Long)modelWatsonListTypeId);
+						(Long)modelWatsonListTypeIdObject);
 				}
 
 			});
@@ -511,10 +517,10 @@ public class WatsonVehicleModelImpl
 				@Override
 				public void accept(
 					WatsonVehicle watsonVehicle,
-					Object originalWatsonVehicleId) {
+					Object originalWatsonVehicleIdObject) {
 
 					watsonVehicle.setOriginalWatsonVehicleId(
-						(Long)originalWatsonVehicleId);
+						(Long)originalWatsonVehicleIdObject);
 				}
 
 			});
@@ -534,10 +540,11 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object typeWatsonListTypeId) {
+					WatsonVehicle watsonVehicle,
+					Object typeWatsonListTypeIdObject) {
 
 					watsonVehicle.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -557,10 +564,11 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object yearWatsonListTypeId) {
+					WatsonVehicle watsonVehicle,
+					Object yearWatsonListTypeIdObject) {
 
 					watsonVehicle.setYearWatsonListTypeId(
-						(Long)yearWatsonListTypeId);
+						(Long)yearWatsonListTypeIdObject);
 				}
 
 			});
@@ -580,9 +588,11 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object watsonIncidentId) {
+					WatsonVehicle watsonVehicle,
+					Object watsonIncidentIdObject) {
 
-					watsonVehicle.setWatsonIncidentId((Long)watsonIncidentId);
+					watsonVehicle.setWatsonIncidentId(
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -601,8 +611,10 @@ public class WatsonVehicleModelImpl
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object year) {
-					watsonVehicle.setYear((Integer)year);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object yearObject) {
+
+					watsonVehicle.setYear((Integer)yearObject);
 				}
 
 			});
@@ -622,9 +634,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object description) {
+					WatsonVehicle watsonVehicle, Object descriptionObject) {
 
-					watsonVehicle.setDescription((String)description);
+					watsonVehicle.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -644,9 +656,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object imagePayload) {
+					WatsonVehicle watsonVehicle, Object imagePayloadObject) {
 
-					watsonVehicle.setImagePayload((String)imagePayload);
+					watsonVehicle.setImagePayload((String)imagePayloadObject);
 				}
 
 			});
@@ -666,9 +678,9 @@ public class WatsonVehicleModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicle watsonVehicle, Object licensePlate) {
+					WatsonVehicle watsonVehicle, Object licensePlateObject) {
 
-					watsonVehicle.setLicensePlate((String)licensePlate);
+					watsonVehicle.setLicensePlate((String)licensePlateObject);
 				}
 
 			});
@@ -687,8 +699,10 @@ public class WatsonVehicleModelImpl
 			new BiConsumer<WatsonVehicle, Object>() {
 
 				@Override
-				public void accept(WatsonVehicle watsonVehicle, Object status) {
-					watsonVehicle.setStatus((Integer)status);
+				public void accept(
+					WatsonVehicle watsonVehicle, Object statusObject) {
+
+					watsonVehicle.setStatus((Integer)statusObject);
 				}
 
 			});

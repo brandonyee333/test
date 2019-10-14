@@ -303,9 +303,10 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object watsonAddressId) {
+					WatsonAddress watsonAddress, Object watsonAddressIdObject) {
 
-					watsonAddress.setWatsonAddressId((Long)watsonAddressId);
+					watsonAddress.setWatsonAddressId(
+						(Long)watsonAddressIdObject);
 				}
 
 			});
@@ -325,9 +326,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object groupId) {
+					WatsonAddress watsonAddress, Object groupIdObject) {
 
-					watsonAddress.setGroupId((Long)groupId);
+					watsonAddress.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -347,9 +348,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object companyId) {
+					WatsonAddress watsonAddress, Object companyIdObject) {
 
-					watsonAddress.setCompanyId((Long)companyId);
+					watsonAddress.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -368,8 +369,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object userId) {
-					watsonAddress.setUserId((Long)userId);
+				public void accept(
+					WatsonAddress watsonAddress, Object userIdObject) {
+
+					watsonAddress.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -389,9 +392,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object userName) {
+					WatsonAddress watsonAddress, Object userNameObject) {
 
-					watsonAddress.setUserName((String)userName);
+					watsonAddress.setUserName((String)userNameObject);
 				}
 
 			});
@@ -411,9 +414,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object createDate) {
+					WatsonAddress watsonAddress, Object createDateObject) {
 
-					watsonAddress.setCreateDate((Date)createDate);
+					watsonAddress.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -433,9 +436,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object modifiedDate) {
+					WatsonAddress watsonAddress, Object modifiedDateObject) {
 
-					watsonAddress.setModifiedDate((Date)modifiedDate);
+					watsonAddress.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -455,9 +458,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object countryId) {
+					WatsonAddress watsonAddress, Object countryIdObject) {
 
-					watsonAddress.setCountryId((Long)countryId);
+					watsonAddress.setCountryId((Long)countryIdObject);
 				}
 
 			});
@@ -478,10 +481,10 @@ public class WatsonAddressModelImpl
 				@Override
 				public void accept(
 					WatsonAddress watsonAddress,
-					Object districtWatsonListTypeId) {
+					Object districtWatsonListTypeIdObject) {
 
 					watsonAddress.setDistrictWatsonListTypeId(
-						(Long)districtWatsonListTypeId);
+						(Long)districtWatsonListTypeIdObject);
 				}
 
 			});
@@ -502,10 +505,10 @@ public class WatsonAddressModelImpl
 				@Override
 				public void accept(
 					WatsonAddress watsonAddress,
-					Object originalWatsonAddressId) {
+					Object originalWatsonAddressIdObject) {
 
 					watsonAddress.setOriginalWatsonAddressId(
-						(Long)originalWatsonAddressId);
+						(Long)originalWatsonAddressIdObject);
 				}
 
 			});
@@ -526,10 +529,10 @@ public class WatsonAddressModelImpl
 				@Override
 				public void accept(
 					WatsonAddress watsonAddress,
-					Object provinceWatsonListTypeId) {
+					Object provinceWatsonListTypeIdObject) {
 
 					watsonAddress.setProvinceWatsonListTypeId(
-						(Long)provinceWatsonListTypeId);
+						(Long)provinceWatsonListTypeIdObject);
 				}
 
 			});
@@ -550,10 +553,10 @@ public class WatsonAddressModelImpl
 				@Override
 				public void accept(
 					WatsonAddress watsonAddress,
-					Object subDistrictWatsonListTypeId) {
+					Object subDistrictWatsonListTypeIdObject) {
 
 					watsonAddress.setSubDistrictWatsonListTypeId(
-						(Long)subDistrictWatsonListTypeId);
+						(Long)subDistrictWatsonListTypeIdObject);
 				}
 
 			});
@@ -573,10 +576,11 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object typeWatsonListTypeId) {
+					WatsonAddress watsonAddress,
+					Object typeWatsonListTypeIdObject) {
 
 					watsonAddress.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -596,9 +600,11 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object watsonIncidentId) {
+					WatsonAddress watsonAddress,
+					Object watsonIncidentIdObject) {
 
-					watsonAddress.setWatsonIncidentId((Long)watsonIncidentId);
+					watsonAddress.setWatsonIncidentId(
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -617,8 +623,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object name) {
-					watsonAddress.setName((String)name);
+				public void accept(
+					WatsonAddress watsonAddress, Object nameObject) {
+
+					watsonAddress.setName((String)nameObject);
 				}
 
 			});
@@ -638,9 +646,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object postalCode) {
+					WatsonAddress watsonAddress, Object postalCodeObject) {
 
-					watsonAddress.setPostalCode((String)postalCode);
+					watsonAddress.setPostalCode((String)postalCodeObject);
 				}
 
 			});
@@ -659,8 +667,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object region) {
-					watsonAddress.setRegion((String)region);
+				public void accept(
+					WatsonAddress watsonAddress, Object regionObject) {
+
+					watsonAddress.setRegion((String)regionObject);
 				}
 
 			});
@@ -679,8 +689,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object street) {
-					watsonAddress.setStreet((String)street);
+				public void accept(
+					WatsonAddress watsonAddress, Object streetObject) {
+
+					watsonAddress.setStreet((String)streetObject);
 				}
 
 			});
@@ -699,8 +711,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object number) {
-					watsonAddress.setNumber((String)number);
+				public void accept(
+					WatsonAddress watsonAddress, Object numberObject) {
+
+					watsonAddress.setNumber((String)numberObject);
 				}
 
 			});
@@ -720,9 +734,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object building) {
+					WatsonAddress watsonAddress, Object buildingObject) {
 
-					watsonAddress.setBuilding((String)building);
+					watsonAddress.setBuilding((String)buildingObject);
 				}
 
 			});
@@ -741,8 +755,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object floor) {
-					watsonAddress.setFloor((String)floor);
+				public void accept(
+					WatsonAddress watsonAddress, Object floorObject) {
+
+					watsonAddress.setFloor((String)floorObject);
 				}
 
 			});
@@ -761,8 +777,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object room) {
-					watsonAddress.setRoom((String)room);
+				public void accept(
+					WatsonAddress watsonAddress, Object roomObject) {
+
+					watsonAddress.setRoom((String)roomObject);
 				}
 
 			});
@@ -782,9 +800,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object description) {
+					WatsonAddress watsonAddress, Object descriptionObject) {
 
-					watsonAddress.setDescription((String)description);
+					watsonAddress.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -804,9 +822,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object imagePayload) {
+					WatsonAddress watsonAddress, Object imagePayloadObject) {
 
-					watsonAddress.setImagePayload((String)imagePayload);
+					watsonAddress.setImagePayload((String)imagePayloadObject);
 				}
 
 			});
@@ -826,9 +844,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object otherType) {
+					WatsonAddress watsonAddress, Object otherTypeObject) {
 
-					watsonAddress.setOtherType((String)otherType);
+					watsonAddress.setOtherType((String)otherTypeObject);
 				}
 
 			});
@@ -848,9 +866,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object lastSeenDate) {
+					WatsonAddress watsonAddress, Object lastSeenDateObject) {
 
-					watsonAddress.setLastSeenDate((Date)lastSeenDate);
+					watsonAddress.setLastSeenDate((Date)lastSeenDateObject);
 				}
 
 			});
@@ -870,9 +888,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object latitude) {
+					WatsonAddress watsonAddress, Object latitudeObject) {
 
-					watsonAddress.setLatitude((Double)latitude);
+					watsonAddress.setLatitude((Double)latitudeObject);
 				}
 
 			});
@@ -892,9 +910,9 @@ public class WatsonAddressModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddress watsonAddress, Object longitude) {
+					WatsonAddress watsonAddress, Object longitudeObject) {
 
-					watsonAddress.setLongitude((Double)longitude);
+					watsonAddress.setLongitude((Double)longitudeObject);
 				}
 
 			});
@@ -913,8 +931,10 @@ public class WatsonAddressModelImpl
 			new BiConsumer<WatsonAddress, Object>() {
 
 				@Override
-				public void accept(WatsonAddress watsonAddress, Object status) {
-					watsonAddress.setStatus((Integer)status);
+				public void accept(
+					WatsonAddress watsonAddress, Object statusObject) {
+
+					watsonAddress.setStatus((Integer)statusObject);
 				}
 
 			});

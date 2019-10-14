@@ -287,9 +287,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object watsonReportId) {
+					WatsonReport watsonReport, Object watsonReportIdObject) {
 
-					watsonReport.setWatsonReportId((Long)watsonReportId);
+					watsonReport.setWatsonReportId((Long)watsonReportIdObject);
 				}
 
 			});
@@ -308,8 +308,10 @@ public class WatsonReportModelImpl
 			new BiConsumer<WatsonReport, Object>() {
 
 				@Override
-				public void accept(WatsonReport watsonReport, Object groupId) {
-					watsonReport.setGroupId((Long)groupId);
+				public void accept(
+					WatsonReport watsonReport, Object groupIdObject) {
+
+					watsonReport.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -329,9 +331,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object companyId) {
+					WatsonReport watsonReport, Object companyIdObject) {
 
-					watsonReport.setCompanyId((Long)companyId);
+					watsonReport.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -350,8 +352,10 @@ public class WatsonReportModelImpl
 			new BiConsumer<WatsonReport, Object>() {
 
 				@Override
-				public void accept(WatsonReport watsonReport, Object userId) {
-					watsonReport.setUserId((Long)userId);
+				public void accept(
+					WatsonReport watsonReport, Object userIdObject) {
+
+					watsonReport.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -370,8 +374,10 @@ public class WatsonReportModelImpl
 			new BiConsumer<WatsonReport, Object>() {
 
 				@Override
-				public void accept(WatsonReport watsonReport, Object userName) {
-					watsonReport.setUserName((String)userName);
+				public void accept(
+					WatsonReport watsonReport, Object userNameObject) {
+
+					watsonReport.setUserName((String)userNameObject);
 				}
 
 			});
@@ -391,9 +397,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object createDate) {
+					WatsonReport watsonReport, Object createDateObject) {
 
-					watsonReport.setCreateDate((Date)createDate);
+					watsonReport.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -413,9 +419,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object modifiedDate) {
+					WatsonReport watsonReport, Object modifiedDateObject) {
 
-					watsonReport.setModifiedDate((Date)modifiedDate);
+					watsonReport.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -435,10 +441,11 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object originalWatsonReportId) {
+					WatsonReport watsonReport,
+					Object originalWatsonReportIdObject) {
 
 					watsonReport.setOriginalWatsonReportId(
-						(Long)originalWatsonReportId);
+						(Long)originalWatsonReportIdObject);
 				}
 
 			});
@@ -458,10 +465,11 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object typeWatsonListTypeId) {
+					WatsonReport watsonReport,
+					Object typeWatsonListTypeIdObject) {
 
 					watsonReport.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -481,9 +489,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object watsonChildId) {
+					WatsonReport watsonReport, Object watsonChildIdObject) {
 
-					watsonReport.setWatsonChildId((Long)watsonChildId);
+					watsonReport.setWatsonChildId((Long)watsonChildIdObject);
 				}
 
 			});
@@ -502,8 +510,10 @@ public class WatsonReportModelImpl
 			new BiConsumer<WatsonReport, Object>() {
 
 				@Override
-				public void accept(WatsonReport watsonReport, Object name) {
-					watsonReport.setName((String)name);
+				public void accept(
+					WatsonReport watsonReport, Object nameObject) {
+
+					watsonReport.setName((String)nameObject);
 				}
 
 			});
@@ -523,9 +533,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object description) {
+					WatsonReport watsonReport, Object descriptionObject) {
 
-					watsonReport.setDescription((String)description);
+					watsonReport.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -545,9 +555,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object fullReport) {
+					WatsonReport watsonReport, Object fullReportObject) {
 
-					watsonReport.setFullReport((String)fullReport);
+					watsonReport.setFullReport((String)fullReportObject);
 				}
 
 			});
@@ -567,9 +577,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object imagePayload) {
+					WatsonReport watsonReport, Object imagePayloadObject) {
 
-					watsonReport.setImagePayload((String)imagePayload);
+					watsonReport.setImagePayload((String)imagePayloadObject);
 				}
 
 			});
@@ -589,9 +599,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object timeSpent) {
+					WatsonReport watsonReport, Object timeSpentObject) {
 
-					watsonReport.setTimeSpent((String)timeSpent);
+					watsonReport.setTimeSpent((String)timeSpentObject);
 				}
 
 			});
@@ -611,9 +621,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object reportedUser) {
+					WatsonReport watsonReport, Object reportedUserObject) {
 
-					watsonReport.setReportedUser((String)reportedUser);
+					watsonReport.setReportedUser((String)reportedUserObject);
 				}
 
 			});
@@ -633,9 +643,9 @@ public class WatsonReportModelImpl
 
 				@Override
 				public void accept(
-					WatsonReport watsonReport, Object reportDate) {
+					WatsonReport watsonReport, Object reportDateObject) {
 
-					watsonReport.setReportDate((Date)reportDate);
+					watsonReport.setReportDate((Date)reportDateObject);
 				}
 
 			});
@@ -654,8 +664,10 @@ public class WatsonReportModelImpl
 			new BiConsumer<WatsonReport, Object>() {
 
 				@Override
-				public void accept(WatsonReport watsonReport, Object key) {
-					watsonReport.setKey((Integer)key);
+				public void accept(
+					WatsonReport watsonReport, Object keyObject) {
+
+					watsonReport.setKey((Integer)keyObject);
 				}
 
 			});
@@ -674,8 +686,10 @@ public class WatsonReportModelImpl
 			new BiConsumer<WatsonReport, Object>() {
 
 				@Override
-				public void accept(WatsonReport watsonReport, Object status) {
-					watsonReport.setStatus((Integer)status);
+				public void accept(
+					WatsonReport watsonReport, Object statusObject) {
+
+					watsonReport.setStatus((Integer)statusObject);
 				}
 
 			});

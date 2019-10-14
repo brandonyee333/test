@@ -286,10 +286,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object watsonRelationshipAuditId) {
+					Object watsonRelationshipAuditIdObject) {
 
 					watsonRelationshipAudit.setWatsonRelationshipAuditId(
-						(Long)watsonRelationshipAuditId);
+						(Long)watsonRelationshipAuditIdObject);
 				}
 
 			});
@@ -312,9 +312,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object groupId) {
+					Object groupIdObject) {
 
-					watsonRelationshipAudit.setGroupId((Long)groupId);
+					watsonRelationshipAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -337,9 +337,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object companyId) {
+					Object companyIdObject) {
 
-					watsonRelationshipAudit.setCompanyId((Long)companyId);
+					watsonRelationshipAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -362,9 +362,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object userId) {
+					Object userIdObject) {
 
-					watsonRelationshipAudit.setUserId((Long)userId);
+					watsonRelationshipAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -387,9 +387,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object userName) {
+					Object userNameObject) {
 
-					watsonRelationshipAudit.setUserName((String)userName);
+					watsonRelationshipAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -412,9 +412,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonRelationshipAudit.setCreateDate((Date)createDate);
+					watsonRelationshipAudit.setCreateDate(
+						(Date)createDateObject);
 				}
 
 			});
@@ -437,9 +438,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonRelationshipAudit.setModifiedDate((Date)modifiedDate);
+					watsonRelationshipAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -462,10 +464,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object watsonIncidentId) {
+					Object watsonIncidentIdObject) {
 
 					watsonRelationshipAudit.setWatsonIncidentId(
-						(Long)watsonIncidentId);
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -488,10 +490,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object watsonRelationshipId) {
+					Object watsonRelationshipIdObject) {
 
 					watsonRelationshipAudit.setWatsonRelationshipId(
-						(Long)watsonRelationshipId);
+						(Long)watsonRelationshipIdObject);
 				}
 
 			});
@@ -514,10 +516,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonRelationshipAudit.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -540,9 +542,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object classNameId1) {
+					Object classNameId1Object) {
 
-					watsonRelationshipAudit.setClassNameId1((Long)classNameId1);
+					watsonRelationshipAudit.setClassNameId1(
+						(Long)classNameId1Object);
 				}
 
 			});
@@ -565,9 +568,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object classPK1) {
+					Object classPK1Object) {
 
-					watsonRelationshipAudit.setClassPK1((Long)classPK1);
+					watsonRelationshipAudit.setClassPK1((Long)classPK1Object);
 				}
 
 			});
@@ -590,9 +593,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object classNameId2) {
+					Object classNameId2Object) {
 
-					watsonRelationshipAudit.setClassNameId2((Long)classNameId2);
+					watsonRelationshipAudit.setClassNameId2(
+						(Long)classNameId2Object);
 				}
 
 			});
@@ -615,9 +619,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object classPK2) {
+					Object classPK2Object) {
 
-					watsonRelationshipAudit.setClassPK2((Long)classPK2);
+					watsonRelationshipAudit.setClassPK2((Long)classPK2Object);
 				}
 
 			});
@@ -640,9 +644,10 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object description) {
+					Object descriptionObject) {
 
-					watsonRelationshipAudit.setDescription((String)description);
+					watsonRelationshipAudit.setDescription(
+						(String)descriptionObject);
 				}
 
 			});
@@ -665,9 +670,9 @@ public class WatsonRelationshipAuditModelImpl
 				@Override
 				public void accept(
 					WatsonRelationshipAudit watsonRelationshipAudit,
-					Object status) {
+					Object statusObject) {
 
-					watsonRelationshipAudit.setStatus((Integer)status);
+					watsonRelationshipAudit.setStatus((Integer)statusObject);
 				}
 
 			});

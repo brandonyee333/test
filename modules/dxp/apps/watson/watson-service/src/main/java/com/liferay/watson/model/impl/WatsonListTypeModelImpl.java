@@ -274,9 +274,11 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object watsonListTypeId) {
+					WatsonListType watsonListType,
+					Object watsonListTypeIdObject) {
 
-					watsonListType.setWatsonListTypeId((Long)watsonListTypeId);
+					watsonListType.setWatsonListTypeId(
+						(Long)watsonListTypeIdObject);
 				}
 
 			});
@@ -296,9 +298,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object groupId) {
+					WatsonListType watsonListType, Object groupIdObject) {
 
-					watsonListType.setGroupId((Long)groupId);
+					watsonListType.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -318,9 +320,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object companyId) {
+					WatsonListType watsonListType, Object companyIdObject) {
 
-					watsonListType.setCompanyId((Long)companyId);
+					watsonListType.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -340,9 +342,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object userId) {
+					WatsonListType watsonListType, Object userIdObject) {
 
-					watsonListType.setUserId((Long)userId);
+					watsonListType.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -362,9 +364,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object userName) {
+					WatsonListType watsonListType, Object userNameObject) {
 
-					watsonListType.setUserName((String)userName);
+					watsonListType.setUserName((String)userNameObject);
 				}
 
 			});
@@ -384,9 +386,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object createDate) {
+					WatsonListType watsonListType, Object createDateObject) {
 
-					watsonListType.setCreateDate((Date)createDate);
+					watsonListType.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -406,9 +408,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object modifiedDate) {
+					WatsonListType watsonListType, Object modifiedDateObject) {
 
-					watsonListType.setModifiedDate((Date)modifiedDate);
+					watsonListType.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -429,10 +431,10 @@ public class WatsonListTypeModelImpl
 				@Override
 				public void accept(
 					WatsonListType watsonListType,
-					Object parentWatsonListTypeId) {
+					Object parentWatsonListTypeIdObject) {
 
 					watsonListType.setParentWatsonListTypeId(
-						(Long)parentWatsonListTypeId);
+						(Long)parentWatsonListTypeIdObject);
 				}
 
 			});
@@ -451,8 +453,10 @@ public class WatsonListTypeModelImpl
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object name) {
-					watsonListType.setName((String)name);
+				public void accept(
+					WatsonListType watsonListType, Object nameObject) {
+
+					watsonListType.setName((String)nameObject);
 				}
 
 			});
@@ -471,8 +475,10 @@ public class WatsonListTypeModelImpl
 			new BiConsumer<WatsonListType, Object>() {
 
 				@Override
-				public void accept(WatsonListType watsonListType, Object type) {
-					watsonListType.setType((String)type);
+				public void accept(
+					WatsonListType watsonListType, Object typeObject) {
+
+					watsonListType.setType((String)typeObject);
 				}
 
 			});
@@ -492,9 +498,9 @@ public class WatsonListTypeModelImpl
 
 				@Override
 				public void accept(
-					WatsonListType watsonListType, Object status) {
+					WatsonListType watsonListType, Object statusObject) {
 
-					watsonListType.setStatus((Integer)status);
+					watsonListType.setStatus((Integer)statusObject);
 				}
 
 			});

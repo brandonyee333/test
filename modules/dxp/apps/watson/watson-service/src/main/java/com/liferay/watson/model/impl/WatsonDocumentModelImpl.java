@@ -273,9 +273,11 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object watsonDocumentId) {
+					WatsonDocument watsonDocument,
+					Object watsonDocumentIdObject) {
 
-					watsonDocument.setWatsonDocumentId((Long)watsonDocumentId);
+					watsonDocument.setWatsonDocumentId(
+						(Long)watsonDocumentIdObject);
 				}
 
 			});
@@ -295,9 +297,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object groupId) {
+					WatsonDocument watsonDocument, Object groupIdObject) {
 
-					watsonDocument.setGroupId((Long)groupId);
+					watsonDocument.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -317,9 +319,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object companyId) {
+					WatsonDocument watsonDocument, Object companyIdObject) {
 
-					watsonDocument.setCompanyId((Long)companyId);
+					watsonDocument.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -339,9 +341,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object userId) {
+					WatsonDocument watsonDocument, Object userIdObject) {
 
-					watsonDocument.setUserId((Long)userId);
+					watsonDocument.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -361,9 +363,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object userName) {
+					WatsonDocument watsonDocument, Object userNameObject) {
 
-					watsonDocument.setUserName((String)userName);
+					watsonDocument.setUserName((String)userNameObject);
 				}
 
 			});
@@ -383,9 +385,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object createDate) {
+					WatsonDocument watsonDocument, Object createDateObject) {
 
-					watsonDocument.setCreateDate((Date)createDate);
+					watsonDocument.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -405,9 +407,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object modifiedDate) {
+					WatsonDocument watsonDocument, Object modifiedDateObject) {
 
-					watsonDocument.setModifiedDate((Date)modifiedDate);
+					watsonDocument.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -428,10 +430,10 @@ public class WatsonDocumentModelImpl
 				@Override
 				public void accept(
 					WatsonDocument watsonDocument,
-					Object parentTypeWatsonListTypeId) {
+					Object parentTypeWatsonListTypeIdObject) {
 
 					watsonDocument.setParentTypeWatsonListTypeId(
-						(Long)parentTypeWatsonListTypeId);
+						(Long)parentTypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -452,10 +454,10 @@ public class WatsonDocumentModelImpl
 				@Override
 				public void accept(
 					WatsonDocument watsonDocument,
-					Object subtypeWatsonListTypeId) {
+					Object subtypeWatsonListTypeIdObject) {
 
 					watsonDocument.setSubtypeWatsonListTypeId(
-						(Long)subtypeWatsonListTypeId);
+						(Long)subtypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -476,10 +478,10 @@ public class WatsonDocumentModelImpl
 				@Override
 				public void accept(
 					WatsonDocument watsonDocument,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonDocument.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -499,9 +501,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object watsonChildId) {
+					WatsonDocument watsonDocument, Object watsonChildIdObject) {
 
-					watsonDocument.setWatsonChildId((Long)watsonChildId);
+					watsonDocument.setWatsonChildId((Long)watsonChildIdObject);
 				}
 
 			});
@@ -521,10 +523,11 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object originalDocument) {
+					WatsonDocument watsonDocument,
+					Object originalDocumentObject) {
 
 					watsonDocument.setOriginalDocument(
-						(Boolean)originalDocument);
+						(Boolean)originalDocumentObject);
 				}
 
 			});
@@ -544,9 +547,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object receivedDate) {
+					WatsonDocument watsonDocument, Object receivedDateObject) {
 
-					watsonDocument.setReceivedDate((Date)receivedDate);
+					watsonDocument.setReceivedDate((Date)receivedDateObject);
 				}
 
 			});
@@ -566,9 +569,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object imagePayload) {
+					WatsonDocument watsonDocument, Object imagePayloadObject) {
 
-					watsonDocument.setImagePayload((String)imagePayload);
+					watsonDocument.setImagePayload((String)imagePayloadObject);
 				}
 
 			});
@@ -588,9 +591,9 @@ public class WatsonDocumentModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocument watsonDocument, Object status) {
+					WatsonDocument watsonDocument, Object statusObject) {
 
-					watsonDocument.setStatus((Integer)status);
+					watsonDocument.setStatus((Integer)statusObject);
 				}
 
 			});

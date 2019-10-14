@@ -276,10 +276,10 @@ public class WatsonHistoryAuditModelImpl
 				@Override
 				public void accept(
 					WatsonHistoryAudit watsonHistoryAudit,
-					Object watsonHistoryAuditId) {
+					Object watsonHistoryAuditIdObject) {
 
 					watsonHistoryAudit.setWatsonHistoryAuditId(
-						(Long)watsonHistoryAuditId);
+						(Long)watsonHistoryAuditIdObject);
 				}
 
 			});
@@ -299,9 +299,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object groupId) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object groupIdObject) {
 
-					watsonHistoryAudit.setGroupId((Long)groupId);
+					watsonHistoryAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -321,9 +322,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object companyId) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object companyIdObject) {
 
-					watsonHistoryAudit.setCompanyId((Long)companyId);
+					watsonHistoryAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -343,9 +345,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object userId) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object userIdObject) {
 
-					watsonHistoryAudit.setUserId((Long)userId);
+					watsonHistoryAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -365,9 +368,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object userName) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object userNameObject) {
 
-					watsonHistoryAudit.setUserName((String)userName);
+					watsonHistoryAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -387,9 +391,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object createDate) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object createDateObject) {
 
-					watsonHistoryAudit.setCreateDate((Date)createDate);
+					watsonHistoryAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -410,9 +415,10 @@ public class WatsonHistoryAuditModelImpl
 				@Override
 				public void accept(
 					WatsonHistoryAudit watsonHistoryAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonHistoryAudit.setModifiedDate((Date)modifiedDate);
+					watsonHistoryAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -433,10 +439,10 @@ public class WatsonHistoryAuditModelImpl
 				@Override
 				public void accept(
 					WatsonHistoryAudit watsonHistoryAudit,
-					Object watsonHistoryId) {
+					Object watsonHistoryIdObject) {
 
 					watsonHistoryAudit.setWatsonHistoryId(
-						(Long)watsonHistoryId);
+						(Long)watsonHistoryIdObject);
 				}
 
 			});
@@ -457,9 +463,10 @@ public class WatsonHistoryAuditModelImpl
 				@Override
 				public void accept(
 					WatsonHistoryAudit watsonHistoryAudit,
-					Object watsonParentId) {
+					Object watsonParentIdObject) {
 
-					watsonHistoryAudit.setWatsonParentId((Long)watsonParentId);
+					watsonHistoryAudit.setWatsonParentId(
+						(Long)watsonParentIdObject);
 				}
 
 			});
@@ -479,9 +486,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object classNameId) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object classNameIdObject) {
 
-					watsonHistoryAudit.setClassNameId((Long)classNameId);
+					watsonHistoryAudit.setClassNameId((Long)classNameIdObject);
 				}
 
 			});
@@ -501,9 +509,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object classPK) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object classPKObject) {
 
-					watsonHistoryAudit.setClassPK((Long)classPK);
+					watsonHistoryAudit.setClassPK((Long)classPKObject);
 				}
 
 			});
@@ -523,9 +532,9 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object type) {
+					WatsonHistoryAudit watsonHistoryAudit, Object typeObject) {
 
-					watsonHistoryAudit.setType((Integer)type);
+					watsonHistoryAudit.setType((Integer)typeObject);
 				}
 
 			});
@@ -545,9 +554,10 @@ public class WatsonHistoryAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistoryAudit watsonHistoryAudit, Object status) {
+					WatsonHistoryAudit watsonHistoryAudit,
+					Object statusObject) {
 
-					watsonHistoryAudit.setStatus((Integer)status);
+					watsonHistoryAudit.setStatus((Integer)statusObject);
 				}
 
 			});

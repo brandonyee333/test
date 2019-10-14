@@ -310,10 +310,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object watsonAddressAuditId) {
+					Object watsonAddressAuditIdObject) {
 
 					watsonAddressAudit.setWatsonAddressAuditId(
-						(Long)watsonAddressAuditId);
+						(Long)watsonAddressAuditIdObject);
 				}
 
 			});
@@ -333,9 +333,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object groupId) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object groupIdObject) {
 
-					watsonAddressAudit.setGroupId((Long)groupId);
+					watsonAddressAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -355,9 +356,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object companyId) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object companyIdObject) {
 
-					watsonAddressAudit.setCompanyId((Long)companyId);
+					watsonAddressAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -377,9 +379,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object userId) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object userIdObject) {
 
-					watsonAddressAudit.setUserId((Long)userId);
+					watsonAddressAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -399,9 +402,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object userName) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object userNameObject) {
 
-					watsonAddressAudit.setUserName((String)userName);
+					watsonAddressAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -421,9 +425,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object createDate) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object createDateObject) {
 
-					watsonAddressAudit.setCreateDate((Date)createDate);
+					watsonAddressAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -444,9 +449,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonAddressAudit.setModifiedDate((Date)modifiedDate);
+					watsonAddressAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -466,9 +472,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object countryId) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object countryIdObject) {
 
-					watsonAddressAudit.setCountryId((Long)countryId);
+					watsonAddressAudit.setCountryId((Long)countryIdObject);
 				}
 
 			});
@@ -489,10 +496,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object districtWatsonListTypeId) {
+					Object districtWatsonListTypeIdObject) {
 
 					watsonAddressAudit.setDistrictWatsonListTypeId(
-						(Long)districtWatsonListTypeId);
+						(Long)districtWatsonListTypeIdObject);
 				}
 
 			});
@@ -513,10 +520,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object originalWatsonAddressId) {
+					Object originalWatsonAddressIdObject) {
 
 					watsonAddressAudit.setOriginalWatsonAddressId(
-						(Long)originalWatsonAddressId);
+						(Long)originalWatsonAddressIdObject);
 				}
 
 			});
@@ -537,10 +544,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object provinceWatsonListTypeId) {
+					Object provinceWatsonListTypeIdObject) {
 
 					watsonAddressAudit.setProvinceWatsonListTypeId(
-						(Long)provinceWatsonListTypeId);
+						(Long)provinceWatsonListTypeIdObject);
 				}
 
 			});
@@ -561,10 +568,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object subDistrictWatsonListTypeId) {
+					Object subDistrictWatsonListTypeIdObject) {
 
 					watsonAddressAudit.setSubDistrictWatsonListTypeId(
-						(Long)subDistrictWatsonListTypeId);
+						(Long)subDistrictWatsonListTypeIdObject);
 				}
 
 			});
@@ -585,10 +592,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonAddressAudit.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -609,10 +616,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object watsonAddressId) {
+					Object watsonAddressIdObject) {
 
 					watsonAddressAudit.setWatsonAddressId(
-						(Long)watsonAddressId);
+						(Long)watsonAddressIdObject);
 				}
 
 			});
@@ -633,10 +640,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object watsonIncidentId) {
+					Object watsonIncidentIdObject) {
 
 					watsonAddressAudit.setWatsonIncidentId(
-						(Long)watsonIncidentId);
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -656,9 +663,9 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object name) {
+					WatsonAddressAudit watsonAddressAudit, Object nameObject) {
 
-					watsonAddressAudit.setName((String)name);
+					watsonAddressAudit.setName((String)nameObject);
 				}
 
 			});
@@ -678,9 +685,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object postalCode) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object postalCodeObject) {
 
-					watsonAddressAudit.setPostalCode((String)postalCode);
+					watsonAddressAudit.setPostalCode((String)postalCodeObject);
 				}
 
 			});
@@ -700,9 +708,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object region) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object regionObject) {
 
-					watsonAddressAudit.setRegion((String)region);
+					watsonAddressAudit.setRegion((String)regionObject);
 				}
 
 			});
@@ -722,9 +731,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object street) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object streetObject) {
 
-					watsonAddressAudit.setStreet((String)street);
+					watsonAddressAudit.setStreet((String)streetObject);
 				}
 
 			});
@@ -744,9 +754,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object number) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object numberObject) {
 
-					watsonAddressAudit.setNumber((String)number);
+					watsonAddressAudit.setNumber((String)numberObject);
 				}
 
 			});
@@ -766,9 +777,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object building) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object buildingObject) {
 
-					watsonAddressAudit.setBuilding((String)building);
+					watsonAddressAudit.setBuilding((String)buildingObject);
 				}
 
 			});
@@ -788,9 +800,9 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object floor) {
+					WatsonAddressAudit watsonAddressAudit, Object floorObject) {
 
-					watsonAddressAudit.setFloor((String)floor);
+					watsonAddressAudit.setFloor((String)floorObject);
 				}
 
 			});
@@ -810,9 +822,9 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object room) {
+					WatsonAddressAudit watsonAddressAudit, Object roomObject) {
 
-					watsonAddressAudit.setRoom((String)room);
+					watsonAddressAudit.setRoom((String)roomObject);
 				}
 
 			});
@@ -832,9 +844,11 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object description) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object descriptionObject) {
 
-					watsonAddressAudit.setDescription((String)description);
+					watsonAddressAudit.setDescription(
+						(String)descriptionObject);
 				}
 
 			});
@@ -855,9 +869,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object imagePayload) {
+					Object imagePayloadObject) {
 
-					watsonAddressAudit.setImagePayload((String)imagePayload);
+					watsonAddressAudit.setImagePayload(
+						(String)imagePayloadObject);
 				}
 
 			});
@@ -877,9 +892,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object otherType) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object otherTypeObject) {
 
-					watsonAddressAudit.setOtherType((String)otherType);
+					watsonAddressAudit.setOtherType((String)otherTypeObject);
 				}
 
 			});
@@ -900,9 +916,10 @@ public class WatsonAddressAuditModelImpl
 				@Override
 				public void accept(
 					WatsonAddressAudit watsonAddressAudit,
-					Object lastSeenDate) {
+					Object lastSeenDateObject) {
 
-					watsonAddressAudit.setLastSeenDate((Date)lastSeenDate);
+					watsonAddressAudit.setLastSeenDate(
+						(Date)lastSeenDateObject);
 				}
 
 			});
@@ -922,9 +939,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object latitude) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object latitudeObject) {
 
-					watsonAddressAudit.setLatitude((Double)latitude);
+					watsonAddressAudit.setLatitude((Double)latitudeObject);
 				}
 
 			});
@@ -944,9 +962,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object longitude) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object longitudeObject) {
 
-					watsonAddressAudit.setLongitude((Double)longitude);
+					watsonAddressAudit.setLongitude((Double)longitudeObject);
 				}
 
 			});
@@ -966,9 +985,10 @@ public class WatsonAddressAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonAddressAudit watsonAddressAudit, Object status) {
+					WatsonAddressAudit watsonAddressAudit,
+					Object statusObject) {
 
-					watsonAddressAudit.setStatus((Integer)status);
+					watsonAddressAudit.setStatus((Integer)statusObject);
 				}
 
 			});

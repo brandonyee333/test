@@ -296,10 +296,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object watsonVehicleAuditId) {
+					Object watsonVehicleAuditIdObject) {
 
 					watsonVehicleAudit.setWatsonVehicleAuditId(
-						(Long)watsonVehicleAuditId);
+						(Long)watsonVehicleAuditIdObject);
 				}
 
 			});
@@ -319,9 +319,10 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object groupId) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object groupIdObject) {
 
-					watsonVehicleAudit.setGroupId((Long)groupId);
+					watsonVehicleAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -341,9 +342,10 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object companyId) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object companyIdObject) {
 
-					watsonVehicleAudit.setCompanyId((Long)companyId);
+					watsonVehicleAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -363,9 +365,10 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object userId) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object userIdObject) {
 
-					watsonVehicleAudit.setUserId((Long)userId);
+					watsonVehicleAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -385,9 +388,10 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object userName) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object userNameObject) {
 
-					watsonVehicleAudit.setUserName((String)userName);
+					watsonVehicleAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -407,9 +411,10 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object createDate) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object createDateObject) {
 
-					watsonVehicleAudit.setCreateDate((Date)createDate);
+					watsonVehicleAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -430,9 +435,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonVehicleAudit.setModifiedDate((Date)modifiedDate);
+					watsonVehicleAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -453,10 +459,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object colorWatsonListTypeId) {
+					Object colorWatsonListTypeIdObject) {
 
 					watsonVehicleAudit.setColorWatsonListTypeId(
-						(Long)colorWatsonListTypeId);
+						(Long)colorWatsonListTypeIdObject);
 				}
 
 			});
@@ -477,10 +483,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object makeWatsonListTypeId) {
+					Object makeWatsonListTypeIdObject) {
 
 					watsonVehicleAudit.setMakeWatsonListTypeId(
-						(Long)makeWatsonListTypeId);
+						(Long)makeWatsonListTypeIdObject);
 				}
 
 			});
@@ -501,10 +507,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object modelWatsonListTypeId) {
+					Object modelWatsonListTypeIdObject) {
 
 					watsonVehicleAudit.setModelWatsonListTypeId(
-						(Long)modelWatsonListTypeId);
+						(Long)modelWatsonListTypeIdObject);
 				}
 
 			});
@@ -525,10 +531,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object originalWatsonVehicleId) {
+					Object originalWatsonVehicleIdObject) {
 
 					watsonVehicleAudit.setOriginalWatsonVehicleId(
-						(Long)originalWatsonVehicleId);
+						(Long)originalWatsonVehicleIdObject);
 				}
 
 			});
@@ -549,10 +555,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonVehicleAudit.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -573,10 +579,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object yearWatsonListTypeId) {
+					Object yearWatsonListTypeIdObject) {
 
 					watsonVehicleAudit.setYearWatsonListTypeId(
-						(Long)yearWatsonListTypeId);
+						(Long)yearWatsonListTypeIdObject);
 				}
 
 			});
@@ -597,10 +603,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object watsonIncidentId) {
+					Object watsonIncidentIdObject) {
 
 					watsonVehicleAudit.setWatsonIncidentId(
-						(Long)watsonIncidentId);
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -621,10 +627,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object watsonVehicleId) {
+					Object watsonVehicleIdObject) {
 
 					watsonVehicleAudit.setWatsonVehicleId(
-						(Long)watsonVehicleId);
+						(Long)watsonVehicleIdObject);
 				}
 
 			});
@@ -644,9 +650,9 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object year) {
+					WatsonVehicleAudit watsonVehicleAudit, Object yearObject) {
 
-					watsonVehicleAudit.setYear((Integer)year);
+					watsonVehicleAudit.setYear((Integer)yearObject);
 				}
 
 			});
@@ -666,9 +672,11 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object description) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object descriptionObject) {
 
-					watsonVehicleAudit.setDescription((String)description);
+					watsonVehicleAudit.setDescription(
+						(String)descriptionObject);
 				}
 
 			});
@@ -689,9 +697,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object imagePayload) {
+					Object imagePayloadObject) {
 
-					watsonVehicleAudit.setImagePayload((String)imagePayload);
+					watsonVehicleAudit.setImagePayload(
+						(String)imagePayloadObject);
 				}
 
 			});
@@ -712,9 +721,10 @@ public class WatsonVehicleAuditModelImpl
 				@Override
 				public void accept(
 					WatsonVehicleAudit watsonVehicleAudit,
-					Object licensePlate) {
+					Object licensePlateObject) {
 
-					watsonVehicleAudit.setLicensePlate((String)licensePlate);
+					watsonVehicleAudit.setLicensePlate(
+						(String)licensePlateObject);
 				}
 
 			});
@@ -734,9 +744,10 @@ public class WatsonVehicleAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonVehicleAudit watsonVehicleAudit, Object status) {
+					WatsonVehicleAudit watsonVehicleAudit,
+					Object statusObject) {
 
-					watsonVehicleAudit.setStatus((Integer)status);
+					watsonVehicleAudit.setStatus((Integer)statusObject);
 				}
 
 			});

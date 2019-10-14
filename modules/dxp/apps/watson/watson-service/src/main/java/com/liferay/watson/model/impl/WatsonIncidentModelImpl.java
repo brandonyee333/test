@@ -297,9 +297,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object watsonIncidentId) {
+					WatsonIncident watsonIncident,
+					Object watsonIncidentIdObject) {
 
-					watsonIncident.setWatsonIncidentId((Long)watsonIncidentId);
+					watsonIncident.setWatsonIncidentId(
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -319,9 +321,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object groupId) {
+					WatsonIncident watsonIncident, Object groupIdObject) {
 
-					watsonIncident.setGroupId((Long)groupId);
+					watsonIncident.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -341,9 +343,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object companyId) {
+					WatsonIncident watsonIncident, Object companyIdObject) {
 
-					watsonIncident.setCompanyId((Long)companyId);
+					watsonIncident.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -363,9 +365,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object userId) {
+					WatsonIncident watsonIncident, Object userIdObject) {
 
-					watsonIncident.setUserId((Long)userId);
+					watsonIncident.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -385,9 +387,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object userName) {
+					WatsonIncident watsonIncident, Object userNameObject) {
 
-					watsonIncident.setUserName((String)userName);
+					watsonIncident.setUserName((String)userNameObject);
 				}
 
 			});
@@ -407,9 +409,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object createDate) {
+					WatsonIncident watsonIncident, Object createDateObject) {
 
-					watsonIncident.setCreateDate((Date)createDate);
+					watsonIncident.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -429,9 +431,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object modifiedDate) {
+					WatsonIncident watsonIncident, Object modifiedDateObject) {
 
-					watsonIncident.setModifiedDate((Date)modifiedDate);
+					watsonIncident.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -452,10 +454,10 @@ public class WatsonIncidentModelImpl
 				@Override
 				public void accept(
 					WatsonIncident watsonIncident,
-					Object externalCaseWatsonListTypeId) {
+					Object externalCaseWatsonListTypeIdObject) {
 
 					watsonIncident.setExternalCaseWatsonListTypeId(
-						(Long)externalCaseWatsonListTypeId);
+						(Long)externalCaseWatsonListTypeIdObject);
 				}
 
 			});
@@ -476,10 +478,10 @@ public class WatsonIncidentModelImpl
 				@Override
 				public void accept(
 					WatsonIncident watsonIncident,
-					Object sourceWatsonListTypeId) {
+					Object sourceWatsonListTypeIdObject) {
 
 					watsonIncident.setSourceWatsonListTypeId(
-						(Long)sourceWatsonListTypeId);
+						(Long)sourceWatsonListTypeIdObject);
 				}
 
 			});
@@ -500,10 +502,10 @@ public class WatsonIncidentModelImpl
 				@Override
 				public void accept(
 					WatsonIncident watsonIncident,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonIncident.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -524,10 +526,10 @@ public class WatsonIncidentModelImpl
 				@Override
 				public void accept(
 					WatsonIncident watsonIncident,
-					Object subtypeWatsonListTypeId) {
+					Object subtypeWatsonListTypeIdObject) {
 
 					watsonIncident.setSubtypeWatsonListTypeId(
-						(Long)subtypeWatsonListTypeId);
+						(Long)subtypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -547,10 +549,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object audienceAdultCount) {
+					WatsonIncident watsonIncident,
+					Object audienceAdultCountObject) {
 
 					watsonIncident.setAudienceAdultCount(
-						(Long)audienceAdultCount);
+						(Long)audienceAdultCountObject);
 				}
 
 			});
@@ -570,10 +573,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object audienceChildCount) {
+					WatsonIncident watsonIncident,
+					Object audienceChildCountObject) {
 
 					watsonIncident.setAudienceChildCount(
-						(Long)audienceChildCount);
+						(Long)audienceChildCountObject);
 				}
 
 			});
@@ -593,9 +597,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object victimAdultCount) {
+					WatsonIncident watsonIncident,
+					Object victimAdultCountObject) {
 
-					watsonIncident.setVictimAdultCount((Long)victimAdultCount);
+					watsonIncident.setVictimAdultCount(
+						(Long)victimAdultCountObject);
 				}
 
 			});
@@ -615,9 +621,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object victimChildCount) {
+					WatsonIncident watsonIncident,
+					Object victimChildCountObject) {
 
-					watsonIncident.setVictimChildCount((Long)victimChildCount);
+					watsonIncident.setVictimChildCount(
+						(Long)victimChildCountObject);
 				}
 
 			});
@@ -636,8 +644,10 @@ public class WatsonIncidentModelImpl
 			new BiConsumer<WatsonIncident, Object>() {
 
 				@Override
-				public void accept(WatsonIncident watsonIncident, Object name) {
-					watsonIncident.setName((String)name);
+				public void accept(
+					WatsonIncident watsonIncident, Object nameObject) {
+
+					watsonIncident.setName((String)nameObject);
 				}
 
 			});
@@ -657,9 +667,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object description) {
+					WatsonIncident watsonIncident, Object descriptionObject) {
 
-					watsonIncident.setDescription((String)description);
+					watsonIncident.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -679,9 +689,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object externalCaseId) {
+					WatsonIncident watsonIncident,
+					Object externalCaseIdObject) {
 
-					watsonIncident.setExternalCaseId((String)externalCaseId);
+					watsonIncident.setExternalCaseId(
+						(String)externalCaseIdObject);
 				}
 
 			});
@@ -701,9 +713,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object reportDate) {
+					WatsonIncident watsonIncident, Object reportDateObject) {
 
-					watsonIncident.setReportDate((Date)reportDate);
+					watsonIncident.setReportDate((Date)reportDateObject);
 				}
 
 			});
@@ -723,9 +735,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object startDate) {
+					WatsonIncident watsonIncident, Object startDateObject) {
 
-					watsonIncident.setStartDate((Date)startDate);
+					watsonIncident.setStartDate((Date)startDateObject);
 				}
 
 			});
@@ -745,9 +757,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object endDate) {
+					WatsonIncident watsonIncident, Object endDateObject) {
 
-					watsonIncident.setEndDate((Date)endDate);
+					watsonIncident.setEndDate((Date)endDateObject);
 				}
 
 			});
@@ -767,9 +779,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object expenses) {
+					WatsonIncident watsonIncident, Object expensesObject) {
 
-					watsonIncident.setExpenses((Double)expenses);
+					watsonIncident.setExpenses((Double)expensesObject);
 				}
 
 			});
@@ -789,9 +801,11 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object incidentStatus) {
+					WatsonIncident watsonIncident,
+					Object incidentStatusObject) {
 
-					watsonIncident.setIncidentStatus((Integer)incidentStatus);
+					watsonIncident.setIncidentStatus(
+						(Integer)incidentStatusObject);
 				}
 
 			});
@@ -811,9 +825,9 @@ public class WatsonIncidentModelImpl
 
 				@Override
 				public void accept(
-					WatsonIncident watsonIncident, Object status) {
+					WatsonIncident watsonIncident, Object statusObject) {
 
-					watsonIncident.setStatus((Integer)status);
+					watsonIncident.setStatus((Integer)statusObject);
 				}
 
 			});

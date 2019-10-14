@@ -292,10 +292,10 @@ public class WatsonReportAuditModelImpl
 				@Override
 				public void accept(
 					WatsonReportAudit watsonReportAudit,
-					Object watsonReportAuditId) {
+					Object watsonReportAuditIdObject) {
 
 					watsonReportAudit.setWatsonReportAuditId(
-						(Long)watsonReportAuditId);
+						(Long)watsonReportAuditIdObject);
 				}
 
 			});
@@ -315,9 +315,9 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object groupId) {
+					WatsonReportAudit watsonReportAudit, Object groupIdObject) {
 
-					watsonReportAudit.setGroupId((Long)groupId);
+					watsonReportAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -337,9 +337,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object companyId) {
+					WatsonReportAudit watsonReportAudit,
+					Object companyIdObject) {
 
-					watsonReportAudit.setCompanyId((Long)companyId);
+					watsonReportAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -359,9 +360,9 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object userId) {
+					WatsonReportAudit watsonReportAudit, Object userIdObject) {
 
-					watsonReportAudit.setUserId((Long)userId);
+					watsonReportAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -381,9 +382,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object userName) {
+					WatsonReportAudit watsonReportAudit,
+					Object userNameObject) {
 
-					watsonReportAudit.setUserName((String)userName);
+					watsonReportAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -403,9 +405,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object createDate) {
+					WatsonReportAudit watsonReportAudit,
+					Object createDateObject) {
 
-					watsonReportAudit.setCreateDate((Date)createDate);
+					watsonReportAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -425,9 +428,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object modifiedDate) {
+					WatsonReportAudit watsonReportAudit,
+					Object modifiedDateObject) {
 
-					watsonReportAudit.setModifiedDate((Date)modifiedDate);
+					watsonReportAudit.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -448,10 +452,10 @@ public class WatsonReportAuditModelImpl
 				@Override
 				public void accept(
 					WatsonReportAudit watsonReportAudit,
-					Object originalWatsonReportId) {
+					Object originalWatsonReportIdObject) {
 
 					watsonReportAudit.setOriginalWatsonReportId(
-						(Long)originalWatsonReportId);
+						(Long)originalWatsonReportIdObject);
 				}
 
 			});
@@ -472,10 +476,10 @@ public class WatsonReportAuditModelImpl
 				@Override
 				public void accept(
 					WatsonReportAudit watsonReportAudit,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonReportAudit.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -495,9 +499,11 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object watsonChildId) {
+					WatsonReportAudit watsonReportAudit,
+					Object watsonChildIdObject) {
 
-					watsonReportAudit.setWatsonChildId((Long)watsonChildId);
+					watsonReportAudit.setWatsonChildId(
+						(Long)watsonChildIdObject);
 				}
 
 			});
@@ -518,9 +524,10 @@ public class WatsonReportAuditModelImpl
 				@Override
 				public void accept(
 					WatsonReportAudit watsonReportAudit,
-					Object watsonReportId) {
+					Object watsonReportIdObject) {
 
-					watsonReportAudit.setWatsonReportId((Long)watsonReportId);
+					watsonReportAudit.setWatsonReportId(
+						(Long)watsonReportIdObject);
 				}
 
 			});
@@ -540,9 +547,9 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object name) {
+					WatsonReportAudit watsonReportAudit, Object nameObject) {
 
-					watsonReportAudit.setName((String)name);
+					watsonReportAudit.setName((String)nameObject);
 				}
 
 			});
@@ -562,9 +569,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object description) {
+					WatsonReportAudit watsonReportAudit,
+					Object descriptionObject) {
 
-					watsonReportAudit.setDescription((String)description);
+					watsonReportAudit.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -584,9 +592,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object fullReport) {
+					WatsonReportAudit watsonReportAudit,
+					Object fullReportObject) {
 
-					watsonReportAudit.setFullReport((String)fullReport);
+					watsonReportAudit.setFullReport((String)fullReportObject);
 				}
 
 			});
@@ -606,9 +615,11 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object imagePayload) {
+					WatsonReportAudit watsonReportAudit,
+					Object imagePayloadObject) {
 
-					watsonReportAudit.setImagePayload((String)imagePayload);
+					watsonReportAudit.setImagePayload(
+						(String)imagePayloadObject);
 				}
 
 			});
@@ -628,9 +639,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object timeSpent) {
+					WatsonReportAudit watsonReportAudit,
+					Object timeSpentObject) {
 
-					watsonReportAudit.setTimeSpent((String)timeSpent);
+					watsonReportAudit.setTimeSpent((String)timeSpentObject);
 				}
 
 			});
@@ -650,9 +662,11 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object reportedUser) {
+					WatsonReportAudit watsonReportAudit,
+					Object reportedUserObject) {
 
-					watsonReportAudit.setReportedUser((String)reportedUser);
+					watsonReportAudit.setReportedUser(
+						(String)reportedUserObject);
 				}
 
 			});
@@ -672,9 +686,10 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object reportDate) {
+					WatsonReportAudit watsonReportAudit,
+					Object reportDateObject) {
 
-					watsonReportAudit.setReportDate((Date)reportDate);
+					watsonReportAudit.setReportDate((Date)reportDateObject);
 				}
 
 			});
@@ -694,9 +709,9 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object key) {
+					WatsonReportAudit watsonReportAudit, Object keyObject) {
 
-					watsonReportAudit.setKey((Integer)key);
+					watsonReportAudit.setKey((Integer)keyObject);
 				}
 
 			});
@@ -716,9 +731,9 @@ public class WatsonReportAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonReportAudit watsonReportAudit, Object status) {
+					WatsonReportAudit watsonReportAudit, Object statusObject) {
 
-					watsonReportAudit.setStatus((Integer)status);
+					watsonReportAudit.setStatus((Integer)statusObject);
 				}
 
 			});

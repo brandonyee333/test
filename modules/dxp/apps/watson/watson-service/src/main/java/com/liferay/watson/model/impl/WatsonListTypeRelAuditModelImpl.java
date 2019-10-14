@@ -291,10 +291,10 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object watsonListTypeRelAuditId) {
+					Object watsonListTypeRelAuditIdObject) {
 
 					watsonListTypeRelAudit.setWatsonListTypeRelAuditId(
-						(Long)watsonListTypeRelAuditId);
+						(Long)watsonListTypeRelAuditIdObject);
 				}
 
 			});
@@ -317,9 +317,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object groupId) {
+					Object groupIdObject) {
 
-					watsonListTypeRelAudit.setGroupId((Long)groupId);
+					watsonListTypeRelAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -342,9 +342,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object companyId) {
+					Object companyIdObject) {
 
-					watsonListTypeRelAudit.setCompanyId((Long)companyId);
+					watsonListTypeRelAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -367,9 +367,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object userId) {
+					Object userIdObject) {
 
-					watsonListTypeRelAudit.setUserId((Long)userId);
+					watsonListTypeRelAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -392,9 +392,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object userName) {
+					Object userNameObject) {
 
-					watsonListTypeRelAudit.setUserName((String)userName);
+					watsonListTypeRelAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -417,9 +417,10 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonListTypeRelAudit.setCreateDate((Date)createDate);
+					watsonListTypeRelAudit.setCreateDate(
+						(Date)createDateObject);
 				}
 
 			});
@@ -442,9 +443,10 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonListTypeRelAudit.setModifiedDate((Date)modifiedDate);
+					watsonListTypeRelAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -467,10 +469,10 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object watsonListTypeId) {
+					Object watsonListTypeIdObject) {
 
 					watsonListTypeRelAudit.setWatsonListTypeId(
-						(Long)watsonListTypeId);
+						(Long)watsonListTypeIdObject);
 				}
 
 			});
@@ -493,10 +495,10 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object watsonListTypeRelId) {
+					Object watsonListTypeRelIdObject) {
 
 					watsonListTypeRelAudit.setWatsonListTypeRelId(
-						(Long)watsonListTypeRelId);
+						(Long)watsonListTypeRelIdObject);
 				}
 
 			});
@@ -519,9 +521,10 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object classNameId) {
+					Object classNameIdObject) {
 
-					watsonListTypeRelAudit.setClassNameId((Long)classNameId);
+					watsonListTypeRelAudit.setClassNameId(
+						(Long)classNameIdObject);
 				}
 
 			});
@@ -544,9 +547,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object classPK) {
+					Object classPKObject) {
 
-					watsonListTypeRelAudit.setClassPK((Long)classPK);
+					watsonListTypeRelAudit.setClassPK((Long)classPKObject);
 				}
 
 			});
@@ -569,9 +572,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object primary) {
+					Object primaryObject) {
 
-					watsonListTypeRelAudit.setPrimary((Boolean)primary);
+					watsonListTypeRelAudit.setPrimary((Boolean)primaryObject);
 				}
 
 			});
@@ -594,9 +597,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object value) {
+					Object valueObject) {
 
-					watsonListTypeRelAudit.setValue((String)value);
+					watsonListTypeRelAudit.setValue((String)valueObject);
 				}
 
 			});
@@ -619,9 +622,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object type) {
+					Object typeObject) {
 
-					watsonListTypeRelAudit.setType((String)type);
+					watsonListTypeRelAudit.setType((String)typeObject);
 				}
 
 			});
@@ -644,9 +647,9 @@ public class WatsonListTypeRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeRelAudit watsonListTypeRelAudit,
-					Object status) {
+					Object statusObject) {
 
-					watsonListTypeRelAudit.setStatus((Integer)status);
+					watsonListTypeRelAudit.setStatus((Integer)statusObject);
 				}
 
 			});

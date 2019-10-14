@@ -287,10 +287,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object watsonResourceAuditId) {
+					Object watsonResourceAuditIdObject) {
 
 					watsonResourceAudit.setWatsonResourceAuditId(
-						(Long)watsonResourceAuditId);
+						(Long)watsonResourceAuditIdObject);
 				}
 
 			});
@@ -310,9 +310,10 @@ public class WatsonResourceAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonResourceAudit watsonResourceAudit, Object groupId) {
+					WatsonResourceAudit watsonResourceAudit,
+					Object groupIdObject) {
 
-					watsonResourceAudit.setGroupId((Long)groupId);
+					watsonResourceAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -332,9 +333,10 @@ public class WatsonResourceAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonResourceAudit watsonResourceAudit, Object companyId) {
+					WatsonResourceAudit watsonResourceAudit,
+					Object companyIdObject) {
 
-					watsonResourceAudit.setCompanyId((Long)companyId);
+					watsonResourceAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -354,9 +356,10 @@ public class WatsonResourceAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonResourceAudit watsonResourceAudit, Object userId) {
+					WatsonResourceAudit watsonResourceAudit,
+					Object userIdObject) {
 
-					watsonResourceAudit.setUserId((Long)userId);
+					watsonResourceAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -376,9 +379,10 @@ public class WatsonResourceAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonResourceAudit watsonResourceAudit, Object userName) {
+					WatsonResourceAudit watsonResourceAudit,
+					Object userNameObject) {
 
-					watsonResourceAudit.setUserName((String)userName);
+					watsonResourceAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -399,9 +403,9 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonResourceAudit.setCreateDate((Date)createDate);
+					watsonResourceAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -422,9 +426,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonResourceAudit.setModifiedDate((Date)modifiedDate);
+					watsonResourceAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -445,10 +450,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object originalWatsonResourceId) {
+					Object originalWatsonResourceIdObject) {
 
 					watsonResourceAudit.setOriginalWatsonResourceId(
-						(Long)originalWatsonResourceId);
+						(Long)originalWatsonResourceIdObject);
 				}
 
 			});
@@ -469,10 +474,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonResourceAudit.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -493,10 +498,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object watsonIncidentId) {
+					Object watsonIncidentIdObject) {
 
 					watsonResourceAudit.setWatsonIncidentId(
-						(Long)watsonIncidentId);
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -517,10 +522,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object watsonResourceId) {
+					Object watsonResourceIdObject) {
 
 					watsonResourceAudit.setWatsonResourceId(
-						(Long)watsonResourceId);
+						(Long)watsonResourceIdObject);
 				}
 
 			});
@@ -540,9 +545,10 @@ public class WatsonResourceAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonResourceAudit watsonResourceAudit, Object name) {
+					WatsonResourceAudit watsonResourceAudit,
+					Object nameObject) {
 
-					watsonResourceAudit.setName((String)name);
+					watsonResourceAudit.setName((String)nameObject);
 				}
 
 			});
@@ -563,9 +569,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object description) {
+					Object descriptionObject) {
 
-					watsonResourceAudit.setDescription((String)description);
+					watsonResourceAudit.setDescription(
+						(String)descriptionObject);
 				}
 
 			});
@@ -586,9 +593,10 @@ public class WatsonResourceAuditModelImpl
 				@Override
 				public void accept(
 					WatsonResourceAudit watsonResourceAudit,
-					Object imagePayload) {
+					Object imagePayloadObject) {
 
-					watsonResourceAudit.setImagePayload((String)imagePayload);
+					watsonResourceAudit.setImagePayload(
+						(String)imagePayloadObject);
 				}
 
 			});
@@ -608,9 +616,10 @@ public class WatsonResourceAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonResourceAudit watsonResourceAudit, Object status) {
+					WatsonResourceAudit watsonResourceAudit,
+					Object statusObject) {
 
-					watsonResourceAudit.setStatus((Integer)status);
+					watsonResourceAudit.setStatus((Integer)statusObject);
 				}
 
 			});

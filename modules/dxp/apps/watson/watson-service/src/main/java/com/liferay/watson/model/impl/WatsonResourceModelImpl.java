@@ -280,9 +280,11 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object watsonResourceId) {
+					WatsonResource watsonResource,
+					Object watsonResourceIdObject) {
 
-					watsonResource.setWatsonResourceId((Long)watsonResourceId);
+					watsonResource.setWatsonResourceId(
+						(Long)watsonResourceIdObject);
 				}
 
 			});
@@ -302,9 +304,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object groupId) {
+					WatsonResource watsonResource, Object groupIdObject) {
 
-					watsonResource.setGroupId((Long)groupId);
+					watsonResource.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -324,9 +326,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object companyId) {
+					WatsonResource watsonResource, Object companyIdObject) {
 
-					watsonResource.setCompanyId((Long)companyId);
+					watsonResource.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -346,9 +348,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object userId) {
+					WatsonResource watsonResource, Object userIdObject) {
 
-					watsonResource.setUserId((Long)userId);
+					watsonResource.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -368,9 +370,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object userName) {
+					WatsonResource watsonResource, Object userNameObject) {
 
-					watsonResource.setUserName((String)userName);
+					watsonResource.setUserName((String)userNameObject);
 				}
 
 			});
@@ -390,9 +392,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object createDate) {
+					WatsonResource watsonResource, Object createDateObject) {
 
-					watsonResource.setCreateDate((Date)createDate);
+					watsonResource.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -412,9 +414,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object modifiedDate) {
+					WatsonResource watsonResource, Object modifiedDateObject) {
 
-					watsonResource.setModifiedDate((Date)modifiedDate);
+					watsonResource.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -435,10 +437,10 @@ public class WatsonResourceModelImpl
 				@Override
 				public void accept(
 					WatsonResource watsonResource,
-					Object originalWatsonResourceId) {
+					Object originalWatsonResourceIdObject) {
 
 					watsonResource.setOriginalWatsonResourceId(
-						(Long)originalWatsonResourceId);
+						(Long)originalWatsonResourceIdObject);
 				}
 
 			});
@@ -459,10 +461,10 @@ public class WatsonResourceModelImpl
 				@Override
 				public void accept(
 					WatsonResource watsonResource,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonResource.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -482,9 +484,11 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object watsonIncidentId) {
+					WatsonResource watsonResource,
+					Object watsonIncidentIdObject) {
 
-					watsonResource.setWatsonIncidentId((Long)watsonIncidentId);
+					watsonResource.setWatsonIncidentId(
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -503,8 +507,10 @@ public class WatsonResourceModelImpl
 			new BiConsumer<WatsonResource, Object>() {
 
 				@Override
-				public void accept(WatsonResource watsonResource, Object name) {
-					watsonResource.setName((String)name);
+				public void accept(
+					WatsonResource watsonResource, Object nameObject) {
+
+					watsonResource.setName((String)nameObject);
 				}
 
 			});
@@ -524,9 +530,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object description) {
+					WatsonResource watsonResource, Object descriptionObject) {
 
-					watsonResource.setDescription((String)description);
+					watsonResource.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -546,9 +552,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object imagePayload) {
+					WatsonResource watsonResource, Object imagePayloadObject) {
 
-					watsonResource.setImagePayload((String)imagePayload);
+					watsonResource.setImagePayload((String)imagePayloadObject);
 				}
 
 			});
@@ -568,9 +574,9 @@ public class WatsonResourceModelImpl
 
 				@Override
 				public void accept(
-					WatsonResource watsonResource, Object status) {
+					WatsonResource watsonResource, Object statusObject) {
 
-					watsonResource.setStatus((Integer)status);
+					watsonResource.setStatus((Integer)statusObject);
 				}
 
 			});

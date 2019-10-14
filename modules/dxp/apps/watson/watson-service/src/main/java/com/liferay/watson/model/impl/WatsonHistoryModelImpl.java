@@ -269,9 +269,10 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object watsonHistoryId) {
+					WatsonHistory watsonHistory, Object watsonHistoryIdObject) {
 
-					watsonHistory.setWatsonHistoryId((Long)watsonHistoryId);
+					watsonHistory.setWatsonHistoryId(
+						(Long)watsonHistoryIdObject);
 				}
 
 			});
@@ -291,9 +292,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object groupId) {
+					WatsonHistory watsonHistory, Object groupIdObject) {
 
-					watsonHistory.setGroupId((Long)groupId);
+					watsonHistory.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -313,9 +314,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object companyId) {
+					WatsonHistory watsonHistory, Object companyIdObject) {
 
-					watsonHistory.setCompanyId((Long)companyId);
+					watsonHistory.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -334,8 +335,10 @@ public class WatsonHistoryModelImpl
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object userId) {
-					watsonHistory.setUserId((Long)userId);
+				public void accept(
+					WatsonHistory watsonHistory, Object userIdObject) {
+
+					watsonHistory.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -355,9 +358,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object userName) {
+					WatsonHistory watsonHistory, Object userNameObject) {
 
-					watsonHistory.setUserName((String)userName);
+					watsonHistory.setUserName((String)userNameObject);
 				}
 
 			});
@@ -377,9 +380,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object createDate) {
+					WatsonHistory watsonHistory, Object createDateObject) {
 
-					watsonHistory.setCreateDate((Date)createDate);
+					watsonHistory.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -399,9 +402,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object modifiedDate) {
+					WatsonHistory watsonHistory, Object modifiedDateObject) {
 
-					watsonHistory.setModifiedDate((Date)modifiedDate);
+					watsonHistory.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -421,9 +424,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object watsonParentId) {
+					WatsonHistory watsonHistory, Object watsonParentIdObject) {
 
-					watsonHistory.setWatsonParentId((Long)watsonParentId);
+					watsonHistory.setWatsonParentId((Long)watsonParentIdObject);
 				}
 
 			});
@@ -443,9 +446,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object classNameId) {
+					WatsonHistory watsonHistory, Object classNameIdObject) {
 
-					watsonHistory.setClassNameId((Long)classNameId);
+					watsonHistory.setClassNameId((Long)classNameIdObject);
 				}
 
 			});
@@ -465,9 +468,9 @@ public class WatsonHistoryModelImpl
 
 				@Override
 				public void accept(
-					WatsonHistory watsonHistory, Object classPK) {
+					WatsonHistory watsonHistory, Object classPKObject) {
 
-					watsonHistory.setClassPK((Long)classPK);
+					watsonHistory.setClassPK((Long)classPKObject);
 				}
 
 			});
@@ -486,8 +489,10 @@ public class WatsonHistoryModelImpl
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object type) {
-					watsonHistory.setType((Integer)type);
+				public void accept(
+					WatsonHistory watsonHistory, Object typeObject) {
+
+					watsonHistory.setType((Integer)typeObject);
 				}
 
 			});
@@ -506,8 +511,10 @@ public class WatsonHistoryModelImpl
 			new BiConsumer<WatsonHistory, Object>() {
 
 				@Override
-				public void accept(WatsonHistory watsonHistory, Object status) {
-					watsonHistory.setStatus((Integer)status);
+				public void accept(
+					WatsonHistory watsonHistory, Object statusObject) {
+
+					watsonHistory.setStatus((Integer)statusObject);
 				}
 
 			});

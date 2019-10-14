@@ -355,10 +355,10 @@ public class KaleoDraftDefinitionModelImpl
 				@Override
 				public void accept(
 					KaleoDraftDefinition kaleoDraftDefinition,
-					Object kaleoDraftDefinitionId) {
+					Object kaleoDraftDefinitionIdObject) {
 
 					kaleoDraftDefinition.setKaleoDraftDefinitionId(
-						(Long)kaleoDraftDefinitionId);
+						(Long)kaleoDraftDefinitionIdObject);
 				}
 
 			});
@@ -378,9 +378,10 @@ public class KaleoDraftDefinitionModelImpl
 
 				@Override
 				public void accept(
-					KaleoDraftDefinition kaleoDraftDefinition, Object groupId) {
+					KaleoDraftDefinition kaleoDraftDefinition,
+					Object groupIdObject) {
 
-					kaleoDraftDefinition.setGroupId((Long)groupId);
+					kaleoDraftDefinition.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -401,9 +402,9 @@ public class KaleoDraftDefinitionModelImpl
 				@Override
 				public void accept(
 					KaleoDraftDefinition kaleoDraftDefinition,
-					Object companyId) {
+					Object companyIdObject) {
 
-					kaleoDraftDefinition.setCompanyId((Long)companyId);
+					kaleoDraftDefinition.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -423,9 +424,10 @@ public class KaleoDraftDefinitionModelImpl
 
 				@Override
 				public void accept(
-					KaleoDraftDefinition kaleoDraftDefinition, Object userId) {
+					KaleoDraftDefinition kaleoDraftDefinition,
+					Object userIdObject) {
 
-					kaleoDraftDefinition.setUserId((Long)userId);
+					kaleoDraftDefinition.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -446,9 +448,9 @@ public class KaleoDraftDefinitionModelImpl
 				@Override
 				public void accept(
 					KaleoDraftDefinition kaleoDraftDefinition,
-					Object userName) {
+					Object userNameObject) {
 
-					kaleoDraftDefinition.setUserName((String)userName);
+					kaleoDraftDefinition.setUserName((String)userNameObject);
 				}
 
 			});
@@ -469,9 +471,9 @@ public class KaleoDraftDefinitionModelImpl
 				@Override
 				public void accept(
 					KaleoDraftDefinition kaleoDraftDefinition,
-					Object createDate) {
+					Object createDateObject) {
 
-					kaleoDraftDefinition.setCreateDate((Date)createDate);
+					kaleoDraftDefinition.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -492,9 +494,10 @@ public class KaleoDraftDefinitionModelImpl
 				@Override
 				public void accept(
 					KaleoDraftDefinition kaleoDraftDefinition,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					kaleoDraftDefinition.setModifiedDate((Date)modifiedDate);
+					kaleoDraftDefinition.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -514,9 +517,10 @@ public class KaleoDraftDefinitionModelImpl
 
 				@Override
 				public void accept(
-					KaleoDraftDefinition kaleoDraftDefinition, Object name) {
+					KaleoDraftDefinition kaleoDraftDefinition,
+					Object nameObject) {
 
-					kaleoDraftDefinition.setName((String)name);
+					kaleoDraftDefinition.setName((String)nameObject);
 				}
 
 			});
@@ -536,9 +540,10 @@ public class KaleoDraftDefinitionModelImpl
 
 				@Override
 				public void accept(
-					KaleoDraftDefinition kaleoDraftDefinition, Object title) {
+					KaleoDraftDefinition kaleoDraftDefinition,
+					Object titleObject) {
 
-					kaleoDraftDefinition.setTitle((String)title);
+					kaleoDraftDefinition.setTitle((String)titleObject);
 				}
 
 			});
@@ -558,9 +563,10 @@ public class KaleoDraftDefinitionModelImpl
 
 				@Override
 				public void accept(
-					KaleoDraftDefinition kaleoDraftDefinition, Object content) {
+					KaleoDraftDefinition kaleoDraftDefinition,
+					Object contentObject) {
 
-					kaleoDraftDefinition.setContent((String)content);
+					kaleoDraftDefinition.setContent((String)contentObject);
 				}
 
 			});
@@ -580,9 +586,10 @@ public class KaleoDraftDefinitionModelImpl
 
 				@Override
 				public void accept(
-					KaleoDraftDefinition kaleoDraftDefinition, Object version) {
+					KaleoDraftDefinition kaleoDraftDefinition,
+					Object versionObject) {
 
-					kaleoDraftDefinition.setVersion((Integer)version);
+					kaleoDraftDefinition.setVersion((Integer)versionObject);
 				}
 
 			});
@@ -603,9 +610,10 @@ public class KaleoDraftDefinitionModelImpl
 				@Override
 				public void accept(
 					KaleoDraftDefinition kaleoDraftDefinition,
-					Object draftVersion) {
+					Object draftVersionObject) {
 
-					kaleoDraftDefinition.setDraftVersion((Integer)draftVersion);
+					kaleoDraftDefinition.setDraftVersion(
+						(Integer)draftVersionObject);
 				}
 
 			});

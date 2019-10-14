@@ -278,10 +278,10 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object watsonIncidentRelAuditId) {
+					Object watsonIncidentRelAuditIdObject) {
 
 					watsonIncidentRelAudit.setWatsonIncidentRelAuditId(
-						(Long)watsonIncidentRelAuditId);
+						(Long)watsonIncidentRelAuditIdObject);
 				}
 
 			});
@@ -304,9 +304,9 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object groupId) {
+					Object groupIdObject) {
 
-					watsonIncidentRelAudit.setGroupId((Long)groupId);
+					watsonIncidentRelAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -329,9 +329,9 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object companyId) {
+					Object companyIdObject) {
 
-					watsonIncidentRelAudit.setCompanyId((Long)companyId);
+					watsonIncidentRelAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -354,9 +354,9 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object userId) {
+					Object userIdObject) {
 
-					watsonIncidentRelAudit.setUserId((Long)userId);
+					watsonIncidentRelAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -379,9 +379,9 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object userName) {
+					Object userNameObject) {
 
-					watsonIncidentRelAudit.setUserName((String)userName);
+					watsonIncidentRelAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -404,9 +404,10 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonIncidentRelAudit.setCreateDate((Date)createDate);
+					watsonIncidentRelAudit.setCreateDate(
+						(Date)createDateObject);
 				}
 
 			});
@@ -429,9 +430,10 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonIncidentRelAudit.setModifiedDate((Date)modifiedDate);
+					watsonIncidentRelAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -454,10 +456,10 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object watsonIncidentId1) {
+					Object watsonIncidentId1Object) {
 
 					watsonIncidentRelAudit.setWatsonIncidentId1(
-						(Long)watsonIncidentId1);
+						(Long)watsonIncidentId1Object);
 				}
 
 			});
@@ -480,10 +482,10 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object watsonIncidentId2) {
+					Object watsonIncidentId2Object) {
 
 					watsonIncidentRelAudit.setWatsonIncidentId2(
-						(Long)watsonIncidentId2);
+						(Long)watsonIncidentId2Object);
 				}
 
 			});
@@ -506,10 +508,10 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object watsonIncidentRelId) {
+					Object watsonIncidentRelIdObject) {
 
 					watsonIncidentRelAudit.setWatsonIncidentRelId(
-						(Long)watsonIncidentRelId);
+						(Long)watsonIncidentRelIdObject);
 				}
 
 			});
@@ -532,9 +534,9 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object type) {
+					Object typeObject) {
 
-					watsonIncidentRelAudit.setType((String)type);
+					watsonIncidentRelAudit.setType((String)typeObject);
 				}
 
 			});
@@ -557,9 +559,9 @@ public class WatsonIncidentRelAuditModelImpl
 				@Override
 				public void accept(
 					WatsonIncidentRelAudit watsonIncidentRelAudit,
-					Object status) {
+					Object statusObject) {
 
-					watsonIncidentRelAudit.setStatus((Integer)status);
+					watsonIncidentRelAudit.setStatus((Integer)statusObject);
 				}
 
 			});

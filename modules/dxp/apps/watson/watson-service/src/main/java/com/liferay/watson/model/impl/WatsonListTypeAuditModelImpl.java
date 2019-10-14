@@ -282,10 +282,10 @@ public class WatsonListTypeAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeAudit watsonListTypeAudit,
-					Object watsonListTypeAuditId) {
+					Object watsonListTypeAuditIdObject) {
 
 					watsonListTypeAudit.setWatsonListTypeAuditId(
-						(Long)watsonListTypeAuditId);
+						(Long)watsonListTypeAuditIdObject);
 				}
 
 			});
@@ -305,9 +305,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object groupId) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object groupIdObject) {
 
-					watsonListTypeAudit.setGroupId((Long)groupId);
+					watsonListTypeAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -327,9 +328,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object companyId) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object companyIdObject) {
 
-					watsonListTypeAudit.setCompanyId((Long)companyId);
+					watsonListTypeAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -349,9 +351,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object userId) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object userIdObject) {
 
-					watsonListTypeAudit.setUserId((Long)userId);
+					watsonListTypeAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -371,9 +374,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object userName) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object userNameObject) {
 
-					watsonListTypeAudit.setUserName((String)userName);
+					watsonListTypeAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -394,9 +398,9 @@ public class WatsonListTypeAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeAudit watsonListTypeAudit,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonListTypeAudit.setCreateDate((Date)createDate);
+					watsonListTypeAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -417,9 +421,10 @@ public class WatsonListTypeAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeAudit watsonListTypeAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonListTypeAudit.setModifiedDate((Date)modifiedDate);
+					watsonListTypeAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -440,10 +445,10 @@ public class WatsonListTypeAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeAudit watsonListTypeAudit,
-					Object parentWatsonListTypeId) {
+					Object parentWatsonListTypeIdObject) {
 
 					watsonListTypeAudit.setParentWatsonListTypeId(
-						(Long)parentWatsonListTypeId);
+						(Long)parentWatsonListTypeIdObject);
 				}
 
 			});
@@ -464,10 +469,10 @@ public class WatsonListTypeAuditModelImpl
 				@Override
 				public void accept(
 					WatsonListTypeAudit watsonListTypeAudit,
-					Object watsonListTypeId) {
+					Object watsonListTypeIdObject) {
 
 					watsonListTypeAudit.setWatsonListTypeId(
-						(Long)watsonListTypeId);
+						(Long)watsonListTypeIdObject);
 				}
 
 			});
@@ -487,9 +492,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object name) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object nameObject) {
 
-					watsonListTypeAudit.setName((String)name);
+					watsonListTypeAudit.setName((String)nameObject);
 				}
 
 			});
@@ -509,9 +515,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object type) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object typeObject) {
 
-					watsonListTypeAudit.setType((String)type);
+					watsonListTypeAudit.setType((String)typeObject);
 				}
 
 			});
@@ -531,9 +538,10 @@ public class WatsonListTypeAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonListTypeAudit watsonListTypeAudit, Object status) {
+					WatsonListTypeAudit watsonListTypeAudit,
+					Object statusObject) {
 
-					watsonListTypeAudit.setStatus((Integer)status);
+					watsonListTypeAudit.setStatus((Integer)statusObject);
 				}
 
 			});

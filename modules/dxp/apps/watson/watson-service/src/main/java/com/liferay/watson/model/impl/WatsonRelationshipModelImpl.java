@@ -277,10 +277,10 @@ public class WatsonRelationshipModelImpl
 				@Override
 				public void accept(
 					WatsonRelationship watsonRelationship,
-					Object watsonRelationshipId) {
+					Object watsonRelationshipIdObject) {
 
 					watsonRelationship.setWatsonRelationshipId(
-						(Long)watsonRelationshipId);
+						(Long)watsonRelationshipIdObject);
 				}
 
 			});
@@ -300,9 +300,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object groupId) {
+					WatsonRelationship watsonRelationship,
+					Object groupIdObject) {
 
-					watsonRelationship.setGroupId((Long)groupId);
+					watsonRelationship.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -322,9 +323,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object companyId) {
+					WatsonRelationship watsonRelationship,
+					Object companyIdObject) {
 
-					watsonRelationship.setCompanyId((Long)companyId);
+					watsonRelationship.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -344,9 +346,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object userId) {
+					WatsonRelationship watsonRelationship,
+					Object userIdObject) {
 
-					watsonRelationship.setUserId((Long)userId);
+					watsonRelationship.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -366,9 +369,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object userName) {
+					WatsonRelationship watsonRelationship,
+					Object userNameObject) {
 
-					watsonRelationship.setUserName((String)userName);
+					watsonRelationship.setUserName((String)userNameObject);
 				}
 
 			});
@@ -388,9 +392,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object createDate) {
+					WatsonRelationship watsonRelationship,
+					Object createDateObject) {
 
-					watsonRelationship.setCreateDate((Date)createDate);
+					watsonRelationship.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -411,9 +416,10 @@ public class WatsonRelationshipModelImpl
 				@Override
 				public void accept(
 					WatsonRelationship watsonRelationship,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonRelationship.setModifiedDate((Date)modifiedDate);
+					watsonRelationship.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -434,10 +440,10 @@ public class WatsonRelationshipModelImpl
 				@Override
 				public void accept(
 					WatsonRelationship watsonRelationship,
-					Object watsonIncidentId) {
+					Object watsonIncidentIdObject) {
 
 					watsonRelationship.setWatsonIncidentId(
-						(Long)watsonIncidentId);
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -458,10 +464,10 @@ public class WatsonRelationshipModelImpl
 				@Override
 				public void accept(
 					WatsonRelationship watsonRelationship,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonRelationship.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -482,9 +488,10 @@ public class WatsonRelationshipModelImpl
 				@Override
 				public void accept(
 					WatsonRelationship watsonRelationship,
-					Object classNameId1) {
+					Object classNameId1Object) {
 
-					watsonRelationship.setClassNameId1((Long)classNameId1);
+					watsonRelationship.setClassNameId1(
+						(Long)classNameId1Object);
 				}
 
 			});
@@ -504,9 +511,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object classPK1) {
+					WatsonRelationship watsonRelationship,
+					Object classPK1Object) {
 
-					watsonRelationship.setClassPK1((Long)classPK1);
+					watsonRelationship.setClassPK1((Long)classPK1Object);
 				}
 
 			});
@@ -527,9 +535,10 @@ public class WatsonRelationshipModelImpl
 				@Override
 				public void accept(
 					WatsonRelationship watsonRelationship,
-					Object classNameId2) {
+					Object classNameId2Object) {
 
-					watsonRelationship.setClassNameId2((Long)classNameId2);
+					watsonRelationship.setClassNameId2(
+						(Long)classNameId2Object);
 				}
 
 			});
@@ -549,9 +558,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object classPK2) {
+					WatsonRelationship watsonRelationship,
+					Object classPK2Object) {
 
-					watsonRelationship.setClassPK2((Long)classPK2);
+					watsonRelationship.setClassPK2((Long)classPK2Object);
 				}
 
 			});
@@ -571,9 +581,11 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object description) {
+					WatsonRelationship watsonRelationship,
+					Object descriptionObject) {
 
-					watsonRelationship.setDescription((String)description);
+					watsonRelationship.setDescription(
+						(String)descriptionObject);
 				}
 
 			});
@@ -593,9 +605,10 @@ public class WatsonRelationshipModelImpl
 
 				@Override
 				public void accept(
-					WatsonRelationship watsonRelationship, Object status) {
+					WatsonRelationship watsonRelationship,
+					Object statusObject) {
 
-					watsonRelationship.setStatus((Integer)status);
+					watsonRelationship.setStatus((Integer)statusObject);
 				}
 
 			});

@@ -340,10 +340,10 @@ public class WatsonTokenAuthEntryModelImpl
 				@Override
 				public void accept(
 					WatsonTokenAuthEntry watsonTokenAuthEntry,
-					Object watsonTokenAuthEntryId) {
+					Object watsonTokenAuthEntryIdObject) {
 
 					watsonTokenAuthEntry.setWatsonTokenAuthEntryId(
-						(Long)watsonTokenAuthEntryId);
+						(Long)watsonTokenAuthEntryIdObject);
 				}
 
 			});
@@ -364,9 +364,9 @@ public class WatsonTokenAuthEntryModelImpl
 				@Override
 				public void accept(
 					WatsonTokenAuthEntry watsonTokenAuthEntry,
-					Object companyId) {
+					Object companyIdObject) {
 
-					watsonTokenAuthEntry.setCompanyId((Long)companyId);
+					watsonTokenAuthEntry.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -386,9 +386,10 @@ public class WatsonTokenAuthEntryModelImpl
 
 				@Override
 				public void accept(
-					WatsonTokenAuthEntry watsonTokenAuthEntry, Object userId) {
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object userIdObject) {
 
-					watsonTokenAuthEntry.setUserId((Long)userId);
+					watsonTokenAuthEntry.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -409,9 +410,9 @@ public class WatsonTokenAuthEntryModelImpl
 				@Override
 				public void accept(
 					WatsonTokenAuthEntry watsonTokenAuthEntry,
-					Object userName) {
+					Object userNameObject) {
 
-					watsonTokenAuthEntry.setUserName((String)userName);
+					watsonTokenAuthEntry.setUserName((String)userNameObject);
 				}
 
 			});
@@ -432,9 +433,9 @@ public class WatsonTokenAuthEntryModelImpl
 				@Override
 				public void accept(
 					WatsonTokenAuthEntry watsonTokenAuthEntry,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonTokenAuthEntry.setCreateDate((Date)createDate);
+					watsonTokenAuthEntry.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -454,9 +455,10 @@ public class WatsonTokenAuthEntryModelImpl
 
 				@Override
 				public void accept(
-					WatsonTokenAuthEntry watsonTokenAuthEntry, Object active) {
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object activeObject) {
 
-					watsonTokenAuthEntry.setActive((Boolean)active);
+					watsonTokenAuthEntry.setActive((Boolean)activeObject);
 				}
 
 			});
@@ -476,9 +478,10 @@ public class WatsonTokenAuthEntryModelImpl
 
 				@Override
 				public void accept(
-					WatsonTokenAuthEntry watsonTokenAuthEntry, Object loginIP) {
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object loginIPObject) {
 
-					watsonTokenAuthEntry.setLoginIP((String)loginIP);
+					watsonTokenAuthEntry.setLoginIP((String)loginIPObject);
 				}
 
 			});
@@ -498,9 +501,10 @@ public class WatsonTokenAuthEntryModelImpl
 
 				@Override
 				public void accept(
-					WatsonTokenAuthEntry watsonTokenAuthEntry, Object token) {
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object tokenObject) {
 
-					watsonTokenAuthEntry.setToken((String)token);
+					watsonTokenAuthEntry.setToken((String)tokenObject);
 				}
 
 			});
@@ -521,10 +525,10 @@ public class WatsonTokenAuthEntryModelImpl
 				@Override
 				public void accept(
 					WatsonTokenAuthEntry watsonTokenAuthEntry,
-					Object expirationDate) {
+					Object expirationDateObject) {
 
 					watsonTokenAuthEntry.setExpirationDate(
-						(Date)expirationDate);
+						(Date)expirationDateObject);
 				}
 
 			});
@@ -545,9 +549,9 @@ public class WatsonTokenAuthEntryModelImpl
 				@Override
 				public void accept(
 					WatsonTokenAuthEntry watsonTokenAuthEntry,
-					Object loginDate) {
+					Object loginDateObject) {
 
-					watsonTokenAuthEntry.setLoginDate((Date)loginDate);
+					watsonTokenAuthEntry.setLoginDate((Date)loginDateObject);
 				}
 
 			});
@@ -567,9 +571,10 @@ public class WatsonTokenAuthEntryModelImpl
 
 				@Override
 				public void accept(
-					WatsonTokenAuthEntry watsonTokenAuthEntry, Object status) {
+					WatsonTokenAuthEntry watsonTokenAuthEntry,
+					Object statusObject) {
 
-					watsonTokenAuthEntry.setStatus((Integer)status);
+					watsonTokenAuthEntry.setStatus((Integer)statusObject);
 				}
 
 			});

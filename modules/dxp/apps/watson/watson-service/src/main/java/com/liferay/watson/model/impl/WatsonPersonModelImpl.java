@@ -306,9 +306,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object watsonPersonId) {
+					WatsonPerson watsonPerson, Object watsonPersonIdObject) {
 
-					watsonPerson.setWatsonPersonId((Long)watsonPersonId);
+					watsonPerson.setWatsonPersonId((Long)watsonPersonIdObject);
 				}
 
 			});
@@ -327,8 +327,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object groupId) {
-					watsonPerson.setGroupId((Long)groupId);
+				public void accept(
+					WatsonPerson watsonPerson, Object groupIdObject) {
+
+					watsonPerson.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -348,9 +350,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object companyId) {
+					WatsonPerson watsonPerson, Object companyIdObject) {
 
-					watsonPerson.setCompanyId((Long)companyId);
+					watsonPerson.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -369,8 +371,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object userId) {
-					watsonPerson.setUserId((Long)userId);
+				public void accept(
+					WatsonPerson watsonPerson, Object userIdObject) {
+
+					watsonPerson.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -389,8 +393,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object userName) {
-					watsonPerson.setUserName((String)userName);
+				public void accept(
+					WatsonPerson watsonPerson, Object userNameObject) {
+
+					watsonPerson.setUserName((String)userNameObject);
 				}
 
 			});
@@ -410,9 +416,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object createDate) {
+					WatsonPerson watsonPerson, Object createDateObject) {
 
-					watsonPerson.setCreateDate((Date)createDate);
+					watsonPerson.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -432,9 +438,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object modifiedDate) {
+					WatsonPerson watsonPerson, Object modifiedDateObject) {
 
-					watsonPerson.setModifiedDate((Date)modifiedDate);
+					watsonPerson.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -454,9 +460,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object birthCountryId) {
+					WatsonPerson watsonPerson, Object birthCountryIdObject) {
 
-					watsonPerson.setBirthCountryId((Long)birthCountryId);
+					watsonPerson.setBirthCountryId((Long)birthCountryIdObject);
 				}
 
 			});
@@ -477,10 +483,10 @@ public class WatsonPersonModelImpl
 				@Override
 				public void accept(
 					WatsonPerson watsonPerson,
-					Object citizenshipWatsonListTypeId) {
+					Object citizenshipWatsonListTypeIdObject) {
 
 					watsonPerson.setCitizenshipWatsonListTypeId(
-						(Long)citizenshipWatsonListTypeId);
+						(Long)citizenshipWatsonListTypeIdObject);
 				}
 
 			});
@@ -500,10 +506,11 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object countryWatsonListTypeId) {
+					WatsonPerson watsonPerson,
+					Object countryWatsonListTypeIdObject) {
 
 					watsonPerson.setCountryWatsonListTypeId(
-						(Long)countryWatsonListTypeId);
+						(Long)countryWatsonListTypeIdObject);
 				}
 
 			});
@@ -524,10 +531,10 @@ public class WatsonPersonModelImpl
 				@Override
 				public void accept(
 					WatsonPerson watsonPerson,
-					Object ethnicityWatsonListTypeId) {
+					Object ethnicityWatsonListTypeIdObject) {
 
 					watsonPerson.setEthnicityWatsonListTypeId(
-						(Long)ethnicityWatsonListTypeId);
+						(Long)ethnicityWatsonListTypeIdObject);
 				}
 
 			});
@@ -547,10 +554,11 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object eyesWatsonListTypeId) {
+					WatsonPerson watsonPerson,
+					Object eyesWatsonListTypeIdObject) {
 
 					watsonPerson.setEyesWatsonListTypeId(
-						(Long)eyesWatsonListTypeId);
+						(Long)eyesWatsonListTypeIdObject);
 				}
 
 			});
@@ -570,10 +578,11 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object hairWatsonListTypeId) {
+					WatsonPerson watsonPerson,
+					Object hairWatsonListTypeIdObject) {
 
 					watsonPerson.setHairWatsonListTypeId(
-						(Long)hairWatsonListTypeId);
+						(Long)hairWatsonListTypeIdObject);
 				}
 
 			});
@@ -593,10 +602,11 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object originalWatsonPersonId) {
+					WatsonPerson watsonPerson,
+					Object originalWatsonPersonIdObject) {
 
 					watsonPerson.setOriginalWatsonPersonId(
-						(Long)originalWatsonPersonId);
+						(Long)originalWatsonPersonIdObject);
 				}
 
 			});
@@ -616,10 +626,11 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object sexWatsonListTypeId) {
+					WatsonPerson watsonPerson,
+					Object sexWatsonListTypeIdObject) {
 
 					watsonPerson.setSexWatsonListTypeId(
-						(Long)sexWatsonListTypeId);
+						(Long)sexWatsonListTypeIdObject);
 				}
 
 			});
@@ -639,10 +650,11 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object typeWatsonListTypeId) {
+					WatsonPerson watsonPerson,
+					Object typeWatsonListTypeIdObject) {
 
 					watsonPerson.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -662,9 +674,10 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object watsonIncidentId) {
+					WatsonPerson watsonPerson, Object watsonIncidentIdObject) {
 
-					watsonPerson.setWatsonIncidentId((Long)watsonIncidentId);
+					watsonPerson.setWatsonIncidentId(
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -684,9 +697,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object description) {
+					WatsonPerson watsonPerson, Object descriptionObject) {
 
-					watsonPerson.setDescription((String)description);
+					watsonPerson.setDescription((String)descriptionObject);
 				}
 
 			});
@@ -706,9 +719,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object imagePayload) {
+					WatsonPerson watsonPerson, Object imagePayloadObject) {
 
-					watsonPerson.setImagePayload((String)imagePayload);
+					watsonPerson.setImagePayload((String)imagePayloadObject);
 				}
 
 			});
@@ -728,9 +741,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object birthDate) {
+					WatsonPerson watsonPerson, Object birthDateObject) {
 
-					watsonPerson.setBirthDate((Date)birthDate);
+					watsonPerson.setBirthDate((Date)birthDateObject);
 				}
 
 			});
@@ -750,9 +763,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object dateAccepted) {
+					WatsonPerson watsonPerson, Object dateAcceptedObject) {
 
-					watsonPerson.setDateAccepted((Date)dateAccepted);
+					watsonPerson.setDateAccepted((Date)dateAcceptedObject);
 				}
 
 			});
@@ -772,9 +785,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object dateRescued) {
+					WatsonPerson watsonPerson, Object dateRescuedObject) {
 
-					watsonPerson.setDateRescued((Date)dateRescued);
+					watsonPerson.setDateRescued((Date)dateRescuedObject);
 				}
 
 			});
@@ -793,8 +806,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object startAge) {
-					watsonPerson.setStartAge((String)startAge);
+				public void accept(
+					WatsonPerson watsonPerson, Object startAgeObject) {
+
+					watsonPerson.setStartAge((String)startAgeObject);
 				}
 
 			});
@@ -813,8 +828,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object endAge) {
-					watsonPerson.setEndAge((String)endAge);
+				public void accept(
+					WatsonPerson watsonPerson, Object endAgeObject) {
+
+					watsonPerson.setEndAge((String)endAgeObject);
 				}
 
 			});
@@ -834,9 +851,9 @@ public class WatsonPersonModelImpl
 
 				@Override
 				public void accept(
-					WatsonPerson watsonPerson, Object occupation) {
+					WatsonPerson watsonPerson, Object occupationObject) {
 
-					watsonPerson.setOccupation((String)occupation);
+					watsonPerson.setOccupation((String)occupationObject);
 				}
 
 			});
@@ -855,8 +872,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object height) {
-					watsonPerson.setHeight((String)height);
+				public void accept(
+					WatsonPerson watsonPerson, Object heightObject) {
+
+					watsonPerson.setHeight((String)heightObject);
 				}
 
 			});
@@ -875,8 +894,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object weight) {
-					watsonPerson.setWeight((String)weight);
+				public void accept(
+					WatsonPerson watsonPerson, Object weightObject) {
+
+					watsonPerson.setWeight((String)weightObject);
 				}
 
 			});
@@ -895,8 +916,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object accepted) {
-					watsonPerson.setAccepted((Boolean)accepted);
+				public void accept(
+					WatsonPerson watsonPerson, Object acceptedObject) {
+
+					watsonPerson.setAccepted((Boolean)acceptedObject);
 				}
 
 			});
@@ -915,8 +938,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object rescued) {
-					watsonPerson.setRescued((Boolean)rescued);
+				public void accept(
+					WatsonPerson watsonPerson, Object rescuedObject) {
+
+					watsonPerson.setRescued((Boolean)rescuedObject);
 				}
 
 			});
@@ -935,8 +960,10 @@ public class WatsonPersonModelImpl
 			new BiConsumer<WatsonPerson, Object>() {
 
 				@Override
-				public void accept(WatsonPerson watsonPerson, Object status) {
-					watsonPerson.setStatus((Integer)status);
+				public void accept(
+					WatsonPerson watsonPerson, Object statusObject) {
+
+					watsonPerson.setStatus((Integer)statusObject);
 				}
 
 			});

@@ -275,9 +275,9 @@ public class AkismetEntryModelImpl
 
 				@Override
 				public void accept(
-					AkismetEntry akismetEntry, Object akismetEntryId) {
+					AkismetEntry akismetEntry, Object akismetEntryIdObject) {
 
-					akismetEntry.setAkismetEntryId((Long)akismetEntryId);
+					akismetEntry.setAkismetEntryId((Long)akismetEntryIdObject);
 				}
 
 			});
@@ -297,9 +297,9 @@ public class AkismetEntryModelImpl
 
 				@Override
 				public void accept(
-					AkismetEntry akismetEntry, Object modifiedDate) {
+					AkismetEntry akismetEntry, Object modifiedDateObject) {
 
-					akismetEntry.setModifiedDate((Date)modifiedDate);
+					akismetEntry.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -319,9 +319,9 @@ public class AkismetEntryModelImpl
 
 				@Override
 				public void accept(
-					AkismetEntry akismetEntry, Object classNameId) {
+					AkismetEntry akismetEntry, Object classNameIdObject) {
 
-					akismetEntry.setClassNameId((Long)classNameId);
+					akismetEntry.setClassNameId((Long)classNameIdObject);
 				}
 
 			});
@@ -340,8 +340,10 @@ public class AkismetEntryModelImpl
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object classPK) {
-					akismetEntry.setClassPK((Long)classPK);
+				public void accept(
+					AkismetEntry akismetEntry, Object classPKObject) {
+
+					akismetEntry.setClassPK((Long)classPKObject);
 				}
 
 			});
@@ -360,8 +362,10 @@ public class AkismetEntryModelImpl
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object type) {
-					akismetEntry.setType((String)type);
+				public void accept(
+					AkismetEntry akismetEntry, Object typeObject) {
+
+					akismetEntry.setType((String)typeObject);
 				}
 
 			});
@@ -381,9 +385,9 @@ public class AkismetEntryModelImpl
 
 				@Override
 				public void accept(
-					AkismetEntry akismetEntry, Object permalink) {
+					AkismetEntry akismetEntry, Object permalinkObject) {
 
-					akismetEntry.setPermalink((String)permalink);
+					akismetEntry.setPermalink((String)permalinkObject);
 				}
 
 			});
@@ -402,8 +406,10 @@ public class AkismetEntryModelImpl
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object referrer) {
-					akismetEntry.setReferrer((String)referrer);
+				public void accept(
+					AkismetEntry akismetEntry, Object referrerObject) {
+
+					akismetEntry.setReferrer((String)referrerObject);
 				}
 
 			});
@@ -423,9 +429,9 @@ public class AkismetEntryModelImpl
 
 				@Override
 				public void accept(
-					AkismetEntry akismetEntry, Object userAgent) {
+					AkismetEntry akismetEntry, Object userAgentObject) {
 
-					akismetEntry.setUserAgent((String)userAgent);
+					akismetEntry.setUserAgent((String)userAgentObject);
 				}
 
 			});
@@ -444,8 +450,10 @@ public class AkismetEntryModelImpl
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object userIP) {
-					akismetEntry.setUserIP((String)userIP);
+				public void accept(
+					AkismetEntry akismetEntry, Object userIPObject) {
+
+					akismetEntry.setUserIP((String)userIPObject);
 				}
 
 			});
@@ -464,8 +472,10 @@ public class AkismetEntryModelImpl
 			new BiConsumer<AkismetEntry, Object>() {
 
 				@Override
-				public void accept(AkismetEntry akismetEntry, Object userURL) {
-					akismetEntry.setUserURL((String)userURL);
+				public void accept(
+					AkismetEntry akismetEntry, Object userURLObject) {
+
+					akismetEntry.setUserURL((String)userURLObject);
 				}
 
 			});

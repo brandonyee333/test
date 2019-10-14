@@ -280,9 +280,11 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object watsonActivityId) {
+					WatsonActivity watsonActivity,
+					Object watsonActivityIdObject) {
 
-					watsonActivity.setWatsonActivityId((Long)watsonActivityId);
+					watsonActivity.setWatsonActivityId(
+						(Long)watsonActivityIdObject);
 				}
 
 			});
@@ -302,9 +304,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object groupId) {
+					WatsonActivity watsonActivity, Object groupIdObject) {
 
-					watsonActivity.setGroupId((Long)groupId);
+					watsonActivity.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -324,9 +326,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object companyId) {
+					WatsonActivity watsonActivity, Object companyIdObject) {
 
-					watsonActivity.setCompanyId((Long)companyId);
+					watsonActivity.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -346,9 +348,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object userId) {
+					WatsonActivity watsonActivity, Object userIdObject) {
 
-					watsonActivity.setUserId((Long)userId);
+					watsonActivity.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -368,9 +370,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object userName) {
+					WatsonActivity watsonActivity, Object userNameObject) {
 
-					watsonActivity.setUserName((String)userName);
+					watsonActivity.setUserName((String)userNameObject);
 				}
 
 			});
@@ -390,9 +392,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object createDate) {
+					WatsonActivity watsonActivity, Object createDateObject) {
 
-					watsonActivity.setCreateDate((Date)createDate);
+					watsonActivity.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -412,9 +414,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object modifiedDate) {
+					WatsonActivity watsonActivity, Object modifiedDateObject) {
 
-					watsonActivity.setModifiedDate((Date)modifiedDate);
+					watsonActivity.setModifiedDate((Date)modifiedDateObject);
 				}
 
 			});
@@ -435,10 +437,10 @@ public class WatsonActivityModelImpl
 				@Override
 				public void accept(
 					WatsonActivity watsonActivity,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonActivity.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -459,10 +461,10 @@ public class WatsonActivityModelImpl
 				@Override
 				public void accept(
 					WatsonActivity watsonActivity,
-					Object subtypeWatsonListTypeId) {
+					Object subtypeWatsonListTypeIdObject) {
 
 					watsonActivity.setSubtypeWatsonListTypeId(
-						(Long)subtypeWatsonListTypeId);
+						(Long)subtypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -482,9 +484,11 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object watsonIncidentId) {
+					WatsonActivity watsonActivity,
+					Object watsonIncidentIdObject) {
 
-					watsonActivity.setWatsonIncidentId((Long)watsonIncidentId);
+					watsonActivity.setWatsonIncidentId(
+						(Long)watsonIncidentIdObject);
 				}
 
 			});
@@ -504,9 +508,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object narrative) {
+					WatsonActivity watsonActivity, Object narrativeObject) {
 
-					watsonActivity.setNarrative((String)narrative);
+					watsonActivity.setNarrative((String)narrativeObject);
 				}
 
 			});
@@ -526,9 +530,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object reportDate) {
+					WatsonActivity watsonActivity, Object reportDateObject) {
 
-					watsonActivity.setReportDate((Date)reportDate);
+					watsonActivity.setReportDate((Date)reportDateObject);
 				}
 
 			});
@@ -548,9 +552,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object startDate) {
+					WatsonActivity watsonActivity, Object startDateObject) {
 
-					watsonActivity.setStartDate((Date)startDate);
+					watsonActivity.setStartDate((Date)startDateObject);
 				}
 
 			});
@@ -570,9 +574,9 @@ public class WatsonActivityModelImpl
 
 				@Override
 				public void accept(
-					WatsonActivity watsonActivity, Object status) {
+					WatsonActivity watsonActivity, Object statusObject) {
 
-					watsonActivity.setStatus((Integer)status);
+					watsonActivity.setStatus((Integer)statusObject);
 				}
 
 			});

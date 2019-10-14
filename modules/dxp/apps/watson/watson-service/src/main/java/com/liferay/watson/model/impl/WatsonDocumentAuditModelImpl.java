@@ -281,10 +281,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object watsonDocumentAuditId) {
+					Object watsonDocumentAuditIdObject) {
 
 					watsonDocumentAudit.setWatsonDocumentAuditId(
-						(Long)watsonDocumentAuditId);
+						(Long)watsonDocumentAuditIdObject);
 				}
 
 			});
@@ -304,9 +304,10 @@ public class WatsonDocumentAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocumentAudit watsonDocumentAudit, Object groupId) {
+					WatsonDocumentAudit watsonDocumentAudit,
+					Object groupIdObject) {
 
-					watsonDocumentAudit.setGroupId((Long)groupId);
+					watsonDocumentAudit.setGroupId((Long)groupIdObject);
 				}
 
 			});
@@ -326,9 +327,10 @@ public class WatsonDocumentAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocumentAudit watsonDocumentAudit, Object companyId) {
+					WatsonDocumentAudit watsonDocumentAudit,
+					Object companyIdObject) {
 
-					watsonDocumentAudit.setCompanyId((Long)companyId);
+					watsonDocumentAudit.setCompanyId((Long)companyIdObject);
 				}
 
 			});
@@ -348,9 +350,10 @@ public class WatsonDocumentAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocumentAudit watsonDocumentAudit, Object userId) {
+					WatsonDocumentAudit watsonDocumentAudit,
+					Object userIdObject) {
 
-					watsonDocumentAudit.setUserId((Long)userId);
+					watsonDocumentAudit.setUserId((Long)userIdObject);
 				}
 
 			});
@@ -370,9 +373,10 @@ public class WatsonDocumentAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocumentAudit watsonDocumentAudit, Object userName) {
+					WatsonDocumentAudit watsonDocumentAudit,
+					Object userNameObject) {
 
-					watsonDocumentAudit.setUserName((String)userName);
+					watsonDocumentAudit.setUserName((String)userNameObject);
 				}
 
 			});
@@ -393,9 +397,9 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object createDate) {
+					Object createDateObject) {
 
-					watsonDocumentAudit.setCreateDate((Date)createDate);
+					watsonDocumentAudit.setCreateDate((Date)createDateObject);
 				}
 
 			});
@@ -416,9 +420,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object modifiedDate) {
+					Object modifiedDateObject) {
 
-					watsonDocumentAudit.setModifiedDate((Date)modifiedDate);
+					watsonDocumentAudit.setModifiedDate(
+						(Date)modifiedDateObject);
 				}
 
 			});
@@ -439,10 +444,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object parentTypeWatsonListTypeId) {
+					Object parentTypeWatsonListTypeIdObject) {
 
 					watsonDocumentAudit.setParentTypeWatsonListTypeId(
-						(Long)parentTypeWatsonListTypeId);
+						(Long)parentTypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -463,10 +468,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object subtypeWatsonListTypeId) {
+					Object subtypeWatsonListTypeIdObject) {
 
 					watsonDocumentAudit.setSubtypeWatsonListTypeId(
-						(Long)subtypeWatsonListTypeId);
+						(Long)subtypeWatsonListTypeIdObject);
 				}
 
 			});
@@ -487,10 +492,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object typeWatsonListTypeId) {
+					Object typeWatsonListTypeIdObject) {
 
 					watsonDocumentAudit.setTypeWatsonListTypeId(
-						(Long)typeWatsonListTypeId);
+						(Long)typeWatsonListTypeIdObject);
 				}
 
 			});
@@ -511,9 +516,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object watsonChildId) {
+					Object watsonChildIdObject) {
 
-					watsonDocumentAudit.setWatsonChildId((Long)watsonChildId);
+					watsonDocumentAudit.setWatsonChildId(
+						(Long)watsonChildIdObject);
 				}
 
 			});
@@ -534,10 +540,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object watsonDocumentId) {
+					Object watsonDocumentIdObject) {
 
 					watsonDocumentAudit.setWatsonDocumentId(
-						(Long)watsonDocumentId);
+						(Long)watsonDocumentIdObject);
 				}
 
 			});
@@ -558,10 +564,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object originalDocument) {
+					Object originalDocumentObject) {
 
 					watsonDocumentAudit.setOriginalDocument(
-						(Boolean)originalDocument);
+						(Boolean)originalDocumentObject);
 				}
 
 			});
@@ -582,9 +588,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object receivedDate) {
+					Object receivedDateObject) {
 
-					watsonDocumentAudit.setReceivedDate((Date)receivedDate);
+					watsonDocumentAudit.setReceivedDate(
+						(Date)receivedDateObject);
 				}
 
 			});
@@ -605,9 +612,10 @@ public class WatsonDocumentAuditModelImpl
 				@Override
 				public void accept(
 					WatsonDocumentAudit watsonDocumentAudit,
-					Object imagePayload) {
+					Object imagePayloadObject) {
 
-					watsonDocumentAudit.setImagePayload((String)imagePayload);
+					watsonDocumentAudit.setImagePayload(
+						(String)imagePayloadObject);
 				}
 
 			});
@@ -627,9 +635,10 @@ public class WatsonDocumentAuditModelImpl
 
 				@Override
 				public void accept(
-					WatsonDocumentAudit watsonDocumentAudit, Object status) {
+					WatsonDocumentAudit watsonDocumentAudit,
+					Object statusObject) {
 
-					watsonDocumentAudit.setStatus((Integer)status);
+					watsonDocumentAudit.setStatus((Integer)statusObject);
 				}
 
 			});
