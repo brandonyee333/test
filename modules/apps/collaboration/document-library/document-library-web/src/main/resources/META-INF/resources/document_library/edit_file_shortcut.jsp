@@ -216,14 +216,14 @@ if (portletTitleBasedNavigation) {
 	}
 
 	function <portlet:namespace />createSelectFileEntryURL(url) {
-		url += '&<portlet:namespace />groupId=' + document.<portlet:namespace />fm.<portlet:namespace />toGroupId.value;
-		url += '&<portlet:namespace />fileEntryId=' + document.<portlet:namespace />fm.<portlet:namespace />toFileEntryId.value;
-
 		var scopeGroupId = <%= themeDisplay.getScopeGroupId() %>;
 
 		if (scopeGroupId != toGroupIdElement.value) {
 			url += '&<portlet:namespace />folderId=<%= DLFolderConstants.DEFAULT_PARENT_FOLDER_ID %>';
 		}
+
+		url += '&<portlet:namespace />groupId=' + document.<portlet:namespace />fm.<portlet:namespace />toGroupId.value;
+		url += '&<portlet:namespace />fileEntryId=' + document.<portlet:namespace />fm.<portlet:namespace />toFileEntryId.value;
 
 		return url;
 	}
