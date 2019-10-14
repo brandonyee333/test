@@ -224,26 +224,6 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return false;
 	}
 
-	public boolean isEnterpriseSearchPremium() {
-		String name = getName();
-
-		if (name.contains("Enterprise Search") && name.contains("Premium")) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean isEnterpriseSearchStandard() {
-		String name = getName();
-
-		if (name.contains("Enterprise Search") && name.contains("Standard")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public boolean isExtendedPremiumSupport() {
 		String name = getName();
 

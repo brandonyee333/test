@@ -15,6 +15,7 @@
 package com.liferay.osb.hook.upgrade;
 
 import com.liferay.osb.hook.upgrade.v5_1_3.UpgradeListType;
+import com.liferay.osb.hook.upgrade.v5_1_3.UpgradeRole;
 
 /**
  * @author Jenny Chen
@@ -29,6 +30,7 @@ public class UpgradeProcess_5_1_3 extends BaseUpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		upgrade(UpgradeListType.class);
+		upgrade(UpgradeRole.class);
 	}
 
 }
