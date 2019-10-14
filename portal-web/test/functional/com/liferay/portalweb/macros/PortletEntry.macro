@@ -118,7 +118,7 @@ definition {
 	macro publish {
 		Button.clickPublish();
 
-		Alert.viewSuccessMessage();
+		/*Alert.viewSuccessMessage();*/
 	}
 
 	macro publishAndWait {
