@@ -47,30 +47,30 @@ import org.osgi.framework.ServiceRegistration;
 public class MockBundleContext<S> implements BundleContext {
 
 	@Override
-	public void addBundleListener(BundleListener listener) {
+	public void addBundleListener(BundleListener bundleListener) {
 	}
 
 	@Override
-	public void addFrameworkListener(FrameworkListener listener) {
+	public void addFrameworkListener(FrameworkListener frameworkListener) {
 	}
 
 	@Override
-	public void addServiceListener(ServiceListener listener) {
+	public void addServiceListener(ServiceListener serviceListener) {
 	}
 
 	@Override
-	public void addServiceListener(ServiceListener listener, String filter)
+	public void addServiceListener(ServiceListener serviceListener, String filterString)
 		throws InvalidSyntaxException {
 	}
 
 	@Override
-	public Filter createFilter(String filter) throws InvalidSyntaxException {
+	public Filter createFilter(String filterString) throws InvalidSyntaxException {
 		return null;
 	}
 
 	@Override
 	public ServiceReference<?>[] getAllServiceReferences(
-			String clazz, String filter)
+			String clazz, String filterString)
 		throws InvalidSyntaxException {
 
 		return new ServiceReference[0];
@@ -130,7 +130,7 @@ public class MockBundleContext<S> implements BundleContext {
 
 	@Override
 	public <S> Collection<ServiceReference<S>> getServiceReferences(
-			Class<S> clazz, String filter)
+			Class<S> clazz, String filterString)
 		throws InvalidSyntaxException {
 
 		return null;
@@ -138,10 +138,10 @@ public class MockBundleContext<S> implements BundleContext {
 
 	@Override
 	public ServiceReference<?>[] getServiceReferences(
-			String clazz, String filter)
+			String clazz, String filterString)
 		throws InvalidSyntaxException {
 
-		List<ServiceReference<?>> filtered = new CopyOnWriteArrayList<>();
+		List<ServiceReference<?>> filteredServiceReferences = new CopyOnWriteArrayList<>();
 
 		_serviceReferenceServices.forEach(
 			(serviceReference, service) -> {
@@ -163,15 +163,15 @@ public class MockBundleContext<S> implements BundleContext {
 				}
 
 				if (serviceReference.compareTo(clazz) == 0) {
-					filtered.add(serviceReference);
+					filteredServiceReferences.add(serviceReference);
 				}
 			});
 
 		ServiceReference<?>[] serviceReferences =
-			new ServiceReference[filtered.size()];
+			new ServiceReference[filteredServiceReferences.size()];
 
-		for (int idx = 0; idx < serviceReferences.length; idx++) {
-			serviceReferences[idx] = filtered.get(idx);
+		for (int i = 0; i < serviceReferences.length; i++) {
+			serviceReferences[i] = filteredServiceReferences.get(i);
 		}
 
 		return serviceReferences;
@@ -183,7 +183,7 @@ public class MockBundleContext<S> implements BundleContext {
 	}
 
 	@Override
-	public Bundle installBundle(String location, InputStream input)
+	public Bundle installBundle(String location, InputStream inputStream)
 		throws BundleException {
 
 		return null;
@@ -198,7 +198,7 @@ public class MockBundleContext<S> implements BundleContext {
 
 	@Override
 	public <S> ServiceRegistration<S> registerService(
-		Class<S> clazz, ServiceFactory<S> factory,
+		Class<S> clazz, ServiceFactory<S> serviceFactory,
 		Dictionary<String, ?> properties) {
 
 		return null;
@@ -224,19 +224,19 @@ public class MockBundleContext<S> implements BundleContext {
 	}
 
 	@Override
-	public void removeBundleListener(BundleListener listener) {
+	public void removeBundleListener(BundleListener bundleListener) {
 	}
 
 	@Override
-	public void removeFrameworkListener(FrameworkListener listener) {
+	public void removeFrameworkListener(FrameworkListener frameworkListener) {
 	}
 
 	@Override
-	public void removeServiceListener(ServiceListener listener) {
+	public void removeServiceListener(ServiceListener serviceListener) {
 	}
 
 	@Override
-	public boolean ungetService(ServiceReference<?> reference) {
+	public boolean ungetService(ServiceReference<?> serviceReference) {
 		return false;
 	}
 
