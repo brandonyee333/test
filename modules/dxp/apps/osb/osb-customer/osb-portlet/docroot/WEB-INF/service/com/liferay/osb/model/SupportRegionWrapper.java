@@ -136,16 +136,6 @@ public class SupportRegionWrapper implements SupportRegion,
 	}
 
 	@Override
-	public SupportRegion toEscapedModel() {
-		return new SupportRegionWrapper(_supportRegion.toEscapedModel());
-	}
-
-	@Override
-	public SupportRegion toUnescapedModel() {
-		return new SupportRegionWrapper(_supportRegion.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _supportRegion.isCachedModel();
 	}
@@ -163,6 +153,16 @@ public class SupportRegionWrapper implements SupportRegion,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _supportRegion.getExpandoBridge();
+	}
+
+	@Override
+	public SupportRegion toEscapedModel() {
+		return new SupportRegionWrapper(_supportRegion.toEscapedModel());
+	}
+
+	@Override
+	public SupportRegion toUnescapedModel() {
+		return new SupportRegionWrapper(_supportRegion.toUnescapedModel());
 	}
 
 	@Override

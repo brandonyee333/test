@@ -197,22 +197,6 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 		}
 	}
 
-	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _orderEntry.getAccountEntry();
-	}
-
-	@Override
-	public OrderEntry toEscapedModel() {
-		return new OrderEntryWrapper(_orderEntry.toEscapedModel());
-	}
-
-	@Override
-	public OrderEntry toUnescapedModel() {
-		return new OrderEntryWrapper(_orderEntry.toUnescapedModel());
-	}
-
 	/**
 	* Returns the prorated of this order entry.
 	*
@@ -331,6 +315,22 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _orderEntry.getExpandoBridge();
+	}
+
+	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _orderEntry.getAccountEntry();
+	}
+
+	@Override
+	public OrderEntry toEscapedModel() {
+		return new OrderEntryWrapper(_orderEntry.toEscapedModel());
+	}
+
+	@Override
+	public OrderEntry toUnescapedModel() {
+		return new OrderEntryWrapper(_orderEntry.toUnescapedModel());
 	}
 
 	@Override

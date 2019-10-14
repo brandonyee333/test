@@ -233,40 +233,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 		}
 	}
 
-	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getAccountEntry();
-	}
-
-	@Override
-	public OfferingEntry toEscapedModel() {
-		return new OfferingEntryWrapper(_offeringEntry.toEscapedModel());
-	}
-
-	@Override
-	public OfferingEntry toUnescapedModel() {
-		return new OfferingEntryWrapper(_offeringEntry.toUnescapedModel());
-	}
-
-	@Override
-	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getOrderEntry();
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getProductEntry();
-	}
-
-	@Override
-	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getSupportResponse();
-	}
-
 	/**
 	* Returns the licenses of this offering entry.
 	*
@@ -333,9 +299,43 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getAccountEntry();
+	}
+
+	@Override
+	public OfferingEntry toEscapedModel() {
+		return new OfferingEntryWrapper(_offeringEntry.toEscapedModel());
+	}
+
+	@Override
+	public OfferingEntry toUnescapedModel() {
+		return new OfferingEntryWrapper(_offeringEntry.toUnescapedModel());
+	}
+
+	@Override
 	public OfferingEntryGroup getOfferingEntryGroup()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getOfferingEntryGroup();
+	}
+
+	@Override
+	public OrderEntry getOrderEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getOrderEntry();
+	}
+
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getProductEntry();
+	}
+
+	@Override
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringEntry.getSupportResponse();
 	}
 
 	@Override

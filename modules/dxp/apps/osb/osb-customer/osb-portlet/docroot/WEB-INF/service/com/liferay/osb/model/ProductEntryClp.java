@@ -705,44 +705,6 @@ public class ProductEntryClp extends BaseModelImpl<ProductEntry>
 	}
 
 	@Override
-	public boolean isEnterpriseSearchPremium() {
-		try {
-			String methodName = "isEnterpriseSearchPremium";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public boolean isEnterpriseSearchStandard() {
-		try {
-			String methodName = "isEnterpriseSearchStandard";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public boolean isExtendedPremiumSupport() {
 		try {
 			String methodName = "isExtendedPremiumSupport";
