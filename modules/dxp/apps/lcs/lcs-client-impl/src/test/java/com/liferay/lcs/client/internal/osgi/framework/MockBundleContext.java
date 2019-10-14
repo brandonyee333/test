@@ -59,12 +59,15 @@ public class MockBundleContext<S> implements BundleContext {
 	}
 
 	@Override
-	public void addServiceListener(ServiceListener serviceListener, String filterString)
+	public void addServiceListener(
+			ServiceListener serviceListener, String filterString)
 		throws InvalidSyntaxException {
 	}
 
 	@Override
-	public Filter createFilter(String filterString) throws InvalidSyntaxException {
+	public Filter createFilter(String filterString)
+		throws InvalidSyntaxException {
+
 		return null;
 	}
 
@@ -141,7 +144,8 @@ public class MockBundleContext<S> implements BundleContext {
 			String clazz, String filterString)
 		throws InvalidSyntaxException {
 
-		List<ServiceReference<?>> filteredServiceReferences = new CopyOnWriteArrayList<>();
+		List<ServiceReference<?>> filteredServiceReferences =
+			new CopyOnWriteArrayList<>();
 
 		_serviceReferenceServices.forEach(
 			(serviceReference, service) -> {
