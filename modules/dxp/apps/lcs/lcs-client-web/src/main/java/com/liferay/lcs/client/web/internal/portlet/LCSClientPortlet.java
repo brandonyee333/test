@@ -19,8 +19,6 @@ import com.liferay.lcs.client.advisor.LCSClientAdvisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.advisor.LCSPortletStateAdvisor;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
-import com.liferay.lcs.client.configuration.LCSConfiguration;
-import com.liferay.lcs.client.configuration.LCSConfigurationProvider;
 import com.liferay.lcs.client.constants.LCSClientPortletKeys;
 import com.liferay.lcs.client.constants.LCSClientWebKeys;
 import com.liferay.lcs.client.platform.exception.LCSException;
@@ -32,6 +30,7 @@ import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.util.ReleaseInfo;
 
 import java.io.IOException;
 
@@ -47,6 +46,7 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -94,20 +94,19 @@ public class LCSClientPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		renderRequest.setAttribute(
-			LCSClientWebKeys.LCS_ALERTS, _lcsAlertAdvisor.getLCSAlerts());
+			LCSClientWebKeys.CLUSTER_NODE_INFOS,
+			_clusterNodeAdvisor.getClusterNodeInfos());
 		renderRequest.setAttribute(
-			LCSConfiguration.class.getName(),
-			_lcsConfigurationProvider.getLCSConfiguration());
+			LCSClientWebKeys.DXP_MAJOR_VERSION, _dxpMajorVersion);
+		renderRequest.setAttribute(
+			LCSClientWebKeys.LCS_ACTIVE_SERVICES, _getLCSActiveServices());
+		renderRequest.setAttribute(
+			LCSClientWebKeys.LCS_ALERTS, _lcsAlertAdvisor.getLCSAlerts());
 		renderRequest.setAttribute(
 			LCSClusterEntryTokenAdvisor.class.getName(),
 			_lcsClusterEntryTokenAdvisor);
 		renderRequest.setAttribute(
 			LCSGatewayClient.class.getName(), _lcsGatewayClient);
-		renderRequest.setAttribute(
-			LCSClientWebKeys.LCS_ACTIVE_SERVICES, _getLCSActiveServices());
-		renderRequest.setAttribute(
-			LCSClientWebKeys.CLUSTER_NODE_INFOS,
-			_clusterNodeAdvisor.getClusterNodeInfos());
 		renderRequest.setAttribute(
 			LCSClientWebKeys.LOCAL_CLUSTER_NODE_ADDRESS,
 			_clusterNodeAdvisor.getLocalClusterNodeAddress());
@@ -173,6 +172,11 @@ public class LCSClientPortlet extends MVCPortlet {
 		}
 	}
 
+	@Activate
+	protected void activate() {
+		_dxpMajorVersion = ReleaseInfo.getBuildNumber() / 100;
+	}
+
 	protected void serveConnectionStatus(
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
@@ -223,6 +227,8 @@ public class LCSClientPortlet extends MVCPortlet {
 	@Reference
 	private ClusterNodeAdvisor _clusterNodeAdvisor;
 
+	private int _dxpMajorVersion;
+
 	@Reference
 	private LCSAlertAdvisor _lcsAlertAdvisor;
 
@@ -231,9 +237,6 @@ public class LCSClientPortlet extends MVCPortlet {
 
 	@Reference
 	private LCSClusterEntryTokenAdvisor _lcsClusterEntryTokenAdvisor;
-
-	@Reference
-	private LCSConfigurationProvider _lcsConfigurationProvider;
 
 	@Reference
 	private LCSGatewayClient _lcsGatewayClient;
