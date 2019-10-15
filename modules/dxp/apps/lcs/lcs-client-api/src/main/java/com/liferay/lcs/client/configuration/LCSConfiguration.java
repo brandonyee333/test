@@ -70,33 +70,6 @@ public interface LCSConfiguration {
 	@Meta.AD(deflt = "JCEKS", required = false)
 	public String keyGeneratorKeyStoreType();
 
-	@Meta.AD(
-		deflt = "https://web.liferay.com/marketplace/-/mp/application/71774947",
-		required = false
-	)
-	public String lrdcomLCSClientDownloadUrl();
-
-	@Meta.AD(
-		deflt = "https://www.liferay.com/supporting-products/liferay-connected-services",
-		required = false
-	)
-	public String lrdcomLCSProductPageUrl();
-
-	@Meta.AD(
-		deflt = "https://customer.liferay.com/documentation/7.0/deploy/-/official_documentation/deployment/managing-liferay-with-liferay-connected-services",
-		required = false
-	)
-	public String lrdcomLCSUserDocumentationUrl();
-
-	@Meta.AD(deflt = "sales@liferay.com", required = false)
-	public String lrdcomSalesEmailAddress();
-
-	@Meta.AD(
-		deflt = "https://help.liferay.com/hc/en-us/requests/new",
-		required = false
-	)
-	public String lrdcomSupportUrl();
-
 	@Meta.AD(deflt = "lcs-gateway.liferay.com", required = false)
 	public String platformLcsGatewayHostName();
 

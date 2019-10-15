@@ -21,6 +21,8 @@ public class LCSClientWebKeys {
 
 	public static final String CLUSTER_NODE_INFOS = "CLUSTER_NODE_INFOS";
 
+	public static final String DXP_MAJOR_VERSION = "DXP_MAJOR_VERSION";
+
 	public static final String LCS_ACTIVE_SERVICES = "LCS_ACTIVE_SERVICES";
 
 	public static final String LCS_ALERTS = "LCS_ALERTS";
