@@ -64,11 +64,11 @@ public class UpgradeRole extends UpgradeProcess {
 		StringBundler sb = new StringBundler(8);
 
 		sb.append("update OSB_ExternalIdMapper inner join OSB_ProductEntry ");
-		sb.append("on OSB_ProductEntry.productEntryId=");
+		sb.append("on OSB_ProductEntry.productEntryId = ");
 		sb.append("OSB_ExternalIdMapper.classPK inner join ClassName_ on ");
-		sb.append("ClassName_.classNameId=OSB_ExternalIdMapper.classNameId ");
-		sb.append("set externalId='enterprise_search' where ");
-		sb.append("OSB_ExternalIdMapper.type_=7 and ClassName_.value like ");
+		sb.append("ClassName_.classNameId = OSB_ExternalIdMapper.classNameId ");
+		sb.append("set externalId = 'enterprise_search' where ");
+		sb.append("OSB_ExternalIdMapper.type_ = 7 and ClassName_.value like ");
 		sb.append("'%.ProductEntry' and OSB_ProductEntry.name like ");
 		sb.append("'%Enterprise Search%'");
 
@@ -80,12 +80,10 @@ public class UpgradeRole extends UpgradeProcess {
 		ResultSet rs = null;
 
 		try {
-			String sql =
+			ps = connection.prepareStatement(
 				"select productEntryId, name from OSB_ProductEntry where " +
 					"name like '%Enterprise Search%' and (name like " +
-						"'%Premium%' or name like '%Standard%')";
-
-			ps = connection.prepareStatement(sql);
+						"'%Premium%' or name like '%Standard%')");
 
 			rs = ps.executeQuery();
 
@@ -94,7 +92,7 @@ public class UpgradeRole extends UpgradeProcess {
 
 				String name = rs.getString("name");
 
-				if (name.contains("Premium")) {
+				if (name.contains("Premium ")) {
 					name = name.replace("Premium ", StringPool.BLANK);
 				}
 				else if (name.contains("Standard")) {
@@ -102,8 +100,8 @@ public class UpgradeRole extends UpgradeProcess {
 				}
 
 				runSQL(
-					"update OSB_ProductEntry set name='" + name +
-						"' where productEntryId=" + productEntryId);
+					"update OSB_ProductEntry set name = '" + name +
+						"' where productEntryId = " + productEntryId);
 			}
 		}
 		finally {
@@ -117,7 +115,7 @@ public class UpgradeRole extends UpgradeProcess {
 
 		try {
 			String sql =
-				"select userId from Users_Orgs where organizationId=" +
+				"select userId from Users_Orgs where organizationId = " +
 					_ORGANIZATION_CUSTOMER_ENTERPRISE_SEARCH_STANDARD_ID;
 
 			ps = connection.prepareStatement(sql);
@@ -131,13 +129,13 @@ public class UpgradeRole extends UpgradeProcess {
 			}
 
 			runSQL(
-				"update Organization_ set name='Customer - Liferay " +
-					"Enterprise Search' where organizationId=" +
+				"update Organization_ set name = 'Customer - Liferay " +
+					"Enterprise Search' where organizationId = " +
 						_ORGANIZATION_CUSTOMER_ENTERPRISE_SEARCH_PREMIUM_ID);
 
 			runSQL(
-				"update Role_ set name='Customer - Liferay Enterprise " +
-					"Search' where roleId=" +
+				"update Role_ set name = 'Customer - Liferay Enterprise " +
+					"Search' where roleId = " +
 						_ROLE_CUSTOMER_ENTERPRISE_SEARCH_PREMIUM_ID);
 		}
 		finally {
