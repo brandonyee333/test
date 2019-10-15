@@ -163,31 +163,6 @@ public class LCSConfigurationDecorator implements LCSConfiguration {
 	}
 
 	@Override
-	public String lrdcomLCSClientDownloadUrl() {
-		return _lcsConfiguration.lrdcomLCSClientDownloadUrl();
-	}
-
-	@Override
-	public String lrdcomLCSProductPageUrl() {
-		return _lcsConfiguration.lrdcomLCSProductPageUrl();
-	}
-
-	@Override
-	public String lrdcomLCSUserDocumentationUrl() {
-		return _lcsConfiguration.lrdcomLCSUserDocumentationUrl();
-	}
-
-	@Override
-	public String lrdcomSalesEmailAddress() {
-		return _lcsConfiguration.lrdcomSalesEmailAddress();
-	}
-
-	@Override
-	public String lrdcomSupportUrl() {
-		return _lcsConfiguration.lrdcomSupportUrl();
-	}
-
-	@Override
 	public String osbLCSGatewayWebSecureApiToken() {
 		return _lcsConfiguration.osbLCSGatewayWebSecureApiToken();
 	}
