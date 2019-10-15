@@ -25,10 +25,10 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor" %><%@
 page import="com.liferay.lcs.client.alert.LCSAlert" %><%@
-page import="com.liferay.lcs.client.configuration.LCSConfiguration" %><%@
 page import="com.liferay.lcs.client.constants.LCSClientConstants" %><%@
 page import="com.liferay.lcs.client.constants.LCSClientWebKeys" %><%@
 page import="com.liferay.lcs.client.platform.gateway.LCSGatewayClient" %><%@
+page import="com.liferay.lcs.client.web.internal.util.LCSInfo" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatConstants" %><%@
@@ -55,5 +55,4 @@ page import="java.util.TimeZone" %>
 <%
 Format dateFormatDate = FastDateFormatFactoryUtil.getDateTime(FastDateFormatConstants.MEDIUM, FastDateFormatConstants.MEDIUM, locale, timeZone);
 Format intervalDateFormatDate = FastDateFormatFactoryUtil.getSimpleDateFormat("HH:mm:ss", TimeZone.getTimeZone(StringPool.UTC));
-LCSConfiguration lcsConfiguration = (LCSConfiguration)request.getAttribute(LCSConfiguration.class.getName());
 %>

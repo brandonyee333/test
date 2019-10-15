@@ -21,8 +21,12 @@
 		<liferay-ui:message key="connected-services" />
 	</span>
 
+	<%
+	int dxpMajorVersion = GetterUtil.getInteger(request.getAttribute(LCSClientWebKeys.DXP_MAJOR_VERSION));
+	%>
+
 	<p>
-		<liferay-ui:message arguments="<%= new Object[] {lcsConfiguration.lrdcomLCSProductPageUrl(), lcsConfiguration.lrdcomLCSUserDocumentationUrl()} %>" key="liferay-connected-services-is-a-set-of-online-tools-and-services-that-lets-you-manage-and-monitor-your-liferay-installations" />
+		<liferay-ui:message arguments="<%= new Object[] {LCSInfo.LRDCOM_LCS_PRODUCT_PAGE_URL, LCSInfo.getUserDocumentationUrl(dxpMajorVersion)} %>" key="liferay-connected-services-is-a-set-of-online-tools-and-services-that-lets-you-manage-and-monitor-your-liferay-installations" />
 	</p>
 
 	<%

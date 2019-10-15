@@ -72,7 +72,7 @@ Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute(LCSClientWebKeys.L
 				<div class="<%= lcsAlert.getCSSClass() %>">
 					<c:choose>
 						<c:when test="<%= lcsAlert == LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE %>">
-							<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomLCSClientDownloadUrl() %>" key="<%= lcsAlert.getLabel() %>" />
+							<liferay-ui:message arguments="<%= LCSInfo.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="<%= lcsAlert.getLabel() %>" />
 						</c:when>
 						<c:otherwise>
 							<liferay-ui:message key="<%= lcsAlert.getLabel() %>" />
@@ -95,11 +95,11 @@ Set<LCSAlert> lcsAlerts = (Set<LCSAlert>)request.getAttribute(LCSClientWebKeys.L
 		</div>
 
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomSupportUrl() %>" key="if-you-have-a-liferay-enterprise-subscription-and-you-have-questions-or-issues-please-open-a-ticket-in-help-center-under-the-liferay-connected-services-organization" />
+			<liferay-ui:message arguments="<%= LCSInfo.LRDCOM_SUPPORT_URL %>" key="if-you-have-a-liferay-enterprise-subscription-and-you-have-questions-or-issues-please-open-a-ticket-in-help-center-under-the-liferay-connected-services-organization" />
 		</div>
 
 		<div class="footer-note">
-			<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomSalesEmailAddress() %>" key="if-you-do-not-have-an-active-enterprise-subscription-please-contact-your-account-executive-or-x" />
+			<liferay-ui:message arguments="<%= LCSInfo.LRDCOM_SALES_EMAIL_ADDRESS %>" key="if-you-do-not-have-an-active-enterprise-subscription-please-contact-your-account-executive-or-x" />
 		</div>
 	</div>
 </footer>

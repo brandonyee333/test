@@ -42,7 +42,7 @@ String registrationLayoutURL = GetterUtil.getString(request.getAttribute(LCSClie
 	<c:otherwise>
 		<c:if test="<%= lcsAlerts.contains(LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE) %>">
 			<div class="alert alert-warning lcs-alert">
-				<liferay-ui:message arguments="<%= lcsConfiguration.lrdcomLCSClientDownloadUrl() %>" key="<%= LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE.getLabel() %>" />
+				<liferay-ui:message arguments="<%= LCSInfo.LRDCOM_LCS_CLIENT_DOWNLOAD_URL %>" key="<%= LCSAlert.WARNING_LCS_PORTLET_NEW_VERSION_AVAILABLE.getLabel() %>" />
 			</div>
 		</c:if>
 
