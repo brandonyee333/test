@@ -3167,10 +3167,12 @@ AUI.add(
 					setValue: function(value) {
 						var instance = this;
 
-						if (value !== '') {
-							value = JSON.parse(value);
-						} else {
-							value = [''];
+						if (Lang.isString(value)) {
+							if (value !== '') {
+								value = JSON.parse(value);
+							} else {
+								value = [''];
+							}
 						}
 
 						instance.getInputNode().all('option').each(
