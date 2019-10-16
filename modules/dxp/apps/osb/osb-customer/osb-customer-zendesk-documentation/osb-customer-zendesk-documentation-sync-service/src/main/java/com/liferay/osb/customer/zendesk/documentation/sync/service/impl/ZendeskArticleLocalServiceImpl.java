@@ -36,6 +36,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -331,16 +332,36 @@ public class ZendeskArticleLocalServiceImpl
 				ZENDESK_ARTICLE_PERMISSION_GROUP_ID);
 		articleJSONObject.put("position", position);
 
+		Map<Locale, String> curRemoteTitleMap = new HashMap<>();
+
+		curRemoteTitleMap.putAll(remoteTitleMap);
+
 		JSONArray translationsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		for (Locale locale : remoteTitleMap.keySet()) {
+		if (!curRemoteTitleMap.isEmpty()) {
+			JSONObject translationJSONObject =
+				JSONFactoryUtil.createJSONObject();
+
+			translationJSONObject.put("body", remoteBodyMap.get(LocaleUtil.US));
+			translationJSONObject.put(
+				"locale",
+				_zendeskLocaleUtil.convertToZendeskLocale(LocaleUtil.US));
+			translationJSONObject.put(
+				"title", curRemoteTitleMap.get(LocaleUtil.US));
+
+			translationsJSONArray.put(translationJSONObject);
+
+			curRemoteTitleMap.remove(LocaleUtil.US);
+		}
+
+		for (Locale locale : curRemoteTitleMap.keySet()) {
 			JSONObject translationJSONObject =
 				JSONFactoryUtil.createJSONObject();
 
 			translationJSONObject.put("body", remoteBodyMap.get(locale));
 			translationJSONObject.put(
 				"locale", _zendeskLocaleUtil.convertToZendeskLocale(locale));
-			translationJSONObject.put("title", remoteTitleMap.get(locale));
+			translationJSONObject.put("title", curRemoteTitleMap.get(locale));
 
 			translationsJSONArray.put(translationJSONObject);
 		}
