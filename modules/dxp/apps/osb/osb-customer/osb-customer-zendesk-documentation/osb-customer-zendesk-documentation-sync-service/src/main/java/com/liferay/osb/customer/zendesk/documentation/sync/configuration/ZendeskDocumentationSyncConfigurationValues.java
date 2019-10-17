@@ -31,4 +31,9 @@ public class ZendeskDocumentationSyncConfigurationValues {
 			ZendeskDocumentationSyncConfigurationUtil.get(
 				"zendesk.article.user.segment.id"));
 
+	public static final String ZENDESK_DOCUMENTATION_TRANSLATOR_CATEGORY_IDS =
+		GetterUtil.getString(
+			ZendeskDocumentationSyncConfigurationUtil.get(
+				"zendesk.documentation.translator.category.ids"));
+
 }

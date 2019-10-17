@@ -34,6 +34,10 @@ public class QueryImpl implements Query {
 		_criteria.add(criterion);
 	}
 
+	public void addParameter(String key, String value) {
+		_parameters.put(key, value);
+	}
+
 	public void addSideload(String sideload) {
 		_sideloads.add(sideload);
 	}
@@ -51,6 +55,10 @@ public class QueryImpl implements Query {
 
 		if (_page > 0) {
 			parameters.put("page", String.valueOf(_page));
+		}
+
+		if (!_parameters.isEmpty()) {
+			parameters.putAll(_parameters);
 		}
 
 		if (!_criteria.isEmpty()) {
@@ -101,6 +109,7 @@ public class QueryImpl implements Query {
 
 	private final Set<String> _criteria = new HashSet<>();
 	private int _page;
+	private final Map<String, String> _parameters = new HashMap<>();
 	private final Set<String> _sideloads = new HashSet<>();
 	private String _sortBy;
 	private String _sortOrder;

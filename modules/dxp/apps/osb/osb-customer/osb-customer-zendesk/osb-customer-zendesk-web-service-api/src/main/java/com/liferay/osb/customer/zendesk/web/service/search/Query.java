@@ -23,6 +23,8 @@ public interface Query {
 
 	public void addCriterion(String criterion);
 
+	public void addParameter(String key, String value);
+
 	public void addSideload(String sideload);
 
 	public int getPage();

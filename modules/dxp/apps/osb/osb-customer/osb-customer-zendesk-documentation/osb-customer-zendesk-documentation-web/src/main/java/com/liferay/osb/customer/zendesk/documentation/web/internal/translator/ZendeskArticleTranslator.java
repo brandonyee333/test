@@ -15,6 +15,8 @@
 package com.liferay.osb.customer.zendesk.documentation.web.internal.translator;
 
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
+import com.liferay.osb.customer.zendesk.documentation.sync.configuration.ZendeskDocumentationSyncConfigurationValues;
+import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticleLocalService;
 import com.liferay.osb.customer.zendesk.model.ZendeskArticle;
 import com.liferay.osb.customer.zendesk.model.ZendeskTranslation;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskArticleWebService;
@@ -94,8 +96,16 @@ public class ZendeskArticleTranslator extends BaseTranslator<ZendeskArticle> {
 	protected SearchHits<ZendeskArticle> search(Query query)
 		throws PortalException {
 
+		query.addParameter(
+			"category",
+			ZendeskDocumentationSyncConfigurationValues.
+				ZENDESK_DOCUMENTATION_TRANSLATOR_CATEGORY_IDS);
+
 		return _zendeskArticleWebService.getZendeskArticles(query);
 	}
+
+	@Reference
+	private ZendeskArticleLocalService _zendeskArticleLocalService;
 
 	@Reference
 	private ZendeskArticleWebService _zendeskArticleWebService;

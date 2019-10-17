@@ -43,7 +43,8 @@ public class DefaultZendeskArticleWebService
 		throws PortalException {
 
 		JSONObject responseJSONObject = _zendeskBaseWebService.get(
-			ZendeskRESTEndpoints.URL_API_V2 + "help_center/articles.json",
+			ZendeskRESTEndpoints.URL_API_V2 +
+				"help_center/articles/search.json",
 			query.getParameters());
 
 		return toSearchHits(responseJSONObject);
@@ -65,7 +66,7 @@ public class DefaultZendeskArticleWebService
 			searchHits.setNextPage(GetterUtil.getInteger(page));
 		}
 
-		JSONArray jsonArray = responseJSONObject.getJSONArray("articles");
+		JSONArray jsonArray = responseJSONObject.getJSONArray("results");
 
 		searchHits.setResults(zendeskConverter.toZendeskArticles(jsonArray));
 
