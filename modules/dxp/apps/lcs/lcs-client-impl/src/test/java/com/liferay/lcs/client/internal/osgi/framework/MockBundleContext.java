@@ -149,8 +149,8 @@ public class MockBundleContext<S> implements BundleContext {
 
 		_serviceReferenceServices.forEach(
 			(serviceReference, service) -> {
-				if (Validator.isNotNull(filter)) {
-					Matcher matcher = _propertyPattern.matcher(filter);
+				if (Validator.isNotNull(filterString)) {
+					Matcher matcher = _propertyPattern.matcher(filterString);
 
 					if (!matcher.matches()) {
 						return;
