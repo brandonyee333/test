@@ -15,7 +15,11 @@
 package com.liferay.osb.customer.rabbitmq.processor;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
+import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Contact;
@@ -82,6 +86,14 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		if (remoteUser.getStatus() != user.getStatus()) {
 			userLocalService.updateStatus(
 				user.getUserId(), remoteUser.getStatus(), new ServiceContext());
+
+			if (remoteUser.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
+				long userId = user.getUserId();
+
+				AccountCustomerLocalServiceUtil.deleteAccountCustomers(userId);
+				AccountWorkerLocalServiceUtil.deleteAccountWorkers(userId);
+				PartnerWorkerLocalServiceUtil.deletePartnerWorkers(userId);
+			}
 		}
 	}
 
