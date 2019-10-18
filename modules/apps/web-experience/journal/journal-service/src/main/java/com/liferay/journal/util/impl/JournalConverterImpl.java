@@ -161,7 +161,9 @@ public class JournalConverterImpl implements JournalConverter {
 		}
 
 		try {
-			return XMLUtil.formatXML(document.asXML());
+			String content = XMLUtil.stripInvalidChars(document.asXML());
+
+			return XMLUtil.formatXML(content);
 		}
 		catch (Exception e) {
 			throw new ArticleContentException(
