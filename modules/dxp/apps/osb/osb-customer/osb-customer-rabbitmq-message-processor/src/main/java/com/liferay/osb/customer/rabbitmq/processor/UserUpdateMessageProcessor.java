@@ -88,11 +88,14 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 				user.getUserId(), remoteUser.getStatus(), new ServiceContext());
 
 			if (remoteUser.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
-				long userId = user.getUserId();
+				AccountCustomerLocalServiceUtil.deleteAccountCustomers(
+					user.getUserId());
 
-				AccountCustomerLocalServiceUtil.deleteAccountCustomers(userId);
-				AccountWorkerLocalServiceUtil.deleteAccountWorkers(userId);
-				PartnerWorkerLocalServiceUtil.deletePartnerWorkers(userId);
+				AccountWorkerLocalServiceUtil.deleteAccountWorkers(
+					user.getUserId());
+
+				PartnerWorkerLocalServiceUtil.deletePartnerWorkers(
+					user.getUserId());
 			}
 		}
 	}
