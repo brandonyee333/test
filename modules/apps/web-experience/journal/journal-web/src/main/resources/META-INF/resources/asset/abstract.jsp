@@ -39,13 +39,14 @@ JournalArticleDisplay articleDisplay = (JournalArticleDisplay)request.getAttribu
 </c:if>
 
 <%
-String summary = HtmlUtil.escape(articleDisplay.getDescription());
-
-summary = HtmlUtil.replaceNewLine(summary);
-
-if (Validator.isNull(summary)) {
-	summary = HtmlUtil.stripHtml(articleDisplay.getContent());
-}
+String summary = articleDisplay.getDescription();
 %>
 
-<%= StringUtil.shorten(summary, abstractLength) %>
+<c:choose>
+	<c:when test="<%= Validator.isNull(summary) %>">
+		<%= StringUtil.shorten(HtmlUtil.stripHtml(articleDisplay.getContent()), abstractLength) %>
+	</c:when>
+	<c:otherwise>
+		<%= HtmlUtil.replaceNewLine(StringUtil.shorten(HtmlUtil.stripHtml(summary), abstractLength)) %>
+	</c:otherwise>
+</c:choose>
