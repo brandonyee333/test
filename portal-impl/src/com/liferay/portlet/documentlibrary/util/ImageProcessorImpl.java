@@ -20,6 +20,7 @@ import com.drew.metadata.exif.ExifIFD0Directory;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
+import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandlerUtil;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.ImageProcessor;
@@ -299,6 +300,10 @@ public class ImageProcessorImpl
 			RenderedImage renderedImage = imageBag.getRenderedImage();
 
 			if (renderedImage == null) {
+				DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
+					destinationFileVersion.getFileEntryId(),
+					destinationFileVersion.getFileVersionId());
+
 				return;
 			}
 
@@ -309,6 +314,11 @@ public class ImageProcessorImpl
 					bytes, imageBag.getType());
 
 				if (future == null) {
+					DLFileEntryPreviewHandlerUtil.
+						addFailDLFileEntryPreview(
+							destinationFileVersion.getFileEntryId(),
+							destinationFileVersion.getFileVersionId());
+
 					return;
 				}
 
@@ -334,11 +344,20 @@ public class ImageProcessorImpl
 			if (!hasThumbnails(destinationFileVersion)) {
 				storeThumbnailImages(destinationFileVersion, renderedImage);
 			}
+
+			DLFileEntryPreviewHandlerUtil.addSuccessDLFileEntryPreview(
+				destinationFileVersion.getFileEntryId(),
+				destinationFileVersion.getFileVersionId());
 		}
 		catch (NoSuchFileEntryException nsfee) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(nsfee, nsfee);
 			}
+
+			DLFileEntryPreviewHandlerUtil.
+				addFailDLFileEntryPreview(
+					destinationFileVersion.getFileEntryId(),
+					destinationFileVersion.getFileVersionId());
 		}
 		finally {
 			StreamUtil.cleanUp(inputStream);
