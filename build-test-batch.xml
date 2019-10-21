@@ -1680,6 +1680,7 @@ app.server.type=@{app.server.type}]]></echo>
 										dir="modules"
 									>
 										<include name="apps/*" />
+										<include name="dxp/apps/*" />
 										<include name="private/apps/*" />
 										<exclude name="${build.exclude.dirs}" />
 										<exclude name="apps/static" />
@@ -3837,7 +3838,7 @@ app.server.type=@{app.server.type}]]></echo>
 					<then>
 						<gradle-execute dir="modules" outputproperty="modules.project.paths" task="printProjectPath">
 							<arg value="--quiet" />
-							<arg value="-Dbuild.exclude.dirs=private/apps/osb-lcs,private/apps/saml,third-party" />
+							<arg value="-Dbuild.exclude.dirs=dxp/apps/osb-lcs,third-party" />
 						</gradle-execute>
 
 						<loadresource property="modules.test.class.group">

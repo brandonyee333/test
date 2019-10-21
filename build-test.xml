@@ -3007,7 +3007,7 @@ ${tomcat-gc-log}
 							<pathconvert property="app.bnd.file">
 								<fileset
 									dir="modules"
-									includes="private/apps/documentum/app.bnd"
+									includes="dxp/apps/documentum/app.bnd"
 								/>
 							</pathconvert>
 
@@ -3098,7 +3098,7 @@ ${tomcat-gc-log}
 									<delete dir="${tstamp.value}" />
 								</then>
 								<else>
-									<propertyfile file="${project.dir}/modules/private/apps/documentum/documentum-hook/docroot/WEB-INF/src/dfc.properties">
+									<propertyfile file="${project.dir}/modules/dxp/apps/documentum/documentum-hook/docroot/WEB-INF/src/dfc.properties">
 										<entry key="dfc.docbroker.host[0]" value="${cmis.repository.vm.host.name}" />
 									</propertyfile>
 								</else>
@@ -5750,6 +5750,7 @@ go]]></replacevalue>
 									dir="modules"
 								>
 									<include name="apps/${osgi.app.name}" />
+									<include name="dxp/apps/${osgi.app.name}" />
 									<include name="private/apps/${osgi.app.name}" />
 								</dirset>
 							</path>

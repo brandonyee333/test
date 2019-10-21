@@ -2,7 +2,7 @@
 
 <suppressions>
 	<checkstyle>
-		<suppress checks="JSONNaming" files="modules/private/apps/lcs/lcs-api/src/main/java/com/liferay/lcs/messaging/Message\.java" />
+		<suppress checks="JSONNaming" files="modules/dxp/apps/lcs/lcs-api/src/main/java/com/liferay/lcs/messaging/Message\.java" />
 	</checkstyle>
 	<source-check>
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-api/.*" />
