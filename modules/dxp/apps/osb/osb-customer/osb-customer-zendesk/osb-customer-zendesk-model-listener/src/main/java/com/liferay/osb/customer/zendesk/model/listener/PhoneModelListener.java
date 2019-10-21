@@ -16,7 +16,6 @@ package com.liferay.osb.customer.zendesk.model.listener;
 
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
-import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
@@ -29,8 +28,6 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ContactLocalService;
-
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -64,22 +61,19 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 		try {
 			String className = phone.getClassName();
 
-			if (className.equals(Contact.class.getName())) {
+			if (className.equals(Contact.class.getName()) &&
+				ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+					_classNameLocalService.getClassNameId(Phone.class),
+					phone.getPhoneId(),
+					ExternalIdMapperConstants.TYPE_ZENDESK)) {
+
 				long userId = getContactUserId(phone.getClassPK());
 
-				List<ExternalIdMapper> externalIdMappers =
-					ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-						_classNameLocalService.getClassNameId(Phone.class),
-						phone.getPhoneId(),
-						ExternalIdMapperConstants.TYPE_ZENDESK);
+				_userSynchronizer.deletePhone(userId, phone);
 
-				if (!externalIdMappers.isEmpty()) {
-					_userSynchronizer.deletePhone(userId, phone);
-
-					ExternalIdMapperLocalServiceUtil.deleteExternalIdMappers(
-						_classNameLocalService.getClassNameId(Phone.class),
-						phone.getPhoneId());
-				}
+				ExternalIdMapperLocalServiceUtil.deleteExternalIdMappers(
+					_classNameLocalService.getClassNameId(Phone.class),
+					phone.getPhoneId());
 			}
 		}
 		catch (Exception e) {
