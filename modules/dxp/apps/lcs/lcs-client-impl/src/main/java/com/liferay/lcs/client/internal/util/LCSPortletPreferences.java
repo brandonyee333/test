@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.PortletPreferences;
+import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.persistence.PortletPreferencesPersistence;
@@ -142,6 +143,9 @@ public class LCSPortletPreferences {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LCSPortletPreferences.class);
+
+	@Reference(target = ModuleServiceLifecycle.DATABASE_INITIALIZED)
+	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
 	@Reference
 	private PortletPreferencesLocalService _portletPreferencesLocalService;
