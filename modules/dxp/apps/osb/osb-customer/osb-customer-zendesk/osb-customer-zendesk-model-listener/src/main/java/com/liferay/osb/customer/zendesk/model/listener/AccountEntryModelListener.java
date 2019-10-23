@@ -20,6 +20,7 @@ import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -65,8 +66,10 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		try {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
-			if (!_zendeskOrganization.get() &&
-				!accountEntry.isActiveSupport()) {
+			if ((!_zendeskOrganization.get() &&
+				 !accountEntry.isActiveSupport()) ||
+				(accountEntry.getAccountEntryId() ==
+					OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
 				return;
 			}

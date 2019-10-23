@@ -33,6 +33,7 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -72,8 +73,10 @@ public class SynchronizeAccountEntryMessageListener
 		AccountEntry accountEntry =
 			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
-		if (!hasZendeskOrganization(accountEntry) &&
-			!accountEntry.isActiveSupport()) {
+		if ((!hasZendeskOrganization(accountEntry) &&
+			 !accountEntry.isActiveSupport()) ||
+			(accountEntry.getAccountEntryId() ==
+				OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
 			AccountEntryLocalServiceUtil.updateLastZendeskAuditDate(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,

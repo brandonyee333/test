@@ -16,9 +16,11 @@ package com.liferay.osb.customer.zendesk.model.listener;
 
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -45,14 +47,22 @@ public class AccountCustomerModelListener
 		try {
 			AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-			if (accountEntry.isActiveSupport()) {
-				_accountCustomerSynchronizer.add(accountCustomer);
+			if (accountEntry.getAccountEntryId() ==
+					OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID) {
 
-				_accountCustomerSynchronizer.addOrganizationSubscription(
-					accountCustomer);
+				_userSynchronizer.addLiferayEmployee(
+					accountCustomer.getUserId());
 			}
-			else if (accountCustomer.isClosedWatcher()) {
-				_accountCustomerSynchronizer.add(accountCustomer);
+			else {
+				if (accountEntry.isActiveSupport()) {
+					_accountCustomerSynchronizer.add(accountCustomer);
+
+					_accountCustomerSynchronizer.addOrganizationSubscription(
+						accountCustomer);
+				}
+				else if (accountCustomer.isClosedWatcher()) {
+					_accountCustomerSynchronizer.add(accountCustomer);
+				}
 			}
 		}
 		catch (Exception e) {
@@ -142,5 +152,8 @@ public class AccountCustomerModelListener
 
 	@Reference
 	private UserLocalService _userLocalService;
+
+	@Reference
+	private UserSynchronizer _userSynchronizer;
 
 }
