@@ -1,0 +1,10 @@
+#
+# Liferay App Version 3.0.0
+#
+
+app.artifacts-3.0.0=\
+	com.liferay.portal.rules.engine.drools-1.0.7.jar
+
+app.change.log-3.0.0=
+
+app.git.id-3.0.0=d14c663382f84f8bcf9d55d82e7155ad0df13047
