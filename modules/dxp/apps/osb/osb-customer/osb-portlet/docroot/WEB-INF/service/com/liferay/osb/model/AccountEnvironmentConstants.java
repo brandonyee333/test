@@ -462,6 +462,9 @@ public class AccountEnvironmentConstants {
 
 	public static final long ENV_SEARCH_ELASTICSEARCH_7_X = 40010;
 
+	public static final long ENV_SEARCH_ELASTICSEARCH_LEARNING_TO_RANK_7_X =
+		40013;
+
 	public static final long ENV_SEARCH_KIBANA_4_X = 40001;
 
 	public static final long ENV_SEARCH_KIBANA_6_X = 40007;
@@ -956,6 +959,7 @@ public class AccountEnvironmentConstants {
 	private static final long[]
 		_ENV_SEARCH_DIGITAL_ENTERPRISE_VERSION_7_2_ENTERPRISE = {
 			ENV_SEARCH_ELASTICSEARCH_6_X, ENV_SEARCH_ELASTICSEARCH_7_X,
+			ENV_SEARCH_ELASTICSEARCH_LEARNING_TO_RANK_7_X,
 			ENV_SEARCH_KIBANA_6_X, ENV_SEARCH_KIBANA_7_X, ENV_SEARCH_X_PACK_6_X,
 			ENV_SEARCH_X_PACK_7_X
 		};

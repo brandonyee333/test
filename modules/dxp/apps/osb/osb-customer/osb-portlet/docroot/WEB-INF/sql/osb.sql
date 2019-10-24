@@ -355,6 +355,7 @@ insert into ListType (listTypeId, name, type_) values (40009, 'solr-7.x', 'com.l
 insert into ListType (listTypeId, name, type_) values (40010, 'elasticsearch-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40011, 'kibana-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 insert into ListType (listTypeId, name, type_) values (40012, 'x-pack-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
+insert into ListType (listTypeId, name, type_) values (40013, 'elasticsearch-learning-to-rank-7.x', 'com.liferay.osb.model.AccountEnvironment.envSearch');
 
 insert into ListType (listTypeId, name, type_) values (41000, '7.0', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
 insert into ListType (listTypeId, name, type_) values (41100, '7.1', 'com.liferay.osb.model.ProductEntry.digitalEnterpriseAllVersions');
