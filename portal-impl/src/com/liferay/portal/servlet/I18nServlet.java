@@ -15,6 +15,7 @@
 package com.liferay.portal.servlet;
 
 import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -324,9 +325,13 @@ public class I18nServlet extends HttpServlet {
 
 		response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
 
+		ServletContext servletContext = getServletContext();
+
 		response.setHeader(
 			"Location",
-			StringPool.SLASH + locale.toLanguageTag() + i18nData.getPath());
+			StringBundler.concat(
+				servletContext.getContextPath(), StringPool.SLASH,
+				locale.toLanguageTag(), i18nData.getPath()));
 	}
 
 	private void _setRequestAttributes(
