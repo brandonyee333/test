@@ -262,15 +262,12 @@ public class WorkflowDefinitionLinkDisplayContext {
 	public String getWorkflowDefinitionLabel(
 		WorkflowDefinition workflowDefinition) {
 
-		String workflowDefinitionName = HtmlUtil.escape(
-			workflowDefinition.getName());
-
 		String workflowDefinitionVersion = LanguageUtil.format(
 			_workflowDefinitionLinkRequestHelper.getLocale(), "version-x",
 			workflowDefinition.getVersion(), false);
 
 		return StringBundler.concat(
-			workflowDefinitionName, " (", workflowDefinitionVersion, ")");
+			workflowDefinition.getName(), " (", workflowDefinitionVersion, ")");
 	}
 
 	public List<WorkflowDefinition> getWorkflowDefinitions()
