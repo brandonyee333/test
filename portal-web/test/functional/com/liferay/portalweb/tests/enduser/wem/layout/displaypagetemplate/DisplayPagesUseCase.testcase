@@ -305,6 +305,8 @@ definition {
 	@description = "This case ensures a user can map the editable background image of a fragment to an existing image content."
 	@priority = "5"
 	test MapWebContentImageToFragmentBackground {
+		property portal.acceptance = "Tim";
+
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
 
 		NavItem.gotoStructures();

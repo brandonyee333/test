@@ -4,6 +4,7 @@ definition {
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Fragments";
+	property portal.acceptance = "Tim";
 
 	setUp {
 		task ("Set up instance and sign in") {
@@ -168,7 +169,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Card");
 		}
 
@@ -194,7 +195,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Heading");
 		}
 
@@ -221,7 +222,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Heading");
 		}
 
@@ -247,7 +248,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Image");
 		}
 
@@ -274,7 +275,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Image");
 		}
 
@@ -300,7 +301,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Paragraph");
 		}
 
@@ -325,7 +326,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Paragraph");
 		}
 
@@ -351,7 +352,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Separator");
 		}
 
@@ -376,7 +377,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Separator");
 		}
 
@@ -402,7 +403,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Spacer");
 		}
 
@@ -422,7 +423,7 @@ definition {
 
 		task ("Add a basic component") {
 			PageEditor.addFragment(
-				collectionName = "Collection Name",
+				collectionName = "Basic Components",
 				fragmentName = "Spacer");
 		}
 

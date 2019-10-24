@@ -31,7 +31,7 @@ definition {
 	@description = "This is a test for LPS-102526. User can activate fragment configuration by clicking on topper."
 	@priority = "5"
 	test ActivateFragmentConfigurationViaTopper {
-		property portal.acceptance = "true";
+		property portal.acceptance = "Tim";
 
 		JSONLayout.addPublicLayout(
 			groupName = "Test Site Name",
