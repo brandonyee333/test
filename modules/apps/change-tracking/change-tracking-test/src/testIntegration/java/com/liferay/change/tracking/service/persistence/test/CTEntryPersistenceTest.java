@@ -202,6 +202,21 @@ public class CTEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByNotC_MCPK() throws Exception {
+		_persistence.countByNotC_MCPK(
+			RandomTestUtil.nextLong(), RandomTestUtil.nextLong());
+
+		_persistence.countByNotC_MCPK(0L, 0L);
+	}
+
+	@Test
+	public void testCountByNotC_MCPKArrayable() throws Exception {
+		_persistence.countByNotC_MCPK(
+			RandomTestUtil.nextLong(),
+			new long[] {RandomTestUtil.nextLong(), 0L});
+	}
+
+	@Test
 	public void testFindByPrimaryKeyExisting() throws Exception {
 		CTEntry newCTEntry = addCTEntry();
 
