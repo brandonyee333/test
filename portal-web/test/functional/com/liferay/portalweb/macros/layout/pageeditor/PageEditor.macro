@@ -90,6 +90,8 @@ definition {
 	}
 
 	macro addFragment {
+		PageEditor.gotoTab(tabName = "Section Builder");
+
 		PageEditor.expandFragmentCollection(collectionName = "${collectionName}");
 
 		DragAndDrop(
