@@ -3,6 +3,8 @@ AUI.add(
 	function(A) {
 		var Lang = A.Lang;
 
+		var STR_UNDERSCORE = '_';
+
 		var KeyValueField = A.Component.create(
 			{
 				ATTRS: {
@@ -73,7 +75,7 @@ AUI.add(
 						for (var i = 0; i < key.length; i++) {
 							var item = key[i];
 
-							if (!A.Text.Unicode.test(item, 'L') && !A.Text.Unicode.test(item, 'N')) {
+							if (!A.Text.Unicode.test(item, 'L') && !A.Text.Unicode.test(item, 'N') && item != STR_UNDERSCORE) {
 								key = key.replace(item, ' ');
 							}
 						}
