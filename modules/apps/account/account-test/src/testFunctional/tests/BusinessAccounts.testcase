@@ -283,7 +283,7 @@ definition {
 
 	@description = "This is a use case for LPS-101221."
 	@priority = "4"
-	test UpdateDeactivateAccountViaNameLink {
+	test UpdateInactivateAccountViaNameLink {
 		ProductMenu.gotoPortlet(
 			category = "Accounts",
 			panel = "Control Panel",
