@@ -82,11 +82,13 @@ public class LCSAlertAdvisorImpl implements LCSAlertAdvisor, LCSEventListener {
 			add(LCSAlert.WARNING_HANDSHAKE_FAILED);
 		}
 		else if (lcsEvent == LCSEvent.HANDSHAKE_SUCCESS) {
-			remove(LCSAlert.WARNING_HANDSHAKE_FAILED);
+			clear();
 
 			add(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID);
 		}
 		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_SUCCESS) {
+			clear();
+
 			add(LCSAlert.SUCCESS_VALID_TOKEN);
 		}
 		else if (lcsEvent == LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING) {
