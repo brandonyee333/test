@@ -39,13 +39,13 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.Collections;
+import java.util.Locale;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -142,8 +142,11 @@ public class AddRecordMVCActionCommand extends BaseMVCActionCommand {
 
 		DDMStructure ddmStructure = recordSet.getDDMStructure();
 
+		Locale siteDefaultLocale = _portal.getSiteDefaultLocale(
+			ddmStructure.getGroupId());
+
 		DDMForm ddmForm = _ddm.updateDDMFormDefaultLocale(
-			ddmStructure.getDDMForm(), LocaleUtil.getSiteDefault());
+			ddmStructure.getDDMForm(), siteDefaultLocale);
 
 		ddmForm.setAvailableLocales(
 			Collections.singleton(ddmForm.getDefaultLocale()));

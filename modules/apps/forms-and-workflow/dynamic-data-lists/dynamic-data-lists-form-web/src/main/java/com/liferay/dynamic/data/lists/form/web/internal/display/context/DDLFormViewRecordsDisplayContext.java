@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Function;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -56,6 +55,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -196,11 +196,16 @@ public class DDLFormViewRecordsDisplayContext {
 		return recordVersion.getStatus();
 	}
 
-	protected void createRecordSearchContainer(DDMStructure ddmStructure) {
+	protected void createRecordSearchContainer(DDMStructure ddmStructure)
+		throws PortalException {
+
 		List<String> headerNames = new ArrayList<>();
 
+		Locale siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+			ddmStructure.getGroupId());
+
 		DDMForm ddmForm = DDMUtil.updateDDMFormDefaultLocale(
-			ddmStructure.getDDMForm(), LocaleUtil.getSiteDefault());
+			ddmStructure.getDDMForm(), siteDefaultLocale);
 
 		ddmForm.setAvailableLocales(
 			Collections.singleton(ddmForm.getDefaultLocale()));

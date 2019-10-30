@@ -33,11 +33,11 @@ import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.util.DDMFormValuesMerger;
 import com.liferay.dynamic.data.mapping.util.DDMUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import java.util.Collections;
+import java.util.Locale;
 
 import javax.portlet.RenderRequest;
 
@@ -76,8 +76,11 @@ public class DDLFormViewRecordDisplayContext {
 
 		DDMStructure ddmStructure = getDDMStructure();
 
+		Locale siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+			ddmStructure.getGroupId());
+
 		DDMForm ddmForm = DDMUtil.updateDDMFormDefaultLocale(
-			ddmStructure.getDDMForm(), LocaleUtil.getSiteDefault());
+			ddmStructure.getDDMForm(), siteDefaultLocale);
 
 		ddmForm.setAvailableLocales(
 			Collections.singleton(ddmForm.getDefaultLocale()));

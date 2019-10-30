@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.service.permission.PortletPermissionUtil;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -291,12 +290,16 @@ public class DDLFormDisplayContext {
 	}
 
 	protected DDMForm getDDMForm(
-		DDMStructure ddmStructure, boolean requireCaptcha) {
+			DDMStructure ddmStructure, boolean requireCaptcha)
+		throws PortalException {
 
 		DDMForm ddmForm = ddmStructure.getDDMForm();
 
+		Locale siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+			ddmStructure.getGroupId());
+
 		ddmForm = DDMUtil.updateDDMFormDefaultLocale(
-			ddmForm, LocaleUtil.getSiteDefault());
+			ddmForm, siteDefaultLocale);
 
 		ddmForm.setAvailableLocales(
 			Collections.singleton(ddmForm.getDefaultLocale()));
