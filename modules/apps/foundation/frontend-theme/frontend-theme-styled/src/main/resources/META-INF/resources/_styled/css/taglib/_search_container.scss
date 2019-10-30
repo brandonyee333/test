@@ -3,7 +3,7 @@
 		position: relative;
 
 		.table-responsive {
-			@include sm {
+			@include xs {
 				margin-left: $table-responsive-margin-left-md;
 				width: auto;
 			}
@@ -25,7 +25,7 @@
 						.lfr-search-iterator-fixed-header-inner-wrapper {
 							overflow-x: hidden;
 
-							@include sm {
+							@include xs {
 								margin-left: $table-responsive-margin-left-md;
 							}
 
@@ -46,7 +46,7 @@
 					width: auto;
 
 					&:first-child {
-						@include sm {
+						@include xs {
 							left: 0;
 							position: absolute;
 							right: 15px;
@@ -58,15 +58,15 @@
 					height: auto;
 				}
 
-				@include sm {
+				@include xs {
 					th {
 						background-color: $bg-color;
 						padding: 10px;
 					}
 
 					td {
-						padding-bottom: 25px;
-						padding-top: 25px;
+						padding-bottom: 27px;
+						padding-top: 26px;
 					}
 				}
 			}
@@ -78,7 +78,7 @@
 	word-break: break-all \9;
 	word-wrap: break-word;
 
-	@include sm {
+	@include xs {
 		max-width: 125px;
 		min-width: 100px;
 	}
@@ -101,7 +101,7 @@
 .lfr-email-column, .lfr-website-column {
 	min-width: 100px;
 
-	@include sm {
+	@include xs {
 		min-width: 115px;
 	}
 
