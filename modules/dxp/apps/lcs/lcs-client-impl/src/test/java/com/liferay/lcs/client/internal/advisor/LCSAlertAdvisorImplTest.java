@@ -17,6 +17,7 @@ package com.liferay.lcs.client.internal.advisor;
 import com.liferay.lcs.client.advisor.LCSClusterEntryTokenAdvisor;
 import com.liferay.lcs.client.alert.LCSAlert;
 import com.liferay.lcs.client.alert.advisor.LCSAlertAdvisor;
+import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.exception.MissingLCSClusterEntryTokenException;
 import com.liferay.lcs.client.exception.MultipleLCSClusterEntryTokenException;
 import com.liferay.lcs.client.internal.BasePowerMockitoTestCase;
@@ -37,6 +38,7 @@ import com.liferay.portal.kernel.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -179,6 +181,7 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 			new LCSAlertAdvisorImpl(lcsEventManager));
 
 		lcsAlertAdvisor.add(LCSAlert.WARNING_HANDSHAKE_FAILED);
+		lcsAlertAdvisor.add(LCSAlert.ERROR_INVALID_ENVIRONMENT_TYPE);
 
 		HandshakeTask handshakeTask = _spyHandshakeTask(
 			lcsEventManager,
@@ -188,9 +191,15 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 
 		Set<LCSAlert> lcsAlerts = lcsAlertAdvisor.getLCSAlerts();
 
+		Assert.assertTrue(
+			"Handshake failed LCS Alert not expected",
+			lcsAlerts.contains(LCSAlert.SUCCESS_CONNECTION_TO_LCS_VALID));
+
 		Assert.assertFalse(
 			"Handshake failed LCS Alert not expected",
 			lcsAlerts.contains(LCSAlert.WARNING_HANDSHAKE_FAILED));
+
+		_assertContainsNoErrorLCSAlert(lcsAlertAdvisor);
 	}
 
 	@Test
@@ -273,6 +282,9 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 		LCSAlertAdvisorImpl lcsAlertAdvisor = new LCSAlertAdvisorImpl(
 			lcsEventManager);
 
+		lcsEventManager.publish(LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_CHECK_FAILED);
+		lcsEventManager.publish(LCSEvent.LCS_CLUSTER_ENTRY_TOKEN_MISSING);
+
 		LCSClusterEntryTokenCheckTask lcsClusterEntryTokenCheckTask =
 			new LCSClusterEntryTokenCheckTask(
 				lcsClusterEntryTokenAdvisor, lcsEventManager,
@@ -285,6 +297,8 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 		Assert.assertTrue(
 			"Valid token LCS Alert expected",
 			lcsAlerts.contains(LCSAlert.SUCCESS_VALID_TOKEN));
+
+		_assertContainsNoErrorLCSAlert(lcsAlertAdvisor);
 	}
 
 	@Test
@@ -306,6 +320,22 @@ public class LCSAlertAdvisorImplTest extends BasePowerMockitoTestCase {
 		Assert.assertTrue(
 			"Handshake failed LCS Alert expected",
 			lcsAlerts.contains(LCSAlert.WARNING_HANDSHAKE_FAILED));
+	}
+
+	private void _assertContainsNoErrorLCSAlert(
+		LCSAlertAdvisor lcsAlertAdvisor) {
+
+		Set<LCSAlert> lcsAlerts = lcsAlertAdvisor.getLCSAlerts();
+
+		for (LCSAlert lcsAlert : LCSAlert.values()) {
+			if (!Objects.equals("danger", lcsAlert.getType())) {
+				continue;
+			}
+
+			Assert.assertFalse(
+				String.format("No %s expected", lcsAlert.name()),
+				lcsAlerts.contains(lcsAlert));
+		}
 	}
 
 	private HandshakeResponseMessage _createHandshakeResponseExpiredMessage() {
