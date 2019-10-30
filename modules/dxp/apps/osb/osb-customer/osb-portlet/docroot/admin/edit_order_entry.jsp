@@ -25,7 +25,7 @@ long orderEntryId = ParamUtil.getLong(request, "orderEntryId");
 
 OrderEntry orderEntry = OrderEntryLocalServiceUtil.fetchOrderEntry(orderEntryId);
 
-long accountEntryId = BeanParamUtil.getLong(orderEntry, request, "accountEntryId");
+long accountEntryId = ParamUtil.getLong(request, "accountEntryId", BeanParamUtil.getLong(orderEntry, request, "accountEntryId"));
 
 String defaultSalesforceOpportunityKey = StringPool.BLANK;
 

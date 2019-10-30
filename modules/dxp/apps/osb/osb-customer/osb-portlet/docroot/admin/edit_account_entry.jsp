@@ -682,6 +682,14 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 
 			<aui:a cssClass="btn btn-default" href="<%= syncToZendeskURL %>" label="sync-to-zendesk" />
 
+			<portlet:renderURL var="addOrderEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
+				<portlet:param name="backURL" value="<%= portletURL.toString() %>" />
+				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+			</portlet:renderURL>
+
+			<aui:a cssClass="btn btn-default" href="<%= addOrderEntryURL %>" label="add-order" />
+
 			<portlet:renderURL var="viewOrdersEntriesURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
 				<portlet:param name="tabs1" value="sales" />
 				<portlet:param name="tabs2" value="orders" />
