@@ -147,8 +147,7 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public String getDataDefinitionDataDefinitionFieldFieldType()
-		throws Exception {
+	public String getDataDefinitionDataDefinitionFieldFieldTypes() {
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
@@ -173,9 +172,8 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public String getDataDefinitionDataDefinitionFieldLink(
-			Long dataDefinitionId, String fieldName)
-		throws Exception {
+	public String getDataDefinitionDataDefinitionFieldLinks(
+		Long dataDefinitionId, String fieldName) {
 
 		return JSONUtil.put(
 			"dataLayouts",
@@ -213,8 +211,7 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public EntityModel getEntityModel(MultivaluedMap multivaluedMap)
-		throws Exception {
+	public EntityModel getEntityModel(MultivaluedMap multivaluedMap) {
 
 		return _entityModel;
 	}
@@ -290,7 +287,7 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public void postDataDefinitionDataDefinitionPermission(
+	public void postDataDefinitionDataDefinitionPermissions(
 			Long dataDefinitionId, String operation,
 			DataDefinitionPermission dataDefinitionPermission)
 		throws Exception {
@@ -327,7 +324,40 @@ public class DataDefinitionResourceImpl
 	}
 
 	@Override
-	public DataDefinition postSiteDataDefinition(
+	public void postSiteDataDefinitionPermissions(
+			Long siteId, String operation,
+			DataDefinitionPermission dataDefinitionPermission)
+		throws Exception {
+
+		DataEnginePermissionUtil.checkOperationPermission(
+			_groupLocalService, operation, siteId);
+
+		List<String> actionIds = new ArrayList<>();
+
+		if (GetterUtil.getBoolean(
+				dataDefinitionPermission.getAddDataDefinition())) {
+
+			actionIds.add(DataActionKeys.ADD_DATA_DEFINITION);
+		}
+
+		if (GetterUtil.getBoolean(
+				dataDefinitionPermission.getDefinePermissions())) {
+
+			actionIds.add(DataActionKeys.DEFINE_PERMISSIONS);
+		}
+
+		if (actionIds.isEmpty()) {
+			return;
+		}
+
+		DataEnginePermissionUtil.persistPermission(
+			actionIds, contextCompany, operation,
+			_resourcePermissionLocalService, _roleLocalService,
+			dataDefinitionPermission.getRoleNames());
+	}
+
+	@Override
+	public DataDefinition postSiteDataDefinitions(
 			Long siteId, DataDefinition dataDefinition)
 		throws Exception {
 
@@ -372,39 +402,6 @@ public class DataDefinitionResourceImpl
 				dataDefinition.getDescription(), dataDefinition.getName());
 
 		return dataDefinition;
-	}
-
-	@Override
-	public void postSiteDataDefinitionPermission(
-			Long siteId, String operation,
-			DataDefinitionPermission dataDefinitionPermission)
-		throws Exception {
-
-		DataEnginePermissionUtil.checkOperationPermission(
-			_groupLocalService, operation, siteId);
-
-		List<String> actionIds = new ArrayList<>();
-
-		if (GetterUtil.getBoolean(
-				dataDefinitionPermission.getAddDataDefinition())) {
-
-			actionIds.add(DataActionKeys.ADD_DATA_DEFINITION);
-		}
-
-		if (GetterUtil.getBoolean(
-				dataDefinitionPermission.getDefinePermissions())) {
-
-			actionIds.add(DataActionKeys.DEFINE_PERMISSIONS);
-		}
-
-		if (actionIds.isEmpty()) {
-			return;
-		}
-
-		DataEnginePermissionUtil.persistPermission(
-			actionIds, contextCompany, operation,
-			_resourcePermissionLocalService, _roleLocalService,
-			dataDefinitionPermission.getRoleNames());
 	}
 
 	@Override
