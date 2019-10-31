@@ -133,17 +133,15 @@ portletURL.setParameter("tabs1", tabs1);
 								url="<%= documentationImportURL %>"
 							/>
 
-							<c:if test="<%= ZendeskSectionLocalServiceUtil.getZendeskSectionsCount(zendeskCategory.getZendeskCategoryId()) <= 0 %>">
-								<portlet:actionURL name="deleteZendeskCategory" var="deleteZendeskCategoryURL">
-									<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-									<portlet:param name="zendeskCategoryId" value="<%= String.valueOf(zendeskCategory.getZendeskCategoryId()) %>" />
-								</portlet:actionURL>
+							<portlet:actionURL name="deleteZendeskCategory" var="deleteZendeskCategoryURL">
+								<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+								<portlet:param name="zendeskCategoryId" value="<%= String.valueOf(zendeskCategory.getZendeskCategoryId()) %>" />
+							</portlet:actionURL>
 
-								<liferay-ui:icon-delete
-									message="remove"
-									url="<%= deleteZendeskCategoryURL %>"
-								/>
-							</c:if>
+							<liferay-ui:icon-delete
+								message="remove"
+								url="<%= deleteZendeskCategoryURL %>"
+							/>
 						</liferay-ui:icon-menu>
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>

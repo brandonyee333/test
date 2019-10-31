@@ -14,9 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.documentation.sync.service.impl;
 
-import com.liferay.osb.customer.zendesk.documentation.sync.exception.RequiredZendeskCategoryException;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticle;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskArticleAttachment;
 import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskCategory;
+import com.liferay.osb.customer.zendesk.documentation.sync.model.ZendeskSection;
 import com.liferay.osb.customer.zendesk.documentation.sync.service.base.ZendeskCategoryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 
@@ -50,10 +51,31 @@ public class ZendeskCategoryLocalServiceImpl
 	public ZendeskCategory deleteZendeskCategory(long zendeskCategoryId)
 		throws PortalException {
 
-		if (zendeskSectionLocalService.getZendeskSectionsCount(
-				zendeskCategoryId) > 0) {
+		List<ZendeskArticle> zendeskArticles =
+			zendeskArticleLocalService.getZendeskCategoryArticles(
+				zendeskCategoryId);
 
-			throw new RequiredZendeskCategoryException();
+		for (ZendeskArticle zendeskArticle : zendeskArticles) {
+			List<ZendeskArticleAttachment> zendeskArticleAttachments =
+				zendeskArticleAttachmentLocalService.
+					getZendeskArticleAttachments(
+						zendeskArticle.getZendeskArticleId());
+
+			for (ZendeskArticleAttachment zendeskArticleAttachment :
+					zendeskArticleAttachments) {
+
+				zendeskArticleAttachmentLocalService.
+					deleteZendeskArticleAttachment(zendeskArticleAttachment);
+			}
+
+			zendeskArticleLocalService.deleteZendeskArticle(zendeskArticle);
+		}
+
+		List<ZendeskSection> zendeskSections =
+			zendeskSectionLocalService.getZendeskSections(zendeskCategoryId);
+
+		for (ZendeskSection zendeskSection : zendeskSections) {
+			zendeskSectionLocalService.deleteZendeskSection(zendeskSection);
 		}
 
 		return zendeskCategoryPersistence.remove(zendeskCategoryId);
