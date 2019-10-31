@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.analytics.settings.web.internal.configuration;
+package com.liferay.analytics.settings.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -26,21 +26,23 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 	scope = ExtendedObjectClassDefinition.Scope.COMPANY
 )
 @Meta.OCD(
-	id = "com.liferay.analytics.settings.web.internal.configuration.AnalyticsConfiguration",
-	localization = "content/Language", name = "analytics-configuration-name"
+	id = "com.liferay.analytics.settings.configuration.AnalyticsConfiguration"
 )
 public interface AnalyticsConfiguration {
 
-	@Meta.AD(name = "token", required = false)
-	public String token();
+	@Meta.AD(required = false)
+	public String dataSourceId();
 
-	@Meta.AD(name = "syncedGroupIds", required = false)
-	public String[] syncedGroupIds();
-
-	@Meta.AD(name = "siteReportingGrouping", required = false)
+	@Meta.AD(required = false)
 	public String siteReportingGrouping();
 
-	@Meta.AD(name = "syncAllContacts", required = false)
+	@Meta.AD(required = false)
 	public boolean syncAllContacts();
+
+	@Meta.AD(required = false)
+	public String[] syncedGroupIds();
+
+	@Meta.AD(required = false)
+	public String token();
 
 }
