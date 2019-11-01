@@ -25,7 +25,7 @@ task formatSourceLocalChanges(type: FormatSourceTask)
 task printDependencyPath
 task setUpLibs
 task setUpPortalTools
-task wrapper(type: Wrapper)
+task wrapperPortal(type: Wrapper)
 task wrapperSubrepo(type: Wrapper)
 
 FileTree libDependenciesFileTree = fileTree(dir: "../lib", include: "*/dependencies.properties")
@@ -140,7 +140,7 @@ repositories {
 	}
 }
 
-wrapper {
+wrapperPortal {
 	File wrapperDir = projectDir.parentFile
 
 	distributionUrl = "../../tools/gradle-${gradle.gradleVersion}.LIFERAY-PATCHED-3-bin.zip"
