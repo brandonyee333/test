@@ -65,10 +65,14 @@ AUI.add(
 								var label = item.label[instance.get('locale')];
 								
 								if (!label) {
-									var values = Object.keys(item.label).map(function(e) {
-										return item.label[e]
-									})
-									
+									var keys = Object.keys(item.label);
+
+									var values = keys.map(
+										function(key) {
+											return item.label[key];
+										}
+									);
+
 									label = values[0];
 								}
 
