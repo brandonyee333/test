@@ -290,13 +290,19 @@ public class DDLFormDisplayContext {
 	}
 
 	protected DDMForm getDDMForm(
-			DDMStructure ddmStructure, boolean requireCaptcha)
-		throws PortalException {
+		DDMStructure ddmStructure, boolean requireCaptcha) {
 
 		DDMForm ddmForm = ddmStructure.getDDMForm();
 
-		Locale siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
-			ddmStructure.getGroupId());
+		Locale siteDefaultLocale;
+
+		try {
+			siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+				ddmStructure.getGroupId());
+		}
+		catch (PortalException pe) {
+			throw new RuntimeException(pe);
+		}
 
 		ddmForm = DDMUtil.updateDDMFormDefaultLocale(
 			ddmForm, siteDefaultLocale);

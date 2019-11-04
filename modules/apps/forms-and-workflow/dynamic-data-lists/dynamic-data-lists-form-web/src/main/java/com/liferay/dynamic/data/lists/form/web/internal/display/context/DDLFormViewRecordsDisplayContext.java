@@ -196,13 +196,18 @@ public class DDLFormViewRecordsDisplayContext {
 		return recordVersion.getStatus();
 	}
 
-	protected void createRecordSearchContainer(DDMStructure ddmStructure)
-		throws PortalException {
-
+	protected void createRecordSearchContainer(DDMStructure ddmStructure) {
 		List<String> headerNames = new ArrayList<>();
 
-		Locale siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
-			ddmStructure.getGroupId());
+		Locale siteDefaultLocale;
+
+		try {
+			siteDefaultLocale = PortalUtil.getSiteDefaultLocale(
+				ddmStructure.getGroupId());
+		}
+		catch (PortalException pe) {
+			throw new RuntimeException(pe);
+		}
 
 		DDMForm ddmForm = DDMUtil.updateDDMFormDefaultLocale(
 			ddmStructure.getDDMForm(), siteDefaultLocale);
