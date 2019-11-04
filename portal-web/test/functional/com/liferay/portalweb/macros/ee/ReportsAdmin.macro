@@ -1,7 +1,8 @@
 definition {
 
 	macro addReportDefinition {
-		LexiconEntry.gotoAddReport();
+		Click(locator1 = "Button#PLUS");
+		//LexiconEntry.gotoAddReport();
 
 		PortletEntry.inputName(name = "${reportsDefinitionName}");
 
