@@ -41,7 +41,7 @@ long groupId = scopeGroupId;
 
 Group group = themeDisplay.getScopeGroup();
 
-if (group.isStaged() && !group.isStagingGroup()) {
+if (group.isStaged() && !group.isStagingGroup() && !group.isStagedRemotely()) {
 	group = group.getStagingGroup();
 	groupId = group.getGroupId();
 }
