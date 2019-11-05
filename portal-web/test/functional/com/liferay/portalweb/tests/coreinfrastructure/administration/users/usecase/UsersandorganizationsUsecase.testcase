@@ -1864,6 +1864,7 @@ definition {
 	@description = "This is a use case for LPS-85534"
 	@priority = "4"
 	test ViewEmailWithPasswordSetupLinkSendToNewUser {
+        property portal.acceptance = "sharry"; 
 		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
 		property test.smtp.server.enabled = "true";
 
