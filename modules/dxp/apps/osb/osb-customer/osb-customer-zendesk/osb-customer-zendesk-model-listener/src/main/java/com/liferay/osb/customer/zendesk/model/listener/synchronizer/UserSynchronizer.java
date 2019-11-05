@@ -296,7 +296,10 @@ public class UserSynchronizer {
 
 		if (!customer && partnerWorkers.isEmpty() && !liferayEmployee &&
 			!AccountEntryLocalServiceUtil.hasValidSupportAccountEntry(
-				userId, false)) {
+				userId, false) &&
+			!_organizationLocalService.hasUserOrganization(
+				userId,
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID)) {
 
 			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 		}
