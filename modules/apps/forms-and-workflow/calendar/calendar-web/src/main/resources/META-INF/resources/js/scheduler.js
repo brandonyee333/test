@@ -1824,7 +1824,7 @@ AUI.add(
 
 						var values = calendarResources.map(
 							function(item) {
-								return item.name;
+								return Lang.String.escapeHTML(item.name);
 							}
 						);
 
