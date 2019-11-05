@@ -343,6 +343,14 @@ public class DLFileEntryPreviewLocalServiceWrapper
 		return _dlFileEntryPreviewLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public boolean hasDLFileEntryPreview(
+		long fileEntryId, long fileVersionId, int previewType) {
+
+		return _dlFileEntryPreviewLocalService.hasDLFileEntryPreview(
+			fileEntryId, fileVersionId, previewType);
+	}
+
 	/**
 	 * Updates the dl file entry preview in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
