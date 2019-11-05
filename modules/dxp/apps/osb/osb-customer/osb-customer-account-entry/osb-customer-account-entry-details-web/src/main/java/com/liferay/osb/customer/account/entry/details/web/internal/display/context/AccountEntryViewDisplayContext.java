@@ -244,6 +244,17 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
+	public boolean isLiferayContractorOrg() {
+		if (OrganizationLocalServiceUtil.hasUserOrganization(
+				_themeDisplay.getUserId(),
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isLiferayIncOrg() {
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				_themeDisplay.getUserId(),

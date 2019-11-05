@@ -59,7 +59,9 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 		renderRequest.setAttribute(
 			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
 
-		if (isLiferayIncOrg(themeDisplay.getUserId())) {
+		if (isLiferayContractorOrg(themeDisplay.getUserId()) ||
+			isLiferayIncOrg(themeDisplay.getUserId())) {
+
 			return "/account_entry_details/worker/view_account_entry.jsp";
 		}
 

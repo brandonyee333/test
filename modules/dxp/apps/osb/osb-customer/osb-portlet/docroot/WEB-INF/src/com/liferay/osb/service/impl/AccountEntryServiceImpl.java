@@ -190,6 +190,8 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		throws PortalException {
 
 		if (!organizationLocalService.hasUserOrganization(
+				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) &&
+			!organizationLocalService.hasUserOrganization(
 				getUserId(), OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			params.put("accountEntryMembership", Long.valueOf(getUserId()));

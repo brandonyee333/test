@@ -28,6 +28,8 @@ public class OSBCustomerConstants {
 
 	public static final long ORGANIZATION_CUSTOMER_ID = 1747330;
 
+	public static final long ORGANIZATION_LIFERAY_CONTRACTOR_ID = 119362231;
+
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
 
 	public static final long ORGANIZATION_PARTNER_ID = 1747324;

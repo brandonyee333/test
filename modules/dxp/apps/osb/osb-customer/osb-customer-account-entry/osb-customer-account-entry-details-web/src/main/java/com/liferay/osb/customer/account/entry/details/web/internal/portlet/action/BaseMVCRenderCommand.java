@@ -64,6 +64,19 @@ public abstract class BaseMVCRenderCommand implements MVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception;
 
+	protected boolean isLiferayContractorOrg(long userId)
+		throws PortalException {
+
+		if (organizationLocalService.hasUserOrganization(
+				userId,
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
 	protected boolean isLiferayIncOrg(long userId) throws PortalException {
 		if (organizationLocalService.hasUserOrganization(
 				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {

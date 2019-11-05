@@ -68,6 +68,9 @@ public class OSBAccountEnvironmentPermission {
 
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
 				permissionChecker.getUserId(),
+				OSBConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
+			OrganizationLocalServiceUtil.hasUserOrganization(
+				permissionChecker.getUserId(),
 				OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;

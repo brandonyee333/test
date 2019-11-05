@@ -69,7 +69,9 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		if (isLiferayIncOrg(themeDisplay.getUserId())) {
+		if (isLiferayContractorOrg(themeDisplay.getUserId()) ||
+			isLiferayIncOrg(themeDisplay.getUserId())) {
+
 			return null;
 		}
 

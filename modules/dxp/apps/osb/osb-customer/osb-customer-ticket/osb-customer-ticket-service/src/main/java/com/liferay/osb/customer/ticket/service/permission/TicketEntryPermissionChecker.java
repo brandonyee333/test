@@ -56,6 +56,9 @@ public class TicketEntryPermissionChecker {
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
+				OSBConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
+			_organizationLocalService.hasUserOrganization(
+				permissionChecker.getUserId(),
 				OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
