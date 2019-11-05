@@ -52,6 +52,12 @@ buildCreateReactClass {
 	filter {
 		String line ->
 
+		line.replace('"function"==typeof define&&define.amd', '"function"==false&&typeof define&&define.amd')
+	}
+
+	filter {
+		String line ->
+
 		line.replace('exports.createReactClass=e(require("react")):t.createReactClass=e(t.React)}(this,', 'exports.createClass=e(require("react")):t.React.createClass=e(t.React)}(AlloyEditor,')
 	}
 
