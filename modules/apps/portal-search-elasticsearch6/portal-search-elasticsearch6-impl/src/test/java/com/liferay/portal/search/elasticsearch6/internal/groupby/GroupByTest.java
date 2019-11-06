@@ -153,6 +153,41 @@ public class GroupByTest extends BaseGroupByTestCase {
 	}
 
 	@Test
+	public void testGroupByTermsStart() throws Exception {
+		indexDuplicates("one", 1);
+		indexDuplicates("two", 2);
+
+		assertSearch(
+			indexingTestHelper -> {
+				indexingTestHelper.define(
+					searchContext -> {
+						GroupByRequest groupByRequest =
+							groupByRequestFactory.getGroupByRequest(
+								GROUP_FIELD);
+
+						groupByRequest.setTermsSorts(
+							new Sort(SORT_FIELD, Sort.STRING_TYPE, true));
+
+						groupByRequest.setTermsStart(1);
+
+						ArrayList<GroupByRequest> groupByRequests =
+							new ArrayList<>();
+
+						groupByRequests.add(groupByRequest);
+
+						searchContext.setAttribute(
+							"groupByRequests", groupByRequests);
+					});
+
+				indexingTestHelper.search();
+
+				indexingTestHelper.verify(
+					hits -> assertGroups(
+						toMap("one", "1|1"), hits, indexingTestHelper));
+			});
+	}
+
+	@Test
 	public void testMultipleGroupByRequests() throws Exception {
 		indexDuplicates("three", 3);
 		indexDuplicates("two", 2);
