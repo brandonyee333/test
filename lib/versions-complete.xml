@@ -974,7 +974,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-annotations.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-annotations</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -986,7 +986,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-core.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-core</project-name>
 				<project-url>https://github.com/FasterXML/jackson-core</project-url>
 				<licenses>
@@ -998,7 +998,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.petra.json.web.service.client.jar!jackson-databind.jar</file-name>
-				<version>2.9.9.3</version>
+				<version>2.9.10.1</version>
 				<project-name>jackson-databind</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -1051,18 +1051,6 @@
 					<license>
 						<license-name>GNU Lesser General Public Licence</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.cluster.multiple.jar!jgroups.jar</file-name>
-				<version>3.6.16.Final</version>
-				<project-name>JGroups</project-name>
-				<project-url>http://www.jgroups.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
@@ -1587,7 +1575,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!jackson-core.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-core</project-name>
 				<project-url>https://github.com/FasterXML/jackson-core</project-url>
 				<licenses>
@@ -2174,7 +2162,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.security.sso.google.jar!jackson-core.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-core</project-name>
 				<project-url>https://github.com/FasterXML/jackson-core</project-url>
 				<licenses>
@@ -2664,7 +2652,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!jackson-annotations.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-annotations</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -2676,7 +2664,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!jackson-core.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-core</project-name>
 				<project-url>https://github.com/FasterXML/jackson-core</project-url>
 				<licenses>
@@ -2688,7 +2676,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!jackson-databind.jar</file-name>
-				<version>2.9.9.3</version>
+				<version>2.9.10.1</version>
 				<project-name>jackson-databind</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -2979,7 +2967,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-annotations.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-annotations</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -2991,7 +2979,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-core.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 				<project-name>Jackson-core</project-name>
 				<project-url>https://github.com/FasterXML/jackson-core</project-url>
 				<licenses>
@@ -3003,7 +2991,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.push.notifications.sender.apple.jar!jackson-databind.jar</file-name>
-				<version>2.9.9.3</version>
+				<version>2.9.10.1</version>
 				<project-name>jackson-databind</project-name>
 				<project-url>http://github.com/FasterXML/jackson</project-url>
 				<licenses>
@@ -3669,7 +3657,7 @@
 			</library>
 			<library>
 				<file-name>lib/development/com.liferay.jenkins.results.parser.jar</file-name>
-				<version>1.0.428</version>
+				<version>1.0.543</version>
 				<project-name>Liferay Jenkins Results Parser</project-name>
 				<licenses>
 					<license>
@@ -5417,15 +5405,15 @@
 			</library>
 			<library>
 				<file-name>lib/portal/jackson-annotations.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jackson-core.jar</file-name>
-				<version>2.9.9</version>
+				<version>2.9.10</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jackson-databind.jar</file-name>
-				<version>2.9.9.3</version>
+				<version>2.9.10.1</version>
 			</library>
 			<library>
 				<file-name>lib/portal/jai_codec.jar</file-name>
