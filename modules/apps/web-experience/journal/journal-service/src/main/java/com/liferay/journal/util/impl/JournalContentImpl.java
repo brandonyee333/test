@@ -58,7 +58,9 @@ import javax.portlet.RenderRequest;
 
 import org.apache.commons.lang.time.StopWatch;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -368,6 +370,23 @@ public class JournalContentImpl
 		return JournalContent.class.getName();
 	}
 
+	@Activate
+	protected void activate() {
+		_portalCache =
+			(PortalCache<JournalContentKey, JournalArticleDisplay>)
+				_multiVMPool.getPortalCache(CACHE_NAME);
+
+		_journalArticlePortalCacheIndexer = new PortalCacheIndexer<>(
+			new JournalContentArticleKeyIndexEncoder(), _portalCache);
+		_journalTemplatePortalCacheIndexer = new PortalCacheIndexer<>(
+			new JournalContentTemplateKeyIndexEncoder(), _portalCache);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		_multiVMPool.removePortalCache(CACHE_NAME);
+	}
+
 	protected JournalArticleDisplay getArticleDisplay(
 		JournalArticle article, String ddmTemplateKey, String viewMode,
 		String languageId, int page, PortletRequestModel portletRequestModel,
@@ -435,14 +454,12 @@ public class JournalContentImpl
 		}
 	}
 
-	@Reference(unbind = "-")
 	protected void setJournalArticleLocalService(
 		JournalArticleLocalService journalArticleLocalService) {
 
 		_journalArticleLocalService = journalArticleLocalService;
 	}
 
-	@Reference(unbind = "-")
 	protected void setMultiVMPool(MultiVMPool multiVMPool) {
 		_portalCache =
 			(PortalCache<JournalContentKey, JournalArticleDisplay>)
@@ -494,7 +511,11 @@ public class JournalContentImpl
 		}
 	}
 
+	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private MultiVMPool _multiVMPool;
 
 	private static class JournalContentArticleKeyIndexEncoder
 		implements IndexEncoder<String, JournalContentKey> {
