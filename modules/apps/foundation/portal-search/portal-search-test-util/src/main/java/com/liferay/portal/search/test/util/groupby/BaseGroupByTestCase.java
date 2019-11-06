@@ -374,41 +374,6 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 			});
 	}
 
-	@Test
-	public void testGroupByTermsStart() throws Exception {
-		indexDuplicates("one", 1);
-		indexDuplicates("two", 2);
-
-		assertSearch(
-			indexingTestHelper -> {
-				indexingTestHelper.define(
-					searchContext -> {
-						GroupByRequest groupByRequest =
-							groupByRequestFactory.getGroupByRequest(
-								GROUP_FIELD);
-
-						groupByRequest.setTermsSorts(
-							new Sort(SORT_FIELD, Sort.STRING_TYPE, true));
-
-						groupByRequest.setTermsStart(1);
-
-						ArrayList<GroupByRequest> groupByRequests =
-							new ArrayList<>();
-
-						groupByRequests.add(groupByRequest);
-
-						searchContext.setAttribute(
-							"groupByRequests", groupByRequests);
-					});
-
-				indexingTestHelper.search();
-
-				indexingTestHelper.verify(
-					hits -> assertGroups(
-						toMap("one", "1|1"), hits, indexingTestHelper));
-			});
-	}
-
 	protected static String sort(Collection<String> collection) {
 		List<String> list = new ArrayList<>(collection);
 
