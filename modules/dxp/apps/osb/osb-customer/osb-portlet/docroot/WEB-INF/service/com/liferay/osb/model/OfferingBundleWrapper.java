@@ -108,6 +108,16 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	}
 
 	@Override
+	public OfferingBundle toEscapedModel() {
+		return new OfferingBundleWrapper(_offeringBundle.toEscapedModel());
+	}
+
+	@Override
+	public OfferingBundle toUnescapedModel() {
+		return new OfferingBundleWrapper(_offeringBundle.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _offeringBundle.isCachedModel();
 	}
@@ -125,16 +135,6 @@ public class OfferingBundleWrapper implements OfferingBundle,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _offeringBundle.getExpandoBridge();
-	}
-
-	@Override
-	public OfferingBundle toEscapedModel() {
-		return new OfferingBundleWrapper(_offeringBundle.toEscapedModel());
-	}
-
-	@Override
-	public OfferingBundle toUnescapedModel() {
-		return new OfferingBundleWrapper(_offeringBundle.toUnescapedModel());
 	}
 
 	@Override

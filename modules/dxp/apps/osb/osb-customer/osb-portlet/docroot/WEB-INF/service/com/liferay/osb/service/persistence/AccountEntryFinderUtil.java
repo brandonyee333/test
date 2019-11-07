@@ -59,10 +59,6 @@ public class AccountEntryFinderUtil {
 		return getFinder().findByKeywords(keywords, params, start, end, obc);
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> findByMissingDossieraProjectKey() {
-		return getFinder().findByMissingDossieraProjectKey();
-	}
-
 	public static java.util.List<com.liferay.osb.model.AccountEntry> findBySupportResponse(
 		long supportResponseId) {
 		return getFinder().findBySupportResponse(supportResponseId);

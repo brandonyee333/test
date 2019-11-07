@@ -156,6 +156,16 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 		}
 	}
 
+	@Override
+	public CorpProjectMessage toEscapedModel() {
+		return new CorpProjectMessageWrapper(_corpProjectMessage.toEscapedModel());
+	}
+
+	@Override
+	public CorpProjectMessage toUnescapedModel() {
+		return new CorpProjectMessageWrapper(_corpProjectMessage.toUnescapedModel());
+	}
+
 	/**
 	* Returns the display cp of this corp project message.
 	*
@@ -214,16 +224,6 @@ public class CorpProjectMessageWrapper implements CorpProjectMessage,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _corpProjectMessage.getExpandoBridge();
-	}
-
-	@Override
-	public CorpProjectMessage toEscapedModel() {
-		return new CorpProjectMessageWrapper(_corpProjectMessage.toEscapedModel());
-	}
-
-	@Override
-	public CorpProjectMessage toUnescapedModel() {
-		return new CorpProjectMessageWrapper(_corpProjectMessage.toUnescapedModel());
 	}
 
 	@Override

@@ -159,12 +159,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public com.liferay.osb.model.AccountEntry fetchAnalyticsCloudBasicAccountEntry(
-		java.lang.String dossieraAccountKey) {
-		return _accountEntryLocalService.fetchAnalyticsCloudBasicAccountEntry(dossieraAccountKey);
-	}
-
-	@Override
 	public com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid) {
 		return _accountEntryLocalService.fetchCorpProjectAccountEntry(corpProjectUuid);
@@ -677,11 +671,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	public void auditAccountEntry(long userId, long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.auditAccountEntry(userId, accountEntryId);
-	}
-
-	@Override
-	public void checkAnalyticsCloudBasicAccountEntries() {
-		_accountEntryLocalService.checkAnalyticsCloudBasicAccountEntries();
 	}
 
 	@Override

@@ -155,12 +155,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().fetchAccountEntry(accountEntryId);
 	}
 
-	public static com.liferay.osb.model.AccountEntry fetchAnalyticsCloudBasicAccountEntry(
-		java.lang.String dossieraAccountKey) {
-		return getService()
-				   .fetchAnalyticsCloudBasicAccountEntry(dossieraAccountKey);
-	}
-
 	public static com.liferay.osb.model.AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid) {
 		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
@@ -617,10 +611,6 @@ public class AccountEntryLocalServiceUtil {
 	public static void auditAccountEntry(long userId, long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().auditAccountEntry(userId, accountEntryId);
-	}
-
-	public static void checkAnalyticsCloudBasicAccountEntries() {
-		getService().checkAnalyticsCloudBasicAccountEntries();
 	}
 
 	public static void clearSupportRegionAccountEntries(long supportRegionId) {

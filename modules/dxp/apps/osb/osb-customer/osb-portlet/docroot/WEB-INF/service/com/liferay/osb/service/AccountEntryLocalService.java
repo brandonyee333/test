@@ -146,10 +146,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	public AccountEntry fetchAccountEntry(long accountEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AccountEntry fetchAnalyticsCloudBasicAccountEntry(
-		java.lang.String dossieraAccountKey);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid);
 
@@ -462,8 +458,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void auditAccountEntry(long userId, long accountEntryId)
 		throws PortalException;
-
-	public void checkAnalyticsCloudBasicAccountEntries();
 
 	public void clearSupportRegionAccountEntries(long supportRegionId);
 
