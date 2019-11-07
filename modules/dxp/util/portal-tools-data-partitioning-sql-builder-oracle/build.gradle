@@ -1,0 +1,20 @@
+import com.liferay.gradle.util.FileUtil
+
+File thirdPartyDir = file("third-party")
+
+compileJava {
+	doFirst {
+		thirdPartyDir.mkdirs()
+
+		String jdbcDriversURL = project.properties["database.jdbc.drivers.url"]
+		String jdbcOracleDriverFileName = project.properties["database.jdbc.oracle.driver"]
+		String oracleVersion = project.properties["database.oracle.version"]
+
+		FileUtil.get(project, "${jdbcDriversURL}/oracle/${oracleVersion}/${jdbcOracleDriverFileName}", thirdPartyDir)
+	}
+}
+
+dependencies {
+	provided fileTree(dir: thirdPartyDir, include: "*.jar")
+	provided project(":util:portal-tools-data-partitioning-sql-builder")
+}

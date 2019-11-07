@@ -1,0 +1,374 @@
+<definition component-name="portal-commerce">
+	<property name="portal.upstream" value="true" />
+	<property name="test.run.environment" value="EE" />
+	<property name="testray.main.component.name" value="Commerce" />
+
+	<set-up>
+		<execute macro="User#firstLoginPG" />
+	</set-up>
+
+	<tear-down>
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<if>
+			<condition function="IsElementNotPresent" locator1="CommerceNavigation#EMPTY_SEARCH_CONTAINER" />
+			<then>
+				<execute macro="CommerceCatalog#moveCatalogEntriesToRecycleBin" />
+			</then>
+		</if>
+
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Options" />
+		</execute>
+
+		<if>
+			<condition function="IsElementNotPresent" locator1="CommerceNavigation#EMPTY_SEARCH_CONTAINER" />
+			<then>
+				<execute macro="CommerceOptions#deleteOptionsEntries" />
+			</then>
+		</if>
+
+		<execute macro="User#logoutPG" />
+	</tear-down>
+
+	<command name="AddGroupedCatalogEntry" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Grouped Product 1 SKU" />
+			<var name="plusMenu" value="Grouped" />
+			<var name="productFullDescription" value="Grouped Product 1 Full Description" />
+			<var name="productShortDescription" value="Grouped Product 1 Short Description" />
+			<var name="productTitle" value="Grouped Product 1 Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#publishEntry" />
+
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute function="AssertElementPresent" locator1="CommerceNavigation#ENTRY_TITLE">
+			<var name="key_entryTitle" value="Grouped Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="AddGroupedDraftCatalogEntry" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Grouped Product 1 SKU" />
+			<var name="plusMenu" value="Grouped" />
+			<var name="productFullDescription" value="Grouped Product 1 Full Description" />
+			<var name="productShortDescription" value="Grouped Product 1 Short Description" />
+			<var name="productTitle" value="Grouped Product 1 Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#saveEntryAsDraft" />
+	</command>
+
+	<command name="AddSimpleCatalogEntry" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Simple Product 1 SKU" />
+			<var name="plusMenu" value="Simple" />
+			<var name="productFullDescription" value="Simple Product 1 Full Description" />
+			<var name="productShortDescription" value="Simple Product 1 Short Description" />
+			<var name="productTitle" value="Simple Product 1 Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#publishEntry" />
+
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute function="AssertElementPresent" locator1="CommerceNavigation#ENTRY_TITLE">
+			<var name="key_entryTitle" value="Simple Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="AddSimpleDraftCatalogEntry" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Simple Product 1 SKU" />
+			<var name="plusMenu" value="Simple" />
+			<var name="productFullDescription" value="Simple Product 1 Full Description" />
+			<var name="productShortDescription" value="Simple Product 1 Short Description" />
+			<var name="productTitle" value="Simple Product 1 Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#saveEntryAsDraft" />
+	</command>
+
+	<command name="AddVirtualCatalogEntry" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Virtual Product 1 SKU" />
+			<var name="plusMenu" value="Virtual" />
+			<var name="productFullDescription" value="Virtual Product 1 Full Description" />
+			<var name="productShortDescription" value="Virtual Product 1 Short Description" />
+			<var name="productTitle" value="Virtual Product 1 Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#publishEntry" />
+
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute function="AssertElementPresent" locator1="CommerceNavigation#ENTRY_TITLE">
+			<var name="key_entryTitle" value="Virtual Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="AddVirtualDraftCatalogEntry" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Virtual Product 1 SKU" />
+			<var name="plusMenu" value="Virtual" />
+			<var name="productFullDescription" value="Virtual Product 1 Full Description" />
+			<var name="productShortDescription" value="Virtual Product 1 Short Description" />
+			<var name="productTitle" value="Virtual Product 1 Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#saveEntryAsDraft" />
+	</command>
+
+	<command name="CheckGroupedDraftCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddGroupedDraftCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Grouped Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="Grouped Product 1 SKU" />
+			<var name="productFullDescription" value="Grouped Product 1 Full Description" />
+			<var name="productShortDescription" value="Grouped Product 1 Short Description" />
+			<var name="productTitle" value="Grouped Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="CheckPublishedGroupedCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddGroupedCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Grouped Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="Grouped Product 1 SKU" />
+			<var name="productFullDescription" value="Grouped Product 1 Full Description" />
+			<var name="productShortDescription" value="Grouped Product 1 Short Description" />
+			<var name="productTitle" value="Grouped Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="CheckPublishedSimpleCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddSimpleCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Simple Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="Simple Product 1 SKU" />
+			<var name="productFullDescription" value="Simple Product 1 Full Description" />
+			<var name="productShortDescription" value="Simple Product 1 Short Description" />
+			<var name="productTitle" value="Simple Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="CheckPublishedVirtualCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddVirtualCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Virtual Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="Virtual Product 1 SKU" />
+			<var name="productFullDescription" value="Virtual Product 1 Full Description" />
+			<var name="productShortDescription" value="Virtual Product 1 Short Description" />
+			<var name="productTitle" value="Virtual Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="CheckSimpleDraftCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddSimpleDraftCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Simple Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="Simple Product 1 SKU" />
+			<var name="productFullDescription" value="Simple Product 1 Full Description" />
+			<var name="productShortDescription" value="Simple Product 1 Short Description" />
+			<var name="productTitle" value="Simple Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="CheckVirtualDraftCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddVirtualDraftCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Virtual Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="Virtual Product 1 SKU" />
+			<var name="productFullDescription" value="Virtual Product 1 Full Description" />
+			<var name="productShortDescription" value="Virtual Product 1 Short Description" />
+			<var name="productTitle" value="Virtual Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="DeleteAllSimpleCatalogEntriesViaCheckbox" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<for list="1,2,3" param="entryNumber">
+			<execute macro="CommerceCatalog#addEntry">
+				<var name="baseSku" value="Product${entryNumber}SKU" />
+				<var name="plusMenu" value="Simple" />
+				<var name="productFullDescription" value="Product ${entryNumber} Full Description" />
+				<var name="productShortDescription" value="Product ${entryNumber} Short Description" />
+				<var name="productTitle" value="Product ${entryNumber} Title" />
+			</execute>
+
+			<execute macro="CommerceEntry#publishEntry" />
+		</for>
+
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceCatalog#moveCatalogEntriesToRecycleBin" />
+
+		<execute function="AssertElementPresent" locator1="CommerceNavigation#EMPTY_SEARCH_CONTAINER" />
+	</command>
+
+	<command name="DeleteGroupedCatalogEntryViaCheckbox" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute test-case="CPCommerceCatalog#AddGroupedCatalogEntry" />
+
+		<execute macro="CommerceCatalog#moveCatalogEntryToRecycleBinViaCheckbox" >
+			<var name="productTitle" value="Grouped Product 1 Title" />
+		</execute>
+	</command>
+
+	<command name="DeleteSimpleCatalogEntryViaCheckbox" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute test-case="CPCommerceCatalog#AddSimpleCatalogEntry" />
+
+		<execute macro="CommerceCatalog#moveCatalogEntryToRecycleBinViaCheckbox" >
+			<var name="productTitle" value="Product 1 Title" />
+		</execute>
+	</command>
+
+	<command ignore="true" name="EditCatalogEntry" priority="5">
+		<execute macro="CommerceCatalog#addEntry">
+			<var name="baseSku" value="Product 1 SKU" />
+			<var name="plusMenu" value="Simple" />
+			<var name="productFullDescription" value="Product Full Description" />
+			<var name="productShortDescription" value="Product Short Description" />
+			<var name="productTitle" value="Product Title" />
+		</execute>
+	</command>
+
+	<command ignore="true" name="EditSimpleCatalogEntry" priority="5">
+		<execute test-case="CPCommerceCatalog#AddSimpleCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Simple Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#editEntryTitle">
+			<var name="newEntryTitle" value="New Product Title" />
+		</execute>
+
+		<execute macro="CommerceEntry#editEntryShortDescription">
+			<var name="newEntryShortDescription" value="New Product Short Description" />
+		</execute>
+
+		<execute macro="CommerceEntry#editEntryFullDescription">
+			<var name="newEntryFullDescription" value="New Product Full Description" />
+		</execute>
+
+		<execute macro="CommerceEntry#editEntryBaseSKU">
+			<var name="baseSku" value="New Product BaseSKU" />
+		</execute>
+
+		<execute macro="CommerceEntry#publishEntry" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="Message#SUCCESS" />
+			<then>
+				<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
+			</then>
+			<else>
+				<execute function="AssertTextEquals" locator1="CommerceEntry#WORKFLOW_STATUS" value1="Approved" />
+			</else>
+		</if>
+
+		<execute macro="CommerceNavigator#gotoSitesCommerce">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="New Product Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceEntry#viewCatalogEntry">
+			<var name="baseSku" value="New Product BaseSKU" />
+			<var name="productFullDescription" value="New Product Full Description" />
+			<var name="productShortDescription" value="New Product Short Description" />
+			<var name="productTitle" value="New Product Title" />
+		</execute>
+	</command>
+
+	<command name="SetSimpleCatalogEntryExpirationDate" priority="5">
+		<property name="portal.acceptance" value="true" />
+
+		<execute test-case="CPCommerceCatalog#AddSimpleCatalogEntry" />
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Simple Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="WebContent#addExpirationDateCP">
+			<var name="expirationDate" value="01/02/3000" />
+		</execute>
+
+		<execute macro="CommerceEntry#publishEntry" />
+
+		<execute macro="ProductMenuHelper#gotoPortlet">
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute macro="CommerceNavigator#gotoEntry">
+			<var name="entryTitle" value="Simple Product 1 Title" />
+			<var name="portlet" value="Catalog" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="TextInput#EXPIRATION_DATE" value1="01/02/3000" />
+	</command>
+</definition>

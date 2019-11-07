@@ -1,0 +1,11 @@
+;
+; Do not manually edit this file.
+;
+[subrepo]
+	autopull = true
+	cmdver = liferay
+	commit = 9ecfd9f834f37fa756f8786f9f2e151f34678e95
+	mergebuttonmergecommits = false
+	mode = pull
+	parent = 43bea32867be2af676fd0c50804b23956d7c20b0
+	remote = git@github.com:liferay/com-liferay-commerce-private.git

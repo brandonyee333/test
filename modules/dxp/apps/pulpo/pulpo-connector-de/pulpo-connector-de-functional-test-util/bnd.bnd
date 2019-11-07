@@ -1,0 +1,5 @@
+Bundle-Name: Liferay Pulpo Connector DE Functional Test Util
+Bundle-SymbolicName: com.liferay.pulpo.connector.de.functional.test.util
+Bundle-Version: 0.0.1
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Liferay Pulpo Connector DE Functional Test Util

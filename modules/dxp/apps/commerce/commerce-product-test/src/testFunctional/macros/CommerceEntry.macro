@@ -1,0 +1,151 @@
+<definition>
+	<command name="addCatalogEntry">
+		<execute function="Type" locator1="CommerceEntry#TITLE_FIELD" value1="${productTitle}" />
+
+		<execute function="Type" locator1="CommerceEntry#SHORT_DESCRIPTION_FIELD" value1="${productShortDescription}" />
+
+		<execute macro="CommerceEntry#addFullDescriptionViaAlloyEditor">
+			<var name="entryFullDescription" value="${productFullDescription}" />
+		</execute>
+
+		<if>
+			<condition function="IsElementNotPresent" locator1="CommerceEntry#BASE_SKU_FIELD" />
+			<then>
+				<execute function="Click" locator1="CommerceEntry#BASE_INFORMATION_TITLE_BAR" />
+
+				<execute function="Type" locator1="CommerceEntry#BASE_SKU_FIELD" value1="${baseSku}" />
+			</then>
+			<else>
+				<execute function="Type" locator1="CommerceEntry#BASE_SKU_FIELD" value1="${baseSku}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="addFullDescriptionViaAlloyEditor">
+		<execute function="Type#typeEditor" locator1="CommerceEntry#FULL_DESCRIPTION_FIELD" value1="${entryFullDescription}" />
+	</command>
+
+	<command name="addOptionsEntry">
+		<execute function="Type" locator1="CommerceEntry#TITLE_FIELD" value1="${optionTitle}" />
+
+		<execute function="Type" locator1="CommerceEntry#DESCRIPTION_FIELD" value1="${optionDescription}" />
+
+		<execute function="Select" locator1="CommerceEntry#FIELD_TYPE_SELECT" value1="${optionFieldType}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#KEY_FIELD" value1="${optionTitle}" />
+	</command>
+
+	<command name="addOptionValue">
+		<execute function="Type" locator1="CommerceEntry#TITLE_FIELD" value1="${valueTitle}" />
+
+		<execute function="Type" locator1="CommerceEntry#PRIORITY_FIELD" value1="${valuePriority}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#KEY_FIELD" value1="${valueTitle}" />
+	</command>
+
+	<command name="editEntryBaseSKU">
+		<if>
+			<condition function="IsElementNotPresent" locator1="CommerceEntry#BASE_INFORMATION_TITLE_BAR" />
+			<then>
+				<execute function="Click" locator1="CommerceEntry#BASE_INFORMATION_TITLE_BAR" />
+
+				<execute function="Type" locator1="CommerceEntry#BASE_SKU_FIELD" value1="${baseSku}" />
+			</then>
+			<else>
+				<execute function="Type" locator1="CommerceEntry#BASE_SKU_FIELD" value1="${baseSku}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="editEntryFullDescription">
+		<execute macro="CommerceEntry#addFullDescriptionViaAlloyEditor">
+			<var name="entryFullDescription" value="${newEntryFullDescription}" />
+		</execute>
+	</command>
+
+	<command name="editEntryShortDescription">
+		<execute function="Type" locator1="CommerceEntry#SHORT_DESCRIPTION_FIELD" value1="${newEntryShortDescription}" />
+	</command>
+
+	<command name="editEntryTitle">
+		<execute function="Type" locator1="CommerceEntry#TITLE_FIELD" value1="${newEntryTitle}" />
+	</command>
+
+	<command name="gotoEntryMenu">
+		<execute function="AssertClick" locator1="CommerceEntry#ENTRY_MENU_TAB" value1="${menuTab}">
+			<var name="key_menuTab" value="${menuTab}" />
+		</execute>
+	</command>
+
+	<command name="gotoEntryTab">
+		<execute macro="CommerceEntry#gotoEntryMenu">
+			<var name="menuTab" value="${menuTab}" />
+		</execute>
+	</command>
+
+	<command name="publishEntry">
+		<execute macro="Button#clickPublish" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="Message#SUCCESS" />
+			<then>
+				<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
+			</then>
+			<else>
+				<execute function="AssertTextEquals" locator1="CommerceEntry#WORKFLOW_STATUS" value1="Approved" />
+			</else>
+		</if>
+	</command>
+
+	<command name="saveEntry">
+		<execute macro="Button#clickSave" />
+
+		<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
+	</command>
+
+	<command name="saveEntryAsDraft">
+		<execute macro="Button#clickSaveAsDraft" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="Message#SUCCESS" />
+			<then>
+				<execute function="AssertElementPresent" locator1="Message#SUCCESS" />
+			</then>
+			<else>
+				<execute function="AssertTextEquals" locator1="CommerceEntry#WORKFLOW_STATUS" value1="Draft" />
+			</else>
+		</if>
+	</command>
+
+	<command name="uploadCatalogEntrySingleImage">
+		<execute macro="CommerceEntry#gotoEntryMenu">
+			<var name="menuTab" value="Images" />
+		</execute>
+
+		<execute function="Click" locator1="Button#PLUS" />
+
+		<execute function="AssertClick" locator1="CommerceEntry#PRODUCT_IMAGE_SELECT_FILE" value1="Select File" />
+
+		<execute macro="CommerceItemSelector#uploadSingleFile">
+			<var name="uploadFileName" value="${uploadFileName}" />
+		</execute>
+	</command>
+
+	<command name="viewCatalogEntry">
+		<execute function="AssertTextEquals" locator1="CommerceEntry#TITLE_FIELD" value1="${productTitle}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#SHORT_DESCRIPTION_FIELD" value1="${productShortDescription}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#FULL_DESCRIPTION_FIELD" value1="${productFullDescription}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#BASE_SKU_FIELD" value1="${baseSku}" />
+	</command>
+
+	<command name="viewOptionsEntry">
+		<execute function="AssertTextEquals" locator1="CommerceEntry#TITLE_FIELD" value1="${optionTitle}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#DESCRIPTION_FIELD" value1="${optionDescription}" />
+
+		<execute function="AssertTextEquals" locator1="CommerceEntry#KEY_FIELD" value1="${optionKey}" />
+	</command>
+</definition>

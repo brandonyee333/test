@@ -1,0 +1,86 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "authentication": {
+        "bucket": "liferay-faro-docker-credentials",
+        "key": "dockercfg_ruben"
+    },
+    "volumes": [
+        {
+            "name": "logsdir",
+            "host": {
+                "sourcePath": "/var/log/containers"
+            }
+        },
+        {
+            "name": "filebeatconfdir",
+            "host": {
+                "sourcePath": "/var/app/current/logstash/conf"
+            }
+        },
+        {
+            "name": "certsdir",
+            "host": {
+                "sourcePath": "/var/app/current/logstash/certs"
+            }
+        }
+    ],
+    "containerDefinitions": [
+        {
+            "name": "pulpo-client-de",
+            "image": "liferay/<DOCKER_IMAGE_NAME>:<DOCKER_IMAGE_VERSION>",
+            "essential": true,
+            "memory": 3072,
+            "extraHosts": [
+                  {
+                    "hostname": "lcs-portal-pulpo",
+                    "ipAddress": "<LCS_PORTAL_IP>"
+                  },
+                  {
+                    "hostname": "lcs-gateway-pulpo",
+                    "ipAddress": "<LCS_GATEWAY_IP>"
+                  }
+             ],
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 8080
+                },
+                {
+                    "hostPort": 5005,
+                    "containerPort": 5005
+                },
+                {
+                    "hostPort": 8099,
+                    "containerPort": 8099
+                },
+                {
+                    "hostPort": 11311,
+                    "containerPort": 11311
+                }
+            ]
+        },
+        {
+            "name": "pulpo-filebeat",
+            "image": "prameswar/filebeat:1.2",
+            "mountPoints": [
+                {
+                    "sourceVolume": "filebeatconfdir",
+                    "containerPath": "/etc/filebeat",
+                    "readOnly": true
+                },
+                {
+                    "sourceVolume": "logsdir",
+                    "containerPath": "/logs",
+                    "readOnly": true
+                },
+                {
+                    "sourceVolume": "certsdir",
+                    "containerPath": "/etc/pki/tls/certs",
+                    "readOnly": true
+                }
+            ],
+            "essential": true,
+            "memory": 512
+        }
+    ]
+}

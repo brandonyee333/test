@@ -1,0 +1,11 @@
+;
+; Do not manually edit this file.
+;
+[subrepo]
+	autopull = false
+	cmdver = liferay
+	commit = 3289e27df832d15f8590bc93f615e24739cbe09c
+	mergebuttonmergecommits = false
+	mode = push
+	parent = e49dfad8c4cf02c4692fcfca1948212c41900c6e
+	remote = git@github.com:liferay/com-liferay-portal-search-elasticsearch-marvel-private.git

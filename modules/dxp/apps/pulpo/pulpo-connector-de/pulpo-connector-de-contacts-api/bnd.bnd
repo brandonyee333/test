@@ -1,0 +1,9 @@
+Bundle-Name: Liferay Pulpo Connector DE Contacts API
+Bundle-SymbolicName: com.liferay.pulpo.connector.de.contacts.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.pulpo.connector.de.contacts,\
+	com.liferay.pulpo.connector.de.contacts.constants,\
+	com.liferay.pulpo.connector.de.contacts.model
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Pulpo Connector Contacts

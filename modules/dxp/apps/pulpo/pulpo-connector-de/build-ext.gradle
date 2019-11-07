@@ -1,0 +1,313 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerTagImage
+
+import com.liferay.gradle.plugins.app.docker.AppDockerPlugin
+import com.liferay.gradle.util.GradleUtil
+
+import java.nio.charset.Charset
+import java.nio.file.Files
+
+import javax.management.remote.JMXConnectorFactory as JmxFactory
+import javax.management.remote.JMXServiceURL as JmxUrl
+
+import org.gradle.testing.jacoco.plugins.JacocoPlugin
+import org.kt3k.gradle.plugin.CoverallsPlugin
+
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.app.docker", version: "1.0.0"
+		classpath group: "org.kt3k.gradle.plugin", name: "coveralls-gradle-plugin", version: "2.6.3"
+	}
+
+	repositories {
+		maven {
+			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+apply plugin: CoverallsPlugin
+
+allprojects {
+	apply plugin: JacocoPlugin
+
+	jacoco {
+		toolVersion = "0.7.8"
+	}
+
+	repositories {
+		mavenLocal()
+
+		maven {
+			url "https://cdn.lfrs.sl/repository.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+configure(subprojects.findAll {!it.childProjects}) {
+	repositories {
+		mavenLocal()
+
+		maven {
+			url "http://nexus-wcm.liferay.org.es/repository/dxp-cloud"
+		}
+	}
+
+	liferay {
+		deployDir = new File(getClientDeployDir())
+	}
+
+	task createClientDeployDir(type: Exec) {
+		commandLine 'mkdir', '-m', '777', '-p', "${getClientDeployDir()}"
+	}
+
+	task createJacocoTestIntegrationFile(type: Exec) {
+		doFirst {
+			commandLine 'touch', "${rootDir}/build/jacoco/testIntegration.exec"
+		}
+	}
+
+	task copyJacocoAgent(type: Copy) {
+		configurations.jacocoAgent.asFileTree.each {
+			from( zipTree(it) )
+		}
+		into "${rootDir}/build/jacoco"
+
+		finalizedBy createJacocoTestIntegrationFile
+	}
+
+	deploy {
+		dependsOn createClientDeployDir
+	}
+
+	liferay {
+		jmxRemotePort = "8098"
+	}
+
+	test {
+		ignoreFailures = false
+	}
+
+	testIntegration {
+		ignoreFailures = false
+
+		testLogging {
+			events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+			showExceptions true
+			exceptionFormat "full"
+			showCauses true
+			showStackTraces true
+		}
+	}
+
+	setUpTestableTomcat {
+		enabled = false
+	}
+
+	startTestableTomcat {
+		enabled = false
+	}
+
+	stopTestableTomcat {
+		enabled = false
+	}
+
+	group project.property("com.liferay.pulpo.connector.de.group.name")
+}
+
+if (GradleUtil.getProperty(project, "com.liferay.pulpo.connector.de.docker.apply.plugin").toBoolean()) {
+	apply plugin: AppDockerPlugin
+
+	appDocker {
+		imageName this.getImageName()
+		imageUser this.getUserName()
+		inputDir "pulpo-connector-de-docker"
+	}
+
+	docker {
+		registryCredentials {
+			username = System.getenv().get("DOCKER_USER")
+			password = System.getenv().get("DOCKER_PWD")
+		}
+	}
+
+	buildAppDockerImage {
+		buildAppDockerImage.dependsOn subprojects.findAll{!it.childProjects}.deploy
+	}
+
+	allprojects {
+		ext {
+			dockerDestinationDir = prepareAppDockerImageInputDir.destinationDir
+		}
+	}
+
+	// This avoids the plugin builing the image again on push
+
+	pushAppDockerImage.dependsOn = []
+
+	afterEvaluate {
+		for (DockerTagImage dockerTagImage in tasks.withType(DockerTagImage)) {
+			dockerTagImage.dependsOn = []
+			dockerTagImage.imageId = "${appDocker.imageUser}/${appDocker.imageName}"
+		}
+	}
+}
+
+task checkDocker() {
+	doLast {
+		def url = "http://localhost:8080"
+
+		println("Trying to reach " + url)
+
+		while (true) {
+			try {
+				print(".")
+
+				url.toURL().text
+
+				println("Portal startup finished")
+
+				break
+			}
+			catch (Exception e) {
+				Thread.sleep(1000)
+			}
+		}
+	}
+}
+
+def getClientDeployDir() {
+	return "${rootDir}/${project.property('com.liferay.pulpo.connector.de.deploy.dir')}"
+}
+
+def pulpoAssetConnectorEnvironmentUniquename = System.getenv().get("PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME")
+def pulpoContactConnectorEnvironmentUniquename = System.getenv().get("PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME")
+def lcsPortalHost = System.getenv().get("LCS_PORTAL_HOST")
+def lcsPortalPort = System.getenv().get("LCS_PORTAL_PORT")
+def lcsPortalEmail = System.getenv().get("LCS_PORTAL_EMAIL")
+def lcsPortalPwd = System.getenv().get("LCS_PORTAL_PWD")
+def lcsPortalIp = System.getenv().get("LCS_PORTAL_IP")
+def lcsGatewayIp = System.getenv().get("LCS_GATEWAY_IP")
+
+task runDocker(type: Exec) {
+	dependsOn subprojects.findAll {!it.childProjects}.copyJacocoAgent
+
+	def javaOpts = project.getProperty('com.liferay.pulpo.connector.de.java.opts')
+
+	javaOpts += ' ' + project.getProperty('com.liferay.pulpo.connector.de.jacoco.opts')
+
+	if (project.hasProperty('debug')) {
+		javaOpts += ' ' + project.getProperty('com.liferay.pulpo.connector.de.debug.opts')
+	}
+
+	commandLine 'docker', 'run',
+			'-h', "localhost",
+ 			'--add-host', "lcs-portal-pulpo:$lcsPortalIp",
+			'--add-host', "lcs-gateway-pulpo:$lcsGatewayIp",
+			'-e', "PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoAssetConnectorEnvironmentUniquename}",
+			'-e', "PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=${pulpoContactConnectorEnvironmentUniquename}",
+			'-e', "JACOCO_DIR=${rootDir}/build/jacoco",
+			'-e', "JAVA_OPTS=$javaOpts",
+			'-e', "LCS_PORTAL_HOST=$lcsPortalHost",
+			'-e', "LCS_PORTAL_PORT=$lcsPortalPort",
+			'-e', "LCS_PORTAL_EMAIL=$lcsPortalEmail",
+			'-e', "LCS_PORTAL_PWD=$lcsPortalPwd",
+			'-e', "ROOT_DIR=${rootDir}",
+			'-p', '5005:5005',
+			'-p', '8080:8080',
+			'-p', '8098:8098',
+			'-p', '11311:11311',
+			'-v', "${rootDir}/build/jacoco:/jacoco",
+			'-v', "${getClientDeployDir()}:/liferay/deploy",
+			'-d',
+			'-v', "${rootDir}/pulpo-connector-de-docker/portal-ext.properties:/liferay/portal-ext.properties",
+			'--name', "liferay-pulpo-client-de",
+			getImageNameWithUserAndVersion()
+
+	finalizedBy checkDocker
+}
+
+def getImageName() {
+	return project.property("com.liferay.pulpo.connector.de.docker.image.name")
+}
+
+def getImageVersion() {
+	return project.property("com.liferay.pulpo.connector.de.docker.image.version")
+}
+
+def getUserName() {
+	return project.property("com.liferay.pulpo.connector.de.docker.username")
+}
+
+def getImageNameWithUser() {
+	return getUserName() + "/" + getImageName()
+}
+
+def getImageNameWithUserAndVersion() {
+	return getImageNameWithUser() + ":" + getImageVersion()
+}
+
+task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
+	dependsOn = subprojects.findAll{!it.childProjects}.test
+	additionalSourceDirs = files(subprojects.findAll{!it.childProjects}.sourceSets.main.allSource.srcDirs)
+	sourceDirectories = files(subprojects.findAll{!it.childProjects}.sourceSets.main.allSource.srcDirs)
+	classDirectories =  files(subprojects.findAll{!it.childProjects}.sourceSets.main.output)
+
+	executionData = files(subprojects.findAll{!it.childProjects}.jacocoTestReport.executionData, "${rootDir}/build/jacoco/testIntegration.exec")
+
+	onlyIf = { true }
+
+	afterEvaluate {
+		classDirectories = files(classDirectories.files.collect {
+			fileTree(dir: it,
+					exclude: [
+						'**/constants/*',
+						'**/exception/*Exception*',
+						'**/model/*Model*',
+						'**/model/*Soap*',
+						'**/model/*Wrapper*',
+						'**/model/impl/*BaseImpl*',
+						'**/model/impl/*CacheModel*',
+						'**/model/impl/*ModelImpl*',
+						'**/service/*ServiceUtil*',
+						'**/service/*ServiceWrapper*',
+						'**/service/base/*',
+						'**/service/http/*',
+						'**/service/persistence/*Util*',
+						'**/service/persistence/impl/*PersistenceImpl*',
+						'**/service/persistence/impl/*FinderBaseImpl*',
+						'**/service/util/*',
+						'**/test/util/*'
+					])
+		})
+	}
+
+	reports {
+		html.enabled = true
+		xml.enabled = true
+		xml.destination "${rootDir}/build/reports/jacoco/test/jacocoTestReport.xml"
+		csv.enabled = false
+	}
+
+	doFirst {
+		executionData = files(executionData.findAll { it.exists() })
+	}
+}
+
+task dumpJacoco {
+	doLast {
+		def serverUrl = 'service:jmx:rmi:///jndi/rmi://localhost:8098/jmxrmi'
+		String beanName = "org.jacoco:type=Runtime"
+		def server = JmxFactory.connect(new JmxUrl(serverUrl)).MBeanServerConnection
+		def gmxb = new GroovyMBean(server, beanName)
+
+		gmxb.dump(true)
+	}
+}
+
+tasks.coveralls {
+	dependsOn jacocoRootReport
+}
+
+coveralls.sourceDirs = files(subprojects.findAll{!it.childProjects}.sourceSets.main.allSource.srcDirs).collect {
+	file -> file.absolutePath
+}

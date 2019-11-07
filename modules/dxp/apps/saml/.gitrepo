@@ -1,0 +1,11 @@
+;
+; Do not manually edit this file.
+;
+[subrepo]
+	autopull = false
+	cmdver = liferay
+	commit = bdab60a113fc1225453756f2ddc591339ad76ed5
+	mergebuttonmergecommits = false
+	mode = push
+	parent = 32a5714299bab032ab483718b4fc01697c42014e
+	remote = git@github.com:liferay/com-liferay-saml-private.git

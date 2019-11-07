@@ -1,0 +1,4 @@
+dependencies {
+	provided fileTree(dir: "third-party", include: "*.jar")
+	provided project(":util:portal-tools-data-partitioning-sql-builder")
+}

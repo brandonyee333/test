@@ -1,0 +1,12 @@
+#
+# Liferay App Version 3.0.0
+#
+
+app.artifacts-3.0.0=\
+	com.liferay.oauth.api-1.0.1.jar,\
+	com.liferay.oauth.service-1.0.1.jar,\
+	com.liferay.oauth.web-1.0.2.jar
+
+app.change.log-3.0.0=LPS-65703 LPS-67374
+
+app.git.id-3.0.0=1948fac75e7fb7f455c695d0080545ef52ae54f1

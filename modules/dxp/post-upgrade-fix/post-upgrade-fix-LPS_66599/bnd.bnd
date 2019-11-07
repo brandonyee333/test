@@ -1,0 +1,3 @@
+Bundle-Name: Liferay Post Upgrade Fix LPS_66599
+Bundle-SymbolicName: com.liferay.post.upgrade.fix.LPS_66599
+Bundle-Version: 1.0.0

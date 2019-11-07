@@ -1,0 +1,8 @@
+Bundle-Name: Liferay Pulpo Connector DE Assets Properties Provider
+Bundle-SymbolicName: com.liferay.pulpo.connector.de.assets.properties.provider
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.pulpo.connector.de.assets.properties.provider,\
+	com.liferay.pulpo.connector.de.assets.properties.provider.registry
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Pulpo Connector DE Assets

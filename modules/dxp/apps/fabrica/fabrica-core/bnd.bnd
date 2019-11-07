@@ -1,0 +1,11 @@
+Bundle-Name: Liferay Fabrica Core
+Bundle-SymbolicName: com.liferay.fabrica.core
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.fabrica.core.admin,\
+	com.liferay.fabrica.core.discovery,\
+	com.liferay.fabrica.core.distribution,\
+	com.liferay.fabrica.core.distribution.client,\
+	com.liferay.fabrica.core.distribution.server
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title:

@@ -1,0 +1,6 @@
+Bundle-Name: Liferay Pulpo Connector DE Assets API
+Bundle-SymbolicName: com.liferay.pulpo.connector.de.assets.api
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.pulpo.connector.de.assets
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title: Pulpo Connector DE Assets

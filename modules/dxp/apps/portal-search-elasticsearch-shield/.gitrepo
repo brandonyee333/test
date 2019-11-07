@@ -1,0 +1,11 @@
+;
+; Do not manually edit this file.
+;
+[subrepo]
+	autopull = false
+	cmdver = liferay
+	commit = ede335a1eb530852f1c6221fbec8e7a1639cb75d
+	mergebuttonmergecommits = false
+	mode = push
+	parent = 04275177ec3f3628e707646381ca62c4af885b19
+	remote = git@github.com:liferay/com-liferay-portal-search-elasticsearch-shield-private.git

@@ -1,0 +1,93 @@
+addons:
+    apt:
+        sources:
+            - google-chrome
+        packages:
+            - google-chrome-stable
+
+cache.directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+jdk: oraclejdk8
+
+language: java
+
+services:
+    - docker
+
+sudo: required
+
+before_install:
+    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" != "7.0.x-private" ]; then
+          echo "Terminating build since there is also a pull request build running.";
+          travis_terminate 0;
+       fi'
+
+    - export CHROME_BIN=/usr/bin/google-chrome
+    - "export DISPLAY=:99.0"
+    - "sh -e /etc/init.d/xvfb start"
+    - sleep 3 # give xvfb some time to start
+
+    # Install Catch Reports
+
+    - curl -O https://liferay-labs.github.io/reports-catcher/catch-reports.sh
+    - chmod +x catch-reports.sh
+
+install:
+    - ./pulpo-connector-de-deployment/src/scripts/install_aws_and_eb_cli.sh
+
+before_script:
+
+    # Quick checks
+
+    - ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration test
+
+   # Check deployed structure
+
+    - ./gradlew deploy
+
+    - ls pulpo-connector-de-docker/deploy
+
+    # Build Docker Image
+    - ./gradlew buildAppDockerImage
+
+    # Run Docker Image
+    - export PULPO_ASSET_CONNECTOR_ENVIRONMENT_UNIQUENAME=dev
+    - export PULPO_CONTACT_CONNECTOR_ENVIRONMENT_UNIQUENAME=dev
+    - travis_wait ./gradlew runDocker
+
+script:
+    - ./gradlew testIntegration
+
+before_cache:
+    - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+after_success:
+    - ./gradlew dumpJacoco
+    - ./gradlew coveralls
+
+    - 'if [ "$TRAVIS_EVENT_TYPE" = "push" ] && [ "$TRAVIS_BRANCH" = "7.0.x-private" ]; then
+           ./gradlew pushAppDockerImage;
+       fi'
+
+before_deploy:
+
+  # Set variables used by deploy script
+
+  - export COMPONENT_NAME="client-de"
+  - export DOCKER_IMAGE_NAME="liferay-pulpo-client-de"
+
+deploy:
+  on:
+    branch: "7.0.x-private"
+    condition: $TRAVIS_EVENT_TYPE = push
+  provider: script
+  script: $TRAVIS_BUILD_DIR/pulpo-connector-de-deployment/src/scripts/deploy.sh
+  skip_cleanup: true
+
+after_script:
+    - ./catch-reports.sh
+
+    - docker logs liferay-pulpo-client-de
