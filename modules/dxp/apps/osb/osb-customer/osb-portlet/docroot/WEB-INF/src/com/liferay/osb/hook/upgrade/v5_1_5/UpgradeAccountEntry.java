@@ -15,14 +15,13 @@
 package com.liferay.osb.hook.upgrade.v5_1_5;
 
 import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.User;
 
@@ -54,34 +53,32 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 			while (rs.next()) {
 				long accountEntryId = rs.getLong("accountEntryId");
+
 				String corpProjectUuid = rs.getString("corpProjectUuid");
 
 				CorpProject corpProject =
 					CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
 						corpProjectUuid);
 
-				if (corpProject != null) {
-					List<User> ownerUsers =
-						corpProject.getAnalyticsCloudOwners();
+				if (corpProject == null) {
+					continue;
+				}
 
-					if (ownerUsers.isEmpty()) {
-						AccountEntry accountEntry =
-							AccountEntryLocalServiceUtil.fetchAccountEntry(
-								accountEntryId);
+				List<User> ownerUsers = corpProject.getAnalyticsCloudOwners();
 
-						for (OfferingEntry offeringEntry :
-								accountEntry.getOfferingEntries()) {
+				if (!ownerUsers.isEmpty()) {
+					continue;
+				}
 
-							offeringEntry.setStatus(
-								OfferingEntryConstants.STATUS_CLOSED);
+				List<OfferingEntry> offeringEntries =
+					OfferingEntryLocalServiceUtil.
+						getAccountEntryOfferingEntries(accountEntryId);
 
-							OfferingEntryLocalServiceUtil.updateOfferingEntry(
-								offeringEntry);
-						}
-
-						AccountEntryLocalServiceUtil.updateSupportStatus(
-							accountEntryId);
-					}
+				for (OfferingEntry offeringEntry : offeringEntries) {
+					OfferingEntryLocalServiceUtil.updateStatus(
+						OSBConstants.USER_DEFAULT_USER_ID,
+						offeringEntry.getOfferingEntryId(),
+						OfferingEntryConstants.STATUS_CLOSED);
 				}
 			}
 		}
