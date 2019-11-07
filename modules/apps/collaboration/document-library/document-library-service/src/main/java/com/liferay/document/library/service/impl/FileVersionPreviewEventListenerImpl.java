@@ -52,13 +52,11 @@ public class FileVersionPreviewEventListenerImpl
 
 	@Override
 	public long getDLFileVersionPreviewId(
-		long fileEntryId, long fileVersionId,
-		int fileVersionPreviewStatus) {
+		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus) {
 
 		FileVersionPreview dlFileVersionPreview =
 			_fileVersionPreviewLocalService.fetchFileVersionPreview(
-				fileEntryId, fileVersionId,
-				fileVersionPreviewStatus);
+				fileEntryId, fileVersionId, fileVersionPreviewStatus);
 
 		if (dlFileVersionPreview == null) {
 			return 0;
