@@ -16,7 +16,6 @@ package com.liferay.osb.service.persistence.impl;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.impl.AccountEntryImpl;
 import com.liferay.osb.service.persistence.AccountEntryFinder;
 import com.liferay.osb.service.persistence.AccountEntryUtil;
 import com.liferay.osb.util.OSBConstants;
@@ -69,9 +68,6 @@ public class AccountEntryFinderImpl
 
 	public static final String FILTER_BY_TYPE =
 		AccountEntryFinder.class.getName() + ".filterByType";
-
-	public static final String FIND_BY_MISSING_DOSSIERA_PROJECT_KEY =
-		AccountEntryFinder.class.getName() + ".findByMissingDossieraProjectKey";
 
 	public static final String
 		FIND_BY_U_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z =
@@ -236,34 +232,6 @@ public class AccountEntryFinderImpl
 			codes, new int[0], null, new int[0], new int[0], instructions,
 			notes, partnerEntryCodes, streets, null, null, cities, zips, params,
 			andOperator, start, end, obc);
-	}
-
-	public List<AccountEntry> findByMissingDossieraProjectKey() {
-		String sql = CustomSQLUtil.get(
-			getClass(), FIND_BY_MISSING_DOSSIERA_PROJECT_KEY);
-
-		Session session = null;
-
-		try {
-			session = openSession();
-
-			SQLQuery q = session.createSynchronizedSQLQuery(sql);
-
-			q.addEntity("OSB_AccountEntry", AccountEntryImpl.class);
-
-			QueryPos qPos = QueryPos.getInstance(q);
-
-			qPos.add(OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID);
-
-			return (List<AccountEntry>)QueryUtil.list(
-				q, getDialect(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-		}
-		catch (Exception e) {
-			throw new SystemException(e);
-		}
-		finally {
-			closeSession(session);
-		}
 	}
 
 	public List<AccountEntry> findBySupportResponse(long supportResponseId) {

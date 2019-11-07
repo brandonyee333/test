@@ -71,29 +71,6 @@
 				(OSB_AccountEntry.type_ = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByMissingDossieraProjectKey">
-		<![CDATA[
-			SELECT
-				{OSB_AccountEntry.*}
-			FROM
-				OSB_AccountEntry
-			INNER JOIN
-				OSB_CorpProject ON
-					(OSB_CorpProject.uuid_ = OSB_AccountEntry.corpProjectUuid)
-			INNER JOIN
-				Group_ ON
-					(Group_.classPK = OSB_CorpProject.organizationId)
-			INNER JOIN
-				UserGroupRole ON
-					(UserGroupRole.groupId = Group_.groupId)
-			WHERE
-				(
-					(OSB_CorpProject.dossieraProjectKey IS NULL) OR
-					(OSB_CorpProject.dossieraProjectKey = '')
-				) AND
-				(UserGroupRole.roleId = ?)
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
 		<![CDATA[
 			SELECT
@@ -819,21 +796,6 @@
 					(OSB_AccountWorker.userId = User_.userId)
 			WHERE
 				(OSB_AccountWorker.role = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByDossieraAccountAccountCustomer">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountCustomer ON
-					(OSB_AccountCustomer.userId = User_.userId)
-			INNER JOIN
-				OSB_AccountEntry ON
-					(OSB_AccountEntry.accountEntryId = OSB_AccountCustomer.accountEntryId)
-			WHERE
-				(
-					(OSB_AccountEntry.dossieraAccountKey = ?) AND
-					(OSB_AccountEntry.type_ != ?)
-				)
 		]]>
 	</sql>
 	<sql id="com.liferay.portal.kernel.service.persistence.UserFinder.joinByPartnerEntryWorkers">

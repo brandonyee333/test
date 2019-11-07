@@ -27,11 +27,6 @@ public class OSBConstants {
 
 	public static final long ACCOUNT_ENTRY_WEDEPLOY_ID = 94686572;
 
-	public static final long[]
-		ANALYTICS_CLOUDS_BASIC_ELIGIBILITY_PRODUCT_ENTRY_IDS = {
-			81815277, 81815279, 81815283, 81815285
-		};
-
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENTRY =
 		"osb/accountentry/";
 
