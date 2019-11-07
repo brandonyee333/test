@@ -626,17 +626,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void addAnalyticsCloudBasicAccountEntry(
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String accountEntryName, java.lang.String[] languageIds,
-		long[] supportRegionIds, java.util.Date supportEndDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(dossieraAccountKey,
-			corpEntryName, accountEntryName, languageIds, supportRegionIds,
-			supportEndDate);
-	}
-
-	@Override
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		_accountEntryLocalService.addSupportRegionAccountEntries(supportRegionId,
@@ -676,12 +665,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_accountEntryLocalService.addWorkflowTask(salesforceOpportunityKey,
 			accountEntry, serviceContext);
-	}
-
-	@Override
-	public void assignOwnership(java.lang.String corpProjectUuid, long userId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.assignOwnership(corpProjectUuid, userId);
 	}
 
 	@Override

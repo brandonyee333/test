@@ -571,17 +571,6 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getSupportRegionPrimaryKeys(accountEntryId);
 	}
 
-	public static void addAnalyticsCloudBasicAccountEntry(
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String accountEntryName, java.lang.String[] languageIds,
-		long[] supportRegionIds, java.util.Date supportEndDate)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addAnalyticsCloudBasicAccountEntry(dossieraAccountKey,
-			corpEntryName, accountEntryName, languageIds, supportRegionIds,
-			supportEndDate);
-	}
-
 	public static void addSupportRegionAccountEntries(long supportRegionId,
 		java.util.List<com.liferay.osb.model.AccountEntry> accountEntries) {
 		getService()
@@ -618,11 +607,6 @@ public class AccountEntryLocalServiceUtil {
 		getService()
 			.addWorkflowTask(salesforceOpportunityKey, accountEntry,
 			serviceContext);
-	}
-
-	public static void assignOwnership(java.lang.String corpProjectUuid,
-		long userId) throws com.liferay.portal.kernel.exception.PortalException {
-		getService().assignOwnership(corpProjectUuid, userId);
 	}
 
 	public static void auditAccountEntries()

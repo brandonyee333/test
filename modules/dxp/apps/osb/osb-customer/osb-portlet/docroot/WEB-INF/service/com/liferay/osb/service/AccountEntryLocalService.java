@@ -44,7 +44,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -441,11 +440,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long[] getSupportRegionPrimaryKeys(long accountEntryId);
 
-	public void addAnalyticsCloudBasicAccountEntry(
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String accountEntryName, java.lang.String[] languageIds,
-		long[] supportRegionIds, Date supportEndDate) throws PortalException;
-
 	public void addSupportRegionAccountEntries(long supportRegionId,
 		List<AccountEntry> accountEntries);
 
@@ -462,9 +456,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void addWorkflowTask(java.lang.String salesforceOpportunityKey,
 		AccountEntry accountEntry, ServiceContext serviceContext)
-		throws PortalException;
-
-	public void assignOwnership(java.lang.String corpProjectUuid, long userId)
 		throws PortalException;
 
 	public void auditAccountEntries() throws PortalException;
