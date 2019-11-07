@@ -795,13 +795,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 					accountEntryLocalService.updateSupportStatus(
 						orderEntry.getAccountEntryId());
-
-					accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(
-						accountEntry.getDossieraAccountKey(),
-						accountEntry.getCorpEntryName(), accountEntry.getName(),
-						accountEntry.getLanguageIds(),
-						accountEntry.getSupportRegionIds(),
-						offeringEntry.getSupportEndDate());
 				}
 			}
 		}

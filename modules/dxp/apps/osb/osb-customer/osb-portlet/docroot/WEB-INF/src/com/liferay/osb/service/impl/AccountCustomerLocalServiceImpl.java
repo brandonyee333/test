@@ -23,28 +23,17 @@ import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBCustomSQLParam;
 import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.portal.kernel.dao.orm.CustomSQLParam;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -122,9 +111,6 @@ public class AccountCustomerLocalServiceImpl
 			}
 		}
 
-		syncAnalyticsCloudBasicAccountEntry(
-			accountEntry.getDossieraAccountKey());
-
 		return accountCustomer;
 	}
 
@@ -180,12 +166,6 @@ public class AccountCustomerLocalServiceImpl
 		throws PortalException {
 
 		deleteAccountCustomer(accountCustomer);
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountCustomer.getAccountEntryId());
-
-		syncAnalyticsCloudBasicAccountEntry(
-			accountEntry.getDossieraAccountKey());
 
 		updateAuditEntry(userId, accountCustomer);
 
@@ -378,85 +358,6 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomer.setClosedWatcher(closedWatcher);
 
 		return accountCustomerPersistence.update(accountCustomer);
-	}
-
-	protected void syncAnalyticsCloudBasicAccountEntry(
-			String dossieraAccountKey)
-		throws PortalException {
-
-		if (Validator.isNull(dossieraAccountKey)) {
-			return;
-		}
-
-		AccountEntry accountEntry =
-			accountEntryLocalService.fetchAnalyticsCloudBasicAccountEntry(
-				dossieraAccountKey);
-
-		if (accountEntry == null) {
-			return;
-		}
-
-		CorpProject corpProject =
-			corpProjectLocalService.fetchCorpProjectByUuid(
-				accountEntry.getCorpProjectUuid());
-
-		if (corpProject == null) {
-			return;
-		}
-
-		List<User> ownerUsers = corpProject.getAnalyticsCloudOwners();
-
-		if (!ownerUsers.isEmpty()) {
-			return;
-		}
-
-		LinkedHashMap<String, Object> userParams = new LinkedHashMap<>();
-
-		String customJoinSQL = CustomSQLUtil.get(
-			"com.liferay.portal.kernel.service.persistence.UserFinder." +
-				"joinByDossieraAccountAccountCustomer");
-
-		CustomSQLParam customSQLParam = new OSBCustomSQLParam(
-			"usersDossieraAccountAccountCustomers", customJoinSQL,
-			new Object[] {
-				dossieraAccountKey,
-				Integer.valueOf(
-					AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)
-			});
-
-		userParams.put("usersDossieraAccountAccountCustomers", customSQLParam);
-
-		List<User> users = userLocalService.search(
-			OSBConstants.COMPANY_ID, null, WorkflowConstants.STATUS_APPROVED,
-			userParams, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			(OrderByComparator)null);
-
-		Set<Long> userIds = new HashSet<>();
-
-		for (User user : users) {
-			userIds.add(user.getUserId());
-		}
-
-		for (AccountCustomer accountCustomer :
-				accountEntry.getAccountCustomers()) {
-
-			if (!userIds.contains(accountCustomer.getUserId())) {
-				deleteAccountCustomer(accountCustomer);
-			}
-			else {
-				accountCustomer.setRole(AccountCustomerConstants.ROLE_WATCHER);
-
-				accountCustomerPersistence.update(accountCustomer);
-
-				userIds.remove(accountCustomer.getUserId());
-			}
-		}
-
-		for (long userId : userIds) {
-			doAddAccountCustomer(
-				userId, accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER, false);
-		}
 	}
 
 	protected void updateAuditEntry(

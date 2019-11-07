@@ -15,9 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.processor;
 
 import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Role;
@@ -70,13 +68,6 @@ public class CorpProjectRoleAssignedMessageProcessor
 		userGroupRoleLocalService.addUserGroupRoles(
 			user.getUserId(), group.getGroupId(),
 			new long[] {role.getRoleId()});
-
-		if (role.getRoleId() ==
-				OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID) {
-
-			AccountEntryLocalServiceUtil.assignOwnership(
-				corpProject.getUuid(), user.getUserId());
-		}
 	}
 
 	@Reference(

@@ -52,11 +52,8 @@ import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
 import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
-import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
-import com.liferay.osb.util.CountryConstants;
-import com.liferay.osb.util.CurrencyConstants;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
@@ -98,7 +95,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.kernel.workflow.WorkflowTask;
@@ -334,104 +330,6 @@ public class AccountEntryLocalServiceImpl
 		return accountEntry;
 	}
 
-	public void addAnalyticsCloudBasicAccountEntry(
-			String dossieraAccountKey, String corpEntryName,
-			String accountEntryName, String[] languageIds,
-			long[] supportRegionIds, Date supportEndDate)
-		throws PortalException {
-
-		String name = StringPool.BLANK;
-
-		if (Validator.isNotNull(corpEntryName)) {
-			name = corpEntryName;
-		}
-		else {
-			name = accountEntryName;
-		}
-
-		if (!name.contains(" - Analytics Cloud")) {
-			name = name + " - Analytics Cloud";
-		}
-
-		name = getName(name);
-
-		// Corp project
-
-		CorpProject corpProject = remoteCorpProjectLocalService.addCorpProject(
-			OSBConstants.USER_DEFAULT_USER_ID, 0, StringPool.BLANK,
-			StringPool.BLANK, name);
-
-		// Account entry
-
-		if (languageIds.length == 0) {
-			languageIds = new String[] {LocaleUtil.toLanguageId(LocaleUtil.US)};
-		}
-
-		if (supportRegionIds.length == 0) {
-			supportRegionIds = new long[] {OSBConstants.SUPPORT_REGION_US_ID};
-		}
-
-		AccountEntry analyticsCloudAccountEntry = doAddAccountEntry(
-			OSBConstants.USER_DEFAULT_USER_ID, corpProject.getUuid(),
-			dossieraAccountKey, corpEntryName, name, null,
-			AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC, 0, 0, false,
-			AccountEntryConstants.TIER_REGULAR, 10000, StringPool.BLANK,
-			StringPool.BLANK, languageIds, supportRegionIds, "N/A",
-			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, "N/A", 0, 0,
-			StringPool.BLANK);
-
-		// Account customer
-
-		List<AccountEntry> accountEntries = getAccountEntries(
-			dossieraAccountKey);
-
-		for (AccountEntry accountEntry : accountEntries) {
-			List<AccountCustomer> accountCustomers =
-				accountEntry.getAccountCustomers();
-
-			for (AccountCustomer accountCustomer : accountCustomers) {
-				accountCustomerLocalService.addAccountCustomer(
-					OSBConstants.USER_DEFAULT_USER_ID,
-					accountCustomer.getUserId(),
-					analyticsCloudAccountEntry.getAccountEntryId(),
-					AccountCustomerConstants.ROLE_WATCHER, false);
-			}
-		}
-
-		// Order entry
-
-		Calendar cal = Calendar.getInstance();
-
-		OrderEntry orderEntry = orderEntryLocalService.addOrderEntry(
-			OSBConstants.USER_DEFAULT_USER_ID,
-			analyticsCloudAccountEntry.getAccountEntryId(), StringPool.BLANK,
-			cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH),
-			cal.get(Calendar.YEAR), false, cal.get(Calendar.MONTH),
-			cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.YEAR),
-			WorkflowConstants.STATUS_APPROVED, StringPool.BLANK,
-			new ArrayList<OfferingEntry>());
-
-		// Offering entry
-
-		ProductEntry productEntry =
-			productEntryLocalService.getProductEntryByName(
-				"Liferay Analytics Cloud Basic");
-
-		long supportLifetime = supportEndDate.getTime() - cal.getTimeInMillis();
-
-		SupportResponse supportResponse =
-			supportResponseLocalService.getSupportResponseByName("Limited");
-
-		offeringEntryLocalService.addOfferingEntry(
-			OSBConstants.USER_DEFAULT_USER_ID,
-			analyticsCloudAccountEntry.getAccountEntryId(),
-			orderEntry.getOrderEntryId(), productEntry.getProductEntryId(),
-			supportResponse.getSupportResponseId(), StringPool.BLANK,
-			OfferingEntryConstants.TYPE_REGULAR, 0, false, 0, 0, 0, true,
-			supportLifetime, OfferingEntryConstants.SIZING_1, 1,
-			OfferingEntryConstants.STATUS_ACTIVE);
-	}
-
 	public void addTrialAccountEntry(long userId) throws Exception {
 		User user = userLocalService.getUser(userId);
 
@@ -662,104 +560,6 @@ public class AccountEntryLocalServiceImpl
 			OSBConstants.COMPANY_ID, OSBConstants.USER_DEFAULT_USER_ID,
 			AccountEntry.class.getName(), accountEntry.getAccountEntryId(),
 			accountEntry, workflowServiceContext);
-	}
-
-	public void assignOwnership(String corpProjectUuid, long userId)
-		throws PortalException {
-
-		AccountEntry accountEntry = fetchCorpProjectAccountEntry(
-			corpProjectUuid);
-
-		if ((accountEntry == null) ||
-			(accountEntry.getType() !=
-				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)) {
-
-			return;
-		}
-
-		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
-			corpProjectUuid);
-
-		for (User user : corpProject.getAnalyticsCloudOwners()) {
-			if (userId != user.getUserId()) {
-				return;
-			}
-		}
-
-		// Account customers
-
-		List<AccountCustomer> acccountCustomers =
-			accountCustomerLocalService.getAccountCustomers(
-				accountEntry.getAccountEntryId());
-
-		for (AccountCustomer accountCustomer : acccountCustomers) {
-			if (userId == accountCustomer.getUserId()) {
-				accountCustomerLocalService.updateAccountCustomer(
-					OSBConstants.USER_DEFAULT_USER_ID,
-					accountCustomer.getAccountCustomerId(),
-					AccountCustomerConstants.ROLE_DEVELOPER, false);
-			}
-			else {
-				accountCustomerLocalService.deleteAccountCustomer(
-					accountCustomer);
-			}
-		}
-
-		// Offering entries
-
-		Date supportEndDate = new Date(
-			System.currentTimeMillis() + (1 * Time.YEAR));
-
-		for (OfferingEntry offeringEntry : accountEntry.getOfferingEntries()) {
-			offeringEntry.setSupportEndDate(supportEndDate);
-
-			offeringEntryPersistence.update(offeringEntry);
-		}
-
-		updateSupportStatus(accountEntry.getAccountEntryId());
-
-		// Dossiera project
-
-		if (Validator.isNull(corpProject.getDossieraProjectKey())) {
-			try {
-				User user = userLocalService.getUser(userId);
-
-				String primaryContactMailingCountryCode = StringPool.BLANK;
-
-				List<Address> addresses = user.getAddresses();
-
-				for (Address address : addresses) {
-					if (Validator.isNull(primaryContactMailingCountryCode) ||
-						address.isMailing()) {
-
-						Country country = address.getCountry();
-
-						if (Validator.isNotNull(country.getA2())) {
-							primaryContactMailingCountryCode = country.getA2();
-						}
-					}
-				}
-
-				if (Validator.isNull(primaryContactMailingCountryCode)) {
-					primaryContactMailingCountryCode =
-						CountryConstants.US_A2_CODE;
-				}
-
-				JSONObject jsonObject = DossieraRESTWebServiceUtil.postProject(
-					accountEntry.getDossieraAccountKey(),
-					SalesforceConstants.PROJECT_RECORD_TYPE_ANALYTICS_CLOUD_ID,
-					user.getEmailAddress(), user.getFirstName(),
-					user.getLastName(), primaryContactMailingCountryCode,
-					CurrencyConstants.CODE_USD);
-
-				WebRESTWebServiceUtil.putCorpProjects(
-					corpProjectUuid,
-					jsonObject.getString("_dossieraProjectKey"), null, null);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-			}
-		}
 	}
 
 	public void auditAccountEntries() throws PortalException {

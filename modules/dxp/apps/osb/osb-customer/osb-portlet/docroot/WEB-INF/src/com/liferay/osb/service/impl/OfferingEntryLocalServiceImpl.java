@@ -19,9 +19,7 @@ import com.liferay.osb.exception.OfferingEntryQuantityException;
 import com.liferay.osb.exception.OfferingEntrySizingException;
 import com.liferay.osb.exception.RequiredOfferingEntryException;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
@@ -35,14 +33,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.text.Format;
 
@@ -116,10 +112,6 @@ public class OfferingEntryLocalServiceImpl
 			accountEntryId);
 
 		accountEntryLocalService.updateSupportStatus(accountEntryId);
-
-		checkAnalyticsCloudBasicAccountEntry(
-			offeringEntry.getAccountEntryId(),
-			offeringEntry.getProductEntryId());
 
 		return offeringEntry;
 	}
@@ -205,10 +197,6 @@ public class OfferingEntryLocalServiceImpl
 
 		accountEntryLocalService.updateSupportStatus(
 			offeringEntry.getAccountEntryId());
-
-		checkAnalyticsCloudBasicAccountEntry(
-			offeringEntry.getAccountEntryId(),
-			offeringEntry.getProductEntryId());
 
 		return offeringEntry;
 	}
@@ -364,10 +352,6 @@ public class OfferingEntryLocalServiceImpl
 		accountEntryLocalService.updateSupportStatus(
 			offeringEntry.getAccountEntryId());
 
-		checkAnalyticsCloudBasicAccountEntry(
-			offeringEntry.getAccountEntryId(),
-			offeringEntry.getProductEntryId());
-
 		return offeringEntry;
 	}
 
@@ -394,10 +378,6 @@ public class OfferingEntryLocalServiceImpl
 
 		accountEntryLocalService.updateSupportStatus(
 			offeringEntry.getAccountEntryId());
-
-		checkAnalyticsCloudBasicAccountEntry(
-			offeringEntry.getAccountEntryId(),
-			offeringEntry.getProductEntryId());
 
 		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
@@ -431,100 +411,6 @@ public class OfferingEntryLocalServiceImpl
 			String.valueOf(status), sb.toString());
 
 		return offeringEntry;
-	}
-
-	protected void checkAnalyticsCloudBasicAccountEntry(
-			long accountEntryId, long productEntryId)
-		throws PortalException {
-
-		AccountEntry accountEntry = accountEntryLocalService.getAccountEntry(
-			accountEntryId);
-
-		if ((accountEntry.getType() != AccountEntryConstants.TYPE_GROUP) ||
-			Validator.isNull(accountEntry.getDossieraAccountKey())) {
-
-			return;
-		}
-
-		if (!ArrayUtil.contains(
-				OSBConstants.
-					ANALYTICS_CLOUDS_BASIC_ELIGIBILITY_PRODUCT_ENTRY_IDS,
-				productEntryId)) {
-
-			return;
-		}
-
-		AccountEntry analyticsCloudBasicAccountEntry =
-			accountEntryLocalService.fetchAnalyticsCloudBasicAccountEntry(
-				accountEntry.getDossieraAccountKey());
-
-		if (analyticsCloudBasicAccountEntry != null) {
-			CorpProject corpProject =
-				corpProjectLocalService.fetchCorpProjectByUuid(
-					analyticsCloudBasicAccountEntry.getCorpProjectUuid());
-
-			if (corpProject != null) {
-				List<User> ownerUsers = corpProject.getAnalyticsCloudOwners();
-
-				if (!ownerUsers.isEmpty()) {
-					return;
-				}
-			}
-		}
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put("accountEntry", accountEntry.getDossieraAccountKey());
-
-		List<OfferingEntry> offeringEntries = search(
-			0L, 0L,
-			OSBConstants.ANALYTICS_CLOUDS_BASIC_ELIGIBILITY_PRODUCT_ENTRY_IDS,
-			new int[] {OfferingEntryConstants.TYPE_REGULAR},
-			new int[] {OfferingEntryConstants.STATUS_ACTIVE}, null, null,
-			params, true, 0, 1, new OfferingEntrySupportEndDateComparator());
-
-		if (offeringEntries.isEmpty()) {
-			if (analyticsCloudBasicAccountEntry != null) {
-				for (OfferingEntry curOfferingEntry :
-						analyticsCloudBasicAccountEntry.getOfferingEntries()) {
-
-					curOfferingEntry.setStatus(
-						OfferingEntryConstants.STATUS_CLOSED);
-
-					offeringEntryPersistence.update(curOfferingEntry);
-				}
-
-				accountEntryLocalService.updateSupportStatus(
-					analyticsCloudBasicAccountEntry.getAccountEntryId());
-			}
-		}
-		else {
-			OfferingEntry offeringEntry = offeringEntries.get(0);
-
-			if (analyticsCloudBasicAccountEntry == null) {
-				accountEntryLocalService.addAnalyticsCloudBasicAccountEntry(
-					accountEntry.getDossieraAccountKey(),
-					accountEntry.getCorpEntryName(), accountEntry.getName(),
-					accountEntry.getLanguageIds(),
-					accountEntry.getSupportRegionIds(),
-					offeringEntry.getSupportEndDate());
-			}
-			else {
-				for (OfferingEntry curOfferingEntry :
-						analyticsCloudBasicAccountEntry.getOfferingEntries()) {
-
-					curOfferingEntry.setSupportEndDate(
-						offeringEntry.getSupportEndDate());
-					curOfferingEntry.setStatus(
-						OfferingEntryConstants.STATUS_ACTIVE);
-
-					offeringEntryPersistence.update(curOfferingEntry);
-				}
-
-				accountEntryLocalService.updateSupportStatus(
-					analyticsCloudBasicAccountEntry.getAccountEntryId());
-			}
-		}
 	}
 
 	protected boolean isLatestActiveOfferingEntry(OfferingEntry offeringEntry)
