@@ -34,7 +34,7 @@ public class DLPreviewHelperImpl implements DLPreviewHelper {
 	}
 
 	@Override
-	public long getDLFileVersionPreviewId(
+	public boolean hasDLFileVersionPreview(
 		long fileEntryId, long fileVersionId, int previewStatus) {
 
 		DLFileVersionPreview dlFileVersionPreview =
@@ -42,10 +42,10 @@ public class DLPreviewHelperImpl implements DLPreviewHelper {
 				fileEntryId, fileVersionId, previewStatus);
 
 		if (dlFileVersionPreview == null) {
-			return 0;
+			return false;
 		}
 
-		return dlFileVersionPreview.getDlFileVersionPreviewId();
+		return true;
 	}
 
 	@Reference
