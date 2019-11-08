@@ -19,6 +19,8 @@ package com.liferay.portlet.preview;
  */
 public interface DLPreviewHelper {
 
+	public void deleteDLFileEntryFileVersionPreviews(long fileEntryId);
+
 	public long getDLFileVersionPreviewId(
 		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus);
 

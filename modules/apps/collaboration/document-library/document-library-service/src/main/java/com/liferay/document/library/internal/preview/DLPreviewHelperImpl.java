@@ -28,6 +28,12 @@ import org.osgi.service.component.annotations.Reference;
 public class DLPreviewHelperImpl implements DLPreviewHelper {
 
 	@Override
+	public void deleteDLFileEntryFileVersionPreviews(long fileEntryId) {
+		_dlFileVersionPreviewLocalService.deleteDLFileEntryFileVersionPreviews(
+			fileEntryId);
+	}
+
+	@Override
 	public long getDLFileVersionPreviewId(
 		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus) {
 
