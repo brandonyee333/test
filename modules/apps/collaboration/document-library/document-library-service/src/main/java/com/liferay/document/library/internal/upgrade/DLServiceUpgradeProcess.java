@@ -16,6 +16,7 @@ package com.liferay.document.library.internal.upgrade;
 
 import com.liferay.document.library.internal.upgrade.v1_0_0.UpgradeDocumentLibrary;
 import com.liferay.document.library.internal.upgrade.v1_0_2.UpgradeDLFileShortcut;
+import com.liferay.document.library.internal.upgrade.v1_1_0.UpgradeSchema;
 import com.liferay.document.library.kernel.store.Store;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -42,6 +43,10 @@ public class DLServiceUpgradeProcess implements UpgradeStepRegistrator {
 		registry.register(
 			"com.liferay.document.library.service", "1.0.0", "1.0.1",
 			new UpgradeDLFileShortcut());
+
+		registry.register(
+			"com.liferay.document.library.service", "1.0.1", "1.1.0",
+			new UpgradeSchema());
 	}
 
 	@Reference(target = "(dl.store.upgrade=true)")
