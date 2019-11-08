@@ -25,9 +25,12 @@ import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.registry.RepositoryEventRegistry;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.repository.liferayrepository.LiferayProcessorLocalRepositoryWrapper;
 import com.liferay.portal.repository.liferayrepository.LiferayProcessorRepositoryWrapper;
 import com.liferay.portal.repository.util.RepositoryWrapperAware;
+import com.liferay.portlet.documentlibrary.util.DLImpl;
+import com.liferay.portlet.preview.DLPreviewHelper;
 
 import java.util.concurrent.Callable;
 
@@ -84,6 +87,9 @@ public class LiferayProcessorCapability
 
 				@Override
 				public void execute(FileEntry fileEntry) {
+					_dlPreviewHelper.deleteDLFileEntryFileVersionPreviews(
+						fileEntry.getFileEntryId());
+
 					cleanUp(fileEntry);
 				}
 
@@ -127,5 +133,9 @@ public class LiferayProcessorCapability
 	}
 
 	private final ResourceGenerationStrategy _resourceGenerationStrategy;
+	private static volatile DLPreviewHelper _dlPreviewHelper =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			DLPreviewHelper.class, DLImpl.class, "_dlPreviewHelper", false,
+			true);
 
 }
