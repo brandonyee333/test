@@ -22,6 +22,7 @@ import com.liferay.journal.service.JournalArticleService;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayWebKeys;
 import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -96,6 +97,24 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 				DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT,
 				_downloadsAssetCategoryUtil.getProductAssetCategory(
 					journalArticleResourcePrimKey));
+
+			return "/view_download.jsp";
+		}
+
+		String urlTitle = ParamUtil.getString(renderRequest, "urlTitle");
+
+		if (!urlTitle.isEmpty()) {
+			JournalArticle journalArticle =
+				_journalArticleService.getArticleByUrlTitle(
+					OSBConstants.GROUP_CUSTOMER_ID, urlTitle);
+
+			renderRequest.setAttribute(
+				DownloadsDisplayWebKeys.JOURNAL_ARTICLE, journalArticle);
+
+			renderRequest.setAttribute(
+				DownloadsDisplayWebKeys.ASSET_CATEGORY_PRODUCT,
+				_downloadsAssetCategoryUtil.getProductAssetCategory(
+					journalArticle.getResourcePrimKey()));
 
 			return "/view_download.jsp";
 		}

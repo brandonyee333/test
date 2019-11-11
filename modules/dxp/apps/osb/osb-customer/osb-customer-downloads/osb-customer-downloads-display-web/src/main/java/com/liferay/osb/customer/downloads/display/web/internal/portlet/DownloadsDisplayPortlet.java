@@ -42,6 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 		"javax.portlet.display-name=OSB Downloads Display",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",
+		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.name=" + DownloadsDisplayPortletKeys.DOWNLOADS_DISPLAY,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=administrator,guest,power-user,user"
