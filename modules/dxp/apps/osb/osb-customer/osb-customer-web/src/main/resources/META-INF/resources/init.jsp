@@ -14,6 +14,8 @@
  */
 --%>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
@@ -21,7 +23,9 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.osb.customer.exception.EmailAddressDomainException" %><%@
+<%@ page import="com.liferay.journal.model.JournalArticle" %><%@
+page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
+page import="com.liferay.osb.customer.exception.EmailAddressDomainException" %><%@
 page import="com.liferay.portal.kernel.exception.RequiredFieldException" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %>
 
