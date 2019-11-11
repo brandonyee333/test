@@ -1,7 +1,12 @@
+Bundle-ClassPath:\
+	.,\
+	lib/osb-portlet-service.jar
 Bundle-Name: Liferay OSB Customer Web
 Bundle-SymbolicName: com.liferay.osb.customer.web
 Bundle-Version: 1.0.0
 Liferay-Releng-Module-Group-Title: Customer
 Web-ContextPath: /osb-customer-web
 -dsannotations-options: inherit
--includeresource: content=src/main/resources/content
+-includeresource:\
+	content=src/main/resources/content,\
+	lib/osb-portlet-service.jar=osb-portlet-service.jar

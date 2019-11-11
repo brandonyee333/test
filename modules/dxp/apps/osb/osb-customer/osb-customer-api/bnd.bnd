@@ -1,4 +1,9 @@
 Bundle-Name: Liferay OSB Customer API
 Bundle-SymbolicName: com.liferay.osb.customer.api
 Bundle-Version: 1.0.0
-Export-Package: com.liferay.osb.customer.constants
+Export-Package:\
+	com.liferay.osb.customer.constants,\
+	com.liferay.osb.customer.exception,\
+	com.liferay.osb.customer.model,\
+	com.liferay.osb.customer.service,\
+	com.liferay.osb.customer.service.persistence

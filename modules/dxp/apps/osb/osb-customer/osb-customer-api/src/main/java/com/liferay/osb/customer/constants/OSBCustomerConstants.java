@@ -26,7 +26,11 @@ public class OSBCustomerConstants {
 	public static final long ORGANIZATION_CORPORATION_PROJECT_PARENT_ID =
 		3294642;
 
+	public static final long ORGANIZATION_CUSTOMER_DXP_ID = 2844828;
+
 	public static final long ORGANIZATION_CUSTOMER_ID = 1747330;
+
+	public static final long ORGANIZATION_CUSTOMER_PORTAL_ID = 2844836;
 
 	public static final long ORGANIZATION_LIFERAY_CONTRACTOR_ID = 119362231;
 

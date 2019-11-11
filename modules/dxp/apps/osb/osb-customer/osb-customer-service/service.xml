@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder package-path="com.liferay.osb.customer">
+	<namespace>OSBCustomer</namespace>
+	<entity local-service="true" name="AuditForm" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="auditFormId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="endUserName" type="String" />
+		<column name="endUserEmail" type="String" />
+		<column name="agreement" type="boolean" />
+	</entity>
+	<exceptions>
+		<exception>EmailDomain</exception>
+	</exceptions>
+</service-builder>
