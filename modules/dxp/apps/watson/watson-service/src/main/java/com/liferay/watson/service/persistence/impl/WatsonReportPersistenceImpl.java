@@ -185,6 +185,18 @@ public class WatsonReportPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				WatsonReportModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonReportImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new watson report with the primary key. Does not add the watson report to the database.
 	 *

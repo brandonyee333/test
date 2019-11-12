@@ -186,6 +186,18 @@ public class WatsonListTypePersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				WatsonListTypeModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonListTypeImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new watson list type with the primary key. Does not add the watson list type to the database.
 	 *

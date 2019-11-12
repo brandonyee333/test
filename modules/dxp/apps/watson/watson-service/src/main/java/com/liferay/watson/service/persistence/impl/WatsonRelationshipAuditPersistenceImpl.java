@@ -176,6 +176,18 @@ public class WatsonRelationshipAuditPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				WatsonRelationshipAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonRelationshipAuditImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new watson relationship audit with the primary key. Does not add the watson relationship audit to the database.
 	 *

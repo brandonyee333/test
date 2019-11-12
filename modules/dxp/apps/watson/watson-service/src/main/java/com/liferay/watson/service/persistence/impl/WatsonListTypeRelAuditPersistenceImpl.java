@@ -197,6 +197,18 @@ public class WatsonListTypeRelAuditPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				WatsonListTypeRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonListTypeRelAuditImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new watson list type rel audit with the primary key. Does not add the watson list type rel audit to the database.
 	 *

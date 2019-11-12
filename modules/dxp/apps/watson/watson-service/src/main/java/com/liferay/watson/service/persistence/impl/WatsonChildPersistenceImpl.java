@@ -164,6 +164,18 @@ public class WatsonChildPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				WatsonChildModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonChildImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new watson child with the primary key. Does not add the watson child to the database.
 	 *

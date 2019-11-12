@@ -196,6 +196,18 @@ public class WatsonIncidentRelAuditPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				WatsonIncidentRelAuditModelImpl.ENTITY_CACHE_ENABLED,
+				WatsonIncidentRelAuditImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new watson incident rel audit with the primary key. Does not add the watson incident rel audit to the database.
 	 *
