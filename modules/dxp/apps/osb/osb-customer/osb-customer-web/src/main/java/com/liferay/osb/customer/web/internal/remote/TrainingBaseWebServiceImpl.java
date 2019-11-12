@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.nio.charset.Charset;
 
@@ -54,23 +53,15 @@ public class TrainingBaseWebServiceImpl
 	public JSONObject post(Map<String, String> parameters)
 		throws PortalException {
 
-		String response = null;
-
 		try {
-			String url = _ENDPOINT;
+			String queryString = URLEncodedUtils.format(
+				toNameValuePairs(parameters), Charset.forName("UTF-8"));
 
-			if (!parameters.isEmpty()) {
-				String queryString = URLEncodedUtils.format(
-					toNameValuePairs(parameters), Charset.forName("UTF-8"));
-
-				url += "?" + queryString;
-			}
-
-			HttpPost httpPost = new HttpPost(url);
+			HttpPost httpPost = new HttpPost(_ENDPOINT + "?" + queryString);
 
 			addHeaders(httpPost, _headers);
 
-			response = execute(httpPost);
+			String response = execute(httpPost);
 
 			return JSONFactoryUtil.createJSONObject(response);
 		}
@@ -104,7 +95,7 @@ public class TrainingBaseWebServiceImpl
 			{
 				put(
 					"Authorization",
-					"Bearer" + StringPool.SPACE +
+					"Bearer " +
 						CustomerWebConfigurationValues.
 							REMOTE_REST_SERVICE_API_TRAINING_TOKEN);
 			}

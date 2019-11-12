@@ -14,12 +14,13 @@
 
 package com.liferay.osb.customer.service.impl;
 
-import com.liferay.osb.customer.exception.EmailDomainException;
+import com.liferay.osb.customer.exception.EmailAddressDomainException;
 import com.liferay.osb.customer.model.AuditForm;
 import com.liferay.osb.customer.service.base.AuditFormLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.RequiredFieldException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -30,13 +31,15 @@ import java.util.Date;
 public class AuditFormLocalServiceImpl extends AuditFormLocalServiceBaseImpl {
 
 	public AuditForm addAuditForm(
-			long userId, Date createDate, String endUserName,
-			String endUserEmail, boolean agreement)
+			long userId, String endUserName, String endUserEmailAddress,
+			boolean agreement)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
 
-		validate(user.getEmailAddress(), endUserName, endUserEmail, agreement);
+		validate(
+			user.getEmailAddress(), endUserName, endUserEmailAddress,
+			agreement);
 
 		long auditFormId = counterLocalService.increment();
 
@@ -44,34 +47,35 @@ public class AuditFormLocalServiceImpl extends AuditFormLocalServiceBaseImpl {
 
 		auditForm.setUserId(userId);
 		auditForm.setUserName(user.getFullName());
-		auditForm.setCreateDate(createDate);
+		auditForm.setCreateDate(new Date());
 		auditForm.setEndUserName(endUserName);
-		auditForm.setEndUserEmail(endUserEmail);
+		auditForm.setEndUserEmailAddress(endUserEmailAddress);
 		auditForm.setAgreement(agreement);
 
 		return auditFormPersistence.update(auditForm);
 	}
 
 	protected void validate(
-			String userEmail, String endUserName, String endUserEmail,
-			boolean agreement)
+			String userEmailAddress, String endUserName,
+			String endUserEmailAddress, boolean agreement)
 		throws Exception {
 
 		if (Validator.isNull(endUserName)) {
 			throw new RequiredFieldException("endUserName", "endUserName");
 		}
 
-		if (Validator.isNull(endUserEmail)) {
-			throw new RequiredFieldException("endUserEmail", "endUserEmail");
+		if (Validator.isNull(endUserEmailAddress)) {
+			throw new RequiredFieldException(
+				"endUserEmailAddress", "endUserEmailAddress");
 		}
 
-		String endUserDomain = endUserEmail.substring(
-			endUserEmail.indexOf(StringPool.AT));
-		String userDomain = userEmail.substring(
-			userEmail.indexOf(StringPool.AT));
+		String endUserDomain = endUserEmailAddress.substring(
+			endUserEmailAddress.indexOf(StringPool.AT));
+		String userDomain = userEmailAddress.substring(
+			userEmailAddress.indexOf(StringPool.AT));
 
-		if (!endUserDomain.equals(userDomain)) {
-			throw new EmailDomainException();
+		if (!StringUtil.equalsIgnoreCase(endUserDomain, userDomain)) {
+			throw new EmailAddressDomainException();
 		}
 
 		if (!agreement) {

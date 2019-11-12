@@ -15,12 +15,10 @@
 package com.liferay.osb.customer.internal.upgrade;
 
 import com.liferay.osb.customer.internal.upgrade.v1_0_1.UpgradeAuditForm;
-import com.liferay.osb.customer.service.persistence.AuditFormPersistence;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.registry.Registry;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -32,10 +30,7 @@ public class OSBCustomerServiceUpgrade implements UpgradeStepRegistrator {
 	public void register(Registry registry) {
 		registry.register(
 			"com.liferay.osb.customer.service", "1.0.0", "1.0.1",
-			new UpgradeAuditForm(_auditFormPersistence));
+			new UpgradeAuditForm());
 	}
-
-	@Reference
-	private AuditFormPersistence _auditFormPersistence;
 
 }

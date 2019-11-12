@@ -57,30 +57,9 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long[] apacSupportRegionIds = {42356498, 42356502, 45637701};
-
 		try {
-			if (isPartner(themeDisplay.getUserId())) {
+			if (hasPermission(themeDisplay.getUserId())) {
 				return "/passport/view.jsp";
-			}
-			else if (isCustomer(themeDisplay.getUserId())) {
-				List<AccountEntry> accountEntries =
-					AccountEntryLocalServiceUtil.getUserActiveAccountEntries(
-						themeDisplay.getUserId(), QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS);
-
-				for (AccountEntry accountEntry : accountEntries) {
-					long[] supportRegionIds =
-						accountEntry.getSupportRegionIds();
-
-					for (long supportRegionId : supportRegionIds) {
-						if (!ArrayUtil.contains(
-								apacSupportRegionIds, supportRegionId)) {
-
-							return "/passport/view.jsp";
-						}
-					}
-				}
 			}
 		}
 		catch (Exception e) {
@@ -88,6 +67,32 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		}
 
 		return "/passport/contact_support.jsp";
+	}
+
+	protected boolean hasPermission(long userId) throws PortalException {
+		if (isPartner(userId)) {
+			return true;
+		}
+
+		if (isCustomer(userId)) {
+			List<AccountEntry> accountEntries =
+				AccountEntryLocalServiceUtil.getUserActiveAccountEntries(
+					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			for (AccountEntry accountEntry : accountEntries) {
+				for (long supportRegionId :
+						accountEntry.getSupportRegionIds()) {
+
+					if (!ArrayUtil.contains(
+							_APAC_SUPPORT_REGION_IDS, supportRegionId)) {
+
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	protected boolean isCustomer(long userId) throws PortalException {
@@ -119,6 +124,10 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
+
+	private static final long[] _APAC_SUPPORT_REGION_IDS = {
+		42356498, 42356502, 45637701
+	};
 
 	@Reference
 	private OrganizationLocalService _organizationLocalService;

@@ -25,7 +25,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 <aui:form action="<%= submitPassportAccessURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 
-	<liferay-ui:error exception="<%= EmailDomainException.class %>" message="email-domain-must-match-your-own" />
+	<liferay-ui:error exception="<%= EmailAddressDomainException.class %>" message="email-domain-must-match-your-own" />
 	<liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-fill-out-all-required-fields" />
 
 	<h1><liferay-ui:message key="liferay-university-passport-access" /></h1>
@@ -44,7 +44,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<aui:validator name="required" />
 			</aui:input>
 
-			<aui:input name="endUserEmail">
+			<aui:input name="endUserEmailAddress">
 				<aui:validator name="email" />
 				<aui:validator name="required" />
 			</aui:input>

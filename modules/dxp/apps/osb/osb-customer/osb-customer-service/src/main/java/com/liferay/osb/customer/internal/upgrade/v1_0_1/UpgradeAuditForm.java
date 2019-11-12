@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.internal.upgrade.v1_0_1;
 
 import com.liferay.osb.customer.model.impl.AuditFormModelImpl;
-import com.liferay.osb.customer.service.persistence.AuditFormPersistence;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
@@ -23,17 +22,12 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
  */
 public class UpgradeAuditForm extends UpgradeProcess {
 
-	public UpgradeAuditForm(AuditFormPersistence auditFormPersistence) {
-		_auditFormPersistence = auditFormPersistence;
+	public UpgradeAuditForm() {
 	}
 
 	@Override
 	protected void doUpgrade() throws Exception {
 		runSQL(AuditFormModelImpl.TABLE_SQL_CREATE);
-
-		_auditFormPersistence.clearCache();
 	}
-
-	private final AuditFormPersistence _auditFormPersistence;
 
 }

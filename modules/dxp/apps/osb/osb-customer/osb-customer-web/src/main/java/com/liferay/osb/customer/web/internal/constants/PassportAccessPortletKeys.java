@@ -20,6 +20,6 @@ package com.liferay.osb.customer.web.internal.constants;
 public class PassportAccessPortletKeys {
 
 	public static final String PASSPORT_ACCESS =
-		"com_liferay_osb_customer_web_portlet_PassportsAccessPortlet";
+		"com_liferay_osb_customer_web_portlet_PassportAccessPortlet";
 
 }

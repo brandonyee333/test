@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.web.internal.portlet.action;
 
-import com.liferay.osb.customer.exception.EmailDomainException;
+import com.liferay.osb.customer.exception.EmailAddressDomainException;
 import com.liferay.osb.customer.service.AuditFormLocalService;
 import com.liferay.osb.customer.service.TrainingBaseWebService;
 import com.liferay.osb.customer.web.internal.constants.PassportAccessPortletKeys;
@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,19 +63,19 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				actionRequest, "endUserFirstName");
 			String endUserLastName = ParamUtil.getString(
 				actionRequest, "endUserLastName");
-			String endUserEmail = ParamUtil.getString(
-				actionRequest, "endUserEmail");
+			String endUserEmailAddress = ParamUtil.getString(
+				actionRequest, "endUserEmailAddress");
 			boolean agreement = ParamUtil.getBoolean(
 				actionRequest, "agreement");
 
 			_auditFormLocalService.addAuditForm(
-				themeDisplay.getUserId(), new Date(),
+				themeDisplay.getUserId(),
 				endUserFirstName + StringPool.SPACE + endUserLastName,
-				endUserEmail, agreement);
+				endUserEmailAddress, agreement);
 
 			Map<String, String> parameters = new HashMap<>();
 
-			parameters.put("emailAddress", endUserEmail);
+			parameters.put("emailAddress", endUserEmailAddress);
 			parameters.put("firstName", endUserFirstName);
 			parameters.put("lastName", endUserLastName);
 
@@ -86,7 +85,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				"mvcRenderCommandName", "/success");
 		}
 		catch (Exception e) {
-			if (e instanceof EmailDomainException ||
+			if (e instanceof EmailAddressDomainException ||
 				e instanceof RequiredFieldException) {
 
 				SessionErrors.add(actionRequest, e.getClass());
