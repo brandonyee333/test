@@ -19,19 +19,15 @@
 <%
 String articleId = ParamUtil.getString(request, "articleId");
 
-long groupId = ParamUtil.getLong(request, "groupId", themeDisplay.getScopeGroupId());
-
 JournalArticle journalArticle = null;
 
-if (!articleId.isEmpty()) {
-	journalArticle = JournalArticleLocalServiceUtil.getArticle(groupId, articleId);
+if (Validator.isNotNull(articleId)) {
+	journalArticle = JournalArticleLocalServiceUtil.getArticle(themeDisplay.getScopeGroupId(), articleId);
 }
 %>
 
 <c:if test="<%= journalArticle != null %>">
-	<aui:form cssClass="container-fluid-1280" enctype="multipart/form-data" method="post">
-		<aui:model-context bean="<%= journalArticle %>" model="<%= JournalArticle.class %>" />
+	<aui:model-context bean="<%= journalArticle %>" model="<%= JournalArticle.class %>" />
 
-		<aui:input label="url-title" name="urlTitle" />
-	</aui:form>
+	<aui:input label="url-title" name="urlTitle" />
 </c:if>

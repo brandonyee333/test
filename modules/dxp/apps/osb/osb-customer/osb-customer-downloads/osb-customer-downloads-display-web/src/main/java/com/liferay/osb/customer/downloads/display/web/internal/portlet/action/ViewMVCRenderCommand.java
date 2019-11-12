@@ -103,7 +103,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 
 		String urlTitle = ParamUtil.getString(renderRequest, "urlTitle");
 
-		if (!urlTitle.isEmpty()) {
+		if (Validator.isNotNull(urlTitle)) {
 			JournalArticle journalArticle =
 				_journalArticleService.getArticleByUrlTitle(
 					OSBConstants.GROUP_CUSTOMER_ID, urlTitle);

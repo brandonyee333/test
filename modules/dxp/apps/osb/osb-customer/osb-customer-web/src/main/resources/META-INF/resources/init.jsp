@@ -27,7 +27,8 @@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.exception.EmailAddressDomainException" %><%@
 page import="com.liferay.portal.kernel.exception.RequiredFieldException" %><%@
-page import="com.liferay.portal.kernel.util.ParamUtil" %>
+page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.kernel.util.Validator" %>
 
 <liferay-frontend:defineObjects />
 

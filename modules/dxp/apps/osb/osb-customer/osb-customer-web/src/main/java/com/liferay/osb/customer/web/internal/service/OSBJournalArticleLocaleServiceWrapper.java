@@ -30,7 +30,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -39,14 +38,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ServiceWrapper.class)
-public class OSBJournalArticleServiceWrapper
+public class OSBJournalArticleLocaleServiceWrapper
 	extends JournalArticleLocalServiceWrapper {
 
-	public OSBJournalArticleServiceWrapper() {
+	public OSBJournalArticleLocaleServiceWrapper() {
 		super(null);
 	}
 
-	public OSBJournalArticleServiceWrapper(
+	public OSBJournalArticleLocaleServiceWrapper(
 		JournalArticleLocalService journalArticleLocalService) {
 
 		super(journalArticleLocalService);
@@ -97,24 +96,19 @@ public class OSBJournalArticleServiceWrapper
 			urlTitle = getUniqueUrlTitle(groupId, articleId, urlTitle);
 		}
 
-		JournalArticle urlTitleArticle = fetchArticleByUrlTitle(
-			groupId, urlTitle);
+		JournalArticle article = fetchArticleByUrlTitle(groupId, urlTitle);
 
-		if ((urlTitleArticle != null) &&
-			!Objects.equals(urlTitleArticle.getArticleId(), articleId)) {
-
+		if ((article != null) && !articleId.equals(article.getArticleId())) {
 			urlTitle = getUniqueUrlTitle(groupId, articleId, urlTitle);
 		}
 
 		List<JournalArticle> articles = getArticles(groupId, articleId);
 
-		for (JournalArticle article : articles) {
-			String curArticleUrlTitle = article.getUrlTitle();
+		for (JournalArticle curArticle : articles) {
+			if (!urlTitle.equals(article.getUrlTitle())) {
+				curArticle.setUrlTitle(urlTitle);
 
-			if (!curArticleUrlTitle.equals(urlTitle)) {
-				article.setUrlTitle(urlTitle);
-
-				updateJournalArticle(article);
+				updateJournalArticle(curArticle);
 			}
 		}
 	}
