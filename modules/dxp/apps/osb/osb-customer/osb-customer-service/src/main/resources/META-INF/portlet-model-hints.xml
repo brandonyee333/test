@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.customer.model.AuditForm">
+		<field name="auditFormId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="endUserName" type="String" />
+		<field name="endUserEmailAddress" type="String" />
+		<field name="agreement" type="boolean" />
+	</model>
+</model-hints>

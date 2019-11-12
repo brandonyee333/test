@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="com.liferay.osb.customer.model.AuditForm" />
+	<class name="com.liferay.osb.customer.model.impl.AuditFormImpl" table="OSBCustomer_AuditForm">
+		<id name="auditFormId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="endUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="endUserEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="agreement" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+</hibernate-mapping>
