@@ -49,11 +49,15 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<aui:validator name="required" />
 			</aui:input>
 
-			<div>
-				Agreement text will go here once legal gives it to us
-			</div>
+			<%
+			DLFolder folder = DLFolderLocalServiceUtil.getFolder(OSBCustomerConstants.GROUP_CUSTOMER_ID, 0, "Liferay University Passport");
 
-			<aui:input label="i-agree-to-the-terms-of-the-agreement" name="agreement" type="checkbox">
+			FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(OSBCustomerConstants.GROUP_CUSTOMER_ID, folder.getFolderId(), "Liferay University Passport Agreement.pdf");
+
+			String url = DLUtil.getPreviewURL(fileEntry, fileEntry.getFileVersion(), themeDisplay, StringPool.BLANK);
+			%>
+
+			<aui:input label='<%= LanguageUtil.format(request, "i-have-agreed-to-the-terms-and-conditions-for-liferay-university-passport-access", url) %>' name="agreement" type="checkbox">
 				<aui:validator name="required" />
 			</aui:input>
 		</aui:fieldset>

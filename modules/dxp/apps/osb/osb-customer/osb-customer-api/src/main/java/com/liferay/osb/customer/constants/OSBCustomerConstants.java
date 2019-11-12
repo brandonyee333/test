@@ -21,6 +21,8 @@ public class OSBCustomerConstants {
 
 	public static final long COMPANY_ID = 10157;
 
+	public static final long GROUP_CUSTOMER_ID = 2700986;
+
 	public static final long GROUP_KNOWLEDGE_ID = 10738;
 
 	public static final long ORGANIZATION_CORPORATION_PROJECT_PARENT_ID =

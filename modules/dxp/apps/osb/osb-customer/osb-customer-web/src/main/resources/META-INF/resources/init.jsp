@@ -23,11 +23,19 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.journal.model.JournalArticle" %><%@
+<%@ page import="com.liferay.document.library.kernel.model.DLFolder" %><%@
+page import="com.liferay.document.library.kernel.service.DLAppLocalServiceUtil" %><%@
+page import="com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil" %><%@
+page import="com.liferay.document.library.kernel.util.DLUtil" %><%@
+page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
+page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
 page import="com.liferay.osb.customer.exception.EmailAddressDomainException" %><%@
 page import="com.liferay.portal.kernel.exception.RequiredFieldException" %><%@
+page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
+page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
+page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
 
 <liferay-frontend:defineObjects />
