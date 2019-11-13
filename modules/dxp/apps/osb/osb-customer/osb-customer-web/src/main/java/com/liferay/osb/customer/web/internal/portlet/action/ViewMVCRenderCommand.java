@@ -70,7 +70,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	protected boolean hasPermission(long userId) throws PortalException {
-		if (isPartner(userId)) {
+		if (isLiferayEmployee(userId) || isPartner(userId)) {
 			return true;
 		}
 
@@ -100,6 +100,16 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 				userId, OSBCustomerConstants.ORGANIZATION_CUSTOMER_DXP_ID) ||
 			_organizationLocalService.hasUserOrganization(
 				userId, OSBCustomerConstants.ORGANIZATION_CUSTOMER_PORTAL_ID)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected boolean isLiferayEmployee(long userId) throws PortalException {
+		if (_organizationLocalService.hasUserOrganization(
+				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
 		}
