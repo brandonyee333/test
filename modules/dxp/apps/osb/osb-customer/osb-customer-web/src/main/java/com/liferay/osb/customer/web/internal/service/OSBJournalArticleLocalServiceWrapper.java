@@ -38,14 +38,14 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ServiceWrapper.class)
-public class OSBJournalArticleLocaleServiceWrapper
+public class OSBJournalArticleLocalServiceWrapper
 	extends JournalArticleLocalServiceWrapper {
 
-	public OSBJournalArticleLocaleServiceWrapper() {
+	public OSBJournalArticleLocalServiceWrapper() {
 		super(null);
 	}
 
-	public OSBJournalArticleLocaleServiceWrapper(
+	public OSBJournalArticleLocalServiceWrapper(
 		JournalArticleLocalService journalArticleLocalService) {
 
 		super(journalArticleLocalService);
