@@ -16,7 +16,6 @@ package com.liferay.osb.customer.internal.upgrade;
 
 import com.liferay.osb.customer.internal.upgrade.v1_0_1.UpgradeAuditForm;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.registry.Registry;
 
 import org.osgi.service.component.annotations.Component;
 
