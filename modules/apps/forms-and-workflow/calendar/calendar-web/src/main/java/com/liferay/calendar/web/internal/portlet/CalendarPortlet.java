@@ -1037,12 +1037,6 @@ public class CalendarPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		boolean allDay = ParamUtil.getBoolean(portletRequest, "allDay");
-
-		if (allDay) {
-			return TimeZoneUtil.getTimeZone(StringPool.UTC);
-		}
-
 		PortletPreferences preferences = portletRequest.getPreferences();
 
 		User user = themeDisplay.getUser();

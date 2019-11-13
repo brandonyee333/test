@@ -248,10 +248,6 @@ public class CalendarUtil {
 			"description",
 			calendarBooking.getDescription(themeDisplay.getLocale()));
 
-		if (calendarBooking.isAllDay()) {
-			timeZone = TimeZone.getTimeZone(StringPool.UTC);
-		}
-
 		java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(
 			calendarBooking.getEndTime(), timeZone);
 
