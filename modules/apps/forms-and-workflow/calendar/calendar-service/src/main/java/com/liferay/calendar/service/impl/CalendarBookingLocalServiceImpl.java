@@ -133,13 +133,6 @@ public class CalendarBookingLocalServiceImpl
 		java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(
 			endTime, timeZone);
 
-		if (allDay) {
-			startTimeJCalendar = JCalendarUtil.toMidnightJCalendar(
-				startTimeJCalendar);
-			endTimeJCalendar = JCalendarUtil.toLastHourJCalendar(
-				endTimeJCalendar);
-		}
-
 		if (firstReminder < secondReminder) {
 			long originalSecondReminder = secondReminder;
 
@@ -1021,13 +1014,6 @@ public class CalendarBookingLocalServiceImpl
 			startTime, timeZone);
 		java.util.Calendar endTimeJCalendar = JCalendarUtil.getJCalendar(
 			endTime, timeZone);
-
-		if (allDay) {
-			startTimeJCalendar = JCalendarUtil.toMidnightJCalendar(
-				startTimeJCalendar);
-			endTimeJCalendar = JCalendarUtil.toLastHourJCalendar(
-				endTimeJCalendar);
-		}
 
 		if (firstReminder < secondReminder) {
 			long originalSecondReminder = secondReminder;
