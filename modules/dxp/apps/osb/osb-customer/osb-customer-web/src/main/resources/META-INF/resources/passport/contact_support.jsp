@@ -16,6 +16,10 @@
 
 <%@ include file="/init.jsp" %>
 
+<br />
+
 <h1><liferay-ui:message key="liferay-university-passport-access" /></h1>
+
+<br />
 
 <liferay-ui:message arguments="https://help.liferay.com/hc/requests/new" key="to-find-out-how-you-can-obtain-a-liferay-university-passport-access-code-please-submit-a-ticket" />
