@@ -59,6 +59,8 @@ import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.service.permission.ModelPermissions;
+import com.liferay.portal.kernel.service.permission.ModelPermissionsFactory;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
@@ -892,27 +894,15 @@ public class MBUtil {
 					ResourceConstants.SCOPE_INDIVIDUAL,
 					String.valueOf(parentMessage.getMessageId()), actionIds);
 
-		Set<String> defaultGroupActionIds = roleIdsToActionIds.get(
-			defaultGroupRole.getRoleId());
+		String[] groupPermissions = _getRolePermissions(
+			defaultGroupRole, roleIdsToActionIds);
+		String[] guestPermissions = _getRolePermissions(
+			guestRole, roleIdsToActionIds);
 
-		if (defaultGroupActionIds == null) {
-			serviceContext.setGroupPermissions(new String[0]);
-		}
-		else {
-			serviceContext.setGroupPermissions(
-				defaultGroupActionIds.toArray(new String[0]));
-		}
+		ModelPermissions modelPermissions = ModelPermissionsFactory.create(
+			groupPermissions, guestPermissions);
 
-		Set<String> guestActionIds = roleIdsToActionIds.get(
-			guestRole.getRoleId());
-
-		if (guestActionIds == null) {
-			serviceContext.setGuestPermissions(new String[0]);
-		}
-		else {
-			serviceContext.setGuestPermissions(
-				guestActionIds.toArray(new String[0]));
-		}
+		serviceContext.setModelPermissions(modelPermissions);
 	}
 
 	public static String replaceMessageBodyPaths(
@@ -1061,6 +1051,24 @@ public class MBUtil {
 		finally {
 			currentThread.setContextClassLoader(classLoader);
 		}
+	}
+
+	private static String[] _getRolePermissions(
+		Role role, Map<Long, Set<String>> roleIdsToActionIds) {
+
+		String[] rolePermissions = null;
+
+		Set<String> defaultRoleActionIds = roleIdsToActionIds.get(
+			role.getRoleId());
+
+		if (defaultRoleActionIds != null) {
+			rolePermissions = defaultRoleActionIds.toArray(new String[0]);
+		}
+		else {
+			rolePermissions = new String[0];
+		}
+
+		return rolePermissions;
 	}
 
 	private static boolean _isEntityRank(
