@@ -108,6 +108,8 @@ public class OSBLicenseKeyPermission {
 			if ((accountWorker.getRole() ==
 					AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST) ||
 				(accountWorker.getRole() ==
+					AccountWorkerConstants.ROLE_CUSTOMER_SUCCESS) ||
+				(accountWorker.getRole() ==
 					AccountWorkerConstants.ROLE_SALES)) {
 
 				return true;

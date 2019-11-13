@@ -125,7 +125,9 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 					<aui:option />
 
 					<%
-					for (int i = 1; i <= 5; i++) {
+					int[] roles = AccountWorkerConstants.ROLES;
+
+					for (int i = 1; i <= roles.length; i++) {
 						if (ArrayUtil.contains(AccountWorkerConstants.ROLES_DEPRECATED, i)) {
 							continue;
 						}

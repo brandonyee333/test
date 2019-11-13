@@ -31,9 +31,9 @@
 		<div class="unit">
 			<div class="table-report unit-content">
 				<liferay-ui:tabs
-					names="advocacy-specialist,managed-services,sales"
+					names="advocacy-specialist,customer-success,managed-services,sales"
 					param="tabs1"
-					tabsValues='<%= AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST + "," + AccountWorkerConstants.ROLE_MANAGED_SERVICES + "," + AccountWorkerConstants.ROLE_SALES %>'
+					tabsValues='<%= AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST + "," + AccountWorkerConstants.ROLE_CUSTOMER_SUCCESS + "," + AccountWorkerConstants.ROLE_MANAGED_SERVICES + "," + AccountWorkerConstants.ROLE_SALES %>'
 					url="<%= portletURL.toString() %>"
 				/>
 

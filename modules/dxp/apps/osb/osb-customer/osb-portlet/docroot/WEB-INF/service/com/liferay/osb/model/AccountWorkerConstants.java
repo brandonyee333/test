@@ -23,6 +23,8 @@ public class AccountWorkerConstants {
 
 	public static final int ROLE_ADVOCACY_SPECIALIST = 4;
 
+	public static final int ROLE_CUSTOMER_SUCCESS = 6;
+
 	public static final int ROLE_EXPERIENCE_MANAGER = 1;
 
 	public static final int ROLE_MANAGED_SERVICES = 5;
@@ -30,6 +32,12 @@ public class AccountWorkerConstants {
 	public static final int ROLE_SALES = 2;
 
 	public static final int ROLE_SALES_MANAGER = 3;
+
+	public static final int[] ROLES = {
+		ROLE_ADVOCACY_SPECIALIST, ROLE_CUSTOMER_SUCCESS,
+		ROLE_EXPERIENCE_MANAGER, ROLE_MANAGED_SERVICES, ROLE_SALES,
+		ROLE_SALES_MANAGER
+	};
 
 	public static final int[] ROLES_DEPRECATED = {
 		ROLE_EXPERIENCE_MANAGER, ROLE_SALES_MANAGER
@@ -42,6 +50,9 @@ public class AccountWorkerConstants {
 	public static String getRoleLabel(int role) {
 		if (role == ROLE_ADVOCACY_SPECIALIST) {
 			return "advocacy-specialist";
+		}
+		else if (role == ROLE_CUSTOMER_SUCCESS) {
+			return "customer-success";
 		}
 		else if (role == ROLE_EXPERIENCE_MANAGER) {
 			return "experience-manager";
