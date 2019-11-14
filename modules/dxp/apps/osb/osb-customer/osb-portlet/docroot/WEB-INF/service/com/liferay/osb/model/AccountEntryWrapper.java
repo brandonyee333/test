@@ -307,22 +307,6 @@ public class AccountEntryWrapper implements AccountEntry,
 		}
 	}
 
-	@Override
-	public AccountEntry toEscapedModel() {
-		return new AccountEntryWrapper(_accountEntry.toEscapedModel());
-	}
-
-	@Override
-	public AccountEntry toUnescapedModel() {
-		return new AccountEntryWrapper(_accountEntry.toUnescapedModel());
-	}
-
-	@Override
-	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntry.getPartnerEntry();
-	}
-
 	/**
 	* Returns the active support of this account entry.
 	*
@@ -487,6 +471,22 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountEntry.getExpandoBridge();
+	}
+
+	@Override
+	public AccountEntry toEscapedModel() {
+		return new AccountEntryWrapper(_accountEntry.toEscapedModel());
+	}
+
+	@Override
+	public AccountEntry toUnescapedModel() {
+		return new AccountEntryWrapper(_accountEntry.toUnescapedModel());
+	}
+
+	@Override
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountEntry.getPartnerEntry();
 	}
 
 	@Override

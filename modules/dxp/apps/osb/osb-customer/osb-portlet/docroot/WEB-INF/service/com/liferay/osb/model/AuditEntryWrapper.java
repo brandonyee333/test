@@ -197,16 +197,6 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		}
 	}
 
-	@Override
-	public AuditEntry toEscapedModel() {
-		return new AuditEntryWrapper(_auditEntry.toEscapedModel());
-	}
-
-	@Override
-	public AuditEntry toUnescapedModel() {
-		return new AuditEntryWrapper(_auditEntry.toUnescapedModel());
-	}
-
 	/**
 	* Returns the i18n of this audit entry.
 	*
@@ -245,6 +235,16 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _auditEntry.getExpandoBridge();
+	}
+
+	@Override
+	public AuditEntry toEscapedModel() {
+		return new AuditEntryWrapper(_auditEntry.toEscapedModel());
+	}
+
+	@Override
+	public AuditEntry toUnescapedModel() {
+		return new AuditEntryWrapper(_auditEntry.toUnescapedModel());
 	}
 
 	@Override

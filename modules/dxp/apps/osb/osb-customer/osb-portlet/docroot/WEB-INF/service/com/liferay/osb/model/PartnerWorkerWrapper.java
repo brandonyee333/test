@@ -93,22 +93,6 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	}
 
 	@Override
-	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _partnerWorker.getPartnerEntry();
-	}
-
-	@Override
-	public PartnerWorker toEscapedModel() {
-		return new PartnerWorkerWrapper(_partnerWorker.toEscapedModel());
-	}
-
-	@Override
-	public PartnerWorker toUnescapedModel() {
-		return new PartnerWorkerWrapper(_partnerWorker.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _partnerWorker.isCachedModel();
 	}
@@ -126,6 +110,22 @@ public class PartnerWorkerWrapper implements PartnerWorker,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _partnerWorker.getExpandoBridge();
+	}
+
+	@Override
+	public PartnerEntry getPartnerEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _partnerWorker.getPartnerEntry();
+	}
+
+	@Override
+	public PartnerWorker toEscapedModel() {
+		return new PartnerWorkerWrapper(_partnerWorker.toEscapedModel());
+	}
+
+	@Override
+	public PartnerWorker toUnescapedModel() {
+		return new PartnerWorkerWrapper(_partnerWorker.toUnescapedModel());
 	}
 
 	@Override

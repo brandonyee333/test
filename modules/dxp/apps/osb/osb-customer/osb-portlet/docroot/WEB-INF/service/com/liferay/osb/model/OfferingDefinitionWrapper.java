@@ -163,28 +163,6 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 		}
 	}
 
-	@Override
-	public OfferingDefinition toEscapedModel() {
-		return new OfferingDefinitionWrapper(_offeringDefinition.toEscapedModel());
-	}
-
-	@Override
-	public OfferingDefinition toUnescapedModel() {
-		return new OfferingDefinitionWrapper(_offeringDefinition.toUnescapedModel());
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringDefinition.getProductEntry();
-	}
-
-	@Override
-	public SupportResponse getSupportResponse()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringDefinition.getSupportResponse();
-	}
-
 	/**
 	* Returns the licenses of this offering definition.
 	*
@@ -263,6 +241,28 @@ public class OfferingDefinitionWrapper implements OfferingDefinition,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _offeringDefinition.getExpandoBridge();
+	}
+
+	@Override
+	public OfferingDefinition toEscapedModel() {
+		return new OfferingDefinitionWrapper(_offeringDefinition.toEscapedModel());
+	}
+
+	@Override
+	public OfferingDefinition toUnescapedModel() {
+		return new OfferingDefinitionWrapper(_offeringDefinition.toUnescapedModel());
+	}
+
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringDefinition.getProductEntry();
+	}
+
+	@Override
+	public SupportResponse getSupportResponse()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _offeringDefinition.getSupportResponse();
 	}
 
 	@Override
