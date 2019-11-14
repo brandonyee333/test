@@ -125,15 +125,13 @@ request.setAttribute("edit_account_entry_workers.jsp-portletURL", portletURL);
 					<aui:option />
 
 					<%
-					int[] roles = AccountWorkerConstants.ROLES;
-
-					for (int i = 1; i <= roles.length; i++) {
-						if (ArrayUtil.contains(AccountWorkerConstants.ROLES_DEPRECATED, i)) {
+					for (int role : AccountWorkerConstants.ROLES) {
+						if (ArrayUtil.contains(AccountWorkerConstants.ROLES_DEPRECATED, role)) {
 							continue;
 						}
 					%>
 
-						<aui:option label="<%= AccountWorkerConstants.getRoleLabel(i) %>" selected="<%= accountWorker.getRole() == i %>" value="<%= i %>" />
+						<aui:option label="<%= AccountWorkerConstants.getRoleLabel(role) %>" selected="<%= accountWorker.getRole() == role %>" value="<%= role %>" />
 
 					<%
 					}
