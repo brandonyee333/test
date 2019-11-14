@@ -69,7 +69,7 @@ boolean search = mvcRenderCommandName.equals("/document_library/search");
 		>
 			<portlet:renderURL var="viewDocumentsHomeURL">
 				<portlet:param name="mvcRenderCommandName" value="/document_library/view" />
-				<portlet:param name="folderId" value="<%= String.valueOf(rootFolderId) %>" />
+				<portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" />
 			</portlet:renderURL>
 
 			<liferay-frontend:management-bar-filter-item
@@ -81,7 +81,7 @@ boolean search = mvcRenderCommandName.equals("/document_library/search");
 			<portlet:renderURL var="viewRecentDocumentsURL">
 				<portlet:param name="mvcRenderCommandName" value="/document_library/view" />
 				<portlet:param name="navigation" value="recent" />
-				<portlet:param name="folderId" value="<%= String.valueOf(rootFolderId) %>" />
+				<portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" />
 			</portlet:renderURL>
 
 			<liferay-frontend:management-bar-filter-item
@@ -94,7 +94,7 @@ boolean search = mvcRenderCommandName.equals("/document_library/search");
 				<portlet:renderURL var="viewMyDocumentsURL">
 					<portlet:param name="mvcRenderCommandName" value="/document_library/view" />
 					<portlet:param name="navigation" value="mine" />
-					<portlet:param name="folderId" value="<%= String.valueOf(rootFolderId) %>" />
+					<portlet:param name="folderId" value="<%= String.valueOf(folderId) %>" />
 				</portlet:renderURL>
 
 				<liferay-frontend:management-bar-filter-item
