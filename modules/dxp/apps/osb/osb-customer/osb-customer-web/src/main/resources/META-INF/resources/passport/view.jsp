@@ -48,7 +48,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<aui:validator name="required" />
 			</aui:input>
 
-			<aui:input name="endUserEmailAddress">
+			<aui:input helpMessage="you-may-request-liferay-university-passport-access-for-yourself-or-a-member-of-your-liferay-project-team" name="endUserEmailAddress">
 				<aui:validator name="email" />
 				<aui:validator name="required" />
 			</aui:input>
