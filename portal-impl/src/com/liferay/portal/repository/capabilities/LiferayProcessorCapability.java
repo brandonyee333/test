@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.repository.liferayrepository.LiferayProcessorLocalRepositoryWrapper;
 import com.liferay.portal.repository.liferayrepository.LiferayProcessorRepositoryWrapper;
 import com.liferay.portal.repository.util.RepositoryWrapperAware;
-import com.liferay.portlet.documentlibrary.util.DLImpl;
 import com.liferay.portlet.preview.DLPreviewHelper;
 
 /**
@@ -120,7 +119,7 @@ public class LiferayProcessorCapability
 	private final ResourceGenerationStrategy _resourceGenerationStrategy;
 	private static volatile DLPreviewHelper _dlPreviewHelper =
 		ServiceProxyFactory.newServiceTrackedInstance(
-			DLPreviewHelper.class, DLImpl.class, "_dlPreviewHelper", false,
-			true);
+			DLPreviewHelper.class, LiferayProcessorCapability.class,
+			"_dlPreviewHelper", false, true);
 
 }
