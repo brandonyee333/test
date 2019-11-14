@@ -394,6 +394,18 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		</tr>
 		<tr>
 			<td>
+				<liferay-ui:message key="lcs-support-admin" />
+			</td>
+			<td>
+				<span id="<portlet:namespace />lcsSupportAdmin">
+					<c:if test="<%= corpProject != null %>">
+						<aui:a href="<%= PortletPropsValues.LCS_SUPPORT_ADMIN_LINK + corpProject.getCorpProjectId() %>" label="lcs-support-admin" target="_blank" />
+					</c:if>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<liferay-ui:message key="ewsa-dossiera-project-key" />
 			</td>
 			<td>

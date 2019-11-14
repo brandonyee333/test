@@ -34,6 +34,9 @@ public class PortletPropsValues {
 	public static final String DOSSIERA_ACCOUNT_LINK = PortletProps.get(
 		PortletPropsKeys.DOSSIERA_ACCOUNT_LINK);
 
+	public static final String LCS_SUPPORT_ADMIN_LINK = PortletProps.get(
+		PortletPropsKeys.LCS_SUPPORT_ADMIN_LINK);
+
 	public static final String[]
 		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
 			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);
