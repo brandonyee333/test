@@ -7764,6 +7764,40 @@ public class JournalArticleLocalServiceImpl
 			return;
 		}
 
+		SubscriptionSender subscriptionSender =
+			new GroupSubscriptionCheckSubscriptionSender(
+				JournalPermission.RESOURCE_NAME);
+
+		subscriptionSender.setClassName(article.getModelClassName());
+		subscriptionSender.setClassPK(article.getId());
+		subscriptionSender.setCompanyId(article.getCompanyId());
+
+		subscriptionSender.addPersistedSubscribers(
+			JournalFolder.class.getName(), article.getGroupId());
+
+		JournalFolder folder = article.getFolder();
+
+		if (folder != null) {
+			subscriptionSender.addPersistedSubscribers(
+				JournalFolder.class.getName(), folder.getFolderId());
+
+			for (Long ancestorFolderId : folder.getAncestorFolderIds()) {
+				subscriptionSender.addPersistedSubscribers(
+					JournalFolder.class.getName(), ancestorFolderId);
+			}
+		}
+
+		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
+			article.getGroupId(),
+			classNameLocalService.getClassNameId(JournalArticle.class),
+			article.getDDMStructureKey(), true);
+
+		subscriptionSender.addPersistedSubscribers(
+			DDMStructure.class.getName(), ddmStructure.getStructureId());
+
+		subscriptionSender.addPersistedSubscribers(
+			JournalArticle.class.getName(), article.getResourcePrimKey());
+
 		String fromName = journalGroupServiceConfiguration.emailFromName();
 		String fromAddress =
 			journalGroupServiceConfiguration.emailFromAddress();
@@ -7831,20 +7865,11 @@ public class JournalArticleLocalServiceImpl
 		catch (Exception e) {
 		}
 
-		SubscriptionSender subscriptionSender =
-			new GroupSubscriptionCheckSubscriptionSender(
-				JournalPermission.RESOURCE_NAME);
-
-		subscriptionSender.setClassName(article.getModelClassName());
-		subscriptionSender.setClassPK(article.getId());
-		subscriptionSender.setCompanyId(article.getCompanyId());
 		subscriptionSender.setContextAttribute(
 			"[$ARTICLE_CONTENT$]", articleContent, false);
 		subscriptionSender.setContextAttribute(
 			"[$ARTICLE_DIFFS$]", DiffHtmlUtil.replaceStyles(articleDiffs),
 			false);
-
-		JournalFolder folder = article.getFolder();
 
 		subscriptionSender.setContextAttributes(
 			"[$ARTICLE_ID$]", article.getArticleId(), "[$ARTICLE_TITLE$]",
@@ -7876,30 +7901,6 @@ public class JournalArticleLocalServiceImpl
 		subscriptionSender.setReplyToAddress(fromAddress);
 		subscriptionSender.setScopeGroupId(article.getGroupId());
 		subscriptionSender.setServiceContext(serviceContext);
-
-		subscriptionSender.addPersistedSubscribers(
-			JournalFolder.class.getName(), article.getGroupId());
-
-		if (folder != null) {
-			subscriptionSender.addPersistedSubscribers(
-				JournalFolder.class.getName(), folder.getFolderId());
-
-			for (Long ancestorFolderId : folder.getAncestorFolderIds()) {
-				subscriptionSender.addPersistedSubscribers(
-					JournalFolder.class.getName(), ancestorFolderId);
-			}
-		}
-
-		DDMStructure ddmStructure = ddmStructureLocalService.getStructure(
-			article.getGroupId(),
-			classNameLocalService.getClassNameId(JournalArticle.class),
-			article.getDDMStructureKey(), true);
-
-		subscriptionSender.addPersistedSubscribers(
-			DDMStructure.class.getName(), ddmStructure.getStructureId());
-
-		subscriptionSender.addPersistedSubscribers(
-			JournalArticle.class.getName(), article.getResourcePrimKey());
 
 		subscriptionSender.flushNotificationsAsync();
 	}
