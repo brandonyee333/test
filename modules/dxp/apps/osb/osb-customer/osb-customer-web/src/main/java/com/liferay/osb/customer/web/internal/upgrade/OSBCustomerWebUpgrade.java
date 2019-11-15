@@ -16,12 +16,14 @@ package com.liferay.osb.customer.web.internal.upgrade;
 
 import com.liferay.dynamic.data.mapping.service.persistence.DDMStructurePersistence;
 import com.liferay.dynamic.data.mapping.service.persistence.DDMTemplatePersistence;
+import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.persistence.JournalArticlePersistence;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeDDMTemplates;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeResourceAction;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_0.UpgradeSubscription;
 import com.liferay.osb.customer.web.internal.upgrade.v1_0_1.UpgradeJournalArticle;
 import com.liferay.osb.customer.web.internal.upgrade.v1_1_0.UpgradeJournalArticles;
+import com.liferay.osb.customer.web.internal.upgrade.v1_2_0.UpgradeJournalArticleURLTitle;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalService;
 import com.liferay.portal.kernel.service.persistence.ResourceActionPersistence;
 import com.liferay.portal.kernel.service.persistence.ResourcePermissionPersistence;
@@ -54,8 +56,13 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 			new UpgradeJournalArticle(_journalArticlePersistence));
 
 		registry.register(
-			"com.liferay.osb.customer.web", "1.0.0", "1.1.0",
+			"com.liferay.osb.customer.web", "1.0.1", "1.1.0",
 			new UpgradeJournalArticles(_journalArticlePersistence));
+
+		registry.register(
+			"com.liferay.osb.customer.web", "1.1.0", "1.2.0",
+			new UpgradeJournalArticleURLTitle(
+				_journalArticleLocalService, _journalArticlePersistence));
 	}
 
 	@Reference
@@ -63,6 +70,9 @@ public class OSBCustomerWebUpgrade implements UpgradeStepRegistrator {
 
 	@Reference
 	private DDMTemplatePersistence _ddmTemplatePersistence;
+
+	@Reference
+	private JournalArticleLocalService _journalArticleLocalService;
 
 	@Reference
 	private JournalArticlePersistence _journalArticlePersistence;
