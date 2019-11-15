@@ -51,11 +51,16 @@ public class AttributeExtensionHelper extends BaseExtensionHelper {
 	public String getNameAttribute(MessageElement messageElement) {
 		Iterator<String> iterator = messageElement.getNamespacePrefixes();
 
-		String namespacePrefix = iterator.next();
+		if (iterator.hasNext()) {
+			String namespacePrefix = iterator.next();
 
-		String namespaceURI = messageElement.getNamespaceURI(namespacePrefix);
+			String namespaceURI = messageElement.getNamespaceURI(
+				namespacePrefix);
 
-		return messageElement.getAttributeNS(namespaceURI, "name");
+			return messageElement.getAttributeNS(namespaceURI, "name");
+		}
+
+		return messageElement.getAttribute("name");
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
