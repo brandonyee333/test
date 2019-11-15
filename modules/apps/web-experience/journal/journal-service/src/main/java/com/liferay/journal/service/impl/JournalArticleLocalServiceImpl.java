@@ -7798,6 +7798,10 @@ public class JournalArticleLocalServiceImpl
 		subscriptionSender.addPersistedSubscribers(
 			JournalArticle.class.getName(), article.getResourcePrimKey());
 
+		if (!subscriptionSender.hasSubscribers()) {
+			return;
+		}
+
 		String fromName = journalGroupServiceConfiguration.emailFromName();
 		String fromAddress =
 			journalGroupServiceConfiguration.emailFromAddress();
