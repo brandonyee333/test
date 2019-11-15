@@ -18,12 +18,17 @@ import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.service.SubscriptionLocalService;
+import com.liferay.portal.kernel.service.SubscriptionLocalServiceUtil;
+import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.util.PropsTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -176,6 +181,61 @@ public class SubscriptionSenderTest extends PowerMockito {
 			subscriptionSender.getContextAttribute("[$PORTAL_URL$]"));
 
 		Assert.assertEquals("http://www.virtual.com", portalURL);
+	}
+
+	@Test
+	public void testHasSubscriptionsReturnsFalseWhenNoSubscribers() {
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		Assert.assertFalse(subscriptionSender.hasSubscribers());
+	}
+
+	@Test
+	public void testHasSubscriptionsReturnsFalseWhenNoSubscriptionsInDB() {
+		SubscriptionLocalService subscriptionLocalService = Mockito.mock(
+			SubscriptionLocalService.class);
+
+		ReflectionTestUtil.setFieldValue(
+			SubscriptionLocalServiceUtil.class, "_service",
+			subscriptionLocalService);
+
+		Mockito.when(
+			subscriptionLocalService.getSubscriptions(
+				Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())
+		).thenReturn(
+			Collections.emptyList()
+		);
+
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.addPersistedSubscribers(
+			Group.class.getName(), RandomTestUtil.randomInt());
+
+		Assert.assertFalse(subscriptionSender.hasSubscribers());
+	}
+
+	@Test
+	public void testHasSubscriptionsReturnsTrueWhenSubscriptionsInDB() {
+		SubscriptionLocalService subscriptionLocalService = Mockito.mock(
+			SubscriptionLocalService.class);
+
+		ReflectionTestUtil.setFieldValue(
+			SubscriptionLocalServiceUtil.class, "_service",
+			subscriptionLocalService);
+
+		Mockito.when(
+			subscriptionLocalService.getSubscriptions(
+				Mockito.anyLong(), Mockito.anyString(), Mockito.anyLong())
+		).thenReturn(
+			Collections.singletonList(Mockito.mock(Subscription.class))
+		);
+
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.addPersistedSubscribers(
+			Group.class.getName(), RandomTestUtil.randomInt());
+
+		Assert.assertTrue(subscriptionSender.hasSubscribers());
 	}
 
 	protected <T> T getMockService(
