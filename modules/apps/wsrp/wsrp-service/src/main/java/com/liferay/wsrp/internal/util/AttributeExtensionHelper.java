@@ -16,6 +16,7 @@ package com.liferay.wsrp.internal.util;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +50,8 @@ public class AttributeExtensionHelper extends BaseExtensionHelper {
 
 	@Override
 	public String getNameAttribute(MessageElement messageElement) {
+		String name = null;
+
 		Iterator<String> iterator = messageElement.getNamespacePrefixes();
 
 		if (iterator.hasNext()) {
@@ -57,10 +60,14 @@ public class AttributeExtensionHelper extends BaseExtensionHelper {
 			String namespaceURI = messageElement.getNamespaceURI(
 				namespacePrefix);
 
-			return messageElement.getAttributeNS(namespaceURI, "name");
+			name = messageElement.getAttributeNS(namespaceURI, "name");
 		}
 
-		return messageElement.getAttribute("name");
+		if (Validator.isNull(name)) {
+			name = messageElement.getAttribute("name");
+		}
+
+		return name;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
