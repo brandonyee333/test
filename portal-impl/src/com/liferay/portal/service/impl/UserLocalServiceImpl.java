@@ -18,6 +18,7 @@ import com.liferay.mail.kernel.service.MailService;
 import com.liferay.message.boards.kernel.model.MBMessage;
 import com.liferay.petra.encryptor.Encryptor;
 import com.liferay.petra.encryptor.EncryptorException;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.PortalCacheMapSynchronizeUtil;
@@ -6361,12 +6362,31 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 					user.getCompanyId(), User.class.getName(), user.getUserId(),
 					TicketConstants.TYPE_PASSWORD, null, null, serviceContext);
 
-				String plid = String.valueOf(serviceContext.getPlid());
+				String updatePasswordURL = "/portal/update_password?";
+
+				long plid = serviceContext.getPlid();
+
+				if (plid > 0) {
+					Layout layout = layoutLocalService.fetchLayout(plid);
+
+					if (layout != null) {
+						try {
+							Group group = layout.getGroup();
+
+							if (!layout.isPrivateLayout() && !group.isUser()) {
+								updatePasswordURL +=
+									"p_l_id=" + serviceContext.getPlid() + "&";
+							}
+						}
+						catch (Exception e) {
+							ReflectionUtil.throwException(e);
+						}
+					}
+				}
 
 				passwordResetURL = StringBundler.concat(
 					serviceContext.getPortalURL(), serviceContext.getPathMain(),
-					"/portal/update_password?p_l_id=", plid, "&ticketKey=",
-					ticket.getKey());
+					updatePasswordURL, "ticketKey=", ticket.getKey());
 
 				localizedBodyMap = LocalizationUtil.getLocalizationMap(
 					companyPortletPreferences,
