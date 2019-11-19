@@ -74,17 +74,15 @@ public class UpgradeJournalArticleURLTitle extends UpgradeProcess {
 			JournalArticle.class.getName(), "urlTitle", title);
 	}
 
-	protected void clearURLTitle() throws Exception {
+	protected void clearURLTitle(long groupId) throws Exception {
 		PreparedStatement ps = null;
 
 		try {
-			String sql =
-				"update JournalArticle set urlTitle = ? where groupId = ?";
-
-			ps = connection.prepareStatement(sql);
+			ps = connection.prepareStatement(
+				"update JournalArticle set urlTitle = ? where groupId = ?");
 
 			ps.setString(1, StringPool.BLANK);
-			ps.setLong(2, OSBCustomerConstants.GROUP_CUSTOMER_ID);
+			ps.setLong(2, groupId);
 
 			ps.executeUpdate();
 		}
@@ -95,8 +93,8 @@ public class UpgradeJournalArticleURLTitle extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		clearURLTitle();
-		updateJournalArticle();
+		clearURLTitle(OSBCustomerConstants.GROUP_CUSTOMER_ID);
+		updateJournalArticle(OSBCustomerConstants.GROUP_CUSTOMER_ID);
 
 		_journalArticlePersistence.clearCache();
 	}
@@ -136,18 +134,14 @@ public class UpgradeJournalArticleURLTitle extends UpgradeProcess {
 		return curUrlTitle;
 	}
 
-	protected void updateJournalArticle() throws Exception {
+	protected void updateJournalArticle(long groupId) throws Exception {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
-			String sql =
+			ps = connection.prepareStatement(
 				"select distinct articleId from JournalArticle where groupId " +
-					"= ?";
-
-			ps = connection.prepareStatement(sql);
-
-			long groupId = OSBCustomerConstants.GROUP_CUSTOMER_ID;
+					"= ?");
 
 			ps.setLong(1, groupId);
 
