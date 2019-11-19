@@ -35,7 +35,7 @@ String requiredAgreement = _getStringValue(ddmFormFieldValuesMap, "requiredAgree
 <h3 class="section-title">
 	<portlet:renderURL var="journalArticleURL">
 		<portlet:param name="mvcRenderCommandName" value="/view" />
-		<portlet:param name="journalArticleResourcePrimKey" value="<%= String.valueOf(journalArticle.getResourcePrimKey()) %>" />
+		<portlet:param name="urlTitle" value="<%= journalArticle.getUrlTitle() %>" />
 	</portlet:renderURL>
 
 	<aui:a href="<%= journalArticleURL.toString() %>" label="<%= journalArticle.getTitle(locale) %>" />

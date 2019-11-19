@@ -3,14 +3,14 @@
 
 <routes>
 	<route>
-		<pattern>/{urlTitle}</pattern>
+		<pattern>/{journalArticleResourcePrimKey:\d+}</pattern>
 		<implicit-parameter name="mvcRenderCommandName">/view</implicit-parameter>
 		<implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
 		<implicit-parameter name="p_p_mode">view</implicit-parameter>
 		<implicit-parameter name="p_p_state">normal</implicit-parameter>
 	</route>
 	<route>
-		<pattern>/{journalArticleResourcePrimKey:\d+}</pattern>
+		<pattern>/{urlTitle}</pattern>
 		<implicit-parameter name="mvcRenderCommandName">/view</implicit-parameter>
 		<implicit-parameter name="p_p_lifecycle">0</implicit-parameter>
 		<implicit-parameter name="p_p_mode">view</implicit-parameter>
