@@ -14,7 +14,6 @@
 
 package com.liferay.osb.license.util;
 
-import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
@@ -191,6 +190,14 @@ public class LicenseUtil {
 		String key = KeyGenerator.generate(properties);
 
 		DocUtil.add(rootElement, "key", key);
+
+		return document.formattedString();
+	}
+
+	public static String exportToXML(Map<String, String> properties, String key)
+		throws Exception {
+
+		Document document = exportToXMLVersion3_4(properties, key, false);
 
 		return document.formattedString();
 	}

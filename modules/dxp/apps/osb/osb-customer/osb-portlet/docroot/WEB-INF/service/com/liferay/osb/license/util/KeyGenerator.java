@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.admin.util;
+package com.liferay.osb.license.util;
 
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -70,7 +70,7 @@ public class KeyGenerator {
 		String ipAddresses, String macAddresses, String[] serverIds,
 		Date startDate, Date expirationDate) {
 
-		Map<String, String> properties = _getProperties(
+		Map<String, String> properties = getProperties(
 			accountEntryName, licenseEntryName, licenseEntryType,
 			licenseVersion, productEntryName, productId, productVersionLabel,
 			owner, maxServers, maxHttpSessions, maxConcurrentUsers, maxUsers,
@@ -100,7 +100,7 @@ public class KeyGenerator {
 			}
 		}
 
-		Map<String, String> properties = _getProperties(
+		Map<String, String> properties = getProperties(
 			licenseKey.getAccountEntryName(), licenseKey.getLicenseEntryName(),
 			licenseKey.getLicenseEntryType(), licenseKey.getLicenseVersion(),
 			licenseKey.getProductEntryName(), licenseKey.getProductId(),
@@ -133,13 +133,7 @@ public class KeyGenerator {
 		return properties;
 	}
 
-	public static String getServerId(
-		String hostName, String ipAddresses, String macAddresses) {
-
-		return _instance._getServerId(hostName, ipAddresses, macAddresses);
-	}
-
-	private static Map<String, String> _getProperties(
+	public static Map<String, String> getProperties(
 		String accountEntryName, String licenseEntryName,
 		String licenseEntryType, int licenseVersion, String productEntryName,
 		String productId, String productVersionLabel, String owner,
@@ -303,6 +297,12 @@ public class KeyGenerator {
 		return properties;
 	}
 
+	public static String getServerId(
+		String hostName, String ipAddresses, String macAddresses) {
+
+		return _instance._getServerId(hostName, ipAddresses, macAddresses);
+	}
+
 	private KeyGenerator() {
 		try {
 			Class<?> clazz = getClass();
@@ -311,7 +311,7 @@ public class KeyGenerator {
 
 			String[] keys = StringUtil.split(
 				StringUtil.read(
-					classLoader, "com/liferay/osb/admin/util/keys.txt"),
+					classLoader, "com/liferay/osb/license/util/keys.txt"),
 				StringPool.NEW_LINE);
 
 			_keys[0] = (Key)Base64.stringToObject(keys[175]);

@@ -4,6 +4,11 @@ Bundle-ClassPath:\
 Bundle-Name: Liferay OSB Customer Account Entry Details Web
 Bundle-SymbolicName: com.liferay.osb.customer.account.entry.details.web
 Bundle-Version: 1.0.0
+Import-Package:\
+	!com.liferay.util,\
+	!com.liferay.util.xml,\
+	\
+	*
 Liferay-Releng-Module-Group-Title: Customer
 Web-ContextPath: /osb-customer-account-entry-details-web
 -dsannotations-options: inherit

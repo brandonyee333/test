@@ -4,5 +4,10 @@ Bundle-ClassPath:\
 Bundle-Name: Liferay OSB Customer Workflow Task Web
 Bundle-SymbolicName: com.liferay.osb.customer.workflow.task.web
 Bundle-Version: 1.0.0
+Import-Package:\
+	!com.liferay.util,\
+	!com.liferay.util.xml,\
+	\
+	*
 Liferay-Releng-Module-Group-Title: Customer
 -includeresource: lib/osb-portlet-service.jar=osb-portlet-service.jar

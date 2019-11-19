@@ -4,6 +4,11 @@ Bundle-ClassPath:\
 Bundle-Name: Liferay OSB Customer Web
 Bundle-SymbolicName: com.liferay.osb.customer.web
 Bundle-Version: 1.0.0
+Import-Package:\
+	!com.liferay.util,\
+	!com.liferay.util.xml,\
+	\
+	*
 Liferay-Releng-Module-Group-Title: Customer
 Web-ContextPath: /osb-customer-web
 -dsannotations-options: inherit

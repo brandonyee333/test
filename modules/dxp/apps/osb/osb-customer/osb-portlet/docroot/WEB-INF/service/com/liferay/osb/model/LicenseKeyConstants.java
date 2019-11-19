@@ -78,6 +78,16 @@ public class LicenseKeyConstants {
 		return 1;
 	}
 
+	public static int getLicenseVersionByMajorProductVersion(
+		int majorProductVersion) {
+
+		if (majorProductVersion >= 72) {
+			return 6;
+		}
+
+		return 0;
+	}
+
 	public static String getProductVersionLabel(int productVersion) {
 		try {
 			ListType listType = ListTypeServiceUtil.getListType(productVersion);

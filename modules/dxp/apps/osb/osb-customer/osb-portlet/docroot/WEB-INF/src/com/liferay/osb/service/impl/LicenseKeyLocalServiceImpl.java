@@ -15,7 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.admin.util.AdminUtil;
-import com.liferay.osb.admin.util.KeyGenerator;
 import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
 import com.liferay.osb.exception.LicenseKeyActiveException;
@@ -33,6 +32,7 @@ import com.liferay.osb.exception.LicenseKeyServerInfoException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.NoSuchLicenseKeyException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
+import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
