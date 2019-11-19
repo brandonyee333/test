@@ -122,6 +122,16 @@ public class AccountInformationWrapper implements AccountInformation,
 	}
 
 	@Override
+	public AccountInformation toEscapedModel() {
+		return new AccountInformationWrapper(_accountInformation.toEscapedModel());
+	}
+
+	@Override
+	public AccountInformation toUnescapedModel() {
+		return new AccountInformationWrapper(_accountInformation.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountInformation.isCachedModel();
 	}
@@ -139,16 +149,6 @@ public class AccountInformationWrapper implements AccountInformation,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountInformation.getExpandoBridge();
-	}
-
-	@Override
-	public AccountInformation toEscapedModel() {
-		return new AccountInformationWrapper(_accountInformation.toEscapedModel());
-	}
-
-	@Override
-	public AccountInformation toUnescapedModel() {
-		return new AccountInformationWrapper(_accountInformation.toUnescapedModel());
 	}
 
 	@Override

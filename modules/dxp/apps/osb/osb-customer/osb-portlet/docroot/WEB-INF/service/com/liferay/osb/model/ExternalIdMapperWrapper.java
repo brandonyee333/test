@@ -115,6 +115,16 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	}
 
 	@Override
+	public ExternalIdMapper toEscapedModel() {
+		return new ExternalIdMapperWrapper(_externalIdMapper.toEscapedModel());
+	}
+
+	@Override
+	public ExternalIdMapper toUnescapedModel() {
+		return new ExternalIdMapperWrapper(_externalIdMapper.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _externalIdMapper.isCachedModel();
 	}
@@ -132,16 +142,6 @@ public class ExternalIdMapperWrapper implements ExternalIdMapper,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _externalIdMapper.getExpandoBridge();
-	}
-
-	@Override
-	public ExternalIdMapper toEscapedModel() {
-		return new ExternalIdMapperWrapper(_externalIdMapper.toEscapedModel());
-	}
-
-	@Override
-	public ExternalIdMapper toUnescapedModel() {
-		return new ExternalIdMapperWrapper(_externalIdMapper.toUnescapedModel());
 	}
 
 	@Override

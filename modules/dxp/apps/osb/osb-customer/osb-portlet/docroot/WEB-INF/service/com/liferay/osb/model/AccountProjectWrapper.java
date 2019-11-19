@@ -108,6 +108,16 @@ public class AccountProjectWrapper implements AccountProject,
 	}
 
 	@Override
+	public AccountProject toEscapedModel() {
+		return new AccountProjectWrapper(_accountProject.toEscapedModel());
+	}
+
+	@Override
+	public AccountProject toUnescapedModel() {
+		return new AccountProjectWrapper(_accountProject.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountProject.isCachedModel();
 	}
@@ -125,16 +135,6 @@ public class AccountProjectWrapper implements AccountProject,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountProject.getExpandoBridge();
-	}
-
-	@Override
-	public AccountProject toEscapedModel() {
-		return new AccountProjectWrapper(_accountProject.toEscapedModel());
-	}
-
-	@Override
-	public AccountProject toUnescapedModel() {
-		return new AccountProjectWrapper(_accountProject.toUnescapedModel());
 	}
 
 	@Override

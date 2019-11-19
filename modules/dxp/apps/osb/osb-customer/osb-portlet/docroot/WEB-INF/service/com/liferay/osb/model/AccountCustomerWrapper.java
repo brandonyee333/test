@@ -99,6 +99,22 @@ public class AccountCustomerWrapper implements AccountCustomer,
 		}
 	}
 
+	@Override
+	public AccountCustomer toEscapedModel() {
+		return new AccountCustomerWrapper(_accountCustomer.toEscapedModel());
+	}
+
+	@Override
+	public AccountCustomer toUnescapedModel() {
+		return new AccountCustomerWrapper(_accountCustomer.toUnescapedModel());
+	}
+
+	@Override
+	public AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountCustomer.getAccountEntry();
+	}
+
 	/**
 	* Returns the closed watcher of this account customer.
 	*
@@ -137,22 +153,6 @@ public class AccountCustomerWrapper implements AccountCustomer,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountCustomer.getExpandoBridge();
-	}
-
-	@Override
-	public AccountCustomer toEscapedModel() {
-		return new AccountCustomerWrapper(_accountCustomer.toEscapedModel());
-	}
-
-	@Override
-	public AccountCustomer toUnescapedModel() {
-		return new AccountCustomerWrapper(_accountCustomer.toUnescapedModel());
-	}
-
-	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountCustomer.getAccountEntry();
 	}
 
 	@Override

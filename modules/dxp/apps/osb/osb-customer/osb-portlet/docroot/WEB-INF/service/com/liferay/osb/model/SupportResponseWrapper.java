@@ -160,6 +160,16 @@ public class SupportResponseWrapper implements SupportResponse,
 	}
 
 	@Override
+	public SupportResponse toEscapedModel() {
+		return new SupportResponseWrapper(_supportResponse.toEscapedModel());
+	}
+
+	@Override
+	public SupportResponse toUnescapedModel() {
+		return new SupportResponseWrapper(_supportResponse.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _supportResponse.isCachedModel();
 	}
@@ -182,16 +192,6 @@ public class SupportResponseWrapper implements SupportResponse,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _supportResponse.getExpandoBridge();
-	}
-
-	@Override
-	public SupportResponse toEscapedModel() {
-		return new SupportResponseWrapper(_supportResponse.toEscapedModel());
-	}
-
-	@Override
-	public SupportResponse toUnescapedModel() {
-		return new SupportResponseWrapper(_supportResponse.toUnescapedModel());
 	}
 
 	@Override

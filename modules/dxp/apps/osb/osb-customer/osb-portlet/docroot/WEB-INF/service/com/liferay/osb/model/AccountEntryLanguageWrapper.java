@@ -88,6 +88,16 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 	}
 
 	@Override
+	public AccountEntryLanguage toEscapedModel() {
+		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toEscapedModel());
+	}
+
+	@Override
+	public AccountEntryLanguage toUnescapedModel() {
+		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toUnescapedModel());
+	}
+
+	@Override
 	public boolean isCachedModel() {
 		return _accountEntryLanguage.isCachedModel();
 	}
@@ -105,16 +115,6 @@ public class AccountEntryLanguageWrapper implements AccountEntryLanguage,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountEntryLanguage.getExpandoBridge();
-	}
-
-	@Override
-	public AccountEntryLanguage toEscapedModel() {
-		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toEscapedModel());
-	}
-
-	@Override
-	public AccountEntryLanguage toUnescapedModel() {
-		return new AccountEntryLanguageWrapper(_accountEntryLanguage.toUnescapedModel());
 	}
 
 	@Override
