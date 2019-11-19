@@ -43,7 +43,7 @@ long recordSetId = ddlFormDisplayContext.getRecordSetId();
 					String name = ddlFormDisplayContext.getRecordSetName(locale);
 					%>
 
-					<aui:form action="<%= addRecordActionURL %>" data-DDLRecordSetId="<%= recordSetId %>" data-DDLRecordSetName="<%= HtmlUtil.escapeAttribute(name) %>" method="post" name="fm">
+					<aui:form action="<%= addRecordActionURL %>" data-DDLRecordSetId="<%= recordSetId %>" data-DDLRecordSetName="<%= HtmlUtil.escapeAttribute(name) %>" data-senna-off="true" method="post" name="fm">
 
 						<%
 						String redirectURL = ddlFormDisplayContext.getRedirectURL();
