@@ -78,7 +78,9 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 </div>
 
 <div class="hide" id="<portlet:namespace />confirmation">
-	<p><strong><liferay-ui:message key="thank-you-for-your-report" /></strong></p>
+	<p>
+		<strong><liferay-ui:message key="thank-you-for-your-report" /></strong>
+	</p>
 
 	<p>
 		<liferay-ui:message arguments="<%= HtmlUtil.escape(company.getName()) %>" key="although-we-cannot-disclose-our-final-decision,-we-do-review-every-report-and-appreciate-your-effort-to-make-sure-x-is-a-safe-environment-for-everyone" translateArguments="<%= false %>" />
@@ -86,7 +88,9 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 </div>
 
 <div class="hide" id="<portlet:namespace />error">
-	<p><strong><liferay-ui:message key="an-error-occurred-while-sending-the-report.-please-try-again-in-a-few-minutes" /></strong></p>
+	<p>
+		<strong><liferay-ui:message key="an-error-occurred-while-sending-the-report.-please-try-again-in-a-few-minutes" /></strong>
+	</p>
 </div>
 
 <aui:script use="liferay-util-window">

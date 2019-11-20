@@ -139,7 +139,9 @@ else {
 							</div>
 
 							<div>
-								<h5><strong><liferay-ui:message key="created" /></strong></h5>
+								<h5>
+									<strong><liferay-ui:message key="created" /></strong>
+								</h5>
 
 								<p>
 

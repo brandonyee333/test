@@ -73,20 +73,26 @@ WikiNodeInfoPanelDisplayContext wikiNodeInfoPanelDisplayContext = wikiDisplayCon
 					%>
 
 					<c:if test="<%= Validator.isNotNull(node.getDescription()) %>">
-						<h5><strong><liferay-ui:message key="description" /></strong></h5>
+						<h5>
+							<strong><liferay-ui:message key="description" /></strong>
+						</h5>
 
 						<p>
 							<%= HtmlUtil.escape(node.getDescription()) %>
 						</p>
 					</c:if>
 
-					<h5><strong><liferay-ui:message key="total-pages" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="total-pages" /></strong>
+					</h5>
 
 					<p>
 						<%= WikiPageServiceUtil.getPagesCount(scopeGroupId, node.getNodeId(), true) %>
 					</p>
 
-					<h5><strong><liferay-ui:message key="orphan-pages" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="orphan-pages" /></strong>
+					</h5>
 
 					<p>
 
@@ -97,13 +103,17 @@ WikiNodeInfoPanelDisplayContext wikiNodeInfoPanelDisplayContext = wikiDisplayCon
 						<%= orphanPages.size() %>
 					</p>
 
-					<h5><strong><liferay-ui:message key="last-modified" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="last-modified" /></strong>
+					</h5>
 
 					<p>
 						<%= dateFormatDateTime.format(node.getModifiedDate()) %>
 					</p>
 
-					<h5><strong><liferay-ui:message key="create-date" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="create-date" /></strong>
+					</h5>
 
 					<p>
 						<%= dateFormatDateTime.format(node.getModifiedDate()) %>

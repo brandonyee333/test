@@ -85,20 +85,26 @@ if (wikiPageInfoPanelDisplayContext.isSinglePageSelection()) {
 					%>
 
 					<c:if test="<%= Validator.isNotNull(wikiPage.getSummary()) %>">
-						<h5><strong><liferay-ui:message key="summary" /></strong></h5>
+						<h5>
+							<strong><liferay-ui:message key="summary" /></strong>
+						</h5>
 
 						<p>
 							<%= HtmlUtil.escape(wikiPage.getSummary()) %>
 						</p>
 					</c:if>
 
-					<h5><strong><liferay-ui:message key="format" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="format" /></strong>
+					</h5>
 
 					<p>
 						<liferay-ui:message key="<%= wikiEngineRenderer.getFormatLabel(wikiPage.getFormat(), locale) %>" />
 					</p>
 
-					<h5><strong><liferay-ui:message key="latest-version" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="latest-version" /></strong>
+					</h5>
 
 					<p>
 						<%= wikiPage.getVersion() %>
@@ -108,25 +114,33 @@ if (wikiPageInfoPanelDisplayContext.isSinglePageSelection()) {
 						</c:if>
 					</p>
 
-					<h5><strong><liferay-ui:message key="create-date" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="create-date" /></strong>
+					</h5>
 
 					<p>
 						<%= dateFormatDateTime.format(wikiPage.getCreateDate()) %>
 					</p>
 
-					<h5><strong><liferay-ui:message key="last-modified" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="last-modified" /></strong>
+					</h5>
 
 					<p>
 						<%= dateFormatDateTime.format(wikiPage.getModifiedDate()) %>
 					</p>
 
-					<h5><strong><liferay-ui:message key="attachments" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="attachments" /></strong>
+					</h5>
 
 					<p>
 						<%= wikiPage.getAttachmentsFileEntriesCount() %>
 					</p>
 
-					<h5><strong><liferay-ui:message key="rss" /></strong></h5>
+					<h5>
+						<strong><liferay-ui:message key="rss" /></strong>
+					</h5>
 
 					<p>
 						<aui:a href="<%= wikiPageInfoPanelDisplayContext.getPageRSSURL(wikiPage) %>" target="_blank">

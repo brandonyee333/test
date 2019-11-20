@@ -50,7 +50,9 @@ renderResponse.setTitle(item.getName());
 
 	<aui:fieldset-group markupView="lexicon">
 		<aui:fieldset>
-			<h4><strong><%= item.getSku() %></strong></h4>
+			<h4>
+				<strong><%= item.getSku() %></strong>
+			</h4>
 
 			<c:if test="<%= item.isMediumImage() %>">
 				<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="image" />" src="<%= Validator.isNotNull(item.getMediumImageURL()) ? item.getMediumImageURL() : themeDisplay.getPathImage() + "/shopping/item?img_id=" + item.getMediumImageId() + "&t=" + WebServerServletTokenUtil.getToken(item.getMediumImageId()) %>" vspace="0" />
@@ -60,7 +62,9 @@ renderResponse.setTitle(item.getName());
 				<aui:a href='<%= Validator.isNotNull(item.getLargeImageURL()) ? item.getLargeImageURL() : themeDisplay.getPathImage() + "/shopping/item?img_id=" + item.getLargeImageId() + "&t=" + WebServerServletTokenUtil.getToken(item.getLargeImageId()) %>' style="font-size: xx-small;" target="_blank"><liferay-ui:message key="see-large-photo" /></aui:a>
 			</c:if>
 
-			<h3><strong><%= item.getName() %></strong></h3>
+			<h3>
+				<strong><%= item.getName() %></strong>
+			</h3>
 
 			<c:if test="<%= Validator.isNotNull(item.getDescription()) %>">
 				<h6 class="text-default"><%= item.getDescription() %></h6>
