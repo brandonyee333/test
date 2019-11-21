@@ -10,5 +10,5 @@ dependencies {
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.registry.api", version: "1.0.0"
 	testIntegrationCompile group: "com.liferay", name: "com.liferay.saml.persistence.api", version: "1.0.0"
 	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile project(":private:apps:saml:saml-persistence-service")
+	testIntegrationCompile project(":dxp:apps:saml:saml-persistence-service")
 }

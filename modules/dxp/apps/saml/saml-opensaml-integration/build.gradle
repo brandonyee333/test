@@ -44,8 +44,8 @@ dependencies {
 	testCompile group: "com.redhat.qe", name: "json-java", version: "20110202"
 	testCompile group: "org.jodd", name: "jodd-json", version: "3.6.4"
 	testCompile group: "org.slf4j", name: "slf4j-api", version: "1.7.2"
-	testCompile project(":private:apps:saml:saml-persistence-service")
-	testCompile project(":private:apps:saml:saml-web")
+	testCompile project(":dxp:apps:saml:saml-persistence-service")
+	testCompile project(":dxp:apps:saml:saml-web")
 }
 
 liferayOSGi {
