@@ -1,3 +1,7 @@
+buildService {
+	apiDir = "../document-library-api/src/main/java"
+}
+
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
@@ -13,6 +17,7 @@ dependencies {
 	compileOnly project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-service")
 	compileOnly project(":apps:foundation:portal-instances:portal-instances-api")
 	compileOnly project(":apps:foundation:portal:portal-instance-lifecycle")
+	compileOnly project(":apps:foundation:portal:portal-spring-extender")
 	compileOnly project(":apps:foundation:portal:portal-upgrade-api")
 	compileOnly project(":apps:foundation:xstream:xstream-configurator-api")
 	compileOnly project(":apps:static:osgi:osgi-util")
@@ -21,6 +26,7 @@ dependencies {
 	compileOnly project(":apps:web-experience:export-import:export-import-service")
 	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":core:petra:petra-function")
+	compileOnly project(":core:petra:petra-lang")
 	compileOnly project(":core:petra:petra-string")
 
 	testCompile project(":apps:foundation:portal-search:portal-search")
