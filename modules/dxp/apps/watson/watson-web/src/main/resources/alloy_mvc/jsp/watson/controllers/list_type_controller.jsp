@@ -129,7 +129,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		return String.valueOf(country.getCountryId());
 	}
 
-	private String _searchDistricts(SearchContext searchContext, String district, String parentWatsonListTypeId, String nameType) throws Exception{
+	private String _searchDistricts(SearchContext searchContext, String district, String parentWatsonListTypeId, String nameType) throws Exception {
 		if (district.equals(StringPool.BLANK)) {
 			return StringPool.BLANK;
 		}
