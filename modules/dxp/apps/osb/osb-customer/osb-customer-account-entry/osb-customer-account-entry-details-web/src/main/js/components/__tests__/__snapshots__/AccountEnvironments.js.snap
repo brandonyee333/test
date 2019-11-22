@@ -222,7 +222,8 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
               <a
                 href="/portal-ext/attachment/url"
-                target="blank"
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 Portal Ext File
               </a>
@@ -277,7 +278,8 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
               <a
                 href="/patch/attachment/url"
-                target="blank"
+                rel="noopener noreferrer"
+                target="_blank"
               >
                 Patch File
               </a>
