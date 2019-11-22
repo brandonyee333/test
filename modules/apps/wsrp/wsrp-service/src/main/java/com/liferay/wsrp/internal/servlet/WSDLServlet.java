@@ -89,7 +89,7 @@ public class WSDLServlet extends HttpServlet {
 
 		if (_paths.contains(path)) {
 			String content = StringUtil.read(
-				servletContext.getResourceAsStream("/WEB-INF/wsdl" + path));
+				servletContext.getResourceAsStream("/META-INF/wsdl" + path));
 
 			return replaceLocations(request, content);
 		}
