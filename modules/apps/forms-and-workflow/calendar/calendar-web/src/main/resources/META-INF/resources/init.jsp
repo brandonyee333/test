@@ -213,7 +213,8 @@ if (calendarDisplayContext != null) {
 	defaultCalendar = calendarDisplayContext.getDefaultCalendar(groupCalendars, userCalendars);
 }
 
-TimeZone userTimeZone = CalendarUtil.getCalendarBookingDisplayTimeZone(calendarBooking, TimeZone.getTimeZone(timeZoneId));
+TimeZone userTimeZone = TimeZone.getTimeZone(timeZoneId);
+
 TimeZone utcTimeZone = TimeZone.getTimeZone(StringPool.UTC);
 
 Format dateFormatLongDate = FastDateFormatFactoryUtil.getDate(FastDateFormatConstants.LONG, locale, userTimeZone);
