@@ -6,7 +6,7 @@ definition {
 			value1 = "${tagName}");
 
 		if (IsElementPresent(locator1 = "AssetCategorization#TAG_AUTOCOMPLETE_CONTAINER")) {
-			Click(locator1 = "AssetCategorization#TAG_AUTOCOMPLETE");
+			Click(locator1 = "AssetCategorization#TAG_AUTOCOMPLETE_CONTAINER");
 		}
 
 		AssertClick(
