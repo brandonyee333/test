@@ -7505,8 +7505,6 @@ captcha.max.challenges=-1
 
 browser.launcher.url=
 
-index.on.startup=true
-
 setup.wizard.enabled=false
 
 mail.send.blacklist=
