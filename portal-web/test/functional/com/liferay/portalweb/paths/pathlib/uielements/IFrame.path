@@ -84,6 +84,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>PROFILE_DETAILS</td>
+	<td>//iframe[@title='Details']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>RECAPTCHA</td>
 	<td>//div[contains(@class,'recaptcha')]//iframe</td>
 	<td></td>
