@@ -15,7 +15,7 @@
 </tr>
 <tr>
 	<td>VALIDATION_ERROR_LIST_ITEM</td>
-	<td>//ul[@class='error-list-items']</td>
+	<td>//ul[@class='error-list-items']/li</td>
 	<td></td>
 </tr>
 <!--CURRENT_AND_PREVIOUS-->
