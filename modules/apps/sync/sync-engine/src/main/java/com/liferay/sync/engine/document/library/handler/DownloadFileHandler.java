@@ -200,7 +200,8 @@ public class DownloadFileHandler extends BaseHandler {
 
 			if (append) {
 				outputStream = Files.newOutputStream(
-					tempFilePath, StandardOpenOption.APPEND);
+					tempFilePath, StandardOpenOption.APPEND,
+					StandardOpenOption.CREATE);
 
 				IOUtils.copyLarge(inputStream, outputStream);
 			}
