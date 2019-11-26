@@ -114,8 +114,7 @@ public class ElasticsearchUpdateDocumentCommandImpl
 				documentType, searchContext, documents, deleteFirst);
 		}
 		catch (Exception e) {
-			throw new SearchException(
-				"Unable to update documents " + documents, e);
+			throw new SearchException("Unable to update documents", e);
 		}
 	}
 
@@ -191,8 +190,7 @@ public class ElasticsearchUpdateDocumentCommandImpl
 			return bulkResponse;
 		}
 		catch (Exception e) {
-			throw new SearchException(
-				"Unable to update documents " + documents, e);
+			throw new SearchException("Unable to update documents", e);
 		}
 	}
 
