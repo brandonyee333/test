@@ -16,8 +16,8 @@ package com.liferay.portlet.documentlibrary.util;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandlerUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandler;
+import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandlerUtil;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
