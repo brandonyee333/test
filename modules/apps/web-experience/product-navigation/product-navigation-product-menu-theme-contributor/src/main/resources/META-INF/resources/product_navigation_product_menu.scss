@@ -407,6 +407,10 @@ body {
 	}
 
 	.layout-set-tabs {
+		.layout-set-link {
+			color: $product-menu-nav-link-color
+		}
+
 		.selected-layout-set {
 			.layout-set-link, .icon-monospaced {
 				color: $product-menu-nav-link-active-color;
