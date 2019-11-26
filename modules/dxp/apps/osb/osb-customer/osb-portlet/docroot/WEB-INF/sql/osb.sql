@@ -120,6 +120,7 @@ insert into ListType (listTypeId, name, type_) values (27063, 'tomcat-9.0', 'com
 insert into ListType (listTypeId, name, type_) values (27064, 'websphere-9.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27065, 'wildfly-11.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 insert into ListType (listTypeId, name, type_) values (27066, 'websphere-8.5.5-fix-pack-11+', 'com.liferay.osb.model.AccountEnvironment.envAS');
+insert into ListType (listTypeId, name, type_) values (27067, 'wildfly-16.0', 'com.liferay.osb.model.AccountEnvironment.envAS');
 
 insert into ListType (listTypeId, name, type_) values (28000, 'db2-8.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28002, 'hypersonic', 'com.liferay.osb.model.AccountEnvironment.envDB');
@@ -167,6 +168,8 @@ insert into ListType (listTypeId, name, type_) values (28043, 'mariadb-10.2', 'c
 insert into ListType (listTypeId, name, type_) values (28044, 'postgresql-10', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28045, 'mysql-8', 'com.liferay.osb.model.AccountEnvironment.envDB');
 insert into ListType (listTypeId, name, type_) values (28046, 'sql-server-2017', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28047, 'postgresql-11.2', 'com.liferay.osb.model.AccountEnvironment.envDB');
+insert into ListType (listTypeId, name, type_) values (28048, 'oracle-19c', 'com.liferay.osb.model.AccountEnvironment.envDB');
 
 insert into ListType (listTypeId, name, type_) values (29000, 'oracle-jdk-5', 'com.liferay.osb.model.AccountEnvironment.envJVM');
 insert into ListType (listTypeId, name, type_) values (29001, 'oracle-jdk-6', 'com.liferay.osb.model.AccountEnvironment.envJVM');
