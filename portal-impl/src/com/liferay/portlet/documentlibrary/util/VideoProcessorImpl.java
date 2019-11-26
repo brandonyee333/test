@@ -16,7 +16,7 @@ package com.liferay.portlet.documentlibrary.util;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandlerUtil;
+import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandler;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.document.library.kernel.util.VideoProcessor;
@@ -441,9 +441,11 @@ public class VideoProcessorImpl
 						file = liferayFileVersion.getFile(false);
 					}
 					catch (UnsupportedOperationException uoe) {
-						DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
+						_dlFileEntryPreviewHandler.addDLFileEntryPreview(
 							destinationFileVersion.getFileEntryId(),
-							destinationFileVersion.getFileVersionId());
+							destinationFileVersion.getFileVersionId(),
+							DLFileEntryPreviewHandler.DLFileEntryPreviewType.
+								FAIL);
 					}
 				}
 
@@ -475,9 +477,10 @@ public class VideoProcessorImpl
 						destinationFileVersion, file, previewTempFiles);
 				}
 				catch (Exception e) {
-					DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
+					_dlFileEntryPreviewHandler.addDLFileEntryPreview(
 						destinationFileVersion.getFileEntryId(),
-						destinationFileVersion.getFileVersionId());
+						destinationFileVersion.getFileVersionId(),
+						DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
 
 					_log.error(e, e);
 				}
@@ -500,9 +503,10 @@ public class VideoProcessorImpl
 				_log.debug(nsfee, nsfee);
 			}
 
-			DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
+			_dlFileEntryPreviewHandler.addDLFileEntryPreview(
 				destinationFileVersion.getFileEntryId(),
-				destinationFileVersion.getFileVersionId());
+				destinationFileVersion.getFileVersionId(),
+				DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
 		}
 		finally {
 			StreamUtil.cleanUp(inputStream);
@@ -558,9 +562,10 @@ public class VideoProcessorImpl
 
 				future.get();
 
-				DLFileEntryPreviewHandlerUtil.addSuccessDLFileEntryPreview(
+				_dlFileEntryPreviewHandler.addDLFileEntryPreview(
 					fileVersion.getFileEntryId(),
-					fileVersion.getFileVersionId());
+					fileVersion.getFileVersionId(),
+					DLFileEntryPreviewHandler.DLFileEntryPreviewType.SUCCESS);
 			}
 			else {
 				LiferayConverter liferayConverter = new LiferayVideoConverter(
@@ -572,9 +577,10 @@ public class VideoProcessorImpl
 
 				liferayConverter.convert();
 
-				DLFileEntryPreviewHandlerUtil.addSuccessDLFileEntryPreview(
+				_dlFileEntryPreviewHandler.addDLFileEntryPreview(
 					fileVersion.getFileEntryId(),
-					fileVersion.getFileVersionId());
+					fileVersion.getFileVersionId(),
+					DLFileEntryPreviewHandler.DLFileEntryPreviewType.SUCCESS);
 			}
 		}
 		catch (Exception e) {
@@ -585,8 +591,9 @@ public class VideoProcessorImpl
 					fileVersion.getTitle(), "."),
 				e);
 
-			DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId());
+			_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
+				DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
 		}
 
 		addFileToStore(
@@ -622,14 +629,16 @@ public class VideoProcessorImpl
 						fileVersion.getTitle()));
 			}
 
-			DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId());
+			_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
+				DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
 		}
 		catch (Exception e) {
 			_log.error(e, e);
 
-			DLFileEntryPreviewHandlerUtil.addFailDLFileEntryPreview(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId());
+			_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
+				DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
 		}
 	}
 
@@ -668,6 +677,11 @@ public class VideoProcessorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		VideoProcessorImpl.class);
 
+	private static volatile DLFileEntryPreviewHandler
+		_dlFileEntryPreviewHandler =
+			ServiceProxyFactory.newServiceTrackedInstance(
+				DLFileEntryPreviewHandler.class, VideoProcessorImpl.class,
+				"_dlFileEntryPreviewHandler", false, false);
 	private static volatile ProcessExecutor _processExecutor =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			ProcessExecutor.class, VideoProcessorImpl.class, "_processExecutor",

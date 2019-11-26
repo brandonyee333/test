@@ -30,7 +30,7 @@ import com.liferay.document.library.kernel.model.DLFileEntryType;
 import com.liferay.document.library.kernel.model.DLFileVersion;
 import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.kernel.model.DLFolderConstants;
-import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandlerUtil;
+import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandler;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.document.library.kernel.util.DL;
 import com.liferay.document.library.kernel.util.DLFileVersionPolicy;
@@ -104,6 +104,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.ServiceProxyFactory;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -701,7 +702,7 @@ public class DLFileEntryLocalServiceImpl
 
 		// DLFileEntryPreviews
 
-		DLFileEntryPreviewHandlerUtil.deleteDLFileEntryPreviews(
+		_dlFileEntryPreviewHandler.deleteDLFileEntryPreviews(
 			dlFileEntry.getFileEntryId());
 
 		// Expando
@@ -2890,6 +2891,12 @@ public class DLFileEntryLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		DLFileEntryLocalServiceImpl.class);
 
+	private static volatile DLFileEntryPreviewHandler
+		_dlFileEntryPreviewHandler =
+			ServiceProxyFactory.newServiceTrackedInstance(
+				DLFileEntryPreviewHandler.class,
+				DLFileEntryLocalServiceImpl.class, "_dlFileEntryPreviewHandler",
+				false, false);
 	private static final Pattern _fileVersionPattern = Pattern.compile(
 		"\\d+\\.\\d+");
 
