@@ -129,16 +129,6 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	}
 
 	@Override
-	public AccountAttachment toEscapedModel() {
-		return new AccountAttachmentWrapper(_accountAttachment.toEscapedModel());
-	}
-
-	@Override
-	public AccountAttachment toUnescapedModel() {
-		return new AccountAttachmentWrapper(_accountAttachment.toUnescapedModel());
-	}
-
-	@Override
 	public boolean fileExists()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountAttachment.fileExists();
@@ -162,6 +152,16 @@ public class AccountAttachmentWrapper implements AccountAttachment,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _accountAttachment.getExpandoBridge();
+	}
+
+	@Override
+	public AccountAttachment toEscapedModel() {
+		return new AccountAttachmentWrapper(_accountAttachment.toEscapedModel());
+	}
+
+	@Override
+	public AccountAttachment toUnescapedModel() {
+		return new AccountAttachmentWrapper(_accountAttachment.toUnescapedModel());
 	}
 
 	@Override

@@ -136,22 +136,6 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
-	public LicenseEntry toEscapedModel() {
-		return new LicenseEntryWrapper(_licenseEntry.toEscapedModel());
-	}
-
-	@Override
-	public LicenseEntry toUnescapedModel() {
-		return new LicenseEntryWrapper(_licenseEntry.toUnescapedModel());
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseEntry.getProductEntry();
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _licenseEntry.isCachedModel();
 	}
@@ -169,6 +153,22 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _licenseEntry.getExpandoBridge();
+	}
+
+	@Override
+	public LicenseEntry toEscapedModel() {
+		return new LicenseEntryWrapper(_licenseEntry.toEscapedModel());
+	}
+
+	@Override
+	public LicenseEntry toUnescapedModel() {
+		return new LicenseEntryWrapper(_licenseEntry.toUnescapedModel());
+	}
+
+	@Override
+	public ProductEntry getProductEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _licenseEntry.getProductEntry();
 	}
 
 	@Override

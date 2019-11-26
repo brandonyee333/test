@@ -137,16 +137,6 @@ public class CorpProjectWrapper implements CorpProject,
 	}
 
 	@Override
-	public CorpProject toEscapedModel() {
-		return new CorpProjectWrapper(_corpProject.toEscapedModel());
-	}
-
-	@Override
-	public CorpProject toUnescapedModel() {
-		return new CorpProjectWrapper(_corpProject.toUnescapedModel());
-	}
-
-	@Override
 	public boolean isCachedModel() {
 		return _corpProject.isCachedModel();
 	}
@@ -164,6 +154,16 @@ public class CorpProjectWrapper implements CorpProject,
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _corpProject.getExpandoBridge();
+	}
+
+	@Override
+	public CorpProject toEscapedModel() {
+		return new CorpProjectWrapper(_corpProject.toEscapedModel());
+	}
+
+	@Override
+	public CorpProject toUnescapedModel() {
+		return new CorpProjectWrapper(_corpProject.toUnescapedModel());
 	}
 
 	@Override
