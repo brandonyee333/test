@@ -26,6 +26,7 @@ long licenseKeyId = ParamUtil.getLong(request, "licenseKeyId");
 LicenseKey licenseKey = LicenseKeyServiceUtil.getLicenseKey(licenseKeyId);
 
 OfferingEntry offeringEntry = licenseKey.getOfferingEntry();
+
 ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(offeringEntry.getProductEntryId());
 
 PortletURL portletURL = renderResponse.createRenderURL();

@@ -217,11 +217,11 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			!newAccountEntryAttributes.isEmpty()) {
 
 			workflowContext.put(
-				WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES,
-				oldAccountEntryAttributes);
-			workflowContext.put(
 				WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES,
 				newAccountEntryAttributes);
+			workflowContext.put(
+				WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES,
+				oldAccountEntryAttributes);
 		}
 
 		workflowContext.put(
