@@ -16,6 +16,8 @@
 	</target>
 
 	<target name="build-service">
+		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="compile" />
+
 		<if>
 			<not>
 				<resourcecontains
