@@ -25,7 +25,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 <aui:form action="<%= submitPassportAccessURL %>" cssClass="container-fluid-1280" method="post" name="fm">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 
-	<liferay-ui:error exception="<%= EmailAddressDomainException.class %>" message="end-user-email-address-domain-must-match-your-own-email-address-domain" />
+	<liferay-ui:error exception="<%= EmailAddressDomainException.class %>" message="end-user-work-email-address-domain-must-match-your-own-email-address-domain" />
 	<liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-fill-out-all-required-fields" />
 
 	<br />
@@ -36,7 +36,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 	<h3><liferay-ui:message key="all-access-pass-to-liferay-university" /></h3>
 
-	<liferay-ui:message key="get-access-to-all-courses-updates-and-new-offerings-for-one-year" />
+	<liferay-ui:message key="receive-1-year-access-to-all-courses-updates-and-new-offerings" />
 
 	<aui:fieldset-group>
 		<aui:fieldset>
@@ -48,7 +48,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 				<aui:validator name="required" />
 			</aui:input>
 
-			<aui:input helpMessage="you-may-request-liferay-university-passport-access-for-yourself-or-a-member-of-your-liferay-project-team" name="endUserEmailAddress">
+			<aui:input helpMessage="you-may-request-liferay-university-passport-access-for-yourself-or-for-a-member-of-your-liferay-project-team" name="endUserWorkEmailAddress">
 				<aui:validator name="email" />
 				<aui:validator name="required" />
 			</aui:input>
@@ -68,6 +68,6 @@ String redirect = ParamUtil.getString(request, "redirect");
 	</aui:fieldset-group>
 
 	<aui:button-row>
-		<aui:button type="submit" />
+		<aui:button type="submit" value="submit" />
 	</aui:button-row>
 </aui:form>

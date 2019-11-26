@@ -64,7 +64,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			String endUserLastName = ParamUtil.getString(
 				actionRequest, "endUserLastName");
 			String endUserEmailAddress = ParamUtil.getString(
-				actionRequest, "endUserEmailAddress");
+				actionRequest, "endUserWorkEmailAddress");
 			boolean agreement = ParamUtil.getBoolean(
 				actionRequest, "agreement");
 
