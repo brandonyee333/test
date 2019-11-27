@@ -2,7 +2,6 @@ apply plugin: "com.liferay.lang.merger"
 
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
-	compileOnly group: "com.liferay", name: "com.liferay.portal.upgrade", version: "2.0.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "default"
@@ -16,6 +15,7 @@ dependencies {
 	compileOnly project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-taglib")
 	compileOnly project(":apps:forms-and-workflow:portal-workflow:portal-workflow-kaleo-api")
 	compileOnly project(":apps:foundation:frontend-taglib:frontend-taglib")
+	compileOnly project(":apps:foundation:portal:portal-upgrade-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype")
 	compileOnly project(":apps:web-experience:application-list:application-list-api")
 	compileOnly project(":core:petra:petra-lang")
