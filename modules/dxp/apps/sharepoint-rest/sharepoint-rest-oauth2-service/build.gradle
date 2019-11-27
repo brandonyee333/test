@@ -5,7 +5,7 @@ buildService {
 
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
-	compileOnly group: "com.liferay", name: "com.liferay.portal.spring.extender", version: "2.0.0"
-	compileOnly group: "com.liferay", name: "com.liferay.sharepoint.rest.oauth2.api", version: "1.0.0"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.6.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly project(":apps:foundation:portal:portal-spring-extender")
+	compileOnly project(":dxp:apps:sharepoint-rest:sharepoint-rest-oauth2-api")
 }
