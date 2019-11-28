@@ -268,6 +268,8 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	protected void cleanUpOrphanedPortletPreferences() throws PortalException {
+		boolean active = CacheRegistryUtil.isActive();
+
 		CacheRegistryUtil.setActive(true);
 
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
@@ -320,7 +322,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			actionableDynamicQuery.performActions();
 		}
 		finally {
-			CacheRegistryUtil.setActive(false);
+			CacheRegistryUtil.setActive(active);
 		}
 	}
 
