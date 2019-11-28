@@ -100,6 +100,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -276,10 +277,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			actionableDynamicQuery.setPerformActionMethod(
 				(com.liferay.portal.kernel.model.PortletPreferences pref) -> {
 					if ((pref.getOwnerId() !=
-						 PortletKeys.PREFS_OWNER_ID_DEFAULT) ||
+							PortletKeys.PREFS_OWNER_ID_DEFAULT) ||
 						(pref.getOwnerType() !=
-						 PortletKeys.PREFS_OWNER_TYPE_LAYOUT) ||
-						"145".equals(pref.getPortletId())) {
+							PortletKeys.PREFS_OWNER_TYPE_LAYOUT) ||
+						Objects.equals("145", pref.getPortletId())) {
 
 						return;
 					}
