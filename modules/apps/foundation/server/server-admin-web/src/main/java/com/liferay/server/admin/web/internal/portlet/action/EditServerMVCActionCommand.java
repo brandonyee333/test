@@ -894,10 +894,10 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 	private DirectServletRegistry _directServletRegistry;
 
 	@Reference
-	private LayoutLocalService _layoutLocalService;
+	private IndexWriterHelper _indexWriterHelper;
 
 	@Reference
-	private IndexWriterHelper _indexWriterHelper;
+	private LayoutLocalService _layoutLocalService;
 
 	@Reference
 	private MailService _mailService;
@@ -913,13 +913,13 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		_organizationMembershipPolicyFactory;
 
 	@Reference
-	private PortletPreferencesLocalService _portletPreferencesLocalService;
-
-	@Reference
 	private PortalInstancesLocalService _portalInstancesLocalService;
 
 	@Reference
 	private PortalUUID _portalUUID;
+
+	@Reference
+	private PortletPreferencesLocalService _portletPreferencesLocalService;
 
 	@Reference
 	private RoleMembershipPolicyFactory _roleMembershipPolicyFactory;
