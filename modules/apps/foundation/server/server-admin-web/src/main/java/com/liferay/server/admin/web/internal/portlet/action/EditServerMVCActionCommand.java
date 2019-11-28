@@ -175,8 +175,8 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		else if (cmd.equals("cacheSingle")) {
 			cacheSingle();
 		}
-		else if (cmd.equals("cleanUpOrphanedPortletPreferencies")) {
-			cleanUpOrphanedPortletPreferencies();
+		else if (cmd.equals("cleanUpOrphanedPortletPreferences")) {
+			cleanUpOrphanedPortletPreferences();
 		}
 		else if (cmd.equals("cleanUpPermissions")) {
 			CleanUpPermissionsUtil.cleanUpAddToPagePermissions(actionRequest);
@@ -267,7 +267,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 		_singleVMPool.clear();
 	}
 
-	protected void cleanUpOrphanedPortletPreferencies() throws PortalException {
+	protected void cleanUpOrphanedPortletPreferences() throws PortalException {
 		CacheRegistryUtil.setActive(true);
 
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
