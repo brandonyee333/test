@@ -276,6 +276,7 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 			ActionableDynamicQuery actionableDynamicQuery =
 				_portletPreferencesLocalService.getActionableDynamicQuery();
 
+			actionableDynamicQuery.setParallel(true);
 			actionableDynamicQuery.setPerformActionMethod(
 				(com.liferay.portal.kernel.model.PortletPreferences pref) -> {
 					if ((pref.getOwnerId() !=
@@ -316,8 +317,6 @@ public class EditServerMVCActionCommand extends BaseMVCActionCommand {
 							deletePortletPreferences(pref);
 					}
 				});
-
-			actionableDynamicQuery.setParallel(true);
 
 			actionableDynamicQuery.performActions();
 		}
