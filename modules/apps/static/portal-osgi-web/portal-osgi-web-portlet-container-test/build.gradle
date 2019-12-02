@@ -3,11 +3,11 @@ copyLibs {
 }
 
 dependencies {
-	compileOnly group: "com.liferay", name: "com.liferay.dynamic.data.mapping.taglib", version: "2.0.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "default"
+	compileOnly project(":apps:forms-and-workflow:dynamic-data-mapping:dynamic-data-mapping-taglib")
 	compileOnly project(":apps:foundation:petra:petra-encryptor")
 	compileOnly project(":core:petra:petra-lang")
 
