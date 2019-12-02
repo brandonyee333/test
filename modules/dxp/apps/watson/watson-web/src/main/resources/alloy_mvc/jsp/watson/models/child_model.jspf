@@ -419,10 +419,8 @@ public static class WatsonChild extends WatsonChildBaseModel {
 			}
 		}
 
-		if (dateFollowUp != null) {
-			if (dateFollowUp.before(new Date(0))) {
-				return new KeyValuePair("dateFollowUp", "the-follow-up-date-is-too-long-ago");
-			}
+		if ((dateFollowUp != null) && dateFollowUp.before(new Date(0))) {
+			return new KeyValuePair("dateFollowUp", "the-follow-up-date-is-too-long-ago");
 		}
 
 		if (dateDischarged != null) {

@@ -217,28 +217,22 @@ renderResponse.setTitle(((item == null) ? LanguageUtil.get(request, "new-item") 
 					String fieldName = ParamUtil.getString(request, "fieldName" + curFieldId);
 					String fieldNameParam = request.getParameter("fieldName" + curFieldId);
 
-					if ((fieldNameParam == null) || fieldNameParam.equals(StringPool.NULL)) {
-						if (itemFields[curFieldId] != null) {
-							fieldName = itemFields[curFieldId].getName();
-						}
+					if (((fieldNameParam == null) || fieldNameParam.equals(StringPool.NULL)) && (itemFields[curFieldId] != null)) {
+						fieldName = itemFields[curFieldId].getName();
 					}
 
 					String[] fieldValues = StringUtil.split(ParamUtil.getString(request, "fieldValues" + curFieldId));
 					String fieldValuesParam = request.getParameter("fieldValues" + curFieldId);
 
-					if ((fieldValuesParam == null) || fieldValuesParam.equals(StringPool.NULL)) {
-						if (itemFields[curFieldId] != null) {
-							fieldValues = itemFields[curFieldId].getValuesArray();
-						}
+					if (((fieldValuesParam == null) || fieldValuesParam.equals(StringPool.NULL)) && (itemFields[curFieldId] != null)) {
+						fieldValues = itemFields[curFieldId].getValuesArray();
 					}
 
 					String fieldDescription = ParamUtil.getString(request, "fieldDescription" + curFieldId);
 					String fieldDescriptionParam = request.getParameter("fieldDescription" + curFieldId);
 
-					if ((fieldDescriptionParam == null) || fieldDescriptionParam.equals(StringPool.NULL)) {
-						if (itemFields[curFieldId] != null) {
-							fieldDescription = itemFields[curFieldId].getDescription();
-						}
+					if (((fieldDescriptionParam == null) || fieldDescriptionParam.equals(StringPool.NULL)) && (itemFields[curFieldId] != null)) {
+						fieldDescription = itemFields[curFieldId].getDescription();
 					}
 				%>
 
@@ -289,79 +283,63 @@ renderResponse.setTitle(((item == null) ? LanguageUtil.get(request, "new-item") 
 					int minQuantity = ParamUtil.getInteger(request, "minQuantity" + curPriceId, 0);
 					String minQuantityParam = request.getParameter("minQuantity" + curPriceId);
 
-					if ((minQuantityParam == null) || minQuantityParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							minQuantity = itemPrices[curPriceId].getMinQuantity();
-						}
+					if (((minQuantityParam == null) || minQuantityParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						minQuantity = itemPrices[curPriceId].getMinQuantity();
 					}
 
 					int maxQuantity = ParamUtil.getInteger(request, "maxQuantity" + curPriceId);
 					String maxQuantityParam = request.getParameter("maxQuantity" + curPriceId);
 
-					if ((maxQuantityParam == null) || maxQuantityParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							maxQuantity = itemPrices[curPriceId].getMaxQuantity();
-						}
+					if (((maxQuantityParam == null) || maxQuantityParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						maxQuantity = itemPrices[curPriceId].getMaxQuantity();
 					}
 
 					double price = ParamUtil.getDouble(request, "price" + curPriceId, locale);
 					String priceParam = request.getParameter("price" + curPriceId);
 
-					if ((priceParam == null) || priceParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							price = itemPrices[curPriceId].getPrice();
-						}
+					if (((priceParam == null) || priceParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						price = itemPrices[curPriceId].getPrice();
 					}
 
 					double discount = ParamUtil.getDouble(request, "discount" + curPriceId, locale) / 100;
 					String discountParam = request.getParameter("discount" + curPriceId);
 
-					if ((discountParam == null) || discountParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							discount = itemPrices[curPriceId].getDiscount();
-						}
+					if (((discountParam == null) || discountParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						discount = itemPrices[curPriceId].getDiscount();
 					}
 
 					boolean taxable = ParamUtil.getBoolean(request, "taxable" + curPriceId, true);
 					String taxableParam = request.getParameter("taxable" + curPriceId);
 
-					if ((taxableParam == null) || taxableParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							taxable = itemPrices[curPriceId].isTaxable();
-						}
+					if (((taxableParam == null) || taxableParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						taxable = itemPrices[curPriceId].isTaxable();
 					}
 
 					double shipping = ParamUtil.getDouble(request, "shipping" + curPriceId, locale);
 					String shippingParam = request.getParameter("shipping" + curPriceId);
 
-					if ((shippingParam == null) || shippingParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							shipping = itemPrices[curPriceId].getShipping();
-						}
+					if (((shippingParam == null) || shippingParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						shipping = itemPrices[curPriceId].getShipping();
 					}
 
 					boolean useShippingFormula = ParamUtil.getBoolean(request, "useShippingFormula" + curPriceId, true);
 					String useShippingFormulaParam = request.getParameter("useShippingFormula" + curPriceId);
 
-					if ((useShippingFormulaParam == null) || useShippingFormulaParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							useShippingFormula = itemPrices[curPriceId].isUseShippingFormula();
-						}
+					if (((useShippingFormulaParam == null) || useShippingFormulaParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						useShippingFormula = itemPrices[curPriceId].isUseShippingFormula();
 					}
 
 					boolean active = ParamUtil.getBoolean(request, "active" + curPriceId, true);
 					String activeParam = request.getParameter("active" + curPriceId);
 
-					if ((activeParam == null) || activeParam.equals(StringPool.NULL)) {
-						if (itemPrices[curPriceId] != null) {
-							int status = itemPrices[curPriceId].getStatus();
+					if (((activeParam == null) || activeParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {
+						int status = itemPrices[curPriceId].getStatus();
 
-							if ((status == ShoppingItemPriceConstants.STATUS_ACTIVE_DEFAULT) || (status == ShoppingItemPriceConstants.STATUS_ACTIVE)) {
-								active = true;
-							}
-							else {
-								active = false;
-							}
+						if ((status == ShoppingItemPriceConstants.STATUS_ACTIVE_DEFAULT) || (status == ShoppingItemPriceConstants.STATUS_ACTIVE)) {
+							active = true;
+						}
+						else {
+							active = false;
 						}
 					}
 

@@ -57,10 +57,8 @@ if (group.isStaged() && !group.isStagingGroup()) {
 		if (Validator.isNull(ddmStructureKey)) {
 			subscribed = JournalUtil.isSubscribedToFolder(themeDisplay.getCompanyId(), scopeGroupId, user.getUserId(), folderId);
 
-			if (subscribed) {
-				if (!JournalUtil.isSubscribedToFolder(themeDisplay.getCompanyId(), scopeGroupId, user.getUserId(), folderId, false)) {
-					unsubscribable = false;
-				}
+			if (subscribed && !JournalUtil.isSubscribedToFolder(themeDisplay.getCompanyId(), scopeGroupId, user.getUserId(), folderId, false)) {
+				unsubscribable = false;
 			}
 		}
 		else {

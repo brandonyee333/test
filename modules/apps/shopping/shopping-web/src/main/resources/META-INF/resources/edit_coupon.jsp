@@ -27,10 +27,8 @@ String code = BeanParamUtil.getString(coupon, request, "code");
 
 boolean neverExpire = ParamUtil.getBoolean(request, "neverExpire", true);
 
-if (coupon != null) {
-	if (coupon.getEndDate() != null) {
-		neverExpire = false;
-	}
+if ((coupon != null) && (coupon.getEndDate() != null)) {
+	neverExpire = false;
 }
 
 double minOrder = BeanParamUtil.getDouble(coupon, request, "minOrder");

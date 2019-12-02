@@ -21,18 +21,14 @@ JournalArticle article = journalDisplayContext.getArticle();
 
 boolean neverExpire = ParamUtil.getBoolean(request, "neverExpire", true);
 
-if (article != null) {
-	if (article.getExpirationDate() != null) {
-		neverExpire = false;
-	}
+if ((article != null) && (article.getExpirationDate() != null)) {
+	neverExpire = false;
 }
 
 boolean neverReview = ParamUtil.getBoolean(request, "neverReview", true);
 
-if (article != null) {
-	if (article.getReviewDate() != null) {
-		neverReview = false;
-	}
+if ((article != null) && (article.getReviewDate() != null)) {
+	neverReview = false;
 }
 %>
 

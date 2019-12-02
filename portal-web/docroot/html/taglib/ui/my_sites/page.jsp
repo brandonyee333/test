@@ -215,10 +215,8 @@ List<Group> mySiteGroups = user.getMySiteGroups(classNames, max);
 
 						boolean selectedSite = false;
 
-						if (layout != null) {
-							if (layout.getGroupId() == mySiteGroup.getGroupId()) {
-								selectedSite = true;
-							}
+						if ((layout != null) && (layout.getGroupId() == mySiteGroup.getGroupId())) {
+							selectedSite = true;
 						}
 						%>
 

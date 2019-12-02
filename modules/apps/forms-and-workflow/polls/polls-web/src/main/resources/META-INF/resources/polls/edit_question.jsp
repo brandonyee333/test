@@ -27,10 +27,8 @@ long questionId = BeanParamUtil.getLong(question, request, "questionId");
 
 boolean neverExpire = ParamUtil.getBoolean(request, "neverExpire", true);
 
-if (question != null) {
-	if (question.getExpirationDate() != null) {
-		neverExpire = false;
-	}
+if ((question != null) && (question.getExpirationDate() != null)) {
+	neverExpire = false;
 }
 
 List choices = new ArrayList();

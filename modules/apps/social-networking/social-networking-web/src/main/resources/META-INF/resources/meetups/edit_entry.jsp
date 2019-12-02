@@ -33,10 +33,8 @@ Calendar startDate = CalendarFactoryUtil.getCalendar(timeZone, locale);
 
 startDate.add(Calendar.MONTH, 1);
 
-if (meetupsEntry != null) {
-	if (meetupsEntry.getStartDate() != null) {
-		startDate.setTime(meetupsEntry.getStartDate());
-	}
+if ((meetupsEntry != null) && (meetupsEntry.getStartDate() != null)) {
+	startDate.setTime(meetupsEntry.getStartDate());
 }
 
 Calendar endDate = CalendarFactoryUtil.getCalendar(timeZone, locale);
@@ -44,10 +42,8 @@ Calendar endDate = CalendarFactoryUtil.getCalendar(timeZone, locale);
 endDate.add(Calendar.MONTH, 1);
 endDate.add(Calendar.HOUR, 3);
 
-if (meetupsEntry != null) {
-	if (meetupsEntry.getStartDate() != null) {
-		endDate.setTime(meetupsEntry.getEndDate());
-	}
+if ((meetupsEntry != null) && (meetupsEntry.getStartDate() != null)) {
+	endDate.setTime(meetupsEntry.getEndDate());
 }
 %>
 
