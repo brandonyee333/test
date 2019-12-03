@@ -194,8 +194,11 @@ public class SPAUtil {
 	}
 
 	public boolean isDisabled(HttpServletRequest httpServletRequest) {
+		SPAConfiguration spaConfiguration =
+			_spaConfigurationActivator.getSPAConfiguration();
+
 		if (BrowserSnifferUtil.isIe(httpServletRequest)) {
-			if (_spaConfiguration.disableInInternetExplorer()) {
+			if (spaConfiguration.disableInInternetExplorer()) {
 				return true;
 			}
 
@@ -203,7 +206,7 @@ public class SPAUtil {
 				httpServletRequest);
 
 			if (majorVersion == 11.0) {
-				return _spaConfiguration.disableInInternetExplorer11();
+				return spaConfiguration.disableInInternetExplorer11();
 			}
 		}
 
