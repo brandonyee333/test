@@ -14,12 +14,9 @@
 
 package com.liferay.osb.customer.metrics.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
 public class SyncStateImpl extends SyncStateBaseImpl {
 
 	public SyncStateImpl() {
