@@ -229,7 +229,7 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 
 	private static final String _JVM_MAX_PERM_SIZE = "-XX:MaxPermSize=256m";
 
-	private static final String _JVM_XMX = "-Xmx1024m";
+	private static final String _JVM_XMX = "-Xmx2048m";
 
 	private static final String _OSGI_CONSOLE = "osgi.console=localhost:11312";
 
