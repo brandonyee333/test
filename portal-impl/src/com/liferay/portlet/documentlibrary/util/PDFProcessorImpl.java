@@ -600,18 +600,14 @@ public class PDFProcessorImpl
 				errorMessage += " resulted in a canceled timeout for " + future;
 			}
 
-			_fileVersionPreviewEventListener.addDLFileEntryPreview(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL);
+			_fileVersionPreviewEventListener.onFailure(fileVersion);
 
 			_log.error(errorMessage);
 
 			throw te;
 		}
 		catch (Exception e) {
-			_fileVersionPreviewEventListener.addDLFileEntryPreview(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL);
+			_fileVersionPreviewEventListener.onFailure(fileVersion);
 
 			_log.error(e, e);
 
@@ -642,11 +638,7 @@ public class PDFProcessorImpl
 						getPreviewFilePath(fileVersion, i + 1),
 						previewTempFile);
 
-					_fileVersionPreviewEventListener.addDLFileEntryPreview(
-						fileVersion.getFileEntryId(),
-						fileVersion.getFileVersionId(),
-						FileVersionPreviewEventListener.DLFileEntryPreviewType.
-							SUCCESS);
+					_fileVersionPreviewEventListener.onSuccess(fileVersion);
 				}
 				finally {
 					FileUtil.delete(previewTempFile);
@@ -687,9 +679,7 @@ public class PDFProcessorImpl
 				"Unable to decrypt PDF document for file version " +
 					fileVersion.getFileVersionId());
 
-			_fileVersionPreviewEventListener.addDLFileEntryPreview(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL);
+			_fileVersionPreviewEventListener.onFailure(fileVersion);
 
 			return;
 		}
@@ -792,22 +782,14 @@ public class PDFProcessorImpl
 
 				_log.error(errorMessage);
 
-				_fileVersionPreviewEventListener.addDLFileEntryPreview(
-					fileVersion.getFileEntryId(),
-					fileVersion.getFileVersionId(),
-					FileVersionPreviewEventListener.DLFileEntryPreviewType.
-						FAIL);
+				_fileVersionPreviewEventListener.onFailure(fileVersion);
 
 				throw te;
 			}
 			catch (Exception e) {
 				_log.error(e, e);
 
-				_fileVersionPreviewEventListener.addDLFileEntryPreview(
-					fileVersion.getFileEntryId(),
-					fileVersion.getFileVersionId(),
-					FileVersionPreviewEventListener.DLFileEntryPreviewType.
-						FAIL);
+				_fileVersionPreviewEventListener.onFailure(fileVersion);
 
 				throw e;
 			}
@@ -846,11 +828,7 @@ public class PDFProcessorImpl
 						getPreviewFilePath(fileVersion, index + 1),
 						previewFile);
 
-					_fileVersionPreviewEventListener.addDLFileEntryPreview(
-						fileVersion.getFileEntryId(),
-						fileVersion.getFileVersionId(),
-						FileVersionPreviewEventListener.DLFileEntryPreviewType.
-							SUCCESS);
+					_fileVersionPreviewEventListener.onSuccess(fileVersion);
 				}
 				finally {
 					FileUtil.delete(previewFile);

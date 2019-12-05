@@ -301,11 +301,8 @@ public class ImageProcessorImpl
 			RenderedImage renderedImage = imageBag.getRenderedImage();
 
 			if (renderedImage == null) {
-				_fileVersionPreviewEventListener.addDLFileEntryPreview(
-					destinationFileVersion.getFileEntryId(),
-					destinationFileVersion.getFileVersionId(),
-					FileVersionPreviewEventListener.DLFileEntryPreviewType.
-						FAIL);
+				_fileVersionPreviewEventListener.onFailure(
+					destinationFileVersion);
 
 				return;
 			}
@@ -317,11 +314,8 @@ public class ImageProcessorImpl
 					bytes, imageBag.getType());
 
 				if (future == null) {
-					_fileVersionPreviewEventListener.addDLFileEntryPreview(
-						destinationFileVersion.getFileEntryId(),
-						destinationFileVersion.getFileVersionId(),
-						FileVersionPreviewEventListener.
-							DLFileEntryPreviewType.FAIL);
+					_fileVersionPreviewEventListener.onFailure(
+						destinationFileVersion);
 
 					return;
 				}
@@ -349,21 +343,15 @@ public class ImageProcessorImpl
 				storeThumbnailImages(destinationFileVersion, renderedImage);
 			}
 
-			_fileVersionPreviewEventListener.addDLFileEntryPreview(
-				destinationFileVersion.getFileEntryId(),
-				destinationFileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.
-					SUCCESS);
+			_fileVersionPreviewEventListener.onSuccess(
+				destinationFileVersion);
 		}
 		catch (NoSuchFileEntryException nsfee) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(nsfee, nsfee);
 			}
 
-			_fileVersionPreviewEventListener.addDLFileEntryPreview(
-				destinationFileVersion.getFileEntryId(),
-				destinationFileVersion.getFileVersionId(),
-				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL);
+			_fileVersionPreviewEventListener.onFailure(destinationFileVersion);
 		}
 		finally {
 			StreamUtil.cleanUp(inputStream);
