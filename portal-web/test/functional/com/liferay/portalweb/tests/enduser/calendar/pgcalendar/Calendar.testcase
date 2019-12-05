@@ -1230,10 +1230,6 @@ definition {
 			page = "Staging Test Page",
 			site = "Site Name");
 
-		ProductMenu.gotoSite(
-			page = "Staging Test Page",
-			site = "Site Name");
-
 		CalendarNavigator.gotoAddEvent();
 
 		PortletEntry.inputTitle(title = "Calendar Event Title");
