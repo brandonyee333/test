@@ -9013,7 +9013,7 @@ public class PortalImpl implements Portal {
 		int pos = portalDomain.indexOf(CharPool.COLON);
 
 		if (pos > 0) {
-			return virtualHostName.regionMatches(0, portalDomain, 0, pos);
+			portalDomain = portalDomain.substring(0, pos);
 		}
 
 		if (virtualHostName.equals(portalDomain) ||
