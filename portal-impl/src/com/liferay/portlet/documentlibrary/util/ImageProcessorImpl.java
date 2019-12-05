@@ -343,8 +343,7 @@ public class ImageProcessorImpl
 				storeThumbnailImages(destinationFileVersion, renderedImage);
 			}
 
-			_fileVersionPreviewEventListener.onSuccess(
-				destinationFileVersion);
+			_fileVersionPreviewEventListener.onSuccess(destinationFileVersion);
 		}
 		catch (NoSuchFileEntryException nsfee) {
 			if (_log.isDebugEnabled()) {
