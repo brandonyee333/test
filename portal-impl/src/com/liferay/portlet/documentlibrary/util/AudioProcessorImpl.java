@@ -16,7 +16,7 @@ package com.liferay.portlet.documentlibrary.util;
 
 import com.liferay.document.library.kernel.exception.NoSuchFileEntryException;
 import com.liferay.document.library.kernel.model.DLProcessorConstants;
-import com.liferay.document.library.kernel.service.DLFileEntryPreviewHandler;
+import com.liferay.document.library.kernel.service.FileVersionPreviewEventListener;
 import com.liferay.document.library.kernel.util.AudioProcessor;
 import com.liferay.document.library.kernel.util.DLPreviewableProcessor;
 import com.liferay.document.library.kernel.util.DLUtil;
@@ -309,11 +309,11 @@ public class AudioProcessorImpl
 						file = liferayFileVersion.getFile(false);
 					}
 					catch (UnsupportedOperationException uoe) {
-						_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+						_fileVersionPreviewEventListener.addDLFileEntryPreview(
 							destinationFileVersion.getFileEntryId(),
 							destinationFileVersion.getFileVersionId(),
-							DLFileEntryPreviewHandler.DLFileEntryPreviewType.
-								FAIL);
+							FileVersionPreviewEventListener.
+								DLFileEntryPreviewType.FAIL);
 					}
 				}
 
@@ -330,17 +330,18 @@ public class AudioProcessorImpl
 					_generateAudioXuggler(
 						destinationFileVersion, file, previewTempFiles);
 
-					_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+					_fileVersionPreviewEventListener.addDLFileEntryPreview(
 						destinationFileVersion.getFileEntryId(),
 						destinationFileVersion.getFileVersionId(),
-						DLFileEntryPreviewHandler.DLFileEntryPreviewType.
+						FileVersionPreviewEventListener.DLFileEntryPreviewType.
 							SUCCESS);
 				}
 				catch (Exception e) {
-					_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+					_fileVersionPreviewEventListener.addDLFileEntryPreview(
 						destinationFileVersion.getFileEntryId(),
 						destinationFileVersion.getFileVersionId(),
-						DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
+						FileVersionPreviewEventListener.DLFileEntryPreviewType.
+							FAIL);
 
 					_log.error(e, e);
 				}
@@ -351,10 +352,10 @@ public class AudioProcessorImpl
 				_log.debug(nsfee, nsfee);
 			}
 
-			_dlFileEntryPreviewHandler.addDLFileEntryPreview(
+			_fileVersionPreviewEventListener.addDLFileEntryPreview(
 				destinationFileVersion.getFileEntryId(),
 				destinationFileVersion.getFileVersionId(),
-				DLFileEntryPreviewHandler.DLFileEntryPreviewType.FAIL);
+				FileVersionPreviewEventListener.DLFileEntryPreviewType.FAIL);
 		}
 		finally {
 			StreamUtil.cleanUp(inputStream);
@@ -495,11 +496,11 @@ public class AudioProcessorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		AudioProcessorImpl.class);
 
-	private static volatile DLFileEntryPreviewHandler
-		_dlFileEntryPreviewHandler =
+	private static volatile FileVersionPreviewEventListener
+		_fileVersionPreviewEventListener =
 			ServiceProxyFactory.newServiceTrackedInstance(
-				DLFileEntryPreviewHandler.class, AudioProcessorImpl.class,
-				"_dlFileEntryPreviewHandler", false, false);
+				FileVersionPreviewEventListener.class, AudioProcessorImpl.class,
+				"_fileVersionPreviewEventListener", false, false);
 	private static volatile ProcessExecutor _processExecutor =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			ProcessExecutor.class, AudioProcessorImpl.class, "_processExecutor",
