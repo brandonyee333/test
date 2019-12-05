@@ -15,6 +15,8 @@
 package com.liferay.portal.security.pacl;
 
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
+import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.security.lang.PortalSecurityManager;
 import com.liferay.portal.security.lang.SecurityManagerUtil;
@@ -39,17 +41,7 @@ public class PACLUtil {
 		}
 
 		if (ProxyUtil.isProxyClass(clazz) || !clazz.isInterface()) {
-			Class<?>[] interfaces = clazz.getInterfaces();
-
-			if (interfaces.length > 0) {
-				clazz = interfaces[0];
-
-				if (clazz.equals(CacheRegistryItem.class) &&
-					(interfaces.length > 1)) {
-
-					clazz = interfaces[1];
-				}
-			}
+			clazz = _getInterface(clazz);
 		}
 
 		return clazz;
@@ -125,6 +117,20 @@ public class PACLUtil {
 
 	}
 
+	private static Class<?> _getInterface(Class clazz) {
+		Class<?>[] interfaces = clazz.getInterfaces();
+
+		for (Class<?> currentInterface : interfaces) {
+			clazz = currentInterface;
+
+			if (!ArrayUtil.contains(_IGNORED_INTERFACES, clazz)) {
+				break;
+			}
+		}
+
+		return clazz;
+	}
+
 	private static boolean _hasSameOrigin(
 		ProtectionDomain protectionDomain,
 		PermissionCollection permissionCollection, PACLPolicy paclPolicy) {
@@ -170,6 +176,10 @@ public class PACLUtil {
 
 		return false;
 	}
+
+	private static final Class<?>[] _IGNORED_INTERFACES = {
+		CacheRegistryItem.class, IdentifiableOSGiService.class
+	};
 
 	private static final Permission _permission = new PACLUtil.Permission();
 
