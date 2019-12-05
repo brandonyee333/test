@@ -626,10 +626,20 @@ public class PortalSecurityManagerImpl
 
 			};
 
-			invocationHandler = new PACLInvocationHandler(invocationHandler);
+			InvocationHandler paclInvocationHandler = null;
+
+			try {
+				paclInvocationHandler = new PACLInvocationHandler(
+					invocationHandler,
+					ServiceBeanAopProxy.getAdvisedSupport(bean));
+			}
+			catch (Exception e) {
+				paclInvocationHandler = new PACLInvocationHandler(
+					invocationHandler);
+			}
 
 			return ProxyUtil.newProxyInstance(
-				classLoader, interfaces, invocationHandler);
+				classLoader, interfaces, paclInvocationHandler);
 		}
 
 	}
