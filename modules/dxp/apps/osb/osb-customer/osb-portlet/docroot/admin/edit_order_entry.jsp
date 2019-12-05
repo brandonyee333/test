@@ -47,10 +47,8 @@ if (startDate != null) {
 	startCal.setTime(startDate);
 }
 else {
-	if (orderEntry != null) {
-		if (orderEntry.getStartDate() != null) {
-			startCal.setTime(orderEntry.getStartDate());
-		}
+	if ((orderEntry != null) && (orderEntry.getStartDate() != null)) {
+		startCal.setTime(orderEntry.getStartDate());
 	}
 }
 
@@ -68,10 +66,8 @@ if (actualStartDate != null) {
 	actualStartCal.setTime(actualStartDate);
 }
 else {
-	if (orderEntry != null) {
-		if (orderEntry.getActualStartDate() != null) {
-			actualStartCal.setTime(orderEntry.getActualStartDate());
-		}
+	if ((orderEntry != null) && (orderEntry.getActualStartDate() != null)) {
+		actualStartCal.setTime(orderEntry.getActualStartDate());
 	}
 }
 
