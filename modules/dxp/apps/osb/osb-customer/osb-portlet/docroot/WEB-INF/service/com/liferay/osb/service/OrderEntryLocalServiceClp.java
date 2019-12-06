@@ -133,46 +133,36 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 
 		_methodParameterTypes21 = new String[] {  };
 
-		_methodName22 = "addOrderEntriesWithWorkflow";
+		_methodName22 = "dynamicQuery";
 
 		_methodParameterTypes22 = new String[] {
-				"java.lang.String", "com.liferay.osb.model.AccountEntry",
-				"com.liferay.osb.model.PartnerEntry",
-				"com.liferay.portal.kernel.model.Address",
-				"com.liferay.osb.model.AccountWorker", "java.util.List",
-				"com.liferay.portal.kernel.service.ServiceContext"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
 		_methodName23 = "dynamicQuery";
 
 		_methodParameterTypes23 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
 		_methodName24 = "dynamicQuery";
 
 		_methodParameterTypes24 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
-
-		_methodName25 = "dynamicQuery";
-
-		_methodParameterTypes25 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName26 = "getAccountEntryOrderEntries";
+		_methodName25 = "getAccountEntryOrderEntries";
 
-		_methodParameterTypes26 = new String[] { "long" };
+		_methodParameterTypes25 = new String[] { "long" };
 
-		_methodName27 = "getOrderEntries";
+		_methodName26 = "getOrderEntries";
 
-		_methodParameterTypes27 = new String[] { "int", "int" };
+		_methodParameterTypes26 = new String[] { "int", "int" };
 
-		_methodName28 = "search";
+		_methodName27 = "search";
 
-		_methodParameterTypes28 = new String[] {
+		_methodParameterTypes27 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "java.lang.String", "int[][]", "int", "int",
@@ -181,29 +171,29 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 				"int", "int", "com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName29 = "search";
+		_methodName28 = "search";
 
-		_methodParameterTypes29 = new String[] {
+		_methodParameterTypes28 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName29 = "dynamicQueryCount";
+
+		_methodParameterTypes29 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
 		_methodName30 = "dynamicQueryCount";
 
 		_methodParameterTypes30 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName31 = "dynamicQueryCount";
-
-		_methodParameterTypes31 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName32 = "checkOrderEntries";
+		_methodName31 = "checkOrderEntries";
 
-		_methodParameterTypes32 = new String[] {  };
+		_methodParameterTypes31 = new String[] {  };
 	}
 
 	@Override
@@ -922,63 +912,13 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.model.OrderEntry> addOrderEntriesWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.portal.kernel.model.Address address,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
-					new Object[] {
-						ClpSerializer.translateInput(salesforceOpportunityKey),
-						
-					ClpSerializer.translateInput(accountEntry),
-						
-					ClpSerializer.translateInput(partnerEntry),
-						
-					ClpSerializer.translateInput(address),
-						
-					ClpSerializer.translateInput(accountWorker),
-						
-					ClpSerializer.translateInput(orderEntries),
-						
-					ClpSerializer.translateInput(serviceContext)
-					});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.OrderEntry>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1003,8 +943,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1036,8 +976,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1069,8 +1009,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1093,8 +1033,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1132,8 +1072,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -1229,8 +1169,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -1264,8 +1204,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1290,8 +1230,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1316,8 +1256,8 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 	@Override
 	public void checkOrderEntries() {
 		try {
-			_invokableLocalService.invokeMethod(_methodName32,
-				_methodParameterTypes32, new Object[] {  });
+			_invokableLocalService.invokeMethod(_methodName31,
+				_methodParameterTypes31, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1395,6 +1335,4 @@ public class OrderEntryLocalServiceClp implements OrderEntryLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
-	private String _methodName32;
-	private String[] _methodParameterTypes32;
 }

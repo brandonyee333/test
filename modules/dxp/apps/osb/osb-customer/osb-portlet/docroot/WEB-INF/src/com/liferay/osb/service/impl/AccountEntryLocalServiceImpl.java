@@ -25,7 +25,6 @@ import com.liferay.osb.exception.AccountEntryNameException;
 import com.liferay.osb.exception.AccountEntryPartnerEntryException;
 import com.liferay.osb.exception.AccountEntrySupportRegionException;
 import com.liferay.osb.exception.DuplicateAccountEntryException;
-import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountCustomer;
@@ -51,27 +50,19 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.rabbitmq.ProvisioningAuditRabbitMQConsumer;
-import com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil;
 import com.liferay.osb.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsKeys;
 import com.liferay.osb.util.PortletPropsValues;
-import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.osb.util.comparator.AccountEntryLastAuditDateComparator;
 import com.liferay.osb.util.comparator.AccountEntryNameComparator;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.configuration.Filter;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -79,15 +70,11 @@ import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -96,25 +83,18 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
-import com.liferay.portal.kernel.workflow.WorkflowTask;
-import com.liferay.portal.kernel.workflow.WorkflowTaskManagerUtil;
 import com.liferay.util.portlet.PortletProps;
-
-import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 import javax.portlet.PortletPreferences;
 
@@ -146,191 +126,6 @@ public class AccountEntryLocalServiceImpl
 			partnerManagedSupport, tier, maxCustomers, instructions, notes,
 			languageIds, supportRegionIds, street1, street2, street3, city, zip,
 			regionId, countryId, ewsaDossieraProjectKey);
-	}
-
-	public AccountEntry addAccountEntryWithWorkflow(
-			String salesforceOpportunityKey, AccountEntry accountEntry,
-			CorpProject corpProject, PartnerEntry partnerEntry, Address address,
-			AccountWorker accountWorker, List<OrderEntry> orderEntries,
-			List<User> users, ServiceContext serviceContext)
-		throws PortalException {
-
-		// Corp project
-
-		if (corpProject.getCorpProjectId() > 0) {
-			remoteCorpProjectLocalService.updateCorpProject(
-				corpProject.getCorpProjectId(), corpProject.getName());
-		}
-		else {
-			corpProject = remoteCorpProjectLocalService.addCorpProject(
-				accountEntry.getDossieraAccountKey(),
-				corpProject.getDossieraProjectKey(),
-				corpProject.getSalesforceProjectKey(), corpProject.getName());
-		}
-
-		// Partner entry
-
-		long partnerEntryId = 0;
-
-		if (partnerEntry != null) {
-			partnerEntryId = partnerEntry.getPartnerEntryId();
-		}
-
-		// Account entry
-
-		ArrayList<String> warningMessages =
-			(ArrayList)serviceContext.getAttribute("warningMessages");
-
-		if (accountEntryPersistence.countByName(accountEntry.getName()) > 0) {
-			warningMessages.add("Project name is already taken");
-		}
-
-		String code = getCode(
-			accountEntry.getCorpEntryName(), accountEntry.getName());
-
-		if (!StringUtil.equalsIgnoreCase(code, accountEntry.getCode())) {
-			warningMessages.add("Project code is already taken");
-		}
-
-		accountEntry = doAddAccountEntry(
-			accountEntry.getUserId(), corpProject.getUuid(),
-			corpProject.getCorpProjectId(),
-			accountEntry.getDossieraAccountKey(),
-			accountEntry.getCorpEntryName(), accountEntry.getName(),
-			accountEntry.getCode(), accountEntry.getType(),
-			accountEntry.getIndustry(), partnerEntryId,
-			accountEntry.getPartnerManagedSupport(), accountEntry.getTier(),
-			accountEntry.getMaxCustomers(), accountEntry.getInstructions(),
-			accountEntry.getNotes(), accountEntry.getLanguageIds(),
-			accountEntry.getSupportRegionIds(), address.getStreet1(),
-			address.getStreet2(), address.getStreet3(), address.getCity(),
-			address.getZip(), address.getRegionId(), address.getCountryId(),
-			accountEntry.getEWSADossieraProjectKey());
-
-		// Account worker
-
-		if (accountWorker != null) {
-			User user = userLocalService.getUser(accountWorker.getUserId());
-
-			accountWorkerLocalService.addAccountWorker(
-				OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-				accountEntry.getAccountEntryId(), accountWorker.getRole());
-		}
-
-		// Order entry
-
-		List<OrderEntry> addedOrderEntries = new ArrayList<>();
-
-		for (OrderEntry orderEntry : orderEntries) {
-			Calendar startCal = Calendar.getInstance();
-
-			startCal.setTime(orderEntry.getStartDate());
-
-			orderEntry = orderEntryLocalService.addOrderEntry(
-				orderEntry.getUserId(), accountEntry.getAccountEntryId(),
-				StringPool.BLANK, startCal.get(Calendar.MONTH),
-				startCal.get(Calendar.DATE), startCal.get(Calendar.YEAR), false,
-				0, 0, 0, WorkflowConstants.STATUS_PENDING_VALIDATION,
-				salesforceOpportunityKey, orderEntry.getOfferingEntries());
-
-			addedOrderEntries.add(orderEntry);
-		}
-
-		// Users
-
-		ArrayList<User> analyticsCloudUsers =
-			(ArrayList<User>)serviceContext.getAttribute("analyticsCloudUsers");
-
-		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
-
-		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
-			missingAnalyticsCloudUsers = addCorpProjectUsers(
-				accountEntry, corpProject, analyticsCloudUsers,
-				new long[] {
-					OSBConstants.ROLE_OSB_CORP_ANALYTICS_CLOUD_OWNER_ID
-				});
-		}
-
-		ArrayList<User> missingUsers = addCorpProjectUsers(
-			accountEntry, corpProject, users,
-			new long[] {
-				OSBConstants.ROLE_OSB_CORP_ADMIN_ID,
-				OSBConstants.ROLE_OSB_CORP_BUYER_ID,
-				OSBConstants.ROLE_OSB_CORP_LCS_USER_ID
-			});
-
-		// Workflow
-
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		if ((analyticsCloudUsers != null) && !analyticsCloudUsers.isEmpty()) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_ANALYTICS_CLOUD_USERS,
-				analyticsCloudUsers);
-		}
-
-		if (!missingAnalyticsCloudUsers.isEmpty()) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_MISSING_ANALYTICS_CLOUD_USERS,
-				missingAnalyticsCloudUsers);
-		}
-
-		if (!missingUsers.isEmpty()) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_MISSING_USERS, missingUsers);
-		}
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
-			Constants.ADD);
-
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			serviceContext.getAttribute("salesforceOpportunityType"));
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
-			salesforceOpportunityType);
-
-		String salesforceOpportunityTaskName =
-			SalesforceConstants.getOpportunityTaskName(
-				salesforceOpportunityType, Constants.ADD);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
-			salesforceOpportunityTaskName);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_ORDER_ENTRIES,
-			SupportUtil.serialize(addedOrderEntries));
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
-			salesforceOpportunityKey);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
-
-		long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-		SupportRegion supportRegion =
-			supportRegionLocalService.getSupportRegion(supportRegionIds[0]);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
-			supportRegion.getName());
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_WARNING_MESSAGES, warningMessages);
-
-		ServiceContext workflowServiceContext = new ServiceContext();
-
-		workflowServiceContext.setAttribute("workflowContext", workflowContext);
-
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, accountEntry.getUserId(),
-			AccountEntry.class.getName(), accountEntry.getAccountEntryId(),
-			accountEntry, workflowServiceContext);
-
-		return accountEntry;
 	}
 
 	public void addTrialAccountEntry(long userId) throws Exception {
@@ -480,176 +275,6 @@ public class AccountEntryLocalServiceImpl
 				"Unable to sync account entry " +
 					accountEntry.getAccountEntryId() + " to LCS",
 				e);
-		}
-	}
-
-	public void addWorkflowTask(
-			String salesforceOpportunityKey, AccountEntry accountEntry,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
-			Constants.VIEW);
-
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			serviceContext.getAttribute("salesforceOpportunityType"));
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
-			salesforceOpportunityType);
-
-		String salesforceOpportunityTaskName =
-			SalesforceConstants.getOpportunityTaskName(
-				salesforceOpportunityType, Constants.VIEW);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
-			salesforceOpportunityTaskName);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
-			salesforceOpportunityKey);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
-
-		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-		if (!supportRegions.isEmpty()) {
-			SupportRegion supportRegion = supportRegions.get(0);
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
-				supportRegion.getName());
-		}
-
-		List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
-			OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(),
-			new Long[] {accountEntry.getAccountEntryId()}, null, null, false,
-			null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-		for (WorkflowTask workflowTask : workflowTasks) {
-			Map<String, Serializable> curWorkflowContext =
-				workflowTask.getOptionalAttributes();
-
-			String salesforceOpportunityAction = GetterUtil.getString(
-				curWorkflowContext.get(
-					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
-
-			if (!salesforceOpportunityAction.equals(Constants.VIEW)) {
-				continue;
-			}
-
-			String curSalesforceOpportunityKey = (String)curWorkflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY);
-
-			if (!salesforceOpportunityKey.equals(curSalesforceOpportunityKey)) {
-				continue;
-			}
-
-			WorkflowTaskManagerUtil.completeWorkflowTask(
-				OSBConstants.COMPANY_ID, OSBConstants.USER_AMOS_FONG_USER_ID,
-				workflowTask.getWorkflowTaskId(), "close",
-				"This view task is out of date.", null);
-
-			Indexer indexer = IndexerRegistryUtil.getIndexer(
-				WorkflowTask.class.getName());
-
-			indexer.reindex(workflowTask);
-		}
-
-		ServiceContext workflowServiceContext = new ServiceContext();
-
-		workflowServiceContext.setAttribute("workflowContext", workflowContext);
-
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, OSBConstants.USER_DEFAULT_USER_ID,
-			AccountEntry.class.getName(), accountEntry.getAccountEntryId(),
-			accountEntry, workflowServiceContext);
-	}
-
-	public void auditAccountEntries() throws PortalException {
-		if (!PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED) {
-			return;
-		}
-
-		int[] types = {
-			AccountEntryConstants.TYPE_INTERNAL_TEST,
-			AccountEntryConstants.TYPE_TRIAL
-		};
-
-		List<AccountEntry> accountEntries =
-			accountEntryPersistence.findByRAEI_NotT_S(
-				0, types, new int[] {WorkflowConstants.STATUS_APPROVED}, 0, 10,
-				new AccountEntryLastAuditDateComparator());
-
-		for (AccountEntry accountEntry : accountEntries) {
-			auditAccountEntry(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				accountEntry.getAccountEntryId());
-		}
-	}
-
-	public void auditAccountEntry(long userId, long accountEntryId)
-		throws PortalException {
-
-		if (!PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED) {
-			return;
-		}
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		CorpProject corpProject = corpProjectLocalService.fetchCorpProject(
-			accountEntry.getCorpProjectId());
-
-		if (corpProject == null) {
-			updateLastAuditDate(
-				userId, accountEntryId,
-				"this-project-cannot-be-found-in-dossiera", StringPool.BLANK);
-
-			return;
-		}
-
-		try {
-			JSONArray jsonArray =
-				DossieraRESTWebServiceUtil.getOpportunitiesJSONArray(
-					corpProject.getSalesforceProjectKey());
-
-			if (jsonArray == null) {
-				updateLastAuditDate(
-					userId, accountEntryId,
-					"this-project-cannot-be-found-in-dossiera",
-					StringPool.BLANK);
-
-				return;
-			}
-
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-			jsonObject.put("accountEntryId", accountEntryId);
-			jsonObject.put("opportunities", jsonArray);
-			jsonObject.put("userId", userId);
-
-			ProvisioningAuditRabbitMQConsumer
-				provisioningAuditRabbitMQConsumer =
-					new ProvisioningAuditRabbitMQConsumer();
-
-			provisioningAuditRabbitMQConsumer.parse(
-				StringPool.BLANK, jsonObject.toString(), null);
-		}
-		catch (Exception e) {
-			_log.error(
-				"There was an error auditing account entry " +
-					accountEntry.getAccountEntryId(),
-				e);
-
-			updateLastAuditDate(
-				userId, accountEntryId,
-				"there-was-an-error-auditing-this-project", StringPool.BLANK);
 		}
 	}
 
@@ -1102,357 +727,6 @@ public class AccountEntryLocalServiceImpl
 		return accountEntryPersistence.update(accountEntry);
 	}
 
-	public void updateAccountEntryWithWorkflow(
-			String salesforceOpportunityKey, AccountEntry accountEntry,
-			PartnerEntry partnerEntry, AccountWorker accountWorker,
-			Address address, List<OrderEntry> orderEntries, List<User> users,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		long classNameId = classNameLocalService.getClassNameId(
-			OrderEntry.class.getName());
-
-		List<ExternalIdMapper> externalIdMappers =
-			externalIdMapperLocalService.getExternalIdMappers(
-				classNameId, ExternalIdMapperConstants.TYPE_SALESFORCE,
-				salesforceOpportunityKey);
-
-		if (externalIdMappers.isEmpty()) {
-			throw new NoSuchOrderEntryException(
-				"No orders found with key " + salesforceOpportunityKey);
-		}
-
-		String salesforceOpportunityStageName = GetterUtil.getString(
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
-
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		if (!salesforceOpportunityStageName.equals(
-				SalesforceConstants.OPPORTUNITY_STAGE_CLOSED_WON)) {
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-				serviceContext.getAttribute("salesforceOpportunityStageName"));
-		}
-
-		Map<String, Integer> offeringEntriesMap =
-			SupportUtil.getOfferingEntriesMap(orderEntries, true);
-
-		if (offeringEntriesMap.isEmpty() && workflowContext.isEmpty()) {
-			return;
-		}
-
-		AccountEntry oldAccountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntry.getAccountEntryId());
-
-		Address oldAddress = oldAccountEntry.getAddress();
-
-		String oldAddressString = AdminUtil.formatAddress(oldAddress);
-
-		String addressString = AdminUtil.formatAddress(address);
-
-		String oldCorpEntryName = oldAccountEntry.getCorpEntryName();
-
-		if ((oldAccountEntry.getIndustry() != accountEntry.getIndustry()) ||
-			!oldAddressString.equals(addressString) ||
-			!oldCorpEntryName.equals(accountEntry.getCorpEntryName())) {
-
-			updateAccountEntry(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				oldAccountEntry.getAccountEntryId(),
-				oldAccountEntry.getCorpProjectUuid(),
-				oldAccountEntry.getCorpProjectId(),
-				accountEntry.getDossieraAccountKey(),
-				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
-				oldAccountEntry.getCode(), oldAccountEntry.getType(),
-				accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
-				oldAccountEntry.getPartnerManagedSupport(),
-				oldAccountEntry.getTier(), oldAccountEntry.getMaxCustomers(),
-				oldAccountEntry.getInstructions(), oldAccountEntry.getNotes(),
-				oldAccountEntry.getLanguageIds(),
-				oldAccountEntry.getSupportRegionIds(),
-				oldAddress.getAddressId(), address.getStreet1(),
-				address.getStreet2(), address.getStreet3(), address.getCity(),
-				address.getZip(), address.getRegionId(), address.getCountryId(),
-				oldAccountEntry.getEWSADossieraProjectKey());
-		}
-
-		if (accountWorker != null) {
-			User user = userLocalService.getUser(accountWorker.getUserId());
-
-			accountWorkerLocalService.addAccountWorker(
-				OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-				accountEntry.getAccountEntryId(), accountWorker.getRole());
-		}
-
-		ArrayList<User> newUsers = new ArrayList<>();
-
-		ArrayList<User> missingAnalyticsCloudUsers = new ArrayList<>();
-
-		List<User> analyticsCloudUsers =
-			(List<User>)serviceContext.getAttribute("analyticsCloudUsers");
-
-		if (analyticsCloudUsers != null) {
-			missingAnalyticsCloudUsers = getMissingUsers(analyticsCloudUsers);
-
-			newUsers.addAll(getNewUsers(oldAccountEntry, analyticsCloudUsers));
-		}
-
-		ArrayList<User> missingUsers = getMissingUsers(users);
-
-		newUsers.addAll(getNewUsers(oldAccountEntry, users));
-
-		ListUtil.distinct(newUsers);
-
-		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
-		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
-
-		if (partnerEntry != null) {
-			if (oldAccountEntry.getPartnerEntryId() !=
-					partnerEntry.getPartnerEntryId()) {
-
-				oldAccountEntryAttributes.put(
-					"partnerEntryId",
-					String.valueOf(oldAccountEntry.getPartnerEntryId()));
-				newAccountEntryAttributes.put(
-					"partnerEntryId",
-					String.valueOf(partnerEntry.getPartnerEntryId()));
-			}
-		}
-		else if (oldAccountEntry.getPartnerEntryId() > 0) {
-			oldAccountEntryAttributes.put(
-				"partnerEntryId",
-				String.valueOf(oldAccountEntry.getPartnerEntryId()));
-			newAccountEntryAttributes.put("partnerEntryId", StringPool.BLANK);
-		}
-
-		if (oldAccountEntry.getPartnerManagedSupport() !=
-				accountEntry.getPartnerManagedSupport()) {
-
-			oldAccountEntryAttributes.put(
-				"partnerManagedSupport",
-				String.valueOf(oldAccountEntry.getPartnerManagedSupport()));
-			newAccountEntryAttributes.put(
-				"partnerManagedSupport",
-				String.valueOf(accountEntry.getPartnerManagedSupport()));
-		}
-
-		if (SupportUtil.hasRenewalOnly(orderEntries) &&
-			oldAccountEntryAttributes.isEmpty() &&
-			newAccountEntryAttributes.isEmpty() && workflowContext.isEmpty()) {
-
-			return;
-		}
-
-		String[] oldLanguageIds = oldAccountEntry.getLanguageIds();
-		String[] languageIds = accountEntry.getLanguageIds();
-
-		Arrays.sort(oldLanguageIds);
-		Arrays.sort(languageIds);
-
-		if (!Arrays.equals(oldLanguageIds, languageIds)) {
-			oldAccountEntryAttributes.put(
-				"languageIds", StringUtil.merge(oldLanguageIds));
-			newAccountEntryAttributes.put(
-				"languageIds", StringUtil.merge(languageIds));
-		}
-
-		long[] oldSupportRegionIds = oldAccountEntry.getSupportRegionIds();
-		long[] supportRegionIds = accountEntry.getSupportRegionIds();
-
-		Arrays.sort(oldSupportRegionIds);
-		Arrays.sort(supportRegionIds);
-
-		if (!Arrays.equals(oldSupportRegionIds, supportRegionIds)) {
-			oldAccountEntryAttributes.put(
-				"supportRegionIds", StringUtil.merge(oldSupportRegionIds));
-			newAccountEntryAttributes.put(
-				"supportRegionIds", StringUtil.merge(supportRegionIds));
-		}
-
-		String oldEWSADossieraProjectKey =
-			oldAccountEntry.getEWSADossieraProjectKey();
-
-		if (!oldEWSADossieraProjectKey.equals(
-				accountEntry.getEWSADossieraProjectKey())) {
-
-			oldAccountEntryAttributes.put(
-				"ewsaDossieraProjectKey",
-				oldAccountEntry.getEWSADossieraProjectKey());
-			newAccountEntryAttributes.put(
-				"ewsaDossieraProjectKey",
-				accountEntry.getEWSADossieraProjectKey());
-		}
-
-		List<OrderEntry> externalIdMapperOrderEntries = new ArrayList<>();
-
-		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-			OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
-				externalIdMapper.getClassPK());
-
-			externalIdMapperOrderEntries.add(orderEntry);
-		}
-
-		Map<String, Integer> oldOfferingEntriesMap =
-			SupportUtil.getOfferingEntriesMap(
-				externalIdMapperOrderEntries, true);
-
-		if (!oldOfferingEntriesMap.equals(offeringEntriesMap)) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_ORDER_ENTRIES,
-				SupportUtil.serialize(orderEntries));
-		}
-
-		if (workflowContext.isEmpty() && oldAccountEntryAttributes.isEmpty() &&
-			newAccountEntryAttributes.isEmpty()) {
-
-			return;
-		}
-
-		String oldAccountEntryName = oldAccountEntry.getName();
-
-		if (!oldAccountEntryName.equals(accountEntry.getName())) {
-			oldAccountEntryAttributes.put("name", oldAccountEntryName);
-			newAccountEntryAttributes.put("name", accountEntry.getName());
-		}
-
-		String notes = oldAccountEntry.getNotes();
-
-		if (!notes.equals(accountEntry.getNotes())) {
-			oldAccountEntryAttributes.put("notes", notes);
-			newAccountEntryAttributes.put("notes", accountEntry.getNotes());
-		}
-
-		if (!oldAccountEntryAttributes.isEmpty() &&
-			!newAccountEntryAttributes.isEmpty()) {
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES,
-				newAccountEntryAttributes);
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES,
-				oldAccountEntryAttributes);
-		}
-
-		if (!missingAnalyticsCloudUsers.isEmpty()) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_MISSING_ANALYTICS_CLOUD_USERS,
-				missingAnalyticsCloudUsers);
-		}
-
-		if (!missingUsers.isEmpty()) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_MISSING_USERS, missingUsers);
-		}
-
-		if (!newUsers.isEmpty()) {
-			workflowContext.put(WorkflowConstants.CONTEXT_NEW_USERS, newUsers);
-		}
-
-		List<Long> existingOrderEntryIds = new ArrayList<>();
-
-		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-			OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
-				externalIdMapper.getClassPK());
-
-			if (orderEntry.getAccountEntryId() !=
-					accountEntry.getAccountEntryId()) {
-
-				continue;
-			}
-
-			existingOrderEntryIds.add(externalIdMapper.getClassPK());
-		}
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_EXISTING_ORDER_ENTRY_IDS,
-			StringUtil.merge(existingOrderEntryIds));
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
-			Constants.UPDATE);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
-			salesforceOpportunityKey);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
-
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			serviceContext.getAttribute("salesforceOpportunityType"));
-
-		String salesforceOpportunityTaskName =
-			SalesforceConstants.getOpportunityTaskName(
-				salesforceOpportunityType, Constants.UPDATE);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
-			salesforceOpportunityTaskName);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
-			salesforceOpportunityType);
-
-		List<SupportRegion> supportRegions =
-			oldAccountEntry.getSupportRegions();
-
-		if (!supportRegions.isEmpty()) {
-			SupportRegion supportRegion = supportRegions.get(0);
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
-				supportRegion.getName());
-		}
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_WARNING_MESSAGES,
-			serviceContext.getAttribute("warningMessages"));
-
-		List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
-			OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(),
-			new Long[] {accountEntry.getAccountEntryId()}, null, null, false,
-			null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-		for (WorkflowTask workflowTask : workflowTasks) {
-			Map<String, Serializable> curWorkflowContext =
-				workflowTask.getOptionalAttributes();
-
-			String salesforceOpportunityAction = GetterUtil.getString(
-				curWorkflowContext.get(
-					WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION));
-
-			if (!salesforceOpportunityAction.equals(Constants.UPDATE)) {
-				continue;
-			}
-
-			String curSalesforceOpportunityKey = (String)curWorkflowContext.get(
-				WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY);
-
-			if (!salesforceOpportunityKey.equals(curSalesforceOpportunityKey)) {
-				continue;
-			}
-
-			WorkflowTaskManagerUtil.completeWorkflowTask(
-				OSBConstants.COMPANY_ID, OSBConstants.USER_AMOS_FONG_USER_ID,
-				workflowTask.getWorkflowTaskId(), "close",
-				"This update task is out of date.", null);
-
-			Indexer indexer = IndexerRegistryUtil.getIndexer(
-				WorkflowTask.class.getName());
-
-			indexer.reindex(workflowTask);
-		}
-
-		ServiceContext workflowServiceContext = new ServiceContext();
-
-		workflowServiceContext.setAttribute("workflowContext", workflowContext);
-
-		WorkflowHandlerRegistryUtil.startWorkflowInstance(
-			OSBConstants.COMPANY_ID, OSBConstants.USER_DEFAULT_USER_ID,
-			AccountEntry.class.getName(), oldAccountEntry.getAccountEntryId(),
-			oldAccountEntry, workflowServiceContext);
-	}
-
 	public AccountEntry updateInstructions(
 			long userId, long accountEntryId, String instructions)
 		throws PortalException {
@@ -1473,32 +747,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntry);
 
 		return accountEntry;
-	}
-
-	public void updateLastAuditDate(
-			long userId, long accountEntryId, String auditLabel,
-			String auditValue)
-		throws PortalException {
-
-		User user = userLocalService.getUser(userId);
-		Date now = new Date();
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		accountEntry.setLastAuditDate(now);
-
-		accountEntryPersistence.update(accountEntry);
-
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId, accountEntryId, 0,
-			classNameId, accountEntryId, AuditEntryConstants.ACTION_AUDIT,
-			AuditEntryConstants.FIELD_NOT_APPLICABLE, VisibilityConstants.ADMIN,
-			auditLabel, auditValue, StringPool.BLANK, StringPool.BLANK,
-			StringPool.BLANK, true, false);
 	}
 
 	public void updateLastZendeskAuditDate(
@@ -1673,37 +921,6 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		if (accountEntry.getStatus() == WorkflowConstants.STATUS_PENDING) {
-			List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
-				OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(),
-				new Long[] {accountEntry.getAccountEntryId()}, null, null,
-				false, null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-			for (WorkflowTask workflowTask : workflowTasks) {
-				Map<String, Serializable> workflowContext =
-					workflowTask.getOptionalAttributes();
-
-				String curSalesforceOpportunityKey =
-					(String)workflowContext.get(
-						WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY);
-
-				if (!salesforceOpportunityKey.equals(
-						curSalesforceOpportunityKey)) {
-
-					continue;
-				}
-
-				WorkflowTaskManagerUtil.completeWorkflowTask(
-					OSBConstants.COMPANY_ID,
-					OSBConstants.USER_AMOS_FONG_USER_ID,
-					workflowTask.getWorkflowTaskId(), "close",
-					"This task was closed by an update task.", null);
-
-				Indexer indexer = IndexerRegistryUtil.getIndexer(
-					WorkflowTask.class.getName());
-
-				indexer.reindex(workflowTask);
-			}
-
 			updateStatus(userId, accountEntryId, status, serviceContext);
 		}
 
@@ -1739,28 +956,6 @@ public class AccountEntryLocalServiceImpl
 
 			orderEntryLocalService.updateStatus(
 				userId, orderEntry.getOrderEntryId(), status, serviceContext);
-
-			if (orderEntryStatus != WorkflowConstants.STATUS_PENDING) {
-				continue;
-			}
-
-			List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(
-				OSBConstants.COMPANY_ID, 0, null, OrderEntry.class.getName(),
-				new Long[] {orderEntry.getOrderEntryId()}, null, null, false,
-				null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-			for (WorkflowTask workflowTask : workflowTasks) {
-				WorkflowTaskManagerUtil.completeWorkflowTask(
-					OSBConstants.COMPANY_ID,
-					OSBConstants.USER_AMOS_FONG_USER_ID,
-					workflowTask.getWorkflowTaskId(), "close",
-					"This task was closed by an update task.", null);
-
-				Indexer indexer = IndexerRegistryUtil.getIndexer(
-					WorkflowTask.class.getName());
-
-				indexer.reindex(workflowTask);
-			}
 		}
 
 		return accountEntry;
@@ -1823,38 +1018,6 @@ public class AccountEntryLocalServiceImpl
 			accountEntry.getIndustry(), accountEntry.getPartnerEntryId(),
 			accountEntry.getMaxCustomers(), accountEntry.getLanguageIds(),
 			accountEntry.getSupportRegionIds());
-	}
-
-	protected ArrayList<User> addCorpProjectUsers(
-			AccountEntry accountEntry, CorpProject corpProject,
-			List<User> users, long[] roleIds)
-		throws PortalException {
-
-		ArrayList<User> missingUsers = new ArrayList<>();
-
-		for (User user : users) {
-			if (user.getUserId() <= 0) {
-				missingUsers.add((User)user.clone());
-
-				continue;
-			}
-
-			remoteCorpProjectLocalService.addCorpProjectUsers(
-				corpProject.getUuid(), new long[] {user.getUserId()});
-
-			for (long roleId : roleIds) {
-				remoteCorpProjectLocalService.addUserCorpProjectRoles(
-					corpProject.getUuid(), new long[] {user.getUserId()},
-					roleId);
-			}
-
-			accountCustomerLocalService.addAccountCustomer(
-				accountEntry.getUserId(), user.getUserId(),
-				accountEntry.getAccountEntryId(),
-				AccountCustomerConstants.ROLE_WATCHER, false);
-		}
-
-		return missingUsers;
 	}
 
 	protected AccountEntry doAddAccountEntry(

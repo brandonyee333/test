@@ -229,41 +229,9 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 			<span class="last segment">
 				<liferay-ui:message key="status" />:
 
-				<%
-				List<WorkflowTask> workflowTasks = new ArrayList<WorkflowTask>();
-
-				if (!orderEntry.isApproved()) {
-					if (orderEntry.getStatus() == WorkflowConstants.STATUS_PENDING_VALIDATION) {
-						workflowTasks = WorkflowTaskManagerUtil.search(OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(), new Long[] {orderEntry.getAccountEntryId()}, null, null, false, null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-					}
-					else {
-						workflowTasks = WorkflowTaskManagerUtil.search(OSBConstants.COMPANY_ID, 0, null, OrderEntry.class.getName(), new Long[] {orderEntry.getOrderEntryId()}, null, null, false, null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-					}
-				}
-				%>
-
-				<c:choose>
-					<c:when test="<%= !workflowTasks.isEmpty() %>">
-
-						<%
-						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-						workflowTaskURL.setParameter("mvcPath", "/edit_workflow_task.jsp");
-						workflowTaskURL.setParameter("redirect", currentURL);
-
-						WorkflowTask workflowTask = workflowTasks.get(0);
-
-						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
-						%>
-
-						<aui:a href="<%= workflowTaskURL.toString() %>" label="<%= orderEntry.getStatusLabel() %>" target="_blank" />
-					</c:when>
-					<c:otherwise>
-						<span class="txt-sb">
-							<%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %>
-						</span>
-					</c:otherwise>
-				</c:choose>
+				<span class="txt-sb">
+					<%= LanguageUtil.get(request, orderEntry.getStatusLabel()) %>
+				</span>
 			</span>
 		</div>
 

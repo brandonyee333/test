@@ -254,21 +254,6 @@ public class OrderEntryLocalServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
-	public static java.util.List<com.liferay.osb.model.OrderEntry> addOrderEntriesWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.portal.kernel.model.Address address,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addOrderEntriesWithWorkflow(salesforceOpportunityKey,
-			accountEntry, partnerEntry, address, accountWorker, orderEntries,
-			serviceContext);
-	}
-
 	/**
 	* Performs a dynamic query on the database and returns the matching rows.
 	*

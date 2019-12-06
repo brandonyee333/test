@@ -67,9 +67,6 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.OfferingEntryImpl;
-import com.liferay.osb.rabbitmq.ProvisioningCreateRabbitMQConsumer;
-import com.liferay.osb.rabbitmq.ProvisioningUpdateRabbitMQConsumer;
-import com.liferay.osb.rabbitmq.RabbitMQConsumer;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
@@ -107,7 +104,6 @@ import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.io.Base64InputStream;
 import com.liferay.portal.kernel.io.ProtectedObjectInputStream;
 import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
@@ -119,7 +115,6 @@ import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -129,7 +124,6 @@ import com.liferay.portal.kernel.upload.UploadPortletRequest;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -149,7 +143,6 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import javax.portlet.ActionRequest;
@@ -167,20 +160,6 @@ import javax.portlet.ResourceResponse;
  * @author Haote Chou
  */
 public class AdminPortlet extends OSBPortlet {
-
-	public void auditAccountEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-
-		AccountEntryLocalServiceUtil.auditAccountEntry(
-			themeDisplay.getUserId(), accountEntryId);
-	}
 
 	public void debugLicenseFiles(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -256,62 +235,6 @@ public class AdminPortlet extends OSBPortlet {
 			}
 
 			uploadPortletRequest.cleanUp();
-		}
-	}
-
-	public void debugRabbitMQ(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		PermissionChecker permissionChecker =
-			themeDisplay.getPermissionChecker();
-
-		if (!permissionChecker.isCompanyAdmin()) {
-			return;
-		}
-
-		String routingKey = ParamUtil.getString(actionRequest, "routingKey");
-		String message = ParamUtil.getString(actionRequest, "message");
-		String[] properties = StringUtil.split(
-			ParamUtil.getString(actionRequest, "properties"),
-			StringPool.NEW_LINE);
-
-		message = StringUtil.replace(
-			message, CharPool.NEW_LINE, StringPool.BLANK);
-
-		Map<String, Object> propertiesMap = MapUtil.toLinkedHashMap(properties);
-
-		RabbitMQConsumer rabbitMQConsumer = null;
-
-		if (routingKey.equals("dossiera.provisioning.create")) {
-			rabbitMQConsumer = new ProvisioningCreateRabbitMQConsumer();
-		}
-		else if (routingKey.equals("dossiera.provisioning.update")) {
-			rabbitMQConsumer = new ProvisioningUpdateRabbitMQConsumer();
-		}
-
-		if (rabbitMQConsumer != null) {
-			try {
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-					message.trim());
-
-				rabbitMQConsumer.parse(
-					routingKey, jsonObject.toString(), propertiesMap);
-			}
-			catch (JSONException jsone) {
-				JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
-					message.trim());
-
-				for (int i = 0; i < jsonArray.length(); i++) {
-					JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-					rabbitMQConsumer.parse(
-						routingKey, jsonObject.toString(), propertiesMap);
-				}
-			}
 		}
 	}
 

@@ -17,10 +17,6 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.PartnerEntry;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -28,9 +24,7 @@ import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.PersistedModel;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
@@ -103,13 +97,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 		java.lang.String street2, java.lang.String street3,
 		java.lang.String city, java.lang.String zip, long regionId,
 		long countryId, java.lang.String ewsaDossieraProjectKey)
-		throws PortalException;
-
-	public AccountEntry addAccountEntryWithWorkflow(
-		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
-		CorpProject corpProject, PartnerEntry partnerEntry, Address address,
-		AccountWorker accountWorker, List<OrderEntry> orderEntries,
-		List<User> users, ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
@@ -452,15 +439,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void addTrialAccountEntry(long userId) throws java.lang.Exception;
 
-	public void addWorkflowTask(java.lang.String salesforceOpportunityKey,
-		AccountEntry accountEntry, ServiceContext serviceContext)
-		throws PortalException;
-
-	public void auditAccountEntries() throws PortalException;
-
-	public void auditAccountEntry(long userId, long accountEntryId)
-		throws PortalException;
-
 	public void clearSupportRegionAccountEntries(long supportRegionId);
 
 	public void deleteSupportRegionAccountEntries(long supportRegionId,
@@ -480,16 +458,6 @@ public interface AccountEntryLocalService extends BaseLocalService,
 
 	public void setSupportRegionAccountEntries(long supportRegionId,
 		long[] accountEntryIds);
-
-	public void updateAccountEntryWithWorkflow(
-		java.lang.String salesforceOpportunityKey, AccountEntry accountEntry,
-		PartnerEntry partnerEntry, AccountWorker accountWorker,
-		Address address, List<OrderEntry> orderEntries, List<User> users,
-		ServiceContext serviceContext) throws PortalException;
-
-	public void updateLastAuditDate(long userId, long accountEntryId,
-		java.lang.String auditLabel, java.lang.String auditValue)
-		throws PortalException;
 
 	public void updateLastZendeskAuditDate(long userId, long accountEntryId,
 		java.lang.String auditLabel, java.lang.String auditValue)

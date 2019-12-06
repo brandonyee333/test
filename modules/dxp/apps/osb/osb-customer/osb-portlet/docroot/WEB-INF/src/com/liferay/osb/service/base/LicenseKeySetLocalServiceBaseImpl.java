@@ -1408,25 +1408,6 @@ public abstract class LicenseKeySetLocalServiceBaseImpl
 	}
 
 	/**
-	 * Returns the rabbit mq message processor local service.
-	 *
-	 * @return the rabbit mq message processor local service
-	 */
-	public com.liferay.osb.service.RabbitMQMessageProcessorLocalService getRabbitMQMessageProcessorLocalService() {
-		return rabbitMQMessageProcessorLocalService;
-	}
-
-	/**
-	 * Sets the rabbit mq message processor local service.
-	 *
-	 * @param rabbitMQMessageProcessorLocalService the rabbit mq message processor local service
-	 */
-	public void setRabbitMQMessageProcessorLocalService(
-		com.liferay.osb.service.RabbitMQMessageProcessorLocalService rabbitMQMessageProcessorLocalService) {
-		this.rabbitMQMessageProcessorLocalService = rabbitMQMessageProcessorLocalService;
-	}
-
-	/**
 	 * Returns the remote corp entry local service.
 	 *
 	 * @return the remote corp entry local service
@@ -1936,8 +1917,6 @@ public abstract class LicenseKeySetLocalServiceBaseImpl
 	protected ProductEntryPersistence productEntryPersistence;
 	@BeanReference(type = ProductEntryFinder.class)
 	protected ProductEntryFinder productEntryFinder;
-	@BeanReference(type = com.liferay.osb.service.RabbitMQMessageProcessorLocalService.class)
-	protected com.liferay.osb.service.RabbitMQMessageProcessorLocalService rabbitMQMessageProcessorLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteCorpEntryLocalService.class)
 	protected com.liferay.osb.service.RemoteCorpEntryLocalService remoteCorpEntryLocalService;
 	@BeanReference(type = com.liferay.osb.service.RemoteCorpProjectLocalService.class)

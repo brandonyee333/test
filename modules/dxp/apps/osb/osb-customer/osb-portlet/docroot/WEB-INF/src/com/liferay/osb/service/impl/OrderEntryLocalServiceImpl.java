@@ -20,20 +20,15 @@ import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.OrderEntryStartDateException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.service.base.OrderEntryLocalServiceBaseImpl;
-import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.SalesforceConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.petra.string.StringPool;
@@ -41,248 +36,28 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.Constants;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 
-import java.io.Serializable;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeMap;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
 public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
-
-	public List<OrderEntry> addOrderEntriesWithWorkflow(
-			String salesforceOpportunityKey, AccountEntry accountEntry,
-			PartnerEntry partnerEntry, Address address,
-			AccountWorker accountWorker, List<OrderEntry> orderEntries,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		AccountEntry oldAccountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntry.getAccountEntryId());
-
-		// Address
-
-		Address oldAddress = oldAccountEntry.getAddress();
-
-		String street1 = address.getStreet1();
-
-		if (!street1.equals("N/A") &&
-			(accountEntry.getType() !=
-				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)) {
-
-			oldAddress.setStreet1(address.getStreet1());
-			oldAddress.setCity(address.getCity());
-			oldAddress.setZip(address.getZip());
-			oldAddress.setRegionId(address.getRegionId());
-			oldAddress.setCountryId(address.getCountryId());
-		}
-
-		// Account entry
-
-		StringBundler sb = new StringBundler(3);
-
-		sb.append(oldAccountEntry.getNotes());
-		sb.append("\n\n--------------------------------------------------\n\n");
-		sb.append(accountEntry.getNotes());
-
-		if (accountEntry.getType() ==
-				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
-
-			oldAccountEntry.setDossieraAccountKey(
-				accountEntry.getDossieraAccountKey());
-			oldAccountEntry.setCorpEntryName(accountEntry.getCorpEntryName());
-			oldAccountEntry.setIndustry(accountEntry.getIndustry());
-			oldAccountEntry.setNotes(sb.toString());
-
-			accountEntryLocalService.updateAccountEntry(oldAccountEntry);
-		}
-		else {
-			accountEntryLocalService.updateAccountEntry(
-				OSBConstants.USER_DEFAULT_USER_ID,
-				oldAccountEntry.getAccountEntryId(),
-				oldAccountEntry.getCorpProjectUuid(),
-				oldAccountEntry.getCorpProjectId(),
-				accountEntry.getDossieraAccountKey(),
-				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
-				oldAccountEntry.getCode(), oldAccountEntry.getType(),
-				accountEntry.getIndustry(), oldAccountEntry.getPartnerEntryId(),
-				oldAccountEntry.getPartnerManagedSupport(),
-				oldAccountEntry.getTier(), oldAccountEntry.getMaxCustomers(),
-				oldAccountEntry.getInstructions(), sb.toString(),
-				oldAccountEntry.getLanguageIds(),
-				oldAccountEntry.getSupportRegionIds(),
-				oldAddress.getAddressId(), oldAddress.getStreet1(),
-				oldAddress.getStreet2(), oldAddress.getStreet3(),
-				oldAddress.getCity(), oldAddress.getZip(),
-				oldAddress.getRegionId(), oldAddress.getCountryId(),
-				oldAccountEntry.getEWSADossieraProjectKey());
-		}
-
-		// Account worker
-
-		if (accountWorker != null) {
-			User user = userLocalService.getUser(accountWorker.getUserId());
-
-			accountWorkerLocalService.addAccountWorker(
-				OSBConstants.USER_DEFAULT_USER_ID, user.getEmailAddress(),
-				accountEntry.getAccountEntryId(), accountWorker.getRole());
-		}
-
-		// Order entries
-
-		List<OrderEntry> addedOrderEntries = new ArrayList<>();
-
-		for (OrderEntry orderEntry : orderEntries) {
-			Calendar startCal = Calendar.getInstance();
-
-			startCal.setTime(orderEntry.getStartDate());
-
-			OrderEntry curOrderEntry = addOrderEntry(
-				orderEntry.getUserId(), accountEntry.getAccountEntryId(),
-				StringPool.BLANK, startCal.get(Calendar.MONTH),
-				startCal.get(Calendar.DATE), startCal.get(Calendar.YEAR), false,
-				0, 0, 0, WorkflowConstants.STATUS_PENDING,
-				salesforceOpportunityKey, orderEntry.getOfferingEntries());
-
-			addedOrderEntries.add(curOrderEntry);
-		}
-
-		// Workflow
-
-		TreeMap<String, String> oldAccountEntryAttributes = new TreeMap<>();
-		TreeMap<String, String> newAccountEntryAttributes = new TreeMap<>();
-
-		String oldAccountEntryName = oldAccountEntry.getName();
-
-		if (!oldAccountEntryName.equals(accountEntry.getName())) {
-			oldAccountEntryAttributes.put("name", oldAccountEntryName);
-			newAccountEntryAttributes.put("name", accountEntry.getName());
-		}
-
-		if (partnerEntry != null) {
-			if (oldAccountEntry.getPartnerEntryId() !=
-					partnerEntry.getPartnerEntryId()) {
-
-				oldAccountEntryAttributes.put(
-					"partnerEntryId",
-					String.valueOf(oldAccountEntry.getPartnerEntryId()));
-				newAccountEntryAttributes.put(
-					"partnerEntryId",
-					String.valueOf(partnerEntry.getPartnerEntryId()));
-			}
-		}
-		else if (oldAccountEntry.getPartnerEntryId() > 0) {
-			oldAccountEntryAttributes.put(
-				"partnerEntryId",
-				String.valueOf(oldAccountEntry.getPartnerEntryId()));
-			newAccountEntryAttributes.put("partnerEntryId", StringPool.BLANK);
-		}
-
-		if (oldAccountEntry.getPartnerManagedSupport() !=
-				accountEntry.getPartnerManagedSupport()) {
-
-			oldAccountEntryAttributes.put(
-				"partnerManagedSupport",
-				String.valueOf(oldAccountEntry.getPartnerManagedSupport()));
-			newAccountEntryAttributes.put(
-				"partnerManagedSupport",
-				String.valueOf(accountEntry.getPartnerManagedSupport()));
-		}
-
-		HashMap<String, Serializable> workflowContext = new HashMap<>();
-
-		if (!oldAccountEntryAttributes.isEmpty() &&
-			!newAccountEntryAttributes.isEmpty()) {
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_NEW_ACCOUNT_ENTRY_ATTRIBUTES,
-				newAccountEntryAttributes);
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_OLD_ACCOUNT_ENTRY_ATTRIBUTES,
-				oldAccountEntryAttributes);
-		}
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_ACTION,
-			Constants.ADD);
-
-		int salesforceOpportunityType = GetterUtil.getInteger(
-			serviceContext.getAttribute("salesforceOpportunityType"));
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TYPE,
-			salesforceOpportunityType);
-
-		String salesforceOpportunityTaskName =
-			SalesforceConstants.getOpportunityTaskName(
-				salesforceOpportunityType, Constants.ADD);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_TASK_NAME,
-			salesforceOpportunityTaskName);
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_KEY,
-			salesforceOpportunityKey);
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_SALESFORCE_OPPORTUNITY_STAGE_NAME,
-			serviceContext.getAttribute("salesforceOpportunityStageName"));
-
-		List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
-
-		if (!supportRegions.isEmpty()) {
-			SupportRegion supportRegion = supportRegions.get(0);
-
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_SUPPORT_REGION_NAME,
-				supportRegion.getName());
-		}
-
-		workflowContext.put(
-			WorkflowConstants.CONTEXT_WARNING_MESSAGES,
-			serviceContext.getAttribute("warningMessages"));
-
-		for (OrderEntry orderEntry : addedOrderEntries) {
-			workflowContext.put(
-				WorkflowConstants.CONTEXT_ORDER_ENTRY,
-				SupportUtil.serialize(orderEntry));
-
-			ServiceContext workflowServiceContext = new ServiceContext();
-
-			workflowServiceContext.setAttribute(
-				"workflowContext", workflowContext);
-
-			WorkflowHandlerRegistryUtil.startWorkflowInstance(
-				OSBConstants.COMPANY_ID, orderEntry.getUserId(),
-				OrderEntry.class.getName(), orderEntry.getOrderEntryId(),
-				orderEntry, workflowServiceContext);
-		}
-
-		return orderEntries;
-	}
 
 	public OrderEntry addOrderEntry(
 			long userId, long accountEntryId, String purchaseOrderKey,

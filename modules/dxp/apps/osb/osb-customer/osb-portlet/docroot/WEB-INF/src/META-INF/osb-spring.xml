@@ -7,14 +7,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 >
-	<bean class="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl" id="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl">
-		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.host')}" />
-		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.port')}" />
-		<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.dossiera.protocol')}" />
-	</bean>
-	<bean class="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil" id="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceUtil">
-		<property name="DossieraRESTWebService" ref="com.liferay.osb.remote.dossiera.DossieraRESTWebServiceImpl" />
-	</bean>
 	<bean class="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl" id="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl">
 		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.host')}" />
 		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.port')}" />

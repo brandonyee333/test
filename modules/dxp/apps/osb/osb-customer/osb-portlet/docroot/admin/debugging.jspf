@@ -19,112 +19,89 @@ String tabs3 = ParamUtil.getString(request, "tabs3", "license");
 %>
 
 <liferay-ui:tabs
-	names="license,rabbitmq"
+	names="license"
 	param="tabs3"
 	url="<%= portletURL.toString() %>"
 />
 
-<c:choose>
-	<c:when test='<%= tabs3.equals("rabbitmq") && permissionChecker.isCompanyAdmin() %>'>
-		<portlet:actionURL name="debugRabbitMQ" var="debugRabbitMQURL">
-			<portlet:param name="mvcPath" value="/admin/view.jsp" />
-			<portlet:param name="tabs1" value="tools" />
-			<portlet:param name="tabs2" value="debugging" />
-			<portlet:param name="tabs3" value="rabbitmq" />
-		</portlet:actionURL>
+<%
+Properties licenseProperties = (Properties)request.getAttribute("licenseProperties");
+Properties serverProperties = (Properties)request.getAttribute("serverProperties");
+Properties serverIdProperties = (Properties)request.getAttribute("serverIdProperties");
+%>
 
-		<aui:form action="<%= debugRabbitMQURL %>" method="post">
-			<aui:input name="routingKey" type="text" />
+<c:if test="<%= licenseProperties != null %>">
+	<h1>
+		License Properties
+	</h1>
 
-			<aui:input name="message" type="textarea" />
+	<%
+	for (String key : licenseProperties.stringPropertyNames()) {
+	%>
 
-			<aui:input name="properties" type="textarea" />
+		<strong><%= key %>:</strong> <%= licenseProperties.getProperty(key) %>
 
-			<aui:button type="submit" value="submit" />
-		</aui:form>
-	</c:when>
-	<c:otherwise>
+		<br />
 
-		<%
-		Properties licenseProperties = (Properties)request.getAttribute("licenseProperties");
-		Properties serverProperties = (Properties)request.getAttribute("serverProperties");
-		Properties serverIdProperties = (Properties)request.getAttribute("serverIdProperties");
-		%>
+	<%
+	}
+	%>
 
-		<c:if test="<%= licenseProperties != null %>">
-			<h1>
-				License Properties
-			</h1>
+</c:if>
 
-			<%
-			for (String key : licenseProperties.stringPropertyNames()) {
-			%>
+<c:if test="<%= serverProperties != null %>">
+	<h1>
+		Server Properties
+	</h1>
 
-				<strong><%= key %>:</strong> <%= licenseProperties.getProperty(key) %>
+	<%
+	for (String key : serverProperties.stringPropertyNames()) {
+	%>
 
-				<br />
+		<strong><%= key %>:</strong> <%= serverProperties.getProperty(key) %>
 
-			<%
-			}
-			%>
+		<br />
 
-		</c:if>
+	<%
+	}
+	%>
 
-		<c:if test="<%= serverProperties != null %>">
-			<h1>
-				Server Properties
-			</h1>
+</c:if>
 
-			<%
-			for (String key : serverProperties.stringPropertyNames()) {
-			%>
+<c:if test="<%= serverIdProperties != null %>">
+	<h1>
+		Server ID Properties
+	</h1>
 
-				<strong><%= key %>:</strong> <%= serverProperties.getProperty(key) %>
+	<%
+	for (String key : serverIdProperties.stringPropertyNames()) {
+	%>
 
-				<br />
+		<strong><%= key %>:</strong> <%= serverIdProperties.getProperty(key) %>
 
-			<%
-			}
-			%>
+		<br />
 
-		</c:if>
+	<%
+	}
+	%>
 
-		<c:if test="<%= serverIdProperties != null %>">
-			<h1>
-				Server ID Properties
-			</h1>
+</c:if>
 
-			<%
-			for (String key : serverIdProperties.stringPropertyNames()) {
-			%>
+<portlet:actionURL name="debugLicenseFiles" var="debugLicenseFilesURL">
+	<portlet:param name="mvcPath" value="/admin/view.jsp" />
+	<portlet:param name="tabs1" value="tools" />
+	<portlet:param name="tabs2" value="debugging" />
+	<portlet:param name="tabs3" value="license" />
+</portlet:actionURL>
 
-				<strong><%= key %>:</strong> <%= serverIdProperties.getProperty(key) %>
+<aui:form action="<%= debugLicenseFilesURL %>" enctype="multipart/form-data" method="post">
+	<div class="ctrl-holder">
+		<aui:input label="license-file" name="license" type="file" />
+	</div>
 
-				<br />
+	<div class="ctrl-holder">
+		<aui:input label="server-id-file" name="serverId" type="file" />
+	</div>
 
-			<%
-			}
-			%>
-
-		</c:if>
-
-		<portlet:actionURL name="debugLicenseFiles" var="debugLicenseFilesURL">
-			<portlet:param name="mvcPath" value="/admin/view.jsp" />
-			<portlet:param name="tabs1" value="tools" />
-			<portlet:param name="tabs2" value="debugging" />
-			<portlet:param name="tabs3" value="license" />
-		</portlet:actionURL>
-
-		<aui:form action="<%= debugLicenseFilesURL %>" enctype="multipart/form-data" method="post">
-			<div class="ctrl-holder">
-				<aui:input label="license-file" name="license" type="file" />
-			</div>
-
-			<div class="ctrl-holder">
-				<aui:input label="server-id-file" name="serverId" type="file" />
-			</div>
-
-			<aui:button type="submit" value="submit" />
-		</aui:form>
-	</c:otherwise>
-</c:choose>
+	<aui:button type="submit" value="submit" />
+</aui:form>

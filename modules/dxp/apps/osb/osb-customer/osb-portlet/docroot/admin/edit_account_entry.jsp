@@ -167,101 +167,13 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</span>
 			<span class="spacer"></span>
 
-			<%
-			WorkflowTask workflowTask = null;
-
-			List<WorkflowTask> workflowTasks = WorkflowTaskManagerUtil.search(OSBConstants.COMPANY_ID, 0, null, AccountEntry.class.getName(), new Long[] {accountEntry.getAccountEntryId()}, null, null, false, null, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
-
-			if (accountEntry.isPending()) {
-				for (WorkflowTask curWorkflowTask : workflowTasks) {
-					Map<String, Serializable> optionalAttributes = curWorkflowTask.getOptionalAttributes();
-
-					String entryClassName = GetterUtil.getString(optionalAttributes.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME));
-
-					if (entryClassName.equals(AccountEntry.class.getName())) {
-						workflowTask = curWorkflowTask;
-
-						break;
-					}
-				}
-			}
-			%>
-
-			<span class="<%= (workflowTask == null) ? "last" : "" %> segment">
+			<span class="last segment">
 				<liferay-ui:message key="status" />:
 
-				<c:choose>
-					<c:when test="<%= workflowTask != null %>">
-
-						<%
-						PortletURL workflowTaskURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-						workflowTaskURL.setParameter("mvcPath", "/edit_workflow_task.jsp");
-						workflowTaskURL.setParameter("redirect", currentURL);
-						workflowTaskURL.setParameter("workflowTaskId", String.valueOf(workflowTask.getWorkflowTaskId()));
-						%>
-
-						<aui:a href="<%= workflowTaskURL.toString() %>" label="<%= accountEntry.getStatusLabel() %>" target="_blank" />
-					</c:when>
-					<c:otherwise>
-						<span class="txt-sb">
-							<%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %>
-						</span>
-					</c:otherwise>
-				</c:choose>
-
-				<c:if test="<%= !workflowTasks.isEmpty() %>">
-
-					<%
-					PortletURL workflowTasksURL = PortletURLFactoryUtil.create(request, PortletKeys.MY_WORKFLOW_TASK, themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
-
-					workflowTasksURL.setParameter("tabs1", "other-assignees");
-					workflowTasksURL.setParameter("accountEntryCode", StringPool.QUOTE + accountEntry.getCode() + StringPool.QUOTE);
-					%>
-
-					(<aui:a href="<%= workflowTasksURL.toString() %>" label="open-workflow-tasks" target="_blank" />)
-				</c:if>
-			</span>
-
-			<c:if test="<%= workflowTask != null %>">
-				<span class="spacer"></span>
-
-				<span class="last segment">
-					<liferay-ui:message key="assigned-to" />:
-
-					<span class="txt-sb">
-
-						<%
-						List<WorkflowTaskAssignee> workflowTaskAssignees = workflowTask.getWorkflowTaskAssignees();
-
-						for (int i = 0; i < workflowTaskAssignees.size(); i++) {
-							WorkflowTaskAssignee workflowTaskAssignee = workflowTaskAssignees.get(i);
-
-							String assignedToName = StringPool.BLANK;
-
-							String assigneeClassName = workflowTaskAssignee.getAssigneeClassName();
-
-							if (assigneeClassName.equals(Role.class.getName())) {
-								Role role = RoleLocalServiceUtil.getRole(workflowTaskAssignee.getAssigneeClassPK());
-
-								assignedToName = role.getName();
-							}
-							else if (assigneeClassName.equals(User.class.getName())) {
-								User curUser = UserLocalServiceUtil.getUser(workflowTaskAssignee.getAssigneeClassPK());
-
-								assignedToName = curUser.getFullName();
-							}
-						%>
-
-							<%= HtmlUtil.escape(assignedToName) %><%= ((i + 1) < workflowTaskAssignees.size()) ? StringPool.COMMA_AND_SPACE : "" %>
-
-						<%
-						}
-						%>
-
-					</span>
+				<span class="txt-sb">
+					<%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %>
 				</span>
-			</c:if>
+			</span>
 		</div>
 
 		<br />
@@ -714,15 +626,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			</portlet:renderURL>
 
 			<aui:a cssClass="btn btn-default" href="<%= viewOrdersEntriesURL %>" label="view-orders" />
-
-			<c:if test="<%= PortletPropsValues.REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED && permissionChecker.isOmniadmin() %>">
-				<portlet:actionURL name="auditAccountEntry" var="auditOrdersURL">
-					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-					<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
-				</portlet:actionURL>
-
-				<aui:a cssClass="btn btn-default" href="<%= auditOrdersURL %>" label="audit-project" />
-			</c:if>
 		</c:if>
 
 		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />

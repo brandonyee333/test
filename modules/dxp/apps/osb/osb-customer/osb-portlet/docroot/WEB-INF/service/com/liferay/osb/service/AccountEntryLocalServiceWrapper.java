@@ -90,23 +90,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 			countryId, ewsaDossieraProjectKey);
 	}
 
-	@Override
-	public com.liferay.osb.model.AccountEntry addAccountEntryWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.CorpProject corpProject,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.portal.kernel.model.Address address,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.List<com.liferay.portal.kernel.model.User> users,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntryLocalService.addAccountEntryWithWorkflow(salesforceOpportunityKey,
-			accountEntry, corpProject, partnerEntry, address, accountWorker,
-			orderEntries, users, serviceContext);
-	}
-
 	/**
 	* Creates a new account entry with the primary key. Does not add the account entry to the database.
 	*
@@ -654,27 +637,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	}
 
 	@Override
-	public void addWorkflowTask(java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.addWorkflowTask(salesforceOpportunityKey,
-			accountEntry, serviceContext);
-	}
-
-	@Override
-	public void auditAccountEntries()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.auditAccountEntries();
-	}
-
-	@Override
-	public void auditAccountEntry(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.auditAccountEntry(userId, accountEntryId);
-	}
-
-	@Override
 	public void clearSupportRegionAccountEntries(long supportRegionId) {
 		_accountEntryLocalService.clearSupportRegionAccountEntries(supportRegionId);
 	}
@@ -718,30 +680,6 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 		long[] accountEntryIds) {
 		_accountEntryLocalService.setSupportRegionAccountEntries(supportRegionId,
 			accountEntryIds);
-	}
-
-	@Override
-	public void updateAccountEntryWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		com.liferay.portal.kernel.model.Address address,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.List<com.liferay.portal.kernel.model.User> users,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.updateAccountEntryWithWorkflow(salesforceOpportunityKey,
-			accountEntry, partnerEntry, accountWorker, address, orderEntries,
-			users, serviceContext);
-	}
-
-	@Override
-	public void updateLastAuditDate(long userId, long accountEntryId,
-		java.lang.String auditLabel, java.lang.String auditValue)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_accountEntryLocalService.updateLastAuditDate(userId, accountEntryId,
-			auditLabel, auditValue);
 	}
 
 	@Override

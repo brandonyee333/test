@@ -92,23 +92,6 @@ public class AccountEntryLocalServiceUtil {
 			ewsaDossieraProjectKey);
 	}
 
-	public static com.liferay.osb.model.AccountEntry addAccountEntryWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.CorpProject corpProject,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.portal.kernel.model.Address address,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.List<com.liferay.portal.kernel.model.User> users,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addAccountEntryWithWorkflow(salesforceOpportunityKey,
-			accountEntry, corpProject, partnerEntry, address, accountWorker,
-			orderEntries, users, serviceContext);
-	}
-
 	/**
 	* Creates a new account entry with the primary key. Does not add the account entry to the database.
 	*
@@ -593,26 +576,6 @@ public class AccountEntryLocalServiceUtil {
 		getService().addTrialAccountEntry(userId);
 	}
 
-	public static void addWorkflowTask(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.addWorkflowTask(salesforceOpportunityKey, accountEntry,
-			serviceContext);
-	}
-
-	public static void auditAccountEntries()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().auditAccountEntries();
-	}
-
-	public static void auditAccountEntry(long userId, long accountEntryId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().auditAccountEntry(userId, accountEntryId);
-	}
-
 	public static void clearSupportRegionAccountEntries(long supportRegionId) {
 		getService().clearSupportRegionAccountEntries(supportRegionId);
 	}
@@ -650,29 +613,6 @@ public class AccountEntryLocalServiceUtil {
 		long[] accountEntryIds) {
 		getService()
 			.setSupportRegionAccountEntries(supportRegionId, accountEntryIds);
-	}
-
-	public static void updateAccountEntryWithWorkflow(
-		java.lang.String salesforceOpportunityKey,
-		com.liferay.osb.model.AccountEntry accountEntry,
-		com.liferay.osb.model.PartnerEntry partnerEntry,
-		com.liferay.osb.model.AccountWorker accountWorker,
-		com.liferay.portal.kernel.model.Address address,
-		java.util.List<com.liferay.osb.model.OrderEntry> orderEntries,
-		java.util.List<com.liferay.portal.kernel.model.User> users,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.updateAccountEntryWithWorkflow(salesforceOpportunityKey,
-			accountEntry, partnerEntry, accountWorker, address, orderEntries,
-			users, serviceContext);
-	}
-
-	public static void updateLastAuditDate(long userId, long accountEntryId,
-		java.lang.String auditLabel, java.lang.String auditValue)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService()
-			.updateLastAuditDate(userId, accountEntryId, auditLabel, auditValue);
 	}
 
 	public static void updateLastZendeskAuditDate(long userId,
