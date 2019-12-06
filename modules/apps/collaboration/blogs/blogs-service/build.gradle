@@ -12,6 +12,7 @@ dependencies {
 	compileOnly project(":apps:web-experience:export-import:export-import-service")
 	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":core:registry-api")
+	compileOnly project(":apps:collaboration:document-library:document-library-api")
 
 	testCompile project(":apps:collaboration:blogs:blogs-test-util")
 	testCompile project(":apps:collaboration:blogs:blogs-web")
