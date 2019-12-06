@@ -1,6 +1,5 @@
 dependencies {
 	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.1.0"
-	compileOnly group: "com.liferay", name: "com.liferay.exportimport.api", version: "2.1.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "default"
@@ -11,6 +10,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":apps:collaboration:flags:flags-taglib")
 	compileOnly project(":apps:collaboration:message-boards:message-boards-api")
+	compileOnly project(":apps:export-import:export-import-api")
 	compileOnly project(":apps:foundation:captcha:captcha-api")
 	compileOnly project(":apps:foundation:captcha:captcha-taglib")
 	compileOnly project(":apps:foundation:expando:expando-taglib")
