@@ -1,0 +1,23 @@
+<LayoutPrototype>
+  <__cachedModel>false</__cachedModel>
+  <__new>false</__new>
+  <__mvccVersion>0</__mvccVersion>
+  <__uuid>468b0425-afe2-a0f7-0356-cfdbd2fb7c1a</__uuid>
+  <__originalUuid>468b0425-afe2-a0f7-0356-cfdbd2fb7c1a</__originalUuid>
+  <__layoutPrototypeId>32095</__layoutPrototypeId>
+  <__companyId>20116</__companyId>
+  <__originalCompanyId>20116</__originalCompanyId>
+  <__setOriginalCompanyId>false</__setOriginalCompanyId>
+  <__userId>31228</__userId>
+  <__userName>Brandon Pettit</__userName>
+  <__createDate class="sql-timestamp">2016-05-11 19:40:36.206</__createDate>
+  <__modifiedDate class="sql-timestamp">2016-05-11 19:44:37.554</__modifiedDate>
+  <__setModifiedDate>false</__setModifiedDate>
+  <__name>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;&lt;root available-locales=&quot;en_US&quot; default-locale=&quot;en_US&quot;&gt;&lt;Name language-id=&quot;en_US&quot;&gt;Department Landing Page&lt;/Name&gt;&lt;/root&gt;</__name>
+  <__description></__description>
+  <__settings></__settings>
+  <__active>true</__active>
+  <__originalActive>true</__originalActive>
+  <__setOriginalActive>false</__setOriginalActive>
+  <__columnBitmask>0</__columnBitmask>
+</LayoutPrototype>

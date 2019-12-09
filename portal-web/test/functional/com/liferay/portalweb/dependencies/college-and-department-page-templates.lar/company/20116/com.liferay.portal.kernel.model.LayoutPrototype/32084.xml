@@ -1,0 +1,23 @@
+<LayoutPrototype>
+  <__cachedModel>false</__cachedModel>
+  <__new>false</__new>
+  <__mvccVersion>0</__mvccVersion>
+  <__uuid>9aec7af0-05a7-7b6d-4fed-91a956b1068b</__uuid>
+  <__originalUuid>9aec7af0-05a7-7b6d-4fed-91a956b1068b</__originalUuid>
+  <__layoutPrototypeId>32084</__layoutPrototypeId>
+  <__companyId>20116</__companyId>
+  <__originalCompanyId>20116</__originalCompanyId>
+  <__setOriginalCompanyId>false</__setOriginalCompanyId>
+  <__userId>31228</__userId>
+  <__userName>Brandon Pettit</__userName>
+  <__createDate class="sql-timestamp">2016-05-11 19:40:19.957</__createDate>
+  <__modifiedDate class="sql-timestamp">2016-05-11 19:44:46.035</__modifiedDate>
+  <__setModifiedDate>false</__setModifiedDate>
+  <__name>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;&lt;root available-locales=&quot;en_US&quot; default-locale=&quot;en_US&quot;&gt;&lt;Name language-id=&quot;en_US&quot;&gt;College Landing Page&lt;/Name&gt;&lt;/root&gt;</__name>
+  <__description></__description>
+  <__settings></__settings>
+  <__active>true</__active>
+  <__originalActive>true</__originalActive>
+  <__setOriginalActive>false</__setOriginalActive>
+  <__columnBitmask>0</__columnBitmask>
+</LayoutPrototype>

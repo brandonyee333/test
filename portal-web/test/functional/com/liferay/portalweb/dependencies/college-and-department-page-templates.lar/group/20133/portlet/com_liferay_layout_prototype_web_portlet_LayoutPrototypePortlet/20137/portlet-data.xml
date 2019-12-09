@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<LayoutPrototypePortletDataHandler group-id="20133">
+	<LayoutPrototype>
+		<staged-model uuid="9aec7af0-05a7-7b6d-4fed-91a956b1068b" path="/company/20116/com.liferay.portal.kernel.model.LayoutPrototype/32084.xml">
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.Layout" class-pk="32088" group-id="32085" live-group-id="32085" type="embedded" uuid="d3412acb-eb6a-2c84-157f-c283cd5a4a25" company-id="20116" private-layout="true" layout-id="1" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model uuid="468b0425-afe2-a0f7-0356-cfdbd2fb7c1a" path="/company/20116/com.liferay.portal.kernel.model.LayoutPrototype/32095.xml">
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.Layout" class-pk="32099" group-id="32096" live-group-id="32096" type="embedded" uuid="c4942211-8b6b-a8f0-8922-d116bc994441" company-id="20116" private-layout="true" layout-id="1" missing="false"/>
+			</references>
+		</staged-model>
+	</LayoutPrototype>
+	<Layout>
+		<staged-model group-id="32085" uuid="d3412acb-eb6a-2c84-157f-c283cd5a4a25" layout-uuid="d3412acb-eb6a-2c84-157f-c283cd5a4a25" layout-id="1" layout-priority="0" action="add" path="/group/32085/com.liferay.portal.kernel.model.Layout/32088.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.LayoutFriendlyURL" class-pk="32094" group-id="32085" live-group-id="32085" type="dependency" uuid="56950b18-9665-7604-7a14-2aa0d88bc6f8" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+		<staged-model group-id="32096" uuid="c4942211-8b6b-a8f0-8922-d116bc994441" layout-uuid="c4942211-8b6b-a8f0-8922-d116bc994441" layout-id="1" layout-priority="0" action="add" path="/group/32096/com.liferay.portal.kernel.model.Layout/32099.xml" asset-priority="0.0">
+			<references>
+				<reference class-name="com.liferay.portal.kernel.model.LayoutFriendlyURL" class-pk="32105" group-id="32096" live-group-id="32096" type="dependency" uuid="57919a2b-43a4-76af-c139-091fc501cdc6" company-id="20116" missing="false"/>
+			</references>
+		</staged-model>
+	</Layout>
+	<LayoutFriendlyURL>
+		<staged-model group-id="32085" uuid="56950b18-9665-7604-7a14-2aa0d88bc6f8" path="/group/32085/com.liferay.portal.kernel.model.LayoutFriendlyURL/32094.xml"/>
+		<staged-model group-id="32096" uuid="57919a2b-43a4-76af-c139-091fc501cdc6" path="/group/32096/com.liferay.portal.kernel.model.LayoutFriendlyURL/32105.xml"/>
+	</LayoutFriendlyURL>
+</LayoutPrototypePortletDataHandler>
