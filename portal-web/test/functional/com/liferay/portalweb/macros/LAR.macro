@@ -180,9 +180,16 @@ definition {
 				locator1 = "Button#IMPORT",
 				value1 = "Import");
 
-			AssertTextEquals(
-				locator1 = "ExportImport#CURRENT_AND_PREVIOUS_STATUS_1",
-				value1 = "Successful");
+			if (isSet(failureExpected)) {
+				AssertTextEquals(
+					locator1 = "ExportImport#CURRENT_AND_PREVIOUS_STATUS_1",
+					value1 = "Failed");
+			}
+			else {
+				AssertTextEquals(
+					locator1 = "ExportImport#CURRENT_AND_PREVIOUS_STATUS_1",
+					value1 = "Successful");
+			}
 
 			SelectFrame(value1 = "relative=top");
 		}
@@ -575,6 +582,7 @@ definition {
 
 		LAR._selectImportFile(
 			cannotImport = "${cannotImport}",
+			failureExpected = "${failureExpected}",
 			importPermissions = "${importPermissions}",
 			larFileName = "${larFileName}",
 			mirrorWithOverwriting = "${mirrorWithOverwriting}",
