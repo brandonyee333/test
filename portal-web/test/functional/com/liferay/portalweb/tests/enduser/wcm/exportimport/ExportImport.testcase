@@ -67,8 +67,8 @@ definition {
 			locator1 = "Message#ERROR",
 			value1 = "Your request failed to complete.");
 
-		AssertTextEquals.assertPartialText(
-			locator1 = "Message#ERROR_DISMISSIBLE",
+		AssertTextPresent(
+			locator1 = "Message#ERROR",
 			value1 = "Unable to validate referenced file entry because it cannot be found with the following parameters");
 	}
 
