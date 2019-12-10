@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<BlogsPortletDataHandler self-path="/group/20142/portlet/com_liferay_blogs_web_portlet_BlogsAdminPortlet/20142/portlet-data.xml" group-id="20142">
+	<BlogsEntry>
+		<staged-model group-id="20142" uuid="6fa840f6-d328-f758-55ac-0dfe3eb1e619" path="/group/20142/com.liferay.blogs.kernel.model.BlogsEntry/38012.xml" asset-priority="0.0" user-uuid="ed40ac88-8c27-299f-b14c-87ccdfc064f8"/>
+	</BlogsEntry>
+</BlogsPortletDataHandler>

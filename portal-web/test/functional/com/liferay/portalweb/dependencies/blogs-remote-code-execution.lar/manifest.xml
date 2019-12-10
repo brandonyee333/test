@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<root>
+	<header available-locales="en_US,ca_ES,zh_CN,nl_NL,fi_FI,fr_FR,de_DE,iw_IL,hu_HU,ja_JP,pt_BR,es_ES" build-number="7010" export-date="Tue, 10 Dec 2019 02:00:53 +0000" type="portlet" company-id="20115" company-group-id="20151" group-id="20142" user-personal-site-group-id="20148" private-layout="true" root-portlet-id="com_liferay_blogs_web_portlet_BlogsAdminPortlet"/>
+	<missing-references/>
+	<portlet portlet-id="com_liferay_blogs_web_portlet_BlogsAdminPortlet" layout-id="1" path="/group/20142/portlet/com_liferay_blogs_web_portlet_BlogsAdminPortlet/20136/portlet.xml" portlet-data="true" schema-version="1.0.0" portlet-configuration="setup"/>
+	<manifest-summary>
+		<staged-model manifest-summary-key="com.liferay.blogs.kernel.model.BlogsEntry" addition-count="1"/>
+	</manifest-summary>
+</root>
