@@ -17,6 +17,7 @@ package com.liferay.asset.publisher.web.util;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
@@ -112,14 +113,25 @@ public class AssetPublisherHelper {
 			(ThemeDisplay)liferayPortletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		if (Validator.isNotNull(assetRenderer.getUrlTitle())) {
+		String urlTitle = assetRenderer.getUrlTitle();
+
+		if (Validator.isNotNull(urlTitle)) {
 			if (assetRenderer.getGroupId() != themeDisplay.getScopeGroupId()) {
 				viewFullContentURL.setParameter(
 					"groupId", String.valueOf(assetRenderer.getGroupId()));
 			}
 
-			viewFullContentURL.setParameter(
-				"urlTitle", assetRenderer.getUrlTitle());
+			urlTitle = urlTitle.replaceAll(StringPool.SLASH, StringPool.DASH);
+
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(StringPool.DASH);
+			sb.append(StringPool.DASH);
+			sb.append(StringPool.PLUS);
+
+			urlTitle = urlTitle.replaceAll(sb.toString(), StringPool.DASH);
+
+			viewFullContentURL.setParameter("urlTitle", urlTitle);
 		}
 
 		String viewURL = null;
