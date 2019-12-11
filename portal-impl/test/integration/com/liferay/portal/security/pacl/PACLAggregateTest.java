@@ -321,6 +321,11 @@ public class PACLAggregateTest extends AutoBalanceTestCase {
 					"portal:" + PropsKeys.MODULE_FRAMEWORK_STATE_DIR,
 					tempStatePath.toString());
 
+				System.setProperty(
+					"portal:module.framework.properties.felix.fileinstall." +
+						"filter",
+					"^((?!arquillian).)*$");
+
 				PropsUtil.setProps(new PropsImpl());
 
 				SystemProperties.set(
