@@ -1,6 +1,44 @@
 <?xml version="1.0"?>
 
 <custom-sql>
+	<sql id="com.liferay.osb.service.persistence.AccountCustomerFinder.countPassportCustomersByDomain">
+		<![CDATA[
+			SELECT
+				count(substring_index(emailAddress, '@', -1)) count
+			FROM
+				OSB_AccountCustomer
+			INNER JOIN
+				User_ ON
+					User_.userId = OSB_AccountCustomer.userId
+			INNER JOIN
+				OSB_AccountEntry ON
+					OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId
+			LEFT JOIN
+				Address ON
+					OSB_AccountEntry.accountEntryId = Address.classPK
+			LEFT JOIN
+				Country ON
+					Address.countryId = Country.countryId
+			INNER JOIN
+				OSB_OfferingEntry ON
+					OSB_AccountCustomer.accountEntryId = OSB_OfferingEntry.accountEntryId
+			WHERE
+				(substring_index(emailAddress, '@', -1) = ?) AND
+				(OSB_AccountEntry.type_ != 4) AND
+				(OSB_OfferingEntry.type_ = 1) AND
+				(OSB_OfferingEntry.status = 1) AND
+				(
+					(OSB_OfferingEntry.version = 42000) OR
+					(OSB_OfferingEntry.version = 21001) OR
+					(OSB_OfferingEntry.version = 21000)
+				) AND
+				(
+					(Country.name != 'china') AND
+					(Country.name != 'india') AND
+					(Country.name != 'japan')
+				)
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
 		<![CDATA[
 			SELECT

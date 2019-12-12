@@ -3,6 +3,7 @@
 <suppressions>
 	<source-check>
 		<suppress checks="GradleDependencyArtifactsCheck" files="build.gradle" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/web/internal/portlet/action/SubmitPassportAccessMVCActionCommand.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/web/internal/portlet/action/ViewMVCRenderCommand.java" />
 	</source-check>
 </suppressions>

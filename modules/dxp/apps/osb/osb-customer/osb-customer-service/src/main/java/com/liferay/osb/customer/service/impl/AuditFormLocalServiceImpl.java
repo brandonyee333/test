@@ -32,14 +32,14 @@ public class AuditFormLocalServiceImpl extends AuditFormLocalServiceBaseImpl {
 
 	public AuditForm addAuditForm(
 			long userId, String endUserName, String endUserEmailAddress,
-			boolean agreement)
+			String companyName, boolean agreement)
 		throws Exception {
 
 		User user = userLocalService.getUser(userId);
 
 		validate(
 			user.getEmailAddress(), endUserName, endUserEmailAddress,
-			agreement);
+			companyName, agreement);
 
 		long auditFormId = counterLocalService.increment();
 
@@ -50,6 +50,7 @@ public class AuditFormLocalServiceImpl extends AuditFormLocalServiceBaseImpl {
 		auditForm.setCreateDate(new Date());
 		auditForm.setEndUserName(endUserName);
 		auditForm.setEndUserEmailAddress(endUserEmailAddress);
+		auditForm.setCompanyName(companyName);
 		auditForm.setAgreement(agreement);
 
 		return auditFormPersistence.update(auditForm);
@@ -57,7 +58,7 @@ public class AuditFormLocalServiceImpl extends AuditFormLocalServiceBaseImpl {
 
 	protected void validate(
 			String userEmailAddress, String endUserName,
-			String endUserEmailAddress, boolean agreement)
+			String endUserEmailAddress, String companyName, boolean agreement)
 		throws Exception {
 
 		if (Validator.isNull(endUserName)) {
@@ -67,6 +68,10 @@ public class AuditFormLocalServiceImpl extends AuditFormLocalServiceBaseImpl {
 		if (Validator.isNull(endUserEmailAddress)) {
 			throw new RequiredFieldException(
 				"endUserEmailAddress", "endUserEmailAddress");
+		}
+
+		if (Validator.isNull(companyName)) {
+			throw new RequiredFieldException("companyName", "companyName");
 		}
 
 		String endUserDomain = endUserEmailAddress.substring(

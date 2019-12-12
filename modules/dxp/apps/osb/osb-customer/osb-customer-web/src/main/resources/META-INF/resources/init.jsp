@@ -31,6 +31,7 @@ page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.journal.service.JournalArticleLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
 page import="com.liferay.osb.customer.exception.EmailAddressDomainException" %><%@
+page import="com.liferay.osb.customer.exception.SubscriptionException" %><%@
 page import="com.liferay.portal.kernel.exception.RequiredFieldException" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@

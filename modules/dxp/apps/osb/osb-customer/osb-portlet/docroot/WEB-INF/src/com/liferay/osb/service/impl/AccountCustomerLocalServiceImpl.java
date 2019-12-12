@@ -160,6 +160,10 @@ public class AccountCustomerLocalServiceImpl
 			userId, user.getUserId(), accountEntryId, role, closedWatcher);
 	}
 
+	public int countPassportCustomersByDomain(String domain) {
+		return accountCustomerFinder.countPassportCustomersByDomain(domain);
+	}
+
 	@Override
 	public AccountCustomer deleteAccountCustomer(
 			long userId, AccountCustomer accountCustomer)

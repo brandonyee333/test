@@ -27,6 +27,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 	<liferay-ui:error exception="<%= EmailAddressDomainException.class %>" message="end-user-work-email-address-domain-must-match-your-own-email-address-domain" />
 	<liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-fill-out-all-required-fields" />
+	<liferay-ui:error exception="<%= SubscriptionException.class %>" message="we-could-not-identify-any-active-liferay-subscription-or-active-liferay-partnership-for-the-provided-company" />
 
 	<br />
 
@@ -40,15 +41,19 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 	<aui:fieldset-group>
 		<aui:fieldset>
-			<aui:input name="endUserFirstName">
+			<aui:input name="endUserFirstName" value="<%= user.getFirstName() %>">
 				<aui:validator name="required" />
 			</aui:input>
 
-			<aui:input name="endUserLastName">
+			<aui:input name="endUserLastName" value="<%= user.getLastName() %>">
 				<aui:validator name="required" />
 			</aui:input>
 
-			<aui:input helpMessage="you-may-request-liferay-university-passport-access-for-yourself-or-for-a-member-of-your-liferay-project-team" name="endUserWorkEmailAddress">
+			<aui:input name="companyName">
+				<aui:validator name="required" />
+			</aui:input>
+
+			<aui:input helpMessage="you-may-request-liferay-university-passport-access-for-yourself-or-for-a-member-of-your-liferay-project-team" name="endUserWorkEmailAddress" value="<%= user.getEmailAddress() %>">
 				<aui:validator name="email" />
 				<aui:validator name="required" />
 			</aui:input>
