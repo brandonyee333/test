@@ -16,7 +16,6 @@ package com.liferay.portal.security.pacl;
 
 import com.liferay.portal.kernel.cache.CacheRegistryItem;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.security.lang.PortalSecurityManager;
 import com.liferay.portal.security.lang.SecurityManagerUtil;
@@ -27,6 +26,10 @@ import java.security.PermissionCollection;
 import java.security.Policy;
 import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Raymond Augé
@@ -123,7 +126,7 @@ public class PACLUtil {
 		for (Class<?> currentInterface : interfaces) {
 			clazz = currentInterface;
 
-			if (!ArrayUtil.contains(_IGNORED_INTERFACES, clazz)) {
+			if (!_ignoredInterfaces.contains(clazz)) {
 				break;
 			}
 		}
@@ -177,10 +180,8 @@ public class PACLUtil {
 		return false;
 	}
 
-	private static final Class<?>[] _IGNORED_INTERFACES = {
-		CacheRegistryItem.class, IdentifiableOSGiService.class
-	};
-
+	private static final Set<Class<?>> _ignoredInterfaces = new HashSet<>(
+		Arrays.asList(CacheRegistryItem.class, IdentifiableOSGiService.class));
 	private static final Permission _permission = new PACLUtil.Permission();
 
 	private static class ProtectionDomainPrivilegedAction
