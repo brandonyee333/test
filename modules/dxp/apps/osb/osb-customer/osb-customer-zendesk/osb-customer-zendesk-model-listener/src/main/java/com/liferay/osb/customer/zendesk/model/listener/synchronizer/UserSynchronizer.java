@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -80,8 +81,14 @@ public class UserSynchronizer {
 
 		String emailAddress = user.getEmailAddress();
 		String fullName = user.getFullName();
+
 		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
+
+		if (Validator.isNull(zendeskLocale)) {
+			zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
+				LocaleUtil.US);
+		}
 
 		Set<String> tags = getTags(user.getUserId());
 
@@ -103,6 +110,11 @@ public class UserSynchronizer {
 
 		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
+
+		if (Validator.isNull(zendeskLocale)) {
+			zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
+				LocaleUtil.US);
+		}
 
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
