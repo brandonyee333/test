@@ -30,9 +30,6 @@ import java.util.Set;
 @ProviderType
 public interface ZendeskUserWebService {
 
-	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException;
-
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
@@ -43,9 +40,6 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public void deleteZendeskUser(long zendeskUserId) throws PortalException;
-
-	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException;
 
 	public ZendeskUser getZendeskUser(long zendeskUserId)
 		throws PortalException;
@@ -60,6 +54,9 @@ public interface ZendeskUserWebService {
 		throws PortalException;
 
 	public SearchHits<ZendeskUser> getZendeskUsers(Query query)
+		throws PortalException;
+
+	public void updateZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException;
 
 }

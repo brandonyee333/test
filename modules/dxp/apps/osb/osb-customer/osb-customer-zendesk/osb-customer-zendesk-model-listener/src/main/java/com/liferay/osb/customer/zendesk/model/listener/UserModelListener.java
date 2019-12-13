@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.model.listener;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
@@ -37,9 +36,7 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -61,23 +58,15 @@ public class UserModelListener extends BaseModelListener<User> {
 				long userId = GetterUtil.getLong(classPK);
 				long organizationId = GetterUtil.getLong(associationClassPK);
 
-				if (organizationId ==
-						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) {
+				User user = _userLocalService.getUser(userId);
 
-					_userSynchronizer.addLiferayEmployee(userId);
-				}
-
-				if (organizationId ==
+				if ((organizationId ==
 						OSBCustomerConstants.
-							ORGANIZATION_LIFERAY_CONTRACTOR_ID) {
+							ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
+					(organizationId ==
+						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-					User user = _userLocalService.getUser(userId);
-
-					Set<String> tags = new HashSet<>();
-
-					tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-
-					_userSynchronizer.update(user, null, tags);
+					_userSynchronizer.update(user, null);
 				}
 			}
 		}
@@ -105,7 +94,7 @@ public class UserModelListener extends BaseModelListener<User> {
 					(organizationId ==
 						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-					_userSynchronizer.removeObsoleteTags(userId, null, null);
+					_userSynchronizer.updateTags(userId);
 				}
 			}
 		}
@@ -134,7 +123,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			if (!oldFirstName.equals(user.getFirstName()) ||
 				!oldLastName.equals(user.getLastName())) {
 
-				_userSynchronizer.update(user, null, null);
+				_userSynchronizer.update(user, null);
 			}
 		}
 		catch (Exception e) {

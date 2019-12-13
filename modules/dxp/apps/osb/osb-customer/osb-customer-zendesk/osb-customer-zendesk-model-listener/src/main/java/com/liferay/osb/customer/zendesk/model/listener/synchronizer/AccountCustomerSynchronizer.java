@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
@@ -51,9 +50,7 @@ public class AccountCustomerSynchronizer {
 
 		AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-		Set<String> tags = getTags(accountCustomer);
-
-		_userSynchronizer.update(user, accountEntry.getName(), tags);
+		_userSynchronizer.update(user, accountEntry.getName());
 	}
 
 	public void addOrganizationSubscription(AccountCustomer accountCustomer)
@@ -155,7 +152,7 @@ public class AccountCustomerSynchronizer {
 				deleteOrganizationMemberships(
 					zendeskUserId, new long[] {zendeskOrganizationId});
 
-			removeTags(accountCustomer, zendeskOrganizationId);
+			_userSynchronizer.updateTags(accountCustomer.getUserId());
 		}
 	}
 
@@ -164,7 +161,7 @@ public class AccountCustomerSynchronizer {
 
 		User user = _userLocalService.getUser(accountCustomer.getUserId());
 
-		_userSynchronizer.sync(zendeskUser, user, getTags(accountCustomer));
+		_userSynchronizer.sync(zendeskUser, user);
 	}
 
 	public void update(AccountCustomer accountCustomer) throws PortalException {
@@ -172,85 +169,8 @@ public class AccountCustomerSynchronizer {
 			accountCustomer.getUserId());
 
 		if (zendeskUserId > 0) {
-			Set<String> tags = getTags(accountCustomer);
-
-			_zendeskUserWebService.addZendeskUserTags(zendeskUserId, tags);
-
-			Set<String> removeTags = new HashSet<>();
-
-			if (!accountCustomer.isClosedWatcher() &&
-				(accountCustomer.getRole() !=
-					AccountCustomerConstants.ROLE_WATCHER)) {
-
-				long zendeskOrganizationId =
-					_zendeskMapperUtil.fetchZendeskOrganizationId(
-						accountCustomer.getAccountEntryId());
-
-				if (zendeskOrganizationId > 0) {
-					removeTags.add(
-						ZendeskTagConstants.getWatcherTag(
-							zendeskOrganizationId));
-				}
-			}
-
-			_userSynchronizer.removeObsoleteTags(
-				accountCustomer.getUserId(), null, removeTags);
+			_userSynchronizer.updateTags(accountCustomer.getUserId());
 		}
-	}
-
-	protected Set<String> getTags(AccountCustomer accountCustomer)
-		throws PortalException {
-
-		AccountEntry accountEntry = accountCustomer.getAccountEntry();
-
-		Set<String> tags = new HashSet<>();
-
-		if (accountEntry.isActiveSupport()) {
-			tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-		}
-
-		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(
-				accountCustomer.getAccountEntryId());
-
-		if (accountEntry.isActiveTicketSupport()) {
-			if (accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_WATCHER) {
-
-				if (zendeskOrganizationId > 0) {
-					tags.add(
-						ZendeskTagConstants.getWatcherTag(
-							zendeskOrganizationId));
-				}
-			}
-			else {
-				tags.add(ZendeskTagConstants.OSB_CUSTOMER);
-			}
-		}
-
-		if (accountCustomer.isClosedWatcher() && (zendeskOrganizationId > 0)) {
-			tags.add(ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-		}
-
-		return tags;
-	}
-
-	protected void removeTags(
-			AccountCustomer accountCustomer, long zendeskOrganizationId)
-		throws PortalException {
-
-		Set<String> removeTags = new HashSet<>();
-
-		if (accountCustomer.isClosedWatcher() ||
-			(accountCustomer.getRole() ==
-				AccountCustomerConstants.ROLE_WATCHER)) {
-
-			removeTags.add(
-				ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-		}
-
-		_userSynchronizer.removeObsoleteTags(
-			accountCustomer.getUserId(), null, removeTags);
 	}
 
 	@Reference(

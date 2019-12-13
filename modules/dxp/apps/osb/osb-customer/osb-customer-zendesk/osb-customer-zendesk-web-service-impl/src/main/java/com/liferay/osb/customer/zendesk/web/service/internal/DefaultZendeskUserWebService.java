@@ -50,12 +50,6 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
-	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException {
-
-		throw new UnsupportedOperationException();
-	}
-
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
@@ -87,12 +81,6 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 	}
 
 	public void deleteZendeskUser(long zendeskUserId) throws PortalException {
-		throw new UnsupportedOperationException();
-	}
-
-	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException {
-
 		throw new UnsupportedOperationException();
 	}
 
@@ -172,6 +160,12 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 			query.getParameters());
 
 		return toSearchHits(responseJSONObject);
+	}
+
+	public void updateZendeskUserTags(long zendeskUserId, Set<String> tags)
+		throws PortalException {
+
+		throw new UnsupportedOperationException();
 	}
 
 	protected JSONObject getZendeskUserJSONObject(

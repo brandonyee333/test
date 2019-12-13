@@ -38,30 +38,6 @@ public class AsyncZendeskUserWebService
 	extends DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 	@Override
-	public void addZendeskUserTags(long zendeskUserId, Set<String> tags)
-		throws PortalException {
-
-		String endpoint =
-			ZendeskRESTEndpoints.URL_API_V2 + "users/" + zendeskUserId +
-				"/tags.json";
-
-		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-		for (String tag : tags) {
-			jsonArray.put(tag);
-		}
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		jsonObject.put("tags", jsonArray);
-
-		ZendeskRequest zendeskRequest = new ZendeskRequest(
-			endpoint, "put", null, jsonObject, null);
-
-		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
-	}
-
-	@Override
 	public ZendeskUser createOrUpdateZendeskUser(
 			String externalId, String email, String zendeskLocale, String name,
 			String organizationName, Set<String> tags)
@@ -122,7 +98,7 @@ public class AsyncZendeskUserWebService
 	}
 
 	@Override
-	public void deleteZendeskUserTags(long zendeskUserId, Set<String> tags)
+	public void updateZendeskUserTags(long zendeskUserId, Set<String> tags)
 		throws PortalException {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
@@ -140,7 +116,7 @@ public class AsyncZendeskUserWebService
 				"/tags.json";
 
 		ZendeskRequest zendeskRequest = new ZendeskRequest(
-			endpoint, "delete", null, jsonObject, null);
+			endpoint, "post", null, jsonObject, null);
 
 		messagePublisherUtil.sendAsyncZendeskRequest(zendeskRequest);
 	}

@@ -93,7 +93,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 				_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
 
-				_accountEntrySynchronizer.removeObsoleteTags(accountEntry);
+				_accountEntrySynchronizer.updateTags(accountEntry);
 			}
 
 			if (oldAccountEntry.isActiveSupport() &&

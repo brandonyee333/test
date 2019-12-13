@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.listener.internal.constants.ZendeskDestinationNames;
@@ -47,10 +46,8 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -199,27 +196,10 @@ public class SynchronizeAccountEntryMessageListener
 						new long[] {zendeskOrganizationId});
 			}
 			else {
-				if (accountCustomer != null) {
-					_accountCustomerSynchronizer.sync(
-						zendeskUser, accountCustomer);
-				}
-
-				if (partnerWorker != null) {
-					_partnerWorkerSynchronizer.sync(
-						zendeskUser, accountEntry.getAccountEntryId(),
-						partnerWorker);
+				if ((accountCustomer != null) || (partnerWorker != null)) {
+					_userSynchronizer.sync(zendeskUser, user);
 				}
 			}
-
-			Set<String> removeTags = new HashSet<>();
-
-			if (accountCustomer == null) {
-				removeTags.add(
-					ZendeskTagConstants.getWatcherTag(zendeskOrganizationId));
-			}
-
-			_userSynchronizer.removeObsoleteTags(
-				user.getUserId(), zendeskUser.getTags(), removeTags);
 		}
 
 		for (AccountCustomer accountCustomer : accountCustomerMap.values()) {

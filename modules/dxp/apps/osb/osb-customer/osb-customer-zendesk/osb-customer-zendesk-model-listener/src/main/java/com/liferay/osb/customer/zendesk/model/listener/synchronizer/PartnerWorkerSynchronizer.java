@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
@@ -30,9 +29,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -49,8 +46,7 @@ public class PartnerWorkerSynchronizer {
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 
-		long zendeskUserId = addUser(
-			partnerWorker, new long[] {zendeskOrganizationId});
+		long zendeskUserId = addUser(partnerWorker);
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
 			addOrganizationMemberships(
@@ -62,7 +58,7 @@ public class PartnerWorkerSynchronizer {
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(
 			partnerWorker);
 
-		long zendeskUserId = addUser(partnerWorker, zendeskOrganizationIds);
+		long zendeskUserId = addUser(partnerWorker);
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
 			addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
@@ -84,8 +80,7 @@ public class PartnerWorkerSynchronizer {
 			}
 		}
 
-		_userSynchronizer.removeObsoleteTags(
-			partnerWorker.getUserId(), null, null);
+		_userSynchronizer.updateTags(partnerWorker.getUserId());
 	}
 
 	public void remove(PartnerWorker partnerWorker) throws PortalException {
@@ -101,24 +96,15 @@ public class PartnerWorkerSynchronizer {
 			}
 		}
 
-		_userSynchronizer.removeObsoleteTags(
-			partnerWorker.getUserId(), null, null);
+		_userSynchronizer.updateTags(partnerWorker.getUserId());
 	}
 
-	public void sync(
-			ZendeskUser zendeskUser, long accountEntryId,
-			PartnerWorker partnerWorker)
+	public void sync(ZendeskUser zendeskUser, PartnerWorker partnerWorker)
 		throws PortalException {
 
 		User user = _userLocalService.getUser(partnerWorker.getUserId());
 
-		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
-
-		Set<String> tags = getTags(
-			partnerWorker, new long[] {zendeskOrganizationId});
-
-		_userSynchronizer.sync(zendeskUser, user, tags);
+		_userSynchronizer.sync(zendeskUser, user);
 	}
 
 	public void updateRole(PartnerWorker partnerWorker) throws PortalException {
@@ -133,8 +119,7 @@ public class PartnerWorkerSynchronizer {
 					zendeskUserId, zendeskOrganizationIds);
 			}
 
-			_userSynchronizer.removeObsoleteTags(
-				partnerWorker.getUserId(), null, null);
+			_userSynchronizer.updateTags(partnerWorker.getUserId());
 		}
 		else {
 			add(partnerWorker);
@@ -159,31 +144,10 @@ public class PartnerWorkerSynchronizer {
 		}
 	}
 
-	protected long addUser(
-			PartnerWorker partnerWorker, long[] zendeskOrganizationIds)
-		throws PortalException {
-
+	protected long addUser(PartnerWorker partnerWorker) throws PortalException {
 		User user = _userLocalService.getUser(partnerWorker.getUserId());
 
-		Set<String> tags = getTags(partnerWorker, zendeskOrganizationIds);
-
-		return _userSynchronizer.update(user, null, tags);
-	}
-
-	protected Set<String> getTags(
-		PartnerWorker partnerWorker, long[] zendeskOrganizationIds) {
-
-		Set<String> tags = new HashSet<>();
-
-		tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
-
-		if ((partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) &&
-			!ArrayUtil.isEmpty(zendeskOrganizationIds)) {
-
-			tags.add(ZendeskTagConstants.OSB_PARTNER);
-		}
-
-		return tags;
+		return _userSynchronizer.update(user, null);
 	}
 
 	protected long[] getZendeskOrganizationIds(PartnerWorker partnerWorker)
