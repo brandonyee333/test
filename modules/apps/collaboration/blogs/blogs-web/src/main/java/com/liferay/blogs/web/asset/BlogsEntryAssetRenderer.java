@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.asset.util.AssetUtil;
 import com.liferay.portlet.blogs.service.permission.BlogsEntryPermission;
+import com.liferay.portlet.blogs.util.BlogsUtil;
 
 import java.util.Date;
 import java.util.Locale;
@@ -210,6 +211,16 @@ public class BlogsEntryAssetRenderer
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		String noSuchEntryRedirect) {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)liferayPortletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		long groupId = _entry.getGroupId();
+
+		if (!BlogsUtil.hasViewInContextGroupLayout(groupId, themeDisplay)) {
+			return null;
+		}
 
 		return getURLViewInContext(
 			liferayPortletRequest, noSuchEntryRedirect, "/blogs/find_entry",
