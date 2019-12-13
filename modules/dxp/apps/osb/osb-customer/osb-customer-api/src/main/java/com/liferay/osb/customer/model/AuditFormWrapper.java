@@ -60,6 +60,7 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 		attributes.put("createDate", getCreateDate());
 		attributes.put("endUserName", getEndUserName());
 		attributes.put("endUserEmailAddress", getEndUserEmailAddress());
+		attributes.put("companyName", getCompanyName());
 		attributes.put("agreement", isAgreement());
 
 		return attributes;
@@ -104,6 +105,12 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 			setEndUserEmailAddress(endUserEmailAddress);
 		}
 
+		String companyName = (String)attributes.get("companyName");
+
+		if (companyName != null) {
+			setCompanyName(companyName);
+		}
+
 		Boolean agreement = (Boolean)attributes.get("agreement");
 
 		if (agreement != null) {
@@ -139,6 +146,16 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	@Override
 	public long getAuditFormId() {
 		return _auditForm.getAuditFormId();
+	}
+
+	/**
+	 * Returns the company name of this audit form.
+	 *
+	 * @return the company name of this audit form
+	 */
+	@Override
+	public String getCompanyName() {
+		return _auditForm.getCompanyName();
 	}
 
 	/**
@@ -284,6 +301,16 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_auditForm.setCachedModel(cachedModel);
+	}
+
+	/**
+	 * Sets the company name of this audit form.
+	 *
+	 * @param companyName the company name of this audit form
+	 */
+	@Override
+	public void setCompanyName(String companyName) {
+		_auditForm.setCompanyName(companyName);
 	}
 
 	/**

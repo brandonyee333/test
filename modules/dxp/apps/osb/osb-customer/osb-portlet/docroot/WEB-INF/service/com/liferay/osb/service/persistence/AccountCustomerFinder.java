@@ -12,36 +12,15 @@
  * details.
  */
 
-package com.liferay.osb.service.base;
+package com.liferay.osb.service.persistence;
 
 import aQute.bnd.annotation.ProviderType;
-
-import com.liferay.osb.service.AuditEntryServiceUtil;
-
-import java.util.Arrays;
 
 /**
  * @author Brian Wing Shun Chan
  * @generated
  */
 @ProviderType
-public class AuditEntryServiceClpInvoker {
-	public AuditEntryServiceClpInvoker() {
-		_methodName198 = "getOSGiServiceIdentifier";
-
-		_methodParameterTypes198 = new String[] {  };
-	}
-
-	public Object invokeMethod(String name, String[] parameterTypes,
-		Object[] arguments) throws Throwable {
-		if (_methodName198.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes198, parameterTypes)) {
-			return AuditEntryServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		throw new UnsupportedOperationException();
-	}
-
-	private String _methodName198;
-	private String[] _methodParameterTypes198;
+public interface AccountCustomerFinder {
+	public int countPassportCustomersByDomain(java.lang.String domain);
 }

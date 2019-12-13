@@ -8,6 +8,7 @@
 		<field name="createDate" type="Date" />
 		<field name="endUserName" type="String" />
 		<field name="endUserEmailAddress" type="String" />
+		<field name="companyName" type="String" />
 		<field name="agreement" type="boolean" />
 	</model>
 </model-hints>

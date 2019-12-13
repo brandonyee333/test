@@ -273,32 +273,32 @@ public class SupportRegionLocalServiceClpInvoker {
 
 		_methodParameterTypes53 = new String[] { "long", "long[][]" };
 
-		_methodName196 = "getOSGiServiceIdentifier";
+		_methodName198 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes196 = new String[] {  };
+		_methodParameterTypes198 = new String[] {  };
 
-		_methodName201 = "addSupportRegion";
+		_methodName203 = "addSupportRegion";
 
-		_methodParameterTypes201 = new String[] {
+		_methodParameterTypes203 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String"
 			};
 
-		_methodName202 = "deleteSupportRegion";
-
-		_methodParameterTypes202 = new String[] { "long" };
-
-		_methodName203 = "fetchSupportRegionByName";
-
-		_methodParameterTypes203 = new String[] { "java.lang.String" };
-
-		_methodName204 = "getAccountEntrySupportRegions";
+		_methodName204 = "deleteSupportRegion";
 
 		_methodParameterTypes204 = new String[] { "long" };
 
-		_methodName205 = "updateSupportRegion";
+		_methodName205 = "fetchSupportRegionByName";
 
-		_methodParameterTypes205 = new String[] {
+		_methodParameterTypes205 = new String[] { "java.lang.String" };
+
+		_methodName206 = "getAccountEntrySupportRegions";
+
+		_methodParameterTypes206 = new String[] { "long" };
+
+		_methodName207 = "updateSupportRegion";
+
+		_methodParameterTypes207 = new String[] {
 				"long", "java.lang.String", "java.lang.String",
 				"java.lang.String"
 			};
@@ -648,35 +648,35 @@ public class SupportRegionLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName196.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes196, parameterTypes)) {
+		if (_methodName198.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes198, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName201.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes201, parameterTypes)) {
+		if (_methodName203.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes203, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.addSupportRegion(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3]);
 		}
 
-		if (_methodName202.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes202, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.deleteSupportRegion(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName203.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes203, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.fetchSupportRegionByName((java.lang.String)arguments[0]);
-		}
-
 		if (_methodName204.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes204, parameterTypes)) {
-			return SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(((Long)arguments[0]).longValue());
+			return SupportRegionLocalServiceUtil.deleteSupportRegion(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName205.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes205, parameterTypes)) {
+			return SupportRegionLocalServiceUtil.fetchSupportRegionByName((java.lang.String)arguments[0]);
+		}
+
+		if (_methodName206.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes206, parameterTypes)) {
+			return SupportRegionLocalServiceUtil.getAccountEntrySupportRegions(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName207.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
 			return SupportRegionLocalServiceUtil.updateSupportRegion(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
 				(java.lang.String)arguments[3]);
@@ -791,16 +791,16 @@ public class SupportRegionLocalServiceClpInvoker {
 	private String[] _methodParameterTypes52;
 	private String _methodName53;
 	private String[] _methodParameterTypes53;
-	private String _methodName196;
-	private String[] _methodParameterTypes196;
-	private String _methodName201;
-	private String[] _methodParameterTypes201;
-	private String _methodName202;
-	private String[] _methodParameterTypes202;
+	private String _methodName198;
+	private String[] _methodParameterTypes198;
 	private String _methodName203;
 	private String[] _methodParameterTypes203;
 	private String _methodName204;
 	private String[] _methodParameterTypes204;
 	private String _methodName205;
 	private String[] _methodParameterTypes205;
+	private String _methodName206;
+	private String[] _methodParameterTypes206;
+	private String _methodName207;
+	private String[] _methodParameterTypes207;
 }

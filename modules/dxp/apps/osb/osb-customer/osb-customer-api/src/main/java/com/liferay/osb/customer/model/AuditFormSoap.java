@@ -37,6 +37,7 @@ public class AuditFormSoap implements Serializable {
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setEndUserName(model.getEndUserName());
 		soapModel.setEndUserEmailAddress(model.getEndUserEmailAddress());
+		soapModel.setCompanyName(model.getCompanyName());
 		soapModel.setAgreement(model.isAgreement());
 
 		return soapModel;
@@ -139,6 +140,14 @@ public class AuditFormSoap implements Serializable {
 		_endUserEmailAddress = endUserEmailAddress;
 	}
 
+	public String getCompanyName() {
+		return _companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		_companyName = companyName;
+	}
+
 	public boolean getAgreement() {
 		return _agreement;
 	}
@@ -157,6 +166,7 @@ public class AuditFormSoap implements Serializable {
 	private Date _createDate;
 	private String _endUserName;
 	private String _endUserEmailAddress;
+	private String _companyName;
 	private boolean _agreement;
 
 }

@@ -27,13 +27,13 @@ import java.util.Arrays;
 @ProviderType
 public class CorpProjectMessageServiceClpInvoker {
 	public CorpProjectMessageServiceClpInvoker() {
-		_methodName202 = "getOSGiServiceIdentifier";
+		_methodName204 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes202 = new String[] {  };
+		_methodParameterTypes204 = new String[] {  };
 
-		_methodName207 = "addCorpProjectMessage";
+		_methodName209 = "addCorpProjectMessage";
 
-		_methodParameterTypes207 = new String[] {
+		_methodParameterTypes209 = new String[] {
 				"java.lang.String", "long", "int", "int", "java.lang.String",
 				"java.lang.String", "boolean", "boolean",
 				"com.liferay.portal.kernel.service.ServiceContext"
@@ -42,13 +42,13 @@ public class CorpProjectMessageServiceClpInvoker {
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName202.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes202, parameterTypes)) {
+		if (_methodName204.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes204, parameterTypes)) {
 			return CorpProjectMessageServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName207.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes207, parameterTypes)) {
+		if (_methodName209.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes209, parameterTypes)) {
 			return CorpProjectMessageServiceUtil.addCorpProjectMessage((java.lang.String)arguments[0],
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue(),
@@ -62,8 +62,8 @@ public class CorpProjectMessageServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName202;
-	private String[] _methodParameterTypes202;
-	private String _methodName207;
-	private String[] _methodParameterTypes207;
+	private String _methodName204;
+	private String[] _methodParameterTypes204;
+	private String _methodName209;
+	private String[] _methodParameterTypes209;
 }

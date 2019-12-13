@@ -211,6 +211,11 @@ public class AccountCustomerLocalServiceWrapper
 		return _accountCustomerLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public int countPassportCustomersByDomain(java.lang.String domain) {
+		return _accountCustomerLocalService.countPassportCustomersByDomain(domain);
+	}
+
 	/**
 	* Returns the number of account customers.
 	*

@@ -72,7 +72,7 @@ public interface AuditFormLocalService
 
 	public AuditForm addAuditForm(
 			long userId, String endUserName, String endUserEmailAddress,
-			boolean agreement)
+			String companyName, boolean agreement)
 		throws Exception;
 
 	/**

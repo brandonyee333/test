@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.service.RemoteCorpProjectMessageLocalService;
 import com.liferay.osb.service.persistence.AccountAttachmentPersistence;
+import com.liferay.osb.service.persistence.AccountCustomerFinder;
 import com.liferay.osb.service.persistence.AccountCustomerPersistence;
 import com.liferay.osb.service.persistence.AccountEntryFinder;
 import com.liferay.osb.service.persistence.AccountEntryLanguagePersistence;
@@ -162,6 +163,25 @@ public abstract class RemoteCorpProjectMessageLocalServiceBaseImpl
 	public void setAccountCustomerPersistence(
 		AccountCustomerPersistence accountCustomerPersistence) {
 		this.accountCustomerPersistence = accountCustomerPersistence;
+	}
+
+	/**
+	 * Returns the account customer finder.
+	 *
+	 * @return the account customer finder
+	 */
+	public AccountCustomerFinder getAccountCustomerFinder() {
+		return accountCustomerFinder;
+	}
+
+	/**
+	 * Sets the account customer finder.
+	 *
+	 * @param accountCustomerFinder the account customer finder
+	 */
+	public void setAccountCustomerFinder(
+		AccountCustomerFinder accountCustomerFinder) {
+		this.accountCustomerFinder = accountCustomerFinder;
 	}
 
 	/**
@@ -1483,6 +1503,8 @@ public abstract class RemoteCorpProjectMessageLocalServiceBaseImpl
 	protected com.liferay.osb.service.AccountCustomerLocalService accountCustomerLocalService;
 	@BeanReference(type = AccountCustomerPersistence.class)
 	protected AccountCustomerPersistence accountCustomerPersistence;
+	@BeanReference(type = AccountCustomerFinder.class)
+	protected AccountCustomerFinder accountCustomerFinder;
 	@BeanReference(type = com.liferay.osb.service.AccountEntryLocalService.class)
 	protected com.liferay.osb.service.AccountEntryLocalService accountEntryLocalService;
 	@BeanReference(type = AccountEntryPersistence.class)

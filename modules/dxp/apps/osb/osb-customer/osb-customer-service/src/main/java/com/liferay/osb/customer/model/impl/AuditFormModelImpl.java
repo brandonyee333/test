@@ -70,7 +70,7 @@ public class AuditFormModelImpl
 		{"auditFormId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"endUserName", Types.VARCHAR}, {"endUserEmailAddress", Types.VARCHAR},
-		{"agreement", Types.BOOLEAN}
+		{"companyName", Types.VARCHAR}, {"agreement", Types.BOOLEAN}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -83,11 +83,12 @@ public class AuditFormModelImpl
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("endUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("endUserEmailAddress", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("companyName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("agreement", Types.BOOLEAN);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSBCustomer_AuditForm (auditFormId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,endUserName VARCHAR(75) null,endUserEmailAddress VARCHAR(75) null,agreement BOOLEAN)";
+		"create table OSBCustomer_AuditForm (auditFormId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,endUserName VARCHAR(75) null,endUserEmailAddress VARCHAR(75) null,companyName VARCHAR(75) null,agreement BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSBCustomer_AuditForm";
@@ -374,6 +375,28 @@ public class AuditFormModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"companyName",
+			new Function<AuditForm, Object>() {
+
+				@Override
+				public Object apply(AuditForm auditForm) {
+					return auditForm.getCompanyName();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"companyName",
+			new BiConsumer<AuditForm, Object>() {
+
+				@Override
+				public void accept(
+					AuditForm auditForm, Object companyNameObject) {
+
+					auditForm.setCompanyName((String)companyNameObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"agreement",
 			new Function<AuditForm, Object>() {
 
@@ -494,6 +517,21 @@ public class AuditFormModelImpl
 	}
 
 	@Override
+	public String getCompanyName() {
+		if (_companyName == null) {
+			return "";
+		}
+		else {
+			return _companyName;
+		}
+	}
+
+	@Override
+	public void setCompanyName(String companyName) {
+		_companyName = companyName;
+	}
+
+	@Override
 	public boolean getAgreement() {
 		return _agreement;
 	}
@@ -546,6 +584,7 @@ public class AuditFormModelImpl
 		auditFormImpl.setCreateDate(getCreateDate());
 		auditFormImpl.setEndUserName(getEndUserName());
 		auditFormImpl.setEndUserEmailAddress(getEndUserEmailAddress());
+		auditFormImpl.setCompanyName(getCompanyName());
 		auditFormImpl.setAgreement(isAgreement());
 
 		auditFormImpl.resetOriginalValues();
@@ -652,6 +691,14 @@ public class AuditFormModelImpl
 			auditFormCacheModel.endUserEmailAddress = null;
 		}
 
+		auditFormCacheModel.companyName = getCompanyName();
+
+		String companyName = auditFormCacheModel.companyName;
+
+		if ((companyName != null) && (companyName.length() == 0)) {
+			auditFormCacheModel.companyName = null;
+		}
+
 		auditFormCacheModel.agreement = isAgreement();
 
 		return auditFormCacheModel;
@@ -733,6 +780,7 @@ public class AuditFormModelImpl
 	private Date _createDate;
 	private String _endUserName;
 	private String _endUserEmailAddress;
+	private String _companyName;
 	private boolean _agreement;
 	private AuditForm _escapedModel;
 

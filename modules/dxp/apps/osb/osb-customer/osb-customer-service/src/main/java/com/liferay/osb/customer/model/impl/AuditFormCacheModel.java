@@ -61,7 +61,7 @@ public class AuditFormCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(15);
+		StringBundler sb = new StringBundler(17);
 
 		sb.append("{auditFormId=");
 		sb.append(auditFormId);
@@ -75,6 +75,8 @@ public class AuditFormCacheModel
 		sb.append(endUserName);
 		sb.append(", endUserEmailAddress=");
 		sb.append(endUserEmailAddress);
+		sb.append(", companyName=");
+		sb.append(companyName);
 		sb.append(", agreement=");
 		sb.append(agreement);
 		sb.append("}");
@@ -117,6 +119,13 @@ public class AuditFormCacheModel
 			auditFormImpl.setEndUserEmailAddress(endUserEmailAddress);
 		}
 
+		if (companyName == null) {
+			auditFormImpl.setCompanyName("");
+		}
+		else {
+			auditFormImpl.setCompanyName(companyName);
+		}
+
 		auditFormImpl.setAgreement(agreement);
 
 		auditFormImpl.resetOriginalValues();
@@ -133,6 +142,7 @@ public class AuditFormCacheModel
 		createDate = objectInput.readLong();
 		endUserName = objectInput.readUTF();
 		endUserEmailAddress = objectInput.readUTF();
+		companyName = objectInput.readUTF();
 
 		agreement = objectInput.readBoolean();
 	}
@@ -166,6 +176,13 @@ public class AuditFormCacheModel
 			objectOutput.writeUTF(endUserEmailAddress);
 		}
 
+		if (companyName == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(companyName);
+		}
+
 		objectOutput.writeBoolean(agreement);
 	}
 
@@ -175,6 +192,7 @@ public class AuditFormCacheModel
 	public long createDate;
 	public String endUserName;
 	public String endUserEmailAddress;
+	public String companyName;
 	public boolean agreement;
 
 }

@@ -123,69 +123,69 @@ public class PartnerWorkerLocalServiceClpInvoker {
 				"com.liferay.osb.model.PartnerWorker"
 			};
 
-		_methodName174 = "getOSGiServiceIdentifier";
+		_methodName176 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes174 = new String[] {  };
+		_methodParameterTypes176 = new String[] {  };
 
-		_methodName179 = "addPartnerWorker";
+		_methodName181 = "addPartnerWorker";
 
-		_methodParameterTypes179 = new String[] { "long", "long", "int" };
+		_methodParameterTypes181 = new String[] { "long", "long", "int" };
 
-		_methodName180 = "addPartnerWorker";
+		_methodName182 = "addPartnerWorker";
 
-		_methodParameterTypes180 = new String[] {
+		_methodParameterTypes182 = new String[] {
 				"long", "java.lang.String", "int"
 			};
 
-		_methodName181 = "deletePartnerWorker";
+		_methodName183 = "deletePartnerWorker";
 
-		_methodParameterTypes181 = new String[] { "long" };
+		_methodParameterTypes183 = new String[] { "long" };
 
-		_methodName182 = "deletePartnerWorkers";
+		_methodName184 = "deletePartnerWorkers";
 
-		_methodParameterTypes182 = new String[] { "long" };
+		_methodParameterTypes184 = new String[] { "long" };
 
-		_methodName183 = "fetchPartnerWorker";
+		_methodName185 = "fetchPartnerWorker";
 
-		_methodParameterTypes183 = new String[] { "long", "long" };
+		_methodParameterTypes185 = new String[] { "long", "long" };
 
-		_methodName184 = "getPartnerWorker";
+		_methodName186 = "getPartnerWorker";
 
-		_methodParameterTypes184 = new String[] { "long", "long" };
+		_methodParameterTypes186 = new String[] { "long", "long" };
 
-		_methodName185 = "getPartnerWorkers";
-
-		_methodParameterTypes185 = new String[] { "long" };
-
-		_methodName186 = "getPartnerWorkers";
-
-		_methodParameterTypes186 = new String[] { "long", "int" };
-
-		_methodName187 = "getUserPartnerWorkers";
+		_methodName187 = "getPartnerWorkers";
 
 		_methodParameterTypes187 = new String[] { "long" };
 
-		_methodName188 = "hasPartnerWorker";
+		_methodName188 = "getPartnerWorkers";
 
-		_methodParameterTypes188 = new String[] { "long" };
+		_methodParameterTypes188 = new String[] { "long", "int" };
 
-		_methodName189 = "hasPartnerWorker";
+		_methodName189 = "getUserPartnerWorkers";
 
-		_methodParameterTypes189 = new String[] { "long", "long" };
+		_methodParameterTypes189 = new String[] { "long" };
 
-		_methodName190 = "hasPartnerWorkerRole";
+		_methodName190 = "hasPartnerWorker";
 
-		_methodParameterTypes190 = new String[] { "long", "int" };
+		_methodParameterTypes190 = new String[] { "long" };
 
-		_methodName191 = "syncPartnerWorkers";
+		_methodName191 = "hasPartnerWorker";
 
-		_methodParameterTypes191 = new String[] {
+		_methodParameterTypes191 = new String[] { "long", "long" };
+
+		_methodName192 = "hasPartnerWorkerRole";
+
+		_methodParameterTypes192 = new String[] { "long", "int" };
+
+		_methodName193 = "syncPartnerWorkers";
+
+		_methodParameterTypes193 = new String[] {
 				"long", "java.lang.String", "java.lang.String"
 			};
 
-		_methodName192 = "updatePartnerWorker";
+		_methodName194 = "updatePartnerWorker";
 
-		_methodParameterTypes192 = new String[] { "long", "int" };
+		_methodParameterTypes194 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -292,92 +292,92 @@ public class PartnerWorkerLocalServiceClpInvoker {
 			return PartnerWorkerLocalServiceUtil.updatePartnerWorker((com.liferay.osb.model.PartnerWorker)arguments[0]);
 		}
 
-		if (_methodName174.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
+		if (_methodName176.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName179.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
+		if (_methodName181.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.addPartnerWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName180.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes180, parameterTypes)) {
+		if (_methodName182.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes182, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.addPartnerWorker(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1],
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName181.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
+		if (_methodName183.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes183, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.deletePartnerWorker(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName182.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes182, parameterTypes)) {
+		if (_methodName184.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes184, parameterTypes)) {
 			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(((Long)arguments[0]).longValue());
 
 			return null;
 		}
 
-		if (_methodName183.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes183, parameterTypes)) {
+		if (_methodName185.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes185, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.fetchPartnerWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName184.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes184, parameterTypes)) {
+		if (_methodName186.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes186, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.getPartnerWorker(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 		}
 
-		if (_methodName185.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes185, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.getPartnerWorkers(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName186.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes186, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.getPartnerWorkers(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue());
-		}
-
 		if (_methodName187.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes187, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(((Long)arguments[0]).longValue());
+			return PartnerWorkerLocalServiceUtil.getPartnerWorkers(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName188.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes188, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.hasPartnerWorker(((Long)arguments[0]).longValue());
+			return PartnerWorkerLocalServiceUtil.getPartnerWorkers(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
 		}
 
 		if (_methodName189.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes189, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.hasPartnerWorker(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
+			return PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName190.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes190, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.hasPartnerWorkerRole(((Long)arguments[0]).longValue(),
-				((Integer)arguments[1]).intValue());
+			return PartnerWorkerLocalServiceUtil.hasPartnerWorker(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName191.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes191, parameterTypes)) {
+			return PartnerWorkerLocalServiceUtil.hasPartnerWorker(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName192.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes192, parameterTypes)) {
+			return PartnerWorkerLocalServiceUtil.hasPartnerWorkerRole(((Long)arguments[0]).longValue(),
+				((Integer)arguments[1]).intValue());
+		}
+
+		if (_methodName193.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes193, parameterTypes)) {
 			PartnerWorkerLocalServiceUtil.syncPartnerWorkers(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (java.lang.String)arguments[2]);
 
 			return null;
 		}
 
-		if (_methodName192.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes192, parameterTypes)) {
+		if (_methodName194.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes194, parameterTypes)) {
 			return PartnerWorkerLocalServiceUtil.updatePartnerWorker(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -423,12 +423,8 @@ public class PartnerWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName174;
-	private String[] _methodParameterTypes174;
-	private String _methodName179;
-	private String[] _methodParameterTypes179;
-	private String _methodName180;
-	private String[] _methodParameterTypes180;
+	private String _methodName176;
+	private String[] _methodParameterTypes176;
 	private String _methodName181;
 	private String[] _methodParameterTypes181;
 	private String _methodName182;
@@ -453,4 +449,8 @@ public class PartnerWorkerLocalServiceClpInvoker {
 	private String[] _methodParameterTypes191;
 	private String _methodName192;
 	private String[] _methodParameterTypes192;
+	private String _methodName193;
+	private String[] _methodParameterTypes193;
+	private String _methodName194;
+	private String[] _methodParameterTypes194;
 }

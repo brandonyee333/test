@@ -8,6 +8,7 @@
 	<bean class="com.liferay.osb.service.impl.AccountCustomerLocalServiceImpl" id="com.liferay.osb.service.AccountCustomerLocalService" />
 	<bean class="com.liferay.osb.service.impl.AccountCustomerServiceImpl" id="com.liferay.osb.service.AccountCustomerService" />
 	<bean class="com.liferay.osb.service.persistence.impl.AccountCustomerPersistenceImpl" id="com.liferay.osb.service.persistence.AccountCustomerPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.service.persistence.impl.AccountCustomerFinderImpl" id="com.liferay.osb.service.persistence.AccountCustomerFinder" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.AccountEntryLocalServiceImpl" id="com.liferay.osb.service.AccountEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.AccountEntryServiceImpl" id="com.liferay.osb.service.AccountEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.AccountEntryPersistenceImpl" id="com.liferay.osb.service.persistence.AccountEntryPersistence" parent="basePersistence" />

@@ -5,5 +5,6 @@ create table OSBCustomer_AuditForm (
 	createDate DATE null,
 	endUserName VARCHAR(75) null,
 	endUserEmailAddress VARCHAR(75) null,
+	companyName VARCHAR(75) null,
 	agreement BOOLEAN
 );

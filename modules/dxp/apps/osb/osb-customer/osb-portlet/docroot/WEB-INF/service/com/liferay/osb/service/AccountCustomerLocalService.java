@@ -171,6 +171,8 @@ public interface AccountCustomerLocalService extends BaseLocalService,
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	public int countPassportCustomersByDomain(java.lang.String domain);
+
 	/**
 	* Returns the number of account customers.
 	*

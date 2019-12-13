@@ -27,21 +27,21 @@ import java.util.Arrays;
 @ProviderType
 public class PartnerWorkerServiceClpInvoker {
 	public PartnerWorkerServiceClpInvoker() {
-		_methodName214 = "getOSGiServiceIdentifier";
+		_methodName216 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes214 = new String[] {  };
+		_methodParameterTypes216 = new String[] {  };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName214.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes214, parameterTypes)) {
+		if (_methodName216.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
 			return PartnerWorkerServiceUtil.getOSGiServiceIdentifier();
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName214;
-	private String[] _methodParameterTypes214;
+	private String _methodName216;
+	private String[] _methodParameterTypes216;
 }

@@ -27,32 +27,32 @@ import java.util.Arrays;
 @ProviderType
 public class RemoteCorpEntryLocalServiceClpInvoker {
 	public RemoteCorpEntryLocalServiceClpInvoker() {
-		_methodName142 = "getOSGiServiceIdentifier";
+		_methodName144 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes142 = new String[] {  };
+		_methodParameterTypes144 = new String[] {  };
 
-		_methodName145 = "hasCorpEntry";
+		_methodName147 = "hasCorpEntry";
 
-		_methodParameterTypes145 = new String[] { "java.lang.String" };
+		_methodParameterTypes147 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName142.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes142, parameterTypes)) {
+		if (_methodName144.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes144, parameterTypes)) {
 			return RemoteCorpEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName145.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes145, parameterTypes)) {
+		if (_methodName147.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes147, parameterTypes)) {
 			return RemoteCorpEntryLocalServiceUtil.hasCorpEntry((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName142;
-	private String[] _methodParameterTypes142;
-	private String _methodName145;
-	private String[] _methodParameterTypes145;
+	private String _methodName144;
+	private String[] _methodParameterTypes144;
+	private String _methodName147;
+	private String[] _methodParameterTypes147;
 }

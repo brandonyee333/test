@@ -27,37 +27,37 @@ import java.util.Arrays;
 @ProviderType
 public class AccountEntryServiceClpInvoker {
 	public AccountEntryServiceClpInvoker() {
-		_methodName228 = "getOSGiServiceIdentifier";
+		_methodName230 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes228 = new String[] {  };
+		_methodParameterTypes230 = new String[] {  };
 
-		_methodName233 = "deleteAccountEntry";
+		_methodName235 = "deleteAccountEntry";
 
-		_methodParameterTypes233 = new String[] { "long" };
+		_methodParameterTypes235 = new String[] { "long" };
 
-		_methodName234 = "fetchCorpProjectAccountEntry";
+		_methodName236 = "fetchCorpProjectAccountEntry";
 
-		_methodParameterTypes234 = new String[] { "java.lang.String" };
+		_methodParameterTypes236 = new String[] { "java.lang.String" };
 
-		_methodName235 = "getAccountEntries";
+		_methodName237 = "getAccountEntries";
 
-		_methodParameterTypes235 = new String[] { "java.lang.String", "long[][]" };
+		_methodParameterTypes237 = new String[] { "java.lang.String", "long[][]" };
 
-		_methodName236 = "getAccountEntry";
+		_methodName238 = "getAccountEntry";
 
-		_methodParameterTypes236 = new String[] { "long" };
+		_methodParameterTypes238 = new String[] { "long" };
 
-		_methodName237 = "getAccountEntryByCode";
+		_methodName239 = "getAccountEntryByCode";
 
-		_methodParameterTypes237 = new String[] { "java.lang.String" };
+		_methodParameterTypes239 = new String[] { "java.lang.String" };
 
-		_methodName238 = "getCorpProjectAccountEntry";
+		_methodName240 = "getCorpProjectAccountEntry";
 
-		_methodParameterTypes238 = new String[] { "java.lang.String" };
+		_methodParameterTypes240 = new String[] { "java.lang.String" };
 
-		_methodName239 = "search";
+		_methodName241 = "search";
 
-		_methodParameterTypes239 = new String[] {
+		_methodParameterTypes241 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String",
@@ -69,9 +69,9 @@ public class AccountEntryServiceClpInvoker {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName240 = "searchCount";
+		_methodName242 = "searchCount";
 
-		_methodParameterTypes240 = new String[] {
+		_methodParameterTypes242 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String",
@@ -82,51 +82,51 @@ public class AccountEntryServiceClpInvoker {
 				"java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName241 = "updateInstructions";
+		_methodName243 = "updateInstructions";
 
-		_methodParameterTypes241 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes243 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName228.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes228, parameterTypes)) {
+		if (_methodName230.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes230, parameterTypes)) {
 			return AccountEntryServiceUtil.getOSGiServiceIdentifier();
-		}
-
-		if (_methodName233.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes233, parameterTypes)) {
-			return AccountEntryServiceUtil.deleteAccountEntry(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName234.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes234, parameterTypes)) {
-			return AccountEntryServiceUtil.fetchCorpProjectAccountEntry((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName235.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes235, parameterTypes)) {
-			return AccountEntryServiceUtil.getAccountEntries((java.lang.String)arguments[0],
-				(long[])arguments[1]);
+			return AccountEntryServiceUtil.deleteAccountEntry(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName236.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes236, parameterTypes)) {
-			return AccountEntryServiceUtil.getAccountEntry(((Long)arguments[0]).longValue());
+			return AccountEntryServiceUtil.fetchCorpProjectAccountEntry((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName237.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes237, parameterTypes)) {
-			return AccountEntryServiceUtil.getAccountEntryByCode((java.lang.String)arguments[0]);
+			return AccountEntryServiceUtil.getAccountEntries((java.lang.String)arguments[0],
+				(long[])arguments[1]);
 		}
 
 		if (_methodName238.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes238, parameterTypes)) {
-			return AccountEntryServiceUtil.getCorpProjectAccountEntry((java.lang.String)arguments[0]);
+			return AccountEntryServiceUtil.getAccountEntry(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName239.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes239, parameterTypes)) {
+			return AccountEntryServiceUtil.getAccountEntryByCode((java.lang.String)arguments[0]);
+		}
+
+		if (_methodName240.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes240, parameterTypes)) {
+			return AccountEntryServiceUtil.getCorpProjectAccountEntry((java.lang.String)arguments[0]);
+		}
+
+		if (_methodName241.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes241, parameterTypes)) {
 			return AccountEntryServiceUtil.search((java.lang.Long)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -159,8 +159,8 @@ public class AccountEntryServiceClpInvoker {
 				(com.liferay.portal.kernel.util.OrderByComparator)arguments[34]);
 		}
 
-		if (_methodName240.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes240, parameterTypes)) {
+		if (_methodName242.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes242, parameterTypes)) {
 			return AccountEntryServiceUtil.searchCount((java.lang.Long)arguments[0],
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue(),
@@ -190,8 +190,8 @@ public class AccountEntryServiceClpInvoker {
 				((Boolean)arguments[31]).booleanValue());
 		}
 
-		if (_methodName241.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes241, parameterTypes)) {
+		if (_methodName243.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes243, parameterTypes)) {
 			return AccountEntryServiceUtil.updateInstructions(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -199,12 +199,8 @@ public class AccountEntryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName228;
-	private String[] _methodParameterTypes228;
-	private String _methodName233;
-	private String[] _methodParameterTypes233;
-	private String _methodName234;
-	private String[] _methodParameterTypes234;
+	private String _methodName230;
+	private String[] _methodParameterTypes230;
 	private String _methodName235;
 	private String[] _methodParameterTypes235;
 	private String _methodName236;
@@ -219,4 +215,8 @@ public class AccountEntryServiceClpInvoker {
 	private String[] _methodParameterTypes240;
 	private String _methodName241;
 	private String[] _methodParameterTypes241;
+	private String _methodName242;
+	private String[] _methodParameterTypes242;
+	private String _methodName243;
+	private String[] _methodParameterTypes243;
 }

@@ -123,29 +123,29 @@ public class AccountInformationLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountInformation"
 			};
 
-		_methodName162 = "getOSGiServiceIdentifier";
+		_methodName164 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes162 = new String[] {  };
+		_methodParameterTypes164 = new String[] {  };
 
-		_methodName167 = "deleteAccountInformation";
-
-		_methodParameterTypes167 = new String[] { "long", "long" };
-
-		_methodName168 = "getAccountEntryAccountInformation";
-
-		_methodParameterTypes168 = new String[] { "long" };
-
-		_methodName169 = "getAccountInformation";
+		_methodName169 = "deleteAccountInformation";
 
 		_methodParameterTypes169 = new String[] { "long", "long" };
 
-		_methodName170 = "getAccountInformationDisplay";
+		_methodName170 = "getAccountEntryAccountInformation";
 
 		_methodParameterTypes170 = new String[] { "long" };
 
-		_methodName171 = "updateAccountInformation";
+		_methodName171 = "getAccountInformation";
 
-		_methodParameterTypes171 = new String[] {
+		_methodParameterTypes171 = new String[] { "long", "long" };
+
+		_methodName172 = "getAccountInformationDisplay";
+
+		_methodParameterTypes172 = new String[] { "long" };
+
+		_methodName173 = "updateAccountInformation";
+
+		_methodParameterTypes173 = new String[] {
 				"long", "long", "long", "java.util.Map"
 			};
 	}
@@ -254,37 +254,37 @@ public class AccountInformationLocalServiceClpInvoker {
 			return AccountInformationLocalServiceUtil.updateAccountInformation((com.liferay.osb.model.AccountInformation)arguments[0]);
 		}
 
-		if (_methodName162.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes162, parameterTypes)) {
+		if (_methodName164.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes164, parameterTypes)) {
 			return AccountInformationLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName167.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes167, parameterTypes)) {
+		if (_methodName169.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes169, parameterTypes)) {
 			AccountInformationLocalServiceUtil.deleteAccountInformation(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue());
 
 			return null;
 		}
 
-		if (_methodName168.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
-			return AccountInformationLocalServiceUtil.getAccountEntryAccountInformation(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName169.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes169, parameterTypes)) {
-			return AccountInformationLocalServiceUtil.getAccountInformation(((Long)arguments[0]).longValue(),
-				((Long)arguments[1]).longValue());
-		}
-
 		if (_methodName170.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes170, parameterTypes)) {
-			return AccountInformationLocalServiceUtil.getAccountInformationDisplay(((Long)arguments[0]).longValue());
+			return AccountInformationLocalServiceUtil.getAccountEntryAccountInformation(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName171.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes171, parameterTypes)) {
+			return AccountInformationLocalServiceUtil.getAccountInformation(((Long)arguments[0]).longValue(),
+				((Long)arguments[1]).longValue());
+		}
+
+		if (_methodName172.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes172, parameterTypes)) {
+			return AccountInformationLocalServiceUtil.getAccountInformationDisplay(((Long)arguments[0]).longValue());
+		}
+
+		if (_methodName173.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
 			return AccountInformationLocalServiceUtil.updateAccountInformation(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
 				((Long)arguments[2]).longValue(),
@@ -332,16 +332,16 @@ public class AccountInformationLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName162;
-	private String[] _methodParameterTypes162;
-	private String _methodName167;
-	private String[] _methodParameterTypes167;
-	private String _methodName168;
-	private String[] _methodParameterTypes168;
+	private String _methodName164;
+	private String[] _methodParameterTypes164;
 	private String _methodName169;
 	private String[] _methodParameterTypes169;
 	private String _methodName170;
 	private String[] _methodParameterTypes170;
 	private String _methodName171;
 	private String[] _methodParameterTypes171;
+	private String _methodName172;
+	private String[] _methodParameterTypes172;
+	private String _methodName173;
+	private String[] _methodParameterTypes173;
 }

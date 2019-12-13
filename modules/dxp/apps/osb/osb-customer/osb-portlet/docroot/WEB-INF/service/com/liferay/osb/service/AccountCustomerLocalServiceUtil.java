@@ -196,6 +196,10 @@ public class AccountCustomerLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static int countPassportCustomersByDomain(java.lang.String domain) {
+		return getService().countPassportCustomersByDomain(domain);
+	}
+
 	/**
 	* Returns the number of account customers.
 	*

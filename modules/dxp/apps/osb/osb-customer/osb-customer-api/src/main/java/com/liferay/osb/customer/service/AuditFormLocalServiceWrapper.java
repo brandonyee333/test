@@ -48,11 +48,11 @@ public class AuditFormLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.model.AuditForm addAuditForm(
 			long userId, String endUserName, String endUserEmailAddress,
-			boolean agreement)
+			String companyName, boolean agreement)
 		throws Exception {
 
 		return _auditFormLocalService.addAuditForm(
-			userId, endUserName, endUserEmailAddress, agreement);
+			userId, endUserName, endUserEmailAddress, companyName, agreement);
 	}
 
 	/**

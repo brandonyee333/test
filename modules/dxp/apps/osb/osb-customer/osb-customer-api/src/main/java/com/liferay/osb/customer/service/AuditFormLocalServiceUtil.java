@@ -52,11 +52,11 @@ public class AuditFormLocalServiceUtil {
 
 	public static com.liferay.osb.customer.model.AuditForm addAuditForm(
 			long userId, String endUserName, String endUserEmailAddress,
-			boolean agreement)
+			String companyName, boolean agreement)
 		throws Exception {
 
 		return getService().addAuditForm(
-			userId, endUserName, endUserEmailAddress, agreement);
+			userId, endUserName, endUserEmailAddress, companyName, agreement);
 	}
 
 	/**

@@ -123,17 +123,17 @@ public class AccountEntryLanguageLocalServiceClpInvoker {
 				"com.liferay.osb.model.AccountEntryLanguage"
 			};
 
-		_methodName162 = "getOSGiServiceIdentifier";
+		_methodName164 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes162 = new String[] {  };
+		_methodParameterTypes164 = new String[] {  };
 
-		_methodName167 = "getAccountEntryLanguages";
+		_methodName169 = "getAccountEntryLanguages";
 
-		_methodParameterTypes167 = new String[] { "long" };
+		_methodParameterTypes169 = new String[] { "long" };
 
-		_methodName168 = "setAccountEntryLanguageIds";
+		_methodName170 = "setAccountEntryLanguageIds";
 
-		_methodParameterTypes168 = new String[] { "long", "java.lang.String[][]" };
+		_methodParameterTypes170 = new String[] { "long", "java.lang.String[][]" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -240,18 +240,18 @@ public class AccountEntryLanguageLocalServiceClpInvoker {
 			return AccountEntryLanguageLocalServiceUtil.updateAccountEntryLanguage((com.liferay.osb.model.AccountEntryLanguage)arguments[0]);
 		}
 
-		if (_methodName162.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes162, parameterTypes)) {
+		if (_methodName164.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes164, parameterTypes)) {
 			return AccountEntryLanguageLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName167.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes167, parameterTypes)) {
+		if (_methodName169.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes169, parameterTypes)) {
 			return AccountEntryLanguageLocalServiceUtil.getAccountEntryLanguages(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName168.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
+		if (_methodName170.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes170, parameterTypes)) {
 			AccountEntryLanguageLocalServiceUtil.setAccountEntryLanguageIds(((Long)arguments[0]).longValue(),
 				(java.lang.String[])arguments[1]);
 
@@ -299,10 +299,10 @@ public class AccountEntryLanguageLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName162;
-	private String[] _methodParameterTypes162;
-	private String _methodName167;
-	private String[] _methodParameterTypes167;
-	private String _methodName168;
-	private String[] _methodParameterTypes168;
+	private String _methodName164;
+	private String[] _methodParameterTypes164;
+	private String _methodName169;
+	private String[] _methodParameterTypes169;
+	private String _methodName170;
+	private String[] _methodParameterTypes170;
 }

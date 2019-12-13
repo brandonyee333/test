@@ -12,6 +12,7 @@
 		<property name="createDate" type="org.hibernate.type.TimestampType" />
 		<property name="endUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="endUserEmailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="companyName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="agreement" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 	</class>
 </hibernate-mapping>

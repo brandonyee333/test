@@ -123,27 +123,27 @@ public class LicenseKeySetLocalServiceClpInvoker {
 				"com.liferay.osb.model.LicenseKeySet"
 			};
 
-		_methodName166 = "getOSGiServiceIdentifier";
+		_methodName168 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes166 = new String[] {  };
+		_methodParameterTypes168 = new String[] {  };
 
-		_methodName171 = "addLicenseKeySet";
+		_methodName173 = "addLicenseKeySet";
 
-		_methodParameterTypes171 = new String[] {
+		_methodParameterTypes173 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName172 = "getAccountEntryLicenseKeySets";
+		_methodName174 = "getAccountEntryLicenseKeySets";
 
-		_methodParameterTypes172 = new String[] { "long", "int", "int" };
+		_methodParameterTypes174 = new String[] { "long", "int", "int" };
 
-		_methodName173 = "getAccountEntryLicenseKeySetsCount";
+		_methodName175 = "getAccountEntryLicenseKeySetsCount";
 
-		_methodParameterTypes173 = new String[] { "long" };
+		_methodParameterTypes175 = new String[] { "long" };
 
-		_methodName174 = "updateLicenseKeySet";
+		_methodName176 = "updateLicenseKeySet";
 
-		_methodParameterTypes174 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes176 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -250,31 +250,31 @@ public class LicenseKeySetLocalServiceClpInvoker {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet((com.liferay.osb.model.LicenseKeySet)arguments[0]);
 		}
 
-		if (_methodName166.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes166, parameterTypes)) {
+		if (_methodName168.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName171.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes171, parameterTypes)) {
+		if (_methodName173.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.addLicenseKeySet(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
-		if (_methodName172.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes172, parameterTypes)) {
+		if (_methodName174.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySets(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName173.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
+		if (_methodName175.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySetsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName174.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
+		if (_methodName176.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -320,14 +320,14 @@ public class LicenseKeySetLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName166;
-	private String[] _methodParameterTypes166;
-	private String _methodName171;
-	private String[] _methodParameterTypes171;
-	private String _methodName172;
-	private String[] _methodParameterTypes172;
+	private String _methodName168;
+	private String[] _methodParameterTypes168;
 	private String _methodName173;
 	private String[] _methodParameterTypes173;
 	private String _methodName174;
 	private String[] _methodParameterTypes174;
+	private String _methodName175;
+	private String[] _methodParameterTypes175;
+	private String _methodName176;
+	private String[] _methodParameterTypes176;
 }

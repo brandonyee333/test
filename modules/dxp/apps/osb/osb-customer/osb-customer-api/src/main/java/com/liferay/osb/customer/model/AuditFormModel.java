@@ -162,6 +162,21 @@ public interface AuditFormModel extends BaseModel<AuditForm> {
 	public void setEndUserEmailAddress(String endUserEmailAddress);
 
 	/**
+	 * Returns the company name of this audit form.
+	 *
+	 * @return the company name of this audit form
+	 */
+	@AutoEscape
+	public String getCompanyName();
+
+	/**
+	 * Sets the company name of this audit form.
+	 *
+	 * @param companyName the company name of this audit form
+	 */
+	public void setCompanyName(String companyName);
+
+	/**
 	 * Returns the agreement of this audit form.
 	 *
 	 * @return the agreement of this audit form

@@ -198,19 +198,19 @@ public class OfferingBundleLocalServiceClpInvoker {
 
 		_methodParameterTypes36 = new String[] { "long", "long[][]" };
 
-		_methodName179 = "getOSGiServiceIdentifier";
+		_methodName181 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes179 = new String[] {  };
+		_methodParameterTypes181 = new String[] {  };
 
-		_methodName184 = "addOfferingBundle";
+		_methodName186 = "addOfferingBundle";
 
-		_methodParameterTypes184 = new String[] {
+		_methodParameterTypes186 = new String[] {
 				"long", "java.lang.String", "long[][]"
 			};
 
-		_methodName185 = "updateOfferingBundle";
+		_methodName187 = "updateOfferingBundle";
 
-		_methodParameterTypes185 = new String[] {
+		_methodParameterTypes187 = new String[] {
 				"long", "java.lang.String", "long[][]"
 			};
 	}
@@ -439,19 +439,19 @@ public class OfferingBundleLocalServiceClpInvoker {
 			return null;
 		}
 
-		if (_methodName179.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
+		if (_methodName181.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes181, parameterTypes)) {
 			return OfferingBundleLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName184.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes184, parameterTypes)) {
+		if (_methodName186.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes186, parameterTypes)) {
 			return OfferingBundleLocalServiceUtil.addOfferingBundle(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (long[])arguments[2]);
 		}
 
-		if (_methodName185.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes185, parameterTypes)) {
+		if (_methodName187.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes187, parameterTypes)) {
 			return OfferingBundleLocalServiceUtil.updateOfferingBundle(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1], (long[])arguments[2]);
 		}
@@ -531,10 +531,10 @@ public class OfferingBundleLocalServiceClpInvoker {
 	private String[] _methodParameterTypes35;
 	private String _methodName36;
 	private String[] _methodParameterTypes36;
-	private String _methodName179;
-	private String[] _methodParameterTypes179;
-	private String _methodName184;
-	private String[] _methodParameterTypes184;
-	private String _methodName185;
-	private String[] _methodParameterTypes185;
+	private String _methodName181;
+	private String[] _methodParameterTypes181;
+	private String _methodName186;
+	private String[] _methodParameterTypes186;
+	private String _methodName187;
+	private String[] _methodParameterTypes187;
 }
