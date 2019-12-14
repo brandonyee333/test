@@ -18,8 +18,8 @@
 		<!-- Other fields -->
 
 		<column name="endUserName" type="String" />
-		<column name="companyName" type="String" />
 		<column name="endUserEmailAddress" type="String" />
+		<column name="companyName" type="String" />
 		<column name="agreement" type="boolean" />
 	</entity>
 	<exceptions>

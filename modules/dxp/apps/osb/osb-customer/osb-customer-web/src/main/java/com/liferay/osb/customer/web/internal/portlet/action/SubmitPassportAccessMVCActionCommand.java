@@ -217,9 +217,6 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		return false;
 	}
 
-	private static final String _BAD_DOMAINS_FILE =
-		"/dependencies/bad_domains.txt";
-
 	private static final String[] _NO_ACCESS_COUNTRIES = {
 		"china", "india", "japan"
 	};
@@ -233,7 +230,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 		try {
 			StringUtil.readLines(
 				SubmitPassportAccessMVCActionCommand.class.getResourceAsStream(
-					_BAD_DOMAINS_FILE),
+					"/dependencies/bad_domains.txt"),
 				_badDomains);
 		}
 		catch (Exception e) {
