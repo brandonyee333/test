@@ -25,6 +25,7 @@ import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.base.OfferingEntryLocalServiceBaseImpl;
+import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
@@ -152,8 +153,12 @@ public class OfferingEntryLocalServiceImpl
 				}
 
 				try {
-					lcsSubscriptionEntryLocalService.syncToLCS(
-						offeringEntry.getAccountEntryId());
+					if (SupportUtil.hasSyncToLCS(
+							offeringEntry.getAccountEntry())) {
+
+						lcsSubscriptionEntryLocalService.syncToLCS(
+							offeringEntry.getAccountEntryId());
+					}
 				}
 				catch (Exception e) {
 					_log.error(

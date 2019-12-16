@@ -60,6 +60,7 @@ import com.liferay.osb.exception.ZendeskTagException;
 import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
+import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
@@ -84,6 +85,7 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
+import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBWebKeys;
 import com.liferay.osb.util.WorkflowConstants;
@@ -391,8 +393,10 @@ public class AdminPortlet extends OSBPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.deleteOrderEntry(
 			orderEntryId);
 
-		syncToLCS(
-			actionRequest, actionResponse, orderEntry.getAccountEntryId());
+		if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
+			syncToLCS(
+				actionRequest, actionResponse, orderEntry.getAccountEntryId());
+		}
 	}
 
 	public void deletePartnerEntry(
@@ -481,8 +485,10 @@ public class AdminPortlet extends OSBPortlet {
 		OrderEntry orderEntry = OrderEntryLocalServiceUtil.renewOrderEntry(
 			themeDisplay.getUserId(), orderEntryId, renewCount);
 
-		syncToLCS(
-			actionRequest, actionResponse, orderEntry.getAccountEntryId());
+		if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
+			syncToLCS(
+				actionRequest, actionResponse, orderEntry.getAccountEntryId());
+		}
 	}
 
 	public void runManualUpgrade(
@@ -564,18 +570,24 @@ public class AdminPortlet extends OSBPortlet {
 		boolean closedWatcher = ParamUtil.getBoolean(
 			actionRequest, "closedWatcher_" + accountCustomerId);
 
+		AccountCustomer accountCustomer = null;
+
 		if (accountCustomerId > 0) {
-			AccountCustomerLocalServiceUtil.updateAccountCustomer(
-				themeDisplay.getUserId(), accountCustomerId, role,
-				closedWatcher);
+			accountCustomer =
+				AccountCustomerLocalServiceUtil.updateAccountCustomer(
+					themeDisplay.getUserId(), accountCustomerId, role,
+					closedWatcher);
 		}
 		else {
-			AccountCustomerLocalServiceUtil.addAccountCustomer(
-				themeDisplay.getUserId(), emailAddress, accountEntryId, role,
-				closedWatcher);
+			accountCustomer =
+				AccountCustomerLocalServiceUtil.addAccountCustomer(
+					themeDisplay.getUserId(), emailAddress, accountEntryId,
+					role, closedWatcher);
 		}
 
-		syncToLCS(actionRequest, actionResponse, accountEntryId);
+		if (SupportUtil.hasSyncToLCS(accountCustomer.getAccountEntry())) {
+			syncToLCS(actionRequest, actionResponse, accountEntryId);
+		}
 	}
 
 	public void updateAccountEntry(
@@ -784,7 +796,12 @@ public class AdminPortlet extends OSBPortlet {
 				OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
 			}
 
-			syncToLCS(actionRequest, actionResponse, accountEntryId);
+			AccountEntry accountEntry =
+				AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
+
+			if (SupportUtil.hasSyncToLCS(accountEntry)) {
+				syncToLCS(actionRequest, actionResponse, accountEntryId);
+			}
 
 			jsonObject.put("message", "success");
 		}
@@ -897,8 +914,10 @@ public class AdminPortlet extends OSBPortlet {
 				actualStartDateYear, salesforceOpportunityKey, offeringEntries);
 		}
 
-		syncToLCS(
-			actionRequest, actionResponse, orderEntry.getAccountEntryId());
+		if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
+			syncToLCS(
+				actionRequest, actionResponse, orderEntry.getAccountEntryId());
+		}
 	}
 
 	public void updatePartnerEntry(

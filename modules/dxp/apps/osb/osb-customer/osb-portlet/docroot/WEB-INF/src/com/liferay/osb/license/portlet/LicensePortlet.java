@@ -39,6 +39,7 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
+import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
 import com.liferay.osb.util.mvc.OSBPortlet;
@@ -174,8 +175,10 @@ public class LicensePortlet extends OSBPortlet {
 			}
 		}
 
-		syncToLCS(
-			actionRequest, actionResponse, licenseKey.getAccountEntryId());
+		if (SupportUtil.hasSyncToLCS(licenseKey.getAccountEntry())) {
+			syncToLCS(
+				actionRequest, actionResponse, licenseKey.getAccountEntryId());
+		}
 	}
 
 	public void renewTrialLicenseKey(
@@ -362,8 +365,10 @@ public class LicensePortlet extends OSBPortlet {
 				offeringEntryId, name, active);
 		}
 
-		syncToLCS(
-			actionRequest, actionResponse, licenseKey.getAccountEntryId());
+		if (SupportUtil.hasSyncToLCS(licenseKey.getAccountEntry())) {
+			syncToLCS(
+				actionRequest, actionResponse, licenseKey.getAccountEntryId());
+		}
 	}
 
 	public void updateLicenseKeySet(

@@ -462,8 +462,10 @@ public class AccountEntryLocalServiceImpl
 		// LCS
 
 		try {
-			lcsSubscriptionEntryLocalService.syncToLCS(
-				accountEntry.getAccountEntryId());
+			if (SupportUtil.hasSyncToLCS(accountEntry)) {
+				lcsSubscriptionEntryLocalService.syncToLCS(
+					accountEntry.getAccountEntryId());
+			}
 		}
 		catch (Exception e) {
 			_log.error(

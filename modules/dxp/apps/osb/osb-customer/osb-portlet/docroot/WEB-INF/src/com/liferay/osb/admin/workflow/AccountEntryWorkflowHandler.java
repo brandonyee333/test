@@ -17,6 +17,7 @@ package com.liferay.osb.admin.workflow;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
+import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -206,8 +207,10 @@ public class AccountEntryWorkflowHandler<T> extends BaseWorkflowHandler<T> {
 
 	protected void syncToLCS(AccountEntry accountEntry) {
 		try {
-			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
-				accountEntry.getAccountEntryId());
+			if (SupportUtil.hasSyncToLCS(accountEntry)) {
+				LCSSubscriptionEntryLocalServiceUtil.syncToLCS(
+					accountEntry.getAccountEntryId());
+			}
 		}
 		catch (Exception e) {
 			_log.error(

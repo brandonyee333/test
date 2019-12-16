@@ -384,8 +384,10 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			}
 
 			try {
-				lcsSubscriptionEntryLocalService.syncToLCS(
-					orderEntry.getAccountEntryId());
+				if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
+					lcsSubscriptionEntryLocalService.syncToLCS(
+						orderEntry.getAccountEntryId());
+				}
 			}
 			catch (Exception e) {
 				_log.error(

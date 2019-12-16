@@ -14,6 +14,7 @@
 
 package com.liferay.osb.support.util;
 
+import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
@@ -34,6 +35,9 @@ import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -229,6 +233,22 @@ public class SupportUtil {
 		}
 
 		return true;
+	}
+
+	public static boolean hasSyncToLCS(AccountEntry accountEntry)
+		throws Exception {
+
+		Date createDate = accountEntry.getCreateDate();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		Date date = dateFormat.parse("2020-01-01");
+
+		if (createDate.before(date)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public static String serialize(List<OrderEntry> orderEntries) {
