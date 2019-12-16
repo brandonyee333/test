@@ -58,15 +58,13 @@ public class UserModelListener extends BaseModelListener<User> {
 				long userId = GetterUtil.getLong(classPK);
 				long organizationId = GetterUtil.getLong(associationClassPK);
 
-				User user = _userLocalService.getUser(userId);
-
 				if ((organizationId ==
 						OSBCustomerConstants.
 							ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
 					(organizationId ==
 						OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
-					_userSynchronizer.update(user, null);
+					_userSynchronizer.updateTags(userId);
 				}
 			}
 		}

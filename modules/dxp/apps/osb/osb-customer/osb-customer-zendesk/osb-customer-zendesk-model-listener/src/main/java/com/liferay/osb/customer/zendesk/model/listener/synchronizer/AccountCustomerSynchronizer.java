@@ -15,7 +15,6 @@
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
@@ -154,14 +153,6 @@ public class AccountCustomerSynchronizer {
 
 			_userSynchronizer.updateTags(accountCustomer.getUserId());
 		}
-	}
-
-	public void sync(ZendeskUser zendeskUser, AccountCustomer accountCustomer)
-		throws PortalException {
-
-		User user = _userLocalService.getUser(accountCustomer.getUserId());
-
-		_userSynchronizer.sync(zendeskUser, user);
 	}
 
 	public void update(AccountCustomer accountCustomer) throws PortalException {

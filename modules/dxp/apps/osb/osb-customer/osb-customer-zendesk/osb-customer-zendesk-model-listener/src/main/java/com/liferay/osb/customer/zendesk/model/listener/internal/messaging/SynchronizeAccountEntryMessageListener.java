@@ -196,9 +196,7 @@ public class SynchronizeAccountEntryMessageListener
 						new long[] {zendeskOrganizationId});
 			}
 			else {
-				if ((accountCustomer != null) || (partnerWorker != null)) {
-					_userSynchronizer.sync(zendeskUser, user);
-				}
+				_userSynchronizer.sync(zendeskUser, user);
 			}
 		}
 

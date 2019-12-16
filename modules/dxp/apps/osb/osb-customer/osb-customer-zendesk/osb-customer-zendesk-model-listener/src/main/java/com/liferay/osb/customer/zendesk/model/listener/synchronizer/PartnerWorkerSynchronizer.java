@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -97,14 +96,6 @@ public class PartnerWorkerSynchronizer {
 		}
 
 		_userSynchronizer.updateTags(partnerWorker.getUserId());
-	}
-
-	public void sync(ZendeskUser zendeskUser, PartnerWorker partnerWorker)
-		throws PortalException {
-
-		User user = _userLocalService.getUser(partnerWorker.getUserId());
-
-		_userSynchronizer.sync(zendeskUser, user);
 	}
 
 	public void updateRole(PartnerWorker partnerWorker) throws PortalException {
