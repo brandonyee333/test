@@ -16,7 +16,9 @@
 
 <%@ include file="/init.jsp" %>
 
-<%@ page import="com.liferay.document.library.web.internal.util.RepositoryClassDefinitionUtil" %><%@
+<%@ page import="com.liferay.document.library.constants.DLFileEntryPreviewConstants" %><%@
+page import="com.liferay.document.library.service.DLFileEntryPreviewLocalServiceUtil" %><%@
+page import="com.liferay.document.library.web.internal.util.RepositoryClassDefinitionUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %>
 
 <%
