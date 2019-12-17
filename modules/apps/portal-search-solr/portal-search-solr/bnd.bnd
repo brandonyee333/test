@@ -8,6 +8,7 @@ Import-Package:\
 	!jline.*,\
 	\
 	!org.apache.lucene.sandbox.*,\
+	!org.apache.yetus.*,\
 	\
 	!org.jboss.netty.*,\
 	\
