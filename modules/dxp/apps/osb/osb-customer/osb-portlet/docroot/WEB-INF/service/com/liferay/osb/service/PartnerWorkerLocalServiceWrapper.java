@@ -203,6 +203,11 @@ public class PartnerWorkerLocalServiceWrapper
 		return _partnerWorkerLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public int countPassportPartnersByDomain(java.lang.String domain) {
+		return _partnerWorkerLocalService.countPassportPartnersByDomain(domain);
+	}
+
 	/**
 	* Returns the number of partner workers.
 	*

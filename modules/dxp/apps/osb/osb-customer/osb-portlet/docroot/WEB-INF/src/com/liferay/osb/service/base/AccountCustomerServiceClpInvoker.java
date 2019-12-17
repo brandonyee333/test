@@ -27,43 +27,43 @@ import java.util.Arrays;
 @ProviderType
 public class AccountCustomerServiceClpInvoker {
 	public AccountCustomerServiceClpInvoker() {
-		_methodName210 = "getOSGiServiceIdentifier";
+		_methodName212 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes210 = new String[] {  };
+		_methodParameterTypes212 = new String[] {  };
 
-		_methodName215 = "getCorpProjectAccountCustomerUsers";
+		_methodName217 = "getCorpProjectAccountCustomerUsers";
 
-		_methodParameterTypes215 = new String[] { "java.lang.String" };
+		_methodParameterTypes217 = new String[] { "java.lang.String" };
 
-		_methodName216 = "getCorpProjectAccountCustomerUUIDs";
+		_methodName218 = "getCorpProjectAccountCustomerUUIDs";
 
-		_methodParameterTypes216 = new String[] { "java.lang.String" };
+		_methodParameterTypes218 = new String[] { "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName210.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
+		if (_methodName212.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes212, parameterTypes)) {
 			return AccountCustomerServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName215.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes215, parameterTypes)) {
+		if (_methodName217.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes217, parameterTypes)) {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUsers((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName216.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes216, parameterTypes)) {
+		if (_methodName218.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes218, parameterTypes)) {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs((java.lang.String)arguments[0]);
 		}
 
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName210;
-	private String[] _methodParameterTypes210;
-	private String _methodName215;
-	private String[] _methodParameterTypes215;
-	private String _methodName216;
-	private String[] _methodParameterTypes216;
+	private String _methodName212;
+	private String[] _methodParameterTypes212;
+	private String _methodName217;
+	private String[] _methodParameterTypes217;
+	private String _methodName218;
+	private String[] _methodParameterTypes218;
 }

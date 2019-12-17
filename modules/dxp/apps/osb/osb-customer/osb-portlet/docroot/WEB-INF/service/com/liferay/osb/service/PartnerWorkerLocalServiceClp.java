@@ -116,69 +116,73 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 
 		_methodParameterTypes19 = new String[] { "java.io.Serializable" };
 
-		_methodName20 = "getPartnerWorkersCount";
+		_methodName20 = "countPassportPartnersByDomain";
 
-		_methodParameterTypes20 = new String[] {  };
+		_methodParameterTypes20 = new String[] { "java.lang.String" };
 
-		_methodName22 = "getOSGiServiceIdentifier";
+		_methodName21 = "getPartnerWorkersCount";
 
-		_methodParameterTypes22 = new String[] {  };
+		_methodParameterTypes21 = new String[] {  };
 
-		_methodName23 = "dynamicQuery";
+		_methodName23 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes23 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
+		_methodParameterTypes23 = new String[] {  };
 
 		_methodName24 = "dynamicQuery";
 
 		_methodParameterTypes24 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
 		_methodName25 = "dynamicQuery";
 
 		_methodParameterTypes25 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
+			};
+
+		_methodName26 = "dynamicQuery";
+
+		_methodParameterTypes26 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName26 = "getPartnerWorkers";
-
-		_methodParameterTypes26 = new String[] { "int", "int" };
-
 		_methodName27 = "getPartnerWorkers";
 
-		_methodParameterTypes27 = new String[] { "long" };
+		_methodParameterTypes27 = new String[] { "int", "int" };
 
 		_methodName28 = "getPartnerWorkers";
 
-		_methodParameterTypes28 = new String[] { "long", "int" };
+		_methodParameterTypes28 = new String[] { "long" };
 
-		_methodName29 = "getUserPartnerWorkers";
+		_methodName29 = "getPartnerWorkers";
 
-		_methodParameterTypes29 = new String[] { "long" };
+		_methodParameterTypes29 = new String[] { "long", "int" };
 
-		_methodName30 = "dynamicQueryCount";
+		_methodName30 = "getUserPartnerWorkers";
 
-		_methodParameterTypes30 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
+		_methodParameterTypes30 = new String[] { "long" };
 
 		_methodName31 = "dynamicQueryCount";
 
 		_methodParameterTypes31 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
+
+		_methodName32 = "dynamicQueryCount";
+
+		_methodParameterTypes32 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName32 = "deletePartnerWorkers";
+		_methodName33 = "deletePartnerWorkers";
 
-		_methodParameterTypes32 = new String[] { "long" };
+		_methodParameterTypes33 = new String[] { "long" };
 
-		_methodName33 = "syncPartnerWorkers";
+		_methodName34 = "syncPartnerWorkers";
 
-		_methodParameterTypes33 = new String[] {
+		_methodParameterTypes34 = new String[] {
 				"long", "java.lang.String", "java.lang.String"
 			};
 	}
@@ -715,12 +719,36 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	}
 
 	@Override
-	public int getPartnerWorkersCount() {
+	public int countPassportPartnersByDomain(java.lang.String domain) {
 		Object returnObj = null;
 
 		try {
 			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] {  });
+					_methodParameterTypes20,
+					new Object[] { ClpSerializer.translateInput(domain) });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return ((Integer)returnObj).intValue();
+	}
+
+	@Override
+	public int getPartnerWorkersCount() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -749,8 +777,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -773,8 +801,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -799,8 +827,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -832,8 +860,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -865,8 +893,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -889,8 +917,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -913,8 +941,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { partnerEntryId, role });
 		}
 		catch (Throwable t) {
@@ -938,8 +966,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29, new Object[] { userId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -962,8 +990,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -988,8 +1016,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName32,
+					_methodParameterTypes32,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1015,8 +1043,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	public void deletePartnerWorkers(long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName32,
-				_methodParameterTypes32, new Object[] { userId });
+			_invokableLocalService.invokeMethod(_methodName33,
+				_methodParameterTypes33, new Object[] { userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1041,8 +1069,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 		java.lang.String newDossieraAccountKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName33,
-				_methodParameterTypes33,
+			_invokableLocalService.invokeMethod(_methodName34,
+				_methodParameterTypes34,
 				new Object[] {
 					partnerEntryId,
 					
@@ -1111,8 +1139,8 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
-	private String _methodName22;
-	private String[] _methodParameterTypes22;
+	private String _methodName21;
+	private String[] _methodParameterTypes21;
 	private String _methodName23;
 	private String[] _methodParameterTypes23;
 	private String _methodName24;
@@ -1135,4 +1163,6 @@ public class PartnerWorkerLocalServiceClp implements PartnerWorkerLocalService {
 	private String[] _methodParameterTypes32;
 	private String _methodName33;
 	private String[] _methodParameterTypes33;
+	private String _methodName34;
+	private String[] _methodParameterTypes34;
 }

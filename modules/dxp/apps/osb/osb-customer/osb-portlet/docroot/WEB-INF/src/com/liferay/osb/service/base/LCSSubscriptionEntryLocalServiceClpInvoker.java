@@ -123,17 +123,17 @@ public class LCSSubscriptionEntryLocalServiceClpInvoker {
 				"com.liferay.osb.model.LCSSubscriptionEntry"
 			};
 
-		_methodName168 = "getOSGiServiceIdentifier";
+		_methodName170 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes168 = new String[] {  };
+		_methodParameterTypes170 = new String[] {  };
 
-		_methodName173 = "getLCSSubscriptionEntries";
+		_methodName175 = "getLCSSubscriptionEntries";
 
-		_methodParameterTypes173 = new String[] { "long" };
+		_methodParameterTypes175 = new String[] { "long" };
 
-		_methodName174 = "syncToLCS";
+		_methodName176 = "syncToLCS";
 
-		_methodParameterTypes174 = new String[] { "long" };
+		_methodParameterTypes176 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -240,18 +240,18 @@ public class LCSSubscriptionEntryLocalServiceClpInvoker {
 			return LCSSubscriptionEntryLocalServiceUtil.updateLCSSubscriptionEntry((com.liferay.osb.model.LCSSubscriptionEntry)arguments[0]);
 		}
 
-		if (_methodName168.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes168, parameterTypes)) {
+		if (_methodName170.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes170, parameterTypes)) {
 			return LCSSubscriptionEntryLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName173.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes173, parameterTypes)) {
+		if (_methodName175.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
 			return LCSSubscriptionEntryLocalServiceUtil.getLCSSubscriptionEntries(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName174.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes174, parameterTypes)) {
+		if (_methodName176.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
 			LCSSubscriptionEntryLocalServiceUtil.syncToLCS(((Long)arguments[0]).longValue());
 
 			return null;
@@ -298,10 +298,10 @@ public class LCSSubscriptionEntryLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName168;
-	private String[] _methodParameterTypes168;
-	private String _methodName173;
-	private String[] _methodParameterTypes173;
-	private String _methodName174;
-	private String[] _methodParameterTypes174;
+	private String _methodName170;
+	private String[] _methodParameterTypes170;
+	private String _methodName175;
+	private String[] _methodParameterTypes175;
+	private String _methodName176;
+	private String[] _methodParameterTypes176;
 }

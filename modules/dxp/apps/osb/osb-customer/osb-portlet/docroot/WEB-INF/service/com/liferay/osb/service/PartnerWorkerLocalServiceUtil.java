@@ -184,6 +184,10 @@ public class PartnerWorkerLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static int countPassportPartnersByDomain(java.lang.String domain) {
+		return getService().countPassportPartnersByDomain(domain);
+	}
+
 	/**
 	* Returns the number of partner workers.
 	*

@@ -76,6 +76,7 @@
 	<bean class="com.liferay.osb.service.impl.PartnerWorkerLocalServiceImpl" id="com.liferay.osb.service.PartnerWorkerLocalService" />
 	<bean class="com.liferay.osb.service.impl.PartnerWorkerServiceImpl" id="com.liferay.osb.service.PartnerWorkerService" />
 	<bean class="com.liferay.osb.service.persistence.impl.PartnerWorkerPersistenceImpl" id="com.liferay.osb.service.persistence.PartnerWorkerPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.service.persistence.impl.PartnerWorkerFinderImpl" id="com.liferay.osb.service.persistence.PartnerWorkerFinder" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.ProductEntryLocalServiceImpl" id="com.liferay.osb.service.ProductEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.ProductEntryServiceImpl" id="com.liferay.osb.service.ProductEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryPersistenceImpl" id="com.liferay.osb.service.persistence.ProductEntryPersistence" parent="basePersistence" />

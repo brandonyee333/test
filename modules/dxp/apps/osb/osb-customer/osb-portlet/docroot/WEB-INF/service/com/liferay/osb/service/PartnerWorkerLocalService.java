@@ -166,6 +166,8 @@ public interface PartnerWorkerLocalService extends BaseLocalService,
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	public int countPassportPartnersByDomain(java.lang.String domain);
+
 	/**
 	* Returns the number of partner workers.
 	*

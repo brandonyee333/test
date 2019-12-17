@@ -48,6 +48,7 @@ import com.liferay.osb.service.persistence.OrderEntryFinder;
 import com.liferay.osb.service.persistence.OrderEntryPersistence;
 import com.liferay.osb.service.persistence.PartnerEntryFinder;
 import com.liferay.osb.service.persistence.PartnerEntryPersistence;
+import com.liferay.osb.service.persistence.PartnerWorkerFinder;
 import com.liferay.osb.service.persistence.PartnerWorkerPersistence;
 import com.liferay.osb.service.persistence.ProductEntryFinder;
 import com.liferay.osb.service.persistence.ProductEntryPersistence;
@@ -1080,6 +1081,24 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	}
 
 	/**
+	 * Returns the partner worker finder.
+	 *
+	 * @return the partner worker finder
+	 */
+	public PartnerWorkerFinder getPartnerWorkerFinder() {
+		return partnerWorkerFinder;
+	}
+
+	/**
+	 * Sets the partner worker finder.
+	 *
+	 * @param partnerWorkerFinder the partner worker finder
+	 */
+	public void setPartnerWorkerFinder(PartnerWorkerFinder partnerWorkerFinder) {
+		this.partnerWorkerFinder = partnerWorkerFinder;
+	}
+
+	/**
 	 * Returns the product entry local service.
 	 *
 	 * @return the product entry local service
@@ -1831,6 +1850,8 @@ public abstract class RemoteUserLocalServiceBaseImpl
 	protected com.liferay.osb.service.PartnerWorkerLocalService partnerWorkerLocalService;
 	@BeanReference(type = PartnerWorkerPersistence.class)
 	protected PartnerWorkerPersistence partnerWorkerPersistence;
+	@BeanReference(type = PartnerWorkerFinder.class)
+	protected PartnerWorkerFinder partnerWorkerFinder;
 	@BeanReference(type = com.liferay.osb.service.ProductEntryLocalService.class)
 	protected com.liferay.osb.service.ProductEntryLocalService productEntryLocalService;
 	@BeanReference(type = ProductEntryPersistence.class)

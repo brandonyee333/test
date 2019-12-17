@@ -27,24 +27,24 @@ import java.util.Arrays;
 @ProviderType
 public class OfferingEntryServiceClpInvoker {
 	public OfferingEntryServiceClpInvoker() {
-		_methodName198 = "getOSGiServiceIdentifier";
+		_methodName200 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes198 = new String[] {  };
+		_methodParameterTypes200 = new String[] {  };
 
-		_methodName203 = "updateStatus";
+		_methodName205 = "updateStatus";
 
-		_methodParameterTypes203 = new String[] { "long", "int" };
+		_methodParameterTypes205 = new String[] { "long", "int" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
 		Object[] arguments) throws Throwable {
-		if (_methodName198.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes198, parameterTypes)) {
+		if (_methodName200.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes200, parameterTypes)) {
 			return OfferingEntryServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName203.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes203, parameterTypes)) {
+		if (_methodName205.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes205, parameterTypes)) {
 			return OfferingEntryServiceUtil.updateStatus(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue());
 		}
@@ -52,8 +52,8 @@ public class OfferingEntryServiceClpInvoker {
 		throw new UnsupportedOperationException();
 	}
 
-	private String _methodName198;
-	private String[] _methodParameterTypes198;
-	private String _methodName203;
-	private String[] _methodParameterTypes203;
+	private String _methodName200;
+	private String[] _methodParameterTypes200;
+	private String _methodName205;
+	private String[] _methodParameterTypes205;
 }
