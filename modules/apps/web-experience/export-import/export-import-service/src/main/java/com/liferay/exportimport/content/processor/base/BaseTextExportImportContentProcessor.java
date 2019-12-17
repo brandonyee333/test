@@ -1580,6 +1580,13 @@ public class BaseTextExportImportContentProcessor
 						continue;
 					}
 
+					long plid = GetterUtil.getLong(
+						element.attributeValue("class-pk"));
+
+					if (oldPlid != plid) {
+						continue;
+					}
+
 					String uuid = element.attributeValue("uuid");
 					String privateLayout = element.attributeValue(
 						"private-layout");
