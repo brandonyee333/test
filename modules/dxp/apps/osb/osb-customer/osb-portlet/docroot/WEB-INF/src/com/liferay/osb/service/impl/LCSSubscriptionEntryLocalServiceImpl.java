@@ -15,8 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -101,23 +99,14 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		AccountEntry accountEntry = accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
-		if (accountEntry.getType() ==
-				AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) {
-
-			return;
-		}
-
 		List<LCSSubscriptionEntry> lcsSubscriptionEntries =
 			getLCSSubscriptionEntries(accountEntryId);
 
 		String lcsSubscriptionEntriesJSON = JSONFactoryUtil.looseSerialize(
 			lcsSubscriptionEntries);
 
-		CorpProject corpProject = corpProjectLocalService.getCorpProjectByUuid(
-			accountEntry.getCorpProjectUuid());
-
 		LCSJSONWebServiceUtil.sendLCSSubscriptionEntries(
-			corpProject.getCorpProjectId(), lcsSubscriptionEntriesJSON);
+			accountEntry.getCorpProjectId(), lcsSubscriptionEntriesJSON);
 	}
 
 	protected LCSSubscriptionEntry createLCSSubscriptionEntry(

@@ -20,7 +20,6 @@ import com.liferay.osb.exception.PartnerEntryCodeException;
 import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.RequiredPartnerEntryException;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.service.base.PartnerEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -85,11 +84,6 @@ public class PartnerEntryLocalServiceImpl
 	@Override
 	public PartnerEntry deletePartnerEntry(long partnerEntryId)
 		throws PortalException {
-
-		if (accountEntryPersistence.countByPartnerEntryId(partnerEntryId) > 0) {
-			throw new RequiredPartnerEntryException(
-				RequiredPartnerEntryException.REFERENCED_ACCOUNT_ENTRY);
-		}
 
 		if (partnerEntryPersistence.countByParentPartnerEntryId(
 				partnerEntryId) > 0) {
@@ -235,19 +229,6 @@ public class PartnerEntryLocalServiceImpl
 
 	protected void closePartnerEntry(User user, long partnerEntryId)
 		throws PortalException {
-
-		List<AccountEntry> accountEntries =
-			accountEntryPersistence.findByPartnerEntryId(partnerEntryId);
-
-		for (AccountEntry accountEntry : accountEntries) {
-			accountEntry.setModifiedUserId(user.getUserId());
-			accountEntry.setModifiedUserName(user.getFullName());
-			accountEntry.setModifiedDate(new Date());
-			accountEntry.setPartnerEntryId(partnerEntryId);
-			accountEntry.setPartnerManagedSupport(false);
-
-			accountEntryPersistence.update(accountEntry);
-		}
 
 		List<PartnerEntry> childPartnerEntries =
 			partnerEntryPersistence.findByParentPartnerEntryId(partnerEntryId);

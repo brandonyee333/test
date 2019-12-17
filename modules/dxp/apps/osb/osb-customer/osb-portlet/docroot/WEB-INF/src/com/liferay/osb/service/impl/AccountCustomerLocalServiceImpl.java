@@ -15,13 +15,9 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.exception.AccountCustomerClosedWatcherException;
-import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
-import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -51,10 +47,6 @@ public class AccountCustomerLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 		User customerUser = userLocalService.getUser(customerUserId);
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		validate(accountEntryId);
 
 		AccountCustomer accountCustomer = fetchAccountCustomer(
 			customerUserId, accountEntryId);
@@ -92,26 +84,6 @@ public class AccountCustomerLocalServiceImpl
 			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
 			accountCustomer.getRoleLabel(),
 			String.valueOf(accountCustomer.getRole()), StringPool.BLANK);
-
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-			assignOrganizations(
-				customerUserId, OSBConstants.ORGANIZATION_TRIAL_ID);
-		}
-		else if (accountEntry.isApproved() &&
-				 (accountEntry.getType() !=
-					 AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) &&
-				 (accountEntry.getType() !=
-					 AccountEntryConstants.TYPE_INTERNAL_TEST) &&
-				 !organizationLocalService.hasUserOrganization(
-					 userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			if (roleLocalService.hasUserRole(
-					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
-
-				assignOrganizations(
-					customerUserId, OSBConstants.ORGANIZATION_CUSTOMER_ID);
-			}
-		}
 
 		return accountCustomer;
 	}
@@ -315,43 +287,7 @@ public class AccountCustomerLocalServiceImpl
 				accountCustomerUser.getFullName());
 		}
 
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountCustomer.getAccountEntryId());
-
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-			assignOrganizations(
-				accountCustomer.getUserId(),
-				OSBConstants.ORGANIZATION_TRIAL_ID);
-		}
-		else if (accountEntry.isApproved() &&
-				 (accountEntry.getType() !=
-					 AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) &&
-				 (accountEntry.getType() !=
-					 AccountEntryConstants.TYPE_INTERNAL_TEST) &&
-				 !organizationLocalService.hasUserOrganization(
-					 userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
-
-			if (roleLocalService.hasUserRole(
-					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
-
-				assignOrganizations(
-					accountCustomer.getUserId(),
-					OSBConstants.ORGANIZATION_CUSTOMER_ID);
-			}
-		}
-
 		return accountCustomer;
-	}
-
-	protected void assignOrganizations(long userId, long organizationId)
-		throws PortalException {
-
-		if (!organizationLocalService.hasUserOrganization(
-				userId, organizationId)) {
-
-			remoteUserLocalService.addOrganizationUsers(
-				organizationId, new long[] {userId});
-		}
 	}
 
 	protected AccountCustomer doAddAccountCustomer(
@@ -411,24 +347,12 @@ public class AccountCustomerLocalServiceImpl
 			StringPool.BLANK, StringPool.BLANK);
 	}
 
-	protected void validate(long accountEntryId) throws PortalException {
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if (accountEntry.getRedirectAccountEntryId() > 0) {
-			throw new NoSuchAccountEntryException();
-		}
-
-		int accountEntryCustomersCount =
-			accountCustomerPersistence.countByAccountEntryId(accountEntryId);
-
-		if ((accountEntryCustomersCount + 1) > accountEntry.getMaxCustomers()) {
-			throw new AccountEntryMaximumCustomersException();
-		}
-	}
-
 	protected void validate(long accountEntryId, boolean closedWatcher)
 		throws PortalException {
+
+		/*
+
+		TODO
 
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
@@ -436,6 +360,7 @@ public class AccountCustomerLocalServiceImpl
 		if (accountEntry.isApproved() && closedWatcher) {
 			throw new AccountCustomerClosedWatcherException();
 		}
+		*/
 	}
 
 }

@@ -19,7 +19,6 @@ import com.liferay.osb.service.base.CorpProjectMessageServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -38,12 +37,9 @@ public class CorpProjectMessageServiceImpl
 
 		validateJSONWebServicePermissions();
 
-		User user = userLocalService.getUserByUuidAndCompanyId(
-			userUuid, OSBConstants.COMPANY_ID);
+		// TODO
 
-		return corpProjectMessageLocalService.addCorpProjectMessage(
-			user.getUserId(), corpProjectId, type, severityLevel, title,
-			content, displayCP, displayLCS, serviceContext);
+		return null;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

@@ -15,8 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.LicenseKeySetNameException;
-import com.liferay.osb.exception.NoSuchAccountEntryException;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -39,7 +37,7 @@ public class LicenseKeySetLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(accountEntryId, name);
+		validate(name);
 
 		long licenseKeySetId = counterLocalService.increment();
 
@@ -85,7 +83,7 @@ public class LicenseKeySetLocalServiceImpl
 	public LicenseKeySet updateLicenseKeySet(long licenseKeySetId, String name)
 		throws PortalException {
 
-		validateName(name);
+		validate(name);
 
 		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
 			licenseKeySetId);
@@ -96,20 +94,7 @@ public class LicenseKeySetLocalServiceImpl
 		return licenseKeySetPersistence.update(licenseKeySet);
 	}
 
-	protected void validate(long accountEntryId, String name)
-		throws PortalException {
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if (accountEntry.getRedirectAccountEntryId() > 0) {
-			throw new NoSuchAccountEntryException();
-		}
-
-		validateName(name);
-	}
-
-	protected void validateName(String name) throws PortalException {
+	protected void validate(String name) throws PortalException {
 		if (Validator.isNull(name)) {
 			throw new LicenseKeySetNameException();
 		}

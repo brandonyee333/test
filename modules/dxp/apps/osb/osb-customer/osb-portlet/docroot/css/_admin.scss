@@ -1,7 +1,6 @@
 .osb-portlet-admin {
 	table {
 		&.lfr-table {
-			display: block;
 			overflow-x: auto;
 			white-space: nowrap;
 		}
@@ -12,10 +11,6 @@
 
 		.inactive td {
 			background-color: $color-error-border;
-		}
-
-		.lfr-role-column {
-			min-width: 0;
 		}
 	}
 
@@ -107,6 +102,10 @@
 			.search-query {
 				margin-top: 4px;
 			}
+		}
+
+		.lfr-table {
+			width: 100%;
 		}
 	}
 

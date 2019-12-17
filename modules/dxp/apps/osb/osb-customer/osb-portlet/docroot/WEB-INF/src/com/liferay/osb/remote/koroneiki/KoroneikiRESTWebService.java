@@ -24,6 +24,9 @@ public interface KoroneikiRESTWebService {
 
 	public void deleteAccounts(String accountKey) throws RemoteServiceException;
 
+	public JSONObject getAccounts(String koroneikiAccountKey)
+		throws RemoteServiceException;
+
 	public JSONObject getAccounts(
 			String domain, String entityName, String entityId)
 		throws RemoteServiceException;

@@ -15,36 +15,20 @@
 package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.AccountAttachment;
-import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountEntryLanguage;
-import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
+import com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceUtil;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLanguageLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.service.AddressLocalServiceUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -62,12 +46,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 	@Override
 	public Object clone() {
 		AccountEntry accountEntry = (AccountEntry)super.clone();
-
-		try {
-			accountEntry.setAddress(getAddress());
-		}
-		catch (Exception e) {
-		}
 
 		try {
 			accountEntry.setLanguageIds(getLanguageIds());
@@ -91,27 +69,18 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 			getAccountEntryId(), accountProjectId);
 	}
 
-	public List<AccountCustomer> getAccountCustomers() {
-		return AccountCustomerLocalServiceUtil.getAccountCustomers(
-			getAccountEntryId());
+	public long getCorpProjectId() {
+
+		// TODO
+
+		return 0;
 	}
 
-	public List<AccountWorker> getAccountWorkers() {
-		return AccountWorkerLocalServiceUtil.getAccountWorkers(
-			getAccountEntryId());
-	}
+	public String getDescription() throws Exception {
+		JSONObject jsonObject = _getKoroneikiAccount();
 
-	public Address getAddress() {
-		if (_address != null) {
-			return _address;
-		}
-
-		List<Address> addresses = AddressLocalServiceUtil.getAddresses(
-			OSBConstants.COMPANY_ID, AccountEntry.class.getName(),
-			getAccountEntryId());
-
-		if (!addresses.isEmpty()) {
-			return addresses.get(0);
+		if (jsonObject != null) {
+			return jsonObject.getString("description");
 		}
 
 		return null;
@@ -126,28 +95,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		}
 
 		return StringPool.BLANK;
-	}
-
-	public String getEWSADossieraProjectKey() {
-		long classNameId = PortalUtil.getClassNameId(
-			AccountEntry.class.getName());
-
-		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, getAccountEntryId(),
-				ExternalIdMapperConstants.TYPE_EWSA_DOSSIERA_ACCOUNT_KEY);
-
-		if (!externalIdMappers.isEmpty()) {
-			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
-
-			return externalIdMapper.getExternalId();
-		}
-
-		return StringPool.BLANK;
-	}
-
-	public String getIndustryLabel() {
-		return AccountEntryConstants.getIndustryLabel(getIndustry());
 	}
 
 	public String[] getLanguageIds() {
@@ -175,20 +122,6 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 	public List<OfferingEntry> getOfferingEntries() {
 		return OfferingEntryLocalServiceUtil.getAccountEntryOfferingEntries(
 			getAccountEntryId());
-	}
-
-	public List<OrderEntry> getOrderEntries() {
-		return OrderEntryLocalServiceUtil.getAccountEntryOrderEntries(
-			getAccountEntryId());
-	}
-
-	public PartnerEntry getPartnerEntry() throws PortalException {
-		if (getPartnerEntryId() == 0) {
-			return null;
-		}
-
-		return PartnerEntryLocalServiceUtil.getPartnerEntry(
-			getPartnerEntryId());
 	}
 
 	public String getStatusLabel() {
@@ -221,30 +154,14 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 			getAccountEntryId());
 	}
 
-	public String getTypeLabel() {
-		return AccountEntryConstants.getTypeLabel(getType());
-	}
+	public String getTier() throws Exception {
+		JSONObject jsonObject = _getKoroneikiAccount();
 
-	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
-		throws PortalException {
-
-		List<OfferingEntry> offeringEntries = getOfferingEntries();
-
-		for (OfferingEntry offeringEntry : offeringEntries) {
-			ProductEntry productEntry = offeringEntry.getProductEntry();
-
-			if (productEntry.isEnterpriseSearch() &&
-				(productEntry.getEnvironment() == productEntryEnvironment)) {
-
-				return true;
-			}
+		if (jsonObject != null) {
+			return jsonObject.getString("tier");
 		}
 
-		return false;
-	}
-
-	public void setAddress(Address address) {
-		_address = address;
+		return null;
 	}
 
 	public void setLanguageIds(String[] languageIds) {
@@ -255,7 +172,18 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		_supportRegionIds = supportRegionIds;
 	}
 
-	private Address _address;
+	private JSONObject _getKoroneikiAccount() throws Exception {
+		if ((_jsonObject == null) &&
+			Validator.isNotNull(getKoroneikiAccountKey())) {
+
+			_jsonObject = KoroneikiRESTWebServiceUtil.getAccounts(
+				getKoroneikiAccountKey());
+		}
+
+		return _jsonObject;
+	}
+
+	private JSONObject _jsonObject;
 	private String[] _languageIds;
 	private long[] _supportRegionIds;
 

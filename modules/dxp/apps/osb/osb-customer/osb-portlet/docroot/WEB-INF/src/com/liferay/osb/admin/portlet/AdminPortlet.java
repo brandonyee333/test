@@ -17,101 +17,46 @@ package com.liferay.osb.admin.portlet;
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
 import com.liferay.osb.admin.util.AdminUtil;
-import com.liferay.osb.exception.AccountEntryCodeException;
-import com.liferay.osb.exception.AccountEntryCorpProjectException;
-import com.liferay.osb.exception.AccountEntryIndustryException;
 import com.liferay.osb.exception.AccountEntryLanguageIdException;
-import com.liferay.osb.exception.AccountEntryMaximumCustomersException;
-import com.liferay.osb.exception.AccountEntryNameException;
-import com.liferay.osb.exception.AccountEntryPartnerEntryException;
 import com.liferay.osb.exception.AccountEntrySupportRegionException;
-import com.liferay.osb.exception.DuplicateAccountEntryException;
-import com.liferay.osb.exception.DuplicateOfferingBundleException;
-import com.liferay.osb.exception.DuplicateOfferingDefinitionException;
-import com.liferay.osb.exception.DuplicatePartnerEntryCodeException;
-import com.liferay.osb.exception.DuplicatePartnerEntryDossieraAccountKeyException;
 import com.liferay.osb.exception.DuplicateProductEntryException;
 import com.liferay.osb.exception.DuplicateSupportRegionException;
-import com.liferay.osb.exception.DuplicateSupportResponseException;
 import com.liferay.osb.exception.LicenseEntryNameException;
 import com.liferay.osb.exception.LicenseEntryVersionException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
-import com.liferay.osb.exception.NoSuchOfferingDefinitionException;
 import com.liferay.osb.exception.NoSuchProductEntryException;
-import com.liferay.osb.exception.NoSuchSupportResponseException;
-import com.liferay.osb.exception.OfferingBundleNameException;
-import com.liferay.osb.exception.OrderEntryActualStartDateException;
-import com.liferay.osb.exception.PartnerEntryCodeException;
-import com.liferay.osb.exception.PartnerEntryDossieraAccountKeyException;
-import com.liferay.osb.exception.PartnerEntryParentPartnerEntryException;
 import com.liferay.osb.exception.ProductEntryEnvironmentException;
 import com.liferay.osb.exception.ProductEntryNameException;
 import com.liferay.osb.exception.RemoteServiceException;
-import com.liferay.osb.exception.RequiredAccountEntryException;
-import com.liferay.osb.exception.RequiredOfferingDefinitionException;
-import com.liferay.osb.exception.RequiredOfferingEntryException;
-import com.liferay.osb.exception.RequiredPartnerEntryException;
 import com.liferay.osb.exception.RequiredProductEntryException;
 import com.liferay.osb.exception.RequiredSupportRegionException;
-import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.SupportRegionNameException;
-import com.liferay.osb.exception.SupportResponseNameException;
 import com.liferay.osb.exception.ZendeskTagException;
 import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.impl.OfferingEntryImpl;
 import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
-import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryServiceUtil;
-import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
-import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBWebKeys;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.osb.util.mvc.OSBPortlet;
-import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.AddressCityException;
-import com.liferay.portal.kernel.exception.AddressStreetException;
-import com.liferay.portal.kernel.exception.AddressZipException;
-import com.liferay.portal.kernel.exception.ContactFirstNameException;
-import com.liferay.portal.kernel.exception.ContactLastNameException;
-import com.liferay.portal.kernel.exception.DuplicateUserEmailAddressException;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.ReservedUserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.io.Base64InputStream;
 import com.liferay.portal.kernel.io.ProtectedObjectInputStream;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -131,7 +76,6 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -238,44 +182,6 @@ public class AdminPortlet extends OSBPortlet {
 		}
 	}
 
-	public void deleteAccountCustomer(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountCustomerId = ParamUtil.getLong(
-			actionRequest, "accountCustomerId");
-
-		AccountCustomerLocalServiceUtil.deleteAccountCustomer(
-			themeDisplay.getUserId(), accountCustomerId);
-	}
-
-	public void deleteAccountEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-
-		AccountEntryServiceUtil.deleteAccountEntry(accountEntryId);
-	}
-
-	public void deleteAccountWorker(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountWorkerId = ParamUtil.getLong(
-			actionRequest, "accountWorkerId");
-
-		AccountWorkerLocalServiceUtil.deleteAccountWorker(
-			themeDisplay.getUserId(), accountWorkerId);
-	}
-
 	public void deleteLicenseEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -284,62 +190,6 @@ public class AdminPortlet extends OSBPortlet {
 			actionRequest, "licenseEntryId");
 
 		LicenseEntryLocalServiceUtil.deleteLicenseEntry(licenseEntryId);
-	}
-
-	public void deleteOfferingBundle(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long offeringBundleId = ParamUtil.getLong(
-			actionRequest, "offeringBundleId");
-
-		OfferingBundleLocalServiceUtil.deleteOfferingBundle(offeringBundleId);
-	}
-
-	public void deleteOfferingDefinition(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long offeringDefinitionId = ParamUtil.getLong(
-			actionRequest, "offeringDefinitionId");
-
-		OfferingDefinitionLocalServiceUtil.deleteOfferingDefinition(
-			offeringDefinitionId);
-	}
-
-	public void deleteOrderEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long orderEntryId = ParamUtil.getLong(actionRequest, "orderEntryId");
-
-		OrderEntry orderEntry = OrderEntryLocalServiceUtil.deleteOrderEntry(
-			orderEntryId);
-
-		if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
-			syncToLCS(
-				actionRequest, actionResponse, orderEntry.getAccountEntryId());
-		}
-	}
-
-	public void deletePartnerEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long partnerEntryId = ParamUtil.getLong(
-			actionRequest, "partnerEntryId");
-
-		PartnerEntryLocalServiceUtil.deletePartnerEntry(partnerEntryId);
-	}
-
-	public void deletePartnerWorker(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long partnerWorkerId = ParamUtil.getLong(
-			actionRequest, "partnerWorkerId");
-
-		PartnerWorkerLocalServiceUtil.deletePartnerWorker(partnerWorkerId);
 	}
 
 	public void deleteProductEntry(
@@ -362,17 +212,6 @@ public class AdminPortlet extends OSBPortlet {
 		SupportRegionLocalServiceUtil.deleteSupportRegion(supportRegionId);
 	}
 
-	public void deleteSupportResponse(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long supportResponseId = ParamUtil.getLong(
-			actionRequest, "supportResponseId");
-
-		SupportResponseLocalServiceUtil.deleteSupportResponse(
-			supportResponseId);
-	}
-
 	@Override
 	public void render(
 			RenderRequest renderRequest, RenderResponse renderResponse)
@@ -392,26 +231,6 @@ public class AdminPortlet extends OSBPortlet {
 		}
 
 		super.render(renderRequest, renderResponse);
-	}
-
-	public void renewOrderEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long orderEntryId = ParamUtil.getLong(actionRequest, "orderEntryId");
-
-		int renewCount = ParamUtil.getInteger(actionRequest, "renewCount");
-
-		OrderEntry orderEntry = OrderEntryLocalServiceUtil.renewOrderEntry(
-			themeDisplay.getUserId(), orderEntryId, renewCount);
-
-		if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
-			syncToLCS(
-				actionRequest, actionResponse, orderEntry.getAccountEntryId());
-		}
 	}
 
 	public void runManualUpgrade(
@@ -474,45 +293,6 @@ public class AdminPortlet extends OSBPortlet {
 			"liferay/zendesk_account_entry_sync", message);
 	}
 
-	public void updateAccountCustomer(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountCustomerId = ParamUtil.getLong(
-			actionRequest, "accountCustomerId");
-
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-		int role = ParamUtil.getInteger(
-			actionRequest, "role_" + accountCustomerId);
-		boolean closedWatcher = ParamUtil.getBoolean(
-			actionRequest, "closedWatcher_" + accountCustomerId);
-
-		AccountCustomer accountCustomer = null;
-
-		if (accountCustomerId > 0) {
-			accountCustomer =
-				AccountCustomerLocalServiceUtil.updateAccountCustomer(
-					themeDisplay.getUserId(), accountCustomerId, role,
-					closedWatcher);
-		}
-		else {
-			accountCustomer =
-				AccountCustomerLocalServiceUtil.addAccountCustomer(
-					themeDisplay.getUserId(), emailAddress, accountEntryId,
-					role, closedWatcher);
-		}
-
-		if (SupportUtil.hasSyncToLCS(accountCustomer.getAccountEntry())) {
-			syncToLCS(actionRequest, actionResponse, accountEntryId);
-		}
-	}
-
 	public void updateAccountEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -523,35 +303,12 @@ public class AdminPortlet extends OSBPortlet {
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 
-		String corpProjectUuid = ParamUtil.getString(
-			actionRequest, "corpProjectUuid");
-		long corpProjectId = ParamUtil.getLong(actionRequest, "corpProjectId");
+		String koroneikiAccountKey = ParamUtil.getString(
+			actionRequest, "koroneikiAccountKey");
 		String dossieraAccountKey = ParamUtil.getString(
 			actionRequest, "dossieraAccountKey");
-		String name = ParamUtil.getString(actionRequest, "name");
-		String code = ParamUtil.getString(actionRequest, "code");
-		int type = ParamUtil.getInteger(actionRequest, "type");
-		int industry = ParamUtil.getInteger(actionRequest, "industry");
-		long partnerEntryId = ParamUtil.getLong(
-			actionRequest, "partnerEntryId");
-		boolean partnerManagedSupport = ParamUtil.getBoolean(
-			actionRequest, "partnerManagedSupport");
-		int tier = ParamUtil.getInteger(actionRequest, "tier");
-		int maxCustomers = ParamUtil.getInteger(actionRequest, "maxCustomers");
 		String instructions = ParamUtil.getString(
 			actionRequest, "instructions");
-		String notes = ParamUtil.getString(actionRequest, "notes");
-		long addressId = ParamUtil.getLong(actionRequest, "addressId");
-		String street1 = ParamUtil.getString(actionRequest, "street1");
-		String street2 = ParamUtil.getString(actionRequest, "street2");
-		String street3 = ParamUtil.getString(actionRequest, "street3");
-		String city = ParamUtil.getString(actionRequest, "city");
-		String zip = ParamUtil.getString(actionRequest, "zip");
-		long regionId = ParamUtil.getLong(actionRequest, "regionId");
-		long countryId = ParamUtil.getLong(actionRequest, "countryId");
-		String ewsaDossieraProjectKey = ParamUtil.getString(
-			actionRequest, "ewsaDossieraProjectKey");
-
 		String[] languageIds = StringUtil.split(
 			ParamUtil.getString(actionRequest, "languageIds"));
 		long[] supportRegionIds = StringUtil.split(
@@ -559,55 +316,18 @@ public class AdminPortlet extends OSBPortlet {
 
 		if (accountEntryId <= 0) {
 			AccountEntryLocalServiceUtil.addAccountEntry(
-				themeDisplay.getUserId(), corpProjectUuid, corpProjectId,
-				dossieraAccountKey, StringPool.BLANK, name, code, type,
-				industry, partnerEntryId, partnerManagedSupport, tier,
-				maxCustomers, instructions, notes, languageIds,
-				supportRegionIds, street1, street2, street3, city, zip,
-				regionId, countryId, ewsaDossieraProjectKey);
+				themeDisplay.getUserId(), koroneikiAccountKey,
+				dossieraAccountKey, instructions, languageIds,
+				supportRegionIds);
 		}
 		else {
-			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
-
 			AccountEntryLocalServiceUtil.updateAccountEntry(
-				themeDisplay.getUserId(), accountEntryId, corpProjectUuid,
-				corpProjectId, dossieraAccountKey,
-				accountEntry.getCorpEntryName(), name, code, type, industry,
-				partnerEntryId, partnerManagedSupport, tier, maxCustomers,
-				instructions, notes, languageIds, supportRegionIds, addressId,
-				street1, street2, street3, city, zip, regionId, countryId,
-				ewsaDossieraProjectKey);
+				themeDisplay.getUserId(), accountEntryId, koroneikiAccountKey,
+				dossieraAccountKey, instructions, languageIds,
+				supportRegionIds);
 		}
 
 		updateAccountAttachment(actionRequest);
-	}
-
-	public void updateAccountWorker(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long accountWorkerId = ParamUtil.getLong(
-			actionRequest, "accountWorkerId");
-
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-		int role = ParamUtil.getInteger(
-			actionRequest, "role_" + accountWorkerId);
-
-		if (accountWorkerId > 0) {
-			AccountWorkerLocalServiceUtil.updateAccountWorker(
-				themeDisplay.getUserId(), accountWorkerId, role);
-		}
-		else {
-			AccountWorkerLocalServiceUtil.addAccountWorker(
-				themeDisplay.getUserId(), emailAddress, accountEntryId, role);
-		}
 	}
 
 	public void updateLicenseEntry(
@@ -636,284 +356,6 @@ public class AdminPortlet extends OSBPortlet {
 			LicenseEntryLocalServiceUtil.updateLicenseEntry(
 				licenseEntryId, productEntryId, name, type, versionMin,
 				versionMax);
-		}
-	}
-
-	public void updateOfferingBundle(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long offeringBundleId = ParamUtil.getLong(
-			actionRequest, "offeringBundleId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		long[] offeringDefinitionIds = ParamUtil.getLongValues(
-			actionRequest, "offeringDefinitionIds");
-
-		if (offeringBundleId > 0) {
-			OfferingBundleLocalServiceUtil.updateOfferingBundle(
-				offeringBundleId, name, offeringDefinitionIds);
-		}
-		else {
-			OfferingBundleLocalServiceUtil.addOfferingBundle(
-				themeDisplay.getUserId(), name, offeringDefinitionIds);
-		}
-	}
-
-	public void updateOfferingDefinition(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long offeringDefinitionId = ParamUtil.getLong(
-			actionRequest, "offeringDefinitionId");
-
-		long productEntryId = ParamUtil.getLong(
-			actionRequest, "productEntryId");
-		long supportResponseId = ParamUtil.getLong(
-			actionRequest, "supportResponseId");
-		String productDescription = ParamUtil.getString(
-			actionRequest, "productDescription");
-		boolean licenses = ParamUtil.getBoolean(actionRequest, "licenses");
-		boolean unlimitedLicenses = ParamUtil.getBoolean(
-			actionRequest, "unlimitedLicenses");
-		long maxConcurrentUsers = ParamUtil.getInteger(
-			actionRequest, "maxConcurrentUsers");
-		long maxUsers = ParamUtil.getInteger(actionRequest, "maxUsers");
-		boolean supportTickets = ParamUtil.getBoolean(
-			actionRequest, "supportTickets");
-
-		if (offeringDefinitionId <= 0) {
-			OfferingDefinitionLocalServiceUtil.addOfferingDefinition(
-				themeDisplay.getUserId(), productEntryId, supportResponseId,
-				productDescription, licenses, unlimitedLicenses,
-				maxConcurrentUsers, maxUsers, supportTickets);
-		}
-		else {
-			OfferingDefinitionLocalServiceUtil.updateOfferingDefinition(
-				offeringDefinitionId, productEntryId, supportResponseId,
-				productDescription, licenses, unlimitedLicenses,
-				maxConcurrentUsers, maxUsers, supportTickets);
-		}
-	}
-
-	public void updateOfferingEntryStatus(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		try {
-			long accountEntryId = ParamUtil.getLong(
-				actionRequest, "accountEntryId");
-
-			long[] offeringEntryIds = StringUtil.split(
-				ParamUtil.getString(actionRequest, "offeringEntryIds"), 0L);
-			int status = ParamUtil.getInteger(actionRequest, "status");
-
-			for (long offeringEntryId : offeringEntryIds) {
-				OfferingEntryServiceUtil.updateStatus(offeringEntryId, status);
-			}
-
-			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
-
-			if (SupportUtil.hasSyncToLCS(accountEntry)) {
-				syncToLCS(actionRequest, actionResponse, accountEntryId);
-			}
-
-			jsonObject.put("message", "success");
-		}
-		catch (Exception e) {
-			jsonObject.put("error", e.getMessage());
-		}
-
-		writeJSON(actionRequest, actionResponse, jsonObject);
-	}
-
-	public void updateOrderEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long orderEntryId = ParamUtil.getLong(actionRequest, "orderEntryId");
-
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-		String salesforceOpportunityKey = ParamUtil.getString(
-			actionRequest, "salesforceOpportunityKey");
-		String purchaseOrderKey = ParamUtil.getString(
-			actionRequest, "purchaseOrderKey");
-
-		int startDateMonth = ParamUtil.getInteger(
-			actionRequest, "startDateMonth");
-		int startDateDay = ParamUtil.getInteger(actionRequest, "startDateDay");
-		int startDateYear = ParamUtil.getInteger(
-			actionRequest, "startDateYear");
-
-		boolean prorated = ParamUtil.getBoolean(actionRequest, "prorated");
-
-		int actualStartDateMonth = ParamUtil.getInteger(
-			actionRequest, "actualStartDateMonth");
-		int actualStartDateDay = ParamUtil.getInteger(
-			actionRequest, "actualStartDateDay");
-		int actualStartDateYear = ParamUtil.getInteger(
-			actionRequest, "actualStartDateYear");
-
-		List<OfferingEntry> offeringEntries = new ArrayList<>();
-
-		int offeringEntriesCount = ParamUtil.getInteger(
-			actionRequest, "offeringEntriesCount");
-
-		for (int i = 0; i < offeringEntriesCount; i++) {
-			int quantity = ParamUtil.getInteger(actionRequest, "quantity_" + i);
-
-			if (quantity <= 0) {
-				continue;
-			}
-
-			long offeringEntryId = ParamUtil.getLong(
-				actionRequest, "offeringEntryId_" + i);
-
-			long productEntryId = ParamUtil.getLong(
-				actionRequest, "productEntryId_" + i);
-			long supportResponseId = ParamUtil.getLong(
-				actionRequest, "supportResponseId_" + i);
-			String productDescription = ParamUtil.getString(
-				actionRequest, "productDescription_" + i);
-			int type = ParamUtil.getInteger(
-				actionRequest, "type_" + i,
-				OfferingEntryConstants.TYPE_REGULAR);
-			int version = ParamUtil.getInteger(actionRequest, "version_" + i);
-			boolean licenses = ParamUtil.getBoolean(
-				actionRequest, "licenses_" + i);
-			long licenseLifetime = ParamUtil.getLong(
-				actionRequest, "licenseLifetime_" + i);
-			boolean supportTickets = ParamUtil.getBoolean(
-				actionRequest, "supportTickets_" + i);
-			long supportLifetime = ParamUtil.getLong(
-				actionRequest, "supportLifetime_" + i);
-			int sizing = ParamUtil.getInteger(actionRequest, "sizing_" + i);
-
-			OfferingEntry offeringEntry = new OfferingEntryImpl();
-
-			offeringEntry.setOfferingEntryId(offeringEntryId);
-			offeringEntry.setProductEntryId(productEntryId);
-			offeringEntry.setSupportResponseId(supportResponseId);
-			offeringEntry.setProductDescription(productDescription);
-			offeringEntry.setType(type);
-			offeringEntry.setVersion(version);
-			offeringEntry.setLicenses(licenses);
-			offeringEntry.setLicenseLifetime(licenseLifetime);
-			offeringEntry.setSupportTickets(supportTickets);
-			offeringEntry.setSupportLifetime(supportLifetime);
-			offeringEntry.setSizing(sizing);
-			offeringEntry.setQuantity(quantity);
-
-			offeringEntries.add(offeringEntry);
-		}
-
-		OrderEntry orderEntry = null;
-
-		if (orderEntryId <= 0) {
-			orderEntry = OrderEntryLocalServiceUtil.addOrderEntry(
-				themeDisplay.getUserId(), accountEntryId, purchaseOrderKey,
-				startDateMonth, startDateDay, startDateYear, prorated,
-				actualStartDateMonth, actualStartDateDay, actualStartDateYear,
-				WorkflowConstants.STATUS_APPROVED, salesforceOpportunityKey,
-				offeringEntries);
-		}
-		else {
-			orderEntry = OrderEntryLocalServiceUtil.updateOrderEntry(
-				themeDisplay.getUserId(), orderEntryId, accountEntryId,
-				purchaseOrderKey, startDateMonth, startDateDay, startDateYear,
-				prorated, actualStartDateMonth, actualStartDateDay,
-				actualStartDateYear, salesforceOpportunityKey, offeringEntries);
-		}
-
-		if (SupportUtil.hasSyncToLCS(orderEntry.getAccountEntry())) {
-			syncToLCS(
-				actionRequest, actionResponse, orderEntry.getAccountEntryId());
-		}
-	}
-
-	public void updatePartnerEntry(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long partnerEntryId = ParamUtil.getLong(
-			actionRequest, "partnerEntryId");
-
-		long parentPartnerEntryId = ParamUtil.getLong(
-			actionRequest, "parentPartnerEntryId");
-		String dossieraAccountKey = ParamUtil.getString(
-			actionRequest, "dossieraAccountKey");
-		String jiraProjectKey = ParamUtil.getString(
-			actionRequest, "jiraProjectKey");
-		String code = ParamUtil.getString(actionRequest, "code");
-		String notes = ParamUtil.getString(actionRequest, "notes");
-		int status = ParamUtil.getInteger(actionRequest, "status");
-		long[] supportRegionIds = ParamUtil.getLongValues(
-			actionRequest, "supportRegionId");
-
-		PartnerEntry partnerEntry = null;
-
-		if (partnerEntryId <= 0) {
-			partnerEntry = PartnerEntryLocalServiceUtil.addPartnerEntry(
-				themeDisplay.getUserId(), parentPartnerEntryId,
-				dossieraAccountKey, jiraProjectKey, code, notes,
-				supportRegionIds);
-		}
-		else {
-			partnerEntry = PartnerEntryLocalServiceUtil.updatePartnerEntry(
-				themeDisplay.getUserId(), partnerEntryId, dossieraAccountKey,
-				jiraProjectKey, code, notes, status, supportRegionIds);
-		}
-
-		List<Address> addresses = UsersAdminUtil.getAddresses(actionRequest);
-
-		UsersAdminUtil.updateAddresses(
-			PartnerEntry.class.getName(), partnerEntry.getPartnerEntryId(),
-			addresses);
-
-		List<Phone> phones = UsersAdminUtil.getPhones(actionRequest);
-
-		UsersAdminUtil.updatePhones(
-			PartnerEntry.class.getName(), partnerEntry.getPartnerEntryId(),
-			phones);
-	}
-
-	public void updatePartnerWorker(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long partnerWorkerId = ParamUtil.getLong(
-			actionRequest, "partnerWorkerId");
-
-		long partnerEntryId = ParamUtil.getLong(
-			actionRequest, "partnerEntryId");
-		String emailAddress = ParamUtil.getString(
-			actionRequest, "emailAddress");
-		int role = ParamUtil.getInteger(
-			actionRequest, "role_" + partnerWorkerId);
-
-		if (partnerWorkerId > 0) {
-			PartnerWorkerLocalServiceUtil.updatePartnerWorker(
-				partnerWorkerId, role);
-		}
-		else {
-			PartnerWorkerLocalServiceUtil.addPartnerWorker(
-				partnerEntryId, emailAddress, role);
 		}
 	}
 
@@ -970,45 +412,6 @@ public class AdminPortlet extends OSBPortlet {
 		else {
 			SupportRegionLocalServiceUtil.addSupportRegion(
 				themeDisplay.getUserId(), name, description, timeZoneId);
-		}
-	}
-
-	public void updateSupportResponse(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		long supportResponseId = ParamUtil.getLong(
-			actionRequest, "supportResponseId");
-
-		String name = ParamUtil.getString(actionRequest, "name");
-		int supportLevel = ParamUtil.getInteger(actionRequest, "supportLevel");
-		int severity1Response = ParamUtil.getInteger(
-			actionRequest, "severity1Response");
-		int severity1Resolution = ParamUtil.getInteger(
-			actionRequest, "severity1Resolution");
-		int severity2Response = ParamUtil.getInteger(
-			actionRequest, "severity2Response");
-		int severity2Resolution = ParamUtil.getInteger(
-			actionRequest, "severity2Resolution");
-		int severity3Response = ParamUtil.getInteger(
-			actionRequest, "severity3Response");
-		int severity3Resolution = ParamUtil.getInteger(
-			actionRequest, "severity3Resolution");
-
-		if (supportResponseId <= 0) {
-			SupportResponseLocalServiceUtil.addSupportResponse(
-				themeDisplay.getUserId(), name, supportLevel, severity1Response,
-				severity1Resolution, severity2Response, severity2Resolution,
-				severity3Response, severity3Resolution);
-		}
-		else {
-			SupportResponseLocalServiceUtil.updateSupportResponse(
-				supportResponseId, name, supportLevel, severity1Response,
-				severity1Resolution, severity2Response, severity2Resolution,
-				severity3Response, severity3Resolution);
 		}
 	}
 
@@ -1135,28 +538,10 @@ public class AdminPortlet extends OSBPortlet {
 			_log.debug(cause, cause);
 		}
 
-		if (cause instanceof AccountEntryCodeException ||
-			cause instanceof AccountEntryCorpProjectException ||
-			cause instanceof AccountEntryIndustryException ||
-			cause instanceof AccountEntryLanguageIdException ||
-			cause instanceof AccountEntryMaximumCustomersException ||
-			cause instanceof AccountEntryNameException ||
-			cause instanceof AccountEntryPartnerEntryException ||
+		if (cause instanceof AccountEntryLanguageIdException ||
 			cause instanceof AccountEntrySupportRegionException ||
-			cause instanceof AddressCityException ||
-			cause instanceof AddressStreetException ||
-			cause instanceof AddressZipException ||
-			cause instanceof ContactFirstNameException ||
-			cause instanceof ContactLastNameException ||
-			cause instanceof DuplicateAccountEntryException ||
-			cause instanceof DuplicateOfferingBundleException ||
-			cause instanceof DuplicateOfferingDefinitionException ||
-			cause instanceof DuplicatePartnerEntryCodeException ||
-			cause instanceof DuplicatePartnerEntryDossieraAccountKeyException ||
 			cause instanceof DuplicateProductEntryException ||
 			cause instanceof DuplicateSupportRegionException ||
-			cause instanceof DuplicateSupportResponseException ||
-			cause instanceof DuplicateUserEmailAddressException ||
 			cause instanceof FileExtensionException ||
 			cause instanceof FileNameException ||
 			cause instanceof LicenseEntryNameException ||
@@ -1164,28 +549,13 @@ public class AdminPortlet extends OSBPortlet {
 			cause instanceof ModelListenerException ||
 			cause instanceof NoSuchAccountEntryException ||
 			cause instanceof NoSuchListTypeException ||
-			cause instanceof NoSuchOfferingDefinitionException ||
 			cause instanceof NoSuchProductEntryException ||
-			cause instanceof NoSuchSupportResponseException ||
-			cause instanceof NoSuchUserException ||
-			cause instanceof OfferingBundleNameException ||
-			cause instanceof OrderEntryActualStartDateException ||
-			cause instanceof PartnerEntryCodeException ||
-			cause instanceof PartnerEntryDossieraAccountKeyException ||
-			cause instanceof PartnerEntryParentPartnerEntryException ||
 			cause instanceof PrincipalException ||
 			cause instanceof ProductEntryEnvironmentException ||
 			cause instanceof ProductEntryNameException ||
-			cause instanceof RequiredAccountEntryException ||
-			cause instanceof RequiredOfferingDefinitionException ||
-			cause instanceof RequiredOfferingEntryException ||
-			cause instanceof RequiredPartnerEntryException ||
 			cause instanceof RequiredProductEntryException ||
 			cause instanceof RequiredSupportRegionException ||
-			cause instanceof RequiredSupportResponseException ||
-			cause instanceof ReservedUserEmailAddressException ||
 			cause instanceof SupportRegionNameException ||
-			cause instanceof SupportResponseNameException ||
 			cause instanceof UserEmailAddressException ||
 			cause instanceof ZendeskTagException) {
 
@@ -1228,14 +598,16 @@ public class AdminPortlet extends OSBPortlet {
 		String code = ParamUtil.getString(resourceRequest, "code");
 		String name = ParamUtil.getString(resourceRequest, "name");
 
-		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
-			name + StringPool.PERCENT, code + StringPool.PERCENT);
+		List<AccountEntry> accountEntries = new ArrayList<>();
 
 		JSONArray accountEntriesArray = JSONFactoryUtil.createJSONArray();
 
 		for (AccountEntry accountEntry : accountEntries) {
+
+			// TODO
+
 			if (Validator.isNotNull(code)) {
-				accountEntriesArray.put(accountEntry.getCode());
+				accountEntriesArray.put(accountEntry.getName());
 			}
 
 			if (Validator.isNotNull(name)) {

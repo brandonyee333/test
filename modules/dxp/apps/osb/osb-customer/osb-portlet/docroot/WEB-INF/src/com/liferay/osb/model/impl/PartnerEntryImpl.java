@@ -14,11 +14,9 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.SupportRegion;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
@@ -35,11 +33,6 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 	public PartnerEntryImpl() {
 	}
 
-	public List<AccountEntry> getAccountEntries() {
-		return AccountEntryLocalServiceUtil.getPartnerAccountEntries(
-			getPartnerEntryId());
-	}
-
 	public List<PartnerEntry> getChildPartnerEntries(boolean recursive) {
 		return PartnerEntryLocalServiceUtil.getChildPartnerEntries(
 			getPartnerEntryId(), recursive);
@@ -52,11 +45,6 @@ public class PartnerEntryImpl extends PartnerEntryBaseImpl {
 
 		return PartnerEntryLocalServiceUtil.getPartnerEntry(
 			getParentPartnerEntryId());
-	}
-
-	public List<AccountEntry> getPartnerManagedAccountEntries() {
-		return AccountEntryLocalServiceUtil.getPartnerAccountEntries(
-			getPartnerEntryId(), true);
 	}
 
 	public List<PartnerWorker> getPartnerWorkers() {

@@ -62,112 +62,24 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 			/>
 
 			<liferay-ui:search-container-column-text
-				buffer="buffer"
-				href="<%= rowURL %>"
-				name="partner"
-			>
-
-				<%
-				PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
-
-				if (partnerEntry != null) {
-					buffer.append(HtmlUtil.escape(partnerEntry.getCode()));
-				}
-				%>
-
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="support-end-date"
-			>
-
-				<%
-				LinkedHashMap<String, Object> params = new LinkedHashMap();
-
-				params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
-
-				List<OfferingEntry> offeringEntries = OfferingEntryLocalServiceUtil.search(0, accountEntry.getAccountEntryId(), new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0, 0, params, true, 0, 1, new OfferingEntrySupportEndDateComparator());
-
-				OfferingEntry offeringEntry = null;
-
-				if (!offeringEntries.isEmpty()) {
-					offeringEntry = offeringEntries.get(0);
-				}
-				%>
-
-				<c:if test="<%= offeringEntry != null %>">
-					<%= longDateFormatDate.format(offeringEntry.getSupportEndDate()) %><br />
-
-					<%= longDateFormatTime.format(offeringEntry.getSupportEndDate()) %>
-				</c:if>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="highest-sla"
-			>
-
-				<%
-				long supportResponseId = accountEntry.getHighestSupportResponseId();
-
-				SupportResponse supportResponse = SupportResponseLocalServiceUtil.fetchSupportResponse(supportResponseId);
-				%>
-
-				<c:if test="<%= supportResponse != null %>">
-					<liferay-ui:message key="<%= supportResponse.getSupportLevelLabel() %>" />
-				</c:if>
-			</liferay-ui:search-container-column-text>
-
-			<liferay-ui:search-container-column-text
-				href="<%= rowURL %>"
-				name="tier"
-				value="<%= AccountEntryConstants.getTierLabel(accountEntry.getTier()) %>"
-			/>
-
-			<liferay-ui:search-container-column-text
 				name="support-regions"
 			>
 
 				<%
 				List<SupportRegion> supportRegions = accountEntry.getSupportRegions();
+
+				for (int i = 0; i < supportRegions.size(); i++) {
+					SupportRegion supportRegion = supportRegions.get(i);
 				%>
 
-				<c:if test="<%= !supportRegions.isEmpty() %>">
-					<span id="<portlet:namespace />expand_<%= accountEntry.getAccountEntryId() %>_supportRegions">
-						<liferay-ui:icon
-							image="../arrows/01_plus"
-							label="<%= true %>"
-							message="expand"
-							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", true);" %>'
-						/>
-					</span>
-					<span class="hide" id="<portlet:namespace />collapse_<%= accountEntry.getAccountEntryId() %>_supportRegions">
-						<liferay-ui:icon
-							image="../arrows/01_minus"
-							label="<%= true %>"
-							message="collapse"
-							url='<%= "javascript:" + renderResponse.getNamespace() + "toggleSupportRegions(" + accountEntry.getAccountEntryId() + ", false);" %>'
-						/>
-					</span>
+					<aui:a href="<%= rowURL.toString() %>" label="<%= supportRegion.getName() %>" />
 
-					<div class="hide" id="<portlet:namespace />supportRegions_<%= accountEntry.getAccountEntryId() %>">
+					<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
 
-						<%
-						for (int i = 0; i < supportRegions.size(); i++) {
-							SupportRegion supportRegion = supportRegions.get(i);
-						%>
+				<%
+				}
+				%>
 
-							<aui:a href="<%= rowURL.toString() %>" label="<%= supportRegion.getName() %>" />
-
-							<%= ((i + 1) < supportRegions.size()) ? "<br />" : "" %>
-
-						<%
-						}
-						%>
-
-					</div>
-				</c:if>
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text

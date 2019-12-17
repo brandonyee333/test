@@ -28,6 +28,12 @@ public class KoroneikiRESTWebServiceUtil {
 		getKoroneikiRESTWebService().deleteAccounts(accountKey);
 	}
 
+	public static JSONObject getAccounts(String koroneikiAccountKey)
+		throws RemoteServiceException {
+
+		return getKoroneikiRESTWebService().getAccounts(koroneikiAccountKey);
+	}
+
 	public static JSONObject getAccounts(
 			String domain, String entityName, String entityId)
 		throws RemoteServiceException {

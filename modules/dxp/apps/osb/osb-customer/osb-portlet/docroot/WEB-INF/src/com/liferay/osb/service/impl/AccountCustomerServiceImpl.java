@@ -41,7 +41,8 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 		validateJSONWebServicePermissions();
 
 		AccountEntry accountEntry =
-			accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
+			accountEntryLocalService.fetchCorpProjectAccountEntry(
+				corpProjectUuid);
 
 		if (accountEntry == null) {
 			return Collections.emptyList();
@@ -70,7 +71,8 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 		validateJSONWebServicePermissions();
 
 		AccountEntry accountEntry =
-			accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
+			accountEntryLocalService.fetchCorpProjectAccountEntry(
+				corpProjectUuid);
 
 		if (accountEntry == null) {
 			return Collections.emptyList();

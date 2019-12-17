@@ -17,7 +17,6 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.DuplicateSupportResponseException;
 import com.liferay.osb.exception.RequiredSupportResponseException;
 import com.liferay.osb.exception.SupportResponseNameException;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.base.SupportResponseLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -25,7 +24,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
@@ -64,11 +62,7 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
 
-		supportResponse = supportResponsePersistence.update(supportResponse);
-
-		recalculateHighestSupportResponses(supportResponseId);
-
-		return supportResponse;
+		return supportResponsePersistence.update(supportResponse);
 	}
 
 	@Override
@@ -81,12 +75,7 @@ public class SupportResponseLocalServiceImpl
 			throw new RequiredSupportResponseException();
 		}
 
-		SupportResponse supportResponse = supportResponsePersistence.remove(
-			supportResponseId);
-
-		recalculateHighestSupportResponses(supportResponseId);
-
-		return supportResponse;
+		return supportResponsePersistence.remove(supportResponseId);
 	}
 
 	public SupportResponse fetchSupportResponseByName(String name) {
@@ -121,23 +110,7 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
 
-		supportResponse = supportResponsePersistence.update(supportResponse);
-
-		recalculateHighestSupportResponses(supportResponseId);
-
-		return supportResponse;
-	}
-
-	protected void recalculateHighestSupportResponses(long supportResponseId)
-		throws PortalException {
-
-		List<AccountEntry> accountEntries =
-			accountEntryFinder.findBySupportResponse(supportResponseId);
-
-		for (AccountEntry accountEntry : accountEntries) {
-			accountEntryLocalService.recalculateHighestSupportResponse(
-				accountEntry.getAccountEntryId());
-		}
+		return supportResponsePersistence.update(supportResponse);
 	}
 
 	protected void validate(long supportResponseId, String name)

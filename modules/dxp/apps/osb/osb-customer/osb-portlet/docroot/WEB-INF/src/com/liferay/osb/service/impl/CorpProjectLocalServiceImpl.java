@@ -15,7 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.NoSuchCorpProjectException;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.CorpProjectLocalServiceBaseImpl;
 import com.liferay.petra.string.StringPool;
@@ -67,16 +66,6 @@ public class CorpProjectLocalServiceImpl
 	@Override
 	public CorpProject deleteCorpProject(CorpProject corpProject)
 		throws PortalException {
-
-		AccountEntry accountEntry =
-			accountEntryPersistence.fetchByCorpProjectId(
-				corpProject.getCorpProjectId());
-
-		if (accountEntry != null) {
-			accountEntry.setCorpProjectId(0);
-
-			accountEntryPersistence.update(accountEntry);
-		}
 
 		return corpProjectPersistence.remove(corpProject);
 	}

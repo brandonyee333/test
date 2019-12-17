@@ -38,7 +38,8 @@ public class LCSSubscriptionEntryServiceImpl
 		validateJSONWebServicePermissions();
 
 		AccountEntry accountEntry =
-			accountEntryPersistence.findByCorpProjectUuid(corpProjectUuid);
+			accountEntryLocalService.getCorpProjectAccountEntry(
+				corpProjectUuid);
 
 		return lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(
 			accountEntry.getAccountEntryId());

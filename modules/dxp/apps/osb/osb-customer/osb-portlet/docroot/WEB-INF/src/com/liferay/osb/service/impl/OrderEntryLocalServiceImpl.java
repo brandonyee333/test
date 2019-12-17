@@ -14,19 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.OrderEntryStartDateException;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.ExternalIdMapper;
 import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.base.OrderEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
@@ -263,14 +260,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 			offeringEntryPersistence.update(offeringEntry);
 		}
-
-		// Account entry
-
-		accountEntryLocalService.recalculateHighestSupportResponse(
-			orderEntry.getAccountEntryId());
-
-		accountEntryLocalService.updateSupportStatus(
-			orderEntry.getAccountEntryId());
 
 		// Audit entry
 
@@ -512,11 +501,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 				orderEntryOfferingEntry);
 		}
 
-		// Account entry
-
-		accountEntryLocalService.updateSupportStatus(
-			orderEntry.getAccountEntryId());
-
 		return orderEntry;
 	}
 
@@ -554,27 +538,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 			offeringEntryLocalService.updateStatus(
 				userId, offeringEntry.getOfferingEntryId(),
 				offeringEntryStatus);
-
-			if ((status == WorkflowConstants.STATUS_APPROVED) &&
-				(accountEntry.getType() ==
-					AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC)) {
-
-				ProductEntry productEntry = offeringEntry.getProductEntry();
-
-				if (productEntry.isAnalyticsCloudBusiness() ||
-					productEntry.isAnalyticsCloudEnterprise()) {
-
-					accountEntry.setType(AccountEntryConstants.TYPE_GROUP);
-
-					accountEntryLocalService.updateAccountEntry(accountEntry);
-
-					accountEntryLocalService.recalculateHighestSupportResponse(
-						orderEntry.getAccountEntryId());
-
-					accountEntryLocalService.updateSupportStatus(
-						orderEntry.getAccountEntryId());
-				}
-			}
 		}
 
 		// Account entry
@@ -619,13 +582,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 				throw new PrincipalException();
 			}
-		}
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if (accountEntry.getRedirectAccountEntryId() > 0) {
-			throw new NoSuchAccountEntryException();
 		}
 	}
 

@@ -15,7 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
@@ -55,8 +54,6 @@ public class AccountWorkerLocalServiceImpl
 			AccountWorker.class.getName());
 
 		User workerUser = userLocalService.getUser(workerUserId);
-
-		validate(accountEntryId);
 
 		AccountWorker accountWorker = accountWorkerPersistence.fetchByU_AEI(
 			workerUserId, accountEntryId);
@@ -282,15 +279,6 @@ public class AccountWorkerLocalServiceImpl
 		}
 
 		return accountWorker;
-	}
-
-	protected void validate(long accountEntryId) throws PortalException {
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if (accountEntry.getRedirectAccountEntryId() > 0) {
-			throw new NoSuchAccountEntryException();
-		}
 	}
 
 }

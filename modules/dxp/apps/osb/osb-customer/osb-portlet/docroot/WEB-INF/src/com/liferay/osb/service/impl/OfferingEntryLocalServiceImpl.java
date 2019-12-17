@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.exception.OfferingEntryQuantityException;
 import com.liferay.osb.exception.OfferingEntrySizingException;
 import com.liferay.osb.exception.RequiredOfferingEntryException;
@@ -109,11 +108,6 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntry = offeringEntryPersistence.update(offeringEntry);
 
-		accountEntryLocalService.recalculateHighestSupportResponse(
-			accountEntryId);
-
-		accountEntryLocalService.updateSupportStatus(accountEntryId);
-
 		return offeringEntry;
 	}
 
@@ -197,12 +191,6 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntry = offeringEntryPersistence.remove(offeringEntry);
 
-		accountEntryLocalService.recalculateHighestSupportResponse(
-			offeringEntry.getAccountEntryId());
-
-		accountEntryLocalService.updateSupportStatus(
-			offeringEntry.getAccountEntryId());
-
 		return offeringEntry;
 	}
 
@@ -237,27 +225,6 @@ public class OfferingEntryLocalServiceImpl
 
 		if (count > 0) {
 			return true;
-		}
-
-		return false;
-	}
-
-	public boolean hasActiveTrialOfferingEntry(long userId) {
-		AccountEntry accountEntry =
-			accountEntryLocalService.fetchUserTrialAccountEntry(userId);
-
-		if (accountEntry != null) {
-			Date now = new Date();
-
-			List<OfferingEntry> offeringEntries =
-				getAccountEntryOfferingEntries(
-					accountEntry.getAccountEntryId());
-
-			for (OfferingEntry offeringEntry : offeringEntries) {
-				if (now.before(offeringEntry.getSupportEndDate())) {
-					return true;
-				}
-			}
 		}
 
 		return false;
@@ -354,9 +321,6 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntry = offeringEntryPersistence.update(offeringEntry);
 
-		accountEntryLocalService.updateSupportStatus(
-			offeringEntry.getAccountEntryId());
-
 		return offeringEntry;
 	}
 
@@ -377,12 +341,6 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setStatus(status);
 
 		offeringEntry = offeringEntryPersistence.update(offeringEntry);
-
-		accountEntryLocalService.recalculateHighestSupportResponse(
-			offeringEntry.getAccountEntryId());
-
-		accountEntryLocalService.updateSupportStatus(
-			offeringEntry.getAccountEntryId());
 
 		long classNameId = classNameLocalService.getClassNameId(
 			AccountEntry.class.getName());
@@ -447,13 +405,6 @@ public class OfferingEntryLocalServiceImpl
 	protected void validate(
 			long accountEntryId, long productEntryId, int sizing, int quantity)
 		throws PortalException {
-
-		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
-			accountEntryId);
-
-		if (accountEntry.getRedirectAccountEntryId() > 0) {
-			throw new NoSuchAccountEntryException();
-		}
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);

@@ -1,94 +1,23 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.service.persistence.AccountCustomerFinder.countPassportCustomersByDomain">
-		<![CDATA[
-			SELECT
-				count(substring_index(emailAddress, '@', -1)) count
-			FROM
-				OSB_AccountCustomer
-			INNER JOIN
-				User_ ON
-					User_.userId = OSB_AccountCustomer.userId
-			INNER JOIN
-				OSB_AccountEntry ON
-					OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId
-			LEFT JOIN
-				Address ON
-					OSB_AccountEntry.accountEntryId = Address.classPK
-			LEFT JOIN
-				Country ON
-					Address.countryId = Country.countryId
-			INNER JOIN
-				OSB_OfferingEntry ON
-					OSB_AccountCustomer.accountEntryId = OSB_OfferingEntry.accountEntryId
-			WHERE
-				(substring_index(emailAddress, '@', -1) = ?) AND
-				(OSB_AccountEntry.type_ != 4) AND
-				(OSB_OfferingEntry.type_ = 1) AND
-				(OSB_OfferingEntry.status = 1) AND
-				(
-					(OSB_OfferingEntry.version = 42000) OR
-					(OSB_OfferingEntry.version = 21001) OR
-					(OSB_OfferingEntry.version = 21000)
-				) AND
-				(
-					(Country.name != 'china') AND
-					(Country.name != 'india') AND
-					(Country.name != 'japan')
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
+	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByKAK_DAK_N_C_I_S">
 		<![CDATA[
 			SELECT
 				DISTINCT OSB_AccountEntry.accountEntryId
 			FROM
 				OSB_AccountEntry
-			LEFT JOIN
-				OSB_PartnerEntry ON
-					OSB_PartnerEntry.partnerEntryId = OSB_AccountEntry.partnerEntryId
-			LEFT JOIN
-				Address ON
-					(Address.companyId = ?) AND
-					(Address.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.ACCOUNTENTRY$]) AND
-					(Address.classPK = OSB_AccountEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
 				(
-					(OSB_AccountEntry.redirectAccountEntryId = 0) AND
-					(
-						(OSB_AccountEntry.userId = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.dossieraAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.corpEntryName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.industry = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.partnerManagedSupport = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.tier = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.status = ?) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.instructions) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.notes) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_PartnerEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(Address.street1) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(Address.countryId = ?) [$AND_OR_CONNECTOR$]
-						(Address.regionId = ?) [$AND_OR_CONNECTOR$]
-						(lower(Address.city) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(Address.zip) LIKE ? [$AND_OR_NULL_CHECK$])
-					)
+					(lower(OSB_AccountEntry.koroneikiAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.dossieraAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_AccountEntry.status = ?) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.instructions) LIKE ? [$AND_OR_NULL_CHECK$])
 				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByIndustry">
-		<![CDATA[
-			WHERE
-				(OSB_AccountEntry.industry = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByStatus">
@@ -97,71 +26,23 @@
 				(OSB_AccountEntry.status = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByTier">
-		<![CDATA[
-			WHERE
-				(OSB_AccountEntry.tier = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByType">
-		<![CDATA[
-			WHERE
-				(OSB_AccountEntry.type_ = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z">
+	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByKAK_DAK_N_C_I_S">
 		<![CDATA[
 			SELECT
-				DISTINCT OSB_AccountEntry.accountEntryId, OSB_AccountEntry.name AS accountEntryName, OSB_AccountEntry.code_ AS accountEntryCode
+				DISTINCT {OSB_AccountEntry.*}
 			FROM
 				OSB_AccountEntry
-			LEFT JOIN
-				OSB_PartnerEntry ON
-					OSB_PartnerEntry.partnerEntryId = OSB_AccountEntry.partnerEntryId
-			LEFT JOIN
-				Address ON
-					(Address.companyId = ?) AND
-					(Address.classNameId = [$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.ACCOUNTENTRY$]) AND
-					(Address.classPK = OSB_AccountEntry.accountEntryId)
 			[$JOIN$]
 			WHERE
 				[$WHERE$]
 				(
-					(OSB_AccountEntry.redirectAccountEntryId = 0) AND
-					(
-						(OSB_AccountEntry.userId = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.createDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.createDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.modifiedUserId = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.modifiedDate > ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.modifiedDate < ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.dossieraAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.corpEntryName) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.industry = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.partnerManagedSupport = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.tier = ?) [$AND_OR_CONNECTOR$]
-						(OSB_AccountEntry.status = ?) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.instructions) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_AccountEntry.notes) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(OSB_PartnerEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(Address.street1) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(Address.countryId = ?) [$AND_OR_CONNECTOR$]
-						(Address.regionId = ?) [$AND_OR_CONNECTOR$]
-						(lower(Address.city) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
-						(lower(Address.zip) LIKE ? [$AND_OR_NULL_CHECK$])
-					)
+					(lower(OSB_AccountEntry.koroneikiAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.dossieraAccountKey) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.name) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.code_) LIKE ? [$AND_OR_NULL_CHECK$]) [$AND_OR_CONNECTOR$]
+					(OSB_AccountEntry.status = ?) [$AND_OR_CONNECTOR$]
+					(lower(OSB_AccountEntry.instructions) LIKE ? [$AND_OR_NULL_CHECK$])
 				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountCustomer">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountCustomer ON
-					(OSB_AccountCustomer.accountEntryId = OSB_AccountEntry.accountEntryId)
-			WHERE
-				(OSB_AccountCustomer.userId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironment">
@@ -201,91 +82,6 @@
 				(OSB_AccountEnvironment.envOS = ?)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_AccountWorker ON
-					(OSB_AccountWorker.accountEntryId = OSB_AccountEntry.accountEntryId)
-			WHERE
-				(
-					(OSB_AccountWorker.userId = ?) AND
-					(OSB_AccountWorker.role = ? [$AND_OR_NULL_CHECK$])
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActiveLicense">
-		<![CDATA[
-			INNER JOIN
-				OSB_OfferingEntry ON
-					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
-			WHERE
-				(
-					(OSB_AccountEntry.type_ = 4) AND
-					(OSB_OfferingEntry.licenses = [$TRUE$]) AND
-					(OSB_OfferingEntry.status = ?)
-				)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByActiveSupport">
-		<![CDATA[
-			WHERE
-				(OSB_AccountEntry.type_ != 4) AND
-				(
-					SELECT
-						COUNT(*)
-					FROM
-						OSB_OfferingEntry
-					WHERE
-						(
-							(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
-							(OSB_OfferingEntry.status = ?)
-						)
-				) [$ACTIVE_SUPPORT_COMPARATOR$] 0
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByExpiredSupport">
-		<![CDATA[
-			WHERE
-				(OSB_AccountEntry.type_ != 4) AND
-				(
-					SELECT
-						COUNT(*)
-					FROM
-						OSB_OfferingEntry
-					WHERE
-						(
-							(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
-							(OSB_OfferingEntry.supportEndDate > ?)
-						)
-				) [$EXPIRED_SUPPORT_COMPARATOR$] 0
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByNoSupport">
-		<![CDATA[
-			LEFT JOIN
-				OSB_OfferingEntry
-					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
-			WHERE
-				(OSB_OfferingEntry.accountEntryId IS NULL)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByOfferingEntry">
-		<![CDATA[
-			INNER JOIN
-				OSB_OfferingEntry ON
-					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByPartnerWorker">
-		<![CDATA[
-			INNER JOIN
-				OSB_PartnerWorker ON
-					(OSB_AccountEntry.partnerManagedSupport = [$TRUE$]) AND
-					(OSB_PartnerWorker.partnerEntryId = OSB_AccountEntry.partnerEntryId)
-			WHERE
-				(OSB_PartnerWorker.userId = ?)
-		]]>
-	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByPrimaryProductEntry">
 		<![CDATA[
 			INNER JOIN
@@ -321,7 +117,7 @@
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByProductEntry">
 		<![CDATA[
 			WHERE
-				(OSB_OfferingEntry.productEntryId = ?)
+				(OSB_AccountEnvironment.productEntryId = ?)
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinBySupportRegion">
@@ -331,27 +127,6 @@
 					(OSB_AccountEntries_SupportRegions.accountEntryId = OSB_AccountEntry.accountEntryId)
 			WHERE
 				(OSB_AccountEntries_SupportRegions.supportRegionId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinBySupportResponse">
-		<![CDATA[
-			WHERE
-				(OSB_OfferingEntry.supportResponseId = ?)
-		]]>
-	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByTicketSupport">
-		<![CDATA[
-			WHERE
-				(
-					SELECT
-						COUNT(*)
-					FROM
-						OSB_OfferingEntry
-					WHERE
-						(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId) AND
-						(OSB_OfferingEntry.supportTickets = [$TRUE$]) AND
-						(OSB_OfferingEntry.status = ?)
-				) [$TICKET_SUPPORT_COMPARATOR$] 0
 		]]>
 	</sql>
 	<sql id="com.liferay.osb.service.persistence.LicenseKeyFinder.countByU_C_M_M_A_L_S_L_P_P_P_P_O_D_H_I_M_S_E_A">

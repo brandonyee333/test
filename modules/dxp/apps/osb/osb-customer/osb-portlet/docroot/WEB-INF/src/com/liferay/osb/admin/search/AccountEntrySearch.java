@@ -29,7 +29,7 @@ import javax.portlet.PortletURL;
  */
 public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 
-	public static final String EMPTY_RESULTS_MESSAGE = "no-projects-were-found";
+	public static final String EMPTY_RESULTS_MESSAGE = "no-accounts-were-found";
 
 	public static List<String> headerNames = new ArrayList<String>() {
 		{
@@ -72,110 +72,27 @@ public class AccountEntrySearch extends SearchContainer<AccountEntry> {
 			ArrayUtil.toStringArray(
 				displayTerms.getAccountEnvironmentEnvOSIds()));
 		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CITY, displayTerms.getCity());
-		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.CODE, displayTerms.getCode());
 		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.COUNTRY_ID,
-			String.valueOf(displayTerms.getCountryId()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CORP_ENTRY_NAME,
-			displayTerms.getCorpEntryName());
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_DATE_GT_DAY,
-			String.valueOf(displayTerms.getCreateDateGTDay()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_DATE_GT_MONTH,
-			String.valueOf(displayTerms.getCreateDateGTMonth()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_DATE_GT_YEAR,
-			String.valueOf(displayTerms.getCreateDateGTYear()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_DATE_LT_DAY,
-			String.valueOf(displayTerms.getCreateDateLTDay()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_DATE_LT_MONTH,
-			String.valueOf(displayTerms.getCreateDateLTMonth()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_DATE_LT_YEAR,
-			String.valueOf(displayTerms.getCreateDateLTYear()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.CREATE_USER_ID,
-			String.valueOf(displayTerms.getCreateUserId()));
+			AccountEntryDisplayTerms.KORONEIKI_ACCOUNT_KEY,
+			displayTerms.getKoroneikiAccountKey());
 		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.DOSSIERA_ACCOUNT_KEY,
 			displayTerms.getDossieraAccountKey());
 		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.EXPIRED_SUPPORT,
-			String.valueOf(displayTerms.expiredSupport));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.INDUSTRIES,
-			ArrayUtil.toStringArray(displayTerms.getIndustries()));
-		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.INSTRUCTIONS,
 			displayTerms.getInstructions());
 		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_DATE_GT_DAY,
-			String.valueOf(displayTerms.getModifiedDateGTDay()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_DATE_GT_MONTH,
-			String.valueOf(displayTerms.getModifiedDateGTMonth()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_DATE_GT_YEAR,
-			String.valueOf(displayTerms.getModifiedDateGTYear()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_DATE_LT_DAY,
-			String.valueOf(displayTerms.getModifiedDateLTDay()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_DATE_LT_MONTH,
-			String.valueOf(displayTerms.getModifiedDateLTMonth()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_DATE_LT_YEAR,
-			String.valueOf(displayTerms.getModifiedDateLTYear()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.MODIFIED_USER_ID,
-			String.valueOf(displayTerms.getModifiedUserId()));
-		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.NAME, displayTerms.getName());
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.NOTES, displayTerms.getNotes());
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.PARTNER_ENTRY_CODE,
-			displayTerms.getPartnerEntryCode());
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.PARTNER_MANAGED_SUPPORT,
-			String.valueOf(displayTerms.getPartnerManagedSupport()));
 		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.PRODUCT_ENTRY_IDS,
 			ArrayUtil.toStringArray(displayTerms.getProductEntryIds()));
 		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.REGION_ID,
-			String.valueOf(displayTerms.getRegionId()));
-		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.STATUSES,
 			ArrayUtil.toStringArray(displayTerms.getStatuses()));
 		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.STREET, displayTerms.getStreet());
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.SUPPORT,
-			String.valueOf(displayTerms.getSupport()));
-		iteratorURL.setParameter(
 			AccountEntryDisplayTerms.SUPPORT_REGION_IDS,
 			ArrayUtil.toStringArray(displayTerms.getSupportRegionIds()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.SUPPORT_RESPONSE_IDS,
-			ArrayUtil.toStringArray(displayTerms.getSupportResponseIds()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.TICKET_SUPPORT,
-			String.valueOf(displayTerms.getTicketSupport()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.TIERS,
-			ArrayUtil.toStringArray(displayTerms.getTiers()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.TYPES,
-			ArrayUtil.toStringArray(displayTerms.getTypes()));
-		iteratorURL.setParameter(
-			AccountEntryDisplayTerms.ZIP, displayTerms.getZip());
 	}
 
 }

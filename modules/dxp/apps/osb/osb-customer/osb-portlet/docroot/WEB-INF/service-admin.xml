@@ -109,97 +109,30 @@
 
 		<!-- Other fields -->
 
-		<column name="corpProjectUuid" type="String" />
-		<column name="corpProjectId" type="long" />
+		<column name="koroneikiAccountKey" type="String" />
 		<column name="dossieraAccountKey" type="String" />
-		<column name="corpEntryName" type="String" />
 		<column name="name" type="String" />
 		<column name="code" type="String" />
-		<column name="redirectAccountEntryId" type="long" />
-		<column name="type" type="int" />
-		<column name="industry" type="int" />
-		<column name="countryId" type="long" />
-		<column name="partnerEntryId" type="long" />
-		<column name="partnerManagedSupport" type="boolean" />
-		<column name="tier" type="int" />
-		<column name="maxCustomers" type="int" />
 		<column name="instructions" type="String" />
-		<column name="notes" type="String" />
-		<column name="highestSupportResponseId" type="long" />
 		<column name="activeSupport" type="boolean" />
 		<column name="activeTicketSupport" type="boolean" />
-		<column name="lastAuditDate" type="Date" />
 		<column name="lastZendeskAuditDate" type="Date" />
 		<column name="status" type="int" />
-		<column name="statusByUserId" type="long" />
-		<column name="statusByUserName" type="String" />
-		<column name="statusDate" type="Date" />
-		<column name="statusMessage" type="String" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
 
 		<!-- Finder methods -->
 
-		<finder name="CorpProjectUuid" return-type="AccountEntry">
-			<finder-column name="corpProjectUuid" />
-		</finder>
-		<finder name="CorpProjectId" return-type="AccountEntry">
-			<finder-column name="corpProjectId" />
+		<finder name="KoroneikiAccountKey" return-type="AccountEntry">
+			<finder-column name="koroneikiAccountKey" />
 		</finder>
 		<finder name="DossieraAccountKey" return-type="Collection">
 			<finder-column name="dossieraAccountKey" />
 		</finder>
-		<finder name="Name" return-type="Collection">
-			<finder-column name="name" />
-		</finder>
-		<finder name="Code" return-type="AccountEntry" unique="true">
-			<finder-column case-sensitive="false" name="code" />
-		</finder>
-		<finder name="RedirectAccountEntryId" return-type="Collection">
-			<finder-column name="redirectAccountEntryId" />
-		</finder>
-		<finder name="PartnerEntryId" return-type="Collection">
-			<finder-column name="partnerEntryId" />
-		</finder>
-		<finder name="U_T" return-type="Collection">
-			<finder-column name="userId" />
-			<finder-column name="type" />
-		</finder>
-		<finder name="DAK_T" return-type="Collection">
-			<finder-column name="dossieraAccountKey" />
-			<finder-column name="type" />
-		</finder>
-		<finder name="RAEI_S" return-type="Collection">
-			<finder-column name="redirectAccountEntryId" />
-			<finder-column arrayable-operator="OR" name="status" />
-		</finder>
-		<finder name="PEI_PMS" return-type="Collection">
-			<finder-column name="partnerEntryId" />
-			<finder-column name="partnerManagedSupport" />
-		</finder>
-		<finder name="RAEI_NotT_S" return-type="Collection">
-			<finder-column name="redirectAccountEntryId" />
-			<finder-column arrayable-operator="AND" comparator="!=" name="type" />
-			<finder-column arrayable-operator="OR" name="status" />
-		</finder>
-		<finder name="N_C_RAEI" return-type="Collection">
-			<finder-column case-sensitive="false" comparator="LIKE" name="name" />
-			<finder-column case-sensitive="false" comparator="LIKE" name="code" />
-			<finder-column name="redirectAccountEntryId" />
-		</finder>
 
 		<!-- References -->
 
-		<reference entity="Address" package-path="com.liferay.portal" />
-		<reference entity="Country" package-path="com.liferay.portal" />
 		<reference entity="ListType" package-path="com.liferay.portal" />
 		<reference entity="Organization" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
-		<reference entity="WorkflowInstanceLink" package-path="com.liferay.portal" />
 	</entity>
 	<entity local-service="true" name="AccountEntryLanguage" remote-service="true">
 
@@ -894,14 +827,8 @@
 	</entity>
 	<exceptions>
 		<exception>AccountAttachmentSize</exception>
-		<exception>AccountCustomerClosedWatcher</exception>
-		<exception>AccountEntryCode</exception>
-		<exception>AccountEntryCorpProject</exception>
-		<exception>AccountEntryIndustry</exception>
+		<exception>AccountEntryKoroneikiAccountKey</exception>
 		<exception>AccountEntryLanguageId</exception>
-		<exception>AccountEntryMaximumCustomers</exception>
-		<exception>AccountEntryName</exception>
-		<exception>AccountEntryPartnerEntry</exception>
 		<exception>AccountEntrySupportRegion</exception>
 		<exception>AccountEnvironmentAttachment</exception>
 		<exception>AccountEnvironmentAttachmentSize</exception>
@@ -916,7 +843,6 @@
 		<exception>AccountEnvironmentName</exception>
 		<exception>AccountProjectName</exception>
 		<exception>DuplicateAccountAttachment</exception>
-		<exception>DuplicateAccountEntry</exception>
 		<exception>DuplicateAccountEnvironment</exception>
 		<exception>DuplicateAccountEnvironmentAttachment</exception>
 		<exception>DuplicateOfferingBundle</exception>
@@ -938,7 +864,6 @@
 		<exception>PartnerEntryParentPartnerEntry</exception>
 		<exception>ProductEntryEnvironment</exception>
 		<exception>ProductEntryName</exception>
-		<exception>RequiredAccountEntry</exception>
 		<exception>RequiredSupportRegion</exception>
 		<exception>SupportRegionName</exception>
 		<exception>SupportResponseName</exception>

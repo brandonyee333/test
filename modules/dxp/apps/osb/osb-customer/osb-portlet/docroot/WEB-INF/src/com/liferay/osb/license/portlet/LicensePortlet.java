@@ -14,7 +14,6 @@
 
 package com.liferay.osb.license.portlet;
 
-import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.exception.DuplicateHostNameException;
 import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
@@ -32,7 +31,6 @@ import com.liferay.osb.exception.LicenseKeySetNameException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
@@ -55,7 +53,6 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ContentTypes;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -73,7 +70,6 @@ import java.util.TimeZone;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
-import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -179,47 +175,6 @@ public class LicensePortlet extends OSBPortlet {
 			syncToLCS(
 				actionRequest, actionResponse, licenseKey.getAccountEntryId());
 		}
-	}
-
-	public void renewTrialLicenseKey(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		User user = themeDisplay.getUser();
-
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.fetchUserTrialAccountEntry(
-				user.getUserId());
-
-		PortletPreferences portletPreferences =
-			AdminUtil.getPortletPreferences();
-
-		int maxTrialKeys = GetterUtil.getInteger(
-			portletPreferences.getValue("maxTrialKeys", null));
-
-		if ((accountEntry != null) && (maxTrialKeys > 0) &&
-			(LicenseKeyLocalServiceUtil.getUserLicenseKeysCount(
-				user.getUserId(), accountEntry.getAccountEntryId()) >=
-					maxTrialKeys)) {
-
-			LicenseKeyLocalServiceUtil.sendTrialRenewalNotificationEmail(
-				"sales@liferay.com", accountEntry.getAccountEntryId());
-
-			SessionMessages.add(actionRequest, "salesNotified");
-		}
-		else {
-			LicenseKeyLocalServiceUtil.renewTrialLicenseKey(user.getUserId());
-
-			SessionMessages.add(
-				actionRequest, "licenseKeySent", user.getEmailAddress());
-		}
-
-		addSuccessMessage(actionRequest, actionResponse);
-
-		sendRedirect(actionRequest, actionResponse);
 	}
 
 	public void resendLicenseKey(

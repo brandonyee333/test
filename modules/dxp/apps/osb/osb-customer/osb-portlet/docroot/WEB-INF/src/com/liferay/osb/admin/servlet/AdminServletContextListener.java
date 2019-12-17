@@ -14,14 +14,7 @@
 
 package com.liferay.osb.admin.servlet;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
-import com.liferay.osb.admin.asset.AccountEntryAssetRendererFactory;
-import com.liferay.osb.admin.asset.OrderEntryAssetRendererFactory;
-import com.liferay.osb.service.permission.OSBCommonPermission;
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.permission.CommonPermission;
-import com.liferay.portal.kernel.service.permission.CommonPermissionUtil;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
 import com.liferay.registry.Registry;
 import com.liferay.registry.RegistryUtil;
@@ -56,30 +49,6 @@ public class AdminServletContextListener
 	@Override
 	protected void doPortalDestroy() {
 
-		// Asset renderers
-
-		if (_accountEntryAssetRendererFactory != null) {
-			AssetRendererFactoryRegistryUtil.unregister(
-				_accountEntryAssetRendererFactory);
-		}
-
-		if (_orderEntryAssetRendererFactory != null) {
-			AssetRendererFactoryRegistryUtil.unregister(
-				_orderEntryAssetRendererFactory);
-		}
-
-		// Common permission
-
-		CommonPermissionUtil commonPermissionUtil =
-			(CommonPermissionUtil)PortalBeanLocatorUtil.locate(
-				CommonPermissionUtil.class.getName());
-
-		OSBCommonPermission osbCommonPermission =
-			(OSBCommonPermission)CommonPermissionUtil.getCommonPermission();
-
-		commonPermissionUtil.setCommonPermission(
-			osbCommonPermission.getCommonPermission());
-
 		// OSGi
 
 		_moduleServiceLifecycleServiceRegistration.unregister();
@@ -88,33 +57,6 @@ public class AdminServletContextListener
 	@Override
 	@SuppressWarnings("unused")
 	protected void doPortalInit() throws Exception {
-
-		// Asset renderers
-
-		_accountEntryAssetRendererFactory =
-			new AccountEntryAssetRendererFactory();
-
-		AssetRendererFactoryRegistryUtil.register(
-			_accountEntryAssetRendererFactory);
-
-		_orderEntryAssetRendererFactory = new OrderEntryAssetRendererFactory();
-
-		AssetRendererFactoryRegistryUtil.register(
-			_orderEntryAssetRendererFactory);
-
-		// Common permission
-
-		CommonPermissionUtil commonPermissionUtil =
-			(CommonPermissionUtil)PortalBeanLocatorUtil.locate(
-				CommonPermissionUtil.class.getName());
-
-		CommonPermission originalCommonPermission =
-			CommonPermissionUtil.getCommonPermission();
-
-		CommonPermission osbCommonPermission = new OSBCommonPermission(
-			originalCommonPermission);
-
-		commonPermissionUtil.setCommonPermission(osbCommonPermission);
 
 		// Expando
 
@@ -135,10 +77,8 @@ public class AdminServletContextListener
 			properties);
 	}
 
-	private AccountEntryAssetRendererFactory _accountEntryAssetRendererFactory;
 	private ServiceRegistration<ModuleServiceLifecycle>
 		_moduleServiceLifecycleServiceRegistration;
-	private OrderEntryAssetRendererFactory _orderEntryAssetRendererFactory;
 	private ServletContext _servletContext;
 
 }

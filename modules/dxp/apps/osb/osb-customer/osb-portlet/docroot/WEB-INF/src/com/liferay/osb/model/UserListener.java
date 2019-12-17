@@ -92,17 +92,21 @@ public class UserListener extends BaseModelListener<User> {
 		if (!accountCustomers.isEmpty()) {
 			boolean customerAccount = false;
 
-			for (AccountCustomer accountCustomer : accountCustomers) {
-				AccountEntry accountEntry = accountCustomer.getAccountEntry();
+			/*
+				TODO
 
-				if (accountEntry.getType() !=
-						AccountEntryConstants.TYPE_TRIAL) {
+						for (AccountCustomer accountCustomer : accountCustomers) {
+							AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-					customerAccount = true;
+							if (accountEntry.getType() !=
+									AccountEntryConstants.TYPE_TRIAL) {
 
-					break;
-				}
-			}
+								customerAccount = true;
+
+								break;
+							}
+						}
+			*/
 
 			if (customerAccount &&
 				!OrganizationLocalServiceUtil.hasUserOrganization(

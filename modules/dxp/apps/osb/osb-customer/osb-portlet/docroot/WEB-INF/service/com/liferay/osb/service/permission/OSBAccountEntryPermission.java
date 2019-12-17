@@ -17,15 +17,12 @@ package com.liferay.osb.service.permission;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -70,14 +67,6 @@ public class OSBAccountEntryPermission {
 			if (RoleLocalServiceUtil.hasUserRole(
 					permissionChecker.getUserId(),
 					OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
-
-				return true;
-			}
-
-			if ((accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) &&
-				RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
 
 				return true;
 			}
@@ -164,25 +153,27 @@ public class OSBAccountEntryPermission {
 		}
 
 		PartnerWorker partnerWorker = null;
+		/*
+		TODO
 
-		try {
-			if (accountEntry.isPartnerManagedSupport()) {
-				partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(
-					permissionChecker.getUserId(),
-					accountEntry.getPartnerEntryId());
+				try {
+					if (accountEntry.isPartnerManagedSupport()) {
+						partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(
+							permissionChecker.getUserId(),
+							accountEntry.getPartnerEntryId());
 
-				if ((partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MANAGER) ||
-					(partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MEMBER)) {
+						if ((partnerWorker.getRole() ==
+								PartnerWorkerConstants.ROLE_MANAGER) ||
+							(partnerWorker.getRole() ==
+								PartnerWorkerConstants.ROLE_MEMBER)) {
 
-					return true;
+							return true;
+						}
+					}
 				}
-			}
-		}
-		catch (Exception e) {
-		}
-
+				catch (Exception e) {
+				}
+		*/
 		if ((accountCustomer != null) || (partnerWorker != null)) {
 			return true;
 		}

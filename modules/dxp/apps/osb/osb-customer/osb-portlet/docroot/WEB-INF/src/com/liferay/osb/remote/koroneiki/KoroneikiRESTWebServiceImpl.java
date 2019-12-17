@@ -77,6 +77,19 @@ public class KoroneikiRESTWebServiceImpl
 	}
 
 	@Override
+	public JSONObject getAccounts(String koroneikiAccountKey)
+		throws RemoteServiceException {
+
+		StringBundler sb = new StringBundler(3);
+
+		sb.append(_URL_API_REST_ACCOUNTS);
+		sb.append(StringPool.SLASH);
+		sb.append(koroneikiAccountKey);
+
+		return doGetToJSONObject(sb.toString());
+	}
+
+	@Override
 	public JSONObject getAccounts(
 			String domain, String entityName, String entityId)
 		throws RemoteServiceException {

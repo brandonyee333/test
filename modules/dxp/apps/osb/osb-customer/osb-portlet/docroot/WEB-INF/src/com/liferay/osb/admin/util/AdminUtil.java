@@ -19,11 +19,7 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.petra.content.ContentUtil;
-import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
@@ -32,20 +28,14 @@ import com.liferay.portal.kernel.service.ListTypeLocalServiceUtil;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.net.URL;
-
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import javax.portlet.PortletPreferences;
 
@@ -114,107 +104,6 @@ public class AdminUtil {
 		sb.append(sb2);
 
 		return sb.toString();
-	}
-
-	public static Map<Locale, String> getEmailAnalyticsCloudWelcomeBodyMap(
-		PortletPreferences preferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, "emailAnalyticsCloudWelcomeBody");
-
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
-			String value = map.get(locale);
-
-			if (Validator.isNotNull(value)) {
-				continue;
-			}
-
-			String languageId = LocaleUtil.toLanguageId(locale);
-
-			map.put(
-				locale,
-				_getEmailTemplate(
-					"email_analytics_cloud_welcome_body_" + languageId +
-						".tmpl",
-					"email_analytics_cloud_welcome_body.tmpl"));
-		}
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailAnalyticsCloudWelcomeSubjectMap(
-		PortletPreferences preferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, "emailAnalyticsCloudWelcomeSubject");
-
-		for (Locale locale : LanguageUtil.getAvailableLocales()) {
-			String value = map.get(locale);
-
-			if (Validator.isNotNull(value)) {
-				continue;
-			}
-
-			String languageId = LocaleUtil.toLanguageId(locale);
-
-			map.put(
-				locale,
-				_getEmailTemplate(
-					"email_analytics_cloud_welcome_subject_" + languageId +
-						".tmpl",
-					"email_analytics_cloud_welcome_subject.tmpl"));
-		}
-
-		return map;
-	}
-
-	public static Map<Locale, String> getEmailProvisioningCreateAccountBodyMap(
-		PortletPreferences preferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, "emailProvisioningCreateAccountBody");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				AdminUtil.class.getClassLoader(),
-				"com/liferay/osb/admin/dependencies" +
-					"/email_provisioning_create_account_body.tmpl"));
-
-		return map;
-	}
-
-	public static Map<Locale, String>
-		getEmailProvisioningCreateAccountSubjectMap(
-			PortletPreferences preferences) {
-
-		Map<Locale, String> map = LocalizationUtil.getLocalizationMap(
-			preferences, "emailProvisioningCreateAccountSubject");
-
-		Locale defaultLocale = LocaleUtil.getDefault();
-
-		String defaultValue = map.get(defaultLocale);
-
-		if (Validator.isNotNull(defaultValue)) {
-			return map;
-		}
-
-		map.put(
-			defaultLocale,
-			ContentUtil.get(
-				AdminUtil.class.getClassLoader(),
-				"com/liferay/osb/admin/dependencies" +
-					"/email_provisioning_create_account_subject.tmpl"));
-
-		return map;
 	}
 
 	public static int getLatestProductVersion(
@@ -287,27 +176,6 @@ public class AdminUtil {
 		return PortletPreferencesLocalServiceUtil.getPreferences(
 			OSBConstants.COMPANY_ID, ownerId, ownerType, plid, portletId,
 			defaultPreferences);
-	}
-
-	private static String _getEmailTemplate(
-		String templateName, String defaultTemplateName) {
-
-		ClassLoader portletClassLoader = AdminUtil.class.getClassLoader();
-
-		String templateDirName = "com/liferay/osb/admin/dependencies/";
-
-		URL url = portletClassLoader.getResource(
-			templateDirName + templateName);
-
-		if (url != null) {
-			return ContentUtil.get(
-				AdminUtil.class.getClassLoader(),
-				templateDirName + templateName);
-		}
-
-		return ContentUtil.get(
-			AdminUtil.class.getClassLoader(),
-			templateDirName + defaultTemplateName);
 	}
 
 	private static String _getManualUpgradeProcessClassPath(int buildNumber) {

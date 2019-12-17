@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.admin.util.AdminUtil;
 import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
 import com.liferay.osb.exception.LicenseKeyActiveException;
@@ -35,7 +34,6 @@ import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -58,15 +56,14 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
@@ -86,8 +83,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-
-import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.time.DateUtils;
 
@@ -542,19 +537,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		AccountEntry accountEntry = licenseKey.getAccountEntry();
 
-		String description = String.valueOf(renewTime) + "-Day ";
-
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-			description += "Trial License";
-		}
-		else {
-			description += "License";
-		}
+		String description = String.valueOf(renewTime) + "-Day License";
 
 		Date expirationDate = new Date(
 			startDate.getTime() + (renewTime * Time.DAY));
 
-		LicenseKey renewedLicenseKey = doAddLicenseKeyVersion3_4(
+		return doAddLicenseKeyVersion3_4(
 			new Date(), user, licenseKeySet, licenseKeySet.getName(),
 			accountEntry, licenseKey.getOfferingEntry(),
 			licenseKey.getLicenseEntry(), productEntry, licenseEntry.getType(),
@@ -567,79 +555,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			new String[] {licenseKey.getServerId()}, startDate, expirationDate,
 			licenseKey.getAdditionalInfo(), licenseKey.getComplimentary(),
 			true);
-
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) {
-			OfferingEntry offeringEntry = renewedLicenseKey.getOfferingEntry();
-
-			offeringEntry.setSupportEndDate(
-				renewedLicenseKey.getExpirationDate());
-
-			offeringEntryPersistence.update(offeringEntry);
-
-			User trialUser = userLocalService.getUser(accountEntry.getUserId());
-
-			sendRegisteredEmail(
-				trialUser.getEmailAddress(), trialUser.getFullName(),
-				renewedLicenseKey);
-		}
-
-		return renewedLicenseKey;
-	}
-
-	public LicenseKey renewTrialLicenseKey(long userId) throws Exception {
-		User user = userLocalService.getUser(userId);
-
-		AccountEntry accountEntry =
-			accountEntryLocalService.fetchUserTrialAccountEntry(userId);
-
-		if (accountEntry == null) {
-			return null;
-		}
-
-		LicenseKey lastLicenseKey =
-			licenseKeyPersistence.findByAccountEntryId_First(
-				accountEntry.getAccountEntryId(),
-				new LicenseKeyExpirationDateComparator(false));
-
-		LicenseKeySet licenseKeySet = licenseKeySetPersistence.findByPrimaryKey(
-			lastLicenseKey.getLicenseKeySetId());
-
-		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
-			lastLicenseKey.getOfferingEntryId());
-
-		lastLicenseKey.setActive(false);
-
-		lastLicenseKey = licenseKeyPersistence.update(lastLicenseKey);
-
-		int productVersion = lastLicenseKey.getProductVersion();
-
-		PortletPreferences portletPreferences =
-			AdminUtil.getPortletPreferences();
-
-		long productEntryId = GetterUtil.getLong(
-			portletPreferences.getValue("trialProductEntryId", null));
-
-		if (productEntryId == offeringEntry.getProductEntryId()) {
-			productVersion = AdminUtil.getLatestProductVersion(
-				portletPreferences, offeringEntry.getProductEntryId());
-		}
-
-		LicenseKey licenseKey = addLicenseKey(
-			userId, licenseKeySet, "Trial Licenses", offeringEntry,
-			lastLicenseKey.getLicenseEntry(), null, productVersion, 0,
-			user.getFullName(), 1, 5, "30-Day Trial License", new String[0],
-			new String[0], new String[0],
-			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
-			null, StringPool.BLANK, false, true);
-
-		offeringEntry.setSupportEndDate(licenseKey.getExpirationDate());
-
-		offeringEntryPersistence.update(offeringEntry);
-
-		sendRegisteredEmail(
-			user.getEmailAddress(), user.getFullName(), licenseKey);
-
-		return licenseKey;
 	}
 
 	public List<LicenseKey> search(
@@ -748,75 +663,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		sendRegisteredEmail(
 			user.getEmailAddress(), user.getFullName(), licenseKey);
-	}
-
-	public void sendTrialRenewalNotificationEmail(
-			String emailAddress, long accountEntryId)
-		throws Exception {
-
-		LicenseKey licenseKey =
-			licenseKeyPersistence.findByAccountEntryId_First(
-				accountEntryId, new LicenseKeyExpirationDateComparator(false));
-
-		Map<Locale, String> subjectMap =
-			LicenseUtil.getEmailNotificationTrialLicenseSubjectMap();
-		Map<Locale, String> bodyMap =
-			LicenseUtil.getEmailNotificationTrialLicenseBodyMap();
-
-		String layoutURL = PortalUtil.getLayoutFullURL(
-			OSBConstants.GROUP_LICENSE_ID, OSBPortletKeys.OSB_LICENSE);
-
-		String licenseURL =
-			layoutURL + Portal.FRIENDLY_URL_SEPARATOR + "license/offering/" +
-				licenseKey.getOfferingEntryId();
-
-		AccountEntry accountEntry = licenseKey.getAccountEntry();
-
-		for (Map.Entry<Locale, String> subjectEntry : subjectMap.entrySet()) {
-			String subject = StringUtil.replace(
-				subjectEntry.getValue(),
-				new String[] {"[$ACCOUNT_ENTRY_NAME$]"},
-				new String[] {accountEntry.getName()});
-
-			subjectEntry.setValue(subject);
-		}
-
-		User user = userLocalService.getUser(licenseKey.getUserId());
-
-		Country country = countryService.getCountry(
-			accountEntry.getCountryId());
-
-		for (Map.Entry<Locale, String> bodyEntry : bodyMap.entrySet()) {
-			String body = StringUtil.replace(
-				bodyEntry.getValue(),
-				new String[] {
-					"[$ACCOUNT_ENTRY_NAME$]", "[$LICENSE_URL$]",
-					"[$USER_COUNTRY$]", "[$USER_EMAIL_ADDRESS$]",
-					"[$USER_FULL_NAME$]"
-				},
-				new String[] {
-					accountEntry.getName(), licenseURL, country.getName(),
-					user.getEmailAddress(), user.getFullName()
-				});
-
-			bodyEntry.setValue(body);
-		}
-
-		SubscriptionSender subscriptionSender = new SubscriptionSender();
-
-		subscriptionSender.setCompanyId(OSBConstants.COMPANY_ID);
-		subscriptionSender.setFrom("no-reply@liferay.com", "Licensing");
-		subscriptionSender.setHtmlFormat(true);
-		subscriptionSender.setLocalizedBodyMap(bodyMap);
-		subscriptionSender.setLocalizedSubjectMap(subjectMap);
-		subscriptionSender.setMailId(
-			"license_key_notification", licenseKey.getLicenseKeyId());
-		subscriptionSender.setPortletId(OSBPortletKeys.OSB_LICENSE);
-		subscriptionSender.setReplyToAddress("sales@liferay.com");
-
-		subscriptionSender.addRuntimeSubscribers(emailAddress, "Liferay, Inc.");
-
-		subscriptionSender.flushNotificationsAsync();
 	}
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)

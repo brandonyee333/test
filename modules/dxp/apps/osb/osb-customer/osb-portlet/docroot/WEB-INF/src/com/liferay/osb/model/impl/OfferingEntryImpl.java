@@ -15,7 +15,6 @@
 package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
@@ -68,16 +67,9 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	}
 
 	public String getKey() throws PortalException {
-		StringBundler sb = new StringBundler(22);
+		StringBundler sb = new StringBundler(20);
 
-		AccountEntry accountEntry = getAccountEntry();
-
-		if (accountEntry.getType() == AccountEntryConstants.TYPE_INDIVIDUAL) {
-			sb.append("userId=");
-			sb.append(getUserId());
-		}
-
-		sb.append(",productEntryId=");
+		sb.append("productEntryId=");
 		sb.append(getProductEntryId());
 		sb.append(",supportResponseId=");
 		sb.append(getSupportResponseId());

@@ -15,8 +15,6 @@
 package com.liferay.osb.service.permission;
 
 import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.LicenseKey;
@@ -71,20 +69,6 @@ public class OSBLicenseKeyPermission {
 				OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
 			return true;
-		}
-
-		try {
-			AccountEntry accountEntry = licenseKey.getAccountEntry();
-
-			if ((accountEntry.getType() == AccountEntryConstants.TYPE_TRIAL) &&
-				RoleLocalServiceUtil.hasUserRole(
-					permissionChecker.getUserId(),
-					OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
-
-				return true;
-			}
-		}
-		catch (Exception e) {
 		}
 
 		if (actionId.equals(OSBActionKeys.UPDATE_ADMIN)) {

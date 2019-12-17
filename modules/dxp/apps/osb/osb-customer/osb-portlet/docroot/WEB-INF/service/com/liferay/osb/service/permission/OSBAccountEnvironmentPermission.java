@@ -21,7 +21,6 @@ import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -96,23 +95,25 @@ public class OSBAccountEnvironmentPermission {
 		}
 
 		PartnerWorker partnerWorker = null;
+		/*
+		TODO
 
-		try {
-			if (accountEntry.isPartnerManagedSupport()) {
-				partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(
-					permissionChecker.getUserId(),
-					accountEntry.getPartnerEntryId());
+				try {
+					if (accountEntry.isPartnerManagedSupport()) {
+						partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(
+							permissionChecker.getUserId(),
+							accountEntry.getPartnerEntryId());
 
-				if (partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MANAGER) {
+						if (partnerWorker.getRole() ==
+								PartnerWorkerConstants.ROLE_MANAGER) {
 
-					return true;
+							return true;
+						}
+					}
 				}
-			}
-		}
-		catch (Exception e) {
-		}
-
+				catch (Exception e) {
+				}
+		*/
 		if (actionId.equals(OSBActionKeys.DELETE)) {
 			return false;
 		}

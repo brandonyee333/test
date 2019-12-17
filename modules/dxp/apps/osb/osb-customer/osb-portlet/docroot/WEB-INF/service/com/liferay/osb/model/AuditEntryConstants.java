@@ -72,6 +72,8 @@ public class AuditEntryConstants {
 
 	public static final int FIELD_INSTRUCTIONS = 34065;
 
+	public static final int FIELD_KORONEIKI_ACCOUNT_KEY = 34079;
+
 	public static final int FIELD_LANGUAGES = 34070;
 
 	public static final int FIELD_NAME = 34060;
