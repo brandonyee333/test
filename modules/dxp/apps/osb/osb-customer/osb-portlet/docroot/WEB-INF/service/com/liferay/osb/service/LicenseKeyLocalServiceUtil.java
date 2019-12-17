@@ -198,11 +198,6 @@ public class LicenseKeyLocalServiceUtil {
 			expirationDate);
 	}
 
-	public static com.liferay.osb.model.LicenseKey renewTrialLicenseKey(
-		long userId) throws java.lang.Exception {
-		return getService().renewTrialLicenseKey(userId);
-	}
-
 	/**
 	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -602,13 +597,6 @@ public class LicenseKeyLocalServiceUtil {
 		com.liferay.portal.kernel.model.User user,
 		com.liferay.osb.model.LicenseKey licenseKey) throws java.lang.Exception {
 		getService().sendRegisteredEmail(user, licenseKey);
-	}
-
-	public static void sendTrialRenewalNotificationEmail(
-		java.lang.String emailAddress, long accountEntryId)
-		throws java.lang.Exception {
-		getService()
-			.sendTrialRenewalNotificationEmail(emailAddress, accountEntryId);
 	}
 
 	public static void updateLicenseKey(long userId, long licenseKeyId,

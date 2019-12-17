@@ -195,12 +195,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 			startDate, expirationDate);
 	}
 
-	@Override
-	public com.liferay.osb.model.LicenseKey renewTrialLicenseKey(long userId)
-		throws java.lang.Exception {
-		return _licenseKeyLocalService.renewTrialLicenseKey(userId);
-	}
-
 	/**
 	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -631,14 +625,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 	public void sendRegisteredEmail(com.liferay.portal.kernel.model.User user,
 		com.liferay.osb.model.LicenseKey licenseKey) throws java.lang.Exception {
 		_licenseKeyLocalService.sendRegisteredEmail(user, licenseKey);
-	}
-
-	@Override
-	public void sendTrialRenewalNotificationEmail(
-		java.lang.String emailAddress, long accountEntryId)
-		throws java.lang.Exception {
-		_licenseKeyLocalService.sendTrialRenewalNotificationEmail(emailAddress,
-			accountEntryId);
 	}
 
 	@Override

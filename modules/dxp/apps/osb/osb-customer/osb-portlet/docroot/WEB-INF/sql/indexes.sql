@@ -8,15 +8,8 @@ create index IX_E9054065 on OSB_AccountEntries_SupportRegions (accountEntryId);
 create index IX_66F378D7 on OSB_AccountEntries_SupportRegions (companyId);
 create index IX_B9459F3D on OSB_AccountEntries_SupportRegions (supportRegionId);
 
-create unique index IX_32214056 on OSB_AccountEntry (code_[$COLUMN_LENGTH:75$]);
-create index IX_6AA361CE on OSB_AccountEntry (corpProjectId);
-create index IX_64D9942E on OSB_AccountEntry (corpProjectUuid[$COLUMN_LENGTH:75$]);
-create index IX_20B23F6D on OSB_AccountEntry (dossieraAccountKey[$COLUMN_LENGTH:75$], type_);
-create index IX_2FB47967 on OSB_AccountEntry (name[$COLUMN_LENGTH:500$], code_[$COLUMN_LENGTH:75$], redirectAccountEntryId);
-create index IX_31810943 on OSB_AccountEntry (partnerEntryId, partnerManagedSupport);
-create index IX_5F5D3902 on OSB_AccountEntry (redirectAccountEntryId, status);
-create index IX_E57EB21F on OSB_AccountEntry (redirectAccountEntryId, type_, status);
-create index IX_31DB3E6F on OSB_AccountEntry (userId, type_);
+create index IX_4304C568 on OSB_AccountEntry (dossieraAccountKey[$COLUMN_LENGTH:75$]);
+create index IX_32D8BC5 on OSB_AccountEntry (koroneikiAccountKey[$COLUMN_LENGTH:75$]);
 
 create index IX_8B166398 on OSB_AccountEntryLanguage (accountEntryId);
 

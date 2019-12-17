@@ -47,10 +47,6 @@ public class OfferingEntryLocalServiceUtil {
 				   .hasActiveSupportOfferingEntry(accountEntryId, ticketSupport);
 	}
 
-	public static boolean hasActiveTrialOfferingEntry(long userId) {
-		return getService().hasActiveTrialOfferingEntry(userId);
-	}
-
 	/**
 	* Adds the offering entry to the database. Also notifies the appropriate model listeners.
 	*

@@ -114,85 +114,81 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				"long", "long", "java.util.Date", "java.util.Date"
 			};
 
-		_methodName14 = "renewTrialLicenseKey";
+		_methodName14 = "updateLicenseKey";
 
-		_methodParameterTypes14 = new String[] { "long" };
-
-		_methodName15 = "updateLicenseKey";
-
-		_methodParameterTypes15 = new String[] {
+		_methodParameterTypes14 = new String[] {
 				"com.liferay.osb.model.LicenseKey"
 			};
 
+		_methodName15 = "updateLicenseKey";
+
+		_methodParameterTypes15 = new String[] { "long", "long", "long", "long" };
+
 		_methodName16 = "updateLicenseKey";
 
-		_methodParameterTypes16 = new String[] { "long", "long", "long", "long" };
-
-		_methodName17 = "updateLicenseKey";
-
-		_methodParameterTypes17 = new String[] {
+		_methodParameterTypes16 = new String[] {
 				"long", "long", "long", "long", "java.lang.String", "boolean"
 			};
 
-		_methodName18 = "getActionableDynamicQuery";
+		_methodName17 = "getActionableDynamicQuery";
+
+		_methodParameterTypes17 = new String[] {  };
+
+		_methodName18 = "dynamicQuery";
 
 		_methodParameterTypes18 = new String[] {  };
 
-		_methodName19 = "dynamicQuery";
+		_methodName19 = "getIndexableActionableDynamicQuery";
 
 		_methodParameterTypes19 = new String[] {  };
 
-		_methodName20 = "getIndexableActionableDynamicQuery";
+		_methodName20 = "deletePersistedModel";
 
-		_methodParameterTypes20 = new String[] {  };
-
-		_methodName21 = "deletePersistedModel";
-
-		_methodParameterTypes21 = new String[] {
+		_methodParameterTypes20 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName22 = "getPersistedModel";
+		_methodName21 = "getPersistedModel";
 
-		_methodParameterTypes22 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes21 = new String[] { "java.io.Serializable" };
 
-		_methodName23 = "getAssetReceiptLicenseLicenseKeysCount";
+		_methodName22 = "getAssetReceiptLicenseLicenseKeysCount";
 
-		_methodParameterTypes23 = new String[] {
+		_methodParameterTypes22 = new String[] {
 				"java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName24 = "getLicenseKeiesCount";
+		_methodName23 = "getLicenseKeiesCount";
 
-		_methodParameterTypes24 = new String[] {  };
+		_methodParameterTypes23 = new String[] {  };
 
-		_methodName25 = "getOfferingEntryGroupLicenseKeysCount";
+		_methodName24 = "getOfferingEntryGroupLicenseKeysCount";
 
-		_methodParameterTypes25 = new String[] { "long[][]", "boolean", "boolean" };
+		_methodParameterTypes24 = new String[] { "long[][]", "boolean", "boolean" };
+
+		_methodName25 = "getOfferingEntryLicenseKeysCount";
+
+		_methodParameterTypes25 = new String[] { "long" };
 
 		_methodName26 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes26 = new String[] { "long" };
+		_methodParameterTypes26 = new String[] { "long", "boolean", "boolean" };
 
 		_methodName27 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes27 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes27 = new String[] { "long", "long" };
 
 		_methodName28 = "getOfferingEntryLicenseKeysCount";
 
-		_methodParameterTypes28 = new String[] { "long", "long" };
+		_methodParameterTypes28 = new String[] { "long", "long", "boolean" };
 
-		_methodName29 = "getOfferingEntryLicenseKeysCount";
+		_methodName29 = "getUserLicenseKeysCount";
 
-		_methodParameterTypes29 = new String[] { "long", "long", "boolean" };
+		_methodParameterTypes29 = new String[] { "long", "long" };
 
-		_methodName30 = "getUserLicenseKeysCount";
+		_methodName30 = "searchCount";
 
-		_methodParameterTypes30 = new String[] { "long", "long" };
-
-		_methodName31 = "searchCount";
-
-		_methodParameterTypes31 = new String[] {
+		_methodParameterTypes30 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
@@ -204,112 +200,112 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				"java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName32 = "searchCount";
+		_methodName31 = "searchCount";
 
-		_methodParameterTypes32 = new String[] {
+		_methodParameterTypes31 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName34 = "getOSGiServiceIdentifier";
+		_methodName33 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes34 = new String[] {  };
+		_methodParameterTypes33 = new String[] {  };
+
+		_methodName34 = "dynamicQuery";
+
+		_methodParameterTypes34 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+			};
 
 		_methodName35 = "dynamicQuery";
 
 		_methodParameterTypes35 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
 		_methodName36 = "dynamicQuery";
 
 		_methodParameterTypes36 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
-			};
-
-		_methodName37 = "dynamicQuery";
-
-		_methodParameterTypes37 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName38 = "getAccountEntryLicenseKeys";
+		_methodName37 = "getAccountEntryLicenseKeys";
 
-		_methodParameterTypes38 = new String[] { "long" };
+		_methodParameterTypes37 = new String[] { "long" };
+
+		_methodName38 = "getAssetReceiptLicenseLicenseKeys";
+
+		_methodParameterTypes38 = new String[] { "java.lang.String", "boolean" };
 
 		_methodName39 = "getAssetReceiptLicenseLicenseKeys";
 
-		_methodParameterTypes39 = new String[] { "java.lang.String", "boolean" };
-
-		_methodName40 = "getAssetReceiptLicenseLicenseKeys";
-
-		_methodParameterTypes40 = new String[] {
+		_methodParameterTypes39 = new String[] {
 				"java.lang.String", "boolean", "boolean"
 			};
 
-		_methodName41 = "getLicenseKeies";
+		_methodName40 = "getLicenseKeies";
 
-		_methodParameterTypes41 = new String[] { "int", "int" };
+		_methodParameterTypes40 = new String[] { "int", "int" };
 
-		_methodName42 = "getLicenseKeySetLicenseKeys";
+		_methodName41 = "getLicenseKeySetLicenseKeys";
 
-		_methodParameterTypes42 = new String[] { "long" };
+		_methodParameterTypes41 = new String[] { "long" };
 
-		_methodName43 = "getLicenseKeys";
+		_methodName42 = "getLicenseKeys";
 
-		_methodParameterTypes43 = new String[] {
+		_methodParameterTypes42 = new String[] {
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName44 = "getLicenseKeys";
+		_methodName43 = "getLicenseKeys";
 
-		_methodParameterTypes44 = new String[] {
+		_methodParameterTypes43 = new String[] {
 				"java.lang.String", "java.lang.String"
 			};
 
+		_methodName44 = "getLicenseKeys";
+
+		_methodParameterTypes44 = new String[] { "long", "java.lang.String" };
+
 		_methodName45 = "getLicenseKeys";
 
-		_methodParameterTypes45 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes45 = new String[] { "long", "long" };
 
-		_methodName46 = "getLicenseKeys";
+		_methodName46 = "getLicenseKeysByName";
 
-		_methodParameterTypes46 = new String[] { "long", "long" };
-
-		_methodName47 = "getLicenseKeysByName";
-
-		_methodParameterTypes47 = new String[] {
+		_methodParameterTypes46 = new String[] {
 				"java.lang.String", "java.lang.String", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName48 = "getOfferingEntryGroupLicenseKeys";
+		_methodName47 = "getOfferingEntryGroupLicenseKeys";
 
-		_methodParameterTypes48 = new String[] {
+		_methodParameterTypes47 = new String[] {
 				"long[][]", "boolean", "boolean", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
+		_methodName48 = "getOfferingEntryLicenseKeys";
+
+		_methodParameterTypes48 = new String[] { "long" };
+
 		_methodName49 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes49 = new String[] { "long" };
+		_methodParameterTypes49 = new String[] { "long", "boolean", "boolean" };
 
 		_methodName50 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes50 = new String[] { "long", "boolean", "boolean" };
+		_methodParameterTypes50 = new String[] { "long", "long" };
 
 		_methodName51 = "getOfferingEntryLicenseKeys";
 
-		_methodParameterTypes51 = new String[] { "long", "long" };
+		_methodParameterTypes51 = new String[] { "long", "long", "boolean" };
 
-		_methodName52 = "getOfferingEntryLicenseKeys";
+		_methodName52 = "search";
 
-		_methodParameterTypes52 = new String[] { "long", "long", "boolean" };
-
-		_methodName53 = "search";
-
-		_methodParameterTypes53 = new String[] {
+		_methodParameterTypes52 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "int", "int", "int",
@@ -322,44 +318,40 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName54 = "search";
+		_methodName53 = "search";
 
-		_methodParameterTypes54 = new String[] {
+		_methodParameterTypes53 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
+			};
+
+		_methodName54 = "dynamicQueryCount";
+
+		_methodParameterTypes54 = new String[] {
+				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
 		_methodName55 = "dynamicQueryCount";
 
 		_methodParameterTypes55 = new String[] {
-				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
-			};
-
-		_methodName56 = "dynamicQueryCount";
-
-		_methodParameterTypes56 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
 
-		_methodName57 = "buyLicenseKey";
+		_methodName56 = "buyLicenseKey";
 
-		_methodParameterTypes57 = new String[] { "long", "long" };
+		_methodParameterTypes56 = new String[] { "long", "long" };
 
-		_methodName58 = "sendRegisteredEmail";
+		_methodName57 = "sendRegisteredEmail";
 
-		_methodParameterTypes58 = new String[] {
+		_methodParameterTypes57 = new String[] {
 				"com.liferay.portal.kernel.model.User",
 				"com.liferay.osb.model.LicenseKey"
 			};
 
-		_methodName59 = "sendTrialRenewalNotificationEmail";
+		_methodName58 = "updateLicenseKey";
 
-		_methodParameterTypes59 = new String[] { "java.lang.String", "long" };
-
-		_methodName60 = "updateLicenseKey";
-
-		_methodParameterTypes60 = new String[] { "long", "long", "boolean" };
+		_methodParameterTypes58 = new String[] { "long", "long", "boolean" };
 	}
 
 	@Override
@@ -921,41 +913,13 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	}
 
 	@Override
-	public com.liferay.osb.model.LicenseKey renewTrialLicenseKey(long userId)
-		throws java.lang.Exception {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] { userId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof java.lang.Exception) {
-				throw (java.lang.Exception)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (com.liferay.osb.model.LicenseKey)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
 	public com.liferay.osb.model.LicenseKey updateLicenseKey(
 		com.liferay.osb.model.LicenseKey licenseKey) {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(licenseKey) });
 		}
 		catch (Throwable t) {
@@ -981,8 +945,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] {
 						licenseKeyId,
 						
@@ -1020,8 +984,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16,
 					new Object[] {
 						userId,
 						
@@ -1060,8 +1024,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1083,8 +1047,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1106,8 +1070,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName19,
+					_methodParameterTypes19, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1131,8 +1095,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -1161,8 +1125,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName22,
-					_methodParameterTypes22,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -1191,8 +1155,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -1221,8 +1185,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1245,8 +1209,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] {
 						ClpSerializer.translateInput(offeringEntryIds),
 						
@@ -1275,8 +1239,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26, new Object[] { offeringEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25, new Object[] { offeringEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1299,8 +1263,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27,
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26,
 					new Object[] { offeringEntryId, complimentary, active });
 		}
 		catch (Throwable t) {
@@ -1324,8 +1288,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] { offeringEntryId, clusterId });
 		}
 		catch (Throwable t) {
@@ -1349,8 +1313,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] { offeringEntryId, clusterId, active });
 		}
 		catch (Throwable t) {
@@ -1373,8 +1337,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { userId, accountEntryId });
 		}
 		catch (Throwable t) {
@@ -1416,8 +1380,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -1525,8 +1489,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName32,
-					_methodParameterTypes32,
+			returnObj = _invokableLocalService.invokeMethod(_methodName31,
+					_methodParameterTypes31,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -1560,8 +1524,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName34,
-					_methodParameterTypes34, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName33,
+					_methodParameterTypes33, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1584,8 +1548,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName35,
-					_methodParameterTypes35,
+			returnObj = _invokableLocalService.invokeMethod(_methodName34,
+					_methodParameterTypes34,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1610,8 +1574,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName36,
-					_methodParameterTypes36,
+			returnObj = _invokableLocalService.invokeMethod(_methodName35,
+					_methodParameterTypes35,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1643,8 +1607,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName37,
-					_methodParameterTypes37,
+			returnObj = _invokableLocalService.invokeMethod(_methodName36,
+					_methodParameterTypes36,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1676,8 +1640,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName38,
-					_methodParameterTypes38, new Object[] { accountEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName37,
+					_methodParameterTypes37, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1700,8 +1664,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName39,
-					_methodParameterTypes39,
+			returnObj = _invokableLocalService.invokeMethod(_methodName38,
+					_methodParameterTypes38,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -1730,8 +1694,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName40,
-					_methodParameterTypes40,
+			returnObj = _invokableLocalService.invokeMethod(_methodName39,
+					_methodParameterTypes39,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -1761,8 +1725,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName41,
-					_methodParameterTypes41, new Object[] { start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName40,
+					_methodParameterTypes40, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1785,8 +1749,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName42,
-					_methodParameterTypes42, new Object[] { licenseKeySetId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName41,
+					_methodParameterTypes41, new Object[] { licenseKeySetId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1811,8 +1775,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName43,
-					_methodParameterTypes43,
+			returnObj = _invokableLocalService.invokeMethod(_methodName42,
+					_methodParameterTypes42,
 					new Object[] {
 						ClpSerializer.translateInput(assetReceiptLicenseUuid),
 						
@@ -1850,8 +1814,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName44,
-					_methodParameterTypes44,
+			returnObj = _invokableLocalService.invokeMethod(_methodName43,
+					_methodParameterTypes43,
 					new Object[] {
 						ClpSerializer.translateInput(productId),
 						
@@ -1879,8 +1843,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName45,
-					_methodParameterTypes45,
+			returnObj = _invokableLocalService.invokeMethod(_methodName44,
+					_methodParameterTypes44,
 					new Object[] { userId, ClpSerializer.translateInput(
 							productId) });
 		}
@@ -1905,8 +1869,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName46,
-					_methodParameterTypes46,
+			returnObj = _invokableLocalService.invokeMethod(_methodName45,
+					_methodParameterTypes45,
 					new Object[] { userId, accountEntryId });
 		}
 		catch (Throwable t) {
@@ -1932,8 +1896,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName47,
-					_methodParameterTypes47,
+			returnObj = _invokableLocalService.invokeMethod(_methodName46,
+					_methodParameterTypes46,
 					new Object[] {
 						ClpSerializer.translateInput(productEntryName),
 						
@@ -1970,8 +1934,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName48,
-					_methodParameterTypes48,
+			returnObj = _invokableLocalService.invokeMethod(_methodName47,
+					_methodParameterTypes47,
 					new Object[] {
 						ClpSerializer.translateInput(offeringEntryIds),
 						
@@ -2007,8 +1971,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName49,
-					_methodParameterTypes49, new Object[] { offeringEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName48,
+					_methodParameterTypes48, new Object[] { offeringEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2031,8 +1995,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName50,
-					_methodParameterTypes50,
+			returnObj = _invokableLocalService.invokeMethod(_methodName49,
+					_methodParameterTypes49,
 					new Object[] { offeringEntryId, complimentary, active });
 		}
 		catch (Throwable t) {
@@ -2056,8 +2020,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName51,
-					_methodParameterTypes51,
+			returnObj = _invokableLocalService.invokeMethod(_methodName50,
+					_methodParameterTypes50,
 					new Object[] { offeringEntryId, clusterId });
 		}
 		catch (Throwable t) {
@@ -2081,8 +2045,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName52,
-					_methodParameterTypes52,
+			returnObj = _invokableLocalService.invokeMethod(_methodName51,
+					_methodParameterTypes51,
 					new Object[] { offeringEntryId, clusterId, active });
 		}
 		catch (Throwable t) {
@@ -2126,8 +2090,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName53,
-					_methodParameterTypes53,
+			returnObj = _invokableLocalService.invokeMethod(_methodName52,
+					_methodParameterTypes52,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -2243,8 +2207,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName54,
-					_methodParameterTypes54,
+			returnObj = _invokableLocalService.invokeMethod(_methodName53,
+					_methodParameterTypes53,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -2278,8 +2242,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName55,
-					_methodParameterTypes55,
+			returnObj = _invokableLocalService.invokeMethod(_methodName54,
+					_methodParameterTypes54,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -2304,8 +2268,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName56,
-					_methodParameterTypes56,
+			returnObj = _invokableLocalService.invokeMethod(_methodName55,
+					_methodParameterTypes55,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -2331,8 +2295,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public void buyLicenseKey(long companyId, long userId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName57,
-				_methodParameterTypes57, new Object[] { companyId, userId });
+			_invokableLocalService.invokeMethod(_methodName56,
+				_methodParameterTypes56, new Object[] { companyId, userId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -2355,8 +2319,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	public void sendRegisteredEmail(com.liferay.portal.kernel.model.User user,
 		com.liferay.osb.model.LicenseKey licenseKey) throws java.lang.Exception {
 		try {
-			_invokableLocalService.invokeMethod(_methodName58,
-				_methodParameterTypes58,
+			_invokableLocalService.invokeMethod(_methodName57,
+				_methodParameterTypes57,
 				new Object[] {
 					ClpSerializer.translateInput(user),
 					
@@ -2381,41 +2345,11 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	}
 
 	@Override
-	public void sendTrialRenewalNotificationEmail(
-		java.lang.String emailAddress, long accountEntryId)
-		throws java.lang.Exception {
-		try {
-			_invokableLocalService.invokeMethod(_methodName59,
-				_methodParameterTypes59,
-				new Object[] {
-					ClpSerializer.translateInput(emailAddress),
-					
-				accountEntryId
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof java.lang.Exception) {
-				throw (java.lang.Exception)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
-			_invokableLocalService.invokeMethod(_methodName60,
-				_methodParameterTypes60,
+			_invokableLocalService.invokeMethod(_methodName58,
+				_methodParameterTypes58,
 				new Object[] { userId, licenseKeyId, active });
 		}
 		catch (Throwable t) {
@@ -2500,8 +2434,8 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	private String[] _methodParameterTypes30;
 	private String _methodName31;
 	private String[] _methodParameterTypes31;
-	private String _methodName32;
-	private String[] _methodParameterTypes32;
+	private String _methodName33;
+	private String[] _methodParameterTypes33;
 	private String _methodName34;
 	private String[] _methodParameterTypes34;
 	private String _methodName35;
@@ -2552,8 +2486,4 @@ public class LicenseKeyLocalServiceClp implements LicenseKeyLocalService {
 	private String[] _methodParameterTypes57;
 	private String _methodName58;
 	private String[] _methodParameterTypes58;
-	private String _methodName59;
-	private String[] _methodParameterTypes59;
-	private String _methodName60;
-	private String[] _methodParameterTypes60;
 }

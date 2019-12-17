@@ -551,25 +551,6 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 	}
 
 	@Override
-	public java.util.List<AccountEntry> getAccountEntries() {
-		try {
-			String methodName = "getAccountEntries";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.util.List<AccountEntry> returnObj = (java.util.List<AccountEntry>)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.util.List<PartnerEntry> getChildPartnerEntries(
 		boolean recursive) {
 		try {
@@ -599,25 +580,6 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 			Object[] parameterValues = new Object[] {  };
 
 			PartnerEntry returnObj = (PartnerEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.util.List<AccountEntry> getPartnerManagedAccountEntries() {
-		try {
-			String methodName = "getPartnerManagedAccountEntries";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.util.List<AccountEntry> returnObj = (java.util.List<AccountEntry>)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

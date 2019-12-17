@@ -355,19 +355,9 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public java.util.List<AccountEntry> getAccountEntries() {
-		return _partnerEntry.getAccountEntries();
-	}
-
-	@Override
 	public java.util.List<PartnerEntry> getChildPartnerEntries(
 		boolean recursive) {
 		return _partnerEntry.getChildPartnerEntries(recursive);
-	}
-
-	@Override
-	public java.util.List<AccountEntry> getPartnerManagedAccountEntries() {
-		return _partnerEntry.getPartnerManagedAccountEntries();
 	}
 
 	@Override

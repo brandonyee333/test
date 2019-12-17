@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalService;
 import com.liferay.portal.kernel.service.InvokableLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -73,12 +72,6 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage addCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
 
-	public CorpProjectMessage addCorpProjectMessage(long userId,
-		long corpProjectId, int type, int severityLevel,
-		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, ServiceContext serviceContext)
-		throws PortalException;
-
 	/**
 	* Creates a new corp project message with the primary key. Does not add the corp project message to the database.
 	*
@@ -112,10 +105,6 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CorpProjectMessage fetchCorpProjectMessage(long corpProjectMessageId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CorpProjectMessage fetchCorpProjectMessageByUuid(
-		java.lang.String uuid) throws PortalException;
-
 	/**
 	* Returns the corp project message with the primary key.
 	*
@@ -127,10 +116,6 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	public CorpProjectMessage getCorpProjectMessage(long corpProjectMessageId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public CorpProjectMessage getCorpProjectMessageByUuid(java.lang.String uuid)
-		throws PortalException;
-
 	/**
 	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -140,12 +125,6 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public CorpProjectMessage updateCorpProjectMessage(
 		CorpProjectMessage corpProjectMessage);
-
-	public CorpProjectMessage updateCorpProjectMessage(long userId,
-		long corpProjectMessageId, int type, int severityLevel,
-		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS, ServiceContext serviceContext)
-		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -240,9 +219,6 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<CorpProjectMessage> getCorpProjectMessages(int start, int end);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<CorpProjectMessage> getCorpProjectMessages(long corpProjectId);
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -260,6 +236,4 @@ public interface CorpProjectMessageLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
-
-	public void checkCorpProjects() throws java.lang.Exception;
 }

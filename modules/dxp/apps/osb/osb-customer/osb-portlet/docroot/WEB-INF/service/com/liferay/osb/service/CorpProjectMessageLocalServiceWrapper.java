@@ -46,18 +46,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.addCorpProjectMessage(corpProjectMessage);
 	}
 
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
-		long userId, long corpProjectId, int type, int severityLevel,
-		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.addCorpProjectMessage(userId,
-			corpProjectId, type, severityLevel, title, content, displayCP,
-			displayLCS, serviceContext);
-	}
-
 	/**
 	* Creates a new corp project message with the primary key. Does not add the corp project message to the database.
 	*
@@ -102,13 +90,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.fetchCorpProjectMessage(corpProjectMessageId);
 	}
 
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessageByUuid(
-		java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.fetchCorpProjectMessageByUuid(uuid);
-	}
-
 	/**
 	* Returns the corp project message with the primary key.
 	*
@@ -123,13 +104,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.getCorpProjectMessage(corpProjectMessageId);
 	}
 
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage getCorpProjectMessageByUuid(
-		java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.getCorpProjectMessageByUuid(uuid);
-	}
-
 	/**
 	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -140,18 +114,6 @@ public class CorpProjectMessageLocalServiceWrapper
 	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
 		com.liferay.osb.model.CorpProjectMessage corpProjectMessage) {
 		return _corpProjectMessageLocalService.updateCorpProjectMessage(corpProjectMessage);
-	}
-
-	@Override
-	public com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
-		long userId, long corpProjectMessageId, int type, int severityLevel,
-		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _corpProjectMessageLocalService.updateCorpProjectMessage(userId,
-			corpProjectMessageId, type, severityLevel, title, content,
-			displayCP, displayLCS, serviceContext);
 	}
 
 	@Override
@@ -285,12 +247,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		return _corpProjectMessageLocalService.getCorpProjectMessages(start, end);
 	}
 
-	@Override
-	public java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
-		long corpProjectId) {
-		return _corpProjectMessageLocalService.getCorpProjectMessages(corpProjectId);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -316,11 +272,6 @@ public class CorpProjectMessageLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return _corpProjectMessageLocalService.dynamicQueryCount(dynamicQuery,
 			projection);
-	}
-
-	@Override
-	public void checkCorpProjects() throws java.lang.Exception {
-		_corpProjectMessageLocalService.checkCorpProjects();
 	}
 
 	@Override

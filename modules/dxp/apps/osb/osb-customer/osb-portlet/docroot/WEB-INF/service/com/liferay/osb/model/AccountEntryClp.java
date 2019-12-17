@@ -29,7 +29,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
@@ -90,32 +89,15 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("corpProjectUuid", getCorpProjectUuid());
-		attributes.put("corpProjectId", getCorpProjectId());
+		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
-		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
-		attributes.put("redirectAccountEntryId", getRedirectAccountEntryId());
-		attributes.put("type", getType());
-		attributes.put("industry", getIndustry());
-		attributes.put("countryId", getCountryId());
-		attributes.put("partnerEntryId", getPartnerEntryId());
-		attributes.put("partnerManagedSupport", getPartnerManagedSupport());
-		attributes.put("tier", getTier());
-		attributes.put("maxCustomers", getMaxCustomers());
 		attributes.put("instructions", getInstructions());
-		attributes.put("notes", getNotes());
-		attributes.put("highestSupportResponseId", getHighestSupportResponseId());
 		attributes.put("activeSupport", getActiveSupport());
 		attributes.put("activeTicketSupport", getActiveTicketSupport());
-		attributes.put("lastAuditDate", getLastAuditDate());
 		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-		attributes.put("statusMessage", getStatusMessage());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -173,28 +155,17 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 			setModifiedDate(modifiedDate);
 		}
 
-		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+		String koroneikiAccountKey = (String)attributes.get(
+				"koroneikiAccountKey");
 
-		if (corpProjectUuid != null) {
-			setCorpProjectUuid(corpProjectUuid);
-		}
-
-		Long corpProjectId = (Long)attributes.get("corpProjectId");
-
-		if (corpProjectId != null) {
-			setCorpProjectId(corpProjectId);
+		if (koroneikiAccountKey != null) {
+			setKoroneikiAccountKey(koroneikiAccountKey);
 		}
 
 		String dossieraAccountKey = (String)attributes.get("dossieraAccountKey");
 
 		if (dossieraAccountKey != null) {
 			setDossieraAccountKey(dossieraAccountKey);
-		}
-
-		String corpEntryName = (String)attributes.get("corpEntryName");
-
-		if (corpEntryName != null) {
-			setCorpEntryName(corpEntryName);
 		}
 
 		String name = (String)attributes.get("name");
@@ -209,73 +180,10 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 			setCode(code);
 		}
 
-		Long redirectAccountEntryId = (Long)attributes.get(
-				"redirectAccountEntryId");
-
-		if (redirectAccountEntryId != null) {
-			setRedirectAccountEntryId(redirectAccountEntryId);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Integer industry = (Integer)attributes.get("industry");
-
-		if (industry != null) {
-			setIndustry(industry);
-		}
-
-		Long countryId = (Long)attributes.get("countryId");
-
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
-
-		Long partnerEntryId = (Long)attributes.get("partnerEntryId");
-
-		if (partnerEntryId != null) {
-			setPartnerEntryId(partnerEntryId);
-		}
-
-		Boolean partnerManagedSupport = (Boolean)attributes.get(
-				"partnerManagedSupport");
-
-		if (partnerManagedSupport != null) {
-			setPartnerManagedSupport(partnerManagedSupport);
-		}
-
-		Integer tier = (Integer)attributes.get("tier");
-
-		if (tier != null) {
-			setTier(tier);
-		}
-
-		Integer maxCustomers = (Integer)attributes.get("maxCustomers");
-
-		if (maxCustomers != null) {
-			setMaxCustomers(maxCustomers);
-		}
-
 		String instructions = (String)attributes.get("instructions");
 
 		if (instructions != null) {
 			setInstructions(instructions);
-		}
-
-		String notes = (String)attributes.get("notes");
-
-		if (notes != null) {
-			setNotes(notes);
-		}
-
-		Long highestSupportResponseId = (Long)attributes.get(
-				"highestSupportResponseId");
-
-		if (highestSupportResponseId != null) {
-			setHighestSupportResponseId(highestSupportResponseId);
 		}
 
 		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
@@ -291,12 +199,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 			setActiveTicketSupport(activeTicketSupport);
 		}
 
-		Date lastAuditDate = (Date)attributes.get("lastAuditDate");
-
-		if (lastAuditDate != null) {
-			setLastAuditDate(lastAuditDate);
-		}
-
 		Date lastZendeskAuditDate = (Date)attributes.get("lastZendeskAuditDate");
 
 		if (lastZendeskAuditDate != null) {
@@ -307,30 +209,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 		if (status != null) {
 			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
-
-		String statusMessage = (String)attributes.get("statusMessage");
-
-		if (statusMessage != null) {
-			setStatusMessage(statusMessage);
 		}
 
 		_entityCacheEnabled = GetterUtil.getBoolean("entityCacheEnabled");
@@ -555,45 +433,22 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public String getCorpProjectUuid() {
-		return _corpProjectUuid;
+	public String getKoroneikiAccountKey() {
+		return _koroneikiAccountKey;
 	}
 
 	@Override
-	public void setCorpProjectUuid(String corpProjectUuid) {
-		_corpProjectUuid = corpProjectUuid;
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_koroneikiAccountKey = koroneikiAccountKey;
 
 		if (_accountEntryRemoteModel != null) {
 			try {
 				Class<?> clazz = _accountEntryRemoteModel.getClass();
 
-				Method method = clazz.getMethod("setCorpProjectUuid",
+				Method method = clazz.getMethod("setKoroneikiAccountKey",
 						String.class);
 
-				method.invoke(_accountEntryRemoteModel, corpProjectUuid);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public long getCorpProjectId() {
-		return _corpProjectId;
-	}
-
-	@Override
-	public void setCorpProjectId(long corpProjectId) {
-		_corpProjectId = corpProjectId;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setCorpProjectId", long.class);
-
-				method.invoke(_accountEntryRemoteModel, corpProjectId);
+				method.invoke(_accountEntryRemoteModel, koroneikiAccountKey);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -618,29 +473,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 						String.class);
 
 				method.invoke(_accountEntryRemoteModel, dossieraAccountKey);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public String getCorpEntryName() {
-		return _corpEntryName;
-	}
-
-	@Override
-	public void setCorpEntryName(String corpEntryName) {
-		_corpEntryName = corpEntryName;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setCorpEntryName", String.class);
-
-				method.invoke(_accountEntryRemoteModel, corpEntryName);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -695,197 +527,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public long getRedirectAccountEntryId() {
-		return _redirectAccountEntryId;
-	}
-
-	@Override
-	public void setRedirectAccountEntryId(long redirectAccountEntryId) {
-		_redirectAccountEntryId = redirectAccountEntryId;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setRedirectAccountEntryId",
-						long.class);
-
-				method.invoke(_accountEntryRemoteModel, redirectAccountEntryId);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public int getType() {
-		return _type;
-	}
-
-	@Override
-	public void setType(int type) {
-		_type = type;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setType", int.class);
-
-				method.invoke(_accountEntryRemoteModel, type);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public int getIndustry() {
-		return _industry;
-	}
-
-	@Override
-	public void setIndustry(int industry) {
-		_industry = industry;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setIndustry", int.class);
-
-				method.invoke(_accountEntryRemoteModel, industry);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public long getCountryId() {
-		return _countryId;
-	}
-
-	@Override
-	public void setCountryId(long countryId) {
-		_countryId = countryId;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setCountryId", long.class);
-
-				method.invoke(_accountEntryRemoteModel, countryId);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public long getPartnerEntryId() {
-		return _partnerEntryId;
-	}
-
-	@Override
-	public void setPartnerEntryId(long partnerEntryId) {
-		_partnerEntryId = partnerEntryId;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setPartnerEntryId", long.class);
-
-				method.invoke(_accountEntryRemoteModel, partnerEntryId);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public boolean getPartnerManagedSupport() {
-		return _partnerManagedSupport;
-	}
-
-	@Override
-	public boolean isPartnerManagedSupport() {
-		return _partnerManagedSupport;
-	}
-
-	@Override
-	public void setPartnerManagedSupport(boolean partnerManagedSupport) {
-		_partnerManagedSupport = partnerManagedSupport;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setPartnerManagedSupport",
-						boolean.class);
-
-				method.invoke(_accountEntryRemoteModel, partnerManagedSupport);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public int getTier() {
-		return _tier;
-	}
-
-	@Override
-	public void setTier(int tier) {
-		_tier = tier;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setTier", int.class);
-
-				method.invoke(_accountEntryRemoteModel, tier);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public int getMaxCustomers() {
-		return _maxCustomers;
-	}
-
-	@Override
-	public void setMaxCustomers(int maxCustomers) {
-		_maxCustomers = maxCustomers;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setMaxCustomers", int.class);
-
-				method.invoke(_accountEntryRemoteModel, maxCustomers);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public String getInstructions() {
 		return _instructions;
 	}
@@ -901,53 +542,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 				Method method = clazz.getMethod("setInstructions", String.class);
 
 				method.invoke(_accountEntryRemoteModel, instructions);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public String getNotes() {
-		return _notes;
-	}
-
-	@Override
-	public void setNotes(String notes) {
-		_notes = notes;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setNotes", String.class);
-
-				method.invoke(_accountEntryRemoteModel, notes);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public long getHighestSupportResponseId() {
-		return _highestSupportResponseId;
-	}
-
-	@Override
-	public void setHighestSupportResponseId(long highestSupportResponseId) {
-		_highestSupportResponseId = highestSupportResponseId;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setHighestSupportResponseId",
-						long.class);
-
-				method.invoke(_accountEntryRemoteModel, highestSupportResponseId);
 			}
 			catch (Exception e) {
 				throw new UnsupportedOperationException(e);
@@ -1014,29 +608,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public Date getLastAuditDate() {
-		return _lastAuditDate;
-	}
-
-	@Override
-	public void setLastAuditDate(Date lastAuditDate) {
-		_lastAuditDate = lastAuditDate;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setLastAuditDate", Date.class);
-
-				method.invoke(_accountEntryRemoteModel, lastAuditDate);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public Date getLastZendeskAuditDate() {
 		return _lastZendeskAuditDate;
 	}
@@ -1084,115 +655,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public long getStatusByUserId() {
-		return _statusByUserId;
-	}
-
-	@Override
-	public void setStatusByUserId(long statusByUserId) {
-		_statusByUserId = statusByUserId;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setStatusByUserId", long.class);
-
-				method.invoke(_accountEntryRemoteModel, statusByUserId);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public String getStatusByUserUuid() {
-		try {
-			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
-
-			return user.getUuid();
-		}
-		catch (PortalException pe) {
-			return StringPool.BLANK;
-		}
-	}
-
-	@Override
-	public void setStatusByUserUuid(String statusByUserUuid) {
-	}
-
-	@Override
-	public String getStatusByUserName() {
-		return _statusByUserName;
-	}
-
-	@Override
-	public void setStatusByUserName(String statusByUserName) {
-		_statusByUserName = statusByUserName;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setStatusByUserName",
-						String.class);
-
-				method.invoke(_accountEntryRemoteModel, statusByUserName);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public Date getStatusDate() {
-		return _statusDate;
-	}
-
-	@Override
-	public void setStatusDate(Date statusDate) {
-		_statusDate = statusDate;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setStatusDate", Date.class);
-
-				method.invoke(_accountEntryRemoteModel, statusDate);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
-	public String getStatusMessage() {
-		return _statusMessage;
-	}
-
-	@Override
-	public void setStatusMessage(String statusMessage) {
-		_statusMessage = statusMessage;
-
-		if (_accountEntryRemoteModel != null) {
-			try {
-				Class<?> clazz = _accountEntryRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setStatusMessage", String.class);
-
-				method.invoke(_accountEntryRemoteModel, statusMessage);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
-	@Override
 	public java.util.List<AccountAttachment> getAccountAttachments(
 		long accountProjectId) {
 		try {
@@ -1213,15 +675,15 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public java.util.List<AccountCustomer> getAccountCustomers() {
+	public long getCorpProjectId() {
 		try {
-			String methodName = "getAccountCustomers";
+			String methodName = "getCorpProjectId";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			java.util.List<AccountCustomer> returnObj = (java.util.List<AccountCustomer>)invokeOnRemoteModel(methodName,
+			Long returnObj = (Long)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -1232,34 +694,15 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public java.util.List<AccountWorker> getAccountWorkers() {
+	public java.lang.String getDescription() {
 		try {
-			String methodName = "getAccountWorkers";
+			String methodName = "getDescription";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
 
-			java.util.List<AccountWorker> returnObj = (java.util.List<AccountWorker>)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.Address getAddress() {
-		try {
-			String methodName = "getAddress";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			com.liferay.portal.kernel.model.Address returnObj = (com.liferay.portal.kernel.model.Address)invokeOnRemoteModel(methodName,
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -1273,44 +716,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	public java.lang.String getDossieraAccountURL() {
 		try {
 			String methodName = "getDossieraAccountURL";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String getEWSADossieraProjectKey() {
-		try {
-			String methodName = "getEWSADossieraProjectKey";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String getIndustryLabel() {
-		try {
-			String methodName = "getIndustryLabel";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -1355,44 +760,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 			Object[] parameterValues = new Object[] {  };
 
 			java.util.List<OfferingEntry> returnObj = (java.util.List<OfferingEntry>)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.util.List<OrderEntry> getOrderEntries() {
-		try {
-			String methodName = "getOrderEntries";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.util.List<OrderEntry> returnObj = (java.util.List<OrderEntry>)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public PartnerEntry getPartnerEntry() {
-		try {
-			String methodName = "getPartnerEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			PartnerEntry returnObj = (PartnerEntry)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;
@@ -1460,9 +827,9 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	}
 
 	@Override
-	public java.lang.String getTypeLabel() {
+	public java.lang.String getTier() {
 		try {
-			String methodName = "getTypeLabel";
+			String methodName = "getTier";
 
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
@@ -1472,43 +839,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 					parameterTypes, parameterValues);
 
 			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment) {
-		try {
-			String methodName = "hasEnterpriseSearchOffering";
-
-			Class<?>[] parameterTypes = new Class<?>[] { int.class };
-
-			Object[] parameterValues = new Object[] { productEntryEnvironment };
-
-			Boolean returnObj = (Boolean)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public void setAddress(com.liferay.portal.kernel.model.Address address) {
-		try {
-			String methodName = "setAddress";
-
-			Class<?>[] parameterTypes = new Class<?>[] {
-					com.liferay.portal.kernel.model.Address.class
-				};
-
-			Object[] parameterValues = new Object[] { address };
-
-			invokeOnRemoteModel(methodName, parameterTypes, parameterValues);
 		}
 		catch (Exception e) {
 			throw new UnsupportedOperationException(e);
@@ -1544,86 +874,6 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		}
 		catch (Exception e) {
 			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public boolean isApproved() {
-		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isDenied() {
-		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isDraft() {
-		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isExpired() {
-		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isInactive() {
-		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isIncomplete() {
-		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isPending() {
-		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isScheduled() {
-		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
-			return true;
-		}
-		else {
-			return false;
 		}
 	}
 
@@ -1704,47 +954,32 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		clone.setModifiedUserId(getModifiedUserId());
 		clone.setModifiedUserName(getModifiedUserName());
 		clone.setModifiedDate(getModifiedDate());
-		clone.setCorpProjectUuid(getCorpProjectUuid());
-		clone.setCorpProjectId(getCorpProjectId());
+		clone.setKoroneikiAccountKey(getKoroneikiAccountKey());
 		clone.setDossieraAccountKey(getDossieraAccountKey());
-		clone.setCorpEntryName(getCorpEntryName());
 		clone.setName(getName());
 		clone.setCode(getCode());
-		clone.setRedirectAccountEntryId(getRedirectAccountEntryId());
-		clone.setType(getType());
-		clone.setIndustry(getIndustry());
-		clone.setCountryId(getCountryId());
-		clone.setPartnerEntryId(getPartnerEntryId());
-		clone.setPartnerManagedSupport(getPartnerManagedSupport());
-		clone.setTier(getTier());
-		clone.setMaxCustomers(getMaxCustomers());
 		clone.setInstructions(getInstructions());
-		clone.setNotes(getNotes());
-		clone.setHighestSupportResponseId(getHighestSupportResponseId());
 		clone.setActiveSupport(getActiveSupport());
 		clone.setActiveTicketSupport(getActiveTicketSupport());
-		clone.setLastAuditDate(getLastAuditDate());
 		clone.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		clone.setStatus(getStatus());
-		clone.setStatusByUserId(getStatusByUserId());
-		clone.setStatusByUserName(getStatusByUserName());
-		clone.setStatusDate(getStatusDate());
-		clone.setStatusMessage(getStatusMessage());
 
 		return clone;
 	}
 
 	@Override
 	public int compareTo(AccountEntry accountEntry) {
-		int value = 0;
+		long primaryKey = accountEntry.getPrimaryKey();
 
-		value = getName().compareToIgnoreCase(accountEntry.getName());
-
-		if (value != 0) {
-			return value;
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
 		}
-
-		return 0;
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -1790,7 +1025,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(69);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1808,58 +1043,24 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getModifiedUserName());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", corpProjectUuid=");
-		sb.append(getCorpProjectUuid());
-		sb.append(", corpProjectId=");
-		sb.append(getCorpProjectId());
+		sb.append(", koroneikiAccountKey=");
+		sb.append(getKoroneikiAccountKey());
 		sb.append(", dossieraAccountKey=");
 		sb.append(getDossieraAccountKey());
-		sb.append(", corpEntryName=");
-		sb.append(getCorpEntryName());
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", code=");
 		sb.append(getCode());
-		sb.append(", redirectAccountEntryId=");
-		sb.append(getRedirectAccountEntryId());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", industry=");
-		sb.append(getIndustry());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", partnerEntryId=");
-		sb.append(getPartnerEntryId());
-		sb.append(", partnerManagedSupport=");
-		sb.append(getPartnerManagedSupport());
-		sb.append(", tier=");
-		sb.append(getTier());
-		sb.append(", maxCustomers=");
-		sb.append(getMaxCustomers());
 		sb.append(", instructions=");
 		sb.append(getInstructions());
-		sb.append(", notes=");
-		sb.append(getNotes());
-		sb.append(", highestSupportResponseId=");
-		sb.append(getHighestSupportResponseId());
 		sb.append(", activeSupport=");
 		sb.append(getActiveSupport());
 		sb.append(", activeTicketSupport=");
 		sb.append(getActiveTicketSupport());
-		sb.append(", lastAuditDate=");
-		sb.append(getLastAuditDate());
 		sb.append(", lastZendeskAuditDate=");
 		sb.append(getLastZendeskAuditDate());
 		sb.append(", status=");
 		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append(", statusMessage=");
-		sb.append(getStatusMessage());
 		sb.append("}");
 
 		return sb.toString();
@@ -1867,7 +1068,7 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(106);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1906,20 +1107,12 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>corpProjectUuid</column-name><column-value><![CDATA[");
-		sb.append(getCorpProjectUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
-		sb.append(getCorpProjectId());
+			"<column><column-name>koroneikiAccountKey</column-name><column-value><![CDATA[");
+		sb.append(getKoroneikiAccountKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>dossieraAccountKey</column-name><column-value><![CDATA[");
 		sb.append(getDossieraAccountKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>corpEntryName</column-name><column-value><![CDATA[");
-		sb.append(getCorpEntryName());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
@@ -1930,48 +1123,8 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getCode());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>redirectAccountEntryId</column-name><column-value><![CDATA[");
-		sb.append(getRedirectAccountEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>industry</column-name><column-value><![CDATA[");
-		sb.append(getIndustry());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>partnerEntryId</column-name><column-value><![CDATA[");
-		sb.append(getPartnerEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>partnerManagedSupport</column-name><column-value><![CDATA[");
-		sb.append(getPartnerManagedSupport());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>tier</column-name><column-value><![CDATA[");
-		sb.append(getTier());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>maxCustomers</column-name><column-value><![CDATA[");
-		sb.append(getMaxCustomers());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>instructions</column-name><column-value><![CDATA[");
 		sb.append(getInstructions());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notes</column-name><column-value><![CDATA[");
-		sb.append(getNotes());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>highestSupportResponseId</column-name><column-value><![CDATA[");
-		sb.append(getHighestSupportResponseId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>activeSupport</column-name><column-value><![CDATA[");
@@ -1982,32 +1135,12 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 		sb.append(getActiveTicketSupport());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>lastAuditDate</column-name><column-value><![CDATA[");
-		sb.append(getLastAuditDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>lastZendeskAuditDate</column-name><column-value><![CDATA[");
 		sb.append(getLastZendeskAuditDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusMessage</column-name><column-value><![CDATA[");
-		sb.append(getStatusMessage());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -2023,32 +1156,15 @@ public class AccountEntryClp extends BaseModelImpl<AccountEntry>
 	private long _modifiedUserId;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
-	private String _corpProjectUuid;
-	private long _corpProjectId;
+	private String _koroneikiAccountKey;
 	private String _dossieraAccountKey;
-	private String _corpEntryName;
 	private String _name;
 	private String _code;
-	private long _redirectAccountEntryId;
-	private int _type;
-	private int _industry;
-	private long _countryId;
-	private long _partnerEntryId;
-	private boolean _partnerManagedSupport;
-	private int _tier;
-	private int _maxCustomers;
 	private String _instructions;
-	private String _notes;
-	private long _highestSupportResponseId;
 	private boolean _activeSupport;
 	private boolean _activeTicketSupport;
-	private Date _lastAuditDate;
 	private Date _lastZendeskAuditDate;
 	private int _status;
-	private long _statusByUserId;
-	private String _statusByUserName;
-	private Date _statusDate;
-	private String _statusMessage;
 	private BaseModel<?> _accountEntryRemoteModel;
 	private Class<?> _clpSerializerClass = ClpSerializer.class;
 	private boolean _entityCacheEnabled;

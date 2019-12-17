@@ -66,7 +66,7 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(69);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{accountEntryId=");
 		sb.append(accountEntryId);
@@ -84,58 +84,24 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		sb.append(modifiedUserName);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
-		sb.append(", corpProjectUuid=");
-		sb.append(corpProjectUuid);
-		sb.append(", corpProjectId=");
-		sb.append(corpProjectId);
+		sb.append(", koroneikiAccountKey=");
+		sb.append(koroneikiAccountKey);
 		sb.append(", dossieraAccountKey=");
 		sb.append(dossieraAccountKey);
-		sb.append(", corpEntryName=");
-		sb.append(corpEntryName);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", code=");
 		sb.append(code);
-		sb.append(", redirectAccountEntryId=");
-		sb.append(redirectAccountEntryId);
-		sb.append(", type=");
-		sb.append(type);
-		sb.append(", industry=");
-		sb.append(industry);
-		sb.append(", countryId=");
-		sb.append(countryId);
-		sb.append(", partnerEntryId=");
-		sb.append(partnerEntryId);
-		sb.append(", partnerManagedSupport=");
-		sb.append(partnerManagedSupport);
-		sb.append(", tier=");
-		sb.append(tier);
-		sb.append(", maxCustomers=");
-		sb.append(maxCustomers);
 		sb.append(", instructions=");
 		sb.append(instructions);
-		sb.append(", notes=");
-		sb.append(notes);
-		sb.append(", highestSupportResponseId=");
-		sb.append(highestSupportResponseId);
 		sb.append(", activeSupport=");
 		sb.append(activeSupport);
 		sb.append(", activeTicketSupport=");
 		sb.append(activeTicketSupport);
-		sb.append(", lastAuditDate=");
-		sb.append(lastAuditDate);
 		sb.append(", lastZendeskAuditDate=");
 		sb.append(lastZendeskAuditDate);
 		sb.append(", status=");
 		sb.append(status);
-		sb.append(", statusByUserId=");
-		sb.append(statusByUserId);
-		sb.append(", statusByUserName=");
-		sb.append(statusByUserName);
-		sb.append(", statusDate=");
-		sb.append(statusDate);
-		sb.append(", statusMessage=");
-		sb.append(statusMessage);
 		sb.append("}");
 
 		return sb.toString();
@@ -179,27 +145,18 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 			accountEntryImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
-		if (corpProjectUuid == null) {
-			accountEntryImpl.setCorpProjectUuid(StringPool.BLANK);
+		if (koroneikiAccountKey == null) {
+			accountEntryImpl.setKoroneikiAccountKey(StringPool.BLANK);
 		}
 		else {
-			accountEntryImpl.setCorpProjectUuid(corpProjectUuid);
+			accountEntryImpl.setKoroneikiAccountKey(koroneikiAccountKey);
 		}
-
-		accountEntryImpl.setCorpProjectId(corpProjectId);
 
 		if (dossieraAccountKey == null) {
 			accountEntryImpl.setDossieraAccountKey(StringPool.BLANK);
 		}
 		else {
 			accountEntryImpl.setDossieraAccountKey(dossieraAccountKey);
-		}
-
-		if (corpEntryName == null) {
-			accountEntryImpl.setCorpEntryName(StringPool.BLANK);
-		}
-		else {
-			accountEntryImpl.setCorpEntryName(corpEntryName);
 		}
 
 		if (name == null) {
@@ -216,15 +173,6 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 			accountEntryImpl.setCode(code);
 		}
 
-		accountEntryImpl.setRedirectAccountEntryId(redirectAccountEntryId);
-		accountEntryImpl.setType(type);
-		accountEntryImpl.setIndustry(industry);
-		accountEntryImpl.setCountryId(countryId);
-		accountEntryImpl.setPartnerEntryId(partnerEntryId);
-		accountEntryImpl.setPartnerManagedSupport(partnerManagedSupport);
-		accountEntryImpl.setTier(tier);
-		accountEntryImpl.setMaxCustomers(maxCustomers);
-
 		if (instructions == null) {
 			accountEntryImpl.setInstructions(StringPool.BLANK);
 		}
@@ -232,23 +180,8 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 			accountEntryImpl.setInstructions(instructions);
 		}
 
-		if (notes == null) {
-			accountEntryImpl.setNotes(StringPool.BLANK);
-		}
-		else {
-			accountEntryImpl.setNotes(notes);
-		}
-
-		accountEntryImpl.setHighestSupportResponseId(highestSupportResponseId);
 		accountEntryImpl.setActiveSupport(activeSupport);
 		accountEntryImpl.setActiveTicketSupport(activeTicketSupport);
-
-		if (lastAuditDate == Long.MIN_VALUE) {
-			accountEntryImpl.setLastAuditDate(null);
-		}
-		else {
-			accountEntryImpl.setLastAuditDate(new Date(lastAuditDate));
-		}
 
 		if (lastZendeskAuditDate == Long.MIN_VALUE) {
 			accountEntryImpl.setLastZendeskAuditDate(null);
@@ -259,28 +192,6 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		}
 
 		accountEntryImpl.setStatus(status);
-		accountEntryImpl.setStatusByUserId(statusByUserId);
-
-		if (statusByUserName == null) {
-			accountEntryImpl.setStatusByUserName(StringPool.BLANK);
-		}
-		else {
-			accountEntryImpl.setStatusByUserName(statusByUserName);
-		}
-
-		if (statusDate == Long.MIN_VALUE) {
-			accountEntryImpl.setStatusDate(null);
-		}
-		else {
-			accountEntryImpl.setStatusDate(new Date(statusDate));
-		}
-
-		if (statusMessage == null) {
-			accountEntryImpl.setStatusMessage(StringPool.BLANK);
-		}
-		else {
-			accountEntryImpl.setStatusMessage(statusMessage);
-		}
 
 		accountEntryImpl.resetOriginalValues();
 
@@ -300,46 +211,18 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 		modifiedUserId = objectInput.readLong();
 		modifiedUserName = objectInput.readUTF();
 		modifiedDate = objectInput.readLong();
-		corpProjectUuid = objectInput.readUTF();
-
-		corpProjectId = objectInput.readLong();
+		koroneikiAccountKey = objectInput.readUTF();
 		dossieraAccountKey = objectInput.readUTF();
-		corpEntryName = objectInput.readUTF();
 		name = objectInput.readUTF();
 		code = objectInput.readUTF();
-
-		redirectAccountEntryId = objectInput.readLong();
-
-		type = objectInput.readInt();
-
-		industry = objectInput.readInt();
-
-		countryId = objectInput.readLong();
-
-		partnerEntryId = objectInput.readLong();
-
-		partnerManagedSupport = objectInput.readBoolean();
-
-		tier = objectInput.readInt();
-
-		maxCustomers = objectInput.readInt();
 		instructions = objectInput.readUTF();
-		notes = objectInput.readUTF();
-
-		highestSupportResponseId = objectInput.readLong();
 
 		activeSupport = objectInput.readBoolean();
 
 		activeTicketSupport = objectInput.readBoolean();
-		lastAuditDate = objectInput.readLong();
 		lastZendeskAuditDate = objectInput.readLong();
 
 		status = objectInput.readInt();
-
-		statusByUserId = objectInput.readLong();
-		statusByUserName = objectInput.readUTF();
-		statusDate = objectInput.readLong();
-		statusMessage = objectInput.readUTF();
 	}
 
 	@Override
@@ -371,27 +254,18 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 
 		objectOutput.writeLong(modifiedDate);
 
-		if (corpProjectUuid == null) {
+		if (koroneikiAccountKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
-			objectOutput.writeUTF(corpProjectUuid);
+			objectOutput.writeUTF(koroneikiAccountKey);
 		}
-
-		objectOutput.writeLong(corpProjectId);
 
 		if (dossieraAccountKey == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
 		else {
 			objectOutput.writeUTF(dossieraAccountKey);
-		}
-
-		if (corpEntryName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(corpEntryName);
 		}
 
 		if (name == null) {
@@ -408,22 +282,6 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 			objectOutput.writeUTF(code);
 		}
 
-		objectOutput.writeLong(redirectAccountEntryId);
-
-		objectOutput.writeInt(type);
-
-		objectOutput.writeInt(industry);
-
-		objectOutput.writeLong(countryId);
-
-		objectOutput.writeLong(partnerEntryId);
-
-		objectOutput.writeBoolean(partnerManagedSupport);
-
-		objectOutput.writeInt(tier);
-
-		objectOutput.writeInt(maxCustomers);
-
 		if (instructions == null) {
 			objectOutput.writeUTF(StringPool.BLANK);
 		}
@@ -431,40 +289,12 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 			objectOutput.writeUTF(instructions);
 		}
 
-		if (notes == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(notes);
-		}
-
-		objectOutput.writeLong(highestSupportResponseId);
-
 		objectOutput.writeBoolean(activeSupport);
 
 		objectOutput.writeBoolean(activeTicketSupport);
-		objectOutput.writeLong(lastAuditDate);
 		objectOutput.writeLong(lastZendeskAuditDate);
 
 		objectOutput.writeInt(status);
-
-		objectOutput.writeLong(statusByUserId);
-
-		if (statusByUserName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(statusByUserName);
-		}
-
-		objectOutput.writeLong(statusDate);
-
-		if (statusMessage == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
-		}
-		else {
-			objectOutput.writeUTF(statusMessage);
-		}
 	}
 
 	public long accountEntryId;
@@ -475,30 +305,13 @@ public class AccountEntryCacheModel implements CacheModel<AccountEntry>,
 	public long modifiedUserId;
 	public String modifiedUserName;
 	public long modifiedDate;
-	public String corpProjectUuid;
-	public long corpProjectId;
+	public String koroneikiAccountKey;
 	public String dossieraAccountKey;
-	public String corpEntryName;
 	public String name;
 	public String code;
-	public long redirectAccountEntryId;
-	public int type;
-	public int industry;
-	public long countryId;
-	public long partnerEntryId;
-	public boolean partnerManagedSupport;
-	public int tier;
-	public int maxCustomers;
 	public String instructions;
-	public String notes;
-	public long highestSupportResponseId;
 	public boolean activeSupport;
 	public boolean activeTicketSupport;
-	public long lastAuditDate;
 	public long lastZendeskAuditDate;
 	public int status;
-	public long statusByUserId;
-	public String statusByUserName;
-	public long statusDate;
-	public String statusMessage;
 }

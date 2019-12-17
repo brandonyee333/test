@@ -60,14 +60,11 @@ import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.service.BaseServiceImpl;
-import com.liferay.portal.kernel.service.persistence.AddressPersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
-import com.liferay.portal.kernel.service.persistence.CountryPersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
 import com.liferay.portal.kernel.service.persistence.OrganizationPersistence;
 import com.liferay.portal.kernel.service.persistence.RolePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.service.persistence.WorkflowInstanceLinkPersistence;
 import com.liferay.portal.kernel.util.PortalUtil;
 
 import javax.sql.DataSource;
@@ -1814,62 +1811,6 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	}
 
 	/**
-	 * Returns the address local service.
-	 *
-	 * @return the address local service
-	 */
-	public com.liferay.portal.kernel.service.AddressLocalService getAddressLocalService() {
-		return addressLocalService;
-	}
-
-	/**
-	 * Sets the address local service.
-	 *
-	 * @param addressLocalService the address local service
-	 */
-	public void setAddressLocalService(
-		com.liferay.portal.kernel.service.AddressLocalService addressLocalService) {
-		this.addressLocalService = addressLocalService;
-	}
-
-	/**
-	 * Returns the address remote service.
-	 *
-	 * @return the address remote service
-	 */
-	public com.liferay.portal.kernel.service.AddressService getAddressService() {
-		return addressService;
-	}
-
-	/**
-	 * Sets the address remote service.
-	 *
-	 * @param addressService the address remote service
-	 */
-	public void setAddressService(
-		com.liferay.portal.kernel.service.AddressService addressService) {
-		this.addressService = addressService;
-	}
-
-	/**
-	 * Returns the address persistence.
-	 *
-	 * @return the address persistence
-	 */
-	public AddressPersistence getAddressPersistence() {
-		return addressPersistence;
-	}
-
-	/**
-	 * Sets the address persistence.
-	 *
-	 * @param addressPersistence the address persistence
-	 */
-	public void setAddressPersistence(AddressPersistence addressPersistence) {
-		this.addressPersistence = addressPersistence;
-	}
-
-	/**
 	 * Returns the class name local service.
 	 *
 	 * @return the class name local service
@@ -1924,43 +1865,6 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
 		this.classNamePersistence = classNamePersistence;
-	}
-
-	/**
-	 * Returns the country remote service.
-	 *
-	 * @return the country remote service
-	 */
-	public com.liferay.portal.kernel.service.CountryService getCountryService() {
-		return countryService;
-	}
-
-	/**
-	 * Sets the country remote service.
-	 *
-	 * @param countryService the country remote service
-	 */
-	public void setCountryService(
-		com.liferay.portal.kernel.service.CountryService countryService) {
-		this.countryService = countryService;
-	}
-
-	/**
-	 * Returns the country persistence.
-	 *
-	 * @return the country persistence
-	 */
-	public CountryPersistence getCountryPersistence() {
-		return countryPersistence;
-	}
-
-	/**
-	 * Sets the country persistence.
-	 *
-	 * @param countryPersistence the country persistence
-	 */
-	public void setCountryPersistence(CountryPersistence countryPersistence) {
-		this.countryPersistence = countryPersistence;
 	}
 
 	/**
@@ -2205,44 +2109,6 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setUserPersistence(UserPersistence userPersistence) {
 		this.userPersistence = userPersistence;
-	}
-
-	/**
-	 * Returns the workflow instance link local service.
-	 *
-	 * @return the workflow instance link local service
-	 */
-	public com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService getWorkflowInstanceLinkLocalService() {
-		return workflowInstanceLinkLocalService;
-	}
-
-	/**
-	 * Sets the workflow instance link local service.
-	 *
-	 * @param workflowInstanceLinkLocalService the workflow instance link local service
-	 */
-	public void setWorkflowInstanceLinkLocalService(
-		com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService) {
-		this.workflowInstanceLinkLocalService = workflowInstanceLinkLocalService;
-	}
-
-	/**
-	 * Returns the workflow instance link persistence.
-	 *
-	 * @return the workflow instance link persistence
-	 */
-	public WorkflowInstanceLinkPersistence getWorkflowInstanceLinkPersistence() {
-		return workflowInstanceLinkPersistence;
-	}
-
-	/**
-	 * Sets the workflow instance link persistence.
-	 *
-	 * @param workflowInstanceLinkPersistence the workflow instance link persistence
-	 */
-	public void setWorkflowInstanceLinkPersistence(
-		WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence) {
-		this.workflowInstanceLinkPersistence = workflowInstanceLinkPersistence;
 	}
 
 	public void afterPropertiesSet() {
@@ -2499,22 +2365,12 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	protected SupportResponseFinder supportResponseFinder;
 	@BeanReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
 	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@BeanReference(type = com.liferay.portal.kernel.service.AddressLocalService.class)
-	protected com.liferay.portal.kernel.service.AddressLocalService addressLocalService;
-	@BeanReference(type = com.liferay.portal.kernel.service.AddressService.class)
-	protected com.liferay.portal.kernel.service.AddressService addressService;
-	@BeanReference(type = AddressPersistence.class)
-	protected AddressPersistence addressPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
 	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
 	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
 	@BeanReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.CountryService.class)
-	protected com.liferay.portal.kernel.service.CountryService countryService;
-	@BeanReference(type = CountryPersistence.class)
-	protected CountryPersistence countryPersistence;
 	@BeanReference(type = com.liferay.portal.kernel.service.ListTypeLocalService.class)
 	protected com.liferay.portal.kernel.service.ListTypeLocalService listTypeLocalService;
 	@BeanReference(type = com.liferay.portal.kernel.service.ListTypeService.class)
@@ -2541,10 +2397,6 @@ public abstract class AccountEntryServiceBaseImpl extends BaseServiceImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 	@BeanReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
-	@BeanReference(type = com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService.class)
-	protected com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService workflowInstanceLinkLocalService;
-	@BeanReference(type = WorkflowInstanceLinkPersistence.class)
-	protected WorkflowInstanceLinkPersistence workflowInstanceLinkPersistence;
 	private ClassLoader _classLoader;
 	private AccountEntryServiceClpInvoker _clpInvoker = new AccountEntryServiceClpInvoker();
 }

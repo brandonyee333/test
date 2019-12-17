@@ -61,32 +61,15 @@
 		<property name="modifiedUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="modifiedUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
-		<property name="corpProjectUuid" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="corpProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="koroneikiAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="dossieraAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="corpEntryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property column="code_" name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="redirectAccountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="industry" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="countryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="partnerEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="partnerManagedSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="tier" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="maxCustomers" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="instructions" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="notes" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="highestSupportResponseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="activeSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="activeTicketSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-		<property name="lastAuditDate" type="org.hibernate.type.TimestampType" />
 		<property name="lastZendeskAuditDate" type="org.hibernate.type.TimestampType" />
 		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusDate" type="org.hibernate.type.TimestampType" />
-		<property name="statusMessage" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountEntryLanguageImpl" table="OSB_AccountEntryLanguage">
 		<id name="accountEntryLanguageId" type="long">

@@ -57,27 +57,16 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 	public java.util.List<AccountAttachment> getAccountAttachments(
 		long accountProjectId);
 
-	public java.util.List<AccountCustomer> getAccountCustomers();
+	public long getCorpProjectId();
 
-	public java.util.List<AccountWorker> getAccountWorkers();
-
-	public com.liferay.portal.kernel.model.Address getAddress();
+	public java.lang.String getDescription() throws java.lang.Exception;
 
 	public java.lang.String getDossieraAccountURL();
-
-	public java.lang.String getEWSADossieraProjectKey();
-
-	public java.lang.String getIndustryLabel();
 
 	public java.lang.String[] getLanguageIds();
 
 	@com.liferay.portal.kernel.json.JSON()
 	public java.util.List<OfferingEntry> getOfferingEntries();
-
-	public java.util.List<OrderEntry> getOrderEntries();
-
-	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getStatusLabel();
 
@@ -86,12 +75,7 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 	@com.liferay.portal.kernel.json.JSON()
 	public java.util.List<SupportRegion> getSupportRegions();
 
-	public java.lang.String getTypeLabel();
-
-	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public void setAddress(com.liferay.portal.kernel.model.Address address);
+	public java.lang.String getTier() throws java.lang.Exception;
 
 	public void setLanguageIds(java.lang.String[] languageIds);
 

@@ -67,9 +67,6 @@ public interface OfferingEntryLocalService extends BaseLocalService,
 	public boolean hasActiveSupportOfferingEntry(long accountEntryId,
 		boolean ticketSupport);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasActiveTrialOfferingEntry(long userId);
-
 	/**
 	* Adds the offering entry to the database. Also notifies the appropriate model listeners.
 	*

@@ -53,17 +53,6 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().addCorpProjectMessage(corpProjectMessage);
 	}
 
-	public static com.liferay.osb.model.CorpProjectMessage addCorpProjectMessage(
-		long userId, long corpProjectId, int type, int severityLevel,
-		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addCorpProjectMessage(userId, corpProjectId, type,
-			severityLevel, title, content, displayCP, displayLCS, serviceContext);
-	}
-
 	/**
 	* Creates a new corp project message with the primary key. Does not add the corp project message to the database.
 	*
@@ -104,12 +93,6 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().fetchCorpProjectMessage(corpProjectMessageId);
 	}
 
-	public static com.liferay.osb.model.CorpProjectMessage fetchCorpProjectMessageByUuid(
-		java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().fetchCorpProjectMessageByUuid(uuid);
-	}
-
 	/**
 	* Returns the corp project message with the primary key.
 	*
@@ -123,12 +106,6 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().getCorpProjectMessage(corpProjectMessageId);
 	}
 
-	public static com.liferay.osb.model.CorpProjectMessage getCorpProjectMessageByUuid(
-		java.lang.String uuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getCorpProjectMessageByUuid(uuid);
-	}
-
 	/**
 	* Updates the corp project message in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -138,18 +115,6 @@ public class CorpProjectMessageLocalServiceUtil {
 	public static com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
 		com.liferay.osb.model.CorpProjectMessage corpProjectMessage) {
 		return getService().updateCorpProjectMessage(corpProjectMessage);
-	}
-
-	public static com.liferay.osb.model.CorpProjectMessage updateCorpProjectMessage(
-		long userId, long corpProjectMessageId, int type, int severityLevel,
-		java.lang.String title, java.lang.String content, boolean displayCP,
-		boolean displayLCS,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateCorpProjectMessage(userId, corpProjectMessageId,
-			type, severityLevel, title, content, displayCP, displayLCS,
-			serviceContext);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -269,11 +234,6 @@ public class CorpProjectMessageLocalServiceUtil {
 		return getService().getCorpProjectMessages(start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.model.CorpProjectMessage> getCorpProjectMessages(
-		long corpProjectId) {
-		return getService().getCorpProjectMessages(corpProjectId);
-	}
-
 	/**
 	* Returns the number of rows matching the dynamic query.
 	*
@@ -296,10 +256,6 @@ public class CorpProjectMessageLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	public static void checkCorpProjects() throws java.lang.Exception {
-		getService().checkCorpProjects();
 	}
 
 	public static void clearService() {

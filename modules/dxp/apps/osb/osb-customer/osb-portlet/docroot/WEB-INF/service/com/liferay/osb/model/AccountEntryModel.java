@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.AuditedModel;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ShardedModel;
-import com.liferay.portal.kernel.model.WorkflowedModel;
 import com.liferay.portal.kernel.service.ServiceContext;
 
 import java.io.Serializable;
@@ -45,7 +44,7 @@ import java.util.Date;
  */
 @ProviderType
 public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>,
-	ShardedModel, WorkflowedModel {
+	ShardedModel {
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -221,33 +220,19 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the corp project uuid of this account entry.
+	 * Returns the koroneiki account key of this account entry.
 	 *
-	 * @return the corp project uuid of this account entry
+	 * @return the koroneiki account key of this account entry
 	 */
 	@AutoEscape
-	public String getCorpProjectUuid();
+	public String getKoroneikiAccountKey();
 
 	/**
-	 * Sets the corp project uuid of this account entry.
+	 * Sets the koroneiki account key of this account entry.
 	 *
-	 * @param corpProjectUuid the corp project uuid of this account entry
+	 * @param koroneikiAccountKey the koroneiki account key of this account entry
 	 */
-	public void setCorpProjectUuid(String corpProjectUuid);
-
-	/**
-	 * Returns the corp project ID of this account entry.
-	 *
-	 * @return the corp project ID of this account entry
-	 */
-	public long getCorpProjectId();
-
-	/**
-	 * Sets the corp project ID of this account entry.
-	 *
-	 * @param corpProjectId the corp project ID of this account entry
-	 */
-	public void setCorpProjectId(long corpProjectId);
+	public void setKoroneikiAccountKey(String koroneikiAccountKey);
 
 	/**
 	 * Returns the dossiera account key of this account entry.
@@ -263,21 +248,6 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	 * @param dossieraAccountKey the dossiera account key of this account entry
 	 */
 	public void setDossieraAccountKey(String dossieraAccountKey);
-
-	/**
-	 * Returns the corp entry name of this account entry.
-	 *
-	 * @return the corp entry name of this account entry
-	 */
-	@AutoEscape
-	public String getCorpEntryName();
-
-	/**
-	 * Sets the corp entry name of this account entry.
-	 *
-	 * @param corpEntryName the corp entry name of this account entry
-	 */
-	public void setCorpEntryName(String corpEntryName);
 
 	/**
 	 * Returns the name of this account entry.
@@ -310,125 +280,6 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setCode(String code);
 
 	/**
-	 * Returns the redirect account entry ID of this account entry.
-	 *
-	 * @return the redirect account entry ID of this account entry
-	 */
-	public long getRedirectAccountEntryId();
-
-	/**
-	 * Sets the redirect account entry ID of this account entry.
-	 *
-	 * @param redirectAccountEntryId the redirect account entry ID of this account entry
-	 */
-	public void setRedirectAccountEntryId(long redirectAccountEntryId);
-
-	/**
-	 * Returns the type of this account entry.
-	 *
-	 * @return the type of this account entry
-	 */
-	public int getType();
-
-	/**
-	 * Sets the type of this account entry.
-	 *
-	 * @param type the type of this account entry
-	 */
-	public void setType(int type);
-
-	/**
-	 * Returns the industry of this account entry.
-	 *
-	 * @return the industry of this account entry
-	 */
-	public int getIndustry();
-
-	/**
-	 * Sets the industry of this account entry.
-	 *
-	 * @param industry the industry of this account entry
-	 */
-	public void setIndustry(int industry);
-
-	/**
-	 * Returns the country ID of this account entry.
-	 *
-	 * @return the country ID of this account entry
-	 */
-	public long getCountryId();
-
-	/**
-	 * Sets the country ID of this account entry.
-	 *
-	 * @param countryId the country ID of this account entry
-	 */
-	public void setCountryId(long countryId);
-
-	/**
-	 * Returns the partner entry ID of this account entry.
-	 *
-	 * @return the partner entry ID of this account entry
-	 */
-	public long getPartnerEntryId();
-
-	/**
-	 * Sets the partner entry ID of this account entry.
-	 *
-	 * @param partnerEntryId the partner entry ID of this account entry
-	 */
-	public void setPartnerEntryId(long partnerEntryId);
-
-	/**
-	 * Returns the partner managed support of this account entry.
-	 *
-	 * @return the partner managed support of this account entry
-	 */
-	public boolean getPartnerManagedSupport();
-
-	/**
-	 * Returns <code>true</code> if this account entry is partner managed support.
-	 *
-	 * @return <code>true</code> if this account entry is partner managed support; <code>false</code> otherwise
-	 */
-	public boolean isPartnerManagedSupport();
-
-	/**
-	 * Sets whether this account entry is partner managed support.
-	 *
-	 * @param partnerManagedSupport the partner managed support of this account entry
-	 */
-	public void setPartnerManagedSupport(boolean partnerManagedSupport);
-
-	/**
-	 * Returns the tier of this account entry.
-	 *
-	 * @return the tier of this account entry
-	 */
-	public int getTier();
-
-	/**
-	 * Sets the tier of this account entry.
-	 *
-	 * @param tier the tier of this account entry
-	 */
-	public void setTier(int tier);
-
-	/**
-	 * Returns the max customers of this account entry.
-	 *
-	 * @return the max customers of this account entry
-	 */
-	public int getMaxCustomers();
-
-	/**
-	 * Sets the max customers of this account entry.
-	 *
-	 * @param maxCustomers the max customers of this account entry
-	 */
-	public void setMaxCustomers(int maxCustomers);
-
-	/**
 	 * Returns the instructions of this account entry.
 	 *
 	 * @return the instructions of this account entry
@@ -442,35 +293,6 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	 * @param instructions the instructions of this account entry
 	 */
 	public void setInstructions(String instructions);
-
-	/**
-	 * Returns the notes of this account entry.
-	 *
-	 * @return the notes of this account entry
-	 */
-	@AutoEscape
-	public String getNotes();
-
-	/**
-	 * Sets the notes of this account entry.
-	 *
-	 * @param notes the notes of this account entry
-	 */
-	public void setNotes(String notes);
-
-	/**
-	 * Returns the highest support response ID of this account entry.
-	 *
-	 * @return the highest support response ID of this account entry
-	 */
-	public long getHighestSupportResponseId();
-
-	/**
-	 * Sets the highest support response ID of this account entry.
-	 *
-	 * @param highestSupportResponseId the highest support response ID of this account entry
-	 */
-	public void setHighestSupportResponseId(long highestSupportResponseId);
 
 	/**
 	 * Returns the active support of this account entry.
@@ -515,20 +337,6 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	public void setActiveTicketSupport(boolean activeTicketSupport);
 
 	/**
-	 * Returns the last audit date of this account entry.
-	 *
-	 * @return the last audit date of this account entry
-	 */
-	public Date getLastAuditDate();
-
-	/**
-	 * Sets the last audit date of this account entry.
-	 *
-	 * @param lastAuditDate the last audit date of this account entry
-	 */
-	public void setLastAuditDate(Date lastAuditDate);
-
-	/**
 	 * Returns the last zendesk audit date of this account entry.
 	 *
 	 * @return the last zendesk audit date of this account entry
@@ -547,7 +355,6 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	 *
 	 * @return the status of this account entry
 	 */
-	@Override
 	public int getStatus();
 
 	/**
@@ -555,152 +362,7 @@ public interface AccountEntryModel extends AuditedModel, BaseModel<AccountEntry>
 	 *
 	 * @param status the status of this account entry
 	 */
-	@Override
 	public void setStatus(int status);
-
-	/**
-	 * Returns the status by user ID of this account entry.
-	 *
-	 * @return the status by user ID of this account entry
-	 */
-	@Override
-	public long getStatusByUserId();
-
-	/**
-	 * Sets the status by user ID of this account entry.
-	 *
-	 * @param statusByUserId the status by user ID of this account entry
-	 */
-	@Override
-	public void setStatusByUserId(long statusByUserId);
-
-	/**
-	 * Returns the status by user uuid of this account entry.
-	 *
-	 * @return the status by user uuid of this account entry
-	 */
-	@Override
-	public String getStatusByUserUuid();
-
-	/**
-	 * Sets the status by user uuid of this account entry.
-	 *
-	 * @param statusByUserUuid the status by user uuid of this account entry
-	 */
-	@Override
-	public void setStatusByUserUuid(String statusByUserUuid);
-
-	/**
-	 * Returns the status by user name of this account entry.
-	 *
-	 * @return the status by user name of this account entry
-	 */
-	@AutoEscape
-	@Override
-	public String getStatusByUserName();
-
-	/**
-	 * Sets the status by user name of this account entry.
-	 *
-	 * @param statusByUserName the status by user name of this account entry
-	 */
-	@Override
-	public void setStatusByUserName(String statusByUserName);
-
-	/**
-	 * Returns the status date of this account entry.
-	 *
-	 * @return the status date of this account entry
-	 */
-	@Override
-	public Date getStatusDate();
-
-	/**
-	 * Sets the status date of this account entry.
-	 *
-	 * @param statusDate the status date of this account entry
-	 */
-	@Override
-	public void setStatusDate(Date statusDate);
-
-	/**
-	 * Returns the status message of this account entry.
-	 *
-	 * @return the status message of this account entry
-	 */
-	@AutoEscape
-	public String getStatusMessage();
-
-	/**
-	 * Sets the status message of this account entry.
-	 *
-	 * @param statusMessage the status message of this account entry
-	 */
-	public void setStatusMessage(String statusMessage);
-
-	/**
-	 * Returns <code>true</code> if this account entry is approved.
-	 *
-	 * @return <code>true</code> if this account entry is approved; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isApproved();
-
-	/**
-	 * Returns <code>true</code> if this account entry is denied.
-	 *
-	 * @return <code>true</code> if this account entry is denied; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isDenied();
-
-	/**
-	 * Returns <code>true</code> if this account entry is a draft.
-	 *
-	 * @return <code>true</code> if this account entry is a draft; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isDraft();
-
-	/**
-	 * Returns <code>true</code> if this account entry is expired.
-	 *
-	 * @return <code>true</code> if this account entry is expired; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isExpired();
-
-	/**
-	 * Returns <code>true</code> if this account entry is inactive.
-	 *
-	 * @return <code>true</code> if this account entry is inactive; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isInactive();
-
-	/**
-	 * Returns <code>true</code> if this account entry is incomplete.
-	 *
-	 * @return <code>true</code> if this account entry is incomplete; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isIncomplete();
-
-	/**
-	 * Returns <code>true</code> if this account entry is pending.
-	 *
-	 * @return <code>true</code> if this account entry is pending; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isPending();
-
-	/**
-	 * Returns <code>true</code> if this account entry is scheduled.
-	 *
-	 * @return <code>true</code> if this account entry is scheduled; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isScheduled();
 
 	@Override
 	public boolean isNew();

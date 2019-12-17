@@ -41,11 +41,6 @@ public class OfferingEntryLocalServiceWrapper
 			ticketSupport);
 	}
 
-	@Override
-	public boolean hasActiveTrialOfferingEntry(long userId) {
-		return _offeringEntryLocalService.hasActiveTrialOfferingEntry(userId);
-	}
-
 	/**
 	* Adds the offering entry to the database. Also notifies the appropriate model listeners.
 	*

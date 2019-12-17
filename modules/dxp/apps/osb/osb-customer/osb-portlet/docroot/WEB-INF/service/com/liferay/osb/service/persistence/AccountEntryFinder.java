@@ -25,17 +25,9 @@ public interface AccountEntryFinder {
 	public int countByKeywords(java.lang.String keywords,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params);
 
-	public int countByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-		java.lang.Long createUserId, java.util.Date createDateGT,
-		java.util.Date createDateLT, java.lang.Long modifiedUserId,
-		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int[] industries,
-		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String partnerEntryCode, java.lang.String street,
-		java.lang.Long countryId, java.lang.Long regionId,
-		java.lang.String city, java.lang.String zip,
+	public int countByKAK_DAK_N_C_I_S(java.lang.String koroneikiAccountKey,
+		java.lang.String dossieraAccountKey, java.lang.String name,
+		java.lang.String code, int[] statuses, java.lang.String instructions,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator);
 
@@ -44,20 +36,10 @@ public interface AccountEntryFinder {
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		int start, int end, com.liferay.portal.kernel.util.OrderByComparator obc);
 
-	public java.util.List<com.liferay.osb.model.AccountEntry> findBySupportResponse(
-		long supportResponseId);
-
-	public java.util.List<com.liferay.osb.model.AccountEntry> findByU_CD_MU_MD_DAK_CEN_N_C_I_PMS_T_S_I_N_P_S_C_R_C_Z(
-		java.lang.Long createUserId, java.util.Date createDateGT,
-		java.util.Date createDateLT, java.lang.Long modifiedUserId,
-		java.util.Date modifiedDateGT, java.util.Date modifiedDateLT,
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int[] industries,
-		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String partnerEntryCode, java.lang.String street,
-		java.lang.Long countryId, java.lang.Long regionId,
-		java.lang.String city, java.lang.String zip,
+	public java.util.List<com.liferay.osb.model.AccountEntry> findByKAK_DAK_N_C_I_S(
+		java.lang.String koroneikiAccountKey,
+		java.lang.String dossieraAccountKey, java.lang.String name,
+		java.lang.String code, int[] statuses, java.lang.String instructions,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator, int start, int end,
 		com.liferay.portal.kernel.util.OrderByComparator obc);

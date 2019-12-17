@@ -250,122 +250,13 @@ public class AccountEntryServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.osb.model.AccountEntry> search(
-		HttpPrincipal httpPrincipal, java.lang.Long createUserId,
-		int createDateGTDay, int createDateGTMonth, int createDateGTYear,
-		int createDateLTDay, int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int[] industries,
-		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String partnerEntryCode, java.lang.String street,
-		java.lang.Long countryId, java.lang.Long regionId,
-		java.lang.String city, java.lang.String zip,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator obc)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
-					"search", _searchParameterTypes6);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					createUserId, createDateGTDay, createDateGTMonth,
-					createDateGTYear, createDateLTDay, createDateLTMonth,
-					createDateLTYear, modifiedUserId, modifiedDateGTDay,
-					modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
-					modifiedDateLTMonth, modifiedDateLTYear,
-					dossieraAccountKey, corpEntryName, name, code, industries,
-					partnerManagedSupport, tiers, statuses, instructions,
-					notes, partnerEntryCode, street, countryId, regionId, city,
-					zip, params, andOperator, start, end, obc);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.util.List<com.liferay.osb.model.AccountEntry>)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
-	public static int searchCount(HttpPrincipal httpPrincipal,
-		java.lang.Long createUserId, int createDateGTDay,
-		int createDateGTMonth, int createDateGTYear, int createDateLTDay,
-		int createDateLTMonth, int createDateLTYear,
-		java.lang.Long modifiedUserId, int modifiedDateGTDay,
-		int modifiedDateGTMonth, int modifiedDateGTYear, int modifiedDateLTDay,
-		int modifiedDateLTMonth, int modifiedDateLTYear,
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int[] industries,
-		java.lang.Boolean partnerManagedSupport, int[] tiers, int[] statuses,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String partnerEntryCode, java.lang.String street,
-		java.lang.Long countryId, java.lang.Long regionId,
-		java.lang.String city, java.lang.String zip,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		boolean andOperator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
-					"searchCount", _searchCountParameterTypes7);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					createUserId, createDateGTDay, createDateGTMonth,
-					createDateGTYear, createDateLTDay, createDateLTMonth,
-					createDateLTYear, modifiedUserId, modifiedDateGTDay,
-					modifiedDateGTMonth, modifiedDateGTYear, modifiedDateLTDay,
-					modifiedDateLTMonth, modifiedDateLTYear,
-					dossieraAccountKey, corpEntryName, name, code, industries,
-					partnerManagedSupport, tiers, statuses, instructions,
-					notes, partnerEntryCode, street, countryId, regionId, city,
-					zip, params, andOperator);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return ((Integer)returnObj).intValue();
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	public static com.liferay.osb.model.AccountEntry updateInstructions(
 		HttpPrincipal httpPrincipal, long accountEntryId,
 		java.lang.String instructions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(AccountEntryServiceUtil.class,
-					"updateInstructions", _updateInstructionsParameterTypes8);
+					"updateInstructions", _updateInstructionsParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey,
 					accountEntryId, instructions);
@@ -410,32 +301,7 @@ public class AccountEntryServiceHttp {
 	private static final Class<?>[] _getCorpProjectAccountEntryParameterTypes5 = new Class[] {
 			java.lang.String.class
 		};
-	private static final Class<?>[] _searchParameterTypes6 = new Class[] {
-			java.lang.Long.class, int.class, int.class, int.class, int.class,
-			int.class, int.class, java.lang.Long.class, int.class, int.class,
-			int.class, int.class, int.class, int.class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class,
-			java.lang.String.class, int[].class, java.lang.Boolean.class,
-			int[].class, int[].class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class,
-			java.lang.String.class, java.lang.Long.class, java.lang.Long.class,
-			java.lang.String.class, java.lang.String.class,
-			java.util.LinkedHashMap.class, boolean.class, int.class, int.class,
-			com.liferay.portal.kernel.util.OrderByComparator.class
-		};
-	private static final Class<?>[] _searchCountParameterTypes7 = new Class[] {
-			java.lang.Long.class, int.class, int.class, int.class, int.class,
-			int.class, int.class, java.lang.Long.class, int.class, int.class,
-			int.class, int.class, int.class, int.class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class,
-			java.lang.String.class, int[].class, java.lang.Boolean.class,
-			int[].class, int[].class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class,
-			java.lang.String.class, java.lang.Long.class, java.lang.Long.class,
-			java.lang.String.class, java.lang.String.class,
-			java.util.LinkedHashMap.class, boolean.class
-		};
-	private static final Class<?>[] _updateInstructionsParameterTypes8 = new Class[] {
+	private static final Class<?>[] _updateInstructionsParameterTypes6 = new Class[] {
 			long.class, java.lang.String.class
 		};
 }

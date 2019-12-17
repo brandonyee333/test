@@ -1600,50 +1600,14 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.AccountCustomerClosedWatcherException")) {
-			return new com.liferay.osb.exception.AccountCustomerClosedWatcherException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountEntryCodeException")) {
-			return new com.liferay.osb.exception.AccountEntryCodeException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountEntryCorpProjectException")) {
-			return new com.liferay.osb.exception.AccountEntryCorpProjectException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountEntryIndustryException")) {
-			return new com.liferay.osb.exception.AccountEntryIndustryException(throwable.getMessage(),
+					"com.liferay.osb.exception.AccountEntryKoroneikiAccountKeyException")) {
+			return new com.liferay.osb.exception.AccountEntryKoroneikiAccountKeyException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
 		if (className.equals(
 					"com.liferay.osb.exception.AccountEntryLanguageIdException")) {
 			return new com.liferay.osb.exception.AccountEntryLanguageIdException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountEntryMaximumCustomersException")) {
-			return new com.liferay.osb.exception.AccountEntryMaximumCustomersException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountEntryNameException")) {
-			return new com.liferay.osb.exception.AccountEntryNameException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.AccountEntryPartnerEntryException")) {
-			return new com.liferay.osb.exception.AccountEntryPartnerEntryException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -1728,12 +1692,6 @@ public class ClpSerializer {
 		if (className.equals(
 					"com.liferay.osb.exception.DuplicateAccountAttachmentException")) {
 			return new com.liferay.osb.exception.DuplicateAccountAttachmentException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.DuplicateAccountEntryException")) {
-			return new com.liferay.osb.exception.DuplicateAccountEntryException(throwable.getMessage(),
 				throwable.getCause());
 		}
 
@@ -1985,12 +1943,6 @@ public class ClpSerializer {
 
 		if (className.equals("com.liferay.osb.exception.RemoteServiceException")) {
 			return new com.liferay.osb.exception.RemoteServiceException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
-					"com.liferay.osb.exception.RequiredAccountEntryException")) {
-			return new com.liferay.osb.exception.RequiredAccountEntryException(throwable.getMessage(),
 				throwable.getCause());
 		}
 

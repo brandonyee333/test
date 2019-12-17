@@ -66,32 +66,15 @@ public class AccountEntryWrapper implements AccountEntry,
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("corpProjectUuid", getCorpProjectUuid());
-		attributes.put("corpProjectId", getCorpProjectId());
+		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
-		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
-		attributes.put("redirectAccountEntryId", getRedirectAccountEntryId());
-		attributes.put("type", getType());
-		attributes.put("industry", getIndustry());
-		attributes.put("countryId", getCountryId());
-		attributes.put("partnerEntryId", getPartnerEntryId());
-		attributes.put("partnerManagedSupport", getPartnerManagedSupport());
-		attributes.put("tier", getTier());
-		attributes.put("maxCustomers", getMaxCustomers());
 		attributes.put("instructions", getInstructions());
-		attributes.put("notes", getNotes());
-		attributes.put("highestSupportResponseId", getHighestSupportResponseId());
 		attributes.put("activeSupport", getActiveSupport());
 		attributes.put("activeTicketSupport", getActiveTicketSupport());
-		attributes.put("lastAuditDate", getLastAuditDate());
 		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-		attributes.put("statusMessage", getStatusMessage());
 
 		return attributes;
 	}
@@ -146,28 +129,17 @@ public class AccountEntryWrapper implements AccountEntry,
 			setModifiedDate(modifiedDate);
 		}
 
-		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+		String koroneikiAccountKey = (String)attributes.get(
+				"koroneikiAccountKey");
 
-		if (corpProjectUuid != null) {
-			setCorpProjectUuid(corpProjectUuid);
-		}
-
-		Long corpProjectId = (Long)attributes.get("corpProjectId");
-
-		if (corpProjectId != null) {
-			setCorpProjectId(corpProjectId);
+		if (koroneikiAccountKey != null) {
+			setKoroneikiAccountKey(koroneikiAccountKey);
 		}
 
 		String dossieraAccountKey = (String)attributes.get("dossieraAccountKey");
 
 		if (dossieraAccountKey != null) {
 			setDossieraAccountKey(dossieraAccountKey);
-		}
-
-		String corpEntryName = (String)attributes.get("corpEntryName");
-
-		if (corpEntryName != null) {
-			setCorpEntryName(corpEntryName);
 		}
 
 		String name = (String)attributes.get("name");
@@ -182,73 +154,10 @@ public class AccountEntryWrapper implements AccountEntry,
 			setCode(code);
 		}
 
-		Long redirectAccountEntryId = (Long)attributes.get(
-				"redirectAccountEntryId");
-
-		if (redirectAccountEntryId != null) {
-			setRedirectAccountEntryId(redirectAccountEntryId);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Integer industry = (Integer)attributes.get("industry");
-
-		if (industry != null) {
-			setIndustry(industry);
-		}
-
-		Long countryId = (Long)attributes.get("countryId");
-
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
-
-		Long partnerEntryId = (Long)attributes.get("partnerEntryId");
-
-		if (partnerEntryId != null) {
-			setPartnerEntryId(partnerEntryId);
-		}
-
-		Boolean partnerManagedSupport = (Boolean)attributes.get(
-				"partnerManagedSupport");
-
-		if (partnerManagedSupport != null) {
-			setPartnerManagedSupport(partnerManagedSupport);
-		}
-
-		Integer tier = (Integer)attributes.get("tier");
-
-		if (tier != null) {
-			setTier(tier);
-		}
-
-		Integer maxCustomers = (Integer)attributes.get("maxCustomers");
-
-		if (maxCustomers != null) {
-			setMaxCustomers(maxCustomers);
-		}
-
 		String instructions = (String)attributes.get("instructions");
 
 		if (instructions != null) {
 			setInstructions(instructions);
-		}
-
-		String notes = (String)attributes.get("notes");
-
-		if (notes != null) {
-			setNotes(notes);
-		}
-
-		Long highestSupportResponseId = (Long)attributes.get(
-				"highestSupportResponseId");
-
-		if (highestSupportResponseId != null) {
-			setHighestSupportResponseId(highestSupportResponseId);
 		}
 
 		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
@@ -264,12 +173,6 @@ public class AccountEntryWrapper implements AccountEntry,
 			setActiveTicketSupport(activeTicketSupport);
 		}
 
-		Date lastAuditDate = (Date)attributes.get("lastAuditDate");
-
-		if (lastAuditDate != null) {
-			setLastAuditDate(lastAuditDate);
-		}
-
 		Date lastZendeskAuditDate = (Date)attributes.get("lastZendeskAuditDate");
 
 		if (lastZendeskAuditDate != null) {
@@ -280,30 +183,6 @@ public class AccountEntryWrapper implements AccountEntry,
 
 		if (status != null) {
 			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
-
-		String statusMessage = (String)attributes.get("statusMessage");
-
-		if (statusMessage != null) {
-			setStatusMessage(statusMessage);
 		}
 	}
 
@@ -328,22 +207,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Returns the partner managed support of this account entry.
-	*
-	* @return the partner managed support of this account entry
-	*/
-	@Override
-	public boolean getPartnerManagedSupport() {
-		return _accountEntry.getPartnerManagedSupport();
-	}
-
-	@Override
-	public boolean hasEnterpriseSearchOffering(int productEntryEnvironment)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntry.hasEnterpriseSearchOffering(productEntryEnvironment);
-	}
-
-	/**
 	* Returns <code>true</code> if this account entry is active support.
 	*
 	* @return <code>true</code> if this account entry is active support; <code>false</code> otherwise
@@ -363,39 +226,9 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.isActiveTicketSupport();
 	}
 
-	/**
-	* Returns <code>true</code> if this account entry is approved.
-	*
-	* @return <code>true</code> if this account entry is approved; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isApproved() {
-		return _accountEntry.isApproved();
-	}
-
 	@Override
 	public boolean isCachedModel() {
 		return _accountEntry.isCachedModel();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is denied.
-	*
-	* @return <code>true</code> if this account entry is denied; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isDenied() {
-		return _accountEntry.isDenied();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is a draft.
-	*
-	* @return <code>true</code> if this account entry is a draft; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isDraft() {
-		return _accountEntry.isDraft();
 	}
 
 	@Override
@@ -403,69 +236,9 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.isEscapedModel();
 	}
 
-	/**
-	* Returns <code>true</code> if this account entry is expired.
-	*
-	* @return <code>true</code> if this account entry is expired; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isExpired() {
-		return _accountEntry.isExpired();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is inactive.
-	*
-	* @return <code>true</code> if this account entry is inactive; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isInactive() {
-		return _accountEntry.isInactive();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is incomplete.
-	*
-	* @return <code>true</code> if this account entry is incomplete; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isIncomplete() {
-		return _accountEntry.isIncomplete();
-	}
-
 	@Override
 	public boolean isNew() {
 		return _accountEntry.isNew();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is partner managed support.
-	*
-	* @return <code>true</code> if this account entry is partner managed support; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isPartnerManagedSupport() {
-		return _accountEntry.isPartnerManagedSupport();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is pending.
-	*
-	* @return <code>true</code> if this account entry is pending; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isPending() {
-		return _accountEntry.isPending();
-	}
-
-	/**
-	* Returns <code>true</code> if this account entry is scheduled.
-	*
-	* @return <code>true</code> if this account entry is scheduled; <code>false</code> otherwise
-	*/
-	@Override
-	public boolean isScheduled() {
-		return _accountEntry.isScheduled();
 	}
 
 	@Override
@@ -484,17 +257,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public PartnerEntry getPartnerEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountEntry.getPartnerEntry();
-	}
-
-	@Override
-	public com.liferay.portal.kernel.model.Address getAddress() {
-		return _accountEntry.getAddress();
-	}
-
-	@Override
 	public com.liferay.portal.kernel.model.CacheModel<AccountEntry> toCacheModel() {
 		return _accountEntry.toCacheModel();
 	}
@@ -505,26 +267,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Returns the industry of this account entry.
-	*
-	* @return the industry of this account entry
-	*/
-	@Override
-	public int getIndustry() {
-		return _accountEntry.getIndustry();
-	}
-
-	/**
-	* Returns the max customers of this account entry.
-	*
-	* @return the max customers of this account entry
-	*/
-	@Override
-	public int getMaxCustomers() {
-		return _accountEntry.getMaxCustomers();
-	}
-
-	/**
 	* Returns the status of this account entry.
 	*
 	* @return the status of this account entry
@@ -532,26 +274,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public int getStatus() {
 		return _accountEntry.getStatus();
-	}
-
-	/**
-	* Returns the tier of this account entry.
-	*
-	* @return the tier of this account entry
-	*/
-	@Override
-	public int getTier() {
-		return _accountEntry.getTier();
-	}
-
-	/**
-	* Returns the type of this account entry.
-	*
-	* @return the type of this account entry
-	*/
-	@Override
-	public int getType() {
-		return _accountEntry.getType();
 	}
 
 	@Override
@@ -579,24 +301,9 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getCode();
 	}
 
-	/**
-	* Returns the corp entry name of this account entry.
-	*
-	* @return the corp entry name of this account entry
-	*/
 	@Override
-	public java.lang.String getCorpEntryName() {
-		return _accountEntry.getCorpEntryName();
-	}
-
-	/**
-	* Returns the corp project uuid of this account entry.
-	*
-	* @return the corp project uuid of this account entry
-	*/
-	@Override
-	public java.lang.String getCorpProjectUuid() {
-		return _accountEntry.getCorpProjectUuid();
+	public java.lang.String getDescription() throws java.lang.Exception {
+		return _accountEntry.getDescription();
 	}
 
 	/**
@@ -614,16 +321,6 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getDossieraAccountURL();
 	}
 
-	@Override
-	public java.lang.String getEWSADossieraProjectKey() {
-		return _accountEntry.getEWSADossieraProjectKey();
-	}
-
-	@Override
-	public java.lang.String getIndustryLabel() {
-		return _accountEntry.getIndustryLabel();
-	}
-
 	/**
 	* Returns the instructions of this account entry.
 	*
@@ -632,6 +329,16 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public java.lang.String getInstructions() {
 		return _accountEntry.getInstructions();
+	}
+
+	/**
+	* Returns the koroneiki account key of this account entry.
+	*
+	* @return the koroneiki account key of this account entry
+	*/
+	@Override
+	public java.lang.String getKoroneikiAccountKey() {
+		return _accountEntry.getKoroneikiAccountKey();
 	}
 
 	/**
@@ -664,54 +371,14 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getName();
 	}
 
-	/**
-	* Returns the notes of this account entry.
-	*
-	* @return the notes of this account entry
-	*/
-	@Override
-	public java.lang.String getNotes() {
-		return _accountEntry.getNotes();
-	}
-
-	/**
-	* Returns the status by user name of this account entry.
-	*
-	* @return the status by user name of this account entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserName() {
-		return _accountEntry.getStatusByUserName();
-	}
-
-	/**
-	* Returns the status by user uuid of this account entry.
-	*
-	* @return the status by user uuid of this account entry
-	*/
-	@Override
-	public java.lang.String getStatusByUserUuid() {
-		return _accountEntry.getStatusByUserUuid();
-	}
-
 	@Override
 	public java.lang.String getStatusLabel() {
 		return _accountEntry.getStatusLabel();
 	}
 
-	/**
-	* Returns the status message of this account entry.
-	*
-	* @return the status message of this account entry
-	*/
 	@Override
-	public java.lang.String getStatusMessage() {
-		return _accountEntry.getStatusMessage();
-	}
-
-	@Override
-	public java.lang.String getTypeLabel() {
-		return _accountEntry.getTypeLabel();
+	public java.lang.String getTier() throws java.lang.Exception {
+		return _accountEntry.getTier();
 	}
 
 	/**
@@ -760,16 +427,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Returns the last audit date of this account entry.
-	*
-	* @return the last audit date of this account entry
-	*/
-	@Override
-	public Date getLastAuditDate() {
-		return _accountEntry.getLastAuditDate();
-	}
-
-	/**
 	* Returns the last zendesk audit date of this account entry.
 	*
 	* @return the last zendesk audit date of this account entry
@@ -789,16 +446,6 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getModifiedDate();
 	}
 
-	/**
-	* Returns the status date of this account entry.
-	*
-	* @return the status date of this account entry
-	*/
-	@Override
-	public Date getStatusDate() {
-		return _accountEntry.getStatusDate();
-	}
-
 	@Override
 	public java.util.List<AccountAttachment> getAccountAttachments(
 		long accountProjectId) {
@@ -806,23 +453,8 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public java.util.List<AccountCustomer> getAccountCustomers() {
-		return _accountEntry.getAccountCustomers();
-	}
-
-	@Override
-	public java.util.List<AccountWorker> getAccountWorkers() {
-		return _accountEntry.getAccountWorkers();
-	}
-
-	@Override
 	public java.util.List<OfferingEntry> getOfferingEntries() {
 		return _accountEntry.getOfferingEntries();
-	}
-
-	@Override
-	public java.util.List<OrderEntry> getOrderEntries() {
-		return _accountEntry.getOrderEntries();
 	}
 
 	@Override
@@ -850,34 +482,9 @@ public class AccountEntryWrapper implements AccountEntry,
 		return _accountEntry.getCompanyId();
 	}
 
-	/**
-	* Returns the corp project ID of this account entry.
-	*
-	* @return the corp project ID of this account entry
-	*/
 	@Override
 	public long getCorpProjectId() {
 		return _accountEntry.getCorpProjectId();
-	}
-
-	/**
-	* Returns the country ID of this account entry.
-	*
-	* @return the country ID of this account entry
-	*/
-	@Override
-	public long getCountryId() {
-		return _accountEntry.getCountryId();
-	}
-
-	/**
-	* Returns the highest support response ID of this account entry.
-	*
-	* @return the highest support response ID of this account entry
-	*/
-	@Override
-	public long getHighestSupportResponseId() {
-		return _accountEntry.getHighestSupportResponseId();
 	}
 
 	/**
@@ -891,16 +498,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Returns the partner entry ID of this account entry.
-	*
-	* @return the partner entry ID of this account entry
-	*/
-	@Override
-	public long getPartnerEntryId() {
-		return _accountEntry.getPartnerEntryId();
-	}
-
-	/**
 	* Returns the primary key of this account entry.
 	*
 	* @return the primary key of this account entry
@@ -908,26 +505,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public long getPrimaryKey() {
 		return _accountEntry.getPrimaryKey();
-	}
-
-	/**
-	* Returns the redirect account entry ID of this account entry.
-	*
-	* @return the redirect account entry ID of this account entry
-	*/
-	@Override
-	public long getRedirectAccountEntryId() {
-		return _accountEntry.getRedirectAccountEntryId();
-	}
-
-	/**
-	* Returns the status by user ID of this account entry.
-	*
-	* @return the status by user ID of this account entry
-	*/
-	@Override
-	public long getStatusByUserId() {
-		return _accountEntry.getStatusByUserId();
 	}
 
 	/**
@@ -981,11 +558,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	@Override
-	public void setAddress(com.liferay.portal.kernel.model.Address address) {
-		_accountEntry.setAddress(address);
-	}
-
-	@Override
 	public void setCachedModel(boolean cachedModel) {
 		_accountEntry.setCachedModel(cachedModel);
 	}
@@ -1008,46 +580,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setCompanyId(long companyId) {
 		_accountEntry.setCompanyId(companyId);
-	}
-
-	/**
-	* Sets the corp entry name of this account entry.
-	*
-	* @param corpEntryName the corp entry name of this account entry
-	*/
-	@Override
-	public void setCorpEntryName(java.lang.String corpEntryName) {
-		_accountEntry.setCorpEntryName(corpEntryName);
-	}
-
-	/**
-	* Sets the corp project ID of this account entry.
-	*
-	* @param corpProjectId the corp project ID of this account entry
-	*/
-	@Override
-	public void setCorpProjectId(long corpProjectId) {
-		_accountEntry.setCorpProjectId(corpProjectId);
-	}
-
-	/**
-	* Sets the corp project uuid of this account entry.
-	*
-	* @param corpProjectUuid the corp project uuid of this account entry
-	*/
-	@Override
-	public void setCorpProjectUuid(java.lang.String corpProjectUuid) {
-		_accountEntry.setCorpProjectUuid(corpProjectUuid);
-	}
-
-	/**
-	* Sets the country ID of this account entry.
-	*
-	* @param countryId the country ID of this account entry
-	*/
-	@Override
-	public void setCountryId(long countryId) {
-		_accountEntry.setCountryId(countryId);
 	}
 
 	/**
@@ -1087,26 +619,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Sets the highest support response ID of this account entry.
-	*
-	* @param highestSupportResponseId the highest support response ID of this account entry
-	*/
-	@Override
-	public void setHighestSupportResponseId(long highestSupportResponseId) {
-		_accountEntry.setHighestSupportResponseId(highestSupportResponseId);
-	}
-
-	/**
-	* Sets the industry of this account entry.
-	*
-	* @param industry the industry of this account entry
-	*/
-	@Override
-	public void setIndustry(int industry) {
-		_accountEntry.setIndustry(industry);
-	}
-
-	/**
 	* Sets the instructions of this account entry.
 	*
 	* @param instructions the instructions of this account entry
@@ -1116,19 +628,19 @@ public class AccountEntryWrapper implements AccountEntry,
 		_accountEntry.setInstructions(instructions);
 	}
 
+	/**
+	* Sets the koroneiki account key of this account entry.
+	*
+	* @param koroneikiAccountKey the koroneiki account key of this account entry
+	*/
+	@Override
+	public void setKoroneikiAccountKey(java.lang.String koroneikiAccountKey) {
+		_accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
+	}
+
 	@Override
 	public void setLanguageIds(java.lang.String[] languageIds) {
 		_accountEntry.setLanguageIds(languageIds);
-	}
-
-	/**
-	* Sets the last audit date of this account entry.
-	*
-	* @param lastAuditDate the last audit date of this account entry
-	*/
-	@Override
-	public void setLastAuditDate(Date lastAuditDate) {
-		_accountEntry.setLastAuditDate(lastAuditDate);
 	}
 
 	/**
@@ -1139,16 +651,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	@Override
 	public void setLastZendeskAuditDate(Date lastZendeskAuditDate) {
 		_accountEntry.setLastZendeskAuditDate(lastZendeskAuditDate);
-	}
-
-	/**
-	* Sets the max customers of this account entry.
-	*
-	* @param maxCustomers the max customers of this account entry
-	*/
-	@Override
-	public void setMaxCustomers(int maxCustomers) {
-		_accountEntry.setMaxCustomers(maxCustomers);
 	}
 
 	/**
@@ -1207,36 +709,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Sets the notes of this account entry.
-	*
-	* @param notes the notes of this account entry
-	*/
-	@Override
-	public void setNotes(java.lang.String notes) {
-		_accountEntry.setNotes(notes);
-	}
-
-	/**
-	* Sets the partner entry ID of this account entry.
-	*
-	* @param partnerEntryId the partner entry ID of this account entry
-	*/
-	@Override
-	public void setPartnerEntryId(long partnerEntryId) {
-		_accountEntry.setPartnerEntryId(partnerEntryId);
-	}
-
-	/**
-	* Sets whether this account entry is partner managed support.
-	*
-	* @param partnerManagedSupport the partner managed support of this account entry
-	*/
-	@Override
-	public void setPartnerManagedSupport(boolean partnerManagedSupport) {
-		_accountEntry.setPartnerManagedSupport(partnerManagedSupport);
-	}
-
-	/**
 	* Sets the primary key of this account entry.
 	*
 	* @param primaryKey the primary key of this account entry
@@ -1252,16 +724,6 @@ public class AccountEntryWrapper implements AccountEntry,
 	}
 
 	/**
-	* Sets the redirect account entry ID of this account entry.
-	*
-	* @param redirectAccountEntryId the redirect account entry ID of this account entry
-	*/
-	@Override
-	public void setRedirectAccountEntryId(long redirectAccountEntryId) {
-		_accountEntry.setRedirectAccountEntryId(redirectAccountEntryId);
-	}
-
-	/**
 	* Sets the status of this account entry.
 	*
 	* @param status the status of this account entry
@@ -1271,79 +733,9 @@ public class AccountEntryWrapper implements AccountEntry,
 		_accountEntry.setStatus(status);
 	}
 
-	/**
-	* Sets the status by user ID of this account entry.
-	*
-	* @param statusByUserId the status by user ID of this account entry
-	*/
-	@Override
-	public void setStatusByUserId(long statusByUserId) {
-		_accountEntry.setStatusByUserId(statusByUserId);
-	}
-
-	/**
-	* Sets the status by user name of this account entry.
-	*
-	* @param statusByUserName the status by user name of this account entry
-	*/
-	@Override
-	public void setStatusByUserName(java.lang.String statusByUserName) {
-		_accountEntry.setStatusByUserName(statusByUserName);
-	}
-
-	/**
-	* Sets the status by user uuid of this account entry.
-	*
-	* @param statusByUserUuid the status by user uuid of this account entry
-	*/
-	@Override
-	public void setStatusByUserUuid(java.lang.String statusByUserUuid) {
-		_accountEntry.setStatusByUserUuid(statusByUserUuid);
-	}
-
-	/**
-	* Sets the status date of this account entry.
-	*
-	* @param statusDate the status date of this account entry
-	*/
-	@Override
-	public void setStatusDate(Date statusDate) {
-		_accountEntry.setStatusDate(statusDate);
-	}
-
-	/**
-	* Sets the status message of this account entry.
-	*
-	* @param statusMessage the status message of this account entry
-	*/
-	@Override
-	public void setStatusMessage(java.lang.String statusMessage) {
-		_accountEntry.setStatusMessage(statusMessage);
-	}
-
 	@Override
 	public void setSupportRegionIds(long[] supportRegionIds) {
 		_accountEntry.setSupportRegionIds(supportRegionIds);
-	}
-
-	/**
-	* Sets the tier of this account entry.
-	*
-	* @param tier the tier of this account entry
-	*/
-	@Override
-	public void setTier(int tier) {
-		_accountEntry.setTier(tier);
-	}
-
-	/**
-	* Sets the type of this account entry.
-	*
-	* @param type the type of this account entry
-	*/
-	@Override
-	public void setType(int type) {
-		_accountEntry.setType(type);
 	}
 
 	/**

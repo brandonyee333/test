@@ -32,42 +32,19 @@
 		<field name="modifiedUserId" type="long" />
 		<field name="modifiedUserName" type="String" />
 		<field name="modifiedDate" type="Date" />
-		<field name="corpProjectUuid" type="String" />
-		<field name="corpProjectId" type="long" />
+		<field name="koroneikiAccountKey" type="String" />
 		<field name="dossieraAccountKey" type="String" />
-		<field name="corpEntryName" type="String">
-			<hint name="max-length">255</hint>
-		</field>
 		<field name="name" type="String">
 			<hint name="max-length">500</hint>
 		</field>
 		<field name="code" type="String" />
-		<field name="redirectAccountEntryId" type="long" />
-		<field name="type" type="int" />
-		<field name="industry" type="int" />
-		<field name="countryId" type="long" />
-		<field name="partnerEntryId" type="long" />
-		<field name="partnerManagedSupport" type="boolean" />
-		<field name="tier" type="int" />
-		<field name="maxCustomers" type="int" />
 		<field name="instructions" type="String">
 			<hint-collection name="TEXTAREA" />
 		</field>
-		<field name="notes" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="highestSupportResponseId" type="long" />
 		<field name="activeSupport" type="boolean" />
 		<field name="activeTicketSupport" type="boolean" />
-		<field name="lastAuditDate" type="Date" />
 		<field name="lastZendeskAuditDate" type="Date" />
 		<field name="status" type="int" />
-		<field name="statusByUserId" type="long" />
-		<field name="statusByUserName" type="String" />
-		<field name="statusDate" type="Date" />
-		<field name="statusMessage" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
 	</model>
 	<model name="com.liferay.osb.model.AccountEntryLanguage">
 		<field name="accountEntryLanguageId" type="long" />

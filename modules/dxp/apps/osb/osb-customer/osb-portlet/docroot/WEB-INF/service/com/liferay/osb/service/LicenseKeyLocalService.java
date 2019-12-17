@@ -165,9 +165,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	public LicenseKey renewLicenseKey(long userId, long licenseKeyId,
 		Date startDate, Date expirationDate) throws PortalException;
 
-	public LicenseKey renewTrialLicenseKey(long userId)
-		throws java.lang.Exception;
-
 	/**
 	* Updates the license key in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -436,10 +433,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 		throws PortalException;
 
 	public void sendRegisteredEmail(User user, LicenseKey licenseKey)
-		throws java.lang.Exception;
-
-	public void sendTrialRenewalNotificationEmail(
-		java.lang.String emailAddress, long accountEntryId)
 		throws java.lang.Exception;
 
 	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.Serializable;
 
@@ -79,32 +78,15 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			{ "modifiedUserId", Types.BIGINT },
 			{ "modifiedUserName", Types.VARCHAR },
 			{ "modifiedDate", Types.TIMESTAMP },
-			{ "corpProjectUuid", Types.VARCHAR },
-			{ "corpProjectId", Types.BIGINT },
+			{ "koroneikiAccountKey", Types.VARCHAR },
 			{ "dossieraAccountKey", Types.VARCHAR },
-			{ "corpEntryName", Types.VARCHAR },
 			{ "name", Types.VARCHAR },
 			{ "code_", Types.VARCHAR },
-			{ "redirectAccountEntryId", Types.BIGINT },
-			{ "type_", Types.INTEGER },
-			{ "industry", Types.INTEGER },
-			{ "countryId", Types.BIGINT },
-			{ "partnerEntryId", Types.BIGINT },
-			{ "partnerManagedSupport", Types.BOOLEAN },
-			{ "tier", Types.INTEGER },
-			{ "maxCustomers", Types.INTEGER },
 			{ "instructions", Types.VARCHAR },
-			{ "notes", Types.VARCHAR },
-			{ "highestSupportResponseId", Types.BIGINT },
 			{ "activeSupport", Types.BOOLEAN },
 			{ "activeTicketSupport", Types.BOOLEAN },
-			{ "lastAuditDate", Types.TIMESTAMP },
 			{ "lastZendeskAuditDate", Types.TIMESTAMP },
-			{ "status", Types.INTEGER },
-			{ "statusByUserId", Types.BIGINT },
-			{ "statusByUserName", Types.VARCHAR },
-			{ "statusDate", Types.TIMESTAMP },
-			{ "statusMessage", Types.VARCHAR }
+			{ "status", Types.INTEGER }
 		};
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP = new HashMap<String, Integer>();
 
@@ -117,38 +99,21 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		TABLE_COLUMNS_MAP.put("modifiedUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("modifiedUserName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("corpProjectUuid", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("corpProjectId", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("koroneikiAccountKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("dossieraAccountKey", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("corpEntryName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("code_", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("redirectAccountEntryId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("industry", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("countryId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("partnerEntryId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("partnerManagedSupport", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("tier", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("maxCustomers", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("instructions", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("notes", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("highestSupportResponseId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("activeSupport", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("activeTicketSupport", Types.BOOLEAN);
-		TABLE_COLUMNS_MAP.put("lastAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("lastZendeskAuditDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
-		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("statusDate", Types.TIMESTAMP);
-		TABLE_COLUMNS_MAP.put("statusMessage", Types.VARCHAR);
 	}
 
-	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,corpProjectUuid VARCHAR(75) null,corpProjectId LONG,dossieraAccountKey VARCHAR(75) null,corpEntryName VARCHAR(255) null,name VARCHAR(500) null,code_ VARCHAR(75) null,redirectAccountEntryId LONG,type_ INTEGER,industry INTEGER,countryId LONG,partnerEntryId LONG,partnerManagedSupport BOOLEAN,tier INTEGER,maxCustomers INTEGER,instructions STRING null,notes STRING null,highestSupportResponseId LONG,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastAuditDate DATE null,lastZendeskAuditDate DATE null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null,statusMessage STRING null)";
+	public static final String TABLE_SQL_CREATE = "create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER)";
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
-	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.name ASC";
-	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.name ASC";
+	public static final String ORDER_BY_JPQL = " ORDER BY accountEntry.accountEntryId ASC";
+	public static final String ORDER_BY_SQL = " ORDER BY OSB_AccountEntry.accountEntryId ASC";
 	public static final String DATA_SOURCE = "liferayDataSource";
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
@@ -161,17 +126,9 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
 				"value.object.column.bitmask.enabled.com.liferay.osb.model.AccountEntry"),
 			true);
-	public static final long CODE_COLUMN_BITMASK = 1L;
-	public static final long CORPPROJECTID_COLUMN_BITMASK = 2L;
-	public static final long CORPPROJECTUUID_COLUMN_BITMASK = 4L;
-	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 8L;
-	public static final long NAME_COLUMN_BITMASK = 16L;
-	public static final long PARTNERENTRYID_COLUMN_BITMASK = 32L;
-	public static final long PARTNERMANAGEDSUPPORT_COLUMN_BITMASK = 64L;
-	public static final long REDIRECTACCOUNTENTRYID_COLUMN_BITMASK = 128L;
-	public static final long STATUS_COLUMN_BITMASK = 256L;
-	public static final long TYPE_COLUMN_BITMASK = 512L;
-	public static final long USERID_COLUMN_BITMASK = 1024L;
+	public static final long DOSSIERAACCOUNTKEY_COLUMN_BITMASK = 1L;
+	public static final long KORONEIKIACCOUNTKEY_COLUMN_BITMASK = 2L;
+	public static final long ACCOUNTENTRYID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -194,32 +151,15 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		model.setModifiedUserId(soapModel.getModifiedUserId());
 		model.setModifiedUserName(soapModel.getModifiedUserName());
 		model.setModifiedDate(soapModel.getModifiedDate());
-		model.setCorpProjectUuid(soapModel.getCorpProjectUuid());
-		model.setCorpProjectId(soapModel.getCorpProjectId());
+		model.setKoroneikiAccountKey(soapModel.getKoroneikiAccountKey());
 		model.setDossieraAccountKey(soapModel.getDossieraAccountKey());
-		model.setCorpEntryName(soapModel.getCorpEntryName());
 		model.setName(soapModel.getName());
 		model.setCode(soapModel.getCode());
-		model.setRedirectAccountEntryId(soapModel.getRedirectAccountEntryId());
-		model.setType(soapModel.getType());
-		model.setIndustry(soapModel.getIndustry());
-		model.setCountryId(soapModel.getCountryId());
-		model.setPartnerEntryId(soapModel.getPartnerEntryId());
-		model.setPartnerManagedSupport(soapModel.getPartnerManagedSupport());
-		model.setTier(soapModel.getTier());
-		model.setMaxCustomers(soapModel.getMaxCustomers());
 		model.setInstructions(soapModel.getInstructions());
-		model.setNotes(soapModel.getNotes());
-		model.setHighestSupportResponseId(soapModel.getHighestSupportResponseId());
 		model.setActiveSupport(soapModel.getActiveSupport());
 		model.setActiveTicketSupport(soapModel.getActiveTicketSupport());
-		model.setLastAuditDate(soapModel.getLastAuditDate());
 		model.setLastZendeskAuditDate(soapModel.getLastZendeskAuditDate());
 		model.setStatus(soapModel.getStatus());
-		model.setStatusByUserId(soapModel.getStatusByUserId());
-		model.setStatusByUserName(soapModel.getStatusByUserName());
-		model.setStatusDate(soapModel.getStatusDate());
-		model.setStatusMessage(soapModel.getStatusMessage());
 
 		return model;
 	}
@@ -306,32 +246,15 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		attributes.put("modifiedUserId", getModifiedUserId());
 		attributes.put("modifiedUserName", getModifiedUserName());
 		attributes.put("modifiedDate", getModifiedDate());
-		attributes.put("corpProjectUuid", getCorpProjectUuid());
-		attributes.put("corpProjectId", getCorpProjectId());
+		attributes.put("koroneikiAccountKey", getKoroneikiAccountKey());
 		attributes.put("dossieraAccountKey", getDossieraAccountKey());
-		attributes.put("corpEntryName", getCorpEntryName());
 		attributes.put("name", getName());
 		attributes.put("code", getCode());
-		attributes.put("redirectAccountEntryId", getRedirectAccountEntryId());
-		attributes.put("type", getType());
-		attributes.put("industry", getIndustry());
-		attributes.put("countryId", getCountryId());
-		attributes.put("partnerEntryId", getPartnerEntryId());
-		attributes.put("partnerManagedSupport", getPartnerManagedSupport());
-		attributes.put("tier", getTier());
-		attributes.put("maxCustomers", getMaxCustomers());
 		attributes.put("instructions", getInstructions());
-		attributes.put("notes", getNotes());
-		attributes.put("highestSupportResponseId", getHighestSupportResponseId());
 		attributes.put("activeSupport", getActiveSupport());
 		attributes.put("activeTicketSupport", getActiveTicketSupport());
-		attributes.put("lastAuditDate", getLastAuditDate());
 		attributes.put("lastZendeskAuditDate", getLastZendeskAuditDate());
 		attributes.put("status", getStatus());
-		attributes.put("statusByUserId", getStatusByUserId());
-		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusDate", getStatusDate());
-		attributes.put("statusMessage", getStatusMessage());
 
 		attributes.put("entityCacheEnabled", isEntityCacheEnabled());
 		attributes.put("finderCacheEnabled", isFinderCacheEnabled());
@@ -389,28 +312,17 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			setModifiedDate(modifiedDate);
 		}
 
-		String corpProjectUuid = (String)attributes.get("corpProjectUuid");
+		String koroneikiAccountKey = (String)attributes.get(
+				"koroneikiAccountKey");
 
-		if (corpProjectUuid != null) {
-			setCorpProjectUuid(corpProjectUuid);
-		}
-
-		Long corpProjectId = (Long)attributes.get("corpProjectId");
-
-		if (corpProjectId != null) {
-			setCorpProjectId(corpProjectId);
+		if (koroneikiAccountKey != null) {
+			setKoroneikiAccountKey(koroneikiAccountKey);
 		}
 
 		String dossieraAccountKey = (String)attributes.get("dossieraAccountKey");
 
 		if (dossieraAccountKey != null) {
 			setDossieraAccountKey(dossieraAccountKey);
-		}
-
-		String corpEntryName = (String)attributes.get("corpEntryName");
-
-		if (corpEntryName != null) {
-			setCorpEntryName(corpEntryName);
 		}
 
 		String name = (String)attributes.get("name");
@@ -425,73 +337,10 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			setCode(code);
 		}
 
-		Long redirectAccountEntryId = (Long)attributes.get(
-				"redirectAccountEntryId");
-
-		if (redirectAccountEntryId != null) {
-			setRedirectAccountEntryId(redirectAccountEntryId);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
-		}
-
-		Integer industry = (Integer)attributes.get("industry");
-
-		if (industry != null) {
-			setIndustry(industry);
-		}
-
-		Long countryId = (Long)attributes.get("countryId");
-
-		if (countryId != null) {
-			setCountryId(countryId);
-		}
-
-		Long partnerEntryId = (Long)attributes.get("partnerEntryId");
-
-		if (partnerEntryId != null) {
-			setPartnerEntryId(partnerEntryId);
-		}
-
-		Boolean partnerManagedSupport = (Boolean)attributes.get(
-				"partnerManagedSupport");
-
-		if (partnerManagedSupport != null) {
-			setPartnerManagedSupport(partnerManagedSupport);
-		}
-
-		Integer tier = (Integer)attributes.get("tier");
-
-		if (tier != null) {
-			setTier(tier);
-		}
-
-		Integer maxCustomers = (Integer)attributes.get("maxCustomers");
-
-		if (maxCustomers != null) {
-			setMaxCustomers(maxCustomers);
-		}
-
 		String instructions = (String)attributes.get("instructions");
 
 		if (instructions != null) {
 			setInstructions(instructions);
-		}
-
-		String notes = (String)attributes.get("notes");
-
-		if (notes != null) {
-			setNotes(notes);
-		}
-
-		Long highestSupportResponseId = (Long)attributes.get(
-				"highestSupportResponseId");
-
-		if (highestSupportResponseId != null) {
-			setHighestSupportResponseId(highestSupportResponseId);
 		}
 
 		Boolean activeSupport = (Boolean)attributes.get("activeSupport");
@@ -507,12 +356,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			setActiveTicketSupport(activeTicketSupport);
 		}
 
-		Date lastAuditDate = (Date)attributes.get("lastAuditDate");
-
-		if (lastAuditDate != null) {
-			setLastAuditDate(lastAuditDate);
-		}
-
 		Date lastZendeskAuditDate = (Date)attributes.get("lastZendeskAuditDate");
 
 		if (lastZendeskAuditDate != null) {
@@ -523,30 +366,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if (status != null) {
 			setStatus(status);
-		}
-
-		Long statusByUserId = (Long)attributes.get("statusByUserId");
-
-		if (statusByUserId != null) {
-			setStatusByUserId(statusByUserId);
-		}
-
-		String statusByUserName = (String)attributes.get("statusByUserName");
-
-		if (statusByUserName != null) {
-			setStatusByUserName(statusByUserName);
-		}
-
-		Date statusDate = (Date)attributes.get("statusDate");
-
-		if (statusDate != null) {
-			setStatusDate(statusDate);
-		}
-
-		String statusMessage = (String)attributes.get("statusMessage");
-
-		if (statusMessage != null) {
-			setStatusMessage(statusMessage);
 		}
 	}
 
@@ -580,14 +399,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setUserId(long userId) {
-		_columnBitmask |= USERID_COLUMN_BITMASK;
-
-		if (!_setOriginalUserId) {
-			_setOriginalUserId = true;
-
-			_originalUserId = _userId;
-		}
-
 		_userId = userId;
 	}
 
@@ -605,10 +416,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setUserUuid(String userUuid) {
-	}
-
-	public long getOriginalUserId() {
-		return _originalUserId;
 	}
 
 	@JSON
@@ -700,51 +507,28 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@JSON
 	@Override
-	public String getCorpProjectUuid() {
-		if (_corpProjectUuid == null) {
+	public String getKoroneikiAccountKey() {
+		if (_koroneikiAccountKey == null) {
 			return StringPool.BLANK;
 		}
 		else {
-			return _corpProjectUuid;
+			return _koroneikiAccountKey;
 		}
 	}
 
 	@Override
-	public void setCorpProjectUuid(String corpProjectUuid) {
-		_columnBitmask |= CORPPROJECTUUID_COLUMN_BITMASK;
+	public void setKoroneikiAccountKey(String koroneikiAccountKey) {
+		_columnBitmask |= KORONEIKIACCOUNTKEY_COLUMN_BITMASK;
 
-		if (_originalCorpProjectUuid == null) {
-			_originalCorpProjectUuid = _corpProjectUuid;
+		if (_originalKoroneikiAccountKey == null) {
+			_originalKoroneikiAccountKey = _koroneikiAccountKey;
 		}
 
-		_corpProjectUuid = corpProjectUuid;
+		_koroneikiAccountKey = koroneikiAccountKey;
 	}
 
-	public String getOriginalCorpProjectUuid() {
-		return GetterUtil.getString(_originalCorpProjectUuid);
-	}
-
-	@JSON
-	@Override
-	public long getCorpProjectId() {
-		return _corpProjectId;
-	}
-
-	@Override
-	public void setCorpProjectId(long corpProjectId) {
-		_columnBitmask |= CORPPROJECTID_COLUMN_BITMASK;
-
-		if (!_setOriginalCorpProjectId) {
-			_setOriginalCorpProjectId = true;
-
-			_originalCorpProjectId = _corpProjectId;
-		}
-
-		_corpProjectId = corpProjectId;
-	}
-
-	public long getOriginalCorpProjectId() {
-		return _originalCorpProjectId;
+	public String getOriginalKoroneikiAccountKey() {
+		return GetterUtil.getString(_originalKoroneikiAccountKey);
 	}
 
 	@JSON
@@ -775,22 +559,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@JSON
 	@Override
-	public String getCorpEntryName() {
-		if (_corpEntryName == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _corpEntryName;
-		}
-	}
-
-	@Override
-	public void setCorpEntryName(String corpEntryName) {
-		_corpEntryName = corpEntryName;
-	}
-
-	@JSON
-	@Override
 	public String getName() {
 		if (_name == null) {
 			return StringPool.BLANK;
@@ -802,17 +570,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setName(String name) {
-		_columnBitmask = -1L;
-
-		if (_originalName == null) {
-			_originalName = _name;
-		}
-
 		_name = name;
-	}
-
-	public String getOriginalName() {
-		return GetterUtil.getString(_originalName);
 	}
 
 	@JSON
@@ -828,159 +586,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setCode(String code) {
-		_columnBitmask |= CODE_COLUMN_BITMASK;
-
-		if (_originalCode == null) {
-			_originalCode = _code;
-		}
-
 		_code = code;
-	}
-
-	public String getOriginalCode() {
-		return GetterUtil.getString(_originalCode);
-	}
-
-	@JSON
-	@Override
-	public long getRedirectAccountEntryId() {
-		return _redirectAccountEntryId;
-	}
-
-	@Override
-	public void setRedirectAccountEntryId(long redirectAccountEntryId) {
-		_columnBitmask |= REDIRECTACCOUNTENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalRedirectAccountEntryId) {
-			_setOriginalRedirectAccountEntryId = true;
-
-			_originalRedirectAccountEntryId = _redirectAccountEntryId;
-		}
-
-		_redirectAccountEntryId = redirectAccountEntryId;
-	}
-
-	public long getOriginalRedirectAccountEntryId() {
-		return _originalRedirectAccountEntryId;
-	}
-
-	@JSON
-	@Override
-	public int getType() {
-		return _type;
-	}
-
-	@Override
-	public void setType(int type) {
-		_columnBitmask |= TYPE_COLUMN_BITMASK;
-
-		if (!_setOriginalType) {
-			_setOriginalType = true;
-
-			_originalType = _type;
-		}
-
-		_type = type;
-	}
-
-	public int getOriginalType() {
-		return _originalType;
-	}
-
-	@JSON
-	@Override
-	public int getIndustry() {
-		return _industry;
-	}
-
-	@Override
-	public void setIndustry(int industry) {
-		_industry = industry;
-	}
-
-	@JSON
-	@Override
-	public long getCountryId() {
-		return _countryId;
-	}
-
-	@Override
-	public void setCountryId(long countryId) {
-		_countryId = countryId;
-	}
-
-	@JSON
-	@Override
-	public long getPartnerEntryId() {
-		return _partnerEntryId;
-	}
-
-	@Override
-	public void setPartnerEntryId(long partnerEntryId) {
-		_columnBitmask |= PARTNERENTRYID_COLUMN_BITMASK;
-
-		if (!_setOriginalPartnerEntryId) {
-			_setOriginalPartnerEntryId = true;
-
-			_originalPartnerEntryId = _partnerEntryId;
-		}
-
-		_partnerEntryId = partnerEntryId;
-	}
-
-	public long getOriginalPartnerEntryId() {
-		return _originalPartnerEntryId;
-	}
-
-	@JSON
-	@Override
-	public boolean getPartnerManagedSupport() {
-		return _partnerManagedSupport;
-	}
-
-	@JSON
-	@Override
-	public boolean isPartnerManagedSupport() {
-		return _partnerManagedSupport;
-	}
-
-	@Override
-	public void setPartnerManagedSupport(boolean partnerManagedSupport) {
-		_columnBitmask |= PARTNERMANAGEDSUPPORT_COLUMN_BITMASK;
-
-		if (!_setOriginalPartnerManagedSupport) {
-			_setOriginalPartnerManagedSupport = true;
-
-			_originalPartnerManagedSupport = _partnerManagedSupport;
-		}
-
-		_partnerManagedSupport = partnerManagedSupport;
-	}
-
-	public boolean getOriginalPartnerManagedSupport() {
-		return _originalPartnerManagedSupport;
-	}
-
-	@JSON
-	@Override
-	public int getTier() {
-		return _tier;
-	}
-
-	@Override
-	public void setTier(int tier) {
-		_tier = tier;
-	}
-
-	@JSON
-	@Override
-	public int getMaxCustomers() {
-		return _maxCustomers;
-	}
-
-	@Override
-	public void setMaxCustomers(int maxCustomers) {
-		_maxCustomers = maxCustomers;
 	}
 
 	@JSON
@@ -997,33 +603,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	@Override
 	public void setInstructions(String instructions) {
 		_instructions = instructions;
-	}
-
-	@JSON
-	@Override
-	public String getNotes() {
-		if (_notes == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _notes;
-		}
-	}
-
-	@Override
-	public void setNotes(String notes) {
-		_notes = notes;
-	}
-
-	@JSON
-	@Override
-	public long getHighestSupportResponseId() {
-		return _highestSupportResponseId;
-	}
-
-	@Override
-	public void setHighestSupportResponseId(long highestSupportResponseId) {
-		_highestSupportResponseId = highestSupportResponseId;
 	}
 
 	@JSON
@@ -1062,17 +641,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@JSON
 	@Override
-	public Date getLastAuditDate() {
-		return _lastAuditDate;
-	}
-
-	@Override
-	public void setLastAuditDate(Date lastAuditDate) {
-		_lastAuditDate = lastAuditDate;
-	}
-
-	@JSON
-	@Override
 	public Date getLastZendeskAuditDate() {
 		return _lastZendeskAuditDate;
 	}
@@ -1090,169 +658,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public void setStatus(int status) {
-		_columnBitmask |= STATUS_COLUMN_BITMASK;
-
-		if (!_setOriginalStatus) {
-			_setOriginalStatus = true;
-
-			_originalStatus = _status;
-		}
-
 		_status = status;
-	}
-
-	public int getOriginalStatus() {
-		return _originalStatus;
-	}
-
-	@JSON
-	@Override
-	public long getStatusByUserId() {
-		return _statusByUserId;
-	}
-
-	@Override
-	public void setStatusByUserId(long statusByUserId) {
-		_statusByUserId = statusByUserId;
-	}
-
-	@Override
-	public String getStatusByUserUuid() {
-		try {
-			User user = UserLocalServiceUtil.getUserById(getStatusByUserId());
-
-			return user.getUuid();
-		}
-		catch (PortalException pe) {
-			return StringPool.BLANK;
-		}
-	}
-
-	@Override
-	public void setStatusByUserUuid(String statusByUserUuid) {
-	}
-
-	@JSON
-	@Override
-	public String getStatusByUserName() {
-		if (_statusByUserName == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _statusByUserName;
-		}
-	}
-
-	@Override
-	public void setStatusByUserName(String statusByUserName) {
-		_statusByUserName = statusByUserName;
-	}
-
-	@JSON
-	@Override
-	public Date getStatusDate() {
-		return _statusDate;
-	}
-
-	@Override
-	public void setStatusDate(Date statusDate) {
-		_statusDate = statusDate;
-	}
-
-	@JSON
-	@Override
-	public String getStatusMessage() {
-		if (_statusMessage == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _statusMessage;
-		}
-	}
-
-	@Override
-	public void setStatusMessage(String statusMessage) {
-		_statusMessage = statusMessage;
-	}
-
-	@Override
-	public boolean isApproved() {
-		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isDenied() {
-		if (getStatus() == WorkflowConstants.STATUS_DENIED) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isDraft() {
-		if (getStatus() == WorkflowConstants.STATUS_DRAFT) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isExpired() {
-		if (getStatus() == WorkflowConstants.STATUS_EXPIRED) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isInactive() {
-		if (getStatus() == WorkflowConstants.STATUS_INACTIVE) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isIncomplete() {
-		if (getStatus() == WorkflowConstants.STATUS_INCOMPLETE) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isPending() {
-		if (getStatus() == WorkflowConstants.STATUS_PENDING) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean isScheduled() {
-		if (getStatus() == WorkflowConstants.STATUS_SCHEDULED) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 
 	public long getColumnBitmask() {
@@ -1294,32 +700,15 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		accountEntryImpl.setModifiedUserId(getModifiedUserId());
 		accountEntryImpl.setModifiedUserName(getModifiedUserName());
 		accountEntryImpl.setModifiedDate(getModifiedDate());
-		accountEntryImpl.setCorpProjectUuid(getCorpProjectUuid());
-		accountEntryImpl.setCorpProjectId(getCorpProjectId());
+		accountEntryImpl.setKoroneikiAccountKey(getKoroneikiAccountKey());
 		accountEntryImpl.setDossieraAccountKey(getDossieraAccountKey());
-		accountEntryImpl.setCorpEntryName(getCorpEntryName());
 		accountEntryImpl.setName(getName());
 		accountEntryImpl.setCode(getCode());
-		accountEntryImpl.setRedirectAccountEntryId(getRedirectAccountEntryId());
-		accountEntryImpl.setType(getType());
-		accountEntryImpl.setIndustry(getIndustry());
-		accountEntryImpl.setCountryId(getCountryId());
-		accountEntryImpl.setPartnerEntryId(getPartnerEntryId());
-		accountEntryImpl.setPartnerManagedSupport(getPartnerManagedSupport());
-		accountEntryImpl.setTier(getTier());
-		accountEntryImpl.setMaxCustomers(getMaxCustomers());
 		accountEntryImpl.setInstructions(getInstructions());
-		accountEntryImpl.setNotes(getNotes());
-		accountEntryImpl.setHighestSupportResponseId(getHighestSupportResponseId());
 		accountEntryImpl.setActiveSupport(getActiveSupport());
 		accountEntryImpl.setActiveTicketSupport(getActiveTicketSupport());
-		accountEntryImpl.setLastAuditDate(getLastAuditDate());
 		accountEntryImpl.setLastZendeskAuditDate(getLastZendeskAuditDate());
 		accountEntryImpl.setStatus(getStatus());
-		accountEntryImpl.setStatusByUserId(getStatusByUserId());
-		accountEntryImpl.setStatusByUserName(getStatusByUserName());
-		accountEntryImpl.setStatusDate(getStatusDate());
-		accountEntryImpl.setStatusMessage(getStatusMessage());
 
 		accountEntryImpl.resetOriginalValues();
 
@@ -1328,15 +717,17 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public int compareTo(AccountEntry accountEntry) {
-		int value = 0;
+		long primaryKey = accountEntry.getPrimaryKey();
 
-		value = getName().compareToIgnoreCase(accountEntry.getName());
-
-		if (value != 0) {
-			return value;
+		if (getPrimaryKey() < primaryKey) {
+			return -1;
 		}
-
-		return 0;
+		else if (getPrimaryKey() > primaryKey) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 
 	@Override
@@ -1380,43 +771,11 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	public void resetOriginalValues() {
 		AccountEntryModelImpl accountEntryModelImpl = this;
 
-		accountEntryModelImpl._originalUserId = accountEntryModelImpl._userId;
-
-		accountEntryModelImpl._setOriginalUserId = false;
-
 		accountEntryModelImpl._setModifiedDate = false;
 
-		accountEntryModelImpl._originalCorpProjectUuid = accountEntryModelImpl._corpProjectUuid;
-
-		accountEntryModelImpl._originalCorpProjectId = accountEntryModelImpl._corpProjectId;
-
-		accountEntryModelImpl._setOriginalCorpProjectId = false;
+		accountEntryModelImpl._originalKoroneikiAccountKey = accountEntryModelImpl._koroneikiAccountKey;
 
 		accountEntryModelImpl._originalDossieraAccountKey = accountEntryModelImpl._dossieraAccountKey;
-
-		accountEntryModelImpl._originalName = accountEntryModelImpl._name;
-
-		accountEntryModelImpl._originalCode = accountEntryModelImpl._code;
-
-		accountEntryModelImpl._originalRedirectAccountEntryId = accountEntryModelImpl._redirectAccountEntryId;
-
-		accountEntryModelImpl._setOriginalRedirectAccountEntryId = false;
-
-		accountEntryModelImpl._originalType = accountEntryModelImpl._type;
-
-		accountEntryModelImpl._setOriginalType = false;
-
-		accountEntryModelImpl._originalPartnerEntryId = accountEntryModelImpl._partnerEntryId;
-
-		accountEntryModelImpl._setOriginalPartnerEntryId = false;
-
-		accountEntryModelImpl._originalPartnerManagedSupport = accountEntryModelImpl._partnerManagedSupport;
-
-		accountEntryModelImpl._setOriginalPartnerManagedSupport = false;
-
-		accountEntryModelImpl._originalStatus = accountEntryModelImpl._status;
-
-		accountEntryModelImpl._setOriginalStatus = false;
 
 		accountEntryModelImpl._columnBitmask = 0;
 	}
@@ -1467,15 +826,14 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			accountEntryCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
-		accountEntryCacheModel.corpProjectUuid = getCorpProjectUuid();
+		accountEntryCacheModel.koroneikiAccountKey = getKoroneikiAccountKey();
 
-		String corpProjectUuid = accountEntryCacheModel.corpProjectUuid;
+		String koroneikiAccountKey = accountEntryCacheModel.koroneikiAccountKey;
 
-		if ((corpProjectUuid != null) && (corpProjectUuid.length() == 0)) {
-			accountEntryCacheModel.corpProjectUuid = null;
+		if ((koroneikiAccountKey != null) &&
+				(koroneikiAccountKey.length() == 0)) {
+			accountEntryCacheModel.koroneikiAccountKey = null;
 		}
-
-		accountEntryCacheModel.corpProjectId = getCorpProjectId();
 
 		accountEntryCacheModel.dossieraAccountKey = getDossieraAccountKey();
 
@@ -1483,14 +841,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		if ((dossieraAccountKey != null) && (dossieraAccountKey.length() == 0)) {
 			accountEntryCacheModel.dossieraAccountKey = null;
-		}
-
-		accountEntryCacheModel.corpEntryName = getCorpEntryName();
-
-		String corpEntryName = accountEntryCacheModel.corpEntryName;
-
-		if ((corpEntryName != null) && (corpEntryName.length() == 0)) {
-			accountEntryCacheModel.corpEntryName = null;
 		}
 
 		accountEntryCacheModel.name = getName();
@@ -1509,22 +859,6 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			accountEntryCacheModel.code = null;
 		}
 
-		accountEntryCacheModel.redirectAccountEntryId = getRedirectAccountEntryId();
-
-		accountEntryCacheModel.type = getType();
-
-		accountEntryCacheModel.industry = getIndustry();
-
-		accountEntryCacheModel.countryId = getCountryId();
-
-		accountEntryCacheModel.partnerEntryId = getPartnerEntryId();
-
-		accountEntryCacheModel.partnerManagedSupport = getPartnerManagedSupport();
-
-		accountEntryCacheModel.tier = getTier();
-
-		accountEntryCacheModel.maxCustomers = getMaxCustomers();
-
 		accountEntryCacheModel.instructions = getInstructions();
 
 		String instructions = accountEntryCacheModel.instructions;
@@ -1533,28 +867,9 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 			accountEntryCacheModel.instructions = null;
 		}
 
-		accountEntryCacheModel.notes = getNotes();
-
-		String notes = accountEntryCacheModel.notes;
-
-		if ((notes != null) && (notes.length() == 0)) {
-			accountEntryCacheModel.notes = null;
-		}
-
-		accountEntryCacheModel.highestSupportResponseId = getHighestSupportResponseId();
-
 		accountEntryCacheModel.activeSupport = getActiveSupport();
 
 		accountEntryCacheModel.activeTicketSupport = getActiveTicketSupport();
-
-		Date lastAuditDate = getLastAuditDate();
-
-		if (lastAuditDate != null) {
-			accountEntryCacheModel.lastAuditDate = lastAuditDate.getTime();
-		}
-		else {
-			accountEntryCacheModel.lastAuditDate = Long.MIN_VALUE;
-		}
 
 		Date lastZendeskAuditDate = getLastZendeskAuditDate();
 
@@ -1567,39 +882,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 		accountEntryCacheModel.status = getStatus();
 
-		accountEntryCacheModel.statusByUserId = getStatusByUserId();
-
-		accountEntryCacheModel.statusByUserName = getStatusByUserName();
-
-		String statusByUserName = accountEntryCacheModel.statusByUserName;
-
-		if ((statusByUserName != null) && (statusByUserName.length() == 0)) {
-			accountEntryCacheModel.statusByUserName = null;
-		}
-
-		Date statusDate = getStatusDate();
-
-		if (statusDate != null) {
-			accountEntryCacheModel.statusDate = statusDate.getTime();
-		}
-		else {
-			accountEntryCacheModel.statusDate = Long.MIN_VALUE;
-		}
-
-		accountEntryCacheModel.statusMessage = getStatusMessage();
-
-		String statusMessage = accountEntryCacheModel.statusMessage;
-
-		if ((statusMessage != null) && (statusMessage.length() == 0)) {
-			accountEntryCacheModel.statusMessage = null;
-		}
-
 		return accountEntryCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(69);
+		StringBundler sb = new StringBundler(35);
 
 		sb.append("{accountEntryId=");
 		sb.append(getAccountEntryId());
@@ -1617,58 +905,24 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getModifiedUserName());
 		sb.append(", modifiedDate=");
 		sb.append(getModifiedDate());
-		sb.append(", corpProjectUuid=");
-		sb.append(getCorpProjectUuid());
-		sb.append(", corpProjectId=");
-		sb.append(getCorpProjectId());
+		sb.append(", koroneikiAccountKey=");
+		sb.append(getKoroneikiAccountKey());
 		sb.append(", dossieraAccountKey=");
 		sb.append(getDossieraAccountKey());
-		sb.append(", corpEntryName=");
-		sb.append(getCorpEntryName());
 		sb.append(", name=");
 		sb.append(getName());
 		sb.append(", code=");
 		sb.append(getCode());
-		sb.append(", redirectAccountEntryId=");
-		sb.append(getRedirectAccountEntryId());
-		sb.append(", type=");
-		sb.append(getType());
-		sb.append(", industry=");
-		sb.append(getIndustry());
-		sb.append(", countryId=");
-		sb.append(getCountryId());
-		sb.append(", partnerEntryId=");
-		sb.append(getPartnerEntryId());
-		sb.append(", partnerManagedSupport=");
-		sb.append(getPartnerManagedSupport());
-		sb.append(", tier=");
-		sb.append(getTier());
-		sb.append(", maxCustomers=");
-		sb.append(getMaxCustomers());
 		sb.append(", instructions=");
 		sb.append(getInstructions());
-		sb.append(", notes=");
-		sb.append(getNotes());
-		sb.append(", highestSupportResponseId=");
-		sb.append(getHighestSupportResponseId());
 		sb.append(", activeSupport=");
 		sb.append(getActiveSupport());
 		sb.append(", activeTicketSupport=");
 		sb.append(getActiveTicketSupport());
-		sb.append(", lastAuditDate=");
-		sb.append(getLastAuditDate());
 		sb.append(", lastZendeskAuditDate=");
 		sb.append(getLastZendeskAuditDate());
 		sb.append(", status=");
 		sb.append(getStatus());
-		sb.append(", statusByUserId=");
-		sb.append(getStatusByUserId());
-		sb.append(", statusByUserName=");
-		sb.append(getStatusByUserName());
-		sb.append(", statusDate=");
-		sb.append(getStatusDate());
-		sb.append(", statusMessage=");
-		sb.append(getStatusMessage());
 		sb.append("}");
 
 		return sb.toString();
@@ -1676,7 +930,7 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(106);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("<model><model-name>");
 		sb.append("com.liferay.osb.model.AccountEntry");
@@ -1715,20 +969,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getModifiedDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>corpProjectUuid</column-name><column-value><![CDATA[");
-		sb.append(getCorpProjectUuid());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>corpProjectId</column-name><column-value><![CDATA[");
-		sb.append(getCorpProjectId());
+			"<column><column-name>koroneikiAccountKey</column-name><column-value><![CDATA[");
+		sb.append(getKoroneikiAccountKey());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>dossieraAccountKey</column-name><column-value><![CDATA[");
 		sb.append(getDossieraAccountKey());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>corpEntryName</column-name><column-value><![CDATA[");
-		sb.append(getCorpEntryName());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>name</column-name><column-value><![CDATA[");
@@ -1739,48 +985,8 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getCode());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>redirectAccountEntryId</column-name><column-value><![CDATA[");
-		sb.append(getRedirectAccountEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>type</column-name><column-value><![CDATA[");
-		sb.append(getType());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>industry</column-name><column-value><![CDATA[");
-		sb.append(getIndustry());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>countryId</column-name><column-value><![CDATA[");
-		sb.append(getCountryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>partnerEntryId</column-name><column-value><![CDATA[");
-		sb.append(getPartnerEntryId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>partnerManagedSupport</column-name><column-value><![CDATA[");
-		sb.append(getPartnerManagedSupport());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>tier</column-name><column-value><![CDATA[");
-		sb.append(getTier());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>maxCustomers</column-name><column-value><![CDATA[");
-		sb.append(getMaxCustomers());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>instructions</column-name><column-value><![CDATA[");
 		sb.append(getInstructions());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>notes</column-name><column-value><![CDATA[");
-		sb.append(getNotes());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>highestSupportResponseId</column-name><column-value><![CDATA[");
-		sb.append(getHighestSupportResponseId());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>activeSupport</column-name><column-value><![CDATA[");
@@ -1791,32 +997,12 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 		sb.append(getActiveTicketSupport());
 		sb.append("]]></column-value></column>");
 		sb.append(
-			"<column><column-name>lastAuditDate</column-name><column-value><![CDATA[");
-		sb.append(getLastAuditDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
 			"<column><column-name>lastZendeskAuditDate</column-name><column-value><![CDATA[");
 		sb.append(getLastZendeskAuditDate());
 		sb.append("]]></column-value></column>");
 		sb.append(
 			"<column><column-name>status</column-name><column-value><![CDATA[");
 		sb.append(getStatus());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserId</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserId());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusByUserName</column-name><column-value><![CDATA[");
-		sb.append(getStatusByUserName());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusDate</column-name><column-value><![CDATA[");
-		sb.append(getStatusDate());
-		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>statusMessage</column-name><column-value><![CDATA[");
-		sb.append(getStatusMessage());
 		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
@@ -1831,56 +1017,23 @@ public class AccountEntryModelImpl extends BaseModelImpl<AccountEntry>
 	private long _accountEntryId;
 	private long _companyId;
 	private long _userId;
-	private long _originalUserId;
-	private boolean _setOriginalUserId;
 	private String _userName;
 	private Date _createDate;
 	private long _modifiedUserId;
 	private String _modifiedUserName;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
-	private String _corpProjectUuid;
-	private String _originalCorpProjectUuid;
-	private long _corpProjectId;
-	private long _originalCorpProjectId;
-	private boolean _setOriginalCorpProjectId;
+	private String _koroneikiAccountKey;
+	private String _originalKoroneikiAccountKey;
 	private String _dossieraAccountKey;
 	private String _originalDossieraAccountKey;
-	private String _corpEntryName;
 	private String _name;
-	private String _originalName;
 	private String _code;
-	private String _originalCode;
-	private long _redirectAccountEntryId;
-	private long _originalRedirectAccountEntryId;
-	private boolean _setOriginalRedirectAccountEntryId;
-	private int _type;
-	private int _originalType;
-	private boolean _setOriginalType;
-	private int _industry;
-	private long _countryId;
-	private long _partnerEntryId;
-	private long _originalPartnerEntryId;
-	private boolean _setOriginalPartnerEntryId;
-	private boolean _partnerManagedSupport;
-	private boolean _originalPartnerManagedSupport;
-	private boolean _setOriginalPartnerManagedSupport;
-	private int _tier;
-	private int _maxCustomers;
 	private String _instructions;
-	private String _notes;
-	private long _highestSupportResponseId;
 	private boolean _activeSupport;
 	private boolean _activeTicketSupport;
-	private Date _lastAuditDate;
 	private Date _lastZendeskAuditDate;
 	private int _status;
-	private int _originalStatus;
-	private boolean _setOriginalStatus;
-	private long _statusByUserId;
-	private String _statusByUserName;
-	private Date _statusDate;
-	private String _statusMessage;
 	private long _columnBitmask;
 	private AccountEntry _escapedModel;
 }
