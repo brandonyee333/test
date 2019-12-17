@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.portlet.PortletLayoutFinderRegistryUtil;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
-import com.liferay.portal.kernel.repository.event.FileVersionPreviewEventListener;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.repository.model.Folder;
@@ -84,6 +83,7 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portlet.documentlibrary.webdav.DLWebDAVUtil;
+import com.liferay.portlet.preview.DLPreviewHelper;
 import com.liferay.trash.kernel.util.TrashUtil;
 
 import java.io.Serializable;
@@ -517,10 +517,9 @@ public class DLImpl implements DL {
 		FileEntry fileEntry, FileVersion fileVersion, ThemeDisplay themeDisplay,
 		String queryString, boolean appendVersion, boolean absoluteURL) {
 
-		long fileVersionPreviewId =
-			_fileVersionPreviewEventListener.getDLFileVersionPreviewId(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				DLFileEntryPreviewType.FAIL.toInteger());
+		long fileVersionPreviewId = _dlPreviewHelper.getDLFileVersionPreviewId(
+			fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
+			DLFileEntryPreviewType.FAIL.toInteger());
 
 		if (fileVersionPreviewId > 0) {
 			return StringPool.BLANK;
@@ -755,10 +754,9 @@ public class DLImpl implements DL {
 		FileEntry fileEntry, FileVersion fileVersion,
 		ThemeDisplay themeDisplay) {
 
-		long fileVersionPreviewId =
-			_fileVersionPreviewEventListener.getDLFileVersionPreviewId(
-				fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
-				DLFileEntryPreviewType.FAIL.toInteger());
+		long fileVersionPreviewId = _dlPreviewHelper.getDLFileVersionPreviewId(
+			fileVersion.getFileEntryId(), fileVersion.getFileVersionId(),
+			DLFileEntryPreviewType.FAIL.toInteger());
 
 		if (fileVersionPreviewId > 0) {
 			return StringPool.BLANK;
@@ -1242,12 +1240,11 @@ public class DLImpl implements DL {
 
 	private static final Set<String> _allMediaGalleryMimeTypes =
 		new TreeSet<>();
+	private static volatile DLPreviewHelper _dlPreviewHelper =
+		ServiceProxyFactory.newServiceTrackedInstance(
+			DLPreviewHelper.class, DLImpl.class, "_dlPreviewHelper", false,
+			true);
 	private static final Set<String> _fileIcons = new HashSet<>();
-	private static volatile FileVersionPreviewEventListener
-		_fileVersionPreviewEventListener =
-			ServiceProxyFactory.newServiceTrackedInstance(
-				FileVersionPreviewEventListener.class, DLImpl.class,
-				"_fileVersionPreviewEventListener", false, false);
 	private static final Map<String, String> _genericNames = new HashMap<>();
 
 	static {

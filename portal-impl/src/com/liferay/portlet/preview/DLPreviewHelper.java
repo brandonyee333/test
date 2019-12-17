@@ -12,22 +12,14 @@
  * details.
  */
 
-package com.liferay.portal.kernel.repository.event;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.repository.model.FileVersion;
+package com.liferay.portlet.preview;
 
 /**
- * @author Roberto Díaz
- * @author Adolfo Pérez
+ * @author Lianne Louie
  */
-public interface FileVersionPreviewEventListener {
+public interface DLPreviewHelper {
 
-	public void deleteDLFileVersionPreviews(long fileEntryId)
-		throws PortalException;
-
-	public void onFailure(FileVersion fileVersion);
-
-	public void onSuccess(FileVersion fileVersion);
+	public long getDLFileVersionPreviewId(
+		long fileEntryId, long fileVersionId, int fileVersionPreviewStatus);
 
 }
