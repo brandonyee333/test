@@ -16,7 +16,6 @@ package com.liferay.document.library.internal.repository.event;
 
 import com.liferay.document.library.constants.DLFileVersionPreviewConstants;
 import com.liferay.document.library.model.DLFileVersionPreview;
-import com.liferay.document.library.model.FileVersionPreview;
 import com.liferay.document.library.service.DLFileVersionPreviewLocalService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -38,16 +37,15 @@ public class FileVersionPreviewEventListenerImpl
 	implements FileVersionPreviewEventListener {
 
 	@Override
-	public void deleteDLFileVersionPreviews(long fileEntryId)
-		throws PortalException {
-
+	public void deleteDLFileVersionPreviews(long fileEntryId) {
 		List<DLFileVersionPreview> fileVersionPreviews =
 			_dlFileVersionPreviewLocalService.getFileEntryDLFileVersionPreviews(
 				fileEntryId);
 
 		for (DLFileVersionPreview dlFileVersionPreview : fileVersionPreviews) {
-			_dlFileVersionPreviewLocalService.deleteDLFileEntryFileVersionPreviews(
-				dlFileVersionPreview.getDlFileVersionPreviewId());
+			_dlFileVersionPreviewLocalService.
+				deleteDLFileEntryFileVersionPreviews(
+					dlFileVersionPreview.getDlFileVersionPreviewId());
 		}
 	}
 
