@@ -1,0 +1,7 @@
+Bundle-Name: Liferay OSB Customer Koroneiki Web Service API
+Bundle-SymbolicName: com.liferay.osb.customer.koroneiki.web.service.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.koroneiki.web.service,\
+	com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0,\
+	com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0
