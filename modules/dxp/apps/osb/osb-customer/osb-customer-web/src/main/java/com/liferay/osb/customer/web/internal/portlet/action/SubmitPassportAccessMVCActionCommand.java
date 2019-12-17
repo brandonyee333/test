@@ -23,6 +23,7 @@ import com.liferay.osb.customer.web.internal.constants.PassportAccessPortletKeys
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -163,11 +164,15 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				return false;
 			}
 
-			int domainCount =
-				AccountCustomerLocalServiceUtil.countPassportCustomersByDomain(
-					domain);
+			if (AccountCustomerLocalServiceUtil.countPassportCustomersByDomain(
+					domain) > 0) {
 
-			if (domainCount > 0) {
+				return true;
+			}
+
+			if (PartnerWorkerLocalServiceUtil.countPassportPartnersByDomain(
+					domain) > 0) {
+
 				return true;
 			}
 		}

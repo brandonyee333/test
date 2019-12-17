@@ -114,6 +114,10 @@ public class PartnerWorkerLocalServiceImpl
 		return addPartnerWorker(partnerEntryId, user.getUserId(), role);
 	}
 
+	public int countPassportPartnersByDomain(String domain) {
+		return partnerWorkerFinder.countPassportPartnersByDomain(domain);
+	}
+
 	@Override
 	public PartnerWorker deletePartnerWorker(long partnerWorkerId)
 		throws PortalException {

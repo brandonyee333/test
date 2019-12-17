@@ -738,6 +738,23 @@
 				(OSB_PartnerEntries_SupportRegions.supportRegionId = ?)
 		]]>
 	</sql>
+	<sql id="com.liferay.osb.service.persistence.PartnerWorkerFinder.countPassportPartnersByDomain">
+		<![CDATA[
+			SELECT
+				count(substring_index(emailAddress, '@', -1)) count
+			FROM
+				OSB_PartnerWorker
+			INNER JOIN
+				User_ ON
+					OSB_PartnerWorker.userId = User_.userId
+			INNER JOIN
+				OSB_PartnerEntry ON
+					OSB_PartnerWorker.partnerEntryId = OSB_PartnerEntry.partnerEntryId
+			WHERE
+				(substring_index(emailAddress, '@', -1) = ?) AND
+				(OSB_PartnerEntry.status = 0)
+		]]>
+	</sql>
 	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.countByName">
 		<![CDATA[
 			SELECT
