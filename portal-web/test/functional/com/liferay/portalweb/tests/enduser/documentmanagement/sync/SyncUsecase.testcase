@@ -22,9 +22,7 @@ definition {
 
 		Navigator.openURL();
 
-		Page.add(
-			columnName = "1 Column",
-			pageName = "Sync Page");
+		Page.add(pageName = "Sync Page");
 
 		Navigator.gotoPage(pageName = "Sync Page");
 

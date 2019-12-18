@@ -815,9 +815,7 @@ definition {
 
 		Site.addBlankCP(siteName = "Moon Rocks 101");
 
-		Page.add(
-			columnName = "1 Column",
-			pageName = "Moon Rocks 101 Page");
+		Page.add(pageName = "Moon Rocks 101 Page");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",

@@ -611,9 +611,7 @@ definition {
 			userLoginEmailAddress = "user1@liferay.com",
 			userLoginFullName = "user1 user1");
 
-		Page.add(
-			columnName = "1 Column",
-			pageName = "Message Boards Page");
+		Page.add(pageName = "Message Boards Page");
 
 		Navigator.gotoPage(pageName = "Message Boards Page");
 
