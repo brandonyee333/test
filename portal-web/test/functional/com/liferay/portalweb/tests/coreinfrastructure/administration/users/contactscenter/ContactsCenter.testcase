@@ -18,7 +18,8 @@ definition {
 
 		Page.add(
 			columnName = "1 Column",
-			pageName = "Contacts Center Page");
+			pageName = "Contacts Center Page",
+			sitePageType = "Empty Page");
 
 		Navigator.gotoPage(pageName = "Contacts Center Page");
 
