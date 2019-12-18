@@ -265,7 +265,7 @@ name = HtmlUtil.escapeJS(name);
 			{
 				documentBrowseLinkCallback: documentBrowseLinkCallback,
 				htmlEncodeOutput: true,
-				spritemap: ALLOYEDITOR_BASEPATH + '/assets/icons/icons.svg',
+				spritemap: ALLOYEDITOR_BASEPATH + 'assets/icons/icons.svg',
 				title: false,
 				uiNode: uiNode
 			},
