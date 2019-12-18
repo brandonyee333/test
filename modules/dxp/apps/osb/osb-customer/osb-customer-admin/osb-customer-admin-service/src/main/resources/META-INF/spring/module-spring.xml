@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountAttachmentLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountAttachmentLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountAttachmentServiceImpl" id="com.liferay.osb.customer.admin.service.AccountAttachmentService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountAttachmentPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountAttachmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEntryLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEntryLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEntryServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEntryService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountEntryPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountEntryFinderImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEntryLanguageLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEntryLanguageLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEntryLanguageServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEntryLanguageService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountEntryLanguagePersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountEntryLanguagePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEnvironmentLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEnvironmentLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEnvironmentServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEnvironmentService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountEnvironmentPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountEnvironmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEnvironmentAttachmentLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AccountEnvironmentAttachmentServiceImpl" id="com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AccountEnvironmentAttachmentPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AccountEnvironmentAttachmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AuditEntryLocalServiceImpl" id="com.liferay.osb.customer.admin.service.AuditEntryLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.AuditEntryServiceImpl" id="com.liferay.osb.customer.admin.service.AuditEntryService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.AuditEntryPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.AuditEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.ExternalIdMapperLocalServiceImpl" id="com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.ExternalIdMapperPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.ExternalIdMapperPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.LicenseEntryLocalServiceImpl" id="com.liferay.osb.customer.admin.service.LicenseEntryLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.LicenseEntryServiceImpl" id="com.liferay.osb.customer.admin.service.LicenseEntryService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.LicenseEntryPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.LicenseEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl" id="com.liferay.osb.customer.admin.service.ProductEntryLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.ProductEntryServiceImpl" id="com.liferay.osb.customer.admin.service.ProductEntryService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.ProductEntryPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.ProductEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.ProductEntryFinderImpl" id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder" parent="basePersistence" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.SupportRegionLocalServiceImpl" id="com.liferay.osb.customer.admin.service.SupportRegionLocalService" />
+	<bean class="com.liferay.osb.customer.admin.service.impl.SupportRegionServiceImpl" id="com.liferay.osb.customer.admin.service.SupportRegionService" />
+	<bean class="com.liferay.osb.customer.admin.service.persistence.impl.SupportRegionPersistenceImpl" id="com.liferay.osb.customer.admin.service.persistence.SupportRegionPersistence" parent="basePersistence" />
+</beans>
