@@ -40,6 +40,8 @@ import com.liferay.portal.repository.capabilities.util.RepositoryServiceAdapter;
 import com.liferay.trash.kernel.service.TrashEntryLocalService;
 import com.liferay.trash.kernel.service.TrashVersionLocalService;
 
+import org.osgi.service.component.annotations.Activate;
+
 /**
  * @author Adolfo Pérez
  */
@@ -146,6 +148,10 @@ public class PortalCapabilityLocatorImpl implements PortalCapabilityLocator {
 		return new LiferayWorkflowCapability(
 			DLFileEntryServiceAdapter.create(documentRepository),
 			DLFileVersionServiceAdapter.create(documentRepository));
+	}
+
+	@Activate
+	protected void activate() {
 	}
 
 	@BeanReference(type = DLAppHelperLocalService.class)
