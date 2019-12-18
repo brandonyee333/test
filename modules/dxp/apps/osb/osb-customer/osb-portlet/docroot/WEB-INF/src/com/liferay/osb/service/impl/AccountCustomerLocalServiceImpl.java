@@ -16,13 +16,8 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountCustomerConstants;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -57,35 +52,8 @@ public class AccountCustomerLocalServiceImpl
 				closedWatcher);
 		}
 
-		accountCustomer = doAddAccountCustomer(
+		return doAddAccountCustomer(
 			customerUserId, accountEntryId, role, closedWatcher);
-
-		long auditSetId = auditEntryLocalService.getNextAuditSetId(
-			AccountEntry.class.getName(), accountEntryId);
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-		long fieldClassNameId = classNameLocalService.getClassNameId(
-			AccountCustomer.class.getName());
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId, accountEntryId,
-			auditSetId, fieldClassNameId,
-			accountCustomer.getAccountCustomerId(),
-			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
-			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			customerUser.getFullName(), String.valueOf(customerUserId),
-			StringPool.BLANK);
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId, accountEntryId,
-			auditSetId, fieldClassNameId,
-			accountCustomer.getAccountCustomerId(),
-			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_ROLE,
-			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			accountCustomer.getRoleLabel(),
-			String.valueOf(accountCustomer.getRole()), StringPool.BLANK);
-
-		return accountCustomer;
 	}
 
 	@Override
@@ -144,8 +112,6 @@ public class AccountCustomerLocalServiceImpl
 		throws PortalException {
 
 		deleteAccountCustomer(accountCustomer);
-
-		updateAuditEntry(userId, accountCustomer);
 
 		return accountCustomer;
 	}
@@ -257,35 +223,10 @@ public class AccountCustomerLocalServiceImpl
 
 		validate(accountCustomer.getAccountEntryId(), closedWatcher);
 
-		int oldRole = accountCustomer.getRole();
-
 		accountCustomer.setRole(role);
 		accountCustomer.setClosedWatcher(closedWatcher);
 
 		accountCustomer = accountCustomerPersistence.update(accountCustomer);
-
-		if (oldRole != role) {
-			long auditSetId = auditEntryLocalService.getNextAuditSetId(
-				AccountEntry.class.getName(),
-				accountCustomer.getAccountEntryId());
-			long classNameId = classNameLocalService.getClassNameId(
-				AccountEntry.class.getName());
-			long fieldClassNameId = classNameLocalService.getClassNameId(
-				AccountCustomer.class.getName());
-			User accountCustomerUser = userLocalService.fetchUser(
-				accountCustomer.getUserId());
-
-			auditEntryLocalService.addAuditEntry(
-				userId, user.getFullName(), now, classNameId,
-				accountCustomer.getAccountEntryId(), auditSetId,
-				fieldClassNameId, accountCustomer.getAccountCustomerId(),
-				AuditEntryConstants.ACTION_UPDATE,
-				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
-				AccountCustomerConstants.getRoleLabel(oldRole),
-				String.valueOf(oldRole), accountCustomer.getRoleLabel(),
-				String.valueOf(accountCustomer.getRole()),
-				accountCustomerUser.getFullName());
-		}
 
 		return accountCustomer;
 	}
@@ -304,47 +245,6 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomer.setClosedWatcher(closedWatcher);
 
 		return accountCustomerPersistence.update(accountCustomer);
-	}
-
-	protected void updateAuditEntry(
-			long userId, AccountCustomer accountCustomer)
-		throws PortalException {
-
-		User user = userLocalService.getUser(userId);
-		User accountCustomerUser = userLocalService.fetchUser(
-			accountCustomer.getUserId());
-		Date now = new Date();
-
-		long auditSetId = auditEntryLocalService.getNextAuditSetId(
-			AccountEntry.class.getName(), accountCustomer.getAccountEntryId());
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-		long fieldClassNameId = classNameLocalService.getClassNameId(
-			AccountCustomer.class.getName());
-
-		String oldLabel = String.valueOf(accountCustomer.getUserId());
-
-		if (accountCustomerUser != null) {
-			oldLabel = accountCustomerUser.getFullName();
-		}
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId,
-			accountCustomer.getAccountEntryId(), auditSetId, fieldClassNameId,
-			accountCustomer.getAccountCustomerId(),
-			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_USER,
-			VisibilityConstants.WORKERS, oldLabel,
-			String.valueOf(accountCustomer.getUserId()), StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK);
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId,
-			accountCustomer.getAccountEntryId(), auditSetId, fieldClassNameId,
-			accountCustomer.getAccountCustomerId(),
-			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_ROLE,
-			VisibilityConstants.WORKERS, accountCustomer.getRoleLabel(),
-			String.valueOf(accountCustomer.getRole()), StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK);
 	}
 
 	protected void validate(long accountEntryId, boolean closedWatcher)

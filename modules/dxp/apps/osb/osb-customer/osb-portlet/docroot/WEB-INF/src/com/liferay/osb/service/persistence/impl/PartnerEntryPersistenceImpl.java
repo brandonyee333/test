@@ -21,7 +21,6 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.PartnerEntryImpl;
 import com.liferay.osb.model.impl.PartnerEntryModelImpl;
 import com.liferay.osb.service.persistence.PartnerEntryPersistence;
-import com.liferay.osb.service.persistence.SupportRegionPersistence;
 
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
@@ -40,10 +39,6 @@ import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.CompanyProvider;
 import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
-import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
-import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -1328,8 +1323,6 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 	protected PartnerEntry removeImpl(PartnerEntry partnerEntry) {
 		partnerEntry = toUnwrappedModel(partnerEntry);
 
-		partnerEntryToSupportRegionTableMapper.deleteLeftPrimaryKeyTableMappings(partnerEntry.getPrimaryKey());
-
 		Session session = null;
 
 		try {
@@ -1874,311 +1867,6 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 		return count.intValue();
 	}
 
-	/**
-	 * Returns the primaryKeys of support regions associated with the partner entry.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @return long[] of the primaryKeys of support regions associated with the partner entry
-	 */
-	@Override
-	public long[] getSupportRegionPrimaryKeys(long pk) {
-		long[] pks = partnerEntryToSupportRegionTableMapper.getRightPrimaryKeys(pk);
-
-		return pks.clone();
-	}
-
-	/**
-	 * Returns all the support regions associated with the partner entry.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @return the support regions associated with the partner entry
-	 */
-	@Override
-	public List<com.liferay.osb.model.SupportRegion> getSupportRegions(long pk) {
-		return getSupportRegions(pk, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-	}
-
-	/**
-	 * Returns a range of all the support regions associated with the partner entry.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PartnerEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param start the lower bound of the range of partner entries
-	 * @param end the upper bound of the range of partner entries (not inclusive)
-	 * @return the range of support regions associated with the partner entry
-	 */
-	@Override
-	public List<com.liferay.osb.model.SupportRegion> getSupportRegions(
-		long pk, int start, int end) {
-		return getSupportRegions(pk, start, end, null);
-	}
-
-	/**
-	 * Returns an ordered range of all the support regions associated with the partner entry.
-	 *
-	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link PartnerEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	 * </p>
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param start the lower bound of the range of partner entries
-	 * @param end the upper bound of the range of partner entries (not inclusive)
-	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of support regions associated with the partner entry
-	 */
-	@Override
-	public List<com.liferay.osb.model.SupportRegion> getSupportRegions(
-		long pk, int start, int end,
-		OrderByComparator<com.liferay.osb.model.SupportRegion> orderByComparator) {
-		return partnerEntryToSupportRegionTableMapper.getRightBaseModels(pk,
-			start, end, orderByComparator);
-	}
-
-	/**
-	 * Returns the number of support regions associated with the partner entry.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @return the number of support regions associated with the partner entry
-	 */
-	@Override
-	public int getSupportRegionsSize(long pk) {
-		long[] pks = partnerEntryToSupportRegionTableMapper.getRightPrimaryKeys(pk);
-
-		return pks.length;
-	}
-
-	/**
-	 * Returns <code>true</code> if the support region is associated with the partner entry.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegionPK the primary key of the support region
-	 * @return <code>true</code> if the support region is associated with the partner entry; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean containsSupportRegion(long pk, long supportRegionPK) {
-		return partnerEntryToSupportRegionTableMapper.containsTableMapping(pk,
-			supportRegionPK);
-	}
-
-	/**
-	 * Returns <code>true</code> if the partner entry has any support regions associated with it.
-	 *
-	 * @param pk the primary key of the partner entry to check for associations with support regions
-	 * @return <code>true</code> if the partner entry has any support regions associated with it; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean containsSupportRegions(long pk) {
-		if (getSupportRegionsSize(pk) > 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	/**
-	 * Adds an association between the partner entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegionPK the primary key of the support region
-	 */
-	@Override
-	public void addSupportRegion(long pk, long supportRegionPK) {
-		PartnerEntry partnerEntry = fetchByPrimaryKey(pk);
-
-		if (partnerEntry == null) {
-			partnerEntryToSupportRegionTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, supportRegionPK);
-		}
-		else {
-			partnerEntryToSupportRegionTableMapper.addTableMapping(partnerEntry.getCompanyId(),
-				pk, supportRegionPK);
-		}
-	}
-
-	/**
-	 * Adds an association between the partner entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegion the support region
-	 */
-	@Override
-	public void addSupportRegion(long pk,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		PartnerEntry partnerEntry = fetchByPrimaryKey(pk);
-
-		if (partnerEntry == null) {
-			partnerEntryToSupportRegionTableMapper.addTableMapping(companyProvider.getCompanyId(),
-				pk, supportRegion.getPrimaryKey());
-		}
-		else {
-			partnerEntryToSupportRegionTableMapper.addTableMapping(partnerEntry.getCompanyId(),
-				pk, supportRegion.getPrimaryKey());
-		}
-	}
-
-	/**
-	 * Adds an association between the partner entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegionPKs the primary keys of the support regions
-	 */
-	@Override
-	public void addSupportRegions(long pk, long[] supportRegionPKs) {
-		long companyId = 0;
-
-		PartnerEntry partnerEntry = fetchByPrimaryKey(pk);
-
-		if (partnerEntry == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = partnerEntry.getCompanyId();
-		}
-
-		partnerEntryToSupportRegionTableMapper.addTableMappings(companyId, pk,
-			supportRegionPKs);
-	}
-
-	/**
-	 * Adds an association between the partner entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegions the support regions
-	 */
-	@Override
-	public void addSupportRegions(long pk,
-		List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		addSupportRegions(pk,
-			ListUtil.toLongArray(supportRegions,
-				com.liferay.osb.model.SupportRegion.SUPPORT_REGION_ID_ACCESSOR));
-	}
-
-	/**
-	 * Clears all associations between the partner entry and its support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry to clear the associated support regions from
-	 */
-	@Override
-	public void clearSupportRegions(long pk) {
-		partnerEntryToSupportRegionTableMapper.deleteLeftPrimaryKeyTableMappings(pk);
-	}
-
-	/**
-	 * Removes the association between the partner entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegionPK the primary key of the support region
-	 */
-	@Override
-	public void removeSupportRegion(long pk, long supportRegionPK) {
-		partnerEntryToSupportRegionTableMapper.deleteTableMapping(pk,
-			supportRegionPK);
-	}
-
-	/**
-	 * Removes the association between the partner entry and the support region. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegion the support region
-	 */
-	@Override
-	public void removeSupportRegion(long pk,
-		com.liferay.osb.model.SupportRegion supportRegion) {
-		partnerEntryToSupportRegionTableMapper.deleteTableMapping(pk,
-			supportRegion.getPrimaryKey());
-	}
-
-	/**
-	 * Removes the association between the partner entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegionPKs the primary keys of the support regions
-	 */
-	@Override
-	public void removeSupportRegions(long pk, long[] supportRegionPKs) {
-		partnerEntryToSupportRegionTableMapper.deleteTableMappings(pk,
-			supportRegionPKs);
-	}
-
-	/**
-	 * Removes the association between the partner entry and the support regions. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegions the support regions
-	 */
-	@Override
-	public void removeSupportRegions(long pk,
-		List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		removeSupportRegions(pk,
-			ListUtil.toLongArray(supportRegions,
-				com.liferay.osb.model.SupportRegion.SUPPORT_REGION_ID_ACCESSOR));
-	}
-
-	/**
-	 * Sets the support regions associated with the partner entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegionPKs the primary keys of the support regions to be associated with the partner entry
-	 */
-	@Override
-	public void setSupportRegions(long pk, long[] supportRegionPKs) {
-		Set<Long> newSupportRegionPKsSet = SetUtil.fromArray(supportRegionPKs);
-		Set<Long> oldSupportRegionPKsSet = SetUtil.fromArray(partnerEntryToSupportRegionTableMapper.getRightPrimaryKeys(
-					pk));
-
-		Set<Long> removeSupportRegionPKsSet = new HashSet<Long>(oldSupportRegionPKsSet);
-
-		removeSupportRegionPKsSet.removeAll(newSupportRegionPKsSet);
-
-		partnerEntryToSupportRegionTableMapper.deleteTableMappings(pk,
-			ArrayUtil.toLongArray(removeSupportRegionPKsSet));
-
-		newSupportRegionPKsSet.removeAll(oldSupportRegionPKsSet);
-
-		long companyId = 0;
-
-		PartnerEntry partnerEntry = fetchByPrimaryKey(pk);
-
-		if (partnerEntry == null) {
-			companyId = companyProvider.getCompanyId();
-		}
-		else {
-			companyId = partnerEntry.getCompanyId();
-		}
-
-		partnerEntryToSupportRegionTableMapper.addTableMappings(companyId, pk,
-			ArrayUtil.toLongArray(newSupportRegionPKsSet));
-	}
-
-	/**
-	 * Sets the support regions associated with the partner entry, removing and adding associations as necessary. Also notifies the appropriate model listeners and clears the mapping table finder cache.
-	 *
-	 * @param pk the primary key of the partner entry
-	 * @param supportRegions the support regions to be associated with the partner entry
-	 */
-	@Override
-	public void setSupportRegions(long pk,
-		List<com.liferay.osb.model.SupportRegion> supportRegions) {
-		try {
-			long[] supportRegionPKs = new long[supportRegions.size()];
-
-			for (int i = 0; i < supportRegions.size(); i++) {
-				com.liferay.osb.model.SupportRegion supportRegion = supportRegions.get(i);
-
-				supportRegionPKs[i] = supportRegion.getPrimaryKey();
-			}
-
-			setSupportRegions(pk, supportRegionPKs);
-		}
-		catch (Exception e) {
-			throw processException(e);
-		}
-	}
-
 	@Override
 	public Set<String> getBadColumnNames() {
 		return _badColumnNames;
@@ -2193,9 +1881,6 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 	 * Initializes the partner entry persistence.
 	 */
 	public void afterPropertiesSet() {
-		partnerEntryToSupportRegionTableMapper = TableMapperFactory.getTableMapper("OSB_PartnerEntries_SupportRegions",
-				"companyId", "partnerEntryId", "supportRegionId", this,
-				supportRegionPersistence);
 	}
 
 	public void destroy() {
@@ -2203,18 +1888,12 @@ public class PartnerEntryPersistenceImpl extends BasePersistenceImpl<PartnerEntr
 		finderCache.removeCache(FINDER_CLASS_NAME_ENTITY);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
-
-		TableMapperFactory.removeTableMapper(
-			"OSB_PartnerEntries_SupportRegions");
 	}
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	protected CompanyProvider companyProvider;
 	protected EntityCache entityCache = EntityCacheUtil.getEntityCache();
 	protected FinderCache finderCache = FinderCacheUtil.getFinderCache();
-	@BeanReference(type = SupportRegionPersistence.class)
-	protected SupportRegionPersistence supportRegionPersistence;
-	protected TableMapper<PartnerEntry, com.liferay.osb.model.SupportRegion> partnerEntryToSupportRegionTableMapper;
 	private static final String _SQL_SELECT_PARTNERENTRY = "SELECT partnerEntry FROM PartnerEntry partnerEntry";
 	private static final String _SQL_SELECT_PARTNERENTRY_WHERE_PKS_IN = "SELECT partnerEntry FROM PartnerEntry partnerEntry WHERE partnerEntryId IN (";
 	private static final String _SQL_SELECT_PARTNERENTRY_WHERE = "SELECT partnerEntry FROM PartnerEntry partnerEntry WHERE ";

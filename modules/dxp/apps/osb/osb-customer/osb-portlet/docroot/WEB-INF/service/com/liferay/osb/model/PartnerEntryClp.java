@@ -627,44 +627,6 @@ public class PartnerEntryClp extends BaseModelImpl<PartnerEntry>
 		}
 	}
 
-	@Override
-	public SupportRegion getSupportRegion() {
-		try {
-			String methodName = "getSupportRegion";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			SupportRegion returnObj = (SupportRegion)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public long[] getSupportRegionIds() {
-		try {
-			String methodName = "getSupportRegionIds";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			long[] returnObj = (long[])invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
 	public BaseModel<?> getPartnerEntryRemoteModel() {
 		return _partnerEntryRemoteModel;
 	}

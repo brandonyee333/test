@@ -1429,25 +1429,6 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	}
 
 	@Override
-	public AccountEntry getAccountEntry() {
-		try {
-			String methodName = "getAccountEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			AccountEntry returnObj = (AccountEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public LicenseEntry getLicenseEntry() {
 		try {
 			String methodName = "getLicenseEntry";
@@ -1514,25 +1495,6 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 			Object[] parameterValues = new Object[] {  };
 
 			OrderEntry returnObj = (OrderEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public ProductEntry getProductEntry() {
-		try {
-			String methodName = "getProductEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			ProductEntry returnObj = (ProductEntry)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

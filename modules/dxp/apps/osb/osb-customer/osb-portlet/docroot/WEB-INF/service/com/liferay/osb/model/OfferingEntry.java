@@ -55,9 +55,6 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 			}
 		};
 
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException;
-
 	@com.liferay.portal.kernel.json.JSON()
 	public java.util.Date getActualStartDate()
 		throws com.liferay.portal.kernel.exception.PortalException;
@@ -72,13 +69,7 @@ public interface OfferingEntry extends OfferingEntryModel, PersistedModel {
 
 	public int getLicenseKeysCount();
 
-	public OfferingEntryGroup getOfferingEntryGroup()
-		throws com.liferay.portal.kernel.exception.PortalException;
-
 	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public ProductEntry getProductEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public java.lang.String getProductType();

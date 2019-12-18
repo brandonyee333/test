@@ -82,9 +82,12 @@ public class OSBOfferingEntryPermission {
 		}
 
 		if (actionId.equals(OSBActionKeys.VIEW)) {
+			/*
+
 			return OSBAccountEntryPermission.contains(
 				permissionChecker, offeringEntry.getAccountEntryId(),
 				OSBActionKeys.VIEW);
+			*/
 		}
 
 		AccountWorker accountWorker = null;

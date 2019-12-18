@@ -14,12 +14,8 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.NoSuchOfferingEntryException;
-import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -27,13 +23,10 @@ import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OfferingEntryGroup;
-import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
-import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
 import com.liferay.osb.util.OSBActionKeys;
@@ -99,9 +92,11 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		OfferingEntry offeringEntry =
 			offeringEntryLocalService.getOfferingEntry(offeringEntryId);
 
+		/*
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), offeringEntry.getAccountEntryId(),
 			ActionKeys.ADD_LICENSE);
+		*/
 
 		ProductEntry productEntry = null;
 
@@ -417,6 +412,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			availableOfferingEntries.add(offeringEntry);
 		}
 
+		/*
 		OfferingEntryGroup offeringEntryGroup =
 			OfferingEntryGroupFactoryUtil.createOfferingEntryGroup(
 				availableOfferingEntries);
@@ -446,6 +442,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 		catch (OfferingEntryStatusException oese) {
 		}
+		*/
 
 		return null;
 	}
@@ -457,9 +454,11 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
 			licenseKeyId);
 
+		/*
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), licenseKey.getAccountEntryId(),
 			OSBActionKeys.ADD_LICENSE);
+		*/
 
 		return licenseKeyLocalService.renewLicenseKey(
 			getUserId(), licenseKeyId, startDate, renewTime);
@@ -660,6 +659,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			return;
 		}
 
+		/*
+
 		if (roleLocalService.hasUserRole(
 				getUserId(), OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
 
@@ -667,6 +668,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			return;
 		}
+		*/
 
 		params.put("accountEntryMembership", Long.valueOf(getUserId()));
 
@@ -794,6 +796,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 	}
 
 	protected long getLicenseEntryId(ProductEntry productEntry) {
+		/*
 		List<LicenseEntry> licenseEntries = productEntry.getLicenseEntries();
 
 		for (LicenseEntry licenseEntry : licenseEntries) {
@@ -806,6 +809,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				return licenseEntry.getLicenseEntryId();
 			}
 		}
+		*/
 
 		return 0;
 	}

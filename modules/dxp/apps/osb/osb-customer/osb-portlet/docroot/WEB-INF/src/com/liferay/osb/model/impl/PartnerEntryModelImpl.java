@@ -175,20 +175,6 @@ public class PartnerEntryModelImpl extends BaseModelImpl<PartnerEntry>
 		return models;
 	}
 
-	public static final String MAPPING_TABLE_OSB_PARTNERENTRIES_SUPPORTREGIONS_NAME =
-		"OSB_PartnerEntries_SupportRegions";
-	public static final Object[][] MAPPING_TABLE_OSB_PARTNERENTRIES_SUPPORTREGIONS_COLUMNS =
-		{
-			{ "companyId", Types.BIGINT },
-			{ "partnerEntryId", Types.BIGINT },
-			{ "supportRegionId", Types.BIGINT }
-		};
-	public static final String MAPPING_TABLE_OSB_PARTNERENTRIES_SUPPORTREGIONS_SQL_CREATE =
-		"create table OSB_PartnerEntries_SupportRegions (companyId LONG not null,partnerEntryId LONG not null,supportRegionId LONG not null,primary key (partnerEntryId, supportRegionId))";
-	public static final boolean FINDER_CACHE_ENABLED_OSB_PARTNERENTRIES_SUPPORTREGIONS =
-		GetterUtil.getBoolean(com.liferay.util.service.ServiceProps.get(
-				"value.object.finder.cache.enabled.OSB_PartnerEntries_SupportRegions"),
-			true);
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.util.service.ServiceProps.get(
 				"lock.expiration.time.com.liferay.osb.model.PartnerEntry"));
 

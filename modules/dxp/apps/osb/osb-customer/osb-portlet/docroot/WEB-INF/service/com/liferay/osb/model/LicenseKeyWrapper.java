@@ -432,12 +432,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	}
 
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getAccountEntry();
-	}
-
-	@Override
 	public LicenseEntry getLicenseEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKey.getLicenseEntry();
@@ -469,12 +463,6 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 	public OrderEntry getOrderEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _licenseKey.getOrderEntry();
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKey.getProductEntry();
 	}
 
 	@Override

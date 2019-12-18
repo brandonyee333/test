@@ -299,12 +299,6 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getAccountEntry();
-	}
-
-	@Override
 	public OfferingEntry toEscapedModel() {
 		return new OfferingEntryWrapper(_offeringEntry.toEscapedModel());
 	}
@@ -315,21 +309,9 @@ public class OfferingEntryWrapper implements OfferingEntry,
 	}
 
 	@Override
-	public OfferingEntryGroup getOfferingEntryGroup()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getOfferingEntryGroup();
-	}
-
-	@Override
 	public OrderEntry getOrderEntry()
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _offeringEntry.getOrderEntry();
-	}
-
-	@Override
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _offeringEntry.getProductEntry();
 	}
 
 	@Override

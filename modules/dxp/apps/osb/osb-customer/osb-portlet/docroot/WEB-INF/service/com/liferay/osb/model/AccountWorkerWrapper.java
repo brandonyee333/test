@@ -113,12 +113,6 @@ public class AccountWorkerWrapper implements AccountWorker,
 	}
 
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _accountWorker.getAccountEntry();
-	}
-
-	@Override
 	public AccountWorker toEscapedModel() {
 		return new AccountWorkerWrapper(_accountWorker.toEscapedModel());
 	}

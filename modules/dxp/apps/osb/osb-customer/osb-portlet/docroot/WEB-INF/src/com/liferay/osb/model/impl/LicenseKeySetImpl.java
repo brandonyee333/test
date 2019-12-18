@@ -14,10 +14,6 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
@@ -25,11 +21,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 public class LicenseKeySetImpl extends LicenseKeySetBaseImpl {
 
 	public LicenseKeySetImpl() {
-	}
-
-	public AccountEntry getAccountEntry() throws PortalException {
-		return AccountEntryLocalServiceUtil.getAccountEntry(
-			getAccountEntryId());
 	}
 
 }

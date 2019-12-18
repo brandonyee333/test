@@ -16,13 +16,11 @@ package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.OfferingDefinitionConstants;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
+import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Brian Wing Shun Chan
@@ -48,12 +46,6 @@ public class OfferingDefinitionImpl extends OfferingDefinitionBaseImpl {
 
 	public String getMaxUsersLabel() {
 		return OfferingDefinitionConstants.getMaxUsersLabel(getMaxUsers());
-	}
-
-	@JSON
-	public ProductEntry getProductEntry() throws PortalException {
-		return ProductEntryLocalServiceUtil.getProductEntry(
-			getProductEntryId());
 	}
 
 	public int getQuantity() {

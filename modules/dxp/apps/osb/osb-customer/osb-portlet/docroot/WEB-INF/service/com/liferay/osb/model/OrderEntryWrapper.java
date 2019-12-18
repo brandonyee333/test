@@ -318,12 +318,6 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	}
 
 	@Override
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _orderEntry.getAccountEntry();
-	}
-
-	@Override
 	public OrderEntry toEscapedModel() {
 		return new OrderEntryWrapper(_orderEntry.toEscapedModel());
 	}
@@ -406,11 +400,6 @@ public class OrderEntryWrapper implements OrderEntry, ModelWrapper<OrderEntry> {
 	@Override
 	public java.lang.String getPurchaseOrderKey() {
 		return _orderEntry.getPurchaseOrderKey();
-	}
-
-	@Override
-	public java.lang.String getSalesforceOpportunityKey() {
-		return _orderEntry.getSalesforceOpportunityKey();
 	}
 
 	/**

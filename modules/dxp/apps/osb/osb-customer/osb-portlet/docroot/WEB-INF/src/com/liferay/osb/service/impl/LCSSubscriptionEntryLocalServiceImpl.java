@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
 import com.liferay.osb.model.LicenseEntryConstants;
@@ -27,12 +26,10 @@ import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.model.SupportResponseConstants;
 import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
-import com.liferay.osb.remote.lcs.LCSJSONWebServiceUtil;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.Validator;
@@ -96,6 +93,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return;
 		}
 
+		/*
+		TODO
 		AccountEntry accountEntry = accountEntryLocalService.getAccountEntry(
 			accountEntryId);
 
@@ -107,6 +106,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 
 		LCSJSONWebServiceUtil.sendLCSSubscriptionEntries(
 			accountEntry.getCorpProjectId(), lcsSubscriptionEntriesJSON);
+		*/
 	}
 
 	protected LCSSubscriptionEntry createLCSSubscriptionEntry(
@@ -129,7 +129,9 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
-		ProductEntry productEntry = offeringEntry.getProductEntry();
+		ProductEntry productEntry = null;
+		//TODO
+		//offeringEntry.getProductEntry();
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 
 		String product = getProduct(productEntry, supportResponse);

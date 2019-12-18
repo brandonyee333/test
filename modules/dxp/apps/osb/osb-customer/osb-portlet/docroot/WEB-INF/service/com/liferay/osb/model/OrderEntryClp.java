@@ -722,25 +722,6 @@ public class OrderEntryClp extends BaseModelImpl<OrderEntry>
 	}
 
 	@Override
-	public AccountEntry getAccountEntry() {
-		try {
-			String methodName = "getAccountEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			AccountEntry returnObj = (AccountEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public java.util.List<OfferingEntry> getOfferingEntries() {
 		try {
 			String methodName = "getOfferingEntries";
@@ -750,25 +731,6 @@ public class OrderEntryClp extends BaseModelImpl<OrderEntry>
 			Object[] parameterValues = new Object[] {  };
 
 			java.util.List<OfferingEntry> returnObj = (java.util.List<OfferingEntry>)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public java.lang.String getSalesforceOpportunityKey() {
-		try {
-			String methodName = "getSalesforceOpportunityKey";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

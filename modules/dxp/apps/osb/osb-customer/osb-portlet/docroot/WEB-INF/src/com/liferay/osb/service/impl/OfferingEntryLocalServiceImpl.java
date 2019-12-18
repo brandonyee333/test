@@ -15,18 +15,13 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.exception.OfferingEntryQuantityException;
-import com.liferay.osb.exception.OfferingEntrySizingException;
 import com.liferay.osb.exception.RequiredOfferingEntryException;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.service.base.OfferingEntryLocalServiceBaseImpl;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -37,7 +32,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.text.Format;
@@ -342,37 +337,6 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntry = offeringEntryPersistence.update(offeringEntry);
 
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-		long fieldClassNameId = classNameLocalService.getClassNameId(
-			OfferingEntry.class.getName());
-
-		StringBundler sb = new StringBundler(6);
-
-		sb.append("ID: ");
-		sb.append(offeringEntryId);
-		sb.append(", Name: ");
-
-		ProductEntry productEntry = productEntryLocalService.getProductEntry(
-			offeringEntry.getProductEntryId());
-
-		sb.append(productEntry.getName());
-
-		sb.append(", Start Date: ");
-
-		String startDate = _dateFormat.format(offeringEntry.getStartDate());
-
-		sb.append(startDate);
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId,
-			offeringEntry.getAccountEntryId(), 0, fieldClassNameId,
-			offeringEntryId, AuditEntryConstants.ACTION_UPDATE,
-			AuditEntryConstants.FIELD_STATUS, VisibilityConstants.WORKERS,
-			StringPool.BLANK, StringPool.BLANK,
-			OfferingEntryConstants.getStatusLabel(status),
-			String.valueOf(status), sb.toString());
-
 		return offeringEntry;
 	}
 
@@ -405,15 +369,6 @@ public class OfferingEntryLocalServiceImpl
 	protected void validate(
 			long accountEntryId, long productEntryId, int sizing, int quantity)
 		throws PortalException {
-
-		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
-			productEntryId);
-
-		if ((productEntry.isDigitalEnterprise() || productEntry.isPortal()) &&
-			(sizing <= 0)) {
-
-			throw new OfferingEntrySizingException();
-		}
 
 		if (quantity <= 0) {
 			throw new OfferingEntryQuantityException();

@@ -5,84 +5,12 @@
 		<hint name="editor">true</hint>
 		<hint name="max-length">2000000</hint>
 	</hint-collection>
-	<model name="com.liferay.osb.model.AccountAttachment">
-		<field name="accountAttachmentId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="accountProjectId" type="long" />
-		<field name="fileName" type="String" />
-		<field name="fileSize" type="long" />
-		<field name="type" type="int" />
-	</model>
 	<model name="com.liferay.osb.model.AccountCustomer">
 		<field name="accountCustomerId" type="long" />
 		<field name="userId" type="long" />
 		<field name="accountEntryId" type="long" />
 		<field name="role" type="int" />
 		<field name="closedWatcher" type="boolean" />
-	</model>
-	<model name="com.liferay.osb.model.AccountEntry">
-		<field name="accountEntryId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedUserId" type="long" />
-		<field name="modifiedUserName" type="String" />
-		<field name="modifiedDate" type="Date" />
-		<field name="koroneikiAccountKey" type="String" />
-		<field name="dossieraAccountKey" type="String" />
-		<field name="name" type="String">
-			<hint name="max-length">500</hint>
-		</field>
-		<field name="code" type="String" />
-		<field name="instructions" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="activeSupport" type="boolean" />
-		<field name="activeTicketSupport" type="boolean" />
-		<field name="lastZendeskAuditDate" type="Date" />
-		<field name="status" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.AccountEntryLanguage">
-		<field name="accountEntryLanguageId" type="long" />
-		<field name="accountEntryId" type="long" />
-		<field name="languageId" type="String" />
-	</model>
-	<model name="com.liferay.osb.model.AccountEnvironment">
-		<field name="accountEnvironmentId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="accountEntryId" type="long" />
-		<field name="productEntryId" type="long" />
-		<field name="name" type="String" />
-		<field name="envOS" type="int" />
-		<field name="envOSCustom" type="String">
-			<hint name="max-length">150</hint>
-		</field>
-		<field name="envDB" type="int" />
-		<field name="envJVM" type="int" />
-		<field name="envAS" type="int" />
-		<field name="envLFR" type="int" />
-		<field name="envCommerce" type="int" />
-		<field name="envBrowser" type="int" />
-		<field name="envCS" type="int" />
-		<field name="envSearch" type="String" />
-	</model>
-	<model name="com.liferay.osb.model.AccountEnvironmentAttachment">
-		<field name="accountEnvironmentAttachmentId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="accountEnvironmentId" type="long" />
-		<field name="fileName" type="String" />
-		<field name="fileSize" type="long" />
-		<field name="type" type="int" />
 	</model>
 	<model name="com.liferay.osb.model.AccountInformation">
 		<field name="accountInformationId" type="long" />
@@ -109,37 +37,6 @@
 		<field name="userId" type="long" />
 		<field name="accountEntryId" type="long" />
 		<field name="role" type="int" />
-	</model>
-	<model name="com.liferay.osb.model.AuditEntry">
-		<field name="auditEntryId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="previousAuditEntryId" type="long" />
-		<field name="auditSetId" type="long" />
-		<field name="fieldClassNameId" type="long" />
-		<field name="fieldClassPK" type="long" />
-		<field name="action" type="int" />
-		<field name="field" type="int" />
-		<field name="visibility" type="int" />
-		<field name="oldLabel" type="String">
-			<hint name="max-length">255</hint>
-		</field>
-		<field name="oldValue" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="newLabel" type="String">
-			<hint name="max-length">255</hint>
-		</field>
-		<field name="newValue" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="description" type="String">
-			<hint-collection name="TEXTAREA" />
-		</field>
-		<field name="i18n" type="boolean" />
 	</model>
 	<model name="com.liferay.osb.model.CorpProject">
 		<field name="uuid" type="String" />
@@ -173,15 +70,6 @@
 		</field>
 		<field name="displayCP" type="boolean" />
 		<field name="displayLCS" type="boolean" />
-	</model>
-	<model name="com.liferay.osb.model.ExternalIdMapper">
-		<field name="externalIdMapperId" type="long" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="classNameId" type="long" />
-		<field name="classPK" type="long" />
-		<field name="type" type="int" />
-		<field name="externalId" type="String" />
 	</model>
 	<model name="com.liferay.osb.model.LCSSubscriptionEntry">
 		<field name="lcsSubscriptionEntryId" type="long" />
@@ -395,18 +283,6 @@
 		<field name="type" type="int" />
 		<field name="environment" type="int" />
 		<field name="versionsListType" type="String" />
-	</model>
-	<model name="com.liferay.osb.model.SupportRegion">
-		<field name="supportRegionId" type="long" />
-		<field name="companyId" type="long" />
-		<field name="userId" type="long" />
-		<field name="userName" type="String" />
-		<field name="createDate" type="Date" />
-		<field name="modifiedDate" type="Date" />
-		<field name="name" type="String" />
-		<field name="description" type="String" />
-		<field name="timeZoneId" type="String" />
-		<field name="managerUserId" type="long" />
 	</model>
 	<model name="com.liferay.osb.model.SupportResponse">
 		<field name="supportResponseId" type="long" />

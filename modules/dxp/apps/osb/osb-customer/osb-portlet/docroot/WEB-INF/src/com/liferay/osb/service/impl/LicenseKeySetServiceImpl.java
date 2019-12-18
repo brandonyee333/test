@@ -16,9 +16,7 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetServiceBaseImpl;
-import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeySetPermission;
-import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
@@ -34,9 +32,11 @@ public class LicenseKeySetServiceImpl extends LicenseKeySetServiceBaseImpl {
 			long userId, long accountEntryId, String name)
 		throws PortalException {
 
+		/*
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), accountEntryId,
 			OSBActionKeys.ADD_LICENSE_KEY_SET);
+		*/
 
 		return licenseKeySetLocalService.addLicenseKeySet(
 			userId, accountEntryId, name);

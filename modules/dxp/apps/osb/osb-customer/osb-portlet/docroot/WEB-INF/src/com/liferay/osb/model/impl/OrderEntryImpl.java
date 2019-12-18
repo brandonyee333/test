@@ -16,19 +16,10 @@ package com.liferay.osb.model.impl;
 
 // import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
 
@@ -42,11 +33,6 @@ public class OrderEntryImpl extends OrderEntryBaseImpl {
 	public OrderEntryImpl() {
 	}
 
-	public AccountEntry getAccountEntry() throws PortalException {
-		return AccountEntryLocalServiceUtil.getAccountEntry(
-			getAccountEntryId());
-	}
-
 	@JSON
 	public List<OfferingEntry> getOfferingEntries() {
 		if (_offeringEntries == null) {
@@ -56,24 +42,6 @@ public class OrderEntryImpl extends OrderEntryBaseImpl {
 		}
 
 		return _offeringEntries;
-	}
-
-	public String getSalesforceOpportunityKey() {
-		long classNameId = PortalUtil.getClassNameId(
-			OrderEntry.class.getName());
-
-		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, getOrderEntryId(),
-				ExternalIdMapperConstants.TYPE_SALESFORCE);
-
-		if (!externalIdMappers.isEmpty()) {
-			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
-
-			return externalIdMapper.getExternalId();
-		}
-
-		return StringPool.BLANK;
 	}
 
 	public String getStatusLabel() {

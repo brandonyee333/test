@@ -33,7 +33,6 @@ import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
@@ -432,11 +431,14 @@ public class LicensePortlet extends OSBPortlet {
 				return true;
 			}
 
+			/*
+
 			if (AccountEntryLocalServiceUtil.hasValidLicenseAccountEntry(
 					themeDisplay.getUserId())) {
 
 				return true;
 			}
+			*/
 		}
 		catch (Exception e) {
 			_log.error(e, e);

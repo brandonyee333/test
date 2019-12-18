@@ -14,7 +14,6 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -37,12 +36,17 @@ public class LCSSubscriptionEntryServiceImpl
 
 		validateJSONWebServicePermissions();
 
+		/*
+		TODO
 		AccountEntry accountEntry =
 			accountEntryLocalService.getCorpProjectAccountEntry(
 				corpProjectUuid);
 
 		return lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(
 			accountEntry.getAccountEntryId());
+		*/
+
+		return null;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

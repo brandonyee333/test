@@ -16,15 +16,9 @@ package com.liferay.osb.support.util;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.petra.content.ContentUtil;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -38,7 +32,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -172,6 +165,8 @@ public class SupportUtil {
 
 		Set<String> selfProvisioningProducts = new TreeSet<>();
 
+		/*
+		TODO
 		LinkedHashMap params = new LinkedHashMap();
 
 		params.put("license", StringPool.BLANK);
@@ -211,6 +206,7 @@ public class SupportUtil {
 				}
 			}
 		}
+		*/
 
 		return selfProvisioningProducts;
 	}

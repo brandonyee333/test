@@ -200,11 +200,6 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	}
 
 	@Override
-	public SupportRegion getSupportRegion() {
-		return _partnerEntry.getSupportRegion();
-	}
-
-	@Override
 	public com.liferay.portal.kernel.model.CacheModel<PartnerEntry> toCacheModel() {
 		return _partnerEntry.toCacheModel();
 	}
@@ -423,11 +418,6 @@ public class PartnerEntryWrapper implements PartnerEntry,
 	@Override
 	public long getUserId() {
 		return _partnerEntry.getUserId();
-	}
-
-	@Override
-	public long[] getSupportRegionIds() {
-		return _partnerEntry.getSupportRegionIds();
 	}
 
 	@Override

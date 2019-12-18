@@ -610,25 +610,6 @@ public class OfferingDefinitionClp extends BaseModelImpl<OfferingDefinition>
 	}
 
 	@Override
-	public ProductEntry getProductEntry() {
-		try {
-			String methodName = "getProductEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			ProductEntry returnObj = (ProductEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public int getQuantity() {
 		try {
 			String methodName = "getQuantity";

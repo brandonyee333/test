@@ -15,20 +15,14 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountWorker;
-import com.liferay.osb.model.AccountWorkerConstants;
-import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,16 +36,7 @@ public class AccountWorkerLocalServiceImpl
 			long userId, long workerUserId, long accountEntryId, int role)
 		throws PortalException {
 
-		User user = userLocalService.getUser(userId);
-		Date now = new Date();
-
-		long auditSetId = auditEntryLocalService.getNextAuditSetId(
-			AccountEntry.class.getName(), accountEntryId);
-
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-		long fieldClassNameId = classNameLocalService.getClassNameId(
-			AccountWorker.class.getName());
+		userLocalService.getUser(userId);
 
 		User workerUser = userLocalService.getUser(workerUserId);
 
@@ -72,22 +57,6 @@ public class AccountWorkerLocalServiceImpl
 		accountWorker.setRole(role);
 
 		accountWorker = accountWorkerPersistence.update(accountWorker);
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId, accountEntryId,
-			auditSetId, fieldClassNameId, accountWorkerId,
-			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_USER,
-			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			workerUser.getFullName(), String.valueOf(workerUser.getUserId()),
-			StringPool.BLANK);
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId, accountEntryId,
-			auditSetId, fieldClassNameId, accountWorkerId,
-			AuditEntryConstants.ACTION_ASSIGN, AuditEntryConstants.FIELD_ROLE,
-			VisibilityConstants.WORKERS, StringPool.BLANK, StringPool.BLANK,
-			accountWorker.getRoleLabel(),
-			String.valueOf(accountWorker.getRole()), StringPool.BLANK);
 
 		return accountWorker;
 	}
@@ -149,40 +118,7 @@ public class AccountWorkerLocalServiceImpl
 	public void deleteAccountWorker(long userId, long accountWorkerId)
 		throws PortalException {
 
-		User user = userLocalService.getUser(userId);
-		Date now = new Date();
-
-		AccountWorker accountWorker = accountWorkerPersistence.remove(
-			accountWorkerId);
-
-		long auditSetId = auditEntryLocalService.getNextAuditSetId(
-			AccountEntry.class.getName(), accountWorker.getAccountEntryId());
-
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-		long fieldClassNameId = classNameLocalService.getClassNameId(
-			AccountWorker.class.getName());
-
-		User accountWorkerUser = userLocalService.getUser(
-			accountWorker.getUserId());
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId,
-			accountWorker.getAccountEntryId(), auditSetId, fieldClassNameId,
-			accountWorker.getAccountWorkerId(),
-			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_USER,
-			VisibilityConstants.WORKERS, accountWorkerUser.getFullName(),
-			String.valueOf(accountWorkerUser.getUserId()), StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK);
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), now, classNameId,
-			accountWorker.getAccountEntryId(), auditSetId, fieldClassNameId,
-			accountWorker.getAccountWorkerId(),
-			AuditEntryConstants.ACTION_UNASSIGN, AuditEntryConstants.FIELD_ROLE,
-			VisibilityConstants.WORKERS, accountWorker.getRoleLabel(),
-			String.valueOf(accountWorker.getRole()), StringPool.BLANK,
-			StringPool.BLANK, StringPool.BLANK);
+		accountWorkerPersistence.remove(accountWorkerId);
 	}
 
 	public void deleteAccountWorkers(long userId) throws PortalException {
@@ -247,36 +183,9 @@ public class AccountWorkerLocalServiceImpl
 			return accountWorker;
 		}
 
-		int oldRole = accountWorker.getRole();
-
 		accountWorker.setRole(role);
 
 		accountWorker = accountWorkerPersistence.update(accountWorker);
-
-		if (oldRole != role) {
-			User user = userLocalService.getUser(userId);
-
-			long classNameId = classNameLocalService.getClassNameId(
-				AccountEntry.class.getName());
-			long auditSetId = auditEntryLocalService.getNextAuditSetId(
-				AccountEntry.class.getName(),
-				accountWorker.getAccountEntryId());
-			long fieldClassNameId = classNameLocalService.getClassNameId(
-				AccountWorker.class.getName());
-			User accountWorkerUser = userLocalService.getUser(
-				accountWorker.getUserId());
-
-			auditEntryLocalService.addAuditEntry(
-				userId, user.getFullName(), new Date(), classNameId,
-				accountWorker.getAccountEntryId(), auditSetId, fieldClassNameId,
-				accountWorker.getAccountWorkerId(),
-				AuditEntryConstants.ACTION_UPDATE,
-				AuditEntryConstants.FIELD_ROLE, VisibilityConstants.WORKERS,
-				AccountWorkerConstants.getRoleLabel(oldRole),
-				String.valueOf(oldRole), accountWorker.getRoleLabel(),
-				String.valueOf(accountWorker.getRole()),
-				accountWorkerUser.getFullName());
-		}
 
 		return accountWorker;
 	}

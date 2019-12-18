@@ -62,10 +62,6 @@ public interface OfferingDefinition extends OfferingDefinitionModel,
 
 	public java.lang.String getMaxUsersLabel();
 
-	@com.liferay.portal.kernel.json.JSON()
-	public ProductEntry getProductEntry()
-		throws com.liferay.portal.kernel.exception.PortalException;
-
 	public int getQuantity();
 
 	public SupportResponse getSupportResponse()

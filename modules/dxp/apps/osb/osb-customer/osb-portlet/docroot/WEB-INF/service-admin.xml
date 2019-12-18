@@ -40,6 +40,34 @@
 		<reference entity="Organization" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
 	</entity>
+	<entity local-service="true" name="AccountEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="accountEntryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedUserId" type="long" />
+		<column name="modifiedUserName" type="String" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="koroneikiAccountKey" type="String" />
+		<column name="dossieraAccountKey" type="String" />
+		<column name="name" type="String" />
+		<column name="code" type="String" />
+		<column name="instructions" type="String" />
+		<column name="activeSupport" type="boolean" />
+		<column name="activeTicketSupport" type="boolean" />
+		<column name="lastZendeskAuditDate" type="Date" />
+		<column name="status" type="int" />
+	</entity>
 	<entity local-service="true" name="AccountInformation" remote-service="true">
 
 		<!-- PK fields -->
@@ -344,10 +372,6 @@
 		<column name="modifiedUserName" type="String" />
 		<column name="modifiedDate" type="Date" />
 
-		<!-- Relationships -->
-
-		<column entity="SupportRegion" mapping-table="PartnerEntries_SupportRegions" name="supportRegions" type="Collection" />
-
 		<!-- Other fields -->
 
 		<column name="parentPartnerEntryId" type="long" />
@@ -416,6 +440,41 @@
 		<reference entity="Organization" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
 		<reference entity="UserGroupRole" package-path="com.liferay.portal" />
+	</entity>
+	<entity local-service="true" name="ProductEntry" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="productEntryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="type" type="int" />
+		<column name="environment" type="int" />
+		<column name="versionsListType" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column case-sensitive="false" name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="ProductEntry" unique="true">
+			<finder-column name="name" />
+		</finder>
+		<finder name="Environment" return-type="Collection">
+			<finder-column name="environment" />
+		</finder>
 	</entity>
 	<entity local-service="true" name="SupportResponse" remote-service="true">
 

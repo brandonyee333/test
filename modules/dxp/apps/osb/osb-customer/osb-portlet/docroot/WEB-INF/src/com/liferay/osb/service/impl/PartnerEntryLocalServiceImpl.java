@@ -23,11 +23,10 @@ import com.liferay.osb.exception.RequiredPartnerEntryException;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.service.base.PartnerEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -73,10 +72,13 @@ public class PartnerEntryLocalServiceImpl
 
 		partnerEntry = partnerEntryPersistence.update(partnerEntry);
 
+		/*
+
 		if (ArrayUtil.isNotEmpty(supportRegionIds)) {
 			partnerEntryPersistence.addSupportRegions(
 				partnerEntryId, supportRegionIds);
 		}
+		*/
 
 		return partnerEntry;
 	}
@@ -219,10 +221,13 @@ public class PartnerEntryLocalServiceImpl
 			closePartnerEntry(user, partnerEntryId);
 		}
 
+		/*
+
 		if (supportRegionIds != null) {
 			partnerEntryPersistence.setSupportRegions(
 				partnerEntryId, supportRegionIds);
 		}
+		*/
 
 		return partnerEntry;
 	}

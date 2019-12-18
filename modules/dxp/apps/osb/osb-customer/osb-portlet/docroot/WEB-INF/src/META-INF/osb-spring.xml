@@ -7,14 +7,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd"
 >
-	<bean class="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl" id="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl">
-		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.host')}" />
-		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.port')}" />
-		<property name="protocol" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.rest.service.api.koroneiki.protocol')}" />
-	</bean>
-	<bean class="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceUtil" id="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceUtil">
-		<property name="KoroneikiRESTWebService" ref="com.liferay.osb.remote.koroneiki.KoroneikiRESTWebServiceImpl" />
-	</bean>
 	<bean class="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl" id="com.liferay.osb.remote.lcs.LCSJSONWebServiceImpl">
 		<property name="hostName" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.host')}" />
 		<property name="hostPort" value="#{T(com.liferay.util.portlet.PortletProps).get('remote.json.service.api.lcs.port')}" />

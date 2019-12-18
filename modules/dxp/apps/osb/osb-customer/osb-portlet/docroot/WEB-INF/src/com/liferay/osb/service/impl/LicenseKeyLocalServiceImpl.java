@@ -42,7 +42,6 @@ import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.model.OfferingDefinitionConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OfferingEntryGroup;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
@@ -858,6 +857,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		LicenseKey licenseKey = null;
 
+		/*
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
 
@@ -865,10 +865,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntryGroup.getAvailableLicenseOfferingEntries();
 
 		availableOfferingEntries.remove(offeringEntry);
-
+		*/
 		int availableServers = offeringEntry.getAvailableServers();
 
 		for (int i = 0; i < serverIds.length; i++) {
+			/*
+
 			if ((availableServers <= 0) &&
 				!availableOfferingEntries.isEmpty()) {
 
@@ -876,7 +878,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 				availableServers = offeringEntry.getAvailableServers();
 			}
-
+			*/
 			licenseKey = doAddLicenseKey(
 				user, now, licenseKeySet, offeringEntry, licenseEntry,
 				accountEntryName, licenseEntryName, licenseEntryType,
@@ -1029,6 +1031,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			keyCount = hostNames.length;
 		}
 
+		/*
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
 
@@ -1036,10 +1039,12 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntryGroup.getAvailableLicenseOfferingEntries();
 
 		availableOfferingEntries.remove(offeringEntry);
-
+		*/
 		int availableServers = offeringEntry.getAvailableServers();
 
 		for (int i = 0; i < keyCount; i++) {
+			/*
+
 			if ((availableServers <= 0) &&
 				!availableOfferingEntries.isEmpty()) {
 
@@ -1047,7 +1052,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 				availableServers = offeringEntry.getAvailableServers();
 			}
-
+			*/
 			int sizing = 0;
 
 			if ((licenseVersion >= 6) &&
@@ -1277,6 +1282,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	protected ProductEntry getDeveloperProductEntry(long productEntryId)
 		throws PortalException {
 
+		/*
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
 
@@ -1296,6 +1302,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				return curProductEntry;
 			}
 		}
+		*/
 
 		return null;
 	}
@@ -1322,6 +1329,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				continue;
 			}
 
+			/*
+
 			if (productEntryRootName.equals(
 					ProductEntryConstants.ROOT_COMMERCE_SUBSCRIPTION) &&
 				productEntry.isCommerceSubscription()) {
@@ -1345,6 +1354,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 				return offeringEntry;
 			}
+			*/
 		}
 
 		return null;
@@ -1436,6 +1446,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	protected void validate(OfferingEntry offeringEntry, int numberOfKeys)
 		throws PortalException {
 
+		/*
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
 
@@ -1444,6 +1455,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			throw new MaximumLicenseKeyException();
 		}
+		*/
 	}
 
 	protected void validate(

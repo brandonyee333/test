@@ -41,15 +41,6 @@ public class PartnerEntryLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerEntryLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static boolean hasSupportRegionPartnerEntries(long supportRegionId) {
-		return getService().hasSupportRegionPartnerEntries(supportRegionId);
-	}
-
-	public static boolean hasSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId) {
-		return getService()
-				   .hasSupportRegionPartnerEntry(supportRegionId, partnerEntryId);
-	}
 
 	/**
 	* Adds the partner entry to the database. Also notifies the appropriate model listeners.
@@ -194,10 +185,6 @@ public class PartnerEntryLocalServiceUtil {
 		return getService().getPartnerEntriesCount();
 	}
 
-	public static int getSupportRegionPartnerEntriesCount(long supportRegionId) {
-		return getService().getSupportRegionPartnerEntriesCount(supportRegionId);
-	}
-
 	public static int searchCount(java.lang.String code, int[] statuses,
 		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator) {
@@ -295,25 +282,6 @@ public class PartnerEntryLocalServiceUtil {
 		return getService().getPartnerEntries(start, end);
 	}
 
-	public static java.util.List<com.liferay.osb.model.PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId) {
-		return getService().getSupportRegionPartnerEntries(supportRegionId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId, int start, int end) {
-		return getService()
-				   .getSupportRegionPartnerEntries(supportRegionId, start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.PartnerEntry> orderByComparator) {
-		return getService()
-				   .getSupportRegionPartnerEntries(supportRegionId, start, end,
-			orderByComparator);
-	}
-
 	public static java.util.List<com.liferay.osb.model.PartnerEntry> getUserPartnerEntries(
 		long userId, int start, int end) {
 		return getService().getUserPartnerEntries(userId, start, end);
@@ -356,73 +324,6 @@ public class PartnerEntryLocalServiceUtil {
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 		return getService().dynamicQueryCount(dynamicQuery, projection);
-	}
-
-	/**
-	* Returns the supportRegionIds of the support regions associated with the partner entry.
-	*
-	* @param partnerEntryId the partnerEntryId of the partner entry
-	* @return long[] the supportRegionIds of support regions associated with the partner entry
-	*/
-	public static long[] getSupportRegionPrimaryKeys(long partnerEntryId) {
-		return getService().getSupportRegionPrimaryKeys(partnerEntryId);
-	}
-
-	public static void addSupportRegionPartnerEntries(long supportRegionId,
-		java.util.List<com.liferay.osb.model.PartnerEntry> partnerEntries) {
-		getService()
-			.addSupportRegionPartnerEntries(supportRegionId, partnerEntries);
-	}
-
-	public static void addSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds) {
-		getService()
-			.addSupportRegionPartnerEntries(supportRegionId, partnerEntryIds);
-	}
-
-	public static void addSupportRegionPartnerEntry(long supportRegionId,
-		com.liferay.osb.model.PartnerEntry partnerEntry) {
-		getService().addSupportRegionPartnerEntry(supportRegionId, partnerEntry);
-	}
-
-	public static void addSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId) {
-		getService()
-			.addSupportRegionPartnerEntry(supportRegionId, partnerEntryId);
-	}
-
-	public static void clearSupportRegionPartnerEntries(long supportRegionId) {
-		getService().clearSupportRegionPartnerEntries(supportRegionId);
-	}
-
-	public static void deleteSupportRegionPartnerEntries(long supportRegionId,
-		java.util.List<com.liferay.osb.model.PartnerEntry> partnerEntries) {
-		getService()
-			.deleteSupportRegionPartnerEntries(supportRegionId, partnerEntries);
-	}
-
-	public static void deleteSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds) {
-		getService()
-			.deleteSupportRegionPartnerEntries(supportRegionId, partnerEntryIds);
-	}
-
-	public static void deleteSupportRegionPartnerEntry(long supportRegionId,
-		com.liferay.osb.model.PartnerEntry partnerEntry) {
-		getService()
-			.deleteSupportRegionPartnerEntry(supportRegionId, partnerEntry);
-	}
-
-	public static void deleteSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId) {
-		getService()
-			.deleteSupportRegionPartnerEntry(supportRegionId, partnerEntryId);
-	}
-
-	public static void setSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds) {
-		getService()
-			.setSupportRegionPartnerEntries(supportRegionId, partnerEntryIds);
 	}
 
 	public static void clearService() {

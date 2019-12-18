@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.io.Serializable;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -72,11 +71,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	@Indexable(type = IndexableType.REINDEX)
 	public ProductEntry addProductEntry(ProductEntry productEntry);
 
-	public ProductEntry addProductEntry(long userId, java.lang.String name,
-		int type, int environment, java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
-		throws PortalException;
-
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
 	*
@@ -108,9 +102,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ProductEntry fetchProductEntry(long productEntryId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry fetchProductEntryByName(java.lang.String name);
-
 	/**
 	* Returns the product entry with the primary key.
 	*
@@ -122,10 +113,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	public ProductEntry getProductEntry(long productEntryId)
 		throws PortalException;
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ProductEntry getProductEntryByName(java.lang.String name)
-		throws PortalException;
-
 	/**
 	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -134,12 +121,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public ProductEntry updateProductEntry(ProductEntry productEntry);
-
-	public ProductEntry updateProductEntry(long productEntryId,
-		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
-		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -168,10 +149,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getProductEntriesCount();
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchCount(java.lang.String name,
-		LinkedHashMap<java.lang.String, java.lang.Object> params);
 
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
@@ -237,14 +214,6 @@ public interface ProductEntryLocalService extends BaseLocalService,
 	*/
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ProductEntry> getProductEntries(int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> getProductEntries(long accountEntryId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ProductEntry> search(java.lang.String name,
-		LinkedHashMap<java.lang.String, java.lang.Object> params, int start,
-		int end);
 
 	/**
 	* Returns the number of rows matching the dynamic query.

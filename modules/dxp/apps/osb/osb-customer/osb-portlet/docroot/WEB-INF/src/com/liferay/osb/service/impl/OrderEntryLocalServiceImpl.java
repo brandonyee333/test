@@ -17,32 +17,21 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.NoSuchOrderEntryException;
 import com.liferay.osb.exception.OrderEntryActualStartDateException;
 import com.liferay.osb.exception.OrderEntryStartDateException;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AuditEntryConstants;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.base.OrderEntryLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.VisibilityConstants;
-import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
-import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -103,18 +92,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setStatus(status);
 
 		orderEntry = orderEntryPersistence.update(orderEntry);
-
-		// External ids
-
-		long classNameId = classNameLocalService.getClassNameId(
-			OrderEntry.class);
-
-		if (Validator.isNotNull(salesforceOpportunityKey)) {
-			externalIdMapperLocalService.addExternalIdMapper(
-				classNameId, orderEntry.getOrderEntryId(),
-				ExternalIdMapperConstants.TYPE_SALESFORCE,
-				salesforceOpportunityKey);
-		}
 
 		// Offering entries
 
@@ -191,14 +168,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		orderEntryPersistence.remove(orderEntry);
 
-		// External ids
-
-		long classNameId = classNameLocalService.getClassNameId(
-			OrderEntry.class.getName());
-
-		externalIdMapperPersistence.removeByC_C(
-			classNameId, orderEntry.getOrderEntryId());
-
 		// Offering entries
 
 		List<OfferingEntry> offeringEntries =
@@ -260,24 +229,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 			offeringEntryPersistence.update(offeringEntry);
 		}
-
-		// Audit entry
-
-		long classNameId = classNameLocalService.getClassNameId(
-			AccountEntry.class.getName());
-		long fieldClassNameId = classNameLocalService.getClassNameId(
-			OrderEntry.class.getName());
-
-		long auditSetId = auditEntryLocalService.getNextAuditSetId(
-			AccountEntry.class.getName(), orderEntry.getAccountEntryId());
-
-		auditEntryLocalService.addAuditEntry(
-			userId, user.getFullName(), new Date(), classNameId,
-			orderEntry.getAccountEntryId(), auditSetId, fieldClassNameId,
-			orderEntryId, AuditEntryConstants.ACTION_RENEW,
-			AuditEntryConstants.FIELD_RENEW_COUNT, VisibilityConstants.ADMIN,
-			StringPool.BLANK, StringPool.BLANK, StringPool.BLANK,
-			String.valueOf(renewCount), StringPool.BLANK);
 
 		return orderEntry;
 	}
@@ -416,40 +367,6 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		orderEntry = orderEntryPersistence.update(orderEntry);
 
-		// External ids
-
-		long classNameId = classNameLocalService.getClassNameId(
-			OrderEntry.class);
-
-		List<ExternalIdMapper> externalIdMappers =
-			externalIdMapperLocalService.getExternalIdMappers(
-				classNameId, orderEntryId,
-				ExternalIdMapperConstants.TYPE_SALESFORCE);
-
-		if (Validator.isNotNull(salesforceOpportunityKey)) {
-			if (externalIdMappers.isEmpty()) {
-				externalIdMapperLocalService.addExternalIdMapper(
-					classNameId, orderEntry.getOrderEntryId(),
-					ExternalIdMapperConstants.TYPE_SALESFORCE,
-					salesforceOpportunityKey);
-			}
-			else {
-				ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
-
-				externalIdMapperLocalService.updateExternalIdMapper(
-					externalIdMapper.getExternalIdMapperId(), classNameId,
-					orderEntry.getOrderEntryId(),
-					ExternalIdMapperConstants.TYPE_SALESFORCE,
-					salesforceOpportunityKey);
-			}
-		}
-		else if (!externalIdMappers.isEmpty()) {
-			for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-				externalIdMapperLocalService.deleteExternalIdMapper(
-					externalIdMapper.getExternalIdMapperId());
-			}
-		}
-
 		// Offering entries
 
 		List<OfferingEntry> orderEntryOfferingEntries =
@@ -532,22 +449,10 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		List<OfferingEntry> offeringEntries =
 			offeringEntryPersistence.findByOrderEntryId(orderEntryId);
 
-		AccountEntry accountEntry = orderEntry.getAccountEntry();
-
 		for (OfferingEntry offeringEntry : offeringEntries) {
 			offeringEntryLocalService.updateStatus(
 				userId, offeringEntry.getOfferingEntryId(),
 				offeringEntryStatus);
-		}
-
-		// Account entry
-
-		if ((accountEntry.getStatus() == WorkflowConstants.STATUS_REJECTED) &&
-			(status == WorkflowConstants.STATUS_APPROVED)) {
-
-			accountEntryLocalService.updateStatus(
-				userId, accountEntry.getAccountEntryId(), status,
-				serviceContext);
 		}
 
 		return orderEntry;
@@ -557,32 +462,14 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 			return OfferingEntryConstants.STATUS_ACTIVE;
 		}
-		else if ((status == WorkflowConstants.STATUS_PENDING) ||
-				 (status == WorkflowConstants.STATUS_PENDING_VALIDATION)) {
 
-			return OfferingEntryConstants.STATUS_PENDING;
-		}
-		else {
-			return OfferingEntryConstants.STATUS_CLOSED;
-		}
+		return OfferingEntryConstants.STATUS_CLOSED;
 	}
 
 	protected void validate(
 			long orderEntryId, long accountEntryId,
 			String salesforceOpportunityKey)
 		throws PortalException {
-
-		if (orderEntryId > 0) {
-			OrderEntry orderEntry = orderEntryPersistence.findByPrimaryKey(
-				orderEntryId);
-
-			if ((orderEntry.getUserId() == OSBConstants.USER_DEFAULT_USER_ID) &&
-				!salesforceOpportunityKey.equals(
-					orderEntry.getSalesforceOpportunityKey())) {
-
-				throw new PrincipalException();
-			}
-		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

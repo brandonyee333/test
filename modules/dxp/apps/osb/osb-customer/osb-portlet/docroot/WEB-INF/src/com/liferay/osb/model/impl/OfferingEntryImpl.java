@@ -16,29 +16,19 @@ package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseKey;
-import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OfferingEntryGroup;
-import com.liferay.osb.model.OfferingEntryGroupFactoryUtil;
 import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.util.comparator.OfferingEntryPKComparator;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -50,9 +40,11 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 	public OfferingEntryImpl() {
 	}
 
-	public AccountEntry getAccountEntry() throws PortalException {
-		return AccountEntryLocalServiceUtil.getAccountEntry(
-			getAccountEntryId());
+	public AccountEntry getAccountEntry() {
+
+		// TODO
+
+		return null;
 	}
 
 	@JSON
@@ -107,39 +99,15 @@ public class OfferingEntryImpl extends OfferingEntryBaseImpl {
 			getOfferingEntryId(), false, true);
 	}
 
-	public OfferingEntryGroup getOfferingEntryGroup() throws PortalException {
-		long userId = 0;
-
-		if (getType() == OfferingEntryConstants.TYPE_TRIAL) {
-			userId = getUserId();
-		}
-
-		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-		params.put(
-			"validLicense",
-			new Long[] {getProductEntryId(), getProductEntryId()});
-
-		List<OfferingEntry> offeringEntries =
-			OfferingEntryLocalServiceUtil.search(
-				userId, getAccountEntryId(), new int[] {getType()}, new int[0],
-				0, 0, 0, 0, 0, 0, params, true, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, new OfferingEntryPKComparator(true));
-
-		Map<String, OfferingEntryGroup> offeringEntryGroupMap =
-			OfferingEntryGroupFactoryUtil.createOfferingEntryGroupMap(
-				offeringEntries);
-
-		return offeringEntryGroupMap.get(getKey());
-	}
-
 	public OrderEntry getOrderEntry() throws PortalException {
 		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
-	public ProductEntry getProductEntry() throws PortalException {
-		return ProductEntryLocalServiceUtil.getProductEntry(
-			getProductEntryId());
+	public ProductEntry getProductEntry() {
+
+		// TODO
+
+		return null;
 	}
 
 	public String getProductType() {

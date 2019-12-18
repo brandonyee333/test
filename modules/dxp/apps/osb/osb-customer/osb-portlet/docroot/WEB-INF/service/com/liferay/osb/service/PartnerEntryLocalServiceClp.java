@@ -28,284 +28,161 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		InvokableLocalService invokableLocalService) {
 		_invokableLocalService = invokableLocalService;
 
-		_methodName0 = "hasSupportRegionPartnerEntries";
+		_methodName0 = "addPartnerEntry";
 
-		_methodParameterTypes0 = new String[] { "long" };
-
-		_methodName1 = "hasSupportRegionPartnerEntry";
-
-		_methodParameterTypes1 = new String[] { "long", "long" };
-
-		_methodName2 = "addPartnerEntry";
-
-		_methodParameterTypes2 = new String[] {
+		_methodParameterTypes0 = new String[] {
 				"com.liferay.osb.model.PartnerEntry"
 			};
 
-		_methodName3 = "addPartnerEntry";
+		_methodName1 = "addPartnerEntry";
 
-		_methodParameterTypes3 = new String[] {
+		_methodParameterTypes1 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "long[][]"
 			};
 
-		_methodName4 = "createPartnerEntry";
+		_methodName2 = "createPartnerEntry";
+
+		_methodParameterTypes2 = new String[] { "long" };
+
+		_methodName3 = "deletePartnerEntry";
+
+		_methodParameterTypes3 = new String[] {
+				"com.liferay.osb.model.PartnerEntry"
+			};
+
+		_methodName4 = "deletePartnerEntry";
 
 		_methodParameterTypes4 = new String[] { "long" };
 
-		_methodName5 = "deletePartnerEntry";
+		_methodName5 = "fetchPartnerEntry";
 
-		_methodParameterTypes5 = new String[] {
-				"com.liferay.osb.model.PartnerEntry"
-			};
+		_methodParameterTypes5 = new String[] { "java.lang.String" };
 
-		_methodName6 = "deletePartnerEntry";
+		_methodName6 = "fetchPartnerEntry";
 
 		_methodParameterTypes6 = new String[] { "long" };
 
-		_methodName7 = "fetchPartnerEntry";
+		_methodName7 = "getPartnerEntry";
 
-		_methodParameterTypes7 = new String[] { "java.lang.String" };
+		_methodParameterTypes7 = new String[] { "long" };
 
-		_methodName8 = "fetchPartnerEntry";
+		_methodName8 = "getPartnerEntryByCode";
 
-		_methodParameterTypes8 = new String[] { "long" };
+		_methodParameterTypes8 = new String[] { "java.lang.String" };
 
-		_methodName9 = "getPartnerEntry";
+		_methodName9 = "updatePartnerEntry";
 
-		_methodParameterTypes9 = new String[] { "long" };
-
-		_methodName10 = "getPartnerEntryByCode";
-
-		_methodParameterTypes10 = new String[] { "java.lang.String" };
-
-		_methodName11 = "updatePartnerEntry";
-
-		_methodParameterTypes11 = new String[] {
+		_methodParameterTypes9 = new String[] {
 				"com.liferay.osb.model.PartnerEntry"
 			};
 
-		_methodName12 = "updatePartnerEntry";
+		_methodName10 = "updatePartnerEntry";
 
-		_methodParameterTypes12 = new String[] {
+		_methodParameterTypes10 = new String[] {
 				"long", "long", "java.lang.String", "java.lang.String",
 				"java.lang.String", "java.lang.String", "int", "long[][]"
 			};
 
-		_methodName13 = "getActionableDynamicQuery";
+		_methodName11 = "getActionableDynamicQuery";
+
+		_methodParameterTypes11 = new String[] {  };
+
+		_methodName12 = "dynamicQuery";
+
+		_methodParameterTypes12 = new String[] {  };
+
+		_methodName13 = "getIndexableActionableDynamicQuery";
 
 		_methodParameterTypes13 = new String[] {  };
 
-		_methodName14 = "dynamicQuery";
+		_methodName14 = "deletePersistedModel";
 
-		_methodParameterTypes14 = new String[] {  };
-
-		_methodName15 = "getIndexableActionableDynamicQuery";
-
-		_methodParameterTypes15 = new String[] {  };
-
-		_methodName16 = "deletePersistedModel";
-
-		_methodParameterTypes16 = new String[] {
+		_methodParameterTypes14 = new String[] {
 				"com.liferay.portal.kernel.model.PersistedModel"
 			};
 
-		_methodName17 = "getPersistedModel";
+		_methodName15 = "getPersistedModel";
 
-		_methodParameterTypes17 = new String[] { "java.io.Serializable" };
+		_methodParameterTypes15 = new String[] { "java.io.Serializable" };
 
-		_methodName18 = "getPartnerEntriesCount";
+		_methodName16 = "getPartnerEntriesCount";
 
-		_methodParameterTypes18 = new String[] {  };
+		_methodParameterTypes16 = new String[] {  };
 
-		_methodName19 = "getSupportRegionPartnerEntriesCount";
+		_methodName17 = "searchCount";
 
-		_methodParameterTypes19 = new String[] { "long" };
-
-		_methodName20 = "searchCount";
-
-		_methodParameterTypes20 = new String[] {
+		_methodParameterTypes17 = new String[] {
 				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
 				"boolean"
 			};
 
-		_methodName21 = "searchCount";
+		_methodName18 = "searchCount";
 
-		_methodParameterTypes21 = new String[] {
+		_methodParameterTypes18 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap"
 			};
 
-		_methodName23 = "getOSGiServiceIdentifier";
+		_methodName20 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes23 = new String[] {  };
+		_methodParameterTypes20 = new String[] {  };
 
-		_methodName24 = "dynamicQuery";
+		_methodName21 = "dynamicQuery";
 
-		_methodParameterTypes24 = new String[] {
+		_methodParameterTypes21 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName25 = "dynamicQuery";
+		_methodName22 = "dynamicQuery";
 
-		_methodParameterTypes25 = new String[] {
+		_methodParameterTypes22 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int"
 			};
 
-		_methodName26 = "dynamicQuery";
+		_methodName23 = "dynamicQuery";
 
-		_methodParameterTypes26 = new String[] {
+		_methodParameterTypes23 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery", "int", "int",
 				"com.liferay.portal.kernel.util.OrderByComparator"
 			};
 
-		_methodName27 = "getChildPartnerEntries";
+		_methodName24 = "getChildPartnerEntries";
 
-		_methodParameterTypes27 = new String[] { "long", "boolean" };
+		_methodParameterTypes24 = new String[] { "long", "boolean" };
 
-		_methodName28 = "getPartnerEntries";
+		_methodName25 = "getPartnerEntries";
 
-		_methodParameterTypes28 = new String[] { "int", "int" };
+		_methodParameterTypes25 = new String[] { "int", "int" };
 
-		_methodName29 = "getSupportRegionPartnerEntries";
+		_methodName26 = "getUserPartnerEntries";
 
-		_methodParameterTypes29 = new String[] { "long" };
+		_methodParameterTypes26 = new String[] { "long", "int", "int" };
 
-		_methodName30 = "getSupportRegionPartnerEntries";
+		_methodName27 = "search";
 
-		_methodParameterTypes30 = new String[] { "long", "int", "int" };
-
-		_methodName31 = "getSupportRegionPartnerEntries";
-
-		_methodParameterTypes31 = new String[] {
-				"long", "int", "int",
-				"com.liferay.portal.kernel.util.OrderByComparator"
-			};
-
-		_methodName32 = "getUserPartnerEntries";
-
-		_methodParameterTypes32 = new String[] { "long", "int", "int" };
-
-		_methodName33 = "search";
-
-		_methodParameterTypes33 = new String[] {
+		_methodParameterTypes27 = new String[] {
 				"java.lang.String", "int[][]", "java.util.LinkedHashMap",
 				"boolean", "int", "int"
 			};
 
-		_methodName34 = "search";
+		_methodName28 = "search";
 
-		_methodParameterTypes34 = new String[] {
+		_methodParameterTypes28 = new String[] {
 				"java.lang.String", "java.util.LinkedHashMap", "int", "int"
 			};
 
-		_methodName35 = "dynamicQueryCount";
+		_methodName29 = "dynamicQueryCount";
 
-		_methodParameterTypes35 = new String[] {
+		_methodParameterTypes29 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery"
 			};
 
-		_methodName36 = "dynamicQueryCount";
+		_methodName30 = "dynamicQueryCount";
 
-		_methodParameterTypes36 = new String[] {
+		_methodParameterTypes30 = new String[] {
 				"com.liferay.portal.kernel.dao.orm.DynamicQuery",
 				"com.liferay.portal.kernel.dao.orm.Projection"
 			};
-
-		_methodName37 = "getSupportRegionPrimaryKeys";
-
-		_methodParameterTypes37 = new String[] { "long" };
-
-		_methodName38 = "addSupportRegionPartnerEntries";
-
-		_methodParameterTypes38 = new String[] { "long", "java.util.List" };
-
-		_methodName39 = "addSupportRegionPartnerEntries";
-
-		_methodParameterTypes39 = new String[] { "long", "long[][]" };
-
-		_methodName40 = "addSupportRegionPartnerEntry";
-
-		_methodParameterTypes40 = new String[] {
-				"long", "com.liferay.osb.model.PartnerEntry"
-			};
-
-		_methodName41 = "addSupportRegionPartnerEntry";
-
-		_methodParameterTypes41 = new String[] { "long", "long" };
-
-		_methodName42 = "clearSupportRegionPartnerEntries";
-
-		_methodParameterTypes42 = new String[] { "long" };
-
-		_methodName43 = "deleteSupportRegionPartnerEntries";
-
-		_methodParameterTypes43 = new String[] { "long", "java.util.List" };
-
-		_methodName44 = "deleteSupportRegionPartnerEntries";
-
-		_methodParameterTypes44 = new String[] { "long", "long[][]" };
-
-		_methodName45 = "deleteSupportRegionPartnerEntry";
-
-		_methodParameterTypes45 = new String[] {
-				"long", "com.liferay.osb.model.PartnerEntry"
-			};
-
-		_methodName46 = "deleteSupportRegionPartnerEntry";
-
-		_methodParameterTypes46 = new String[] { "long", "long" };
-
-		_methodName47 = "setSupportRegionPartnerEntries";
-
-		_methodParameterTypes47 = new String[] { "long", "long[][]" };
-	}
-
-	@Override
-	public boolean hasSupportRegionPartnerEntries(long supportRegionId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName0,
-					_methodParameterTypes0, new Object[] { supportRegionId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Boolean)returnObj).booleanValue();
-	}
-
-	@Override
-	public boolean hasSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName1,
-					_methodParameterTypes1,
-					new Object[] { supportRegionId, partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Boolean)returnObj).booleanValue();
 	}
 
 	@Override
@@ -314,8 +191,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableLocalService.invokeMethod(_methodName0,
+					_methodParameterTypes0,
 					new Object[] { ClpSerializer.translateInput(partnerEntry) });
 		}
 		catch (Throwable t) {
@@ -342,8 +219,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableLocalService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
 					new Object[] {
 						userId,
 						
@@ -385,8 +262,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -409,8 +286,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+			returnObj = _invokableLocalService.invokeMethod(_methodName3,
+					_methodParameterTypes3,
 					new Object[] { ClpSerializer.translateInput(partnerEntry) });
 		}
 		catch (Throwable t) {
@@ -435,8 +312,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName6,
-					_methodParameterTypes6, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName4,
+					_methodParameterTypes4, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -463,8 +340,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName7,
-					_methodParameterTypes7,
+			returnObj = _invokableLocalService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
 					new Object[] {
 						ClpSerializer.translateInput(dossieraAccountKey)
 					});
@@ -490,8 +367,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName6,
+					_methodParameterTypes6, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -515,8 +392,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName9,
-					_methodParameterTypes9, new Object[] { partnerEntryId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName7,
+					_methodParameterTypes7, new Object[] { partnerEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -544,8 +421,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableLocalService.invokeMethod(_methodName8,
+					_methodParameterTypes8,
 					new Object[] { ClpSerializer.translateInput(code) });
 		}
 		catch (Throwable t) {
@@ -573,8 +450,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName11,
-					_methodParameterTypes11,
+			returnObj = _invokableLocalService.invokeMethod(_methodName9,
+					_methodParameterTypes9,
 					new Object[] { ClpSerializer.translateInput(partnerEntry) });
 		}
 		catch (Throwable t) {
@@ -601,8 +478,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName12,
-					_methodParameterTypes12,
+			returnObj = _invokableLocalService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						userId,
 						
@@ -645,8 +522,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName13,
-					_methodParameterTypes13, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName11,
+					_methodParameterTypes11, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -668,8 +545,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName14,
-					_methodParameterTypes14, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName12,
+					_methodParameterTypes12, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -691,8 +568,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName15,
-					_methodParameterTypes15, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName13,
+					_methodParameterTypes13, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -716,8 +593,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName16,
-					_methodParameterTypes16,
+			returnObj = _invokableLocalService.invokeMethod(_methodName14,
+					_methodParameterTypes14,
 					new Object[] { ClpSerializer.translateInput(persistedModel) });
 		}
 		catch (Throwable t) {
@@ -746,8 +623,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName17,
-					_methodParameterTypes17,
+			returnObj = _invokableLocalService.invokeMethod(_methodName15,
+					_methodParameterTypes15,
 					new Object[] { ClpSerializer.translateInput(primaryKeyObj) });
 		}
 		catch (Throwable t) {
@@ -774,31 +651,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName18,
-					_methodParameterTypes18, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return ((Integer)returnObj).intValue();
-	}
-
-	@Override
-	public int getSupportRegionPartnerEntriesCount(long supportRegionId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName19,
-					_methodParameterTypes19, new Object[] { supportRegionId });
+			returnObj = _invokableLocalService.invokeMethod(_methodName16,
+					_methodParameterTypes16, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -822,8 +676,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName20,
-					_methodParameterTypes20,
+			returnObj = _invokableLocalService.invokeMethod(_methodName17,
+					_methodParameterTypes17,
 					new Object[] {
 						ClpSerializer.translateInput(code),
 						
@@ -855,8 +709,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName21,
-					_methodParameterTypes21,
+			returnObj = _invokableLocalService.invokeMethod(_methodName18,
+					_methodParameterTypes18,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -890,8 +744,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName23,
-					_methodParameterTypes23, new Object[] {  });
+			returnObj = _invokableLocalService.invokeMethod(_methodName20,
+					_methodParameterTypes20, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -914,8 +768,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName24,
-					_methodParameterTypes24,
+			returnObj = _invokableLocalService.invokeMethod(_methodName21,
+					_methodParameterTypes21,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -940,8 +794,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName25,
-					_methodParameterTypes25,
+			returnObj = _invokableLocalService.invokeMethod(_methodName22,
+					_methodParameterTypes22,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -973,8 +827,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName26,
-					_methodParameterTypes26,
+			returnObj = _invokableLocalService.invokeMethod(_methodName23,
+					_methodParameterTypes23,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1006,8 +860,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName27,
-					_methodParameterTypes27,
+			returnObj = _invokableLocalService.invokeMethod(_methodName24,
+					_methodParameterTypes24,
 					new Object[] { partnerEntryId, recursive });
 		}
 		catch (Throwable t) {
@@ -1031,91 +885,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName28,
-					_methodParameterTypes28, new Object[] { start, end });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.PartnerEntry>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName29,
-					_methodParameterTypes29, new Object[] { supportRegionId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.PartnerEntry>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId, int start, int end) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName30,
-					_methodParameterTypes30,
-					new Object[] { supportRegionId, start, end });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.osb.model.PartnerEntry>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator<com.liferay.osb.model.PartnerEntry> orderByComparator) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName31,
-					_methodParameterTypes31,
-					new Object[] {
-						supportRegionId,
-						
-					start,
-						
-					end,
-						
-					ClpSerializer.translateInput(orderByComparator)
-					});
+			returnObj = _invokableLocalService.invokeMethod(_methodName25,
+					_methodParameterTypes25, new Object[] { start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1138,8 +909,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName32,
-					_methodParameterTypes32, new Object[] { userId, start, end });
+			returnObj = _invokableLocalService.invokeMethod(_methodName26,
+					_methodParameterTypes26, new Object[] { userId, start, end });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -1164,8 +935,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName33,
-					_methodParameterTypes33,
+			returnObj = _invokableLocalService.invokeMethod(_methodName27,
+					_methodParameterTypes27,
 					new Object[] {
 						ClpSerializer.translateInput(code),
 						
@@ -1203,8 +974,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName34,
-					_methodParameterTypes34,
+			returnObj = _invokableLocalService.invokeMethod(_methodName28,
+					_methodParameterTypes28,
 					new Object[] {
 						ClpSerializer.translateInput(keywords),
 						
@@ -1236,8 +1007,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName35,
-					_methodParameterTypes35,
+			returnObj = _invokableLocalService.invokeMethod(_methodName29,
+					_methodParameterTypes29,
 					new Object[] { ClpSerializer.translateInput(dynamicQuery) });
 		}
 		catch (Throwable t) {
@@ -1262,8 +1033,8 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName36,
-					_methodParameterTypes36,
+			returnObj = _invokableLocalService.invokeMethod(_methodName30,
+					_methodParameterTypes30,
 					new Object[] {
 						ClpSerializer.translateInput(dynamicQuery),
 						
@@ -1283,265 +1054,6 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 		}
 
 		return ((Long)returnObj).longValue();
-	}
-
-	@Override
-	public long[] getSupportRegionPrimaryKeys(long partnerEntryId) {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableLocalService.invokeMethod(_methodName37,
-					_methodParameterTypes37, new Object[] { partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (long[])ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public void addSupportRegionPartnerEntries(long supportRegionId,
-		java.util.List<com.liferay.osb.model.PartnerEntry> partnerEntries) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName38,
-				_methodParameterTypes38,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntries)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName39,
-				_methodParameterTypes39,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntryIds)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionPartnerEntry(long supportRegionId,
-		com.liferay.osb.model.PartnerEntry partnerEntry) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName40,
-				_methodParameterTypes40,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntry)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void addSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName41,
-				_methodParameterTypes41,
-				new Object[] { supportRegionId, partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void clearSupportRegionPartnerEntries(long supportRegionId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName42,
-				_methodParameterTypes42, new Object[] { supportRegionId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void deleteSupportRegionPartnerEntries(long supportRegionId,
-		java.util.List<com.liferay.osb.model.PartnerEntry> partnerEntries) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName43,
-				_methodParameterTypes43,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntries)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void deleteSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName44,
-				_methodParameterTypes44,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntryIds)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void deleteSupportRegionPartnerEntry(long supportRegionId,
-		com.liferay.osb.model.PartnerEntry partnerEntry) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName45,
-				_methodParameterTypes45,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntry)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void deleteSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName46,
-				_methodParameterTypes46,
-				new Object[] { supportRegionId, partnerEntryId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-	}
-
-	@Override
-	public void setSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds) {
-		try {
-			_invokableLocalService.invokeMethod(_methodName47,
-				_methodParameterTypes47,
-				new Object[] {
-					supportRegionId,
-					
-				ClpSerializer.translateInput(partnerEntryIds)
-				});
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
 	}
 
 	private InvokableLocalService _invokableLocalService;
@@ -1583,12 +1095,12 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	private String[] _methodParameterTypes17;
 	private String _methodName18;
 	private String[] _methodParameterTypes18;
-	private String _methodName19;
-	private String[] _methodParameterTypes19;
 	private String _methodName20;
 	private String[] _methodParameterTypes20;
 	private String _methodName21;
 	private String[] _methodParameterTypes21;
+	private String _methodName22;
+	private String[] _methodParameterTypes22;
 	private String _methodName23;
 	private String[] _methodParameterTypes23;
 	private String _methodName24;
@@ -1605,38 +1117,4 @@ public class PartnerEntryLocalServiceClp implements PartnerEntryLocalService {
 	private String[] _methodParameterTypes29;
 	private String _methodName30;
 	private String[] _methodParameterTypes30;
-	private String _methodName31;
-	private String[] _methodParameterTypes31;
-	private String _methodName32;
-	private String[] _methodParameterTypes32;
-	private String _methodName33;
-	private String[] _methodParameterTypes33;
-	private String _methodName34;
-	private String[] _methodParameterTypes34;
-	private String _methodName35;
-	private String[] _methodParameterTypes35;
-	private String _methodName36;
-	private String[] _methodParameterTypes36;
-	private String _methodName37;
-	private String[] _methodParameterTypes37;
-	private String _methodName38;
-	private String[] _methodParameterTypes38;
-	private String _methodName39;
-	private String[] _methodParameterTypes39;
-	private String _methodName40;
-	private String[] _methodParameterTypes40;
-	private String _methodName41;
-	private String[] _methodParameterTypes41;
-	private String _methodName42;
-	private String[] _methodParameterTypes42;
-	private String _methodName43;
-	private String[] _methodParameterTypes43;
-	private String _methodName44;
-	private String[] _methodParameterTypes44;
-	private String _methodName45;
-	private String[] _methodParameterTypes45;
-	private String _methodName46;
-	private String[] _methodParameterTypes46;
-	private String _methodName47;
-	private String[] _methodParameterTypes47;
 }

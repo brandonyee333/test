@@ -16,32 +16,19 @@ package com.liferay.osb.service.messaging;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountAttachmentServiceUtil;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerServiceUtil;
-import com.liferay.osb.service.AccountEntryLanguageLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLanguageServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentServiceUtil;
 import com.liferay.osb.service.AccountInformationLocalServiceUtil;
 import com.liferay.osb.service.AccountInformationServiceUtil;
 import com.liferay.osb.service.AccountProjectLocalServiceUtil;
 import com.liferay.osb.service.AccountProjectServiceUtil;
 import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.AccountWorkerServiceUtil;
-import com.liferay.osb.service.AuditEntryLocalServiceUtil;
-import com.liferay.osb.service.AuditEntryServiceUtil;
 import com.liferay.osb.service.ClpSerializer;
 import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.CorpProjectMessageServiceUtil;
 import com.liferay.osb.service.CorpProjectServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
@@ -68,8 +55,6 @@ import com.liferay.osb.service.RemoteCorpEntryLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
-import com.liferay.osb.service.SupportRegionLocalServiceUtil;
-import com.liferay.osb.service.SupportRegionServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseServiceUtil;
 
@@ -93,24 +78,9 @@ public class ClpMessageListener extends BaseMessageListener {
 
 		if (command.equals("undeploy") &&
 				servletContextName.equals(getServletContextName())) {
-			AccountAttachmentLocalServiceUtil.clearService();
-
-			AccountAttachmentServiceUtil.clearService();
 			AccountCustomerLocalServiceUtil.clearService();
 
 			AccountCustomerServiceUtil.clearService();
-			AccountEntryLocalServiceUtil.clearService();
-
-			AccountEntryServiceUtil.clearService();
-			AccountEntryLanguageLocalServiceUtil.clearService();
-
-			AccountEntryLanguageServiceUtil.clearService();
-			AccountEnvironmentLocalServiceUtil.clearService();
-
-			AccountEnvironmentServiceUtil.clearService();
-			AccountEnvironmentAttachmentLocalServiceUtil.clearService();
-
-			AccountEnvironmentAttachmentServiceUtil.clearService();
 			AccountInformationLocalServiceUtil.clearService();
 
 			AccountInformationServiceUtil.clearService();
@@ -120,17 +90,12 @@ public class ClpMessageListener extends BaseMessageListener {
 			AccountWorkerLocalServiceUtil.clearService();
 
 			AccountWorkerServiceUtil.clearService();
-			AuditEntryLocalServiceUtil.clearService();
-
-			AuditEntryServiceUtil.clearService();
 			CorpProjectLocalServiceUtil.clearService();
 
 			CorpProjectServiceUtil.clearService();
 			CorpProjectMessageLocalServiceUtil.clearService();
 
 			CorpProjectMessageServiceUtil.clearService();
-			ExternalIdMapperLocalServiceUtil.clearService();
-
 			LCSSubscriptionEntryLocalServiceUtil.clearService();
 
 			LCSSubscriptionEntryServiceUtil.clearService();
@@ -172,9 +137,6 @@ public class ClpMessageListener extends BaseMessageListener {
 
 			RemoteUserLocalServiceUtil.clearService();
 
-			SupportRegionLocalServiceUtil.clearService();
-
-			SupportRegionServiceUtil.clearService();
 			SupportResponseLocalServiceUtil.clearService();
 
 			SupportResponseServiceUtil.clearService();

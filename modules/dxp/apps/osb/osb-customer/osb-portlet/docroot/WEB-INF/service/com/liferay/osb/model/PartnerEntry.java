@@ -63,8 +63,4 @@ public interface PartnerEntry extends PartnerEntryModel, PersistedModel {
 	public java.util.List<PartnerWorker> getPartnerWorkers();
 
 	public java.lang.String getStatusLabel();
-
-	public SupportRegion getSupportRegion();
-
-	public long[] getSupportRegionIds();
 }

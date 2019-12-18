@@ -57,9 +57,6 @@ public interface LicenseKey extends LicenseKeyModel, PersistedModel {
 	public boolean canRenew()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
-	public AccountEntry getAccountEntry()
-		throws com.liferay.portal.kernel.exception.PortalException;
-
 	public LicenseEntry getLicenseEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
@@ -70,9 +67,6 @@ public interface LicenseKey extends LicenseKeyModel, PersistedModel {
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public OrderEntry getOrderEntry()
-		throws com.liferay.portal.kernel.exception.PortalException;
-
-	public ProductEntry getProductEntry()
 		throws com.liferay.portal.kernel.exception.PortalException;
 
 	public boolean isExpired();

@@ -41,11 +41,6 @@ public class AccountProjectLocalServiceImpl
 		AccountProject accountProject = accountProjectPersistence.remove(
 			accountProjectId);
 
-		// Account attachments
-
-		accountAttachmentLocalService.deleteAccountAttachments(
-			accountProject.getAccountEntryId(), accountProjectId);
-
 		// Account information
 
 		accountInformationLocalService.deleteAccountInformation(

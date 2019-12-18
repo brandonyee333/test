@@ -53,16 +53,6 @@ public class ProductEntryLocalServiceUtil {
 		return getService().addProductEntry(productEntry);
 	}
 
-	public static com.liferay.osb.model.ProductEntry addProductEntry(
-		long userId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addProductEntry(userId, name, type, environment,
-			versionsListType, dossieraIdMappings, zendeskTag);
-	}
-
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
 	*
@@ -103,11 +93,6 @@ public class ProductEntryLocalServiceUtil {
 		return getService().fetchProductEntry(productEntryId);
 	}
 
-	public static com.liferay.osb.model.ProductEntry fetchProductEntryByName(
-		java.lang.String name) {
-		return getService().fetchProductEntryByName(name);
-	}
-
 	/**
 	* Returns the product entry with the primary key.
 	*
@@ -121,12 +106,6 @@ public class ProductEntryLocalServiceUtil {
 		return getService().getProductEntry(productEntryId);
 	}
 
-	public static com.liferay.osb.model.ProductEntry getProductEntryByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getProductEntryByName(name);
-	}
-
 	/**
 	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -136,16 +115,6 @@ public class ProductEntryLocalServiceUtil {
 	public static com.liferay.osb.model.ProductEntry updateProductEntry(
 		com.liferay.osb.model.ProductEntry productEntry) {
 		return getService().updateProductEntry(productEntry);
-	}
-
-	public static com.liferay.osb.model.ProductEntry updateProductEntry(
-		long productEntryId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .updateProductEntry(productEntryId, name, type, environment,
-			versionsListType, dossieraIdMappings, zendeskTag);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
@@ -182,11 +151,6 @@ public class ProductEntryLocalServiceUtil {
 	*/
 	public static int getProductEntriesCount() {
 		return getService().getProductEntriesCount();
-	}
-
-	public static int searchCount(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return getService().searchCount(name, params);
 	}
 
 	public static java.lang.Object invokeMethod(java.lang.String name,
@@ -268,18 +232,6 @@ public class ProductEntryLocalServiceUtil {
 	public static java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
 		int start, int end) {
 		return getService().getProductEntries(start, end);
-	}
-
-	public static java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
-		long accountEntryId) {
-		return getService().getProductEntries(accountEntryId);
-	}
-
-	public static java.util.List<com.liferay.osb.model.ProductEntry> search(
-		java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end) {
-		return getService().search(name, params, start, end);
 	}
 
 	/**

@@ -45,16 +45,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		return _productEntryLocalService.addProductEntry(productEntry);
 	}
 
-	@Override
-	public com.liferay.osb.model.ProductEntry addProductEntry(long userId,
-		java.lang.String name, int type, int environment,
-		java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.addProductEntry(userId, name, type,
-			environment, versionsListType, dossieraIdMappings, zendeskTag);
-	}
-
 	/**
 	* Creates a new product entry with the primary key. Does not add the product entry to the database.
 	*
@@ -99,12 +89,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		return _productEntryLocalService.fetchProductEntry(productEntryId);
 	}
 
-	@Override
-	public com.liferay.osb.model.ProductEntry fetchProductEntryByName(
-		java.lang.String name) {
-		return _productEntryLocalService.fetchProductEntryByName(name);
-	}
-
 	/**
 	* Returns the product entry with the primary key.
 	*
@@ -119,13 +103,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 		return _productEntryLocalService.getProductEntry(productEntryId);
 	}
 
-	@Override
-	public com.liferay.osb.model.ProductEntry getProductEntryByName(
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.getProductEntryByName(name);
-	}
-
 	/**
 	* Updates the product entry in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	*
@@ -136,17 +113,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public com.liferay.osb.model.ProductEntry updateProductEntry(
 		com.liferay.osb.model.ProductEntry productEntry) {
 		return _productEntryLocalService.updateProductEntry(productEntry);
-	}
-
-	@Override
-	public com.liferay.osb.model.ProductEntry updateProductEntry(
-		long productEntryId, java.lang.String name, int type, int environment,
-		java.lang.String versionsListType,
-		java.lang.String[] dossieraIdMappings, java.lang.String zendeskTag)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _productEntryLocalService.updateProductEntry(productEntryId,
-			name, type, environment, versionsListType, dossieraIdMappings,
-			zendeskTag);
 	}
 
 	@Override
@@ -189,12 +155,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	@Override
 	public int getProductEntriesCount() {
 		return _productEntryLocalService.getProductEntriesCount();
-	}
-
-	@Override
-	public int searchCount(java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params) {
-		return _productEntryLocalService.searchCount(name, params);
 	}
 
 	@Override
@@ -283,20 +243,6 @@ public class ProductEntryLocalServiceWrapper implements ProductEntryLocalService
 	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
 		int start, int end) {
 		return _productEntryLocalService.getProductEntries(start, end);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.ProductEntry> getProductEntries(
-		long accountEntryId) {
-		return _productEntryLocalService.getProductEntries(accountEntryId);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.ProductEntry> search(
-		java.lang.String name,
-		java.util.LinkedHashMap<java.lang.String, java.lang.Object> params,
-		int start, int end) {
-		return _productEntryLocalService.search(name, params, start, end);
 	}
 
 	/**

@@ -62,12 +62,6 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link PartnerEntryLocalServiceUtil} to access the partner entry local service. Add custom service methods to {@link com.liferay.osb.service.impl.PartnerEntryLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportRegionPartnerEntries(long supportRegionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public boolean hasSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId);
 
 	/**
 	* Adds the partner entry to the database. Also notifies the appropriate model listeners.
@@ -175,9 +169,6 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	public int getPartnerEntriesCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getSupportRegionPartnerEntriesCount(long supportRegionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(java.lang.String code, int[] statuses,
 		LinkedHashMap<java.lang.String, java.lang.Object> params,
 		boolean andOperator);
@@ -256,19 +247,6 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	public List<PartnerEntry> getPartnerEntries(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId, int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<PartnerEntry> getSupportRegionPartnerEntries(
-		long supportRegionId, int start, int end,
-		OrderByComparator<PartnerEntry> orderByComparator);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<PartnerEntry> getUserPartnerEntries(long userId, int start,
 		int end);
 
@@ -299,42 +277,4 @@ public interface PartnerEntryLocalService extends BaseLocalService,
 	*/
 	public long dynamicQueryCount(DynamicQuery dynamicQuery,
 		Projection projection);
-
-	/**
-	* Returns the supportRegionIds of the support regions associated with the partner entry.
-	*
-	* @param partnerEntryId the partnerEntryId of the partner entry
-	* @return long[] the supportRegionIds of support regions associated with the partner entry
-	*/
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long[] getSupportRegionPrimaryKeys(long partnerEntryId);
-
-	public void addSupportRegionPartnerEntries(long supportRegionId,
-		List<PartnerEntry> partnerEntries);
-
-	public void addSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds);
-
-	public void addSupportRegionPartnerEntry(long supportRegionId,
-		PartnerEntry partnerEntry);
-
-	public void addSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId);
-
-	public void clearSupportRegionPartnerEntries(long supportRegionId);
-
-	public void deleteSupportRegionPartnerEntries(long supportRegionId,
-		List<PartnerEntry> partnerEntries);
-
-	public void deleteSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds);
-
-	public void deleteSupportRegionPartnerEntry(long supportRegionId,
-		PartnerEntry partnerEntry);
-
-	public void deleteSupportRegionPartnerEntry(long supportRegionId,
-		long partnerEntryId);
-
-	public void setSupportRegionPartnerEntries(long supportRegionId,
-		long[] partnerEntryIds);
 }
