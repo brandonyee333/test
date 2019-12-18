@@ -18,6 +18,7 @@ import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.AccountCustomerServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AccountInformationLocalServiceUtil;
 import com.liferay.osb.service.AccountInformationServiceUtil;
 import com.liferay.osb.service.AccountProjectLocalServiceUtil;
@@ -81,6 +82,8 @@ public class ClpMessageListener extends BaseMessageListener {
 			AccountCustomerLocalServiceUtil.clearService();
 
 			AccountCustomerServiceUtil.clearService();
+			AccountEntryLocalServiceUtil.clearService();
+
 			AccountInformationLocalServiceUtil.clearService();
 
 			AccountInformationServiceUtil.clearService();

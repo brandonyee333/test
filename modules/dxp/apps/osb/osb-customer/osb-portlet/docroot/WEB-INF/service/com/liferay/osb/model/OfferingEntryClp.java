@@ -846,6 +846,25 @@ public class OfferingEntryClp extends BaseModelImpl<OfferingEntry>
 	}
 
 	@Override
+	public AccountEntry getAccountEntry() {
+		try {
+			String methodName = "getAccountEntry";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			AccountEntry returnObj = (AccountEntry)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
 	public Date getActualStartDate() {
 		try {
 			String methodName = "getActualStartDate";
@@ -950,6 +969,25 @@ public class OfferingEntryClp extends BaseModelImpl<OfferingEntry>
 			Object[] parameterValues = new Object[] {  };
 
 			OrderEntry returnObj = (OrderEntry)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public ProductEntry getProductEntry() {
+		try {
+			String methodName = "getProductEntry";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			ProductEntry returnObj = (ProductEntry)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

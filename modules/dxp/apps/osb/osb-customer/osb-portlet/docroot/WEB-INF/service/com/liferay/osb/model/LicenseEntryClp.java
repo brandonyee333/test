@@ -448,6 +448,25 @@ public class LicenseEntryClp extends BaseModelImpl<LicenseEntry>
 		}
 	}
 
+	@Override
+	public ProductEntry getProductEntry() {
+		try {
+			String methodName = "getProductEntry";
+
+			Class<?>[] parameterTypes = new Class<?>[] {  };
+
+			Object[] parameterValues = new Object[] {  };
+
+			ProductEntry returnObj = (ProductEntry)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
 	public BaseModel<?> getLicenseEntryRemoteModel() {
 		return _licenseEntryRemoteModel;
 	}

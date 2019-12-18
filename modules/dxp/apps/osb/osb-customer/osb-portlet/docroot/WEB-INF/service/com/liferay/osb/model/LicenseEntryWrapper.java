@@ -166,6 +166,11 @@ public class LicenseEntryWrapper implements LicenseEntry,
 	}
 
 	@Override
+	public ProductEntry getProductEntry() {
+		return _licenseEntry.getProductEntry();
+	}
+
+	@Override
 	public com.liferay.portal.kernel.model.CacheModel<LicenseEntry> toCacheModel() {
 		return _licenseEntry.toCacheModel();
 	}

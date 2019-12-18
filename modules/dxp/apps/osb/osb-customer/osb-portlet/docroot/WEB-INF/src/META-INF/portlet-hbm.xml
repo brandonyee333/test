@@ -3,6 +3,7 @@
 
 <hibernate-mapping auto-import="false" default-lazy="false">
 	<import class="com.liferay.osb.model.AccountCustomer" />
+	<import class="com.liferay.osb.model.AccountEntry" />
 	<import class="com.liferay.osb.model.AccountInformation" />
 	<import class="com.liferay.osb.model.AccountProject" />
 	<import class="com.liferay.osb.model.AccountWorker" />
@@ -28,6 +29,27 @@
 		<property name="accountEntryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="role" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 		<property name="closedWatcher" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.liferay.osb.model.impl.AccountEntryImpl" table="OSB_AccountEntry">
+		<id name="accountEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="modifiedUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="koroneikiAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="dossieraAccountKey" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property column="code_" name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="instructions" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="activeSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="activeTicketSupport" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="lastZendeskAuditDate" type="org.hibernate.type.TimestampType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.model.impl.AccountInformationImpl" table="OSB_AccountInformation">
 		<id name="accountInformationId" type="long">

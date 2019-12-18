@@ -17,6 +17,7 @@ package com.liferay.osb.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.model.AccountCustomerClp;
+import com.liferay.osb.model.AccountEntryClp;
 import com.liferay.osb.model.AccountInformationClp;
 import com.liferay.osb.model.AccountProjectClp;
 import com.liferay.osb.model.AccountWorkerClp;
@@ -125,6 +126,10 @@ public class ClpSerializer {
 			return translateInputAccountCustomer(oldModel);
 		}
 
+		if (oldModelClassName.equals(AccountEntryClp.class.getName())) {
+			return translateInputAccountEntry(oldModel);
+		}
+
 		if (oldModelClassName.equals(AccountInformationClp.class.getName())) {
 			return translateInputAccountInformation(oldModel);
 		}
@@ -212,6 +217,16 @@ public class ClpSerializer {
 		AccountCustomerClp oldClpModel = (AccountCustomerClp)oldModel;
 
 		BaseModel<?> newModel = oldClpModel.getAccountCustomerRemoteModel();
+
+		newModel.setModelAttributes(oldClpModel.getModelAttributes());
+
+		return newModel;
+	}
+
+	public static Object translateInputAccountEntry(BaseModel<?> oldModel) {
+		AccountEntryClp oldClpModel = (AccountEntryClp)oldModel;
+
+		BaseModel<?> newModel = oldClpModel.getAccountEntryRemoteModel();
 
 		newModel.setModelAttributes(oldClpModel.getModelAttributes());
 
@@ -409,6 +424,43 @@ public class ClpSerializer {
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.AccountCustomerImpl")) {
 			return translateOutputAccountCustomer(oldModel);
+		}
+		else if (oldModelClassName.endsWith("Clp")) {
+			try {
+				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
+
+				Method getClpSerializerClassMethod = oldModelClass.getMethod(
+						"getClpSerializerClass");
+
+				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
+
+				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
+
+				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
+						BaseModel.class);
+
+				Class<?> oldModelModelClass = oldModel.getModelClass();
+
+				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
+						oldModelModelClass.getSimpleName() + "RemoteModel");
+
+				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
+
+				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
+						oldRemoteModel);
+
+				return newModel;
+			}
+			catch (Throwable t) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Unable to translate " + oldModelClassName, t);
+				}
+			}
+		}
+
+		if (oldModelClassName.equals(
+					"com.liferay.osb.model.impl.AccountEntryImpl")) {
+			return translateOutputAccountEntry(oldModel);
 		}
 		else if (oldModelClassName.endsWith("Clp")) {
 			try {
@@ -1438,6 +1490,12 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
+					"com.liferay.osb.exception.NoSuchAccountEntryException")) {
+			return new com.liferay.osb.exception.NoSuchAccountEntryException(throwable.getMessage(),
+				throwable.getCause());
+		}
+
+		if (className.equals(
 					"com.liferay.osb.exception.NoSuchAccountInformationException")) {
 			return new com.liferay.osb.exception.NoSuchAccountInformationException(throwable.getMessage(),
 				throwable.getCause());
@@ -1548,6 +1606,16 @@ public class ClpSerializer {
 		newModel.setModelAttributes(oldModel.getModelAttributes());
 
 		newModel.setAccountCustomerRemoteModel(oldModel);
+
+		return newModel;
+	}
+
+	public static Object translateOutputAccountEntry(BaseModel<?> oldModel) {
+		AccountEntryClp newModel = new AccountEntryClp();
+
+		newModel.setModelAttributes(oldModel.getModelAttributes());
+
+		newModel.setAccountEntryRemoteModel(oldModel);
 
 		return newModel;
 	}
