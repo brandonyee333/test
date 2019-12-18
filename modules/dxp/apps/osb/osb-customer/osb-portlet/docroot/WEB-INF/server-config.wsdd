@@ -1,15 +1,37 @@
 <?xml version="1.0"?>
 
 <deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
-	<service name="Plugin_OSB_AccountAttachmentService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.AccountAttachmentServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="AccountAttachmentServiceSoap" />
-		<parameter name="wsdlServiceElement" value="AccountAttachmentServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountAttachmentService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
+	<globalConfiguration>
+		<parameter name="adminPassword" value="admin" />
+		<parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl" />
+		<parameter name="sendXsiTypes" value="true" />
+		<parameter name="sendMultiRefs" value="true" />
+		<parameter name="sendXMLDeclaration" value="true" />
+		<parameter name="axis.sendMinimizedElements" value="true" />
+		<requestFlow>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="session" />
+			</handler>
+			<handler type="java:org.apache.axis.handlers.JWSHandler">
+				<parameter name="scope" value="request" />
+				<parameter name="extension" value=".jwr" />
+			</handler>
+		</requestFlow>
+	</globalConfiguration>
+	<handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder" />
+	<handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper" />
+	<handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler" />
+	<transport name="http">
+		<requestFlow>
+			<handler type="URLMapper" />
+			<handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler" />
+		</requestFlow>
+	</transport>
+	<transport name="local">
+		<responseFlow>
+			<handler type="LocalResponder" />
+		</responseFlow>
+	</transport>
 	<service name="Plugin_OSB_AccountCustomerService" provider="java:RPC" style="rpc" use="encoded">
 		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.kernel.portal.liferay.com" qname="ns:ArrayOf_tns2_UserSoap" type="java:com.liferay.portal.kernel.model.UserSoap[]" innerType="cmp-ns:UserSoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
 		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_string" type="java:java.lang.String[]" innerType="cmp-ns:string" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
@@ -27,116 +49,6 @@
 		<parameter name="wsdlPortType" value="AccountCustomerServiceSoap" />
 		<parameter name="wsdlServiceElement" value="AccountCustomerServiceSoapService" />
 		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountCustomerService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_AccountEntryLanguageService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.AccountEntryLanguageServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="AccountEntryLanguageServiceSoap" />
-		<parameter name="wsdlServiceElement" value="AccountEntryLanguageServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountEntryLanguageService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_AccountEntryService" provider="java:RPC" style="rpc" use="encoded">
-		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns2_AccountEntrySoap" type="java:com.liferay.osb.model.AccountEntrySoap[]" innerType="cmp-ns:AccountEntrySoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
-		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_long" type="java:long[]" innerType="cmp-ns:long" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
-		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AccountEntrySoap" type="java:com.liferay.osb.model.AccountEntrySoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="fetchCorpProjectAccountEntry" qname="operNS:fetchCorpProjectAccountEntry" returnQName="fetchCorpProjectAccountEntryReturn" returnType="rtns:AccountEntrySoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="corpProjectUuid" type="tns:string"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getAccountEntries" qname="operNS:getAccountEntries" returnQName="getAccountEntriesReturn" returnType="rtns:ArrayOf_tns2_AccountEntrySoap" returnItemType="tns2:AccountEntrySoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="userUuid" type="tns:string"></parameter>
-			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="productEntryIds" type="tns:ArrayOf_xsd_long"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getAccountEntryByCode" qname="operNS:getAccountEntryByCode" returnQName="getAccountEntryByCodeReturn" returnType="rtns:AccountEntrySoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="code" type="tns:string"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getAccountEntry" qname="operNS:getAccountEntry" returnQName="getAccountEntryReturn" returnType="rtns:AccountEntrySoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getCorpProjectAccountEntry" qname="operNS:getCorpProjectAccountEntry" returnQName="getCorpProjectAccountEntryReturn" returnType="rtns:AccountEntrySoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="corpProjectUuid" type="tns:string"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="updateInstructions" qname="operNS:updateInstructions" returnQName="updateInstructionsReturn" returnType="rtns:AccountEntrySoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="instructions" type="tns:string"></parameter>
-		</operation>
-		<parameter name="allowedMethods" value="fetchCorpProjectAccountEntry getAccountEntries getAccountEntry getAccountEntryByCode getCorpProjectAccountEntry updateInstructions" />
-		<parameter name="className" value="com.liferay.osb.service.http.AccountEntryServiceSoap" />
-		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com,urn:http.service.osb.liferay.com" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="AccountEntryServiceSoap" />
-		<parameter name="wsdlServiceElement" value="AccountEntryServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountEntryService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_AccountEnvironmentAttachmentService" provider="java:RPC" style="rpc" use="encoded">
-		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AccountEnvironmentAttachmentSoap" type="java:com.liferay.osb.model.AccountEnvironmentAttachmentSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getAccountEnvironmentAttachment" qname="operNS:getAccountEnvironmentAttachment" returnQName="getAccountEnvironmentAttachmentReturn" returnType="rtns:AccountEnvironmentAttachmentSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEnvironmentAttachmentId" type="tns:long"></parameter>
-		</operation>
-		<parameter name="allowedMethods" value="getAccountEnvironmentAttachment" />
-		<parameter name="className" value="com.liferay.osb.service.http.AccountEnvironmentAttachmentServiceSoap" />
-		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="AccountEnvironmentAttachmentServiceSoap" />
-		<parameter name="wsdlServiceElement" value="AccountEnvironmentAttachmentServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountEnvironmentAttachmentService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_AccountEnvironmentService" provider="java:RPC" style="rpc" use="encoded">
-		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns2_AccountEnvironmentSoap" type="java:com.liferay.osb.model.AccountEnvironmentSoap[]" innerType="cmp-ns:AccountEnvironmentSoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
-		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_anyType" type="java:java.lang.Object[]" innerType="cmp-ns:anyType" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
-		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:AccountEnvironmentSoap" type="java:com.liferay.osb.model.AccountEnvironmentSoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="addAccountEnvironment" qname="operNS:addAccountEnvironment" returnQName="addAccountEnvironmentReturn" returnType="rtns:AccountEnvironmentSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="productEntryId" type="tns:long"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="name" type="tns:string"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envOS" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envOSCustom" type="tns:string"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envDB" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envJVM" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envAS" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envLFR" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envBrowser" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envCS" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envSearch" type="tns:string"></parameter>
-			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="files" type="tns:ArrayOf_xsd_anyType"></parameter>
-			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="types" type="tns:ArrayOf_xsd_anyType"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="deleteAccountEnvironment" qname="operNS:deleteAccountEnvironment" returnQName="deleteAccountEnvironmentReturn" returnType="rtns:AccountEnvironmentSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEnvironmentId" type="tns:long"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getAccountEnvironment" qname="operNS:getAccountEnvironment" returnQName="getAccountEnvironmentReturn" returnType="rtns:AccountEnvironmentSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEnvironmentId" type="tns:long"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getAccountEnvironments" qname="operNS:getAccountEnvironments" returnQName="getAccountEnvironmentsReturn" returnType="rtns:ArrayOf_tns2_AccountEnvironmentSoap" returnItemType="tns2:AccountEnvironmentSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEntryId" type="tns:long"></parameter>
-		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="updateAccountEnvironment" qname="operNS:updateAccountEnvironment" returnQName="updateAccountEnvironmentReturn" returnType="rtns:AccountEnvironmentSoap" soapAction="">
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="accountEnvironmentId" type="tns:long"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="productEntryId" type="tns:long"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="name" type="tns:string"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envOS" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envOSCustom" type="tns:string"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envDB" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envJVM" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envAS" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envLFR" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envBrowser" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envCS" type="tns:int"></parameter>
-			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="envSearch" type="tns:string"></parameter>
-			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="files" type="tns:ArrayOf_xsd_anyType"></parameter>
-			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="types" type="tns:ArrayOf_xsd_anyType"></parameter>
-		</operation>
-		<parameter name="allowedMethods" value="addAccountEnvironment deleteAccountEnvironment getAccountEnvironment getAccountEnvironments updateAccountEnvironment" />
-		<parameter name="className" value="com.liferay.osb.service.http.AccountEnvironmentServiceSoap" />
-		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com,http://xml.apache.org/xml-soap,urn:http.service.osb.liferay.com" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="AccountEnvironmentServiceSoap" />
-		<parameter name="wsdlServiceElement" value="AccountEnvironmentServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountEnvironmentService" />
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
 	<service name="Plugin_OSB_AccountInformationService" provider="java:RPC" style="rpc" use="encoded">
@@ -164,15 +76,6 @@
 		<parameter name="wsdlPortType" value="AccountWorkerServiceSoap" />
 		<parameter name="wsdlServiceElement" value="AccountWorkerServiceSoapService" />
 		<parameter name="wsdlServicePort" value="Plugin_OSB_AccountWorkerService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_AuditEntryService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.AuditEntryServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="AuditEntryServiceSoap" />
-		<parameter name="wsdlServiceElement" value="AuditEntryServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_AuditEntryService" />
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
 	<service name="Plugin_OSB_CorpProjectMessageService" provider="java:RPC" style="rpc" use="encoded">
@@ -268,7 +171,7 @@
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
 	<service name="Plugin_OSB_LicenseKeyService" provider="java:RPC" style="rpc" use="encoded">
-		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns3_LicenseKeySoap" type="java:com.liferay.osb.model.LicenseKeySoap[]" innerType="cmp-ns:LicenseKeySoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
+		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://model.osb.liferay.com" qname="ns:ArrayOf_tns2_LicenseKeySoap" type="java:com.liferay.osb.model.LicenseKeySoap[]" innerType="cmp-ns:LicenseKeySoap" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
 		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_long" type="java:long[]" innerType="cmp-ns:long" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
 		<arrayMapping xmlns:ns="urn:http.service.osb.liferay.com" xmlns:cmp-ns="http://www.w3.org/2001/XMLSchema" qname="ns:ArrayOf_xsd_string" type="java:java.lang.String[]" innerType="cmp-ns:string" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></arrayMapping>
 		<typeMapping xmlns:ns="http://model.osb.liferay.com" qname="ns:LicenseKeySoap" type="java:com.liferay.osb.model.LicenseKeySoap" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></typeMapping>
@@ -316,6 +219,11 @@
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="startDate" type="tns:dateTime"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="expirationDate" type="tns:dateTime"></parameter>
 		</operation>
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="generateCommerceLicenseKey" qname="operNS:generateCommerceLicenseKey" returnQName="generateCommerceLicenseKeyReturn" returnType="rtns:string" soapAction="">
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="owner" type="tns:string"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="startDate" type="tns:dateTime"></parameter>
+			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="licenseLifetime" type="tns:long"></parameter>
+		</operation>
 		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://www.w3.org/2001/XMLSchema" name="generateWeDeployLicenseKey" qname="operNS:generateWeDeployLicenseKey" returnQName="generateWeDeployLicenseKeyReturn" returnType="rtns:string" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="owner" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="startDate" type="tns:dateTime"></parameter>
@@ -326,12 +234,12 @@
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="complimentary" type="tns:boolean"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="active" type="tns:boolean"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getAssetReceiptLicenseLicenseKeys" qname="operNS:getAssetReceiptLicenseLicenseKeys" returnQName="getAssetReceiptLicenseLicenseKeysReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getAssetReceiptLicenseLicenseKeys" qname="operNS:getAssetReceiptLicenseLicenseKeys" returnQName="getAssetReceiptLicenseLicenseKeysReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="assetReceiptLicenseUuid" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="complimentary" type="tns:boolean"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="active" type="tns:boolean"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeySetLicenseKeys" qname="operNS:getLicenseKeySetLicenseKeys" returnQName="getLicenseKeySetLicenseKeysReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeySetLicenseKeys" qname="operNS:getLicenseKeySetLicenseKeys" returnQName="getLicenseKeySetLicenseKeysReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="licenseKeySetId" type="tns:long"></parameter>
 		</operation>
 		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getLicenseKey" qname="operNS:getLicenseKey" returnQName="getLicenseKeyReturn" returnType="rtns:LicenseKeySoap" soapAction="">
@@ -340,7 +248,7 @@
 		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="http://model.osb.liferay.com" name="getLicenseKey" qname="operNS:getLicenseKey" returnQName="getLicenseKeyReturn" returnType="rtns:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="uuid" type="tns:string"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeysByName" qname="operNS:getLicenseKeysByName" returnQName="getLicenseKeysByNameReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeysByName" qname="operNS:getLicenseKeysByName" returnQName="getLicenseKeysByNameReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="productEntryName" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="serverId" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="active" type="tns:boolean"></parameter>
@@ -348,15 +256,15 @@
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="end" type="tns:int"></parameter>
 			<parameter xmlns:tns="http://util.kernel.portal.liferay.com" qname="obc" type="tns:OrderByComparator"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeys" qname="operNS:getLicenseKeys" returnQName="getLicenseKeysReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeys" qname="operNS:getLicenseKeys" returnQName="getLicenseKeysReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="userId" type="tns:long"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="productId" type="tns:string"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeys" qname="operNS:getLicenseKeys" returnQName="getLicenseKeysReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeys" qname="operNS:getLicenseKeys" returnQName="getLicenseKeysReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="productId" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="serverId" type="tns:string"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeys" qname="operNS:getLicenseKeys" returnQName="getLicenseKeysReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getLicenseKeys" qname="operNS:getLicenseKeys" returnQName="getLicenseKeysReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="assetReceiptLicenseUuid" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="productId" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="serverId" type="tns:string"></parameter>
@@ -370,7 +278,7 @@
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="complimentary" type="tns:boolean"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="active" type="tns:boolean"></parameter>
 		</operation>
-		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getOfferingEntryGroupLicenseKeys" qname="operNS:getOfferingEntryGroupLicenseKeys" returnQName="getOfferingEntryGroupLicenseKeysReturn" returnType="rtns:ArrayOf_tns3_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
+		<operation xmlns:operNS="urn:http.service.osb.liferay.com" xmlns:rtns="urn:http.service.osb.liferay.com" xmlns:tns2="http://model.osb.liferay.com" name="getOfferingEntryGroupLicenseKeys" qname="operNS:getOfferingEntryGroupLicenseKeys" returnQName="getOfferingEntryGroupLicenseKeysReturn" returnType="rtns:ArrayOf_tns2_LicenseKeySoap" returnItemType="tns2:LicenseKeySoap" soapAction="">
 			<parameter xmlns:tns="urn:http.service.osb.liferay.com" qname="offeringEntryIds" type="tns:ArrayOf_xsd_long"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="complimentary" type="tns:boolean"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="active" type="tns:boolean"></parameter>
@@ -430,7 +338,7 @@
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="assetReceiptLicenseUuid" type="tns:string"></parameter>
 			<parameter xmlns:tns="http://www.w3.org/2001/XMLSchema" qname="active" type="tns:boolean"></parameter>
 		</operation>
-		<parameter name="allowedMethods" value="addDeveloperLicenseKey addLicenseKey generateWeDeployLicenseKey getAssetReceiptLicenseLicenseKeys getAssetReceiptLicenseLicenseKeysCount getLicenseKey getLicenseKeySetLicenseKeys getLicenseKeys getLicenseKeysByName getOfferingEntryGroupLicenseKeys getOfferingEntryGroupLicenseKeysCount getOfferingEntryLicenseKeysCount isActive registerLicenseKey renewLicenseKey updateLicenseKey updateLicenseKeys" />
+		<parameter name="allowedMethods" value="addDeveloperLicenseKey addLicenseKey generateCommerceLicenseKey generateWeDeployLicenseKey getAssetReceiptLicenseLicenseKeys getAssetReceiptLicenseLicenseKeysCount getLicenseKey getLicenseKeySetLicenseKeys getLicenseKeys getLicenseKeysByName getOfferingEntryGroupLicenseKeys getOfferingEntryGroupLicenseKeysCount getOfferingEntryLicenseKeysCount isActive registerLicenseKey renewLicenseKey updateLicenseKey updateLicenseKeys" />
 		<parameter name="className" value="com.liferay.osb.service.http.LicenseKeyServiceSoap" />
 		<parameter name="schemaUnqualified" value="http://model.osb.liferay.com,http://util.kernel.portal.liferay.com,urn:http.service.osb.liferay.com" />
 		<parameter name="typeMappingVersion" value="1.2" />
@@ -537,15 +445,6 @@
 		<parameter name="wsdlPortType" value="ProductEntryServiceSoap" />
 		<parameter name="wsdlServiceElement" value="ProductEntryServiceSoapService" />
 		<parameter name="wsdlServicePort" value="Plugin_OSB_ProductEntryService" />
-		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
-	</service>
-	<service name="Plugin_OSB_SupportRegionService" provider="java:RPC" style="rpc" use="encoded">
-		<parameter name="allowedMethods" value="*" />
-		<parameter name="className" value="com.liferay.osb.service.http.SupportRegionServiceSoap" />
-		<parameter name="typeMappingVersion" value="1.2" />
-		<parameter name="wsdlPortType" value="SupportRegionServiceSoap" />
-		<parameter name="wsdlServiceElement" value="SupportRegionServiceSoapService" />
-		<parameter name="wsdlServicePort" value="Plugin_OSB_SupportRegionService" />
 		<parameter name="wsdlTargetNamespace" value="urn:http.service.osb.liferay.com" />
 	</service>
 	<service name="Plugin_OSB_SupportResponseService" provider="java:RPC" style="rpc" use="encoded">
