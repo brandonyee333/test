@@ -37,7 +37,7 @@ portletURL.setParameter("mvcPath", "/admin/select_support_region.jsp");
 		/>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.model.SupportRegion"
+			className="com.liferay.osb.customer.admin.model.SupportRegion"
 			escapedModel="<%= true %>"
 			keyProperty="supportRegionId"
 			modelVar="supportRegion"

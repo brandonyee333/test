@@ -22,18 +22,18 @@ String tabs2 = ParamUtil.getString(request, "tabs2");
 
 String tabsNames = StringPool.BLANK;
 
-if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 	tabsNames = "accounts,sales,support,tools";
 }
 else {
 	List<String> tabsNamesList = new ArrayList<String>();
 
-	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 		tabsNamesList.add("accounts");
 		tabsNamesList.add("sales");
 	}
 
-	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
+	if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
 		tabsNamesList.add("support");
 	}
 

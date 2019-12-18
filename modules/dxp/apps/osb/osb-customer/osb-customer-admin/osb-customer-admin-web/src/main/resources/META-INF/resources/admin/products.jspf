@@ -14,34 +14,36 @@
  */
 --%>
 
+<liferay-ui:error exception="<%= RequiredProductEntryException.class %>" message="you-cannot-remove-products-that-are-used-in-licenses" />
+
 <liferay-ui:search-container
-	headerNames="name,type,product"
+	headerNames="name"
 	iteratorURL="<%= portletURL %>"
-	total="<%= LicenseEntryLocalServiceUtil.getLicenseEntriesCount() %>"
+	total="<%= ProductEntryLocalServiceUtil.getProductEntriesCount() %>"
 >
 	<liferay-ui:search-container-results
-		results="<%= LicenseEntryLocalServiceUtil.getLicenseEntries(searchContainer.getStart(), searchContainer.getEnd()) %>"
+		results="<%= ProductEntryLocalServiceUtil.getProductEntries(searchContainer.getStart(), searchContainer.getEnd()) %>"
 	/>
 
 	<liferay-ui:search-container-row
-		className="com.liferay.osb.model.LicenseEntry"
+		className="com.liferay.osb.customer.admin.model.ProductEntry"
 		escapedModel="<%= true %>"
-		keyProperty="licenseEntryId"
-		modelVar="licenseEntry"
+		keyProperty="productEntryId"
+		modelVar="productEntry"
 	>
 
 		<%
 		String rowURL = null;
 
 		if (permissionChecker.isOmniadmin()) {
-			PortletURL editLicenseEntryURL = renderResponse.createRenderURL();
+			PortletURL editProductEntryURL = renderResponse.createRenderURL();
 
-			editLicenseEntryURL.setParameter("mvcPath", "/admin/edit_license_entry.jsp");
-			editLicenseEntryURL.setParameter("redirect", portletURL.toString());
-			editLicenseEntryURL.setParameter("licenseEntryId", String.valueOf(licenseEntry.getLicenseEntryId()));
-			editLicenseEntryURL.setWindowState(LiferayWindowState.MAXIMIZED);
+			editProductEntryURL.setParameter("mvcPath", "/admin/edit_product_entry.jsp");
+			editProductEntryURL.setParameter("redirect", portletURL.toString());
+			editProductEntryURL.setParameter("productEntryId", String.valueOf(productEntry.getProductEntryId()));
+			editProductEntryURL.setWindowState(LiferayWindowState.MAXIMIZED);
 
-			rowURL = editLicenseEntryURL.toString();
+			rowURL = editProductEntryURL.toString();
 		}
 		%>
 
@@ -52,38 +54,34 @@
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
-			name="product"
-			property="productEntry.name"
-		/>
-
-		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
-			property="type"
+			name="type"
+			property="typeLabel"
 			translate="<%= true %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
-			name="version"
-			property="versionLabel"
+			name="environment"
+			property="environmentLabel"
+			translate="<%= true %>"
 		/>
 
 		<c:if test="<%= permissionChecker.isOmniadmin() %>">
 			<liferay-ui:search-container-column-jsp
 				align="right"
-				path="/admin/license_entry_action.jsp"
+				path="/admin/product_entry_action.jsp"
 			/>
 		</c:if>
 	</liferay-ui:search-container-row>
 
 	<c:if test="<%= permissionChecker.isOmniadmin() %>">
 		<div>
-			<portlet:renderURL var="editLicenseEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
-				<portlet:param name="mvcPath" value="/admin/edit_license_entry.jsp" />
+			<portlet:renderURL var="editProductEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+				<portlet:param name="mvcPath" value="/admin/edit_product_entry.jsp" />
 				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 			</portlet:renderURL>
 
-			<aui:a cssClass="btn btn-default" href="<%= editLicenseEntryURL %>" label="add-license" />
+			<aui:a cssClass="btn btn-default" href="<%= editProductEntryURL %>" label="add-product" />
 		</div>
 
 		<br />

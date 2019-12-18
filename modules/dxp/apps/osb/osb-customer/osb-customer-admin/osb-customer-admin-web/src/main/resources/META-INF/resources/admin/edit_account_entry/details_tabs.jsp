@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AccountEntry accountEntry = (AccountEntry)request.getAttribute(OSBWebKeys.ACCOUNT_ENTRY);
+AccountEntry accountEntry = (AccountEntry)request.getAttribute(CustomerAdminWebKeys.ACCOUNT_ENTRY);
 String detailTab = (String)request.getAttribute("edit_account_entry.jsp-detailTab");
 
 String[] languageIds = StringUtil.split(ParamUtil.getString(request, "languageIds"));
@@ -98,7 +98,7 @@ for (SupportRegion supportRegion : supportRegions) {
 				/>
 
 				<liferay-ui:search-container-row
-					className="com.liferay.osb.model.SupportRegion"
+					className="com.liferay.osb.customer.admin.model.SupportRegion"
 					escapedModel="<%= true %>"
 					keyProperty="supportRegionId"
 					modelVar="supportRegion"

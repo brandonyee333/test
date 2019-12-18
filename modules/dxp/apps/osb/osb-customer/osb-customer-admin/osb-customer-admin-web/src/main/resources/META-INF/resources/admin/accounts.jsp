@@ -21,8 +21,6 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 
 <aui:form action="<%= portletURL.toString() %>" method="post">
-	<liferay-ui:error exception="<%= RequiredAccountEntryException.class %>" message="you-cannot-remove-projects-that-have-users" />
-
 	<liferay-ui:search-container
 		searchContainer="<%= new AccountEntrySearch(renderRequest, portletURL) %>"
 	>
@@ -39,7 +37,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		</liferay-ui:search-container-results>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.model.AccountEntry"
+			className="com.liferay.osb.customer.admin.model.AccountEntry"
 			escapedModel="<%= true %>"
 			keyProperty="accountEntryId"
 			modelVar="accountEntry"

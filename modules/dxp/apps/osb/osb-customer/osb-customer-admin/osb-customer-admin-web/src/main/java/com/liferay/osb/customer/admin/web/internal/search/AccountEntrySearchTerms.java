@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.admin.search;
+package com.liferay.osb.customer.admin.web.internal.search;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringBundler;

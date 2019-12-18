@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AccountEntry accountEntry = (AccountEntry)request.getAttribute(OSBWebKeys.ACCOUNT_ENTRY);
+AccountEntry accountEntry = (AccountEntry)request.getAttribute(CustomerAdminWebKeys.ACCOUNT_ENTRY);
 
 String detailTab = ParamUtil.getString(request, "detailTab");
 
@@ -50,7 +50,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
-	<aui:input name="accountProjectId" type="hidden" value="<%= AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID %>" />
 
 	<liferay-ui:tabs
 		backURL="<%= backURL %>"
@@ -103,78 +102,75 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				<%= HtmlUtil.escape(accountEntry.getCode()) %>
 			</td>
 		</tr>
-
-			<tr>
-				<td>
-					<liferay-ui:message key="parent-account" />
-				</td>
-				<td>
-					parent account here
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="lcs-support-admin" />
-				</td>
-				<td>
-					<span id="<portlet:namespace />lcsSupportAdmin">
-						<c:if test="<%= accountEntry.getCorpProjectId() > 0 %>">
-							<aui:a href="<%= PortletPropsValues.LCS_SUPPORT_ADMIN_LINK + accountEntry.getCorpProjectId() %>" label="lcs-support-admin" target="_blank" />
-						</c:if>
-					</span>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="partner" />
-				</td>
-				<td>
-					partner here
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="partner-first-line-support" />
-				</td>
-				<td>
-					partner fls here
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="description" />
-				</td>
-				<td>
-					<%= HtmlUtil.escape(accountEntry.getDescription()) %>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="additional-notes" />
-				</td>
-				<td>
-					<%= HtmlUtil.escape(accountEntry.getNotes()) %>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="tier" />
-				</td>
-				<td>
-					<%= HtmlUtil.escape(accountEntry.getTier()) %>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<liferay-ui:message key="addresses" />
-				</td>
-				<td>
-					<aui:row>
-					</aui:row>
-				</td>
-			</tr>
-		</c:if>
-
+		<tr>
+			<td>
+				<liferay-ui:message key="parent-account" />
+			</td>
+			<td>
+				parent account here
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="lcs-support-admin" />
+			</td>
+			<td>
+				<span id="<portlet:namespace />lcsSupportAdmin">
+					<c:if test="<%= accountEntry.getCorpProjectId() > 0 %>">
+						<aui:a href="<%= CustomerAdminWebConfigurationValues.LCS_SUPPORT_ADMIN_LINK + accountEntry.getCorpProjectId() %>" label="lcs-support-admin" target="_blank" />
+					</c:if>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="partner" />
+			</td>
+			<td>
+				partner here
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="partner-first-line-support" />
+			</td>
+			<td>
+				partner fls here
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="description" />
+			</td>
+			<td>
+				<%= HtmlUtil.escape(accountEntry.getDescription()) %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="additional-notes" />
+			</td>
+			<td>
+				notes here
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="tier" />
+			</td>
+			<td>
+				<%= HtmlUtil.escape(accountEntry.getTier()) %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<liferay-ui:message key="addresses" />
+			</td>
+			<td>
+				<aui:row>
+				</aui:row>
+			</td>
+		</tr>
 		<tr>
 			<td>
 				<liferay-ui:message key="special-instructions" />
@@ -185,14 +181,14 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		</tr>
 
 		<c:if test="<%= accountEntry != null %>">
-		<tr>
+			<tr>
 				<td>
 					<liferay-ui:message key="oem-instructions" />
 				</td>
 				<td>
 
 					<%
-					List<AccountAttachment> accountAttachments = AccountAttachmentLocalServiceUtil.getAccountAttachments(accountEntryId, AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
+					List<AccountAttachment> accountAttachments = AccountAttachmentLocalServiceUtil.getAccountAttachments(accountEntryId, 0, AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
 
 					AccountAttachment accountAttachment = null;
 
@@ -222,6 +218,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 					<aui:input id="accountAttachmentField" inputCssClass='<%= (accountAttachment != null) ? "hide" : "" %>' label="" name="accountAttachment" type="file" />
 				</td>
 			</tr>
+		</c:if>
 	</table>
 
 	<br />

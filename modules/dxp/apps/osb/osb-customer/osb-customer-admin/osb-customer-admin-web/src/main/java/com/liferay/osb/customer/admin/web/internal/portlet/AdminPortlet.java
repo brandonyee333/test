@@ -12,39 +12,35 @@
  *
  */
 
-package com.liferay.osb.admin.portlet;
+package com.liferay.osb.customer.admin.web.internal.portlet;
 
 import com.liferay.document.library.kernel.exception.FileExtensionException;
 import com.liferay.document.library.kernel.exception.FileNameException;
-import com.liferay.osb.admin.util.AdminUtil;
-import com.liferay.osb.exception.AccountEntryLanguageIdException;
-import com.liferay.osb.exception.AccountEntrySupportRegionException;
-import com.liferay.osb.exception.DuplicateProductEntryException;
-import com.liferay.osb.exception.DuplicateSupportRegionException;
-import com.liferay.osb.exception.LicenseEntryNameException;
-import com.liferay.osb.exception.LicenseEntryVersionException;
-import com.liferay.osb.exception.NoSuchAccountEntryException;
-import com.liferay.osb.exception.NoSuchProductEntryException;
-import com.liferay.osb.exception.ProductEntryEnvironmentException;
-import com.liferay.osb.exception.ProductEntryNameException;
-import com.liferay.osb.exception.RemoteServiceException;
-import com.liferay.osb.exception.RequiredProductEntryException;
-import com.liferay.osb.exception.RequiredSupportRegionException;
-import com.liferay.osb.exception.SupportRegionNameException;
-import com.liferay.osb.exception.ZendeskTagException;
-import com.liferay.osb.license.util.KeyGenerator;
-import com.liferay.osb.model.AccountAttachment;
-import com.liferay.osb.model.AccountAttachmentConstants;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.service.SupportRegionLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.OSBWebKeys;
-import com.liferay.osb.util.mvc.OSBPortlet;
+import com.liferay.osb.customer.admin.constants.AccountAttachmentConstants;
+import com.liferay.osb.customer.admin.exception.AccountEntryLanguageIdException;
+import com.liferay.osb.customer.admin.exception.AccountEntrySupportRegionException;
+import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
+import com.liferay.osb.customer.admin.exception.DuplicateSupportRegionException;
+import com.liferay.osb.customer.admin.exception.LicenseEntryNameException;
+import com.liferay.osb.customer.admin.exception.LicenseEntryPortalVersionException;
+import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
+import com.liferay.osb.customer.admin.exception.NoSuchProductEntryException;
+import com.liferay.osb.customer.admin.exception.ProductEntryEnvironmentException;
+import com.liferay.osb.customer.admin.exception.ProductEntryNameException;
+import com.liferay.osb.customer.admin.exception.RequiredProductEntryException;
+import com.liferay.osb.customer.admin.exception.RequiredSupportRegionException;
+import com.liferay.osb.customer.admin.exception.SupportRegionNameException;
+import com.liferay.osb.customer.admin.exception.ZendeskTagException;
+import com.liferay.osb.customer.admin.model.AccountAttachment;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountAttachmentLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
+import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminWebKeys;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -57,17 +53,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.model.Release;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.ReleaseLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
@@ -91,6 +84,7 @@ import java.util.Properties;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequest;
 import javax.portlet.RenderRequest;
@@ -98,12 +92,30 @@ import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  * @author Haote Chou
  */
-public class AdminPortlet extends OSBPortlet {
+@Component(
+	immediate = true,
+	property = {
+		"com.liferay.portlet.css-class-wrapper=osb-customer-admin-portlet",
+		"com.liferay.portlet.display-category=category.osb",
+		"com.liferay.portlet.footer-portlet-javascript=/dist/main.js",
+		"com.liferay.portlet.header-portlet-css=/dist/main.css",
+		"javax.portlet.display-name=OSB Customer Admin",
+		"javax.portlet.expiration-cache=0",
+		"javax.portlet.init-param.mvc-command-names-default-views=/view",
+		"javax.portlet.name=" + CustomerAdminPortletKeys.ADMIN,
+		"javax.portlet.resource-bundle=content.Language",
+		"javax.portlet.security-role-ref=administrator,guest,power-user,user"
+	},
+	service = Portlet.class
+)
+public class AdminPortlet extends MVCPortlet {
 
 	public void debugLicenseFiles(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -142,6 +154,7 @@ public class AdminPortlet extends OSBPortlet {
 			File serverIdFile = uploadPortletRequest.getFile("serverId");
 
 			if ((serverIdFile != null) && (serverIdFile.length() > 0)) {
+				/*
 				byte[] bytes = FileUtil.getBytes(serverIdFile);
 
 				Properties serverProperties = KeyGenerator.decryptServerId(
@@ -159,6 +172,7 @@ public class AdminPortlet extends OSBPortlet {
 
 				actionRequest.setAttribute(
 					"serverIdProperties", serverIdProperties);
+				*/
 			}
 		}
 		finally {
@@ -226,26 +240,11 @@ public class AdminPortlet extends OSBPortlet {
 
 			if (accountEntry != null) {
 				renderRequest.setAttribute(
-					OSBWebKeys.ACCOUNT_ENTRY, accountEntry);
+					CustomerAdminWebKeys.ACCOUNT_ENTRY, accountEntry);
 			}
 		}
 
 		super.render(renderRequest, renderResponse);
-	}
-
-	public void runManualUpgrade(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		Release release = ReleaseLocalServiceUtil.getRelease(
-			OSBConstants.OSB_PORTLET_RELEASE_ID);
-
-		List<UpgradeProcess> upgradeProcesses =
-			AdminUtil.getManualUpgradeProcessClasses(release.getBuildNumber());
-
-		for (UpgradeProcess upgradeProcess : upgradeProcesses) {
-			upgradeProcess.upgrade();
-		}
 	}
 
 	@Override
@@ -507,21 +506,21 @@ public class AdminPortlet extends OSBPortlet {
 
 			if (RoleLocalServiceUtil.hasUserRole(
 					themeDisplay.getUserId(),
-					OSBConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+					OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
 				return true;
 			}
 
 			if (RoleLocalServiceUtil.hasUserRole(
 					themeDisplay.getUserId(),
-					OSBConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+					OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
 				return true;
 			}
 
 			if (RoleLocalServiceUtil.hasUserRole(
 					themeDisplay.getUserId(),
-					OSBConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
+					OSBCustomerConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
 
 				return true;
 			}
@@ -561,14 +560,8 @@ public class AdminPortlet extends OSBPortlet {
 
 			return true;
 		}
-		else if (cause instanceof RemoteServiceException) {
-			_log.error(cause, cause);
 
-			return true;
-		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	protected void serveAccountAttachment(
@@ -616,6 +609,27 @@ public class AdminPortlet extends OSBPortlet {
 		}
 
 		writeJSON(resourceRequest, resourceResponse, accountEntriesArray);
+	}
+
+	protected void syncToLCS(
+			ActionRequest actionRequest, ActionResponse actionResponse,
+			long accountEntryId)
+		throws IOException {
+
+		try {
+			//LCSSubscriptionEntryLocalServiceUtil.syncToLCS(accountEntryId);
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to sync account entry " + accountEntryId + " to LCS",
+				e);
+
+			SessionMessages.add(actionRequest, "lcsSyncFailed");
+
+			addSuccessMessage(actionRequest, actionResponse);
+
+			sendRedirect(actionRequest, actionResponse);
+		}
 	}
 
 	protected void updateAccountAttachment(ActionRequest actionRequest)

@@ -12,9 +12,9 @@
  *
  */
 
-package com.liferay.osb.admin.search;
+package com.liferay.osb.customer.admin.web.internal.search;
 
-import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
