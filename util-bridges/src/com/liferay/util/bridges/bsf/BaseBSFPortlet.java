@@ -57,6 +57,12 @@ public abstract class BaseBSFPortlet extends GenericPortlet {
 		String file = renderRequest.getParameter(getFileParam());
 
 		if (file != null) {
+			if (file.contains("/../")) {
+				_log.error("Illegal directory traversal in " + file);
+
+				return;
+			}
+
 			include(file, renderRequest, renderResponse);
 		}
 		else {
