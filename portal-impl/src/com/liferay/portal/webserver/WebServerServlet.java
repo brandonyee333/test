@@ -929,25 +929,6 @@ public class WebServerServlet extends HttpServlet {
 
 		FileEntry fileEntry = getFileEntry(pathArray);
 
-		Group group = GroupLocalServiceUtil.getGroup(fileEntry.getGroupId());
-
-		if (group.isStagingGroup()) {
-			PermissionChecker permissionChecker =
-				PermissionThreadLocal.getPermissionChecker();
-
-			String portletId = PortletProviderUtil.getPortletId(
-				FileEntry.class.getName(), PortletProvider.Action.VIEW);
-
-			if (!PortletPermissionUtil.hasControlPanelAccessPermission(
-					permissionChecker, fileEntry.getGroupId(), portletId)) {
-
-				throw new PrincipalException.MustHavePermission(
-					permissionChecker, FileEntry.class.getName(),
-					fileEntry.getFileEntryId(),
-					ActionKeys.ACCESS_IN_CONTROL_PANEL);
-			}
-		}
-
 		String version = ParamUtil.getString(request, "version");
 
 		if (Validator.isNull(version) &&
