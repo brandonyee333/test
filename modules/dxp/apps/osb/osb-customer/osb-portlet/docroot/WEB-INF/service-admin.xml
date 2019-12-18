@@ -2,53 +2,6 @@
 <!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
 
 <service-builder>
-	<entity local-service="true" name="AccountAttachment" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="accountAttachmentId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="accountEntryId" type="long" />
-		<column name="accountProjectId" type="long" />
-		<column name="fileName" type="String" />
-		<column name="fileSize" type="long" />
-		<column name="type" type="int" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="createDate" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="AccountEntryId" return-type="Collection">
-			<finder-column name="accountEntryId" />
-		</finder>
-		<finder name="AEI_API" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column name="accountProjectId" />
-		</finder>
-		<finder name="AEI_API_T" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column name="accountProjectId" />
-			<finder-column name="type" />
-		</finder>
-		<finder name="AEI_API_FN_T" return-type="AccountAttachment">
-			<finder-column name="accountEntryId" />
-			<finder-column name="accountProjectId" />
-			<finder-column name="fileName" />
-			<finder-column name="type" />
-		</finder>
-	</entity>
 	<entity local-service="true" name="AccountCustomer" remote-service="true">
 
 		<!-- PK fields -->
@@ -86,164 +39,6 @@
 
 		<reference entity="Organization" package-path="com.liferay.portal" />
 		<reference entity="Role" package-path="com.liferay.portal" />
-	</entity>
-	<entity local-service="true" name="AccountEntry" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="accountEntryId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedUserId" type="long" />
-		<column name="modifiedUserName" type="String" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Relationships -->
-
-		<column entity="SupportRegion" mapping-table="AccountEntries_SupportRegions" name="supportRegions" type="Collection" />
-
-		<!-- Other fields -->
-
-		<column name="koroneikiAccountKey" type="String" />
-		<column name="dossieraAccountKey" type="String" />
-		<column name="name" type="String" />
-		<column name="code" type="String" />
-		<column name="instructions" type="String" />
-		<column name="activeSupport" type="boolean" />
-		<column name="activeTicketSupport" type="boolean" />
-		<column name="lastZendeskAuditDate" type="Date" />
-		<column name="status" type="int" />
-
-		<!-- Finder methods -->
-
-		<finder name="KoroneikiAccountKey" return-type="AccountEntry">
-			<finder-column name="koroneikiAccountKey" />
-		</finder>
-		<finder name="DossieraAccountKey" return-type="Collection">
-			<finder-column name="dossieraAccountKey" />
-		</finder>
-
-		<!-- References -->
-
-		<reference entity="ListType" package-path="com.liferay.portal" />
-		<reference entity="Organization" package-path="com.liferay.portal" />
-		<reference entity="Role" package-path="com.liferay.portal" />
-	</entity>
-	<entity local-service="true" name="AccountEntryLanguage" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="accountEntryLanguageId" primary="true" type="long" />
-
-		<!-- Other fields -->
-
-		<column name="accountEntryId" type="long" />
-		<column name="languageId" type="String" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="languageId" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="AccountEntryId" return-type="Collection">
-			<finder-column name="accountEntryId" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="AccountEnvironment" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="accountEnvironmentId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="accountEntryId" type="long" />
-		<column name="productEntryId" type="long" />
-		<column name="name" type="String" />
-		<column name="envOS" type="int" />
-		<column name="envOSCustom" type="String" />
-		<column name="envDB" type="int" />
-		<column name="envJVM" type="int" />
-		<column name="envAS" type="int" />
-		<column name="envLFR" type="int" />
-		<column name="envCommerce" type="int" />
-		<column name="envBrowser" type="int" />
-		<column name="envCS" type="int" />
-		<column name="envSearch" type="String" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="name" />
-		</order>
-
-		<!-- Finder -->
-
-		<finder name="AccountEntryId" return-type="Collection">
-			<finder-column name="accountEntryId" />
-		</finder>
-		<finder name="AEI_PEI" return-type="Collection">
-			<finder-column name="accountEntryId" />
-			<finder-column name="productEntryId" />
-		</finder>
-		<finder name="AEI_PEI_N" return-type="AccountEnvironment">
-			<finder-column name="accountEntryId" />
-			<finder-column name="productEntryId" />
-			<finder-column name="name" />
-		</finder>
-
-		<!-- References -->
-
-		<reference entity="ListType" package-path="com.liferay.portal" />
-	</entity>
-	<entity local-service="true" name="AccountEnvironmentAttachment" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="accountEnvironmentAttachmentId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="accountEnvironmentId" type="long" />
-		<column name="fileName" type="String" />
-		<column name="fileSize" type="long" />
-		<column name="type" type="int" />
-
-		<!-- Finder methods -->
-
-		<finder name="AccountEnvironmentId" return-type="Collection">
-			<finder-column name="accountEnvironmentId" />
-		</finder>
-		<finder name="AEI_FN" return-type="AccountEnvironmentAttachment">
-			<finder-column name="accountEnvironmentId" />
-			<finder-column name="fileName" />
-		</finder>
-		<finder name="AEI_T" return-type="AccountEnvironmentAttachment">
-			<finder-column name="accountEnvironmentId" />
-			<finder-column name="type" />
-		</finder>
 	</entity>
 	<entity local-service="true" name="AccountInformation" remote-service="true">
 
@@ -337,100 +132,6 @@
 		<finder name="AEI_R" return-type="Collection">
 			<finder-column name="accountEntryId" />
 			<finder-column name="role" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="AuditEntry" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="auditEntryId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="classNameId" type="long" />
-		<column name="classPK" type="long" />
-		<column name="previousAuditEntryId" type="long" />
-		<column name="auditSetId" type="long" />
-		<column name="fieldClassNameId" type="long" />
-		<column name="fieldClassPK" type="long" />
-		<column name="action" type="int" />
-		<column name="field" type="int" />
-		<column name="visibility" type="int" />
-		<column name="oldLabel" type="String" />
-		<column name="oldValue" type="String" />
-		<column name="newLabel" type="String" />
-		<column name="newValue" type="String" />
-		<column name="description" type="String" />
-		<column name="i18n" type="boolean" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column name="createDate" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="GtCD_C" return-type="Collection">
-			<finder-column name="createDate" comparator=">" />
-			<finder-column name="classNameId" />
-		</finder>
-		<finder name="C_C_V" return-type="Collection">
-			<finder-column name="classNameId" />
-			<finder-column name="classPK" />
-			<finder-column arrayable-operator="OR" name="visibility" />
-		</finder>
-		<finder name="FC_FC_F" return-type="Collection">
-			<finder-column name="fieldClassNameId" />
-			<finder-column name="fieldClassPK" />
-			<finder-column name="field" />
-		</finder>
-		<finder name="C_C_F_A" return-type="Collection">
-			<finder-column name="classNameId" />
-			<finder-column name="classPK" />
-			<finder-column name="field" />
-			<finder-column name="action" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="ExternalIdMapper" remote-service="false">
-
-		<!-- PK fields -->
-
-		<column name="externalIdMapperId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="classNameId" type="long" />
-		<column name="classPK" type="long" />
-		<column name="type" type="int" />
-		<column name="externalId" type="String" />
-
-		<!-- Finder methods -->
-
-		<finder name="C_C" return-type="Collection">
-			<finder-column name="classNameId" />
-			<finder-column name="classPK" />
-		</finder>
-		<finder name="C_C_T" return-type="Collection">
-			<finder-column name="classNameId" />
-			<finder-column name="classPK" />
-			<finder-column name="type" />
-		</finder>
-		<finder name="C_T_EI" return-type="Collection">
-			<finder-column name="classNameId" />
-			<finder-column name="type" />
-			<finder-column name="externalId" />
 		</finder>
 	</entity>
 	<entity local-service="true" name="OfferingBundle" remote-service="true">
@@ -716,79 +417,6 @@
 		<reference entity="Role" package-path="com.liferay.portal" />
 		<reference entity="UserGroupRole" package-path="com.liferay.portal" />
 	</entity>
-	<entity local-service="true" name="ProductEntry" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="productEntryId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="name" type="String" />
-		<column name="type" type="int" />
-		<column name="environment" type="int" />
-		<column name="versionsListType" type="String" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="Name" return-type="ProductEntry" unique="true">
-			<finder-column name="name" />
-		</finder>
-		<finder name="Environment" return-type="Collection">
-			<finder-column name="environment" />
-		</finder>
-	</entity>
-	<entity local-service="true" name="SupportRegion" remote-service="true">
-
-		<!-- PK fields -->
-
-		<column name="supportRegionId" primary="true" type="long" />
-
-		<!-- Audit fields -->
-
-		<column name="companyId" type="long" />
-		<column name="userId" type="long" />
-		<column name="userName" type="String" />
-		<column name="createDate" type="Date" />
-		<column name="modifiedDate" type="Date" />
-
-		<!-- Other fields -->
-
-		<column name="name" type="String" />
-		<column name="description" type="String" />
-		<column name="timeZoneId" type="String" />
-		<column name="managerUserId" type="long" />
-
-		<!-- Relationships -->
-
-		<column entity="AccountEntry" mapping-table="AccountEntries_SupportRegions" name="accountEntries" type="Collection" />
-		<column entity="PartnerEntry" mapping-table="PartnerEntries_SupportRegions" name="partnerEntries" type="Collection" />
-
-		<!-- Order -->
-
-		<order by="asc">
-			<order-column case-sensitive="false" name="name" />
-		</order>
-
-		<!-- Finder methods -->
-
-		<finder name="Name" return-type="SupportRegion" unique="true">
-			<finder-column name="name" />
-		</finder>
-	</entity>
 	<entity local-service="true" name="SupportResponse" remote-service="true">
 
 		<!-- PK fields -->
@@ -826,31 +454,11 @@
 		</finder>
 	</entity>
 	<exceptions>
-		<exception>AccountAttachmentSize</exception>
-		<exception>AccountEntryKoroneikiAccountKey</exception>
-		<exception>AccountEntryLanguageId</exception>
-		<exception>AccountEntrySupportRegion</exception>
-		<exception>AccountEnvironmentAttachment</exception>
-		<exception>AccountEnvironmentAttachmentSize</exception>
-		<exception>AccountEnvironmentEnvAS</exception>
-		<exception>AccountEnvironmentEnvBrowser</exception>
-		<exception>AccountEnvironmentEnvCommerce</exception>
-		<exception>AccountEnvironmentEnvCS</exception>
-		<exception>AccountEnvironmentEnvDB</exception>
-		<exception>AccountEnvironmentEnvLFR</exception>
-		<exception>AccountEnvironmentEnvOS</exception>
-		<exception>AccountEnvironmentEnvSearch</exception>
-		<exception>AccountEnvironmentName</exception>
 		<exception>AccountProjectName</exception>
-		<exception>DuplicateAccountAttachment</exception>
-		<exception>DuplicateAccountEnvironment</exception>
-		<exception>DuplicateAccountEnvironmentAttachment</exception>
 		<exception>DuplicateOfferingBundle</exception>
 		<exception>DuplicateOfferingDefinition</exception>
 		<exception>DuplicatePartnerEntryCode</exception>
 		<exception>DuplicatePartnerEntryDossieraAccountKey</exception>
-		<exception>DuplicateProductEntry</exception>
-		<exception>DuplicateSupportRegion</exception>
 		<exception>DuplicateSupportResponse</exception>
 		<exception>OfferingBundleName</exception>
 		<exception>OfferingEntryQuantity</exception>
@@ -862,11 +470,6 @@
 		<exception>PartnerEntryCode</exception>
 		<exception>PartnerEntryDossieraAccountKey</exception>
 		<exception>PartnerEntryParentPartnerEntry</exception>
-		<exception>ProductEntryEnvironment</exception>
-		<exception>ProductEntryName</exception>
-		<exception>RequiredSupportRegion</exception>
-		<exception>SupportRegionName</exception>
 		<exception>SupportResponseName</exception>
-		<exception>ZendeskTag</exception>
 	</exceptions>
 </service-builder>

@@ -1,0 +1,546 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.customer.admin.service.impl;
+
+import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
+import com.liferay.osb.customer.admin.constants.AuditEntryConstants;
+import com.liferay.osb.customer.admin.constants.VisibilityConstants;
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
+import com.liferay.osb.customer.admin.exception.AccountEntryKoroneikiAccountKeyException;
+import com.liferay.osb.customer.admin.exception.AccountEntryLanguageIdException;
+import com.liferay.osb.customer.admin.exception.AccountEntrySupportRegionException;
+import com.liferay.osb.customer.admin.model.AccountAttachment;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.SupportRegion;
+import com.liferay.osb.customer.admin.service.base.AccountEntryLocalServiceBaseImpl;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * @author Brian Wing Shun Chan
+ * @author Amos Fong
+ */
+public class AccountEntryLocalServiceImpl
+	extends AccountEntryLocalServiceBaseImpl {
+
+	public AccountEntry addAccountEntry(
+			long userId, String koroneikiAccountKey, String dossieraAccountKey,
+			String instructions, String[] languageIds, long[] supportRegionIds)
+		throws PortalException {
+
+		validate(0, koroneikiAccountKey, languageIds, supportRegionIds);
+
+		return doAddAccountEntry(
+			userId, koroneikiAccountKey, dossieraAccountKey, instructions,
+			languageIds, supportRegionIds);
+	}
+
+	@Override
+	public AccountEntry deleteAccountEntry(long userId, long accountEntryId)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		accountEntryPersistence.remove(accountEntry);
+
+		// Account attachments
+
+		List<AccountAttachment> accountAttachments =
+			accountAttachmentPersistence.findByAccountEntryId(accountEntryId);
+
+		for (AccountAttachment accountAttachment : accountAttachments) {
+			accountAttachmentLocalService.deleteAccountAttachment(
+				accountAttachment);
+		}
+
+		// Account environments
+
+		List<AccountEnvironment> accountEnvironments =
+			accountEnvironmentPersistence.findByAccountEntryId(accountEntryId);
+
+		for (AccountEnvironment accountEnvironment : accountEnvironments) {
+			accountEnvironmentLocalService.deleteAccountEnvironment(
+				accountEnvironment.getAccountEnvironmentId());
+		}
+
+		// Account languages
+
+		accountEntryLanguagePersistence.removeByAccountEntryId(accountEntryId);
+
+		// External ids
+
+		long classNameId = classNameLocalService.getClassNameId(
+			AccountEntry.class.getName());
+
+		externalIdMapperPersistence.removeByC_C(classNameId, accountEntryId);
+
+		// Audit entry
+
+		auditEntryLocalService.addAuditEntry(
+			userId, user.getFullName(), new Date(), classNameId, accountEntryId,
+			0, classNameId, accountEntryId, AuditEntryConstants.ACTION_DELETE,
+			AuditEntryConstants.FIELD_NOT_APPLICABLE, VisibilityConstants.ADMIN,
+			accountEntry.getName(),
+			String.valueOf(accountEntry.getAccountEntryId()), StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK);
+
+		return accountEntry;
+	}
+
+	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid) {
+
+		// TODO
+
+		return null;
+	}
+
+	@Override
+	public AccountEntry fetchKoroneikiAccountEntry(String koroneikiAccountKey) {
+		return accountEntryPersistence.fetchByKoroneikiAccountKey(
+			koroneikiAccountKey);
+	}
+
+	public List<AccountEntry> getAccountEntries(String dossieraAccountKey) {
+		return accountEntryPersistence.findByDossieraAccountKey(
+			dossieraAccountKey);
+	}
+
+	@Override
+	public AccountEntry getAccountEntry(long accountEntryId)
+		throws PortalException {
+
+		return accountEntryPersistence.findByPrimaryKey(accountEntryId);
+	}
+
+	public AccountEntry getCorpProjectAccountEntry(String corpProjectUuid) {
+
+		// TODO
+
+		return null;
+	}
+
+	public List<AccountEntry> getUserActiveAccountEntries(
+		long userId, int start, int end) {
+
+		// TODO
+
+		return null;
+	}
+
+	public boolean hasValidLicenseAccountEntry(long userId) {
+
+		// TODO
+
+		return false;
+	}
+
+	public boolean hasValidSupportAccountEntry(
+		long userId, boolean ticketSupport) {
+
+		// TODO
+
+		return false;
+	}
+
+	public List<AccountEntry> search(
+		String keywords, LinkedHashMap<String, Object> params, int start,
+		int end, OrderByComparator obc) {
+
+		return accountEntryFinder.findByKeywords(
+			keywords, params, start, end, obc);
+	}
+
+	public List<AccountEntry> search(
+		String koroneikiAccountKey, String dossieraAccountKey, String name,
+		String code, int[] statuses, String instructions,
+		LinkedHashMap<String, Object> params, boolean andOperator, int start,
+		int end, OrderByComparator obc) {
+
+		return accountEntryFinder.findByKAK_DAK_N_C_I_S(
+			koroneikiAccountKey, dossieraAccountKey, name, code, statuses,
+			instructions, params, andOperator, start, end, obc);
+	}
+
+	public int searchCount(
+		String keywords, LinkedHashMap<String, Object> params) {
+
+		return accountEntryFinder.countByKeywords(keywords, params);
+	}
+
+	public int searchCount(
+		String koroneikiAccountKey, String dossieraAccountKey, String name,
+		String code, int[] statuses, String instructions,
+		LinkedHashMap<String, Object> params, boolean andOperator) {
+
+		return accountEntryFinder.countByKAK_DAK_N_C_I_S(
+			koroneikiAccountKey, dossieraAccountKey, name, code, statuses,
+			instructions, params, andOperator);
+	}
+
+	public AccountEntry updateAccountEntry(
+			long userId, long accountEntryId, String koroneikiAccountKey,
+			String dossieraAccountKey, String instructions,
+			String[] languageIds, long[] supportRegionIds)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
+
+		validate(
+			accountEntryId, koroneikiAccountKey, languageIds, supportRegionIds);
+
+		accountEntry.setModifiedUserId(user.getUserId());
+		accountEntry.setModifiedUserName(user.getFullName());
+		accountEntry.setModifiedDate(new Date());
+		accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
+		accountEntry.setDossieraAccountKey(dossieraAccountKey);
+		accountEntry.setInstructions(instructions);
+
+		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
+			accountEntryId, languageIds);
+
+		accountEntryPersistence.setSupportRegions(
+			accountEntryId, supportRegionIds);
+
+		updateAuditEntry(
+			user.getUserId(), user.getFullName(), oldAccountEntry,
+			accountEntry);
+
+		return accountEntryPersistence.update(accountEntry);
+	}
+
+	public AccountEntry updateInstructions(
+			long userId, long accountEntryId, String instructions)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
+
+		accountEntry.setInstructions(instructions);
+
+		accountEntry = accountEntryPersistence.update(accountEntry);
+
+		updateAuditEntry(
+			user.getUserId(), user.getFullName(), oldAccountEntry,
+			accountEntry);
+
+		return accountEntry;
+	}
+
+	public void updateLastZendeskAuditDate(
+			long userId, long accountEntryId, String auditLabel,
+			String auditValue)
+		throws PortalException {
+
+		User user = userLocalService.getUser(userId);
+		Date now = new Date();
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		accountEntry.setLastZendeskAuditDate(now);
+
+		accountEntryPersistence.update(accountEntry);
+
+		if (Validator.isNotNull(auditLabel) ||
+			Validator.isNotNull(auditValue)) {
+
+			long classNameId = classNameLocalService.getClassNameId(
+				AccountEntry.class.getName());
+
+			auditEntryLocalService.addAuditEntry(
+				userId, user.getFullName(), now, classNameId, accountEntryId, 0,
+				classNameId, accountEntryId, AuditEntryConstants.ACTION_AUDIT,
+				AuditEntryConstants.FIELD_NOT_APPLICABLE,
+				VisibilityConstants.ADMIN, auditLabel, auditValue,
+				StringPool.BLANK, StringPool.BLANK, StringPool.BLANK, true,
+				false);
+		}
+	}
+
+	public AccountEntry updateStatus(
+			long userId, long accountEntryId, int status,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		userLocalService.getUser(userId);
+		Date now = new Date();
+
+		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
+			accountEntryId);
+
+		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
+			(status == WorkflowConstants.STATUS_APPROVED)) {
+
+			// TODO
+
+			//accountCustomerLocalService.resetClosedWorkers(accountEntryId);
+		}
+
+		if ((accountEntry.getStatus() != WorkflowConstants.STATUS_APPROVED) &&
+			(accountEntry.getStatus() != status)) {
+
+			// Account entry
+
+			accountEntry.setModifiedDate(serviceContext.getModifiedDate(now));
+			accountEntry.setStatus(status);
+
+			accountEntry = accountEntryPersistence.update(accountEntry);
+		}
+
+		if (accountEntry.getStatus() != status) {
+			long classNameId = classNameLocalService.getClassNameId(
+				AccountEntry.class.getName());
+
+			auditEntryLocalService.addAuditEntry(
+				OSBCustomerConstants.USER_DEFAULT_USER_ID, StringPool.BLANK,
+				new Date(), classNameId, accountEntryId, 0, classNameId,
+				accountEntryId, AuditEntryConstants.ACTION_UPDATE,
+				AuditEntryConstants.FIELD_STATUS, VisibilityConstants.ADMIN,
+				WorkflowConstants.getStatusLabel(status),
+				String.valueOf(status), accountEntry.getStatusLabel(),
+				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
+		}
+
+		return accountEntry;
+	}
+
+	protected AccountEntry doAddAccountEntry(
+			long userId, String koroneikiAccountKey, String dossieraAccountKey,
+			String instructions, String[] languageIds, long[] supportRegionIds)
+		throws PortalException {
+
+		// Account entry
+
+		User user = userLocalService.getUser(userId);
+		Date now = new Date();
+
+		long accountEntryId = counterLocalService.increment();
+
+		AccountEntry accountEntry = accountEntryPersistence.create(
+			accountEntryId);
+
+		accountEntry.setCompanyId(OSBCustomerConstants.COMPANY_ID);
+		accountEntry.setUserId(user.getUserId());
+		accountEntry.setUserName(user.getFullName());
+		accountEntry.setCreateDate(now);
+		accountEntry.setModifiedUserId(user.getUserId());
+		accountEntry.setModifiedUserName(user.getFullName());
+		accountEntry.setModifiedDate(now);
+		accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
+		accountEntry.setDossieraAccountKey(dossieraAccountKey);
+		accountEntry.setInstructions(instructions);
+		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
+
+		// Languages
+
+		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
+			accountEntryId, languageIds);
+
+		// Support regions
+
+		accountEntryPersistence.setSupportRegions(
+			accountEntryId, supportRegionIds);
+
+		return accountEntryPersistence.update(accountEntry);
+	}
+
+	protected String formatLanguageIds(String[] languageIds) {
+		List<String> formattedLanguageIds = new ArrayList<>(languageIds.length);
+
+		for (String languageId : languageIds) {
+			Locale locale = LocaleUtil.fromLanguageId(languageId);
+
+			formattedLanguageIds.add(locale.getDisplayName());
+		}
+
+		return StringUtil.merge(formattedLanguageIds);
+	}
+
+	protected String formatSupportRegionIds(long[] supportRegionIds) {
+		List<String> supportRegionNames = new ArrayList<>(
+			supportRegionIds.length);
+
+		for (long supportRegionId : supportRegionIds) {
+			SupportRegion supportRegion =
+				supportRegionPersistence.fetchByPrimaryKey(supportRegionId);
+
+			if (supportRegion != null) {
+				supportRegionNames.add(supportRegion.getName());
+			}
+		}
+
+		return StringUtil.merge(supportRegionNames);
+	}
+
+	protected void updateAuditEntry(
+			long userId, String userName, AccountEntry oldAccountEntry,
+			AccountEntry accountEntry)
+		throws PortalException {
+
+		long classPK = accountEntry.getAccountEntryId();
+		Date createDate = accountEntry.getModifiedDate();
+		long classNameId = classNameLocalService.getClassNameId(
+			AccountEntry.class.getName());
+		long auditSetId = auditEntryLocalService.getNextAuditSetId(
+			AccountEntry.class.getName(), classPK);
+		int auditAction = AuditEntryConstants.ACTION_UPDATE;
+
+		String oldKoroneikiAccountKey =
+			oldAccountEntry.getKoroneikiAccountKey();
+
+		if (!oldKoroneikiAccountKey.equals(
+				accountEntry.getKoroneikiAccountKey())) {
+
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_KORONEIKI_ACCOUNT_KEY,
+				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
+				oldKoroneikiAccountKey, StringPool.BLANK,
+				accountEntry.getKoroneikiAccountKey(), StringPool.BLANK);
+		}
+
+		String oldDossieraAccountKey = oldAccountEntry.getDossieraAccountKey();
+
+		if (!oldDossieraAccountKey.equals(
+				accountEntry.getDossieraAccountKey())) {
+
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_DOSSIERA_ACCOUNT_KEY,
+				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
+				oldDossieraAccountKey, StringPool.BLANK,
+				accountEntry.getDossieraAccountKey(), StringPool.BLANK);
+		}
+
+		String oldInstructions = oldAccountEntry.getInstructions();
+
+		if (!oldInstructions.equals(accountEntry.getInstructions())) {
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_INSTRUCTIONS,
+				VisibilityConstants.LIFERAY_INC, StringPool.BLANK,
+				oldInstructions, StringPool.BLANK,
+				accountEntry.getInstructions(), StringPool.BLANK);
+		}
+
+		if (oldAccountEntry.getStatus() != accountEntry.getStatus()) {
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_STATUS,
+				VisibilityConstants.LIFERAY_INC,
+				oldAccountEntry.getStatusLabel(),
+				String.valueOf(oldAccountEntry.getStatus()),
+				accountEntry.getStatusLabel(),
+				String.valueOf(accountEntry.getStatus()), StringPool.BLANK);
+		}
+
+		String[] oldLanguageIds = oldAccountEntry.getLanguageIds();
+		String[] languageIds = accountEntry.getLanguageIds();
+
+		Arrays.sort(oldLanguageIds);
+		Arrays.sort(languageIds);
+
+		if (!Arrays.equals(oldLanguageIds, languageIds)) {
+			String oldLanguageIdsString = formatLanguageIds(oldLanguageIds);
+			String languageIdsString = formatLanguageIds(languageIds);
+
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_LANGUAGES,
+				VisibilityConstants.LIFERAY_INC, oldLanguageIdsString,
+				StringUtil.merge(oldLanguageIds), languageIdsString,
+				StringUtil.merge(languageIds), StringPool.BLANK);
+		}
+
+		long[] oldSupportRegionIds = oldAccountEntry.getSupportRegionIds();
+		long[] supportRegionIds = accountEntry.getSupportRegionIds();
+
+		Arrays.sort(oldSupportRegionIds);
+		Arrays.sort(supportRegionIds);
+
+		if (!Arrays.equals(oldSupportRegionIds, supportRegionIds)) {
+			String oldSupportRegionIdsString = formatSupportRegionIds(
+				oldSupportRegionIds);
+			String sSupportRegionIdsString = formatSupportRegionIds(
+				supportRegionIds);
+
+			auditEntryLocalService.addAuditEntry(
+				userId, userName, createDate, classNameId, classPK, auditSetId,
+				classNameId, classPK, auditAction,
+				AuditEntryConstants.FIELD_SUPPORT_REGIONS,
+				VisibilityConstants.LIFERAY_INC, oldSupportRegionIdsString,
+				StringUtil.merge(oldSupportRegionIds), sSupportRegionIdsString,
+				StringUtil.merge(supportRegionIds), StringPool.BLANK);
+		}
+	}
+
+	protected void validate(
+			long accountEntryId, String koroneikiAccountKey,
+			String[] languageIds, long[] supportRegionIds)
+		throws PortalException {
+
+		if (Validator.isNull(koroneikiAccountKey)) {
+			throw new AccountEntryKoroneikiAccountKeyException();
+		}
+
+		if (ArrayUtil.isEmpty(supportRegionIds)) {
+			throw new AccountEntrySupportRegionException();
+		}
+		else if (ArrayUtil.isEmpty(languageIds)) {
+			throw new AccountEntryLanguageIdException();
+		}
+
+		for (String languageId : languageIds) {
+			if (!ArrayUtil.contains(
+					AccountEntryConstants.LANGUAGES, languageId)) {
+
+				throw new AccountEntryLanguageIdException();
+			}
+		}
+	}
+
+}

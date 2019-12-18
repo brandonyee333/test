@@ -21,17 +21,9 @@ package com.liferay.osb.util;
  */
 public class OSBConstants {
 
-	public static final long ACCOUNT_ENTRY_LRDCOM_ID = 5377279;
-
 	public static final long ACCOUNT_ENTRY_TRIAL_ID = 8264303;
 
 	public static final long ACCOUNT_ENTRY_WEDEPLOY_ID = 94686572;
-
-	public static final String ATTACHMENTS_DIR_ACCOUNT_ENTRY =
-		"osb/accountentry/";
-
-	public static final String ATTACHMENTS_DIR_ACCOUNT_ENVIRONMENT =
-		"osb/accountenvironment/";
 
 	public static final long COMPANY_ID = 10157;
 
