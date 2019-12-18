@@ -36,9 +36,6 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -240,11 +237,7 @@ public class SupportUtil {
 
 		Date createDate = accountEntry.getCreateDate();
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-		Date date = dateFormat.parse("2020-01-01");
-
-		if (createDate.before(date)) {
+		if (createDate.getTime() <= _SYNC_TO_LCS_TIME) {
 			return true;
 		}
 
@@ -319,5 +312,7 @@ public class SupportUtil {
 
 		return orderEntryAttributes;
 	}
+
+	private static final long _SYNC_TO_LCS_TIME = 1577865600000L;
 
 }
