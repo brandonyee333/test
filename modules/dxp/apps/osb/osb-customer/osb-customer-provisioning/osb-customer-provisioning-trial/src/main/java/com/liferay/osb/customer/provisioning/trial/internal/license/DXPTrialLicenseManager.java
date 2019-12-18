@@ -26,6 +26,8 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
+import java.math.BigInteger;
+
 import java.text.Format;
 import java.text.SimpleDateFormat;
 
@@ -94,13 +96,19 @@ public class DXPTrialLicenseManager {
 	}
 
 	private long _generateHash(String day) {
-		int seed = Integer.valueOf(day);
+		BigInteger hash = new BigInteger(day);
 
-		double hash = Math.pow(seed, 17) % 51539607551L;
+		hash = hash.pow(17);
 
-		hash = Math.pow(hash + _version, 17) % 51539607551L;
+		hash = hash.mod(BigInteger.valueOf(51539607551L));
 
-		return (long)hash;
+		hash = hash.add(BigInteger.valueOf(_version));
+
+		hash = hash.pow(17);
+
+		hash = hash.mod(BigInteger.valueOf(51539607551L));
+
+		return hash.longValue();
 	}
 
 	private String _generateLicenseXML(String day) throws Exception {
