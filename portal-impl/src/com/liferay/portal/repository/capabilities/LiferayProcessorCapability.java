@@ -116,10 +116,11 @@ public class LiferayProcessorCapability
 			});
 	}
 
-	private final ResourceGenerationStrategy _resourceGenerationStrategy;
 	private static volatile DLPreviewHelper _dlPreviewHelper =
 		ServiceProxyFactory.newServiceTrackedInstance(
 			DLPreviewHelper.class, LiferayProcessorCapability.class,
 			"_dlPreviewHelper", false, true);
+
+	private final ResourceGenerationStrategy _resourceGenerationStrategy;
 
 }
