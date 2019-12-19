@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.LayoutRevision;
 import com.liferay.portal.kernel.model.LayoutSetBranch;
 import com.liferay.portal.kernel.model.impl.VirtualLayout;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.LayoutService;
@@ -335,9 +336,13 @@ public class LayoutsTreeImpl implements LayoutsTree {
 		int count = _layoutService.getLayoutsCount(
 			groupId, privateLayout, parentLayoutId);
 
+		int totalCount = _layoutLocalService.getLayoutsCount(
+			_groupLocalService.getGroup(groupId), privateLayout,
+			parentLayoutId);
+
 		List<Layout> layouts = _getPaginatedLayouts(
 			request, groupId, privateLayout, parentLayoutId, incomplete, treeId,
-			childLayout, count);
+			childLayout, count, totalCount);
 
 		for (Layout layout : layouts) {
 			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
@@ -431,7 +436,7 @@ public class LayoutsTreeImpl implements LayoutsTree {
 	private List<Layout> _getPaginatedLayouts(
 			HttpServletRequest request, long groupId, boolean privateLayout,
 			long parentLayoutId, boolean incomplete, String treeId,
-			boolean childLayout, int count)
+			boolean childLayout, int count, int totalCount)
 		throws Exception {
 
 		if (!_isPaginationEnabled(request)) {
@@ -478,6 +483,14 @@ public class LayoutsTreeImpl implements LayoutsTree {
 			(start == PropsValues.LAYOUT_MANAGE_PAGES_INITIAL_CHILDREN)) {
 
 			start = end;
+		}
+
+		if (count != totalCount) {
+			List<Layout> layouts = _layoutService.getLayouts(
+				groupId, privateLayout, parentLayoutId, incomplete,
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			return layouts.subList(start, end);
 		}
 
 		return _layoutService.getLayouts(
@@ -716,6 +729,9 @@ public class LayoutsTreeImpl implements LayoutsTree {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		LayoutsTreeImpl.class);
+
+	@Reference
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
