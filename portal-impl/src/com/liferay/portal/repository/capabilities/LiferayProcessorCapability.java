@@ -19,7 +19,6 @@ import com.liferay.portal.kernel.repository.LocalRepository;
 import com.liferay.portal.kernel.repository.Repository;
 import com.liferay.portal.kernel.repository.capabilities.ProcessorCapability;
 import com.liferay.portal.kernel.repository.event.RepositoryEventAware;
-import com.liferay.portal.kernel.repository.event.RepositoryEventListener;
 import com.liferay.portal.kernel.repository.event.RepositoryEventType;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.repository.model.FileVersion;
@@ -31,8 +30,6 @@ import com.liferay.portal.repository.liferayrepository.LiferayProcessorRepositor
 import com.liferay.portal.repository.util.RepositoryWrapperAware;
 import com.liferay.portlet.documentlibrary.util.DLImpl;
 import com.liferay.portlet.preview.DLPreviewHelper;
-
-import java.util.concurrent.Callable;
 
 /**
  * @author Adolfo Pérez
@@ -82,17 +79,11 @@ public class LiferayProcessorCapability
 
 		repositoryEventRegistry.registerRepositoryEventListener(
 			RepositoryEventType.Delete.class, FileEntry.class,
-			new RepositoryEventListener
-				<RepositoryEventType.Delete, FileEntry>() {
+			fileEntry -> {
+				_dlPreviewHelper.deleteDLFileEntryFileVersionPreviews(
+					fileEntry.getFileEntryId());
 
-				@Override
-				public void execute(FileEntry fileEntry) {
-					_dlPreviewHelper.deleteDLFileEntryFileVersionPreviews(
-						fileEntry.getFileEntryId());
-
-					cleanUp(fileEntry);
-				}
-
+				cleanUp(fileEntry);
 			});
 	}
 
@@ -119,16 +110,10 @@ public class LiferayProcessorCapability
 		final FileEntry fileEntry, final FileVersion fileVersion) {
 
 		TransactionCommitCallbackUtil.registerCallback(
-			new Callable<Void>() {
+			() -> {
+				DLProcessorRegistryUtil.trigger(fileEntry, fileVersion, true);
 
-				@Override
-				public Void call() throws Exception {
-					DLProcessorRegistryUtil.trigger(
-						fileEntry, fileVersion, true);
-
-					return null;
-				}
-
+				return null;
 			});
 	}
 
