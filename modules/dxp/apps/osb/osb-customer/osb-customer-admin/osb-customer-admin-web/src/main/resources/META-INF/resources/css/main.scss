@@ -1,4 +1,7 @@
-.osb-portlet-admin {
+@import "_breakpoints";
+@import "_customer-variables";
+
+.osb-customer-admin-portlet {
 	table {
 		&.lfr-table {
 			overflow-x: auto;
@@ -86,8 +89,8 @@
 		display: none;
 	}
 
-	.advanced-search.input-group,
-	.basic-search.input-group {
+	.basic-search.input-group,
+	.taglib-search-toggle-advanced-wrapper {
 		max-width: none;
 
 		@include media-breakpoint-down(sm) {
@@ -221,7 +224,7 @@
 	}
 }
 
-.osb-portlet-admin-alert {
+.osb-customer-admin-portlet-alert {
 	&.error {
 		color: $color-error;
 

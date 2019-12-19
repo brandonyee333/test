@@ -97,13 +97,13 @@ public class ProductEntryConstants {
 		ProductEntry.class.getName() + ".commerceMajorVersions";
 
 	public static final String LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS =
-		ProductEntry.class.getName() + ".digitalEnterpriseAllVersions";
+		ProductEntry.class.getName() + ".dxpAllVersions";
 
 	public static final String LIST_TYPE_DIGITAL_ENTERPRISE_MAJOR_VERSIONS =
-		ProductEntry.class.getName() + ".digitalEnterpriseMajorVersions";
+		ProductEntry.class.getName() + ".dxpMajorVersions";
 
 	public static final String LIST_TYPE_DIGITAL_ENTERPRISE_MINOR_VERSIONS =
-		ProductEntry.class.getName() + ".digitalEnterpriseMinorVersions";
+		ProductEntry.class.getName() + ".dxpMinorVersions";
 
 	public static final String LIST_TYPE_PORTAL_ALL_VERSIONS =
 		ProductEntry.class.getName() + ".portalAllVersions";
@@ -115,13 +115,13 @@ public class ProductEntryConstants {
 		ProductEntry.class.getName() + ".portalMinorVersions";
 
 	public static final String LIST_TYPE_SOCIAL_OFFICE_ALL_VERSIONS =
-		ProductEntry.class.getName() + ".socialOfficeAllVersions";
+		ProductEntry.class.getName() + ".soAllVersions";
 
 	public static final String LIST_TYPE_SOCIAL_OFFICE_MAJOR_VERSIONS =
-		ProductEntry.class.getName() + ".socialOfficeMajorVersions";
+		ProductEntry.class.getName() + ".soMajorVersions";
 
 	public static final String LIST_TYPE_SOCIAL_OFFICE_MINOR_VERSIONS =
-		ProductEntry.class.getName() + ".socialOfficeMinorVersions";
+		ProductEntry.class.getName() + ".soMinorVersions";
 
 	public static final int[] LIST_TYPES_DEPRECATED = {
 		ProductEntryConstants.PORTAL_VERSION_4_4_0,

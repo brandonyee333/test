@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <custom-sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.countByKAK_DAK_N_C_I_S">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.countByKAK_DAK_N_C_I_S">
 		<![CDATA[
 			SELECT
 				DISTINCT OSB_AccountEntry.accountEntryId
@@ -20,13 +20,13 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.filterByStatus">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.filterByStatus">
 		<![CDATA[
 			WHERE
 				OSB_AccountEntry.status = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.findByKAK_DAK_N_C_I_S">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.findByKAK_DAK_N_C_I_S">
 		<![CDATA[
 			SELECT
 				DISTINCT {OSB_AccountEntry.*}
@@ -45,44 +45,44 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironment">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByAccountEnvironment">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEnvironment ON
 					OSB_AccountEnvironment.accountEntryId = OSB_AccountEntry.accountEntryId
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvAS">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvAS">
 		<![CDATA[
 			WHERE
 				OSB_AccountEnvironment.envAS = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvDB">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvDB">
 		<![CDATA[
 			WHERE
 				OSB_AccountEnvironment.envDB = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvJVM">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvJVM">
 		<![CDATA[
 			WHERE
 				OSB_AccountEnvironment.envJVM = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvLFR">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvLFR">
 		<![CDATA[
 			WHERE
 				OSB_AccountEnvironment.envLFR = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvOS">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByAccountEnvironmentEnvOS">
 		<![CDATA[
 			WHERE
 				OSB_AccountEnvironment.envOS = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinByPrimaryProductEntry">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinByPrimaryProductEntry">
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
@@ -115,7 +115,7 @@
 				OSB_AccountEnvironment.productEntryId = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.AccountEntryFinder.joinBySupportRegion">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder.joinBySupportRegion">
 		<![CDATA[
 			INNER JOIN
 				OSB_AccountEntries_SupportRegions ON
@@ -124,7 +124,7 @@
 				OSB_AccountEntries_SupportRegions.supportRegionId = ?
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.countByName">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder.countByName">
 		<![CDATA[
 			SELECT
 				COUNT(*) AS COUNT_VALUE
@@ -139,7 +139,7 @@
 				)
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.filterByLicenseOfferingEntries">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder.filterByLicenseOfferingEntries">
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
@@ -149,7 +149,7 @@
 				(OSB_OfferingEntry.licenses = [$TRUE$])
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.findByAccountEntry">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder.findByAccountEntry">
 		<![CDATA[
 			SELECT
 				DISTINCT {OSB_ProductEntry.*}
@@ -165,7 +165,7 @@
 				OSB_ProductEntry.name
 		]]>
 	</sql>
-	<sql id="com.liferay.osb.service.persistence.ProductEntryFinder.findByName">
+	<sql id="com.liferay.osb.customer.admin.service.persistence.ProductEntryFinder.findByName">
 		<![CDATA[
 			SELECT
 				DISTINCT {OSB_ProductEntry.*}

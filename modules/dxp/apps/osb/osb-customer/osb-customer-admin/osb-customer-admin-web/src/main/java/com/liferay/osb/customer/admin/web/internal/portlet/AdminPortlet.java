@@ -104,8 +104,7 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"com.liferay.portlet.css-class-wrapper=osb-customer-admin-portlet",
 		"com.liferay.portlet.display-category=category.osb",
-		"com.liferay.portlet.footer-portlet-javascript=/dist/main.js",
-		"com.liferay.portlet.header-portlet-css=/dist/main.css",
+		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"javax.portlet.display-name=OSB Customer Admin",
 		"javax.portlet.expiration-cache=0",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",

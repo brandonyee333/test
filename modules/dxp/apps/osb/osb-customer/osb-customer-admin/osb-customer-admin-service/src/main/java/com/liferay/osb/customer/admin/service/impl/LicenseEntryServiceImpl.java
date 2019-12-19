@@ -36,4 +36,5 @@ public class LicenseEntryServiceImpl extends LicenseEntryServiceBaseImpl {
 	 *
 	 * Never reference this class directly. Always use <code>com.liferay.osb.customer.admin.service.LicenseEntryServiceUtil</code> to access the license entry remote service.
 	 */
+
 }

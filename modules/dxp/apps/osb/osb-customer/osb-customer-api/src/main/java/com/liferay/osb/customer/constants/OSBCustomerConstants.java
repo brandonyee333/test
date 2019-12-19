@@ -19,6 +19,8 @@ package com.liferay.osb.customer.constants;
  */
 public class OSBCustomerConstants {
 
+	public static final long ACCOUNT_ENTRY_LRDCOM_ID = 5377279;
+
 	public static final String ATTACHMENTS_DIR_ACCOUNT_ENTRY =
 		"osb/accountentry/";
 
@@ -40,7 +42,7 @@ public class OSBCustomerConstants {
 
 	public static final long ORGANIZATION_CUSTOMER_PORTAL_ID = 2844836;
 
-	public static final long ACCOUNT_ENTRY_LRDCOM_ID = 5377279;
+	public static final long ORGANIZATION_LIFERAY_CONTRACTOR_ID = 119362231;
 
 	public static final long ORGANIZATION_LIFERAY_INC_ID = 1747318;
 
@@ -51,10 +53,6 @@ public class OSBCustomerConstants {
 
 	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID =
 		3525738;
-
-	public static final long ORGANIZATION_LIFERAY_CONTRACTOR_ID = 119362231;
-	
-	public static final long ROLE_OSB_SUPPORT_ADMIN_ID = 1546564;
 
 	public static final long ROLE_CUSTOMER_COMMERCE_ID = 3525734;
 
@@ -73,6 +71,8 @@ public class OSBCustomerConstants {
 	public static final long ROLE_OSB_ACCOUNT_ADMIN_ID = 1546563;
 
 	public static final long ROLE_OSB_ADMINISTRATOR_ID = 1546561;
+
+	public static final long ROLE_OSB_SUPPORT_ADMIN_ID = 1546564;
 
 	public static final long ROLE_PARTNER_ID = 54427;
 
