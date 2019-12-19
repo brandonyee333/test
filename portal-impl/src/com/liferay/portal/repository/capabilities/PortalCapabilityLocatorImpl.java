@@ -153,9 +153,9 @@ public class PortalCapabilityLocatorImpl implements PortalCapabilityLocator {
 	@Activate
 	protected void activate() {
 		_alwaysGeneratingProcessorCapability = new LiferayProcessorCapability(
-			ProcessorCapability.ResourceGenerationStrategy.ALWAYS_GENERATE);
+			LiferayProcessorCapability.ResourceGenerationStrategy.ALWAYS_GENERATE);
 		_reusingProcessorCapability = new LiferayProcessorCapability(
-			ProcessorCapability.ResourceGenerationStrategy.REUSE);
+			LiferayProcessorCapability.ResourceGenerationStrategy.REUSE);
 	}
 
 	@BeanReference(type = DLAppHelperLocalService.class)
