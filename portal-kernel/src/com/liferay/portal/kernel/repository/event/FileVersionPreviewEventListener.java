@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.repository.event;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.repository.model.FileVersion;
 
 /**
