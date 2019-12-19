@@ -73,6 +73,8 @@ public class SocialBookmarkTag extends IncludeTag {
 		_contentId = null;
 		_displayStyle = null;
 		_icon = null;
+		_jspPath = null;
+		_postURL = null;
 		_target = null;
 		_title = null;
 		_type = null;

@@ -135,6 +135,7 @@ public class TemplateRendererTag extends ParamAndPropertyAncestorTagImpl {
 			_componentId = null;
 			_context = null;
 			_module = null;
+			_template = null;
 			_templateNamespace = null;
 		}
 	}
