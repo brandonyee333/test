@@ -316,6 +316,12 @@ public class LayoutImportController implements ImportController {
 			if (!sourceLayoutUuids.contains(layout.getUuid()) &&
 				!layoutPlids.containsValue(layout.getPlid())) {
 
+				layout = _layoutLocalService.fetchLayout(layout.getPlid());
+
+				if (layout == null) {
+					continue;
+				}
+
 				try {
 					_layoutLocalService.deleteLayout(
 						layout, false, serviceContext);
