@@ -137,17 +137,17 @@ public class PartnerWorkerLocalServiceClpInvoker {
 				"long", "java.lang.String", "int"
 			};
 
-		_methodName185 = "deletePartnerWorker";
+		_methodName185 = "countPassportPartnersByDomain";
 
-		_methodParameterTypes185 = new String[] { "long" };
+		_methodParameterTypes185 = new String[] { "java.lang.String" };
 
-		_methodName186 = "deletePartnerWorkers";
+		_methodName186 = "deletePartnerWorker";
 
 		_methodParameterTypes186 = new String[] { "long" };
 
-		_methodName187 = "countPassportPartnersByDomain";
+		_methodName187 = "deletePartnerWorkers";
 
-		_methodParameterTypes187 = new String[] { "java.lang.String" };
+		_methodParameterTypes187 = new String[] { "long" };
 
 		_methodName188 = "fetchPartnerWorker";
 
@@ -317,19 +317,19 @@ public class PartnerWorkerLocalServiceClpInvoker {
 
 		if (_methodName185.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes185, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.deletePartnerWorker(((Long)arguments[0]).longValue());
+			return PartnerWorkerLocalServiceUtil.countPassportPartnersByDomain((java.lang.String)arguments[0]);
 		}
 
 		if (_methodName186.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes186, parameterTypes)) {
-			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(((Long)arguments[0]).longValue());
-
-			return null;
+			return PartnerWorkerLocalServiceUtil.deletePartnerWorker(((Long)arguments[0]).longValue());
 		}
 
 		if (_methodName187.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes187, parameterTypes)) {
-			return PartnerWorkerLocalServiceUtil.countPassportPartnersByDomain((java.lang.String)arguments[0]);
+			PartnerWorkerLocalServiceUtil.deletePartnerWorkers(((Long)arguments[0]).longValue());
+
+			return null;
 		}
 
 		if (_methodName188.equals(name) &&
