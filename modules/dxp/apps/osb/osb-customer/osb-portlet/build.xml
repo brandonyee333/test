@@ -16,7 +16,12 @@
 	</target>
 
 	<target name="build-service">
-		<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="compile" />
+		<trycatch>
+			<try>
+				<ant antfile="${portal.base.dir}/tools/sdk/portlets/build-common-portlet.xml" target="compile" />
+			</try>
+			<catch />
+		</trycatch>
 
 		<if>
 			<not>
