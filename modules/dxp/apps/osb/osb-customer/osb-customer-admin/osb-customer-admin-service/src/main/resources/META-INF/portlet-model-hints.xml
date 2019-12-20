@@ -27,7 +27,9 @@
 			<hint name="max-length">500</hint>
 		</field>
 		<field name="code" type="String" />
-		<field name="instructions" type="String" />
+		<field name="instructions" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
 		<field name="activeSupport" type="boolean" />
 		<field name="activeTicketSupport" type="boolean" />
 		<field name="lastZendeskAuditDate" type="Date" />

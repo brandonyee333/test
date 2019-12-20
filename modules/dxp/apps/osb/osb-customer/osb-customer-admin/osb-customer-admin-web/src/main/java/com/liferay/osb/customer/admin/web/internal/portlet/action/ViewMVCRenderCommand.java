@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.web.internal.portlet.action;
+package com.liferay.osb.customer.admin.web.internal.portlet.action;
 
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;

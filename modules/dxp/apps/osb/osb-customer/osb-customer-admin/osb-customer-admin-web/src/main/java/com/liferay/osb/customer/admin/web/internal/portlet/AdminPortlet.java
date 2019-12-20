@@ -33,14 +33,17 @@ import com.liferay.osb.customer.admin.exception.SupportRegionNameException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountAttachmentLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.customer.admin.service.SupportRegionLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.AccountAttachmentLocalService;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
+import com.liferay.osb.customer.admin.service.SupportRegionLocalService;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortletKeys;
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminWebKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -56,7 +59,7 @@ import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -65,7 +68,8 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -93,6 +97,7 @@ import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -121,7 +126,7 @@ public class AdminPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		FileInputStream fileInputStream = null;
 		ObjectInputStream objectInputStream = null;
@@ -202,7 +207,7 @@ public class AdminPortlet extends MVCPortlet {
 		long licenseEntryId = ParamUtil.getLong(
 			actionRequest, "licenseEntryId");
 
-		LicenseEntryLocalServiceUtil.deleteLicenseEntry(licenseEntryId);
+		_licenseEntryLocalService.deleteLicenseEntry(licenseEntryId);
 	}
 
 	public void deleteProductEntry(
@@ -212,7 +217,7 @@ public class AdminPortlet extends MVCPortlet {
 		long productEntryId = ParamUtil.getLong(
 			actionRequest, "productEntryId");
 
-		ProductEntryLocalServiceUtil.deleteProductEntry(productEntryId);
+		_productEntryLocalService.deleteProductEntry(productEntryId);
 	}
 
 	public void deleteSupportRegion(
@@ -222,7 +227,7 @@ public class AdminPortlet extends MVCPortlet {
 		long supportRegionId = ParamUtil.getLong(
 			actionRequest, "supportRegionId");
 
-		SupportRegionLocalServiceUtil.deleteSupportRegion(supportRegionId);
+		_supportRegionLocalService.deleteSupportRegion(supportRegionId);
 	}
 
 	@Override
@@ -230,12 +235,19 @@ public class AdminPortlet extends MVCPortlet {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws IOException, PortletException {
 
+		renderRequest.setAttribute(
+			AccountWebService.class.getName(), _accountWebService);
+		renderRequest.setAttribute(
+			TeamRoleWebService.class.getName(), _teamRoleWebService);
+		renderRequest.setAttribute(
+			TeamWebService.class.getName(), _teamWebService);
+
 		long accountEntryId = ParamUtil.getLong(
 			renderRequest, "accountEntryId");
 
 		if (accountEntryId > 0) {
 			AccountEntry accountEntry =
-				AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
+				_accountEntryLocalService.fetchAccountEntry(accountEntryId);
 
 			if (accountEntry != null) {
 				renderRequest.setAttribute(
@@ -313,13 +325,13 @@ public class AdminPortlet extends MVCPortlet {
 			ParamUtil.getString(actionRequest, "supportRegionIds"), 0L);
 
 		if (accountEntryId <= 0) {
-			AccountEntryLocalServiceUtil.addAccountEntry(
+			_accountEntryLocalService.addAccountEntry(
 				themeDisplay.getUserId(), koroneikiAccountKey,
 				dossieraAccountKey, instructions, languageIds,
 				supportRegionIds);
 		}
 		else {
-			AccountEntryLocalServiceUtil.updateAccountEntry(
+			_accountEntryLocalService.updateAccountEntry(
 				themeDisplay.getUserId(), accountEntryId, koroneikiAccountKey,
 				dossieraAccountKey, instructions, languageIds,
 				supportRegionIds);
@@ -346,12 +358,12 @@ public class AdminPortlet extends MVCPortlet {
 		int versionMax = ParamUtil.getInteger(actionRequest, "versionMax");
 
 		if (licenseEntryId <= 0) {
-			LicenseEntryLocalServiceUtil.addLicenseEntry(
+			_licenseEntryLocalService.addLicenseEntry(
 				themeDisplay.getUserId(), productEntryId, name, type,
 				versionMin, versionMax);
 		}
 		else {
-			LicenseEntryLocalServiceUtil.updateLicenseEntry(
+			licenseEntryLocalService.updateLicenseEntry(
 				licenseEntryId, productEntryId, name, type, versionMin,
 				versionMax);
 		}
@@ -378,12 +390,12 @@ public class AdminPortlet extends MVCPortlet {
 		String zendeskTag = ParamUtil.getString(actionRequest, "zendeskTag");
 
 		if (productEntryId <= 0) {
-			ProductEntryLocalServiceUtil.addProductEntry(
+			_productEntryLocalService.addProductEntry(
 				themeDisplay.getUserId(), name, type, environment,
 				versionsListType, dossieraIdMappings, zendeskTag);
 		}
 		else {
-			ProductEntryLocalServiceUtil.updateProductEntry(
+			_productEntryLocalService.updateProductEntry(
 				productEntryId, name, type, environment, versionsListType,
 				dossieraIdMappings, zendeskTag);
 		}
@@ -404,11 +416,11 @@ public class AdminPortlet extends MVCPortlet {
 		String timeZoneId = ParamUtil.getString(actionRequest, "timeZoneId");
 
 		if (supportRegionId > 0) {
-			SupportRegionLocalServiceUtil.updateSupportRegion(
+			_supportRegionLocalService.updateSupportRegion(
 				supportRegionId, name, description, timeZoneId);
 		}
 		else {
-			SupportRegionLocalServiceUtil.addSupportRegion(
+			_supportRegionLocalService.addSupportRegion(
 				themeDisplay.getUserId(), name, description, timeZoneId);
 		}
 	}
@@ -503,21 +515,21 @@ public class AdminPortlet extends MVCPortlet {
 				(ThemeDisplay)portletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
 
-			if (RoleLocalServiceUtil.hasUserRole(
+			if (_roleLocalService.hasUserRole(
 					themeDisplay.getUserId(),
 					OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
 
 				return true;
 			}
 
-			if (RoleLocalServiceUtil.hasUserRole(
+			if (_roleLocalService.hasUserRole(
 					themeDisplay.getUserId(),
 					OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
 				return true;
 			}
 
-			if (RoleLocalServiceUtil.hasUserRole(
+			if (_roleLocalService.hasUserRole(
 					themeDisplay.getUserId(),
 					OSBCustomerConstants.ROLE_OSB_SUPPORT_ADMIN_ID)) {
 
@@ -571,13 +583,12 @@ public class AdminPortlet extends MVCPortlet {
 			resourceRequest, "accountAttachmentId");
 
 		AccountAttachment accountAttachment =
-			AccountAttachmentLocalServiceUtil.getAccountAttachment(
+			_accountAttachmentLocalService.getAccountAttachment(
 				accountAttachmentId);
 
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse, accountAttachment.getFileName(),
-			AccountAttachmentLocalServiceUtil.getFileAsStream(
-				accountAttachment),
+			_accountAttachmentLocalService.getFileAsStream(accountAttachment),
 			accountAttachment.getContentLength(),
 			MimeTypesUtil.getContentType(accountAttachment.getFileName()),
 			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
@@ -635,7 +646,7 @@ public class AdminPortlet extends MVCPortlet {
 		throws Exception {
 
 		UploadPortletRequest uploadPortletRequest =
-			PortalUtil.getUploadPortletRequest(actionRequest);
+			_portal.getUploadPortletRequest(actionRequest);
 
 		long accountAttachmentId = ParamUtil.getLong(
 			uploadPortletRequest, "accountAttachmentId");
@@ -644,7 +655,7 @@ public class AdminPortlet extends MVCPortlet {
 			uploadPortletRequest, "deleteAccountAttachment");
 
 		if (deleteAccountAttachment) {
-			AccountAttachmentLocalServiceUtil.deleteAccountAttachment(
+			_accountAttachmentLocalService.deleteAccountAttachment(
 				accountAttachmentId);
 		}
 
@@ -670,7 +681,7 @@ public class AdminPortlet extends MVCPortlet {
 			ObjectValuePair<String, File> ovp = new ObjectValuePair<>(
 				fileName, file);
 
-			AccountAttachmentLocalServiceUtil.addAccountAttachment(
+			_accountAttachmentLocalService.addAccountAttachment(
 				themeDisplay.getUserId(), accountEntryId, accountProjectId, ovp,
 				AccountAttachmentConstants.TYPE_OEM_INSTRUCTIONS);
 		}
@@ -680,5 +691,35 @@ public class AdminPortlet extends MVCPortlet {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(AdminPortlet.class);
+
+	@Reference
+	private AccountAttachmentLocalService _accountAttachmentLocalService;
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountWebService _accountWebService;
+
+	@Reference
+	private LicenseEntryLocalService _licenseEntryLocalService;
+
+	@Reference
+	private Portal _portal;
+
+	@Reference
+	private ProductEntryLocalService _productEntryLocalService;
+
+	@Reference
+	private RoleLocalService _roleLocalService;
+
+	@Reference
+	private SupportRegionLocalService _supportRegionLocalService;
+
+	@Reference
+	private TeamRoleWebService _teamRoleWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 }

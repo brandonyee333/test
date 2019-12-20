@@ -19,6 +19,12 @@
 <%
 AccountEntry accountEntry = (AccountEntry)request.getAttribute(CustomerAdminWebKeys.ACCOUNT_ENTRY);
 
+Account koroneikiAccount = null;
+
+if ((accountEntry != null) && Validator.isNotNull(accountEntry.getKoroneikiAccountKey())) {
+	koroneikiAccount = accountWebService.getAccount(accountEntry.getKoroneikiAccountKey());
+}
+
 String detailTab = ParamUtil.getString(request, "detailTab");
 
 String redirect = ParamUtil.getString(request, "redirect");
@@ -46,7 +52,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<portlet:param name="mvcPath" value="/admin/edit_account_entry.jsp" />
 </portlet:actionURL>
 
-<aui:form action="<%= updateAccountEntryURL %>" enctype="multipart/form-data" method="post">
+<aui:form action="<%= updateAccountEntryURL %>" cssClass="edit-account-entry" enctype="multipart/form-data" method="post">
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
 	<aui:input name="backURL" type="hidden" value="<%= backURL %>" />
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
@@ -72,7 +78,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<table class="lfr-table">
 		<tr>
 			<td>
-				<liferay-ui:message key="koroneiki-account-key" />
+				<strong><liferay-ui:message key="koroneiki-account-key" /></strong>
 			</td>
 			<td>
 				<aui:input label="" name="koroneikiAccountKey" />
@@ -80,100 +86,47 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		</tr>
 		<tr>
 			<td>
-				<liferay-ui:message key="dossiera-account-key" />
+				<strong><liferay-ui:message key="dossiera-account-key" /></strong>
 			</td>
 			<td>
 				<aui:input label="" name="dossieraAccountKey" />
 			</td>
 		</tr>
+
+		<c:if test="<%= accountEntry != null %>">
+			<tr>
+				<td>
+					<strong><liferay-ui:message key="lcs-support-admin" /></strong>
+				</td>
+				<td>
+					<span id="<portlet:namespace />lcsSupportAdmin">
+						<c:if test="<%= accountEntry.getCorpProjectId() > 0 %>">
+							<aui:a href="<%= CustomerAdminWebConfigurationValues.LCS_SUPPORT_ADMIN_LINK + accountEntry.getCorpProjectId() %>" label="lcs-support-admin" target="_blank" />
+						</c:if>
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong><liferay-ui:message key="project-name" /></strong>
+				</td>
+				<td>
+					<%= HtmlUtil.escape(accountEntry.getName()) %>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<strong><liferay-ui:message key="code" /></strong>
+				</td>
+				<td>
+					<%= HtmlUtil.escape(accountEntry.getCode()) %>
+				</td>
+			</tr>
+		</c:if>
+
 		<tr>
 			<td>
-				<liferay-ui:message key="project-name" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(accountEntry.getName()) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="code" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(accountEntry.getCode()) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="parent-account" />
-			</td>
-			<td>
-				parent account here
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="lcs-support-admin" />
-			</td>
-			<td>
-				<span id="<portlet:namespace />lcsSupportAdmin">
-					<c:if test="<%= accountEntry.getCorpProjectId() > 0 %>">
-						<aui:a href="<%= CustomerAdminWebConfigurationValues.LCS_SUPPORT_ADMIN_LINK + accountEntry.getCorpProjectId() %>" label="lcs-support-admin" target="_blank" />
-					</c:if>
-				</span>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="partner" />
-			</td>
-			<td>
-				partner here
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="partner-first-line-support" />
-			</td>
-			<td>
-				partner fls here
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="description" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(accountEntry.getDescription()) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="additional-notes" />
-			</td>
-			<td>
-				notes here
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="tier" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(accountEntry.getTier()) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="addresses" />
-			</td>
-			<td>
-				<aui:row>
-				</aui:row>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="special-instructions" />
+				<strong><liferay-ui:message key="special-instructions" /></strong>
 			</td>
 			<td>
 				<aui:input label="" name="instructions" />
@@ -183,7 +136,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		<c:if test="<%= accountEntry != null %>">
 			<tr>
 				<td>
-					<liferay-ui:message key="oem-instructions" />
+					<strong><liferay-ui:message key="oem-instructions" /></strong>
 				</td>
 				<td>
 
@@ -219,6 +172,144 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 				</td>
 			</tr>
 		</c:if>
+
+		<tr>
+			<td colspan="2">
+			</td>
+		</tr>
+
+		<%
+		String partner = StringPool.BLANK;
+		String firstLineSupport = StringPool.BLANK;
+
+		if (koroneikiAccount != null) {
+			List<Team> teams = teamWebService.getAssignedTeams(koroneikiAccount.getKey());
+
+			for (Team team : teams) {
+				List<TeamRole> teamRoles = teamRoleWebService.getTeamRoles(koroneikiAccount.getKey(), team.getKey());
+
+				for (TeamRole teamRole : teamRoles) {
+					String name = teamRole.getName();
+
+					if (name.equals("First Line Support")) {
+						firstLineSupport = team.getName();
+					}
+					else if (name.equals("Partner")) {
+						partner = team.getName();
+					}
+				}
+			}
+		}
+		%>
+
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="partner" /></strong>
+			</td>
+			<td>
+				<%= HtmlUtil.escape(partner) %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="partner-first-line-support" /></strong>
+			</td>
+			<td>
+				<%= HtmlUtil.escape(firstLineSupport) %>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="tier" /></strong>
+			</td>
+			<td>
+				<c:if test="<%= (koroneikiAccount != null) && Validator.isNotNull(koroneikiAccount.getTier()) %>">
+					<%= koroneikiAccount.getTier() %>
+				</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="description" /></strong>
+			</td>
+			<td>
+				<c:if test="<%= (koroneikiAccount != null) && Validator.isNotNull(koroneikiAccount.getDescription()) %>">
+					<%= StringUtil.replace(HtmlUtil.escape(koroneikiAccount.getDescription()), CharPool.NEW_LINE, "<br />") %>
+				</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="additional-notes" /></strong>
+			</td>
+			<td>
+				<c:if test="<%= (koroneikiAccount != null) && Validator.isNotNull(koroneikiAccount.getNotes()) %>">
+					<%= StringUtil.replace(HtmlUtil.escape(koroneikiAccount.getNotes()), CharPool.NEW_LINE, "<br />") %>
+				</c:if>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><liferay-ui:message key="addresses" /></strong>
+			</td>
+			<td>
+
+					<%
+					if (koroneikiAccount != null) {
+						PostalAddress[] postalAddresses = koroneikiAccount.getPostalAddresses();
+
+						if (postalAddresses != null) {
+							for (PostalAddress postalAddress : postalAddresses) {
+						%>
+
+								<div>
+									<c:if test="<%= Validator.isNotNull(postalAddress.getAddressType()) %>">
+										<strong><liferay-ui:message key="<%= postalAddress.getAddressType() %>" /></strong><br />
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getStreetAddressLine1()) %>">
+										<%= HtmlUtil.escape(postalAddress.getStreetAddressLine1()) %><br />
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getStreetAddressLine2()) %>">
+										<%= HtmlUtil.escape(postalAddress.getStreetAddressLine2()) %><br />
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getStreetAddressLine3()) %>">
+										<%= HtmlUtil.escape(postalAddress.getStreetAddressLine3()) %><br />
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getAddressLocality()) %>">
+										<%= HtmlUtil.escape(postalAddress.getAddressLocality()) %>,
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getAddressRegion()) %>">
+										<%= HtmlUtil.escape(postalAddress.getAddressRegion()) %>
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getPostalCode()) %>">
+										<%= HtmlUtil.escape(postalAddress.getPostalCode()) %>
+									</c:if>
+
+									<c:if test="<%= Validator.isNotNull(postalAddress.getAddressCountry()) %>">
+										<br /><%= HtmlUtil.escape(postalAddress.getAddressCountry()) %>
+									</c:if>
+
+									<c:if test="<%= (postalAddress.getPrimary() != null) && postalAddress.getPrimary() %>">
+										<br />(<liferay-ui:message key="primary" />)
+									</c:if>
+
+									<br />
+								<div>
+
+					<%
+							}
+						}
+					}
+					%>
+
+			</td>
+		</tr>
 	</table>
 
 	<br />
