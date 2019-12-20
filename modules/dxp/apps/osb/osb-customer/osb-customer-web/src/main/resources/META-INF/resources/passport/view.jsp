@@ -27,7 +27,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 
 	<liferay-ui:error exception="<%= EmailAddressDomainException.class %>" message="end-user-work-email-address-domain-must-match-your-own-email-address-domain" />
 	<liferay-ui:error exception="<%= RequiredFieldException.class %>" message="please-fill-out-all-required-fields" />
-	<liferay-ui:error exception="<%= SubscriptionException.class %>" message="we-could-not-identify-any-active-liferay-subscription-or-active-liferay-partnership-for-the-provided-company" />
+	<liferay-ui:error exception="<%= SubscriptionException.class %>" message="we-could-not-identify-any-eligible-liferay-subscription-or-liferay-partnership-for-the-provided-company" />
 
 	<br />
 
