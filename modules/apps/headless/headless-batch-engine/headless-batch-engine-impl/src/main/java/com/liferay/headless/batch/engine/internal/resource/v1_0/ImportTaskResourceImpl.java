@@ -14,6 +14,9 @@
 
 package com.liferay.headless.batch.engine.internal.resource.v1_0;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
 import com.liferay.batch.engine.BatchEngineImportTaskExecutor;
 import com.liferay.batch.engine.BatchEngineTaskExecuteStatus;
 import com.liferay.batch.engine.BatchEngineTaskOperation;
@@ -37,6 +40,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.multipart.BinaryFile;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -52,6 +56,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.ext.ContextResolver;
+import javax.ws.rs.ext.Providers;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -82,6 +92,19 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 	}
 
 	@Override
+	public ImportTask deleteImportTask(
+			String className, String version, String callbackURL, Object object)
+		throws IOException {
+
+		MediaType mediaType = _httpHeaders.getMediaType();
+
+		return _importFile(
+			BatchEngineTaskOperation.DELETE, _getBytes(object, mediaType),
+			callbackURL, className, _getContentType(mediaType.toString()), null,
+			version);
+	}
+
+	@Override
 	public ImportTask getImportTask(Long importTaskId) throws Exception {
 		return _toImportTask(
 			_batchEngineImportTaskLocalService.getBatchEngineImportTask(
@@ -101,6 +124,20 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 	}
 
 	@Override
+	public ImportTask postImportTask(
+			String className, String version, String callbackURL,
+			String fieldNameMapping, Object object)
+		throws Exception {
+
+		MediaType mediaType = _httpHeaders.getMediaType();
+
+		return _importFile(
+			BatchEngineTaskOperation.CREATE, _getBytes(object, mediaType),
+			callbackURL, className, _getContentType(mediaType.toString()),
+			fieldNameMapping, version);
+	}
+
+	@Override
 	public ImportTask putImportTask(
 			String className, String version, String callbackURL,
 			MultipartBody multipartBody)
@@ -109,6 +146,19 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 		return _importFile(
 			BatchEngineTaskOperation.UPDATE,
 			multipartBody.getBinaryFile("file"), callbackURL, className, null,
+			version);
+	}
+
+	@Override
+	public ImportTask putImportTask(
+			String className, String version, String callbackURL, Object object)
+		throws Exception {
+
+		MediaType mediaType = _httpHeaders.getMediaType();
+
+		return _importFile(
+			BatchEngineTaskOperation.UPDATE, _getBytes(object, mediaType),
+			callbackURL, className, _getContentType(mediaType.toString()), null,
 			version);
 	}
 
@@ -132,6 +182,35 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 				String.valueOf(entry.getKey()),
 				GetterUtil.getInteger(entry.getValue()));
 		}
+	}
+
+	private byte[] _getBytes(Object object, MediaType mediaType)
+		throws IOException {
+
+		byte[] bytes = null;
+
+		if (mediaType.equals(MediaType.valueOf(MediaType.APPLICATION_JSON))) {
+			ContextResolver<ObjectMapper> contextResolver =
+				_providers.getContextResolver(ObjectMapper.class, mediaType);
+
+			ObjectMapper objectMapper = contextResolver.getContext(
+				Object.class);
+
+			ObjectWriter objectWriter = objectMapper.writer();
+
+			bytes = objectWriter.writeValueAsBytes(object);
+		}
+		else {
+			String content = (String)object;
+
+			bytes = content.getBytes();
+		}
+
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			_getUnsyncByteArrayOutputStream(
+				"fileName", new ByteArrayInputStream(bytes));
+
+		return unsyncByteArrayOutputStream.toByteArray();
 	}
 
 	private Map.Entry<byte[], String> _getContentAndExtensionFromCompressedFile(
@@ -160,6 +239,32 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 		throws IOException {
 
 		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			_getUnsyncByteArrayOutputStream(fileName, inputStream);
+
+		return new AbstractMap.SimpleImmutableEntry<>(
+			unsyncByteArrayOutputStream.toByteArray(),
+			_file.getExtension(fileName));
+	}
+
+	private String _getContentType(String mediaType) {
+		if (mediaType.equals(MediaType.APPLICATION_JSON)) {
+			return "json";
+		}
+		else if (mediaType.equals("text/csv")) {
+			return "csv";
+		}
+		else if (mediaType.equals("application/x-ndjson")) {
+			return "jsonl";
+		}
+
+		return mediaType;
+	}
+
+	private UnsyncByteArrayOutputStream _getUnsyncByteArrayOutputStream(
+			String fileName, InputStream inputStream)
+		throws IOException {
+
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
 			new UnsyncByteArrayOutputStream();
 
 		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
@@ -172,9 +277,7 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 			StreamUtil.transfer(inputStream, zipOutputStream, false);
 		}
 
-		return new AbstractMap.SimpleImmutableEntry<>(
-			unsyncByteArrayOutputStream.toByteArray(),
-			_file.getExtension(fileName));
+		return unsyncByteArrayOutputStream;
 	}
 
 	private ImportTask _importFile(
@@ -182,17 +285,6 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 			BinaryFile binaryFile, String callbackURL, String className,
 			String fieldNameMappingString, String version)
 		throws Exception {
-
-		Class<?> clazz = _itemClassRegistry.getItemClass(className);
-
-		if (clazz == null) {
-			throw new IllegalArgumentException(
-				"Unknown class name: " + className);
-		}
-
-		ExecutorService executorService =
-			_portalExecutorManager.getPortalExecutor(
-				ImportTaskResourceImpl.class.getName());
 
 		Map.Entry<byte[], String> entry = null;
 
@@ -205,12 +297,33 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 				binaryFile.getFileName(), binaryFile.getInputStream());
 		}
 
+		return _importFile(
+			batchEngineTaskOperation, entry.getKey(), callbackURL, className,
+			entry.getValue(), fieldNameMappingString, version);
+	}
+
+	private ImportTask _importFile(
+		BatchEngineTaskOperation batchEngineTaskOperation, byte[] bytes,
+		String callbackURL, String className, String contentType,
+		String fieldNameMappingString, String version) {
+
+		Class<?> clazz = _itemClassRegistry.getItemClass(className);
+
+		if (clazz == null) {
+			throw new IllegalArgumentException(
+				"Unknown class name: " + className);
+		}
+
+		ExecutorService executorService =
+			_portalExecutorManager.getPortalExecutor(
+				ImportTaskResourceImpl.class.getName());
+
 		BatchEngineImportTask batchEngineImportTask =
 			_batchEngineImportTaskLocalService.addBatchEngineImportTask(
 				contextCompany.getCompanyId(), contextUser.getUserId(),
 				_itemClassBatchSizeMap.getOrDefault(className, _batchSize),
-				callbackURL, className, entry.getKey(),
-				StringUtil.upperCase(entry.getValue()),
+				callbackURL, className, bytes,
+				StringUtil.upperCase(contentType),
 				BatchEngineTaskExecuteStatus.INITIAL.name(),
 				_toMap(fieldNameMappingString), batchEngineTaskOperation.name(),
 				ParametersUtil.toParameters(contextUriInfo, _ignoredParameters),
@@ -277,6 +390,9 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 	@Reference
 	private File _file;
 
+	@Context
+	private HttpHeaders _httpHeaders;
+
 	private final Map<String, Integer> _itemClassBatchSizeMap = new HashMap<>();
 
 	@Reference
@@ -284,5 +400,8 @@ public class ImportTaskResourceImpl extends BaseImportTaskResourceImpl {
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
+
+	@Context
+	private Providers _providers;
 
 }
