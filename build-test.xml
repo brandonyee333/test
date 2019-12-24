@@ -11720,6 +11720,22 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 			</then>
 		</if>
 
+		<get-testcase-property property.name="portal.memory.sharepoint2013" />
+
+		<if>
+			<and>
+				<equals arg1="${app.server.type}" arg2="tomcat" />
+				<equals arg1="${portal.memory.sharepoint2013}" arg2="true" />
+			</and>
+			<then>
+				<replace
+					file="${app.server.tomcat.dir}/bin/setenv${file.suffix.bat}"
+					token="-Xmx2560m"
+					value="-Xmx5120m"
+				/>
+			</then>
+		</if>
+
 		<get-testcase-property property.name="web.xml.timeout" />
 
 		<if>
