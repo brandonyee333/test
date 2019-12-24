@@ -42,6 +42,7 @@ import com.liferay.portal.util.PortalClassPathUtil;
 import com.liferay.portal.util.PropsUtil;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import java.net.MalformedURLException;
@@ -270,7 +271,12 @@ public class PACLTestRule implements TestRule {
 
 		Method method = _testClass.getMethod(description.getMethodName());
 
-		method.invoke(_instance);
+		try {
+			method.invoke(_instance);
+		}
+		catch (InvocationTargetException ite) {
+			throw ite.getCause();
+		}
 	}
 
 	private static Class<?> _loadTestClass(Class<?> clazz)
