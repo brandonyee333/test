@@ -1407,9 +1407,14 @@
 				config.dialog = dialogConfig;
 			}
 
-			var eventHandles = [Liferay.once(config.eventName, callback)];
+			var eventHandles = [];
 
+			if (callback) {
+				eventHandles.push(Liferay.once(config.eventName, callback));
+			}
 			var detachSelectionOnHideFn = function(event) {
+				Liferay.fire(config.eventName);
+
 				if (!event.newVal) {
 					(new A.EventHandle(eventHandles)).detach();
 				}
