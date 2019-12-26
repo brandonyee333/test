@@ -870,7 +870,6 @@ information.
 						<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
 						<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
 						<arg value="-Dliferay.home=${liferay.home}" />
-						<arg if:set="env.JENKINS_HOME" value="-Dliferay.ssl.context.enabled=${gradle.ci.liferay.ssl.context.enabled}" />
 						<arg if:set="env.JENKINS_HOME" value="-Dorg.gradle.internal.http.connectionTimeout=${gradle.ci.http.connection.timeout}" />
 						<arg if:set="env.JENKINS_HOME" value="-Dorg.gradle.internal.http.socketTimeout=${gradle.ci.http.socket.timeout}" />
 						<arg value="tasks" />
@@ -981,7 +980,6 @@ information.
 								<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
 								<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
 								<arg value="-Dliferay.home=${liferay.home}" />
-								<arg if:set="env.JENKINS_HOME" value="-Dliferay.ssl.context.enabled=${gradle.ci.liferay.ssl.context.enabled}" />
 								<arg if:set="env.JENKINS_HOME" value="-Dorg.gradle.internal.http.connectionTimeout=${gradle.ci.http.connection.timeout}" />
 								<arg if:set="env.JENKINS_HOME" value="-Dorg.gradle.internal.http.socketTimeout=${gradle.ci.http.socket.timeout}" />
 								<arg line="@{task}" />
@@ -1016,7 +1014,6 @@ information.
 									<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
 									<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
 									<arg value="-Dliferay.home=${liferay.home}" />
-									<arg if:set="env.JENKINS_HOME" value="-Dliferay.ssl.context.enabled=${gradle.ci.liferay.ssl.context.enabled}" />
 									<arg if:set="env.JENKINS_HOME" value="-Dorg.gradle.internal.http.connectionTimeout=${gradle.ci.http.connection.timeout}" />
 									<arg if:set="env.JENKINS_HOME" value="-Dorg.gradle.internal.http.socketTimeout=${gradle.ci.http.socket.timeout}" />
 									<arg if:set="env.JENKINS_HOME" value="-Dpatcher.hotfix.dirs=${build.patcher.hotfix.dirs}" />
