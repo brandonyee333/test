@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.exception.NoSuchRegionException;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PhoneNumberException;
 import com.liferay.portal.kernel.exception.PhoneNumberExtensionException;
+import com.liferay.portal.kernel.exception.RequiredRoleException;
 import com.liferay.portal.kernel.exception.RequiredUserException;
 import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserFieldException;
@@ -58,9 +59,11 @@ import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.PasswordPolicy;
 import com.liferay.portal.kernel.model.Phone;
+import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.Website;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.DynamicActionRequest;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -73,6 +76,7 @@ import com.liferay.portal.kernel.security.ldap.LDAPSettingsUtil;
 import com.liferay.portal.kernel.security.membershippolicy.MembershipPolicyException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.ListTypeLocalService;
+import com.liferay.portal.kernel.service.RoleService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextFactory;
 import com.liferay.portal.kernel.service.UserLocalService;
@@ -81,6 +85,7 @@ import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.FileUtil;
@@ -392,7 +397,9 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 			String mvcPath = "/edit_user.jsp";
 
 			if (e instanceof NoSuchUserException ||
-				e instanceof PrincipalException) {
+				e instanceof PrincipalException ||
+				e instanceof
+					RequiredRoleException.MustNotRemoveLastAdministator) {
 
 				SessionErrors.add(actionRequest, e.getClass());
 
@@ -547,6 +554,11 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	@Reference(unbind = "-")
+	protected void setRoleService(RoleService roleService) {
+		_roleService = roleService;
+	}
+
+	@Reference(unbind = "-")
 	protected void setUserLocalService(UserLocalService userLocalService) {
 		this.userLocalService = userLocalService;
 	}
@@ -676,7 +688,10 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 		long[] groupIds = UsersAdminUtil.getGroupIds(actionRequest);
 		long[] organizationIds = UsersAdminUtil.getOrganizationIds(
 			actionRequest);
+
 		long[] roleIds = UsersAdminUtil.getRoleIds(actionRequest);
+
+		_validate(user, roleIds);
 
 		List<UserGroupRole> userGroupRoles = null;
 
@@ -829,6 +844,31 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 
 	protected UserLocalService userLocalService;
 
+	private void _validate(User user, long[] roleIds) throws Exception {
+
+		// This is a unique case where we should throw an exception in the
+		// portlet action. The service implementation already guards against
+		// removing the last administrator, but it does so by quietly readding
+		// the administrator role to the roleIds array. We're already safe in
+		// regards to data integrity. However, the goal is to provide the user
+		// feedback as to why the administrator role was not removed. Putting
+		// this check in UserServiceImpl is useless because UsersAdmin readds
+		// the role.
+
+		Role administratorRole = _roleService.getRole(
+			user.getCompanyId(), RoleConstants.ADMINISTRATOR);
+
+		long[] administratorUserIds = _userService.getRoleUserIds(
+			administratorRole.getRoleId());
+
+		if ((administratorUserIds.length == 1) &&
+			ArrayUtil.contains(administratorUserIds, user.getUserId()) &&
+			!ArrayUtil.contains(roleIds, administratorRole.getRoleId())) {
+
+			throw new RequiredRoleException.MustNotRemoveLastAdministator();
+		}
+	}
+
 	private ActionRequest _wrapActionRequest(ActionRequest actionRequest)
 		throws Exception {
 
@@ -852,6 +892,7 @@ public class EditUserMVCActionCommand extends BaseMVCActionCommand {
 		_announcementsDeliveryLocalService;
 	private DLAppLocalService _dlAppLocalService;
 	private ListTypeLocalService _listTypeLocalService;
+	private RoleService _roleService;
 	private UserService _userService;
 
 }
