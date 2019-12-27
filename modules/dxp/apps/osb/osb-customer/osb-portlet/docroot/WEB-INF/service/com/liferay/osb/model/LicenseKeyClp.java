@@ -1429,25 +1429,6 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 	}
 
 	@Override
-	public AccountEntry getAccountEntry() {
-		try {
-			String methodName = "getAccountEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			AccountEntry returnObj = (AccountEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
 	public LicenseEntry getLicenseEntry() {
 		try {
 			String methodName = "getLicenseEntry";
@@ -1476,44 +1457,6 @@ public class LicenseKeyClp extends BaseModelImpl<LicenseKey>
 			Object[] parameterValues = new Object[] {  };
 
 			LicenseKeySet returnObj = (LicenseKeySet)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public OfferingEntry getOfferingEntry() {
-		try {
-			String methodName = "getOfferingEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			OfferingEntry returnObj = (OfferingEntry)invokeOnRemoteModel(methodName,
-					parameterTypes, parameterValues);
-
-			return returnObj;
-		}
-		catch (Exception e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	@Override
-	public OrderEntry getOrderEntry() {
-		try {
-			String methodName = "getOrderEntry";
-
-			Class<?>[] parameterTypes = new Class<?>[] {  };
-
-			Object[] parameterValues = new Object[] {  };
-
-			OrderEntry returnObj = (OrderEntry)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);
 
 			return returnObj;

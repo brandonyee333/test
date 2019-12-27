@@ -16,8 +16,6 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.model.CorpProject;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.service.BaseLocalService;
@@ -47,11 +45,6 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	 *
 	 * Never modify or reference this interface directly. Always use {@link RemoteCorpProjectLocalServiceUtil} to access the remote corp project local service. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public CorpProject addCorpProject(java.lang.String dossieraAccountKey,
-		java.lang.String dossieraProjectKey,
-		java.lang.String salesforceProjectKey, java.lang.String name)
-		throws PortalException;
-
 	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
@@ -63,22 +56,4 @@ public interface RemoteCorpProjectLocalService extends BaseLocalService,
 	* @return the OSGi service identifier
 	*/
 	public java.lang.String getOSGiServiceIdentifier();
-
-	public void addCorpProjectUsers(java.lang.String corpProjectUuid,
-		long[] userIds) throws PortalException;
-
-	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
-		throws PortalException;
-
-	public void addUserCorpProjectRoles(java.lang.String corpProjectUuid,
-		long[] userIds, long roleId) throws PortalException;
-
-	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
-		long roleId) throws PortalException;
-
-	public void deleteCorpProject(java.lang.String corpProjectUuid)
-		throws PortalException;
-
-	public void updateCorpProject(long corpProjectId, java.lang.String name)
-		throws PortalException;
 }

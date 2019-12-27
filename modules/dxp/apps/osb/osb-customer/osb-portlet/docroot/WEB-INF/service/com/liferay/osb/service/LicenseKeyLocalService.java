@@ -16,11 +16,7 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseKey;
-import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.ProductEntry;
 
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -80,16 +76,6 @@ public interface LicenseKeyLocalService extends BaseLocalService,
 	*/
 	@Indexable(type = IndexableType.REINDEX)
 	public LicenseKey addLicenseKey(LicenseKey licenseKey);
-
-	public LicenseKey addLicenseKey(long userId, LicenseKeySet licenseKeySet,
-		java.lang.String name, OfferingEntry offeringEntry,
-		LicenseEntry licenseEntry, ProductEntry productEntry,
-		int productVersion, long clusterId, java.lang.String owner,
-		int maxServers, int maxHttpSessions, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		Date startDate, Date expirationDate, java.lang.String additionalInfo,
-		boolean complimentary, boolean active) throws PortalException;
 
 	public LicenseKey addLicenseKey(long userId,
 		java.lang.String assetReceiptLicenseUuid,

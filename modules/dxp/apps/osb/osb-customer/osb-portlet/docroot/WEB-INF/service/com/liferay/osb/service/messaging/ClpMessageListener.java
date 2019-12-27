@@ -16,20 +16,7 @@ package com.liferay.osb.service.messaging;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountCustomerServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.AccountInformationLocalServiceUtil;
-import com.liferay.osb.service.AccountInformationServiceUtil;
-import com.liferay.osb.service.AccountProjectLocalServiceUtil;
-import com.liferay.osb.service.AccountProjectServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerServiceUtil;
 import com.liferay.osb.service.ClpSerializer;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
-import com.liferay.osb.service.CorpProjectMessageLocalServiceUtil;
-import com.liferay.osb.service.CorpProjectMessageServiceUtil;
-import com.liferay.osb.service.CorpProjectServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
@@ -38,26 +25,9 @@ import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
-import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
-import com.liferay.osb.service.OfferingBundleServiceUtil;
-import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
-import com.liferay.osb.service.OfferingDefinitionServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryServiceUtil;
-import com.liferay.osb.service.OrderEntryLocalServiceUtil;
-import com.liferay.osb.service.OrderEntryServiceUtil;
-import com.liferay.osb.service.PartnerEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerEntryServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerServiceUtil;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.service.ProductEntryServiceUtil;
 import com.liferay.osb.service.RemoteCorpEntryLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
-import com.liferay.osb.service.RemoteCorpProjectMessageLocalServiceUtil;
 import com.liferay.osb.service.RemoteUserLocalServiceUtil;
-import com.liferay.osb.service.SupportResponseLocalServiceUtil;
-import com.liferay.osb.service.SupportResponseServiceUtil;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
@@ -79,26 +49,6 @@ public class ClpMessageListener extends BaseMessageListener {
 
 		if (command.equals("undeploy") &&
 				servletContextName.equals(getServletContextName())) {
-			AccountCustomerLocalServiceUtil.clearService();
-
-			AccountCustomerServiceUtil.clearService();
-			AccountEntryLocalServiceUtil.clearService();
-
-			AccountInformationLocalServiceUtil.clearService();
-
-			AccountInformationServiceUtil.clearService();
-			AccountProjectLocalServiceUtil.clearService();
-
-			AccountProjectServiceUtil.clearService();
-			AccountWorkerLocalServiceUtil.clearService();
-
-			AccountWorkerServiceUtil.clearService();
-			CorpProjectLocalServiceUtil.clearService();
-
-			CorpProjectServiceUtil.clearService();
-			CorpProjectMessageLocalServiceUtil.clearService();
-
-			CorpProjectMessageServiceUtil.clearService();
 			LCSSubscriptionEntryLocalServiceUtil.clearService();
 
 			LCSSubscriptionEntryServiceUtil.clearService();
@@ -111,38 +61,11 @@ public class ClpMessageListener extends BaseMessageListener {
 			LicenseKeySetLocalServiceUtil.clearService();
 
 			LicenseKeySetServiceUtil.clearService();
-			OfferingBundleLocalServiceUtil.clearService();
-
-			OfferingBundleServiceUtil.clearService();
-			OfferingDefinitionLocalServiceUtil.clearService();
-
-			OfferingDefinitionServiceUtil.clearService();
-			OfferingEntryLocalServiceUtil.clearService();
-
-			OfferingEntryServiceUtil.clearService();
-			OrderEntryLocalServiceUtil.clearService();
-
-			OrderEntryServiceUtil.clearService();
-			PartnerEntryLocalServiceUtil.clearService();
-
-			PartnerEntryServiceUtil.clearService();
-			PartnerWorkerLocalServiceUtil.clearService();
-
-			PartnerWorkerServiceUtil.clearService();
-			ProductEntryLocalServiceUtil.clearService();
-
-			ProductEntryServiceUtil.clearService();
 			RemoteCorpEntryLocalServiceUtil.clearService();
 
 			RemoteCorpProjectLocalServiceUtil.clearService();
 
-			RemoteCorpProjectMessageLocalServiceUtil.clearService();
-
 			RemoteUserLocalServiceUtil.clearService();
-
-			SupportResponseLocalServiceUtil.clearService();
-
-			SupportResponseServiceUtil.clearService();
 		}
 	}
 }

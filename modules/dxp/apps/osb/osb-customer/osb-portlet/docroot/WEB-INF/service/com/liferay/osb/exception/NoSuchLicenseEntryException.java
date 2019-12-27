@@ -14,11 +14,14 @@
 
 package com.liferay.osb.exception;
 
+import aQute.bnd.annotation.ProviderType;
+
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public class NoSuchLicenseEntryException extends NoSuchModelException {
 
 	public NoSuchLicenseEntryException() {

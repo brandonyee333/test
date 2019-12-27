@@ -35,16 +35,6 @@ public class RemoteCorpProjectLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.osb.model.CorpProject addCorpProject(
-		java.lang.String dossieraAccountKey,
-		java.lang.String dossieraProjectKey,
-		java.lang.String salesforceProjectKey, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _remoteCorpProjectLocalService.addCorpProject(dossieraAccountKey,
-			dossieraProjectKey, salesforceProjectKey, name);
-	}
-
-	@Override
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -60,48 +50,6 @@ public class RemoteCorpProjectLocalServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _remoteCorpProjectLocalService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public void addCorpProjectUsers(java.lang.String corpProjectUuid,
-		long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.addCorpProjectUsers(corpProjectUuid,
-			userIds);
-	}
-
-	@Override
-	public void addCorpProjectUsers(long corpProjectId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.addCorpProjectUsers(corpProjectId,
-			userIds);
-	}
-
-	@Override
-	public void addUserCorpProjectRoles(java.lang.String corpProjectUuid,
-		long[] userIds, long roleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.addUserCorpProjectRoles(corpProjectUuid,
-			userIds, roleId);
-	}
-
-	@Override
-	public void addUserCorpProjectRoles(long corpProjectId, long[] userIds,
-		long roleId) throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.addUserCorpProjectRoles(corpProjectId,
-			userIds, roleId);
-	}
-
-	@Override
-	public void deleteCorpProject(java.lang.String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.deleteCorpProject(corpProjectUuid);
-	}
-
-	@Override
-	public void updateCorpProject(long corpProjectId, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		_remoteCorpProjectLocalService.updateCorpProject(corpProjectId, name);
 	}
 
 	@Override

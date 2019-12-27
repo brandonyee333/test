@@ -41,16 +41,6 @@ public class RemoteCorpProjectLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to {@link com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl} and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static com.liferay.osb.model.CorpProject addCorpProject(
-		java.lang.String dossieraAccountKey,
-		java.lang.String dossieraProjectKey,
-		java.lang.String salesforceProjectKey, java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService()
-				   .addCorpProject(dossieraAccountKey, dossieraProjectKey,
-			salesforceProjectKey, name);
-	}
-
 	public static java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable {
@@ -64,40 +54,6 @@ public class RemoteCorpProjectLocalServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static void addCorpProjectUsers(java.lang.String corpProjectUuid,
-		long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addCorpProjectUsers(corpProjectUuid, userIds);
-	}
-
-	public static void addCorpProjectUsers(long corpProjectId, long[] userIds)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addCorpProjectUsers(corpProjectId, userIds);
-	}
-
-	public static void addUserCorpProjectRoles(
-		java.lang.String corpProjectUuid, long[] userIds, long roleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addUserCorpProjectRoles(corpProjectUuid, userIds, roleId);
-	}
-
-	public static void addUserCorpProjectRoles(long corpProjectId,
-		long[] userIds, long roleId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().addUserCorpProjectRoles(corpProjectId, userIds, roleId);
-	}
-
-	public static void deleteCorpProject(java.lang.String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().deleteCorpProject(corpProjectUuid);
-	}
-
-	public static void updateCorpProject(long corpProjectId,
-		java.lang.String name)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		getService().updateCorpProject(corpProjectId, name);
 	}
 
 	public static void clearService() {

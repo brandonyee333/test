@@ -56,27 +56,6 @@ public class LicenseKeyLocalServiceWrapper implements LicenseKeyLocalService,
 
 	@Override
 	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
-		com.liferay.osb.model.LicenseKeySet licenseKeySet,
-		java.lang.String name,
-		com.liferay.osb.model.OfferingEntry offeringEntry,
-		com.liferay.osb.model.LicenseEntry licenseEntry,
-		com.liferay.osb.model.ProductEntry productEntry, int productVersion,
-		long clusterId, java.lang.String owner, int maxServers,
-		int maxHttpSessions, java.lang.String description,
-		java.lang.String[] hostNames, java.lang.String[] ipAddresses,
-		java.lang.String[] macAddresses, java.lang.String[] serverIds,
-		java.util.Date startDate, java.util.Date expirationDate,
-		java.lang.String additionalInfo, boolean complimentary, boolean active)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _licenseKeyLocalService.addLicenseKey(userId, licenseKeySet,
-			name, offeringEntry, licenseEntry, productEntry, productVersion,
-			clusterId, owner, maxServers, maxHttpSessions, description,
-			hostNames, ipAddresses, macAddresses, serverIds, startDate,
-			expirationDate, additionalInfo, complimentary, active);
-	}
-
-	@Override
-	public com.liferay.osb.model.LicenseKey addLicenseKey(long userId,
 		java.lang.String assetReceiptLicenseUuid,
 		java.lang.String licenseEntryType, java.lang.String productEntryName,
 		java.lang.String productId, int productVersion, java.lang.String owner,
