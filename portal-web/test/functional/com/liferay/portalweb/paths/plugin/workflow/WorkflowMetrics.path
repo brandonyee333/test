@@ -44,6 +44,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FILTER_CLEAR_ALL</td>
+	<td>//span[contains(text(),'Clear All')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>METRICS_ALL_ITEMS_TABLE_INSTANCE</td>
 	<td>//td[contains(@data-testid,'assetInfoCell') and contains(text(),'${key_instanceInfo}')]</td>
 	<td></td>

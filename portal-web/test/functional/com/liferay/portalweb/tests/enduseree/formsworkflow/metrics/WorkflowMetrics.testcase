@@ -145,6 +145,56 @@ definition {
 			isPresent = "INST_WEEK,INST_MONTH");
 	}
 
+	@description = "LRQA-53638 Automate LPS-100677: [Performance] Search for a step in all steps performance list"
+	@priority = "5"
+	test SearchOnPerformanceByStepPage {
+		property test.name.skip.portal.instance = "WorkflowMetrics#SearchForStepsOnPerformancePage";
+
+		WorkflowMetrics.createUsersAndAssignInstances();
+
+		WorkflowMetrics.executeWorkflowScript(scriptName = "CompleteTasksAssignedToUsers.groovy");
+
+		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
+
+		Click(locator1 = "WorkflowMetrics#METRICS_PERFORMANCE_TAB");
+
+		Click(
+			key_stepsNumber = "2",
+			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_CARD_VIEW_ALL_STEPS");
+
+		WorkflowMetricsPerformanceByStep.searchForStep(stepName = "review");
+
+		WorkflowMetricsPerformanceByStep.viewPerformanceByStepAfterSearch(
+			stepName = "Review",
+			slaBreachedValue = "0 (0%)",
+			avgCompletionTimeValue = "1min",
+			isNotPresent = "Update"
+		);
+
+		WorkflowMetricsPerformanceByStep.searchForStep(stepName = "update");
+		
+		WorkflowMetricsPerformanceByStep.viewPerformanceByStepAfterSearch(
+			stepName = "Update",
+			slaBreachedValue = "0 (0%)",
+			avgCompletionTimeValue = "0min",
+			isNotPresent = "Review"
+		);
+
+		WorkflowMetricsPerformanceByStep.searchForStep(stepName = "nothing");
+
+		AssertElementPresent(locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_NO_RESULTS_FOUND");
+
+		Click(locator1 = "WorkflowMetrics#FILTER_CLEAR_ALL");
+
+		AssertElementPresent(
+			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME",
+			key_stepName = "Review");
+
+		AssertElementPresent(
+			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME",
+			key_stepName = "Update");
+	}
+
 	@description = "Verify that the filters from All Items page are correctly loaded when accessed via Metrics Pending/Completed cards"
 	@priority = "5"
 	test VerifyAllItemsFilterFromMetrics {
