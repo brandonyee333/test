@@ -15,8 +15,7 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.service.AccountEntryServiceUtil;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.osb.customer.admin.service.AccountEntryService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -51,16 +50,10 @@ public class EditAccountEntryInstructionsMVCActionCommand
 		String instructions = ParamUtil.getString(
 			actionRequest, "instructions");
 
-		AccountEntryServiceUtil.updateInstructions(
-			accountEntryId, instructions);
+		_accountEntryService.updateInstructions(accountEntryId, instructions);
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private AccountEntryService _accountEntryService;
 
 }

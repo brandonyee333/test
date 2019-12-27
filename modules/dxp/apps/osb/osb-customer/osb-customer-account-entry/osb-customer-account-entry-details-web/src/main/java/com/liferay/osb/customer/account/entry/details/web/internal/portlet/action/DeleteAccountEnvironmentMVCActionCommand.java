@@ -15,8 +15,7 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.service.AccountEnvironmentServiceUtil;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -48,16 +47,11 @@ public class DeleteAccountEnvironmentMVCActionCommand
 		long accountEnvironmentId = ParamUtil.getLong(
 			actionRequest, "accountEnvironmentId");
 
-		AccountEnvironmentServiceUtil.deleteAccountEnvironment(
+		_accountEnvironmentService.deleteAccountEnvironment(
 			accountEnvironmentId);
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private AccountEnvironmentService _accountEnvironmentService;
 
 }

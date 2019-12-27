@@ -18,7 +18,6 @@ import com.liferay.osb.customer.zendesk.model.listener.internal.constants.Zendes
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
 import java.util.Dictionary;
@@ -78,14 +77,6 @@ public class SynchronizeAccountEntryMessagingConfigurator {
 		DestinationFactory destinationFactory) {
 
 		_destinationFactory = destinationFactory;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	private volatile BundleContext _bundleContext;

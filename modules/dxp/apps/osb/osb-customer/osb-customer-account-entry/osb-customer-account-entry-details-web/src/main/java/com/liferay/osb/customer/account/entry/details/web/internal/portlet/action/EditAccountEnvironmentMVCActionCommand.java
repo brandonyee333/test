@@ -15,12 +15,11 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.exception.AccountEnvironmentAttachmentSizeException;
-import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
-import com.liferay.osb.service.AccountEnvironmentServiceUtil;
+import com.liferay.osb.customer.admin.constants.AccountEnvironmentAttachmentConstants;
+import com.liferay.osb.customer.admin.exception.AccountEnvironmentAttachmentSizeException;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentService;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -128,13 +127,13 @@ public class EditAccountEnvironmentMVCActionCommand
 			}
 
 			if (accountEnvironmentId > 0) {
-				AccountEnvironmentServiceUtil.updateAccountEnvironment(
+				_accountEnvironmentService.updateAccountEnvironment(
 					accountEnvironmentId, productEntryId, name, envOS,
 					envOSCustom, envDB, envJVM, envAS, envLFR, envCommerce,
 					envBrowser, envCS, envSearch, files, types);
 			}
 			else {
-				AccountEnvironmentServiceUtil.addAccountEnvironment(
+				_accountEnvironmentService.addAccountEnvironment(
 					accountEntryId, productEntryId, name, envOS, envOSCustom,
 					envDB, envJVM, envAS, envLFR, envCommerce, envBrowser,
 					envCS, envSearch, files, types);
@@ -157,16 +156,11 @@ public class EditAccountEnvironmentMVCActionCommand
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditAccountEnvironmentMVCActionCommand.class);
+
+	@Reference
+	private AccountEnvironmentService _accountEnvironmentService;
 
 	@Reference
 	private Portal _portal;

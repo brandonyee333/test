@@ -14,13 +14,12 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;
@@ -51,15 +50,15 @@ public class ZendeskUserCreateMessageProcessor extends BaseMessageProcessor {
 		long classNameId = classNameLocalService.getClassNameId(User.class);
 
 		User user = userLocalService.getUserByUuidAndCompanyId(
-			uuid, OSBConstants.COMPANY_ID);
+			uuid, OSBCustomerConstants.COMPANY_ID);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, user.getUserId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (externalIdMappers.isEmpty()) {
-			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+			_externalIdMapperLocalService.addExternalIdMapper(
 				classNameId, user.getUserId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskUserId);
 		}
@@ -67,7 +66,7 @@ public class ZendeskUserCreateMessageProcessor extends BaseMessageProcessor {
 			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
 			if (externalIdMapper.getExternalId() != zendeskUserId) {
-				ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(
+				_externalIdMapperLocalService.updateExternalIdMapper(
 					externalIdMapper.getExternalIdMapperId(), classNameId,
 					user.getUserId(), ExternalIdMapperConstants.TYPE_ZENDESK,
 					zendeskUserId);
@@ -75,12 +74,7 @@ public class ZendeskUserCreateMessageProcessor extends BaseMessageProcessor {
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 }

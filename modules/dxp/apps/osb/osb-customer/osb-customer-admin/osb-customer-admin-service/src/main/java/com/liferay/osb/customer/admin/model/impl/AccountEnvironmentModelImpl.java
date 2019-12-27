@@ -109,7 +109,7 @@ public class AccountEnvironmentModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_AccountEnvironment (accountEnvironmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,productEntryId LONG,name VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(75) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER,envCommerce INTEGER,envBrowser INTEGER,envCS INTEGER,envSearch VARCHAR(75) null)";
+		"create table OSB_AccountEnvironment (accountEnvironmentId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,accountEntryId LONG,productEntryId LONG,name VARCHAR(75) null,envOS INTEGER,envOSCustom VARCHAR(150) null,envDB INTEGER,envJVM INTEGER,envAS INTEGER,envLFR INTEGER,envCommerce INTEGER,envBrowser INTEGER,envCS INTEGER,envSearch VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSB_AccountEnvironment";

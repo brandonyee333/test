@@ -19,10 +19,10 @@ import com.liferay.asset.kernel.model.AssetCategoryConstants;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.service.JournalArticleService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayWebKeys;
 import com.liferay.osb.customer.downloads.display.web.internal.util.DownloadsAssetCategoryUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -106,7 +106,7 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 		if (Validator.isNotNull(urlTitle)) {
 			JournalArticle journalArticle =
 				_journalArticleService.getArticleByUrlTitle(
-					OSBConstants.GROUP_CUSTOMER_ID, urlTitle);
+					OSBCustomerConstants.GROUP_CUSTOMER_ID, urlTitle);
 
 			renderRequest.setAttribute(
 				DownloadsDisplayWebKeys.JOURNAL_ARTICLE, journalArticle);

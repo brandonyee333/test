@@ -113,7 +113,7 @@ public class AuditEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_AuditEntry (auditEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,classNameId LONG,classPK LONG,previousAuditEntryId LONG,auditSetId LONG,fieldClassNameId LONG,fieldClassPK LONG,action INTEGER,field INTEGER,visibility INTEGER,oldLabel VARCHAR(75) null,oldValue VARCHAR(75) null,newLabel VARCHAR(75) null,newValue VARCHAR(75) null,description VARCHAR(75) null,i18n BOOLEAN)";
+		"create table OSB_AuditEntry (auditEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,classNameId LONG,classPK LONG,previousAuditEntryId LONG,auditSetId LONG,fieldClassNameId LONG,fieldClassPK LONG,action INTEGER,field INTEGER,visibility INTEGER,oldLabel VARCHAR(255) null,oldValue STRING null,newLabel VARCHAR(255) null,newValue STRING null,description STRING null,i18n BOOLEAN)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_AuditEntry";
 

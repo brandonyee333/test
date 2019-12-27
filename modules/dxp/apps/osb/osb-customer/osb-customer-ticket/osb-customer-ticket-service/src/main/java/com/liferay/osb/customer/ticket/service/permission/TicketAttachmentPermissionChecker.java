@@ -14,16 +14,8 @@
 
 package com.liferay.osb.customer.ticket.service.permission;
 
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -55,14 +47,16 @@ public class TicketAttachmentPermissionChecker {
 
 		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
-				OSBConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
 			_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
-				OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
 		}
 
+		/*
+		TODO
 		AccountCustomer accountCustomer =
 			AccountCustomerLocalServiceUtil.fetchAccountCustomer(
 				permissionChecker.getUserId(), accountEntryId);
@@ -89,16 +83,9 @@ public class TicketAttachmentPermissionChecker {
 				return true;
 			}
 		}
+		*/
 
 		return false;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference(unbind = "-")

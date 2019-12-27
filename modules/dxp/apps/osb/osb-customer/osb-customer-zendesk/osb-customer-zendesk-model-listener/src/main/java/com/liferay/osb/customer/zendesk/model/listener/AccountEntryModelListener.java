@@ -14,13 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.model.listener;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -28,9 +27,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
-import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -46,11 +43,15 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
+			/*
+			TODO
+
 			if (!accountEntry.isActiveSupport()) {
 				return;
 			}
 
 			_accountEntrySynchronizer.update(accountEntry);
+			*/
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -65,6 +66,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		try {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
+
+			/*
+			TODO
 
 			if ((!_zendeskOrganization.get() &&
 				 !accountEntry.isActiveSupport()) ||
@@ -121,6 +125,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 						accountEntry);
 				}
 			}
+			*/
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -149,7 +154,7 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 		try {
 			AccountEntry oldAccountEntry =
-				AccountEntryLocalServiceUtil.getAccountEntry(
+				_accountEntryLocalService.getAccountEntry(
 					accountEntry.getAccountEntryId());
 
 			_oldAccountEntry.set(oldAccountEntry);
@@ -166,11 +171,11 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 	protected boolean hasZendeskOrganization(AccountEntry accountEntry)
 		throws PortalException {
 
-		long classNameId = ClassNameLocalServiceUtil.getClassNameId(
+		long classNameId = _classNameLocalService.getClassNameId(
 			AccountEntry.class);
 
 		boolean externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+			_externalIdMapperLocalService.hasExternalIdMappers(
 				classNameId, accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
@@ -183,6 +188,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 	protected boolean isUpdateAccountEntry(
 		AccountEntry oldAccountEntry, AccountEntry accountEntry) {
+
+		/*
+			TODO
 
 		if (!DateUtil.equals(
 				oldAccountEntry.getLastZendeskAuditDate(),
@@ -209,16 +217,9 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 			return true;
 		}
+		*/
 
 		return false;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -232,6 +233,15 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 			AccountEntryModelListener.class + "._zendeskOrganization");
 
 	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
 	private AccountEntrySynchronizer _accountEntrySynchronizer;
+
+	@Reference
+	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 }

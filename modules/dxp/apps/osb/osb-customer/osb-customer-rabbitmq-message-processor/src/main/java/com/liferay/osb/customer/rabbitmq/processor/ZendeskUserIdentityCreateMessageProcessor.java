@@ -14,14 +14,13 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.zendesk.util.PhoneUtil;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.List;
 
@@ -59,7 +58,7 @@ public class ZendeskUserIdentityCreateMessageProcessor
 		long classPK = 0;
 
 		List<ExternalIdMapper> userExternalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameLocalService.getClassNameId(User.class),
 				ExternalIdMapperConstants.TYPE_ZENDESK, userId);
 
@@ -76,11 +75,11 @@ public class ZendeskUserIdentityCreateMessageProcessor
 		}
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (externalIdMappers.isEmpty()) {
-			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+			_externalIdMapperLocalService.addExternalIdMapper(
 				classNameId, classPK, ExternalIdMapperConstants.TYPE_ZENDESK,
 				id);
 		}
@@ -88,20 +87,15 @@ public class ZendeskUserIdentityCreateMessageProcessor
 			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
 			if (externalIdMapper.getExternalId() != id) {
-				ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(
+				_externalIdMapperLocalService.updateExternalIdMapper(
 					externalIdMapper.getExternalIdMapperId(), classNameId,
 					classPK, ExternalIdMapperConstants.TYPE_ZENDESK, id);
 			}
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
 	private PhoneUtil _phoneUtil;

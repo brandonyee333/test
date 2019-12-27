@@ -14,19 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.UserLocalService;
-
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -34,6 +22,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = AccountCustomerSynchronizer.class)
 public class AccountCustomerSynchronizer {
 
+	/*
+	TODO
 	public void add(AccountCustomer accountCustomer) throws PortalException {
 		User user = _userLocalService.getUser(accountCustomer.getUserId());
 
@@ -86,14 +76,6 @@ public class AccountCustomerSynchronizer {
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	@Reference
 	private UserLocalService _userLocalService;
 
@@ -112,5 +94,7 @@ public class AccountCustomerSynchronizer {
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserWebService _zendeskUserWebService;
+
+	*/
 
 }

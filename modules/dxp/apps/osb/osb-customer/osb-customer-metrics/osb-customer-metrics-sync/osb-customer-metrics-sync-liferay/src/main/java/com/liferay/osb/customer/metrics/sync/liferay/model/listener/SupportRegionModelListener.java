@@ -14,13 +14,11 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.model.listener;
 
+import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.model.SupportRegion;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -28,13 +26,4 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ModelListener.class)
 public class SupportRegionModelListener
 	extends BaseMetricsModelListener<SupportRegion> {
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 }

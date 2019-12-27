@@ -15,10 +15,9 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.model.AccountEnvironmentAttachment;
-import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentAttachmentServiceUtil;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalService;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentService;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
@@ -53,13 +52,13 @@ public class AccountEnvironmentAttachmentMVCResourceCommand
 			resourceRequest, "accountEnvironmentAttachmentId");
 
 		AccountEnvironmentAttachment accountEnvironmentAttachment =
-			AccountEnvironmentAttachmentServiceUtil.
+			_accountEnvironmentAttachmentService.
 				getAccountEnvironmentAttachment(accountEnvironmentAttachmentId);
 
 		PortletResponseUtil.sendFile(
 			resourceRequest, resourceResponse,
 			accountEnvironmentAttachment.getFileName(),
-			AccountEnvironmentAttachmentLocalServiceUtil.getFileAsStream(
+			_accountEnvironmentAttachmentLocalService.getFileAsStream(
 				accountEnvironmentAttachment),
 			accountEnvironmentAttachment.getContentLength(),
 			MimeTypesUtil.getContentType(
@@ -67,12 +66,12 @@ public class AccountEnvironmentAttachmentMVCResourceCommand
 			HttpHeaders.CONTENT_DISPOSITION_ATTACHMENT);
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private AccountEnvironmentAttachmentLocalService
+		_accountEnvironmentAttachmentLocalService;
+
+	@Reference
+	private AccountEnvironmentAttachmentService
+		_accountEnvironmentAttachmentService;
 
 }

@@ -108,7 +108,7 @@ public class AccountEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,name VARCHAR(75) null,code_ VARCHAR(75) null,instructions VARCHAR(75) null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER)";
+		"create table OSB_AccountEntry (accountEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedUserId LONG,modifiedUserName VARCHAR(75) null,modifiedDate DATE null,koroneikiAccountKey VARCHAR(75) null,dossieraAccountKey VARCHAR(75) null,name VARCHAR(500) null,code_ VARCHAR(75) null,instructions STRING null,activeSupport BOOLEAN,activeTicketSupport BOOLEAN,lastZendeskAuditDate DATE null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_AccountEntry";
 

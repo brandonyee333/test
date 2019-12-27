@@ -15,26 +15,16 @@
 package com.liferay.osb.customer.metrics.sync.liferay.model.listener;
 
 import com.liferay.osb.customer.metrics.impl.model.BaseMetricsModelListener;
-import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
  */
 @Component(immediate = true, service = ModelListener.class)
-public class LicenseKeySetModelListener
-	extends BaseMetricsModelListener<LicenseKeySet> {
+public class LicenseKeySetModelListener extends BaseMetricsModelListener {
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	//TODO
 
 }

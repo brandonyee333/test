@@ -18,15 +18,8 @@ import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -96,6 +89,8 @@ public class AcceptAgreementMVCActionCommand extends BaseMVCActionCommand {
 	protected String getCompanies(long userId) throws PortalException {
 		List<String> companies = new ArrayList<>();
 
+		/*
+		TODO
 		List<AccountCustomer> accountCustomers =
 			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
 
@@ -115,6 +110,7 @@ public class AcceptAgreementMVCActionCommand extends BaseMVCActionCommand {
 				companies.add(partnerEntry.getCode());
 			}
 		}
+		*/
 
 		return StringUtil.merge(companies, StringPool.SLASH);
 	}
@@ -135,14 +131,6 @@ public class AcceptAgreementMVCActionCommand extends BaseMVCActionCommand {
 			companyId, User.class.getName(),
 			ExpandoTableConstants.DEFAULT_TABLE_NAME, expandoColumnName, userId,
 			agreementData);
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference

@@ -14,16 +14,9 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -35,6 +28,8 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountUpdateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		/*
+		TODO
 		CorpProject corpProject =
 			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
 				jsonObject.getString("key"));
@@ -73,14 +68,7 @@ public class AccountUpdateMessageProcessor extends BaseMessageProcessor {
 			corpProject.getCorpProjectId(), dossieraProjectKey,
 			salesforceProjectKey, jsonObject.getString("name"),
 			new ServiceContext());
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+		*/
 	}
 
 }

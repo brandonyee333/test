@@ -14,24 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.ArrayUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -39,6 +22,8 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = PartnerWorkerSynchronizer.class)
 public class PartnerWorkerSynchronizer {
 
+	/*
+	TODO
 	public void add(long accountEntryId, PartnerWorker partnerWorker)
 		throws PortalException {
 
@@ -169,14 +154,6 @@ public class PartnerWorkerSynchronizer {
 			zendeskUserId, zendeskOrganizationIds);
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	protected long update(PartnerWorker partnerWorker) throws PortalException {
 		User user = _userLocalService.getUser(partnerWorker.getUserId());
 
@@ -198,5 +175,6 @@ public class PartnerWorkerSynchronizer {
 	@Reference(target = "(async=true)")
 	private ZendeskOrganizationMembershipWebService
 		_zendeskOrganizationMembershipWebService;
+	*/
 
 }

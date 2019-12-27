@@ -14,10 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.model.listener;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -62,7 +62,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 			String className = phone.getClassName();
 
 			if (className.equals(Contact.class.getName()) &&
-				ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+				_externalIdMapperLocalService.hasExternalIdMappers(
 					_classNameLocalService.getClassNameId(Phone.class),
 					phone.getPhoneId(),
 					ExternalIdMapperConstants.TYPE_ZENDESK)) {
@@ -71,7 +71,7 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 
 				_userSynchronizer.deletePhone(userId, phone);
 
-				ExternalIdMapperLocalServiceUtil.deleteExternalIdMappers(
+				_externalIdMapperLocalService.deleteExternalIdMappers(
 					_classNameLocalService.getClassNameId(Phone.class),
 					phone.getPhoneId());
 			}
@@ -115,6 +115,9 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 
 	@Reference
 	private ContactLocalService _contactLocalService;
+
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;

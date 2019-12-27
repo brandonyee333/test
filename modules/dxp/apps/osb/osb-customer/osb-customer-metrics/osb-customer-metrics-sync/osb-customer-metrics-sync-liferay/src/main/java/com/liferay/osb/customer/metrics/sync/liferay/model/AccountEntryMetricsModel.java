@@ -14,13 +14,11 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.model;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.SupportRegion;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,11 +41,14 @@ public class AccountEntryMetricsModel
 			_metricsTransformationUtil.transformSharedAttributes(
 				accountEntry.getModelAttributes());
 
+		/*
+		TODO
 		attributes.put("industry", accountEntry.getIndustryLabel());
 		attributes.put("status", accountEntry.getStatusLabel());
 		attributes.put(
 			"tier", AccountEntryConstants.getTierLabel(accountEntry.getTier()));
 		attributes.put("type", accountEntry.getTypeLabel());
+		*/
 
 		return attributes;
 	}
@@ -86,14 +87,6 @@ public class AccountEntryMetricsModel
 	@Override
 	public boolean hasMapping() {
 		return true;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	private static final String[] _MAPPING_TABLES = {"SupportRegion"};

@@ -14,7 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
+import com.liferay.osb.customer.admin.exception.RequiredAccountEntryException;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
+import com.liferay.osb.customer.admin.service.SupportRegionLocalService;
+import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
@@ -49,9 +53,6 @@ import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Country;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -73,6 +74,9 @@ public class AccountEntrySynchronizer {
 	public void addAccountCustomers(AccountEntry accountEntry)
 		throws PortalException {
 
+		/*
+		TODO
+
 		for (AccountCustomer accountCustomer :
 				accountEntry.getAccountCustomers()) {
 
@@ -83,11 +87,14 @@ public class AccountEntrySynchronizer {
 					accountCustomer);
 			}
 		}
+		*/
 	}
 
 	public void addPartnerManagedSupport(AccountEntry accountEntry)
 		throws PortalException {
 
+		/*
+		TODO
 		List<PartnerWorker> partnerWorkers =
 			PartnerWorkerLocalServiceUtil.getPartnerWorkers(
 				accountEntry.getPartnerEntryId());
@@ -96,6 +103,7 @@ public class AccountEntrySynchronizer {
 			_partnerWorkerSynchronizer.add(
 				accountEntry.getAccountEntryId(), partnerWorker);
 		}
+		*/
 	}
 
 	public void closeZendeskTickets(AccountEntry accountEntry)
@@ -138,6 +146,8 @@ public class AccountEntrySynchronizer {
 		}
 	}
 
+	/*
+	TODO
 	public void reassignTickets(AccountCustomer accountCustomer)
 		throws PortalException {
 
@@ -202,6 +212,7 @@ public class AccountEntrySynchronizer {
 			}
 		}
 	}
+	*/
 
 	public void reassignTickets(
 			PartnerWorker partnerWorker, long accountEntryId)
@@ -304,9 +315,13 @@ public class AccountEntrySynchronizer {
 
 		removeAccountCustomers(accountEntry);
 
+		/*
+		TODO
+
 		if (accountEntry.isPartnerManagedSupport()) {
 			removePartnerManagedSupport(accountEntry);
 		}
+		*/
 
 		_asyncZendeskOrganizationWebService.deleteZendeskOrganization(
 			zendeskOrganizationId);
@@ -315,16 +330,24 @@ public class AccountEntrySynchronizer {
 	public void removeAccountCustomers(AccountEntry accountEntry)
 		throws PortalException {
 
+		/*
+		TODO
+
 		for (AccountCustomer accountCustomer :
 				accountEntry.getAccountCustomers()) {
 
 			_accountCustomerSynchronizer.remove(accountCustomer);
 		}
+		*/
+	}
+
 	}
 
 	public void removePartnerManagedSupport(AccountEntry accountEntry)
 		throws PortalException {
 
+		/*
+		TODO
 		List<PartnerWorker> partnerWorkers =
 			PartnerWorkerLocalServiceUtil.getPartnerWorkers(
 				accountEntry.getPartnerEntryId());
@@ -333,14 +356,17 @@ public class AccountEntrySynchronizer {
 			_partnerWorkerSynchronizer.remove(
 				accountEntry.getAccountEntryId(), partnerWorker);
 		}
+		*/
 	}
 
 	public void update(AccountEntry accountEntry) throws PortalException {
+		/*
+		TODO
 		long classNameId = _classNameLocalService.getClassNameId(
 			AccountEntry.class);
 
 		boolean externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+			_externalIdMapperLocalService.hasExternalIdMappers(
 				classNameId, accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
@@ -379,7 +405,7 @@ public class AccountEntrySynchronizer {
 		long[] supportRegionIds = accountEntry.getSupportRegionIds();
 
 		SupportRegion supportRegion =
-			SupportRegionLocalServiceUtil.getSupportRegion(supportRegionIds[0]);
+			_supportRegionLocalService.getSupportRegion(supportRegionIds[0]);
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
 			accountEntry.getCode(), countryName,
@@ -400,6 +426,7 @@ public class AccountEntrySynchronizer {
 				ZendeskLocales.US, accountEntry.getCode(),
 				accountEntry.getName(), null);
 		}
+		*/
 	}
 
 	public void updateTags(AccountEntry accountEntry) throws PortalException {
@@ -419,6 +446,8 @@ public class AccountEntrySynchronizer {
 
 		Set<String> tags = new HashSet<>();
 
+		/*
+		TODO
 		List<OfferingEntry> offeringEntries = accountEntry.getOfferingEntries();
 
 		for (OfferingEntry offeringEntry : offeringEntries) {
@@ -435,7 +464,7 @@ public class AccountEntrySynchronizer {
 				ProductEntry.class);
 
 			List<ExternalIdMapper> externalIdMappers =
-				ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+				_externalIdMapperLocalService.getExternalIdMappers(
 					classNameId, productEntry.getProductEntryId(),
 					ExternalIdMapperConstants.TYPE_ZENDESK);
 
@@ -445,16 +474,9 @@ public class AccountEntrySynchronizer {
 				tags.add(externalIdMapper.getExternalId());
 			}
 		}
+		*/
 
 		return tags;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference
@@ -470,10 +492,16 @@ public class AccountEntrySynchronizer {
 	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
+
+	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
 
 	@Reference
 	private QueryFactory _queryFactory;
+
+	@Reference
+	private SupportRegionLocalService _supportRegionLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

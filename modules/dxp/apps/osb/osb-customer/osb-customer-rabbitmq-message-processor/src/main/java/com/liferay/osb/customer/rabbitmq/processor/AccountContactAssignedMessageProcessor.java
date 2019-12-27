@@ -14,14 +14,9 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -37,6 +32,8 @@ public class AccountContactAssignedMessageProcessor
 	protected void doProcess(JSONObject jsonObject) throws Exception {
 		JSONObject accountJSONObject = jsonObject.getJSONObject("account");
 
+		/*
+		TODO
 		CorpProject corpProject =
 			CorpProjectLocalServiceUtil.fetchCorpProjectByUuid(
 				accountJSONObject.getString("key"));
@@ -55,14 +52,7 @@ public class AccountContactAssignedMessageProcessor
 
 		userLocalService.addOrganizationUser(
 			corpProject.getOrganizationId(), user.getUserId());
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+		*/
 	}
 
 }

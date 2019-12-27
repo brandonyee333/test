@@ -14,6 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.util;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganization;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
@@ -21,16 +26,10 @@ import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebServic
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskUserException;
-import com.liferay.osb.exception.NoSuchAccountEntryException;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.ContactLocalService;
 import com.liferay.portal.kernel.service.PhoneLocalService;
@@ -56,7 +55,7 @@ public class ZendeskMapperUtil {
 			AccountEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, accountEntryId,
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
@@ -74,7 +73,7 @@ public class ZendeskMapperUtil {
 			return 0;
 		}
 
-		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+		_externalIdMapperLocalService.addExternalIdMapper(
 			classNameId, accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
 			String.valueOf(zendeskOrganization.getZendeskOrganizationId()));
 
@@ -85,7 +84,7 @@ public class ZendeskMapperUtil {
 		long classNameId = _classNameLocalService.getClassNameId(User.class);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (!externalIdMappers.isEmpty()) {
@@ -103,7 +102,7 @@ public class ZendeskMapperUtil {
 			return 0;
 		}
 
-		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+		_externalIdMapperLocalService.addExternalIdMapper(
 			classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK,
 			String.valueOf(zendeskUser.getZendeskUserId()));
 
@@ -116,7 +115,7 @@ public class ZendeskMapperUtil {
 		long classNameId = _classNameLocalService.getClassNameId(Phone.class);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, phoneId, ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (!externalIdMappers.isEmpty()) {
@@ -163,7 +162,7 @@ public class ZendeskMapperUtil {
 		}
 
 		if (zendeskUserIdentityId > 0) {
-			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+			_externalIdMapperLocalService.addExternalIdMapper(
 				classNameId, phoneId, ExternalIdMapperConstants.TYPE_ZENDESK,
 				String.valueOf(zendeskUserIdentityId));
 		}
@@ -178,7 +177,7 @@ public class ZendeskMapperUtil {
 			AccountEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, ExternalIdMapperConstants.TYPE_ZENDESK,
 				String.valueOf(zendeskOrganizationId));
 
@@ -195,7 +194,7 @@ public class ZendeskMapperUtil {
 		long classNameId = _classNameLocalService.getClassNameId(User.class);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (!externalIdMappers.isEmpty()) {
@@ -213,19 +212,11 @@ public class ZendeskMapperUtil {
 			throw new NoSuchZendeskUserException();
 		}
 
-		ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+		_externalIdMapperLocalService.addExternalIdMapper(
 			classNameId, userId, ExternalIdMapperConstants.TYPE_ZENDESK,
 			String.valueOf(zendeskUser.getZendeskUserId()));
 
 		return zendeskUser.getZendeskUserId();
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference
@@ -233,6 +224,9 @@ public class ZendeskMapperUtil {
 
 	@Reference
 	private ContactLocalService _contactLocalService;
+
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
 	private PhoneLocalService _phoneLocalService;

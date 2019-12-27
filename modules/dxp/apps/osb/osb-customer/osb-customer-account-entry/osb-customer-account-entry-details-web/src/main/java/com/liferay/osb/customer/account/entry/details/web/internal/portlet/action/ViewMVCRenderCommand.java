@@ -16,11 +16,10 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -76,7 +75,7 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 		}
 
 		List<AccountEntry> accountEntries =
-			AccountEntryLocalServiceUtil.getUserActiveAccountEntries(
+			_accountEntryLocalService.getUserActiveAccountEntries(
 				themeDisplay.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 		if (accountEntries.isEmpty()) {
@@ -90,12 +89,7 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 		return null;
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 }

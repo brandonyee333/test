@@ -16,21 +16,15 @@ package com.liferay.osb.customer.rabbitmq.processor;
 
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.ListTypeConstants;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.OrganizationConstants;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -42,6 +36,8 @@ import org.osgi.service.component.annotations.Reference;
 public class AccountCreateMessageProcessor extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		/*
+		TODO
 		String accountKey = jsonObject.getString("key");
 
 		CorpProject corpProject =
@@ -90,14 +86,7 @@ public class AccountCreateMessageProcessor extends BaseMessageProcessor {
 			OSBCustomerConstants.USER_DEFAULT_USER_ID, dossieraProjectKey,
 			salesforceProjectKey, name, organization.getOrganizationId(),
 			serviceContext);
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+		*/
 	}
 
 	private Organization _addOrganization(String name) throws PortalException {

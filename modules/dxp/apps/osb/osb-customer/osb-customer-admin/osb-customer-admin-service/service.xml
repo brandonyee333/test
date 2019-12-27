@@ -439,6 +439,7 @@
 		<exception>LicenseEntryPortalVersion</exception>
 		<exception>ProductEntryEnvironment</exception>
 		<exception>ProductEntryName</exception>
+		<exception>RequiredAccountEntry</exception>
 		<exception>RequiredProductEntry</exception>
 		<exception>RequiredSupportRegion</exception>
 		<exception>SupportRegionName</exception>

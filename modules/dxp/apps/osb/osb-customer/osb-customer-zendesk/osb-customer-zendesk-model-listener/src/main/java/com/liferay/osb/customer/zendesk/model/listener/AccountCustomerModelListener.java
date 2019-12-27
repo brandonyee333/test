@@ -14,20 +14,13 @@
 
 package com.liferay.osb.customer.zendesk.model.listener;
 
-import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
@@ -37,9 +30,10 @@ import org.osgi.service.component.annotations.Reference;
  * @author Kyle Bischof
  */
 @Component(immediate = true, service = ModelListener.class)
-public class AccountCustomerModelListener
-	extends BaseModelListener<AccountCustomer> {
+public class AccountCustomerModelListener extends BaseModelListener {
 
+	/*
+	TODO
 	@Override
 	public void onAfterCreate(AccountCustomer accountCustomer)
 		throws ModelListenerException {
@@ -134,17 +128,9 @@ public class AccountCustomerModelListener
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		AccountCustomerModelListener.class);
-
+	*/
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
 

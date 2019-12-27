@@ -14,22 +14,14 @@
 
 package com.liferay.osb.customer.provisioning.trial.internal.license;
 
-import com.liferay.osb.license.util.KeyGenerator;
-import com.liferay.osb.license.util.LicenseUtil;
-import com.liferay.osb.model.LicenseEntryConstants;
-import com.liferay.osb.model.LicenseKeyConstants;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.math.BigInteger;
 
 import java.text.Format;
-import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -115,6 +107,8 @@ public class TrialLicenseManager {
 	}
 
 	private String _generateLicenseXML(String day) throws Exception {
+		/*
+		TODO
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 
 		Date startDate = dateFormat.parse(day);
@@ -148,6 +142,9 @@ public class TrialLicenseManager {
 		String key = KeyGenerator.generate(properties);
 
 		return LicenseUtil.exportToXML(properties, key);
+		*/
+
+		return null;
 	}
 
 	private synchronized void _refreshDayHashes() {

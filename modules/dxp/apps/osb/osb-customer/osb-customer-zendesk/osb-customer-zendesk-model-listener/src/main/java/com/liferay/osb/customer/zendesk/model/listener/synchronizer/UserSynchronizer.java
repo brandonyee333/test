@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
 
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
@@ -24,14 +24,6 @@ import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountCustomerConstants;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
@@ -212,6 +204,10 @@ public class UserSynchronizer {
 
 		// Customer
 
+		/*
+		TODO
+		boolean customer = false;
+
 		List<AccountCustomer> accountCustomers =
 			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
 
@@ -292,7 +288,7 @@ public class UserSynchronizer {
 				break;
 			}
 		}
-
+		*/
 		return tags;
 	}
 
@@ -312,6 +308,9 @@ public class UserSynchronizer {
 
 		return false;
 	}
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskUserIdentityWebService _asyncZendeskUserIdentityWebService;

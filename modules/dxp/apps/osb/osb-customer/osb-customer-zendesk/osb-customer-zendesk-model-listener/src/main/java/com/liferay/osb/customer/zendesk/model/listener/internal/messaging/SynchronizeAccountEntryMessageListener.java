@@ -14,6 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
@@ -25,29 +29,17 @@ import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchron
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -67,15 +59,15 @@ public class SynchronizeAccountEntryMessageListener
 	protected void doReceive(Message message) throws Exception {
 		long accountEntryId = (Long)message.get("accountEntryId");
 
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
 
 		if ((!hasZendeskOrganization(accountEntry) &&
 			 !accountEntry.isActiveSupport()) ||
 			(accountEntry.getAccountEntryId() ==
-				OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
+				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
-			AccountEntryLocalServiceUtil.updateLastZendeskAuditDate(
+			_accountEntryLocalService.updateLastZendeskAuditDate(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
 				StringPool.BLANK, StringPool.BLANK);
 
@@ -88,7 +80,7 @@ public class SynchronizeAccountEntryMessageListener
 		catch (Exception e) {
 			_log.error(e, e);
 
-			AccountEntryLocalServiceUtil.updateLastZendeskAuditDate(
+			_accountEntryLocalService.updateLastZendeskAuditDate(
 				OSBCustomerConstants.USER_DEFAULT_USER_ID, accountEntryId,
 				StringPool.BLANK, StringPool.BLANK);
 		}
@@ -121,7 +113,7 @@ public class SynchronizeAccountEntryMessageListener
 			AccountEntry.class);
 
 		boolean externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.hasExternalIdMappers(
+			_externalIdMapperLocalService.hasExternalIdMappers(
 				classNameId, accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
@@ -132,19 +124,13 @@ public class SynchronizeAccountEntryMessageListener
 		return false;
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
-
 	protected void synchronize(AccountEntry accountEntry)
 		throws PortalException {
 
 		_accountEntrySynchronizer.update(accountEntry);
 
+		/*
+		TODO
 		Map<Long, AccountCustomer> accountCustomerMap = new HashMap<>();
 
 		for (AccountCustomer accountCustomer :
@@ -211,10 +197,11 @@ public class SynchronizeAccountEntryMessageListener
 			_partnerWorkerSynchronizer.add(partnerWorker);
 		}
 
-		AccountEntryLocalServiceUtil.updateLastZendeskAuditDate(
+		_accountEntryLocalService.updateLastZendeskAuditDate(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), "Synced project to Zendesk.",
 			StringPool.BLANK);
+		*/
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -222,6 +209,9 @@ public class SynchronizeAccountEntryMessageListener
 
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private AccountEntrySynchronizer _accountEntrySynchronizer;
@@ -232,6 +222,9 @@ public class SynchronizeAccountEntryMessageListener
 
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;

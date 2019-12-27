@@ -14,11 +14,10 @@
 
 package com.liferay.osb.customer.metrics.sync.liferay.model;
 
+import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.metrics.impl.model.BaseModelMetricsModel;
 import com.liferay.osb.customer.metrics.model.MetricsModel;
 import com.liferay.osb.customer.metrics.sync.liferay.model.util.MetricsTransformationUtil;
-import com.liferay.osb.model.SupportRegion;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.Map;
 
@@ -41,14 +40,6 @@ public class SupportRegionMetricsModel
 	@Override
 	public Class getModelClass() {
 		return SupportRegion.class;
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
 	}
 
 	@Reference

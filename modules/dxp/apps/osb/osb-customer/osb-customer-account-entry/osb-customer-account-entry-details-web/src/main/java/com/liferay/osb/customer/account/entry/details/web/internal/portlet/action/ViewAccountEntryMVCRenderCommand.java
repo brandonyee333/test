@@ -16,9 +16,8 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryServiceUtil;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryService;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -53,7 +52,7 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 		long accountEntryId = ParamUtil.getLong(
 			renderRequest, "accountEntryId");
 
-		AccountEntry accountEntry = AccountEntryServiceUtil.getAccountEntry(
+		AccountEntry accountEntry = _accountEntryService.getAccountEntry(
 			accountEntryId);
 
 		renderRequest.setAttribute(
@@ -68,12 +67,7 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 		return "/account_entry_details/customer/view_account_entry.jsp";
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private AccountEntryService _accountEntryService;
 
 }

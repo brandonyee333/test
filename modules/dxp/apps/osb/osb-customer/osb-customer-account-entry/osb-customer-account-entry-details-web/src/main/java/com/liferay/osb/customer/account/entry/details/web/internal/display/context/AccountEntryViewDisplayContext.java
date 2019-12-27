@@ -16,25 +16,23 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.util.AccountEntryDetailsRequestHelper;
+import com.liferay.osb.customer.admin.constants.AccountEnvironmentAttachmentConstants;
+import com.liferay.osb.customer.admin.constants.AccountEnvironmentConstants;
+import com.liferay.osb.customer.admin.constants.ProductEntryConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.AccountEnvironment;
+import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
+import com.liferay.osb.customer.admin.model.ProductEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryServiceUtil;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
+import com.liferay.osb.customer.admin.service.permission.AccountEnvironmentPermission;
+import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.AccountEnvironment;
-import com.liferay.osb.model.AccountEnvironmentAttachment;
-import com.liferay.osb.model.AccountEnvironmentAttachmentConstants;
-import com.liferay.osb.model.AccountEnvironmentConstants;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.service.AccountEntryServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentAttachmentLocalServiceUtil;
-import com.liferay.osb.service.AccountEnvironmentLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.ProductEntryLocalServiceUtil;
-import com.liferay.osb.service.permission.OSBAccountEntryPermission;
-import com.liferay.osb.service.permission.OSBAccountEnvironmentPermission;
-import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -101,11 +99,11 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public String getAccountEntryInstructionsEditURL() throws PortalException {
-		if (!OSBAccountEntryPermission.contains(
+		if (!AccountEntryPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
 				_accountEntry.getAccountEntryId(),
 				OSBActionKeys.UPDATE_ACCOUNT_INFO) &&
-			!OSBAccountEntryPermission.contains(
+			!AccountEntryPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
 				_accountEntry.getAccountEntryId(),
 				OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS)) {
@@ -245,6 +243,9 @@ public class AccountEntryViewDisplayContext {
 		Set<ListType> envCommerceVersions = new HashSet<>();
 		Set<ListType> envLFRVersions = new HashSet<>();
 
+		/*
+		TODO
+
 		for (OfferingEntry offeringEntry : _accountEntry.getOfferingEntries()) {
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
@@ -267,6 +268,7 @@ public class AccountEntryViewDisplayContext {
 					getCurrentVersionsListTypes(productEntry));
 			}
 		}
+		*/
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -305,6 +307,9 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public boolean isPartnerManagedSupportWorker() {
+		/*
+		TODO
+
 		if (!_accountEntry.isPartnerManagedSupport()) {
 			return false;
 		}
@@ -314,6 +319,7 @@ public class AccountEntryViewDisplayContext {
 
 			return true;
 		}
+		*/
 
 		return false;
 	}
@@ -417,7 +423,7 @@ public class AccountEntryViewDisplayContext {
 			"accountEnvironmentId",
 			accountEnvironment.getAccountEnvironmentId());
 
-		if (OSBAccountEnvironmentPermission.contains(
+		if (AccountEnvironmentPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
 				_accountEntry.getAccountEntryId(), OSBActionKeys.DELETE)) {
 
@@ -426,7 +432,7 @@ public class AccountEntryViewDisplayContext {
 				getAccountEnvironmentDeleteURL(accountEnvironment));
 		}
 
-		if (OSBAccountEnvironmentPermission.contains(
+		if (AccountEnvironmentPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
 				_accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE)) {
 
@@ -643,11 +649,14 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("displayName", productEntry.getDisplayName());
 
 		if (productEntry.isCommerce() || productEntry.isDigitalEnterprise()) {
+			/*
+			TODO
 			boolean enterpriseSearch =
 				_accountEntry.hasEnterpriseSearchOffering(
 					productEntry.getEnvironment());
 
 			jsonObject.put("enterpriseSearch", enterpriseSearch);
+			*/
 		}
 
 		jsonObject.put("productEntryId", productEntry.getProductEntryId());

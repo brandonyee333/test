@@ -14,12 +14,11 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.List;
 
@@ -47,12 +46,12 @@ public class ZendeskOrganizationCreateMessageProcessor
 			AccountEntry.class);
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, accountEntryId,
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (externalIdMappers.isEmpty()) {
-			ExternalIdMapperLocalServiceUtil.addExternalIdMapper(
+			_externalIdMapperLocalService.addExternalIdMapper(
 				classNameId, accountEntryId,
 				ExternalIdMapperConstants.TYPE_ZENDESK, zendeskOrganizationId);
 		}
@@ -60,7 +59,7 @@ public class ZendeskOrganizationCreateMessageProcessor
 			ExternalIdMapper externalIdMapper = externalIdMappers.get(0);
 
 			if (externalIdMapper.getExternalId() != zendeskOrganizationId) {
-				ExternalIdMapperLocalServiceUtil.updateExternalIdMapper(
+				_externalIdMapperLocalService.updateExternalIdMapper(
 					externalIdMapper.getExternalIdMapperId(), classNameId,
 					accountEntryId, ExternalIdMapperConstants.TYPE_ZENDESK,
 					zendeskOrganizationId);
@@ -68,12 +67,7 @@ public class ZendeskOrganizationCreateMessageProcessor
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 }

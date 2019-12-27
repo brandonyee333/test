@@ -16,14 +16,14 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.ticket.constants.TicketActionKeys;
 import com.liferay.osb.customer.ticket.service.permission.TicketEntryPermissionChecker;
 import com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -72,14 +72,17 @@ public class AddTicketAttachmentMVCRenderCommand extends BaseMVCRenderCommand {
 			themeDisplay.getPermissionChecker(), accountEntryId,
 			TicketActionKeys.ADD_TICKET_ATTACHMENT);
 
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
 
 		renderRequest.setAttribute(
 			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
 
 		return "/account_entry_details/add_ticket_attachment.jsp";
 	}
+
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;

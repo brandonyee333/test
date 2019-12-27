@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<suppressions>
-	<source-check>
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/downloads/display/web/internal/portlet/action/AcceptAgreementMVCActionCommand.java" />
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/downloads/display/web/internal/portlet/action/VerifyAgreementMVCResourceCommand.java" />
-	</source-check>
-</suppressions>

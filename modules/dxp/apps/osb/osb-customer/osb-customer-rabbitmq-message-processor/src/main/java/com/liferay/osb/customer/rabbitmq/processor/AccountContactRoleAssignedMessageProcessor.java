@@ -14,16 +14,9 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.CorpProjectLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.model.Group;
-import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -37,6 +30,8 @@ public class AccountContactRoleAssignedMessageProcessor
 	extends BaseMessageProcessor {
 
 	protected void doProcess(JSONObject jsonObject) throws Exception {
+		/*
+		TODO
 		JSONObject accountJSONObject = jsonObject.getJSONObject("account");
 
 		CorpProject corpProject =
@@ -69,14 +64,7 @@ public class AccountContactRoleAssignedMessageProcessor
 		userGroupRoleLocalService.addUserGroupRoles(
 			user.getUserId(), group.getGroupId(),
 			new long[] {role.getRoleId()});
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+		*/
 	}
 
 }

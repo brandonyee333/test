@@ -14,12 +14,11 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.osb.model.ExternalIdMapper;
-import com.liferay.osb.model.ExternalIdMapperConstants;
-import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.ExternalIdMapper;
+import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 
 import java.util.List;
 
@@ -43,22 +42,17 @@ public class ZendeskUserDeleteMessageProcessor extends BaseMessageProcessor {
 		String zendeskUserId = userJSONObject.getString("id");
 
 		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
+			_externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, ExternalIdMapperConstants.TYPE_ZENDESK,
 				zendeskUserId);
 
 		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-			ExternalIdMapperLocalServiceUtil.deleteExternalIdMapper(
+			_externalIdMapperLocalService.deleteExternalIdMapper(
 				externalIdMapper.getExternalIdMapperId());
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 }

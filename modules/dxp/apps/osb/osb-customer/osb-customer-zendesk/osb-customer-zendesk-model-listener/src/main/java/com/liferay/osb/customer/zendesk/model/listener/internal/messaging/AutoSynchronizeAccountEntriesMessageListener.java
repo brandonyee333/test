@@ -14,16 +14,15 @@
 
 package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.admin.util.comparator.AccountEntryLastZendeskAuditDateComparator;
 import com.liferay.osb.customer.zendesk.model.listener.configuration.ZendeskModelListenerConfigurationValues;
 import com.liferay.osb.customer.zendesk.model.listener.internal.constants.ZendeskDestinationNames;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.util.comparator.AccountEntryLastZendeskAuditDateComparator;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.scheduler.SchedulerEngineHelper;
 import com.liferay.portal.kernel.scheduler.SchedulerEntry;
 import com.liferay.portal.kernel.scheduler.SchedulerEntryImpl;
@@ -89,7 +88,7 @@ public class AutoSynchronizeAccountEntriesMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(
+		List<AccountEntry> accountEntries = _accountEntryLocalService.search(
 			null, null, 0,
 			ZendeskModelListenerConfigurationValues.
 				ZENDESK_ACCOUNT_ENTRY_SYNC_BATCH,
@@ -106,13 +105,8 @@ public class AutoSynchronizeAccountEntriesMessageListener
 		}
 	}
 
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
-	}
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
 	private SchedulerEngineHelper _schedulerEngineHelper;

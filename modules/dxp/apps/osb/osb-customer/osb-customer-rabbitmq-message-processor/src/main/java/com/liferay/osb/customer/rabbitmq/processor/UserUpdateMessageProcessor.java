@@ -14,22 +14,14 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.RemoteUserLocalServiceUtil;
-import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Phone;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.PhoneLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,6 +45,8 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 			return;
 		}
 
+		/*
+		TODO
 		User remoteUser = RemoteUserLocalServiceUtil.translate(jsonObject);
 
 		Contact contact = user.getContact();
@@ -86,26 +80,8 @@ public class UserUpdateMessageProcessor extends BaseMessageProcessor {
 		if (remoteUser.getStatus() != user.getStatus()) {
 			userLocalService.updateStatus(
 				user.getUserId(), remoteUser.getStatus(), new ServiceContext());
-
-			if (remoteUser.getStatus() == WorkflowConstants.STATUS_INACTIVE) {
-				AccountCustomerLocalServiceUtil.deleteAccountCustomers(
-					user.getUserId());
-
-				AccountWorkerLocalServiceUtil.deleteAccountWorkers(
-					user.getUserId());
-
-				PartnerWorkerLocalServiceUtil.deletePartnerWorkers(
-					user.getUserId());
-			}
 		}
-	}
-
-	@Reference(
-		target = "(module.service.lifecycle=osb.portlet.initialized)",
-		unbind = "-"
-	)
-	protected void setModuleServiceLifecycle(
-		ModuleServiceLifecycle moduleServiceLifecycle) {
+		*/
 	}
 
 	protected void updateUserPhones(long contactId, User user, User remoteUser)

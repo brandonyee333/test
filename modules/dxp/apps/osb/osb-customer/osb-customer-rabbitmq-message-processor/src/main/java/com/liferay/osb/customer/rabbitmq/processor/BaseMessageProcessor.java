@@ -14,10 +14,8 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
-import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
@@ -103,6 +101,8 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	}
 
 	protected User addWebUser(JSONObject jsonObject) throws PortalException {
+		/*
+		TODO
 		User remoteUser = RemoteUserLocalServiceUtil.translate(jsonObject);
 
 		Company company = companyLocalService.getCompany(
@@ -132,6 +132,9 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		expandoBridge.setAttributes(remoteExpandoBridge.getAttributes(), false);
 
 		return user;
+		*/
+
+		return null;
 	}
 
 	protected abstract void doProcess(JSONObject jsonObject) throws Exception;
