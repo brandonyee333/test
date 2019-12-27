@@ -1,0 +1,5 @@
+Bundle-Name: Liferay OSB Customer Downloads Proxy Web
+Bundle-SymbolicName: com.liferay.osb.customer.downloads.proxy.web
+Bundle-Version: 1.0.0
+Liferay-Releng-Module-Group-Title: Customer
+-includeresource: content=src/main/resources/content

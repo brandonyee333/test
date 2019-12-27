@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.util;
+package com.liferay.osb.customer.downloads.proxy.web.internal.util;
 
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoValueLocalServiceUtil;

@@ -3,7 +3,6 @@
 
 <display>
 	<category name="category.osb">
-		<portlet id="3" />
 		<portlet id="4" />
 		<portlet id="38" />
 	</category>

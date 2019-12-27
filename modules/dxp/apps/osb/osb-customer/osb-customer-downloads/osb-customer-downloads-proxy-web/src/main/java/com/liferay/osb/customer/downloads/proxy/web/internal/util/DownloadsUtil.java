@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.downloads.util;
+package com.liferay.osb.customer.downloads.proxy.web.internal.util;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;

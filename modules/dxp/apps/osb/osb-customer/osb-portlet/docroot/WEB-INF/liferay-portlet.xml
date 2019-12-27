@@ -3,15 +3,6 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>3</portlet-name>
-		<configuration-action-class>com.liferay.osb.downloads.action.ConfigurationActionImpl</configuration-action-class>
-		<preferences-company-wide>true</preferences-company-wide>
-		<preferences-unique-per-layout>false</preferences-unique-per-layout>
-		<header-portlet-css>/css/main.css</header-portlet-css>
-		<css-class-wrapper>osb-portlet-downloads</css-class-wrapper>
-		<add-default-resource>true</add-default-resource>
-	</portlet>
-	<portlet>
 		<portlet-name>4</portlet-name>
 		<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
 		<friendly-url-mapping>license</friendly-url-mapping>

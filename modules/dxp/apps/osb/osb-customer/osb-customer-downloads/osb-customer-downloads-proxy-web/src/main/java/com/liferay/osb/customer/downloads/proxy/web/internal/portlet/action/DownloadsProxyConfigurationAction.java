@@ -12,9 +12,11 @@
  *
  */
 
-package com.liferay.osb.downloads.action;
+package com.liferay.osb.customer.downloads.proxy.web.internal.portlet.action;
 
+import com.liferay.osb.customer.downloads.proxy.web.internal.constants.DownloadsProxyPortletKeys;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.portlet.ConfigurationAction;
 import com.liferay.portal.kernel.portlet.DefaultConfigurationAction;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -28,14 +30,22 @@ import javax.portlet.PortletPreferences;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.osgi.service.component.annotations.Component;
+
 /**
  * @author Amos Fong
  */
-public class ConfigurationActionImpl extends DefaultConfigurationAction {
+@Component(
+	immediate = true,
+	property = "javax.portlet.name=" + DownloadsProxyPortletKeys.DOWNLOADS_PROXY,
+	service = ConfigurationAction.class
+)
+public class DownloadsProxyConfigurationAction
+	extends DefaultConfigurationAction {
 
 	@Override
 	public String getJspPath(HttpServletRequest request) {
-		return "/downloads/configuration.jsp";
+		return "/configuration.jsp";
 	}
 
 	@Override

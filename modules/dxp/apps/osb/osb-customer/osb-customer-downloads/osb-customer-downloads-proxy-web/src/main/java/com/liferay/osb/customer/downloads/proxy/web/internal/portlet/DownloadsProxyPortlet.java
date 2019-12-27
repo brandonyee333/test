@@ -12,13 +12,12 @@
  *
  */
 
-package com.liferay.osb.downloads.portlet;
+package com.liferay.osb.customer.downloads.proxy.web.internal.portlet;
 
-import com.liferay.osb.downloads.util.DownloadsUtil;
-import com.liferay.osb.util.AgreementUtil;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.downloads.proxy.web.internal.constants.DownloadsProxyPortletKeys;
+import com.liferay.osb.customer.downloads.proxy.web.internal.util.AgreementUtil;
+import com.liferay.osb.customer.downloads.proxy.web.internal.util.DownloadsUtil;
 import com.liferay.portal.kernel.audit.AuditMessage;
 import com.liferay.portal.kernel.audit.AuditRouterUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -27,21 +26,21 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Digester;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.FileUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
@@ -50,14 +49,33 @@ import java.util.regex.Pattern;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.Portlet;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
-public class DownloadsPortlet extends MVCPortlet {
+@Component(
+	property = {
+		"com.liferay.portlet.css-class-wrapper=osb-downloads-proxy-portlet",
+		"com.liferay.portlet.display-category=category.osb",
+		"com.liferay.portlet.preferences-company-wide=true",
+		"javax.portlet.display-name=OSB Downloads Proxy",
+		"javax.portlet.expiration-cache=0",
+		"javax.portlet.init-param.mvc-command-names-default-views=/view",
+		"javax.portlet.init-param.template-path=/META-INF/resources/",
+		"javax.portlet.name=" + DownloadsProxyPortletKeys.DOWNLOADS_PROXY,
+		"javax.portlet.resource-bundle=content.Language",
+		"javax.portlet.security-role-ref=administrator,guest,power-user,user"
+	},
+	service = Portlet.class
+)
+public class DownloadsProxyPortlet extends MVCPortlet {
 
 	@Override
 	public void processAction(
@@ -72,7 +90,7 @@ public class DownloadsPortlet extends MVCPortlet {
 
 		String url = _URL_PREFIX + fileName;
 
-		String key = HttpUtil.URLtoString(url, true);
+		String key = _http.URLtoString(url, true);
 
 		url = _URL_PREFIX + StringPool.SLASH + key;
 
@@ -91,7 +109,9 @@ public class DownloadsPortlet extends MVCPortlet {
 		ThemeDisplay themeDisplay, PortletPreferences preferences,
 		String fileName) {
 
-		if (themeDisplay.getScopeGroupId() == OSBConstants.GROUP_CUSTOMER_ID) {
+		if (themeDisplay.getScopeGroupId() ==
+				OSBCustomerConstants.GROUP_CUSTOMER_ID) {
+
 			return true;
 		}
 
@@ -117,15 +137,15 @@ public class DownloadsPortlet extends MVCPortlet {
 			return false;
 		}
 
-		if (OrganizationLocalServiceUtil.hasUserOrganization(
+		if (_organizationLocalService.hasUserOrganization(
 				themeDisplay.getUserId(),
-				OSBConstants.ORGANIZATION_CUSTOMER_DXP_ID) ||
-			OrganizationLocalServiceUtil.hasUserOrganization(
+				OSBCustomerConstants.ORGANIZATION_CUSTOMER_DXP_ID) ||
+			_organizationLocalService.hasUserOrganization(
 				themeDisplay.getUserId(),
-				OSBConstants.ORGANIZATION_LIFERAY_INC_ID) ||
-			OrganizationLocalServiceUtil.hasUserOrganization(
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID) ||
+			_organizationLocalService.hasUserOrganization(
 				themeDisplay.getUserId(),
-				OSBConstants.ORGANIZATION_PARTNER_ID)) {
+				OSBCustomerConstants.ORGANIZATION_PARTNER_ID)) {
 
 			return true;
 		}
@@ -189,7 +209,7 @@ public class DownloadsPortlet extends MVCPortlet {
 		sb.append(liferayVersion);
 		sb.append("/public-components.txt");
 
-		String key = HttpUtil.URLtoString(sb.toString(), true);
+		String key = _http.URLtoString(sb.toString(), true);
 
 		String[] publicComponents = DownloadsUtil.getPublicComponents(
 			_URL_PREFIX + StringPool.SLASH + key, liferayVersion);
@@ -295,12 +315,12 @@ public class DownloadsPortlet extends MVCPortlet {
 		try {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-			jsonObject.put(
-				"layoutURL", PortalUtil.getLayoutFullURL(themeDisplay));
+			jsonObject.put("layoutURL", _portal.getLayoutFullURL(themeDisplay));
 
 			AuditMessage auditMessage = new AuditMessage(
-				ActionKeys.VIEW, OSBConstants.COMPANY_ID, user.getUserId(),
-				user.getFullName(), DownloadsPortlet.class.getName(),
+				ActionKeys.VIEW, OSBCustomerConstants.COMPANY_ID,
+				user.getUserId(), user.getFullName(),
+				"com.liferay.osb.downloads.portlet.DownloadsPortlet",
 				"fileName", fileName, null, jsonObject);
 
 			AuditRouterUtil.route(auditMessage);
@@ -317,7 +337,7 @@ public class DownloadsPortlet extends MVCPortlet {
 	private static final String _URL_PREFIX = "https://downloads.liferay.com";
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DownloadsPortlet.class);
+		DownloadsProxyPortlet.class);
 
 	private static Pattern _customerAccessPattern;
 	private static String _customerAccessPatternString;
@@ -325,5 +345,14 @@ public class DownloadsPortlet extends MVCPortlet {
 	private static String _guestAccessPatternString;
 	private static Pattern _trialPattern;
 	private static String _trialPatternString;
+
+	@Reference
+	private Http _http;
+
+	@Reference
+	private OrganizationLocalService _organizationLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }
