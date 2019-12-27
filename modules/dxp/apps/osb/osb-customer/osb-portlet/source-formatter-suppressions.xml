@@ -1,13 +1,8 @@
 <?xml version="1.0"?>
 
 <suppressions>
-	<checkstyle>
-		<suppress checks="ListUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/UpgradeProcess_5_0_4\.java" />
-		<suppress checks="ListUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/UpgradeProcess_5_1_1\.java" />
-	</checkstyle>
 	<source-check>
 		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/admin/servlet/AdminServletContextListener\.java" />
-		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/service/impl/AccountCustomerLocalServiceImpl\.java" />
 		<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/service/impl/OSBUserServiceImpl\.java" />
 		<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/remote/koroneiki/KoroneikiRESTWebServiceImpl\.java" />
 		<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/remote/web/WebRESTWebServiceImpl\.java" />

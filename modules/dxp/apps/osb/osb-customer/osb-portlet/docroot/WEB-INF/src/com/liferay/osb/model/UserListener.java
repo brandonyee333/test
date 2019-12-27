@@ -14,10 +14,6 @@
 
 package com.liferay.osb.model;
 
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -26,10 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-
-import java.util.List;
 
 /**
  * @author Amos Fong
@@ -60,6 +53,9 @@ public class UserListener extends BaseModelListener<User> {
 
 	@Override
 	public void onAfterRemove(User user) {
+		/*
+		TODO
+
 		try {
 			AccountCustomerLocalServiceUtil.deleteAccountCustomers(
 				user.getUserId());
@@ -83,30 +79,29 @@ public class UserListener extends BaseModelListener<User> {
 		catch (Exception e) {
 			_log.error(e, e);
 		}
+		*/
 	}
 
 	protected void assignOrganizations(long userId) throws PortalException {
+		/*
+		TODO
 		List<AccountCustomer> accountCustomers =
 			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
 
 		if (!accountCustomers.isEmpty()) {
 			boolean customerAccount = false;
 
-			/*
-				TODO
+			for (AccountCustomer accountCustomer : accountCustomers) {
+				AccountEntry accountEntry = accountCustomer.getAccountEntry();
 
-						for (AccountCustomer accountCustomer : accountCustomers) {
-							AccountEntry accountEntry = accountCustomer.getAccountEntry();
+				if (accountEntry.getType() !=
+						AccountEntryConstants.TYPE_TRIAL) {
 
-							if (accountEntry.getType() !=
-									AccountEntryConstants.TYPE_TRIAL) {
+					customerAccount = true;
 
-								customerAccount = true;
-
-								break;
-							}
-						}
-			*/
+					break;
+				}
+			}
 
 			if (customerAccount &&
 				!OrganizationLocalServiceUtil.hasUserOrganization(
@@ -127,6 +122,7 @@ public class UserListener extends BaseModelListener<User> {
 			RemoteUserLocalServiceUtil.addOrganizationUsers(
 				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
 		}
+		*/
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(UserListener.class);

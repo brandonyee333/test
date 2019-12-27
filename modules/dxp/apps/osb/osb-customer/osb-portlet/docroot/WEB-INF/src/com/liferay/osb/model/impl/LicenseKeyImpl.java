@@ -14,17 +14,11 @@
 
 package com.liferay.osb.model.impl;
 
-import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
-import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
-import com.liferay.osb.service.OrderEntryLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.Time;
 
 import java.util.Date;
 
@@ -46,20 +40,16 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 			return false;
 		}
 
+		/*
+		TODO
 		OfferingEntry offeringEntry = getOfferingEntry();
 
 		if ((offeringEntry.getLicenseLifetime() / Time.DAY) > 365) {
 			return false;
 		}
+		*/
 
 		return true;
-	}
-
-	public AccountEntry getAccountEntry() {
-
-		// TODO
-
-		return null;
 	}
 
 	public LicenseEntry getLicenseEntry() throws PortalException {
@@ -70,15 +60,6 @@ public class LicenseKeyImpl extends LicenseKeyBaseImpl {
 	public LicenseKeySet getLicenseKeySet() throws PortalException {
 		return LicenseKeySetLocalServiceUtil.getLicenseKeySet(
 			getLicenseKeySetId());
-	}
-
-	public OfferingEntry getOfferingEntry() throws PortalException {
-		return OfferingEntryLocalServiceUtil.getOfferingEntry(
-			getOfferingEntryId());
-	}
-
-	public OrderEntry getOrderEntry() throws PortalException {
-		return OrderEntryLocalServiceUtil.getOrderEntry(getOrderEntryId());
 	}
 
 	public boolean isExpired() {

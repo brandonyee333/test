@@ -14,10 +14,7 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.model.impl.CorpProjectImpl;
 import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
-import com.liferay.portal.kernel.exception.PortalException;
 
 /**
  * @author Amos Fong
@@ -25,13 +22,14 @@ import com.liferay.portal.kernel.exception.PortalException;
 public class RemoteCorpProjectLocalServiceImpl
 	extends RemoteCorpProjectLocalServiceBaseImpl {
 
+	/*
+	TODO
 	@Override
 	public CorpProject addCorpProject(
 			String dossieraAccountKey, String dossieraProjectKey,
 			String salesforceProjectKey, String name)
 		throws PortalException {
 
-		/*
 		String parentAccountKey = StringPool.BLANK;
 
 		if (Validator.isNotNull(dossieraAccountKey)) {
@@ -61,11 +59,10 @@ public class RemoteCorpProjectLocalServiceImpl
 			KoroneikiRESTWebServiceUtil.postAccountExternalLinks(
 				accountKey, "salesforce", "project", salesforceProjectKey);
 		}
-		*/
 
 		CorpProject corpProject = new CorpProjectImpl();
 
-		//corpProject.setUuid(accountKey);
+		corpProject.setUuid(accountKey);
 
 		return corpProject;
 	}
@@ -84,8 +81,6 @@ public class RemoteCorpProjectLocalServiceImpl
 	public void addCorpProjectUsers(String corpProjectUuid, long[] userIds)
 		throws PortalException {
 
-		/*
-
 		for (long userId : userIds) {
 			User user = userLocalService.getUser(userId);
 
@@ -102,7 +97,6 @@ public class RemoteCorpProjectLocalServiceImpl
 			KoroneikiRESTWebServiceUtil.putAccountContacts(
 				corpProjectUuid, new String[] {user.getUuid()});
 		}
-		*/
 	}
 
 	@Override
@@ -121,7 +115,6 @@ public class RemoteCorpProjectLocalServiceImpl
 			String corpProjectUuid, long[] userIds, long roleId)
 		throws PortalException {
 
-		/*
 		Role role = roleLocalService.getRole(roleId);
 
 		for (long userId : userIds) {
@@ -130,26 +123,26 @@ public class RemoteCorpProjectLocalServiceImpl
 			KoroneikiRESTWebServiceUtil.putAccountContactRoles(
 				corpProjectUuid, user.getUuid(), new String[] {role.getUuid()});
 		}
-		*/
 	}
 
 	@Override
 	public void deleteCorpProject(String corpProjectUuid)
 		throws PortalException {
 
-		//KoroneikiRESTWebServiceUtil.deleteAccounts(corpProjectUuid);
+		KoroneikiRESTWebServiceUtil.deleteAccounts(corpProjectUuid);
 	}
 
 	@Override
 	public void updateCorpProject(long corpProjectId, String name)
 		throws PortalException {
 
-		/*
 		CorpProject corpProject = corpProjectLocalService.getCorpProject(
 			corpProjectId);
 
 		KoroneikiRESTWebServiceUtil.putAccounts(corpProject.getUuid(), name);
-		*/
+
 	}
+
+	*/
 
 }

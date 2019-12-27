@@ -18,34 +18,17 @@ import com.liferay.osb.exception.DuplicateIPAddressException;
 import com.liferay.osb.exception.DuplicateMACAddressException;
 import com.liferay.osb.exception.LicenseKeyActiveException;
 import com.liferay.osb.exception.LicenseKeyDescriptionException;
-import com.liferay.osb.exception.LicenseKeyHostNameException;
 import com.liferay.osb.exception.LicenseKeyIPAddressException;
 import com.liferay.osb.exception.LicenseKeyMACAddressException;
-import com.liferay.osb.exception.LicenseKeyMaxServersException;
 import com.liferay.osb.exception.LicenseKeyOwnerException;
-import com.liferay.osb.exception.LicenseKeyProductEntryException;
-import com.liferay.osb.exception.LicenseKeyProductVersionException;
-import com.liferay.osb.exception.LicenseKeyRenewException;
 import com.liferay.osb.exception.LicenseKeyServerIdException;
 import com.liferay.osb.exception.LicenseKeyServerInfoException;
-import com.liferay.osb.exception.MaximumLicenseKeyException;
 import com.liferay.osb.exception.NoSuchLicenseKeyException;
-import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.KeyGenerator;
 import com.liferay.osb.license.util.LicenseUtil;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
-import com.liferay.osb.model.LicenseKeyConstants;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.model.OfferingDefinitionConstants;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.base.LicenseKeyLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
@@ -55,24 +38,18 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.service.CountryService;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.SubscriptionSender;
-import com.liferay.portal.kernel.util.Time;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.File;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -97,6 +74,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
+		/*
+		TODO
 		AccountEntry accountEntry = accountEntryPersistence.findByPrimaryKey(
 			accountEntryId);
 
@@ -134,8 +113,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			new String[0], new String[0], new String[0],
 			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, new Date(),
 			null, false, true);
+		*/
+
+		return null;
 	}
 
+	/*
+	TODO
 	public LicenseKey addLicenseKey(
 			long userId, LicenseKeySet licenseKeySet, String name,
 			OfferingEntry offeringEntry, LicenseEntry licenseEntry,
@@ -207,6 +191,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			active);
 	}
 
+	*/
 	public LicenseKey addLicenseKey(
 			long userId, long licenseKeySetId, String name,
 			long offeringEntryId, long licenseEntryId, long productEntryId,
@@ -224,6 +209,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				licenseKeySetId);
 		}
 
+		/*
+		TODO
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPrimaryKey(
@@ -242,6 +229,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
 			serverIds, startDate, expirationDate, StringPool.BLANK,
 			complimentary, active);
+		*/
+
+		return null;
 	}
 
 	public LicenseKey addLicenseKey(
@@ -515,6 +505,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			long userId, long licenseKeyId, Date startDate, int renewTime)
 		throws Exception {
 
+		/*
+		TODO
 		User user = userLocalService.getUser(userId);
 
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
@@ -554,6 +546,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			new String[] {licenseKey.getServerId()}, startDate, expirationDate,
 			licenseKey.getAdditionalInfo(), licenseKey.getComplimentary(),
 			true);
+		*/
+
+		return null;
 	}
 
 	public List<LicenseKey> search(
@@ -703,6 +698,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		LicenseKey licenseKey = licenseKeyPersistence.findByPrimaryKey(
 			licenseKeyId);
 
+		/*
+		TODO
 		OfferingEntry offeringEntry = offeringEntryPersistence.findByPrimaryKey(
 			offeringEntryId);
 
@@ -777,10 +774,13 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
 				active);
 		}
+		*/
 
 		return licenseKey;
 	}
 
+	/*
+	TODO
 	protected LicenseKey doAddLicenseKey(
 			Date now, User user, LicenseKeySet licenseKeySet, String name,
 			AccountEntry accountEntry, OfferingEntry offeringEntry,
@@ -857,7 +857,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		LicenseKey licenseKey = null;
 
-		/*
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
 
@@ -865,12 +864,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntryGroup.getAvailableLicenseOfferingEntries();
 
 		availableOfferingEntries.remove(offeringEntry);
-		*/
+
 		int availableServers = offeringEntry.getAvailableServers();
 
 		for (int i = 0; i < serverIds.length; i++) {
-			/*
-
 			if ((availableServers <= 0) &&
 				!availableOfferingEntries.isEmpty()) {
 
@@ -878,7 +875,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 				availableServers = offeringEntry.getAvailableServers();
 			}
-			*/
+
 			licenseKey = doAddLicenseKey(
 				user, now, licenseKeySet, offeringEntry, licenseEntry,
 				accountEntryName, licenseEntryName, licenseEntryType,
@@ -1031,7 +1028,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			keyCount = hostNames.length;
 		}
 
-		/*
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
 
@@ -1039,12 +1035,10 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			offeringEntryGroup.getAvailableLicenseOfferingEntries();
 
 		availableOfferingEntries.remove(offeringEntry);
-		*/
+
 		int availableServers = offeringEntry.getAvailableServers();
 
 		for (int i = 0; i < keyCount; i++) {
-			/*
-
 			if ((availableServers <= 0) &&
 				!availableOfferingEntries.isEmpty()) {
 
@@ -1052,7 +1046,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 				availableServers = offeringEntry.getAvailableServers();
 			}
-			*/
+
 			int sizing = 0;
 
 			if ((licenseVersion >= 6) &&
@@ -1203,6 +1197,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 	}
 
+	*/
+
 	protected List<LicenseKey> getClusterLicenseKeys(
 		LicenseKey licenseKey, String type) {
 
@@ -1226,6 +1222,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		);
 	}
 
+	/*
+	TODO
 	protected OfferingEntry getDeveloperOfferingEntry(
 			long accountEntryId, long primaryProductEntryId, int version,
 			int sizing)
@@ -1282,7 +1280,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 	protected ProductEntry getDeveloperProductEntry(long productEntryId)
 		throws PortalException {
 
-		/*
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
 
@@ -1302,7 +1299,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 				return curProductEntry;
 			}
 		}
-		*/
 
 		return null;
 	}
@@ -1354,13 +1350,17 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 				return offeringEntry;
 			}
-			*/
 		}
 
 		return null;
 	}
 
+	*/
+
 	protected int getProductVersion(int productMinorVersion) {
+		/*
+		TODO
+
 		if (productMinorVersion ==
 				ProductEntryConstants.COMMERCE_LICENSE_VERSION_1) {
 
@@ -1410,6 +1410,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			return ProductEntryConstants.PORTAL_VERSION_5_2_9;
 		}
+		*/
 
 		return 0;
 	}
@@ -1443,10 +1444,11 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		subscriptionSender.flushNotificationsAsync();
 	}
 
+	/*
+	TODO
 	protected void validate(OfferingEntry offeringEntry, int numberOfKeys)
 		throws PortalException {
 
-		/*
 		OfferingEntryGroup offeringEntryGroup =
 			offeringEntry.getOfferingEntryGroup();
 
@@ -1455,7 +1457,6 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 			throw new MaximumLicenseKeyException();
 		}
-		*/
 	}
 
 	protected void validate(
@@ -1567,6 +1568,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		}
 	}
 
+	*/
 	protected void validate(
 			String licenseEntryType, String owner, String description,
 			String hostName, String ipAddresses, String macAddresses)

@@ -54,6 +54,9 @@ public class LicenseKeyConstants {
 	public static int getLicenseVersion(
 		ProductEntry productEntry, int productVersion) {
 
+		/*
+		TODO
+
 		if (productEntry.isCommerce()) {
 			return getAppLicenseVersion();
 		}
@@ -84,6 +87,7 @@ public class LicenseKeyConstants {
 
 			return 2;
 		}
+		*/
 
 		return 1;
 	}

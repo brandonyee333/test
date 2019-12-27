@@ -17,7 +17,6 @@ package com.liferay.osb.license.util;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBFileUtil;
@@ -30,7 +29,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.Base64;
-import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -390,6 +389,8 @@ public class LicenseUtil {
 
 		LicenseKey firstLicenseKey = licenseKeys.get(0);
 
+		/*
+		TODO
 		OfferingEntry offeringEntry = firstLicenseKey.getOfferingEntry();
 		String licenseEntryType = firstLicenseKey.getLicenseEntryType();
 		Date startDate = firstLicenseKey.getStartDate();
@@ -442,6 +443,7 @@ public class LicenseUtil {
 				return false;
 			}
 		}
+		*/
 
 		return true;
 	}

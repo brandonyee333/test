@@ -17,23 +17,13 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.model.LCSSubscriptionEntryConstants;
 import com.liferay.osb.model.LicenseEntryConstants;
-import com.liferay.osb.model.OfferingDefinitionConstants;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.osb.model.SupportResponse;
-import com.liferay.osb.model.SupportResponseConstants;
-import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +44,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		Map<String, LCSSubscriptionEntry> lcsSubscriptionEntriesMap =
 			new HashMap<>();
 
+		/*
+		TODO
 		List<OfferingEntry> offeringEntries =
 			offeringEntryLocalService.getAccountEntryOfferingEntries(
 				accountEntryId);
@@ -84,6 +76,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 
 			lcsSubscriptionEntriesMap.put(key, lcsSubscriptionEntry);
 		}
+		*/
 
 		return new ArrayList<>(lcsSubscriptionEntriesMap.values());
 	}
@@ -109,6 +102,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		*/
 	}
 
+	/*
+	TODO
 	protected LCSSubscriptionEntry createLCSSubscriptionEntry(
 			OfferingEntry offeringEntry)
 		throws PortalException {
@@ -129,9 +124,7 @@ public class LCSSubscriptionEntryLocalServiceImpl
 			return null;
 		}
 
-		ProductEntry productEntry = null;
-		//TODO
-		//offeringEntry.getProductEntry();
+		ProductEntry productEntry = offeringEntry.getProductEntry();
 		SupportResponse supportResponse = offeringEntry.getSupportResponse();
 
 		String product = getProduct(productEntry, supportResponse);
@@ -203,6 +196,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		return 0;
 	}
 
+	*/
+
 	protected String getKey(LCSSubscriptionEntry lcsSubscriptionEntry) {
 		StringBundler sb = new StringBundler(5);
 
@@ -218,6 +213,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 		return sb.toString();
 	}
 
+	/*
+	TODO
 	protected String getProduct(
 		ProductEntry productEntry, SupportResponse supportResponse) {
 
@@ -282,6 +279,8 @@ public class LCSSubscriptionEntryLocalServiceImpl
 
 		return product;
 	}
+
+	*/
 
 	protected String getType(String product) {
 		if (product.contains(_DIGITAL_ENTERPRISE_BACKUP) ||

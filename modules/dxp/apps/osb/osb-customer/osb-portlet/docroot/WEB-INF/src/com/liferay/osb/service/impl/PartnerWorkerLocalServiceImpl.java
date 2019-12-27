@@ -14,30 +14,14 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.expando.kernel.model.ExpandoBridge;
-import com.liferay.osb.exception.NoSuchPartnerWorkerException;
-import com.liferay.osb.model.PartnerEntry;
-import com.liferay.osb.model.PartnerWorker;
-import com.liferay.osb.model.PartnerWorkerConstants;
-import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
-import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.NoSuchUserException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Role;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ServiceContext;
-
-import java.util.List;
-
 /**
  * @author Amos Fong
  * @author Brent Krone-Schmidt
  * @author Rachael Koestartyo
  */
-public class PartnerWorkerLocalServiceImpl
-	extends PartnerWorkerLocalServiceBaseImpl {
+public class PartnerWorkerLocalServiceImpl {
+
+	/*TODO
 
 	public PartnerWorker addPartnerWorker(
 			long partnerEntryId, long userId, int role)
@@ -149,58 +133,6 @@ public class PartnerWorkerLocalServiceImpl
 		}
 		catch (NoSuchPartnerWorkerException nspwe) {
 		}
-	}
-
-	public PartnerWorker fetchPartnerWorker(long userId, long partnerEntryId) {
-		return partnerWorkerPersistence.fetchByU_PEI(userId, partnerEntryId);
-	}
-
-	public PartnerWorker getPartnerWorker(long userId, long partnerEntryId)
-		throws PortalException {
-
-		return partnerWorkerPersistence.findByU_PEI(userId, partnerEntryId);
-	}
-
-	public List<PartnerWorker> getPartnerWorkers(long partnerEntryId) {
-		return partnerWorkerPersistence.findByPartnerEntryId(partnerEntryId);
-	}
-
-	public List<PartnerWorker> getPartnerWorkers(
-		long partnerEntryId, int role) {
-
-		return partnerWorkerPersistence.findByPEI_R(partnerEntryId, role);
-	}
-
-	public List<PartnerWorker> getUserPartnerWorkers(long userId) {
-		return partnerWorkerPersistence.findByUserId(userId);
-	}
-
-	public boolean hasPartnerWorker(long userId) {
-		if (partnerWorkerPersistence.countByUserId(userId) > 0) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean hasPartnerWorker(long userId, long partnerEntryId) {
-		if (partnerWorkerPersistence.countByU_PEI(userId, partnerEntryId) > 0) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public boolean hasPartnerWorkerRole(long userId, int role) {
-		List<PartnerWorker> partnerWorkers = getUserPartnerWorkers(userId);
-
-		for (PartnerWorker partnerWorker : partnerWorkers) {
-			if (partnerWorker.getRole() == role) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	public void syncPartnerWorkers(
@@ -343,5 +275,7 @@ public class PartnerWorkerLocalServiceImpl
 				OSBConstants.ORGANIZATION_PARTNER_ID, new long[] {userId});
 		}
 	}
+
+	*/
 
 }

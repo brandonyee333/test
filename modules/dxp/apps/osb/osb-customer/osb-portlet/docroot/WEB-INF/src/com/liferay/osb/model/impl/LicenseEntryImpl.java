@@ -15,7 +15,6 @@
 package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.LicenseEntryConstants;
-import com.liferay.osb.model.ProductEntry;
 
 /**
  * @author Brian Wing Shun Chan
@@ -24,13 +23,6 @@ import com.liferay.osb.model.ProductEntry;
 public class LicenseEntryImpl extends LicenseEntryBaseImpl {
 
 	public LicenseEntryImpl() {
-	}
-
-	public ProductEntry getProductEntry() {
-
-		// TODO
-
-		return null;
 	}
 
 	public String getVersionLabel() {

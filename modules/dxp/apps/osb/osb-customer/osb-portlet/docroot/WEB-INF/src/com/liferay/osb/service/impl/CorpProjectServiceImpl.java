@@ -14,22 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.CorpProject;
-import com.liferay.osb.service.base.CorpProjectServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.model.Organization;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.service.ServiceContext;
 
 /**
  * @author Amos Fong
  */
 @JSONWebService
-public class CorpProjectServiceImpl extends CorpProjectServiceBaseImpl {
+public class CorpProjectServiceImpl {
 
+	/*
+	TODO
 	public CorpProject addCorpProject(
 			String userUuid, String dossieraProjectKey,
 			String salesforceProjectKey, String name, long organizationId,
@@ -66,5 +60,7 @@ public class CorpProjectServiceImpl extends CorpProjectServiceBaseImpl {
 			throw new PrincipalException();
 		}
 	}
+
+	*/
 
 }

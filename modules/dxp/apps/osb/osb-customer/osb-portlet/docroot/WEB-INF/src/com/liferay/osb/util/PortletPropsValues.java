@@ -24,22 +24,11 @@ import com.liferay.util.portlet.PortletProps;
  */
 public class PortletPropsValues {
 
-	public static final String AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS =
-		PortletProps.get(
-			PortletPropsKeys.AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS);
-
-	public static final String CORP_PROJECT_LINK = PortletProps.get(
-		PortletPropsKeys.CORP_PROJECT_LINK);
-
 	public static final String DOSSIERA_ACCOUNT_LINK = PortletProps.get(
 		PortletPropsKeys.DOSSIERA_ACCOUNT_LINK);
 
 	public static final String LCS_SUPPORT_ADMIN_LINK = PortletProps.get(
 		PortletPropsKeys.LCS_SUPPORT_ADMIN_LINK);
-
-	public static final String[]
-		PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS = PortletProps.getArray(
-			PortletPropsKeys.PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS);
 
 	public static final boolean REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		GetterUtil.getBoolean(
@@ -83,12 +72,5 @@ public class PortletPropsValues {
 		GetterUtil.getString(
 			PortletProps.get(
 				PortletPropsKeys.REMOTE_REST_SERVICE_API_WEB_TOKEN));
-
-	public static final String SUPPORT_EMAIL_ADDRESS_FROM = PortletProps.get(
-		PortletPropsKeys.SUPPORT_EMAIL_ADDRESS_FROM);
-
-	public static final boolean SYNCHRONIZE_USERS_ENABLED =
-		GetterUtil.getBoolean(
-			PortletProps.get(PortletPropsKeys.SYNCHRONIZE_USERS_ENABLED));
 
 }

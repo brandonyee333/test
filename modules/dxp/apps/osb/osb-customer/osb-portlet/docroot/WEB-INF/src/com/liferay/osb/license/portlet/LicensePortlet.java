@@ -29,7 +29,6 @@ import com.liferay.osb.exception.LicenseKeyRenewException;
 import com.liferay.osb.exception.LicenseKeyServerIdException;
 import com.liferay.osb.exception.LicenseKeySetNameException;
 import com.liferay.osb.exception.MaximumLicenseKeyException;
-import com.liferay.osb.exception.OfferingEntryStatusException;
 import com.liferay.osb.license.util.LicenseUtil;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
@@ -462,8 +461,9 @@ public class LicensePortlet extends OSBPortlet {
 			cause instanceof LicenseKeyRegistrationException ||
 			cause instanceof LicenseKeyServerIdException ||
 			cause instanceof LicenseKeySetNameException ||
-			cause instanceof MaximumLicenseKeyException ||
-			cause instanceof OfferingEntryStatusException) {
+			cause instanceof MaximumLicenseKeyException) {
+
+			//cause instanceof OfferingEntryStatusException) {
 
 			return true;
 		}

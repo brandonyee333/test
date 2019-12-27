@@ -14,30 +14,23 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.service.base.AccountCustomerServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
-
-import java.util.List;
 
 /**
  * @author Amos Fong
  */
 @JSONWebService(mode = JSONWebServiceMode.MANUAL)
-public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
+public class AccountCustomerServiceImpl {
 
+	/*
+	TODO
 	@JSONWebService
 	public List<User> getCorpProjectAccountCustomerUsers(String corpProjectUuid)
 		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
-		/*
-		TODO
 		AccountEntry accountEntry =
 			accountEntryLocalService.fetchCorpProjectAccountEntry(
 				corpProjectUuid);
@@ -59,9 +52,6 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 		}
 
 		return users;
-		*/
-
-		return null;
 	}
 
 	@JSONWebService
@@ -71,8 +61,6 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
-		/*
-		TODO
 		AccountEntry accountEntry =
 			accountEntryLocalService.fetchCorpProjectAccountEntry(
 				corpProjectUuid);
@@ -96,9 +84,6 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 		}
 
 		return uuids;
-		*/
-
-		return null;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {
@@ -108,5 +93,7 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 			throw new PrincipalException();
 		}
 	}
+
+	*/
 
 }

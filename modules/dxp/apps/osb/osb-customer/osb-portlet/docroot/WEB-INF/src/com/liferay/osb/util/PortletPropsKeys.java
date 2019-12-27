@@ -21,21 +21,10 @@ package com.liferay.osb.util;
  */
 public interface PortletPropsKeys {
 
-	public static final String AUTOMATIC_PROVISIONING_ERROR_EMAIL_ADDRESS =
-		"automatic.provisioning.error.email.address";
-
-	public static final String CORP_PROJECT_LINK = "corp.project.link";
-
 	public static final String DOSSIERA_ACCOUNT_LINK = "dossiera.account.link";
 
 	public static final String LCS_SUPPORT_ADMIN_LINK =
 		"lcs.support.admin.link";
-
-	public static final String PROVISIONING_EMAIL_ADDRESS =
-		"provisioning.email.address";
-
-	public static final String PROVISIONING_OPPORTUNITY_PRODUCT_FAMILY_TOKENS =
-		"provisioning.opportunity.product.family.tokens";
 
 	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED =
 		"remote.json.service.api.lcs.enabled";
@@ -61,11 +50,5 @@ public interface PortletPropsKeys {
 
 	public static final String REMOTE_REST_SERVICE_API_WEB_TOKEN =
 		"remote.rest.service.api.web.token";
-
-	public static final String SUPPORT_EMAIL_ADDRESS_FROM =
-		"support.email.address.from";
-
-	public static final String SYNCHRONIZE_USERS_ENABLED =
-		"synchronize.users.enabled";
 
 }

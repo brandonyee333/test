@@ -14,13 +14,8 @@
 
 package com.liferay.osb.service.permission;
 
-import com.liferay.osb.model.AccountCustomer;
-import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.LicenseKeySet;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountWorkerLocalServiceUtil;
 import com.liferay.osb.service.LicenseKeySetLocalServiceUtil;
-import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
@@ -70,6 +65,8 @@ public class OSBLicenseKeySetPermission {
 			return true;
 		}
 
+		/*
+		TODO
 		AccountWorker accountWorker = null;
 
 		try {
@@ -98,6 +95,7 @@ public class OSBLicenseKeySetPermission {
 		if (actionId.equals(OSBActionKeys.VIEW) && (accountCustomer != null)) {
 			return true;
 		}
+		*/
 
 		return false;
 	}

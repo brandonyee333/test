@@ -16,21 +16,14 @@ package com.liferay.osb.license.util;
 
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
-import com.liferay.petra.string.CharPool;
-import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 import com.liferay.util.Encryptor;
 
 import java.security.Key;
@@ -38,7 +31,6 @@ import java.security.MessageDigest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -114,6 +106,9 @@ public class KeyGenerator {
 
 		// See LRDCOM-2568
 
+		/*
+		TODO
+
 		if (licenseKey.getProductVersion() ==
 				ProductEntryConstants.PORTAL_VERSION_6_1_10) {
 
@@ -129,6 +124,7 @@ public class KeyGenerator {
 				properties.put("productVersion", "6.1");
 			}
 		}
+		*/
 
 		return properties;
 	}
@@ -224,6 +220,9 @@ public class KeyGenerator {
 			}
 		}
 		else if (licenseVersion >= 3) {
+			/*
+			TODO
+
 			if (productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
 				properties.put("accountEntryName", accountEntryName);
 				properties.put("licenseEntryName", licenseEntryName);
@@ -233,6 +232,7 @@ public class KeyGenerator {
 				properties.put("productId", productId);
 				properties.put("productVersion", productVersionLabel);
 			}
+			*/
 
 			properties.put(
 				"expirationDate", String.valueOf(expirationDate.getTime()));
@@ -268,11 +268,14 @@ public class KeyGenerator {
 			}
 
 			if ((licenseVersion >= 6) && (sizing > 0)) {
+				/*
+				TODO
 				properties.put(
 					"instanceSize",
 					LanguageUtil.get(
 						LocaleUtil.US,
 						OfferingEntryConstants.getSizingLabel(sizing)));
+				*/
 			}
 
 			if (licenseEntryType.equals(LicenseEntryConstants.TYPE_CLUSTER) ||
@@ -438,21 +441,29 @@ public class KeyGenerator {
 			digests.set(i, digest);
 		}
 
+		/*
+		TODO
+
 		if (Validator.isNull(productId) ||
 			productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
 
 			return _interweaveDigest(digests);
 		}
+		*/
 
 		return _digestsToString(digests);
 	}
 
 	private String _getAlgorithm(String productId, int i) {
+		/*
+		TODO
+
 		if (Validator.isNull(productId) ||
 			productId.equals(ProductEntryConstants.PRODUCT_ID_PORTAL)) {
 
 			return _ALGORITHMS[i % _ALGORITHMS.length];
 		}
+		*/
 
 		return _ALGORITHMS[2];
 	}

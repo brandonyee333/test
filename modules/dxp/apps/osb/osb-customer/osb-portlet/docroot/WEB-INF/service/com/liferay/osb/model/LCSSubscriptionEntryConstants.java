@@ -21,8 +21,7 @@ import java.util.Date;
  */
 public class LCSSubscriptionEntryConstants {
 
-	public static final int ALLOWED_SERVERS_UNLIMITED =
-		OfferingEntryConstants.QUANTITY_UNLIMITED;
+	public static final int ALLOWED_SERVERS_UNLIMITED = 10000;
 
 	public static final Date END_DATE_PERPETUAL = new Date(4102444800000L);
 

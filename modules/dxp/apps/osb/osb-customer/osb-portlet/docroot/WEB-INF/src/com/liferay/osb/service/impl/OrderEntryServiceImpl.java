@@ -14,19 +14,16 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.service.base.OrderEntryServiceBaseImpl;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
-import com.liferay.portal.kernel.security.auth.PrincipalException;
 
 /**
  * @author Amos Fong
  */
 @JSONWebService
-public class OrderEntryServiceImpl extends OrderEntryServiceBaseImpl {
+public class OrderEntryServiceImpl {
 
+	/*
+	TODO
 	public OrderEntry getOrderEntry(String uuid) throws PortalException {
 		validateJSONWebServicePermissions();
 
@@ -40,5 +37,7 @@ public class OrderEntryServiceImpl extends OrderEntryServiceBaseImpl {
 			throw new PrincipalException();
 		}
 	}
+
+	*/
 
 }

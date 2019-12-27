@@ -67,6 +67,9 @@ public class LicenseEntryConstants {
 		}
 
 		try {
+			/*
+			TODO
+
 			if (versionMax == ProductEntryConstants.PORTAL_VERSION_OTHER) {
 				sb.append(StringPool.PLUS);
 			}
@@ -76,6 +79,7 @@ public class LicenseEntryConstants {
 				sb.append(" - ");
 				sb.append(listType.getName());
 			}
+			*/
 		}
 		catch (Exception e) {
 			return "N/A";

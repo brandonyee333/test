@@ -14,18 +14,10 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.exception.NoSuchOfferingEntryException;
-import com.liferay.osb.license.util.LicenseUtil;
-import com.liferay.osb.model.AccountWorkerConstants;
 import com.liferay.osb.model.LicenseEntry;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeyConstants;
-import com.liferay.osb.model.OfferingEntry;
-import com.liferay.osb.model.OfferingEntryConstants;
-import com.liferay.osb.model.OrderEntry;
-import com.liferay.osb.model.ProductEntry;
-import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.LicenseKeyServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
@@ -37,13 +29,11 @@ import com.liferay.portal.kernel.io.Base64OutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -51,7 +41,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -68,11 +57,15 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			int productMinorVersion)
 		throws PortalException {
 
+		/*
+		TODO
+
 		if (!accountCustomerLocalService.hasAccountCustomer(
 				getUserId(), accountEntryId)) {
 
 			throw new PrincipalException();
 		}
+		*/
 
 		return licenseKeyLocalService.addDeveloperLicenseKey(
 			getUserId(), accountEntryId, productEntryRootName,
@@ -89,10 +82,11 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			boolean active)
 		throws PortalException {
 
+		/*
+		TODO
 		OfferingEntry offeringEntry =
 			offeringEntryLocalService.getOfferingEntry(offeringEntryId);
 
-		/*
 		OSBAccountEntryPermission.check(
 			getPermissionChecker(), offeringEntry.getAccountEntryId(),
 			ActionKeys.ADD_LICENSE);
@@ -174,6 +168,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
 
+		/*
+		TODO
 		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
 			getUserId(), StringPool.BLANK,
 			LicenseEntryConstants.TYPE_ENTERPRISE, "Liferay Commerce",
@@ -182,6 +178,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
 
 		return exportToLI(licenseKey);
+		*/
+
+		return null;
 	}
 
 	@JSONWebService
@@ -191,6 +190,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
+		/*
+		TODO
 		OfferingEntry offeringEntry = getWeDeployOfferingEntry();
 
 		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
@@ -209,6 +210,9 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			expirationDate, StringPool.BLANK, false, true);
 
 		return LicenseUtil.exportToXML(licenseKey);
+		*/
+
+		return null;
 	}
 
 	@JSONWebService
@@ -384,6 +388,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		validateJSONWebServicePermissions();
 
+		/*
+		TODO
 		OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
 			orderEntryUuid);
 
@@ -412,7 +418,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			availableOfferingEntries.add(offeringEntry);
 		}
 
-		/*
 		OfferingEntryGroup offeringEntryGroup =
 			OfferingEntryGroupFactoryUtil.createOfferingEntryGroup(
 				availableOfferingEntries);
@@ -660,6 +665,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		}
 
 		/*
+		TODO
 
 		if (roleLocalService.hasUserRole(
 				getUserId(), OSBConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
@@ -668,7 +674,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			return;
 		}
-		*/
 
 		params.put("accountEntryMembership", Long.valueOf(getUserId()));
 
@@ -677,6 +682,7 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 			return;
 		}
+		*/
 
 		params.put("active", Boolean.TRUE);
 	}
@@ -730,10 +736,13 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			String sizing = StringPool.BLANK;
 
 			if (licenseKey.getSizing() > 0) {
+				/*
+				TODO
 				sizing = LanguageUtil.get(
 					LocaleUtil.US,
 					OfferingEntryConstants.getSizingLabel(
 						licenseKey.getSizing()));
+				*/
 			}
 
 			objectOutputStream.writeUTF(sizing);
@@ -795,8 +804,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return filteredLicenseKeys;
 	}
 
+	/*
+	TODO
 	protected long getLicenseEntryId(ProductEntry productEntry) {
-		/*
+
 		List<LicenseEntry> licenseEntries = productEntry.getLicenseEntries();
 
 		for (LicenseEntry licenseEntry : licenseEntries) {
@@ -809,7 +820,6 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 				return licenseEntry.getLicenseEntryId();
 			}
 		}
-		*/
 
 		return 0;
 	}
@@ -828,6 +838,10 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 		return ProductEntryConstants.PORTAL_VERSION_6_1_10;
 	}
 
+	*/
+
+	/*
+	TODO
 	protected OfferingEntry getWeDeployOfferingEntry() throws PortalException {
 		List<OrderEntry> orderEntries =
 			orderEntryLocalService.getAccountEntryOrderEntries(
@@ -849,6 +863,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 
 		throw new NoSuchOfferingEntryException();
 	}
+
+	*/
 
 	protected boolean isAccountAdmin(long userId) {
 		if (roleLocalService.hasUserRole(
