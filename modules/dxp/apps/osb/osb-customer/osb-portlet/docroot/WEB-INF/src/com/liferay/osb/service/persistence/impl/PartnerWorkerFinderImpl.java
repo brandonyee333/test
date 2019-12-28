@@ -14,22 +14,13 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.PartnerWorkerFinder;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
-import com.liferay.portal.kernel.dao.orm.QueryPos;
-import com.liferay.portal.kernel.dao.orm.SQLQuery;
-import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.kernel.dao.orm.Type;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import java.util.Iterator;
-
 /**
  * @author Kyle Bischof
  */
-public class PartnerWorkerFinderImpl
-	extends PartnerWorkerFinderBaseImpl implements PartnerWorkerFinder {
+public class PartnerWorkerFinderImpl {
 
+	/*
+	TODO
 	public static final String COUNT_PASSPORT_PARTNERS_BY_DOMAIN =
 		PartnerWorkerFinder.class.getName() + ".countPassportPartnersByDomain";
 
@@ -70,5 +61,7 @@ public class PartnerWorkerFinderImpl
 			closeSession(session);
 		}
 	}
+
+	*/
 
 }

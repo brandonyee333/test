@@ -38,8 +38,9 @@ public class SupportUtil {
 
 		return false;
 	}
+
 	*/
-	
+
 	public static Set<String> getSelfProvisioningProducts(long accountEntryId)
 		throws PortalException {
 

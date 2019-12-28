@@ -14,22 +14,13 @@
 
 package com.liferay.osb.service.persistence.impl;
 
-import com.liferay.osb.service.persistence.AccountCustomerFinder;
-import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
-import com.liferay.portal.kernel.dao.orm.QueryPos;
-import com.liferay.portal.kernel.dao.orm.SQLQuery;
-import com.liferay.portal.kernel.dao.orm.Session;
-import com.liferay.portal.kernel.dao.orm.Type;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import java.util.Iterator;
-
 /**
  * @author Kyle Bischof
  */
-public class AccountCustomerFinderImpl
-	extends AccountCustomerFinderBaseImpl implements AccountCustomerFinder {
+public class AccountCustomerFinderImpl {
 
+	/*
+	TODO
 	public static final String COUNT_PASSPORT_CUSTOMERS_BY_DOMAIN =
 		AccountCustomerFinder.class.getName() +
 			".countPassportCustomersByDomain";
@@ -71,5 +62,7 @@ public class AccountCustomerFinderImpl
 			closeSession(session);
 		}
 	}
+
+	*/
 
 }

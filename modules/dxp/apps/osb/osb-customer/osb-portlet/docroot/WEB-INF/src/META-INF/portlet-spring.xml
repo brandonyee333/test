@@ -2,46 +2,6 @@
 
 <!-- @generated -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-	<bean class="com.liferay.osb.service.impl.AccountAttachmentLocalServiceImpl" id="com.liferay.osb.service.AccountAttachmentLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountAttachmentServiceImpl" id="com.liferay.osb.service.AccountAttachmentService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountAttachmentPersistenceImpl" id="com.liferay.osb.service.persistence.AccountAttachmentPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountCustomerLocalServiceImpl" id="com.liferay.osb.service.AccountCustomerLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountCustomerServiceImpl" id="com.liferay.osb.service.AccountCustomerService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountCustomerPersistenceImpl" id="com.liferay.osb.service.persistence.AccountCustomerPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountCustomerFinderImpl" id="com.liferay.osb.service.persistence.AccountCustomerFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountEntryLocalServiceImpl" id="com.liferay.osb.service.AccountEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountEntryServiceImpl" id="com.liferay.osb.service.AccountEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountEntryPersistenceImpl" id="com.liferay.osb.service.persistence.AccountEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountEntryFinderImpl" id="com.liferay.osb.service.persistence.AccountEntryFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountEntryLanguageLocalServiceImpl" id="com.liferay.osb.service.AccountEntryLanguageLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountEntryLanguageServiceImpl" id="com.liferay.osb.service.AccountEntryLanguageService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountEntryLanguagePersistenceImpl" id="com.liferay.osb.service.persistence.AccountEntryLanguagePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountEnvironmentLocalServiceImpl" id="com.liferay.osb.service.AccountEnvironmentLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountEnvironmentServiceImpl" id="com.liferay.osb.service.AccountEnvironmentService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountEnvironmentPersistenceImpl" id="com.liferay.osb.service.persistence.AccountEnvironmentPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountEnvironmentAttachmentLocalServiceImpl" id="com.liferay.osb.service.AccountEnvironmentAttachmentLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountEnvironmentAttachmentServiceImpl" id="com.liferay.osb.service.AccountEnvironmentAttachmentService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountEnvironmentAttachmentPersistenceImpl" id="com.liferay.osb.service.persistence.AccountEnvironmentAttachmentPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountInformationLocalServiceImpl" id="com.liferay.osb.service.AccountInformationLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountInformationServiceImpl" id="com.liferay.osb.service.AccountInformationService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountInformationPersistenceImpl" id="com.liferay.osb.service.persistence.AccountInformationPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountProjectLocalServiceImpl" id="com.liferay.osb.service.AccountProjectLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountProjectServiceImpl" id="com.liferay.osb.service.AccountProjectService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountProjectPersistenceImpl" id="com.liferay.osb.service.persistence.AccountProjectPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AccountWorkerLocalServiceImpl" id="com.liferay.osb.service.AccountWorkerLocalService" />
-	<bean class="com.liferay.osb.service.impl.AccountWorkerServiceImpl" id="com.liferay.osb.service.AccountWorkerService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AccountWorkerPersistenceImpl" id="com.liferay.osb.service.persistence.AccountWorkerPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.AuditEntryLocalServiceImpl" id="com.liferay.osb.service.AuditEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.AuditEntryServiceImpl" id="com.liferay.osb.service.AuditEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.AuditEntryPersistenceImpl" id="com.liferay.osb.service.persistence.AuditEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.CorpProjectLocalServiceImpl" id="com.liferay.osb.service.CorpProjectLocalService" />
-	<bean class="com.liferay.osb.service.impl.CorpProjectServiceImpl" id="com.liferay.osb.service.CorpProjectService" />
-	<bean class="com.liferay.osb.service.persistence.impl.CorpProjectPersistenceImpl" id="com.liferay.osb.service.persistence.CorpProjectPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.CorpProjectMessageLocalServiceImpl" id="com.liferay.osb.service.CorpProjectMessageLocalService" />
-	<bean class="com.liferay.osb.service.impl.CorpProjectMessageServiceImpl" id="com.liferay.osb.service.CorpProjectMessageService" />
-	<bean class="com.liferay.osb.service.persistence.impl.CorpProjectMessagePersistenceImpl" id="com.liferay.osb.service.persistence.CorpProjectMessagePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.ExternalIdMapperLocalServiceImpl" id="com.liferay.osb.service.ExternalIdMapperLocalService" />
-	<bean class="com.liferay.osb.service.persistence.impl.ExternalIdMapperPersistenceImpl" id="com.liferay.osb.service.persistence.ExternalIdMapperPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryLocalServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.LCSSubscriptionEntryPersistenceImpl" id="com.liferay.osb.service.persistence.LCSSubscriptionEntryPersistence" parent="basePersistence" />
@@ -55,41 +15,7 @@
 	<bean class="com.liferay.osb.service.impl.LicenseKeySetLocalServiceImpl" id="com.liferay.osb.service.LicenseKeySetLocalService" />
 	<bean class="com.liferay.osb.service.impl.LicenseKeySetServiceImpl" id="com.liferay.osb.service.LicenseKeySetService" />
 	<bean class="com.liferay.osb.service.persistence.impl.LicenseKeySetPersistenceImpl" id="com.liferay.osb.service.persistence.LicenseKeySetPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.OfferingBundleLocalServiceImpl" id="com.liferay.osb.service.OfferingBundleLocalService" />
-	<bean class="com.liferay.osb.service.impl.OfferingBundleServiceImpl" id="com.liferay.osb.service.OfferingBundleService" />
-	<bean class="com.liferay.osb.service.persistence.impl.OfferingBundlePersistenceImpl" id="com.liferay.osb.service.persistence.OfferingBundlePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.OfferingDefinitionLocalServiceImpl" id="com.liferay.osb.service.OfferingDefinitionLocalService" />
-	<bean class="com.liferay.osb.service.impl.OfferingDefinitionServiceImpl" id="com.liferay.osb.service.OfferingDefinitionService" />
-	<bean class="com.liferay.osb.service.persistence.impl.OfferingDefinitionPersistenceImpl" id="com.liferay.osb.service.persistence.OfferingDefinitionPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.OfferingEntryLocalServiceImpl" id="com.liferay.osb.service.OfferingEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.OfferingEntryServiceImpl" id="com.liferay.osb.service.OfferingEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.OfferingEntryPersistenceImpl" id="com.liferay.osb.service.persistence.OfferingEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.OfferingEntryFinderImpl" id="com.liferay.osb.service.persistence.OfferingEntryFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.OrderEntryLocalServiceImpl" id="com.liferay.osb.service.OrderEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.OrderEntryServiceImpl" id="com.liferay.osb.service.OrderEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.OrderEntryPersistenceImpl" id="com.liferay.osb.service.persistence.OrderEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.OrderEntryFinderImpl" id="com.liferay.osb.service.persistence.OrderEntryFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.PartnerEntryLocalServiceImpl" id="com.liferay.osb.service.PartnerEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.PartnerEntryServiceImpl" id="com.liferay.osb.service.PartnerEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.PartnerEntryPersistenceImpl" id="com.liferay.osb.service.persistence.PartnerEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.PartnerEntryFinderImpl" id="com.liferay.osb.service.persistence.PartnerEntryFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.PartnerWorkerLocalServiceImpl" id="com.liferay.osb.service.PartnerWorkerLocalService" />
-	<bean class="com.liferay.osb.service.impl.PartnerWorkerServiceImpl" id="com.liferay.osb.service.PartnerWorkerService" />
-	<bean class="com.liferay.osb.service.persistence.impl.PartnerWorkerPersistenceImpl" id="com.liferay.osb.service.persistence.PartnerWorkerPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.PartnerWorkerFinderImpl" id="com.liferay.osb.service.persistence.PartnerWorkerFinder" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.ProductEntryLocalServiceImpl" id="com.liferay.osb.service.ProductEntryLocalService" />
-	<bean class="com.liferay.osb.service.impl.ProductEntryServiceImpl" id="com.liferay.osb.service.ProductEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryPersistenceImpl" id="com.liferay.osb.service.persistence.ProductEntryPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.ProductEntryFinderImpl" id="com.liferay.osb.service.persistence.ProductEntryFinder" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.RemoteCorpEntryLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectLocalService" />
-	<bean class="com.liferay.osb.service.impl.RemoteCorpProjectMessageLocalServiceImpl" id="com.liferay.osb.service.RemoteCorpProjectMessageLocalService" />
 	<bean class="com.liferay.osb.service.impl.RemoteUserLocalServiceImpl" id="com.liferay.osb.service.RemoteUserLocalService" />
-	<bean class="com.liferay.osb.service.impl.SupportRegionLocalServiceImpl" id="com.liferay.osb.service.SupportRegionLocalService" />
-	<bean class="com.liferay.osb.service.impl.SupportRegionServiceImpl" id="com.liferay.osb.service.SupportRegionService" />
-	<bean class="com.liferay.osb.service.persistence.impl.SupportRegionPersistenceImpl" id="com.liferay.osb.service.persistence.SupportRegionPersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.impl.SupportResponseLocalServiceImpl" id="com.liferay.osb.service.SupportResponseLocalService" />
-	<bean class="com.liferay.osb.service.impl.SupportResponseServiceImpl" id="com.liferay.osb.service.SupportResponseService" />
-	<bean class="com.liferay.osb.service.persistence.impl.SupportResponsePersistenceImpl" id="com.liferay.osb.service.persistence.SupportResponsePersistence" parent="basePersistence" />
-	<bean class="com.liferay.osb.service.persistence.impl.SupportResponseFinderImpl" id="com.liferay.osb.service.persistence.SupportResponseFinder" parent="basePersistence" />
 </beans>
