@@ -69,6 +69,10 @@ int startYear = ParamUtil.get(request, "schedulerStartDateYear", cal.get(Calenda
 		</div>
 	</aui:field-wrapper>
 
+	<aui:field-wrapper label="time-zone">
+		<aui:input cssClass="calendar-portlet-time-zone-field" label="" name="timeZoneId" type="timeZone" value="<%= timeZone.getID() %>" />
+	</aui:field-wrapper>
+
 	<aui:field-wrapper label="end-date">
 		<aui:input checked="<%= true %>" id="schedulerNoEndDate" label="no-end-date" name="endDateType" type="radio" value="0" />
 		<aui:input first="<%= true %>" id="schedulerEndBy" label="end-by" name="endDateType" type="radio" value="1" />
