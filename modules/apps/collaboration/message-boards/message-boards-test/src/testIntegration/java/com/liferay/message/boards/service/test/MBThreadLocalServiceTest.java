@@ -80,11 +80,11 @@ public class MBThreadLocalServiceTest {
 
 	@Test
 	public void testAttachmentsWhenSplittingThread() throws Exception {
-		MBMessage rootMessage = _addMessage(null, true);
+		MBMessage rootMessage = _addMessage(null);
 
-		MBMessage splitMessage = _addMessage(rootMessage, true);
+		MBMessage splitMessage = _addMessage(rootMessage);
 
-		MBMessage childMessage = _addMessage(splitMessage, true);
+		MBMessage childMessage = _addMessage(splitMessage);
 
 		Assert.assertEquals(
 			rootMessage.getThreadId(), splitMessage.getThreadId());
@@ -149,9 +149,9 @@ public class MBThreadLocalServiceTest {
 
 	@Test
 	public void testGetNoAssetThreads() throws Exception {
-		_addMessage(null, false);
+		_addMessage(null);
 
-		MBMessage message = _addMessage(null, false);
+		MBMessage message = _addMessage(null);
 
 		MBThread thread = message.getThread();
 
@@ -168,9 +168,7 @@ public class MBThreadLocalServiceTest {
 		Assert.assertEquals(thread, threads.get(0));
 	}
 
-	private MBMessage _addMessage(
-			MBMessage parentMessage, boolean addAttachments)
-		throws Exception {
+	private MBMessage _addMessage(MBMessage parentMessage) throws Exception {
 
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
@@ -187,12 +185,8 @@ public class MBThreadLocalServiceTest {
 		}
 
 		List<ObjectValuePair<String, InputStream>> inputStreamOVPs =
-			Collections.emptyList();
-
-		if (addAttachments) {
-			inputStreamOVPs = MBTestUtil.getInputStreamOVPs(
+			MBTestUtil.getInputStreamOVPs(
 				"attachment.txt", getClass(), StringPool.BLANK);
-		}
 
 		return MBMessageLocalServiceUtil.addMessage(
 			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
