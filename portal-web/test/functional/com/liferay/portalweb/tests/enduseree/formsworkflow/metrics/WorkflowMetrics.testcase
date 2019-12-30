@@ -165,20 +165,18 @@ definition {
 		WorkflowMetricsPerformanceByStep.searchForStep(stepName = "review");
 
 		WorkflowMetricsPerformanceByStep.viewPerformanceByStepAfterSearch(
-			stepName = "Review",
-			slaBreachedValue = "0 (0%)",
 			avgCompletionTimeValue = "1min",
-			isNotPresent = "Update"
-		);
+			isNotPresent = "Update",
+			slaBreachedValue = "0 (0%)",
+			stepName = "Review");
 
 		WorkflowMetricsPerformanceByStep.searchForStep(stepName = "update");
-		
+
 		WorkflowMetricsPerformanceByStep.viewPerformanceByStepAfterSearch(
-			stepName = "Update",
-			slaBreachedValue = "0 (0%)",
 			avgCompletionTimeValue = "0min",
-			isNotPresent = "Review"
-		);
+			isNotPresent = "Review",
+			slaBreachedValue = "0 (0%)",
+			stepName = "Update");
 
 		WorkflowMetricsPerformanceByStep.searchForStep(stepName = "nothing");
 
@@ -187,12 +185,12 @@ definition {
 		Click(locator1 = "WorkflowMetrics#FILTER_CLEAR_ALL");
 
 		AssertElementPresent(
-			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME",
-			key_stepName = "Review");
+			key_stepName = "Review",
+			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME");
 
 		AssertElementPresent(
-			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME",
-			key_stepName = "Update");
+			key_stepName = "Update",
+			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME");
 	}
 
 	@description = "Verify that the filters from All Items page are correctly loaded when accessed via Metrics Pending/Completed cards"
@@ -416,7 +414,6 @@ definition {
 	@description = "LRQA-53662 Automate LPS-92053 View process item detail page"
 	@priority = "5"
 	test ViewProcessItemDetailPage {
-		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "WorkflowMetrics#ViewProcessItemDetailPage";
 
 		ProductMenu.gotoPortlet(
