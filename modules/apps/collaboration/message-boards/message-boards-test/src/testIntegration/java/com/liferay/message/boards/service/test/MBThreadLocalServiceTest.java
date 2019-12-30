@@ -80,11 +80,11 @@ public class MBThreadLocalServiceTest {
 
 	@Test
 	public void testAttachmentsWhenSplittingThread() throws Exception {
-		MBMessage rootMessage = addMessage(null, true);
+		MBMessage rootMessage = _addMessage(null, true);
 
-		MBMessage splitMessage = addMessage(rootMessage, true);
+		MBMessage splitMessage = _addMessage(rootMessage, true);
 
-		MBMessage childMessage = addMessage(splitMessage, true);
+		MBMessage childMessage = _addMessage(splitMessage, true);
 
 		Assert.assertEquals(
 			rootMessage.getThreadId(), splitMessage.getThreadId());
@@ -124,7 +124,7 @@ public class MBThreadLocalServiceTest {
 
 		Assert.assertEquals(0, expandoCount);
 
-		MBMessage message = addMessageWithExpando();
+		MBMessage message = _addMessageWithExpando();
 
 		ExpandoBridge expandoBridge = message.getExpandoBridge();
 
@@ -149,9 +149,9 @@ public class MBThreadLocalServiceTest {
 
 	@Test
 	public void testGetNoAssetThreads() throws Exception {
-		addMessage(null, false);
+		_addMessage(null, false);
 
-		MBMessage message = addMessage(null, false);
+		MBMessage message = _addMessage(null, false);
 
 		MBThread thread = message.getThread();
 
@@ -168,7 +168,7 @@ public class MBThreadLocalServiceTest {
 		Assert.assertEquals(thread, threads.get(0));
 	}
 
-	protected MBMessage addMessage(
+	private MBMessage _addMessage(
 			MBMessage parentMessage, boolean addAttachments)
 		throws Exception {
 
@@ -202,7 +202,7 @@ public class MBThreadLocalServiceTest {
 			false, serviceContext);
 	}
 
-	protected MBMessage addMessageWithExpando()
+	private MBMessage _addMessageWithExpando()
 		throws Exception {
 
 		ExpandoTable expandoTable =
