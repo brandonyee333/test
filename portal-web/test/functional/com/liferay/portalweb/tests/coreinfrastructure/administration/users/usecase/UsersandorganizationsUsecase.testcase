@@ -1303,7 +1303,6 @@ definition {
 		Organization.addCP(
 			orgCountry = "United States",
 			orgName = "United States",
-			orgParent = "North America",
 			orgType = "Location");
 
 		ProductMenu.gotoPortlet(
@@ -1314,7 +1313,6 @@ definition {
 		Organization.addCP(
 			orgCountry = "Canada",
 			orgName = "Canada",
-			orgParent = "North America",
 			orgType = "Location");
 
 		ProductMenu.gotoPortlet(
