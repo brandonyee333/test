@@ -30,6 +30,7 @@ import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.service.MBMessageLocalServiceUtil;
 import com.liferay.message.boards.kernel.service.MBThreadLocalServiceUtil;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -42,6 +43,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
@@ -171,15 +173,11 @@ public class MBThreadLocalServiceTest {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
 
-		long categoryId = MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID;
-		long threadId = 0;
-		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
-
-		if (parentMessage != null) {
-			categoryId = parentMessage.getCategoryId();
-			threadId = parentMessage.getThreadId();
-			parentMessageId = parentMessage.getMessageId();
-		}
+		long categoryId = BeanPropertiesUtil.getLong(
+			parentMessage, "categoryId");
+		long threadId = BeanPropertiesUtil.getLong(parentMessage, "threadId");
+		long parentMessageId = BeanPropertiesUtil.getLong(
+			parentMessage, "messageId");
 
 		List<ObjectValuePair<String, InputStream>> inputStreamOVPs =
 			MBTestUtil.getInputStreamOVPs(
@@ -208,10 +206,6 @@ public class MBThreadLocalServiceTest {
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
 
-		long categoryId = MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID;
-		long threadId = 0;
-		long parentMessageId = MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID;
-
 		Map<String, Serializable> expandoBridgeAttributes =
 			HashMapBuilder.<String, Serializable>put(
 				"testExpandoName", "testExpandoValue"
@@ -221,7 +215,8 @@ public class MBThreadLocalServiceTest {
 
 		return MBMessageLocalServiceUtil.addMessage(
 			TestPropsValues.getUserId(), RandomTestUtil.randomString(),
-			_group.getGroupId(), categoryId, threadId, parentMessageId,
+			_group.getGroupId(), MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
+			0L, MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			MBMessageConstants.DEFAULT_FORMAT, null, false, 0.0,
 			false, serviceContext);
