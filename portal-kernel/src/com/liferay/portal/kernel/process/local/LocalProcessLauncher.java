@@ -121,7 +121,7 @@ public class LocalProcessLauncher {
 
 			Thread thread = new Thread(
 				new ProcessCallableRunner(objectInputStream),
-				"ProcessCallable-Runner");
+				"Process Callable Runner");
 
 			thread.setDaemon(true);
 
