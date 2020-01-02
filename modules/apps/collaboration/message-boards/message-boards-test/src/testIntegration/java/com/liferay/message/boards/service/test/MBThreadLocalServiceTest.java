@@ -43,7 +43,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.PermissionCheckerTestRule;
 import com.liferay.portlet.messageboards.util.test.MBTestUtil;
@@ -51,7 +50,6 @@ import com.liferay.portlet.messageboards.util.test.MBTestUtil;
 import java.io.InputStream;
 import java.io.Serializable;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +119,6 @@ public class MBThreadLocalServiceTest {
 
 	@Test
 	public void testDeleteThreadWithExpandoMessages() throws Exception {
-
 		int expandoCount = ExpandoValueLocalServiceUtil.getExpandoValuesCount();
 
 		MBMessage message = _addMessageWithExpando();
@@ -168,7 +165,6 @@ public class MBThreadLocalServiceTest {
 	}
 
 	private MBMessage _addMessage(MBMessage parentMessage) throws Exception {
-
 		ServiceContext serviceContext =
 			ServiceContextTestUtil.getServiceContext(
 				_group.getGroupId(), TestPropsValues.getUserId());
@@ -191,9 +187,7 @@ public class MBThreadLocalServiceTest {
 			false, serviceContext);
 	}
 
-	private MBMessage _addMessageWithExpando()
-		throws Exception {
-
+	private MBMessage _addMessageWithExpando() throws Exception {
 		ExpandoTable expandoTable =
 			ExpandoTableLocalServiceUtil.addDefaultTable(
 				PortalUtil.getDefaultCompanyId(), MBMessage.class.getName());
@@ -218,8 +212,8 @@ public class MBThreadLocalServiceTest {
 			_group.getGroupId(), MBCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
 			0L, MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID,
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			MBMessageConstants.DEFAULT_FORMAT, null, false, 0.0,
-			false, serviceContext);
+			MBMessageConstants.DEFAULT_FORMAT, null, false, 0.0, false,
+			serviceContext);
 	}
 
 	@DeleteAfterTestRun
