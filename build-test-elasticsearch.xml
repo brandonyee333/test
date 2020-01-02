@@ -37,13 +37,13 @@ name_opt = ca_default
 cert_opt = ca_default
 policy = policy_anything
 [ policy_anything ]
-countryName             = optional
-stateOrProvinceName     = optional
-localityName            = optional
-organizationName        = optional
-organizationalUnitName  = optional
-commonName              = supplied
-emailAddress            = optional
+countryName = optional
+stateOrProvinceName = optional
+localityName = optional
+organizationName = optional
+organizationalUnitName = optional
+commonName = supplied
+emailAddress = optional
 [ req ]
 default_bits = 2048 # Size of keys
 default_keyfile = key.pem # name of generated keys

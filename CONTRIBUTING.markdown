@@ -45,7 +45,7 @@ To build Liferay Portal from source do the following:
 
 ## Building a Module in liferay-portal
 
-A module can be built from within liferay-portal without recompiling the whole platform.  To build a module, do the following:
+A module can be built from within liferay-portal without recompiling the whole platform. To build a module, do the following:
 
 * The platform must be completely compiled once using the method above.  This is due to the fact that the initial build initializes the build environment.
 
@@ -56,9 +56,9 @@ A module can be built from within liferay-portal without recompiling the whole p
 
 * If all goes well the following should appear in the bundle logs:
 
-      20:31:55,899 INFO  [fileinstall-/Users/jamie/liferay/repos/contrib/bundles/osgi/modules][BundleStartStopLogger:38] STOPPED com.liferay.comment.web_1.1.8 [243]
+      20:31:55,899 INFO [fileinstall-/Users/jamie/liferay/repos/contrib/bundles/osgi/modules][BundleStartStopLogger:38] STOPPED com.liferay.comment.web_1.1.8 [243]
 
-      20:31:56,038 INFO  [Refresh Thread: Equinox Container: 208f839d-2b6b-0017-1f31-cc9c6b1fc91b][BundleStartStopLogger:35] STARTED com.liferay.comment.web_1.1.8 [243]
+      20:31:56,038 INFO [Refresh Thread: Equinox Container: 208f839d-2b6b-0017-1f31-cc9c6b1fc91b][BundleStartStopLogger:35] STARTED com.liferay.comment.web_1.1.8 [243]
 
 # Making Changes
 
