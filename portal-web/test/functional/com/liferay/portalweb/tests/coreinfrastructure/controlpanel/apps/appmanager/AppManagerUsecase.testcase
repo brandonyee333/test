@@ -27,6 +27,7 @@ definition {
 	@priority = "5"
 	test InstallUninstallApp {
 		property test.name.skip.portal.instance = "AppManagerUsecase#InstallUninstallApp";
+
 		var appName = "test-app-portlet";
 
 		ProductMenu.gotoPortlet(
@@ -68,6 +69,8 @@ definition {
 	@description = "This is a use case for LPS-99031."
 	@priority = "5"
 	test ViewLicenseManager {
+		property test.name.skip.portal.instance = "AppManagerUsecase#ViewLicenseManager";
+
 		ProductMenu.gotoPortlet(
 			category = "Apps",
 			panel = "Control Panel",
