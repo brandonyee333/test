@@ -29,6 +29,7 @@ import com.liferay.message.boards.kernel.model.MBMessageDisplay;
 import com.liferay.message.boards.kernel.model.MBThread;
 import com.liferay.message.boards.kernel.model.MBThreadConstants;
 import com.liferay.message.boards.kernel.model.MBTreeWalker;
+import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.increment.BufferedIncrement;
@@ -1189,7 +1190,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		return thread;
 	}
 
-	@Reference
+	@BeanReference(type = ExpandoRowLocalService.class)
 	protected ExpandoRowLocalService expandoRowLocalService;
 
 	protected void moveAttachmentsFolders(
