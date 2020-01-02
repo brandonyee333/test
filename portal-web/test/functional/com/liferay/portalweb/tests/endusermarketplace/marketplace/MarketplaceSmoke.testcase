@@ -10,22 +10,6 @@ definition {
 
 	tearDown {
 		BlogsEntry.tearDownCP();
-
-		BookmarksFolder.tearDownCP();
-
-		WikiPage.tearDownCP();
-
-		Page.tearDownPG();
-
-		DMFolder.tearDownCP();
-
-		DMDocument.tearDownCP();
-
-		Navigator.gotoPage(pageName = "Calendar Test Page");
-
-		CalendarEvent.tearDown();
-
-		Calendar.tearDown();
 	}
 
 	@priority = "5"
