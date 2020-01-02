@@ -90,7 +90,6 @@ public class HandshakeMessage extends Message {
 	}
 
 	/**
-	 * @return
 	 * @deprecated As of Judson (7.1.x), will be removed in next version
 	 */
 	@Deprecated
@@ -103,7 +102,6 @@ public class HandshakeMessage extends Message {
 	}
 
 	/**
-	 * @return
 	 * @deprecated As of Judson (7.1.x), will be removed in next version
 	 */
 	@Deprecated
@@ -116,7 +114,6 @@ public class HandshakeMessage extends Message {
 	}
 
 	/**
-	 * @return
 	 * @deprecated As of Judson (7.1.x), will be removed in next version
 	 */
 	@Deprecated

@@ -102,7 +102,6 @@ public abstract class Message implements Serializable {
 	/**
 	 * Returns the message's error code.
 	 *
-	 * @return
 	 * @see   #setErrorCode(int)
 	 * @since LCS Messaging 10.1.2
 	 */
@@ -113,7 +112,6 @@ public abstract class Message implements Serializable {
 	/**
 	 * Returns the message's error message.
 	 *
-	 * @return
 	 * @see   #setErrorMessage(String)
 	 * @since LCS Messaging 10.1.2
 	 */

@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.exception.PortalException;
  *
  * @author     Eduardo Lundgren
  * @deprecated As of Judson (7.1.x), replaced by {@link
- *             #com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException}
+ *             com.liferay.portal.workflow.kaleo.definition.exception.KaleoDefinitionValidationException}
  */
 @Deprecated
 public class KaleoDraftDefinitionContentException extends PortalException {
