@@ -186,7 +186,7 @@ public class SynchronizeAccountEntryMessageListener
 				user.getUserId());
 
 			if ((accountCustomer == null) && (partnerWorker == null)) {
-				_accountCustomerSynchronizer.reassignTickets(
+				_accountEntrySynchronizer.reassignTickets(
 					user.getUserId(), accountEntry.getAccountEntryId(),
 					zendeskOrganizationId, zendeskUser.getZendeskUserId());
 

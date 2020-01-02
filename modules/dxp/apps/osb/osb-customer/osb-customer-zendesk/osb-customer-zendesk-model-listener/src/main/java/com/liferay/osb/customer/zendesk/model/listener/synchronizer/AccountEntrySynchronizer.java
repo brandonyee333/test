@@ -18,6 +18,7 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
@@ -28,6 +29,7 @@ import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
 import com.liferay.osb.customer.zendesk.web.service.search.SearchHits;
 import com.liferay.osb.exception.RequiredAccountEntryException;
 import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.model.ExternalIdMapper;
@@ -39,6 +41,7 @@ import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
+import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
@@ -49,10 +52,12 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -118,6 +123,74 @@ public class AccountEntrySynchronizer {
 
 		if (!zendeskTickets.isEmpty()) {
 			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+		}
+	}
+
+	public void reassignTickets(AccountCustomer accountCustomer)
+		throws PortalException {
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(
+				accountCustomer.getAccountEntryId());
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			accountCustomer.getUserId());
+
+		reassignTickets(
+			accountCustomer.getUserId(), accountCustomer.getAccountEntryId(),
+			zendeskOrganizationId, zendeskUserId);
+	}
+
+	public void reassignTickets(
+			long userId, long accountEntryId, long zendeskOrganizationId,
+			long zendeskUserId)
+		throws PortalException {
+
+		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+			Set<String> criteria = new HashSet<>();
+
+			criteria.add("organization:" + zendeskOrganizationId);
+			criteria.add("requester:" + zendeskUserId);
+			criteria.add("status<closed");
+
+			List<ZendeskTicket> zendeskTickets =
+				_zendeskTicketWebService.getZendeskTickets(criteria);
+
+			if (!zendeskTickets.isEmpty()) {
+				List<AccountCustomer> accountCustomers =
+					AccountCustomerLocalServiceUtil.getAccountCustomers(
+						accountEntryId,
+						AccountCustomerConstants.ROLE_DEVELOPER);
+
+				accountCustomers = ListUtil.copy(accountCustomers);
+
+				Iterator<AccountCustomer> iterator =
+					accountCustomers.iterator();
+
+				while (iterator.hasNext()) {
+					AccountCustomer accountCustomer = iterator.next();
+
+					if (accountCustomer.getUserId() == userId) {
+						iterator.remove();
+					}
+				}
+
+				if (accountCustomers.isEmpty()) {
+					throw new AccountCustomerRemovalException();
+				}
+
+				AccountCustomer newAccountCustomer = accountCustomers.get(0);
+
+				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+					newAccountCustomer.getUserId());
+
+				for (ZendeskTicket zendeskTicket : zendeskTickets) {
+					zendeskTicket.setRequesterId(newZendeskUserId);
+					zendeskTicket.setZendeskOrganizationId(
+						zendeskOrganizationId);
+				}
+
+				_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+			}
 		}
 	}
 

@@ -23,7 +23,11 @@ import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchron
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.model.AccountCustomer;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.PartnerEntry;
+import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
@@ -147,12 +151,42 @@ public class UserModelListener extends BaseModelListener<User> {
 
 			for (AccountCustomer accountCustomer : accountCustomers) {
 				try {
-					_accountCustomerSynchronizer.reassignTickets(
-						accountCustomer);
+					_accountEntrySynchronizer.reassignTickets(accountCustomer);
 				}
 				catch (AccountCustomerRemovalException acre) {
 					_accountEntrySynchronizer.closeZendeskTickets(
 						accountCustomer.getAccountEntry());
+				}
+			}
+
+			List<PartnerWorker> partnerWorkers =
+				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(
+					user.getUserId());
+
+			for (PartnerWorker partnerWorker : partnerWorkers) {
+				PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
+
+				List<AccountEntry> accountEntries =
+					partnerEntry.getPartnerManagedAccountEntries();
+
+				for (AccountEntry accountEntry : accountEntries) {
+					try {
+						long zendeskOrganizationId =
+							_zendeskMapperUtil.fetchZendeskOrganizationId(
+								accountEntry.getAccountEntryId());
+
+						if (zendeskOrganizationId <= 0) {
+							continue;
+						}
+
+						_accountEntrySynchronizer.reassignTickets(
+							user.getUserId(), accountEntry.getAccountEntryId(),
+							zendeskOrganizationId, zendeskUserId);
+					}
+					catch (AccountCustomerRemovalException acre) {
+						_accountEntrySynchronizer.closeZendeskTickets(
+							accountEntry);
+					}
 				}
 			}
 

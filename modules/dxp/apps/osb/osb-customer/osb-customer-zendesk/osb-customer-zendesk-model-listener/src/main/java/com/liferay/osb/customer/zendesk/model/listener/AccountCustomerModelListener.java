@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.model.listener;
 
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
@@ -81,7 +82,7 @@ public class AccountCustomerModelListener
 				return;
 			}
 
-			_accountCustomerSynchronizer.reassignTickets(accountCustomer);
+			_accountEntrySynchronizer.reassignTickets(accountCustomer);
 
 			_accountCustomerSynchronizer.remove(accountCustomer);
 		}
@@ -146,6 +147,9 @@ public class AccountCustomerModelListener
 
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+
+	@Reference
+	private AccountEntrySynchronizer _accountEntrySynchronizer;
 
 	@Reference
 	private UserLocalService _userLocalService;

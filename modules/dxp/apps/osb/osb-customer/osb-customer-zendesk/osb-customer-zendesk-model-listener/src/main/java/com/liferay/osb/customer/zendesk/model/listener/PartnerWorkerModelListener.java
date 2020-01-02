@@ -14,9 +14,15 @@
 
 package com.liferay.osb.customer.zendesk.model.listener;
 
+import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
+import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.PartnerWorkerSynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
 import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
@@ -29,6 +35,8 @@ import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.UserLocalService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -63,6 +71,37 @@ public class PartnerWorkerModelListener
 
 			if (user == null) {
 				return;
+			}
+
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+				user.getUserId());
+
+			if (zendeskUserId <= 0) {
+				return;
+			}
+
+			PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
+
+			List<AccountEntry> accountEntries =
+				partnerEntry.getPartnerManagedAccountEntries();
+
+			for (AccountEntry accountEntry : accountEntries) {
+				try {
+					long zendeskOrganizationId =
+						_zendeskMapperUtil.fetchZendeskOrganizationId(
+							accountEntry.getAccountEntryId());
+
+					if (zendeskOrganizationId <= 0) {
+						continue;
+					}
+
+					_accountEntrySynchronizer.reassignTickets(
+						user.getUserId(), accountEntry.getAccountEntryId(),
+						zendeskOrganizationId, zendeskUserId);
+				}
+				catch (AccountCustomerRemovalException acre) {
+					_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
+				}
 			}
 
 			_partnerWorkerSynchronizer.remove(partnerWorker);
@@ -130,6 +169,12 @@ public class PartnerWorkerModelListener
 			PartnerWorkerModelListener.class + "._oldRole");
 
 	@Reference
+	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+
+	@Reference
+	private AccountEntrySynchronizer _accountEntrySynchronizer;
+
+	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
 
 	@Reference
@@ -137,5 +182,8 @@ public class PartnerWorkerModelListener
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;
+
+	@Reference
+	private ZendeskMapperUtil _zendeskMapperUtil;
 
 }
