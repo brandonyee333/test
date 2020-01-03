@@ -127,6 +127,7 @@ create table OSB_ProductEntry (
 	userName VARCHAR(75) null,
 	createDate DATE null,
 	modifiedDate DATE null,
+	koroneikiProductKey VARCHAR(75) null,
 	name VARCHAR(75) null,
 	type_ INTEGER,
 	environment INTEGER,

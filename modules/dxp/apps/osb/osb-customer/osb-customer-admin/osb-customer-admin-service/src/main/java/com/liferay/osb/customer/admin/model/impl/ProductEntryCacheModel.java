@@ -62,7 +62,7 @@ public class ProductEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(21);
 
 		sb.append("{productEntryId=");
 		sb.append(productEntryId);
@@ -74,6 +74,8 @@ public class ProductEntryCacheModel
 		sb.append(createDate);
 		sb.append(", modifiedDate=");
 		sb.append(modifiedDate);
+		sb.append(", koroneikiProductKey=");
+		sb.append(koroneikiProductKey);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", type=");
@@ -115,6 +117,13 @@ public class ProductEntryCacheModel
 			productEntryImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
+		if (koroneikiProductKey == null) {
+			productEntryImpl.setKoroneikiProductKey("");
+		}
+		else {
+			productEntryImpl.setKoroneikiProductKey(koroneikiProductKey);
+		}
+
 		if (name == null) {
 			productEntryImpl.setName("");
 		}
@@ -145,6 +154,7 @@ public class ProductEntryCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
+		koroneikiProductKey = objectInput.readUTF();
 		name = objectInput.readUTF();
 
 		type = objectInput.readInt();
@@ -168,6 +178,13 @@ public class ProductEntryCacheModel
 
 		objectOutput.writeLong(createDate);
 		objectOutput.writeLong(modifiedDate);
+
+		if (koroneikiProductKey == null) {
+			objectOutput.writeUTF("");
+		}
+		else {
+			objectOutput.writeUTF(koroneikiProductKey);
+		}
 
 		if (name == null) {
 			objectOutput.writeUTF("");
@@ -193,6 +210,7 @@ public class ProductEntryCacheModel
 	public String userName;
 	public long createDate;
 	public long modifiedDate;
+	public String koroneikiProductKey;
 	public String name;
 	public int type;
 	public int environment;

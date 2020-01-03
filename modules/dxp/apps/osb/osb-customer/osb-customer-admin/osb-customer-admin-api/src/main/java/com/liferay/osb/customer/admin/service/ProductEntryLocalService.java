@@ -62,9 +62,8 @@ public interface ProductEntryLocalService
 	 * Never modify or reference this interface directly. Always use {@link ProductEntryLocalServiceUtil} to access the product entry local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ProductEntry addProductEntry(
-			long userId, String name, int type, int environment,
-			String versionsListType, String[] dossieraIdMappings,
-			String zendeskTag)
+			long userId, String koroneikiProductKey, int type, int environment,
+			String versionsListType, String zendeskTag)
 		throws PortalException;
 
 	/**
@@ -250,9 +249,8 @@ public interface ProductEntryLocalService
 	public int searchCount(String name, LinkedHashMap<String, Object> params);
 
 	public ProductEntry updateProductEntry(
-			long productEntryId, String name, int type, int environment,
-			String versionsListType, String[] dossieraIdMappings,
-			String zendeskTag)
+			long productEntryId, String koroneikiProductKey, int type,
+			int environment, String versionsListType, String zendeskTag)
 		throws PortalException;
 
 	/**

@@ -146,6 +146,21 @@ public interface ProductEntryModel extends BaseModel<ProductEntry> {
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
+	 * Returns the koroneiki product key of this product entry.
+	 *
+	 * @return the koroneiki product key of this product entry
+	 */
+	@AutoEscape
+	public String getKoroneikiProductKey();
+
+	/**
+	 * Sets the koroneiki product key of this product entry.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key of this product entry
+	 */
+	public void setKoroneikiProductKey(String koroneikiProductKey);
+
+	/**
 	 * Returns the name of this product entry.
 	 *
 	 * @return the name of this product entry

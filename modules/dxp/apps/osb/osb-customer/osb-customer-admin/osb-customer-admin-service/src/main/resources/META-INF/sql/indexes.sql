@@ -27,6 +27,7 @@ create index IX_8B5D7FE4 on OSB_LicenseEntry (productEntryId, portalVersionMin);
 create unique index IX_7576438B on OSB_LicenseEntry (productEntryId, type_[$COLUMN_LENGTH:75$]);
 
 create index IX_884EBE59 on OSB_ProductEntry (environment);
+create unique index IX_9EC71E05 on OSB_ProductEntry (koroneikiProductKey[$COLUMN_LENGTH:75$]);
 create unique index IX_190AFA9 on OSB_ProductEntry (name[$COLUMN_LENGTH:75$]);
 
 create unique index IX_DC67F8E7 on OSB_SupportRegion (name[$COLUMN_LENGTH:75$]);

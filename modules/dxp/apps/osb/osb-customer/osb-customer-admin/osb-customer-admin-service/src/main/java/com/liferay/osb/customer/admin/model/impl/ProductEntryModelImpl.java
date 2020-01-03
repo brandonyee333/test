@@ -74,7 +74,8 @@ public class ProductEntryModelImpl
 	public static final Object[][] TABLE_COLUMNS = {
 		{"productEntryId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
-		{"modifiedDate", Types.TIMESTAMP}, {"name", Types.VARCHAR},
+		{"modifiedDate", Types.TIMESTAMP},
+		{"koroneikiProductKey", Types.VARCHAR}, {"name", Types.VARCHAR},
 		{"type_", Types.INTEGER}, {"environment", Types.INTEGER},
 		{"versionsListType", Types.VARCHAR}
 	};
@@ -88,6 +89,7 @@ public class ProductEntryModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("koroneikiProductKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("environment", Types.INTEGER);
@@ -95,7 +97,7 @@ public class ProductEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,name VARCHAR(75) null,type_ INTEGER,environment INTEGER,versionsListType VARCHAR(75) null)";
+		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,type_ INTEGER,environment INTEGER,versionsListType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_ProductEntry";
 
@@ -128,7 +130,9 @@ public class ProductEntryModelImpl
 
 	public static final long ENVIRONMENT_COLUMN_BITMASK = 1L;
 
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long KORONEIKIPRODUCTKEY_COLUMN_BITMASK = 2L;
+
+	public static final long NAME_COLUMN_BITMASK = 4L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -148,6 +152,7 @@ public class ProductEntryModelImpl
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setKoroneikiProductKey(soapModel.getKoroneikiProductKey());
 		model.setName(soapModel.getName());
 		model.setType(soapModel.getType());
 		model.setEnvironment(soapModel.getEnvironment());
@@ -417,6 +422,30 @@ public class ProductEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
+			"koroneikiProductKey",
+			new Function<ProductEntry, Object>() {
+
+				@Override
+				public Object apply(ProductEntry productEntry) {
+					return productEntry.getKoroneikiProductKey();
+				}
+
+			});
+		attributeSetterBiConsumers.put(
+			"koroneikiProductKey",
+			new BiConsumer<ProductEntry, Object>() {
+
+				@Override
+				public void accept(
+					ProductEntry productEntry,
+					Object koroneikiProductKeyObject) {
+
+					productEntry.setKoroneikiProductKey(
+						(String)koroneikiProductKeyObject);
+				}
+
+			});
+		attributeGetterFunctions.put(
 			"name",
 			new Function<ProductEntry, Object>() {
 
@@ -596,6 +625,32 @@ public class ProductEntryModelImpl
 
 	@JSON
 	@Override
+	public String getKoroneikiProductKey() {
+		if (_koroneikiProductKey == null) {
+			return "";
+		}
+		else {
+			return _koroneikiProductKey;
+		}
+	}
+
+	@Override
+	public void setKoroneikiProductKey(String koroneikiProductKey) {
+		_columnBitmask |= KORONEIKIPRODUCTKEY_COLUMN_BITMASK;
+
+		if (_originalKoroneikiProductKey == null) {
+			_originalKoroneikiProductKey = _koroneikiProductKey;
+		}
+
+		_koroneikiProductKey = koroneikiProductKey;
+	}
+
+	public String getOriginalKoroneikiProductKey() {
+		return GetterUtil.getString(_originalKoroneikiProductKey);
+	}
+
+	@JSON
+	@Override
 	public String getName() {
 		if (_name == null) {
 			return "";
@@ -711,6 +766,7 @@ public class ProductEntryModelImpl
 		productEntryImpl.setUserName(getUserName());
 		productEntryImpl.setCreateDate(getCreateDate());
 		productEntryImpl.setModifiedDate(getModifiedDate());
+		productEntryImpl.setKoroneikiProductKey(getKoroneikiProductKey());
 		productEntryImpl.setName(getName());
 		productEntryImpl.setType(getType());
 		productEntryImpl.setEnvironment(getEnvironment());
@@ -777,6 +833,9 @@ public class ProductEntryModelImpl
 
 		productEntryModelImpl._setModifiedDate = false;
 
+		productEntryModelImpl._originalKoroneikiProductKey =
+			productEntryModelImpl._koroneikiProductKey;
+
 		productEntryModelImpl._originalName = productEntryModelImpl._name;
 
 		productEntryModelImpl._originalEnvironment =
@@ -820,6 +879,16 @@ public class ProductEntryModelImpl
 		}
 		else {
 			productEntryCacheModel.modifiedDate = Long.MIN_VALUE;
+		}
+
+		productEntryCacheModel.koroneikiProductKey = getKoroneikiProductKey();
+
+		String koroneikiProductKey = productEntryCacheModel.koroneikiProductKey;
+
+		if ((koroneikiProductKey != null) &&
+			(koroneikiProductKey.length() == 0)) {
+
+			productEntryCacheModel.koroneikiProductKey = null;
 		}
 
 		productEntryCacheModel.name = getName();
@@ -921,6 +990,8 @@ public class ProductEntryModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private String _koroneikiProductKey;
+	private String _originalKoroneikiProductKey;
 	private String _name;
 	private String _originalName;
 	private int _type;

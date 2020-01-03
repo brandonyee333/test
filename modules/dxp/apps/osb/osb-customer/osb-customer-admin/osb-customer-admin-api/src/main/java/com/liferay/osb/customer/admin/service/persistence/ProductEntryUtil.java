@@ -124,6 +124,72 @@ public class ProductEntryUtil {
 	}
 
 	/**
+	 * Returns the product entry where koroneikiProductKey = &#63; or throws a <code>NoSuchProductEntryException</code> if it could not be found.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	public static ProductEntry findByKoroneikiProductKey(
+			String koroneikiProductKey)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchProductEntryException {
+
+		return getPersistence().findByKoroneikiProductKey(koroneikiProductKey);
+	}
+
+	/**
+	 * Returns the product entry where koroneikiProductKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public static ProductEntry fetchByKoroneikiProductKey(
+		String koroneikiProductKey) {
+
+		return getPersistence().fetchByKoroneikiProductKey(koroneikiProductKey);
+	}
+
+	/**
+	 * Returns the product entry where koroneikiProductKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public static ProductEntry fetchByKoroneikiProductKey(
+		String koroneikiProductKey, boolean useFinderCache) {
+
+		return getPersistence().fetchByKoroneikiProductKey(
+			koroneikiProductKey, useFinderCache);
+	}
+
+	/**
+	 * Removes the product entry where koroneikiProductKey = &#63; from the database.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the product entry that was removed
+	 */
+	public static ProductEntry removeByKoroneikiProductKey(
+			String koroneikiProductKey)
+		throws com.liferay.osb.customer.admin.exception.
+			NoSuchProductEntryException {
+
+		return getPersistence().removeByKoroneikiProductKey(
+			koroneikiProductKey);
+	}
+
+	/**
+	 * Returns the number of product entries where koroneikiProductKey = &#63;.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the number of matching product entries
+	 */
+	public static int countByKoroneikiProductKey(String koroneikiProductKey) {
+		return getPersistence().countByKoroneikiProductKey(koroneikiProductKey);
+	}
+
+	/**
 	 * Returns the product entry where name = &#63; or throws a <code>NoSuchProductEntryException</code> if it could not be found.
 	 *
 	 * @param name the name

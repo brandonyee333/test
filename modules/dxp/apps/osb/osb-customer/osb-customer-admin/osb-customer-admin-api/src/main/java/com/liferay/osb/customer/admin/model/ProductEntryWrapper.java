@@ -60,6 +60,7 @@ public class ProductEntryWrapper
 		attributes.put("userName", getUserName());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
+		attributes.put("koroneikiProductKey", getKoroneikiProductKey());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
 		attributes.put("environment", getEnvironment());
@@ -98,6 +99,13 @@ public class ProductEntryWrapper
 
 		if (modifiedDate != null) {
 			setModifiedDate(modifiedDate);
+		}
+
+		String koroneikiProductKey = (String)attributes.get(
+			"koroneikiProductKey");
+
+		if (koroneikiProductKey != null) {
+			setKoroneikiProductKey(koroneikiProductKey);
 		}
 
 		String name = (String)attributes.get("name");
@@ -157,11 +165,6 @@ public class ProductEntryWrapper
 		return _productEntry.getDisplayName();
 	}
 
-	@Override
-	public String[] getDossieraIdMappings() {
-		return _productEntry.getDossieraIdMappings();
-	}
-
 	/**
 	 * Returns the environment of this product entry.
 	 *
@@ -180,6 +183,16 @@ public class ProductEntryWrapper
 	@Override
 	public ExpandoBridge getExpandoBridge() {
 		return _productEntry.getExpandoBridge();
+	}
+
+	/**
+	 * Returns the koroneiki product key of this product entry.
+	 *
+	 * @return the koroneiki product key of this product entry
+	 */
+	@Override
+	public String getKoroneikiProductKey() {
+		return _productEntry.getKoroneikiProductKey();
 	}
 
 	/**
@@ -444,6 +457,16 @@ public class ProductEntryWrapper
 	@Override
 	public void setExpandoBridgeAttributes(ServiceContext serviceContext) {
 		_productEntry.setExpandoBridgeAttributes(serviceContext);
+	}
+
+	/**
+	 * Sets the koroneiki product key of this product entry.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key of this product entry
+	 */
+	@Override
+	public void setKoroneikiProductKey(String koroneikiProductKey) {
+		_productEntry.setKoroneikiProductKey(koroneikiProductKey);
 	}
 
 	/**

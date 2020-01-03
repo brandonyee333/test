@@ -63,8 +63,6 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 
 	public String getDisplayName();
 
-	public String[] getDossieraIdMappings();
-
 	public String getEnvironmentLabel();
 
 	public String getTypeLabel();

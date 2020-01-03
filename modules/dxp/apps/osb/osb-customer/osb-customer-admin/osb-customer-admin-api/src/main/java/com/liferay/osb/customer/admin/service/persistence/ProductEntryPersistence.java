@@ -49,6 +49,51 @@ public interface ProductEntryPersistence extends BasePersistence<ProductEntry> {
 		Set<Serializable> primaryKeys);
 
 	/**
+	 * Returns the product entry where koroneikiProductKey = &#63; or throws a <code>NoSuchProductEntryException</code> if it could not be found.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the matching product entry
+	 * @throws NoSuchProductEntryException if a matching product entry could not be found
+	 */
+	public ProductEntry findByKoroneikiProductKey(String koroneikiProductKey)
+		throws NoSuchProductEntryException;
+
+	/**
+	 * Returns the product entry where koroneikiProductKey = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public ProductEntry fetchByKoroneikiProductKey(String koroneikiProductKey);
+
+	/**
+	 * Returns the product entry where koroneikiProductKey = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching product entry, or <code>null</code> if a matching product entry could not be found
+	 */
+	public ProductEntry fetchByKoroneikiProductKey(
+		String koroneikiProductKey, boolean useFinderCache);
+
+	/**
+	 * Removes the product entry where koroneikiProductKey = &#63; from the database.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the product entry that was removed
+	 */
+	public ProductEntry removeByKoroneikiProductKey(String koroneikiProductKey)
+		throws NoSuchProductEntryException;
+
+	/**
+	 * Returns the number of product entries where koroneikiProductKey = &#63;.
+	 *
+	 * @param koroneikiProductKey the koroneiki product key
+	 * @return the number of matching product entries
+	 */
+	public int countByKoroneikiProductKey(String koroneikiProductKey);
+
+	/**
 	 * Returns the product entry where name = &#63; or throws a <code>NoSuchProductEntryException</code> if it could not be found.
 	 *
 	 * @param name the name
