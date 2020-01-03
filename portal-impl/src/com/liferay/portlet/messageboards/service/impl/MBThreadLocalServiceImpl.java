@@ -69,8 +69,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.osgi.service.component.annotations.Reference;
-
 /**
  * @author Brian Wing Shun Chan
  * @author Shuyang Zhou
@@ -1190,9 +1188,6 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		return thread;
 	}
 
-	@BeanReference(type = ExpandoRowLocalService.class)
-	protected ExpandoRowLocalService expandoRowLocalService;
-
 	protected void moveAttachmentsFolders(
 			MBMessage message, long oldAttachmentsFolderId, MBThread oldThread,
 			MBThread newThread, ServiceContext serviceContext)
@@ -1243,5 +1238,8 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 			moveChildrenMessages(message, category, oldThreadId);
 		}
 	}
+
+	@BeanReference(type = ExpandoRowLocalService.class)
+	protected ExpandoRowLocalService expandoRowLocalService;
 
 }
