@@ -42,6 +42,7 @@ import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminPortle
 import com.liferay.osb.customer.admin.web.internal.constants.CustomerAdminWebKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.portal.kernel.exception.ModelListenerException;
@@ -238,6 +239,8 @@ public class AdminPortlet extends MVCPortlet {
 		renderRequest.setAttribute(
 			AccountWebService.class.getName(), _accountWebService);
 		renderRequest.setAttribute(
+			ProductWebService.class.getName(), _productWebService);
+		renderRequest.setAttribute(
 			TeamRoleWebService.class.getName(), _teamRoleWebService);
 		renderRequest.setAttribute(
 			TeamWebService.class.getName(), _teamWebService);
@@ -379,25 +382,23 @@ public class AdminPortlet extends MVCPortlet {
 		long productEntryId = ParamUtil.getLong(
 			actionRequest, "productEntryId");
 
-		String name = ParamUtil.getString(actionRequest, "name");
+		String koroneikiProductKey = ParamUtil.getString(
+			actionRequest, "koroneikiProductKey");
 		int type = ParamUtil.getInteger(actionRequest, "type");
 		int environment = ParamUtil.getInteger(actionRequest, "environment");
 		String versionsListType = ParamUtil.getString(
 			actionRequest, "versionsListType");
-		String[] dossieraIdMappings = StringUtil.split(
-			ParamUtil.getString(actionRequest, "dossieraIdMappings"),
-			StringPool.NEW_LINE);
 		String zendeskTag = ParamUtil.getString(actionRequest, "zendeskTag");
 
 		if (productEntryId <= 0) {
 			_productEntryLocalService.addProductEntry(
-				themeDisplay.getUserId(), name, type, environment,
-				versionsListType, dossieraIdMappings, zendeskTag);
+				themeDisplay.getUserId(), koroneikiProductKey, type,
+				environment, versionsListType, zendeskTag);
 		}
 		else {
 			_productEntryLocalService.updateProductEntry(
-				productEntryId, name, type, environment, versionsListType,
-				dossieraIdMappings, zendeskTag);
+				productEntryId, koroneikiProductKey, type, environment,
+				versionsListType, zendeskTag);
 		}
 	}
 
@@ -709,6 +710,9 @@ public class AdminPortlet extends MVCPortlet {
 
 	@Reference
 	private ProductEntryLocalService _productEntryLocalService;
+
+	@Reference
+	private ProductWebService _productWebService;
 
 	@Reference
 	private RoleLocalService _roleLocalService;

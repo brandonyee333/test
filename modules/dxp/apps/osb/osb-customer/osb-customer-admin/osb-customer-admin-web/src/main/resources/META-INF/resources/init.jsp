@@ -60,10 +60,13 @@ page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntrySear
 page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntrySearchTerms" %><%@
 page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.AccountWebService" %><%@
+page import="com.liferay.osb.customer.koroneiki.web.service.ProductWebService" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.TeamWebService" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team" %><%@
 page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
@@ -112,6 +115,7 @@ WindowState windowState = renderRequest.getWindowState();
 String currentURL = PortalUtil.getCurrentURL(request);
 
 AccountWebService accountWebService = (AccountWebService)request.getAttribute(AccountWebService.class.getName());
+ProductWebService productWebService = (ProductWebService)request.getAttribute(ProductWebService.class.getName());
 TeamRoleWebService teamRoleWebService = (TeamRoleWebService)request.getAttribute(TeamRoleWebService.class.getName());
 TeamWebService teamWebService = (TeamWebService)request.getAttribute(TeamWebService.class.getName());
 %>

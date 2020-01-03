@@ -25,17 +25,18 @@ long productEntryId = ParamUtil.getLong(request, "productEntryId");
 
 ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(productEntryId);
 
+Product koroneikiProduct = null;
+
+if ((productEntry != null) && Validator.isNotNull(productEntry.getKoroneikiProductKey())) {
+	koroneikiProduct = productWebService.getProduct(productEntry.getKoroneikiProductKey());
+}
+
 int type = BeanParamUtil.getInteger(productEntry, request, "type");
 int environment = BeanParamUtil.getInteger(productEntry, request, "environment");
 String versionsListType = BeanParamUtil.getString(productEntry, request, "versionsListType");
-String dossieraIdMappings = ParamUtil.getString(request, "dossieraIdMappings");
 String zendeskTag = ParamUtil.getString(request, "zendeskTag");
 
 if (productEntry != null) {
-	if (Validator.isNull(dossieraIdMappings)) {
-		dossieraIdMappings = StringUtil.merge(productEntry.getDossieraIdMappings(), StringPool.NEW_LINE);
-	}
-
 	if (Validator.isNull(zendeskTag)) {
 		zendeskTag = productEntry.getZendeskTag();
 	}
@@ -61,17 +62,23 @@ if (productEntry != null) {
 	<liferay-ui:error exception="<%= ProductEntryNameException.class %>" message="please-enter-a-valid-name" />
 	<liferay-ui:error exception="<%= ZendeskTagException.class %>" message="please-enter-a-valid-zendesk-tag" />
 
+	<aui:model-context bean="<%= productEntry %>" model="<%= ProductEntry.class %>" />
+
 	<table class="lfr-table">
+		<tr>
+			<td>
+				<liferay-ui:message key="koroneiki-product-key" />
+			</td>
+			<td>
+				<aui:input label="" name="koroneikiProductKey" />
+			</td>
+		</tr>
 		<tr>
 			<td>
 				<liferay-ui:message key="name" />
 			</td>
 			<td>
-				<liferay-ui:input-field
-					bean="<%= productEntry %>"
-					field="name"
-					model="<%= ProductEntry.class %>"
-				/>
+				<%= HtmlUtil.escape(productEntry.getName()) %>
 			</td>
 		</tr>
 		<tr>
@@ -138,12 +145,53 @@ if (productEntry != null) {
 
 		<tr>
 			<td>
-				<liferay-ui:message key="dossiera-id-mappings" />
+				<liferay-ui:message key="external-links" />
 			</td>
 			<td>
-				<aui:fieldset>
-					<aui:input label="" name="dossieraIdMappings" style="width: 500px;" type="textarea" value="<%= dossieraIdMappings %>" />
-				</aui:fieldset>
+				<table class="lfr-table">
+
+					<%
+					if (koroneikiProduct != null) {
+						ExternalLink[] externalLinks = koroneikiProduct.getExternalLinks();
+
+						if (externalLinks != null) {
+					%>
+					
+						<tr>
+							<td>
+								<strong><liferay-ui:message key="domain" /></strong>
+							</td>
+							<td>
+								<strong><liferay-ui:message key="entity-name" /></strong>
+							</td>
+							<td>
+								<strong><liferay-ui:message key="entity-id" /></strong>
+							</td>
+						</tr>
+					
+					<% 
+						for (ExternalLink externalLink : externalLinks) {
+					%>
+
+								<tr>
+									<td>
+										<%= HtmlUtil.escape(externalLink.getDomain()) %>
+									</td>
+									<td>
+										<%= HtmlUtil.escape(externalLink.getEntityName()) %>
+									</td>
+									<td>
+										<%= HtmlUtil.escape(externalLink.getEntityId()) %>
+									</td>
+								</tr>
+
+					<%
+							}
+						}
+					}
+					%>
+
+				</table>
 			</td>
 		</tr>
 		<tr>

@@ -78,26 +78,6 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return ProductEntryConstants.getDisplayName(getName());
 	}
 
-	public String[] getDossieraIdMappings() {
-		long classNameId = PortalUtil.getClassNameId(
-			ProductEntry.class.getName());
-
-		List<ExternalIdMapper> externalIdMappers =
-			ExternalIdMapperLocalServiceUtil.getExternalIdMappers(
-				classNameId, getProductEntryId(),
-				ExternalIdMapperConstants.TYPE_DOSSIERA);
-
-		String[] dossieraIdMappings = new String[externalIdMappers.size()];
-
-		for (int i = 0; i < externalIdMappers.size(); i++) {
-			ExternalIdMapper externalIdMapper = externalIdMappers.get(i);
-
-			dossieraIdMappings[i] = externalIdMapper.getExternalId();
-		}
-
-		return dossieraIdMappings;
-	}
-
 	public String getEnvironmentLabel() {
 		return ProductEntryConstants.getEnvironmentLabel(getEnvironment());
 	}

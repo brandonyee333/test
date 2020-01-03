@@ -357,6 +357,7 @@
 
 		<!-- Other fields -->
 
+		<column name="koroneikiProductKey" type="String" />
 		<column name="name" type="String" />
 		<column name="type" type="int" />
 		<column name="environment" type="int" />
@@ -370,6 +371,9 @@
 
 		<!-- Finder methods -->
 
+		<finder name="KoroneikiProductKey" return-type="ProductEntry" unique="true">
+			<finder-column name="koroneikiProductKey" />
+		</finder>
 		<finder name="Name" return-type="ProductEntry" unique="true">
 			<finder-column name="name" />
 		</finder>

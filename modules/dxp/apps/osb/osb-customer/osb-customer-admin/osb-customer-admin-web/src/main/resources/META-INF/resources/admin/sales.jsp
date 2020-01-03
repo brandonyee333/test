@@ -34,7 +34,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 	<c:when test='<%= tabs2.equals("licenses") %>'>
 		<%@ include file="/admin/licenses.jspf" %>
 	</c:when>
-	<c:when test='<%= tabs2.equals("products") %>'>
+	<c:otherwise>
 		<%@ include file="/admin/products.jspf" %>
-	</c:when>
+	</c:otherwise>
 </c:choose>

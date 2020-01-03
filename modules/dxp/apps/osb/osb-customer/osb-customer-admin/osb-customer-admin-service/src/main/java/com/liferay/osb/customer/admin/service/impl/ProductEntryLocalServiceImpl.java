@@ -17,7 +17,6 @@ package com.liferay.osb.customer.admin.service.impl;
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
 import com.liferay.osb.customer.admin.exception.ProductEntryEnvironmentException;
-import com.liferay.osb.customer.admin.exception.ProductEntryNameException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
 import com.liferay.osb.customer.admin.model.ExternalIdMapper;
 import com.liferay.osb.customer.admin.model.ProductEntry;
@@ -25,7 +24,6 @@ import com.liferay.osb.customer.admin.service.base.ProductEntryLocalServiceBaseI
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Date;
@@ -40,15 +38,14 @@ public class ProductEntryLocalServiceImpl
 	extends ProductEntryLocalServiceBaseImpl {
 
 	public ProductEntry addProductEntry(
-			long userId, String name, int type, int environment,
-			String versionsListType, String[] dossieraIdMappings,
-			String zendeskTag)
+			long userId, String koroneikiProductKey, int type, int environment,
+			String versionsListType, String zendeskTag)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(0, name, environment, zendeskTag);
+		validate(0, koroneikiProductKey, environment, zendeskTag);
 
 		long productEntryId = counterLocalService.increment();
 
@@ -59,7 +56,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setUserName(user.getFullName());
 		productEntry.setCreateDate(now);
 		productEntry.setModifiedDate(now);
-		productEntry.setName(name);
+		productEntry.setKoroneikiProductKey(koroneikiProductKey);
 		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
@@ -68,12 +65,6 @@ public class ProductEntryLocalServiceImpl
 
 		long classNameId = classNameLocalService.getClassNameId(
 			ProductEntry.class);
-
-		for (String dossieraIdMapping : dossieraIdMappings) {
-			externalIdMapperLocalService.addExternalIdMapper(
-				classNameId, productEntryId,
-				ExternalIdMapperConstants.TYPE_DOSSIERA, dossieraIdMapping);
-		}
 
 		if (Validator.isNotNull(zendeskTag)) {
 			externalIdMapperLocalService.addExternalIdMapper(
@@ -129,18 +120,17 @@ public class ProductEntryLocalServiceImpl
 	}
 
 	public ProductEntry updateProductEntry(
-			long productEntryId, String name, int type, int environment,
-			String versionsListType, String[] dossieraIdMappings,
-			String zendeskTag)
+			long productEntryId, String koroneikiProductKey, int type,
+			int environment, String versionsListType, String zendeskTag)
 		throws PortalException {
 
-		validate(productEntryId, name, environment, zendeskTag);
+		validate(productEntryId, koroneikiProductKey, environment, zendeskTag);
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
 
 		productEntry.setModifiedDate(new Date());
-		productEntry.setName(name);
+		productEntry.setKoroneikiProductKey(koroneikiProductKey);
 		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
@@ -153,30 +143,7 @@ public class ProductEntryLocalServiceImpl
 		List<ExternalIdMapper> externalIdMappers =
 			externalIdMapperLocalService.getExternalIdMappers(
 				classNameId, productEntryId,
-				ExternalIdMapperConstants.TYPE_DOSSIERA);
-
-		for (ExternalIdMapper externalIdMapper : externalIdMappers) {
-			String externalId = externalIdMapper.getExternalId();
-
-			if (!ArrayUtil.contains(dossieraIdMappings, externalId)) {
-				externalIdMapperLocalService.deleteExternalIdMapper(
-					externalIdMapper.getExternalIdMapperId());
-			}
-			else {
-				dossieraIdMappings = ArrayUtil.remove(
-					dossieraIdMappings, externalId);
-			}
-		}
-
-		for (String dossieraIdMapping : dossieraIdMappings) {
-			externalIdMapperLocalService.addExternalIdMapper(
-				classNameId, productEntryId,
-				ExternalIdMapperConstants.TYPE_DOSSIERA, dossieraIdMapping);
-		}
-
-		externalIdMappers = externalIdMapperLocalService.getExternalIdMappers(
-			classNameId, productEntryId,
-			ExternalIdMapperConstants.TYPE_ZENDESK);
+				ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (Validator.isNotNull(zendeskTag)) {
 			if (!externalIdMappers.isEmpty()) {
@@ -204,15 +171,13 @@ public class ProductEntryLocalServiceImpl
 	}
 
 	protected void validate(
-			long productEntryId, String name, int environment,
+			long productEntryId, String koroneikiProductKey, int environment,
 			String zendeskTag)
 		throws PortalException {
 
-		if (Validator.isNull(name)) {
-			throw new ProductEntryNameException();
-		}
-
-		ProductEntry productEntry = productEntryPersistence.fetchByName(name);
+		ProductEntry productEntry =
+			productEntryPersistence.fetchByKoroneikiProductKey(
+				koroneikiProductKey);
 
 		if ((productEntry != null) &&
 			(productEntry.getProductEntryId() != productEntryId)) {
