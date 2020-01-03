@@ -285,6 +285,8 @@ definition {
 	test ViewContentSharingDisabledAcrossSitesViaAP {
 		property test.name.skip.portal.instance = "CPPortalSettings#ViewContentSharingDisabledAcrossSitesViaAP";
 
+		var siteName = TestCase.getSiteName(siteName = "${siteName}");
+
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
@@ -350,7 +352,7 @@ definition {
 			contentSharingAcrossSitesEnabled = "false",
 			globalSiteName = "Global",
 			globalSiteType = "Global",
-			liferaySiteName = "Liferay",
+			liferaySiteName = "${siteName}",
 			liferaySiteType = "Site");
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -383,7 +385,7 @@ definition {
 			contentSharingAcrossSitesEnabled = "false",
 			globalSiteName = "Global",
 			globalSiteType = "Global",
-			liferaySiteName = "Liferay",
+			liferaySiteName = "${siteName}",
 			liferaySiteType = "Site");
 
 		Navigator.openSiteURL(siteName = "Child SiteName");
@@ -461,7 +463,7 @@ definition {
 			currentSite = "true",
 			globalSiteName = "Global",
 			globalSiteType = "Global",
-			liferaySiteName = "Liferay",
+			liferaySiteName = "${siteName}",
 			liferaySiteType = "Current Site");
 
 		Navigator.gotoPage(pageName = "AP Test Page");
