@@ -156,22 +156,22 @@ if (productEntry != null) {
 
 						if (externalLinks != null) {
 					%>
-					
-						<tr>
-							<td>
-								<strong><liferay-ui:message key="domain" /></strong>
-							</td>
-							<td>
-								<strong><liferay-ui:message key="entity-name" /></strong>
-							</td>
-							<td>
-								<strong><liferay-ui:message key="entity-id" /></strong>
-							</td>
-						</tr>
-					
-					<% 
-						for (ExternalLink externalLink : externalLinks) {
-					%>
+
+							<tr>
+								<td>
+									<strong><liferay-ui:message key="domain" /></strong>
+								</td>
+								<td>
+									<strong><liferay-ui:message key="entity-name" /></strong>
+								</td>
+								<td>
+									<strong><liferay-ui:message key="entity-id" /></strong>
+								</td>
+							</tr>
+
+							<%
+							for (ExternalLink externalLink : externalLinks) {
+							%>
 
 								<tr>
 									<td>
