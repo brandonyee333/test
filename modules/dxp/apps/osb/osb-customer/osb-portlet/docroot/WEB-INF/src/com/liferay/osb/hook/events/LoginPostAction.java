@@ -14,7 +14,6 @@
 
 package com.liferay.osb.hook.events;
 
-import com.liferay.osb.service.RemoteUserLocalServiceUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -34,7 +33,7 @@ public class LoginPostAction extends Action {
 		try {
 			long userId = PortalUtil.getUserId(request);
 
-			RemoteUserLocalServiceUtil.synchronize(userId);
+			//TODO RemoteUserLocalServiceUtil.synchronize(userId);
 		}
 		catch (Exception e) {
 			throw new ActionException(e);

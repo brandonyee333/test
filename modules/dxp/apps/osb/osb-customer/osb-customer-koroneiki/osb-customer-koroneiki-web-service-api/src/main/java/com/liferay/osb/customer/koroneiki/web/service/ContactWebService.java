@@ -12,28 +12,22 @@
  *
  */
 
-package com.liferay.osb.customer.admin.exception;
+package com.liferay.osb.customer.koroneiki.web.service;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+
+import java.util.List;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class RequiredAccountEntryException extends PortalException {
+public interface ContactWebService {
 
-	public RequiredAccountEntryException() {
-	}
+	public Contact fetchContactByUuid(String uuid) throws Exception;
 
-	public RequiredAccountEntryException(String msg) {
-		super(msg);
-	}
+	public List<Contact> search(String filterString, int page, int pageSize)
+		throws Exception;
 
-	public RequiredAccountEntryException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public RequiredAccountEntryException(Throwable cause) {
-		super(cause);
-	}
+	public long searchCount(String filterString) throws Exception;
 
 }

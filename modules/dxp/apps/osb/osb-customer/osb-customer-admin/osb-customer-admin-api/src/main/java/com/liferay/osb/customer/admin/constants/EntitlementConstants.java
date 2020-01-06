@@ -12,28 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.admin.exception;
-
-import com.liferay.portal.kernel.exception.PortalException;
+package com.liferay.osb.customer.admin.constants;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class RequiredAccountEntryException extends PortalException {
+public class EntitlementConstants {
 
-	public RequiredAccountEntryException() {
-	}
-
-	public RequiredAccountEntryException(String msg) {
-		super(msg);
-	}
-
-	public RequiredAccountEntryException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
-
-	public RequiredAccountEntryException(Throwable cause) {
-		super(cause);
-	}
+	public static final String ORGANIZATION_NAME_PREFIX = "Koroneiki ";
 
 }

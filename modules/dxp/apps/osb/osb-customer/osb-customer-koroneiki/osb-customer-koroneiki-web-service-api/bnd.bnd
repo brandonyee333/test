@@ -5,5 +5,7 @@ Export-Package:\
 	com.liferay.osb.customer.koroneiki.web.service,\
 	com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0,\
 	com.liferay.osb.koroneiki.phloem.rest.client.function,\
+	com.liferay.osb.koroneiki.phloem.rest.client.http,\
 	com.liferay.osb.koroneiki.phloem.rest.client.pagination,\
-	com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0
+	com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0,\
+	com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0

@@ -12,28 +12,21 @@
  *
  */
 
-package com.liferay.osb.customer.admin.exception;
+package com.liferay.osb.customer.identity.management.provider;
 
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Amos Fong
  */
-public class RequiredAccountEntryException extends PortalException {
+public interface UserIdentityProvider {
 
-	public RequiredAccountEntryException() {
-	}
+	public User fetchUserByEmailAddress(String emailAddress) throws Exception;
 
-	public RequiredAccountEntryException(String msg) {
-		super(msg);
-	}
+	public User fetchUserByProviderId(String providerId) throws Exception;
 
-	public RequiredAccountEntryException(String msg, Throwable cause) {
-		super(msg, cause);
-	}
+	public User getUserByEmailAddress(String emailAddress) throws Exception;
 
-	public RequiredAccountEntryException(Throwable cause) {
-		super(cause);
-	}
+	public User getUserByProviderId(String providerId) throws Exception;
 
 }

@@ -15,8 +15,6 @@
 package com.liferay.osb.customer.koroneiki.web.service;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
-import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.search.filter.Filter;
 
 /**
  * @author Kyle Bischof

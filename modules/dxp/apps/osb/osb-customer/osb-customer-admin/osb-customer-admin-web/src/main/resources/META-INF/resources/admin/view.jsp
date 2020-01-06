@@ -23,7 +23,7 @@ String tabs2 = ParamUtil.getString(request, "tabs2");
 String tabsNames = StringPool.BLANK;
 
 if (RoleLocalServiceUtil.hasUserRole(user.getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
-	tabsNames = "accounts,sales,support,tools";
+	tabsNames = "accounts,entitlements,sales,support,tools";
 }
 else {
 	List<String> tabsNamesList = new ArrayList<String>();
@@ -68,6 +68,9 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 	<liferay-util:include page="/common/exception.jsp" servletContext="<%= application %>" />
 
 	<c:choose>
+		<c:when test='<%= tabs1.equals("entitlements") %>'>
+			<liferay-util:include page="/admin/entitlements.jsp" servletContext="<%= application %>" />
+		</c:when>
 		<c:when test='<%= tabs1.equals("sales") %>'>
 			<liferay-util:include page="/admin/sales.jsp" servletContext="<%= application %>" />
 		</c:when>

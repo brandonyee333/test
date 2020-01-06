@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.rabbitmq.processor;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.rabbitmq.connector.processor.MessageProcessor;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -161,6 +162,26 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		return null;
 	}
 
+	protected Organization fetchOrganization(String name) {
+		if (Validator.isNull(name)) {
+			return null;
+		}
+
+		List<Company> companies = companyLocalService.getCompanies();
+
+		for (Company company : companies) {
+			Organization organization =
+				organizationLocalService.fetchOrganization(
+					company.getCompanyId(), name);
+
+			if (organization != null) {
+				return organization;
+			}
+		}
+
+		return null;
+	}
+
 	protected Role fetchRole(String uuid) {
 		if (Validator.isNull(uuid)) {
 			return null;
@@ -190,6 +211,25 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 		for (Company company : companies) {
 			User user = userLocalService.fetchUserByUuidAndCompanyId(
 				uuid, company.getCompanyId());
+
+			if (user != null) {
+				return user;
+			}
+		}
+
+		return null;
+	}
+
+	protected User fetchUserByEmailAddress(String emailAddress) {
+		if (Validator.isNull(emailAddress)) {
+			return null;
+		}
+
+		List<Company> companies = companyLocalService.getCompanies();
+
+		for (Company company : companies) {
+			User user = userLocalService.fetchUserByEmailAddress(
+				company.getCompanyId(), emailAddress);
 
 			if (user != null) {
 				return user;
@@ -248,6 +288,10 @@ public abstract class BaseMessageProcessor implements MessageProcessor {
 	protected OrganizationLocalService organizationLocalService;
 	protected RoleLocalService roleLocalService;
 	protected UserGroupRoleLocalService userGroupRoleLocalService;
+
+	@Reference(target = "(provider=web)")
+	protected UserIdentityProvider userIdentityProvider;
+
 	protected UserLocalService userLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(

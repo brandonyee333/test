@@ -19,8 +19,6 @@ import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.Kor
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductResource;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.search.Sort;
-import com.liferay.portal.kernel.search.filter.Filter;
 
 import java.util.Map;
 
