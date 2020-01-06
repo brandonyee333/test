@@ -15,7 +15,7 @@
 </tr>
 <tr>
 	<td>BREADCRUMB_ENTRY_ACTIVE_ENTRY</td>
-	<td>//div[contains(@id,'breadcrumb')]//li[@class='active']</td>
+	<td>//div[contains(@id,'breadcrumb')]//li[@class='active'] | //div[contains(@id,'breadcrumb')]//li[2]</td>
 	<td></td>
 </tr>
 </tbody>

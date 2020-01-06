@@ -56,7 +56,7 @@ definition {
 	macro viewActiveEntry {
 		var breadcrumbNameUppercase = StringUtil.upperCase("${breadcrumbName}");
 
-		AssertTextEquals(
+		AssertTextEquals.assertPartialText(
 			locator1 = "Breadcrumb#BREADCRUMB_ENTRY_ACTIVE_ENTRY",
 			value1 = "${breadcrumbNameUppercase}");
 	}
