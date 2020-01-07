@@ -33,11 +33,6 @@ public class MBDiscussionLocalServiceWrapper
 		_mbDiscussionLocalService = mbDiscussionLocalService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link MBDiscussionLocalServiceUtil} to access the message boards discussion local service. Add custom service methods to <code>com.liferay.portlet.messageboards.service.impl.MBDiscussionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.message.boards.kernel.model.MBDiscussion addDiscussion(
 			long userId, long groupId, long classNameId, long classPK,

@@ -32,16 +32,10 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ShoppingItemServiceUtil {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingItemServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
-	 */
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingItemServiceUtil} to access the shopping item remote service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingItemServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static com.liferay.shopping.model.ShoppingItem addItem(
 			long groupId, long categoryId, String sku, String name,

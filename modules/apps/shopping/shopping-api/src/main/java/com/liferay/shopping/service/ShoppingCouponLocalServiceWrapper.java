@@ -33,11 +33,6 @@ public class ShoppingCouponLocalServiceWrapper
 		_shoppingCouponLocalService = shoppingCouponLocalService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingCouponLocalServiceUtil} to access the shopping coupon local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCouponLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.shopping.model.ShoppingCoupon addCoupon(
 			long userId, String code, boolean autoCode, String name,

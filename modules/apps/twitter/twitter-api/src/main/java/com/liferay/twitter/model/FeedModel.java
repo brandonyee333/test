@@ -42,7 +42,7 @@ import java.util.Date;
 @ProviderType
 public interface FeedModel extends AuditedModel, BaseModel<Feed>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a feed model instance should use the {@link Feed} interface instead.

@@ -300,11 +300,6 @@ public class ShoppingOrderItemWrapper
 		return _shoppingOrderItem.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping order item model instance should use the <code>ShoppingOrderItem</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_shoppingOrderItem.persist();

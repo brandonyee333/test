@@ -65,7 +65,7 @@ public class WatsonReportPersistenceImpl
 	extends BasePersistenceImpl<WatsonReport>
 	implements WatsonReportPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonReportUtil</code> to access the watson report persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

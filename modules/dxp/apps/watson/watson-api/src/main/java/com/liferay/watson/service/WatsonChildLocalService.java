@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonChildLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonChildLocalServiceUtil} to access the watson child local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonChildLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

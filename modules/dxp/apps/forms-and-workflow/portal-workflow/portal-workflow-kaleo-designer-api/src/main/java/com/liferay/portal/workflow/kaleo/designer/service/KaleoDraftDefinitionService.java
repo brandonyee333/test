@@ -58,7 +58,7 @@ import java.util.Map;
 )
 public interface KaleoDraftDefinitionService extends BaseService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoDraftDefinitionServiceUtil} to access the kaleo draft definition remote service. Add custom service methods to <code>com.liferay.portal.workflow.kaleo.designer.service.impl.KaleoDraftDefinitionServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

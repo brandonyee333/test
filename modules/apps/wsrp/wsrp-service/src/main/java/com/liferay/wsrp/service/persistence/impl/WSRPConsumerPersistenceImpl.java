@@ -69,7 +69,7 @@ public class WSRPConsumerPersistenceImpl
 	extends BasePersistenceImpl<WSRPConsumer>
 	implements WSRPConsumerPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WSRPConsumerUtil</code> to access the wsrp consumer persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

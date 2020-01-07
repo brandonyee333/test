@@ -69,7 +69,7 @@ public class WSRPProducerPersistenceImpl
 	extends BasePersistenceImpl<WSRPProducer>
 	implements WSRPProducerPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WSRPProducerUtil</code> to access the wsrp producer persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

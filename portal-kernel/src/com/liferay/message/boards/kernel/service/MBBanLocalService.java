@@ -60,7 +60,7 @@ import java.util.List;
 public interface MBBanLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MBBanLocalServiceUtil} to access the message boards ban local service. Add custom service methods to <code>com.liferay.portlet.messageboards.service.impl.MBBanLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

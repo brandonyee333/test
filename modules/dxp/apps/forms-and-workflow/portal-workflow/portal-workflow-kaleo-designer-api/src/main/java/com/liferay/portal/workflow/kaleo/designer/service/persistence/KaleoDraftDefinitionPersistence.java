@@ -40,7 +40,7 @@ import java.util.Set;
 public interface KaleoDraftDefinitionPersistence
 	extends BasePersistence<KaleoDraftDefinition> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link KaleoDraftDefinitionUtil} to access the kaleo draft definition persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

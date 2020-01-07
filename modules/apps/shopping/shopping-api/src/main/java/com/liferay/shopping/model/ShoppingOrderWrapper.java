@@ -1042,11 +1042,6 @@ public class ShoppingOrderWrapper
 		return _shoppingOrder.isShipToBilling();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping order model instance should use the <code>ShoppingOrder</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_shoppingOrder.persist();

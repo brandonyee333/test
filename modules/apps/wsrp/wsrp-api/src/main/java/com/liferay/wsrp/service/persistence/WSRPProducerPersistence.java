@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface WSRPProducerPersistence extends BasePersistence<WSRPProducer> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WSRPProducerUtil} to access the wsrp producer persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

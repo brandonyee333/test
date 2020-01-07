@@ -750,11 +750,6 @@ public class MBThreadWrapper implements MBThread, ModelWrapper<MBThread> {
 		return _mbThread.isScheduled();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a message boards thread model instance should use the <code>MBThread</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_mbThread.persist();

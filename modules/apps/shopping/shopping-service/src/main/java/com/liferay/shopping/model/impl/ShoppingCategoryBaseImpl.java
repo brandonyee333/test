@@ -32,7 +32,7 @@ import com.liferay.shopping.service.ShoppingCategoryLocalServiceUtil;
 public abstract class ShoppingCategoryBaseImpl
 	extends ShoppingCategoryModelImpl implements ShoppingCategory {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping category model instance should use the <code>ShoppingCategory</code> interface instead.

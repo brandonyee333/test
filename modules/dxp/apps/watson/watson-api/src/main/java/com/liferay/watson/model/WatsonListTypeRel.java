@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface WatsonListTypeRel
 	extends PersistedModel, WatsonListTypeRelModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonListTypeRelImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface UserThreadPersistence extends BasePersistence<UserThread> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link UserThreadUtil} to access the user thread persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

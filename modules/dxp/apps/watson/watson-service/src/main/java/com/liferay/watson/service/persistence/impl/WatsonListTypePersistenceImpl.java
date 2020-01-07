@@ -65,7 +65,7 @@ public class WatsonListTypePersistenceImpl
 	extends BasePersistenceImpl<WatsonListType>
 	implements WatsonListTypePersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonListTypeUtil</code> to access the watson list type persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -63,7 +63,7 @@ public class ShoppingItemFieldPersistenceImpl
 	extends BasePersistenceImpl<ShoppingItemField>
 	implements ShoppingItemFieldPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ShoppingItemFieldUtil</code> to access the shopping item field persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

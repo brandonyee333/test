@@ -32,7 +32,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class WatsonResourceAuditLocalServiceUtil {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonResourceAuditLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.

@@ -53,7 +53,7 @@ import com.liferay.shopping.model.ShoppingOrder;
 )
 public interface ShoppingOrderService extends BaseService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingOrderServiceUtil} to access the shopping order remote service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingOrderServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

@@ -32,7 +32,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class WatsonAddressLocalServiceUtil {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonAddressLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.

@@ -401,11 +401,6 @@ public class WatsonRelationshipAuditWrapper
 		return _watsonRelationshipAudit.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a watson relationship audit model instance should use the <code>WatsonRelationshipAudit</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_watsonRelationshipAudit.persist();

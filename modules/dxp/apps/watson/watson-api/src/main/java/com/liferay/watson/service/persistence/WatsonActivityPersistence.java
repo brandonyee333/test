@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonActivityPersistence
 	extends BasePersistence<WatsonActivity> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonActivityUtil} to access the watson activity persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

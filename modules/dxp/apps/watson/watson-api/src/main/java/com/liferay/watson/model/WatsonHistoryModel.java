@@ -45,7 +45,7 @@ public interface WatsonHistoryModel
 	extends AttachedModel, BaseModel<WatsonHistory>, GroupedModel,
 			ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson history model instance should use the {@link WatsonHistory} interface instead.

@@ -40,7 +40,7 @@ import java.util.Set;
 @ProviderType
 public interface AkismetEntryPersistence extends BasePersistence<AkismetEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AkismetEntryUtil} to access the akismet entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

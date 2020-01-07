@@ -32,7 +32,7 @@ import com.liferay.shopping.service.ShoppingItemPriceLocalServiceUtil;
 public abstract class ShoppingItemPriceBaseImpl
 	extends ShoppingItemPriceModelImpl implements ShoppingItemPrice {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping item price model instance should use the <code>ShoppingItemPrice</code> interface instead.

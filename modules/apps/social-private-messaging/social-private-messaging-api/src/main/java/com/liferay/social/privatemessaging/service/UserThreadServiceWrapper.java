@@ -30,11 +30,6 @@ public class UserThreadServiceWrapper
 		_userThreadService = userThreadService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link UserThreadServiceUtil} to access the user thread remote service. Add custom service methods to <code>com.liferay.social.privatemessaging.service.impl.UserThreadServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.message.boards.kernel.model.MBMessage
 			getLastThreadMessage(long mbThreadId)

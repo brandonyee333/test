@@ -59,7 +59,7 @@ public class WSRPConsumerPortletModelImpl
 	extends BaseModelImpl<WSRPConsumerPortlet>
 	implements WSRPConsumerPortletModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a wsrp consumer portlet model instance should use the <code>WSRPConsumerPortlet</code> interface instead.

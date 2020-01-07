@@ -61,7 +61,7 @@ public class MeetupsRegistrationModelImpl
 	extends BaseModelImpl<MeetupsRegistration>
 	implements MeetupsRegistrationModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a meetups registration model instance should use the <code>MeetupsRegistration</code> interface instead.

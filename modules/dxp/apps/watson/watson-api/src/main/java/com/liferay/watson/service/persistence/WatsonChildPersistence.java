@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface WatsonChildPersistence extends BasePersistence<WatsonChild> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonChildUtil} to access the watson child persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

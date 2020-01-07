@@ -63,7 +63,7 @@ public class WatsonDocumentAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonDocumentAudit>
 	implements WatsonDocumentAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonDocumentAuditUtil</code> to access the watson document audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

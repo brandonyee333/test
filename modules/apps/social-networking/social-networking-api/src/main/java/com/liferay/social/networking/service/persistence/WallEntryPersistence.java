@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface WallEntryPersistence extends BasePersistence<WallEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WallEntryUtil} to access the wall entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

@@ -91,7 +91,7 @@ public abstract class WatsonListTypeAuditLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements IdentifiableOSGiService, WatsonListTypeAuditLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>WatsonListTypeAuditLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.watson.service.WatsonListTypeAuditLocalServiceUtil</code>.

@@ -32,7 +32,7 @@ import com.liferay.watson.login.service.WatsonTokenAuthEntryLocalServiceUtil;
 public abstract class WatsonTokenAuthEntryBaseImpl
 	extends WatsonTokenAuthEntryModelImpl implements WatsonTokenAuthEntry {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson token auth entry model instance should use the <code>WatsonTokenAuthEntry</code> interface instead.

@@ -56,7 +56,7 @@ import java.util.List;
 )
 public interface ShoppingCategoryService extends BaseService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingCategoryServiceUtil} to access the shopping category remote service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

@@ -67,7 +67,7 @@ public abstract class DLFileRankLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements DLFileRankLocalService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>DLFileRankLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.document.library.kernel.service.DLFileRankLocalServiceUtil</code>.

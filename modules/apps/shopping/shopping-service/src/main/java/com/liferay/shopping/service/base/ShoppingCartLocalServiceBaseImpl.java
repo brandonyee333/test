@@ -67,7 +67,7 @@ public abstract class ShoppingCartLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements IdentifiableOSGiService, ShoppingCartLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>ShoppingCartLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCartLocalServiceUtil</code>.

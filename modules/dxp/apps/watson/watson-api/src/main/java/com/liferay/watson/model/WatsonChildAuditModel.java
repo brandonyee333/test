@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WatsonChildAuditModel
 	extends BaseModel<WatsonChildAudit>, GroupedModel, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson child audit model instance should use the {@link WatsonChildAudit} interface instead.

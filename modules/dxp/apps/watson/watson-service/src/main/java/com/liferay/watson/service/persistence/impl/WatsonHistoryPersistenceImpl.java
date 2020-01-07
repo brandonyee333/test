@@ -65,7 +65,7 @@ public class WatsonHistoryPersistenceImpl
 	extends BasePersistenceImpl<WatsonHistory>
 	implements WatsonHistoryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonHistoryUtil</code> to access the watson history persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -33,11 +33,6 @@ public class ShoppingCategoryServiceWrapper
 		_shoppingCategoryService = shoppingCategoryService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingCategoryServiceUtil} to access the shopping category remote service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCategoryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.shopping.model.ShoppingCategory addCategory(
 			long parentCategoryId, String name, String description,

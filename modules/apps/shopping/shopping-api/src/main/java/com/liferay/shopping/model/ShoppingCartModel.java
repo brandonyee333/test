@@ -43,7 +43,7 @@ import java.util.Date;
 public interface ShoppingCartModel
 	extends BaseModel<ShoppingCart>, GroupedModel, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a shopping cart model instance should use the {@link ShoppingCart} interface instead.

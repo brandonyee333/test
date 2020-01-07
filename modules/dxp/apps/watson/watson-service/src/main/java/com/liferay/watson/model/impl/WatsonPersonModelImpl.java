@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonPersonModelImpl
 	extends BaseModelImpl<WatsonPerson> implements WatsonPersonModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson person model instance should use the <code>WatsonPerson</code> interface instead.

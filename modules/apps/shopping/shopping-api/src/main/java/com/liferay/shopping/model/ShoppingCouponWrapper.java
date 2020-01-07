@@ -454,11 +454,6 @@ public class ShoppingCouponWrapper
 		return _shoppingCoupon.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping coupon model instance should use the <code>ShoppingCoupon</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_shoppingCoupon.persist();

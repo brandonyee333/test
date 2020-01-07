@@ -32,7 +32,7 @@ import com.liferay.social.privatemessaging.service.UserThreadLocalServiceUtil;
 public abstract class UserThreadBaseImpl
 	extends UserThreadModelImpl implements UserThread {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a user thread model instance should use the <code>UserThread</code> interface instead.

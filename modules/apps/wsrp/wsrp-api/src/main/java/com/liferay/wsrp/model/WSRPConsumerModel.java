@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WSRPConsumerModel
 	extends BaseModel<WSRPConsumer>, ShardedModel, StagedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a wsrp consumer model instance should use the {@link WSRPConsumer} interface instead.

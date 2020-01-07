@@ -63,7 +63,7 @@ public class WatsonActivityPersistenceImpl
 	extends BasePersistenceImpl<WatsonActivity>
 	implements WatsonActivityPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonActivityUtil</code> to access the watson activity persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -63,7 +63,7 @@ public class WatsonActivityAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonActivityAudit>
 	implements WatsonActivityAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonActivityAuditUtil</code> to access the watson activity audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

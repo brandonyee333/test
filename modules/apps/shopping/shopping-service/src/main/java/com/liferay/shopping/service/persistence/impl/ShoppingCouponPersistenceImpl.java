@@ -67,7 +67,7 @@ public class ShoppingCouponPersistenceImpl
 	extends BasePersistenceImpl<ShoppingCoupon>
 	implements ShoppingCouponPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ShoppingCouponUtil</code> to access the shopping coupon persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -32,16 +32,10 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class WSRPConsumerLocalServiceUtil {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPConsumerLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
-	 */
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link WSRPConsumerLocalServiceUtil} to access the wsrp consumer local service. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPConsumerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static com.liferay.wsrp.model.WSRPConsumer addWSRPConsumer(
 			long companyId, String adminPortletId, String name, String url,

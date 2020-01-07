@@ -64,7 +64,7 @@ public class MeetupsEntryPersistenceImpl
 	extends BasePersistenceImpl<MeetupsEntry>
 	implements MeetupsEntryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>MeetupsEntryUtil</code> to access the meetups entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

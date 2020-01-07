@@ -62,7 +62,7 @@ public class JournalArticleImagePersistenceImpl
 	extends BasePersistenceImpl<JournalArticleImage>
 	implements JournalArticleImagePersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>JournalArticleImageUtil</code> to access the journal article image persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

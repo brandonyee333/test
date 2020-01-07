@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WSRPConsumerPortletPersistence
 	extends BasePersistence<WSRPConsumerPortlet> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WSRPConsumerPortletUtil} to access the wsrp consumer portlet persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

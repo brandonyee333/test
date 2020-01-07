@@ -56,7 +56,7 @@ import java.util.List;
 public interface ShoppingCouponLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingCouponLocalServiceUtil} to access the shopping coupon local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCouponLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

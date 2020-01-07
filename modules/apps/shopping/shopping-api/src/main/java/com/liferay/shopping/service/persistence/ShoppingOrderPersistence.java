@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ShoppingOrderPersistence
 	extends BasePersistence<ShoppingOrder> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingOrderUtil} to access the shopping order persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

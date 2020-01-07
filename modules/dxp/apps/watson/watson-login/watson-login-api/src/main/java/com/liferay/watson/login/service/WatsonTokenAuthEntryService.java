@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 )
 public interface WatsonTokenAuthEntryService extends BaseService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonTokenAuthEntryServiceUtil} to access the watson token auth entry remote service. Add custom service methods to <code>com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

@@ -61,7 +61,7 @@ public class ShoppingItemPricePersistenceImpl
 	extends BasePersistenceImpl<ShoppingItemPrice>
 	implements ShoppingItemPricePersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ShoppingItemPriceUtil</code> to access the shopping item price persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

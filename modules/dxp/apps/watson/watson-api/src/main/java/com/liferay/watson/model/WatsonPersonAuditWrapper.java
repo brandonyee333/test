@@ -821,11 +821,6 @@ public class WatsonPersonAuditWrapper
 		return _watsonPersonAudit.isRescued();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a watson person audit model instance should use the <code>WatsonPersonAudit</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_watsonPersonAudit.persist();

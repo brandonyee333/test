@@ -33,11 +33,6 @@ public class MeetupsEntryLocalServiceWrapper
 		_meetupsEntryLocalService = meetupsEntryLocalService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link MeetupsEntryLocalServiceUtil} to access the meetups entry local service. Add custom service methods to <code>com.liferay.social.networking.service.impl.MeetupsEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.social.networking.model.MeetupsEntry addMeetupsEntry(
 			long userId, String title, String description, int startDateMonth,

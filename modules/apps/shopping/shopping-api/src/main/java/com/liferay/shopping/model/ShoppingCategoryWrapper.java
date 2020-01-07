@@ -298,11 +298,6 @@ public class ShoppingCategoryWrapper
 		return _shoppingCategory.isRoot();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping category model instance should use the <code>ShoppingCategory</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_shoppingCategory.persist();

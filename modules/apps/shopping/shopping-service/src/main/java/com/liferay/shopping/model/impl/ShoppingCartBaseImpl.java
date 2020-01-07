@@ -32,7 +32,7 @@ import com.liferay.shopping.service.ShoppingCartLocalServiceUtil;
 public abstract class ShoppingCartBaseImpl
 	extends ShoppingCartModelImpl implements ShoppingCart {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping cart model instance should use the <code>ShoppingCart</code> interface instead.

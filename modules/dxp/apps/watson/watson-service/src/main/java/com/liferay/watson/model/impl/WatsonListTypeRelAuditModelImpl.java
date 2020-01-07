@@ -69,7 +69,7 @@ public class WatsonListTypeRelAuditModelImpl
 	extends BaseModelImpl<WatsonListTypeRelAudit>
 	implements WatsonListTypeRelAuditModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type rel audit model instance should use the <code>WatsonListTypeRelAudit</code> interface instead.

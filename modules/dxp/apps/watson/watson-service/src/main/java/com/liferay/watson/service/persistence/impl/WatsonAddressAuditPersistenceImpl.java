@@ -65,7 +65,7 @@ public class WatsonAddressAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonAddressAudit>
 	implements WatsonAddressAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonAddressAuditUtil</code> to access the watson address audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

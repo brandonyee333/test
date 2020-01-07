@@ -32,7 +32,7 @@ import com.liferay.social.networking.service.MeetupsRegistrationLocalServiceUtil
 public abstract class MeetupsRegistrationBaseImpl
 	extends MeetupsRegistrationModelImpl implements MeetupsRegistration {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a meetups registration model instance should use the <code>MeetupsRegistration</code> interface instead.

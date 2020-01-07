@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonVehicleLocalServiceUtil;
 public abstract class WatsonVehicleBaseImpl
 	extends WatsonVehicleModelImpl implements WatsonVehicle {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson vehicle model instance should use the <code>WatsonVehicle</code> interface instead.

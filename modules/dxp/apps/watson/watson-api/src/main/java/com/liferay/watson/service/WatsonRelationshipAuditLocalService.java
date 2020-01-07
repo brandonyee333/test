@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonRelationshipAuditLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonRelationshipAuditLocalServiceUtil} to access the watson relationship audit local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonRelationshipAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

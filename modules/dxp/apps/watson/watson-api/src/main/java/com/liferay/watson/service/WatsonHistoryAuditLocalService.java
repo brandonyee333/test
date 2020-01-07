@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonHistoryAuditLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonHistoryAuditLocalServiceUtil} to access the watson history audit local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonHistoryAuditLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface WatsonPersonPersistence extends BasePersistence<WatsonPerson> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonPersonUtil} to access the watson person persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

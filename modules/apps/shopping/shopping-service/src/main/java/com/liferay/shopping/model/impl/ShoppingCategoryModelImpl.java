@@ -64,7 +64,7 @@ import java.util.function.Function;
 public class ShoppingCategoryModelImpl
 	extends BaseModelImpl<ShoppingCategory> implements ShoppingCategoryModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping category model instance should use the <code>ShoppingCategory</code> interface instead.

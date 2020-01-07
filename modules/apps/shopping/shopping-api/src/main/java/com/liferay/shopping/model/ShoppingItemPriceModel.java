@@ -39,7 +39,7 @@ import java.io.Serializable;
 public interface ShoppingItemPriceModel
 	extends BaseModel<ShoppingItemPrice>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a shopping item price model instance should use the {@link ShoppingItemPrice} interface instead.

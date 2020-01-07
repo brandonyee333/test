@@ -56,7 +56,7 @@ import java.util.List;
 public interface AkismetEntryLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AkismetEntryLocalServiceUtil} to access the akismet entry local service. Add custom service methods to <code>com.liferay.akismet.service.impl.AkismetEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

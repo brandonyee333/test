@@ -61,7 +61,7 @@ import java.util.Set;
 public interface ResourcePermissionLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ResourcePermissionLocalServiceUtil} to access the resource permission local service. Add custom service methods to <code>com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

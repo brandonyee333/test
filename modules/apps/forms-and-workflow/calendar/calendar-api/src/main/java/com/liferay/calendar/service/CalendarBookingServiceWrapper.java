@@ -32,11 +32,6 @@ public class CalendarBookingServiceWrapper
 		_calendarBookingService = calendarBookingService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link CalendarBookingServiceUtil} to access the calendar booking remote service. Add custom service methods to <code>com.liferay.calendar.service.impl.CalendarBookingServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.calendar.model.CalendarBooking addCalendarBooking(
 			long calendarId, long[] childCalendarIds,

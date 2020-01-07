@@ -55,7 +55,7 @@ import java.util.List;
 public interface MeetupsRegistrationLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link MeetupsRegistrationLocalServiceUtil} to access the meetups registration local service. Add custom service methods to <code>com.liferay.social.networking.service.impl.MeetupsRegistrationLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

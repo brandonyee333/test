@@ -48,7 +48,7 @@ public interface WatsonIncidentModel
 	extends BaseModel<WatsonIncident>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson incident model instance should use the {@link WatsonIncident} interface instead.

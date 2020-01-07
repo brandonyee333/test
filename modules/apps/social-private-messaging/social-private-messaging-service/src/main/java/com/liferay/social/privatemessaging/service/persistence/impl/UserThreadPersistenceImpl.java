@@ -66,7 +66,7 @@ import java.util.Set;
 public class UserThreadPersistenceImpl
 	extends BasePersistenceImpl<UserThread> implements UserThreadPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>UserThreadUtil</code> to access the user thread persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

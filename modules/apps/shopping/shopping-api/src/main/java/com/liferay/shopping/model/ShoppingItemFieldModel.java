@@ -40,7 +40,7 @@ import java.io.Serializable;
 public interface ShoppingItemFieldModel
 	extends BaseModel<ShoppingItemField>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a shopping item field model instance should use the {@link ShoppingItemField} interface instead.

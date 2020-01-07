@@ -56,7 +56,7 @@ public class JournalArticleImageModelImpl
 	extends BaseModelImpl<JournalArticleImage>
 	implements JournalArticleImageModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a journal article image model instance should use the <code>JournalArticleImage</code> interface instead.

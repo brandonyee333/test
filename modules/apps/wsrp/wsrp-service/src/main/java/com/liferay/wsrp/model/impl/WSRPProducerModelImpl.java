@@ -58,7 +58,7 @@ import java.util.function.Function;
 public class WSRPProducerModelImpl
 	extends BaseModelImpl<WSRPProducer> implements WSRPProducerModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a wsrp producer model instance should use the <code>WSRPProducer</code> interface instead.

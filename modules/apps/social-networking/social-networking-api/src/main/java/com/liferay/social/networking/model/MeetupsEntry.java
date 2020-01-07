@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface MeetupsEntry extends MeetupsEntryModel, PersistedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.social.networking.model.impl.MeetupsEntryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

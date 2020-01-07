@@ -63,7 +63,7 @@ public class WatsonIncidentAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonIncidentAudit>
 	implements WatsonIncidentAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonIncidentAuditUtil</code> to access the watson incident audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

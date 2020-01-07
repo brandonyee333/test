@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ShoppingItemFieldPersistence
 	extends BasePersistence<ShoppingItemField> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingItemFieldUtil} to access the shopping item field persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

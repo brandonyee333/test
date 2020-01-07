@@ -32,7 +32,7 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class WatsonTokenAuthEntryServiceUtil {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.watson.login.service.impl.WatsonTokenAuthEntryServiceImpl</code> and rerun ServiceBuilder to regenerate this class.

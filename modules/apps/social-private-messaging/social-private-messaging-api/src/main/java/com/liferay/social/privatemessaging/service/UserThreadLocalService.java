@@ -60,7 +60,7 @@ import java.util.List;
 public interface UserThreadLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link UserThreadLocalServiceUtil} to access the user thread local service. Add custom service methods to <code>com.liferay.social.privatemessaging.service.impl.UserThreadLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

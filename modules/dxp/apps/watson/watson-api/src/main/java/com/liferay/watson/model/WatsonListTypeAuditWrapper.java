@@ -405,11 +405,6 @@ public class WatsonListTypeAuditWrapper
 		return _watsonListTypeAudit.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a watson list type audit model instance should use the <code>WatsonListTypeAudit</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_watsonListTypeAudit.persist();

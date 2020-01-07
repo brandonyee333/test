@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonVehicleLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonVehicleLocalServiceUtil} to access the watson vehicle local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonVehicleLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

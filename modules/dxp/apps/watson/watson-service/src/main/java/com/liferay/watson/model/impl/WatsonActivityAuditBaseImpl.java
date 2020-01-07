@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonActivityAuditLocalServiceUtil;
 public abstract class WatsonActivityAuditBaseImpl
 	extends WatsonActivityAuditModelImpl implements WatsonActivityAudit {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson activity audit model instance should use the <code>WatsonActivityAudit</code> interface instead.

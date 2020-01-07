@@ -63,7 +63,7 @@ public class WatsonVehiclePersistenceImpl
 	extends BasePersistenceImpl<WatsonVehicle>
 	implements WatsonVehiclePersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonVehicleUtil</code> to access the watson vehicle persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

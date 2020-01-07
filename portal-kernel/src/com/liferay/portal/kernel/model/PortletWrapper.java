@@ -2271,11 +2271,6 @@ public class PortletWrapper implements ModelWrapper<Portlet>, Portlet {
 		_portlet.linkRoles();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a portlet model instance should use the <code>Portlet</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_portlet.persist();

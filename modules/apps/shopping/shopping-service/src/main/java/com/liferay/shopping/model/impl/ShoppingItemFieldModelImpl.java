@@ -55,7 +55,7 @@ import java.util.function.Function;
 public class ShoppingItemFieldModelImpl
 	extends BaseModelImpl<ShoppingItemField> implements ShoppingItemFieldModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping item field model instance should use the <code>ShoppingItemField</code> interface instead.

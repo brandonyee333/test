@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonPersonAuditPersistence
 	extends BasePersistence<WatsonPersonAudit> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonPersonAuditUtil} to access the watson person audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

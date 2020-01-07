@@ -47,7 +47,7 @@ import javax.sql.DataSource;
 public abstract class EntryServiceBaseImpl
 	extends BaseServiceImpl implements EntryService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>EntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.contacts.service.EntryServiceUtil</code>.

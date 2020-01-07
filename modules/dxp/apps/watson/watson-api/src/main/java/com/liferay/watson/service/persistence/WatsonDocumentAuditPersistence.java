@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonDocumentAuditPersistence
 	extends BasePersistence<WatsonDocumentAudit> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonDocumentAuditUtil} to access the watson document audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

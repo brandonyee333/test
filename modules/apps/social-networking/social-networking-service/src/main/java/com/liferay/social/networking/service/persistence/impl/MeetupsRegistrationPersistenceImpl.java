@@ -65,7 +65,7 @@ public class MeetupsRegistrationPersistenceImpl
 	extends BasePersistenceImpl<MeetupsRegistration>
 	implements MeetupsRegistrationPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>MeetupsRegistrationUtil</code> to access the meetups registration persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

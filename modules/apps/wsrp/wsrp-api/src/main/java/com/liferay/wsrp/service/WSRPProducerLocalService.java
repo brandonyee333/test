@@ -60,7 +60,7 @@ import java.util.List;
 public interface WSRPProducerLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WSRPProducerLocalServiceUtil} to access the wsrp producer local service. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPProducerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

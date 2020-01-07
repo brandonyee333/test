@@ -32,7 +32,7 @@ import com.liferay.shopping.service.ShoppingCouponLocalServiceUtil;
 public abstract class ShoppingCouponBaseImpl
 	extends ShoppingCouponModelImpl implements ShoppingCoupon {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping coupon model instance should use the <code>ShoppingCoupon</code> interface instead.

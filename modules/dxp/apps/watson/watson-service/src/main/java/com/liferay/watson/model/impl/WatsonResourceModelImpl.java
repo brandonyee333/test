@@ -67,7 +67,7 @@ import java.util.function.Function;
 public class WatsonResourceModelImpl
 	extends BaseModelImpl<WatsonResource> implements WatsonResourceModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson resource model instance should use the <code>WatsonResource</code> interface instead.

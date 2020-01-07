@@ -49,7 +49,7 @@ public interface WatsonListTypeRelAuditModel
 	extends AttachedModel, BaseModel<WatsonListTypeRelAudit>, GroupedModel,
 			LocalizedModel, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson list type rel audit model instance should use the {@link WatsonListTypeRelAudit} interface instead.

@@ -65,7 +65,7 @@ import java.util.Set;
 public class FeedPersistenceImpl
 	extends BasePersistenceImpl<Feed> implements FeedPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>FeedUtil</code> to access the feed persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

@@ -64,7 +64,7 @@ public abstract class AkismetEntryLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements AkismetEntryLocalService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AkismetEntryLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.akismet.service.AkismetEntryLocalServiceUtil</code>.

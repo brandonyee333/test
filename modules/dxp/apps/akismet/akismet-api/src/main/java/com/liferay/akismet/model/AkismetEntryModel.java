@@ -42,7 +42,7 @@ import java.util.Date;
 public interface AkismetEntryModel
 	extends AttachedModel, BaseModel<AkismetEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a akismet entry model instance should use the {@link AkismetEntry} interface instead.

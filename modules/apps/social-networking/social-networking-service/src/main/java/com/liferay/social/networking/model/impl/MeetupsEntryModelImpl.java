@@ -60,7 +60,7 @@ import java.util.function.Function;
 public class MeetupsEntryModelImpl
 	extends BaseModelImpl<MeetupsEntry> implements MeetupsEntryModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a meetups entry model instance should use the <code>MeetupsEntry</code> interface instead.

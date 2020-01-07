@@ -32,7 +32,7 @@ import com.liferay.shopping.service.ShoppingOrderLocalServiceUtil;
 public abstract class ShoppingOrderBaseImpl
 	extends ShoppingOrderModelImpl implements ShoppingOrder {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping order model instance should use the <code>ShoppingOrder</code> interface instead.

@@ -57,7 +57,7 @@ import java.util.Map;
 public interface ShoppingCartLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingCartLocalServiceUtil} to access the shopping cart local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCartLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

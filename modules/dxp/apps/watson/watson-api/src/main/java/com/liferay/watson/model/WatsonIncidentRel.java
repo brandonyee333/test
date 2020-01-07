@@ -32,7 +32,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface WatsonIncidentRel
 	extends PersistedModel, WatsonIncidentRelModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentRelImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

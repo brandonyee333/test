@@ -311,11 +311,6 @@ public class UserThreadWrapper implements ModelWrapper<UserThread>, UserThread {
 		return _userThread.isRead();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a user thread model instance should use the <code>UserThread</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_userThread.persist();

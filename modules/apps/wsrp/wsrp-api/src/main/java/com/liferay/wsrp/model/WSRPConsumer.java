@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface WSRPConsumer extends PersistedModel, WSRPConsumerModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.wsrp.model.impl.WSRPConsumerImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

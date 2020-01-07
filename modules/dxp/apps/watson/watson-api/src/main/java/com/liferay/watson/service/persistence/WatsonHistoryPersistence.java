@@ -40,7 +40,7 @@ import java.util.Set;
 public interface WatsonHistoryPersistence
 	extends BasePersistence<WatsonHistory> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonHistoryUtil} to access the watson history persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

@@ -60,7 +60,7 @@ import java.util.function.Function;
 public class WallEntryModelImpl
 	extends BaseModelImpl<WallEntry> implements WallEntryModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a wall entry model instance should use the <code>WallEntry</code> interface instead.

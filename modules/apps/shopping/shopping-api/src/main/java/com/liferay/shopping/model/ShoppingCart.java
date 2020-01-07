@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface ShoppingCart extends PersistedModel, ShoppingCartModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.shopping.model.impl.ShoppingCartImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

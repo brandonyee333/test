@@ -43,7 +43,7 @@ import java.util.Date;
 public interface UserThreadModel
 	extends AuditedModel, BaseModel<UserThread>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a user thread model instance should use the {@link UserThread} interface instead.

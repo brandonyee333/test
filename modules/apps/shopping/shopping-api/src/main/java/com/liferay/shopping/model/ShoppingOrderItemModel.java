@@ -42,7 +42,7 @@ import java.util.Date;
 public interface ShoppingOrderItemModel
 	extends BaseModel<ShoppingOrderItem>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a shopping order item model instance should use the {@link ShoppingOrderItem} interface instead.

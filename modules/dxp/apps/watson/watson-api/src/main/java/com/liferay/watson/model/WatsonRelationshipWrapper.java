@@ -380,11 +380,6 @@ public class WatsonRelationshipWrapper
 		return _watsonRelationship.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a watson relationship model instance should use the <code>WatsonRelationship</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_watsonRelationship.persist();

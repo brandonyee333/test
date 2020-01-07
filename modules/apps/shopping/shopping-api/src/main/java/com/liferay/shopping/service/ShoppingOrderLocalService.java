@@ -57,7 +57,7 @@ import java.util.List;
 public interface ShoppingOrderLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingOrderLocalServiceUtil} to access the shopping order local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingOrderLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

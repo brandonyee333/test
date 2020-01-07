@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WatsonRelationshipModel
 	extends BaseModel<WatsonRelationship>, GroupedModel, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson relationship model instance should use the {@link WatsonRelationship} interface instead.

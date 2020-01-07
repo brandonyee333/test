@@ -55,7 +55,7 @@ import java.util.List;
 public interface WatsonDocumentLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonDocumentLocalServiceUtil} to access the watson document local service. Add custom service methods to <code>com.liferay.watson.service.impl.WatsonDocumentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

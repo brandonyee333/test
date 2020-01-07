@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface WatsonReportPersistence extends BasePersistence<WatsonReport> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link WatsonReportUtil} to access the watson report persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

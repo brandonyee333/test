@@ -65,7 +65,7 @@ public class WatsonReportAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonReportAudit>
 	implements WatsonReportAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonReportAuditUtil</code> to access the watson report audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

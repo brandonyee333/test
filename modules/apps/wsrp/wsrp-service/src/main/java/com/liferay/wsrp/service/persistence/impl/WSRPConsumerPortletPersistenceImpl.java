@@ -70,7 +70,7 @@ public class WSRPConsumerPortletPersistenceImpl
 	extends BasePersistenceImpl<WSRPConsumerPortlet>
 	implements WSRPConsumerPortletPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WSRPConsumerPortletUtil</code> to access the wsrp consumer portlet persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

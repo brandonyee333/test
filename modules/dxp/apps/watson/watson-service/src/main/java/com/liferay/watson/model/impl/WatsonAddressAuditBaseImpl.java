@@ -32,7 +32,7 @@ import com.liferay.watson.service.WatsonAddressAuditLocalServiceUtil;
 public abstract class WatsonAddressAuditBaseImpl
 	extends WatsonAddressAuditModelImpl implements WatsonAddressAudit {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson address audit model instance should use the <code>WatsonAddressAudit</code> interface instead.

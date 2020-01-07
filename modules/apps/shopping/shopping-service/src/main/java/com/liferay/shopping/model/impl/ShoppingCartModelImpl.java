@@ -59,7 +59,7 @@ import java.util.function.Function;
 public class ShoppingCartModelImpl
 	extends BaseModelImpl<ShoppingCart> implements ShoppingCartModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping cart model instance should use the <code>ShoppingCart</code> interface instead.

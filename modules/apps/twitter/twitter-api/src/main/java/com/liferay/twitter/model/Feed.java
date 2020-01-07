@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface Feed extends FeedModel, PersistedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.twitter.model.impl.FeedImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

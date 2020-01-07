@@ -33,11 +33,6 @@ public class ShoppingItemLocalServiceWrapper
 		_shoppingItemLocalService = shoppingItemLocalService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingItemLocalServiceUtil} to access the shopping item local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingItemLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.shopping.model.ShoppingItem addItem(
 			long userId, long groupId, long categoryId, String sku, String name,

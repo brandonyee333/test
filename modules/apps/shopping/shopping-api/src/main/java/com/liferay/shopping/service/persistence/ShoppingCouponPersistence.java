@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ShoppingCouponPersistence
 	extends BasePersistence<ShoppingCoupon> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingCouponUtil} to access the shopping coupon persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

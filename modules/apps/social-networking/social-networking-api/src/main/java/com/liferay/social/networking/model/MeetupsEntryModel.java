@@ -43,7 +43,7 @@ import java.util.Date;
 public interface MeetupsEntryModel
 	extends AuditedModel, BaseModel<MeetupsEntry>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a meetups entry model instance should use the {@link MeetupsEntry} interface instead.

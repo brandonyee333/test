@@ -68,7 +68,7 @@ import java.util.function.Function;
 public class WatsonListTypeRelModelImpl
 	extends BaseModelImpl<WatsonListTypeRel> implements WatsonListTypeRelModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson list type rel model instance should use the <code>WatsonListTypeRel</code> interface instead.

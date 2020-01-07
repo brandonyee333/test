@@ -32,11 +32,6 @@ public class KaleoDefinitionServiceWrapper
 		_kaleoDefinitionService = kaleoDefinitionService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link KaleoDefinitionServiceUtil} to access the kaleo definition remote service. Add custom service methods to <code>com.liferay.portal.workflow.kaleo.service.impl.KaleoDefinitionServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public java.util.List
 		<com.liferay.portal.workflow.kaleo.model.KaleoDefinition>

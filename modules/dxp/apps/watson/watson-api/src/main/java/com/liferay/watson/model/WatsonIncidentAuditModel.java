@@ -48,7 +48,7 @@ public interface WatsonIncidentAuditModel
 	extends BaseModel<WatsonIncidentAudit>, GroupedModel, LocalizedModel,
 			ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson incident audit model instance should use the {@link WatsonIncidentAudit} interface instead.

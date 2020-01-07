@@ -32,7 +32,7 @@ import com.liferay.wsrp.service.WSRPConsumerLocalServiceUtil;
 public abstract class WSRPConsumerBaseImpl
 	extends WSRPConsumerModelImpl implements WSRPConsumer {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a wsrp consumer model instance should use the <code>WSRPConsumer</code> interface instead.

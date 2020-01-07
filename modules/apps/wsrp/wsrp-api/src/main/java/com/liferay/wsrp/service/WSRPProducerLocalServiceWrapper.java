@@ -33,11 +33,6 @@ public class WSRPProducerLocalServiceWrapper
 		_wsrpProducerLocalService = wsrpProducerLocalService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link WSRPProducerLocalServiceUtil} to access the wsrp producer local service. Add custom service methods to <code>com.liferay.wsrp.service.impl.WSRPProducerLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.wsrp.model.WSRPProducer addWSRPProducer(
 			long userId, long groupId, String name, String version,

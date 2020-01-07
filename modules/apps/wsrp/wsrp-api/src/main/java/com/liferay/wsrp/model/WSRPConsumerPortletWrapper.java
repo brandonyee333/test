@@ -268,11 +268,6 @@ public class WSRPConsumerPortletWrapper
 		return _wsrpConsumerPortlet.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a wsrp consumer portlet model instance should use the <code>WSRPConsumerPortlet</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_wsrpConsumerPortlet.persist();

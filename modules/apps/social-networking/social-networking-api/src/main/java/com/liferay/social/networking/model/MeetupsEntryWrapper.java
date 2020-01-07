@@ -360,11 +360,6 @@ public class MeetupsEntryWrapper
 		return _meetupsEntry.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a meetups entry model instance should use the <code>MeetupsEntry</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_meetupsEntry.persist();

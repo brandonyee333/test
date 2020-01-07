@@ -320,11 +320,6 @@ public class ShoppingItemPriceWrapper
 		return _shoppingItemPrice.isUseShippingFormula();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping item price model instance should use the <code>ShoppingItemPrice</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_shoppingItemPrice.persist();

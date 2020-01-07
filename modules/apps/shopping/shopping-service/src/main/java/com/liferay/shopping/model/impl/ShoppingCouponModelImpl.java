@@ -65,7 +65,7 @@ import java.util.function.Function;
 public class ShoppingCouponModelImpl
 	extends BaseModelImpl<ShoppingCoupon> implements ShoppingCouponModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping coupon model instance should use the <code>ShoppingCoupon</code> interface instead.

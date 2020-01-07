@@ -62,7 +62,7 @@ public class WatsonHistoryAuditModelImpl
 	extends BaseModelImpl<WatsonHistoryAudit>
 	implements WatsonHistoryAuditModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson history audit model instance should use the <code>WatsonHistoryAudit</code> interface instead.

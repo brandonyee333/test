@@ -63,7 +63,7 @@ public class WatsonChildAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonChildAudit>
 	implements WatsonChildAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonChildAuditUtil</code> to access the watson child audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

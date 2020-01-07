@@ -43,7 +43,7 @@ import java.util.Date;
 public interface WatsonIncidentRelModel
 	extends BaseModel<WatsonIncidentRel>, GroupedModel, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson incident rel model instance should use the {@link WatsonIncidentRel} interface instead.

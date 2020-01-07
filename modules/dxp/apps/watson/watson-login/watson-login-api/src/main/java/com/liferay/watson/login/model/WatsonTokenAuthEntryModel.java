@@ -42,7 +42,7 @@ import java.util.Date;
 public interface WatsonTokenAuthEntryModel
 	extends BaseModel<WatsonTokenAuthEntry>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a watson token auth entry model instance should use the {@link WatsonTokenAuthEntry} interface instead.

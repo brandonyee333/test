@@ -78,7 +78,7 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements IdentifiableOSGiService, WSRPConsumerPortletLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>WSRPConsumerPortletLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.wsrp.service.WSRPConsumerPortletLocalServiceUtil</code>.

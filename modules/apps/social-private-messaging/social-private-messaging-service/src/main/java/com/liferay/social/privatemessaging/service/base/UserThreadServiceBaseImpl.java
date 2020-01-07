@@ -52,7 +52,7 @@ public abstract class UserThreadServiceBaseImpl
 	extends BaseServiceImpl
 	implements IdentifiableOSGiService, UserThreadService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>UserThreadService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.social.privatemessaging.service.UserThreadServiceUtil</code>.

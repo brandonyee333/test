@@ -63,7 +63,7 @@ import java.util.Set;
 public class WallEntryPersistenceImpl
 	extends BasePersistenceImpl<WallEntry> implements WallEntryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WallEntryUtil</code> to access the wall entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

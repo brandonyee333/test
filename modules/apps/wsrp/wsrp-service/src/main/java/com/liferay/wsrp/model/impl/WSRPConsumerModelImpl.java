@@ -58,7 +58,7 @@ import java.util.function.Function;
 public class WSRPConsumerModelImpl
 	extends BaseModelImpl<WSRPConsumer> implements WSRPConsumerModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a wsrp consumer model instance should use the <code>WSRPConsumer</code> interface instead.

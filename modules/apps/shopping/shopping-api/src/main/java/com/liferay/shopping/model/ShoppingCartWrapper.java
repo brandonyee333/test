@@ -341,11 +341,6 @@ public class ShoppingCartWrapper
 		return _shoppingCart.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a shopping cart model instance should use the <code>ShoppingCart</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_shoppingCart.persist();

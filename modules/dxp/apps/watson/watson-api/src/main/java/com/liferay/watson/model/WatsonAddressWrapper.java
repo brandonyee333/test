@@ -831,11 +831,6 @@ public class WatsonAddressWrapper
 		return _watsonAddress.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a watson address model instance should use the <code>WatsonAddress</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_watsonAddress.persist();

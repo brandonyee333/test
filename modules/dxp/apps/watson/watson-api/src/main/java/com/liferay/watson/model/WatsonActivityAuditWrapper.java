@@ -457,11 +457,6 @@ public class WatsonActivityAuditWrapper
 		return _watsonActivityAudit.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a watson activity audit model instance should use the <code>WatsonActivityAudit</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_watsonActivityAudit.persist();

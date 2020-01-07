@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface MBMessage extends MBMessageModel, PersistedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.portlet.messageboards.model.impl.MBMessageImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

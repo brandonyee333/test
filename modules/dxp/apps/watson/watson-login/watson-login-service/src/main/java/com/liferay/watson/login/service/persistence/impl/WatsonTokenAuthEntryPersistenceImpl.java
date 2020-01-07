@@ -64,7 +64,7 @@ public class WatsonTokenAuthEntryPersistenceImpl
 	extends BasePersistenceImpl<WatsonTokenAuthEntry>
 	implements WatsonTokenAuthEntryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonTokenAuthEntryUtil</code> to access the watson token auth entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

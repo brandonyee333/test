@@ -32,7 +32,7 @@ import com.liferay.shopping.service.ShoppingItemFieldLocalServiceUtil;
 public abstract class ShoppingItemFieldBaseImpl
 	extends ShoppingItemFieldModelImpl implements ShoppingItemField {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a shopping item field model instance should use the <code>ShoppingItemField</code> interface instead.

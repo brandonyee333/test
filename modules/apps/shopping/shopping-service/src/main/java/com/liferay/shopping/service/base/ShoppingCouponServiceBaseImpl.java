@@ -51,7 +51,7 @@ public abstract class ShoppingCouponServiceBaseImpl
 	extends BaseServiceImpl
 	implements IdentifiableOSGiService, ShoppingCouponService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>ShoppingCouponService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingCouponServiceUtil</code>.

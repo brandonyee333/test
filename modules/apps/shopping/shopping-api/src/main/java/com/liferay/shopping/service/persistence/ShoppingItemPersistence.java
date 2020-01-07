@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface ShoppingItemPersistence extends BasePersistence<ShoppingItem> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingItemUtil} to access the shopping item persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

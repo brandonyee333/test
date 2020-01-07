@@ -65,7 +65,7 @@ import java.util.function.Function;
 public class UserThreadModelImpl
 	extends BaseModelImpl<UserThread> implements UserThreadModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a user thread model instance should use the <code>UserThread</code> interface instead.

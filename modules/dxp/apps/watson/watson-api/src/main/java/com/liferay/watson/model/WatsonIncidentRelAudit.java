@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.Accessor;
 public interface WatsonIncidentRelAudit
 	extends PersistedModel, WatsonIncidentRelAuditModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.watson.model.impl.WatsonIncidentRelAuditImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

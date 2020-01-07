@@ -55,7 +55,7 @@ import java.util.List;
 public interface ShoppingItemPriceLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ShoppingItemPriceLocalServiceUtil} to access the shopping item price local service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingItemPriceLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

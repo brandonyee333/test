@@ -32,11 +32,6 @@ public class ShoppingCouponServiceWrapper
 		_shoppingCouponService = shoppingCouponService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ShoppingCouponServiceUtil} to access the shopping coupon remote service. Add custom service methods to <code>com.liferay.shopping.service.impl.ShoppingCouponServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.shopping.model.ShoppingCoupon addCoupon(
 			String code, boolean autoCode, String name, String description,

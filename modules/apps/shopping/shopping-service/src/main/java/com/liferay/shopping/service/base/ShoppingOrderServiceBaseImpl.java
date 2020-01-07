@@ -53,7 +53,7 @@ public abstract class ShoppingOrderServiceBaseImpl
 	extends BaseServiceImpl
 	implements IdentifiableOSGiService, ShoppingOrderService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>ShoppingOrderService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.shopping.service.ShoppingOrderServiceUtil</code>.

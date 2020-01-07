@@ -43,7 +43,7 @@ import java.util.Date;
 public interface MeetupsRegistrationModel
 	extends AuditedModel, BaseModel<MeetupsRegistration>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a meetups registration model instance should use the {@link MeetupsRegistration} interface instead.

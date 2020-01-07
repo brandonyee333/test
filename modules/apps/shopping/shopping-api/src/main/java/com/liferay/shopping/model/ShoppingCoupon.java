@@ -31,7 +31,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface ShoppingCoupon extends PersistedModel, ShoppingCouponModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.shopping.model.impl.ShoppingCouponImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

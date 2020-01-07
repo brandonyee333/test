@@ -68,7 +68,7 @@ public class WatsonActivityAuditModelImpl
 	extends BaseModelImpl<WatsonActivityAudit>
 	implements WatsonActivityAuditModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a watson activity audit model instance should use the <code>WatsonActivityAudit</code> interface instead.

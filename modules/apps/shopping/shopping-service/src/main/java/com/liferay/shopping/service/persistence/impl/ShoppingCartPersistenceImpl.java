@@ -64,7 +64,7 @@ public class ShoppingCartPersistenceImpl
 	extends BasePersistenceImpl<ShoppingCart>
 	implements ShoppingCartPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ShoppingCartUtil</code> to access the shopping cart persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

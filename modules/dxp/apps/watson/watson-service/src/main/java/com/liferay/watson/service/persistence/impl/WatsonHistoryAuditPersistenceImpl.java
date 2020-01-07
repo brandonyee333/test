@@ -65,7 +65,7 @@ public class WatsonHistoryAuditPersistenceImpl
 	extends BasePersistenceImpl<WatsonHistoryAudit>
 	implements WatsonHistoryAuditPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>WatsonHistoryAuditUtil</code> to access the watson history audit persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

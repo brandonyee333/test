@@ -406,11 +406,6 @@ public class KaleoDraftDefinitionWrapper
 		return _kaleoDraftDefinition.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a kaleo draft definition model instance should use the <code>KaleoDraftDefinition</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_kaleoDraftDefinition.persist();

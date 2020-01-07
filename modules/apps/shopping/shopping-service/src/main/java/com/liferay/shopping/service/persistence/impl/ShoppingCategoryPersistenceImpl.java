@@ -68,7 +68,7 @@ public class ShoppingCategoryPersistenceImpl
 	extends BasePersistenceImpl<ShoppingCategory>
 	implements ShoppingCategoryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ShoppingCategoryUtil</code> to access the shopping category persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

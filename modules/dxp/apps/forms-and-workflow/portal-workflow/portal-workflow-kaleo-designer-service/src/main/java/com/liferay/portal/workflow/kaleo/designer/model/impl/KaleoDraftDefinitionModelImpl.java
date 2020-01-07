@@ -72,7 +72,7 @@ public class KaleoDraftDefinitionModelImpl
 	extends BaseModelImpl<KaleoDraftDefinition>
 	implements KaleoDraftDefinitionModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a kaleo draft definition model instance should use the <code>KaleoDraftDefinition</code> interface instead.
