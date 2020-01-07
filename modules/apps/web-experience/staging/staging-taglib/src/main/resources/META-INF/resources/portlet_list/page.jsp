@@ -82,6 +82,8 @@
 		}
 
 		boolean showPortletDataInput = MapUtil.getBoolean(parameterMap, PortletDataHandlerKeys.PORTLET_DATA + StringPool.UNDERLINE + portlet.getPortletId(), portletDataHandler.isPublishToLiveByDefault()) || MapUtil.getBoolean(parameterMap, PortletDataHandlerKeys.PORTLET_DATA_ALL);
+
+		request.setAttribute("render_controls.showPortletDataInput", showPortletDataInput);
 	%>
 
 		<li class="tree-item">
