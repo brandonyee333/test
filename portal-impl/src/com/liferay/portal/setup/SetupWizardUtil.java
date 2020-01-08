@@ -46,6 +46,7 @@ import java.sql.Connection;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -180,6 +181,8 @@ public class SetupWizardUtil {
 		_updateCompany(request, unicodeProperties);
 
 		_updateAdminUser(request, response, unicodeProperties);
+
+		_updateCompanyWebId(request, unicodeProperties);
 
 		HttpSession session = request.getSession();
 
@@ -391,6 +394,37 @@ public class SetupWizardUtil {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		themeDisplay.setCompany(company);
+	}
+
+	private static void _updateCompanyWebId(
+			HttpServletRequest httpServletRequest,
+			UnicodeProperties unicodeProperties)
+		throws Exception {
+
+		String companyDefaultWebId = unicodeProperties.get(
+			PropsKeys.COMPANY_DEFAULT_WEB_ID);
+
+		if (Validator.isNull(companyDefaultWebId)) {
+			return;
+		}
+
+		Company company = CompanyLocalServiceUtil.getCompanyById(
+			PortalInstances.getDefaultCompanyId());
+
+		if (Objects.equals(companyDefaultWebId, company.getWebId())) {
+			return;
+		}
+
+		company.setWebId(companyDefaultWebId);
+		company.setMx(companyDefaultWebId);
+
+		company = CompanyLocalServiceUtil.updateCompany(company);
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
 
 		themeDisplay.setCompany(company);
 	}
