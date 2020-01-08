@@ -1,3 +1,7 @@
+<div class="search-total-label">
+	${languageUtil.format(locale, "x-results-for-x", [searchContainer.getTotal(), "<strong>" + htmlUtil.escape(searchResultsPortletDisplayContext.getKeywords()) + "</strong>"], false)}
+</div>
+
 <div class="display-compact">
 	<ul>
 		<#if entries?has_content>
@@ -13,3 +17,11 @@
 		</#if>
 	</ul>
 </div>
+
+<@liferay_aui.form useNamespace=false>
+	<@liferay_ui["search-paginator"]
+	id="${namespace}searchContainerTag"
+	markupView="lexicon"
+	searchContainer=searchContainer
+	/>
+</@liferay_aui.form>
