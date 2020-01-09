@@ -179,6 +179,23 @@ definition {
 			value1 = "userfnEdit Test");
 	}
 
+	@description = "This is a use case for LPS-105387."
+	@priority = "5"
+	test UpdateUserPortrait {
+		UserBar.viewUserDefaultIcon();
+
+		ProductMenu.gotoPortlet(
+			category = "My Account",
+			panel = "User",
+			portlet = "Account Settings");
+
+		User.changeProfileImage(imageName = "marketplace_icon.png");
+
+		Navigator.openURL();
+
+		AssertElementNotPresent(locator1 = "UserBar#USER_AVATAR_DEFAULT");
+	}
+
 	@priority = "4"
 	test ViewMyAccount {
 		Page.gotoMyAccount(portletName = "Account Settings");
