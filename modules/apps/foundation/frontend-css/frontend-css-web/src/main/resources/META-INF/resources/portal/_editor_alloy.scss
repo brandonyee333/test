@@ -10,10 +10,6 @@
 	color: initial;
 }
 
-.ie .ae-ui .ae-container-input input, .ae-ui .ae-container-input .ae-input {
-	color: #000;
-}
-
 .alloy-editor-container {
 	position: relative;
 
@@ -107,6 +103,10 @@
 	font-weight: normal;
 	line-height: 1.4em;
 	text-align: left;
+}
+
+.ie .ae-ui .ae-container-input input, .ae-ui .ae-container-input .ae-input {
+	color: #000;
 }
 
 .ie11 .alloy-editor-container .cke_widget_inline {
