@@ -57,7 +57,12 @@ renderResponse.setTitle(LanguageUtil.get(request, "forgot-password"));
 
 		<c:choose>
 			<c:when test="<%= ule.passwordPolicy.isRequireUnlock() %>">
-				<liferay-ui:message key="this-account-is-locked" />
+
+				<%
+				Format dateFormat = FastDateFormatFactoryUtil.getDateTime(FastDateFormatConstants.SHORT, FastDateFormatConstants.LONG, locale, TimeZone.getTimeZone(ule.user.getTimeZoneId()));
+				%>
+
+				<liferay-ui:message arguments="<%= dateFormat.format(ule.user.getUnlockDate()) %>" key="this-account-is-locked-until-x" translateArguments="<%= false %>" />
 			</c:when>
 			<c:otherwise>
 				<liferay-ui:message arguments="<%= ule.user.getUnlockDate() %>" key="this-account-is-locked-until-x" translateArguments="<%= false %>" />
