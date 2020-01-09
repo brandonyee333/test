@@ -76,4 +76,8 @@ definition {
 		}
 	}
 
+	macro viewUserDefaultIcon {
+		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_DEFAULT");
+	}
+
 }
