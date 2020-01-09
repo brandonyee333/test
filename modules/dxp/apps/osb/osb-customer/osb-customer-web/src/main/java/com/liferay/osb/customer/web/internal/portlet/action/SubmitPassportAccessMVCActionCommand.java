@@ -14,24 +14,19 @@
 
 package com.liferay.osb.customer.web.internal.portlet.action;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.exception.EmailAddressDomainException;
 import com.liferay.osb.customer.exception.SubscriptionException;
 import com.liferay.osb.customer.service.AuditFormLocalService;
 import com.liferay.osb.customer.service.TrainingBaseWebService;
 import com.liferay.osb.customer.web.internal.constants.PassportAccessPortletKeys;
-import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
-import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
-import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.RequiredFieldException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
@@ -39,7 +34,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -145,6 +139,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 					userId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
 			for (AccountEntry accountEntry : accountEntries) {
+				/*
 				Address address = accountEntry.getAddress();
 
 				Country country = address.getCountry();
@@ -154,6 +149,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 				if (!ArrayUtil.contains(_NO_ACCESS_COUNTRIES, countryName)) {
 					return true;
 				}
+				*/
 			}
 		}
 		else {
@@ -163,6 +159,8 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 			if (_badDomains.contains(domain)) {
 				return false;
 			}
+
+			/*
 
 			if (AccountCustomerLocalServiceUtil.countPassportCustomersByDomain(
 					domain) > 0) {
@@ -175,6 +173,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 
 				return true;
 			}
+			*/
 		}
 
 		return false;
@@ -214,7 +213,7 @@ public class SubmitPassportAccessMVCActionCommand extends BaseMVCActionCommand {
 
 	protected boolean isVerifiedUser(long userId) throws PortalException {
 		if (_roleLocalService.hasUserRole(
-				userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
+				userId, OSBCustomerConstants.ROLE_VERIFIED_USER_ID)) {
 
 			return true;
 		}

@@ -27,7 +27,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 >
 	<liferay-ui:search-container-results>
 
-		<%
+		<%--
 		if (accountEntry.getType() != AccountEntryConstants.TYPE_INDIVIDUAL) {
 			if (accountEntryViewDisplayContext.isLiferayContractorOrg() || accountEntryViewDisplayContext.isLiferayIncOrg() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker()) {
 				results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
@@ -39,10 +39,11 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 			searchContainer.setTotal(results.size());
 			searchContainer.setResults(results);
 		}
-		%>
+		--%>
 
 	</liferay-ui:search-container-results>
 
+	<%--
 	<liferay-ui:search-container-row
 		className="com.liferay.osb.model.OfferingEntryGroup"
 		modelVar="offeringEntryGroup"
@@ -50,7 +51,8 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
 		<%
 		ProductEntry productEntry = offeringEntryGroup.getProductEntry();
-		SupportResponse supportResponse = offeringEntryGroup.getSupportResponse();
+		//SupportResponse supportResponse = offeringEntryGroup.getSupportResponse();
+
 		%>
 
 		<liferay-ui:search-container-column-text
@@ -110,4 +112,5 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 		markupView="lexicon"
 		paginate="<%= false %>"
 	/>
+	--%>
 </liferay-ui:search-container>

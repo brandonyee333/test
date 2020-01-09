@@ -38,7 +38,7 @@
 						String auditEntryUserName = StringPool.BLANK;
 						String portraitURL = StringPool.BLANK;
 
-						if (auditEntry.getUserId() != OSBConstants.USER_DEFAULT_USER_ID) {
+						if (auditEntry.getUserId() != OSBCustomerConstants.USER_DEFAULT_USER_ID) {
 							User auditEntryUser = UserLocalServiceUtil.getUser(auditEntry.getUserId());
 
 							auditEntryUserName = auditEntryUser.getFullName();

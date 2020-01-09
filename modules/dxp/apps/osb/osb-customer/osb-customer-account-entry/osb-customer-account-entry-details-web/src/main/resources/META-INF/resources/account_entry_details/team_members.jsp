@@ -30,7 +30,8 @@ long accountEntryId = accountEntry.getAccountEntryId();
 	<liferay-ui:search-container-results>
 
 		<%
-		results = AccountCustomerLocalServiceUtil.getAccountCustomers(accountEntryId);
+
+		//results = AccountCustomerLocalServiceUtil.getAccountCustomers(accountEntryId);
 
 		searchContainer.setTotal(results.size());
 		searchContainer.setResults(results);
@@ -38,6 +39,7 @@ long accountEntryId = accountEntry.getAccountEntryId();
 
 	</liferay-ui:search-container-results>
 
+	<%--
 	<liferay-ui:search-container-row
 		className="com.liferay.osb.model.AccountCustomer"
 		modelVar="accountCustomer"
@@ -90,4 +92,6 @@ long accountEntryId = accountEntry.getAccountEntryId();
 		markupView="lexicon"
 		paginate="<%= false %>"
 	/>
+	--%>
+
 </liferay-ui:search-container>

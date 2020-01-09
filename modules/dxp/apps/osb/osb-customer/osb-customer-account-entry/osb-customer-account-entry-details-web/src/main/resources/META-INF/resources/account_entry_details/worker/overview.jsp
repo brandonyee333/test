@@ -41,10 +41,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="dossiera-account" />
 					</td>
 
-					<%
-					String dossieraAccountURL = accountEntry.getDossieraAccountURL();
-					%>
-
+					<%--
 					<c:choose>
 						<c:when test="<%= Validator.isNotNull(dossieraAccountURL) %>">
 							<td>
@@ -57,6 +54,8 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 							</td>
 						</c:otherwise>
 					</c:choose>
+					--%>
+
 				</tr>
 				<tr>
 					<td>
@@ -71,6 +70,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="level" />
 					</td>
 					<td>
+						<%--
 						<c:choose>
 							<c:when test="<%= accountEntry.getHighestSupportResponseId() != 0 %>">
 
@@ -84,6 +84,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 								<liferay-ui:message key="not-applicable" />
 							</c:otherwise>
 						</c:choose>
+						--%>
 					</td>
 				</tr>
 				<tr>
@@ -106,6 +107,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="partner" />
 					</td>
 					<td>
+						<%--
 						<c:if test="<%= accountEntry.getPartnerEntryId() > 0 %>">
 
 							<%
@@ -114,6 +116,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
 							<%= HtmlUtil.escape(partnerEntry.getCode()) %>
 						</c:if>
+						--%>
 					</td>
 				</tr>
 				<tr>
@@ -121,9 +124,11 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="partner-support" />
 					</td>
 					<td>
+						<%--
 						<c:if test="<%= accountEntry.getPartnerEntryId() > 0 %>">
 							<%= accountEntry.isPartnerManagedSupport() ? LanguageUtil.get(request, "yes") : LanguageUtil.get(request, "no") %>
 						</c:if>
+						--%>
 					</td>
 				</tr>
 				<tr>
@@ -131,7 +136,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="tier" />
 					</td>
 					<td>
-						<%= AccountEntryConstants.getTierLabel(accountEntry.getTier()) %>
+						<%--<%= AccountEntryConstants.getTierLabel(accountEntry.getTier()) %>--%>
 					</td>
 				</tr>
 				<tr>
@@ -139,7 +144,7 @@ AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 						<liferay-ui:message key="industry" />
 					</td>
 					<td>
-						<%= LanguageUtil.get(request, accountEntry.getIndustryLabel()) %>
+						<%--<%= LanguageUtil.get(request, accountEntry.getIndustryLabel()) %>--%>
 					</td>
 				</tr>
 				<tr>

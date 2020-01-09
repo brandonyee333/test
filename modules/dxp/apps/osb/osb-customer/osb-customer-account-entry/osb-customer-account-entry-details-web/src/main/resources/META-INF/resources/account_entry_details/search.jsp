@@ -52,11 +52,11 @@ PortletURL portletURL = renderResponse.createRenderURL();
 				andOperator = true;
 			}
 
-			total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator);
+			//total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator);
 
 			searchContainer.setTotal(total);
 
-			results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
+			//results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
 
 			searchContainer.setResults(results);
 			%>
@@ -64,7 +64,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		</liferay-ui:search-container-results>
 
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.model.AccountEntry"
+			className="com.liferay.osb.customer.admin.model.AccountEntry"
 			keyProperty="accountEntryId"
 			modelVar="accountEntry"
 		>
