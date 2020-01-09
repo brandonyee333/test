@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.admin.internal.upgrade;
 
 import com.liferay.osb.customer.admin.internal.upgrade.v1_0_0.UpgradeListTypes;
+import com.liferay.osb.customer.admin.internal.upgrade.v1_0_0.UpgradeSchema;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -29,7 +30,7 @@ public class OSBCustomerAdminServiceUpgrade implements UpgradeStepRegistrator {
 	public void register(Registry registry) {
 		registry.register(
 			"com.liferay.osb.customer.admin.service", "0.0.0", "1.0.0",
-			new UpgradeListTypes());
+			new UpgradeSchema(), new UpgradeListTypes());
 	}
 
 }
