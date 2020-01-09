@@ -50,6 +50,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DETAILS_PROFILE_IMAGE</td>
+	<td>//img[contains(@id,'avatar') and contains(@src,'${key_imageName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DETAILS_SCREEN_NAME_FIELD</td>
 	<td>//input[contains(@id,'screenName')]</td>
 	<td></td>
@@ -266,6 +271,12 @@
 <tr>
 	<td>CUSTOM_FIELDS_SELECT</td>
 	<td>//div[contains(.,'${customFieldName}')]/select</td>
+	<td></td>
+</tr>
+<!--UPLOAD_IMAGE-->
+<tr>
+	<td>UPLOAD_IMAGE_SELECT</td>
+	<td>//label[contains(@id,'uploadImage')]</td>
 	<td></td>
 </tr>
 </tbody>
