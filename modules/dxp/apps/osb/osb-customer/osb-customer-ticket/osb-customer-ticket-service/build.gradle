@@ -19,6 +19,8 @@ dependencies {
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-account-entry:osb-customer-account-entry-details-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-admin:osb-customer-admin-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-ticket:osb-customer-ticket-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk-connector:osb-customer-zendesk-connector-api")
 	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk-util")

@@ -186,16 +186,18 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			List<Team> teams = teamWebService.getAssignedTeams(koroneikiAccount.getKey());
 
 			for (Team team : teams) {
-				List<TeamRole> teamRoles = teamRoleWebService.getTeamRoles(koroneikiAccount.getKey(), team.getKey());
+				TeamRole[] teamRoles = team.getTeamRoles();
 
-				for (TeamRole teamRole : teamRoles) {
-					String name = teamRole.getName();
+				if (teamRoles != null) {
+					for (TeamRole teamRole : teamRoles) {
+						String name = teamRole.getName();
 
-					if (name.equals("First Line Support")) {
-						firstLineSupport = team.getName();
-					}
-					else if (name.equals("Partner")) {
-						partner = team.getName();
+						if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+							firstLineSupport = team.getName();
+						}
+						else if (name.equals(TeamRoleConstants.NAME_PARTNER)) {
+							partner = team.getName();
+						}
 					}
 				}
 			}

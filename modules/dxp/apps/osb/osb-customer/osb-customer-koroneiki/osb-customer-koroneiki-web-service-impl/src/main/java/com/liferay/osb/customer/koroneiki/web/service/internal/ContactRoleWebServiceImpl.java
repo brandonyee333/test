@@ -14,11 +14,12 @@
 
 package com.liferay.osb.customer.koroneiki.web.service.internal;
 
-import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Page;
-import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.TeamResource;
+import com.liferay.osb.koroneiki.phloem.rest.client.pagination.Pagination;
+import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ContactRoleResource;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 
 import java.util.ArrayList;
@@ -34,17 +35,41 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	configurationPid = "com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration",
-	immediate = true, service = TeamWebService.class
+	immediate = true, service = ContactRoleWebService.class
 )
-public class TeamWebServiceImpl implements TeamWebService {
+public class ContactRoleWebServiceImpl implements ContactRoleWebService {
 
-	public List<Team> getAssignedTeams(String accountKey) throws Exception {
-		Page<Team> teamsPage =
-			_teamResource.getAccountAccountKeyAssignedTeamsPage(
-				accountKey, null);
+	public List<ContactRole> getAccountContactRoles(
+			String accountKey, String contactUuid, int page, int pageSize)
+		throws Exception {
 
-		if ((teamsPage != null) && (teamsPage.getItems() != null)) {
-			return new ArrayList<>(teamsPage.getItems());
+		Page<ContactRole> contactRolesPage =
+			_contactRoleResource.
+				getAccountAccountKeyContactByUuidContactUuidRolesPage(
+					accountKey, contactUuid, Pagination.of(page, pageSize));
+
+		if ((contactRolesPage != null) &&
+			(contactRolesPage.getItems() != null)) {
+
+			return new ArrayList<>(contactRolesPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
+	public List<ContactRole> getTeamContactRoles(
+			String teamKey, String contactUuid, int page, int pageSize)
+		throws Exception {
+
+		Page<ContactRole> contactRolesPage =
+			_contactRoleResource.
+				getTeamTeamKeyContactByUuidContactUuidRolesPage(
+					teamKey, contactUuid, Pagination.of(page, pageSize));
+
+		if ((contactRolesPage != null) &&
+			(contactRolesPage.getItems() != null)) {
+
+			return new ArrayList<>(contactRolesPage.getItems());
 		}
 
 		return Collections.emptyList();
@@ -56,18 +81,16 @@ public class TeamWebServiceImpl implements TeamWebService {
 			ConfigurableUtil.createConfigurable(
 				KoroneikiConfiguration.class, properties);
 
-		TeamResource.Builder builder = TeamResource.builder();
+		ContactRoleResource.Builder builder = ContactRoleResource.builder();
 
-		_teamResource = builder.endpoint(
+		_contactRoleResource = builder.endpoint(
 			koroneikiConfiguration.host(), koroneikiConfiguration.port(),
 			koroneikiConfiguration.scheme()
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
-		).parameter(
-			"nestedFields", "teamRoles"
 		).build();
 	}
 
-	private TeamResource _teamResource;
+	private ContactRoleResource _contactRoleResource;
 
 }

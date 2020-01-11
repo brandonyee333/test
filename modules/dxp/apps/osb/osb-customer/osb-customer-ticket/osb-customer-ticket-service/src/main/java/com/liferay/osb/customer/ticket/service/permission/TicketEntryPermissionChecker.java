@@ -14,11 +14,23 @@
 
 package com.liferay.osb.customer.ticket.service.permission;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
+
+import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -55,42 +67,92 @@ public class TicketEntryPermissionChecker {
 			return true;
 		}
 
-		/*
-		TODO
-		AccountCustomer accountCustomer =
-			AccountCustomerLocalServiceUtil.fetchAccountCustomer(
-				permissionChecker.getUserId(), accountEntryId);
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
 
-		if ((accountCustomer != null) &&
-			((accountCustomer.getRole() ==
-				AccountCustomerConstants.ROLE_DEVELOPER) ||
-			 (accountCustomer.getRole() ==
-				 AccountCustomerConstants.ROLE_MANAGER))) {
+		User user = permissionChecker.getUser();
 
-			return true;
-		}
+		try {
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					accountEntry.getKoroneikiAccountKey(), user.getUuid(), 1,
+					100);
 
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+			for (ContactRole contactRole : contactRoles) {
+				String name = contactRole.getName();
 
-		if (accountEntry.isPartnerManagedSupport()) {
-			PartnerWorker partnerWorker =
-				PartnerWorkerLocalServiceUtil.fetchPartnerWorker(
-					permissionChecker.getUserId(),
-					accountEntry.getPartnerEntryId());
+				if (name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
+					name.equals(ContactRoleConstants.NAME_SUPPORT_MANAGER)) {
 
-			if ((partnerWorker != null) &&
-				((partnerWorker.getRole() ==
-					PartnerWorkerConstants.ROLE_MANAGER) ||
-				 (partnerWorker.getRole() ==
-					 PartnerWorkerConstants.ROLE_MEMBER))) {
+					return true;
+				}
+			}
+
+			if (isPartner(
+					accountEntry.getKoroneikiAccountKey(), user.getUuid())) {
 
 				return true;
 			}
 		}
-		*/
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 
 		return false;
+	}
+
+	protected static boolean isPartner(
+			String koroneikiAccountKey, String userUuid)
+		throws Exception {
+
+		List<Team> teams = _teamWebService.getAssignedTeams(
+			koroneikiAccountKey);
+
+		for (Team team : teams) {
+			TeamRole[] teamRoles = team.getTeamRoles();
+
+			if (teamRoles == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : teamRoles) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					List<ContactRole> contactRoles =
+						_contactRoleWebService.getTeamContactRoles(
+							team.getKey(), userUuid, 1, 100);
+
+					for (ContactRole contactRole : contactRoles) {
+						String contactRoleName = contactRole.getName();
+
+						if (contactRoleName.equals(
+								ContactRoleConstants.NAME_PARTNER_MANAGER) ||
+							contactRoleName.equals(
+								ContactRoleConstants.NAME_PARTNER_MEMBER)) {
+
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	@Reference(unbind = "-")
+	protected void setAccountEntryLocalService(
+		AccountEntryLocalService accountEntryLocalService) {
+
+		_accountEntryLocalService = accountEntryLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setContactRoleWebService(
+		ContactRoleWebService contactRoleWebService) {
+
+		_contactRoleWebService = contactRoleWebService;
 	}
 
 	@Reference(unbind = "-")
@@ -100,6 +162,14 @@ public class TicketEntryPermissionChecker {
 		_organizationLocalService = organizationLocalService;
 	}
 
+	@Reference(unbind = "-")
+	protected void setTeamWebService(TeamWebService teamWebService) {
+		_teamWebService = teamWebService;
+	}
+
+	private static AccountEntryLocalService _accountEntryLocalService;
+	private static ContactRoleWebService _contactRoleWebService;
 	private static OrganizationLocalService _organizationLocalService;
+	private static TeamWebService _teamWebService;
 
 }
