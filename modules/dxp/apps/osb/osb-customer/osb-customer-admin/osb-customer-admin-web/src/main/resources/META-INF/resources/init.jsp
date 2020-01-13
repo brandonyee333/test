@@ -60,6 +60,7 @@ page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntryDisp
 page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntrySearch" %><%@
 page import="com.liferay.osb.customer.admin.web.internal.search.AccountEntrySearchTerms" %><%@
 page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
+page import="com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.AccountWebService" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.ProductWebService" %><%@
 page import="com.liferay.osb.customer.koroneiki.web.service.TeamWebService" %><%@
