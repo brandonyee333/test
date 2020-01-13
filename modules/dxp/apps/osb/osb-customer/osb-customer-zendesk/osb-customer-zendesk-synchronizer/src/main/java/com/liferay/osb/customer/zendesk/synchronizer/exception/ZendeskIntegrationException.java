@@ -12,14 +12,28 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.internal.constants;
+package com.liferay.osb.customer.zendesk.synchronizer.exception;
+
+import com.liferay.portal.kernel.exception.ModelListenerException;
 
 /**
- * @author Amos Fong
+ * @author Jenny Chen
  */
-public class ZendeskDestinationNames {
+public class ZendeskIntegrationException extends ModelListenerException {
 
-	public static final String ACCOUNT_ENTRY_SYNC =
-		"liferay/zendesk_account_entry_sync";
+	public ZendeskIntegrationException() {
+	}
+
+	public ZendeskIntegrationException(String msg) {
+		super(msg);
+	}
+
+	public ZendeskIntegrationException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
+	public ZendeskIntegrationException(Throwable cause) {
+		super(cause);
+	}
 
 }

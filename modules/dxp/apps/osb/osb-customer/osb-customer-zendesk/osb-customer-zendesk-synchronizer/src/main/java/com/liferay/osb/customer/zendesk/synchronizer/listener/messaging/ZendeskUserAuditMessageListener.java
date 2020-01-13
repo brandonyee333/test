@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
+package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.model.listener.configuration.ZendeskModelListenerConfigurationValues;
+import com.liferay.osb.customer.zendesk.synchronizer.configuration.ZendeskSynchronizerConfigurationValues;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.osb.customer.zendesk.web.service.search.Query;
 import com.liferay.osb.customer.zendesk.web.service.search.QueryFactory;
@@ -97,7 +97,7 @@ public class ZendeskUserAuditMessageListener extends BaseMessageListener {
 
 		for (ZendeskUser zendeskUser : zendeskUsers) {
 			sb.append("<a href=\"");
-			sb.append(ZendeskModelListenerConfigurationValues.ZENDESK_USER_URL);
+			sb.append(ZendeskSynchronizerConfigurationValues.ZENDESK_USER_URL);
 			sb.append(zendeskUser.getZendeskUserId());
 			sb.append("\">");
 			sb.append(zendeskUser.getEmail());
@@ -123,7 +123,7 @@ public class ZendeskUserAuditMessageListener extends BaseMessageListener {
 		subscriptionSender.setSubject(subject);
 
 		subscriptionSender.addRuntimeSubscribers(
-			ZendeskModelListenerConfigurationValues.ZENDESK_ADMIN_EMAIL_ADDRESS,
+			ZendeskSynchronizerConfigurationValues.ZENDESK_ADMIN_EMAIL_ADDRESS,
 			"Zendesk Admin");
 
 		subscriptionSender.flushNotificationsAsync();

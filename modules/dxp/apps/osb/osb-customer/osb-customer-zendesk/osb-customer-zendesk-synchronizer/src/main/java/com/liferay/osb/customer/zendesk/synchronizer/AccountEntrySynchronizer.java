@@ -12,13 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
+package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.exception.RequiredAccountEntryException;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.SupportRegionLocalService;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
@@ -341,8 +340,6 @@ public class AccountEntrySynchronizer {
 		*/
 	}
 
-	}
-
 	public void removePartnerManagedSupport(AccountEntry accountEntry)
 		throws PortalException {
 
@@ -430,11 +427,11 @@ public class AccountEntrySynchronizer {
 	}
 
 	public void updateTags(AccountEntry accountEntry) throws PortalException {
-		for (AccountCustomer accountCustomer :
+		/*for (AccountCustomer accountCustomer :
 				accountEntry.getAccountCustomers()) {
 
 			_userSynchronizer.updateTags(accountCustomer.getUserId());
-		}
+		}*/
 	}
 
 	protected String getDefaultUserEmail(long accountEntryId) {

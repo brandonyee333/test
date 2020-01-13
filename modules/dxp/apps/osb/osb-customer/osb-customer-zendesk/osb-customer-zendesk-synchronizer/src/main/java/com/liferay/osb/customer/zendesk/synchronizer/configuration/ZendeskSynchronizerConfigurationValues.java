@@ -12,31 +12,31 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.configuration;
+package com.liferay.osb.customer.zendesk.synchronizer.configuration;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 
 /**
  * @author Amos Fong
  */
-public class ZendeskModelListenerConfigurationValues {
+public class ZendeskSynchronizerConfigurationValues {
 
 	public static final int ZENDESK_ACCOUNT_ENTRY_SYNC_BATCH =
 		GetterUtil.getInteger(
-			ZendeskModelListenerConfigurationUtil.get(
+			ZendeskSynchronizerConfigurationUtil.get(
 				"zendesk.account.entry.sync.batch"));
 
 	public static final int ZENDESK_ACCOUNT_ENTRY_SYNC_INTERVAL =
 		GetterUtil.getInteger(
-			ZendeskModelListenerConfigurationUtil.get(
+			ZendeskSynchronizerConfigurationUtil.get(
 				"zendesk.account.entry.sync.interval"));
 
 	public static final String ZENDESK_ADMIN_EMAIL_ADDRESS =
 		GetterUtil.getString(
-			ZendeskModelListenerConfigurationUtil.get(
+			ZendeskSynchronizerConfigurationUtil.get(
 				"zendesk.admin.email.address"));
 
 	public static final String ZENDESK_USER_URL = GetterUtil.getString(
-		ZendeskModelListenerConfigurationUtil.get("zendesk.user.url"));
+		ZendeskSynchronizerConfigurationUtil.get("zendesk.user.url"));
 
 }

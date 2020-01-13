@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.configuration;
+package com.liferay.osb.customer.zendesk.synchronizer.configuration;
 
 import com.liferay.portal.kernel.configuration.Configuration;
 import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
 /**
  * @author Amos Fong
  */
-public class ZendeskModelListenerConfigurationUtil {
+public class ZendeskSynchronizerConfigurationUtil {
 
 	public static String get(String key) {
 		return _configuration.get(key);
@@ -28,7 +28,7 @@ public class ZendeskModelListenerConfigurationUtil {
 
 	private static final Configuration _configuration =
 		ConfigurationFactoryUtil.getConfiguration(
-			ZendeskModelListenerConfigurationUtil.class.getClassLoader(),
+			ZendeskSynchronizerConfigurationUtil.class.getClassLoader(),
 			"portlet");
 
 }

@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
+package com.liferay.osb.customer.zendesk.synchronizer;
 
 import org.osgi.service.component.annotations.Component;
 

@@ -12,10 +12,9 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.synchronizer;
+package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
@@ -289,6 +288,7 @@ public class UserSynchronizer {
 			}
 		}
 		*/
+
 		return tags;
 	}
 

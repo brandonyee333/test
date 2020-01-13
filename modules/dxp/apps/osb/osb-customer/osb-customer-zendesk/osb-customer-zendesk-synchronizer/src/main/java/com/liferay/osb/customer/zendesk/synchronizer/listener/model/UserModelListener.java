@@ -12,16 +12,17 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener;
+package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.PartnerWorkerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountCustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountEntrySynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
 import com.liferay.petra.lang.CentralizedThreadLocal;
@@ -34,9 +35,6 @@ import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;

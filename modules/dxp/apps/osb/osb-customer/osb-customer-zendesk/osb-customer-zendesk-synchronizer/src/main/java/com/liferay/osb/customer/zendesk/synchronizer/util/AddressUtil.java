@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.util;
+package com.liferay.osb.customer.zendesk.synchronizer.util;
 
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Address;
@@ -29,7 +29,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Kyle Bischof
  */
 @Component(immediate = true, service = {})
-public class ZendeskModelListenerUtil {
+public class AddressUtil {
 
 	public static String convertAddressToString(Address address) {
 		if (address == null) {

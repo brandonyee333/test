@@ -12,27 +12,27 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.exception;
+package com.liferay.osb.customer.zendesk.synchronizer.exception;
 
-import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
 
 /**
- * @author Jenny Chen
+ * @author Kyle Bischof
  */
-public class ZendeskIntegrationException extends ModelListenerException {
+public class AccountCustomerRemovalException extends PortalException {
 
-	public ZendeskIntegrationException() {
+	public AccountCustomerRemovalException() {
 	}
 
-	public ZendeskIntegrationException(String msg) {
+	public AccountCustomerRemovalException(String msg) {
 		super(msg);
 	}
 
-	public ZendeskIntegrationException(String msg, Throwable cause) {
+	public AccountCustomerRemovalException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public ZendeskIntegrationException(Throwable cause) {
+	public AccountCustomerRemovalException(Throwable cause) {
 		super(cause);
 	}
 

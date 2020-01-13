@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
+package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.model.AccountEntry;
@@ -21,11 +21,11 @@ import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.model.listener.internal.constants.ZendeskDestinationNames;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.PartnerWorkerSynchronizer;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountCustomerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountEntrySynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
@@ -33,15 +33,24 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
+import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationConfiguration;
+import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.StringPool;
 
+import java.util.Dictionary;
 import java.util.List;
 
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -54,6 +63,40 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class SynchronizeAccountEntryMessageListener
 	extends BaseMessageListener {
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_bundleContext = bundleContext;
+
+		DestinationConfiguration destinationConfiguration =
+			new DestinationConfiguration(
+				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
+				ZendeskDestinationNames.ACCOUNT_ENTRY_SYNC);
+
+		Destination destination = _destinationFactory.createDestination(
+			destinationConfiguration);
+
+		Dictionary<String, Object> dictionary = new HashMapDictionary<>();
+
+		dictionary.put("destination.name", destination.getName());
+
+		_serviceRegistration = _bundleContext.registerService(
+			Destination.class, destination, dictionary);
+	}
+
+	@Deactivate
+	protected void deactivate() {
+		if (_serviceRegistration != null) {
+			Destination destination = _bundleContext.getService(
+				_serviceRegistration.getReference());
+
+			_serviceRegistration.unregister();
+
+			destination.destroy();
+		}
+
+		_bundleContext = null;
+	}
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
@@ -122,6 +165,13 @@ public class SynchronizeAccountEntryMessageListener
 		}
 
 		return false;
+	}
+
+	@Reference(unbind = "-")
+	protected void setDestinationFactory(
+		DestinationFactory destinationFactory) {
+
+		_destinationFactory = destinationFactory;
 	}
 
 	protected void synchronize(AccountEntry accountEntry)
@@ -220,14 +270,20 @@ public class SynchronizeAccountEntryMessageListener
 	private ZendeskOrganizationMembershipWebService
 		_asyncZendeskOrganizationMembershipWebService;
 
+	private volatile BundleContext _bundleContext;
+
 	@Reference
 	private ClassNameLocalService _classNameLocalService;
+
+	private DestinationFactory _destinationFactory;
 
 	@Reference
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
 	private PartnerWorkerSynchronizer _partnerWorkerSynchronizer;
+
+	private ServiceRegistration<Destination> _serviceRegistration;
 
 	@Reference
 	private UserLocalService _userLocalService;

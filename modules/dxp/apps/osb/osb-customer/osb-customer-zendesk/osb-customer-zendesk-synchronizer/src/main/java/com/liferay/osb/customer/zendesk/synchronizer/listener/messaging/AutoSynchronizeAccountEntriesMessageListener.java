@@ -12,13 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener.internal.messaging;
+package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.util.comparator.AccountEntryLastZendeskAuditDateComparator;
-import com.liferay.osb.customer.zendesk.model.listener.configuration.ZendeskModelListenerConfigurationValues;
-import com.liferay.osb.customer.zendesk.model.listener.internal.constants.ZendeskDestinationNames;
+import com.liferay.osb.customer.zendesk.synchronizer.configuration.ZendeskSynchronizerConfigurationValues;
+import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
@@ -52,7 +52,7 @@ public class AutoSynchronizeAccountEntriesMessageListener
 	@Activate
 	@Modified
 	protected void activate(Map<String, Object> properties) {
-		if (ZendeskModelListenerConfigurationValues.
+		if (ZendeskSynchronizerConfigurationValues.
 				ZENDESK_ACCOUNT_ENTRY_SYNC_INTERVAL <= 0) {
 
 			return;
@@ -64,7 +64,7 @@ public class AutoSynchronizeAccountEntriesMessageListener
 
 		Trigger trigger = _triggerFactory.createTrigger(
 			className, className, null, null,
-			ZendeskModelListenerConfigurationValues.
+			ZendeskSynchronizerConfigurationValues.
 				ZENDESK_ACCOUNT_ENTRY_SYNC_INTERVAL,
 			TimeUnit.MINUTE);
 
@@ -77,7 +77,7 @@ public class AutoSynchronizeAccountEntriesMessageListener
 
 	@Deactivate
 	protected void deactivate() {
-		if (ZendeskModelListenerConfigurationValues.
+		if (ZendeskSynchronizerConfigurationValues.
 				ZENDESK_ACCOUNT_ENTRY_SYNC_INTERVAL <= 0) {
 
 			return;
@@ -90,7 +90,7 @@ public class AutoSynchronizeAccountEntriesMessageListener
 	protected void doReceive(Message message) throws Exception {
 		List<AccountEntry> accountEntries = _accountEntryLocalService.search(
 			null, null, 0,
-			ZendeskModelListenerConfigurationValues.
+			ZendeskSynchronizerConfigurationValues.
 				ZENDESK_ACCOUNT_ENTRY_SYNC_BATCH,
 			new AccountEntryLastZendeskAuditDateComparator());
 

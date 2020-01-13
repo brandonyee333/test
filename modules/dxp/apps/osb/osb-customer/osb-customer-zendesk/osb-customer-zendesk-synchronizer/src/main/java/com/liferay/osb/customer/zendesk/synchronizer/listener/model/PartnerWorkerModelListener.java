@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.zendesk.model.listener;
+package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
@@ -26,8 +26,8 @@ import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.PartnerWorkerSynchronizer;
-import com.liferay.osb.customer.zendesk.model.listener.synchronizer.UserSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
+import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.service.UserLocalService;
