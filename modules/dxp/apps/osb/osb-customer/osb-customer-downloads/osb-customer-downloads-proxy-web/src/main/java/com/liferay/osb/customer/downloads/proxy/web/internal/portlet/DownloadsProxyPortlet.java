@@ -67,6 +67,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.preferences-company-wide=true",
 		"javax.portlet.display-name=OSB Downloads Proxy",
 		"javax.portlet.expiration-cache=0",
+		"javax.portlet.init-param.check-auth-token=false",
 		"javax.portlet.init-param.mvc-command-names-default-views=/view",
 		"javax.portlet.init-param.template-path=/META-INF/resources/",
 		"javax.portlet.name=" + DownloadsProxyPortletKeys.DOWNLOADS_PROXY,
