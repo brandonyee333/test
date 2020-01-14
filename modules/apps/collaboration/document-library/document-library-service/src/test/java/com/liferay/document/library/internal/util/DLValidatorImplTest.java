@@ -42,16 +42,8 @@ public class DLValidatorImplTest {
 	@Before
 	public void setUp() {
 		PowerMockito.mockStatic(PrefsPropsUtil.class);
-		DLValidatorImpl dlValidatorImpl = new DLValidatorImpl();
 
-		Mockito.when(
-			PrefsPropsUtil.getStringArray(
-				PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA)
-		).thenReturn(
-			new String[] {"gif"}
-		);
-
-		_dlValidator = dlValidatorImpl;
+		_dlValidator = new DLValidatorImpl();
 
 		FileUtil fileUtil = new FileUtil();
 
@@ -60,22 +52,44 @@ public class DLValidatorImplTest {
 
 	@Test(expected = FileExtensionException.class)
 	public void testInvalidExtension() throws Exception {
-		_dlValidator.validateFileExtension("test.gıf");
+		_validateFileExtension("test.gıf");
 	}
 
 	@Test
 	public void testValidLowerCaseExtension() throws Exception {
-		_dlValidator.validateFileExtension("test.gif");
+		_validateFileExtension("test.gif");
 	}
 
 	@Test
 	public void testValidMixedCaseExtension() throws Exception {
-		_dlValidator.validateFileExtension("test.GiF");
+		_validateFileExtension("test.GiF");
 	}
 
 	@Test
 	public void testValidUpperCaseExtension() throws Exception {
-		_dlValidator.validateFileExtension("test.GIF");
+		_validateFileExtension("test.GIF");
+	}
+
+	private void _validateFileExtension(String fileName)
+		throws FileExtensionException {
+
+		Mockito.when(
+			PrefsPropsUtil.getStringArray(
+				PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA)
+		).thenReturn(
+			new String[] {".gif"}
+		);
+
+		_dlValidator.validateFileExtension(fileName);
+
+		Mockito.when(
+			PrefsPropsUtil.getStringArray(
+				PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA)
+		).thenReturn(
+			new String[] {"gif"}
+		);
+
+		_dlValidator.validateFileExtension(fileName);
 	}
 
 	private DLValidator _dlValidator;
