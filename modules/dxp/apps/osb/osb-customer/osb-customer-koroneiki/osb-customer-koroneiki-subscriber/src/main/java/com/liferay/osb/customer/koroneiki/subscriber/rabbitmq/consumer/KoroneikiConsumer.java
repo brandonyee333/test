@@ -37,7 +37,10 @@ import org.osgi.service.component.annotations.Reference;
 		"routing.key=koroneiki.account.contact.unassigned",
 		"routing.key=koroneiki.account.contactrole.unassigned",
 		"routing.key=koroneiki.account.teamrole.assigned",
-		"routing.key=koroneiki.account.teamrole.unassigned"
+		"routing.key=koroneiki.account.teamrole.unassigned",
+		"routing.key=koroneiki.product.create",
+		"routing.key=koroneiki.product.delete",
+		"routing.key=koroneiki.product.update"
 	},
 	service = KoroneikiConsumer.class
 )

@@ -16,7 +16,7 @@ package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
-import com.liferay.osb.customer.admin.exception.ProductEntryEnvironmentException;
+import com.liferay.osb.customer.admin.exception.ProductEntryNameException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
 import com.liferay.osb.customer.admin.model.ExternalIdMapper;
 import com.liferay.osb.customer.admin.model.ProductEntry;
@@ -38,14 +38,14 @@ public class ProductEntryLocalServiceImpl
 	extends ProductEntryLocalServiceBaseImpl {
 
 	public ProductEntry addProductEntry(
-			long userId, String koroneikiProductKey, int type, int environment,
-			String versionsListType, String zendeskTag)
+			long userId, String koroneikiProductKey, String name, int type,
+			int environment, String versionsListType, String zendeskTag)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(0, koroneikiProductKey, environment, zendeskTag);
+		validate(0, koroneikiProductKey, name, zendeskTag);
 
 		long productEntryId = counterLocalService.increment();
 
@@ -57,6 +57,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setCreateDate(now);
 		productEntry.setModifiedDate(now);
 		productEntry.setKoroneikiProductKey(koroneikiProductKey);
+		productEntry.setName(name);
 		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
@@ -94,6 +95,13 @@ public class ProductEntryLocalServiceImpl
 		return productEntry;
 	}
 
+	public ProductEntry deleteProductEntry(String koroneikiProductKey)
+		throws PortalException {
+
+		return productEntryPersistence.removeByKoroneikiProductKey(
+			koroneikiProductKey);
+	}
+
 	public ProductEntry fetchProductEntryByName(String name) {
 		return productEntryPersistence.fetchByName(name);
 	}
@@ -101,6 +109,14 @@ public class ProductEntryLocalServiceImpl
 	public List<ProductEntry> getProductEntries(long accountEntryId) {
 		return productEntryFinder.findByAccountEntry(
 			accountEntryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+	}
+
+	public ProductEntry getProductEntryByKoroneikiKey(
+			String koroneikiProductKey)
+		throws PortalException {
+
+		return productEntryPersistence.findByKoroneikiProductKey(
+			koroneikiProductKey);
 	}
 
 	public ProductEntry getProductEntryByName(String name)
@@ -120,17 +136,19 @@ public class ProductEntryLocalServiceImpl
 	}
 
 	public ProductEntry updateProductEntry(
-			long productEntryId, String koroneikiProductKey, int type,
-			int environment, String versionsListType, String zendeskTag)
+			long productEntryId, String koroneikiProductKey, String name,
+			int type, int environment, String versionsListType,
+			String zendeskTag)
 		throws PortalException {
 
-		validate(productEntryId, koroneikiProductKey, environment, zendeskTag);
+		validate(productEntryId, koroneikiProductKey, name, zendeskTag);
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
 
 		productEntry.setModifiedDate(new Date());
 		productEntry.setKoroneikiProductKey(koroneikiProductKey);
+		productEntry.setName(name);
 		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
@@ -171,7 +189,7 @@ public class ProductEntryLocalServiceImpl
 	}
 
 	protected void validate(
-			long productEntryId, String koroneikiProductKey, int environment,
+			long productEntryId, String koroneikiProductKey, String name,
 			String zendeskTag)
 		throws PortalException {
 
@@ -179,14 +197,14 @@ public class ProductEntryLocalServiceImpl
 			productEntryPersistence.fetchByKoroneikiProductKey(
 				koroneikiProductKey);
 
+		if (Validator.isNull(name)) {
+			throw new ProductEntryNameException();
+		}
+
 		if ((productEntry != null) &&
 			(productEntry.getProductEntryId() != productEntryId)) {
 
 			throw new DuplicateProductEntryException();
-		}
-
-		if (environment <= 0) {
-			throw new ProductEntryEnvironmentException();
 		}
 
 		if (Validator.isNotNull(zendeskTag) &&
