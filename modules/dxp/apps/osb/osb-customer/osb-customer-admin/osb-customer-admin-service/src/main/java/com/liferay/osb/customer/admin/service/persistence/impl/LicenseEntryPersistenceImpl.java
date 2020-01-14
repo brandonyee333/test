@@ -66,7 +66,7 @@ public class LicenseEntryPersistenceImpl
 	extends BasePersistenceImpl<LicenseEntry>
 	implements LicenseEntryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>LicenseEntryUtil</code> to access the license entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

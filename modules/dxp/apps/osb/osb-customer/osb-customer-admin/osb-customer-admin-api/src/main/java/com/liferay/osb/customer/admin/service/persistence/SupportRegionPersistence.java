@@ -40,7 +40,7 @@ import java.util.Set;
 public interface SupportRegionPersistence
 	extends BasePersistence<SupportRegion> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportRegionUtil} to access the support region persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

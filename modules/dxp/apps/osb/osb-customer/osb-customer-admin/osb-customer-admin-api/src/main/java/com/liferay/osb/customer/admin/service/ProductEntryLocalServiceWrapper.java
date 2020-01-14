@@ -33,20 +33,15 @@ public class ProductEntryLocalServiceWrapper
 		_productEntryLocalService = productEntryLocalService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ProductEntryLocalServiceUtil} to access the product entry local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.osb.customer.admin.model.ProductEntry addProductEntry(
-			long userId, String koroneikiProductKey, int type, int environment,
-			String versionsListType, String zendeskTag)
+			long userId, String koroneikiProductKey, String name, int type,
+			int environment, String versionsListType, String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _productEntryLocalService.addProductEntry(
-			userId, koroneikiProductKey, type, environment, versionsListType,
-			zendeskTag);
+			userId, koroneikiProductKey, name, type, environment,
+			versionsListType, zendeskTag);
 	}
 
 	/**
@@ -112,6 +107,15 @@ public class ProductEntryLocalServiceWrapper
 		com.liferay.osb.customer.admin.model.ProductEntry productEntry) {
 
 		return _productEntryLocalService.deleteProductEntry(productEntry);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.ProductEntry deleteProductEntry(
+			String koroneikiProductKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _productEntryLocalService.deleteProductEntry(
+			koroneikiProductKey);
 	}
 
 	@Override
@@ -302,6 +306,15 @@ public class ProductEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.admin.model.ProductEntry
+			getProductEntryByKoroneikiKey(String koroneikiProductKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _productEntryLocalService.getProductEntryByKoroneikiKey(
+			koroneikiProductKey);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.ProductEntry
 			getProductEntryByName(String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -326,12 +339,13 @@ public class ProductEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.admin.model.ProductEntry updateProductEntry(
-			long productEntryId, String koroneikiProductKey, int type,
-			int environment, String versionsListType, String zendeskTag)
+			long productEntryId, String koroneikiProductKey, String name,
+			int type, int environment, String versionsListType,
+			String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _productEntryLocalService.updateProductEntry(
-			productEntryId, koroneikiProductKey, type, environment,
+			productEntryId, koroneikiProductKey, name, type, environment,
 			versionsListType, zendeskTag);
 	}
 

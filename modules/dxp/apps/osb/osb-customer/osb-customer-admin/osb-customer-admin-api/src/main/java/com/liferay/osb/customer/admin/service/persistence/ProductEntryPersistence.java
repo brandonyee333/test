@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface ProductEntryPersistence extends BasePersistence<ProductEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ProductEntryUtil} to access the product entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

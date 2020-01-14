@@ -407,11 +407,6 @@ public class ProductEntryWrapper
 		return _productEntry.isUnlimitedEnterpriseWide();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a product entry model instance should use the <code>ProductEntry</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_productEntry.persist();

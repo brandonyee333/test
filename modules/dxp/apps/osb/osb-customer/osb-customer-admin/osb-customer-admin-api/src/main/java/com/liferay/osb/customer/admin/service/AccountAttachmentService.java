@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 )
 public interface AccountAttachmentService extends BaseService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentServiceUtil} to access the account attachment remote service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountAttachmentServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

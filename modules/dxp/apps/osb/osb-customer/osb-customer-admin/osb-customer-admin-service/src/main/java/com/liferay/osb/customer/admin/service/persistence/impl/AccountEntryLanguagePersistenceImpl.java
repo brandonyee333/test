@@ -60,7 +60,7 @@ public class AccountEntryLanguagePersistenceImpl
 	extends BasePersistenceImpl<AccountEntryLanguage>
 	implements AccountEntryLanguagePersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>AccountEntryLanguageUtil</code> to access the account entry language persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

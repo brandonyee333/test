@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.LicenseEntryLocalServiceUtil;
 public abstract class LicenseEntryBaseImpl
 	extends LicenseEntryModelImpl implements LicenseEntry {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a license entry model instance should use the <code>LicenseEntry</code> interface instead.

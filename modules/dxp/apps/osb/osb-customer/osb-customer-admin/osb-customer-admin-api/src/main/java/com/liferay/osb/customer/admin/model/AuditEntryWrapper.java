@@ -485,11 +485,6 @@ public class AuditEntryWrapper implements AuditEntry, ModelWrapper<AuditEntry> {
 		return _auditEntry.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a audit entry model instance should use the <code>AuditEntry</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_auditEntry.persist();

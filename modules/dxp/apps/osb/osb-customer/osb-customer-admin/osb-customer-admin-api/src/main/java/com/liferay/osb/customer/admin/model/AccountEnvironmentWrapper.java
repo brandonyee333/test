@@ -480,11 +480,6 @@ public class AccountEnvironmentWrapper
 		return _accountEnvironment.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a account environment model instance should use the <code>AccountEnvironment</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_accountEnvironment.persist();

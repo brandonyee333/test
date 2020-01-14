@@ -59,7 +59,7 @@ public abstract class AccountEnvironmentServiceBaseImpl
 	extends BaseServiceImpl
 	implements AccountEnvironmentService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AccountEnvironmentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEnvironmentServiceUtil</code>.

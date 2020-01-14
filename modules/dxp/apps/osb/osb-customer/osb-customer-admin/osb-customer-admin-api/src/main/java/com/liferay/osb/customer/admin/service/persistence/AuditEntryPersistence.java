@@ -40,7 +40,7 @@ import java.util.Set;
 @ProviderType
 public interface AuditEntryPersistence extends BasePersistence<AuditEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AuditEntryUtil} to access the audit entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

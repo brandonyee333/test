@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalServiceUtil;
 public abstract class ExternalIdMapperBaseImpl
 	extends ExternalIdMapperModelImpl implements ExternalIdMapper {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a external ID mapper model instance should use the <code>ExternalIdMapper</code> interface instead.

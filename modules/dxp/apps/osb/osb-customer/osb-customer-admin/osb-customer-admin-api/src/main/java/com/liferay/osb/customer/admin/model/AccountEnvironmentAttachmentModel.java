@@ -41,7 +41,7 @@ import java.util.Date;
 public interface AccountEnvironmentAttachmentModel
 	extends BaseModel<AccountEnvironmentAttachment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a account environment attachment model instance should use the {@link AccountEnvironmentAttachment} interface instead.

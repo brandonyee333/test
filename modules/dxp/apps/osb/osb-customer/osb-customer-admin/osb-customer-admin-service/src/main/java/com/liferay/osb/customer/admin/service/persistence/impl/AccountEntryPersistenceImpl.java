@@ -74,7 +74,7 @@ public class AccountEntryPersistenceImpl
 	extends BasePersistenceImpl<AccountEntry>
 	implements AccountEntryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>AccountEntryUtil</code> to access the account entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

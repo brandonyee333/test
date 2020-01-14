@@ -58,7 +58,7 @@ public abstract class LicenseEntryServiceBaseImpl
 	extends BaseServiceImpl
 	implements IdentifiableOSGiService, LicenseEntryService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>LicenseEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.LicenseEntryServiceUtil</code>.

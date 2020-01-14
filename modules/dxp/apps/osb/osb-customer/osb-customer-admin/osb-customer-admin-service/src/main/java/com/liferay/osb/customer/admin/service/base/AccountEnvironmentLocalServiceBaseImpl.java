@@ -76,7 +76,7 @@ public abstract class AccountEnvironmentLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements AccountEnvironmentLocalService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AccountEnvironmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil</code>.

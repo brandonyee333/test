@@ -41,7 +41,7 @@ import java.util.Date;
 @ProviderType
 public interface AuditEntryModel extends AttachedModel, BaseModel<AuditEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a audit entry model instance should use the {@link AuditEntry} interface instead.

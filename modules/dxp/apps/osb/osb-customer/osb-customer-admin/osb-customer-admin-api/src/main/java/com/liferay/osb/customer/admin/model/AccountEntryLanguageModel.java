@@ -39,7 +39,7 @@ import java.io.Serializable;
 public interface AccountEntryLanguageModel
 	extends BaseModel<AccountEntryLanguage> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a account entry language model instance should use the {@link AccountEntryLanguage} interface instead.

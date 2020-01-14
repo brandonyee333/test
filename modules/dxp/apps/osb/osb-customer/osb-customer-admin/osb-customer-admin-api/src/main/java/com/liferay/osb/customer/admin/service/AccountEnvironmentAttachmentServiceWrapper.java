@@ -35,11 +35,6 @@ public class AccountEnvironmentAttachmentServiceWrapper
 			accountEnvironmentAttachmentService;
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link AccountEnvironmentAttachmentServiceUtil} to access the account environment attachment remote service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEnvironmentAttachmentServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment
 			getAccountEnvironmentAttachment(long accountEnvironmentAttachmentId)

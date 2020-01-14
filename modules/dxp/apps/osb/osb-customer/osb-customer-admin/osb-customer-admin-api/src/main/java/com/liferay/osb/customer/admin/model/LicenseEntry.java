@@ -33,7 +33,7 @@ import com.liferay.portal.kernel.util.Accessor;
 @ProviderType
 public interface LicenseEntry extends LicenseEntryModel, PersistedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.admin.model.impl.LicenseEntryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

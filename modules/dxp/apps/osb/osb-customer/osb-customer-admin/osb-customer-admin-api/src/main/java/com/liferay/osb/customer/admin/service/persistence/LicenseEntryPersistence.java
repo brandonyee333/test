@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface LicenseEntryPersistence extends BasePersistence<LicenseEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link LicenseEntryUtil} to access the license entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

@@ -305,11 +305,6 @@ public class AccountEnvironmentAttachmentWrapper
 		return _accountEnvironmentAttachment.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a account environment attachment model instance should use the <code>AccountEnvironmentAttachment</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_accountEnvironmentAttachment.persist();

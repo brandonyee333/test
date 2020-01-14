@@ -55,7 +55,7 @@ import java.util.List;
 public interface AccountEntryLanguageLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEntryLanguageLocalServiceUtil} to access the account entry language local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEntryLanguageLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

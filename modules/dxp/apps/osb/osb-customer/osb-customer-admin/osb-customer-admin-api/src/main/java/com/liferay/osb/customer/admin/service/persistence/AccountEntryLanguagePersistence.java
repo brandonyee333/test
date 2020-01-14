@@ -40,7 +40,7 @@ import java.util.Set;
 public interface AccountEntryLanguagePersistence
 	extends BasePersistence<AccountEntryLanguage> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEntryLanguageUtil} to access the account entry language persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

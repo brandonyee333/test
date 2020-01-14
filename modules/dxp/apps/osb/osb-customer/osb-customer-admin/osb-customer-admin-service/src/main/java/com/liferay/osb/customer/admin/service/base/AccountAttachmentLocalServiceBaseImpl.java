@@ -75,7 +75,7 @@ public abstract class AccountAttachmentLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
 	implements AccountAttachmentLocalService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AccountAttachmentLocalService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountAttachmentLocalServiceUtil</code>.

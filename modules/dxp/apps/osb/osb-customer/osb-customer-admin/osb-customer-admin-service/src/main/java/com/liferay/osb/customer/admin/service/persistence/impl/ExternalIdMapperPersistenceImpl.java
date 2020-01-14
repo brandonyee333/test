@@ -66,7 +66,7 @@ public class ExternalIdMapperPersistenceImpl
 	extends BasePersistenceImpl<ExternalIdMapper>
 	implements ExternalIdMapperPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ExternalIdMapperUtil</code> to access the external ID mapper persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

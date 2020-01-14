@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.AccountAttachmentLocalServiceUtil;
 public abstract class AccountAttachmentBaseImpl
 	extends AccountAttachmentModelImpl implements AccountAttachment {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a account attachment model instance should use the <code>AccountAttachment</code> interface instead.

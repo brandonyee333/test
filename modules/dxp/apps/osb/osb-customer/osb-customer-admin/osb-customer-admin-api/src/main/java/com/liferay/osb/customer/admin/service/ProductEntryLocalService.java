@@ -56,14 +56,14 @@ import java.util.List;
 public interface ProductEntryLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ProductEntryLocalServiceUtil} to access the product entry local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public ProductEntry addProductEntry(
-			long userId, String koroneikiProductKey, int type, int environment,
-			String versionsListType, String zendeskTag)
+			long userId, String koroneikiProductKey, String name, int type,
+			int environment, String versionsListType, String zendeskTag)
 		throws PortalException;
 
 	/**
@@ -110,6 +110,9 @@ public interface ProductEntryLocalService
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	public ProductEntry deleteProductEntry(ProductEntry productEntry);
+
+	public ProductEntry deleteProductEntry(String koroneikiProductKey)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public DynamicQuery dynamicQuery();
@@ -238,6 +241,11 @@ public interface ProductEntryLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ProductEntry getProductEntryByKoroneikiKey(
+			String koroneikiProductKey)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ProductEntry getProductEntryByName(String name)
 		throws PortalException;
 
@@ -249,8 +257,9 @@ public interface ProductEntryLocalService
 	public int searchCount(String name, LinkedHashMap<String, Object> params);
 
 	public ProductEntry updateProductEntry(
-			long productEntryId, String koroneikiProductKey, int type,
-			int environment, String versionsListType, String zendeskTag)
+			long productEntryId, String koroneikiProductKey, String name,
+			int type, int environment, String versionsListType,
+			String zendeskTag)
 		throws PortalException;
 
 	/**

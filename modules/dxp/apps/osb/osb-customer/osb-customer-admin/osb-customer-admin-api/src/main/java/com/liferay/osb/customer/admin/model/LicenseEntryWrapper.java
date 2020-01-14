@@ -297,11 +297,6 @@ public class LicenseEntryWrapper
 		return _licenseEntry.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a license entry model instance should use the <code>LicenseEntry</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_licenseEntry.persist();

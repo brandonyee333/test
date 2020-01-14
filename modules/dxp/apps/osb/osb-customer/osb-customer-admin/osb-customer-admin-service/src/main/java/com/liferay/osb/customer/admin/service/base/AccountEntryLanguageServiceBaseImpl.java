@@ -58,7 +58,7 @@ public abstract class AccountEntryLanguageServiceBaseImpl
 	extends BaseServiceImpl
 	implements AccountEntryLanguageService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AccountEntryLanguageService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountEntryLanguageServiceUtil</code>.

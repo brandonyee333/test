@@ -33,7 +33,7 @@ public abstract class AccountEnvironmentAttachmentBaseImpl
 	extends AccountEnvironmentAttachmentModelImpl
 	implements AccountEnvironmentAttachment {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a account environment attachment model instance should use the <code>AccountEnvironmentAttachment</code> interface instead.

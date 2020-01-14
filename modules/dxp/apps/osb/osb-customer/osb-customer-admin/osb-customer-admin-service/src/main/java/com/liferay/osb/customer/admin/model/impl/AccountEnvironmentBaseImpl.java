@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil
 public abstract class AccountEnvironmentBaseImpl
 	extends AccountEnvironmentModelImpl implements AccountEnvironment {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a account environment model instance should use the <code>AccountEnvironment</code> interface instead.

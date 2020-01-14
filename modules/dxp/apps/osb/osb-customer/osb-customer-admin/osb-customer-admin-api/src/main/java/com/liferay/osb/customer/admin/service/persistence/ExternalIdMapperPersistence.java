@@ -40,7 +40,7 @@ import java.util.Set;
 public interface ExternalIdMapperPersistence
 	extends BasePersistence<ExternalIdMapper> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link ExternalIdMapperUtil} to access the external ID mapper persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

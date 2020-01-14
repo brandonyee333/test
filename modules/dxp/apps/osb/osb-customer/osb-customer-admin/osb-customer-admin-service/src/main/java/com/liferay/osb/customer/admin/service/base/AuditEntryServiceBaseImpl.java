@@ -58,7 +58,7 @@ public abstract class AuditEntryServiceBaseImpl
 	extends BaseServiceImpl
 	implements AuditEntryService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AuditEntryService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AuditEntryServiceUtil</code>.

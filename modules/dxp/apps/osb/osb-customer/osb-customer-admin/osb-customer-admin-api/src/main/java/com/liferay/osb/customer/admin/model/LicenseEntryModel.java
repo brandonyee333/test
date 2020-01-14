@@ -40,7 +40,7 @@ import java.util.Date;
 @ProviderType
 public interface LicenseEntryModel extends BaseModel<LicenseEntry> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a license entry model instance should use the {@link LicenseEntry} interface instead.

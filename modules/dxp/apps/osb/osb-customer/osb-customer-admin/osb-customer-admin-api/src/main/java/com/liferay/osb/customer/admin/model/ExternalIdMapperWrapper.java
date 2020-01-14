@@ -242,11 +242,6 @@ public class ExternalIdMapperWrapper
 		return _externalIdMapper.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a external ID mapper model instance should use the <code>ExternalIdMapper</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_externalIdMapper.persist();

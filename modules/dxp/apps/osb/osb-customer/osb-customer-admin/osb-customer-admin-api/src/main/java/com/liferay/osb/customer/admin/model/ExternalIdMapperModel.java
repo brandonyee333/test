@@ -42,7 +42,7 @@ import java.util.Date;
 public interface ExternalIdMapperModel
 	extends AttachedModel, BaseModel<ExternalIdMapper> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a external ID mapper model instance should use the {@link ExternalIdMapper} interface instead.

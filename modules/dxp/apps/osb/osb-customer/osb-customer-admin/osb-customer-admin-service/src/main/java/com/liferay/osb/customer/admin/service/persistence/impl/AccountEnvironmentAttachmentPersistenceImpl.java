@@ -67,7 +67,7 @@ public class AccountEnvironmentAttachmentPersistenceImpl
 	extends BasePersistenceImpl<AccountEnvironmentAttachment>
 	implements AccountEnvironmentAttachmentPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>AccountEnvironmentAttachmentUtil</code> to access the account environment attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

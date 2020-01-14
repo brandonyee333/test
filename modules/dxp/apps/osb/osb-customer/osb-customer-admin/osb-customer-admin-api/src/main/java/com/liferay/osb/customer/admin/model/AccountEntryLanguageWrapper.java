@@ -166,11 +166,6 @@ public class AccountEntryLanguageWrapper
 		return _accountEntryLanguage.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a account entry language model instance should use the <code>AccountEntryLanguage</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_accountEntryLanguage.persist();

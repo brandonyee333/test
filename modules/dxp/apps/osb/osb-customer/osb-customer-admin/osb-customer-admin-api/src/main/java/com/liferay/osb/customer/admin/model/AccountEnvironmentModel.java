@@ -40,7 +40,7 @@ import java.util.Date;
 @ProviderType
 public interface AccountEnvironmentModel extends BaseModel<AccountEnvironment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a account environment model instance should use the {@link AccountEnvironment} interface instead.

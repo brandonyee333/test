@@ -64,7 +64,7 @@ public class AccountAttachmentPersistenceImpl
 	extends BasePersistenceImpl<AccountAttachment>
 	implements AccountAttachmentPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>AccountAttachmentUtil</code> to access the account attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

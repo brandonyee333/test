@@ -298,11 +298,6 @@ public class AccountAttachmentWrapper
 		return _accountAttachment.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a account attachment model instance should use the <code>AccountAttachment</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_accountAttachment.persist();

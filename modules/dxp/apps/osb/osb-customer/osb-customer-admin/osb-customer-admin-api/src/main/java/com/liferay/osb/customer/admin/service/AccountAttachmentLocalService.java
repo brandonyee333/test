@@ -58,7 +58,7 @@ import java.util.List;
 public interface AccountAttachmentLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentLocalServiceUtil} to access the account attachment local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountAttachmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

@@ -40,7 +40,7 @@ import java.util.Set;
 public interface AccountEnvironmentPersistence
 	extends BasePersistence<AccountEnvironment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEnvironmentUtil} to access the account environment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

@@ -50,7 +50,7 @@ import com.liferay.portal.kernel.transaction.Transactional;
 )
 public interface AccountEntryLanguageService extends BaseService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEntryLanguageServiceUtil} to access the account entry language remote service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEntryLanguageServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

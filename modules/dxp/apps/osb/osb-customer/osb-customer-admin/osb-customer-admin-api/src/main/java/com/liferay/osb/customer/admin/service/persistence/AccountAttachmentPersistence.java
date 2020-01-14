@@ -40,7 +40,7 @@ import java.util.Set;
 public interface AccountAttachmentPersistence
 	extends BasePersistence<AccountAttachment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountAttachmentUtil} to access the account attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

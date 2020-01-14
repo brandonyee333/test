@@ -58,7 +58,7 @@ public abstract class AccountAttachmentServiceBaseImpl
 	extends BaseServiceImpl
 	implements AccountAttachmentService, IdentifiableOSGiService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Use <code>AccountAttachmentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.admin.service.AccountAttachmentServiceUtil</code>.

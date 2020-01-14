@@ -40,7 +40,7 @@ import java.util.Set;
 public interface AccountEnvironmentAttachmentPersistence
 	extends BasePersistence<AccountEnvironmentAttachment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEnvironmentAttachmentUtil} to access the account environment attachment persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

@@ -40,7 +40,7 @@ import java.util.Date;
 @ProviderType
 public interface AccountAttachmentModel extends BaseModel<AccountAttachment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a account attachment model instance should use the {@link AccountAttachment} interface instead.

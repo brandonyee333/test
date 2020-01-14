@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
 public abstract class AccountEntryBaseImpl
 	extends AccountEntryModelImpl implements AccountEntry {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a account entry model instance should use the <code>AccountEntry</code> interface instead.

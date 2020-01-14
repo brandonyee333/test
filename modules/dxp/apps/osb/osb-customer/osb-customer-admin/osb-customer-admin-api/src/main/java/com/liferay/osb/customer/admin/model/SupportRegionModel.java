@@ -43,7 +43,7 @@ import java.util.Date;
 public interface SupportRegionModel
 	extends AuditedModel, BaseModel<SupportRegion>, ShardedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a support region model instance should use the {@link SupportRegion} interface instead.

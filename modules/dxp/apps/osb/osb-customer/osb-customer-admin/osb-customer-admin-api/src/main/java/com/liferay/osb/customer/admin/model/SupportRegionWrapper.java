@@ -312,11 +312,6 @@ public class SupportRegionWrapper
 		return _supportRegion.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a support region model instance should use the <code>SupportRegion</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_supportRegion.persist();

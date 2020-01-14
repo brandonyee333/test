@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.SupportRegionLocalServiceUtil;
 public abstract class SupportRegionBaseImpl
 	extends SupportRegionModelImpl implements SupportRegion {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a support region model instance should use the <code>SupportRegion</code> interface instead.

@@ -55,7 +55,7 @@ import java.util.List;
 public interface SupportRegionLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link SupportRegionLocalServiceUtil} to access the support region local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.SupportRegionLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

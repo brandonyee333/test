@@ -32,7 +32,7 @@ import com.liferay.osb.customer.admin.service.AuditEntryLocalServiceUtil;
 public abstract class AuditEntryBaseImpl
 	extends AuditEntryModelImpl implements AuditEntry {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a audit entry model instance should use the <code>AuditEntry</code> interface instead.

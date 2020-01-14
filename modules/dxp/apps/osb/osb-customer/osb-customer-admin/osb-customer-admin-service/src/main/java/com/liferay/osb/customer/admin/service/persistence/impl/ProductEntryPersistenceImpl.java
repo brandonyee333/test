@@ -66,7 +66,7 @@ public class ProductEntryPersistenceImpl
 	extends BasePersistenceImpl<ProductEntry>
 	implements ProductEntryPersistence {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. Always use <code>ProductEntryUtil</code> to access the product entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.

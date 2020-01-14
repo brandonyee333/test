@@ -32,26 +32,20 @@ import org.osgi.util.tracker.ServiceTracker;
  */
 public class ProductEntryLocalServiceUtil {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this interface directly. Always use {@link ProductEntryLocalServiceUtil} to access the product entry local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.ProductEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
-	 */
 	public static com.liferay.osb.customer.admin.model.ProductEntry
 			addProductEntry(
-				long userId, String koroneikiProductKey, int type,
+				long userId, String koroneikiProductKey, String name, int type,
 				int environment, String versionsListType, String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addProductEntry(
-			userId, koroneikiProductKey, type, environment, versionsListType,
-			zendeskTag);
+			userId, koroneikiProductKey, name, type, environment,
+			versionsListType, zendeskTag);
 	}
 
 	/**
@@ -115,6 +109,13 @@ public class ProductEntryLocalServiceUtil {
 			com.liferay.osb.customer.admin.model.ProductEntry productEntry) {
 
 		return getService().deleteProductEntry(productEntry);
+	}
+
+	public static com.liferay.osb.customer.admin.model.ProductEntry
+			deleteProductEntry(String koroneikiProductKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().deleteProductEntry(koroneikiProductKey);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.DynamicQuery
@@ -292,6 +293,13 @@ public class ProductEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.admin.model.ProductEntry
+			getProductEntryByKoroneikiKey(String koroneikiProductKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getProductEntryByKoroneikiKey(koroneikiProductKey);
+	}
+
+	public static com.liferay.osb.customer.admin.model.ProductEntry
 			getProductEntryByName(String name)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
@@ -314,12 +322,13 @@ public class ProductEntryLocalServiceUtil {
 
 	public static com.liferay.osb.customer.admin.model.ProductEntry
 			updateProductEntry(
-				long productEntryId, String koroneikiProductKey, int type,
-				int environment, String versionsListType, String zendeskTag)
+				long productEntryId, String koroneikiProductKey, String name,
+				int type, int environment, String versionsListType,
+				String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateProductEntry(
-			productEntryId, koroneikiProductKey, type, environment,
+			productEntryId, koroneikiProductKey, name, type, environment,
 			versionsListType, zendeskTag);
 	}
 

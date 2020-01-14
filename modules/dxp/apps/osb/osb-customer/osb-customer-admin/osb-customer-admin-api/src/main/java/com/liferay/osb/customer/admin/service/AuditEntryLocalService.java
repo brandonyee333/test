@@ -56,7 +56,7 @@ import java.util.List;
 public interface AuditEntryLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AuditEntryLocalServiceUtil} to access the audit entry local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AuditEntryLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.

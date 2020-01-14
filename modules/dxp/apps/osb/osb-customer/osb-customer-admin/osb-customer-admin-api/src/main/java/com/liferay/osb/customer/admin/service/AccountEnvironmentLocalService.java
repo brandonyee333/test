@@ -58,7 +58,7 @@ import java.util.Map;
 public interface AccountEnvironmentLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AccountEnvironmentLocalServiceUtil} to access the account environment local service. Add custom service methods to <code>com.liferay.osb.customer.admin.service.impl.AccountEnvironmentLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
