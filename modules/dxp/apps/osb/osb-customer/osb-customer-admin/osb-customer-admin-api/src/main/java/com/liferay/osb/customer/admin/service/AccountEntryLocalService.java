@@ -74,7 +74,8 @@ public interface AccountEntryLocalService
 
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String instructions, String[] languageIds, long[] supportRegionIds)
+			String name, String code, String instructions, int status,
+			String[] languageIds, long[] supportRegionIds)
 		throws PortalException;
 
 	public void addSupportRegionAccountEntries(
@@ -121,6 +122,9 @@ public interface AccountEntryLocalService
 		throws PortalException;
 
 	public AccountEntry deleteAccountEntry(long userId, long accountEntryId)
+		throws PortalException;
+
+	public AccountEntry deleteAccountEntry(String koroneikiAccountKey)
 		throws PortalException;
 
 	/**
@@ -353,8 +357,9 @@ public interface AccountEntryLocalService
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
-			String dossieraAccountKey, String instructions,
-			String[] languageIds, long[] supportRegionIds)
+			String dossieraAccountKey, String name, String code,
+			String instructions, int status, String[] languageIds,
+			long[] supportRegionIds)
 		throws PortalException;
 
 	public AccountEntry updateInstructions(

@@ -49,12 +49,13 @@ public class AccountEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String instructions, String[] languageIds, long[] supportRegionIds)
+			String name, String code, String instructions, int status,
+			String[] languageIds, long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.addAccountEntry(
-			userId, koroneikiAccountKey, dossieraAccountKey, instructions,
-			languageIds, supportRegionIds);
+			userId, koroneikiAccountKey, dossieraAccountKey, name, code,
+			instructions, status, languageIds, supportRegionIds);
 	}
 
 	@Override
@@ -146,6 +147,15 @@ public class AccountEntryLocalServiceWrapper
 
 		return _accountEntryLocalService.deleteAccountEntry(
 			userId, accountEntryId);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry deleteAccountEntry(
+			String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryLocalService.deleteAccountEntry(
+			koroneikiAccountKey);
 	}
 
 	/**
@@ -546,13 +556,14 @@ public class AccountEntryLocalServiceWrapper
 	@Override
 	public com.liferay.osb.customer.admin.model.AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
-			String dossieraAccountKey, String instructions,
-			String[] languageIds, long[] supportRegionIds)
+			String dossieraAccountKey, String name, String code,
+			String instructions, int status, String[] languageIds,
+			long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _accountEntryLocalService.updateAccountEntry(
 			userId, accountEntryId, koroneikiAccountKey, dossieraAccountKey,
-			instructions, languageIds, supportRegionIds);
+			name, code, instructions, status, languageIds, supportRegionIds);
 	}
 
 	@Override

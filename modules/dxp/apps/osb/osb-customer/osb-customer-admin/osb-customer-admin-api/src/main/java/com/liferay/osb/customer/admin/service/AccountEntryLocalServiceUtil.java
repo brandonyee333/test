@@ -54,13 +54,14 @@ public class AccountEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			addAccountEntry(
 				long userId, String koroneikiAccountKey,
-				String dossieraAccountKey, String instructions,
-				String[] languageIds, long[] supportRegionIds)
+				String dossieraAccountKey, String name, String code,
+				String instructions, int status, String[] languageIds,
+				long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addAccountEntry(
-			userId, koroneikiAccountKey, dossieraAccountKey, instructions,
-			languageIds, supportRegionIds);
+			userId, koroneikiAccountKey, dossieraAccountKey, name, code,
+			instructions, status, languageIds, supportRegionIds);
 	}
 
 	public static void addSupportRegionAccountEntries(
@@ -142,6 +143,13 @@ public class AccountEntryLocalServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().deleteAccountEntry(userId, accountEntryId);
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			deleteAccountEntry(String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().deleteAccountEntry(koroneikiAccountKey);
 	}
 
 	/**
@@ -506,13 +514,14 @@ public class AccountEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			updateAccountEntry(
 				long userId, long accountEntryId, String koroneikiAccountKey,
-				String dossieraAccountKey, String instructions,
-				String[] languageIds, long[] supportRegionIds)
+				String dossieraAccountKey, String name, String code,
+				String instructions, int status, String[] languageIds,
+				long[] supportRegionIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateAccountEntry(
 			userId, accountEntryId, koroneikiAccountKey, dossieraAccountKey,
-			instructions, languageIds, supportRegionIds);
+			name, code, instructions, status, languageIds, supportRegionIds);
 	}
 
 	public static com.liferay.osb.customer.admin.model.AccountEntry
