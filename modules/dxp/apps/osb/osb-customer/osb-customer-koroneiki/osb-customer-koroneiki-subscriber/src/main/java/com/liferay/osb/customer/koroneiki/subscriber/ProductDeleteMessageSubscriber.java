@@ -19,8 +19,6 @@ import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductSerDes;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -32,23 +30,15 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true, property = "topic.pattern=koroneiki.product.delete",
 	service = ProductDeleteMessageSubscriber.class
 )
-public class ProductDeleteMessageSubscriber implements MessageSubscriber {
+public class ProductDeleteMessageSubscriber
+	extends BaseMessageSubscriber implements MessageSubscriber {
 
-	public void receive(Message message) {
-		try {
-			Product product = ProductSerDes.toDTO((String)message.getPayload());
+	@Override
+	public void doReceive(Message message) throws Exception {
+		Product product = ProductSerDes.toDTO((String)message.getPayload());
 
-			_productEntryLocalService.deleteProductEntry(product.getKey());
-		}
-		catch (Exception e) {
-			_log.error(message);
-
-			_log.error(e, e);
-		}
+		_productEntryLocalService.deleteProductEntry(product.getKey());
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ProductDeleteMessageSubscriber.class);
 
 	@Reference
 	private ProductEntryLocalService _productEntryLocalService;

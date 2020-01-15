@@ -20,8 +20,6 @@ import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductSerDes;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -33,32 +31,23 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true, property = "topic.pattern=koroneiki.product.update",
 	service = ProductUpdateMessageSubscriber.class
 )
-public class ProductUpdateMessageSubscriber implements MessageSubscriber {
+public class ProductUpdateMessageSubscriber
+	extends BaseMessageSubscriber implements MessageSubscriber {
 
-	public void receive(Message message) {
-		try {
-			Product product = ProductSerDes.toDTO((String)message.getPayload());
+	@Override
+	public void doReceive(Message message) throws Exception {
+		Product product = ProductSerDes.toDTO((String)message.getPayload());
 
-			ProductEntry productEntry =
-				_productEntryLocalService.getProductEntryByKoroneikiKey(
-					product.getKey());
+		ProductEntry productEntry =
+			_productEntryLocalService.getProductEntryByKoroneikiKey(
+				product.getKey());
 
-			_productEntryLocalService.updateProductEntry(
-				productEntry.getProductEntryId(), product.getKey(),
-				product.getName(), productEntry.getType(),
-				productEntry.getEnvironment(),
-				productEntry.getVersionsListType(),
-				productEntry.getZendeskTag());
-		}
-		catch (Exception e) {
-			_log.error(message);
-
-			_log.error(e, e);
-		}
+		_productEntryLocalService.updateProductEntry(
+			productEntry.getProductEntryId(), product.getKey(),
+			product.getName(), productEntry.getType(),
+			productEntry.getEnvironment(), productEntry.getVersionsListType(),
+			productEntry.getZendeskTag());
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ProductUpdateMessageSubscriber.class);
 
 	@Reference
 	private ProductEntryLocalService _productEntryLocalService;

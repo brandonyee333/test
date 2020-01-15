@@ -14,13 +14,10 @@
 
 package com.liferay.osb.customer.admin.service.impl;
 
-import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
 import com.liferay.osb.customer.admin.constants.AuditEntryConstants;
 import com.liferay.osb.customer.admin.constants.VisibilityConstants;
 import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.exception.AccountEntryKoroneikiAccountKeyException;
-import com.liferay.osb.customer.admin.exception.AccountEntryLanguageIdException;
-import com.liferay.osb.customer.admin.exception.AccountEntrySupportRegionException;
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.SupportRegion;
@@ -52,14 +49,15 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry addAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String instructions, String[] languageIds, long[] supportRegionIds)
+			String name, String code, String instructions, int status,
+			String[] languageIds, long[] supportRegionIds)
 		throws PortalException {
 
-		validate(0, koroneikiAccountKey, languageIds, supportRegionIds);
+		validate(0, koroneikiAccountKey);
 
 		return doAddAccountEntry(
-			userId, koroneikiAccountKey, dossieraAccountKey, instructions,
-			languageIds, supportRegionIds);
+			userId, koroneikiAccountKey, dossieraAccountKey, name, code,
+			instructions, status, languageIds, supportRegionIds);
 	}
 
 	@Override
@@ -115,6 +113,18 @@ public class AccountEntryLocalServiceImpl
 			StringPool.BLANK, StringPool.BLANK);
 
 		return accountEntry;
+	}
+
+	public AccountEntry deleteAccountEntry(String koroneikiAccountKey)
+		throws PortalException {
+
+		AccountEntry accountEntry =
+			accountEntryPersistence.findByKoroneikiAccountKey(
+				koroneikiAccountKey);
+
+		return deleteAccountEntry(
+			OSBCustomerConstants.USER_DEFAULT_USER_ID,
+			accountEntry.getAccountEntryId());
 	}
 
 	public AccountEntry fetchCorpProjectAccountEntry(String corpProjectUuid) {
@@ -209,8 +219,9 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String koroneikiAccountKey,
-			String dossieraAccountKey, String instructions,
-			String[] languageIds, long[] supportRegionIds)
+			String dossieraAccountKey, String name, String code,
+			String instructions, int status, String[] languageIds,
+			long[] supportRegionIds)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -220,21 +231,27 @@ public class AccountEntryLocalServiceImpl
 
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
-		validate(
-			accountEntryId, koroneikiAccountKey, languageIds, supportRegionIds);
+		validate(accountEntryId, koroneikiAccountKey);
 
 		accountEntry.setModifiedUserId(user.getUserId());
 		accountEntry.setModifiedUserName(user.getFullName());
 		accountEntry.setModifiedDate(new Date());
 		accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
 		accountEntry.setDossieraAccountKey(dossieraAccountKey);
+		accountEntry.setName(name);
+		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
+		accountEntry.setStatus(status);
 
-		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
-			accountEntryId, languageIds);
+		if (!ArrayUtil.isEmpty(languageIds)) {
+			accountEntryLanguageLocalService.setAccountEntryLanguageIds(
+				accountEntryId, languageIds);
+		}
 
-		accountEntryPersistence.setSupportRegions(
-			accountEntryId, supportRegionIds);
+		if (!ArrayUtil.isEmpty(supportRegionIds)) {
+			accountEntryPersistence.setSupportRegions(
+				accountEntryId, supportRegionIds);
+		}
 
 		updateAuditEntry(
 			user.getUserId(), user.getFullName(), oldAccountEntry,
@@ -345,7 +362,8 @@ public class AccountEntryLocalServiceImpl
 
 	protected AccountEntry doAddAccountEntry(
 			long userId, String koroneikiAccountKey, String dossieraAccountKey,
-			String instructions, String[] languageIds, long[] supportRegionIds)
+			String name, String code, String instructions, int status,
+			String[] languageIds, long[] supportRegionIds)
 		throws PortalException {
 
 		// Account entry
@@ -367,18 +385,24 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedDate(now);
 		accountEntry.setKoroneikiAccountKey(koroneikiAccountKey);
 		accountEntry.setDossieraAccountKey(dossieraAccountKey);
+		accountEntry.setName(name);
+		accountEntry.setCode(code);
 		accountEntry.setInstructions(instructions);
-		accountEntry.setStatus(WorkflowConstants.STATUS_CLOSED);
+		accountEntry.setStatus(status);
 
 		// Languages
 
-		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
-			accountEntryId, languageIds);
+		if (!ArrayUtil.isEmpty(languageIds)) {
+			accountEntryLanguageLocalService.setAccountEntryLanguageIds(
+				accountEntryId, languageIds);
+		}
 
 		// Support regions
 
-		accountEntryPersistence.setSupportRegions(
-			accountEntryId, supportRegionIds);
+		if (!ArrayUtil.isEmpty(supportRegionIds)) {
+			accountEntryPersistence.setSupportRegions(
+				accountEntryId, supportRegionIds);
+		}
 
 		return accountEntryPersistence.update(accountEntry);
 	}
@@ -518,28 +542,11 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	protected void validate(
-			long accountEntryId, String koroneikiAccountKey,
-			String[] languageIds, long[] supportRegionIds)
+	protected void validate(long accountEntryId, String koroneikiAccountKey)
 		throws PortalException {
 
 		if (Validator.isNull(koroneikiAccountKey)) {
 			throw new AccountEntryKoroneikiAccountKeyException();
-		}
-
-		if (ArrayUtil.isEmpty(supportRegionIds)) {
-			throw new AccountEntrySupportRegionException();
-		}
-		else if (ArrayUtil.isEmpty(languageIds)) {
-			throw new AccountEntryLanguageIdException();
-		}
-
-		for (String languageId : languageIds) {
-			if (!ArrayUtil.contains(
-					AccountEntryConstants.LANGUAGES, languageId)) {
-
-				throw new AccountEntryLanguageIdException();
-			}
 		}
 	}
 

@@ -16,8 +16,6 @@ package com.liferay.osb.customer.koroneiki.subscriber;
 
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 
 import org.osgi.service.component.annotations.Component;
@@ -31,27 +29,18 @@ import org.osgi.service.component.annotations.Component;
 	service = AccountTeamRoleAssignedMessageSubscriber.class
 )
 public class AccountTeamRoleAssignedMessageSubscriber
-	implements MessageSubscriber {
+	extends BaseMessageSubscriber implements MessageSubscriber {
 
-	public void receive(Message message) {
-		try {
-			com.liferay.portal.kernel.messaging.Message zendeskMessage =
-				new com.liferay.portal.kernel.messaging.Message();
+	@Override
+	public void doReceive(Message message) throws Exception {
+		com.liferay.portal.kernel.messaging.Message zendeskMessage =
+			new com.liferay.portal.kernel.messaging.Message();
 
-			zendeskMessage.put("topic", "koroneiki.account.teamrole.assigned");
-			zendeskMessage.setPayload(message.getPayload());
+		zendeskMessage.put("topic", message.getDestinationName());
+		zendeskMessage.setPayload(message.getPayload());
 
-			MessageBusUtil.sendMessage(
-				"liferay/zendesk_account_teamrole_sync", zendeskMessage);
-		}
-		catch (Exception e) {
-			_log.error(message);
-
-			_log.error(e, e);
-		}
+		MessageBusUtil.sendMessage(
+			"liferay/zendesk_account_teamrole_sync", zendeskMessage);
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AccountTeamRoleAssignedMessageSubscriber.class);
 
 }

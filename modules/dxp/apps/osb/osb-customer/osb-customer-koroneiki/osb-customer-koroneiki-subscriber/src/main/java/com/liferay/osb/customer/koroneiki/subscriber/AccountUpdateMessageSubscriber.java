@@ -14,13 +14,17 @@
 
 package com.liferay.osb.customer.koroneiki.subscriber;
 
+import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -29,27 +33,35 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true, property = "topic.pattern=koroneiki.account.update",
 	service = AccountUpdateMessageSubscriber.class
 )
-public class AccountUpdateMessageSubscriber implements MessageSubscriber {
+public class AccountUpdateMessageSubscriber
+	extends BaseMessageSubscriber implements MessageSubscriber {
 
-	public void receive(Message message) {
-		try {
-			com.liferay.portal.kernel.messaging.Message zendeskMessage =
-				new com.liferay.portal.kernel.messaging.Message();
+	@Override
+	public void doReceive(Message message) throws Exception {
+		Account account = AccountSerDes.toDTO((String)message.getPayload());
 
-			zendeskMessage.put("topic", "koroneiki.account.update");
-			zendeskMessage.setPayload(message.getPayload());
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				account.getKey());
 
-			MessageBusUtil.sendMessage(
-				"liferay/zendesk_account_sync", zendeskMessage);
-		}
-		catch (Exception e) {
-			_log.error(message);
+		_accountEntryLocalService.updateAccountEntry(
+			OSBCustomerConstants.USER_DEFAULT_USER_ID,
+			accountEntry.getAccountEntryId(), account.getKey(),
+			getDossieraAccountKey(account.getExternalLinks()),
+			account.getName(), account.getCode(), null,
+			getStatus(account.getStatusAsString()), null, new long[0]);
 
-			_log.error(e, e);
-		}
+		com.liferay.portal.kernel.messaging.Message zendeskMessage =
+			new com.liferay.portal.kernel.messaging.Message();
+
+		zendeskMessage.put("topic", message.getDestinationName());
+		zendeskMessage.setPayload(message.getPayload());
+
+		MessageBusUtil.sendMessage(
+			"liferay/zendesk_account_sync", zendeskMessage);
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		AccountUpdateMessageSubscriber.class);
+	@Reference
+	private AccountEntryLocalService _accountEntryLocalService;
 
 }
