@@ -17,7 +17,7 @@
 <%@ include file="/account_entry_details/init.jsp" %>
 
 <%
-AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
+Account koroneikiAccount = accountEntryViewDisplayContext.getAccount();
 
 String tabs1 = ParamUtil.getString(request, "tabs1");
 
@@ -25,7 +25,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 portletURL.setParameter("mvcRenderCommandName", "/view_account_entry");
 portletURL.setParameter("tabs1", tabs1);
-portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+portletURL.setParameter("koroneikiAccountKey", String.valueOf(koroneikiAccount.getKey()));
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
 
@@ -37,7 +37,7 @@ if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
 %>
 
 <h1>
-	<%= HtmlUtil.escape(accountEntry.getName()) %>
+	<%= HtmlUtil.escape(koroneikiAccount.getName()) %>
 </h1>
 
 <liferay-ui:tabs

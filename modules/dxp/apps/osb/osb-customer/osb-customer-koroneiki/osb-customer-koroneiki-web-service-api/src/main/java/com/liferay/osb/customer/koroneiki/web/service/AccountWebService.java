@@ -16,11 +16,19 @@ package com.liferay.osb.customer.koroneiki.web.service;
 
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 
+import java.util.List;
+
 /**
  * @author Kyle Bischof
  */
 public interface AccountWebService {
 
 	public Account getAccount(String accountKey) throws Exception;
+
+	public List<Account> search(
+			String filterString, int page, int pageSize, String sortString)
+		throws Exception;
+
+	public long searchCount(String filterString) throws Exception;
 
 }

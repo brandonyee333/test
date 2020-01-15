@@ -16,101 +16,62 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
-<%
-AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
-%>
-
 <liferay-ui:search-container
-	emptyResultsMessage="no-offerings-were-found"
-	headerNames="product,sla,start-date,support-end-date,license,tickets,version,instance-size,status"
-	iteratorURL="<%= renderResponse.createRenderURL() %>"
+	searchContainer="<%= accountEntryViewDisplayContext.getProductPurchasesSearchContainer() %>"
 >
-	<liferay-ui:search-container-results>
-
-		<%--
-		if (accountEntry.getType() != AccountEntryConstants.TYPE_INDIVIDUAL) {
-			if (accountEntryViewDisplayContext.isLiferayContractorOrg() || accountEntryViewDisplayContext.isLiferayIncOrg() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker()) {
-				results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[0], 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-			}
-			else {
-				results = OfferingEntryGroupFactoryUtil.createOfferingEntryGroups(0, accountEntry.getAccountEntryId(), new int[0], new int[] {OfferingEntryConstants.STATUS_ACTIVE}, 0, 0, 0, 0, 0, 0, new LinkedHashMap(), true, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-			}
-
-			searchContainer.setTotal(results.size());
-			searchContainer.setResults(results);
-		}
-		--%>
-
-	</liferay-ui:search-container-results>
-
-	<%--
 	<liferay-ui:search-container-row
-		className="com.liferay.osb.model.OfferingEntryGroup"
-		modelVar="offeringEntryGroup"
+		className="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase"
+		modelVar="productPurchase"
 	>
 
 		<%
-		ProductEntry productEntry = offeringEntryGroup.getProductEntry();
-		//SupportResponse supportResponse = offeringEntryGroup.getSupportResponse();
-
+		Product product = productPurchase.getProduct();
 		%>
 
 		<liferay-ui:search-container-column-text
 			name="product"
-			value="<%= productEntry.getName() %>"
-		/>
-
-		<liferay-ui:search-container-column-text
-			name="sla"
-			value="<%= LanguageUtil.get(request, supportResponse.getSupportLevelLabel(themeDisplay.getLocale())) %>"
+			value="<%= product.getName() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="start-date"
-			value="<%= longDateFormatDate.format(offeringEntryGroup.getActualStartDate()) %>"
+			value="<%= longDateFormatDate.format(productPurchase.getStartDate()) %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="support-end-date"
-			value="<%= longDateFormatDate.format(offeringEntryGroup.getSupportEndDate()) %>"
-		/>
-
-		<liferay-ui:search-container-column-text
-			name="licenses"
-		>
-			<%= offeringEntryGroup.getLicenseKeysCount() %> / <%= offeringEntryGroup.getQuantity() %>
-		</liferay-ui:search-container-column-text>
-
-		<liferay-ui:search-container-column-text
-			name="tickets"
-			value='<%= offeringEntryGroup.isSupportTickets() ? LanguageUtil.get(request, "unlimited") : "0" %>'
-		/>
-
-		<liferay-ui:search-container-column-text
-			name="version"
-			value="<%= OfferingEntryConstants.getVersionLabel(offeringEntryGroup.getVersion()) %>"
+			value="<%= longDateFormatDate.format(productPurchase.getEndDate()) %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="instance-size"
-			value="<%= LanguageUtil.get(request, offeringEntryGroup.getSizingLabel()) %>"
-		/>
-
-		<liferay-ui:search-container-column-text
-			name="status"
 		>
 
 			<%
-			String offeringStatus = OfferingEntryConstants.getStatusLabel(offeringEntryGroup.getStatus());
+			Map<String, String> properties = productPurchase.getProperties();
 			%>
 
-			<span class="label label-sm label-<%= offeringStatus %>"><%= offeringStatus %></span>
+			<c:if test="<%= (properties != null) && properties.containsKey(ProductPurchaseConstants.PROPERTY_SIZING) %>">
+				<%= properties.get(ProductPurchaseConstants.PROPERTY_SIZING) %>
+			</c:if>
 		</liferay-ui:search-container-column-text>
+
+		<liferay-ui:search-container-column-text
+			name="quantity"
+			value="<%= String.valueOf(productPurchase.getQuantity()) %>"
+		/>
+
+		<c:if test="<%= accountEntryViewDisplayContext.isLiferayContractorOrg() || accountEntryViewDisplayContext.isLiferayIncOrg() || accountEntryViewDisplayContext.isPartnerManagedSupportWorker() %>">
+			<liferay-ui:search-container-column-text
+				name="status"
+			>
+				<span class="label label-sm label-<%= productPurchase.getStatus() %>"><%= productPurchase.getStatus() %></span>
+			</liferay-ui:search-container-column-text>
+		</c:if>
 	</liferay-ui:search-container-row>
 
 	<liferay-ui:search-iterator
 		markupView="lexicon"
 		paginate="<%= false %>"
 	/>
-	--%>
 </liferay-ui:search-container>

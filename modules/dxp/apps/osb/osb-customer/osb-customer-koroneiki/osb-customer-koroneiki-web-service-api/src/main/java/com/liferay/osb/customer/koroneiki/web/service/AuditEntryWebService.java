@@ -14,24 +14,17 @@
 
 package com.liferay.osb.customer.koroneiki.web.service;
 
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.AuditEntry;
 
 import java.util.List;
 
 /**
  * @author Amos Fong
  */
-public interface ContactWebService {
+public interface AuditEntryWebService {
 
-	public Contact fetchContactByUuid(String uuid) throws Exception;
-
-	public List<Contact> getAccountContacts(
+	public List<AuditEntry> getAccountAuditEntries(
 			String accountKey, int page, int pageSize)
 		throws Exception;
-
-	public List<Contact> search(String filterString, int page, int pageSize)
-		throws Exception;
-
-	public long searchCount(String filterString) throws Exception;
 
 }

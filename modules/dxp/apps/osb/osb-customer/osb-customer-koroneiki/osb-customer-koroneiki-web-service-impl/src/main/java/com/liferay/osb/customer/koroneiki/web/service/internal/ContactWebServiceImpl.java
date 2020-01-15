@@ -53,6 +53,21 @@ public class ContactWebServiceImpl implements ContactWebService {
 		return ContactSerDes.toDTO(httpResponse.getContent());
 	}
 
+	public List<Contact> getAccountContacts(
+			String accountKey, int page, int pageSize)
+		throws Exception {
+
+		Page<Contact> contactsPage =
+			_contactResource.getAccountAccountKeyContactsPage(
+				accountKey, Pagination.of(page, pageSize));
+
+		if ((contactsPage != null) && (contactsPage.getItems() != null)) {
+			return new ArrayList<>(contactsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
 	public List<Contact> search(String filterString, int page, int pageSize)
 		throws Exception {
 
@@ -92,6 +107,8 @@ public class ContactWebServiceImpl implements ContactWebService {
 			koroneikiConfiguration.scheme()
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
+		).parameter(
+			"nestedFields", "contactRoles"
 		).build();
 	}
 

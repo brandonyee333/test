@@ -16,70 +16,82 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
-<%
-AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
-
-long accountEntryId = accountEntry.getAccountEntryId();
-%>
-
 <liferay-ui:search-container
 	emptyResultsMessage="no-team-members-were-found"
 	headerNames="name,role,email,contact-number"
-	iteratorURL="<%= renderResponse.createRenderURL() %>"
 >
 	<liferay-ui:search-container-results>
 
 		<%
+		List<Contact> contacts = accountEntryViewDisplayContext.getCustomerContacts();
 
-		//results = AccountCustomerLocalServiceUtil.getAccountCustomers(accountEntryId);
-
-		searchContainer.setTotal(results.size());
-		searchContainer.setResults(results);
+		searchContainer.setTotal(contacts.size());
+		searchContainer.setResults(contacts);
 		%>
 
 	</liferay-ui:search-container-results>
 
-	<%--
 	<liferay-ui:search-container-row
-		className="com.liferay.osb.model.AccountCustomer"
-		modelVar="accountCustomer"
+		className="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact"
+		modelVar="koroneikiContact"
 	>
 
 		<%
-		User curUser = UserLocalServiceUtil.getUser(accountCustomer.getUserId());
-
 		String contactNumber = StringPool.BLANK;
 
-		for (Phone phone : curUser.getPhones()) {
-			if (phone.isPrimary()) {
-				contactNumber = phone.getNumber();
+		try {
+			User curUser = UserLocalServiceUtil.getUserByUuidAndCompanyId(koroneikiContact.getUuid(), themeDisplay.getCompanyId());
 
-				if (Validator.isNotNull(phone.getExtension())) {
-					contactNumber += " ext: " + phone.getExtension();
+			for (Phone phone : curUser.getPhones()) {
+				if (phone.isPrimary()) {
+					contactNumber = phone.getNumber();
+
+					if (Validator.isNotNull(phone.getExtension())) {
+						contactNumber += " ext: " + phone.getExtension();
+					}
+
+					break;
 				}
-
-				break;
 			}
+		}
+		catch (NoSuchUserException nsue) {
 		}
 		%>
 
 		<liferay-ui:search-container-column-text
 			cssClass="semi-bold"
 			name="name"
-			value="<%= curUser.getFullName() %>"
+			value="<%= PortalUtil.getFullName(koroneikiContact.getFirstName(), koroneikiContact.getMiddleName(), koroneikiContact.getLastName()) %>"
 		/>
 
 		<liferay-ui:search-container-column-text
 			name="role"
 		>
-			<c:if test="<%= Validator.isNotNull(accountCustomer.getRoleLabel()) %>">
-				<%= LanguageUtil.get(request, accountCustomer.getRoleLabel()) %>
-			</c:if>
+
+			<%
+			ContactRole[] contactRoles = koroneikiContact.getContactRoles();
+
+			if (contactRoles != null) {
+				for (ContactRole contactRole : contactRoles) {
+					String name = contactRole.getName();
+
+					if (name.equals(ContactRoleConstants.NAME_MEMBER)) {
+						continue;
+					}
+			%>
+
+					<%= HtmlUtil.escape(name) %><br />
+
+			<%
+				}
+			}
+			%>
+
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
 			name="email"
-			value="<%= curUser.getEmailAddress() %>"
+			value="<%= koroneikiContact.getEmailAddress() %>"
 		/>
 
 		<liferay-ui:search-container-column-text
@@ -92,6 +104,4 @@ long accountEntryId = accountEntry.getAccountEntryId();
 		markupView="lexicon"
 		paginate="<%= false %>"
 	/>
-	--%>
-
 </liferay-ui:search-container>

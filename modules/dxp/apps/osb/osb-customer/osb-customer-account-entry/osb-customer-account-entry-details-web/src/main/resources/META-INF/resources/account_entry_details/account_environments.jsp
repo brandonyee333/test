@@ -19,11 +19,21 @@
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
-String addEnvironmentURL = accountEntryViewDisplayContext.getAccountEnvironmentAddURL(accountEntry);
+String addEnvironmentURL = StringPool.BLANK;
+JSONArray accountEnvironmentsJSONArray = JSONFactoryUtil.createJSONArray();
+JSONObject environmentConfigurationJSONObject = JSONFactoryUtil.createJSONObject();
+boolean permitAdd = false;
+boolean permitDelete = false;
+boolean permitEdit = false;
 
-JSONArray accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
-
-JSONObject environmentConfigurationJSONObject = accountEntryViewDisplayContext.getEnvironmentConfigurationJSONObject();
+if (accountEntry != null) {
+	addEnvironmentURL = accountEntryViewDisplayContext.getAccountEnvironmentAddURL(accountEntry);
+	accountEnvironmentsJSONArray = accountEntryViewDisplayContext.getAccountEnvironmentsJSONArray();
+	environmentConfigurationJSONObject = accountEntryViewDisplayContext.getEnvironmentConfigurationJSONObject();
+	permitAdd = AccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT);
+	permitDelete = AccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE);
+	permitEdit = AccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE);
+}
 %>
 
 <div class="account-environments card" id="<portlet:namespace />accountEnvironments"></div>
@@ -35,9 +45,9 @@ JSONObject environmentConfigurationJSONObject = accountEntryViewDisplayContext.g
 			addEnvironmentURL: '<%= addEnvironmentURL %>',
 			environmentConfiguration: <%= environmentConfigurationJSONObject %>,
 			environments: <%= accountEnvironmentsJSONArray %>,
-			permitAdd: <%= AccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) %>,
-			permitDelete: <%= AccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.DELETE) %>,
-			permitEdit: <%= AccountEnvironmentPermission.contains(permissionChecker, accountEntry.getAccountEntryId(), OSBActionKeys.UPDATE) %>
+			permitAdd: <%= permitAdd %>,
+			permitDelete: <%= permitDelete %>,
+			permitEdit: <%= permitEdit %>
 		},
 		document.getElementById('<portlet:namespace />accountEnvironments')
 	);

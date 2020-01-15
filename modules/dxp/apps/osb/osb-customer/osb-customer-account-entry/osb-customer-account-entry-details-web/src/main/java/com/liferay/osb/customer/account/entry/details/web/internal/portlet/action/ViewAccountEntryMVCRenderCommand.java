@@ -15,13 +15,16 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
-import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryService;
+import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -46,20 +49,23 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		String koroneikiAccountKey = ParamUtil.getString(
+			renderRequest, "koroneikiAccountKey");
 
-		long accountEntryId = ParamUtil.getLong(
-			renderRequest, "accountEntryId");
+		Account account = _accountWebService.getAccount(koroneikiAccountKey);
 
-		AccountEntry accountEntry = _accountEntryService.getAccountEntry(
-			accountEntryId);
+		AccountEntryViewDisplayContext accountEntryViewDisplayContext =
+			new AccountEntryViewDisplayContext(
+				renderRequest, renderResponse, account, _auditEntryWebService,
+				_contactRoleWebService, _contactWebService,
+				_productPurchaseWebService, _teamWebService);
 
 		renderRequest.setAttribute(
-			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
+			AccountEntryViewDisplayContext.class.getName(),
+			accountEntryViewDisplayContext);
 
-		if (isLiferayContractorOrg(themeDisplay.getUserId()) ||
-			isLiferayIncOrg(themeDisplay.getUserId())) {
+		if (accountEntryViewDisplayContext.isLiferayContractorOrg() ||
+			accountEntryViewDisplayContext.isLiferayIncOrg()) {
 
 			return "/account_entry_details/worker/view_account_entry.jsp";
 		}
@@ -68,6 +74,21 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 	}
 
 	@Reference
-	private AccountEntryService _accountEntryService;
+	private AccountWebService _accountWebService;
+
+	@Reference
+	private AuditEntryWebService _auditEntryWebService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
+
+	@Reference
+	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 }

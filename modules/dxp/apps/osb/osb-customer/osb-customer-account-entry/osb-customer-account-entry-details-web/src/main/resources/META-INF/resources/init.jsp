@@ -27,6 +27,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.configuration.AccountEntryDetailsConfiguration" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
+page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntrySearchDisplayContext" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
 page import="com.liferay.osb.customer.github.configuration.GitHubConfigurationValues" %><%@
@@ -50,35 +51,36 @@ page import="com.liferay.osb.customer.admin.exception.AccountEnvironmentNameExce
 page import="com.liferay.osb.customer.admin.exception.DuplicateAccountEnvironmentException" %><%@
 page import="com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException" %><%@
 page import="com.liferay.osb.customer.admin.model.AccountEntry" %><%@
-page import="com.liferay.osb.customer.admin.model.AuditEntry" %><%@
-page import="com.liferay.osb.customer.admin.model.ProductEntry" %><%@
 page import="com.liferay.osb.customer.admin.model.SupportRegion" %><%@
-page import="com.liferay.osb.customer.admin.service.AccountEntryServiceUtil" %><%@
-page import="com.liferay.osb.customer.admin.service.AuditEntryLocalServiceUtil" %><%@
 page import="com.liferay.osb.customer.admin.service.permission.AccountEnvironmentPermission" %><%@
 page import="com.liferay.osb.customer.constants.OSBActionKeys" %><%@
-page import="com.liferay.osb.customer.constants.OSBCustomerConstants" %><%@
+page import="com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants" %><%@
+page import="com.liferay.osb.customer.koroneiki.constants.ProductPurchaseConstants" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryWebService" %><%@
 page import="com.liferay.osb.customer.zendesk.exception.ZendeskTicketClosedException" %><%@
 page import="com.liferay.osb.customer.zendesk.web.service.exception.NoSuchZendeskTicketException" %><%@
-page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.AuditEntry" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole" %><%@
+page import="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product" %><%@
+page import="com.liferay.portal.kernel.exception.NoSuchUserException" %><%@
 page import="com.liferay.portal.kernel.json.JSONArray" %><%@
+page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.json.JSONObject" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.Phone" %><%@
 page import="com.liferay.portal.kernel.model.User" %><%@
 page import="com.liferay.portal.kernel.service.UserLocalServiceUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
-page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
 page import="com.liferay.portal.kernel.util.StringPool" %><%@
-page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
 
 <%@ page import="java.io.FileNotFoundException" %>
@@ -86,8 +88,8 @@ page import="com.liferay.portal.kernel.util.Validator" %>
 <%@ page import="java.text.DateFormat" %><%@
 page import="java.text.Format" %>
 
-<%@ page import="java.util.LinkedHashMap" %><%@
-page import="java.util.List" %>
+<%@ page import="java.util.List" %><%@
+page import="java.util.Map" %>
 
 <%@ page import="javax.portlet.PortletURL" %>
 

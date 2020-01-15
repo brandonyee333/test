@@ -19,10 +19,15 @@
 <%
 AccountEntry accountEntry = accountEntryViewDisplayContext.getAccountEntry();
 
-long accountEntryId = accountEntry.getAccountEntryId();
+long accountEntryId = 0;
+String editInstructionsURL = StringPool.BLANK;
+String instructions = StringPool.BLANK;
 
-String editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
-String instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
+if (accountEntry != null) {
+	accountEntryId = accountEntry.getAccountEntryId();
+	editInstructionsURL = accountEntryViewDisplayContext.getAccountEntryInstructionsEditURL();
+	instructions = HtmlUtil.escapeJS(accountEntry.getInstructions());
+}
 %>
 
 <div class="card support-instructions" id="<portlet:namespace />supportInstructions"></div>

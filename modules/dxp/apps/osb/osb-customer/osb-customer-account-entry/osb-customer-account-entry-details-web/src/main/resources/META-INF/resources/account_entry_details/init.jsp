@@ -17,5 +17,5 @@
 <%@ include file="/init.jsp" %>
 
 <%
-AccountEntryViewDisplayContext accountEntryViewDisplayContext = new AccountEntryViewDisplayContext(renderRequest, renderResponse);
+AccountEntryViewDisplayContext accountEntryViewDisplayContext = (AccountEntryViewDisplayContext)liferayPortletRequest.getAttribute(AccountEntryViewDisplayContext.class.getName());
 %>

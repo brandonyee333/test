@@ -17,76 +17,47 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String keywords = ParamUtil.getString(request, "keywords");
+AccountEntrySearchDisplayContext accountEntrySearchDisplayContext = (AccountEntrySearchDisplayContext)liferayPortletRequest.getAttribute(AccountEntrySearchDisplayContext.class.getName());
 
 PortletURL portletURL = renderResponse.createRenderURL();
 %>
 
 <div class="col-md-8 col-md-offset-2">
 	<h1>
-		<liferay-ui:message key="select-a-project" />
+		<liferay-ui:message key="select-an-account" />
 	</h1>
 
 	<aui:form action="<%= portletURL.toString() %>" method="post" name="searchFm">
 		<liferay-ui:input-search
 			markupView="lexicon"
-			placeholder='<%= LanguageUtil.get(request, "search-projects") %>'
+			placeholder='<%= LanguageUtil.get(request, "search-accounts") %>'
 		/>
 	</aui:form>
 
 	<liferay-ui:search-container
-		emptyResultsMessage="no-projects-were-found"
-		headerNames="name,status"
-		iteratorURL="<%= portletURL %>"
+		searchContainer="<%= accountEntrySearchDisplayContext.getAccountsSearchContainer() %>"
 	>
-		<liferay-ui:search-container-results>
-
-			<%
-			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
-
-			params.put("type", new int[] {AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC, AccountEntryConstants.TYPE_GROUP, AccountEntryConstants.TYPE_INDIVIDUAL, AccountEntryConstants.TYPE_INTERNAL_TEST});
-
-			boolean andOperator = false;
-
-			if (Validator.isNull(keywords)) {
-				andOperator = true;
-			}
-
-			//total = AccountEntryServiceUtil.searchCount(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator);
-
-			searchContainer.setTotal(total);
-
-			//results = AccountEntryServiceUtil.search(null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, keywords, keywords, new int[0], null, new int[0], new int[0], null, null, null, null, null, null, null, null, params, andOperator, searchContainer.getStart(), searchContainer.getEnd(), new AccountEntryNameComparator(true));
-
-			searchContainer.setResults(results);
-			%>
-
-		</liferay-ui:search-container-results>
-
 		<liferay-ui:search-container-row
-			className="com.liferay.osb.customer.admin.model.AccountEntry"
-			keyProperty="accountEntryId"
-			modelVar="accountEntry"
+			className="com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account"
+			modelVar="koroneikiAccount"
 		>
 			<liferay-portlet:renderURL varImpl="rowURL">
 				<portlet:param name="mvcRenderCommandName" value="/view_account_entry" />
 				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+				<portlet:param name="koroneikiAccountKey" value="<%= koroneikiAccount.getKey() %>" />
 			</liferay-portlet:renderURL>
 
 			<liferay-ui:search-container-column-text
 				cssClass="project-name-column"
 				name="name"
 			>
-				<aui:a cssClass="project-name" href="<%= rowURL.toString() %>" label="<%= accountEntry.getName() %>" />
-
-				<span class="label label-sm label-<%= accountEntry.getStatusLabel() %> mobile-label"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
+				<aui:a cssClass="project-name" href="<%= rowURL.toString() %>" label="<%= HtmlUtil.escape(koroneikiAccount.getName()) %>" />
 			</liferay-ui:search-container-column-text>
 
 			<liferay-ui:search-container-column-text
 				name="status"
 			>
-				<span class="label label-sm label-<%= accountEntry.getStatusLabel() %>"><%= LanguageUtil.get(request, accountEntry.getStatusLabel()) %></span>
+				<span class="label label-sm label-<%= koroneikiAccount.getStatus() %>"><%= koroneikiAccount.getStatus() %></span>
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.account.entry.details.web.internal.display.context;
 
-import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.util.AccountEntryDetailsRequestHelper;
 import com.liferay.osb.customer.admin.constants.AccountEnvironmentAttachmentConstants;
 import com.liferay.osb.customer.admin.constants.AccountEnvironmentConstants;
@@ -23,7 +22,7 @@ import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.AccountEnvironment;
 import com.liferay.osb.customer.admin.model.AccountEnvironmentAttachment;
 import com.liferay.osb.customer.admin.model.ProductEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryServiceUtil;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentAttachmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.AccountEnvironmentLocalServiceUtil;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalServiceUtil;
@@ -33,21 +32,41 @@ import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.AuditEntry;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
+import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.ListType;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -68,30 +87,72 @@ import javax.servlet.http.HttpServletRequest;
 public class AccountEntryViewDisplayContext {
 
 	public AccountEntryViewDisplayContext(
-			PortletRequest portletRequest, MimeResponse mimeResponse)
-		throws PortalException {
+			PortletRequest portletRequest, MimeResponse mimeResponse,
+			Account account, AuditEntryWebService auditEntryWebService,
+			ContactRoleWebService contactRoleWebService,
+			ContactWebService contactWebService,
+			ProductPurchaseWebService productPurchaseWebService,
+			TeamWebService teamWebService)
+		throws Exception {
 
 		_portletRequest = portletRequest;
 		_mimeResponse = mimeResponse;
+		_account = account;
+		_auditEntryWebService = auditEntryWebService;
+		_contactRoleWebService = contactRoleWebService;
+		_contactWebService = contactWebService;
+		_productPurchaseWebService = productPurchaseWebService;
+		_teamWebService = teamWebService;
 
-		AccountEntry accountEntry = (AccountEntry)_portletRequest.getAttribute(
-			AccountEntryDetailsWebKeys.ACCOUNT_ENTRY);
-
-		if (accountEntry == null) {
-			long accountEntryId = ParamUtil.getLong(
-				portletRequest, "accountEntryId");
-
-			accountEntry = AccountEntryServiceUtil.getAccountEntry(
-				accountEntryId);
-		}
-
-		_accountEntry = accountEntry;
+		_accountEntry = AccountEntryLocalServiceUtil.fetchKoroneikiAccountEntry(
+			_account.getKey());
 
 		_accountEntryDetailsRequestHelper =
 			new AccountEntryDetailsRequestHelper(portletRequest);
 
 		_request = _accountEntryDetailsRequestHelper.getRequest();
-		_themeDisplay = _accountEntryDetailsRequestHelper.getThemeDisplay();
+		_user = _accountEntryDetailsRequestHelper.getUser();
+
+		boolean isPartnerManagedSupportWorker = false;
+		String partnerManagedSupportName = StringPool.BLANK;
+		String partnerName = StringPool.BLANK;
+
+		List<Team> teams = _teamWebService.getAssignedTeams(_account.getKey());
+
+		for (Team team : teams) {
+			TeamRole[] teamRoles = team.getTeamRoles();
+
+			if (teamRoles == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : teamRoles) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					partnerManagedSupportName = team.getName();
+
+					List<ContactRole> contactRoles =
+						_contactRoleWebService.getTeamContactRoles(
+							team.getKey(), _user.getUuid(), 1, 100);
+
+					if (!contactRoles.isEmpty()) {
+						isPartnerManagedSupportWorker = true;
+					}
+				}
+				else if (name.equals(TeamRoleConstants.NAME_PARTNER)) {
+					partnerName = team.getName();
+				}
+			}
+		}
+
+		_isPartnerManagedSupportWorker = isPartnerManagedSupportWorker;
+		_partnerManagedSupportName = partnerManagedSupportName;
+		_partnerName = partnerName;
+	}
+
+	public Account getAccount() {
+		return _account;
 	}
 
 	public AccountEntry getAccountEntry() {
@@ -153,6 +214,44 @@ public class AccountEntryViewDisplayContext {
 		}
 
 		return jsonArray;
+	}
+
+	public List<AuditEntry> getAuditEntries() throws Exception {
+		return _auditEntryWebService.getAccountAuditEntries(
+			_account.getKey(), 1, 1000);
+	}
+
+	public List<Contact> getCustomerContacts() throws Exception {
+		List<Contact> contacts = _contactWebService.getAccountContacts(
+			_account.getKey(), 1, 1000);
+
+		Iterator<Contact> iterator = contacts.iterator();
+
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+
+			boolean liferayContact = false;
+
+			ContactRole[] contactRoles = contact.getContactRoles();
+
+			if (contactRoles != null) {
+				for (ContactRole contactRole : contactRoles) {
+					String name = contactRole.getName();
+
+					if (name.startsWith(
+							ContactRoleConstants.NAME_PREFIX_LIFERAY)) {
+
+						liferayContact = true;
+					}
+				}
+			}
+
+			if (liferayContact) {
+				iterator.remove();
+			}
+		}
+
+		return contacts;
 	}
 
 	public String getCollaboratorAddURL() throws PortletException {
@@ -284,9 +383,107 @@ public class AccountEntryViewDisplayContext {
 		return jsonObject;
 	}
 
+	public List<Contact> getLiferayContacts() throws Exception {
+		List<Contact> contacts = _contactWebService.getAccountContacts(
+			_account.getKey(), 1, 1000);
+
+		Iterator<Contact> iterator = contacts.iterator();
+
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+
+			boolean liferayContact = false;
+
+			ContactRole[] contactRoles = contact.getContactRoles();
+
+			if (contactRoles != null) {
+				for (ContactRole contactRole : contactRoles) {
+					String name = contactRole.getName();
+
+					if (name.startsWith(
+							ContactRoleConstants.NAME_PREFIX_LIFERAY)) {
+
+						liferayContact = true;
+					}
+				}
+			}
+
+			if (!liferayContact) {
+				iterator.remove();
+			}
+		}
+
+		return contacts;
+	}
+
+	public String getPartnerManagedSupportName() {
+		return _partnerManagedSupportName;
+	}
+
+	public String getPartnerName() {
+		return _partnerName;
+	}
+
+	public SearchContainer getProductPurchasesSearchContainer()
+		throws Exception {
+
+		SearchContainer searchContainer = new SearchContainer(
+			_portletRequest, _mimeResponse.createRenderURL(),
+			Collections.emptyList(), "no-offerings-were-found");
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("accountKey eq '");
+		sb.append(_account.getKey());
+		sb.append("'");
+
+		if (!isLiferayContractorOrg() && !isLiferayIncOrg() &&
+			!isPartnerManagedSupportWorker()) {
+
+			sb.append(" and state eq 'active'");
+		}
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseWebService.search(sb.toString(), 1, 1000);
+
+		searchContainer.setResults(productPurchases);
+		searchContainer.setTotal(productPurchases.size());
+
+		return searchContainer;
+	}
+
+	public String getSupportLevel() throws Exception {
+		StringBundler sb = new StringBundler(3);
+
+		sb.append("accountKey eq '");
+		sb.append(_account.getKey());
+		sb.append("' and state eq 'active'");
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseWebService.search(sb.toString(), 1, 1000);
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			Product product = productPurchase.getProduct();
+
+			String name = product.getName();
+
+			if (name.equals(ProductConstants.NAME_GOLD)) {
+				return ProductConstants.NAME_GOLD;
+			}
+			else if (name.equals(ProductConstants.NAME_LIMITED)) {
+				return ProductConstants.NAME_LIMITED;
+			}
+			else if (name.equals(ProductConstants.NAME_PLATINUM)) {
+				return ProductConstants.NAME_PLATINUM;
+			}
+		}
+
+		return StringPool.BLANK;
+	}
+
 	public boolean isLiferayContractorOrg() {
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
-				_themeDisplay.getUserId(),
+				_user.getUserId(),
 				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID)) {
 
 			return true;
@@ -297,7 +494,7 @@ public class AccountEntryViewDisplayContext {
 
 	public boolean isLiferayIncOrg() {
 		if (OrganizationLocalServiceUtil.hasUserOrganization(
-				_themeDisplay.getUserId(),
+				_user.getUserId(),
 				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
@@ -307,21 +504,7 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public boolean isPartnerManagedSupportWorker() {
-		/*
-		TODO
-
-		if (!_accountEntry.isPartnerManagedSupport()) {
-			return false;
-		}
-
-		if (PartnerWorkerLocalServiceUtil.hasPartnerWorker(
-				_themeDisplay.getUserId(), _accountEntry.getPartnerEntryId())) {
-
-			return true;
-		}
-		*/
-
-		return false;
+		return _isPartnerManagedSupportWorker;
 	}
 
 	protected String getAccountEnvironmentAttachmentURL(
@@ -701,12 +884,21 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
+	private final Account _account;
 	private final AccountEntry _accountEntry;
 	private final AccountEntryDetailsRequestHelper
 		_accountEntryDetailsRequestHelper;
+	private final AuditEntryWebService _auditEntryWebService;
+	private final ContactRoleWebService _contactRoleWebService;
+	private final ContactWebService _contactWebService;
+	private final boolean _isPartnerManagedSupportWorker;
 	private final MimeResponse _mimeResponse;
+	private final String _partnerManagedSupportName;
+	private final String _partnerName;
 	private final PortletRequest _portletRequest;
+	private final ProductPurchaseWebService _productPurchaseWebService;
 	private final HttpServletRequest _request;
-	private final ThemeDisplay _themeDisplay;
+	private final TeamWebService _teamWebService;
+	private final User _user;
 
 }

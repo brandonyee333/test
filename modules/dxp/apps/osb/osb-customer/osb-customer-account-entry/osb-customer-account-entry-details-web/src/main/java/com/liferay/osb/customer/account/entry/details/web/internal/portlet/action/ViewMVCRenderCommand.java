@@ -15,11 +15,16 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
-import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
-import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntrySearchDisplayContext;
+import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -50,11 +55,31 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
 
-		AccountEntry accountEntry = getAccountEntry(renderRequest);
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
-		if (accountEntry != null) {
+		AccountEntrySearchDisplayContext accountEntrySearchDisplayContext =
+			new AccountEntrySearchDisplayContext(
+				renderRequest, renderResponse, themeDisplay,
+				_accountWebService);
+
+		renderRequest.setAttribute(
+			AccountEntrySearchDisplayContext.class.getName(),
+			accountEntrySearchDisplayContext);
+
+		Account account = getAccount(accountEntrySearchDisplayContext);
+
+		if (account != null) {
+			AccountEntryViewDisplayContext accountEntryViewDisplayContext =
+				new AccountEntryViewDisplayContext(
+					renderRequest, renderResponse, account,
+					_auditEntryWebService, _contactRoleWebService,
+					_contactWebService, _productPurchaseWebService,
+					_teamWebService);
+
 			renderRequest.setAttribute(
-				AccountEntryDetailsWebKeys.ACCOUNT_ENTRY, accountEntry);
+				AccountEntryViewDisplayContext.class.getName(),
+				accountEntryViewDisplayContext);
 
 			return "/account_entry_details/customer/view_account_entry.jsp";
 		}
@@ -62,34 +87,48 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 		return "/account_entry_details/search.jsp";
 	}
 
-	protected AccountEntry getAccountEntry(RenderRequest renderRequest)
-		throws PortalException {
+	protected Account getAccount(
+			AccountEntrySearchDisplayContext accountEntrySearchDisplayContext)
+		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		if (isLiferayContractorOrg(themeDisplay.getUserId()) ||
-			isLiferayIncOrg(themeDisplay.getUserId())) {
+		if (accountEntrySearchDisplayContext.isLiferayContractorOrg() ||
+			accountEntrySearchDisplayContext.isLiferayIncOrg()) {
 
 			return null;
 		}
 
-		List<AccountEntry> accountEntries =
-			_accountEntryLocalService.getUserActiveAccountEntries(
-				themeDisplay.getUserId(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		SearchContainer searchContainer =
+			accountEntrySearchDisplayContext.getAccountsSearchContainer();
 
-		if (accountEntries.isEmpty()) {
+		if (searchContainer.getTotal() <= 0) {
 			throw new PrincipalException();
 		}
 
-		if (accountEntries.size() == 1) {
-			return accountEntries.get(0);
+		List<Account> accounts = searchContainer.getResults();
+
+		if (accounts.size() == 1) {
+			return accounts.get(0);
 		}
 
 		return null;
 	}
 
 	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
+	private AccountWebService _accountWebService;
+
+	@Reference
+	private AuditEntryWebService _auditEntryWebService;
+
+	@Reference
+	private ContactRoleWebService _contactRoleWebService;
+
+	@Reference
+	private ContactWebService _contactWebService;
+
+	@Reference
+	private ProductPurchaseWebService _productPurchaseWebService;
+
+	@Reference
+	private TeamWebService _teamWebService;
 
 }

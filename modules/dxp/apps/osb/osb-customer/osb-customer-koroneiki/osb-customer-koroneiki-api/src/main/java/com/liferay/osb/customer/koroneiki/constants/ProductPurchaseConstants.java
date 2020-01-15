@@ -12,26 +12,13 @@
  *
  */
 
-package com.liferay.osb.customer.koroneiki.web.service;
-
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
-
-import java.util.List;
+package com.liferay.osb.customer.koroneiki.constants;
 
 /**
  * @author Amos Fong
  */
-public interface ContactWebService {
+public class ProductPurchaseConstants {
 
-	public Contact fetchContactByUuid(String uuid) throws Exception;
-
-	public List<Contact> getAccountContacts(
-			String accountKey, int page, int pageSize)
-		throws Exception;
-
-	public List<Contact> search(String filterString, int page, int pageSize)
-		throws Exception;
-
-	public long searchCount(String filterString) throws Exception;
+	public static final String PROPERTY_SIZING = "Sizing";
 
 }

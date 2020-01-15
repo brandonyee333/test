@@ -19,9 +19,13 @@ package com.liferay.osb.customer.koroneiki.constants;
  */
 public class ContactRoleConstants {
 
+	public static final String NAME_MEMBER = "Member";
+
 	public static final String NAME_PARTNER_MANAGER = "Partner Manager";
 
 	public static final String NAME_PARTNER_MEMBER = "Partner Member";
+
+	public static final String NAME_PREFIX_LIFERAY = "Liferay";
 
 	public static final String NAME_SUPPORT_DEVELOPER = "Support Developer";
 
