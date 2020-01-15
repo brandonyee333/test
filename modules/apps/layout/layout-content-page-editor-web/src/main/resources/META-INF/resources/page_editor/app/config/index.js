@@ -67,7 +67,7 @@ const SIDEBAR_PANEL_IDS_TO_PLUGINS = {
  * Note that in the final version we'll be using NPMResolver to obtain these
  * paths dynamically.
  */
-const PLUGIN_ROOT = 'layout-content-page-editor-web@2.0.0/page_editor/plugins';
+const PLUGIN_ROOT = 'layout-content-page-editor-web@2.0.2/page_editor/plugins';
 
 function augmentPanelData(sidebarPanels) {
 	return sidebarPanels.map(panel => {
