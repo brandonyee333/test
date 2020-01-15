@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.nio.charset.Charset;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
@@ -237,6 +238,10 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 		List<String> modifiedAttributeNames = new ArrayList<>();
 
 		for (String attributeName : attributeNames) {
+			if (attributeName.equalsIgnoreCase("modifiedDate")) {
+				continue;
+			}
+
 			String value = String.valueOf(
 				BeanPropertiesUtil.getObject(model, attributeName));
 			String originalValue = String.valueOf(
@@ -256,9 +261,16 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 		Map<String, Object> modelAttributes = model.getModelAttributes();
 
 		for (String includeAttributeName : includeAttributeNames) {
-			jsonObject.put(
-				includeAttributeName,
-				modelAttributes.get(includeAttributeName));
+			if (modelAttributes.get(includeAttributeName) instanceof Date) {
+				Date date = (Date)modelAttributes.get(includeAttributeName);
+
+				jsonObject.put(includeAttributeName, date.getTime());
+			}
+			else {
+				jsonObject.put(
+					includeAttributeName,
+					modelAttributes.get(includeAttributeName));
+			}
 		}
 
 		jsonObject.put(
