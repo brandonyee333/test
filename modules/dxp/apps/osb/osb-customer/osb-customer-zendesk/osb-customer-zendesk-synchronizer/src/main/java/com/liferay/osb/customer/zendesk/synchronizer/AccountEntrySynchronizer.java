@@ -21,9 +21,6 @@ import com.liferay.osb.customer.admin.service.SupportRegionLocalService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
-import com.liferay.osb.customer.zendesk.model.listener.exception.PartnerWorkerRemovalException;
-import com.liferay.osb.customer.zendesk.model.listener.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskTicketWebService;
@@ -211,6 +208,7 @@ public class AccountEntrySynchronizer {
 			}
 		}
 	}
+
 	*/
 
 	public void reassignTickets(

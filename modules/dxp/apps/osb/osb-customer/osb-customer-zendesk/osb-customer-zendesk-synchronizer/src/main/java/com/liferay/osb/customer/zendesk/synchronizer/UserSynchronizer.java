@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
@@ -299,12 +300,15 @@ public class UserSynchronizer {
 			return false;
 		}
 
+		/*
+		TODO
 		List<PartnerWorker> partnerWorkers =
 			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
 
 		if (!partnerWorkers.isEmpty()) {
 			return true;
 		}
+		*/
 
 		return false;
 	}
