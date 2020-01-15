@@ -12,18 +12,21 @@
  * details.
  */
 
-import {switchLayoutData, selectExperience} from './utils';
+import {switchLayoutData, selectExperience, setUsedWidgets} from './utils';
 
 function selectExperienceReducer(state, payload) {
 	let nextState = state;
 
-	const newExperience = payload;
+	const {porletIds, segmentsExperienceId} = payload;
 
 	nextState = switchLayoutData(nextState, {
 		currentExperienceId: nextState.segmentsExperienceId,
-		targetExperienceId: newExperience.segmentsExperienceId
+		targetExperienceId: segmentsExperienceId
 	});
-	nextState = selectExperience(nextState, newExperience.segmentsExperienceId);
+
+	nextState = setUsedWidgets(nextState, {porletIds});
+
+	nextState = selectExperience(nextState, segmentsExperienceId);
 
 	return nextState;
 }
