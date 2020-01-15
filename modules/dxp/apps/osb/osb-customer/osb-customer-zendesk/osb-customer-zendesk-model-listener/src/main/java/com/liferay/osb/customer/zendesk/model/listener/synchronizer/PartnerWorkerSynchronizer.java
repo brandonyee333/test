@@ -45,7 +45,7 @@ public class PartnerWorkerSynchronizer {
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
 
-		long zendeskUserId = addUser(partnerWorker);
+		long zendeskUserId = update(partnerWorker);
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
 			addOrganizationMemberships(
@@ -57,7 +57,7 @@ public class PartnerWorkerSynchronizer {
 		long[] zendeskOrganizationIds = getZendeskOrganizationIds(
 			partnerWorker);
 
-		long zendeskUserId = addUser(partnerWorker);
+		long zendeskUserId = update(partnerWorker);
 
 		if (partnerWorker.getRole() != PartnerWorkerConstants.ROLE_WATCHER) {
 			addOrganizationMemberships(zendeskUserId, zendeskOrganizationIds);
@@ -79,7 +79,7 @@ public class PartnerWorkerSynchronizer {
 			}
 		}
 
-		_userSynchronizer.updateTags(partnerWorker.getUserId());
+		update(partnerWorker);
 	}
 
 	public void remove(PartnerWorker partnerWorker) throws PortalException {
@@ -95,7 +95,7 @@ public class PartnerWorkerSynchronizer {
 			}
 		}
 
-		_userSynchronizer.updateTags(partnerWorker.getUserId());
+		update(partnerWorker);
 	}
 
 	public void updateRole(PartnerWorker partnerWorker) throws PortalException {
@@ -110,7 +110,7 @@ public class PartnerWorkerSynchronizer {
 					zendeskUserId, zendeskOrganizationIds);
 			}
 
-			_userSynchronizer.updateTags(partnerWorker.getUserId());
+			update(partnerWorker);
 		}
 		else {
 			add(partnerWorker);
@@ -133,12 +133,6 @@ public class PartnerWorkerSynchronizer {
 				createZendeskUserOrganizationSubscription(
 					zendeskUserId, zendeskOrganizationId);
 		}
-	}
-
-	protected long addUser(PartnerWorker partnerWorker) throws PortalException {
-		User user = _userLocalService.getUser(partnerWorker.getUserId());
-
-		return _userSynchronizer.update(user, null);
 	}
 
 	protected long[] getZendeskOrganizationIds(PartnerWorker partnerWorker)
@@ -181,6 +175,12 @@ public class PartnerWorkerSynchronizer {
 	)
 	protected void setModuleServiceLifecycle(
 		ModuleServiceLifecycle moduleServiceLifecycle) {
+	}
+
+	protected long update(PartnerWorker partnerWorker) throws PortalException {
+		User user = _userLocalService.getUser(partnerWorker.getUserId());
+
+		return _userSynchronizer.update(user, null);
 	}
 
 	@Reference(target = "(async=true)")

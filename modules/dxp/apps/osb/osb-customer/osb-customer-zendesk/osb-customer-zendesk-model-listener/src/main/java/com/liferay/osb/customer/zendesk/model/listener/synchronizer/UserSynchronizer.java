@@ -80,7 +80,12 @@ public class UserSynchronizer {
 		throws PortalException {
 
 		String emailAddress = user.getEmailAddress();
+
 		String fullName = user.getFullName();
+
+		if (hasPartnerWorker(user.getUserId())) {
+			fullName = fullName + " [P]";
+		}
 
 		String zendeskLocale = _zendeskLocaleUtil.convertToZendeskLocale(
 			user.getLanguageId());
@@ -100,8 +105,8 @@ public class UserSynchronizer {
 			!tags.equals(zendeskUser.getTags())) {
 
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				user.getUuid(), StringPool.BLANK, zendeskLocale,
-				user.getFullName(), null, tags);
+				user.getUuid(), StringPool.BLANK, zendeskLocale, fullName, null,
+				tags);
 		}
 	}
 
@@ -119,18 +124,22 @@ public class UserSynchronizer {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
 
+		String fullName = user.getFullName();
+
+		if (hasPartnerWorker(user.getUserId())) {
+			fullName = fullName + " [P]";
+		}
+
 		if (zendeskUserId != 0) {
 			_asyncZendeskUserWebService.createOrUpdateZendeskUser(
-				user.getUuid(), StringPool.BLANK, zendeskLocale,
-				user.getFullName(), organizationName,
-				getTags(user.getUserId()));
+				user.getUuid(), StringPool.BLANK, zendeskLocale, fullName,
+				organizationName, getTags(user.getUserId()));
 		}
 		else {
 			ZendeskUser zendeskUser =
 				_zendeskUserWebService.createOrUpdateZendeskUser(
 					user.getUuid(), user.getEmailAddress(), zendeskLocale,
-					user.getFullName(), organizationName,
-					getTags(user.getUserId()));
+					fullName, organizationName, getTags(user.getUserId()));
 
 			zendeskUserId = zendeskUser.getZendeskUserId();
 
@@ -285,6 +294,23 @@ public class UserSynchronizer {
 		}
 
 		return tags;
+	}
+
+	protected boolean hasPartnerWorker(long userId) throws PortalException {
+		if (_organizationLocalService.hasUserOrganization(
+				userId, OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+			return false;
+		}
+
+		List<PartnerWorker> partnerWorkers =
+			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
+
+		if (!partnerWorkers.isEmpty()) {
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference(target = "(async=true)")
