@@ -8,10 +8,14 @@
 <tr><td rowspan="1" colspan="3">Dropdown</td></tr>
 </thead>
 <tbody>
-<!--FILTER-->
 <tr>
 	<td>FILTER</td>
 	<td>//*[@data-qa-id='filter']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FRIENDLY_URL_LOCALE</td>
+	<td>//button[contains(@id,'friendlyURLMenu')]//span[contains(@class,'btn-section')]</td>
 	<td></td>
 </tr>
 <tr>
