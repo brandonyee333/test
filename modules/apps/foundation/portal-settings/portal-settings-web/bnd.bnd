@@ -4,5 +4,9 @@ Bundle-Version: 1.2.19
 Export-Package:\
 	com.liferay.portal.settings.web.constants,\
 	com.liferay.portal.settings.web.portlet.action
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.portal.settings.lang), (bundle.symbolic.name=com.liferay.login.authentication.google.web)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /portal-settings-web
 -includeresource: META-INF/resources/users_admin/css=@com.liferay.users.admin.web-[0-9.]*.jar!/META-INF/resources/css

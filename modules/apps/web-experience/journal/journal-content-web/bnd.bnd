@@ -2,4 +2,8 @@ Bundle-Name: Liferay Journal Content Web
 Bundle-SymbolicName: com.liferay.journal.content.web
 Bundle-Version: 2.0.46
 Liferay-Releng-Module-Group-Title: Web Content
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.journal.lang)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /journal-content-web
