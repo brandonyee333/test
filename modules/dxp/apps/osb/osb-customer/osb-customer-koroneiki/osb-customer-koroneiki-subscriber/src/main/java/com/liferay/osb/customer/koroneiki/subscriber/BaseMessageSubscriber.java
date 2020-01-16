@@ -20,6 +20,7 @@ import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -63,6 +64,18 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 			StringUtil.replace(label, CharPool.SPACE, CharPool.DASH));
 
 		return WorkflowConstants.getLabelStatus(statusLabel);
+	}
+
+	protected void sendMessage(
+		String destination, String topic, String payload) {
+
+		com.liferay.portal.kernel.messaging.Message message =
+			new com.liferay.portal.kernel.messaging.Message();
+
+		message.put("topic", topic);
+		message.setPayload(payload);
+
+		MessageBusUtil.sendMessage(destination, message);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

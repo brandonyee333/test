@@ -21,7 +21,6 @@ import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -51,14 +50,9 @@ public class AccountUpdateMessageSubscriber
 			account.getName(), account.getCode(), null,
 			getStatus(account.getStatusAsString()), null, new long[0]);
 
-		com.liferay.portal.kernel.messaging.Message zendeskMessage =
-			new com.liferay.portal.kernel.messaging.Message();
-
-		zendeskMessage.put("topic", message.getDestinationName());
-		zendeskMessage.setPayload(message.getPayload());
-
-		MessageBusUtil.sendMessage(
-			"liferay/zendesk_account_sync", zendeskMessage);
+		sendMessage(
+			"liferay/zendesk_account_sync", message.getDestinationName(),
+			message.getPayload());
 	}
 
 	@Reference

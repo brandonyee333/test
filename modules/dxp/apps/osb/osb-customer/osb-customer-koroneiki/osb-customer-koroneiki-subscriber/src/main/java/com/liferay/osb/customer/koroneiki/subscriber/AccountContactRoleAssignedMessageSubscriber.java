@@ -16,7 +16,6 @@ package com.liferay.osb.customer.koroneiki.subscriber;
 
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
-import com.liferay.portal.kernel.messaging.MessageBusUtil;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -33,14 +32,9 @@ public class AccountContactRoleAssignedMessageSubscriber
 
 	@Override
 	public void doReceive(Message message) throws Exception {
-		com.liferay.portal.kernel.messaging.Message zendeskMessage =
-			new com.liferay.portal.kernel.messaging.Message();
-
-		zendeskMessage.put("topic", message.getDestinationName());
-		zendeskMessage.setPayload(message.getPayload());
-
-		MessageBusUtil.sendMessage(
-			"liferay/zendesk_account_contact_sync", zendeskMessage);
+		sendMessage(
+			"liferay/zendesk_account_contact_sync",
+			message.getDestinationName(), message.getPayload());
 	}
 
 }
