@@ -34,7 +34,7 @@ public class AccountTeamRoleAssignedMessageSubscriber
 	public void doReceive(Message message) throws Exception {
 		sendMessage(
 			"liferay/zendesk_account_teamrole_sync",
-			message.getDestinationName(), message.getPayload());
+			message.getDestinationName(), (String)message.getPayload());
 	}
 
 }

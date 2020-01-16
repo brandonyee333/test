@@ -52,7 +52,7 @@ public class AccountUpdateMessageSubscriber
 
 		sendMessage(
 			"liferay/zendesk_account_sync", message.getDestinationName(),
-			message.getPayload());
+			(String)message.getPayload());
 	}
 
 	@Reference

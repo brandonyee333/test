@@ -46,7 +46,7 @@ public class AccountCreateMessageSubscriber
 
 		sendMessage(
 			"liferay/zendesk_account_sync", message.getDestinationName(),
-			message.getPayload());
+			(String)message.getPayload());
 	}
 
 	@Reference

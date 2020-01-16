@@ -34,7 +34,7 @@ public class AccountContactRoleUnassignedMessageSubscriber
 	public void doReceive(Message message) throws Exception {
 		sendMessage(
 			"liferay/zendesk_account_contact_sync",
-			message.getDestinationName(), message.getPayload());
+			message.getDestinationName(), (String)message.getPayload());
 	}
 
 }
