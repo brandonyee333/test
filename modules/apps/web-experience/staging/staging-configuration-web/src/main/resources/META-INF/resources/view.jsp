@@ -217,6 +217,7 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 
 									<%
 									boolean secureConnection = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("secureConnection"));
+									boolean setRemoteSiteURL = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("setRemoteSiteURL"));
 									%>
 
 									<span class="flex-item-center staging-configuration-control-label <%= secureConnection ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
@@ -225,7 +226,15 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 									<span class="staging-configuration-control-toggle">
 										<aui:input label="<%= StringPool.BLANK %>" name="secureConnection" type="toggle-switch" value="<%= secureConnection %>" />
 									</span>
+									<span class="flex-item-center staging-configuration-control-label <%= setRemoteSiteURL ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
+										<liferay-ui:message key="manually-define-remote-site-url" />
+									</span>
+									<span class="staging-configuration-control-toggle">
+										<aui:input label="<%= StringPool.BLANK %>" name="setRemoteSiteURL" type="toggle-switch" value="<%= setRemoteSiteURL %>" />
+									</span>
 								</div>
+
+								<aui:input label="remote-site-url" name="remoteSiteURL" size="20" disabled="<%= !setRemoteSiteURL %>" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
 							</aui:fieldset>
 						</div>
 
