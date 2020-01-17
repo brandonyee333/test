@@ -234,7 +234,9 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 									</span>
 								</div>
 
-								<aui:input label="remote-site-url" name="remoteSiteURL" size="20" disabled="<%= !setRemoteSiteURL %>" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
+								<div class="<%= setRemoteSiteURL ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />remoteSiteURLContainer">
+									<aui:input label="remote-site-url" name="remoteSiteURL" size="20" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
+								</div>
 							</aui:fieldset>
 						</div>
 
@@ -429,6 +431,21 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 			submitForm(form);
 		}
 	}
+</aui:script>
+
+<aui:script>
+	var setRemoteSiteURLCheckbox = document.getElementById('<portlet:namespace />setRemoteSiteURL');
+	var remoteSiteURLContainer = document.getElementById('<portlet:namespace />remoteSiteURLContainer');
+
+	setRemoteSiteURLCheckbox.addEventListener('click', function() {
+		var checked = setRemoteSiteURLCheckbox.checked;
+
+		if (checked) {
+			remoteSiteURLContainer.classList.remove('hide');
+		} else {
+			remoteSiteURLContainer.classList.add('hide');
+		}
+	});
 </aui:script>
 
 <aui:script sandbox="<%= true %>">
