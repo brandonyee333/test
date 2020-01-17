@@ -16,6 +16,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
@@ -24,7 +25,10 @@ import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -49,8 +53,15 @@ public class ViewAccountEntryMVCRenderCommand extends BaseMVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws Exception {
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
 		String koroneikiAccountKey = ParamUtil.getString(
 			renderRequest, "koroneikiAccountKey");
+
+		AccountEntryPermission.check(
+			themeDisplay.getPermissionChecker(), koroneikiAccountKey,
+			ActionKeys.VIEW);
 
 		Account account = _accountWebService.getAccount(koroneikiAccountKey);
 

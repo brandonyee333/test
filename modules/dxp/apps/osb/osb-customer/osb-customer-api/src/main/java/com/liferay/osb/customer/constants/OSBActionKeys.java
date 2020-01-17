@@ -27,10 +27,6 @@ public class OSBActionKeys extends ActionKeys {
 
 	public static final String ADD_LICENSE_KEY_SET = "ADD_LICENSE_KEY_SET";
 
-	public static final String ASSIGN_CUSTOMERS = "ASSIGN_CUSTOMERS";
-
-	public static final String UPDATE_ACCOUNT_INFO = "UPDATE_ACCOUNT_INFO";
-
 	public static final String UPDATE_ACCOUNT_INSTRUCTIONS =
 		"UPDATE_ACCOUNT_INSTRUCTIONS";
 

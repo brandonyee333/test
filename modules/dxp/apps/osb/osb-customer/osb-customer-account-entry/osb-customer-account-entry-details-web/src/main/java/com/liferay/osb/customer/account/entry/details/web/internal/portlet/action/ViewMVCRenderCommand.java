@@ -17,6 +17,7 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntrySearchDisplayContext;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext;
+import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.AuditEntryWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
@@ -27,6 +28,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -70,6 +72,10 @@ public class ViewMVCRenderCommand extends BaseMVCRenderCommand {
 		Account account = getAccount(accountEntrySearchDisplayContext);
 
 		if (account != null) {
+			AccountEntryPermission.check(
+				themeDisplay.getPermissionChecker(), account.getKey(),
+				ActionKeys.VIEW);
+
 			AccountEntryViewDisplayContext accountEntryViewDisplayContext =
 				new AccountEntryViewDisplayContext(
 					renderRequest, renderResponse, account,

@@ -163,10 +163,6 @@ public class AccountEntryViewDisplayContext {
 		if (!AccountEntryPermission.contains(
 				_accountEntryDetailsRequestHelper.getPermissionChecker(),
 				_accountEntry.getAccountEntryId(),
-				OSBActionKeys.UPDATE_ACCOUNT_INFO) &&
-			!AccountEntryPermission.contains(
-				_accountEntryDetailsRequestHelper.getPermissionChecker(),
-				_accountEntry.getAccountEntryId(),
 				OSBActionKeys.UPDATE_ACCOUNT_INSTRUCTIONS)) {
 
 			return null;
