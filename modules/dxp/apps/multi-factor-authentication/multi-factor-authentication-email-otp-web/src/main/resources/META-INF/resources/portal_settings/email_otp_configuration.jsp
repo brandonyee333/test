@@ -16,10 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-MFAEmailOTPConfiguration mfaEmailOTPConfiguration = ConfigurationProviderUtil.getCompanyConfiguration(MFAEmailOTPConfiguration.class, themeDisplay.getCompanyId());
-%>
-
 <aui:fieldset>
 	<aui:input name="enabled" type="toggle-switch" value="<%= mfaEmailOTPConfiguration.enabled() %>" />
 
@@ -34,9 +30,9 @@ MFAEmailOTPConfiguration mfaEmailOTPConfiguration = ConfigurationProviderUtil.ge
 	<aui:input helpMessage="email-template-from-description" label="email-template-from" name="emailTemplateFrom" type="text" value="<%= mfaEmailOTPConfiguration.emailTemplateFrom() %>" />
 
 	<liferay-frontend:email-notification-settings
-		emailBodyLocalizedValuesMap='<%= (LocalizedValuesMap)request.getAttribute("bodyLocalizedValuesMap") %>'
+		emailBodyLocalizedValuesMap="<%= (LocalizedValuesMap)request.getAttribute(MFAEmailOTPWebKeys.MFA_EMAIL_OTP_BODY_LOCALIZED_VALUES_MAP) %>"
 		emailParam="emailOTPTemplate"
-		emailSubjectLocalizedValuesMap='<%= (LocalizedValuesMap)request.getAttribute("subjectLocalizedValuesMap") %>'
+		emailSubjectLocalizedValuesMap="<%= (LocalizedValuesMap)request.getAttribute(MFAEmailOTPWebKeys.MFA_EMAIL_OTP_SUBJECT_LOCALIZED_VALUES_MAP) %>"
 		showEmailEnabled="<%= false %>"
 	/>
 
