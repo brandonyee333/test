@@ -235,7 +235,7 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 								</div>
 
 								<div class="<%= setRemoteSiteURL ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />remoteSiteURLContainer">
-									<aui:input label="remote-site-url" name="remoteSiteURL" size="20" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
+									<aui:input label="remote-site-url" helpMessage="remote-site-url-help-message" name="remoteSiteURL" size="20" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
 								</div>
 							</aui:fieldset>
 						</div>
