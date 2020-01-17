@@ -40,14 +40,22 @@ public class IGDisplayExportImportPortletPreferencesProcessor
 
 	@Override
 	public List<Capability> getExportCapabilities() {
-		return _dlExportImportPortletPreferencesProcessor.
-			getExportCapabilities();
+		List<Capability> exportCapabilities =
+			_dlExportImportPortletPreferencesProcessor.getExportCapabilities();
+
+		exportCapabilities.add(_igDisplayExportCapability);
+
+		return exportCapabilities;
 	}
 
 	@Override
 	public List<Capability> getImportCapabilities() {
-		return _dlExportImportPortletPreferencesProcessor.
-			getImportCapabilities();
+		List<Capability> importCapabilities =
+			_dlExportImportPortletPreferencesProcessor.getImportCapabilities();
+
+		importCapabilities.add(_igDisplayImportCapability);
+
+		return importCapabilities;
 	}
 
 	@Override
@@ -72,8 +80,32 @@ public class IGDisplayExportImportPortletPreferencesProcessor
 				portletDataContext, portletPreferences);
 	}
 
+	@Reference(unbind = "-")
+	protected void setIGDisplayPortletDisplayTemplateExportCapability(
+		IGDisplayPortletDisplayTemplateExportCapability
+			igDisplayPortletDisplayTemplateExportCapability) {
+
+		_igDisplayExportCapability =
+			igDisplayPortletDisplayTemplateExportCapability;
+	}
+
+	@Reference(unbind = "-")
+	protected void setIGDisplayPortletDisplayTemplateImportCapability(
+		IGDisplayPortletDisplayTemplateImportCapability
+			igDisplayPortletDisplayTemplateImportCapability) {
+
+		_igDisplayImportCapability =
+			igDisplayPortletDisplayTemplateImportCapability;
+	}
+
 	@Reference
 	private DLExportImportPortletPreferencesProcessor
 		_dlExportImportPortletPreferencesProcessor;
+
+	private IGDisplayPortletDisplayTemplateExportCapability 
+		_igDisplayExportCapability;
+
+	private IGDisplayPortletDisplayTemplateImportCapability
+		_igDisplayImportCapability;
 
 }
