@@ -515,6 +515,25 @@ definition {
 			AssertElementPresent(locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_FILTER_VALUE");
 		}
 	}
+	macro verifyFiltersOptionsCheck {
+		var key_allItemsFilterName = "${allItemsFilterName}";
+
+		Click(locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_FILTER_BY");
+
+		for (var assigneeName : list "${isChecked}") {
+			AssertChecked(
+				locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_FILTER_BY_ASSIGNEE_VALUE_CHECKBOX",
+				value1 = "${assigneeName}");
+		}
+
+		for (var assigneeName : list "${isNotChecked}") {
+			AssertNotChecked(
+				locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_FILTER_BY_ASSIGNEE_VALUE_CHECKBOX",
+				value1 = "${assigneeName}");
+		}
+
+		Click(locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_FILTER_TITLE");
+	}
 
 	macro viewItemFilterByOnAllItemsPage {
 		var key_allItemsFilterName = "${allItemsFilterName}";
