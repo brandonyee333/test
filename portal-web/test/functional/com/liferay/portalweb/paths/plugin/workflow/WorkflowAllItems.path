@@ -74,6 +74,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>WORKFLOW_ALL_ITEMS_FILTER_BY_ASSIGNEE_VALUE_CHECKBOX</td>
+	<td>//label/input[@type='checkbox' and @data-key='${assigneeName}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>WORKFLOW_ALL_ITEMS_FILTER_TITLE</td>
 	<td>//div[@class='portlet-body']//ul[@class='navbar-nav']/li//strong[contains(.,'Filter By')]</td>
 	<td></td>
@@ -91,6 +96,16 @@
 <tr>
 	<td>WORKFLOW_ALL_ITEMS_TABLE_CURRENT_ASSIGNEE_VALUE</td>
 	<td>//td[contains(@data-testid,'assetInfoCell') and contains(text(),'${key_workflowInstanceName}')]/following-sibling::td[contains(@data-testid,'assigneesCell') and contains(text(),'${key_workflowInstanceAssignee}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WORKFLOW_ALL_ITEMS_TABLE_EMPTY_MESSAGE</td>
+	<td>//div[contains(.,'Once there are active processes, metrics will appear here.')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WORKFLOW_ALL_ITEMS_TITLE</td>
+	<td>//ul[@class='control-menu-nav']//div[contains(.,'Single Approver: All Items')]</td>
 	<td></td>
 </tr>
 <tr>
