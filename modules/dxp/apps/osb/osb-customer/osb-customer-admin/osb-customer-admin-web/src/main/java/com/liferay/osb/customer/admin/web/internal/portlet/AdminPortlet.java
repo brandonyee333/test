@@ -33,6 +33,7 @@ import com.liferay.osb.customer.admin.exception.SupportRegionNameException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountAttachmentLocalService;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
@@ -74,6 +75,7 @@ import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -330,14 +332,19 @@ public class AdminPortlet extends MVCPortlet {
 		if (accountEntryId <= 0) {
 			_accountEntryLocalService.addAccountEntry(
 				themeDisplay.getUserId(), koroneikiAccountKey,
-				dossieraAccountKey, instructions, languageIds,
+				dossieraAccountKey, null, null, instructions,
+				WorkflowConstants.STATUS_APPROVED, languageIds,
 				supportRegionIds);
 		}
 		else {
+			AccountEntry accountEntry =
+				_accountEntryLocalService.getAccountEntry(accountEntryId);
+
 			_accountEntryLocalService.updateAccountEntry(
 				themeDisplay.getUserId(), accountEntryId, koroneikiAccountKey,
-				dossieraAccountKey, instructions, languageIds,
-				supportRegionIds);
+				dossieraAccountKey, accountEntry.getName(),
+				accountEntry.getCode(), instructions, accountEntry.getStatus(),
+				languageIds, supportRegionIds);
 		}
 
 		updateAccountAttachment(actionRequest);
@@ -392,13 +399,16 @@ public class AdminPortlet extends MVCPortlet {
 
 		if (productEntryId <= 0) {
 			_productEntryLocalService.addProductEntry(
-				themeDisplay.getUserId(), koroneikiProductKey, type,
+				themeDisplay.getUserId(), koroneikiProductKey, null, type,
 				environment, versionsListType, zendeskTag);
 		}
 		else {
+			ProductEntry productEntry =
+				_productEntryLocalService.getProductEntry(productEntryId);
+
 			_productEntryLocalService.updateProductEntry(
-				productEntryId, koroneikiProductKey, type, environment,
-				versionsListType, zendeskTag);
+				productEntryId, koroneikiProductKey, productEntry.getName(),
+				type, environment, versionsListType, zendeskTag);
 		}
 	}
 
