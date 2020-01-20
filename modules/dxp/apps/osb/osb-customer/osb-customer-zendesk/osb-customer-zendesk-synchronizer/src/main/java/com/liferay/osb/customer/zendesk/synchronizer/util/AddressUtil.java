@@ -14,11 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.util;
 
-import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.Country;
-import com.liferay.portal.kernel.model.Region;
-import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.PostalAddress;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
@@ -31,62 +27,56 @@ import org.osgi.service.component.annotations.Component;
 @Component(immediate = true, service = {})
 public class AddressUtil {
 
-	public static String convertAddressToString(Address address) {
-		if (address == null) {
+	public static String convertAddressToString(PostalAddress postalAddress) {
+		if (postalAddress == null) {
 			return StringPool.BLANK;
 		}
 
 		StringBundler sb = new StringBundler(7);
 
-		if (Validator.isNotNull(address.getStreet1())) {
-			sb.append(address.getStreet1());
+		if (Validator.isNotNull(postalAddress.getStreetAddressLine1())) {
+			sb.append(postalAddress.getStreetAddressLine1());
 			sb.append(StringPool.NEW_LINE);
 		}
 
-		if (Validator.isNotNull(address.getStreet2())) {
-			sb.append(address.getStreet2());
+		if (Validator.isNotNull(postalAddress.getStreetAddressLine2())) {
+			sb.append(postalAddress.getStreetAddressLine2());
 			sb.append(StringPool.NEW_LINE);
 		}
 
-		if (Validator.isNotNull(address.getStreet3())) {
-			sb.append(address.getStreet3());
+		if (Validator.isNotNull(postalAddress.getStreetAddressLine3())) {
+			sb.append(postalAddress.getStreetAddressLine3());
 			sb.append(StringPool.NEW_LINE);
 		}
 
 		StringBundler sb2 = new StringBundler(7);
 
-		if (Validator.isNotNull(address.getCity())) {
-			sb2.append(address.getCity());
+		if (Validator.isNotNull(postalAddress.getAddressLocality())) {
+			sb2.append(postalAddress.getAddressLocality());
 		}
 
-		Region region = address.getRegion();
-
-		if (Validator.isNotNull(region.getName())) {
+		if (Validator.isNotNull(postalAddress.getAddressRegion())) {
 			if (sb2.index() != 0) {
 				sb2.append(StringPool.SPACE);
 			}
 
-			sb2.append(region.getName());
+			sb2.append(postalAddress.getAddressRegion());
 		}
 
-		if (Validator.isNotNull(address.getZip())) {
+		if (Validator.isNotNull(postalAddress.getPostalCode())) {
 			if (sb2.index() != 0) {
 				sb2.append(StringPool.SPACE);
 			}
 
-			sb2.append(address.getZip());
+			sb2.append(postalAddress.getPostalCode());
 		}
 
-		Country country = address.getCountry();
-
-		if (Validator.isNotNull(country.getName())) {
+		if (Validator.isNotNull(postalAddress.getAddressCountry())) {
 			if (sb2.index() != 0) {
 				sb2.append(StringPool.NEW_LINE);
 			}
 
-			sb2.append(
-				LanguageUtil.get(
-					LocaleUtil.US, "country." + country.getName()));
+			sb2.append(postalAddress.getAddressCountry());
 		}
 
 		sb.append(sb2);

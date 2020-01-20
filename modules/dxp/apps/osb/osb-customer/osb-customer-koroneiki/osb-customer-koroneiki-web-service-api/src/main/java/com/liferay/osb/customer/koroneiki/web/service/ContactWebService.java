@@ -34,4 +34,7 @@ public interface ContactWebService {
 
 	public long searchCount(String filterString) throws Exception;
 
+	public List<Contact> getTeamContacts(String teamKey, int page, int pageSize)
+		throws Exception;
+
 }

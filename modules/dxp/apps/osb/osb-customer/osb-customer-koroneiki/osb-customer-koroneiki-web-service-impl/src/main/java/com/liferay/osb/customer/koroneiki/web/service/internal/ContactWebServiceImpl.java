@@ -68,6 +68,20 @@ public class ContactWebServiceImpl implements ContactWebService {
 		return Collections.emptyList();
 	}
 
+	public List<Contact> getTeamContacts(String teamKey, int page, int pageSize)
+		throws Exception {
+
+		Page<Contact> contactsPage =
+			_contactResource.getAccountAccountKeyContactsPage(
+				teamKey, Pagination.of(page, pageSize));
+
+		if ((contactsPage != null) && (contactsPage.getItems() != null)) {
+			return new ArrayList<>(contactsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
 	public List<Contact> search(String filterString, int page, int pageSize)
 		throws Exception {
 

@@ -14,37 +14,26 @@
 
 package com.liferay.osb.customer.koroneiki.subscriber;
 
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
  */
 @Component(
-	immediate = true, property = "topic.pattern=koroneiki.account.delete",
-	service = AccountDeleteMessageSubscriber.class
+	immediate = true, property = "topic.pattern=koroneiki.team.update",
+	service = TeamUpdateMessageSubscriber.class
 )
-public class AccountDeleteMessageSubscriber
+public class TeamUpdateMessageSubscriber
 	extends BaseMessageSubscriber implements MessageSubscriber {
 
 	@Override
 	public void doReceive(Message message) throws Exception {
-		Account account = AccountSerDes.toDTO((String)message.getPayload());
-
 		sendMessage(
-			"liferay/zendesk_account_sync", message.getDestinationName(),
+			"liferay/zendesk_team_sync", message.getDestinationName(),
 			(String)message.getPayload());
-
-		_accountEntryLocalService.deleteAccountEntry(account.getKey());
 	}
-
-	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
 
 }

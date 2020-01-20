@@ -14,12 +14,21 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
+import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
+import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
+import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
+import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -54,8 +63,8 @@ public class AccountMessageListener extends BaseMessageListener {
 
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
-				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/zendesk_account_sync");
+				DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
+				ZendeskDestinationNames.ACCOUNT_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
@@ -88,7 +97,7 @@ public class AccountMessageListener extends BaseMessageListener {
 
 		String topic = message.getString("topic");
 
-		if (topic.equals("koroeniki.account.create")) {
+		if (topic.equals("koroneiki.account.create")) {
 			onCreate(account);
 		}
 		else if (topic.equals("koroneiki.account.delete")) {
@@ -100,200 +109,90 @@ public class AccountMessageListener extends BaseMessageListener {
 	}
 
 	protected void onCreate(Account account) {
+		try {
+			if (_accountSynchronizer.hasActiveSupport(account)) {
+				_accountSynchronizer.update(account);
+			}
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 
-		// TODO
-
+			throw new ZendeskIntegrationException(e);
+		}
 	}
 
 	protected void onDelete(Account account) {
+		try {
+			_accountSynchronizer.remove(account);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
 
-		// TODO
-
+			throw new ZendeskIntegrationException(e);
+		}
 	}
 
 	protected void onUpdate(Account account) {
+		try {
+			AccountEntry accountEntry =
+				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					account.getKey());
 
-		// TODO
+			if ((!_hasZendeskOrganization(accountEntry) &&
+				 !_accountSynchronizer.hasActiveSupport(account)) ||
+				(accountEntry.getAccountEntryId() ==
+					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
+				return;
+			}
+
+			_accountSynchronizer.update(account);
+
+			if (!_accountSynchronizer.hasActiveTicketSupport(account)) {
+				_accountSynchronizer.closeZendeskTickets(account);
+				_accountSynchronizer.updateTags(account);
+			}
+
+			if (!_accountSynchronizer.hasActiveSupport(account)) {
+				_accountSynchronizer.removeAccountCustomers(account);
+			}
+
+			// TODO add customers if needed
+
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new ZendeskIntegrationException(e);
+		}
 	}
 
-	/*	TODO
-	 *
-	 * @Override
-		public void onAfterCreate(AccountEntry accountEntry)
-			throws ModelListenerException {
-			try {
-				if (!accountEntry.isActiveSupport()) {
-					return;
-				}
+	private boolean _hasZendeskOrganization(AccountEntry accountEntry)
+		throws PortalException {
 
-				_accountEntrySynchronizer.update(accountEntry);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
+		long classNameId = _classNameLocalService.getClassNameId(
+			AccountEntry.class);
 
-				throw new ZendeskIntegrationException(e);
-			}
+		boolean externalIdMappers =
+			_externalIdMapperLocalService.hasExternalIdMappers(
+				classNameId, accountEntry.getAccountEntryId(),
+				ExternalIdMapperConstants.TYPE_ZENDESK);
+
+		if (externalIdMappers) {
+			return true;
 		}
 
-		@Override
-		public void onAfterUpdate(AccountEntry accountEntry)
-			throws ModelListenerException {
-			try {
-				AccountEntry oldAccountEntry = _oldAccountEntry.get();
+		return false;
+	}
 
-				if ((!_zendeskOrganization.get() &&
-					 !accountEntry.isActiveSupport()) ||
-					(accountEntry.getAccountEntryId() ==
-						OSBConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
-
-					return;
-				}
-
-				if (isUpdateAccountEntry(oldAccountEntry, accountEntry)) {
-					_accountEntrySynchronizer.update(accountEntry);
-				}
-
-				if (_zendeskOrganization.get() &&
-					((oldAccountEntry.isPartnerManagedSupport() &&
-					  !accountEntry.isPartnerManagedSupport()) ||
-					 (oldAccountEntry.getPartnerEntryId() !=
-						 accountEntry.getPartnerEntryId()))) {
-
-					_accountEntrySynchronizer.removePartnerManagedSupport(
-						oldAccountEntry);
-				}
-
-				if (oldAccountEntry.isActiveTicketSupport() &&
-					!accountEntry.isActiveTicketSupport()) {
-
-					_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
-					_accountEntrySynchronizer.updateTags(accountEntry);
-				}
-
-				if (oldAccountEntry.isActiveSupport() &&
-					!accountEntry.isActiveSupport()) {
-
-					_accountEntrySynchronizer.removeAccountCustomers(accountEntry);
-				}
-
-				if (accountEntry.isActiveSupport()) {
-					if ((oldAccountEntry.isActiveTicketSupport() !=
-							accountEntry.isActiveTicketSupport()) ||
-						(oldAccountEntry.isActiveSupport() !=
-							accountEntry.isActiveSupport())) {
-
-						_accountEntrySynchronizer.addAccountCustomers(accountEntry);
-					}
-
-					if (accountEntry.isPartnerManagedSupport() &&
-						(!_zendeskOrganization.get() ||
-						 !oldAccountEntry.isPartnerManagedSupport() ||
-						 (oldAccountEntry.getPartnerEntryId() !=
-							 accountEntry.getPartnerEntryId()))) {
-
-						_accountEntrySynchronizer.addPartnerManagedSupport(
-							accountEntry);
-					}
-				}
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				throw new ZendeskIntegrationException(e);
-			}
-		}
-
-		@Override
-		public void onBeforeRemove(AccountEntry accountEntry)
-			throws ModelListenerException {
-			try {
-				_accountEntrySynchronizer.remove(accountEntry);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				throw new ZendeskIntegrationException(e);
-			}
-		}
-
-		@Override
-		public void onBeforeUpdate(AccountEntry accountEntry)
-			throws ModelListenerException {
-			try {
-				AccountEntry oldAccountEntry =
-					_accountEntryLocalService.getAccountEntry(
-						accountEntry.getAccountEntryId());
-
-				_oldAccountEntry.set(oldAccountEntry);
-				_zendeskOrganization.set(hasZendeskOrganization(accountEntry));
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				throw new ZendeskIntegrationException(e);
-			}
-		}
-
-		protected boolean hasZendeskOrganization(AccountEntry accountEntry)
-			throws PortalException {
-			long classNameId = _classNameLocalService.getClassNameId(
-				AccountEntry.class);
-			boolean externalIdMappers =
-				_externalIdMapperLocalService.hasExternalIdMappers(
-					classNameId, accountEntry.getAccountEntryId(),
-					ExternalIdMapperConstants.TYPE_ZENDESK);
-
-			if (externalIdMappers) {
-				return true;
-			}
-
-			return false;
-		}
-
-		protected boolean isUpdateAccountEntry(
-			AccountEntry oldAccountEntry, AccountEntry accountEntry) {
-
-			if (!DateUtil.equals(
-					oldAccountEntry.getLastZendeskAuditDate(),
-					accountEntry.getLastZendeskAuditDate())) {
-
-				return false;
-			}
-
-			if (accountEntry.isActiveSupport()) {
-				return true;
-			}
-
-			if (oldAccountEntry.isActiveSupport() &&
-				!accountEntry.isActiveSupport()) {
-
-				return true;
-			}
-
-			String oldAccountEntryCode = oldAccountEntry.getCode();
-			String oldAccountEntryName = oldAccountEntry.getName();
-
-			if (!oldAccountEntryCode.equals(accountEntry.getCode()) ||
-				!oldAccountEntryName.equals(accountEntry.getName())) {
-
-				return true;
-			}
-
-			return false;
-		}
-
-		private static final Log _log = LogFactoryUtil.getLog(
-			AccountEntryModelListener.class);
-		private static final ThreadLocal<AccountEntry> _oldAccountEntry =
-			new CentralizedThreadLocal<>(
-				AccountEntryModelListener.class + "._oldAccountEntry");
-		private static final ThreadLocal<Boolean> _zendeskOrganization =
-			new CentralizedThreadLocal<>(
-				AccountEntryModelListener.class + "._zendeskOrganization");*/
+	private static final Log _log = LogFactoryUtil.getLog(
+		AccountMessageListener.class);
 
 	@Reference
 	private AccountEntryLocalService _accountEntryLocalService;
+
+	@Reference
+	private AccountSynchronizer _accountSynchronizer;
 
 	private volatile BundleContext _bundleContext;
 
@@ -306,11 +205,11 @@ public class AccountMessageListener extends BaseMessageListener {
 	@Reference
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
-	/*@Reference
-	private AccountEntrySynchronizer _accountEntrySynchronizer;*/
-
 	@Reference
 	private JSONFactory _jsonFactory;
+
+	@Reference
+	private ProductPurchaseWebService _productPurchaseWebService;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 

@@ -25,4 +25,8 @@ public class ProductConstants {
 
 	public static final String NAME_PLATINUM = "Platinum Subscription";
 
+	public static final String NAME_SILVER = "Silver Subscription";
+
+	public static final String NAME_FLOATING = "Floating Subscription";
+
 }

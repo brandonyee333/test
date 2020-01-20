@@ -41,7 +41,11 @@ import org.osgi.service.component.annotations.Reference;
 		"routing.key=koroneiki.entitlement.delete",
 		"routing.key=koroneiki.product.create",
 		"routing.key=koroneiki.product.delete",
-		"routing.key=koroneiki.product.update"
+		"routing.key=koroneiki.product.update",
+		"routing.key=koroneiki.productpurchase.create",
+		"routing.key=koroneiki.productpurchase.delete",
+		"routing.key=koroneiki.productpurchase.update",
+		"routing.key=koroneiki.team.update"
 	},
 	service = KoroneikiConsumer.class
 )

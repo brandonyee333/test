@@ -14,20 +14,13 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
-import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
-import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamRoleSerDes;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamSerDes;
-import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
+import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -50,10 +43,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "destination.name=" + ZendeskDestinationNames.ACCOUNT_TEAMROLE_SYNC,
+	property = "destination.name=" + ZendeskDestinationNames.PRODUCTPURCHASE_SYNC,
 	service = MessageListener.class
 )
-public class TeamRoleMessageListener extends BaseMessageListener {
+public class ProductPurchaseMessageListener extends BaseMessageListener {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
@@ -62,7 +55,7 @@ public class TeamRoleMessageListener extends BaseMessageListener {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/zendesk_account_teamrole_sync");
+				ZendeskDestinationNames.PRODUCTPURCHASE_SYNC);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
@@ -91,63 +84,20 @@ public class TeamRoleMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		JSONObject jsonObject = _jsonFactory.createJSONObject(
+		ProductPurchase productPurchase = ProductPurchaseSerDes.toDTO(
 			(String)message.getPayload());
 
-		Account account = AccountSerDes.toDTO(jsonObject.getString("account"));
-		Team team = TeamSerDes.toDTO(jsonObject.getString("team"));
-		TeamRole teamRole = TeamRoleSerDes.toDTO(
-			jsonObject.getString("teamRole"));
+		Account account = _accountWebService.getAccount(
+			productPurchase.getAccountKey());
 
-		String topic = message.getString("topic");
-
-		String teamRoleName = teamRole.getName();
-
-		if (teamRoleName.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-			if (topic.equals("koroneiki.account.teamrole.assigned")) {
-				team.setTeamRoles(new TeamRole[] {teamRole});
-
-				account.setAssignedTeams(new Team[] {team});
-
-				onTeamRoleAssign(account, team);
-			}
-			else {
-				onTeamRoleUnassign(account, team);
-			}
-		}
+		_accountSynchronizer.update(account);
 	}
-
-	protected void onTeamRoleAssign(Account account, Team team) {
-		try {
-			_accountSynchronizer.update(account);
-
-			//_accountSynchronizer.addPartnerManagedSupport(account, team);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
-	protected void onTeamRoleUnassign(Account account, Team team) {
-		try {
-			_accountSynchronizer.update(account);
-
-			//_accountSynchronizer.removePartnerManagedSupport(account, team);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TeamRoleMessageListener.class);
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	private volatile BundleContext _bundleContext;
 
@@ -155,7 +105,7 @@ public class TeamRoleMessageListener extends BaseMessageListener {
 	private DestinationFactory _destinationFactory;
 
 	@Reference
-	private JSONFactory _jsonFactory;
+	private ProductPurchaseWebService _productPurchaseWebService;
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 

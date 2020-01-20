@@ -14,20 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
-import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
-import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
-import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
-import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamRoleSerDes;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamSerDes;
 import com.liferay.portal.kernel.json.JSONFactory;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -50,10 +42,10 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "destination.name=" + ZendeskDestinationNames.ACCOUNT_TEAMROLE_SYNC,
+	property = "destination.name=" + ZendeskDestinationNames.TEAM_SYNC,
 	service = MessageListener.class
 )
-public class TeamRoleMessageListener extends BaseMessageListener {
+public class TeamMessageListener extends BaseMessageListener {
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
@@ -62,7 +54,7 @@ public class TeamRoleMessageListener extends BaseMessageListener {
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_PARALLEL,
-				"liferay/zendesk_account_teamrole_sync");
+				"liferay/zendesk_team_sync");
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
@@ -91,60 +83,28 @@ public class TeamRoleMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		JSONObject jsonObject = _jsonFactory.createJSONObject(
-			(String)message.getPayload());
+		Team team = TeamSerDes.toDTO((String)message.getPayload());
 
-		Account account = AccountSerDes.toDTO(jsonObject.getString("account"));
-		Team team = TeamSerDes.toDTO(jsonObject.getString("team"));
-		TeamRole teamRole = TeamRoleSerDes.toDTO(
-			jsonObject.getString("teamRole"));
+		ExternalLink[] externalLinks = team.getExternalLinks();
 
-		String topic = message.getString("topic");
+		if (externalLinks == null) {
+			return;
+		}
 
-		String teamRoleName = teamRole.getName();
+		for (ExternalLink externalLink : externalLinks) {
+			String domain = externalLink.getDomain();
 
-		if (teamRoleName.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
-			if (topic.equals("koroneiki.account.teamrole.assigned")) {
-				team.setTeamRoles(new TeamRole[] {teamRole});
-
-				account.setAssignedTeams(new Team[] {team});
-
-				onTeamRoleAssign(account, team);
+			if (!domain.equals("jira")) {
+				continue;
 			}
-			else {
-				onTeamRoleUnassign(account, team);
-			}
+
+			//TODO
+
+			// LHC-1836
+			// update all accounts assigned to team
+
 		}
 	}
-
-	protected void onTeamRoleAssign(Account account, Team team) {
-		try {
-			_accountSynchronizer.update(account);
-
-			//_accountSynchronizer.addPartnerManagedSupport(account, team);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
-	protected void onTeamRoleUnassign(Account account, Team team) {
-		try {
-			_accountSynchronizer.update(account);
-
-			//_accountSynchronizer.removePartnerManagedSupport(account, team);
-		}
-		catch (Exception e) {
-			_log.error(e, e);
-
-			throw new ZendeskIntegrationException(e);
-		}
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		TeamRoleMessageListener.class);
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;

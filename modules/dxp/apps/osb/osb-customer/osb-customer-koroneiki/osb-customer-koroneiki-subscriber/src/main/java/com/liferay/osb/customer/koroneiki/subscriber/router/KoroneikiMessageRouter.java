@@ -27,7 +27,11 @@ import com.liferay.osb.customer.koroneiki.subscriber.EntitlementCreateMessageSub
 import com.liferay.osb.customer.koroneiki.subscriber.EntitlementDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.ProductCreateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.ProductDeleteMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.ProductPurchaseCreateMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.ProductPurchaseDeleteMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.ProductPurchaseUpdateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.ProductUpdateMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.TeamUpdateMessageSubscriber;
 import com.liferay.osb.distributed.messaging.subscribing.router.BaseMessageRouter;
 import com.liferay.osb.distributed.messaging.subscribing.router.MessageRouter;
 
@@ -153,11 +157,46 @@ public class KoroneikiMessageRouter extends BaseMessageRouter {
 	}
 
 	@Reference(unbind = "-")
+	protected void setProductPurchaseCreateMessageSubscriber(
+		ProductPurchaseCreateMessageSubscriber
+			productPurchaseCreateMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(productPurchaseCreateMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setProductPurchaseDeleteMessageSubscriber(
+		ProductPurchaseDeleteMessageSubscriber
+			productPurchaseDeleteMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(productPurchaseDeleteMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setProductPurchaseUpdateMessageSubscriber(
+		ProductPurchaseUpdateMessageSubscriber
+			productPurchaseUpdateMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(productPurchaseUpdateMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
 	protected void setProductUpdateMessageSubscriber(
 		ProductUpdateMessageSubscriber productUpdateMessageSubscriber,
 		Map<String, Object> properties) {
 
 		addRoute(productUpdateMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setTeamUpdateMessageSubscriber(
+		TeamUpdateMessageSubscriber teamUpdateMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(teamUpdateMessageSubscriber, properties);
 	}
 
 }
