@@ -91,7 +91,7 @@ List addresses = AddressServiceUtil.getAddresses(Contact.class.getName(), contac
 						<aui:option label='<%= "--" + LanguageUtil.get(request, "my-addresses") + "--" %>' />
 
 						<%
-						for (int i = 0; addresses != null && i < addresses.size(); i++) {
+						for (int i = 0; (addresses != null) && (i < addresses.size()); i++) {
 							Address address = (Address)addresses.get(i);
 						%>
 
@@ -130,7 +130,7 @@ List addresses = AddressServiceUtil.getAddresses(Contact.class.getName(), contac
 						<aui:option label='<%= "--" + LanguageUtil.get(request, "my-addresses") + "--" %>' />
 
 						<%
-						for (int i = 0; addresses != null && i < addresses.size(); i++) {
+						for (int i = 0; (addresses != null) && (i < addresses.size()); i++) {
 							Address address = (Address)addresses.get(i);
 						%>
 
@@ -258,7 +258,7 @@ List addresses = AddressServiceUtil.getAddresses(Contact.class.getName(), contac
 		var form = AUI.$(document.<portlet:namespace />fm);
 
 		<%
-		for (int i = 0; addresses != null && i < addresses.size(); i++) {
+		for (int i = 0; (addresses != null) && (i < addresses.size()); i++) {
 			Address address = (Address)addresses.get(i);
 
 			Region region = address.getRegion();

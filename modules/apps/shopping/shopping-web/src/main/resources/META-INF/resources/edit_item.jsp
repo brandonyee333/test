@@ -344,7 +344,7 @@ renderResponse.setTitle(((item == null) ? LanguageUtil.get(request, "new-item") 
 					}
 
 					String defaultPriceParam = request.getParameter("defaultPrice");
-					boolean defaultPrice = (curPriceId == 0 ? true : false);
+					boolean defaultPrice = ((curPriceId == 0) ? true : false);
 
 					if (Validator.isNotNull(defaultPriceParam)) {
 						if (ParamUtil.getInteger(request, "defaultPrice") == curPriceId) {

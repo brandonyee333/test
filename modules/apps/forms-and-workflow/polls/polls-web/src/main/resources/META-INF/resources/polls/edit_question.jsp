@@ -58,7 +58,7 @@ if (choiceName > 0) {
 boolean showHeader = ParamUtil.getBoolean(request, "showHeader", true);
 
 if (showHeader) {
-	renderResponse.setTitle(question == null ? LanguageUtil.get(request, "new-poll") : question.getTitle(locale));
+	renderResponse.setTitle((question == null) ? LanguageUtil.get(request, "new-poll") : question.getTitle(locale));
 }
 
 portletDisplay.setShowBackIcon(true);

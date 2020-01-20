@@ -232,8 +232,8 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 
 		if (countryA2.equals("TH")) {
 			keyValuePair = validateWatsonAddressSubdistrict(watsonAddress.getSubDistrictWatsonListTypeId());
-			keyValuePair = keyValuePair == null ? validateWatsonAddressDistrict(watsonAddress.getDistrictWatsonListTypeId()) : keyValuePair;
-			keyValuePair = keyValuePair == null ? validateWatsonAddressProvince(watsonAddress.getProvinceWatsonListTypeId()) : keyValuePair;
+			keyValuePair = (keyValuePair == null) ? validateWatsonAddressDistrict(watsonAddress.getDistrictWatsonListTypeId()) : keyValuePair;
+			keyValuePair = (keyValuePair == null) ? validateWatsonAddressProvince(watsonAddress.getProvinceWatsonListTypeId()) : keyValuePair;
 		}
 		else {
 			keyValuePair = validateWatsonAddressRegion(watsonAddress.getRegion());
