@@ -22,7 +22,7 @@ String randomNamespace = PortalUtil.generateRandomKey(request, "portlet_asset_pu
 long[] categorizableGroupIds = (long[])request.getAttribute("configuration.jsp-categorizableGroupIds");
 
 if (categorizableGroupIds == null) {
-	categorizableGroupIds = StringUtil.split(ParamUtil.getString(request, "categorizableGroupIds"), 0l);
+	categorizableGroupIds = StringUtil.split(ParamUtil.getString(request, "categorizableGroupIds"), 0L);
 }
 
 int index = ParamUtil.getInteger(request, "index", GetterUtil.getInteger((String)request.getAttribute("configuration.jsp-index")));
