@@ -15,18 +15,33 @@
 package com.liferay.osb.customer.admin.service.permission;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
+import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
+import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
-import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.RoleLocalService;
+
+import java.util.Collections;
+import java.util.List;
+
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Lin Cui
  */
+@Component(immediate = true, service = {})
 public class AccountEnvironmentPermission {
 
 	public static void check(
@@ -50,91 +65,81 @@ public class AccountEnvironmentPermission {
 	}
 
 	public static boolean contains(
-		PermissionChecker permissionChecker, AccountEntry accountEntry,
-		String actionId) {
+			PermissionChecker permissionChecker, AccountEntry accountEntry,
+			String actionId)
+		throws PortalException {
 
-		if (RoleLocalServiceUtil.hasUserRole(
+		if (_roleLocalService.hasUserRole(
 				permissionChecker.getUserId(),
 				OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
 
 			return true;
 		}
 
-		if (OrganizationLocalServiceUtil.hasUserOrganization(
+		if (_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
 				OSBCustomerConstants.ORGANIZATION_LIFERAY_CONTRACTOR_ID) ||
-			OrganizationLocalServiceUtil.hasUserOrganization(
+			_organizationLocalService.hasUserOrganization(
 				permissionChecker.getUserId(),
 				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			return true;
 		}
 
-		/*
-		TODO
-		AccountCustomer accountCustomer = null;
-
 		try {
-			accountCustomer =
-				AccountCustomerLocalServiceUtil.getAccountCustomer(
-					permissionChecker.getUserId(),
-					accountEntry.getAccountEntryId());
+			User user = permissionChecker.getUser();
 
-			if ((accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_DEVELOPER) ||
-				(accountCustomer.getRole() ==
-					AccountCustomerConstants.ROLE_MANAGER)) {
+			List<ContactRole> contactRoles =
+				_contactRoleWebService.getAccountContactRoles(
+					accountEntry.getKoroneikiAccountKey(), user.getUuid(), 1,
+					1);
 
-				return true;
-			}
-		}
-		catch (Exception e) {
-		}
+			for (ContactRole contactRole : contactRoles) {
+				String name = contactRole.getName();
 
-		PartnerWorker partnerWorker = null;
-
-		try {
-			if (accountEntry.isPartnerManagedSupport()) {
-				partnerWorker = PartnerWorkerLocalServiceUtil.getPartnerWorker(
-					permissionChecker.getUserId(),
-					accountEntry.getPartnerEntryId());
-
-				if (partnerWorker.getRole() ==
-						PartnerWorkerConstants.ROLE_MANAGER) {
+				if (name.equals(ContactRoleConstants.NAME_SUPPORT_DEVELOPER) ||
+					name.equals(ContactRoleConstants.NAME_SUPPORT_MANAGER)) {
 
 					return true;
 				}
 			}
+
+			List<ContactRole> partnerContactRoles = getPartnerContactRoles(
+				accountEntry.getKoroneikiAccountKey(), user.getUuid());
+
+			for (ContactRole contactRole : contactRoles) {
+				String name = contactRole.getName();
+
+				if (name.equals(ContactRoleConstants.NAME_PARTNER_MANAGER)) {
+					return true;
+				}
+			}
+
+			if (actionId.equals(OSBActionKeys.DELETE)) {
+				return false;
+			}
+
+			for (ContactRole contactRole : contactRoles) {
+				String name = contactRole.getName();
+
+				if (name.equals(ContactRoleConstants.NAME_PARTNER_MEMBER)) {
+					return true;
+				}
+			}
+
+			if (actionId.equals(OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) ||
+				actionId.equals(OSBActionKeys.UPDATE)) {
+
+				return false;
+			}
+
+			if (contactRoles.isEmpty()) {
+				return true;
+			}
 		}
 		catch (Exception e) {
+			throw new PortalException(e);
 		}
-		*/
-
-		if (actionId.equals(OSBActionKeys.DELETE)) {
-			return false;
-		}
-
-		/*
-
-		if ((partnerWorker != null) &&
-			(partnerWorker.getRole() == PartnerWorkerConstants.ROLE_MEMBER)) {
-
-			return true;
-		}
-		*/
-
-		if (actionId.equals(OSBActionKeys.ADD_ACCOUNT_ENVIRONMENT) ||
-			actionId.equals(OSBActionKeys.UPDATE)) {
-
-			return false;
-		}
-
-		/*
-
-		if (accountCustomer != null) {
-			return true;
-		}
-		*/
 
 		return false;
 	}
@@ -144,10 +149,74 @@ public class AccountEnvironmentPermission {
 			String actionId)
 		throws PortalException {
 
-		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
+		AccountEntry accountEntry = _accountEntryLocalService.getAccountEntry(
+			accountEntryId);
 
 		return contains(permissionChecker, accountEntry, actionId);
 	}
+
+	protected static List<ContactRole> getPartnerContactRoles(
+			String koroneikiAccountKey, String userUuid)
+		throws Exception {
+
+		List<Team> teams = _teamWebService.getAssignedTeams(
+			koroneikiAccountKey);
+
+		for (Team team : teams) {
+			TeamRole[] teamRoles = team.getTeamRoles();
+
+			if (teamRoles == null) {
+				continue;
+			}
+
+			for (TeamRole teamRole : teamRoles) {
+				String name = teamRole.getName();
+
+				if (name.equals(TeamRoleConstants.NAME_FIRST_LINE_SUPPORT)) {
+					return _contactRoleWebService.getTeamContactRoles(
+						team.getKey(), userUuid, 1, 100);
+				}
+			}
+		}
+
+		return Collections.emptyList();
+	}
+
+	@Reference(unbind = "-")
+	protected void setAccountEntryLocalService(
+		AccountEntryLocalService accountEntryLocalService) {
+
+		_accountEntryLocalService = accountEntryLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setContactRoleWebService(
+		ContactRoleWebService contactRoleWebService) {
+
+		_contactRoleWebService = contactRoleWebService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setOrganizationLocalService(
+		OrganizationLocalService organizationLocalService) {
+
+		_organizationLocalService = organizationLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setRoleLocalService(RoleLocalService roleLocalService) {
+		_roleLocalService = roleLocalService;
+	}
+
+	@Reference(unbind = "-")
+	protected void setTeamWebService(TeamWebService teamWebService) {
+		_teamWebService = teamWebService;
+	}
+
+	private static AccountEntryLocalService _accountEntryLocalService;
+	private static ContactRoleWebService _contactRoleWebService;
+	private static OrganizationLocalService _organizationLocalService;
+	private static RoleLocalService _roleLocalService;
+	private static TeamWebService _teamWebService;
 
 }

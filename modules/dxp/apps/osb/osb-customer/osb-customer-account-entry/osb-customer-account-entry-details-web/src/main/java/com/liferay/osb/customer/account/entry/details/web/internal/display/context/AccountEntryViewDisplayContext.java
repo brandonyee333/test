@@ -331,18 +331,37 @@ public class AccountEntryViewDisplayContext {
 	}
 
 	public JSONObject getEnvironmentConfigurationJSONObject() throws Exception {
-		List<String> productEntryDisplayNames = new ArrayList<>();
+		Set<String> productEntryDisplayNames = new HashSet<>();
 
 		JSONArray productsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		Set<ListType> envCommerceVersions = new HashSet<>();
 		Set<ListType> envLFRVersions = new HashSet<>();
+		Set<Integer> enterpriseSearchEnvironments = new HashSet<>();
 
-		/*
-		TODO
+		StringBundler sb = new StringBundler(3);
 
-		for (OfferingEntry offeringEntry : _accountEntry.getOfferingEntries()) {
-			ProductEntry productEntry = offeringEntry.getProductEntry();
+		sb.append("accountKey eq '");
+		sb.append(_account.getKey());
+		sb.append("' and state eq 'active'");
+
+		List<ProductPurchase> productPurchases =
+			_productPurchaseWebService.search(sb.toString(), 1, 1000);
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			ProductEntry productEntry =
+				ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(
+					productPurchase.getProductKey());
+
+			if (productEntry.isEnterpriseSearch()) {
+				enterpriseSearchEnvironments.add(productEntry.getEnvironment());
+			}
+		}
+
+		for (ProductPurchase productPurchase : productPurchases) {
+			ProductEntry productEntry =
+				ProductEntryLocalServiceUtil.getProductEntryByKoroneikiKey(
+					productPurchase.getProductKey());
 
 			if (productEntryDisplayNames.contains(
 					productEntry.getDisplayName())) {
@@ -352,7 +371,9 @@ public class AccountEntryViewDisplayContext {
 
 			productEntryDisplayNames.add(productEntry.getDisplayName());
 
-			productsJSONArray.put(getProductJSONObject(productEntry));
+			productsJSONArray.put(
+				getProductJSONObject(
+					productEntry, enterpriseSearchEnvironments));
 
 			if (productEntry.isCommerce()) {
 				envCommerceVersions.addAll(
@@ -363,7 +384,6 @@ public class AccountEntryViewDisplayContext {
 					getCurrentVersionsListTypes(productEntry));
 			}
 		}
-		*/
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -820,7 +840,9 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	protected JSONObject getProductJSONObject(ProductEntry productEntry)
+	protected JSONObject getProductJSONObject(
+			ProductEntry productEntry,
+			Set<Integer> enterpriseSearchEnvironments)
 		throws Exception {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -828,14 +850,14 @@ public class AccountEntryViewDisplayContext {
 		jsonObject.put("displayName", productEntry.getDisplayName());
 
 		if (productEntry.isCommerce() || productEntry.isDigitalEnterprise()) {
-			/*
-			TODO
-			boolean enterpriseSearch =
-				_accountEntry.hasEnterpriseSearchOffering(
-					productEntry.getEnvironment());
+			if (enterpriseSearchEnvironments.contains(
+					productEntry.getEnvironment())) {
 
-			jsonObject.put("enterpriseSearch", enterpriseSearch);
-			*/
+				jsonObject.put("enterpriseSearch", true);
+			}
+			else {
+				jsonObject.put("enterpriseSearch", false);
+			}
 		}
 
 		jsonObject.put("productEntryId", productEntry.getProductEntryId());
