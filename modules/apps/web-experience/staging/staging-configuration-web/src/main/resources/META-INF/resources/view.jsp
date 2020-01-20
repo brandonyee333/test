@@ -235,7 +235,7 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 								</div>
 
 								<div class="<%= setRemoteSiteURL ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />remoteSiteURLContainer">
-									<aui:input label="remote-site-url" helpMessage="remote-site-url-help-message" name="remoteSiteURL" size="20" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
+									<aui:input helpMessage="remote-site-url-help-message" label="remote-site-url" name="remoteSiteURL" size="20" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
 								</div>
 							</aui:fieldset>
 						</div>
@@ -434,8 +434,12 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 </aui:script>
 
 <aui:script>
-	var setRemoteSiteURLCheckbox = document.getElementById('<portlet:namespace />setRemoteSiteURL');
-	var remoteSiteURLContainer = document.getElementById('<portlet:namespace />remoteSiteURLContainer');
+	var setRemoteSiteURLCheckbox = document.getElementById(
+		'<portlet:namespace />setRemoteSiteURL'
+	);
+	var remoteSiteURLContainer = document.getElementById(
+		'<portlet:namespace />remoteSiteURLContainer'
+	);
 
 	setRemoteSiteURLCheckbox.addEventListener('click', function() {
 		var checked = setRemoteSiteURLCheckbox.checked;
