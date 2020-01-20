@@ -14,17 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
-import com.liferay.osb.customer.zendesk.synchronizer.AccountCustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -159,7 +152,7 @@ public class PartnerWorkerModelListener extends BaseModelListener {
 	private static final ThreadLocal<Integer> _oldRole =
 		new CentralizedThreadLocal<>(
 			PartnerWorkerModelListener.class + "._oldRole");
-	*/
+
 	@Reference
 	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
 
@@ -177,5 +170,6 @@ public class PartnerWorkerModelListener extends BaseModelListener {
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;
+	*/
 
 }

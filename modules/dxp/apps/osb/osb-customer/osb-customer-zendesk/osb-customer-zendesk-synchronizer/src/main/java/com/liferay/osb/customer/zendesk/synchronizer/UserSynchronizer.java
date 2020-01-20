@@ -14,33 +14,7 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer;
 
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.constants.ZendeskUserIdentityConstants;
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.model.ZendeskUserIdentity;
-import com.liferay.osb.customer.zendesk.util.PhoneUtil;
-import com.liferay.osb.customer.zendesk.util.ZendeskLocaleUtil;
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserIdentityWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Phone;
-import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.OrganizationLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -48,7 +22,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = UserSynchronizer.class)
 public class UserSynchronizer {
 
-	public void addPhone(long userId, Phone phone) throws PortalException {
+	/*public void addPhone(long userId, Phone phone) throws PortalException {
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
 
 		String number = _phoneUtil.convertToE164(phone);
@@ -204,7 +178,6 @@ public class UserSynchronizer {
 
 		// Customer
 
-		/*
 		TODO
 		boolean customer = false;
 
@@ -288,7 +261,6 @@ public class UserSynchronizer {
 				break;
 			}
 		}
-		*/
 
 		return tags;
 	}
@@ -300,7 +272,6 @@ public class UserSynchronizer {
 			return false;
 		}
 
-		/*
 		TODO
 		List<PartnerWorker> partnerWorkers =
 			PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
@@ -308,7 +279,6 @@ public class UserSynchronizer {
 		if (!partnerWorkers.isEmpty()) {
 			return true;
 		}
-		*/
 
 		return false;
 	}
@@ -344,6 +314,6 @@ public class UserSynchronizer {
 	private ZendeskUserIdentityWebService _zendeskUserIdentityWebService;
 
 	@Reference
-	private ZendeskUserWebService _zendeskUserWebService;
+	private ZendeskUserWebService _zendeskUserWebService;*/
 
 }

@@ -14,30 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.connector.constants.ZendeskTagConstants;
-import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
-import com.liferay.osb.customer.zendesk.model.listener.exception.PartnerWorkerRemovalException;
-import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
-import com.liferay.osb.customer.zendesk.synchronizer.AccountCustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.petra.lang.CentralizedThreadLocal;
-import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
-import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Amos Fong
@@ -45,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ModelListener.class)
 public class UserModelListener extends BaseModelListener<User> {
 
-	@Override
+	/*@Override
 	public void onAfterAddAssociation(
 			Object classPK, String associationClassName,
 			Object associationClassPK)
@@ -141,7 +122,6 @@ public class UserModelListener extends BaseModelListener<User> {
 				return;
 			}
 
-			/*
 			TODO
 			List<AccountCustomer> accountCustomers =
 				AccountCustomerLocalServiceUtil.getUserAccountCustomers(
@@ -188,7 +168,7 @@ public class UserModelListener extends BaseModelListener<User> {
 			}
 
 			_zendeskUserWebService.deleteZendeskUser(zendeskUserId);
-			*/
+
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -231,6 +211,6 @@ public class UserModelListener extends BaseModelListener<User> {
 	private ZendeskMapperUtil _zendeskMapperUtil;
 
 	@Reference(target = "(async=true)")
-	private ZendeskUserWebService _zendeskUserWebService;
+	private ZendeskUserWebService _zendeskUserWebService;*/
 
 }

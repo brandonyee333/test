@@ -14,23 +14,11 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
-import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
-import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
-import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
-import com.liferay.portal.kernel.exception.ModelListenerException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
-import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.Phone;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.ContactLocalService;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -38,7 +26,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = ModelListener.class)
 public class PhoneModelListener extends BaseModelListener<Phone> {
 
-	@Override
+	/*@Override
 	public void onAfterCreate(Phone phone) throws ModelListenerException {
 		try {
 			String className = phone.getClassName();
@@ -120,6 +108,6 @@ public class PhoneModelListener extends BaseModelListener<Phone> {
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
 
 	@Reference
-	private UserSynchronizer _userSynchronizer;
+	private UserSynchronizer _userSynchronizer;*/
 
 }

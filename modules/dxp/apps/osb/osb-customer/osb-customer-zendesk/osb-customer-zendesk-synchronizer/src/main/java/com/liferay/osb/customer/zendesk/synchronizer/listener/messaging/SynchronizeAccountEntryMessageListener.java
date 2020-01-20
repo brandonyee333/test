@@ -14,44 +14,12 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 
-import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
-import com.liferay.osb.customer.admin.model.AccountEntry;
-import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
-import com.liferay.osb.customer.zendesk.model.ZendeskOrganizationMembership;
-import com.liferay.osb.customer.zendesk.model.ZendeskUser;
-import com.liferay.osb.customer.zendesk.synchronizer.AccountCustomerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.AccountEntrySynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.PartnerWorkerSynchronizer;
-import com.liferay.osb.customer.zendesk.synchronizer.UserSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
-import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationMembershipWebService;
-import com.liferay.osb.customer.zendesk.web.service.ZendeskUserWebService;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
-import com.liferay.portal.kernel.messaging.Destination;
-import com.liferay.portal.kernel.messaging.DestinationConfiguration;
-import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
-import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portal.kernel.util.StringPool;
 
-import java.util.Dictionary;
-import java.util.List;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Jenny Chen
@@ -64,7 +32,11 @@ import org.osgi.service.component.annotations.Reference;
 public class SynchronizeAccountEntryMessageListener
 	extends BaseMessageListener {
 
-	@Activate
+	@Override
+	protected void doReceive(Message message) throws Exception {
+	}
+
+	/*@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
 
@@ -179,7 +151,6 @@ public class SynchronizeAccountEntryMessageListener
 
 		_accountEntrySynchronizer.update(accountEntry);
 
-		/*
 		TODO
 		Map<Long, AccountCustomer> accountCustomerMap = new HashMap<>();
 
@@ -251,7 +222,7 @@ public class SynchronizeAccountEntryMessageListener
 			OSBCustomerConstants.USER_DEFAULT_USER_ID,
 			accountEntry.getAccountEntryId(), "Synced project to Zendesk.",
 			StringPool.BLANK);
-		*/
+
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
@@ -264,7 +235,7 @@ public class SynchronizeAccountEntryMessageListener
 	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountEntrySynchronizer _accountEntrySynchronizer;
+	private AccountSynchronizer _accountEntrySynchronizer;
 
 	@Reference(target = "(async=true)")
 	private ZendeskOrganizationMembershipWebService
@@ -299,6 +270,6 @@ public class SynchronizeAccountEntryMessageListener
 		_zendeskOrganizationMembershipWebService;
 
 	@Reference
-	private ZendeskUserWebService _zendeskUserWebService;
+	private ZendeskUserWebService _zendeskUserWebService;*/
 
 }

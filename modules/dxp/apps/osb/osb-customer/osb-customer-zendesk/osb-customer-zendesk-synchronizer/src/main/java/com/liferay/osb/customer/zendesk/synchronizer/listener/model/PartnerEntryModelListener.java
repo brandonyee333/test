@@ -14,14 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.synchronizer.listener.model;
 
-import com.liferay.osb.customer.zendesk.synchronizer.AccountEntrySynchronizer;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -53,12 +49,11 @@ public class PartnerEntryModelListener extends BaseModelListener {
 		}
 	}
 
-	*/
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		PartnerEntryModelListener.class);
 
 	@Reference
-	private AccountEntrySynchronizer _accountEntrySynchronizer;
+	private AccountSynchronizer _accountSynchronizer;
+	*/
 
 }
