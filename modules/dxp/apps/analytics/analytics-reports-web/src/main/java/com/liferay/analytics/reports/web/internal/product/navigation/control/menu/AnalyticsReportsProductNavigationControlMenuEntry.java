@@ -62,6 +62,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
+import com.liferay.taglib.util.BodyBottomTag;	
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -96,10 +97,18 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws IOException {
+		BodyBottomTag bodyBottomTag = new BodyBottomTag();
 
-		_processBodyBottomContent(
-			PageContextFactoryUtil.create(
-				httpServletRequest, httpServletResponse));
+		bodyBottomTag.setOutputKey("analyticsReportsPanel");
+
+		try {
+			bodyBottomTag.doBodyTag(
+				httpServletRequest, httpServletResponse,
+				this::_processBodyBottomTagBody);
+		}
+		catch (JspException je) {
+			throw new IOException(je);
+		}
 
 		return true;
 	}
@@ -233,7 +242,7 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 			AnalyticsReportsPortletKeys.ANALYTICS_REPORTS);
 	}
 
-	private void _processBodyBottomContent(PageContext pageContext) {
+	private void _processBodyBottomTagBody(PageContext pageContext) {
 		try {
 			HttpServletRequest httpServletRequest =
 				(HttpServletRequest)pageContext.getRequest();
