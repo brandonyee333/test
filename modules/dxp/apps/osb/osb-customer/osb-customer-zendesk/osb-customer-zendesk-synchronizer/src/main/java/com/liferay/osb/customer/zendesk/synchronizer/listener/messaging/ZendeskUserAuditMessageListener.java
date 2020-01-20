@@ -88,7 +88,7 @@ public class ZendeskUserAuditMessageListener extends BaseMessageListener {
 
 		String body = ContentUtil.get(
 			ZendeskUserAuditMessageListener.class.getClassLoader(),
-			"com/liferay/osb/customer/zendesk/model/listener/dependencies" +
+			"com/liferay/osb/customer/zendesk/synchronizer/dependencies" +
 				"/email_review_users_body.tmpl");
 
 		List<ZendeskUser> zendeskUsers = searchHits.getResults();
@@ -117,7 +117,7 @@ public class ZendeskUserAuditMessageListener extends BaseMessageListener {
 
 		String subject = ContentUtil.get(
 			ZendeskUserAuditMessageListener.class.getClassLoader(),
-			"com/liferay/osb/customer/zendesk/model/listener/dependencies" +
+			"com/liferay/osb/customer/zendesk/synchronizer/dependencies" +
 				"/email_review_users_subject.tmpl");
 
 		subscriptionSender.setSubject(subject);
