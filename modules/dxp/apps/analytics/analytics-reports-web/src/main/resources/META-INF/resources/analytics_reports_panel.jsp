@@ -16,9 +16,22 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+AnalyticsReportsDisplayContext analyticsReportsDisplayContext = (AnalyticsReportsDisplayContext)request.getAttribute("ANALYTICS_REPORTS_DISPLAY_CONTEXT");
+%>
+
 <c:choose>
 	<c:when test="<%= AnalyticsReportsUtil.isAnalyticsEnabled(themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId()) %>">
-		<h1>YES</h1>
+		<div id="<%= renderResponse.getNamespace() + "-analytics-reports-root" %>">
+			<div class="inline-item my-5 p-5 w-100">
+				<span aria-hidden="true" class="loading-animation"></span>
+			</div>
+
+			<react:component
+				data="<%= analyticsReportsDisplayContext.getData() %>"
+				module="js/AnalyticsReportsApp.es"
+			/>
+		</div>
 	</c:when>
 	<c:otherwise>
 		<div id="<%= renderResponse.getNamespace() + "-analytics-reports-root" %>">
@@ -40,7 +53,7 @@
 							markupView="lexicon"
 							message="open-analytics-cloud"
 							target="_blank"
-							url="analyticsReportsDisplayContext.getLiferayAnalyticsURL(themeDisplay.getCompanyId())"
+							url="<%= analyticsReportsDisplayContext.getLiferayAnalyticsURL(themeDisplay.getCompanyId()) %>"
 						/>
 					</c:when>
 					<c:otherwise>
@@ -70,4 +83,3 @@
 		</div>
 	</c:otherwise>
 </c:choose>
-

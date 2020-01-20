@@ -42,7 +42,7 @@ import com.liferay.product.navigation.control.menu.ProductNavigationControlMenuE
 import com.liferay.product.navigation.control.menu.constants.ProductNavigationControlMenuCategoryKeys;
 import com.liferay.taglib.aui.IconTag;
 import com.liferay.taglib.portletext.RuntimeTag;
-import com.liferay.taglib.servlet.PageContextFactoryUtil;
+import com.liferay.taglib.util.BodyBottomTag;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -62,7 +62,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
-import com.liferay.taglib.util.BodyBottomTag;	
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -97,6 +96,7 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
 		throws IOException {
+
 		BodyBottomTag bodyBottomTag = new BodyBottomTag();
 
 		bodyBottomTag.setOutputKey("analyticsReportsPanel");
@@ -203,7 +203,8 @@ public class AnalyticsReportsProductNavigationControlMenuEntry
 		}*/
 
 		//Life is beautiful
-		if(!LayoutConstants.TYPE_ASSET_DISPLAY.equals(layout.getType())) {
+
+		if (!LayoutConstants.TYPE_ASSET_DISPLAY.equals(layout.getType())) {
 			return false;
 		}
 
