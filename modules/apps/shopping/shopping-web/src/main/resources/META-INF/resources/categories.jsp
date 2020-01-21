@@ -81,7 +81,7 @@ else {
 
 categoriesSearch.setResults(results);
 
-boolean showSearch = (categoriesAndItemsCount > 0);
+boolean showSearch = categoriesAndItemsCount > 0;
 %>
 
 <liferay-util:include page="/tabs1.jsp" servletContext="<%= application %>">

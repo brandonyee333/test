@@ -26,7 +26,7 @@ WSRPConsumer wsrpConsumer = WSRPConsumerLocalServiceUtil.fetchWSRPConsumer(wsrpC
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((wsrpConsumer == null) ? LanguageUtil.get(request, "new-consumer") : wsrpConsumer.getName()));
+renderResponse.setTitle((wsrpConsumer == null) ? LanguageUtil.get(request, "new-consumer") : wsrpConsumer.getName());
 %>
 
 <portlet:actionURL name="updateWSRPConsumer" var="updateWSRPConsumerURL" />

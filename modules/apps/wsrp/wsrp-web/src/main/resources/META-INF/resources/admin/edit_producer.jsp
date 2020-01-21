@@ -38,7 +38,7 @@ ServletContext portalServletContext = ServletContextPool.get(portalServletContex
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((wsrpProducer == null) ? LanguageUtil.get(request, "new-producer") : wsrpProducer.getName()));
+renderResponse.setTitle((wsrpProducer == null) ? LanguageUtil.get(request, "new-producer") : wsrpProducer.getName());
 %>
 
 <portlet:actionURL name="updateWSRPProducer" var="updateWSRPProducerURL" />

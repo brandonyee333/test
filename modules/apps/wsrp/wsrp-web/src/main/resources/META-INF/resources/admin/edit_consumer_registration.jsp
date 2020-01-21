@@ -44,7 +44,7 @@ if (supportsInbandRegistration) {
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((wsrpConsumer == null) ? LanguageUtil.get(request, "new-consumer-registration") : wsrpConsumer.getName()));
+renderResponse.setTitle((wsrpConsumer == null) ? LanguageUtil.get(request, "new-consumer-registration") : wsrpConsumer.getName());
 %>
 
 <portlet:actionURL name="updateWSRPConsumerRegistration" var="updateWSRPConsumerRegistrationURL" />

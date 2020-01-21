@@ -283,20 +283,20 @@ if (organization != null) {
 						String usersTitle = null;
 
 						if (Validator.isNotNull(keywords) || ((organization == null) && (organizationsCount == 0))) {
-							usersTitle = LanguageUtil.get(request, (active ? "users" : "inactive-users"));
+							usersTitle = LanguageUtil.get(request, active ? "users" : "inactive-users");
 						}
 						else if (organization == null) {
-							usersTitle = LanguageUtil.get(request, (active ? "users-without-an-organization" : "inactive-users-without-an-organization"));
+							usersTitle = LanguageUtil.get(request, active ? "users-without-an-organization" : "inactive-users-without-an-organization");
 						}
 						else if ((usersCount == 0) && (inactiveUsersCount == 0)) {
-							usersTitle = LanguageUtil.format(request, (active ? "x-users" : "x-inactive-users"), "0");
+							usersTitle = LanguageUtil.format(request, active ? "x-users" : "x-inactive-users", "0");
 						}
 						else {
 							if ((active && (usersCount == 1)) || (!active && (inactiveUsersCount == 1))) {
-								usersTitle = LanguageUtil.format(request, (active ? "x-user" : "x-inactive-user"), String.valueOf((active ? usersCount : inactiveUsersCount)), false);
+								usersTitle = LanguageUtil.format(request, active ? "x-user" : "x-inactive-user", String.valueOf(active ? usersCount : inactiveUsersCount), false);
 							}
 							else {
-								usersTitle = LanguageUtil.format(request, (active ? "x-users" : "x-inactive-users"), String.valueOf((active ? usersCount : inactiveUsersCount)), false);
+								usersTitle = LanguageUtil.format(request, active ? "x-users" : "x-inactive-users", String.valueOf(active ? usersCount : inactiveUsersCount), false);
 							}
 						}
 						%>

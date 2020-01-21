@@ -28,7 +28,7 @@ long parentCategoryId = BeanParamUtil.getLong(category, request, "parentCategory
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((category == null) ? LanguageUtil.get(request, "new-category") : category.getName()));
+renderResponse.setTitle((category == null) ? LanguageUtil.get(request, "new-category") : category.getName());
 %>
 
 <portlet:actionURL name="/shopping/edit_category" var="editCategoryURL">

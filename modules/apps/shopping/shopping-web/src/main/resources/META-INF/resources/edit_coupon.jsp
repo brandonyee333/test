@@ -38,7 +38,7 @@ String discountType = BeanParamUtil.getString(coupon, request, "discountType");
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((coupon == null) ? LanguageUtil.get(request, "coupon") : coupon.getName()));
+renderResponse.setTitle((coupon == null) ? LanguageUtil.get(request, "coupon") : coupon.getName());
 %>
 
 <portlet:actionURL name="/shopping/edit_coupon" var="editCouponURL">

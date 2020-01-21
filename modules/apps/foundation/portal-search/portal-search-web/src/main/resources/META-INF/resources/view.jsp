@@ -19,7 +19,7 @@
 <%
 long groupId = ParamUtil.getLong(request, SearchPortletParameterNames.GROUP_ID);
 
-boolean scopeEverything = (groupId == 0);
+boolean scopeEverything = groupId == 0;
 
 PortletURL portletURL = renderResponse.createRenderURL();
 

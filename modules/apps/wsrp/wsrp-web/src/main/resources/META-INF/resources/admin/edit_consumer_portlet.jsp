@@ -37,7 +37,7 @@ PortletDescription[] portletDescriptions = serviceDescription.getOfferedPortlets
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((wsrpConsumerPortlet == null) ? LanguageUtil.get(request, "new-portlet") : wsrpConsumerPortlet.getName()));
+renderResponse.setTitle((wsrpConsumerPortlet == null) ? LanguageUtil.get(request, "new-portlet") : wsrpConsumerPortlet.getName());
 %>
 
 <portlet:actionURL name="updateWSRPConsumerPortlet" var="updateWSRPConsumerPortletURL" />

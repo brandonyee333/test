@@ -80,7 +80,7 @@ int priceId = ParamUtil.getInteger(request, "priceId", -1);
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
-renderResponse.setTitle(((item == null) ? LanguageUtil.get(request, "new-item") : item.getName()));
+renderResponse.setTitle((item == null) ? LanguageUtil.get(request, "new-item") : item.getName());
 %>
 
 <portlet:actionURL name="/shopping/edit_item" var="editItemURL">
@@ -344,7 +344,7 @@ renderResponse.setTitle(((item == null) ? LanguageUtil.get(request, "new-item") 
 					}
 
 					String defaultPriceParam = request.getParameter("defaultPrice");
-					boolean defaultPrice = ((curPriceId == 0) ? true : false);
+					boolean defaultPrice = (curPriceId == 0) ? true : false;
 
 					if (Validator.isNotNull(defaultPriceParam)) {
 						if (ParamUtil.getInteger(request, "defaultPrice") == curPriceId) {
