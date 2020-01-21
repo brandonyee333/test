@@ -17,6 +17,7 @@ package com.liferay.blogs.web.internal.exportimport.portlet.preferences.processo
 import com.liferay.blogs.constants.BlogsPortletKeys;
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalService;
+import com.liferay.exportimport.kernel.lar.ExportImportHelper;
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.exportimport.kernel.lar.PortletDataException;
 import com.liferay.exportimport.kernel.lar.PortletDataHandler;
@@ -64,18 +65,19 @@ public class BlogsExportImportPortletPreferencesProcessor
 			PortletPreferences portletPreferences)
 		throws PortletDataException {
 
+		if (!_exportImportHelper.isExportPortletData(portletDataContext) ||
+			!portletDataContext.getBooleanParameter(
+				_blogsPortletDataHandler.getNamespace(), "entries")) {
+
+			return portletPreferences;
+		}
+
 		try {
 			portletDataContext.addPortletPermissions(
 				BlogsPermission.RESOURCE_NAME);
 		}
 		catch (PortalException pe) {
 			throw new PortletDataException(pe);
-		}
-
-		if (!portletDataContext.getBooleanParameter(
-				_blogsPortletDataHandler.getNamespace(), "entries")) {
-
-			return portletPreferences;
 		}
 
 		String portletId = portletDataContext.getPortletId();
@@ -166,5 +168,8 @@ public class BlogsExportImportPortletPreferencesProcessor
 		_blogsPortletDisplayTemplateExportCapability;
 	private BlogsPortletDisplayTemplateImportCapability
 		_blogsPortletDisplayTemplateImportCapability;
+
+	@Reference
+	private ExportImportHelper _exportImportHelper;
 
 }
