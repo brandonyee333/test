@@ -209,7 +209,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		page.setStatusDate(serviceContext.getModifiedDate(now));
 		page.setExpandoBridgeAttributes(serviceContext);
 
-		wikiPagePersistence.update(page);
+		page = wikiPagePersistence.update(page);
 
 		// Resources
 
@@ -1614,7 +1614,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		if (oldStatus == WorkflowConstants.STATUS_PENDING) {
 			page.setStatus(WorkflowConstants.STATUS_DRAFT);
 
-			wikiPagePersistence.update(page);
+			page = wikiPagePersistence.update(page);
 		}
 
 		List<WikiPage> pageVersions = wikiPagePersistence.findByR_N_H(
@@ -1663,7 +1663,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		page.setTitle(trashTitle);
 
-		wikiPagePersistence.update(page);
+		page = wikiPagePersistence.update(page);
 
 		// Child pages
 
@@ -2036,7 +2036,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 		page.setStatusByUserName(user.getFullName());
 		page.setStatusDate(new Date());
 
-		wikiPagePersistence.update(page);
+		page = wikiPagePersistence.update(page);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
 			String cmd = GetterUtil.getString(
@@ -2162,7 +2162,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 				if (!curPage.equals(page)) {
 					curPage.setHead(false);
 
-					wikiPagePersistence.update(curPage);
+					curPage = wikiPagePersistence.update(curPage);
 				}
 			}
 		}
@@ -2466,7 +2466,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			childPage.setParentTitle(newParentPage.getTitle());
 
-			wikiPagePersistence.update(childPage);
+			childPage = wikiPagePersistence.update(childPage);
 
 			if (childPage.isInTrashImplicitly()) {
 				moveDependentFromTrash(
@@ -2489,7 +2489,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			childPage.setParentTitle(parentTrashTitle);
 
-			wikiPagePersistence.update(childPage);
+			childPage = wikiPagePersistence.update(childPage);
 
 			if (!childPage.isInTrash()) {
 				moveDependentToTrash(
@@ -2535,7 +2535,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 		page.setParentTitle(newParentTitle);
 
-		wikiPagePersistence.update(page);
+		page = wikiPagePersistence.update(page);
 
 		int oldStatus = WorkflowConstants.STATUS_APPROVED;
 
@@ -2622,7 +2622,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			redirectorPage.setRedirectTitle(newRedirectPage.getTitle());
 
-			wikiPagePersistence.update(redirectorPage);
+			redirectorPage = wikiPagePersistence.update(redirectorPage);
 
 			if (redirectorPage.isInTrashImplicitly()) {
 				moveDependentFromTrash(
@@ -2646,7 +2646,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			redirectorPage.setRedirectTitle(redirectPageTrashTitle);
 
-			wikiPagePersistence.update(redirectorPage);
+			redirectorPage = wikiPagePersistence.update(redirectorPage);
 
 			if (!redirectorPage.isInTrash()) {
 				moveDependentToTrash(
@@ -2687,7 +2687,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			page.setTitle(trashTitle);
 
-			wikiPagePersistence.update(page);
+			page = wikiPagePersistence.update(page);
 		}
 
 		int oldStatus = page.getStatus();
@@ -2711,7 +2711,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 
 			versionPage.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-			wikiPagePersistence.update(versionPage);
+			versionPage = wikiPagePersistence.update(versionPage);
 
 			// Trash
 
@@ -2837,7 +2837,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			page.setRedirectTitle(StringPool.BLANK);
 		}
 
-		wikiPagePersistence.update(page);
+		page = wikiPagePersistence.update(page);
 
 		TrashEntry trashEntry = trashEntryLocalService.getEntry(
 			WikiPage.class.getName(), page.getResourcePrimKey());
@@ -3188,7 +3188,7 @@ public class WikiPageLocalServiceImpl extends WikiPageLocalServiceBaseImpl {
 			oldPage.getExpandoBridge(), page.getExpandoBridge(),
 			serviceContext);
 
-		wikiPagePersistence.update(page);
+		page = wikiPagePersistence.update(page);
 
 		// Node
 

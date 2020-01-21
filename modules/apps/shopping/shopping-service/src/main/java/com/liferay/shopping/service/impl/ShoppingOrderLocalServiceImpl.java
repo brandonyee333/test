@@ -139,7 +139,7 @@ public class ShoppingOrderLocalServiceImpl
 		order.setSendOrderEmail(true);
 		order.setSendShippingEmail(true);
 
-		shoppingOrderPersistence.update(order);
+		order = shoppingOrderPersistence.update(order);
 
 		// Resources
 
@@ -168,7 +168,7 @@ public class ShoppingOrderLocalServiceImpl
 		order.setPpReceiverEmail(ppReceiverEmail);
 		order.setPpPayerEmail(ppPayerEmail);
 
-		shoppingOrderPersistence.update(order);
+		order = shoppingOrderPersistence.update(order);
 
 		// Inventory
 
@@ -318,7 +318,7 @@ public class ShoppingOrderLocalServiceImpl
 
 		order.setPpPaymentStatus(ShoppingOrderConstants.STATUS_CHECKOUT);
 
-		shoppingOrderPersistence.update(order);
+		order = shoppingOrderPersistence.update(order);
 
 		boolean requiresShipping = false;
 
@@ -368,9 +368,7 @@ public class ShoppingOrderLocalServiceImpl
 		order.setSendOrderEmail(true);
 		order.setSendShippingEmail(true);
 
-		shoppingOrderPersistence.update(order);
-
-		return order;
+		return shoppingOrderPersistence.update(order);
 	}
 
 	@Override
@@ -446,7 +444,7 @@ public class ShoppingOrderLocalServiceImpl
 		if (emailType.equals("confirmation") && order.isSendOrderEmail()) {
 			order.setSendOrderEmail(false);
 
-			shoppingOrderPersistence.update(order);
+			order = shoppingOrderPersistence.update(order);
 		}
 		else if (emailType.equals("shipping") && order.isSendShippingEmail()) {
 			order.setSendShippingEmail(false);
@@ -497,9 +495,7 @@ public class ShoppingOrderLocalServiceImpl
 		order.setPpReceiverEmail(ppReceiverEmail);
 		order.setPpPayerEmail(ppPayerEmail);
 
-		shoppingOrderPersistence.update(order);
-
-		return order;
+		return shoppingOrderPersistence.update(order);
 	}
 
 	@Override
@@ -578,9 +574,7 @@ public class ShoppingOrderLocalServiceImpl
 		order.setCcVerNumber(ccVerNumber);
 		order.setComments(comments);
 
-		shoppingOrderPersistence.update(order);
-
-		return order;
+		return shoppingOrderPersistence.update(order);
 	}
 
 	protected String getNumber() {

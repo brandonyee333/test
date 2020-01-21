@@ -457,9 +457,8 @@ public class ExportImportConfigurationLocalServiceImpl
 		exportImportConfiguration.setStatusByUserName(user.getScreenName());
 		exportImportConfiguration.setStatusDate(new Date());
 
-		exportImportConfigurationPersistence.update(exportImportConfiguration);
-
-		return exportImportConfiguration;
+		return exportImportConfigurationPersistence.update(
+			exportImportConfiguration);
 	}
 
 	protected SearchContext buildSearchContext(

@@ -111,9 +111,7 @@ public class ShoppingCouponLocalServiceImpl
 		coupon.setDiscount(discount);
 		coupon.setDiscountType(discountType);
 
-		shoppingCouponPersistence.update(coupon);
-
-		return coupon;
+		return shoppingCouponPersistence.update(coupon);
 	}
 
 	@Override
@@ -219,9 +217,7 @@ public class ShoppingCouponLocalServiceImpl
 		coupon.setDiscount(discount);
 		coupon.setDiscountType(discountType);
 
-		shoppingCouponPersistence.update(coupon);
-
-		return coupon;
+		return shoppingCouponPersistence.update(coupon);
 	}
 
 	protected String getCode() {

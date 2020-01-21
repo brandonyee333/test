@@ -215,7 +215,7 @@ public class ShoppingCartLocalServiceImpl
 		cart.setInsure(insure);
 
 		if (!user.isDefaultUser()) {
-			shoppingCartPersistence.update(cart);
+			cart = shoppingCartPersistence.update(cart);
 		}
 
 		return cart;

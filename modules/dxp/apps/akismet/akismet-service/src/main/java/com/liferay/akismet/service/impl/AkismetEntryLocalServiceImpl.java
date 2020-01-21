@@ -69,9 +69,7 @@ public class AkismetEntryLocalServiceImpl
 		akismetEntry.setUserIP(userIP);
 		akismetEntry.setUserURL(userURL);
 
-		akismetEntryPersistence.update(akismetEntry);
-
-		return akismetEntry;
+		return akismetEntryPersistence.update(akismetEntry);
 	}
 
 }

@@ -91,7 +91,7 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 
 		tag.setName(name);
 
-		assetTagPersistence.update(tag);
+		tag = assetTagPersistence.update(tag);
 
 		// Resources
 
@@ -180,7 +180,7 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 
 		tag.setAssetCount(Math.max(0, tag.getAssetCount() - 1));
 
-		assetTagPersistence.update(tag);
+		tag = assetTagPersistence.update(tag);
 
 		assetTagStatsLocalService.updateTagStats(tagId, classNameId);
 
@@ -568,7 +568,7 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 
 		tag.setAssetCount(tag.getAssetCount() + 1);
 
-		assetTagPersistence.update(tag);
+		tag = assetTagPersistence.update(tag);
 
 		assetTagStatsLocalService.updateTagStats(tagId, classNameId);
 
@@ -665,7 +665,7 @@ public class AssetTagLocalServiceImpl extends AssetTagLocalServiceBaseImpl {
 
 		tag.setName(name);
 
-		assetTagPersistence.update(tag);
+		tag = assetTagPersistence.update(tag);
 
 		// Indexer
 

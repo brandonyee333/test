@@ -65,7 +65,7 @@ public class AttachmentLocalServiceImpl extends AttachmentLocalServiceBaseImpl {
 		attachment.setFileName(fileName);
 		attachment.setSize(size);
 
-		attachmentPersistence.update(attachment);
+		attachment = attachmentPersistence.update(attachment);
 
 		// File
 
