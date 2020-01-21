@@ -109,7 +109,7 @@ public class JournalFolderLocalServiceImpl
 		folder.setDescription(description);
 		folder.setExpandoBridgeAttributes(serviceContext);
 
-		folder = journalFolderPersistence.update(folder);
+		journalFolderPersistence.update(folder);
 
 		// Resources
 
@@ -555,7 +555,7 @@ public class JournalFolderLocalServiceImpl
 		folder.setTreePath(folder.buildTreePath());
 		folder.setExpandoBridgeAttributes(serviceContext);
 
-		folder = journalFolderPersistence.update(folder);
+		journalFolderPersistence.update(folder);
 
 		rebuildTree(
 			folder.getCompanyId(), folderId, folder.getTreePath(), true);
@@ -647,7 +647,7 @@ public class JournalFolderLocalServiceImpl
 
 		folder.setName(TrashUtil.getTrashTitle(trashEntry.getEntryId()));
 
-		folder = journalFolderPersistence.update(folder);
+		journalFolderPersistence.update(folder);
 
 		// Folders and articles
 
@@ -726,7 +726,7 @@ public class JournalFolderLocalServiceImpl
 
 		folder.setName(TrashUtil.getOriginalTitle(folder.getName()));
 
-		folder = journalFolderPersistence.update(folder);
+		journalFolderPersistence.update(folder);
 
 		TrashEntry trashEntry = trashEntryLocalService.getEntry(
 			JournalFolder.class.getName(), folderId);
@@ -952,7 +952,7 @@ public class JournalFolderLocalServiceImpl
 		folder.setStatusByUserName(user.getFullName());
 		folder.setStatusDate(new Date());
 
-		folder = journalFolderPersistence.update(folder);
+		journalFolderPersistence.update(folder);
 
 		// Asset
 
@@ -1050,7 +1050,7 @@ public class JournalFolderLocalServiceImpl
 		folder.setRestrictionType(restrictionType);
 		folder.setExpandoBridgeAttributes(serviceContext);
 
-		folder = journalFolderPersistence.update(folder);
+		journalFolderPersistence.update(folder);
 
 		// Asset
 
@@ -1151,7 +1151,7 @@ public class JournalFolderLocalServiceImpl
 			article.setFolderId(toFolderId);
 			article.setTreePath(article.buildTreePath());
 
-			article = journalArticlePersistence.update(article);
+			journalArticlePersistence.update(article);
 
 			Indexer<JournalArticle> indexer =
 				IndexerRegistryUtil.nullSafeGetIndexer(JournalArticle.class);
@@ -1191,7 +1191,7 @@ public class JournalFolderLocalServiceImpl
 
 					curArticle.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-					curArticle = journalArticlePersistence.update(curArticle);
+					journalArticlePersistence.update(curArticle);
 
 					// Trash
 
@@ -1253,7 +1253,7 @@ public class JournalFolderLocalServiceImpl
 
 				folder.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-				folder = journalFolderPersistence.update(folder);
+				journalFolderPersistence.update(folder);
 
 				// Trash
 
@@ -1378,7 +1378,7 @@ public class JournalFolderLocalServiceImpl
 
 				folder.setStatus(oldStatus);
 
-				folder = journalFolderPersistence.update(folder);
+				journalFolderPersistence.update(folder);
 
 				// Folders and articles
 

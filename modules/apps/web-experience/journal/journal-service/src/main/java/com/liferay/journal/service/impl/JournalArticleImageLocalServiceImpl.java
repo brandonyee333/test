@@ -55,7 +55,7 @@ public class JournalArticleImageLocalServiceImpl
 			articleImage.setLanguageId(languageId);
 			articleImage.setTempImage(false);
 
-			articleImage = journalArticleImagePersistence.update(articleImage);
+			journalArticleImagePersistence.update(articleImage);
 		}
 		else if (articleImage.getArticleImageId() != articleImageId) {
 			throw new DuplicateArticleImageIdException(
@@ -154,7 +154,7 @@ public class JournalArticleImageLocalServiceImpl
 			articleImage.setLanguageId(languageId);
 			articleImage.setTempImage(tempImage);
 
-			articleImage = journalArticleImagePersistence.update(articleImage);
+			journalArticleImagePersistence.update(articleImage);
 		}
 
 		return articleImage.getArticleImageId();

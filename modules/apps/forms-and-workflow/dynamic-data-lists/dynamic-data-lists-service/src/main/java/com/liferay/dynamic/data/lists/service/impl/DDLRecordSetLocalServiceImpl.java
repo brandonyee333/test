@@ -114,7 +114,7 @@ public class DDLRecordSetLocalServiceImpl
 		recordSet.setMinDisplayRows(minDisplayRows);
 		recordSet.setScope(scope);
 
-		recordSet = ddlRecordSetPersistence.update(recordSet);
+		ddlRecordSetPersistence.update(recordSet);
 
 		// Resources
 
@@ -557,7 +557,9 @@ public class DDLRecordSetLocalServiceImpl
 
 		recordSet.setMinDisplayRows(minDisplayRows);
 
-		return ddlRecordSetPersistence.update(recordSet);
+		ddlRecordSetPersistence.update(recordSet);
+
+		return recordSet;
 	}
 
 	/**
@@ -670,7 +672,7 @@ public class DDLRecordSetLocalServiceImpl
 		recordSet.setDescriptionMap(descriptionMap);
 		recordSet.setMinDisplayRows(minDisplayRows);
 
-		recordSet = ddlRecordSetPersistence.update(recordSet);
+		ddlRecordSetPersistence.update(recordSet);
 
 		if (oldDDMStructureId != ddmStructureId) {
 

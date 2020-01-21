@@ -160,7 +160,7 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		role.setSubtype(subtype);
 		role.setExpandoBridgeAttributes(serviceContext);
 
-		role = rolePersistence.update(role);
+		rolePersistence.update(role);
 
 		// Resources
 
@@ -1537,7 +1537,9 @@ public class RoleLocalServiceImpl extends RoleLocalServiceBaseImpl {
 		role.setSubtype(subtype);
 		role.setExpandoBridgeAttributes(serviceContext);
 
-		return rolePersistence.update(role);
+		rolePersistence.update(role);
+
+		return role;
 	}
 
 	protected void checkSystemRole(

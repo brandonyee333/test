@@ -133,7 +133,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 
 		entry.setStatus(ReportStatus.PENDING.getValue());
 
-		entry = entryPersistence.update(entry);
+		entryPersistence.update(entry);
 
 		// Resources
 
@@ -353,7 +353,7 @@ public class EntryLocalServiceImpl extends EntryLocalServiceBaseImpl {
 		entry.setScheduleRequest(false);
 		entry.setRepeating(false);
 
-		entry = entryPersistence.update(entry);
+		entryPersistence.update(entry);
 
 		_schedulerEngineHelper.unschedule(
 			entry.getJobName(), entry.getSchedulerRequestName(),

@@ -1737,7 +1737,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			user.setPasswordModified(true);
 			user.setPasswordModifiedDate(new Date());
 
-			user = userPersistence.update(user);
+			userPersistence.update(user);
 
 			user.setPasswordModified(false);
 		}
@@ -3922,7 +3922,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				user.setPasswordModified(true);
 				user.setPasswordModifiedDate(new Date());
 
-				user = userPersistence.update(user);
+				userPersistence.update(user);
 
 				user.setPasswordModified(false);
 			}
@@ -4298,7 +4298,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setAgreedToTermsOfUse(agreedToTermsOfUse);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4346,7 +4348,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setCreateDate(createDate);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4376,7 +4380,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			user, password, user.getFirstName(), user.getMiddleName(),
 			user.getLastName(), emailAddress1);
 
-		user = userPersistence.update(user);
+		userPersistence.update(user);
 
 		Contact contact = user.getContact();
 
@@ -4427,7 +4431,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				user, password, user.getFirstName(), user.getMiddleName(),
 				user.getLastName(), emailAddress1);
 
-			user = userPersistence.update(user);
+			userPersistence.update(user);
 
 			Contact contact = user.getContact();
 
@@ -4455,7 +4459,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setEmailAddressVerified(emailAddressVerified);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4473,7 +4479,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setFacebookId(facebookId);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4495,7 +4503,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setGoogleUserId(googleUserId);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4731,7 +4741,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setJobTitle(jobTitle);
 
-		user = userPersistence.update(user);
+		userPersistence.update(user);
 
 		Contact contact = contactPersistence.findByPrimaryKey(
 			user.getContactId());
@@ -4806,7 +4816,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			user.setFailedLoginAttempts(0);
 		}
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4877,7 +4889,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setModifiedDate(modifiedDate);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -4897,7 +4911,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setOpenId(openId);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -5065,7 +5081,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		user.setPasswordModifiedDate(passwordModifiedDate);
 		user.setDigest(StringPool.BLANK);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -5085,7 +5103,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setPasswordReset(passwordReset);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -5129,7 +5149,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		user.setReminderQueryQuestion(question);
 		user.setReminderQueryAnswer(answer);
 
-		return userPersistence.update(user);
+		userPersistence.update(user);
+
+		return user;
 	}
 
 	/**
@@ -5158,7 +5180,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		user.setScreenName(screenName);
 
-		user = userPersistence.update(user);
+		userPersistence.update(user);
 
 		// Group
 
@@ -5473,7 +5495,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		group.setFriendlyURL(
 			FriendlyURLNormalizerUtil.normalize(StringPool.SLASH + screenName));
 
-		group = groupPersistence.update(group);
+		groupPersistence.update(group);
 
 		// Groups and organizations
 
@@ -6100,7 +6122,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			else {
 				user.setDigest(StringPool.BLANK);
 
-				user = userPersistence.update(user);
+				userPersistence.update(user);
 
 				throw new PasswordExpiredException();
 			}

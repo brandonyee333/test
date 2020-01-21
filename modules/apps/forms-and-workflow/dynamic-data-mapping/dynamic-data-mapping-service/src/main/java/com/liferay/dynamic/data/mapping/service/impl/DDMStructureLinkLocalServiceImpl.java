@@ -46,7 +46,9 @@ public class DDMStructureLinkLocalServiceImpl
 		structureLink.setClassPK(classPK);
 		structureLink.setStructureId(structureId);
 
-		return ddmStructureLinkPersistence.update(structureLink);
+		ddmStructureLinkPersistence.update(structureLink);
+
+		return structureLink;
 	}
 
 	@Override
@@ -181,7 +183,9 @@ public class DDMStructureLinkLocalServiceImpl
 		structureLink.setClassPK(classPK);
 		structureLink.setStructureId(structureId);
 
-		return ddmStructureLinkPersistence.update(structureLink);
+		ddmStructureLinkPersistence.update(structureLink);
+
+		return structureLink;
 	}
 
 }

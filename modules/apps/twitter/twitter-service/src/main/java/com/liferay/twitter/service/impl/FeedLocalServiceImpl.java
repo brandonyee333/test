@@ -116,7 +116,7 @@ public class FeedLocalServiceImpl extends FeedLocalServiceBaseImpl {
 			feed.setModifiedDate(now);
 			feed.setTwitterScreenName(twitterScreenName);
 
-			feed = feedPersistence.update(feed);
+			feedPersistence.update(feed);
 		}
 		else {
 			jsonArray = TimelineProcessorUtil.getUserTimelineJSONArray(

@@ -112,8 +112,7 @@ public class KaleoDraftDefinitionLocalServiceImpl
 		kaleoDraftDefinition.setVersion(version);
 		kaleoDraftDefinition.setDraftVersion(draftVersion);
 
-		kaleoDraftDefinition = kaleoDraftDefinitionPersistence.update(
-			kaleoDraftDefinition);
+		kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
 
 		// Resources
 
@@ -537,7 +536,9 @@ public class KaleoDraftDefinitionLocalServiceImpl
 		kaleoDraftDefinition.setTitleMap(titleMap);
 		kaleoDraftDefinition.setContent(content);
 
-		return kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
+		kaleoDraftDefinitionPersistence.update(kaleoDraftDefinition);
+
+		return kaleoDraftDefinition;
 	}
 
 	protected void addKeywordsCriterion(

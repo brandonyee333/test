@@ -93,7 +93,7 @@ public class MBMailingListLocalServiceImpl
 		mailingList.setAllowAnonymous(allowAnonymous);
 		mailingList.setActive(active);
 
-		mailingList = mbMailingListPersistence.update(mailingList);
+		mbMailingListPersistence.update(mailingList);
 
 		// Scheduler
 
@@ -183,7 +183,7 @@ public class MBMailingListLocalServiceImpl
 		mailingList.setAllowAnonymous(allowAnonymous);
 		mailingList.setActive(active);
 
-		mailingList = mbMailingListPersistence.update(mailingList);
+		mbMailingListPersistence.update(mailingList);
 
 		// Scheduler
 

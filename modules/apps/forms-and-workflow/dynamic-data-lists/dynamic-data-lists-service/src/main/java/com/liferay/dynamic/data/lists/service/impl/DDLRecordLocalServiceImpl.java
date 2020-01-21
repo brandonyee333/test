@@ -137,7 +137,7 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 		record.setVersion(DDLRecordConstants.VERSION_DEFAULT);
 		record.setDisplayIndex(displayIndex);
 
-		record = ddlRecordPersistence.update(record);
+		ddlRecordPersistence.update(record);
 
 		// Record version
 
@@ -855,7 +855,7 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 
 		record.setModifiedDate(serviceContext.getModifiedDate(null));
 
-		record = ddlRecordPersistence.update(record);
+		ddlRecordPersistence.update(record);
 
 		// Record version
 
@@ -1036,7 +1036,7 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 		recordVersion.setStatusByUserName(user.getFullName());
 		recordVersion.setStatusDate(new Date());
 
-		recordVersion = ddlRecordVersionPersistence.update(recordVersion);
+		ddlRecordVersionPersistence.update(recordVersion);
 
 		// Record
 
@@ -1055,7 +1055,7 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 				record.setVersionUserId(recordVersion.getUserId());
 				record.setVersionUserName(recordVersion.getUserName());
 
-				record = ddlRecordPersistence.update(record);
+				ddlRecordPersistence.update(record);
 			}
 		}
 		else {
@@ -1078,7 +1078,7 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 
 				record.setVersion(newVersion);
 
-				record = ddlRecordPersistence.update(record);
+				ddlRecordPersistence.update(record);
 			}
 		}
 
@@ -1118,7 +1118,9 @@ public class DDLRecordLocalServiceImpl extends DDLRecordLocalServiceBaseImpl {
 		recordVersion.setStatusByUserName(user.getFullName());
 		recordVersion.setStatusDate(record.getModifiedDate());
 
-		return ddlRecordVersionPersistence.update(recordVersion);
+		ddlRecordVersionPersistence.update(recordVersion);
+
+		return recordVersion;
 	}
 
 	protected void deleteAssetEntry(long recordId) throws PortalException {

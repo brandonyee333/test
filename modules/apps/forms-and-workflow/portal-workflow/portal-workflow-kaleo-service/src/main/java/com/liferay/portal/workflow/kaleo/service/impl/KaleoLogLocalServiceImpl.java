@@ -68,7 +68,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		kaleoLog.setEndDate(new Date(endTime));
 		kaleoLog.setDuration(endTime - startTime);
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -93,7 +95,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 
 		kaleoLog.setStartDate(kaleoLog.getCreateDate());
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -126,7 +130,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		catch (NoSuchLogException nsle) {
 		}
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -183,7 +189,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		kaleoLog.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -226,7 +234,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		kaleoLog.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -259,7 +269,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		kaleoLog.setWorkflowContext(
 			WorkflowContextUtil.convert(workflowContext));
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -287,7 +299,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 		catch (NoSuchLogException nsle) {
 		}
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override
@@ -306,7 +320,9 @@ public class KaleoLogLocalServiceImpl extends KaleoLogLocalServiceBaseImpl {
 
 		kaleoLog.setWorkflowContext(kaleoInstance.getWorkflowContext());
 
-		return kaleoLogPersistence.update(kaleoLog);
+		kaleoLogPersistence.update(kaleoLog);
+
+		return kaleoLog;
 	}
 
 	@Override

@@ -75,7 +75,9 @@ public class MeetupsRegistrationLocalServiceImpl
 		meetupsRegistration.setComments(comments);
 		meetupsRegistration.setStatus(status);
 
-		return meetupsRegistrationPersistence.update(meetupsRegistration);
+		meetupsRegistrationPersistence.update(meetupsRegistration);
+
+		return meetupsRegistration;
 	}
 
 }

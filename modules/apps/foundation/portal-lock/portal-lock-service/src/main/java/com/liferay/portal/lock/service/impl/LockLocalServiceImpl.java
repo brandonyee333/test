@@ -196,7 +196,9 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 			lock.setExpirationDate(new Date(now.getTime() + expirationTime));
 		}
 
-		return lockPersistence.update(lock);
+		lockPersistence.update(lock);
+
+		return lock;
 	}
 
 	@MasterDataSource
@@ -232,7 +234,7 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 								lock.setKey(key);
 								lock.setOwner(updatedOwner);
 
-								lock = lockPersistence.update(lock);
+								lockPersistence.update(lock);
 
 								lock.setNew(true);
 							}
@@ -244,7 +246,7 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 								lock.setKey(key);
 								lock.setOwner(updatedOwner);
 
-								lock = lockPersistence.update(lock);
+								lockPersistence.update(lock);
 
 								lock.setNew(true);
 							}
@@ -314,7 +316,9 @@ public class LockLocalServiceImpl extends LockLocalServiceBaseImpl {
 					new Date(now.getTime() + expirationTime));
 			}
 
-			return lockPersistence.update(lock);
+			lockPersistence.update(lock);
+
+			return lock;
 		}
 		finally {
 			if (lockListener != null) {

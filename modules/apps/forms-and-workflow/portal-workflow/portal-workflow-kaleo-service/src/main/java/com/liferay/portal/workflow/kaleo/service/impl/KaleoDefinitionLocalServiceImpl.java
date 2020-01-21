@@ -116,7 +116,9 @@ public class KaleoDefinitionLocalServiceImpl
 		kaleoDefinition.setVersion(version);
 		kaleoDefinition.setActive(false);
 
-		return kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinitionPersistence.update(kaleoDefinition);
+
+		return kaleoDefinition;
 	}
 
 	@Override
@@ -350,7 +352,9 @@ public class KaleoDefinitionLocalServiceImpl
 
 		kaleoDefinition.setTitle(title);
 
-		return kaleoDefinitionPersistence.update(kaleoDefinition);
+		kaleoDefinitionPersistence.update(kaleoDefinition);
+
+		return kaleoDefinition;
 	}
 
 }

@@ -100,7 +100,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 		category.setDisplayStyle(displayStyle);
 		category.setExpandoBridgeAttributes(serviceContext);
 
-		category = mbCategoryPersistence.update(category);
+		mbCategoryPersistence.update(category);
 
 		// Resources
 
@@ -792,7 +792,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 		category.setExpandoBridgeAttributes(serviceContext);
 
-		category = mbCategoryPersistence.update(category);
+		mbCategoryPersistence.update(category);
 
 		// Mailing list
 
@@ -878,7 +878,9 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 		category.setStatusByUserName(user.getFullName());
 		category.setStatusDate(new Date());
 
-		return mbCategoryPersistence.update(category);
+		mbCategoryPersistence.update(category);
+
+		return category;
 	}
 
 	@Override
@@ -978,7 +980,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 			thread.setCategoryId(toCategoryId);
 
-			thread = mbThreadPersistence.update(thread);
+			mbThreadPersistence.update(thread);
 
 			List<MBMessage> messages = mbMessagePersistence.findByThreadId(
 				thread.getThreadId());
@@ -989,7 +991,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 				message.setCategoryId(toCategoryId);
 
-				message = mbMessagePersistence.update(message);
+				mbMessagePersistence.update(message);
 
 				// Indexer
 
@@ -1032,7 +1034,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 				thread.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-				thread = mbThreadPersistence.update(thread);
+				mbThreadPersistence.update(thread);
 
 				// Trash
 
@@ -1068,7 +1070,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 				category.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-				category = mbCategoryPersistence.update(category);
+				mbCategoryPersistence.update(category);
 
 				// Trash
 
@@ -1116,7 +1118,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 				thread.setStatus(oldStatus);
 
-				thread = mbThreadPersistence.update(thread);
+				mbThreadPersistence.update(thread);
 
 				// Threads
 
@@ -1158,7 +1160,7 @@ public class MBCategoryLocalServiceImpl extends MBCategoryLocalServiceBaseImpl {
 
 				category.setStatus(oldStatus);
 
-				category = mbCategoryPersistence.update(category);
+				mbCategoryPersistence.update(category);
 
 				// Categories and threads
 

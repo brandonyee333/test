@@ -101,7 +101,7 @@ public class AssetLinkLocalServiceImpl extends AssetLinkLocalServiceBaseImpl {
 		link.setType(type);
 		link.setWeight(weight);
 
-		link = assetLinkPersistence.update(link);
+		assetLinkPersistence.update(link);
 
 		if (AssetLinkConstants.isTypeBi(type)) {
 			long linkId2 = counterLocalService.increment();
@@ -456,7 +456,9 @@ public class AssetLinkLocalServiceImpl extends AssetLinkLocalServiceBaseImpl {
 
 		assetLink.setWeight(weight);
 
-		return assetLinkPersistence.update(assetLink);
+		assetLinkPersistence.update(assetLink);
+
+		return assetLink;
 	}
 
 	/**

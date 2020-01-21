@@ -63,7 +63,9 @@ public class SamlSpSessionLocalServiceImpl
 		samlSpSession.setSessionIndex(sessionIndex);
 		samlSpSession.setTerminated(false);
 
-		return samlSpSessionPersistence.update(samlSpSession);
+		samlSpSessionPersistence.update(samlSpSession);
+
+		return samlSpSession;
 	}
 
 	@Override
@@ -131,7 +133,9 @@ public class SamlSpSessionLocalServiceImpl
 		samlSpSession.setModifiedDate(new Date());
 		samlSpSession.setJSessionId(jSessionId);
 
-		return samlSpSessionPersistence.update(samlSpSession);
+		samlSpSessionPersistence.update(samlSpSession);
+
+		return samlSpSession;
 	}
 
 	@Override
@@ -160,7 +164,9 @@ public class SamlSpSessionLocalServiceImpl
 		samlSpSession.setNameIdValue(nameIdValue);
 		samlSpSession.setSessionIndex(sessionIndex);
 
-		return samlSpSessionPersistence.update(samlSpSession);
+		samlSpSessionPersistence.update(samlSpSession);
+
+		return samlSpSession;
 	}
 
 }

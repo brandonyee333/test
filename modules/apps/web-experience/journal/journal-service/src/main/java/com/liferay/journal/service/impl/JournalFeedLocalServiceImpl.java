@@ -110,7 +110,7 @@ public class JournalFeedLocalServiceImpl
 
 		feed.setExpandoBridgeAttributes(serviceContext);
 
-		feed = journalFeedPersistence.update(feed);
+		journalFeedPersistence.update(feed);
 
 		// Resources
 
@@ -321,7 +321,9 @@ public class JournalFeedLocalServiceImpl
 
 		feed.setExpandoBridgeAttributes(serviceContext);
 
-		return journalFeedPersistence.update(feed);
+		journalFeedPersistence.update(feed);
+
+		return feed;
 	}
 
 	protected boolean isValidStructureOptionValue(

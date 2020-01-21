@@ -85,7 +85,9 @@ public class WSRPConsumerLocalServiceImpl
 			getWSDL(wsrpConsumer, forwardCookies, forwardHeaders));
 		wsrpConsumer.setMarkupCharacterSets(markupCharacterSets);
 
-		return wsrpConsumerPersistence.update(wsrpConsumer);
+		wsrpConsumerPersistence.update(wsrpConsumer);
+
+		return wsrpConsumer;
 	}
 
 	@Override
@@ -185,7 +187,9 @@ public class WSRPConsumerLocalServiceImpl
 		wsrpConsumer.setRegistrationContext(registrationContext);
 		wsrpConsumer.setRegistrationProperties(registrationProperties);
 
-		return wsrpConsumerPersistence.update(wsrpConsumer);
+		wsrpConsumerPersistence.update(wsrpConsumer);
+
+		return wsrpConsumer;
 	}
 
 	@Override
@@ -289,7 +293,9 @@ public class WSRPConsumerLocalServiceImpl
 			getWSDL(wsrpConsumer, forwardCookies, forwardHeaders));
 		wsrpConsumer.setMarkupCharacterSets(markupCharacterSets);
 
-		return wsrpConsumerPersistence.update(wsrpConsumer);
+		wsrpConsumerPersistence.update(wsrpConsumer);
+
+		return wsrpConsumer;
 	}
 
 	protected String getWSDL(
