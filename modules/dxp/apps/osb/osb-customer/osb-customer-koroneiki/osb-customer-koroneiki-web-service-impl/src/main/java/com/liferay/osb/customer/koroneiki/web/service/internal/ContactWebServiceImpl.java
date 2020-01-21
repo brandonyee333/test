@@ -58,7 +58,7 @@ public class ContactWebServiceImpl implements ContactWebService {
 		throws Exception {
 
 		Page<Contact> contactsPage =
-			_contactResource.getAccountAccountKeyContactsPage(
+			_nestedFieldsContactResource.getAccountAccountKeyContactsPage(
 				accountKey, Pagination.of(page, pageSize));
 
 		if ((contactsPage != null) && (contactsPage.getItems() != null)) {
@@ -107,11 +107,21 @@ public class ContactWebServiceImpl implements ContactWebService {
 			koroneikiConfiguration.scheme()
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
+		).build();
+
+		builder = ContactResource.builder();
+
+		_nestedFieldsContactResource = builder.endpoint(
+			koroneikiConfiguration.host(), koroneikiConfiguration.port(),
+			koroneikiConfiguration.scheme()
+		).header(
+			"API_Token", koroneikiConfiguration.apiToken()
 		).parameter(
 			"nestedFields", "contactRoles"
 		).build();
 	}
 
 	private ContactResource _contactResource;
+	private ContactResource _nestedFieldsContactResource;
 
 }
