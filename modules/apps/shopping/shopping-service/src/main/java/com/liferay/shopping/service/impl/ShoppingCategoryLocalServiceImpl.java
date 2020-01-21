@@ -74,7 +74,7 @@ public class ShoppingCategoryLocalServiceImpl
 		category.setName(name);
 		category.setDescription(description);
 
-		shoppingCategoryPersistence.update(category);
+		category = shoppingCategoryPersistence.update(category);
 
 		// Resources
 
@@ -309,9 +309,7 @@ public class ShoppingCategoryLocalServiceImpl
 		category.setName(name);
 		category.setDescription(description);
 
-		shoppingCategoryPersistence.update(category);
-
-		return category;
+		return shoppingCategoryPersistence.update(category);
 	}
 
 	protected long getParentCategoryId(long groupId, long parentCategoryId) {

@@ -117,7 +117,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		thread.setStatusByUserName(message.getStatusByUserName());
 		thread.setStatusDate(message.getStatusDate());
 
-		mbThreadPersistence.update(thread);
+		thread = mbThreadPersistence.update(thread);
 
 		// Asset
 
@@ -559,7 +559,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 
 			message.setStatus(WorkflowConstants.STATUS_IN_TRASH);
 
-			mbMessagePersistence.update(message);
+			message = mbMessagePersistence.update(message);
 
 			userIds.add(message.getUserId());
 
@@ -639,7 +639,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 
 		thread.setCategoryId(categoryId);
 
-		mbThreadPersistence.update(thread);
+		thread = mbThreadPersistence.update(thread);
 
 		// Messages
 
@@ -649,7 +649,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		for (MBMessage message : messages) {
 			message.setCategoryId(categoryId);
 
-			mbMessagePersistence.update(message);
+			message = mbMessagePersistence.update(message);
 
 			// Indexer
 
@@ -766,7 +766,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		if (oldStatus == WorkflowConstants.STATUS_PENDING) {
 			thread.setStatus(WorkflowConstants.STATUS_DRAFT);
 
-			mbThreadPersistence.update(thread);
+			thread = mbThreadPersistence.update(thread);
 		}
 
 		thread = updateStatus(
@@ -831,7 +831,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 
 			message.setStatus(oldStatus);
 
-			mbMessagePersistence.update(message);
+			message = mbMessagePersistence.update(message);
 
 			userIds.add(message.getUserId());
 
@@ -1014,7 +1014,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		MBThread thread = addThread(
 			message.getCategoryId(), message, serviceContext);
 
-		mbThreadPersistence.update(oldThread);
+		oldThread = mbThreadPersistence.update(oldThread);
 
 		// Update messages
 
@@ -1058,7 +1058,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		message.setRootMessageId(thread.getRootMessageId());
 		message.setParentMessageId(0);
 
-		mbMessagePersistence.update(message);
+		message = mbMessagePersistence.update(message);
 
 		// Attachments
 
@@ -1136,7 +1136,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 
 		thread.setQuestion(question);
 
-		mbThreadPersistence.update(thread);
+		thread = mbThreadPersistence.update(thread);
 
 		if (!question) {
 			MBMessage message = mbMessagePersistence.findByPrimaryKey(
@@ -1161,7 +1161,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 		thread.setStatusByUserName(user.getFullName());
 		thread.setStatusDate(new Date());
 
-		mbThreadPersistence.update(thread);
+		thread = mbThreadPersistence.update(thread);
 
 		// Messages
 
@@ -1226,7 +1226,7 @@ public class MBThreadLocalServiceImpl extends MBThreadLocalServiceBaseImpl {
 			message.setThreadId(parentMessage.getThreadId());
 			message.setRootMessageId(parentMessage.getRootMessageId());
 
-			mbMessagePersistence.update(message);
+			message = mbMessagePersistence.update(message);
 
 			if (!message.isDiscussion()) {
 				Indexer<MBMessage> indexer =

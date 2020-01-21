@@ -993,7 +993,7 @@ public class PortletLocalServiceImpl extends PortletLocalServiceBaseImpl {
 		portlet.setRoles(roles);
 		portlet.setActive(active);
 
-		portletPersistence.update(portlet);
+		portlet = portletPersistence.update(portlet);
 
 		portlet = getPortletById(companyId, portletId);
 

@@ -182,7 +182,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setMaxUsers(maxUsers);
 		company.setActive(active);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 
 		// Virtual host
 
@@ -345,7 +345,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				if (!defaultUser.isAgreedToTermsOfUse()) {
 					defaultUser.setAgreedToTermsOfUse(true);
 
-					userPersistence.update(defaultUser);
+					defaultUser = userPersistence.update(defaultUser);
 				}
 			}
 			else {
@@ -385,7 +385,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				defaultUser.setAgreedToTermsOfUse(true);
 				defaultUser.setStatus(WorkflowConstants.STATUS_APPROVED);
 
-				userPersistence.update(defaultUser);
+				defaultUser = userPersistence.update(defaultUser);
 
 				// Contact
 
@@ -871,7 +871,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		company.setMaxUsers(maxUsers);
 		company.setActive(active);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 
 		// Virtual host
 
@@ -937,7 +937,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		PortalUtil.updateImageId(company, logo, logoBytes, "logoId", 0, 0, 0);
 
-		companyPersistence.update(company);
+		company = companyPersistence.update(company);
 
 		// Account
 

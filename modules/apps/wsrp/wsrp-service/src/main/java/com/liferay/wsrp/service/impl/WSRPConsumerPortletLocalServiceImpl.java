@@ -110,7 +110,8 @@ public class WSRPConsumerPortletLocalServiceImpl
 		wsrpConsumerPortlet.setName(name);
 		wsrpConsumerPortlet.setPortletHandle(portletHandle);
 
-		wsrpConsumerPortletPersistence.update(wsrpConsumerPortlet);
+		wsrpConsumerPortlet = wsrpConsumerPortletPersistence.update(
+			wsrpConsumerPortlet);
 
 		wsrpConsumerPortletLocalService.initWSRPConsumerPortlet(
 			wsrpConsumer.getCompanyId(), wsrpConsumerId, wsrpConsumerPortletId,
@@ -398,9 +399,7 @@ public class WSRPConsumerPortletLocalServiceImpl
 		wsrpConsumerPortlet.setModifiedDate(new Date());
 		wsrpConsumerPortlet.setName(name);
 
-		wsrpConsumerPortletPersistence.update(wsrpConsumerPortlet);
-
-		return wsrpConsumerPortlet;
+		return wsrpConsumerPortletPersistence.update(wsrpConsumerPortlet);
 	}
 
 	protected void addPortletExtraInfo(

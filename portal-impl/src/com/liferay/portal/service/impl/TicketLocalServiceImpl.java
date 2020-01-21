@@ -62,9 +62,7 @@ public class TicketLocalServiceImpl extends TicketLocalServiceBaseImpl {
 		ticket.setExtraInfo(extraInfo);
 		ticket.setExpirationDate(expirationDate);
 
-		ticketPersistence.update(ticket);
-
-		return ticket;
+		return ticketPersistence.update(ticket);
 	}
 
 	@Override

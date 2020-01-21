@@ -42,9 +42,7 @@ public class DDMStorageLinkLocalServiceImpl
 		storageLink.setClassPK(classPK);
 		storageLink.setStructureId(structureId);
 
-		ddmStorageLinkPersistence.update(storageLink);
-
-		return storageLink;
+		return ddmStorageLinkPersistence.update(storageLink);
 	}
 
 	@Override
@@ -117,9 +115,7 @@ public class DDMStorageLinkLocalServiceImpl
 		storageLink.setClassNameId(classNameId);
 		storageLink.setClassPK(classPK);
 
-		ddmStorageLinkPersistence.update(storageLink);
-
-		return storageLink;
+		return ddmStorageLinkPersistence.update(storageLink);
 	}
 
 }

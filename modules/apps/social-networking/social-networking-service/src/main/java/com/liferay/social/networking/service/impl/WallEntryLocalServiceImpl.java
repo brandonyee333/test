@@ -62,7 +62,7 @@ public class WallEntryLocalServiceImpl extends WallEntryLocalServiceBaseImpl {
 		wallEntry.setUserName(user.getFullName());
 		wallEntry.setComments(comments);
 
-		wallEntryPersistence.update(wallEntry);
+		wallEntry = wallEntryPersistence.update(wallEntry);
 
 		// Email
 
@@ -164,9 +164,7 @@ public class WallEntryLocalServiceImpl extends WallEntryLocalServiceBaseImpl {
 
 		wallEntry.setComments(comments);
 
-		wallEntryPersistence.update(wallEntry);
-
-		return wallEntry;
+		return wallEntryPersistence.update(wallEntry);
 	}
 
 	protected void sendEmail(WallEntry wallEntry, ThemeDisplay themeDisplay)

@@ -212,7 +212,7 @@ public class CalendarBookingLocalServiceImpl
 		calendarBooking.setStatus(status);
 		calendarBooking.setStatusDate(serviceContext.getModifiedDate(now));
 
-		calendarBookingPersistence.update(calendarBooking);
+		calendarBooking = calendarBookingPersistence.update(calendarBooking);
 
 		addChildCalendarBookings(
 			calendarBooking, childCalendarIds, serviceContext);
@@ -1081,7 +1081,7 @@ public class CalendarBookingLocalServiceImpl
 
 		calendarBooking.setExpandoBridgeAttributes(serviceContext);
 
-		calendarBookingPersistence.update(calendarBooking);
+		calendarBooking = calendarBookingPersistence.update(calendarBooking);
 
 		updateChildCalendarBookings(
 			calendarBooking, childCalendarIds, serviceContext);
@@ -1246,7 +1246,7 @@ public class CalendarBookingLocalServiceImpl
 		calendarBooking.setStatusByUserName(user.getFullName());
 		calendarBooking.setStatusDate(serviceContext.getModifiedDate(now));
 
-		calendarBookingPersistence.update(calendarBooking);
+		calendarBooking = calendarBookingPersistence.update(calendarBooking);
 
 		// Child calendar bookings
 

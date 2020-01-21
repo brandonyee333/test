@@ -240,7 +240,7 @@ public class DLFileEntryLocalServiceImpl
 		dlFileEntry.setSize(size);
 		dlFileEntry.setReadCount(DLFileEntryConstants.DEFAULT_READ_COUNT);
 
-		dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 
 		// Resources
 
@@ -319,7 +319,7 @@ public class DLFileEntryLocalServiceImpl
 		if (!webDAVCheckInMode && manualCheckInRequired) {
 			dlFileEntry.setManualCheckInRequired(false);
 
-			dlFileEntryPersistence.update(dlFileEntry);
+			dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 		}
 
 		DLFileVersion lastDLFileVersion =
@@ -344,7 +344,7 @@ public class DLFileEntryLocalServiceImpl
 				dlFileEntry.setMimeType(latestDLFileVersion.getMimeType());
 				dlFileEntry.setSize(latestDLFileVersion.getSize());
 
-				dlFileEntryPersistence.update(dlFileEntry);
+				dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 
 				// File version
 
@@ -356,7 +356,8 @@ public class DLFileEntryLocalServiceImpl
 					latestDLFileVersion.getMimeType());
 				lastDLFileVersion.setSize(latestDLFileVersion.getSize());
 
-				dlFileVersionPersistence.update(lastDLFileVersion);
+				lastDLFileVersion = dlFileVersionPersistence.update(
+					lastDLFileVersion);
 
 				// File
 
@@ -386,7 +387,8 @@ public class DLFileEntryLocalServiceImpl
 
 			latestDLFileVersion.setChangeLog(changeLog);
 
-			dlFileVersionPersistence.update(latestDLFileVersion);
+			latestDLFileVersion = dlFileVersionPersistence.update(
+				latestDLFileVersion);
 
 			// Folder
 
@@ -825,7 +827,8 @@ public class DLFileEntryLocalServiceImpl
 					dlLatestFileVersion.setFileEntryTypeId(fileEntryTypeId);
 					dlLatestFileVersion.setStatusDate(new Date());
 
-					dlFileVersionPersistence.update(dlLatestFileVersion);
+					dlLatestFileVersion = dlFileVersionPersistence.update(
+						dlLatestFileVersion);
 
 					dlFileEntry.setModifiedDate(new Date());
 					dlFileEntry.setFileName(dlLatestFileVersion.getFileName());
@@ -1927,7 +1930,7 @@ public class DLFileEntryLocalServiceImpl
 		dlFileVersion.setStatusByUserName(user.getFullName());
 		dlFileVersion.setStatusDate(new Date());
 
-		dlFileVersionPersistence.update(dlFileVersion);
+		dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
 
 		// File entry
 
@@ -1951,7 +1954,7 @@ public class DLFileEntryLocalServiceImpl
 				dlFileEntry.setVersion(dlFileVersion.getVersion());
 				dlFileEntry.setSize(dlFileVersion.getSize());
 
-				dlFileEntryPersistence.update(dlFileEntry);
+				dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 			}
 		}
 		else {
@@ -1978,7 +1981,7 @@ public class DLFileEntryLocalServiceImpl
 
 				dlFileEntry.setVersion(newVersion);
 
-				dlFileEntryPersistence.update(dlFileEntry);
+				dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 			}
 
 			// Indexer
@@ -2194,7 +2197,7 @@ public class DLFileEntryLocalServiceImpl
 		ExpandoBridgeUtil.setExpandoBridgeAttributes(
 			oldExpandoBridge, dlFileVersion.getExpandoBridge(), serviceContext);
 
-		dlFileVersionPersistence.update(dlFileVersion);
+		dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
 
 		if ((fileEntryTypeId > 0) && (ddmFormValuesMap != null)) {
 			dlFileEntryMetadataLocalService.updateFileEntryMetadata(
@@ -2218,7 +2221,7 @@ public class DLFileEntryLocalServiceImpl
 
 		dlFileVersion.setExtraSettingsProperties(extraSettingsProperties);
 
-		dlFileVersionPersistence.update(dlFileVersion);
+		dlFileVersion = dlFileVersionPersistence.update(dlFileVersion);
 
 		int status = dlFileVersion.getStatus();
 
@@ -2242,7 +2245,7 @@ public class DLFileEntryLocalServiceImpl
 
 		dlFileEntry.setExtraSettingsProperties(extraSettingsProperties);
 
-		dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 
 		List<DLFileVersion> dlFileVersions =
 			dlFileVersionLocalService.getFileVersions(
@@ -2431,7 +2434,7 @@ public class DLFileEntryLocalServiceImpl
 		dlFileEntry.setFolderId(newFolderId);
 		dlFileEntry.setTreePath(dlFileEntry.buildTreePath());
 
-		dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 
 		// File version
 
@@ -2798,7 +2801,7 @@ public class DLFileEntryLocalServiceImpl
 
 		dlFileEntry.setManualCheckInRequired(manualCheckinRequired);
 
-		dlFileEntryPersistence.update(dlFileEntry);
+		dlFileEntry = dlFileEntryPersistence.update(dlFileEntry);
 
 		String version = dlFileVersion.getVersion();
 

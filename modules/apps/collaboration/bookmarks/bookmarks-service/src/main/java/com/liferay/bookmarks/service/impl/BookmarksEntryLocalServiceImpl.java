@@ -120,7 +120,7 @@ public class BookmarksEntryLocalServiceImpl
 		entry.setDescription(description);
 		entry.setExpandoBridgeAttributes(serviceContext);
 
-		bookmarksEntryPersistence.update(entry);
+		entry = bookmarksEntryPersistence.update(entry);
 
 		// Resources
 
@@ -347,9 +347,7 @@ public class BookmarksEntryLocalServiceImpl
 		entry.setFolderId(parentFolderId);
 		entry.setTreePath(entry.buildTreePath());
 
-		bookmarksEntryPersistence.update(entry);
-
-		return entry;
+		return bookmarksEntryPersistence.update(entry);
 	}
 
 	@Override
@@ -426,7 +424,7 @@ public class BookmarksEntryLocalServiceImpl
 	public BookmarksEntry openEntry(long userId, BookmarksEntry entry) {
 		entry.setVisits(entry.getVisits() + 1);
 
-		bookmarksEntryPersistence.update(entry);
+		entry = bookmarksEntryPersistence.update(entry);
 
 		assetEntryLocalService.incrementViewCounter(
 			userId, BookmarksEntry.class.getName(), entry.getEntryId(), 1);
@@ -636,7 +634,7 @@ public class BookmarksEntryLocalServiceImpl
 		entry.setDescription(description);
 		entry.setExpandoBridgeAttributes(serviceContext);
 
-		bookmarksEntryPersistence.update(entry);
+		entry = bookmarksEntryPersistence.update(entry);
 
 		// Asset
 
@@ -678,7 +676,7 @@ public class BookmarksEntryLocalServiceImpl
 		entry.setStatusByUserName(user.getScreenName());
 		entry.setStatusDate(new Date());
 
-		bookmarksEntryPersistence.update(entry);
+		entry = bookmarksEntryPersistence.update(entry);
 
 		JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
 

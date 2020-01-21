@@ -151,7 +151,7 @@ public class ShoppingItemLocalServiceImpl
 		item.setLargeImageId(counterLocalService.increment());
 		item.setLargeImageURL(largeImageURL);
 
-		shoppingItemPersistence.update(item);
+		item = shoppingItemPersistence.update(item);
 
 		// Resources
 
@@ -532,7 +532,7 @@ public class ShoppingItemLocalServiceImpl
 		item.setLargeImage(largeImage);
 		item.setLargeImageURL(largeImageURL);
 
-		shoppingItemPersistence.update(item);
+		item = shoppingItemPersistence.update(item);
 
 		// Images
 

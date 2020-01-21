@@ -43,9 +43,7 @@ public class ListTypeLocalServiceImpl extends ListTypeLocalServiceBaseImpl {
 		listType.setName(name);
 		listType.setType(type);
 
-		listTypePersistence.update(listType);
-
-		return listType;
+		return listTypePersistence.update(listType);
 	}
 
 	@Override

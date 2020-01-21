@@ -80,7 +80,7 @@ public class KaleoTimerLocalServiceImpl extends KaleoTimerLocalServiceBaseImpl {
 			kaleoTimer.setRecurrenceScale(durationScale.getValue());
 		}
 
-		kaleoTimerPersistence.update(kaleoTimer);
+		kaleoTimer = kaleoTimerPersistence.update(kaleoTimer);
 
 		// Kaleo actions
 

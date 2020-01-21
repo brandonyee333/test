@@ -120,7 +120,7 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 		dlFolder.setRestrictionType(DLFolderConstants.RESTRICTION_TYPE_INHERIT);
 		dlFolder.setExpandoBridgeAttributes(serviceContext);
 
-		dlFolderPersistence.update(dlFolder);
+		dlFolder = dlFolderPersistence.update(dlFolder);
 
 		// Resources
 
@@ -677,7 +677,7 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			dlFolder.setTreePath(dlFolder.buildTreePath());
 			dlFolder.setExpandoBridgeAttributes(serviceContext);
 
-			dlFolderPersistence.update(dlFolder);
+			dlFolder = dlFolderPersistence.update(dlFolder);
 
 			rebuildTree(
 				dlFolder.getCompanyId(), folderId, dlFolder.getTreePath(),
@@ -1047,7 +1047,7 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 			dlFolder.setDefaultFileEntryTypeId(defaultFileEntryTypeId);
 			dlFolder.setRestrictionType(restrictionType);
 
-			dlFolderPersistence.update(dlFolder);
+			dlFolder = dlFolderPersistence.update(dlFolder);
 
 			// File entry types
 
@@ -1124,7 +1124,7 @@ public class DLFolderLocalServiceImpl extends DLFolderLocalServiceBaseImpl {
 		dlFolder.setStatusByUserName(user.getFullName());
 		dlFolder.setStatusDate(new Date());
 
-		dlFolderPersistence.update(dlFolder);
+		dlFolder = dlFolderPersistence.update(dlFolder);
 
 		// Asset
 

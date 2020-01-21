@@ -351,7 +351,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 			thread.setPriority(priority);
 
-			mbThreadPersistence.update(thread);
+			thread = mbThreadPersistence.update(thread);
 
 			updatePriorities(thread.getThreadId(), priority);
 		}
@@ -378,7 +378,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		message.setExpandoBridgeAttributes(serviceContext);
 
-		mbMessagePersistence.update(message);
+		message = mbMessagePersistence.update(message);
 
 		// Resources
 
@@ -716,7 +716,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 					childMessage.setParentMessageId(
 						MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID);
 
-					mbMessagePersistence.update(childMessage);
+					childMessage = mbMessagePersistence.update(childMessage);
 
 					List<MBMessage> repliesMessages =
 						mbMessagePersistence.findByThreadReplies(
@@ -732,7 +732,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 					thread.setRootMessageId(childMessage.getMessageId());
 					thread.setRootMessageUserId(childMessage.getUserId());
 
-					mbThreadPersistence.update(thread);
+					thread = mbThreadPersistence.update(thread);
 				}
 			}
 			else {
@@ -770,7 +770,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 						thread.setLastPostDate(
 							prevAndNextMessages[0].getModifiedDate());
 
-						mbThreadPersistence.update(thread);
+						thread = mbThreadPersistence.update(thread);
 					}
 				}
 			}
@@ -1546,7 +1546,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		if (message.isAnswer() != answer) {
 			message.setAnswer(answer);
 
-			mbMessagePersistence.update(message);
+			message = mbMessagePersistence.update(message);
 		}
 
 		if (cascade) {
@@ -1727,7 +1727,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		message.setExpandoBridgeAttributes(serviceContext);
 
-		mbMessagePersistence.update(message);
+		message = mbMessagePersistence.update(message);
 
 		// Statistics
 
@@ -1746,7 +1746,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 			thread.setPriority(priority);
 
-			mbThreadPersistence.update(thread);
+			thread = mbThreadPersistence.update(thread);
 
 			updatePriorities(thread.getThreadId(), priority);
 		}
@@ -1777,9 +1777,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 		message.setBody(body);
 
-		mbMessagePersistence.update(message);
-
-		return message;
+		return mbMessagePersistence.update(message);
 	}
 
 	/**
@@ -1822,7 +1820,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		message.setStatusByUserName(user.getFullName());
 		message.setStatusDate(modifiedDate);
 
-		mbMessagePersistence.update(message);
+		message = mbMessagePersistence.update(message);
 
 		// Thread
 
