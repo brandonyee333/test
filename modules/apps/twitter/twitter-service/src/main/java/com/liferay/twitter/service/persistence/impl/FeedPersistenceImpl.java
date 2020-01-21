@@ -240,13 +240,13 @@ public class FeedPersistenceImpl
 					cacheResult(feed);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
 						_finderPathFetchByU_TSN, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -333,10 +333,10 @@ public class FeedPersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -550,11 +550,11 @@ public class FeedPersistenceImpl
 
 			return remove(feed);
 		}
-		catch (NoSuchFeedException nsee) {
-			throw nsee;
+		catch (NoSuchFeedException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -577,8 +577,8 @@ public class FeedPersistenceImpl
 				session.delete(feed);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -650,8 +650,8 @@ public class FeedPersistenceImpl
 				feed = (Feed)session.merge(feed);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -751,12 +751,12 @@ public class FeedPersistenceImpl
 						primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					FeedModelImpl.ENTITY_CACHE_ENABLED, FeedImpl.class,
 					primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -863,8 +863,8 @@ public class FeedPersistenceImpl
 					primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -995,12 +995,12 @@ public class FeedPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1044,11 +1044,11 @@ public class FeedPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

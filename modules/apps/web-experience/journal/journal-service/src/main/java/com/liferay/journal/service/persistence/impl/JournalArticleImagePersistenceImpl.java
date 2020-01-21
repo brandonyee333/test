@@ -233,12 +233,12 @@ public class JournalArticleImagePersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -400,8 +400,8 @@ public class JournalArticleImagePersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -571,10 +571,10 @@ public class JournalArticleImagePersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -743,12 +743,12 @@ public class JournalArticleImagePersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -911,8 +911,8 @@ public class JournalArticleImagePersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1083,10 +1083,10 @@ public class JournalArticleImagePersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1291,12 +1291,12 @@ public class JournalArticleImagePersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1483,8 +1483,8 @@ public class JournalArticleImagePersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1700,10 +1700,10 @@ public class JournalArticleImagePersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1960,13 +1960,13 @@ public class JournalArticleImagePersistenceImpl
 					cacheResult(journalArticleImage);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(
 						_finderPathFetchByG_A_V_E_E_L, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2121,10 +2121,10 @@ public class JournalArticleImagePersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2397,11 +2397,11 @@ public class JournalArticleImagePersistenceImpl
 
 			return remove(journalArticleImage);
 		}
-		catch (NoSuchArticleImageException nsee) {
-			throw nsee;
+		catch (NoSuchArticleImageException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2427,8 +2427,8 @@ public class JournalArticleImagePersistenceImpl
 				session.delete(journalArticleImage);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2482,8 +2482,8 @@ public class JournalArticleImagePersistenceImpl
 					journalArticleImage);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2679,12 +2679,12 @@ public class JournalArticleImagePersistenceImpl
 						JournalArticleImageImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					JournalArticleImageModelImpl.ENTITY_CACHE_ENABLED,
 					JournalArticleImageImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2799,8 +2799,8 @@ public class JournalArticleImagePersistenceImpl
 					JournalArticleImageImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2934,12 +2934,12 @@ public class JournalArticleImagePersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2983,11 +2983,11 @@ public class JournalArticleImagePersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

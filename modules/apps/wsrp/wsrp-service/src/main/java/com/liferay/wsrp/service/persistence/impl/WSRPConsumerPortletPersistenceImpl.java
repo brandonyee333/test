@@ -253,12 +253,12 @@ public class WSRPConsumerPortletPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -419,8 +419,8 @@ public class WSRPConsumerPortletPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -613,10 +613,10 @@ public class WSRPConsumerPortletPersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -812,12 +812,12 @@ public class WSRPConsumerPortletPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -993,8 +993,8 @@ public class WSRPConsumerPortletPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1200,10 +1200,10 @@ public class WSRPConsumerPortletPersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1381,12 +1381,12 @@ public class WSRPConsumerPortletPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1549,8 +1549,8 @@ public class WSRPConsumerPortletPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1722,10 +1722,10 @@ public class WSRPConsumerPortletPersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1901,12 +1901,12 @@ public class WSRPConsumerPortletPersistenceImpl
 					cacheResult(wsrpConsumerPortlet);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(_finderPathFetchByW_P, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1995,10 +1995,10 @@ public class WSRPConsumerPortletPersistenceImpl
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2032,9 +2032,9 @@ public class WSRPConsumerPortletPersistenceImpl
 
 			field.set(this, dbColumnNames);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -2255,11 +2255,11 @@ public class WSRPConsumerPortletPersistenceImpl
 
 			return remove(wsrpConsumerPortlet);
 		}
-		catch (NoSuchConsumerPortletException nsee) {
-			throw nsee;
+		catch (NoSuchConsumerPortletException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2285,8 +2285,8 @@ public class WSRPConsumerPortletPersistenceImpl
 				session.delete(wsrpConsumerPortlet);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2371,8 +2371,8 @@ public class WSRPConsumerPortletPersistenceImpl
 					wsrpConsumerPortlet);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2569,12 +2569,12 @@ public class WSRPConsumerPortletPersistenceImpl
 						WSRPConsumerPortletImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					WSRPConsumerPortletModelImpl.ENTITY_CACHE_ENABLED,
 					WSRPConsumerPortletImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2689,8 +2689,8 @@ public class WSRPConsumerPortletPersistenceImpl
 					WSRPConsumerPortletImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2824,12 +2824,12 @@ public class WSRPConsumerPortletPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2873,11 +2873,11 @@ public class WSRPConsumerPortletPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

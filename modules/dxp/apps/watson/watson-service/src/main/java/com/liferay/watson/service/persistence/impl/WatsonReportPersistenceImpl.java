@@ -98,9 +98,9 @@ public class WatsonReportPersistenceImpl
 
 			field.set(this, dbColumnNames);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -259,11 +259,11 @@ public class WatsonReportPersistenceImpl
 
 			return remove(watsonReport);
 		}
-		catch (NoSuchReportException nsee) {
-			throw nsee;
+		catch (NoSuchReportException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -286,8 +286,8 @@ public class WatsonReportPersistenceImpl
 				session.delete(watsonReport);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -362,8 +362,8 @@ public class WatsonReportPersistenceImpl
 				watsonReport = (WatsonReport)session.merge(watsonReport);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -461,12 +461,12 @@ public class WatsonReportPersistenceImpl
 						WatsonReportImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					WatsonReportModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonReportImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -575,8 +575,8 @@ public class WatsonReportPersistenceImpl
 					WatsonReportImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -708,12 +708,12 @@ public class WatsonReportPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -757,11 +757,11 @@ public class WatsonReportPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

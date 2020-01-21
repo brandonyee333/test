@@ -229,12 +229,12 @@ public class TrashVersionPersistenceImpl
 					FinderCacheUtil.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -390,8 +390,8 @@ public class TrashVersionPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -560,10 +560,10 @@ public class TrashVersionPersistenceImpl
 
 				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -743,12 +743,12 @@ public class TrashVersionPersistenceImpl
 					FinderCacheUtil.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -921,8 +921,8 @@ public class TrashVersionPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1103,10 +1103,10 @@ public class TrashVersionPersistenceImpl
 
 				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1249,13 +1249,13 @@ public class TrashVersionPersistenceImpl
 					cacheResult(trashVersion);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(
 						_finderPathFetchByC_C, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1330,10 +1330,10 @@ public class TrashVersionPersistenceImpl
 
 				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1556,11 +1556,11 @@ public class TrashVersionPersistenceImpl
 
 			return remove(trashVersion);
 		}
-		catch (NoSuchVersionException nsee) {
-			throw nsee;
+		catch (NoSuchVersionException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1583,8 +1583,8 @@ public class TrashVersionPersistenceImpl
 				session.delete(trashVersion);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1635,8 +1635,8 @@ public class TrashVersionPersistenceImpl
 				trashVersion = (TrashVersion)session.merge(trashVersion);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1800,12 +1800,12 @@ public class TrashVersionPersistenceImpl
 						TrashVersionImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				EntityCacheUtil.removeResult(
 					TrashVersionModelImpl.ENTITY_CACHE_ENABLED,
 					TrashVersionImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1914,8 +1914,8 @@ public class TrashVersionPersistenceImpl
 					TrashVersionImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2047,12 +2047,12 @@ public class TrashVersionPersistenceImpl
 					FinderCacheUtil.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2096,11 +2096,11 @@ public class TrashVersionPersistenceImpl
 				FinderCacheUtil.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

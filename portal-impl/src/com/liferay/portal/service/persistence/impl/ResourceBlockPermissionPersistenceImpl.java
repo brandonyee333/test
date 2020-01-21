@@ -238,12 +238,12 @@ public class ResourceBlockPermissionPersistenceImpl
 					FinderCacheUtil.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -407,8 +407,8 @@ public class ResourceBlockPermissionPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -581,10 +581,10 @@ public class ResourceBlockPermissionPersistenceImpl
 
 				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -751,12 +751,12 @@ public class ResourceBlockPermissionPersistenceImpl
 					FinderCacheUtil.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -920,8 +920,8 @@ public class ResourceBlockPermissionPersistenceImpl
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1093,10 +1093,10 @@ public class ResourceBlockPermissionPersistenceImpl
 
 				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1242,13 +1242,13 @@ public class ResourceBlockPermissionPersistenceImpl
 					cacheResult(resourceBlockPermission);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(
 						_finderPathFetchByR_R, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1325,10 +1325,10 @@ public class ResourceBlockPermissionPersistenceImpl
 
 				FinderCacheUtil.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1572,11 +1572,11 @@ public class ResourceBlockPermissionPersistenceImpl
 
 			return remove(resourceBlockPermission);
 		}
-		catch (NoSuchResourceBlockPermissionException nsee) {
-			throw nsee;
+		catch (NoSuchResourceBlockPermissionException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1602,8 +1602,8 @@ public class ResourceBlockPermissionPersistenceImpl
 				session.delete(resourceBlockPermission);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1660,8 +1660,8 @@ public class ResourceBlockPermissionPersistenceImpl
 						resourceBlockPermission);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1834,12 +1834,12 @@ public class ResourceBlockPermissionPersistenceImpl
 						nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				EntityCacheUtil.removeResult(
 					ResourceBlockPermissionModelImpl.ENTITY_CACHE_ENABLED,
 					ResourceBlockPermissionImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1956,8 +1956,8 @@ public class ResourceBlockPermissionPersistenceImpl
 					ResourceBlockPermissionImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2092,12 +2092,12 @@ public class ResourceBlockPermissionPersistenceImpl
 					FinderCacheUtil.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					FinderCacheUtil.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2142,11 +2142,11 @@ public class ResourceBlockPermissionPersistenceImpl
 				FinderCacheUtil.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				FinderCacheUtil.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

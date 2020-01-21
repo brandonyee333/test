@@ -239,11 +239,11 @@ public class WatsonPersonPersistenceImpl
 
 			return remove(watsonPerson);
 		}
-		catch (NoSuchPersonException nsee) {
-			throw nsee;
+		catch (NoSuchPersonException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -266,8 +266,8 @@ public class WatsonPersonPersistenceImpl
 				session.delete(watsonPerson);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -342,8 +342,8 @@ public class WatsonPersonPersistenceImpl
 				watsonPerson = (WatsonPerson)session.merge(watsonPerson);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -441,12 +441,12 @@ public class WatsonPersonPersistenceImpl
 						WatsonPersonImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					WatsonPersonModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonPersonImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -555,8 +555,8 @@ public class WatsonPersonPersistenceImpl
 					WatsonPersonImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -688,12 +688,12 @@ public class WatsonPersonPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -737,11 +737,11 @@ public class WatsonPersonPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

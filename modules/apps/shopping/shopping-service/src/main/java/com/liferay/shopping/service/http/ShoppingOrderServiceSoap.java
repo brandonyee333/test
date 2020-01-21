@@ -72,10 +72,10 @@ public class ShoppingOrderServiceSoap {
 				groupId, number, ppTxnId, ppPaymentStatus, ppPaymentGross,
 				ppReceiverEmail, ppPayerEmail, serviceContext);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -85,10 +85,10 @@ public class ShoppingOrderServiceSoap {
 		try {
 			ShoppingOrderServiceUtil.deleteOrder(groupId, orderId);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -103,10 +103,10 @@ public class ShoppingOrderServiceSoap {
 			return com.liferay.shopping.model.ShoppingOrderSoap.toSoapModel(
 				returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -119,10 +119,10 @@ public class ShoppingOrderServiceSoap {
 			ShoppingOrderServiceUtil.sendEmail(
 				groupId, orderId, emailType, serviceContext);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -140,10 +140,10 @@ public class ShoppingOrderServiceSoap {
 			return com.liferay.shopping.model.ShoppingOrderSoap.toSoapModel(
 				returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -176,10 +176,10 @@ public class ShoppingOrderServiceSoap {
 			return com.liferay.shopping.model.ShoppingOrderSoap.toSoapModel(
 				returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 

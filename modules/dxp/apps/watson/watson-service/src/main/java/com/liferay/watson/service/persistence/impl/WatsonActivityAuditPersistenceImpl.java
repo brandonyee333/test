@@ -242,11 +242,11 @@ public class WatsonActivityAuditPersistenceImpl
 
 			return remove(watsonActivityAudit);
 		}
-		catch (NoSuchActivityAuditException nsee) {
-			throw nsee;
+		catch (NoSuchActivityAuditException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -272,8 +272,8 @@ public class WatsonActivityAuditPersistenceImpl
 				session.delete(watsonActivityAudit);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -352,8 +352,8 @@ public class WatsonActivityAuditPersistenceImpl
 					watsonActivityAudit);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -453,12 +453,12 @@ public class WatsonActivityAuditPersistenceImpl
 						WatsonActivityAuditImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					WatsonActivityAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonActivityAuditImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -573,8 +573,8 @@ public class WatsonActivityAuditPersistenceImpl
 					WatsonActivityAuditImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -708,12 +708,12 @@ public class WatsonActivityAuditPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -757,11 +757,11 @@ public class WatsonActivityAuditPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

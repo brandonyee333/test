@@ -73,10 +73,10 @@ public class AssetCategoryPropertyServiceSoap {
 			return com.liferay.asset.kernel.model.AssetCategoryPropertySoap.
 				toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -87,10 +87,10 @@ public class AssetCategoryPropertyServiceSoap {
 			AssetCategoryPropertyServiceUtil.deleteCategoryProperty(
 				categoryPropertyId);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -107,10 +107,10 @@ public class AssetCategoryPropertyServiceSoap {
 			return com.liferay.asset.kernel.model.AssetCategoryPropertySoap.
 				toSoapModels(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -127,10 +127,10 @@ public class AssetCategoryPropertyServiceSoap {
 			return com.liferay.asset.kernel.model.AssetCategoryPropertySoap.
 				toSoapModels(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -147,10 +147,10 @@ public class AssetCategoryPropertyServiceSoap {
 			return com.liferay.asset.kernel.model.AssetCategoryPropertySoap.
 				toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
@@ -167,10 +167,10 @@ public class AssetCategoryPropertyServiceSoap {
 			return com.liferay.asset.kernel.model.AssetCategoryPropertySoap.
 				toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 

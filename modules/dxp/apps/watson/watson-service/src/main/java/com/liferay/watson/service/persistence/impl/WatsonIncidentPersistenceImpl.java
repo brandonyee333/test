@@ -240,11 +240,11 @@ public class WatsonIncidentPersistenceImpl
 
 			return remove(watsonIncident);
 		}
-		catch (NoSuchIncidentException nsee) {
-			throw nsee;
+		catch (NoSuchIncidentException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -268,8 +268,8 @@ public class WatsonIncidentPersistenceImpl
 				session.delete(watsonIncident);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -344,8 +344,8 @@ public class WatsonIncidentPersistenceImpl
 				watsonIncident = (WatsonIncident)session.merge(watsonIncident);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -444,12 +444,12 @@ public class WatsonIncidentPersistenceImpl
 						WatsonIncidentImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					WatsonIncidentModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonIncidentImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -560,8 +560,8 @@ public class WatsonIncidentPersistenceImpl
 					WatsonIncidentImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -694,12 +694,12 @@ public class WatsonIncidentPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -743,11 +743,11 @@ public class WatsonIncidentPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);

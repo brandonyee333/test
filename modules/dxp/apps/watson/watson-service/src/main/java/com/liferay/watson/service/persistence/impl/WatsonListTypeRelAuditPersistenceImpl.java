@@ -99,9 +99,9 @@ public class WatsonListTypeRelAuditPersistenceImpl
 
 			field.set(this, dbColumnNames);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -273,11 +273,11 @@ public class WatsonListTypeRelAuditPersistenceImpl
 
 			return remove(watsonListTypeRelAudit);
 		}
-		catch (NoSuchListTypeRelAuditException nsee) {
-			throw nsee;
+		catch (NoSuchListTypeRelAuditException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -303,8 +303,8 @@ public class WatsonListTypeRelAuditPersistenceImpl
 				session.delete(watsonListTypeRelAudit);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -385,8 +385,8 @@ public class WatsonListTypeRelAuditPersistenceImpl
 					watsonListTypeRelAudit);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -490,12 +490,12 @@ public class WatsonListTypeRelAuditPersistenceImpl
 						nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					WatsonListTypeRelAuditModelImpl.ENTITY_CACHE_ENABLED,
 					WatsonListTypeRelAuditImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -612,8 +612,8 @@ public class WatsonListTypeRelAuditPersistenceImpl
 					WatsonListTypeRelAuditImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -747,12 +747,12 @@ public class WatsonListTypeRelAuditPersistenceImpl
 					finderCache.putResult(finderPath, finderArgs, list);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (useFinderCache) {
 					finderCache.removeResult(finderPath, finderArgs);
 				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -797,11 +797,11 @@ public class WatsonListTypeRelAuditPersistenceImpl
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
