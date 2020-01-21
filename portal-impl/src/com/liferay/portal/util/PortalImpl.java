@@ -933,17 +933,33 @@ public class PortalImpl implements Portal {
 
 		url = url.trim();
 
-		if ((url.charAt(0) == CharPool.SLASH) &&
-			((url.length() == 1) ||
-			 ((url.length() > 1) && (url.charAt(1) != CharPool.SLASH)))) {
+		String protocol = HttpUtil.getProtocol(url);
+
+		String domain = HttpUtil.getDomain(url);
+
+		String path = HttpUtil.getPath(url);
+
+		if (domain.isEmpty()) {
+
+			if (path.isEmpty()) {
+				return StringPool.BLANK;
+			}
+
+			// Specs allows URL of protocol followed by path, but we do not.
+
+			if (!protocol.isEmpty()) {
+				return StringPool.BLANK;
+			}
+
+			// The URL is a relative path
 
 			return url;
 		}
 
-		String domain = HttpUtil.getDomain(url);
+		// Specs regards URL staring with double slashes valid, but we do not.
 
-		if (domain.isEmpty()) {
-			return null;
+		if (!protocol.isEmpty()) {
+			return StringPool.BLANK;
 		}
 
 		if (!_validPortalDomainCheckDisabled && isValidPortalDomain(domain)) {
