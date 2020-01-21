@@ -162,7 +162,8 @@ public class EditPublishConfigurationMVCActionCommand
 			if (e instanceof ConnectException ||
 				e instanceof RemoteExportException) {
 
-				_log.error("Connection error: " + e.getMessage());
+				_log.error(
+					"Unable to connect to remote live: " + e.getMessage());
 
 				if (_log.isDebugEnabled()) {
 					_log.debug(e, e);
