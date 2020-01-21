@@ -21,6 +21,31 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class CustomerWebConfigurationValues {
 
+	public static final String REMOTE_REST_SERVICE_API_DXP_CLOUD_HOST =
+		GetterUtil.getString(
+			CustomerWebConfigurationUtil.get(
+				"remote.rest.service.api.dxp.cloud.host"));
+
+	public static final String REMOTE_REST_SERVICE_API_DXP_CLOUD_PAGE_ID =
+		GetterUtil.getString(
+			CustomerWebConfigurationUtil.get(
+				"remote.rest.service.api.dxp.cloud.page.id"));
+
+	public static final int REMOTE_REST_SERVICE_API_DXP_CLOUD_PORT =
+		GetterUtil.getInteger(
+			CustomerWebConfigurationUtil.get(
+				"remote.rest.service.api.dxp.cloud.port"));
+
+	public static final String REMOTE_REST_SERVICE_API_DXP_CLOUD_PROTOCOL =
+		GetterUtil.getString(
+			CustomerWebConfigurationUtil.get(
+				"remote.rest.service.api.dxp.cloud.protocol"));
+
+	public static final String REMOTE_REST_SERVICE_API_DXP_CLOUD_TOKEN =
+		GetterUtil.getString(
+			CustomerWebConfigurationUtil.get(
+				"remote.rest.service.api.dxp.cloud.token"));
+
 	public static final String REMOTE_REST_SERVICE_API_TRAINING_HOST =
 		GetterUtil.getString(
 			CustomerWebConfigurationUtil.get(
