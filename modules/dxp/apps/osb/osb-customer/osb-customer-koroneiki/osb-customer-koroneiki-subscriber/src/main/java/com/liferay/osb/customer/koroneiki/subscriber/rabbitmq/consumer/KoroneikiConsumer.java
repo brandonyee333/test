@@ -37,6 +37,8 @@ import org.osgi.service.component.annotations.Reference;
 		"routing.key=koroneiki.account.teamrole.assigned",
 		"routing.key=koroneiki.account.teamrole.unassigned",
 		"routing.key=koroneiki.account.update",
+		"routing.key=koroneiki.entitlement.create",
+		"routing.key=koroneiki.entitlement.delete",
 		"routing.key=koroneiki.product.create",
 		"routing.key=koroneiki.product.delete",
 		"routing.key=koroneiki.product.update"
