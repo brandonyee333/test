@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Component;
  * @author Amos Fong
  */
 @Component(
-	immediate = true, property = "routing.key=koroneiki.entitlement.delete",
+	immediate = true, property = "topic.pattern=koroneiki.entitlement.delete",
 	service = EntitlementDeleteMessageSubscriber.class
 )
 public class EntitlementDeleteMessageSubscriber
