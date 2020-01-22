@@ -37,6 +37,10 @@ public class FlagsTag extends IncludeTag {
 		_contentTitle = contentTitle;
 	}
 
+	public void setContentURL(String contentURL) {
+		_contentURL = contentURL;
+	}
+
 	public void setLabel(boolean label) {
 		_label = label;
 	}
@@ -63,6 +67,7 @@ public class FlagsTag extends IncludeTag {
 		_className = null;
 		_classPK = 0;
 		_contentTitle = null;
+		_contentURL = null;
 		_label = true;
 		_message = null;
 		_reportedUserId = 0;
@@ -79,6 +84,7 @@ public class FlagsTag extends IncludeTag {
 		request.setAttribute(
 			"liferay-flags:flags:classPK", String.valueOf(_classPK));
 		request.setAttribute("liferay-flags:flags:contentTitle", _contentTitle);
+		request.setAttribute("liferay-flags:flags:contentURL", _contentURL);
 		request.setAttribute(
 			"liferay-flags:flags:label", String.valueOf(_label));
 		request.setAttribute("liferay-flags:flags:message", _message);
@@ -92,6 +98,7 @@ public class FlagsTag extends IncludeTag {
 	private String _className;
 	private long _classPK;
 	private String _contentTitle;
+	private String _contentURL;
 	private boolean _label = true;
 	private String _message;
 	private long _reportedUserId;

@@ -70,6 +70,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -101,6 +102,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import javax.portlet.PortletRequest;
+import javax.portlet.PortletURL;
+import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -494,6 +497,31 @@ public class MBUtil {
 		return entries;
 	}
 
+	public static String getMBMessageURL(
+		long messageId, RenderResponse renderResponse) {
+
+		PortletURL portletURL = renderResponse.createRenderURL();
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/message_boards/view_message");
+		portletURL.setParameter("messageId", String.valueOf(messageId));
+
+		return StringBundler.concat(
+			portletURL.toString(), StringPool.POUND,
+			renderResponse.getNamespace(), "message_",
+			String.valueOf(messageId));
+	}
+
+	public static String getMBMessageURL(
+		long messageId, String layoutURL, RenderResponse renderResponse) {
+
+		return StringBundler.concat(
+			layoutURL, Portal.FRIENDLY_URL_SEPARATOR,
+			"message_boards/view_message/", String.valueOf(messageId),
+			StringPool.POUND, renderResponse.getNamespace(), "message_",
+			String.valueOf(messageId));
+	}
+
 	public static long getMessageId(String messageIdString) {
 		String[] parts = _getMessageIdStringParts(messageIdString);
 
@@ -657,25 +685,21 @@ public class MBUtil {
 	}
 
 	public static String[] getThreadPriority(
-			MBGroupServiceSettings mbGroupServiceSettings, String languageId,
-			double value)
-		throws Exception {
+		MBGroupServiceSettings mbGroupServiceSettings, String languageId,
+		double value) {
 
-		String[] priorities = mbGroupServiceSettings.getPriorities(languageId);
+		String[] priorityPair = _findThreadPriority(
+			value, mbGroupServiceSettings.getPriorities(languageId));
 
-		String[] priorityPair = _findThreadPriority(value, priorities);
-
-		if (priorityPair == null) {
-			String defaultLanguageId = LocaleUtil.toLanguageId(
-				LocaleUtil.getSiteDefault());
-
-			priorities = mbGroupServiceSettings.getPriorities(
-				defaultLanguageId);
-
-			priorityPair = _findThreadPriority(value, priorities);
+		if (priorityPair != null) {
+			return priorityPair;
 		}
 
-		return priorityPair;
+		String defaultLanguageId = LocaleUtil.toLanguageId(
+			LocaleUtil.getSiteDefault());
+
+		return _findThreadPriority(
+			value, mbGroupServiceSettings.getPriorities(defaultLanguageId));
 	}
 
 	public static Set<Long> getThreadSubscriptionClassPKs(long userId) {
@@ -987,17 +1011,16 @@ public class MBUtil {
 			String[] priorityArray = StringUtil.split(
 				priority, StringPool.PIPE);
 
-			try {
-				String priorityName = priorityArray[0];
-				String priorityImage = priorityArray[1];
-				double priorityValue = GetterUtil.getDouble(priorityArray[2]);
-
-				if (value == priorityValue) {
-					return new String[] {priorityName, priorityImage};
-				}
+			if ((priorityArray == null) || (priorityArray.length < 3)) {
+				continue;
 			}
-			catch (Exception e) {
-				_log.error("Unable to determine thread priority", e);
+
+			String priorityName = priorityArray[0];
+			String priorityImage = priorityArray[1];
+			double priorityValue = GetterUtil.getDouble(priorityArray[2]);
+
+			if (value == priorityValue) {
+				return new String[] {priorityName, priorityImage};
 			}
 		}
 

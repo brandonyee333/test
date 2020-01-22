@@ -33,6 +33,12 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<description>The flagged asset's content URL.</description>
+			<name>contentURL</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<description>Whether to show message text as a label next to the flag icon or as a tooltip. The default value is <![CDATA[<code>true</code>]]>.</description>
 			<name>label</name>
 			<required>false</required>

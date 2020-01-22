@@ -22,9 +22,14 @@ String randomNamespace = StringUtil.randomId() + StringPool.UNDERLINE;
 String className = (String)request.getAttribute("liferay-flags:flags:className");
 long classPK = GetterUtil.getLong((String)request.getAttribute("liferay-flags:flags:classPK"));
 String contentTitle = GetterUtil.getString((String)request.getAttribute("liferay-flags:flags:contentTitle"));
+String contentURL = GetterUtil.getString((String)request.getAttribute("liferay-flags:flags:contentURL"));
 boolean label = GetterUtil.getBoolean((String)request.getAttribute("liferay-flags:flags:label"), true);
 String message = GetterUtil.getString((String)request.getAttribute("liferay-flags:flags:message"), "flag[action]");
 long reportedUserId = GetterUtil.getLong((String)request.getAttribute("liferay-flags:flags:reportedUserId"));
+
+if (Validator.isNull(contentURL)) {
+	contentURL = currentURL;
+}
 
 String cssClass = randomNamespace;
 
@@ -70,7 +75,7 @@ if (!TrashUtil.isInTrash(className, classPK)) {
 									className: '<%= className %>',
 									classPK: '<%= classPK %>',
 									contentTitle: '<%= HtmlUtil.escapeJS(contentTitle) %>',
-									contentURL: '<%= HtmlUtil.escapeJS(currentURL) %>',
+									contentURL: '<%= HtmlUtil.escapeJS(contentURL) %>',
 									reportedUserId: '<%= reportedUserId %>'
 								}
 							);

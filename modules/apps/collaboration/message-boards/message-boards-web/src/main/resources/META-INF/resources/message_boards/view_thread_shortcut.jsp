@@ -50,30 +50,13 @@ if (threadFlag != null) {
 			</c:if>
 
 			<%
-			String messageURL = null;
+			String rowHREF = null;
 
 			if (portletName.equals(MBPortletKeys.MESSAGE_BOARDS_ADMIN)) {
-				PortletURL selMessageURL = renderResponse.createRenderURL();
-
-				selMessageURL.setParameter("mvcRenderCommandName", "/message_boards/view_message");
-				selMessageURL.setParameter("messageId", String.valueOf(selMessage.getMessageId()));
-
-				messageURL = selMessageURL.toString();
+				rowHREF = MBUtil.getMBMessageURL(selMessage.getMessageId(), renderResponse);
 			}
 			else {
-				String layoutFullURL = PortalUtil.getLayoutFullURL(themeDisplay);
-
-				messageURL = layoutFullURL + Portal.FRIENDLY_URL_SEPARATOR + "message_boards/view_message/" + selMessage.getMessageId();
-
-				if (windowState.equals(WindowState.MAXIMIZED)) {
-					messageURL += "/maximized";
-				}
-			}
-
-			String rowHREF = "#" + renderResponse.getNamespace() + "message_" + message.getMessageId();
-
-			if (!themeDisplay.isFacebook()) {
-				rowHREF = messageURL + rowHREF;
+				rowHREF = MBUtil.getMBMessageURL(selMessage.getMessageId(), PortalUtil.getLayoutFullURL(themeDisplay), renderResponse);
 			}
 
 			boolean readThread = true;
