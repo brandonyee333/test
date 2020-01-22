@@ -15,15 +15,21 @@
 package com.liferay.osb.customer.koroneiki.subscriber;
 
 import com.liferay.osb.customer.admin.constants.WorkflowConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
+import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
+import com.liferay.portal.kernel.service.OrganizationLocalService;
+import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -77,6 +83,18 @@ public abstract class BaseMessageSubscriber implements MessageSubscriber {
 
 		MessageBusUtil.sendMessage(destination, message);
 	}
+
+	@Reference
+	protected JSONFactory jsonFactory;
+
+	@Reference
+	protected OrganizationLocalService organizationLocalService;
+
+	@Reference(target = "(provider=web)")
+	protected UserIdentityProvider userIdentityProvider;
+
+	@Reference
+	protected UserLocalService userLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseMessageSubscriber.class);

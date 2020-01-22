@@ -8,6 +8,7 @@ dependencies {
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
 	compileOnly project(":private:apps:osb-customer:osb-customer-admin:osb-customer-admin-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-api")
+	compileOnly project(":private:apps:osb-customer:osb-customer-identity-management:osb-customer-identity-management-api")
 	compileOnly project(":private:apps:osb-customer:osb-customer-koroneiki:osb-customer-koroneiki-web-service-api")
 }
 

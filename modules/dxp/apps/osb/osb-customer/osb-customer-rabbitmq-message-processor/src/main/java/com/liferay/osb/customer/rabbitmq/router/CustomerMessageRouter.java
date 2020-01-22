@@ -23,8 +23,6 @@ import com.liferay.osb.customer.rabbitmq.processor.AccountContactUnassignedMessa
 import com.liferay.osb.customer.rabbitmq.processor.AccountCreateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.AccountDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.AccountUpdateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.EntitlementCreateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.EntitlementDeleteMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationUpdateMessageProcessor;
@@ -110,22 +108,6 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(accountUpdateMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setEntitlementCreateMessageProcessor(
-		EntitlementCreateMessageProcessor entitlementCreateMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(entitlementCreateMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setEntitlementDeleteMessageProcessor(
-		EntitlementDeleteMessageProcessor entitlementDeleteMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(entitlementDeleteMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")

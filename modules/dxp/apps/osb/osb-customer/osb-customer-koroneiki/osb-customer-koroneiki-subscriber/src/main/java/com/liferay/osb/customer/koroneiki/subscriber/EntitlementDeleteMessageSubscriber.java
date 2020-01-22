@@ -12,9 +12,12 @@
  *
  */
 
-package com.liferay.osb.customer.rabbitmq.processor;
+package com.liferay.osb.customer.koroneiki.subscriber;
 
 import com.liferay.osb.customer.admin.constants.EntitlementConstants;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.distributed.messaging.Message;
+import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
@@ -26,11 +29,16 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	immediate = true, property = "routing.key=koroneiki.entitlement.delete",
-	service = EntitlementDeleteMessageProcessor.class
+	service = EntitlementDeleteMessageSubscriber.class
 )
-public class EntitlementDeleteMessageProcessor extends BaseMessageProcessor {
+public class EntitlementDeleteMessageSubscriber
+	extends BaseMessageSubscriber implements MessageSubscriber {
 
-	protected void doProcess(JSONObject jsonObject) throws Exception {
+	@Override
+	protected void doReceive(Message message) throws Exception {
+		JSONObject jsonObject = jsonFactory.createJSONObject(
+			(String)message.getPayload());
+
 		JSONObject contactJSONObject = jsonObject.getJSONObject("contact");
 
 		if (contactJSONObject == null) {
@@ -40,7 +48,8 @@ public class EntitlementDeleteMessageProcessor extends BaseMessageProcessor {
 		JSONObject entitlementJSONObject = jsonObject.getJSONObject(
 			"entitlement");
 
-		Organization organization = fetchOrganization(
+		Organization organization = organizationLocalService.fetchOrganization(
+			OSBCustomerConstants.COMPANY_ID,
 			EntitlementConstants.ORGANIZATION_NAME_PREFIX +
 				entitlementJSONObject.getString("name"));
 
@@ -48,7 +57,8 @@ public class EntitlementDeleteMessageProcessor extends BaseMessageProcessor {
 			return;
 		}
 
-		User user = fetchUserByEmailAddress(
+		User user = userLocalService.fetchUserByEmailAddress(
+			OSBCustomerConstants.COMPANY_ID,
 			contactJSONObject.getString("emailAddress"));
 
 		if (user == null) {

@@ -23,6 +23,8 @@ import com.liferay.osb.customer.koroneiki.subscriber.AccountDeleteMessageSubscri
 import com.liferay.osb.customer.koroneiki.subscriber.AccountTeamRoleAssignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountTeamRoleUnassignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountUpdateMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.EntitlementCreateMessageSubscriber;
+import com.liferay.osb.customer.koroneiki.subscriber.EntitlementDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.ProductCreateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.ProductDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.ProductUpdateMessageSubscriber;
@@ -116,6 +118,22 @@ public class KoroneikiMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(accountUpdateMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setEntitlementCreateMessageSubscriber(
+		EntitlementCreateMessageSubscriber entitlementCreateMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(entitlementCreateMessageSubscriber, properties);
+	}
+
+	@Reference(unbind = "-")
+	protected void setEntitlementDeleteMessageSubscriber(
+		EntitlementDeleteMessageSubscriber entitlementDeleteMessageSubscriber,
+		Map<String, Object> properties) {
+
+		addRoute(entitlementDeleteMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")
