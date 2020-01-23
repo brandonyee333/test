@@ -181,10 +181,10 @@ if (ratingsEntry != null) {
 									String positiveRatingMessage = null;
 
 									if (type.equals(RatingsType.THUMBS.getValue())) {
-										positiveRatingMessage = (thumbUp) ? "you-have-rated-this-as-good" : "rate-this-as-good";
+										positiveRatingMessage = thumbUp ? "you-have-rated-this-as-good" : "rate-this-as-good";
 									}
 									else {
-										positiveRatingMessage = (thumbUp) ? "unlike-this" : "like-this";
+										positiveRatingMessage = thumbUp ? "unlike-this" : "like-this";
 									}
 									%>
 
