@@ -41,6 +41,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Time;
+import com.liferay.portal.kernel.util.URLCodec;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.minifier.MinifierUtil;
 import com.liferay.portal.servlet.filters.dynamiccss.DynamicCSSUtil;
@@ -445,6 +446,12 @@ public class ComboServlet extends HttpServlet {
 		moduleName = getResourcePath(moduleName);
 
 		int index = moduleName.indexOf(CharPool.QUESTION);
+
+		if (moduleName.startsWith("/proxy/")) {
+			moduleName = URLCodec.decodeURL(moduleName);
+
+			index = moduleName.lastIndexOf(CharPool.QUESTION);
+		}
 
 		if (index != -1) {
 			moduleName = moduleName.substring(0, index);
