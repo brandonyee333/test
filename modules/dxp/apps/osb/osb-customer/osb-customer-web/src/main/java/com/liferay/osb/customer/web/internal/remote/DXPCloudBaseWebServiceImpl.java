@@ -69,8 +69,10 @@ public class DXPCloudBaseWebServiceImpl
 
 	@Override
 	public JSONArray getSubscribers() throws PortalException {
+		String response = null;
+
 		try {
-			String response = doGet(
+			response = doGet(
 				_URL_API_REST_DXP_CLOUD_SUBSCRIBERS,
 				Collections.<String, String>emptyMap(), _headers);
 

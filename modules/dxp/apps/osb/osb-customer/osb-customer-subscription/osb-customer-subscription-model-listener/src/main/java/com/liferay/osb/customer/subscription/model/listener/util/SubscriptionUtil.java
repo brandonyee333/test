@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.subscription.model.listener.util;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.osb.customer.service.DXPCloudBaseWebService;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
@@ -25,6 +26,7 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.HashMap;
@@ -84,11 +86,18 @@ public class SubscriptionUtil {
 
 		User user = _userLocalService.fetchUser(accountCustomer.getUserId());
 
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
+
+		boolean osbDXPCloudSubscription = GetterUtil.getBoolean(
+			expandoBridge.getAttribute("osbDXPCloudSubscription", false));
+
 		String value = subscribers.get(user.getEmailAddress());
 
-		if (Validator.isNull(value)) {
+		if (Validator.isNull(value) && !osbDXPCloudSubscription) {
 			_dxpCloudRESTWebService.postSubscriber(
 				user.getEmailAddress(), true);
+
+			expandoBridge.setAttribute("osbDXPCloudSubscription", true, false);
 		}
 	}
 
@@ -116,13 +125,23 @@ public class SubscriptionUtil {
 			AccountCustomerLocalServiceUtil.getUserAccountCustomers(
 				accountCustomer.getUserId());
 
-		boolean activeDXPCloud = hasActiveDXPCloud(userAccountCustomers);
-
 		User user = _userLocalService.fetchUser(accountCustomer.getUserId());
+
+		ExpandoBridge expandoBridge = user.getExpandoBridge();
 
 		String value = subscribers.get(user.getEmailAddress());
 
+		boolean activeDXPCloud = hasActiveDXPCloud(userAccountCustomers);
+
 		if (!activeDXPCloud && Validator.isNotNull(value)) {
+			boolean osbDXPCloudSubscription = GetterUtil.getBoolean(
+				expandoBridge.getAttribute("osbDXPCloudSubscription", false));
+
+			if (osbDXPCloudSubscription) {
+				expandoBridge.setAttribute(
+					"osbDXPCloudSubscription", false, false);
+			}
+
 			_dxpCloudRESTWebService.deleteSubscriber(value);
 		}
 	}

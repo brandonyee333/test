@@ -126,6 +126,14 @@ public class AdminServletContextListenerExpandoHelper {
 		}
 
 		try {
+			ExpandoColumnLocalServiceUtil.addColumn(
+				table.getTableId(), "osbDXPCloudSubscription",
+				ExpandoColumnConstants.BOOLEAN);
+		}
+		catch (DuplicateColumnNameException dcne) {
+		}
+
+		try {
 			ExpandoColumn expandoColumn =
 				ExpandoColumnLocalServiceUtil.addColumn(
 					table.getTableId(), "osbIndustry",
