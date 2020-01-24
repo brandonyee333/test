@@ -904,6 +904,10 @@
 		<url-pattern>/zh_TW/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>I18n Servlet</servlet-name>
+		<url-pattern>/ms_MY/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>Language Servlet</servlet-name>
 		<url-pattern>/language/*</url-pattern>
 	</servlet-mapping>
