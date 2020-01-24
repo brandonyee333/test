@@ -525,12 +525,7 @@ public class PortalImplUnitTest extends PowerMockito {
 
 		sb.append("2f");
 
-		try {
-			Assert.assertFalse(_portalImpl.isValidResourceId(sb.toString()));
-		}
-		catch (OutOfMemoryError oome) {
-			Assert.fail();
-		}
+		Assert.assertFalse(_portalImpl.isValidResourceId(sb.toString()));
 	}
 
 	@Test
