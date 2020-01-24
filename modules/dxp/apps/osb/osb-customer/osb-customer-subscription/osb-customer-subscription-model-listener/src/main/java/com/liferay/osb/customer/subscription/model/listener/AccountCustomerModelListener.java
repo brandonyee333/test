@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.subscription.model.listener;
 
-import com.liferay.osb.customer.subscription.model.listener.util.SubscriptionUtil;
+import com.liferay.osb.customer.subscription.model.listener.util.DXPCloudStatusPageSubscriptionUtil;
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.log.Log;
@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
-
-import java.util.Collections;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -40,14 +38,12 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			if (!_subscriptionUtil.hasActiveDXPCloud(
+			if (_dxpCloudStatusPageSubscriptionUtil.hasActiveDXPCloud(
 					accountCustomer.getAccountEntry())) {
 
-				return;
+				_dxpCloudStatusPageSubscriptionUtil.subscribe(
+					accountCustomer.getUserId());
 			}
-
-			_subscriptionUtil.subscribeToDXPCloud(
-				accountCustomer, Collections.emptyMap());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -59,8 +55,8 @@ public class AccountCustomerModelListener
 		throws ModelListenerException {
 
 		try {
-			_subscriptionUtil.unsubscribeToDXPCloud(
-				accountCustomer, Collections.emptyMap());
+			_dxpCloudStatusPageSubscriptionUtil.unsubscribe(
+				accountCustomer.getUserId());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -79,6 +75,7 @@ public class AccountCustomerModelListener
 		AccountCustomerModelListener.class);
 
 	@Reference
-	private SubscriptionUtil _subscriptionUtil;
+	private DXPCloudStatusPageSubscriptionUtil
+		_dxpCloudStatusPageSubscriptionUtil;
 
 }

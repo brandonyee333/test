@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.subscription.model.listener;
 
-import com.liferay.osb.customer.subscription.model.listener.util.SubscriptionUtil;
+import com.liferay.osb.customer.subscription.model.listener.util.DXPCloudStatusPageSubscriptionUtil;
 import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.ProductEntry;
@@ -42,18 +42,20 @@ public class OfferingEntryModelListener
 		throws ModelListenerException {
 
 		try {
+			if (offeringEntry.getStatus() !=
+					OfferingEntryConstants.STATUS_ACTIVE) {
+
+				return;
+			}
+
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
 			if (!productEntry.isDXPCloud()) {
 				return;
 			}
 
-			if (offeringEntry.getStatus() ==
-					OfferingEntryConstants.STATUS_ACTIVE) {
-
-				_subscriptionUtil.subscribeToDXPCloud(
-					offeringEntry.getAccountEntry());
-			}
+			_dxpCloudStatusPageSubscriptionUtil.subscribe(
+				offeringEntry.getAccountEntry());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -65,12 +67,20 @@ public class OfferingEntryModelListener
 		throws ModelListenerException {
 
 		try {
+			if (offeringEntry.getStatus() !=
+					OfferingEntryConstants.STATUS_ACTIVE) {
+
+				return;
+			}
+
 			ProductEntry productEntry = offeringEntry.getProductEntry();
 
-			if (productEntry.isDXPCloud()) {
-				_subscriptionUtil.unsubscribeToDXPCloud(
-					offeringEntry.getAccountEntry());
+			if (!productEntry.isDXPCloud()) {
+				return;
 			}
+
+			_dxpCloudStatusPageSubscriptionUtil.unsubscribe(
+				offeringEntry.getAccountEntry());
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -94,11 +104,11 @@ public class OfferingEntryModelListener
 				if (offeringEntry.getStatus() ==
 						OfferingEntryConstants.STATUS_ACTIVE) {
 
-					_subscriptionUtil.subscribeToDXPCloud(
+					_dxpCloudStatusPageSubscriptionUtil.subscribe(
 						offeringEntry.getAccountEntry());
 				}
 				else {
-					_subscriptionUtil.unsubscribeToDXPCloud(
+					_dxpCloudStatusPageSubscriptionUtil.unsubscribe(
 						offeringEntry.getAccountEntry());
 				}
 			}
@@ -140,6 +150,7 @@ public class OfferingEntryModelListener
 			OfferingEntryModelListener.class + "._oldOfferingEntry");
 
 	@Reference
-	private SubscriptionUtil _subscriptionUtil;
+	private DXPCloudStatusPageSubscriptionUtil
+		_dxpCloudStatusPageSubscriptionUtil;
 
 }

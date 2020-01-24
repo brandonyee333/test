@@ -3,6 +3,6 @@
 <suppressions>
 	<source-check>
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/subscription/model/listener/OfferingEntryModelListener.java" />
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/subscription/model/listener/util/SubscriptionUtil.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/subscription/model/listener/util/DXPCloudStatusPageSubscriptionUtil.java" />
 	</source-check>
 </suppressions>

@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.web.internal.remote;
 
-import com.liferay.osb.customer.service.DXPCloudBaseWebService;
+import com.liferay.osb.customer.service.DXPCloudStatusPageWebService;
 import com.liferay.osb.customer.web.internal.configuration.CustomerWebConfigurationValues;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
@@ -37,9 +37,10 @@ import org.osgi.service.component.annotations.Component;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = DXPCloudBaseWebService.class)
-public class DXPCloudBaseWebServiceImpl
-	extends BaseJSONWebServiceClientImpl implements DXPCloudBaseWebService {
+@Component(immediate = true, service = DXPCloudStatusPageWebService.class)
+public class DXPCloudStatusPageWebServiceImpl
+	extends BaseJSONWebServiceClientImpl
+	implements DXPCloudStatusPageWebService {
 
 	@Override
 	public void afterPropertiesSet() throws IOReactorException {
@@ -69,10 +70,8 @@ public class DXPCloudBaseWebServiceImpl
 
 	@Override
 	public JSONArray getSubscribers() throws PortalException {
-		String response = null;
-
 		try {
-			response = doGet(
+			String response = doGet(
 				_URL_API_REST_DXP_CLOUD_SUBSCRIBERS,
 				Collections.<String, String>emptyMap(), _headers);
 
@@ -84,8 +83,7 @@ public class DXPCloudBaseWebServiceImpl
 	}
 
 	@Override
-	public JSONObject postSubscriber(
-			String emailAddress, boolean skipConfirmationNotification)
+	public JSONObject postSubscriber(String emailAddress)
 		throws PortalException {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
@@ -93,8 +91,7 @@ public class DXPCloudBaseWebServiceImpl
 		JSONObject subscriberJSONObject = JSONFactoryUtil.createJSONObject();
 
 		subscriberJSONObject.put("email", emailAddress);
-		subscriberJSONObject.put(
-			"skip_confirmation_notification", skipConfirmationNotification);
+		subscriberJSONObject.put("skip_confirmation_notification", true);
 
 		jsonObject.put("subscriber", subscriberJSONObject);
 

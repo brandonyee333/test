@@ -21,15 +21,14 @@ import com.liferay.portal.kernel.json.JSONObject;
 /**
  * @author Jenny Chen
  */
-public interface DXPCloudBaseWebService {
+public interface DXPCloudStatusPageWebService {
 
 	public JSONObject deleteSubscriber(String subscriberId)
 		throws PortalException;
 
 	public JSONArray getSubscribers() throws PortalException;
 
-	public JSONObject postSubscriber(
-			String emailAddress, boolean skipConfirmationNotification)
+	public JSONObject postSubscriber(String emailAddress)
 		throws PortalException;
 
 }
