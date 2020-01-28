@@ -29,12 +29,12 @@ public interface ContactWebService {
 			String accountKey, int page, int pageSize)
 		throws Exception;
 
+	public List<Contact> getTeamContacts(String teamKey, int page, int pageSize)
+		throws Exception;
+
 	public List<Contact> search(String filterString, int page, int pageSize)
 		throws Exception;
 
 	public long searchCount(String filterString) throws Exception;
-
-	public List<Contact> getTeamContacts(String teamKey, int page, int pageSize)
-		throws Exception;
 
 }

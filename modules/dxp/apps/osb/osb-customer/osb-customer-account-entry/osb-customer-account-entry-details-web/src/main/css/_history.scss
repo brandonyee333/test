@@ -54,18 +54,23 @@
 			margin-right: 0;
 		}
 
-		.icon .lexicon-icon-angle-right {
-			width: 8px;
+		.description {
+			margin-left: $margin-md;
 		}
 
-		.user-display {
-			display: inline-flex;
-			margin-right: $margin-md;
+		.icon .lexicon-icon-angle-right {
+			width: 8px;
 		}
 
 		.summary {
 			font-style: italic;
 			margin-left: $margin-md;
+			margin-right: $margin-md;
+		}
+
+		.user-display {
+			display: inline-flex;
+			margin-right: $margin-md;
 		}
 	}
 }

@@ -212,9 +212,30 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	public List<AuditEntry> getAuditEntries() throws Exception {
-		return _auditEntryWebService.getAccountAuditEntries(
-			_account.getKey(), 1, 1000);
+	public List<List<AuditEntry>> getAuditEntrySets() throws Exception {
+		List<List<AuditEntry>> auditEntrySets = new ArrayList<>();
+
+		List<AuditEntry> auditEntries =
+			_auditEntryWebService.getAccountAuditEntries(
+				_account.getKey(), 1, 1000);
+
+		long auditSetId = 0;
+
+		List<AuditEntry> auditEntrySet = null;
+
+		for (AuditEntry auditEntry : auditEntries) {
+			if (auditEntry.getAuditSetId() != auditSetId) {
+				auditSetId = auditEntry.getAuditSetId();
+
+				auditEntrySet = new ArrayList<>();
+
+				auditEntrySets.add(auditEntrySet);
+			}
+
+			auditEntrySet.add(auditEntry);
+		}
+
+		return auditEntrySets;
 	}
 
 	public List<Contact> getCustomerContacts() throws Exception {
