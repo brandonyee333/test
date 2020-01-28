@@ -2506,6 +2506,145 @@ public class StagingImpl implements Staging {
 		boolean secureConnection, long remoteGroupId) {
 	}
 
+	@Override
+	public void validateRemoteGroupIsSame(
+			long groupId, long remoteGroupId, String remoteAddress,
+			int remotePort, String remotePathContext, boolean secureConnection)
+		throws PortalException {
+
+		if (remoteGroupId <= 0) {
+			RemoteOptionsException roe = new RemoteOptionsException(
+				RemoteOptionsException.REMOTE_GROUP_ID);
+
+			roe.setRemoteGroupId(remoteGroupId);
+
+			throw roe;
+		}
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		PermissionChecker permissionChecker =
+			PermissionThreadLocal.getPermissionChecker();
+
+		User user = permissionChecker.getUser();
+
+		String remoteURL = buildRemoteURL(
+			remoteAddress, remotePort, remotePathContext, secureConnection);
+
+		HttpPrincipal httpPrincipal = new HttpPrincipal(
+			remoteURL, user.getLogin(), user.getPassword(),
+			user.isPasswordEncrypted());
+
+		try {
+			currentThread.setContextClassLoader(
+				PortalClassLoaderUtil.getClassLoader());
+
+			// Ping the remote host and verify that the remote group exists in
+			// the same company as the remote user
+
+			GroupServiceHttp.checkRemoteStagingGroup(
+				httpPrincipal, remoteGroupId);
+
+			Group group = _groupLocalService.getGroup(groupId);
+
+			Group remoteGroup = GroupServiceHttp.getGroup(
+				httpPrincipal, remoteGroupId);
+
+			if (group.equals(remoteGroup) &&
+				Objects.equals(group.getUuid(), remoteGroup.getUuid())) {
+
+				String validationTimestamp = String.valueOf(
+					System.currentTimeMillis());
+
+				_setGroupTypeSetting(
+					group, "remoteGroupCheck", validationTimestamp);
+
+				remoteGroup = GroupServiceHttp.getGroup(
+					httpPrincipal, remoteGroupId);
+
+				UnicodeProperties remoteTypeSettingsProperties =
+					remoteGroup.getTypeSettingsProperties();
+
+				String remoteTimestamp = GetterUtil.getString(
+					remoteTypeSettingsProperties.getProperty(
+						"remoteGroupCheck"));
+
+				if (validationTimestamp.equals(remoteTimestamp)) {
+					RemoteExportException ree = new RemoteExportException(
+						RemoteExportException.SAME_GROUP);
+
+					ree.setGroupId(remoteGroupId);
+
+					throw ree;
+				}
+			}
+		}
+		catch (NoSuchGroupException nsge) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(nsge, nsge);
+			}
+
+			RemoteExportException ree = new RemoteExportException(
+				RemoteExportException.NO_GROUP);
+
+			ree.setGroupId(remoteGroupId);
+
+			throw ree;
+		}
+		catch (PrincipalException pe) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(pe, pe);
+			}
+
+			RemoteExportException ree = new RemoteExportException(
+				RemoteExportException.NO_PERMISSIONS);
+
+			ree.setGroupId(remoteGroupId);
+
+			throw ree;
+		}
+		catch (RemoteAuthException rae) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(rae, rae);
+			}
+
+			rae.setURL(remoteURL);
+
+			throw rae;
+		}
+		catch (SystemException se) {
+
+			// LPS-52675
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(se, se);
+			}
+
+			RemoteExportException ree = new RemoteExportException(
+				RemoteExportException.BAD_CONNECTION, se.getMessage());
+
+			ree.setURL(remoteURL);
+
+			throw ree;
+		}
+		finally {
+			_setGroupTypeSetting(groupId, "remoteGroupCheck", null);
+
+			currentThread.setContextClassLoader(contextClassLoader);
+		}
+	}
+
 	protected long doCopyRemoteLayouts(
 			ExportImportConfiguration exportImportConfiguration,
 			String remoteAddress, int remotePort, String remotePathContext,
@@ -3194,6 +3333,33 @@ public class StagingImpl implements Staging {
 		finally {
 			currentThread.setContextClassLoader(contextClassLoader);
 		}
+	}
+
+	private void _setGroupTypeSetting(Group group, String key, String value) {
+		if (group == null) {
+			return;
+		}
+
+		UnicodeProperties typeSettingsProperties =
+			group.getTypeSettingsProperties();
+
+		if (Validator.isNotNull(value)) {
+			typeSettingsProperties.setProperty(key, value);
+		}
+		else {
+			typeSettingsProperties.remove(key);
+		}
+
+		group.setTypeSettingsProperties(typeSettingsProperties);
+		group.setTypeSettings(typeSettingsProperties.toString());
+
+		_groupLocalService.updateGroup(group);
+	}
+
+	private void _setGroupTypeSetting(long groupId, String key, String value) {
+		Group group = _groupLocalService.fetchGroup(groupId);
+
+		_setGroupTypeSetting(group, key, value);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(StagingImpl.class);
