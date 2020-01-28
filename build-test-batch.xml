@@ -2321,13 +2321,27 @@ app.server.type=@{app.server.type}]]></echo>
 								test.sql.zip.url="${test.sql.zip.url}"
 							/>
 
-							<gradle-execute dir="modules" task="deploy">
+							<gradle-execute dir="modules/core" task="deploy">
 								<arg value="--parallel" />
 								<arg value="-Dbuild.profile=portal-pre" />
 								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
 							</gradle-execute>
 
-							<ant dir="portal-kernel" inheritAll="false" target="compile" />
+							<gradle-execute dir="modules" task=":apps:foundation:petra:petra-encryptor:deploy">
+								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+							</gradle-execute>
+
+							<gradle-execute dir="modules" task=":apps:foundation:petra:petra-xml:deploy">
+								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+							</gradle-execute>
+
+							<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
+
+							<gradle-execute dir="modules/apps" task="deploy">
+								<arg value="--parallel" />
+								<arg value="-Dbuild.profile=portal-pre" />
+								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+							</gradle-execute>
 
 							<parallel failonany="true" threadcount="${parallel.thread.count}">
 								<ant dir="portal-test" inheritAll="false" target="jar" />
