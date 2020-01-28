@@ -14,25 +14,11 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
+<portlet:actionURL name="linkAccountEntries" var="linkAccountEntriesURL">
+	<portlet:param name="mvcPath" value="/admin/view.jsp" />
+	<portlet:param name="redirect" value="<%= currentURL %>" />
+	<portlet:param name="tabs1" value="tools" />
+	<portlet:param name="tabs2" value="migration" />
+</portlet:actionURL>
 
-<%
-String tabs2 = ParamUtil.getString(request, "tabs2", "debugging");
-
-PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
-%>
-
-<liferay-ui:tabs
-	names="debugging,migration"
-	param="tabs2"
-	url="<%= portletURL.toString() %>"
-/>
-
-<c:choose>
-	<c:when test='<%= tabs2.equals("debugging") %>'>
-		<%@ include file="/admin/debugging.jspf" %>
-	</c:when>
-	<c:otherwise>
-		<%@ include file="/admin/migration.jspf" %>
-	</c:otherwise>
-</c:choose>
+<aui:button onClick="<%= linkAccountEntriesURL.toString() %>" value="link-koroneiki-accounts" />
