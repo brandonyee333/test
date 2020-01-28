@@ -127,10 +127,6 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 
 	@Override
 	public DataSource initDataSource(Properties properties) throws Exception {
-		testDatabaseClass(properties);
-
-		_waitForJDBCConnection(properties);
-
 		String jndiName = properties.getProperty("jndi.name");
 
 		if (Validator.isNotNull(jndiName)) {
@@ -145,6 +141,11 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			catch (Exception e) {
 				_log.error("Unable to lookup " + jndiName, e);
 			}
+		}
+		else {
+			testDatabaseClass(properties);
+
+			_waitForJDBCConnection(properties);
 		}
 
 		if (_log.isDebugEnabled()) {
