@@ -53,6 +53,7 @@
 		<suppress checks="TransactionalTestRuleCheck" files=".*" />
 	</checkstyle>
 	<source-check>
+		<suppress checks="BNDExportsCheck" files="util-slf4j/bnd\.bnd" />
 		<suppress checks="CDNCheck" files="test\.properties" />
 		<suppress checks="JavaCleanUpMethodVariablesCheck" files="util-taglib/src/com/liferay/taglib/util/IncludeTag\.java" />
 		<suppress checks="JavaDeserializationSecurityCheck" files="portal-impl/src/com/liferay/portal/bean/BeanPropertiesImpl\.java" />
