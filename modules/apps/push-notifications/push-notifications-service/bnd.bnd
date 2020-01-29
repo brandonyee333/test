@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Push Notifications Service
 Bundle-SymbolicName: com.liferay.push.notifications.service
-Bundle-Version: 1.0.45
+Bundle-Version: 1.0.46
 Export-Package: com.liferay.push.notifications.service.permission
 Liferay-Require-SchemaVersion: 1.0.6
 Liferay-Service: true
