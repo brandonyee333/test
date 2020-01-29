@@ -21,8 +21,8 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
  */
 public interface ProductWebService {
 
-	public Product fetchProductByName(String name) throws Exception;
+	public Product fetchProduct(String productKey) throws Exception;
 
-	public Product getProduct(String productKey) throws Exception;
+	public Product fetchProductByName(String name) throws Exception;
 
 }

@@ -26,7 +26,7 @@ import com.liferay.osb.customer.admin.exception.LicenseEntryPortalVersionExcepti
 import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
 import com.liferay.osb.customer.admin.exception.NoSuchProductEntryException;
 import com.liferay.osb.customer.admin.exception.ProductEntryEnvironmentException;
-import com.liferay.osb.customer.admin.exception.ProductEntryNameException;
+import com.liferay.osb.customer.admin.exception.ProductEntryKoroneikiProductKeyException;
 import com.liferay.osb.customer.admin.exception.RequiredProductEntryException;
 import com.liferay.osb.customer.admin.exception.RequiredSupportRegionException;
 import com.liferay.osb.customer.admin.exception.SupportRegionNameException;
@@ -46,6 +46,7 @@ import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamRoleWebService;
 import com.liferay.osb.customer.koroneiki.web.service.TeamWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.exception.NoSuchListTypeException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -396,18 +397,27 @@ public class AdminPortlet extends MVCPortlet {
 			actionRequest, "versionsListType");
 		String zendeskTag = ParamUtil.getString(actionRequest, "zendeskTag");
 
+		ProductEntry productEntry = null;
+
 		if (productEntryId <= 0) {
-			_productEntryLocalService.addProductEntry(
+			productEntry = _productEntryLocalService.addProductEntry(
 				themeDisplay.getUserId(), koroneikiProductKey, null,
 				environment, versionsListType, zendeskTag);
 		}
 		else {
-			ProductEntry productEntry =
-				_productEntryLocalService.getProductEntry(productEntryId);
+			productEntry = _productEntryLocalService.getProductEntry(
+				productEntryId);
 
 			_productEntryLocalService.updateProductEntry(
 				productEntryId, koroneikiProductKey, productEntry.getName(),
 				environment, versionsListType, zendeskTag);
+		}
+
+		Product product = _productWebService.fetchProduct(koroneikiProductKey);
+
+		if (product != null) {
+			_productEntryLocalService.updateName(
+				productEntry.getProductEntryId(), product.getName());
 		}
 	}
 
@@ -572,7 +582,7 @@ public class AdminPortlet extends MVCPortlet {
 			cause instanceof NoSuchProductEntryException ||
 			cause instanceof PrincipalException ||
 			cause instanceof ProductEntryEnvironmentException ||
-			cause instanceof ProductEntryNameException ||
+			cause instanceof ProductEntryKoroneikiProductKeyException ||
 			cause instanceof RequiredProductEntryException ||
 			cause instanceof RequiredSupportRegionException ||
 			cause instanceof SupportRegionNameException ||

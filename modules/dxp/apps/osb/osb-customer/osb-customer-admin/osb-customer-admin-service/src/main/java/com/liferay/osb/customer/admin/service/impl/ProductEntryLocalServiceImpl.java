@@ -16,7 +16,7 @@ package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.constants.ExternalIdMapperConstants;
 import com.liferay.osb.customer.admin.exception.DuplicateProductEntryException;
-import com.liferay.osb.customer.admin.exception.ProductEntryNameException;
+import com.liferay.osb.customer.admin.exception.ProductEntryKoroneikiProductKeyException;
 import com.liferay.osb.customer.admin.exception.ZendeskTagException;
 import com.liferay.osb.customer.admin.model.ExternalIdMapper;
 import com.liferay.osb.customer.admin.model.ProductEntry;
@@ -45,7 +45,7 @@ public class ProductEntryLocalServiceImpl
 		User user = userLocalService.getUser(userId);
 		Date now = new Date();
 
-		validate(0, koroneikiProductKey, name, zendeskTag);
+		validate(0, koroneikiProductKey, zendeskTag);
 
 		long productEntryId = counterLocalService.increment();
 
@@ -101,6 +101,13 @@ public class ProductEntryLocalServiceImpl
 			koroneikiProductKey);
 	}
 
+	public ProductEntry fetchProductEntryByKoroneikiKey(
+		String koroneikiProductKey) {
+
+		return productEntryPersistence.fetchByKoroneikiProductKey(
+			koroneikiProductKey);
+	}
+
 	public ProductEntry fetchProductEntryByName(String name) {
 		return productEntryPersistence.fetchByName(name);
 	}
@@ -134,12 +141,23 @@ public class ProductEntryLocalServiceImpl
 		return productEntryFinder.countByName(name, params);
 	}
 
+	public ProductEntry updateName(long productEntryId, String name)
+		throws PortalException {
+
+		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
+			productEntryId);
+
+		productEntry.setName(name);
+
+		return productEntryPersistence.update(productEntry);
+	}
+
 	public ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,
 			int environment, String versionsListType, String zendeskTag)
 		throws PortalException {
 
-		validate(productEntryId, koroneikiProductKey, name, zendeskTag);
+		validate(productEntryId, koroneikiProductKey, zendeskTag);
 
 		ProductEntry productEntry = productEntryPersistence.findByPrimaryKey(
 			productEntryId);
@@ -186,17 +204,16 @@ public class ProductEntryLocalServiceImpl
 	}
 
 	protected void validate(
-			long productEntryId, String koroneikiProductKey, String name,
-			String zendeskTag)
+			long productEntryId, String koroneikiProductKey, String zendeskTag)
 		throws PortalException {
+
+		if (Validator.isNull(koroneikiProductKey)) {
+			throw new ProductEntryKoroneikiProductKeyException();
+		}
 
 		ProductEntry productEntry =
 			productEntryPersistence.fetchByKoroneikiProductKey(
 				koroneikiProductKey);
-
-		if (Validator.isNull(name)) {
-			throw new ProductEntryNameException();
-		}
 
 		if ((productEntry != null) &&
 			(productEntry.getProductEntryId() != productEntryId)) {

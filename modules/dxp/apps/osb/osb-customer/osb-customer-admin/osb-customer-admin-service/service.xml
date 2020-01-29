@@ -441,7 +441,7 @@
 		<exception>LicenseEntryName</exception>
 		<exception>LicenseEntryPortalVersion</exception>
 		<exception>ProductEntryEnvironment</exception>
-		<exception>ProductEntryName</exception>
+		<exception>ProductEntryKoroneikiProductKey</exception>
 		<exception>RequiredAccountEntry</exception>
 		<exception>RequiredProductEntry</exception>
 		<exception>RequiredSupportRegion</exception>

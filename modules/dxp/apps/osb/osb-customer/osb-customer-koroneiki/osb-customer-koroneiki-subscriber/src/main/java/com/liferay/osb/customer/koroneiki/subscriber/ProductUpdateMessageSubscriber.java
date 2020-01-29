@@ -39,13 +39,13 @@ public class ProductUpdateMessageSubscriber
 		Product product = ProductSerDes.toDTO((String)message.getPayload());
 
 		ProductEntry productEntry =
-			_productEntryLocalService.getProductEntryByKoroneikiKey(
+			_productEntryLocalService.fetchProductEntryByKoroneikiKey(
 				product.getKey());
 
-		_productEntryLocalService.updateProductEntry(
-			productEntry.getProductEntryId(), product.getKey(),
-			product.getName(), productEntry.getEnvironment(),
-			productEntry.getVersionsListType(), productEntry.getZendeskTag());
+		if (productEntry != null) {
+			_productEntryLocalService.updateName(
+				productEntry.getProductEntryId(), product.getName());
+		}
 	}
 
 	@Reference

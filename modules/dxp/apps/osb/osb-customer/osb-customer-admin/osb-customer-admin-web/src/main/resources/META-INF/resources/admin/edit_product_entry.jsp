@@ -28,7 +28,7 @@ ProductEntry productEntry = ProductEntryLocalServiceUtil.fetchProductEntry(produ
 Product koroneikiProduct = null;
 
 if ((productEntry != null) && Validator.isNotNull(productEntry.getKoroneikiProductKey())) {
-	koroneikiProduct = productWebService.getProduct(productEntry.getKoroneikiProductKey());
+	koroneikiProduct = productWebService.fetchProduct(productEntry.getKoroneikiProductKey());
 }
 
 int environment = BeanParamUtil.getInteger(productEntry, request, "environment");
@@ -58,8 +58,14 @@ if (productEntry != null) {
 
 	<liferay-ui:error exception="<%= DuplicateProductEntryException.class %>" message="please-enter-a-unique-name" />
 	<liferay-ui:error exception="<%= ProductEntryEnvironmentException.class %>" message="please-enter-a-valid-environment" />
-	<liferay-ui:error exception="<%= ProductEntryNameException.class %>" message="please-enter-a-valid-name" />
+	<liferay-ui:error exception="<%= ProductEntryKoroneikiProductKeyException.class %>" message="please-enter-a-valid-koroneiki-product-key" />
 	<liferay-ui:error exception="<%= ZendeskTagException.class %>" message="please-enter-a-valid-zendesk-tag" />
+
+	<c:if test="<%= (productEntry != null) && Validator.isNotNull(productEntry.getKoroneikiProductKey()) && (koroneikiProduct == null) %>">
+		<div class="alert alert-danger">
+			<liferay-ui:message key="unable-to-find-the-koroneiki-product" />
+		</div>
+	</c:if>
 
 	<aui:model-context bean="<%= productEntry %>" model="<%= ProductEntry.class %>" />
 
@@ -72,14 +78,18 @@ if (productEntry != null) {
 				<aui:input label="" name="koroneikiProductKey" />
 			</td>
 		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="name" />
-			</td>
-			<td>
-				<%= HtmlUtil.escape(productEntry.getName()) %>
-			</td>
-		</tr>
+
+		<c:if test="<%= productEntry != null %>">
+			<tr>
+				<td>
+					<liferay-ui:message key="name" />
+				</td>
+				<td>
+					<%= HtmlUtil.escape(productEntry.getName()) %>
+				</td>
+			</tr>
+		</c:if>
+
 		<tr>
 			<td>
 				<liferay-ui:message key="environment" />
@@ -121,6 +131,16 @@ if (productEntry != null) {
 			</tr>
 		</c:if>
 
+		<tr>
+			<td>
+				<liferay-ui:message key="zendesk-tag" />
+			</td>
+			<td>
+				<aui:fieldset>
+					<aui:input label="" name="zendeskTag" style="width: 500px;" type="text" value="<%= zendeskTag %>" />
+				</aui:fieldset>
+			</td>
+		</tr>
 		<tr>
 			<td>
 				<liferay-ui:message key="external-links" />
@@ -170,16 +190,6 @@ if (productEntry != null) {
 					%>
 
 				</table>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="zendesk-tag" />
-			</td>
-			<td>
-				<aui:fieldset>
-					<aui:input label="" name="zendeskTag" style="width: 500px;" type="text" value="<%= zendeskTag %>" />
-				</aui:fieldset>
 			</td>
 		</tr>
 	</table>

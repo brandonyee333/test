@@ -49,8 +49,17 @@
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
-			property="name"
-		/>
+			name="name"
+		>
+			<c:choose>
+				<c:when test="<%= Validator.isNotNull(productEntry.getName()) %>">
+					<%= productEntry.getName() %>
+				</c:when>
+				<c:otherwise>
+					<%= productEntry.getKoroneikiProductKey() %>
+				</c:otherwise>
+			</c:choose>
+		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"

@@ -41,6 +41,17 @@ import org.osgi.service.component.annotations.Reference;
 )
 public class ProductWebServiceImpl implements ProductWebService {
 
+	public Product fetchProduct(String productKey) throws Exception {
+		HttpInvoker.HttpResponse httpResponse =
+			_productResource.getProductHttpResponse(productKey);
+
+		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
+			return null;
+		}
+
+		return ProductSerDes.toDTO(httpResponse.getContent());
+	}
+
 	public Product fetchProductByName(String name) throws Exception {
 		HttpInvoker.HttpResponse httpResponse =
 			_productResource.getProductByNameProductNameHttpResponse(
@@ -51,10 +62,6 @@ public class ProductWebServiceImpl implements ProductWebService {
 		}
 
 		return ProductSerDes.toDTO(httpResponse.getContent());
-	}
-
-	public Product getProduct(String productKey) throws Exception {
-		return _productResource.getProduct(productKey);
 	}
 
 	@Activate
