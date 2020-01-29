@@ -237,14 +237,6 @@ public class ProductEntryConstants {
 
 	public static final int SOCIAL_OFFICE_VERSION_OTHER = 23999;
 
-	public static final int TYPE_ADD_ON = 1;
-
-	public static final int TYPE_PRIMARY = 2;
-
-	public static final int TYPE_REGULAR = 0;
-
-	public static final int[] TYPES = {TYPE_ADD_ON, TYPE_PRIMARY, TYPE_REGULAR};
-
 	public static String getAllListType(String majorListType) {
 		if (majorListType.equals(LIST_TYPE_PORTAL_MAJOR_VERSIONS)) {
 			return LIST_TYPE_PORTAL_ALL_VERSIONS;
@@ -379,18 +371,6 @@ public class ProductEntryConstants {
 		}
 
 		return StringPool.BLANK;
-	}
-
-	public static String getTypeLabel(int type) {
-		if (type == TYPE_ADD_ON) {
-			return "add-on";
-		}
-		else if (type == TYPE_PRIMARY) {
-			return "primary";
-		}
-		else {
-			return "regular";
-		}
 	}
 
 	public static boolean isCommerce(long listTypeId) {

@@ -31,7 +31,6 @@ if ((productEntry != null) && Validator.isNotNull(productEntry.getKoroneikiProdu
 	koroneikiProduct = productWebService.getProduct(productEntry.getKoroneikiProductKey());
 }
 
-int type = BeanParamUtil.getInteger(productEntry, request, "type");
 int environment = BeanParamUtil.getInteger(productEntry, request, "environment");
 String versionsListType = BeanParamUtil.getString(productEntry, request, "versionsListType");
 String zendeskTag = ParamUtil.getString(request, "zendeskTag");
@@ -79,27 +78,6 @@ if (productEntry != null) {
 			</td>
 			<td>
 				<%= HtmlUtil.escape(productEntry.getName()) %>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<liferay-ui:message key="type" />
-			</td>
-			<td>
-				<aui:select label="" name="type">
-					<aui:option value="" />
-
-					<%
-					for (int curType : ProductEntryConstants.TYPES) {
-					%>
-
-						<aui:option label="<%= ProductEntryConstants.getTypeLabel(curType) %>" selected="<%= type == curType %>" value="<%= curType %>" />
-
-					<%
-					}
-					%>
-
-				</aui:select>
 			</td>
 		</tr>
 		<tr>

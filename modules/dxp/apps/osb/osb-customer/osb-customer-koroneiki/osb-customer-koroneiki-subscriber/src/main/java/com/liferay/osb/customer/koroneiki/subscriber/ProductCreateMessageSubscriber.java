@@ -40,7 +40,7 @@ public class ProductCreateMessageSubscriber
 
 		_productEntryLocalService.addProductEntry(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID, product.getKey(),
-			product.getName(), 0, 0, null, null);
+			product.getName(), 0, null, null);
 	}
 
 	@Reference

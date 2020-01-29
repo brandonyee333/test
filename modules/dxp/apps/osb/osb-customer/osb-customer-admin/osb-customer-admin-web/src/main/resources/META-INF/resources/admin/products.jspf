@@ -54,13 +54,6 @@
 
 		<liferay-ui:search-container-column-text
 			href="<%= rowURL %>"
-			name="type"
-			property="typeLabel"
-			translate="<%= true %>"
-		/>
-
-		<liferay-ui:search-container-column-text
-			href="<%= rowURL %>"
 			name="environment"
 			property="environmentLabel"
 			translate="<%= true %>"

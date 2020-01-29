@@ -359,7 +359,6 @@
 
 		<column name="koroneikiProductKey" type="String" />
 		<column name="name" type="String" />
-		<column name="type" type="int" />
 		<column name="environment" type="int" />
 		<column name="versionsListType" type="String" />
 

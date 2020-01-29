@@ -44,9 +44,8 @@ public class ProductUpdateMessageSubscriber
 
 		_productEntryLocalService.updateProductEntry(
 			productEntry.getProductEntryId(), product.getKey(),
-			product.getName(), productEntry.getType(),
-			productEntry.getEnvironment(), productEntry.getVersionsListType(),
-			productEntry.getZendeskTag());
+			product.getName(), productEntry.getEnvironment(),
+			productEntry.getVersionsListType(), productEntry.getZendeskTag());
 	}
 
 	@Reference

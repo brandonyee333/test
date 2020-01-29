@@ -38,7 +38,7 @@ public class ProductEntryLocalServiceImpl
 	extends ProductEntryLocalServiceBaseImpl {
 
 	public ProductEntry addProductEntry(
-			long userId, String koroneikiProductKey, String name, int type,
+			long userId, String koroneikiProductKey, String name,
 			int environment, String versionsListType, String zendeskTag)
 		throws PortalException {
 
@@ -58,7 +58,6 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setModifiedDate(now);
 		productEntry.setKoroneikiProductKey(koroneikiProductKey);
 		productEntry.setName(name);
-		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
 
@@ -137,8 +136,7 @@ public class ProductEntryLocalServiceImpl
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,
-			int type, int environment, String versionsListType,
-			String zendeskTag)
+			int environment, String versionsListType, String zendeskTag)
 		throws PortalException {
 
 		validate(productEntryId, koroneikiProductKey, name, zendeskTag);
@@ -149,7 +147,6 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setModifiedDate(new Date());
 		productEntry.setKoroneikiProductKey(koroneikiProductKey);
 		productEntry.setName(name);
-		productEntry.setType(type);
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
 

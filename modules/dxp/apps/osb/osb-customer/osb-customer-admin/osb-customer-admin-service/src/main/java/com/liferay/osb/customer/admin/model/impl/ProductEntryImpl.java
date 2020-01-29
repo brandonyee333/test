@@ -82,10 +82,6 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 		return ProductEntryConstants.getEnvironmentLabel(getEnvironment());
 	}
 
-	public String getTypeLabel() {
-		return ProductEntryConstants.getTypeLabel(getType());
-	}
-
 	public List<ListType> getVersionsListTypes() {
 		String listType =
 			ProductEntry.class.getName() + StringPool.PERIOD +
