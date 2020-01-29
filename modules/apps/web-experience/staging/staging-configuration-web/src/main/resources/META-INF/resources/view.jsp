@@ -217,7 +217,7 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 
 									<%
 									boolean secureConnection = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("secureConnection"));
-									boolean setRemoteSiteURL = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("setRemoteSiteURL"));
+									boolean overrideRemoteSiteURL = GetterUtil.getBoolean(liveGroupTypeSettings.getProperty("setRemoteSiteURL"));
 									%>
 
 									<span class="flex-item-center staging-configuration-control-label <%= secureConnection ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
@@ -226,15 +226,15 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 									<span class="staging-configuration-control-toggle">
 										<aui:input label="<%= StringPool.BLANK %>" name="secureConnection" type="toggle-switch" value="<%= secureConnection %>" />
 									</span>
-									<span class="flex-item-center staging-configuration-control-label <%= setRemoteSiteURL ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
+									<span class="flex-item-center staging-configuration-control-label <%= overrideRemoteSiteURL ? "staging-configuration-control-label-bold" : StringPool.BLANK %>">
 										<liferay-ui:message key="manually-define-remote-site-url" />
 									</span>
 									<span class="staging-configuration-control-toggle">
-										<aui:input label="<%= StringPool.BLANK %>" name="setRemoteSiteURL" type="toggle-switch" value="<%= setRemoteSiteURL %>" />
+										<aui:input label="<%= StringPool.BLANK %>" name="overrideRemoteSiteURL" type="toggle-switch" value="<%= overrideRemoteSiteURL %>" />
 									</span>
 								</div>
 
-								<div class="<%= setRemoteSiteURL ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />remoteSiteURLContainer">
+								<div class="<%= overrideRemoteSiteURL ? StringPool.BLANK : "hide" %>" id="<portlet:namespace />remoteSiteURLContainer">
 									<aui:input helpMessage="remote-site-url-help-message" label="remote-site-url" name="remoteSiteURL" size="20" type="text" value='<%= liveGroupTypeSettings.getProperty("remoteSiteURL") %>' />
 								</div>
 							</aui:fieldset>
@@ -434,15 +434,15 @@ BackgroundTask lastCompletedInitialPublicationBackgroundTask = BackgroundTaskMan
 </aui:script>
 
 <aui:script>
-	var setRemoteSiteURLCheckbox = document.getElementById(
-		'<portlet:namespace />setRemoteSiteURL'
+	var overrideRemoteSiteURLCheckbox = document.getElementById(
+		'<portlet:namespace />overrideRemoteSiteURL'
 	);
 	var remoteSiteURLContainer = document.getElementById(
 		'<portlet:namespace />remoteSiteURLContainer'
 	);
 
-	setRemoteSiteURLCheckbox.addEventListener('click', function() {
-		var checked = setRemoteSiteURLCheckbox.checked;
+	overrideRemoteSiteURLCheckbox.addEventListener('click', function() {
+		var checked = overrideRemoteSiteURLCheckbox.checked;
 
 		if (checked) {
 			remoteSiteURLContainer.classList.remove('hide');

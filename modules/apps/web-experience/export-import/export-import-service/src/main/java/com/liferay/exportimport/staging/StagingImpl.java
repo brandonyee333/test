@@ -1119,10 +1119,10 @@ public class StagingImpl implements Staging {
 		UnicodeProperties typeSettingsProperties =
 			stagingGroup.getTypeSettingsProperties();
 
-		boolean setRemoteSiteURL = GetterUtil.getBoolean(
-			typeSettingsProperties.getProperty("setRemoteSiteURL"));
+		boolean overrideRemoteSiteURL = GetterUtil.getBoolean(
+			typeSettingsProperties.getProperty("overrideRemoteSiteURL"));
 
-		if (setRemoteSiteURL) {
+		if (overrideRemoteSiteURL) {
 			return GetterUtil.getString(
 				typeSettingsProperties.getProperty("remoteSiteURL"));
 		}
@@ -2224,16 +2224,17 @@ public class StagingImpl implements Staging {
 
 	@Override
 	public void setRemoteSiteURL(
-			Group stagingGroup, boolean setRemoteSiteURL, String remoteSiteURL)
+			Group stagingGroup, boolean overrideRemoteSiteURL,
+			String remoteSiteURL)
 		throws PortalException {
 
 		UnicodeProperties typeSettingsProperties =
 			stagingGroup.getTypeSettingsProperties();
 
 		typeSettingsProperties.setProperty(
-			"setRemoteSiteURL", String.valueOf(setRemoteSiteURL));
+			"overrideRemoteSiteURL", String.valueOf(overrideRemoteSiteURL));
 
-		if (setRemoteSiteURL) {
+		if (overrideRemoteSiteURL) {
 			typeSettingsProperties.setProperty(
 				"remoteSiteURL", String.valueOf(remoteSiteURL));
 		}
