@@ -217,6 +217,14 @@ public class ProductEntryLocalServiceWrapper
 
 	@Override
 	public com.liferay.osb.customer.admin.model.ProductEntry
+		fetchProductEntryByKoroneikiKey(String koroneikiProductKey) {
+
+		return _productEntryLocalService.fetchProductEntryByKoroneikiKey(
+			koroneikiProductKey);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.ProductEntry
 		fetchProductEntryByName(String name) {
 
 		return _productEntryLocalService.fetchProductEntryByName(name);
@@ -335,6 +343,14 @@ public class ProductEntryLocalServiceWrapper
 		String name, java.util.LinkedHashMap<String, Object> params) {
 
 		return _productEntryLocalService.searchCount(name, params);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.ProductEntry updateName(
+			long productEntryId, String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _productEntryLocalService.updateName(productEntryId, name);
 	}
 
 	@Override

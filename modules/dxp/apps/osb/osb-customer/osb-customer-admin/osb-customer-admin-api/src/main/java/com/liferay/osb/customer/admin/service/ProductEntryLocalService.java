@@ -184,6 +184,10 @@ public interface ProductEntryLocalService
 	public ProductEntry fetchProductEntry(long productEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ProductEntry fetchProductEntryByKoroneikiKey(
+		String koroneikiProductKey);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ProductEntry fetchProductEntryByName(String name);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -255,6 +259,9 @@ public interface ProductEntryLocalService
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int searchCount(String name, LinkedHashMap<String, Object> params);
+
+	public ProductEntry updateName(long productEntryId, String name)
+		throws PortalException;
 
 	public ProductEntry updateProductEntry(
 			long productEntryId, String koroneikiProductKey, String name,

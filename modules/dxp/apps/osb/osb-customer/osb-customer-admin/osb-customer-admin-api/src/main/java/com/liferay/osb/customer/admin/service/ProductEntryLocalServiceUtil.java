@@ -210,6 +210,13 @@ public class ProductEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.osb.customer.admin.model.ProductEntry
+		fetchProductEntryByKoroneikiKey(String koroneikiProductKey) {
+
+		return getService().fetchProductEntryByKoroneikiKey(
+			koroneikiProductKey);
+	}
+
+	public static com.liferay.osb.customer.admin.model.ProductEntry
 		fetchProductEntryByName(String name) {
 
 		return getService().fetchProductEntryByName(name);
@@ -318,6 +325,13 @@ public class ProductEntryLocalServiceUtil {
 		String name, java.util.LinkedHashMap<String, Object> params) {
 
 		return getService().searchCount(name, params);
+	}
+
+	public static com.liferay.osb.customer.admin.model.ProductEntry updateName(
+			long productEntryId, String name)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateName(productEntryId, name);
 	}
 
 	public static com.liferay.osb.customer.admin.model.ProductEntry
