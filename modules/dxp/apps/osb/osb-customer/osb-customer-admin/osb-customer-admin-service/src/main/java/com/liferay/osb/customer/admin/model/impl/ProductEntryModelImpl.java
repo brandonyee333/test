@@ -76,8 +76,7 @@ public class ProductEntryModelImpl
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP},
 		{"koroneikiProductKey", Types.VARCHAR}, {"name", Types.VARCHAR},
-		{"type_", Types.INTEGER}, {"environment", Types.INTEGER},
-		{"versionsListType", Types.VARCHAR}
+		{"environment", Types.INTEGER}, {"versionsListType", Types.VARCHAR}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -91,13 +90,12 @@ public class ProductEntryModelImpl
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("koroneikiProductKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("environment", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("versionsListType", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,type_ INTEGER,environment INTEGER,versionsListType VARCHAR(75) null)";
+		"create table OSB_ProductEntry (productEntryId LONG not null primary key,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,koroneikiProductKey VARCHAR(75) null,name VARCHAR(75) null,environment INTEGER,versionsListType VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table OSB_ProductEntry";
 
@@ -154,7 +152,6 @@ public class ProductEntryModelImpl
 		model.setModifiedDate(soapModel.getModifiedDate());
 		model.setKoroneikiProductKey(soapModel.getKoroneikiProductKey());
 		model.setName(soapModel.getName());
-		model.setType(soapModel.getType());
 		model.setEnvironment(soapModel.getEnvironment());
 		model.setVersionsListType(soapModel.getVersionsListType());
 
@@ -290,13 +287,15 @@ public class ProductEntryModelImpl
 				try {
 					return constructor.newInstance(invocationHandler);
 				}
-				catch (ReflectiveOperationException roe) {
-					throw new InternalError(roe);
+				catch (ReflectiveOperationException
+							reflectiveOperationException) {
+
+					throw new InternalError(reflectiveOperationException);
 				}
 			};
 		}
-		catch (NoSuchMethodException nsme) {
-			throw new InternalError(nsme);
+		catch (NoSuchMethodException noSuchMethodException) {
+			throw new InternalError(noSuchMethodException);
 		}
 	}
 
@@ -468,28 +467,6 @@ public class ProductEntryModelImpl
 
 			});
 		attributeGetterFunctions.put(
-			"type",
-			new Function<ProductEntry, Object>() {
-
-				@Override
-				public Object apply(ProductEntry productEntry) {
-					return productEntry.getType();
-				}
-
-			});
-		attributeSetterBiConsumers.put(
-			"type",
-			new BiConsumer<ProductEntry, Object>() {
-
-				@Override
-				public void accept(
-					ProductEntry productEntry, Object typeObject) {
-
-					productEntry.setType((Integer)typeObject);
-				}
-
-			});
-		attributeGetterFunctions.put(
 			"environment",
 			new Function<ProductEntry, Object>() {
 
@@ -570,7 +547,7 @@ public class ProductEntryModelImpl
 
 			return user.getUuid();
 		}
-		catch (PortalException pe) {
+		catch (PortalException portalException) {
 			return "";
 		}
 	}
@@ -677,17 +654,6 @@ public class ProductEntryModelImpl
 
 	@JSON
 	@Override
-	public int getType() {
-		return _type;
-	}
-
-	@Override
-	public void setType(int type) {
-		_type = type;
-	}
-
-	@JSON
-	@Override
 	public int getEnvironment() {
 		return _environment;
 	}
@@ -768,7 +734,6 @@ public class ProductEntryModelImpl
 		productEntryImpl.setModifiedDate(getModifiedDate());
 		productEntryImpl.setKoroneikiProductKey(getKoroneikiProductKey());
 		productEntryImpl.setName(getName());
-		productEntryImpl.setType(getType());
 		productEntryImpl.setEnvironment(getEnvironment());
 		productEntryImpl.setVersionsListType(getVersionsListType());
 
@@ -899,8 +864,6 @@ public class ProductEntryModelImpl
 			productEntryCacheModel.name = null;
 		}
 
-		productEntryCacheModel.type = getType();
-
 		productEntryCacheModel.environment = getEnvironment();
 
 		productEntryCacheModel.versionsListType = getVersionsListType();
@@ -994,7 +957,6 @@ public class ProductEntryModelImpl
 	private String _originalKoroneikiProductKey;
 	private String _name;
 	private String _originalName;
-	private int _type;
 	private int _environment;
 	private int _originalEnvironment;
 	private boolean _setOriginalEnvironment;

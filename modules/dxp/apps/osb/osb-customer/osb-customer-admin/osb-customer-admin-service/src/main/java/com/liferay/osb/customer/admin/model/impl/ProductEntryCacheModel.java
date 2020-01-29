@@ -62,7 +62,7 @@ public class ProductEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(21);
+		StringBundler sb = new StringBundler(19);
 
 		sb.append("{productEntryId=");
 		sb.append(productEntryId);
@@ -78,8 +78,6 @@ public class ProductEntryCacheModel
 		sb.append(koroneikiProductKey);
 		sb.append(", name=");
 		sb.append(name);
-		sb.append(", type=");
-		sb.append(type);
 		sb.append(", environment=");
 		sb.append(environment);
 		sb.append(", versionsListType=");
@@ -131,7 +129,6 @@ public class ProductEntryCacheModel
 			productEntryImpl.setName(name);
 		}
 
-		productEntryImpl.setType(type);
 		productEntryImpl.setEnvironment(environment);
 
 		if (versionsListType == null) {
@@ -156,8 +153,6 @@ public class ProductEntryCacheModel
 		modifiedDate = objectInput.readLong();
 		koroneikiProductKey = objectInput.readUTF();
 		name = objectInput.readUTF();
-
-		type = objectInput.readInt();
 
 		environment = objectInput.readInt();
 		versionsListType = objectInput.readUTF();
@@ -193,8 +188,6 @@ public class ProductEntryCacheModel
 			objectOutput.writeUTF(name);
 		}
 
-		objectOutput.writeInt(type);
-
 		objectOutput.writeInt(environment);
 
 		if (versionsListType == null) {
@@ -212,7 +205,6 @@ public class ProductEntryCacheModel
 	public long modifiedDate;
 	public String koroneikiProductKey;
 	public String name;
-	public int type;
 	public int environment;
 	public String versionsListType;
 

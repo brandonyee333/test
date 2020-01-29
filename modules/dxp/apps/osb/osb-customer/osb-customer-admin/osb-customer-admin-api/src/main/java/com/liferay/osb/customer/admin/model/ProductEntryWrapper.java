@@ -62,7 +62,6 @@ public class ProductEntryWrapper
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("koroneikiProductKey", getKoroneikiProductKey());
 		attributes.put("name", getName());
-		attributes.put("type", getType());
 		attributes.put("environment", getEnvironment());
 		attributes.put("versionsListType", getVersionsListType());
 
@@ -112,12 +111,6 @@ public class ProductEntryWrapper
 
 		if (name != null) {
 			setName(name);
-		}
-
-		Integer type = (Integer)attributes.get("type");
-
-		if (type != null) {
-			setType(type);
 		}
 
 		Integer environment = (Integer)attributes.get("environment");
@@ -238,21 +231,6 @@ public class ProductEntryWrapper
 	@Override
 	public long getProductEntryId() {
 		return _productEntry.getProductEntryId();
-	}
-
-	/**
-	 * Returns the type of this product entry.
-	 *
-	 * @return the type of this product entry
-	 */
-	@Override
-	public int getType() {
-		return _productEntry.getType();
-	}
-
-	@Override
-	public String getTypeLabel() {
-		return _productEntry.getTypeLabel();
 	}
 
 	/**
@@ -512,16 +490,6 @@ public class ProductEntryWrapper
 	@Override
 	public void setProductEntryId(long productEntryId) {
 		_productEntry.setProductEntryId(productEntryId);
-	}
-
-	/**
-	 * Sets the type of this product entry.
-	 *
-	 * @param type the type of this product entry
-	 */
-	@Override
-	public void setType(int type) {
-		_productEntry.setType(type);
 	}
 
 	/**

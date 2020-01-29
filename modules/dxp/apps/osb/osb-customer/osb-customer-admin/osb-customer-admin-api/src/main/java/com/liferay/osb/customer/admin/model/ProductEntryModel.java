@@ -176,20 +176,6 @@ public interface ProductEntryModel extends BaseModel<ProductEntry> {
 	public void setName(String name);
 
 	/**
-	 * Returns the type of this product entry.
-	 *
-	 * @return the type of this product entry
-	 */
-	public int getType();
-
-	/**
-	 * Sets the type of this product entry.
-	 *
-	 * @param type the type of this product entry
-	 */
-	public void setType(int type);
-
-	/**
 	 * Returns the environment of this product entry.
 	 *
 	 * @return the environment of this product entry

@@ -570,10 +570,6 @@ public class ProductEntryUtil {
 		return getPersistence().countAll();
 	}
 
-	public static Set<String> getBadColumnNames() {
-		return getPersistence().getBadColumnNames();
-	}
-
 	public static ProductEntryPersistence getPersistence() {
 		return _serviceTracker.getService();
 	}

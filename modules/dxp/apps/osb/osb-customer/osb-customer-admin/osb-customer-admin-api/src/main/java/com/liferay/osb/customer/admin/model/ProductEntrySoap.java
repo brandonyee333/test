@@ -38,7 +38,6 @@ public class ProductEntrySoap implements Serializable {
 		soapModel.setModifiedDate(model.getModifiedDate());
 		soapModel.setKoroneikiProductKey(model.getKoroneikiProductKey());
 		soapModel.setName(model.getName());
-		soapModel.setType(model.getType());
 		soapModel.setEnvironment(model.getEnvironment());
 		soapModel.setVersionsListType(model.getVersionsListType());
 
@@ -150,14 +149,6 @@ public class ProductEntrySoap implements Serializable {
 		_name = name;
 	}
 
-	public int getType() {
-		return _type;
-	}
-
-	public void setType(int type) {
-		_type = type;
-	}
-
 	public int getEnvironment() {
 		return _environment;
 	}
@@ -181,7 +172,6 @@ public class ProductEntrySoap implements Serializable {
 	private Date _modifiedDate;
 	private String _koroneikiProductKey;
 	private String _name;
-	private int _type;
 	private int _environment;
 	private String _versionsListType;
 

@@ -400,7 +400,4 @@ public interface ProductEntryPersistence extends BasePersistence<ProductEntry> {
 	 */
 	public int countAll();
 
-	@Override
-	public Set<String> getBadColumnNames();
-
 }

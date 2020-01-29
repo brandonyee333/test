@@ -65,8 +65,6 @@ public interface ProductEntry extends PersistedModel, ProductEntryModel {
 
 	public String getEnvironmentLabel();
 
-	public String getTypeLabel();
-
 	public java.util.List<com.liferay.portal.kernel.model.ListType>
 		getVersionsListTypes();
 

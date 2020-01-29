@@ -39,13 +39,13 @@ public class ProductEntryLocalServiceUtil {
 	 */
 	public static com.liferay.osb.customer.admin.model.ProductEntry
 			addProductEntry(
-				long userId, String koroneikiProductKey, String name, int type,
+				long userId, String koroneikiProductKey, String name,
 				int environment, String versionsListType, String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().addProductEntry(
-			userId, koroneikiProductKey, name, type, environment,
-			versionsListType, zendeskTag);
+			userId, koroneikiProductKey, name, environment, versionsListType,
+			zendeskTag);
 	}
 
 	/**
@@ -323,12 +323,11 @@ public class ProductEntryLocalServiceUtil {
 	public static com.liferay.osb.customer.admin.model.ProductEntry
 			updateProductEntry(
 				long productEntryId, String koroneikiProductKey, String name,
-				int type, int environment, String versionsListType,
-				String zendeskTag)
+				int environment, String versionsListType, String zendeskTag)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateProductEntry(
-			productEntryId, koroneikiProductKey, name, type, environment,
+			productEntryId, koroneikiProductKey, name, environment,
 			versionsListType, zendeskTag);
 	}
 

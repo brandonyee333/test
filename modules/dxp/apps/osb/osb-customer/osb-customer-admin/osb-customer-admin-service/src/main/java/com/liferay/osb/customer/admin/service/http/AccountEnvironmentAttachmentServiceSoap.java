@@ -77,10 +77,10 @@ public class AccountEnvironmentAttachmentServiceSoap {
 			return com.liferay.osb.customer.admin.model.
 				AccountEnvironmentAttachmentSoap.toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
