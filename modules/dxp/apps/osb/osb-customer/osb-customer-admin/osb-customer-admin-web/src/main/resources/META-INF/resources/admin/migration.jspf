@@ -22,3 +22,12 @@
 </portlet:actionURL>
 
 <aui:button onClick="<%= linkAccountEntriesURL.toString() %>" value="link-koroneiki-accounts" />
+
+<portlet:actionURL name="linkProductEntries" var="linkProductEntriesURL">
+	<portlet:param name="mvcPath" value="/admin/view.jsp" />
+	<portlet:param name="redirect" value="<%= currentURL %>" />
+	<portlet:param name="tabs1" value="tools" />
+	<portlet:param name="tabs2" value="migration" />
+</portlet:actionURL>
+
+<aui:button onClick="<%= linkProductEntriesURL.toString() %>" value="link-koroneiki-products" />

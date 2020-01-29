@@ -17,13 +17,19 @@ package com.liferay.osb.customer.koroneiki.web.service.internal;
 import com.liferay.osb.customer.koroneiki.web.service.ProductWebService;
 import com.liferay.osb.customer.koroneiki.web.service.internal.configuration.KoroneikiConfiguration;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
+import com.liferay.osb.koroneiki.phloem.rest.client.http.HttpInvoker;
 import com.liferay.osb.koroneiki.phloem.rest.client.resource.v1_0.ProductResource;
+import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductSerDes;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.util.Http;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Kyle Bischof
@@ -34,6 +40,18 @@ import org.osgi.service.component.annotations.Component;
 	immediate = true, service = ProductWebService.class
 )
 public class ProductWebServiceImpl implements ProductWebService {
+
+	public Product fetchProductByName(String name) throws Exception {
+		HttpInvoker.HttpResponse httpResponse =
+			_productResource.getProductByNameProductNameHttpResponse(
+				_http.encodePath(name));
+
+		if (httpResponse.getStatusCode() == HttpServletResponse.SC_NOT_FOUND) {
+			return null;
+		}
+
+		return ProductSerDes.toDTO(httpResponse.getContent());
+	}
 
 	public Product getProduct(String productKey) throws Exception {
 		return _productResource.getProduct(productKey);
@@ -54,6 +72,9 @@ public class ProductWebServiceImpl implements ProductWebService {
 			"API_Token", koroneikiConfiguration.apiToken()
 		).build();
 	}
+
+	@Reference
+	private Http _http;
 
 	private ProductResource _productResource;
 

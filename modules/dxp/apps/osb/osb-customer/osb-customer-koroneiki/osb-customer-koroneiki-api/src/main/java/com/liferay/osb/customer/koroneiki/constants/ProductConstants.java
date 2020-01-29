@@ -19,6 +19,8 @@ package com.liferay.osb.customer.koroneiki.constants;
  */
 public class ProductConstants {
 
+	public static final String NAME_FLOATING = "Floating Subscription";
+
 	public static final String NAME_GOLD = "Gold Subscription";
 
 	public static final String NAME_LIMITED = "Limited Subscription";
@@ -26,7 +28,5 @@ public class ProductConstants {
 	public static final String NAME_PLATINUM = "Platinum Subscription";
 
 	public static final String NAME_SILVER = "Silver Subscription";
-
-	public static final String NAME_FLOATING = "Floating Subscription";
 
 }
