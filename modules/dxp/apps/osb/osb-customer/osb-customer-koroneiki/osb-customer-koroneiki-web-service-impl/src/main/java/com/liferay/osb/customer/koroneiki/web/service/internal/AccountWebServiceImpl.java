@@ -45,6 +45,21 @@ public class AccountWebServiceImpl implements AccountWebService {
 		return _accountResource.getAccount(accountKey);
 	}
 
+	public List<Account> getContactAccountsByUuid(
+			String contactUuid, int page, int pageSize)
+		throws Exception {
+
+		Page<Account> accountsPage =
+			_accountResource.getContactByUuidContactUuidAccountsPage(
+				contactUuid, Pagination.of(page, pageSize));
+
+		if ((accountsPage != null) && (accountsPage.getItems() != null)) {
+			return new ArrayList<>(accountsPage.getItems());
+		}
+
+		return Collections.emptyList();
+	}
+
 	public List<Account> search(
 			String filterString, int page, int pageSize, String sortString)
 		throws Exception {

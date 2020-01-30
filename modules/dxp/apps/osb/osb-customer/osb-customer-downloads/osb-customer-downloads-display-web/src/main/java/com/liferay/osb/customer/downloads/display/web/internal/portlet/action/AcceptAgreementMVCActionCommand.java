@@ -18,7 +18,8 @@ import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoValueLocalService;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDDMStructureConstants;
 import com.liferay.osb.customer.downloads.display.constants.DownloadsDisplayPortletKeys;
-import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -64,74 +65,56 @@ public class AcceptAgreementMVCActionCommand extends BaseMVCActionCommand {
 		if (agreement.equals(
 				DownloadsDDMStructureConstants.REQUIRED_AGREEMENT_ESA)) {
 
-			setExpandoValue(
-				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-				"osbCustomerESA", version);
+			setExpandoValue(themeDisplay.getUser(), "osbCustomerESA", version);
 		}
 		else if (agreement.equals(
 					DownloadsDDMStructureConstants.
 						REQUIRED_AGREEMENT_EVALUATION_EULA)) {
 
 			setExpandoValue(
-				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-				"osbCustomerEvaluationEULA", version);
+				themeDisplay.getUser(), "osbCustomerEvaluationEULA", version);
 		}
 		else if (agreement.equals(
 					DownloadsDDMStructureConstants.
 						REQUIRED_AGREEMENT_STUDIO_EULA)) {
 
 			setExpandoValue(
-				themeDisplay.getCompanyId(), themeDisplay.getUserId(),
-				"osbCustomerStudioEULA", version);
+				themeDisplay.getUser(), "osbCustomerStudioEULA", version);
 		}
 	}
 
-	protected String getCompanies(long userId) throws PortalException {
+	protected String getCompanies(User user) throws Exception {
 		List<String> companies = new ArrayList<>();
 
-		/*
-		TODO
-		List<AccountCustomer> accountCustomers =
-			AccountCustomerLocalServiceUtil.getUserAccountCustomers(userId);
+		List<Account> accounts = _accountWebService.getContactAccountsByUuid(
+			user.getUuid(), 1, 20);
 
-		for (AccountCustomer accountCustomer : accountCustomers) {
-			AccountEntry accountEntry = accountCustomer.getAccountEntry();
-
-			companies.add(accountEntry.getName());
+		for (Account account : accounts) {
+			companies.add(account.getName());
 		}
-
-		if (companies.isEmpty()) {
-			List<PartnerWorker> partnerWorkers =
-				PartnerWorkerLocalServiceUtil.getUserPartnerWorkers(userId);
-
-			for (PartnerWorker partnerWorker : partnerWorkers) {
-				PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
-
-				companies.add(partnerEntry.getCode());
-			}
-		}
-		*/
 
 		return StringUtil.merge(companies, StringPool.SLASH);
 	}
 
 	protected void setExpandoValue(
-			long companyId, long userId, String expandoColumnName,
-			double version)
-		throws PortalException {
+			User user, String expandoColumnName, double version)
+		throws Exception {
 
 		String[] agreementData = new String[4];
 
 		agreementData[0] = String.valueOf(System.currentTimeMillis());
-		agreementData[1] = getCompanies(userId);
+		agreementData[1] = getCompanies(user);
 		agreementData[2] = LocaleUtil.toLanguageId(LocaleUtil.US);
 		agreementData[3] = String.valueOf(version);
 
 		_expandoValueLocalService.addValue(
-			companyId, User.class.getName(),
-			ExpandoTableConstants.DEFAULT_TABLE_NAME, expandoColumnName, userId,
-			agreementData);
+			user.getCompanyId(), User.class.getName(),
+			ExpandoTableConstants.DEFAULT_TABLE_NAME, expandoColumnName,
+			user.getUserId(), agreementData);
 	}
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference
 	private ExpandoValueLocalService _expandoValueLocalService;

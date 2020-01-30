@@ -25,6 +25,10 @@ public interface AccountWebService {
 
 	public Account getAccount(String accountKey) throws Exception;
 
+	public List<Account> getContactAccountsByUuid(
+			String contactUuid, int page, int pageSize)
+		throws Exception;
+
 	public List<Account> search(
 			String filterString, int page, int pageSize, String sortString)
 		throws Exception;
