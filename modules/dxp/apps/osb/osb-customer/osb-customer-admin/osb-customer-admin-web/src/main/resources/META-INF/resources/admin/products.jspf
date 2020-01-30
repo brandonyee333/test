@@ -14,7 +14,7 @@
  */
 --%>
 
-<liferay-ui:error exception="<%= RequiredProductEntryException.class %>" message="you-cannot-remove-products-that-are-used-in-licenses" />
+<liferay-ui:error exception="<%= RequiredProductEntryException.class %>" message="you-cannot-remove-products-that-are-linked-to-koroneiki-products" />
 
 <liferay-ui:search-container
 	headerNames="name"

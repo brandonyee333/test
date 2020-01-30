@@ -221,6 +221,16 @@ public class AdminPortlet extends MVCPortlet {
 		long productEntryId = ParamUtil.getLong(
 			actionRequest, "productEntryId");
 
+		ProductEntry productEntry = _productEntryLocalService.getProductEntry(
+			productEntryId);
+
+		Product product = _productWebService.fetchProduct(
+			productEntry.getKoroneikiProductKey());
+
+		if (product != null) {
+			throw new RequiredProductEntryException();
+		}
+
 		_productEntryLocalService.deleteProductEntry(productEntryId);
 	}
 
