@@ -60,6 +60,13 @@ public class LCSSubscriptionEntryServiceWrapper
 	}
 
 	@Override
+	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntriesByCorpProjectId(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _lcsSubscriptionEntryService.getLCSSubscriptionEntriesByCorpProjectId(corpProjectId);
+	}
+
+	@Override
 	public LCSSubscriptionEntryService getWrappedService() {
 		return _lcsSubscriptionEntryService;
 	}

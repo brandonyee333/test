@@ -66,6 +66,20 @@ public class AccountCustomerServiceWrapper implements AccountCustomerService,
 	}
 
 	@Override
+	public java.util.List<java.lang.String> getCorpProjectIdAccountCustomerUUIDs(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountCustomerService.getCorpProjectIdAccountCustomerUUIDs(corpProjectId);
+	}
+
+	@Override
+	public java.util.List<com.liferay.portal.kernel.model.User> getCorpProjectIdAccountCustomerUsers(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _accountCustomerService.getCorpProjectIdAccountCustomerUsers(corpProjectId);
+	}
+
+	@Override
 	public AccountCustomerService getWrappedService() {
 		return _accountCustomerService;
 	}

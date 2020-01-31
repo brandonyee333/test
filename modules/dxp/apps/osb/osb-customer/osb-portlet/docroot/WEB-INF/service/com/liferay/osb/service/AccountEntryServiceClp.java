@@ -35,25 +35,29 @@ public class AccountEntryServiceClp implements AccountEntryService {
 
 		_methodParameterTypes1 = new String[] { "java.lang.String" };
 
-		_methodName2 = "getAccountEntry";
+		_methodName2 = "fetchCorpProjectIdAccountEntry";
 
 		_methodParameterTypes2 = new String[] { "long" };
 
-		_methodName3 = "getAccountEntryByCode";
+		_methodName3 = "getAccountEntry";
 
-		_methodParameterTypes3 = new String[] { "java.lang.String" };
+		_methodParameterTypes3 = new String[] { "long" };
 
-		_methodName4 = "getCorpProjectAccountEntry";
+		_methodName4 = "getAccountEntryByCode";
 
 		_methodParameterTypes4 = new String[] { "java.lang.String" };
 
-		_methodName5 = "updateInstructions";
+		_methodName5 = "getCorpProjectAccountEntry";
 
-		_methodParameterTypes5 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes5 = new String[] { "java.lang.String" };
 
-		_methodName6 = "searchCount";
+		_methodName6 = "updateInstructions";
 
-		_methodParameterTypes6 = new String[] {
+		_methodParameterTypes6 = new String[] { "long", "java.lang.String" };
+
+		_methodName7 = "searchCount";
+
+		_methodParameterTypes7 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String",
@@ -64,17 +68,17 @@ public class AccountEntryServiceClp implements AccountEntryService {
 				"java.util.LinkedHashMap", "boolean"
 			};
 
-		_methodName8 = "getOSGiServiceIdentifier";
+		_methodName9 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes8 = new String[] {  };
+		_methodParameterTypes9 = new String[] {  };
 
-		_methodName9 = "getAccountEntries";
+		_methodName10 = "getAccountEntries";
 
-		_methodParameterTypes9 = new String[] { "java.lang.String", "long[][]" };
+		_methodParameterTypes10 = new String[] { "java.lang.String", "long[][]" };
 
-		_methodName10 = "search";
+		_methodName11 = "search";
 
-		_methodParameterTypes10 = new String[] {
+		_methodParameterTypes11 = new String[] {
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.Long", "int", "int", "int", "int", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String",
@@ -147,14 +151,43 @@ public class AccountEntryServiceClp implements AccountEntryService {
 	}
 
 	@Override
+	public com.liferay.osb.model.AccountEntry fetchCorpProjectIdAccountEntry(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] { corpProjectId });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (com.liferay.osb.model.AccountEntry)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
 	public com.liferay.osb.model.AccountEntry getAccountEntry(
 		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2, new Object[] { accountEntryId });
+			returnObj = _invokableService.invokeMethod(_methodName3,
+					_methodParameterTypes3, new Object[] { accountEntryId });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -182,8 +215,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName3,
-					_methodParameterTypes3,
+			returnObj = _invokableService.invokeMethod(_methodName4,
+					_methodParameterTypes4,
 					new Object[] { ClpSerializer.translateInput(code) });
 		}
 		catch (Throwable t) {
@@ -212,8 +245,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName4,
-					_methodParameterTypes4,
+			returnObj = _invokableService.invokeMethod(_methodName5,
+					_methodParameterTypes5,
 					new Object[] { ClpSerializer.translateInput(corpProjectUuid) });
 		}
 		catch (Throwable t) {
@@ -242,8 +275,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5,
+			returnObj = _invokableService.invokeMethod(_methodName6,
+					_methodParameterTypes6,
 					new Object[] {
 						accountEntryId,
 						
@@ -289,8 +322,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName6,
-					_methodParameterTypes6,
+			returnObj = _invokableService.invokeMethod(_methodName7,
+					_methodParameterTypes7,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -388,8 +421,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName8,
-					_methodParameterTypes8, new Object[] {  });
+			returnObj = _invokableService.invokeMethod(_methodName9,
+					_methodParameterTypes9, new Object[] {  });
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
@@ -413,8 +446,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName9,
-					_methodParameterTypes9,
+			returnObj = _invokableService.invokeMethod(_methodName10,
+					_methodParameterTypes10,
 					new Object[] {
 						ClpSerializer.translateInput(userUuid),
 						
@@ -462,8 +495,8 @@ public class AccountEntryServiceClp implements AccountEntryService {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName10,
-					_methodParameterTypes10,
+			returnObj = _invokableService.invokeMethod(_methodName11,
+					_methodParameterTypes11,
 					new Object[] {
 						ClpSerializer.translateInput(createUserId),
 						
@@ -570,10 +603,12 @@ public class AccountEntryServiceClp implements AccountEntryService {
 	private String[] _methodParameterTypes5;
 	private String _methodName6;
 	private String[] _methodParameterTypes6;
-	private String _methodName8;
-	private String[] _methodParameterTypes8;
+	private String _methodName7;
+	private String[] _methodParameterTypes7;
 	private String _methodName9;
 	private String[] _methodParameterTypes9;
 	private String _methodName10;
 	private String[] _methodParameterTypes10;
+	private String _methodName11;
+	private String[] _methodParameterTypes11;
 }

@@ -80,5 +80,20 @@ public class LCSSubscriptionEntryServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.model.LCSSubscriptionEntrySoap[] getLCSSubscriptionEntriesByCorpProjectId(
+		long corpProjectId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> returnValue =
+				LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntriesByCorpProjectId(corpProjectId);
+
+			return com.liferay.osb.model.LCSSubscriptionEntrySoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(LCSSubscriptionEntryServiceSoap.class);
 }

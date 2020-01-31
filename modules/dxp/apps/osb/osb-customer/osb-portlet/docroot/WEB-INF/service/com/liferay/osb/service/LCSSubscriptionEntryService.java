@@ -69,4 +69,9 @@ public interface LCSSubscriptionEntryService extends BaseService,
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
 		java.lang.String corpProjectUuid) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<LCSSubscriptionEntry> getLCSSubscriptionEntriesByCorpProjectId(
+		long corpProjectId) throws PortalException;
 }

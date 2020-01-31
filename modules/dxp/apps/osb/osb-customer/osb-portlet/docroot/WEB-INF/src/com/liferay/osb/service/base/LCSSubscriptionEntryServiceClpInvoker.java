@@ -34,6 +34,10 @@ public class LCSSubscriptionEntryServiceClpInvoker {
 		_methodName211 = "getLCSSubscriptionEntries";
 
 		_methodParameterTypes211 = new String[] { "java.lang.String" };
+
+		_methodName212 = "getLCSSubscriptionEntriesByCorpProjectId";
+
+		_methodParameterTypes212 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -48,6 +52,11 @@ public class LCSSubscriptionEntryServiceClpInvoker {
 			return LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries((java.lang.String)arguments[0]);
 		}
 
+		if (_methodName212.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes212, parameterTypes)) {
+			return LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntriesByCorpProjectId(((Long)arguments[0]).longValue());
+		}
+
 		throw new UnsupportedOperationException();
 	}
 
@@ -55,4 +64,6 @@ public class LCSSubscriptionEntryServiceClpInvoker {
 	private String[] _methodParameterTypes206;
 	private String _methodName211;
 	private String[] _methodParameterTypes211;
+	private String _methodName212;
+	private String[] _methodParameterTypes212;
 }

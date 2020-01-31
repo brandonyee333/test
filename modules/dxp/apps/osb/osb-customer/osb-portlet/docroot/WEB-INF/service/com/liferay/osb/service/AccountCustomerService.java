@@ -72,4 +72,14 @@ public interface AccountCustomerService extends BaseService, InvokableService {
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<User> getCorpProjectAccountCustomerUsers(
 		java.lang.String corpProjectUuid) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<java.lang.String> getCorpProjectIdAccountCustomerUUIDs(
+		long corpProjectId) throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<User> getCorpProjectIdAccountCustomerUsers(long corpProjectId)
+		throws PortalException;
 }

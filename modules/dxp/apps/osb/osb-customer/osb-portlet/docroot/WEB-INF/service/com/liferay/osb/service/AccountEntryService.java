@@ -62,6 +62,11 @@ public interface AccountEntryService extends BaseService, InvokableService {
 	public AccountEntry fetchCorpProjectAccountEntry(
 		java.lang.String corpProjectUuid) throws PortalException;
 
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry fetchCorpProjectIdAccountEntry(long corpProjectId)
+		throws PortalException;
+
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public AccountEntry getAccountEntry(long accountEntryId)
 		throws PortalException;

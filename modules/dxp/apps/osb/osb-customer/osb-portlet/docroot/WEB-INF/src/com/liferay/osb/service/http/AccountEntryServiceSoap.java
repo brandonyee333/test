@@ -93,6 +93,20 @@ public class AccountEntryServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.model.AccountEntrySoap fetchCorpProjectIdAccountEntry(
+		long corpProjectId) throws RemoteException {
+		try {
+			com.liferay.osb.model.AccountEntry returnValue = AccountEntryServiceUtil.fetchCorpProjectIdAccountEntry(corpProjectId);
+
+			return com.liferay.osb.model.AccountEntrySoap.toSoapModel(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.model.AccountEntrySoap[] getAccountEntries(
 		java.lang.String userUuid, long[] productEntryIds)
 		throws RemoteException {

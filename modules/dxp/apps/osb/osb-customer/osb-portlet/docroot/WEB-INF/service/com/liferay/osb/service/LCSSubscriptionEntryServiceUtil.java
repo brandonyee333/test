@@ -62,6 +62,13 @@ public class LCSSubscriptionEntryServiceUtil {
 		return getService().getLCSSubscriptionEntries(corpProjectUuid);
 	}
 
+	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntriesByCorpProjectId(
+		long corpProjectId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService()
+				   .getLCSSubscriptionEntriesByCorpProjectId(corpProjectId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

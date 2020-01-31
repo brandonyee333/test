@@ -93,5 +93,33 @@ public class AccountCustomerServiceSoap {
 		}
 	}
 
+	public static com.liferay.portal.kernel.model.UserSoap[] getCorpProjectIdAccountCustomerUsers(
+		long corpProjectId) throws RemoteException {
+		try {
+			java.util.List<com.liferay.portal.kernel.model.User> returnValue = AccountCustomerServiceUtil.getCorpProjectIdAccountCustomerUsers(corpProjectId);
+
+			return com.liferay.portal.kernel.model.UserSoap.toSoapModels(returnValue);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
+	public static java.lang.String[] getCorpProjectIdAccountCustomerUUIDs(
+		long corpProjectId) throws RemoteException {
+		try {
+			java.util.List<java.lang.String> returnValue = AccountCustomerServiceUtil.getCorpProjectIdAccountCustomerUUIDs(corpProjectId);
+
+			return returnValue.toArray(new java.lang.String[returnValue.size()]);
+		}
+		catch (Exception e) {
+			_log.error(e, e);
+
+			throw new RemoteException(e.getMessage());
+		}
+	}
+
 	private static Log _log = LogFactoryUtil.getLog(AccountCustomerServiceSoap.class);
 }
