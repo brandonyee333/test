@@ -38,14 +38,6 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 		_methodName3 = "getCorpProjectAccountCustomerUsers";
 
 		_methodParameterTypes3 = new String[] { "java.lang.String" };
-
-		_methodName4 = "getCorpProjectIdAccountCustomerUUIDs";
-
-		_methodParameterTypes4 = new String[] { "long" };
-
-		_methodName5 = "getCorpProjectIdAccountCustomerUsers";
-
-		_methodParameterTypes5 = new String[] { "long" };
 	}
 
 	@Override
@@ -138,64 +130,6 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 		return (java.util.List<com.liferay.portal.kernel.model.User>)ClpSerializer.translateOutput(returnObj);
 	}
 
-	@Override
-	public java.util.List<java.lang.String> getCorpProjectIdAccountCustomerUUIDs(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName4,
-					_methodParameterTypes4, new Object[] { corpProjectId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<java.lang.String>)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.portal.kernel.model.User> getCorpProjectIdAccountCustomerUsers(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName5,
-					_methodParameterTypes5, new Object[] { corpProjectId });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-				throw (com.liferay.portal.kernel.exception.PortalException)t;
-			}
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.util.List<com.liferay.portal.kernel.model.User>)ClpSerializer.translateOutput(returnObj);
-	}
-
 	private InvokableService _invokableService;
 	private String _methodName1;
 	private String[] _methodParameterTypes1;
@@ -203,8 +137,4 @@ public class AccountCustomerServiceClp implements AccountCustomerService {
 	private String[] _methodParameterTypes2;
 	private String _methodName3;
 	private String[] _methodParameterTypes3;
-	private String _methodName4;
-	private String[] _methodParameterTypes4;
-	private String _methodName5;
-	private String[] _methodParameterTypes5;
 }

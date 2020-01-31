@@ -88,43 +88,8 @@ public class LCSSubscriptionEntryServiceHttp {
 		}
 	}
 
-	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntriesByCorpProjectId(
-		HttpPrincipal httpPrincipal, long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		try {
-			MethodKey methodKey = new MethodKey(LCSSubscriptionEntryServiceUtil.class,
-					"getLCSSubscriptionEntriesByCorpProjectId",
-					_getLCSSubscriptionEntriesByCorpProjectIdParameterTypes1);
-
-			MethodHandler methodHandler = new MethodHandler(methodKey,
-					corpProjectId);
-
-			Object returnObj = null;
-
-			try {
-				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
-			}
-			catch (Exception e) {
-				if (e instanceof com.liferay.portal.kernel.exception.PortalException) {
-					throw (com.liferay.portal.kernel.exception.PortalException)e;
-				}
-
-				throw new com.liferay.portal.kernel.exception.SystemException(e);
-			}
-
-			return (java.util.List<com.liferay.osb.model.LCSSubscriptionEntry>)returnObj;
-		}
-		catch (com.liferay.portal.kernel.exception.SystemException se) {
-			_log.error(se, se);
-
-			throw se;
-		}
-	}
-
 	private static Log _log = LogFactoryUtil.getLog(LCSSubscriptionEntryServiceHttp.class);
 	private static final Class<?>[] _getLCSSubscriptionEntriesParameterTypes0 = new Class[] {
 			java.lang.String.class
 		};
-	private static final Class<?>[] _getLCSSubscriptionEntriesByCorpProjectIdParameterTypes1 =
-		new Class[] { long.class };
 }

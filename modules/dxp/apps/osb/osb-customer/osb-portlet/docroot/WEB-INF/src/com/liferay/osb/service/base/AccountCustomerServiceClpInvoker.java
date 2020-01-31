@@ -38,14 +38,6 @@ public class AccountCustomerServiceClpInvoker {
 		_methodName218 = "getCorpProjectAccountCustomerUUIDs";
 
 		_methodParameterTypes218 = new String[] { "java.lang.String" };
-
-		_methodName219 = "getCorpProjectIdAccountCustomerUsers";
-
-		_methodParameterTypes219 = new String[] { "long" };
-
-		_methodName220 = "getCorpProjectIdAccountCustomerUUIDs";
-
-		_methodParameterTypes220 = new String[] { "long" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -65,16 +57,6 @@ public class AccountCustomerServiceClpInvoker {
 			return AccountCustomerServiceUtil.getCorpProjectAccountCustomerUUIDs((java.lang.String)arguments[0]);
 		}
 
-		if (_methodName219.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes219, parameterTypes)) {
-			return AccountCustomerServiceUtil.getCorpProjectIdAccountCustomerUsers(((Long)arguments[0]).longValue());
-		}
-
-		if (_methodName220.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes220, parameterTypes)) {
-			return AccountCustomerServiceUtil.getCorpProjectIdAccountCustomerUUIDs(((Long)arguments[0]).longValue());
-		}
-
 		throw new UnsupportedOperationException();
 	}
 
@@ -84,8 +66,4 @@ public class AccountCustomerServiceClpInvoker {
 	private String[] _methodParameterTypes217;
 	private String _methodName218;
 	private String[] _methodParameterTypes218;
-	private String _methodName219;
-	private String[] _methodParameterTypes219;
-	private String _methodName220;
-	private String[] _methodParameterTypes220;
 }

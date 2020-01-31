@@ -53,12 +53,6 @@ public class AccountEntryServiceUtil {
 		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
 	}
 
-	public static com.liferay.osb.model.AccountEntry fetchCorpProjectIdAccountEntry(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().fetchCorpProjectIdAccountEntry(corpProjectId);
-	}
-
 	public static com.liferay.osb.model.AccountEntry getAccountEntry(
 		long accountEntryId)
 		throws com.liferay.portal.kernel.exception.PortalException {

@@ -68,18 +68,6 @@ public class AccountCustomerServiceUtil {
 		return getService().getCorpProjectAccountCustomerUsers(corpProjectUuid);
 	}
 
-	public static java.util.List<java.lang.String> getCorpProjectIdAccountCustomerUUIDs(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getCorpProjectIdAccountCustomerUUIDs(corpProjectId);
-	}
-
-	public static java.util.List<com.liferay.portal.kernel.model.User> getCorpProjectIdAccountCustomerUsers(
-		long corpProjectId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getCorpProjectIdAccountCustomerUsers(corpProjectId);
-	}
-
 	public static void clearService() {
 		_service = null;
 	}
