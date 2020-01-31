@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.AccountEntryServiceBaseImpl;
 import com.liferay.osb.service.permission.OSBAccountEntryPermission;
 import com.liferay.osb.util.OSBActionKeys;
@@ -56,22 +55,6 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		validateJSONWebServicePermissions();
 
 		return accountEntryPersistence.fetchByCorpProjectUuid(corpProjectUuid);
-	}
-
-	@JSONWebService
-	public AccountEntry fetchCorpProjectIdAccountEntry(long corpProjectId)
-		throws PortalException {
-
-		validateJSONWebServicePermissions();
-
-		CorpProject corpProject = corpProjectLocalService.fetchCorpProject(
-			corpProjectId);
-
-		if (corpProject == null) {
-			return null;
-		}
-
-		return fetchCorpProjectAccountEntry(corpProject.getUuid());
 	}
 
 	@JSONWebService

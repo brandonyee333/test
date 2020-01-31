@@ -16,7 +16,6 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.service.base.AccountCustomerServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -92,26 +91,6 @@ public class AccountCustomerServiceImpl extends AccountCustomerServiceBaseImpl {
 		}
 
 		return uuids;
-	}
-
-	@JSONWebService
-	public List<User> getCorpProjectIdAccountCustomerUsers(long corpProjectId)
-		throws PortalException {
-
-		CorpProject corpProject = corpProjectLocalService.getCorpProject(
-			corpProjectId);
-
-		return getCorpProjectAccountCustomerUsers(corpProject.getUuid());
-	}
-
-	@JSONWebService
-	public List<String> getCorpProjectIdAccountCustomerUUIDs(long corpProjectId)
-		throws PortalException {
-
-		CorpProject corpProject = corpProjectLocalService.getCorpProject(
-			corpProjectId);
-
-		return getCorpProjectAccountCustomerUUIDs(corpProject.getUuid());
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

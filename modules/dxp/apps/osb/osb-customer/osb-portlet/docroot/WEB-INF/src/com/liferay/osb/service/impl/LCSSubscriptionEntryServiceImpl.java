@@ -15,7 +15,6 @@
 package com.liferay.osb.service.impl;
 
 import com.liferay.osb.model.AccountEntry;
-import com.liferay.osb.model.CorpProject;
 import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
@@ -43,17 +42,6 @@ public class LCSSubscriptionEntryServiceImpl
 
 		return lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(
 			accountEntry.getAccountEntryId());
-	}
-
-	@JSONWebService
-	public List<LCSSubscriptionEntry> getLCSSubscriptionEntriesByCorpProjectId(
-			long corpProjectId)
-		throws PortalException {
-
-		CorpProject corpProject = corpProjectLocalService.getCorpProject(
-			corpProjectId);
-
-		return getLCSSubscriptionEntries(corpProject.getUuid());
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {
