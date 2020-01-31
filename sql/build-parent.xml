@@ -8,7 +8,7 @@
 	<var name="fork.mode" value="false" />
 	<var if:true="${jvm.debug}" name="fork.mode" value="true" />
 
-	<target name="build-db">
+	<target depends="replace-portal-data-release-tokens" name="build-db">
 		<if>
 			<equals arg1="${build.profile}" arg2="dxp" />
 			<then>
@@ -54,6 +54,14 @@
 		</java>
 
 		<echo>${db.builder.output}</echo>
+
+		<copy
+			failonerror="false"
+			file="${project.dir}/sql/build/temp/portal-data-release.sql.original"
+			overwrite="true"
+			quiet="true"
+			tofile="${project.dir}/sql/portal-data-release.sql"
+		/>
 	</target>
 
 	<target name="clean">
@@ -177,5 +185,44 @@
 			<param name="arg.line" value="${sybase.arg.line}" />
 			<param name="log" value="${sybase.log}" />
 		</antcall>
+	</target>
+
+	<target name="replace-portal-data-release-tokens">
+		<if>
+			<available file="${project.dir}/sql/portal-data-release.sql" />
+			<then>
+				<copy
+					file="${project.dir}/sql/portal-data-release.sql"
+					overwrite="true"
+					tofile="${project.dir}/sql/build/temp/portal-data-release.sql.original"
+				/>
+
+				<copy
+					file="${project.dir}/sql/portal-data-release.sql"
+					overwrite="true"
+					tofile="${project.dir}/sql/build/temp/portal-data-release.sql.new"
+				/>
+
+				<replace
+					file="${project.dir}/sql/build/temp/portal-data-release.sql.new"
+				>
+					<replacefilter
+						token="[$BUILD_NUMBER$]"
+						value="${portal.data.release.build.number}"
+					/>
+					<replacefilter
+						token="[$SCHEMA_VERSION$]"
+						value="${portal.data.release.schema.version}"
+					/>
+				</replace>
+
+				<copy
+					file="${project.dir}/sql/build/temp/portal-data-release.sql.new"
+					overwrite="true"
+					tofile="${project.dir}/sql/portal-data-release.sql"
+					verbose="true"
+				/>
+			</then>
+		</if>
 	</target>
 </project>

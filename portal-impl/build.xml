@@ -933,6 +933,8 @@ This target does not format .es.js files. Please run the following command from 
 			/>
 		</copy>
 
+		<ant dir="${project.dir}/sql" inheritAll="false" target="sql-parent.replace-portal-data-release-tokens" />
+
 		<copy
 			preservelastmodified="true"
 			todir="${portal-impl.classes.dir}/com/liferay/portal/tools/sql/dependencies"
@@ -942,6 +944,14 @@ This target does not format .es.js files. Please run the following command from 
 				includes="portal-data-common.sql,portal-data-counter.sql,portal-data-release.sql,portal-tables.sql,indexes.properties,indexes.sql,sequences.sql,update-*.sql"
 			/>
 		</copy>
+
+		<copy
+			failonerror="false"
+			file="${project.dir}/sql/build/temp/portal-data-release.sql.original"
+			overwrite="true"
+			quiet="true"
+			tofile="${project.dir}/sql/portal-data-release.sql"
+		/>
 
 		<copy
 			file="${project.dir}/classes/log4j.properties"

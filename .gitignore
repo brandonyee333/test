@@ -123,6 +123,7 @@
 /rebel.xml
 /release.*.properties
 /selenium-output
+/sql/build
 /sql/create
 /sql/create-bare
 /sql/create-sharded
