@@ -36,7 +36,7 @@ boolean defaultPolicy = BeanParamUtil.getBoolean(passwordPolicy, request, "defau
 PasswordPoliciesConfiguration passwordPoliciesConfiguration = (PasswordPoliciesConfiguration)request.getAttribute(PasswordPoliciesConfiguration.class.getName());
 
 portletDisplay.setShowBackIcon(true);
-portletDisplay.setURLBack(backURL.toString());
+portletDisplay.setURLBack(backURL);
 
 renderResponse.setTitle(passwordPolicy.isNew() ? LanguageUtil.get(request, "new-password-policy") : passwordPolicy.getName());
 %>
