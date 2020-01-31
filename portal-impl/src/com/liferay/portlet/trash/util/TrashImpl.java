@@ -466,6 +466,10 @@ public class TrashImpl implements Trash {
 		PortletURL portletURL = PortalUtil.getControlPanelPortletURL(
 			request, portletId, PortletRequest.RENDER_PHASE);
 
+		if (portletURL == null) {
+			return null;
+		}
+
 		portletURL.setParameter("mvcPath", "/view_content.jsp");
 		portletURL.setParameter("redirect", themeDisplay.getURLCurrent());
 
