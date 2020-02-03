@@ -231,8 +231,6 @@ public class XMLSecurityTest extends BaseSamlTestCase {
 
 		sb.append(authnRequestXML.substring(38));
 
-		authnRequestXML = sb.toString();
-
 		decodeAuthnRequest(sb.toString(), redirectURL);
 	}
 
