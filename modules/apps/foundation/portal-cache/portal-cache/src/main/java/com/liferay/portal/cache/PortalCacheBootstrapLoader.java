@@ -16,7 +16,9 @@ package com.liferay.portal.cache;
 
 /**
  * @author Tina Tian
+ * @deprecated As of Wilberforce (7.0.x), with no direct replacement
  */
+@Deprecated
 public interface PortalCacheBootstrapLoader {
 
 	public static final String BOOTSTRAP_ASYNCHRONOUSLY =

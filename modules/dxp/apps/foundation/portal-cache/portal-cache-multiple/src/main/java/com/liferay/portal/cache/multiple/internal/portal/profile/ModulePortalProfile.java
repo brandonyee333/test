@@ -15,8 +15,6 @@
 package com.liferay.portal.cache.multiple.internal.portal.profile;
 
 import com.liferay.portal.cache.multiple.internal.ClusterLinkPortalCacheReplicatorFactory;
-import com.liferay.portal.cache.multiple.internal.bootstrap.ClusterLinkBootstrapLoaderHelperUtil;
-import com.liferay.portal.cache.multiple.internal.bootstrap.ClusterLinkPortalCacheBootstrapLoaderFactory;
 import com.liferay.portal.cache.multiple.internal.cluster.link.ClusterLinkPortalCacheClusterChannelFactory;
 import com.liferay.portal.cache.multiple.internal.cluster.link.PortalCacheClusterLink;
 import com.liferay.portal.cache.multiple.internal.cluster.link.messaging.ClusterLinkMessagingConfigurator;
@@ -41,9 +39,7 @@ public class ModulePortalProfile extends BaseDSModulePortalProfile {
 		init(
 			componentContext,
 			Collections.singleton(PortalProfile.PORTAL_PROFILE_NAME_DXP),
-			ClusterLinkBootstrapLoaderHelperUtil.class.getName(),
 			ClusterLinkMessagingConfigurator.class.getName(),
-			ClusterLinkPortalCacheBootstrapLoaderFactory.class.getName(),
 			ClusterLinkPortalCacheClusterChannelFactory.class.getName(),
 			ClusterLinkPortalCacheClusterListener.class.getName(),
 			ClusterLinkPortalCacheReplicatorFactory.class.getName(),
