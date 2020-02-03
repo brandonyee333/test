@@ -205,7 +205,7 @@ public class AccountEntryLocalServiceClpInvoker {
 		_methodName210 = "addAccountEntry";
 
 		_methodParameterTypes210 = new String[] {
-				"long", "java.lang.String", "java.lang.String",
+				"long", "java.lang.String", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"int", "int", "long", "boolean", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String[][]",
@@ -388,7 +388,7 @@ public class AccountEntryLocalServiceClpInvoker {
 		_methodName244 = "updateAccountEntry";
 
 		_methodParameterTypes244 = new String[] {
-				"long", "long", "java.lang.String", "java.lang.String",
+				"long", "long", "java.lang.String", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"int", "int", "long", "boolean", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String[][]",
@@ -683,26 +683,27 @@ public class AccountEntryLocalServiceClpInvoker {
 		if (_methodName210.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes210, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.addAccountEntry(((Long)arguments[0]).longValue(),
-				(java.lang.String)arguments[1], (java.lang.String)arguments[2],
+				(java.lang.String)arguments[1],
+				((Long)arguments[2]).longValue(),
 				(java.lang.String)arguments[3], (java.lang.String)arguments[4],
-				(java.lang.String)arguments[5],
-				((Integer)arguments[6]).intValue(),
+				(java.lang.String)arguments[5], (java.lang.String)arguments[6],
 				((Integer)arguments[7]).intValue(),
-				((Long)arguments[8]).longValue(),
-				((Boolean)arguments[9]).booleanValue(),
-				((Integer)arguments[10]).intValue(),
+				((Integer)arguments[8]).intValue(),
+				((Long)arguments[9]).longValue(),
+				((Boolean)arguments[10]).booleanValue(),
 				((Integer)arguments[11]).intValue(),
-				(java.lang.String)arguments[12],
+				((Integer)arguments[12]).intValue(),
 				(java.lang.String)arguments[13],
-				(java.lang.String[])arguments[14], (long[])arguments[15],
-				(java.lang.String)arguments[16],
+				(java.lang.String)arguments[14],
+				(java.lang.String[])arguments[15], (long[])arguments[16],
 				(java.lang.String)arguments[17],
 				(java.lang.String)arguments[18],
 				(java.lang.String)arguments[19],
 				(java.lang.String)arguments[20],
-				((Long)arguments[21]).longValue(),
+				(java.lang.String)arguments[21],
 				((Long)arguments[22]).longValue(),
-				(java.lang.String)arguments[23]);
+				((Long)arguments[23]).longValue(),
+				(java.lang.String)arguments[24]);
 		}
 
 		if (_methodName211.equals(name) &&
@@ -971,27 +972,28 @@ public class AccountEntryLocalServiceClpInvoker {
 				Arrays.deepEquals(_methodParameterTypes244, parameterTypes)) {
 			return AccountEntryLocalServiceUtil.updateAccountEntry(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(),
-				(java.lang.String)arguments[2], (java.lang.String)arguments[3],
+				(java.lang.String)arguments[2],
+				((Long)arguments[3]).longValue(),
 				(java.lang.String)arguments[4], (java.lang.String)arguments[5],
-				(java.lang.String)arguments[6],
-				((Integer)arguments[7]).intValue(),
+				(java.lang.String)arguments[6], (java.lang.String)arguments[7],
 				((Integer)arguments[8]).intValue(),
-				((Long)arguments[9]).longValue(),
-				((Boolean)arguments[10]).booleanValue(),
-				((Integer)arguments[11]).intValue(),
+				((Integer)arguments[9]).intValue(),
+				((Long)arguments[10]).longValue(),
+				((Boolean)arguments[11]).booleanValue(),
 				((Integer)arguments[12]).intValue(),
-				(java.lang.String)arguments[13],
+				((Integer)arguments[13]).intValue(),
 				(java.lang.String)arguments[14],
-				(java.lang.String[])arguments[15], (long[])arguments[16],
-				((Long)arguments[17]).longValue(),
-				(java.lang.String)arguments[18],
+				(java.lang.String)arguments[15],
+				(java.lang.String[])arguments[16], (long[])arguments[17],
+				((Long)arguments[18]).longValue(),
 				(java.lang.String)arguments[19],
 				(java.lang.String)arguments[20],
 				(java.lang.String)arguments[21],
 				(java.lang.String)arguments[22],
-				((Long)arguments[23]).longValue(),
+				(java.lang.String)arguments[23],
 				((Long)arguments[24]).longValue(),
-				(java.lang.String)arguments[25]);
+				((Long)arguments[25]).longValue(),
+				(java.lang.String)arguments[26]);
 		}
 
 		if (_methodName245.equals(name) &&

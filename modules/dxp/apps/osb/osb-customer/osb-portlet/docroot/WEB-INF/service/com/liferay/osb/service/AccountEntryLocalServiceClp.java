@@ -53,7 +53,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		_methodName5 = "addAccountEntry";
 
 		_methodParameterTypes5 = new String[] {
-				"long", "java.lang.String", "java.lang.String",
+				"long", "java.lang.String", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"int", "int", "long", "boolean", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String[][]",
@@ -133,7 +133,7 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 		_methodName20 = "updateAccountEntry";
 
 		_methodParameterTypes20 = new String[] {
-				"long", "long", "java.lang.String", "java.lang.String",
+				"long", "long", "java.lang.String", "long", "java.lang.String",
 				"java.lang.String", "java.lang.String", "java.lang.String",
 				"int", "int", "long", "boolean", "int", "int",
 				"java.lang.String", "java.lang.String", "java.lang.String[][]",
@@ -571,15 +571,16 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 
 	@Override
 	public com.liferay.osb.model.AccountEntry addAccountEntry(long userId,
-		java.lang.String corpProjectUuid, java.lang.String dossieraAccountKey,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String corpProjectUuid, long corpProjectId,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -590,6 +591,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 						userId,
 						
 					ClpSerializer.translateInput(corpProjectUuid),
+						
+					corpProjectId,
 						
 					ClpSerializer.translateInput(dossieraAccountKey),
 						
@@ -1062,15 +1065,15 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 	@Override
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(long userId,
 		long accountEntryId, java.lang.String corpProjectUuid,
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, long addressId, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		long corpProjectId, java.lang.String dossieraAccountKey,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		long addressId, java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
@@ -1083,6 +1086,8 @@ public class AccountEntryLocalServiceClp implements AccountEntryLocalService {
 					accountEntryId,
 						
 					ClpSerializer.translateInput(corpProjectUuid),
+						
+					corpProjectId,
 						
 					ClpSerializer.translateInput(dossieraAccountKey),
 						

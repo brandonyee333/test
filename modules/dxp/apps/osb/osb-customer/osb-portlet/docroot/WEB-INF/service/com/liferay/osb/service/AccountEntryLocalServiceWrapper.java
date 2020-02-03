@@ -71,22 +71,23 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 
 	@Override
 	public com.liferay.osb.model.AccountEntry addAccountEntry(long userId,
-		java.lang.String corpProjectUuid, java.lang.String dossieraAccountKey,
-		java.lang.String corpEntryName, java.lang.String name,
-		java.lang.String code, int type, int industry, long partnerEntryId,
-		boolean partnerManagedSupport, int tier, int maxCustomers,
-		java.lang.String instructions, java.lang.String notes,
-		java.lang.String[] languageIds, long[] supportRegionIds,
-		java.lang.String street1, java.lang.String street2,
-		java.lang.String street3, java.lang.String city, java.lang.String zip,
-		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
+		java.lang.String corpProjectUuid, long corpProjectId,
+		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
+		java.lang.String name, java.lang.String code, int type, int industry,
+		long partnerEntryId, boolean partnerManagedSupport, int tier,
+		int maxCustomers, java.lang.String instructions,
+		java.lang.String notes, java.lang.String[] languageIds,
+		long[] supportRegionIds, java.lang.String street1,
+		java.lang.String street2, java.lang.String street3,
+		java.lang.String city, java.lang.String zip, long regionId,
+		long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntryLocalService.addAccountEntry(userId,
-			corpProjectUuid, dossieraAccountKey, corpEntryName, name, code,
-			type, industry, partnerEntryId, partnerManagedSupport, tier,
-			maxCustomers, instructions, notes, languageIds, supportRegionIds,
-			street1, street2, street3, city, zip, regionId, countryId,
-			ewsaDossieraProjectKey);
+			corpProjectUuid, corpProjectId, dossieraAccountKey, corpEntryName,
+			name, code, type, industry, partnerEntryId, partnerManagedSupport,
+			tier, maxCustomers, instructions, notes, languageIds,
+			supportRegionIds, street1, street2, street3, city, zip, regionId,
+			countryId, ewsaDossieraProjectKey);
 	}
 
 	@Override
@@ -226,22 +227,22 @@ public class AccountEntryLocalServiceWrapper implements AccountEntryLocalService
 	@Override
 	public com.liferay.osb.model.AccountEntry updateAccountEntry(long userId,
 		long accountEntryId, java.lang.String corpProjectUuid,
-		java.lang.String dossieraAccountKey, java.lang.String corpEntryName,
-		java.lang.String name, java.lang.String code, int type, int industry,
-		long partnerEntryId, boolean partnerManagedSupport, int tier,
-		int maxCustomers, java.lang.String instructions,
-		java.lang.String notes, java.lang.String[] languageIds,
-		long[] supportRegionIds, long addressId, java.lang.String street1,
-		java.lang.String street2, java.lang.String street3,
-		java.lang.String city, java.lang.String zip, long regionId,
-		long countryId, java.lang.String ewsaDossieraProjectKey)
+		long corpProjectId, java.lang.String dossieraAccountKey,
+		java.lang.String corpEntryName, java.lang.String name,
+		java.lang.String code, int type, int industry, long partnerEntryId,
+		boolean partnerManagedSupport, int tier, int maxCustomers,
+		java.lang.String instructions, java.lang.String notes,
+		java.lang.String[] languageIds, long[] supportRegionIds,
+		long addressId, java.lang.String street1, java.lang.String street2,
+		java.lang.String street3, java.lang.String city, java.lang.String zip,
+		long regionId, long countryId, java.lang.String ewsaDossieraProjectKey)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _accountEntryLocalService.updateAccountEntry(userId,
-			accountEntryId, corpProjectUuid, dossieraAccountKey, corpEntryName,
-			name, code, type, industry, partnerEntryId, partnerManagedSupport,
-			tier, maxCustomers, instructions, notes, languageIds,
-			supportRegionIds, addressId, street1, street2, street3, city, zip,
-			regionId, countryId, ewsaDossieraProjectKey);
+			accountEntryId, corpProjectUuid, corpProjectId, dossieraAccountKey,
+			corpEntryName, name, code, type, industry, partnerEntryId,
+			partnerManagedSupport, tier, maxCustomers, instructions, notes,
+			languageIds, supportRegionIds, addressId, street1, street2,
+			street3, city, zip, regionId, countryId, ewsaDossieraProjectKey);
 	}
 
 	@Override
