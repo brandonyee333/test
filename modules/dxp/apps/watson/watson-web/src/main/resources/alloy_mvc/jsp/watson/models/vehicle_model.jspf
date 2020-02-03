@@ -122,7 +122,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 		jsonObject.put("typeWatsonListTypeId", watsonVehicle.getTypeWatsonListTypeId());
 		jsonObject.put("watsonIncidentId", watsonVehicle.getWatsonIncidentId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonVehicle.getWatsonVehicleId(), watsonRelationships));
 		}
 		else {
@@ -245,7 +245,7 @@ public static class WatsonVehicle extends WatsonVehicleBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonVehicleRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {
 					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");

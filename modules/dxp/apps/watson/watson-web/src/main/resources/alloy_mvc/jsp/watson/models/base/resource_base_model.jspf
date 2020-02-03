@@ -360,7 +360,7 @@ public static class WatsonResourceBaseModel extends WatsonResourceWrapper {
 	}
 
 	public static void validateWatsonResourceBaseModel(WatsonResourceBaseModel watsonResource) throws AlloyException {
-		if (Validator.isNull(watsonResource) || Validator.isNull(watsonResource.getWrappedModel())) {
+		if ((watsonResource == null) || Validator.isNull(watsonResource.getWrappedModel())) {
 			throw new AlloyException("the-resource-is-invalid");
 		}
 	}

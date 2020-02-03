@@ -360,7 +360,7 @@ public static class WatsonIncidentBaseModel extends WatsonIncidentWrapper {
 	}
 
 	public static void validateWatsonIncidentBaseModel(WatsonIncidentBaseModel watsonIncident) throws AlloyException {
-		if (Validator.isNull(watsonIncident) || Validator.isNull(watsonIncident.getWrappedModel())) {
+		if ((watsonIncident == null) || Validator.isNull(watsonIncident.getWrappedModel())) {
 			throw new AlloyException("the-incident-is-invalid");
 		}
 	}

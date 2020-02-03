@@ -360,7 +360,7 @@ public static class WatsonChildBaseModel extends WatsonChildWrapper {
 	}
 
 	public static void validateWatsonChildBaseModel(WatsonChildBaseModel watsonChild) throws AlloyException {
-		if (Validator.isNull(watsonChild) || Validator.isNull(watsonChild.getWrappedModel())) {
+		if ((watsonChild == null) || Validator.isNull(watsonChild.getWrappedModel())) {
 			throw new AlloyException("the-child-is-invalid");
 		}
 	}

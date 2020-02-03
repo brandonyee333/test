@@ -360,7 +360,7 @@ public static class WatsonRelationshipBaseModel extends WatsonRelationshipWrappe
 	}
 
 	public static void validateWatsonRelationshipBaseModel(WatsonRelationshipBaseModel watsonRelationship) throws AlloyException {
-		if (Validator.isNull(watsonRelationship) || Validator.isNull(watsonRelationship.getWrappedModel())) {
+		if ((watsonRelationship == null) || Validator.isNull(watsonRelationship.getWrappedModel())) {
 			throw new AlloyException("the-relationship-is-invalid");
 		}
 	}

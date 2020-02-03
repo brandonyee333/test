@@ -114,7 +114,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 		jsonObject.put("typeWatsonListTypeId", watsonReport.getTypeWatsonListTypeId());
 		jsonObject.put("watsonChildId", watsonReport.getWatsonChildId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonReport.getWatsonReportId(), watsonRelationships));
 		}
 		else {
@@ -184,7 +184,7 @@ public static class WatsonReport extends WatsonReportBaseModel {
 
 		WatsonReport watsonReport = fetch(watsonReportId, true);
 
-		if (Validator.isNull(watsonReport)) {
+		if (watsonReport == null) {
 			return StringPool.BLANK;
 		}
 

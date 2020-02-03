@@ -360,7 +360,7 @@ public static class WatsonAddressBaseModel extends WatsonAddressWrapper {
 	}
 
 	public static void validateWatsonAddressBaseModel(WatsonAddressBaseModel watsonAddress) throws AlloyException {
-		if (Validator.isNull(watsonAddress) || Validator.isNull(watsonAddress.getWrappedModel())) {
+		if ((watsonAddress == null) || Validator.isNull(watsonAddress.getWrappedModel())) {
 			throw new AlloyException("the-address-is-invalid");
 		}
 	}

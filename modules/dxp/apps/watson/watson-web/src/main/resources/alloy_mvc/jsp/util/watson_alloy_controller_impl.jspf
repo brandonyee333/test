@@ -234,7 +234,7 @@ public static class WatsonAlloyControllerImpl extends BaseAlloyControllerImpl {
 					keywordsBooleanClause = BooleanClauseFactoryUtil.create(matchQuery, BooleanClauseOccur.MUST.getName());
 				}
 
-				if (Validator.isNotNull(keywordsBooleanClause)) {
+				if (keywordsBooleanClause != null) {
 					booleanClauseArray = ArrayUtil.append(booleanClauseArray, keywordsBooleanClause);
 				}
 			}

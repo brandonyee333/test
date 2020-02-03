@@ -181,7 +181,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 		jsonObject.put("watsonIncidentId", watsonPerson.getWatsonIncidentId());
 		jsonObject.put("watsonPersonId", watsonPerson.getWatsonPersonId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonPerson.getWatsonPersonId(), watsonRelationships));
 		}
 		else {
@@ -439,7 +439,7 @@ public static class WatsonPerson extends WatsonPersonBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonPersonRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {
 					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");

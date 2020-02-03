@@ -360,7 +360,7 @@ public static class WatsonActivityBaseModel extends WatsonActivityWrapper {
 	}
 
 	public static void validateWatsonActivityBaseModel(WatsonActivityBaseModel watsonActivity) throws AlloyException {
-		if (Validator.isNull(watsonActivity) || Validator.isNull(watsonActivity.getWrappedModel())) {
+		if ((watsonActivity == null) || Validator.isNull(watsonActivity.getWrappedModel())) {
 			throw new AlloyException("the-activity-is-invalid");
 		}
 	}

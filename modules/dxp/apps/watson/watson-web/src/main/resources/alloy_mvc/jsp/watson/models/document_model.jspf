@@ -109,7 +109,7 @@ public static class WatsonDocument extends WatsonDocumentBaseModel {
 		jsonObject.put("watsonChildId", watsonDocument.getWatsonChildId());
 		jsonObject.put("watsonDocumentId", watsonDocument.getWatsonDocumentId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonDocument.getWatsonDocumentId(), watsonRelationships));
 		}
 		else {

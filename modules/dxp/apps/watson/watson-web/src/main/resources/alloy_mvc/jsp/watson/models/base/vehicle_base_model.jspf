@@ -360,7 +360,7 @@ public static class WatsonVehicleBaseModel extends WatsonVehicleWrapper {
 	}
 
 	public static void validateWatsonVehicleBaseModel(WatsonVehicleBaseModel watsonVehicle) throws AlloyException {
-		if (Validator.isNull(watsonVehicle) || Validator.isNull(watsonVehicle.getWrappedModel())) {
+		if ((watsonVehicle == null) || Validator.isNull(watsonVehicle.getWrappedModel())) {
 			throw new AlloyException("the-vehicle-is-invalid");
 		}
 	}

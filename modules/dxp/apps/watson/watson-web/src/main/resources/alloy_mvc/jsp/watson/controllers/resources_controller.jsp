@@ -378,7 +378,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			File file = uploadPortletRequest.getFile("file");
 
-			if (Validator.isNotNull(file) && (file.length() > 0)) {
+			if ((file != null) && (file.length() > 0)) {
 				JSONObject cropDataJSONObject = JSONFactoryUtil.createJSONObject(ParamUtil.getString(request, "cropData"));
 
 				try {

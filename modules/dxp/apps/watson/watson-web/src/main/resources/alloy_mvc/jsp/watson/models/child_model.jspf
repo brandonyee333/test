@@ -79,7 +79,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	public static JSONObject getAsJSONObject(WatsonChild watsonChild, List<WatsonListTypeRel> activitiesInvolvedWatsonListTypeRels, List<WatsonListTypeRel> countryIDWatsonListTypeRels, List<WatsonListTypeRel> guardianNameWatsonListTypeRels, List<WatsonListTypeRel> nameWatsonListTypeRels, List<WatsonListTypeRel> parentNameWatsonListTypeRels, List<WatsonListTypeRel> vocationalTrainingWatsonListTypeRels, List<WatsonRelationship> watsonRelationships, Locale locale) throws Exception {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		if (Validator.isNotNull(activitiesInvolvedWatsonListTypeRels) && !activitiesInvolvedWatsonListTypeRels.isEmpty()) {
+		if ((activitiesInvolvedWatsonListTypeRels != null) && !activitiesInvolvedWatsonListTypeRels.isEmpty()) {
 			List<Long> activitiesInvolvedIds = new ArrayList<>();
 
 			for (WatsonListTypeRel activityInvolved : activitiesInvolvedWatsonListTypeRels) {
@@ -191,7 +191,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 		jsonObject.put("typeWatsonListTypeId", watsonChild.getTypeWatsonListTypeId());
 
-		if (Validator.isNotNull(vocationalTrainingWatsonListTypeRels) && !vocationalTrainingWatsonListTypeRels.isEmpty()) {
+		if ((vocationalTrainingWatsonListTypeRels != null) && !vocationalTrainingWatsonListTypeRels.isEmpty()) {
 			List<Long> vocationalTrainingIds = new ArrayList<>();
 
 			for (WatsonListTypeRel vocationalTrainingWatsonListTypeRel : vocationalTrainingWatsonListTypeRels) {
@@ -208,7 +208,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 
 		jsonObject.put("watsonChildId", watsonChild.getWatsonChildId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonChild.getWatsonChildId(), watsonRelationships));
 		}
 		else {
@@ -548,7 +548,7 @@ public static class WatsonChild extends WatsonChildBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonChildRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {
 					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");

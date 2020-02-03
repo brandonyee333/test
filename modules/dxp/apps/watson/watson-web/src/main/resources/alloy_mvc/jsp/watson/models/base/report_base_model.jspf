@@ -360,7 +360,7 @@ public static class WatsonReportBaseModel extends WatsonReportWrapper {
 	}
 
 	public static void validateWatsonReportBaseModel(WatsonReportBaseModel watsonReport) throws AlloyException {
-		if (Validator.isNull(watsonReport) || Validator.isNull(watsonReport.getWrappedModel())) {
+		if ((watsonReport == null) || Validator.isNull(watsonReport.getWrappedModel())) {
 			throw new AlloyException("the-report-is-invalid");
 		}
 	}

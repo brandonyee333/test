@@ -86,7 +86,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 		jsonObject.put("watsonActivityId", watsonActivity.getWatsonActivityId());
 		jsonObject.put("watsonIncidentId", watsonActivity.getWatsonIncidentId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonActivity.getWatsonActivityId(), watsonRelationships));
 		}
 		else {
@@ -127,7 +127,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 	public static boolean hasEditableStatus(long currentUserId, long createdUserId) throws Exception {
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
-		if (Validator.isNotNull(user)) {
+		if (user != null) {
 			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR);
 
 			if (hasAdminRole) {
@@ -169,7 +169,7 @@ public static class WatsonActivity extends WatsonActivityBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonActivityRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {
 					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");

@@ -360,7 +360,7 @@ public static class WatsonListTypeRelBaseModel extends WatsonListTypeRelWrapper 
 	}
 
 	public static void validateWatsonListTypeRelBaseModel(WatsonListTypeRelBaseModel watsonListTypeRel) throws AlloyException {
-		if (Validator.isNull(watsonListTypeRel) || Validator.isNull(watsonListTypeRel.getWrappedModel())) {
+		if ((watsonListTypeRel == null) || Validator.isNull(watsonListTypeRel.getWrappedModel())) {
 			throw new AlloyException("the-list-type-rel-is-invalid");
 		}
 	}

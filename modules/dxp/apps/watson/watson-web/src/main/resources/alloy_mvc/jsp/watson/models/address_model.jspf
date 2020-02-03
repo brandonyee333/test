@@ -143,7 +143,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 		jsonObject.put("watsonAddressId", watsonAddress.getWatsonAddressId());
 		jsonObject.put("watsonIncidentId", watsonAddress.getWatsonIncidentId());
 
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			jsonObject.put("watsonRelationships", WatsonRelationship.getWatsonRelationshipsAsJSONArray(watsonAddress.getWatsonAddressId(), watsonRelationships));
 		}
 		else {
@@ -353,7 +353,7 @@ public static class WatsonAddress extends WatsonAddressBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonAddressRelationships(List<WatsonRelationship> watsonRelationships) throws Exception {
-		if (Validator.isNotNull(watsonRelationships)) {
+		if (watsonRelationships != null) {
 			for (WatsonRelationship watsonRelationship : watsonRelationships) {
 				if (!watsonRelationship.isValid()) {
 					return new KeyValuePair("watsonRelationships", "the-relationships-were-invalid");

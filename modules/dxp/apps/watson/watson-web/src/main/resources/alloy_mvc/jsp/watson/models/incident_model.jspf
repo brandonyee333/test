@@ -137,7 +137,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("modifiedUserName", WatsonHistory.fetchLastModifiedUserName(watsonIncident));
 		jsonObject.put("name", watsonIncident.getName());
 
-		if (Validator.isNotNull(natures) && !natures.isEmpty()) {
+		if ((natures != null) && !natures.isEmpty()) {
 			List<Long> natureIds = new ArrayList<>();
 
 			for (WatsonListTypeRel nature : natures) {
@@ -180,7 +180,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 		jsonObject.put("victimChildCount", watsonIncident.getVictimChildCount());
 		jsonObject.put("watsonIncidentId", watsonIncident.getWatsonIncidentId());
 
-		if (Validator.isNotNull(watsonIncidentRels)) {
+		if (watsonIncidentRels != null) {
 			List<Long> watsonIncidentRelClassPKs = WatsonIncidentRel.getWatsonIncidentRelClassPKs(watsonIncident.getWatsonIncidentId(), watsonIncidentRels);
 
 			jsonObject.put("watsonIncidentRelIds", watsonIncidentRelClassPKs.toArray());
@@ -435,7 +435,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	public static boolean hasDisabled(long currentUserId, long incidentStatus) throws Exception {
 		User user = UserLocalServiceUtil.fetchUser(currentUserId);
 
-		if (Validator.isNotNull(user)) {
+		if (user != null) {
 			boolean hasAdminRole = WatsonPermission.check(user, RoleConstants.WATSON_ADMINISTRATOR);
 
 			if (hasAdminRole) {
@@ -469,7 +469,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonIncidentExpenses(double expenses) {
-		if (Validator.isNotNull(expenses) && (expenses < 0)) {
+		if (expenses < 0) {
 			return new KeyValuePair("expenses", "the-expenses-cannot-be-negative");
 		}
 
@@ -541,7 +541,7 @@ public static class WatsonIncident extends WatsonIncidentBaseModel {
 	}
 
 	public static KeyValuePair validateWatsonIncidentRels(List<WatsonIncidentRel> watsonIncidentRels) throws Exception {
-		if (Validator.isNotNull(watsonIncidentRels)) {
+		if (watsonIncidentRels != null) {
 			for (WatsonIncidentRel watsonIncidentRel : watsonIncidentRels) {
 				if (!watsonIncidentRel.isValid()) {
 					return new KeyValuePair("watsonIncidentRels", "the-relationships-were-invalid");
