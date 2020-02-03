@@ -3,5 +3,6 @@
 <suppressions>
 	<checkstyle>
 		<suppress checks="StaticVariableNameCheck" files="journal-service/src/main/java/com/liferay/journal/configuration/JournalServiceConfigurationValues\.java" />
+		<suppress checks="UnnecessaryAssignCheck" files="modules/apps/web-experience/journal/journal-web/src/main/java/com/liferay/journal/web/util/JournalRSSUtil\.java" />
 	</checkstyle>
 </suppressions>
