@@ -607,8 +607,7 @@ public class LayoutRevisionLocalServiceImpl
 
 					curLayoutRevision.setHead(false);
 
-					curLayoutRevision = layoutRevisionPersistence.update(
-						curLayoutRevision);
+					layoutRevisionPersistence.update(curLayoutRevision);
 				}
 			}
 		}

@@ -189,7 +189,7 @@ public class OrganizationLocalServiceTest {
 
 		_organizations.add(organizationA);
 
-		organizationA = OrganizationTestUtil.addSite(organizationA);
+		OrganizationTestUtil.addSite(organizationA);
 
 		Group groupB = organizationB.getGroup();
 

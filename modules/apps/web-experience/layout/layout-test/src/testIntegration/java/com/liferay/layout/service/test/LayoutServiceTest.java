@@ -98,7 +98,7 @@ public class LayoutServiceTest {
 
 		layoutTypePortlet.setLayoutTemplateId(userId, "1_column", false);
 
-		layout = LayoutLocalServiceUtil.updateLayout(layout);
+		LayoutLocalServiceUtil.updateLayout(layout);
 	}
 
 	@DeleteAfterTestRun

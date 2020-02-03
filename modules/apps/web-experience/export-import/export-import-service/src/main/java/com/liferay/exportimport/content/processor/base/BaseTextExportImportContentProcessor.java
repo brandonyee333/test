@@ -2005,7 +2005,7 @@ public class BaseTextExportImportContentProcessor
 			url = url.substring(pos);
 
 			try {
-				layout = LayoutLocalServiceUtil.getFriendlyURLLayout(
+				LayoutLocalServiceUtil.getFriendlyURLLayout(
 					urlGroup.getGroupId(), privateLayout, url);
 			}
 			catch (NoSuchLayoutException nsle) {
