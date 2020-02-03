@@ -125,25 +125,26 @@ public class AccountEntryLocalServiceImpl
 	extends AccountEntryLocalServiceBaseImpl {
 
 	public AccountEntry addAccountEntry(
-			long userId, String corpProjectUuid, String dossieraAccountKey,
-			String corpEntryName, String name, String code, int type,
-			int industry, long partnerEntryId, boolean partnerManagedSupport,
-			int tier, int maxCustomers, String instructions, String notes,
-			String[] languageIds, long[] supportRegionIds, String street1,
-			String street2, String street3, String city, String zip,
-			long regionId, long countryId, String ewsaDossieraProjectKey)
+			long userId, String corpProjectUuid, long corpProjectId,
+			String dossieraAccountKey, String corpEntryName, String name,
+			String code, int type, int industry, long partnerEntryId,
+			boolean partnerManagedSupport, int tier, int maxCustomers,
+			String instructions, String notes, String[] languageIds,
+			long[] supportRegionIds, String street1, String street2,
+			String street3, String city, String zip, long regionId,
+			long countryId, String ewsaDossieraProjectKey)
 		throws PortalException {
 
 		validate(
-			0, corpProjectUuid, name, code, type, industry, partnerEntryId,
-			maxCustomers, languageIds, supportRegionIds);
+			0, corpProjectUuid, corpProjectId, name, code, type, industry,
+			partnerEntryId, maxCustomers, languageIds, supportRegionIds);
 
 		return doAddAccountEntry(
-			userId, corpProjectUuid, dossieraAccountKey, corpEntryName, name,
-			code, type, industry, partnerEntryId, partnerManagedSupport, tier,
-			maxCustomers, instructions, notes, languageIds, supportRegionIds,
-			street1, street2, street3, city, zip, regionId, countryId,
-			ewsaDossieraProjectKey);
+			userId, corpProjectUuid, corpProjectId, dossieraAccountKey,
+			corpEntryName, name, code, type, industry, partnerEntryId,
+			partnerManagedSupport, tier, maxCustomers, instructions, notes,
+			languageIds, supportRegionIds, street1, street2, street3, city, zip,
+			regionId, countryId, ewsaDossieraProjectKey);
 	}
 
 	public AccountEntry addAccountEntryWithWorkflow(
@@ -191,6 +192,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntry = doAddAccountEntry(
 			accountEntry.getUserId(), corpProject.getUuid(),
+			corpProject.getCorpProjectId(),
 			accountEntry.getDossieraAccountKey(),
 			accountEntry.getCorpEntryName(), accountEntry.getName(),
 			accountEntry.getCode(), accountEntry.getType(),
@@ -384,9 +386,10 @@ public class AccountEntryLocalServiceImpl
 		}
 
 		AccountEntry accountEntry = doAddAccountEntry(
-			userId, corpProject.getUuid(), StringPool.BLANK, StringPool.BLANK,
-			companyName, null, AccountEntryConstants.TYPE_TRIAL, industry, 0L,
-			false, AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
+			userId, corpProject.getUuid(), corpProject.getCorpProjectId(),
+			StringPool.BLANK, StringPool.BLANK, companyName, null,
+			AccountEntryConstants.TYPE_TRIAL, industry, 0L, false,
+			AccountEntryConstants.TIER_REGULAR, 1, StringPool.BLANK,
 			StringPool.BLANK, new String[0], new long[0], "N/A",
 			StringPool.BLANK, StringPool.BLANK, "N/A", "N/A", 0L, countryId,
 			StringPool.BLANK);
@@ -1009,13 +1012,14 @@ public class AccountEntryLocalServiceImpl
 
 	public AccountEntry updateAccountEntry(
 			long userId, long accountEntryId, String corpProjectUuid,
-			String dossieraAccountKey, String corpEntryName, String name,
-			String code, int type, int industry, long partnerEntryId,
-			boolean partnerManagedSupport, int tier, int maxCustomers,
-			String instructions, String notes, String[] languageIds,
-			long[] supportRegionIds, long addressId, String street1,
-			String street2, String street3, String city, String zip,
-			long regionId, long countryId, String ewsaDossieraProjectKey)
+			long corpProjectId, String dossieraAccountKey, String corpEntryName,
+			String name, String code, int type, int industry,
+			long partnerEntryId, boolean partnerManagedSupport, int tier,
+			int maxCustomers, String instructions, String notes,
+			String[] languageIds, long[] supportRegionIds, long addressId,
+			String street1, String street2, String street3, String city,
+			String zip, long regionId, long countryId,
+			String ewsaDossieraProjectKey)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
@@ -1027,24 +1031,15 @@ public class AccountEntryLocalServiceImpl
 		AccountEntry oldAccountEntry = (AccountEntry)accountEntry.clone();
 
 		validate(
-			accountEntryId, corpProjectUuid, name, code, type, industry,
-			partnerEntryId, maxCustomers, languageIds, supportRegionIds);
+			accountEntryId, corpProjectUuid, corpProjectId, name, code, type,
+			industry, partnerEntryId, maxCustomers, languageIds,
+			supportRegionIds);
 
 		accountEntry.setModifiedUserId(user.getUserId());
 		accountEntry.setModifiedUserName(user.getFullName());
 		accountEntry.setModifiedDate(new Date());
-
 		accountEntry.setCorpProjectUuid(corpProjectUuid);
-
-		if (Validator.isNotNull(corpProjectUuid)) {
-			CorpProject corpProject =
-				corpProjectLocalService.fetchCorpProjectByUuid(corpProjectUuid);
-
-			if (corpProject != null) {
-				accountEntry.setCorpProjectId(corpProject.getCorpProjectId());
-			}
-		}
-
+		accountEntry.setCorpProjectId(corpProjectId);
 		accountEntry.setDossieraAccountKey(dossieraAccountKey);
 		accountEntry.setCorpEntryName(corpEntryName);
 		accountEntry.setName(name);
@@ -1147,6 +1142,7 @@ public class AccountEntryLocalServiceImpl
 				OSBConstants.USER_DEFAULT_USER_ID,
 				oldAccountEntry.getAccountEntryId(),
 				oldAccountEntry.getCorpProjectUuid(),
+				oldAccountEntry.getCorpProjectId(),
 				accountEntry.getDossieraAccountKey(),
 				accountEntry.getCorpEntryName(), oldAccountEntry.getName(),
 				oldAccountEntry.getCode(), oldAccountEntry.getType(),
@@ -1533,9 +1529,9 @@ public class AccountEntryLocalServiceImpl
 
 			validate(
 				accountEntryId, accountEntry.getCorpProjectUuid(),
-				accountEntry.getName(), accountEntry.getCode(),
-				accountEntry.getType(), accountEntry.getIndustry(),
-				accountEntry.getPartnerEntryId(),
+				accountEntry.getCorpProjectId(), accountEntry.getName(),
+				accountEntry.getCode(), accountEntry.getType(),
+				accountEntry.getIndustry(), accountEntry.getPartnerEntryId(),
 				accountEntry.getMaxCustomers(), accountEntry.getLanguageIds(),
 				accountEntry.getSupportRegionIds());
 
@@ -1803,10 +1799,11 @@ public class AccountEntryLocalServiceImpl
 	public void validate(AccountEntry accountEntry) throws PortalException {
 		validate(
 			accountEntry.getAccountEntryId(), accountEntry.getCorpProjectUuid(),
-			accountEntry.getName(), accountEntry.getCode(),
-			accountEntry.getType(), accountEntry.getIndustry(),
-			accountEntry.getPartnerEntryId(), accountEntry.getMaxCustomers(),
-			accountEntry.getLanguageIds(), accountEntry.getSupportRegionIds());
+			accountEntry.getCorpProjectId(), accountEntry.getName(),
+			accountEntry.getCode(), accountEntry.getType(),
+			accountEntry.getIndustry(), accountEntry.getPartnerEntryId(),
+			accountEntry.getMaxCustomers(), accountEntry.getLanguageIds(),
+			accountEntry.getSupportRegionIds());
 	}
 
 	protected ArrayList<User> addCorpProjectUsers(
@@ -1842,13 +1839,14 @@ public class AccountEntryLocalServiceImpl
 	}
 
 	protected AccountEntry doAddAccountEntry(
-			long userId, String corpProjectUuid, String dossieraAccountKey,
-			String corpEntryName, String name, String code, int type,
-			int industry, long partnerEntryId, boolean partnerManagedSupport,
-			int tier, int maxCustomers, String instructions, String notes,
-			String[] languageIds, long[] supportRegionIds, String street1,
-			String street2, String street3, String city, String zip,
-			long regionId, long countryId, String ewsaDossieraProjectKey)
+			long userId, String corpProjectUuid, long corpProjectId,
+			String dossieraAccountKey, String corpEntryName, String name,
+			String code, int type, int industry, long partnerEntryId,
+			boolean partnerManagedSupport, int tier, int maxCustomers,
+			String instructions, String notes, String[] languageIds,
+			long[] supportRegionIds, String street1, String street2,
+			String street3, String city, String zip, long regionId,
+			long countryId, String ewsaDossieraProjectKey)
 		throws PortalException {
 
 		// Account entry
@@ -1869,18 +1867,8 @@ public class AccountEntryLocalServiceImpl
 		accountEntry.setModifiedUserId(user.getUserId());
 		accountEntry.setModifiedUserName(user.getFullName());
 		accountEntry.setModifiedDate(now);
-
 		accountEntry.setCorpProjectUuid(corpProjectUuid);
-
-		if (Validator.isNotNull(corpProjectUuid)) {
-			CorpProject corpProject =
-				corpProjectLocalService.fetchCorpProjectByUuid(corpProjectUuid);
-
-			if (corpProject != null) {
-				accountEntry.setCorpProjectId(corpProject.getCorpProjectId());
-			}
-		}
-
+		accountEntry.setCorpProjectId(corpProjectId);
 		accountEntry.setDossieraAccountKey(dossieraAccountKey);
 		accountEntry.setCorpEntryName(corpEntryName);
 		accountEntry.setName(name);
@@ -2641,7 +2629,8 @@ public class AccountEntryLocalServiceImpl
 		}
 	}
 
-	protected void validate(long accountEntryId, String corpProjectUuid)
+	protected void validate(
+			long accountEntryId, String corpProjectUuid, long corpProjectId)
 		throws PortalException {
 
 		if (Validator.isNotNull(corpProjectUuid)) {
@@ -2653,16 +2642,32 @@ public class AccountEntryLocalServiceImpl
 
 				throw new AccountEntryCorpProjectException();
 			}
+
+			if (corpProjectId <= 0) {
+				throw new AccountEntryCorpProjectException();
+			}
+		}
+
+		if (corpProjectId > 0) {
+			AccountEntry accountEntry =
+				accountEntryPersistence.fetchByCorpProjectId(corpProjectId);
+
+			if ((accountEntry != null) &&
+				(accountEntry.getAccountEntryId() != accountEntryId)) {
+
+				throw new AccountEntryCorpProjectException();
+			}
 		}
 	}
 
 	protected void validate(
-			long accountEntryId, String corpProjectUuid, String name,
-			String code, int type, int industry, long partnerEntryId,
-			int maxCustomers, String[] languageIds, long[] supportRegionIds)
+			long accountEntryId, String corpProjectUuid, long corpProjectId,
+			String name, String code, int type, int industry,
+			long partnerEntryId, int maxCustomers, String[] languageIds,
+			long[] supportRegionIds)
 		throws PortalException {
 
-		validate(accountEntryId, corpProjectUuid);
+		validate(accountEntryId, corpProjectUuid, corpProjectId);
 
 		if (Validator.isNull(name)) {
 			throw new AccountEntryNameException();

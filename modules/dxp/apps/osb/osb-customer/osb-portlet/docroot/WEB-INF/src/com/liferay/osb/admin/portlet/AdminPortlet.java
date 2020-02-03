@@ -602,6 +602,7 @@ public class AdminPortlet extends OSBPortlet {
 
 		String corpProjectUuid = ParamUtil.getString(
 			actionRequest, "corpProjectUuid");
+		long corpProjectId = ParamUtil.getLong(actionRequest, "corpProjectId");
 		String dossieraAccountKey = ParamUtil.getString(
 			actionRequest, "dossieraAccountKey");
 		String name = ParamUtil.getString(actionRequest, "name");
@@ -635,11 +636,12 @@ public class AdminPortlet extends OSBPortlet {
 
 		if (accountEntryId <= 0) {
 			AccountEntryLocalServiceUtil.addAccountEntry(
-				themeDisplay.getUserId(), corpProjectUuid, dossieraAccountKey,
-				StringPool.BLANK, name, code, type, industry, partnerEntryId,
-				partnerManagedSupport, tier, maxCustomers, instructions, notes,
-				languageIds, supportRegionIds, street1, street2, street3, city,
-				zip, regionId, countryId, ewsaDossieraProjectKey);
+				themeDisplay.getUserId(), corpProjectUuid, corpProjectId,
+				dossieraAccountKey, StringPool.BLANK, name, code, type,
+				industry, partnerEntryId, partnerManagedSupport, tier,
+				maxCustomers, instructions, notes, languageIds,
+				supportRegionIds, street1, street2, street3, city, zip,
+				regionId, countryId, ewsaDossieraProjectKey);
 		}
 		else {
 			AccountEntry accountEntry =
@@ -647,11 +649,12 @@ public class AdminPortlet extends OSBPortlet {
 
 			AccountEntryLocalServiceUtil.updateAccountEntry(
 				themeDisplay.getUserId(), accountEntryId, corpProjectUuid,
-				dossieraAccountKey, accountEntry.getCorpEntryName(), name, code,
-				type, industry, partnerEntryId, partnerManagedSupport, tier,
-				maxCustomers, instructions, notes, languageIds,
-				supportRegionIds, addressId, street1, street2, street3, city,
-				zip, regionId, countryId, ewsaDossieraProjectKey);
+				corpProjectId, dossieraAccountKey,
+				accountEntry.getCorpEntryName(), name, code, type, industry,
+				partnerEntryId, partnerManagedSupport, tier, maxCustomers,
+				instructions, notes, languageIds, supportRegionIds, addressId,
+				street1, street2, street3, city, zip, regionId, countryId,
+				ewsaDossieraProjectKey);
 		}
 
 		updateAccountAttachment(actionRequest);

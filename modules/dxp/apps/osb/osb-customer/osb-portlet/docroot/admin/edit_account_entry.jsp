@@ -35,6 +35,7 @@ if (Validator.isNull(backURL)) {
 
 long accountEntryId = BeanParamUtil.getLong(accountEntry, request, "accountEntryId");
 String corpProjectUuid = BeanParamUtil.getString(accountEntry, request, "corpProjectUuid");
+long corpProjectId = BeanParamUtil.getLong(accountEntry, request, "corpProjectId");
 int type = BeanParamUtil.getInteger(accountEntry, request, "type", AccountEntryConstants.TYPE_GROUP);
 int industry = BeanParamUtil.getInteger(accountEntry, request, "industry");
 long partnerEntryId = BeanParamUtil.getLong(accountEntry, request, "partnerEntryId");
@@ -76,6 +77,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<aui:input name="accountEntryId" type="hidden" value="<%= accountEntryId %>" />
 	<aui:input name="accountProjectId" type="hidden" value="<%= AccountProjectConstants.DEFAULT_ACCOUNT_PROJECT_ID %>" />
 	<aui:input name="corpProjectUuid" type="hidden" value="<%= corpProjectUuid %>" />
+	<aui:input name="corpProjectId" type="hidden" value="<%= corpProjectId %>" />
 	<aui:input name="key" type="hidden" />
 	<aui:input name="offeringEntryIds" type="hidden" />
 	<aui:input name="partnerEntryId" type="hidden" value="<%= partnerEntryId %>" />
@@ -777,6 +779,8 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	function <portlet:namespace />removeCorpProject() {
 		document.<portlet:namespace />fm.<portlet:namespace />corpProjectUuid.value = '';
 
+		document.<portlet:namespace />fm.<portlet:namespace />corpProjectId.value = 0;
+
 		document.getElementById('<portlet:namespace />corpProjectName').innerHTML = '';
 	}
 
@@ -808,8 +812,10 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		submitForm(document.<portlet:namespace />fm, '<portlet:actionURL><portlet:param name="jspPage" value="/admin/edit_account_entry.jsp" /></portlet:actionURL>');
 	}
 
-	function <portlet:namespace />selectCorpProject(corpProjectUuid, corpProjectName) {
+	function <portlet:namespace />selectCorpProject(corpProjectUuid, corpProjectId, corpProjectName) {
 		document.<portlet:namespace />fm.<portlet:namespace />corpProjectUuid.value = corpProjectUuid;
+
+		document.<portlet:namespace />fm.<portlet:namespace />corpProjectId.value = corpProjectId;
 
 		document.getElementById('<portlet:namespace />corpProjectName').innerHTML = corpProjectName;
 	}

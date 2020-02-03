@@ -65,6 +65,8 @@ portletURL.setParameter("callback", callback);
 			sb.append("('");
 			sb.append(corpProject.getUuid());
 			sb.append("', '");
+			sb.append(corpProject.getCorpProjectId());
+			sb.append("', '");
 			sb.append(UnicodeFormatter.toString(corpProject.getName()));
 			sb.append("'); window.close();");
 

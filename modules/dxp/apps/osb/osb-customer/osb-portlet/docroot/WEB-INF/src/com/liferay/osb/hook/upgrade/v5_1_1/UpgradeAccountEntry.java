@@ -139,6 +139,7 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 					OSBConstants.USER_DEFAULT_USER_ID,
 					analyticsCloudAccountEntry.getAccountEntryId(),
 					analyticsCloudAccountEntry.getCorpProjectUuid(),
+					analyticsCloudAccountEntry.getCorpProjectId(),
 					analyticsCloudAccountEntry.getDossieraAccountKey(),
 					analyticsCloudAccountEntry.getCorpEntryName(),
 					analyticsCloudAccountEntry.getName(),
