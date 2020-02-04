@@ -360,7 +360,7 @@ public static class WatsonPersonBaseModel extends WatsonPersonWrapper {
 	}
 
 	public static void validateWatsonPersonBaseModel(WatsonPersonBaseModel watsonPerson) throws AlloyException {
-		if ((watsonPerson == null) || Validator.isNull(watsonPerson.getWrappedModel())) {
+		if ((watsonPerson == null) || (watsonPerson.getWrappedModel() == null)) {
 			throw new AlloyException("the-person-is-invalid");
 		}
 	}

@@ -360,7 +360,7 @@ public static class WatsonHistoryBaseModel extends WatsonHistoryWrapper {
 	}
 
 	public static void validateWatsonHistoryBaseModel(WatsonHistoryBaseModel watsonHistory) throws AlloyException {
-		if ((watsonHistory == null) || Validator.isNull(watsonHistory.getWrappedModel())) {
+		if ((watsonHistory == null) || (watsonHistory.getWrappedModel() == null)) {
 			throw new AlloyException("the-history-is-invalid");
 		}
 	}

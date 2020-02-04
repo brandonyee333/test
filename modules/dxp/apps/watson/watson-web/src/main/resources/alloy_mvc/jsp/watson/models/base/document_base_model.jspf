@@ -360,7 +360,7 @@ public static class WatsonDocumentBaseModel extends WatsonDocumentWrapper {
 	}
 
 	public static void validateWatsonDocumentBaseModel(WatsonDocumentBaseModel watsonDocument) throws AlloyException {
-		if ((watsonDocument == null) || Validator.isNull(watsonDocument.getWrappedModel())) {
+		if ((watsonDocument == null) || (watsonDocument.getWrappedModel() == null)) {
 			throw new AlloyException("the-document-is-invalid");
 		}
 	}

@@ -360,7 +360,7 @@ public static class WatsonListTypeBaseModel extends WatsonListTypeWrapper {
 	}
 
 	public static void validateWatsonListTypeBaseModel(WatsonListTypeBaseModel watsonListType) throws AlloyException {
-		if ((watsonListType == null) || Validator.isNull(watsonListType.getWrappedModel())) {
+		if ((watsonListType == null) || (watsonListType.getWrappedModel() == null)) {
 			throw new AlloyException("the-list-type-is-invalid");
 		}
 	}

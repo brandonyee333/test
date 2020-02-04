@@ -360,7 +360,7 @@ public static class WatsonIncidentRelBaseModel extends WatsonIncidentRelWrapper 
 	}
 
 	public static void validateWatsonIncidentRelBaseModel(WatsonIncidentRelBaseModel watsonIncidentRel) throws AlloyException {
-		if ((watsonIncidentRel == null) || Validator.isNull(watsonIncidentRel.getWrappedModel())) {
+		if ((watsonIncidentRel == null) || (watsonIncidentRel.getWrappedModel() == null)) {
 			throw new AlloyException("the-incident-rel-is-invalid");
 		}
 	}
