@@ -36,6 +36,9 @@ public interface AccountWebService {
 			String contactUuid, int page, int pageSize)
 		throws Exception;
 
+	public Account getAccountContactsContactRoles(String accountKey)
+		throws Exception;
+
 	public List<Account> search(
 			String filterString, int page, int pageSize, String sortString)
 		throws Exception;

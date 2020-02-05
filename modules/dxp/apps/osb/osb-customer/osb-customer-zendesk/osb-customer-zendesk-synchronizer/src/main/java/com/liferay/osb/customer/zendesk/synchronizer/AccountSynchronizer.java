@@ -21,14 +21,18 @@ import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ContactWebService;
 import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.constants.ZendeskLocales;
 import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
+import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AddressUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
@@ -47,9 +51,10 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -75,18 +80,12 @@ public class AccountSynchronizer {
 
 		for (Contact contact : contacts) {
 			for (ContactRole contactRole : contact.getContactRoles()) {
-				String name = contactRole.getName();
+				if (ArrayUtil.contains(
+						ContactRoleConstants.SUPPORT_CONTACT_ROLES,
+						contactRole.getName())) {
 
-				if (name.equals("Customer Developer") ||
-					name.equals("Customer Manager")) {
-
-					//_accountCustomerSynchronizer.add(accountCustomer);
+					_customerSynchronizer.add(account, contact, contactRole);
 				}
-			}
-
-			if (hasActiveTicketSupport(account)) {
-				/*_accountCustomerSynchronizer.addOrganizationSubscription(
-				 accountCustomer);*/
 			}
 		}
 	}
@@ -99,10 +98,10 @@ public class AccountSynchronizer {
 
 		for (Contact contact : contacts) {
 			for (ContactRole contactRole : contact.getContactRoles()) {
-				String contactRoleName = contactRole.getName();
+				String name = contactRole.getName();
 
-				if (contactRoleName.equals("Partner Manager") ||
-					contactRoleName.equals("Partner Member")) {
+				if (ArrayUtil.contains(
+						ContactRoleConstants.PARTNER_CONTACT_ROLES, name)) {
 
 					/*_partnerWorkerSynchronizer.add(
 						accountEntry.getAccountEntryId(), partnerWorker);*/
@@ -141,134 +140,78 @@ public class AccountSynchronizer {
 		}
 	}
 
-	/*
-	TODO
-	public void reassignTickets(AccountCustomer accountCustomer)
-		throws PortalException {
-
-		long zendeskOrganizationId =
-			_zendeskMapperUtil.fetchZendeskOrganizationId(
-				accountCustomer.getAccountEntryId());
-		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-			accountCustomer.getUserId());
-
-		reassignTickets(
-			accountCustomer.getUserId(), accountCustomer.getAccountEntryId(),
-			zendeskOrganizationId, zendeskUserId);
-	}
-
 	public void reassignTickets(
-			long userId, long accountEntryId, long zendeskOrganizationId,
-			long zendeskUserId)
-		throws PortalException {
-
-		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
-			Set<String> criteria = new HashSet<>();
-
-			criteria.add("organization:" + zendeskOrganizationId);
-			criteria.add("requester:" + zendeskUserId);
-			criteria.add("status<closed");
-
-			List<ZendeskTicket> zendeskTickets =
-				_zendeskTicketWebService.getZendeskTickets(criteria);
-
-			if (!zendeskTickets.isEmpty()) {
-				List<AccountCustomer> accountCustomers =
-					AccountCustomerLocalServiceUtil.getAccountCustomers(
-						accountEntryId,
-						AccountCustomerConstants.ROLE_DEVELOPER);
-
-				accountCustomers = ListUtil.copy(accountCustomers);
-
-				Iterator<AccountCustomer> iterator =
-					accountCustomers.iterator();
-
-				while (iterator.hasNext()) {
-					AccountCustomer accountCustomer = iterator.next();
-
-					if (accountCustomer.getUserId() == userId) {
-						iterator.remove();
-					}
-				}
-
-				if (accountCustomers.isEmpty()) {
-					throw new AccountCustomerRemovalException();
-				}
-
-				AccountCustomer newAccountCustomer = accountCustomers.get(0);
-
-				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-					newAccountCustomer.getUserId());
-
-				for (ZendeskTicket zendeskTicket : zendeskTickets) {
-					zendeskTicket.setRequesterId(newZendeskUserId);
-					zendeskTicket.setZendeskOrganizationId(
-						zendeskOrganizationId);
-				}
-
-				_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
-			}
-		}
-	}
-
-	*/
-
-	public List<ProductPurchase> getProductPurchases(String accountKey)
+			String userUuid, long accountEntryId, String accountKey,
+			long zendeskOrganizationId, long zendeskUserId)
 		throws Exception {
 
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("accountKey eq '");
-		sb.append(accountKey);
-		sb.append("' and state eq 'active'");
-
-		return _productPurchaseWebService.search(sb.toString(), 1, 1000);
-	}
-
-	public boolean hasActiveSupport(Account account) throws Exception {
-		Date now = new Date();
-
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			account.getKey());
-
-		for (ProductPurchase productPurchase : productPurchases) {
-			Product product = productPurchase.getProduct();
-
-			String name = product.getName();
-
-			if (name.equals(ProductConstants.NAME_GOLD) ||
-				name.equals(ProductConstants.NAME_LIMITED) ||
-				name.equals(ProductConstants.NAME_PLATINUM) ||
-				name.equals(ProductConstants.NAME_SILVER)) {
-
-				if (productPurchase.getPerpetual()) {
-					return true;
-				}
-
-				Date endDate = productPurchase.getEndDate();
-
-				if (now.before(endDate)) {
-					return true;
-				}
-			}
+		if ((zendeskOrganizationId == 0) || (zendeskUserId == 0)) {
+			return;
 		}
 
-		return false;
-	}
+		long newZendeskUserId = 0;
 
-	public boolean hasActiveTicketSupport(Account account) throws Exception {
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			account.getKey());
+		Set<String> criteria = new HashSet<>();
 
-		for (ProductPurchase productPurchase : productPurchases) {
-			Map<String, String> properties = productPurchase.getProperties();
+		criteria.add("organization:" + zendeskOrganizationId);
+		criteria.add("requester:" + zendeskUserId);
+		criteria.add("status<closed");
 
-			if (properties.get("Tickets") != null) {
-				return true;
+		List<ZendeskTicket> zendeskTickets =
+			_zendeskTicketWebService.getZendeskTickets(criteria);
+
+		if (!zendeskTickets.isEmpty()) {
+			ZendeskUser zendeskUser = null;
+
+			Account account = _accountWebService.getAccountContactsContactRoles(
+				accountKey);
+
+			Contact[] contacts = account.getContacts();
+
+			if ((contacts != null) && (contacts.length > 0)) {
+				for (Contact contact : contacts) {
+					if (userUuid.equals(contact.getUuid())) {
+						continue;
+					}
+
+					ContactRole[] contactRoles = contact.getContactRoles();
+
+					if ((contactRoles == null) || (contactRoles.length == 0)) {
+						continue;
+					}
+
+					for (ContactRole contactRole : contactRoles) {
+						String name = contactRole.getName();
+
+						if (name.equals(
+								ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
+
+							User user =
+								_userLocalService.fetchUserByUuidAndCompanyId(
+									contact.getUuid(),
+									OSBCustomerConstants.COMPANY_ID);
+
+							newZendeskUserId =
+								_zendeskMapperUtil.fetchZendeskUserId(
+									user.getUserId());
+						}
+					}
+				}
 			}
-		}
+			else {
+				zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
+					getDefaultUserEmail(accountEntryId));
 
-		return false;
+				newZendeskUserId = zendeskUser.getZendeskUserId();
+			}
+
+			for (ZendeskTicket zendeskTicket : zendeskTickets) {
+				zendeskTicket.setRequesterId(newZendeskUserId);
+				zendeskTicket.setZendeskOrganizationId(zendeskOrganizationId);
+			}
+
+			_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+		}
 	}
 
 	public void remove(Account account) throws Exception {
@@ -323,11 +266,16 @@ public class AccountSynchronizer {
 	}
 
 	public void removeAccountCustomers(Account account) throws Exception {
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				account.getKey());
+
 		List<Contact> contacts = _contactWebService.getAccountContacts(
 			account.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
-			//_accountCustomerSynchronizer.remove(accountCustomer);
+			_customerSynchronizer.remove(
+				contact, accountEntry.getAccountEntryId());
 		}
 	}
 
@@ -444,7 +392,10 @@ public class AccountSynchronizer {
 			account.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
-			//_userSynchronizer.updateTags(accountCustomer.getUserId());
+			User user = _userLocalService.fetchUserByUuidAndCompanyId(
+				contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+
+			_userSynchronizer.updateTags(user);
 		}
 	}
 
@@ -453,8 +404,8 @@ public class AccountSynchronizer {
 	}
 
 	protected String getSupportLevel(String accountKey) throws Exception {
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			accountKey);
+		List<ProductPurchase> productPurchases =
+			_accountUtil.getProductPurchases(accountKey);
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Product product = productPurchase.getProduct();
@@ -480,8 +431,8 @@ public class AccountSynchronizer {
 
 		Date now = new Date();
 
-		List<ProductPurchase> productPurchases = getProductPurchases(
-			account.getKey());
+		List<ProductPurchase> productPurchases =
+			_accountUtil.getProductPurchases(account.getKey());
 
 		for (ProductPurchase productPurchase : productPurchases) {
 			Map<String, String> properties = productPurchase.getProperties();
@@ -552,10 +503,13 @@ public class AccountSynchronizer {
 	}
 
 	@Reference
-	private AccountCustomerSynchronizer _accountCustomerSynchronizer;
+	private AccountEntryLocalService _accountEntryLocalService;
 
 	@Reference
-	private AccountEntryLocalService _accountEntryLocalService;
+	private AccountUtil _accountUtil;
+
+	@Reference
+	private AccountWebService _accountWebService;
 
 	@Reference(target = "(async=true)")
 	private ZendeskOrganizationWebService _asyncZendeskOrganizationWebService;
@@ -568,6 +522,9 @@ public class AccountSynchronizer {
 
 	@Reference
 	private ContactWebService _contactWebService;
+
+	@Reference
+	private CustomerSynchronizer _customerSynchronizer;
 
 	@Reference
 	private ExternalIdMapperLocalService _externalIdMapperLocalService;
@@ -584,8 +541,8 @@ public class AccountSynchronizer {
 	@Reference
 	private UserLocalService _userLocalService;
 
-	/*@Reference
-	private UserSynchronizer _userSynchronizer;*/
+	@Reference
+	private UserSynchronizer _userSynchronizer;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;

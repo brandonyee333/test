@@ -91,6 +91,12 @@ public class AccountWebServiceImpl implements AccountWebService {
 		return Collections.emptyList();
 	}
 
+	public Account getAccountContactsContactRoles(String accountKey) 
+		throws Exception {
+
+		return _nestedFieldsAccountResource.getAccount(accountKey);
+	}
+
 	public List<Account> search(
 			String filterString, int page, int pageSize, String sortString)
 		throws Exception {
@@ -132,8 +138,18 @@ public class AccountWebServiceImpl implements AccountWebService {
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
 		).build();
+
+		_nestedFieldsAccountResource = builder.endpoint(
+			koroneikiConfiguration.host(), koroneikiConfiguration.port(),
+			koroneikiConfiguration.scheme()
+		).header(
+			"API_Token", koroneikiConfiguration.apiToken()
+		).parameter(
+			"nestedFields", "contacts,contacts.contactRoles"
+		).build();
 	}
 
 	private AccountResource _accountResource;
+	private AccountResource _nestedFieldsAccountResource;
 
 }

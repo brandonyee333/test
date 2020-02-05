@@ -23,6 +23,7 @@ import com.liferay.osb.customer.koroneiki.web.service.ProductPurchaseWebService;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
 import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinationNames;
 import com.liferay.osb.customer.zendesk.synchronizer.exception.ZendeskIntegrationException;
+import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -110,7 +111,7 @@ public class AccountMessageListener extends BaseMessageListener {
 
 	protected void onCreate(Account account) {
 		try {
-			if (_accountSynchronizer.hasActiveSupport(account)) {
+			if (_accountUtil.hasActiveSupport(account)) {
 				_accountSynchronizer.update(account);
 			}
 		}
@@ -139,7 +140,7 @@ public class AccountMessageListener extends BaseMessageListener {
 					account.getKey());
 
 			if ((!_hasZendeskOrganization(accountEntry) &&
-				 !_accountSynchronizer.hasActiveSupport(account)) ||
+				 !_accountUtil.hasActiveSupport(account)) ||
 				(accountEntry.getAccountEntryId() ==
 					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
 
@@ -148,17 +149,14 @@ public class AccountMessageListener extends BaseMessageListener {
 
 			_accountSynchronizer.update(account);
 
-			if (!_accountSynchronizer.hasActiveTicketSupport(account)) {
+			if (!_accountUtil.hasActiveTicketSupport(account)) {
 				_accountSynchronizer.closeZendeskTickets(account);
 				_accountSynchronizer.updateTags(account);
 			}
 
-			if (!_accountSynchronizer.hasActiveSupport(account)) {
+			if (!_accountUtil.hasActiveSupport(account)) {
 				_accountSynchronizer.removeAccountCustomers(account);
 			}
-
-			// TODO add customers if needed
-
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -193,6 +191,9 @@ public class AccountMessageListener extends BaseMessageListener {
 
 	@Reference
 	private AccountSynchronizer _accountSynchronizer;
+
+	@Reference
+	private AccountUtil _accountUtil;
 
 	private volatile BundleContext _bundleContext;
 

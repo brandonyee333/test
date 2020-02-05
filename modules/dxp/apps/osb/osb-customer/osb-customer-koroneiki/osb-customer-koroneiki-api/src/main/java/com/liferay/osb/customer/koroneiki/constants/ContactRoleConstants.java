@@ -27,8 +27,19 @@ public class ContactRoleConstants {
 
 	public static final String NAME_PREFIX_LIFERAY = "Liferay";
 
+	public static final String NAME_SUPPORT_CLOSED_WATCHER = "Closed Watcher";
+
 	public static final String NAME_SUPPORT_DEVELOPER = "Support Developer";
 
-	public static final String NAME_SUPPORT_MANAGER = "Support Manager";
+	public static final String NAME_SUPPORT_WATCHER = "Support Watcher";
+
+	public static final String[] PARTNER_CONTACT_ROLES = {
+		NAME_PARTNER_MANAGER, NAME_PARTNER_MEMEBER
+	};
+
+	public static final String[] SUPPORT_CONTACT_ROLES = {
+		NAME_SUPPORT_DEVELOPER, NAME_SUPPORT_WATCHER,
+		NAME_SUPPORT_CLOSED_WATCHER
+	};
 
 }
