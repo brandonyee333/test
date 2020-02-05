@@ -66,4 +66,12 @@ public interface JournalWebConfiguration {
 	@Meta.AD(deflt = "true", required = false)
 	public boolean publishVersionHistoryByDefault();
 
+	@Deprecated
+	@Meta.AD(
+		deflt = "false",
+		description = "reverse-chronological-order-by-default-description",
+		name = "reverse-chronological-order-by-default", required = false
+	)
+	public boolean reverseChronologicalOrderByDefault();
+
 }
