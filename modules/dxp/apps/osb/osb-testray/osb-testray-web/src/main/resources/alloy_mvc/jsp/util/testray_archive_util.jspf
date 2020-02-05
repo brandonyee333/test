@@ -22,24 +22,7 @@ public static class TestrayArchiveUtil {
 			throw new AlloyException("you-cannot-archive-a-promoted-build", false);
 		}
 
-		if (toFile) {
-			executeInTransaction(TestrayFileArchiver.class, "doArchiveTree", new Class<?>[] {AlloyController.class, TestrayBuild.class}, new Object[] {alloyController, testrayBuild});
-		}
-		else {
-			executeInTransaction(TestrayDatabaseArchiver.class, "doArchiveTree", new Class<?>[] {AlloyController.class, TestrayBuild.class}, new Object[] {alloyController, testrayBuild});
-		}
-
-		testrayBuild.setStatus(TestrayBuildConstants.STATUS_ARCHIVED);
-
-		alloyController.updateModelIgnoreRequest(testrayBuild);
-
-		Indexer testrayTaskIndexer = IndexerRegistryUtil.nullSafeGetIndexer(TestrayTask.class);
-
-		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(testrayBuild.getTestrayBuildId());
-
-		if (testrayTask != null) {
-			testrayTaskIndexer.reindex(TestrayTask.class.getName(), testrayTask.getTestrayTaskId());
-		}
+		TestrayBuildUtil.deleteTestrayBuild(testrayBuild);
 	}
 
 	public static void deleteTestrayArchives(String className, long classPK) throws Exception {
