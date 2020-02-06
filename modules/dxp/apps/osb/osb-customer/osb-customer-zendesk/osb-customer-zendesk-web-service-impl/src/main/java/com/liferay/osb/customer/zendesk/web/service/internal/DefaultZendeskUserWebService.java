@@ -199,7 +199,7 @@ public class DefaultZendeskUserWebService implements ZendeskUserWebService {
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 
-		if ((tags != null) && !tags.isEmpty()) {
+		if (tags != null) {
 			for (String tag : tags) {
 				tagsJSONArray.put(tag);
 			}
