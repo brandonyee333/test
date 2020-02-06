@@ -55,7 +55,7 @@ public class OrganizationLocalServiceTreeTest
 		Organization organization = OrganizationTestUtil.addOrganization(
 			parentOrganizationId, RandomTestUtil.randomString(), false);
 
-		organization.setTreePath(null);
+		organization.setTreePath("/0/");
 
 		return OrganizationLocalServiceUtil.updateOrganization(organization);
 	}
