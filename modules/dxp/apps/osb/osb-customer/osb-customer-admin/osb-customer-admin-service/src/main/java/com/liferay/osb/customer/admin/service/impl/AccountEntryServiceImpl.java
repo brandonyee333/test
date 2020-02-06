@@ -15,16 +15,20 @@
 package com.liferay.osb.customer.admin.service.impl;
 
 import com.liferay.osb.customer.admin.constants.AccountEntryConstants;
+import com.liferay.osb.customer.admin.exception.NoSuchAccountEntryException;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.base.AccountEntryServiceBaseImpl;
 import com.liferay.osb.customer.admin.service.permission.AccountEntryPermission;
 import com.liferay.osb.customer.constants.OSBActionKeys;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.koroneiki.web.service.AccountWebService;
+import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -81,14 +85,27 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	public AccountEntry getAccountEntryByCode(String code)
 		throws PortalException {
 
-		/*
-		TODO
-				AccountEntryPermission.check(
-					getPermissionChecker(), accountEntry.getAccountEntryId(),
-					ActionKeys.VIEW);
-		*/
+		validateJSONWebServicePermissions();
 
-		return null;
+		try {
+			List<Account> accounts = _accountWebService.search(
+				"code eq '" + code + "'", 1, 10, null);
+
+			for (Account account : accounts) {
+				AccountEntry accountEntry =
+					accountEntryLocalService.fetchKoroneikiAccountEntry(
+						account.getKey());
+
+				if (accountEntry != null) {
+					return accountEntry;
+				}
+			}
+
+			throw new NoSuchAccountEntryException();
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 	}
 
 	@JSONWebService
@@ -137,5 +154,8 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 			throw new PrincipalException();
 		}
 	}
+
+	@ServiceReference(type = AccountWebService.class)
+	private AccountWebService _accountWebService;
 
 }

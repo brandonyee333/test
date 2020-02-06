@@ -23,7 +23,14 @@ import java.util.List;
  */
 public interface AccountWebService {
 
+	public Account fetchAccount(String accountKey) throws Exception;
+
 	public Account getAccount(String accountKey) throws Exception;
+
+	public List<Account> getAccounts(
+			String domain, String entityName, String entityId, int page,
+			int pageSize)
+		throws Exception;
 
 	public List<Account> getContactAccountsByUuid(
 			String contactUuid, int page, int pageSize)
