@@ -517,7 +517,8 @@ public class MBUtil {
 
 		return StringBundler.concat(
 			portletURL.toString(), StringPool.POUND,
-			portletDisplay.getNamespace(), "message_", messageId);
+			portletDisplay.getNamespace(), "message_",
+			String.valueOf(messageId));
 	}
 
 	public static String getMBMessageURL(
