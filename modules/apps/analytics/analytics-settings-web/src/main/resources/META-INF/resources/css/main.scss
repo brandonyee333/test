@@ -1,0 +1,42 @@
+.portlet-analytics-settings {
+    &.card a.btn-primary,
+    &.card-horizontal a.btn-primary {
+        color: #FFF;
+    }
+
+    .contacts-link-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+
+    .list-icon {
+        float: left;
+        margin-right: 20px;
+        margin-top: 5px;
+
+        .lexicon-icon {
+            margin-top: -5px;
+            padding: 0;
+            width: 16px;
+        }
+    }
+
+    .list-group-sync {
+        list-style: none;
+        margin: 3rem 0 0 3rem;
+        padding: 0;
+
+        li {
+            display: table;
+            margin-bottom: 3rem;
+        }
+    }
+
+    .sync-all-contacts {
+        margin: 2rem 0 2rem -2rem;
+    }
+
+    .sync-options {
+        display: inline-block;
+    }
+}

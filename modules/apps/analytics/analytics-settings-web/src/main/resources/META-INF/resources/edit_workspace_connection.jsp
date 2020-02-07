@@ -70,7 +70,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 <portlet:actionURL name="/analytics/edit_workspace_connection" var="editWorkspaceConnectionURL" />
 
-<div class="container-fluid-1280">
+<div class="card container-fluid-1280 main-content-card portlet-analytics-settings">
 	<c:if test="<%= AnalyticsSettingsUtil.isAnalyticsEnabledWithOAuth(themeDisplay.getCompanyId()) %>">
 		<aui:alert type="warning">
 			<div class="mb-2">
@@ -139,9 +139,9 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	</aui:form>
 
 	<aui:fieldset>
-		<label class="control-label">
+		<h4>
 			<liferay-ui:message key="synced-contacts" />
-		</label>
+		</h4>
 
 		<div class="form-text">
 			<liferay-ui:message key="synced-contacts-help" />
@@ -166,9 +166,9 @@ PortletURL portletURL = renderResponse.createRenderURL();
 	</aui:fieldset>
 
 	<aui:fieldset>
-		<label class="control-label">
+		<h4>
 			<liferay-ui:message key="synced-sites" />
-		</label>
+		</h4>
 
 		<div class="form-text">
 			<liferay-ui:message key="synced-sites-help" />
