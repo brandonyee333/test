@@ -200,6 +200,10 @@ public class ConfigurationPersistenceManager
 			String pid, @SuppressWarnings("rawtypes") Dictionary dictionary)
 		throws IOException {
 
+		if (dictionary.isEmpty()) {
+			return;
+		}
+
 		ConfigurationModelListener configurationModelListener = null;
 
 		if (!pid.endsWith("factory") &&
