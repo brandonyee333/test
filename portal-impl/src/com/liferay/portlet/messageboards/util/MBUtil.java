@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.model.Subscription;
 import com.liferay.portal.kernel.model.ThemeConstants;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.parsers.bbcode.BBCodeTranslatorUtil;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.sanitizer.Sanitizer;
 import com.liferay.portal.kernel.sanitizer.SanitizerUtil;
 import com.liferay.portal.kernel.search.Document;
@@ -495,6 +496,28 @@ public class MBUtil {
 		}
 
 		return entries;
+	}
+
+	public static String getMBMessageURL(
+		long messageId, HttpServletRequest httpServletRequest) {
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
+
+		PortletURL portletURL = PortletURLFactoryUtil.create(
+			httpServletRequest, portletDisplay.getId(),
+			PortletRequest.RENDER_PHASE);
+
+		portletURL.setParameter(
+			"mvcRenderCommandName", "/message_boards/view_message");
+		portletURL.setParameter("messageId", String.valueOf(messageId));
+
+		return StringBundler.concat(
+			portletURL.toString(), StringPool.POUND,
+			portletDisplay.getNamespace(), "message_", messageId);
 	}
 
 	public static String getMBMessageURL(

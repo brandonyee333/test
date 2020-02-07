@@ -201,7 +201,7 @@ if (message.isAnonymous()) {
 								className="<%= MBMessage.class.getName() %>"
 								classPK="<%= message.getMessageId() %>"
 								contentTitle="<%= message.getSubject() %>"
-								contentURL="<%= MBUtil.getMBMessageURL(message.getMessageId(), renderResponse) %>"
+								contentURL="<%= MBUtil.getMBMessageURL(message.getMessageId(), request) %>"
 								reportedUserId="<%= message.getUserId() %>"
 							/>
 						</c:if>
