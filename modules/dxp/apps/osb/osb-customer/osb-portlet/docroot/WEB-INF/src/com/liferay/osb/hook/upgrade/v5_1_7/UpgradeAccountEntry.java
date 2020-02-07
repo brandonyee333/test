@@ -38,7 +38,7 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 		try {
 			String sql =
-				"select corpProjectUuid from osb_accountEntry where " +
+				"select corpProjectUuid from OSB_AccountEntry where " +
 					"corpProjectId = 0 and corpProjectUuid is not null";
 
 			ps = connection.prepareStatement(sql);
