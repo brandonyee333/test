@@ -3226,7 +3226,9 @@ AUI.add(
 
 							editor.create();
 
-							editor.setHTML(html);
+							CKEDITOR.on('instanceReady', function() {
+								editor.setHTML(html);
+							});
 						}
 					},
 
