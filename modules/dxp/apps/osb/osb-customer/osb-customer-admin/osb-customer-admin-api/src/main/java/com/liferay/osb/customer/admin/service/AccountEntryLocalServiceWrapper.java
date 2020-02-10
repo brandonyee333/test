@@ -389,6 +389,15 @@ public class AccountEntryLocalServiceWrapper
 		return _accountEntryLocalService.getIndexableActionableDynamicQuery();
 	}
 
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry
+			getKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryLocalService.getKoroneikiAccountEntry(
+			koroneikiAccountKey);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

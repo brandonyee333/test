@@ -364,6 +364,13 @@ public class AccountEntryLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			getKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().getKoroneikiAccountEntry(koroneikiAccountKey);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *

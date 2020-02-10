@@ -266,6 +266,10 @@ public interface AccountEntryLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry getKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws PortalException;
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
