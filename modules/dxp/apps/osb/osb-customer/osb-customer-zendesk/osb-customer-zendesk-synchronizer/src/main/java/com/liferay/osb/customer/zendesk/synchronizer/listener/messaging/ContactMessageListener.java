@@ -110,6 +110,20 @@ public class ContactMessageListener extends BaseMessageListener {
 		ContactRole contactRole = ContactRoleSerDes.toDTO(
 			jsonObject.getString("contactRole"));
 
+		AccountEntry accountEntry =
+			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				account.getKey());
+
+		if (accountEntry == null) {
+			return;
+		}
+
+		if (accountEntry.getAccountEntryId() ==
+				OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID) {
+
+			return;
+		}
+
 		String topic = message.getString("topic");
 
 		if (topic.equals("koroneiki.account.contact.assigned")) {
@@ -130,16 +144,6 @@ public class ContactMessageListener extends BaseMessageListener {
 		Account account, Contact contact, ContactRole contactRole) {
 
 		try {
-			AccountEntry accountEntry =
-				_accountEntryLocalService.fetchKoroneikiAccountEntry(
-					account.getKey());
-
-			if (accountEntry.getAccountEntryId() ==
-					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID) {
-
-				return;
-			}
-
 			_customerSynchronizer.add(account, contact, contactRole);
 		}
 		catch (Exception e) {
@@ -186,7 +190,7 @@ public class ContactMessageListener extends BaseMessageListener {
 				}
 				else {
 					AccountEntry accountEntry =
-						_accountEntryLocalService.fetchKoroneikiAccountEntry(
+						_accountEntryLocalService.getKoroneikiAccountEntry(
 							account.getKey());
 
 					_customerSynchronizer.remove(
@@ -211,7 +215,7 @@ public class ContactMessageListener extends BaseMessageListener {
 			}
 
 			AccountEntry accountEntry =
-				_accountEntryLocalService.fetchKoroneikiAccountEntry(
+				_accountEntryLocalService.getKoroneikiAccountEntry(
 					account.getKey());
 
 			long zendeskOrganizationId =

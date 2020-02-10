@@ -127,13 +127,13 @@ public class UserSynchronizer {
 
 			ContactRole[] contactRoles = contactAccountView.getContactRoles();
 
-			AccountEntry accountEntry =
-				_accountEntryLocalService.fetchKoroneikiAccountEntry(
-					account.getKey());
-
 			if (_accountUtil.hasActiveSupport(account)) {
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);
 			}
+
+			AccountEntry accountEntry =
+				_accountEntryLocalService.getKoroneikiAccountEntry(
+					account.getKey());
 
 			long zendeskOrganizationId =
 				_zendeskMapperUtil.fetchZendeskOrganizationId(
@@ -156,12 +156,10 @@ public class UserSynchronizer {
 			}
 
 			if (_accountUtil.hasActiveTicketSupport(account)) {
-				if (watcher) {
-					if (zendeskOrganizationId > 0) {
-						tags.add(
-							ZendeskTagConstants.getWatcherTag(
-								zendeskOrganizationId));
-					}
+				if (watcher && (zendeskOrganizationId > 0)) {
+					tags.add(
+						ZendeskTagConstants.getWatcherTag(
+							zendeskOrganizationId));
 				}
 				else {
 					tags.add(ZendeskTagConstants.OSB_CUSTOMER);

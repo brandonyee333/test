@@ -168,7 +168,7 @@ public class AccountSynchronizer {
 
 			Contact[] contacts = account.getContacts();
 
-			if ((contacts != null) && (contacts.length > 0)) {
+			if (!ArrayUtil.isEmpty(contacts)) {
 				for (Contact contact : contacts) {
 					if (userUuid.equals(contact.getUuid())) {
 						continue;
@@ -176,7 +176,7 @@ public class AccountSynchronizer {
 
 					ContactRole[] contactRoles = contact.getContactRoles();
 
-					if ((contactRoles == null) || (contactRoles.length == 0)) {
+					if (ArrayUtil.isEmpty(contactRoles)) {
 						continue;
 					}
 
@@ -216,7 +216,7 @@ public class AccountSynchronizer {
 
 	public void remove(Account account) throws Exception {
 		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+			_accountEntryLocalService.getKoroneikiAccountEntry(
 				account.getKey());
 
 		long zendeskOrganizationId =
@@ -267,7 +267,7 @@ public class AccountSynchronizer {
 
 	public void removeAccountCustomers(Account account) throws Exception {
 		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+			_accountEntryLocalService.getKoroneikiAccountEntry(
 				account.getKey());
 
 		List<Contact> contacts = _contactWebService.getAccountContacts(
@@ -301,15 +301,13 @@ public class AccountSynchronizer {
 
 	public void update(Account account) throws Exception {
 		AccountEntry accountEntry =
-			_accountEntryLocalService.fetchKoroneikiAccountEntry(
+			_accountEntryLocalService.getKoroneikiAccountEntry(
 				account.getKey());
-
-		long classNameId = _classNameLocalService.getClassNameId(
-			AccountEntry.class);
 
 		boolean externalIdMappers =
 			_externalIdMapperLocalService.hasExternalIdMappers(
-				classNameId, accountEntry.getAccountEntryId(),
+				_classNameLocalService.getClassNameId(AccountEntry.class),
+				accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		String address = StringPool.BLANK;
@@ -317,7 +315,7 @@ public class AccountSynchronizer {
 
 		PostalAddress[] postalAddresses = account.getPostalAddresses();
 
-		if ((postalAddresses != null) && (postalAddresses.length > 0)) {
+		if (!ArrayUtil.isEmpty(postalAddresses)) {
 			address = AddressUtil.convertAddressToString(postalAddresses[0]);
 			countryName = postalAddresses[0].getAddressCountry();
 		}
@@ -372,10 +370,10 @@ public class AccountSynchronizer {
 		String supportLanguage = StringPool.BLANK;
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
-			account.getCode(), countryName, address,
-			String.valueOf(account.getKey()), account.getName(),
-			account.getNotes(), String.valueOf(partnerManagedSupport),
-			partnerJiraProject, partnerName, getSupportLevel(account.getKey()),
+			account.getCode(), countryName, address, account.getKey(),
+			account.getName(), account.getNotes(),
+			String.valueOf(partnerManagedSupport), partnerJiraProject,
+			partnerName, getSupportLevel(account.getKey()),
 			account.getStatusAsString(), supportLanguage, supportRegion,
 			account.getTierAsString(), getTags(account));
 
@@ -448,10 +446,8 @@ public class AccountSynchronizer {
 				_productEntryLocalService.getProductEntryByKoroneikiKey(
 					productPurchase.getProductKey());
 
-			String tag = productEntry.getZendeskTag();
-
-			if (Validator.isNotNull(tag)) {
-				tags.add(tag);
+			if (Validator.isNotNull(productEntry.getZendeskTag())) {
+				tags.add(productEntry.getZendeskTag());
 			}
 		}
 

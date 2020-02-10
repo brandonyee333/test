@@ -60,6 +60,12 @@ public class AccountWebServiceImpl implements AccountWebService {
 		return _accountResource.getAccount(accountKey);
 	}
 
+	public Account getAccountContactsContactRoles(String accountKey)
+		throws Exception {
+
+		return _nestedFieldsAccountResource.getAccount(accountKey);
+	}
+
 	public List<Account> getAccounts(
 			String domain, String entityName, String entityId, int page,
 			int pageSize)
@@ -89,12 +95,6 @@ public class AccountWebServiceImpl implements AccountWebService {
 		}
 
 		return Collections.emptyList();
-	}
-
-	public Account getAccountContactsContactRoles(String accountKey) 
-		throws Exception {
-
-		return _nestedFieldsAccountResource.getAccount(accountKey);
 	}
 
 	public List<Account> search(

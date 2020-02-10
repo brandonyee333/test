@@ -91,8 +91,6 @@ public class ContactAccountViewWebServiceImpl
 		).header(
 			"API_Token", koroneikiConfiguration.apiToken()
 		).build();
-
-		builder = ContactAccountViewResource.builder();
 	}
 
 	private ContactAccountViewResource _contactAccountViewResource;

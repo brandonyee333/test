@@ -61,7 +61,7 @@ public class CustomerSynchronizer {
 
 			if (_accountUtil.hasActiveTicketSupport(account)) {
 				AccountEntry accountEntry =
-					_accountEntryLocalService.fetchKoroneikiAccountEntry(
+					_accountEntryLocalService.getKoroneikiAccountEntry(
 						account.getKey());
 
 				addOrganizationSubscription(
@@ -104,20 +104,17 @@ public class CustomerSynchronizer {
 			Account account, Contact contact, long accountEntryId)
 		throws Exception {
 
-		if (accountEntryId > 0) {
-			User user = _userLocalService.getUserByUuidAndCompanyId(
-				contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+		User user = _userLocalService.getUserByUuidAndCompanyId(
+			contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
 
-			long zendeskOrganizationId =
-				_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
-			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
-				user.getUserId());
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			user.getUserId());
 
-			if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
-				_zendeskUserWebService.
-					createZendeskUserOrganizationSubscription(
-						zendeskUserId, zendeskOrganizationId);
-			}
+		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+			_zendeskUserWebService.createZendeskUserOrganizationSubscription(
+				zendeskUserId, zendeskOrganizationId);
 		}
 	}
 

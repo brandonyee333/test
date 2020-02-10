@@ -139,10 +139,15 @@ public class AccountMessageListener extends BaseMessageListener {
 				_accountEntryLocalService.fetchKoroneikiAccountEntry(
 					account.getKey());
 
-			if ((!_hasZendeskOrganization(accountEntry) &&
-				 !_accountUtil.hasActiveSupport(account)) ||
+			if ((accountEntry == null) ||
 				(accountEntry.getAccountEntryId() ==
 					OSBCustomerConstants.ACCOUNT_ENTRY_LRDCOM_ID)) {
+
+				return;
+			}
+
+			if (!_hasZendeskOrganization(accountEntry) &&
+				!_accountUtil.hasActiveSupport(account)) {
 
 				return;
 			}
@@ -168,12 +173,10 @@ public class AccountMessageListener extends BaseMessageListener {
 	private boolean _hasZendeskOrganization(AccountEntry accountEntry)
 		throws PortalException {
 
-		long classNameId = _classNameLocalService.getClassNameId(
-			AccountEntry.class);
-
 		boolean externalIdMappers =
 			_externalIdMapperLocalService.hasExternalIdMappers(
-				classNameId, accountEntry.getAccountEntryId(),
+				_classNameLocalService.getClassNameId(AccountEntry.class),
+				accountEntry.getAccountEntryId(),
 				ExternalIdMapperConstants.TYPE_ZENDESK);
 
 		if (externalIdMappers) {

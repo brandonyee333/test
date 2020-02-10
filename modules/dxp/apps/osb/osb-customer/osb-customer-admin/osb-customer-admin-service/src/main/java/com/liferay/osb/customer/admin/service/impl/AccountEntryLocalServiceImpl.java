@@ -159,6 +159,14 @@ public class AccountEntryLocalServiceImpl
 		return null;
 	}
 
+	@Override
+	public AccountEntry getKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws PortalException {
+
+		return accountEntryPersistence.findByKoroneikiAccountKey(
+			koroneikiAccountKey);
+	}
+
 	public List<AccountEntry> getUserActiveAccountEntries(
 		long userId, int start, int end) {
 
