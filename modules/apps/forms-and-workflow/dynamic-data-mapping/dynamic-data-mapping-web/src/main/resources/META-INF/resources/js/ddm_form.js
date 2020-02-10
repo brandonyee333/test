@@ -11,6 +11,10 @@ AUI.add(
 
 		var INSTANCE_ID_PREFIX = '_INSTANCE_';
 
+		var INTEGER_MIN_VALUE = 0;
+
+		var INTEGER_MAX_VALUE = 2147483647;
+
 		var SELECTOR_REPEAT_BUTTONS = '.lfr-ddm-repeatable-add-button, .lfr-ddm-repeatable-delete-button';
 
 		var TPL_ICON_CARET = '<span class="collapse-icon-closed"><span class="icon-caret-right"></span></span>';
@@ -385,6 +389,45 @@ AUI.add(
 						var instance = this;
 
 						instance.get('container').remove();
+					},
+
+					addIntegerRangeRule() {
+						var instance = this;
+
+						if (instance) {
+							var dataType = instance.get('dataType');
+
+							if (dataType && dataType === 'integer') {
+								var liferayForm = instance.get('liferayForm');
+
+								if (liferayForm) {
+									var node = instance.getInputNode();
+
+									var fieldName = node.get('name');
+
+									var errorMessage = Liferay.Util.sub(
+										Liferay.Language.get(
+											'please-enter-a-valid-integer-value-between-x-and-x'
+										),
+										INTEGER_MIN_VALUE,
+										INTEGER_MAX_VALUE
+									);
+
+									liferayForm.addRule(
+										fieldName,
+										'integerRange_custom',
+										errorMessage,
+										val => {
+											return (
+												val >= INTEGER_MIN_VALUE &&
+												val <= INTEGER_MAX_VALUE
+											);
+										},
+										true
+									);
+								}
+							}
+						}
 					},
 
 					addLocaleToLocalizationMap: function(locale, defaultLocale) {
@@ -911,6 +954,8 @@ AUI.add(
 						if (event.formName === formNode.attr('name')) {
 							instance.set('liferayForm', event.form);
 						}
+
+						instance.addIntegerRangeRule();
 					},
 
 					_afterDeleteAvailableLocale: function(event) {
