@@ -17,6 +17,7 @@ package com.liferay.osb.customer.zendesk.synchronizer.listener.messaging;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.web.service.ContactRoleWebService;
 import com.liferay.osb.customer.zendesk.synchronizer.AccountSynchronizer;
@@ -42,7 +43,6 @@ import com.liferay.portal.kernel.messaging.DestinationFactory;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 
@@ -207,8 +207,8 @@ public class ContactMessageListener extends BaseMessageListener {
 
 	protected void onContactUnassign(Account account, Contact contact) {
 		try {
-			User user = _userLocalService.fetchUserByUuidAndCompanyId(
-				contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
 
 			if (user == null) {
 				return;
@@ -267,8 +267,8 @@ public class ContactMessageListener extends BaseMessageListener {
 
 	private ServiceRegistration<Destination> _serviceRegistration;
 
-	@Reference
-	private UserLocalService _userLocalService;
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private ZendeskMapperUtil _zendeskMapperUtil;

@@ -21,7 +21,7 @@ import com.liferay.osb.customer.admin.model.ProductEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
 import com.liferay.osb.customer.admin.service.ExternalIdMapperLocalService;
 import com.liferay.osb.customer.admin.service.ProductEntryLocalService;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.koroneiki.constants.ProductConstants;
 import com.liferay.osb.customer.koroneiki.constants.TeamRoleConstants;
@@ -53,7 +53,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.TeamRole;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -187,9 +186,8 @@ public class AccountSynchronizer {
 								ContactRoleConstants.NAME_SUPPORT_DEVELOPER)) {
 
 							User user =
-								_userLocalService.fetchUserByUuidAndCompanyId(
-									contact.getUuid(),
-									OSBCustomerConstants.COMPANY_ID);
+								_userIdentityProvider.fetchUserByEmailAddress(
+									contact.getEmailAddress());
 
 							newZendeskUserId =
 								_zendeskMapperUtil.fetchZendeskUserId(
@@ -390,8 +388,8 @@ public class AccountSynchronizer {
 			account.getKey(), 1, 1000);
 
 		for (Contact contact : contacts) {
-			User user = _userLocalService.fetchUserByUuidAndCompanyId(
-				contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
 
 			_userSynchronizer.updateTags(user);
 		}
@@ -534,8 +532,8 @@ public class AccountSynchronizer {
 	@Reference
 	private QueryFactory _queryFactory;
 
-	@Reference
-	private UserLocalService _userLocalService;
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;

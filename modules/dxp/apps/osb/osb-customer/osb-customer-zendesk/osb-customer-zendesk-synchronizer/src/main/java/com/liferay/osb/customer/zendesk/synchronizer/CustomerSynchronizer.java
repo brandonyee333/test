@@ -16,7 +16,7 @@ package com.liferay.osb.customer.zendesk.synchronizer;
 
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.service.AccountEntryLocalService;
-import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.identity.management.provider.UserIdentityProvider;
 import com.liferay.osb.customer.koroneiki.constants.ContactRoleConstants;
 import com.liferay.osb.customer.zendesk.synchronizer.util.AccountUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
@@ -27,7 +27,6 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Contact;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ContactRole;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 
 import org.osgi.service.component.annotations.Component;
@@ -54,8 +53,8 @@ public class CustomerSynchronizer {
 				ContactRoleConstants.SUPPORT_CONTACT_ROLES,
 				contactRole.getName())) {
 
-			User user = _userLocalService.getUserByUuidAndCompanyId(
-				contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+			User user = _userIdentityProvider.fetchUserByEmailAddress(
+				contact.getEmailAddress());
 
 			_userSynchronizer.update(user, account.getName());
 
@@ -71,8 +70,8 @@ public class CustomerSynchronizer {
 	}
 
 	public void remove(Contact contact, long accountEntryId) throws Exception {
-		User user = _userLocalService.getUserByUuidAndCompanyId(
-			contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
@@ -89,8 +88,8 @@ public class CustomerSynchronizer {
 	}
 
 	public void update(Contact contact) throws Exception {
-		User user = _userLocalService.getUserByUuidAndCompanyId(
-			contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
 
 		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 			user.getUserId());
@@ -104,8 +103,8 @@ public class CustomerSynchronizer {
 			Account account, Contact contact, long accountEntryId)
 		throws Exception {
 
-		User user = _userLocalService.getUserByUuidAndCompanyId(
-			contact.getUuid(), OSBCustomerConstants.COMPANY_ID);
+		User user = _userIdentityProvider.fetchUserByEmailAddress(
+			contact.getEmailAddress());
 
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
@@ -124,8 +123,8 @@ public class CustomerSynchronizer {
 	@Reference
 	private AccountUtil _accountUtil;
 
-	@Reference
-	private UserLocalService _userLocalService;
+	@Reference(target = "(provider=okta)")
+	private UserIdentityProvider _userIdentityProvider;
 
 	@Reference
 	private UserSynchronizer _userSynchronizer;
