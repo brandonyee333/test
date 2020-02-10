@@ -379,6 +379,9 @@ public abstract class LayoutPrototypeLocalServiceBaseImpl
 			(LayoutPrototype)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

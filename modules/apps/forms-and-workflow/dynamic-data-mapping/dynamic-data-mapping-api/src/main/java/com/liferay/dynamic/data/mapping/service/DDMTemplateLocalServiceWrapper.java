@@ -649,6 +649,9 @@ public class DDMTemplateLocalServiceWrapper
 		return _ddmTemplateLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

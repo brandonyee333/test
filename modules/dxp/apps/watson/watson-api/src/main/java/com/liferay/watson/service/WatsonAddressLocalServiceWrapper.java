@@ -220,6 +220,9 @@ public class WatsonAddressLocalServiceWrapper
 		return _watsonAddressLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

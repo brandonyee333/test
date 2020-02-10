@@ -447,6 +447,9 @@ public abstract class MBThreadLocalServiceBaseImpl
 		return mbThreadLocalService.deleteMBThread((MBThread)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

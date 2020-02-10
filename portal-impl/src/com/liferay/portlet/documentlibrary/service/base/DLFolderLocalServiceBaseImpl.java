@@ -449,6 +449,9 @@ public abstract class DLFolderLocalServiceBaseImpl
 		return dlFolderLocalService.deleteDLFolder((DLFolder)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

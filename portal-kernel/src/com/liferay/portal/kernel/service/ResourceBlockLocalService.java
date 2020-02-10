@@ -270,6 +270,9 @@ public interface ResourceBlockLocalService
 	public List<String> getPermissions(
 		ResourceBlock resourceBlock, long roleId);
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

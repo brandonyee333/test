@@ -301,6 +301,9 @@ public abstract class WatsonTokenAuthEntryLocalServiceBaseImpl
 			(WatsonTokenAuthEntry)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

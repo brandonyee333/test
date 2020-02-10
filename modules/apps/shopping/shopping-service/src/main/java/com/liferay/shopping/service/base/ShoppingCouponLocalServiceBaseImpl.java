@@ -285,6 +285,9 @@ public abstract class ShoppingCouponLocalServiceBaseImpl
 			(ShoppingCoupon)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

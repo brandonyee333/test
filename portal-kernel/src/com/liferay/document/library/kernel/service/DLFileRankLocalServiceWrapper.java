@@ -331,6 +331,9 @@ public class DLFileRankLocalServiceWrapper
 		return _dlFileRankLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

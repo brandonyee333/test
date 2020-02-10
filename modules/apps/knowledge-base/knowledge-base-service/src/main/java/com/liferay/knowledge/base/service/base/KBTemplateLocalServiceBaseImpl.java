@@ -379,6 +379,9 @@ public abstract class KBTemplateLocalServiceBaseImpl
 			(KBTemplate)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

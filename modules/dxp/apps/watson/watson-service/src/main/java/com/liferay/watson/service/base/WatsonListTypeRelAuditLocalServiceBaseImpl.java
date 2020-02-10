@@ -330,6 +330,9 @@ public abstract class WatsonListTypeRelAuditLocalServiceBaseImpl
 			(WatsonListTypeRelAudit)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

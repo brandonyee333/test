@@ -282,6 +282,9 @@ public abstract class AkismetEntryLocalServiceBaseImpl
 			(AkismetEntry)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

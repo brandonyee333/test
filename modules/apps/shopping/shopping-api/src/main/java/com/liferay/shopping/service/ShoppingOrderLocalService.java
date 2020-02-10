@@ -218,6 +218,9 @@ public interface ShoppingOrderLocalService
 	public ShoppingOrder getPayPalTxnIdOrder(String ppTxnId)
 		throws PortalException;
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)

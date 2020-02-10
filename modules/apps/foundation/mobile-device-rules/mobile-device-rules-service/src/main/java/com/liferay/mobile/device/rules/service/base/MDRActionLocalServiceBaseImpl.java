@@ -391,6 +391,9 @@ public abstract class MDRActionLocalServiceBaseImpl
 		return mdrActionLocalService.deleteMDRAction((MDRAction)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

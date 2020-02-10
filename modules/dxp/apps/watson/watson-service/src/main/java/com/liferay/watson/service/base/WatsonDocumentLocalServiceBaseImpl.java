@@ -309,6 +309,9 @@ public abstract class WatsonDocumentLocalServiceBaseImpl
 			(WatsonDocument)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

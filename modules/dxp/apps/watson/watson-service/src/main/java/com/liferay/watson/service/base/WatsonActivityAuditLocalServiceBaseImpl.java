@@ -328,6 +328,9 @@ public abstract class WatsonActivityAuditLocalServiceBaseImpl
 			(WatsonActivityAudit)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

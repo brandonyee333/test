@@ -369,6 +369,9 @@ public abstract class JournalFeedLocalServiceBaseImpl
 			(JournalFeed)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

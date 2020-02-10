@@ -286,6 +286,9 @@ public abstract class DDLRecordVersionLocalServiceBaseImpl
 			(DDLRecordVersion)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

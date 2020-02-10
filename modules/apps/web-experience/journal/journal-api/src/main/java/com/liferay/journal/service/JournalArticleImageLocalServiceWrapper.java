@@ -358,6 +358,9 @@ public class JournalArticleImageLocalServiceWrapper
 		return _journalArticleImageLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

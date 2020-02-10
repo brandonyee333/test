@@ -244,6 +244,9 @@ public class ShoppingCartLocalServiceWrapper
 		return _shoppingCartLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

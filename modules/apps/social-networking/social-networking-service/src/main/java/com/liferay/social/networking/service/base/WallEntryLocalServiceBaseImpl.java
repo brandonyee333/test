@@ -285,6 +285,9 @@ public abstract class WallEntryLocalServiceBaseImpl
 		return wallEntryLocalService.deleteWallEntry((WallEntry)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

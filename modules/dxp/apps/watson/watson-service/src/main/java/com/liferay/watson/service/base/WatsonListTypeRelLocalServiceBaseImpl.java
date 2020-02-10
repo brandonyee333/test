@@ -317,6 +317,9 @@ public abstract class WatsonListTypeRelLocalServiceBaseImpl
 			(WatsonListTypeRel)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

@@ -323,6 +323,9 @@ public abstract class KaleoNotificationRecipientLocalServiceBaseImpl
 				(KaleoNotificationRecipient)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

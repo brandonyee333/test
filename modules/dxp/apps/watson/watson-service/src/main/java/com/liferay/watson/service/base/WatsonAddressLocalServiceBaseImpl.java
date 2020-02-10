@@ -309,6 +309,9 @@ public abstract class WatsonAddressLocalServiceBaseImpl
 			(WatsonAddress)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

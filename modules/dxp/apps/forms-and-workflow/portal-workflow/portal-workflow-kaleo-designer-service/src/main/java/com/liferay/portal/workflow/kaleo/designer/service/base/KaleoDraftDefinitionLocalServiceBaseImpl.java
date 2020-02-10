@@ -303,6 +303,9 @@ public abstract class KaleoDraftDefinitionLocalServiceBaseImpl
 			(KaleoDraftDefinition)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

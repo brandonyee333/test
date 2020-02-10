@@ -289,6 +289,9 @@ public abstract class ShoppingCategoryLocalServiceBaseImpl
 			(ShoppingCategory)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

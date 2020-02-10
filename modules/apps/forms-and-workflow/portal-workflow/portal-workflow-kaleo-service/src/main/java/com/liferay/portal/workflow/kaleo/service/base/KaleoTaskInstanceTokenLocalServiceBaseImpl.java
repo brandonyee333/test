@@ -319,6 +319,9 @@ public abstract class KaleoTaskInstanceTokenLocalServiceBaseImpl
 			(KaleoTaskInstanceToken)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

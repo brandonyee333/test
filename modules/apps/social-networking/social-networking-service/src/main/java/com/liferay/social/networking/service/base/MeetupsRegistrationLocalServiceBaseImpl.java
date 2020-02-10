@@ -304,6 +304,9 @@ public abstract class MeetupsRegistrationLocalServiceBaseImpl
 			(MeetupsRegistration)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

@@ -359,6 +359,9 @@ public class ShoppingCategoryLocalServiceWrapper
 		return _shoppingCategoryLocalService.getParentCategory(category);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

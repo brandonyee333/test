@@ -401,6 +401,9 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 			(WSRPConsumerPortlet)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

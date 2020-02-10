@@ -274,6 +274,9 @@ public abstract class FeedLocalServiceBaseImpl
 		return feedLocalService.deleteFeed((Feed)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

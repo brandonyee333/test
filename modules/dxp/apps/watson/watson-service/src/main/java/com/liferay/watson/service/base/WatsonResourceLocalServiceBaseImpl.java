@@ -309,6 +309,9 @@ public abstract class WatsonResourceLocalServiceBaseImpl
 			(WatsonResource)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {

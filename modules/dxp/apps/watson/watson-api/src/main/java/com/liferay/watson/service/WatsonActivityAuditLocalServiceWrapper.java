@@ -228,6 +228,9 @@ public class WatsonActivityAuditLocalServiceWrapper
 		return _watsonActivityAuditLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
 			java.io.Serializable primaryKeyObj)

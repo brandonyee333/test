@@ -282,6 +282,9 @@ public abstract class TrashEntryLocalServiceBaseImpl
 			(TrashEntry)persistedModel);
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
