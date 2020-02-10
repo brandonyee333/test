@@ -1,5 +1,5 @@
 Bundle-Name: Liferay Upload Web
 Bundle-SymbolicName: com.liferay.upload.web
-Bundle-Version: 1.0.14
+Bundle-Version: 1.0.15
 Liferay-Releng-Module-Group-Title: Upload
 -dsannotations-options: inherit
