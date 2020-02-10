@@ -3199,35 +3199,35 @@ AUI.add(
 							var type = fieldDefinition.type;
 
 							if (type === 'ddm-text-html') {
-								var editor = field.getEditor();
-
-								var usingCKEditor =
-									CKEDITOR &&
-									CKEDITOR.instances &&
-									CKEDITOR.instances[
-										field.getInputName() + 'Editor'
-									];
-
-								var usingAlloyEditor =
-									editor.getNativeEditor()._editor &&
-									editor.getNativeEditor()._editor.window.$
-										.AlloyEditor;
-
-								if (usingCKEditor && !usingAlloyEditor) {
-									instance.recreateEditor(editor);
-								}
+								instance.recreateEditor(field);
 							}
 						}
 					},
 	
-					recreateEditor: function(editor) {
-						var html = editor.getHTML();
+					recreateEditor: function(field) {
+						var usingCKEditor =
+							CKEDITOR &&
+							CKEDITOR.instances &&
+							CKEDITOR.instances[field.getInputName() + 'Editor'];
+							
+						var editor = field.getEditor();
+						
+						var nativeEditor = editor.getNativeEditor();
+						
+						var usingAlloyEditor =
+							nativeEditor &&
+							nativeEditor._editor &&
+							nativeEditor._editor.window.$.AlloyEditor;
 
-						editor.dispose();
+						if (usingCKEditor && !usingAlloyEditor) {
+							var html = editor.getHTML();
 
-						editor.create();
+							editor.dispose();
 
-						editor.setHTML(html);
+							editor.create();
+
+							editor.setHTML(html);
+						}
 					},
 
 					registerRepeatable: function(field) {
