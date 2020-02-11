@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Twitter API
 Bundle-SymbolicName: com.liferay.twitter.api
-Bundle-Version: 1.0.18
+Bundle-Version: 1.0.19
 Export-Package:\
 	com.liferay.twitter.constants,\
 	com.liferay.twitter.exception,\
