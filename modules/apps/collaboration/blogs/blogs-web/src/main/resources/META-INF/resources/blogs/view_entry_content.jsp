@@ -66,7 +66,7 @@ String socialBookmarksDisplayPosition = blogsPortletInstanceConfiguration.social
 				%>
 
 				<c:if test="<%= Validator.isNotNull(coverImageURL) %>">
-					<div class="cover-image-container" style="background-image: url(<%= coverImageURL %>)"></div>
+					<div class="cover-image-container" style="background-image: url(<%= coverImageURL %>);"></div>
 
 					<c:if test="<%= viewSingleEntry %>">
 						<div class="cover-image-caption">

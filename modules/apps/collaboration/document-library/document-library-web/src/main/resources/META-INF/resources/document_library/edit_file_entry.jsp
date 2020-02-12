@@ -430,7 +430,7 @@ if (portletTitleBasedNavigation) {
 						<c:if test="<%= (fileEntry != null) && !checkedOut %>">
 							<aui:input label="customize-the-version-number-increment-and-describe-my-changes" name="updateVersionDetails" type="checkbox" />
 
-							<div id="<portlet:namespace />versionDetails" style="display: none">
+							<div id="<portlet:namespace />versionDetails" style="display: none;">
 								<aui:input label="major-version" name="majorVersion" type="radio" value="<%= true %>" />
 
 								<aui:input checked="<%= true %>" label="minor-version" name="majorVersion" type="radio" value="<%= false %>" />

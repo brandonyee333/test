@@ -109,7 +109,7 @@ if (portletTitleBasedNavigation) {
 
 								<c:if test="<%= Validator.isNotNull(smallImageURL) %>">
 									<aui:a href="<%= previousEntryURL %>" title="<%= HtmlUtil.escape(previousEntry.getTitle()) %>">
-										<span class="small-image visible-lg-block visible-md-block" style="background-image: url(<%= HtmlUtil.escape(smallImageURL) %>)"></span>
+										<span class="small-image visible-lg-block visible-md-block" style="background-image: url(<%= HtmlUtil.escape(smallImageURL) %>);"></span>
 									</aui:a>
 								</c:if>
 
@@ -154,7 +154,7 @@ if (portletTitleBasedNavigation) {
 
 								<c:if test="<%= Validator.isNotNull(smallImageURL) %>">
 									<aui:a href="<%= nextEntryURL %>" title="<%= HtmlUtil.escape(nextEntry.getTitle()) %>">
-										<span class="small-image visible-lg-block visible-md-block" style="background-image: url(<%= HtmlUtil.escape(smallImageURL) %>)"></span>
+										<span class="small-image visible-lg-block visible-md-block" style="background-image: url(<%= HtmlUtil.escape(smallImageURL) %>);"></span>
 									</aui:a>
 								</c:if>
 

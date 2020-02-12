@@ -36,7 +36,7 @@ Portlet portlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(),
 		%>
 
 		<c:if test="<%= Validator.isNotNull(coverImageURL) %>">
-			<div class="cover-image-container" style="background-image: url(<%= coverImageURL %>)"></div>
+			<div class="cover-image-container" style="background-image: url(<%= coverImageURL %>);"></div>
 		</c:if>
 
 		<%
