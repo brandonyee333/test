@@ -19,6 +19,8 @@ package com.liferay.osb.customer.zendesk.connector.constants;
  */
 public interface ZendeskRESTEndpoints {
 
+	public static final String GROUPS = "groups.json";
+
 	public static final String IDENTITIES = "/identities.json";
 
 	public static final String INCREMENTAL_ARTICLES =
