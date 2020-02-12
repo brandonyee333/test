@@ -9,6 +9,13 @@
         opacity: 0.5;
     }
 
+    .empty-state-icon {
+		background-image: url(@theme_image_path@/states/empty_state.gif);
+		margin: auto;
+		max-width: 250px;
+		padding-top: 250px;
+	}
+
     .list-icon {
         float: left;
         margin-right: 20px;
