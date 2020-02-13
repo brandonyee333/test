@@ -3240,7 +3240,7 @@ AUI.add(
 								return;
 							}
 
-							nestedFields.forEach(nestedField => {
+							nestedFields.forEach(function(nestedField) {
 								instance.recreateEditors(nestedField);
 							});
 						}
