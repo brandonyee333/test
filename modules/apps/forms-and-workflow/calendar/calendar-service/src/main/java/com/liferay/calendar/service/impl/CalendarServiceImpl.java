@@ -139,7 +139,7 @@ public class CalendarServiceImpl extends CalendarServiceBaseImpl {
 		if (!CalendarPermission.contains(
 				getPermissionChecker(), calendarId,
 				CalendarActionKeys.MANAGE_BOOKINGS) ||
-			!_calendarModelResourcePermission.contains(
+			!CalendarPermission.contains(
 				getPermissionChecker(), calendarId, ActionKeys.VIEW)) {
 
 			return false;
