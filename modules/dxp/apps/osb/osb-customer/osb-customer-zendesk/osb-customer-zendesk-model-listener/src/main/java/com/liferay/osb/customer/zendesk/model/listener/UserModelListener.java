@@ -16,6 +16,7 @@ package com.liferay.osb.customer.zendesk.model.listener;
 
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
+import com.liferay.osb.customer.zendesk.model.listener.exception.PartnerWorkerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
@@ -182,10 +183,9 @@ public class UserModelListener extends BaseModelListener<User> {
 						}
 
 						_accountEntrySynchronizer.reassignTickets(
-							user.getUserId(), accountEntry.getAccountEntryId(),
-							zendeskOrganizationId, zendeskUserId);
+							partnerWorker, accountEntry.getAccountEntryId());
 					}
-					catch (AccountCustomerRemovalException acre) {
+					catch (PartnerWorkerRemovalException pwre) {
 						_accountEntrySynchronizer.closeZendeskTickets(
 							accountEntry);
 					}

@@ -19,6 +19,7 @@ import com.liferay.osb.customer.zendesk.constants.ZendeskTicketConstants;
 import com.liferay.osb.customer.zendesk.model.ZendeskTicket;
 import com.liferay.osb.customer.zendesk.model.ZendeskUser;
 import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
+import com.liferay.osb.customer.zendesk.model.listener.exception.PartnerWorkerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.util.ZendeskModelListenerUtil;
 import com.liferay.osb.customer.zendesk.util.ZendeskMapperUtil;
 import com.liferay.osb.customer.zendesk.web.service.ZendeskOrganizationWebService;
@@ -38,10 +39,12 @@ import com.liferay.osb.model.OfferingEntry;
 import com.liferay.osb.model.OfferingEntryConstants;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.PartnerWorker;
+import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
@@ -182,6 +185,78 @@ public class AccountEntrySynchronizer {
 
 				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 					newAccountCustomer.getUserId());
+
+				for (ZendeskTicket zendeskTicket : zendeskTickets) {
+					zendeskTicket.setRequesterId(newZendeskUserId);
+					zendeskTicket.setZendeskOrganizationId(
+						zendeskOrganizationId);
+				}
+
+				_zendeskTicketWebService.updateZendeskTickets(zendeskTickets);
+			}
+		}
+	}
+
+	public void reassignTickets(
+			PartnerWorker partnerWorker, long accountEntryId)
+		throws PortalException {
+
+		long zendeskOrganizationId =
+			_zendeskMapperUtil.fetchZendeskOrganizationId(accountEntryId);
+		long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+			partnerWorker.getUserId());
+
+		if ((zendeskOrganizationId > 0) && (zendeskUserId > 0)) {
+			Set<String> criteria = new HashSet<>();
+
+			criteria.add("organization:" + zendeskOrganizationId);
+			criteria.add("requester:" + zendeskUserId);
+			criteria.add("status<closed");
+
+			List<ZendeskTicket> zendeskTickets =
+				_zendeskTicketWebService.getZendeskTickets(criteria);
+
+			if (!zendeskTickets.isEmpty()) {
+				AccountEntry accountEntry =
+					AccountEntryLocalServiceUtil.fetchAccountEntry(
+						accountEntryId);
+
+				PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+
+				List<PartnerWorker> partnerWorkers =
+					PartnerWorkerLocalServiceUtil.getPartnerWorkers(
+						partnerEntry.getPartnerEntryId(),
+						PartnerWorkerConstants.ROLE_MEMBER);
+
+				partnerWorkers = ListUtil.copy(partnerWorkers);
+
+				List<PartnerWorker> partnerWorkerManagers =
+					PartnerWorkerLocalServiceUtil.getPartnerWorkers(
+						partnerEntry.getPartnerEntryId(),
+						PartnerWorkerConstants.ROLE_MANAGER);
+
+				partnerWorkerManagers = ListUtil.copy(partnerWorkerManagers);
+
+				partnerWorkers.addAll(partnerWorkerManagers);
+
+				Iterator<PartnerWorker> iterator = partnerWorkers.iterator();
+
+				while (iterator.hasNext()) {
+					PartnerWorker curPartnerWorker = iterator.next();
+
+					if (curPartnerWorker.equals(partnerWorker)) {
+						iterator.remove();
+					}
+				}
+
+				if (partnerWorkers.isEmpty()) {
+					throw new PartnerWorkerRemovalException();
+				}
+
+				PartnerWorker newPartnerWorker = partnerWorkers.get(0);
+
+				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
+					newPartnerWorker.getUserId());
 
 				for (ZendeskTicket zendeskTicket : zendeskTickets) {
 					zendeskTicket.setRequesterId(newZendeskUserId);

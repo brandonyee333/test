@@ -130,7 +130,7 @@ public class PartnerWorkerLocalServiceImpl
 		unassignCorpEntryOrganizations(
 			partnerWorker.getUserId(), partnerWorker.getPartnerEntryId());
 
-		return partnerWorkerPersistence.remove(partnerWorkerId);
+		return deletePartnerWorker(partnerWorker);
 	}
 
 	public void deletePartnerWorkers(long userId) throws PortalException {

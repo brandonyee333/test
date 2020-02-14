@@ -14,7 +14,6 @@
 
 package com.liferay.osb.customer.zendesk.model.listener;
 
-import com.liferay.osb.customer.zendesk.model.listener.exception.AccountCustomerRemovalException;
 import com.liferay.osb.customer.zendesk.model.listener.exception.ZendeskIntegrationException;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountCustomerSynchronizer;
 import com.liferay.osb.customer.zendesk.model.listener.synchronizer.AccountEntrySynchronizer;
@@ -28,6 +27,7 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
@@ -80,29 +80,7 @@ public class PartnerWorkerModelListener
 				return;
 			}
 
-			PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
-
-			List<AccountEntry> accountEntries =
-				partnerEntry.getPartnerManagedAccountEntries();
-
-			for (AccountEntry accountEntry : accountEntries) {
-				try {
-					long zendeskOrganizationId =
-						_zendeskMapperUtil.fetchZendeskOrganizationId(
-							accountEntry.getAccountEntryId());
-
-					if (zendeskOrganizationId <= 0) {
-						continue;
-					}
-
-					_accountEntrySynchronizer.reassignTickets(
-						user.getUserId(), accountEntry.getAccountEntryId(),
-						zendeskOrganizationId, zendeskUserId);
-				}
-				catch (AccountCustomerRemovalException acre) {
-					_accountEntrySynchronizer.closeZendeskTickets(accountEntry);
-				}
-			}
+			reassignPartnerWorkerTickets(partnerWorker);
 
 			_partnerWorkerSynchronizer.remove(partnerWorker);
 		}
@@ -118,12 +96,18 @@ public class PartnerWorkerModelListener
 		throws ModelListenerException {
 
 		try {
-			if (((_oldRole.get() == PartnerWorkerConstants.ROLE_WATCHER) &&
-				 (partnerWorker.getRole() !=
-					 PartnerWorkerConstants.ROLE_WATCHER)) ||
-				((_oldRole.get() != PartnerWorkerConstants.ROLE_WATCHER) &&
-				 (partnerWorker.getRole() ==
-					 PartnerWorkerConstants.ROLE_WATCHER))) {
+			if ((_oldRole.get() == PartnerWorkerConstants.ROLE_WATCHER) &&
+				(partnerWorker.getRole() !=
+					PartnerWorkerConstants.ROLE_WATCHER)) {
+
+				_partnerWorkerSynchronizer.updateRole(partnerWorker);
+			}
+
+			if ((_oldRole.get() != PartnerWorkerConstants.ROLE_WATCHER) &&
+				(partnerWorker.getRole() ==
+					PartnerWorkerConstants.ROLE_WATCHER)) {
+
+				reassignPartnerWorkerTickets(partnerWorker);
 
 				_partnerWorkerSynchronizer.updateRole(partnerWorker);
 			}
@@ -150,6 +134,28 @@ public class PartnerWorkerModelListener
 			_log.error(e, e);
 
 			throw new ZendeskIntegrationException(e);
+		}
+	}
+
+	protected void reassignPartnerWorkerTickets(PartnerWorker partnerWorker)
+		throws PortalException {
+
+		PartnerEntry partnerEntry = partnerWorker.getPartnerEntry();
+
+		List<AccountEntry> accountEntries =
+			partnerEntry.getPartnerManagedAccountEntries();
+
+		for (AccountEntry accountEntry : accountEntries) {
+			long zendeskOrganizationId =
+				_zendeskMapperUtil.fetchZendeskOrganizationId(
+					accountEntry.getAccountEntryId());
+
+			if (zendeskOrganizationId <= 0) {
+				continue;
+			}
+
+			_accountEntrySynchronizer.reassignTickets(
+				partnerWorker, accountEntry.getAccountEntryId());
 		}
 	}
 
