@@ -44,7 +44,6 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportRegion;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.AccountCustomerLocalServiceUtil;
-import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.PartnerWorkerLocalServiceUtil;
 import com.liferay.osb.service.SupportRegionLocalServiceUtil;
@@ -55,12 +54,10 @@ import com.liferay.portal.kernel.model.Country;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -159,29 +156,26 @@ public class AccountEntrySynchronizer {
 				_zendeskTicketWebService.getZendeskTickets(criteria);
 
 			if (!zendeskTickets.isEmpty()) {
+				AccountCustomer newAccountCustomer = null;
+
 				List<AccountCustomer> accountCustomers =
 					AccountCustomerLocalServiceUtil.getAccountCustomers(
 						accountEntryId,
 						AccountCustomerConstants.ROLE_DEVELOPER);
 
-				accountCustomers = ListUtil.copy(accountCustomers);
-
-				Iterator<AccountCustomer> iterator =
-					accountCustomers.iterator();
-
-				while (iterator.hasNext()) {
-					AccountCustomer accountCustomer = iterator.next();
-
+				for (AccountCustomer accountCustomer : accountCustomers) {
 					if (accountCustomer.getUserId() == userId) {
-						iterator.remove();
+						continue;
 					}
+
+					newAccountCustomer = accountCustomer;
+
+					break;
 				}
 
-				if (accountCustomers.isEmpty()) {
+				if (newAccountCustomer == null) {
 					throw new AccountCustomerRemovalException();
 				}
-
-				AccountCustomer newAccountCustomer = accountCustomers.get(0);
 
 				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 					newAccountCustomer.getUserId());
@@ -217,43 +211,33 @@ public class AccountEntrySynchronizer {
 				_zendeskTicketWebService.getZendeskTickets(criteria);
 
 			if (!zendeskTickets.isEmpty()) {
-				AccountEntry accountEntry =
-					AccountEntryLocalServiceUtil.fetchAccountEntry(
-						accountEntryId);
-
-				PartnerEntry partnerEntry = accountEntry.getPartnerEntry();
+				PartnerWorker newPartnerWorker = null;
 
 				List<PartnerWorker> partnerWorkers =
 					PartnerWorkerLocalServiceUtil.getPartnerWorkers(
-						partnerEntry.getPartnerEntryId(),
-						PartnerWorkerConstants.ROLE_MEMBER);
+						partnerWorker.getPartnerEntryId());
 
-				partnerWorkers = ListUtil.copy(partnerWorkers);
+				for (PartnerWorker curPartnerWorker : partnerWorkers) {
+					if (curPartnerWorker.getUserId() ==
+							partnerWorker.getUserId()) {
 
-				List<PartnerWorker> partnerWorkerManagers =
-					PartnerWorkerLocalServiceUtil.getPartnerWorkers(
-						partnerEntry.getPartnerEntryId(),
-						PartnerWorkerConstants.ROLE_MANAGER);
+						continue;
+					}
 
-				partnerWorkerManagers = ListUtil.copy(partnerWorkerManagers);
+					if ((curPartnerWorker.getRole() ==
+							PartnerWorkerConstants.ROLE_MANAGER) ||
+						(curPartnerWorker.getRole() ==
+							PartnerWorkerConstants.ROLE_MEMBER)) {
 
-				partnerWorkers.addAll(partnerWorkerManagers);
+						newPartnerWorker = curPartnerWorker;
 
-				Iterator<PartnerWorker> iterator = partnerWorkers.iterator();
-
-				while (iterator.hasNext()) {
-					PartnerWorker curPartnerWorker = iterator.next();
-
-					if (curPartnerWorker.equals(partnerWorker)) {
-						iterator.remove();
+						break;
 					}
 				}
 
-				if (partnerWorkers.isEmpty()) {
+				if (newPartnerWorker == null) {
 					throw new PartnerWorkerRemovalException();
 				}
-
-				PartnerWorker newPartnerWorker = partnerWorkers.get(0);
 
 				long newZendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(
 					newPartnerWorker.getUserId());

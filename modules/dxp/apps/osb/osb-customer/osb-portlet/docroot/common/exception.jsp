@@ -32,12 +32,12 @@
 
 	String message = mle.getLocalizedMessage();
 
-	if (message.contains("Server returned status 429")) {
-		message = LanguageUtil.get(request, "zendesk-api-rate-limit-exceeded");
-	}
-
 	if (message.contains("PartnerWorkerRemovalException")) {
 		message = LanguageUtil.get(request, "unable-to-update-partner-due-to-open-tickets");
+	}
+
+	if (message.contains("Server returned status 429")) {
+		message = LanguageUtil.get(request, "zendesk-api-rate-limit-exceeded");
 	}
 	%>
 
