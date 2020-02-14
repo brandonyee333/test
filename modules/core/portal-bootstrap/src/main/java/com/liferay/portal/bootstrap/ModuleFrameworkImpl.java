@@ -1335,7 +1335,11 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		for (Path jarPath : jarPaths) {
 			try (InputStream inputStream = Files.newInputStream(jarPath)) {
-				URI uri = jarPath.toUri();
+				File file = jarPath.toFile();
+
+				file = file.getCanonicalFile();
+
+				URI uri = file.toURI();
 
 				String uriString = uri.toString();
 
@@ -1359,6 +1363,8 @@ public class ModuleFrameworkImpl implements ModuleFramework {
 
 		for (String staticFileName : staticFileNames) {
 			File file = new File(deployDir + StringPool.SLASH + staticFileName);
+
+			file = file.getCanonicalFile();
 
 			if (file.exists()) {
 				bundles.putAll(
