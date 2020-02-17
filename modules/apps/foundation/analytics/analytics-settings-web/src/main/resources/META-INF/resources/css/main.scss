@@ -39,6 +39,20 @@
         }
     }
 
+    .radio-buttons {
+		label {
+			cursor: pointer;
+		}
+
+		small {
+			margin: 0 0 0 1.4rem;
+		}
+
+		.radio {
+			margin-bottom: 0;
+		}
+	}
+
     .sync-all-contacts {
         margin: 2rem 0 2rem -2rem;
     }
