@@ -5,6 +5,9 @@ Export-Package:\
 	com.liferay.exportimport.web.constants,\
 	com.liferay.exportimport.web.trash
 Liferay-Releng-Module-Group-Title: Data Management
+Provide-Capability:\
+	liferay.resource.bundle;\
+		resource.bundle.aggregate:String="(bundle.symbolic.name=com.liferay.staging.lang)";\
+		resource.bundle.base.name="content.Language"
 Web-ContextPath: /exportimport-web
 -dsannotations-options: inherit
--includeresource: content=../../staging/staging-lang/src/main/resources/content
