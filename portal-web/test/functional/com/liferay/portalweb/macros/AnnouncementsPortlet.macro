@@ -23,8 +23,6 @@ definition {
 
 		Click(locator1 = "Button#ITEMS_PER_PAGE");
 
-		var key_itemsPerPage = "${itemsPerPage}";
-
 		MenuItem.click(menuItem = "${itemsPerPage}");
 	}
 
