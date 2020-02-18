@@ -101,6 +101,12 @@ public class AccountEntrySynchronizer {
 	public void closeZendeskTickets(AccountEntry accountEntry)
 		throws PortalException {
 
+		closeZendeskTickets(0, accountEntry);
+	}
+
+	public void closeZendeskTickets(long userId, AccountEntry accountEntry)
+		throws PortalException {
+
 		long zendeskOrganizationId =
 			_zendeskMapperUtil.fetchZendeskOrganizationId(
 				accountEntry.getAccountEntryId());
@@ -109,6 +115,12 @@ public class AccountEntrySynchronizer {
 
 		criteria.add("organization:" + zendeskOrganizationId);
 		criteria.add("status<" + ZendeskTicketConstants.STATUS_CLOSED);
+
+		if (userId > 0) {
+			long zendeskUserId = _zendeskMapperUtil.fetchZendeskUserId(userId);
+
+			criteria.add("requester:" + zendeskUserId);
+		}
 
 		ZendeskUser zendeskUser = _zendeskUserWebService.getZendeskUserByEmail(
 			getDefaultUserEmail(accountEntry.getAccountEntryId()));

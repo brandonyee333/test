@@ -187,7 +187,7 @@ public class UserModelListener extends BaseModelListener<User> {
 					}
 					catch (PartnerWorkerRemovalException pwre) {
 						_accountEntrySynchronizer.closeZendeskTickets(
-							accountEntry);
+							user.getUserId(), accountEntry);
 					}
 				}
 			}
