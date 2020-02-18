@@ -965,6 +965,8 @@ definition {
 
 		KBArticle.enableSourceURL();
 
+		WaitForSPARefresh();
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
