@@ -125,7 +125,8 @@ public class UserSynchronizer {
 		for (ContactAccountView contactAccountView : contactAccountViews) {
 			Account account = contactAccountView.getAccount();
 
-			ContactRole[] contactRoles = contactAccountView.getContactRoles();
+			ContactRole[] contactRoles =
+				contactAccountView.getCustomerContactRoles();
 
 			if (_accountUtil.hasActiveSupport(account)) {
 				tags.add(ZendeskTagConstants.OSB_KNOWLEDGE_BASE);

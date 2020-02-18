@@ -165,7 +165,7 @@ public class AccountSynchronizer {
 			Account account = _accountWebService.getAccountContactsContactRoles(
 				accountKey);
 
-			Contact[] contacts = account.getContacts();
+			Contact[] contacts = account.getCustomerContacts();
 
 			if (!ArrayUtil.isEmpty(contacts)) {
 				for (Contact contact : contacts) {
