@@ -363,6 +363,26 @@ AUI.add(
 								'translationmanager:editingLocaleChange': instance._afterEditingLocaleChange
 							}
 						);
+
+						instance.eventHandlers = [];
+
+						instance.bindUI();
+					},
+
+					bindUI: function() {
+						var instance = this;
+
+						var formNode = instance.get('formNode');
+
+						if (formNode) {
+							instance.eventHandlers.push(
+								Liferay.after(
+									'form:registered',
+									instance._afterFormRegistered,
+									instance
+								)
+							);
+						}
 					},
 
 					renderUI: function() {
@@ -387,6 +407,10 @@ AUI.add(
 
 					destructor: function() {
 						var instance = this;
+
+						AArray.invoke(instance.eventHandlers, 'detach');
+
+						instance.eventHandlers = null;
 
 						instance.get('container').remove();
 					},
