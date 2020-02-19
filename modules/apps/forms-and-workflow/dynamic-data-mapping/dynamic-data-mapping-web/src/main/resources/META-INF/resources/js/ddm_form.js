@@ -391,7 +391,7 @@ AUI.add(
 						instance.get('container').remove();
 					},
 
-					addIntegerRangeRule() {
+					addIntegerRangeRule: function() {
 						var instance = this;
 
 						var dataType = instance.get('dataType');
@@ -404,19 +404,21 @@ AUI.add(
 
 								var fieldName = node.get('name');
 
-								var errorMessage = Liferay.Util.sub(
+								var errorMessage = Lang.sub(
 									Liferay.Language.get(
 										'please-enter-a-valid-integer-value-between-x-and-x'
 									),
-									INTEGER_MIN_VALUE,
-									INTEGER_MAX_VALUE
+									[
+										INTEGER_MIN_VALUE,
+										INTEGER_MAX_VALUE
+									]
 								);
 
 								liferayForm.addRule(
 									fieldName,
 									'integerRange_custom',
 									errorMessage,
-									val => {
+									function(val) {
 										return (
 											val >= INTEGER_MIN_VALUE &&
 											val <= INTEGER_MAX_VALUE
