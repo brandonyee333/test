@@ -1585,7 +1585,9 @@ definition {
 	macro uploadAudio {
 		Click.pauseClickAt(locator1 = "WCEditWebContent#AUDIO_BUTTON");
 
-		ItemSelector.addFromURL(imageSourceURL = "${dmDocumentURL}");
+		ItemSelector.addFromURL(
+			imageSourceURL = "${dmDocumentURL}",
+			type = "Audio");
 
 		SelectFrame(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
@@ -1597,7 +1599,9 @@ definition {
 	macro uploadVideo {
 		Click.pauseClickAt(locator1 = "WCEditWebContent#VIDEO_BUTTON");
 
-		ItemSelector.addFromURL(imageSourceURL = "${dmDocumentURL}");
+		ItemSelector.addFromURL(
+			imageSourceURL = "${dmDocumentURL}",
+			type = "Video");
 
 		SelectFrame(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
