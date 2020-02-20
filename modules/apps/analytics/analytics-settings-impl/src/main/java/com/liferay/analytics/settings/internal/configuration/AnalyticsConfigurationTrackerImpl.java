@@ -368,6 +368,10 @@ public class AnalyticsConfigurationTrackerImpl
 
 		message.setPayload(baseModels);
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Queueing add analytics messages message");
+		}
+
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
 				_messageBus.sendMessage(
@@ -595,6 +599,10 @@ public class AnalyticsConfigurationTrackerImpl
 
 		message.put("command", AnalyticsMessagesProcessorCommand.SEND);
 		message.put("companyId", dictionary.get("companyId"));
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Queueing send analytics messages message");
+		}
 
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
