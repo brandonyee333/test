@@ -28,6 +28,7 @@ import com.google.pubsub.v1.ProjectTopicName;
 import com.google.pubsub.v1.PubsubMessage;
 import com.google.pubsub.v1.PushConfig;
 import com.google.pubsub.v1.Subscription;
+import com.google.pubsub.v1.Topic;
 
 import com.liferay.osb.asah.common.constants.ServiceConstants;
 import com.liferay.osb.asah.common.messaging.Channel;
@@ -36,7 +37,9 @@ import com.liferay.osb.asah.common.messaging.MessageListener;
 import com.liferay.osb.asah.common.messaging.MessageSubscriber;
 import com.liferay.osb.asah.common.spring.annotation.MonolithExclude;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -168,14 +171,10 @@ public class PubSubMessageBusImpl implements MessageBus {
 			subscription.getName(), _createMessageReceiver(messageListener));
 	}
 
-	private void _createTopic(Channel channel) throws Exception {
-		ProjectTopicName projectTopicName = getProjectTopicName(channel);
+	private void _createTopic(
+		ProjectTopicName projectTopicName, TopicAdminClient topicAdminClient) {
 
-		try (PubSubClient<TopicAdminClient> pubSubClient =
-				_pubSubClientFactory.createTopicAdminClient()) {
-
-			TopicAdminClient topicAdminClient = pubSubClient.get();
-
+		try {
 			topicAdminClient.createTopic(projectTopicName);
 
 			if (_log.isInfoEnabled()) {
@@ -191,8 +190,21 @@ public class PubSubMessageBusImpl implements MessageBus {
 	}
 
 	private void _createTopics() throws Exception {
-		for (Channel channel : Channel.values()) {
-			_createTopic(channel);
+		try (PubSubClient<TopicAdminClient> pubSubClient =
+				_pubSubClientFactory.createTopicAdminClient()) {
+
+			TopicAdminClient topicAdminClient = pubSubClient.get();
+
+			Set<String> topicNames = _fetchTopicNames(topicAdminClient);
+
+			for (Channel channel : Channel.values()) {
+				ProjectTopicName projectTopicName = getProjectTopicName(
+					channel);
+
+				if (!topicNames.contains(projectTopicName.toString())) {
+					_createTopic(projectTopicName, topicAdminClient);
+				}
+			}
 		}
 	}
 
@@ -205,6 +217,19 @@ public class PubSubMessageBusImpl implements MessageBus {
 		for (Publisher publisher : _channels.values()) {
 			publisher.shutdown();
 		}
+	}
+
+	private Set<String> _fetchTopicNames(TopicAdminClient topicAdminClient) {
+		Set<String> topicNames = new HashSet<>();
+
+		TopicAdminClient.ListTopicsPagedResponse listTopicsPagedResponse =
+			topicAdminClient.listTopics(getProjectName());
+
+		for (Topic topic : listTopicsPagedResponse.iterateAll()) {
+			topicNames.add(topic.getName());
+		}
+
+		return topicNames;
 	}
 
 	private Publisher _getOrCreatePublisher(Channel channel) throws Exception {
