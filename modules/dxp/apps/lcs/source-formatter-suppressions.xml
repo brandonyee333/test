@@ -1,9 +1,6 @@
 <?xml version="1.0"?>
 
 <suppressions>
-	<checkstyle>
-		<suppress checks="JSONNaming" files="modules/dxp/apps/lcs/lcs-api/src/main/java/com/liferay/lcs/messaging/Message\.java" />
-	</checkstyle>
 	<source-check>
 		<suppress checks="GradleDependencyArtifactsCheck" files="/lcs-client-api/build\.gradle" />
 		<suppress checks="GradleDependencyArtifactsCheck" files="/lcs-client-impl/build\.gradle" />
@@ -12,6 +9,5 @@
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-messaging/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-rest-client/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-security/.*" />
-		<suppress checks="PropertiesLiferayPluginPackageLiferayVersionsCheck" files="/lcs-portlet/docroot/WEB-INF/liferay-plugin-package\.properties" />
 	</source-check>
 </suppressions>
