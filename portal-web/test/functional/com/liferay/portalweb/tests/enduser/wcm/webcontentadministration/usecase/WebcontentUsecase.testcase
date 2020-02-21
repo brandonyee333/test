@@ -859,7 +859,7 @@ definition {
 		Navigator.gotoPage(pageName = "Test Page Name");
 
 		WebContent.viewPGViaWCD(
-			webContentContent = "Space Program Academy of Continuing Education Dare to Dream out of this world Space Program 大学生涯教育 地球から、宇宙の果てへ"
+			webContentContent = "Space Program 大学生涯教育 地球から、宇宙の果てへ"
 		);
 
 		Navigator.gotoPage(pageName = "Test Page Name");
