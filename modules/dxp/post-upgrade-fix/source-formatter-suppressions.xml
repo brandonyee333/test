@@ -2,9 +2,9 @@
 
 <suppressions>
 	<checkstyle>
-		<suppress checks="MethodName" files="modules/dxp/post-upgrade-fix/post-upgrade-fix-LPS_[0-9]*/src/main/java/com/liferay/post/upgrade/fix/LPS_[0-9]*/osgi/commands/PostUpgradeFixOSGiCommands.java" />
+		<suppress checks="MethodName" files="post-upgrade-fix-LPS_[0-9]*/src/main/java/com/liferay/post/upgrade/fix/LPS_[0-9]*/osgi/commands/PostUpgradeFixOSGiCommands.java" />
 	</checkstyle>
 	<source-check>
-		<suppress checks="JavaVerifyUpgradeConnectionCheck" files="modules/dxp/post-upgrade-fix/.*" />
+		<suppress checks="JavaVerifyUpgradeConnectionCheck" files=".*" />
 	</source-check>
 </suppressions>

@@ -5,6 +5,6 @@
 		<suppress checks="MethodNameCheck" files="wsrp-service/src/main/java/com/liferay/wsrp/internal/proxy/Stub\.java" />
 	</checkstyle>
 	<source-check>
-		<suppress checks="JavaServiceUtilCheck" files="modules/apps/wsrp/wsrp-service/src/main/java/com/liferay/wsrp/internal/bind/.*" />
+		<suppress checks="JavaServiceUtilCheck" files="wsrp-service/src/main/java/com/liferay/wsrp/internal/bind/.*" />
 	</source-check>
 </suppressions>
