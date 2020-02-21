@@ -2,11 +2,11 @@
 
 <suppressions>
 	<source-check>
-		<suppress checks="GradleDependencyArtifactsCheck" files="/lcs-client-api/build\.gradle" />
-		<suppress checks="GradleDependencyArtifactsCheck" files="/lcs-client-impl/build\.gradle" />
-		<suppress checks="GradleDependencyArtifactsCheck" files="/lcs-client-web/build\.gradle" />
-		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-api/.*" />
-		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-messaging/.*" />
-		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-security/.*" />
+		<suppress checks="GradleDependencyArtifactsCheck" files="lcs-client-api/build\.gradle" />
+		<suppress checks="GradleDependencyArtifactsCheck" files="lcs-client-impl/build\.gradle" />
+		<suppress checks="GradleDependencyArtifactsCheck" files="lcs-client-web/build\.gradle" />
+		<suppress checks="JavaDiamondOperatorCheck" files="lcs-api/.*" />
+		<suppress checks="JavaDiamondOperatorCheck" files="lcs-messaging/.*" />
+		<suppress checks="JavaDiamondOperatorCheck" files="lcs-security/.*" />
 	</source-check>
 </suppressions>
