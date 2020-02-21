@@ -29,7 +29,7 @@ definition {
 
 		Click(locator1 = "Button#EDITOR_SWITCH");
 
-		Type.sendKeysAceEditor(
+		Type.typeAceEditor(
 			locator1 = "TextArea#ACE_EDITOR",
 			value1 = "${content}");
 	}
