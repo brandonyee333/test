@@ -7,7 +7,6 @@
 		<suppress checks="GradleDependencyArtifactsCheck" files="/lcs-client-web/build\.gradle" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-api/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-messaging/.*" />
-		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-rest-client/.*" />
 		<suppress checks="JavaDiamondOperatorCheck" files="/lcs-security/.*" />
 	</source-check>
 </suppressions>
