@@ -2,10 +2,10 @@
 
 <suppressions>
 	<source-check>
-		<suppress checks="GradleDependencyArtifactsCheck" files="modules/apps/foundation/petra/petra-encryptor/build\.gradle" />
-		<suppress checks="GradleDependencyArtifactsCheck" files="modules/apps/foundation/petra/petra-xml/build\.gradle" />
+		<suppress checks="GradleDependencyArtifactsCheck" files="petra-encryptor/build\.gradle" />
+		<suppress checks="GradleDependencyArtifactsCheck" files="petra-xml/build\.gradle" />
 		<suppress checks="JavaDiamondOperatorCheck" files="petra-json-web-service-client/.*" />
-		<suppress checks="JavaXMLSecurityCheck" files="modules/apps/foundation/petra/petra-log4j/src/main/java/com/liferay/petra/log4j/Log4JUtil\.java" />
-		<suppress checks="JavaXMLSecurityCheck" files="modules/apps/foundation/petra/petra-xml/src/main/java/com/liferay/petra/xml/Dom4jUtil\.java" />
+		<suppress checks="JavaXMLSecurityCheck" files="petra-log4j/src/main/java/com/liferay/petra/log4j/Log4JUtil\.java" />
+		<suppress checks="JavaXMLSecurityCheck" files="petra-xml/src/main/java/com/liferay/petra/xml/Dom4jUtil\.java" />
 	</source-check>
 </suppressions>

@@ -2,7 +2,7 @@
 
 <suppressions>
 	<source-check>
-		<suppress checks="GradleDependencyArtifactsCheck" files="modules/apps/static/portal-osgi-web/portal-osgi-web-wab-extender/build\.gradle" />
-		<suppress checks="JavaXMLSecurityCheck" files="modules/apps/static/portal-osgi-web/portal-osgi-web-servlet-context-helper/src/main/java/com/liferay/portal/osgi/web/servlet/context/helper/internal/definition/WebXMLDefinitionLoader\.java" />
+		<suppress checks="GradleDependencyArtifactsCheck" files="portal-osgi-web-wab-extender/build\.gradle" />
+		<suppress checks="JavaXMLSecurityCheck" files="portal-osgi-web-servlet-context-helper/src/main/java/com/liferay/portal/osgi/web/servlet/context/helper/internal/definition/WebXMLDefinitionLoader\.java" />
 	</source-check>
 </suppressions>
