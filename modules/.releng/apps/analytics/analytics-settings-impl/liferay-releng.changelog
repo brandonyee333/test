@@ -2,3 +2,8 @@
 # Bundle Version 1.0.1
 #
 bed41663d22eb58c93d98b4c86dadaaadcad1287^..050bd8c78a0daff5533d2ede6c2d9726427da7e3=LRAC-4949
+
+#
+# Bundle Version 1.0.5
+#
+050bd8c78a0daff5533d2ede6c2d9726427da7e3^..633bbe60bdfa82da2b74b1a3af2bfbad0e5fc821=LRAC-5183 LRAC-5230
