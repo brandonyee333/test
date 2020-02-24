@@ -102,9 +102,8 @@ public class IGDisplayExportImportPortletPreferencesProcessor
 	private DLExportImportPortletPreferencesProcessor
 		_dlExportImportPortletPreferencesProcessor;
 
-	private IGDisplayPortletDisplayTemplateExportCapability 
+	private IGDisplayPortletDisplayTemplateExportCapability
 		_igDisplayExportCapability;
-
 	private IGDisplayPortletDisplayTemplateImportCapability
 		_igDisplayImportCapability;
 

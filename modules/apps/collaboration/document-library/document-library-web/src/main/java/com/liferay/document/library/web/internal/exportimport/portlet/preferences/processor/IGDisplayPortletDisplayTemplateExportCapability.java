@@ -31,8 +31,7 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	immediate = true,
-
-	service = { 
+	service = {
 		Capability.class, IGDisplayPortletDisplayTemplateExportCapability.class
 	}
 )
