@@ -57,6 +57,12 @@
 				<required>true</required>
 			</attribute>
 			<attribute>
+				<name>panels</name>
+				<inputType>java.util.HashMap[]</inputType>
+				<outputType>java.util.HashMap[]</outputType>
+				<required>false</required>
+			</attribute>
+			<attribute>
 				<name>scopes</name>
 				<inputType>java.util.Set</inputType>
 				<required>false</required>
