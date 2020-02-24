@@ -224,7 +224,6 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 											title={label}
 										/>
 									)}
-									);
 								</>
 							);
 						});
