@@ -54,6 +54,12 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>panels</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.util.HashMap[]</type>
+		</attribute>
+		<attribute>
 			<name>scopes</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>

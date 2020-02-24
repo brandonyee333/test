@@ -66,6 +66,10 @@ public abstract class BaseDataLayoutBuilderTag extends com.liferay.taglib.util.I
 		return _namespace;
 	}
 
+	public java.util.HashMap[] getPanels() {
+		return _panels;
+	}
+
 	public java.util.Set getScopes() {
 		return _scopes;
 	}
@@ -106,6 +110,10 @@ public abstract class BaseDataLayoutBuilderTag extends com.liferay.taglib.util.I
 		_namespace = namespace;
 	}
 
+	public void setPanels(java.util.HashMap[] panels) {
+		_panels = panels;
+	}
+
 	public void setScopes(java.util.Set scopes) {
 		_scopes = scopes;
 	}
@@ -133,6 +141,7 @@ public abstract class BaseDataLayoutBuilderTag extends com.liferay.taglib.util.I
 		_groupId = null;
 		_localizable = false;
 		_namespace = null;
+		_panels = null;
 		_scopes = null;
 		_singlePage = false;
 	}
@@ -157,6 +166,7 @@ public abstract class BaseDataLayoutBuilderTag extends com.liferay.taglib.util.I
 		setNamespacedAttribute(request, "groupId", _groupId);
 		setNamespacedAttribute(request, "localizable", _localizable);
 		setNamespacedAttribute(request, "namespace", _namespace);
+		setNamespacedAttribute(request, "panels", _panels);
 		setNamespacedAttribute(request, "scopes", _scopes);
 		setNamespacedAttribute(request, "singlePage", _singlePage);
 	}
@@ -177,6 +187,7 @@ public abstract class BaseDataLayoutBuilderTag extends com.liferay.taglib.util.I
 	private java.lang.Long _groupId = null;
 	private boolean _localizable = false;
 	private java.lang.String _namespace = null;
+	private java.util.HashMap[] _panels = null;
 	private java.util.Set _scopes = null;
 	private boolean _singlePage = false;
 
