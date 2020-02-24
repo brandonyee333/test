@@ -135,6 +135,25 @@ definition {
 			PortletEntry.inputDescription(description = "${dmDocumentDescription}");
 		}
 
+		if (isSet(documentsAndMediaField)) {
+			var key_fieldName = "DocumentsandMedia";
+
+			AssertClick(
+				locator1 = "Button#FIELD_SELECT",
+				value1 = "Select");
+
+			SelectFrame(locator1 = "IFrame#DIALOG");
+
+			AssertClick.assertPartialTextClickAt(
+				key_dmDocumentTitle = "${documentsAndMediaField}",
+				locator1 = "WC#ICON_DOCUMENT_TITLE",
+				value1 = "${documentsAndMediaField}");
+
+			SelectFrameTop(value1 = "relative=top");
+
+			Click(locator1 = "Button#ADD");
+		}
+
 		if (isSet(validationError)) {
 			Button.clickPublish();
 
