@@ -38,7 +38,7 @@ long[] portalProductMinorVersions = StringUtil.split(PrefsParamUtil.getString(po
 		LinkedHashMap<String, Object> params = new LinkedHashMap<String, Object>();
 
 		params.put("accountCustomer", Long.valueOf(user.getUserId()));
-		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE, ProductEntryConstants.ROOT_NAME_PORTAL, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
+		params.put("primaryProductEntry", new Object[] {OfferingEntryConstants.STATUS_ACTIVE, ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE, ProductEntryConstants.ROOT_NAME_PORTAL, ProductEntryConstants.ROOT_DXP_CLOUD, ProductEntryConstants.TYPE_PRIMARY, ProductEntryConstants.ENVIRONMENT_DEVELOPMENT});
 
 		List<AccountEntry> accountEntries = AccountEntryLocalServiceUtil.search(null, params, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new AccountEntryNameComparator(true));
 		%>

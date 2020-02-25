@@ -207,7 +207,7 @@ public class ProductEntryImpl extends ProductEntryBaseImpl {
 	public boolean isDXPCloud() {
 		String name = getName();
 
-		if (name.contains("DXP Cloud")) {
+		if (name.contains(ProductEntryConstants.ROOT_DXP_CLOUD)) {
 			return true;
 		}
 

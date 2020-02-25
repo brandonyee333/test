@@ -1428,6 +1428,8 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 		for (ProductEntry curProductEntry : productEntries) {
 			if ((curProductEntry.isDigitalEnterprise() &&
 				 productEntry.isDigitalEnterprise()) ||
+				(curProductEntry.isDigitalEnterprise() &&
+				 productEntry.isDXPCloud()) ||
 				(curProductEntry.isPortal() && productEntry.isPortal())) {
 
 				return curProductEntry;
@@ -1463,6 +1465,9 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 			if ((productEntryRootName.equals(
 					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) &&
 				 productEntry.isDigitalEnterprise()) ||
+				(productEntryRootName.equals(
+					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE) &&
+				 productEntry.isDXPCloud()) ||
 				(productEntryRootName.equals(
 					ProductEntryConstants.ROOT_NAME_PORTAL) &&
 				 productEntry.isPortal())) {

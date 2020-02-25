@@ -194,7 +194,9 @@ public class SupportUtil {
 				continue;
 			}
 
-			if (productEntry.isDigitalEnterprise()) {
+			if (productEntry.isDigitalEnterprise() ||
+				productEntry.isDXPCloud()) {
+
 				selfProvisioningProducts.add(
 					ProductEntryConstants.ROOT_NAME_DIGITAL_ENTERPRISE);
 			}

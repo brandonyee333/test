@@ -194,6 +194,8 @@ public class ProductEntryConstants {
 
 	public static final String PRODUCT_ID_PORTAL = "Portal";
 
+	public static final String ROOT_DXP_CLOUD = "DXP Cloud";
+
 	public static final String ROOT_NAME_DIGITAL_ENTERPRISE =
 		"Digital Enterprise";
 

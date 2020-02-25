@@ -297,10 +297,15 @@
 			WHERE
 				(
 					(OSB_AccountEntry.type_ != 4) AND
-					(OSB_OfferingEntry.licenses = [$TRUE$]) AND
 					(OSB_OfferingEntry.status = ?) AND
 					(
-						(lower(OSB_ProductEntry.name) LIKE ?) OR
+						(
+							(OSB_OfferingEntry.licenses = [$TRUE$]) AND
+							(
+								(lower(OSB_ProductEntry.name) LIKE ?) OR
+								(lower(OSB_ProductEntry.name) LIKE ?)
+							)
+						) OR
 						(lower(OSB_ProductEntry.name) LIKE ?)
 					) AND
 					(OSB_ProductEntry.type_ = ?) AND
