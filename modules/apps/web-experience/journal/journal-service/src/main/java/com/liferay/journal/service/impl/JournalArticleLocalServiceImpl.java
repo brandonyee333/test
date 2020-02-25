@@ -20,7 +20,6 @@ import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.asset.kernel.model.AssetLinkConstants;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
-import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureException;
 import com.liferay.dynamic.data.mapping.exception.NoSuchTemplateException;
@@ -64,6 +63,7 @@ import com.liferay.journal.model.JournalArticleConstants;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.model.JournalArticleResource;
 import com.liferay.journal.model.JournalFolder;
+import com.liferay.journal.model.JournalFolderConstants;
 import com.liferay.journal.model.impl.JournalArticleDisplayImpl;
 import com.liferay.journal.service.base.JournalArticleLocalServiceBaseImpl;
 import com.liferay.journal.service.permission.JournalPermission;
@@ -7875,7 +7875,7 @@ public class JournalArticleLocalServiceImpl
 			folderName = folder.getName();
 
 			if ((folder.getFolderId() ==
-					DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
+					JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
 				Validator.isNull(folderName)) {
 
 				folderName = LanguageUtil.get(
