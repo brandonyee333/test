@@ -106,7 +106,7 @@ public class LayoutCommonTag extends IncludeTag {
 
 		jspWriter.write(
 			"<form action=\"#\" class=\"hide\" id=\"hrefFm\" method=\"post\" " +
-				"name=\"hrefFm\"><span></span><input hidden type=\"submit\"/>" +
+				"name=\"hrefFm\" aria-hidden=\"true\"><span></span><input hidden type=\"submit\"/>" +
 					"</form>");
 
 		return EVAL_PAGE;
