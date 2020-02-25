@@ -32,6 +32,8 @@ import com.liferay.portal.security.ldap.exportimport.LDAPUserImporter;
 import com.liferay.portal.security.ldap.exportimport.configuration.LDAPImportConfiguration;
 import com.liferay.portal.security.ldap.internal.constants.LDAPDestinationNames;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Activate;
@@ -66,7 +68,8 @@ public class UserImportMessageListener extends BaseMessageListener {
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, null, null, interval, TimeUnit.MINUTE);
+			className, className, _futureDate(interval), null, interval,
+			TimeUnit.MINUTE);
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
 			className, trigger);
@@ -145,6 +148,17 @@ public class UserImportMessageListener extends BaseMessageListener {
 		SchedulerEngineHelper schedulerEngineHelper) {
 
 		_schedulerEngineHelper = schedulerEngineHelper;
+	}
+
+	private Date _futureDate(int interval) {
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(new Date());
+		calendar.setLenient(true);
+
+		calendar.add(Calendar.MINUTE, interval);
+
+		return calendar.getTime();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
