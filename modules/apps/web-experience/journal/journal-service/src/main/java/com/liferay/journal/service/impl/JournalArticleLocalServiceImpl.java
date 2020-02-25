@@ -20,6 +20,7 @@ import com.liferay.asset.kernel.model.AssetLink;
 import com.liferay.asset.kernel.model.AssetLinkConstants;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
+import com.liferay.document.library.kernel.model.DLFolderConstants;
 import com.liferay.document.library.kernel.util.DLUtil;
 import com.liferay.dynamic.data.mapping.exception.NoSuchStructureException;
 import com.liferay.dynamic.data.mapping.exception.NoSuchTemplateException;
@@ -7867,10 +7868,19 @@ public class JournalArticleLocalServiceImpl
 			"[$ARTICLE_DIFFS$]", DiffHtmlUtil.replaceStyles(articleDiffs),
 			false);
 
+		String folderName = folder.getName();
+
+		if ((folder.getFolderId() ==
+				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
+			Validator.isNull(folderName)) {
+
+			folderName = LanguageUtil.get(LocaleUtil.getSiteDefault(), "home");
+		}
+
 		subscriptionSender.setContextAttributes(
 			"[$ARTICLE_ID$]", article.getArticleId(), "[$ARTICLE_TITLE$]",
 			articleTitle, "[$ARTICLE_URL$]", articleURL, "[$ARTICLE_VERSION$]",
-			article.getVersion(), "[$FOLDER_NAME$]", folder.getName());
+			article.getVersion(), "[$FOLDER_NAME$]", folderName);
 
 		subscriptionSender.setContextCreatorUserPrefix("ARTICLE");
 		subscriptionSender.setCreatorUserId(article.getUserId());
