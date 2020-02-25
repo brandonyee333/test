@@ -530,32 +530,32 @@ public class WatsonVehicleAuditPersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler(
+		StringBundler sb = new StringBundler(
 			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_WATSONVEHICLEAUDIT_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_WATSONVEHICLEAUDIT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
 			for (WatsonVehicleAudit watsonVehicleAudit :
-					(List<WatsonVehicleAudit>)q.list()) {
+					(List<WatsonVehicleAudit>)query.list()) {
 
 				map.put(
 					watsonVehicleAudit.getPrimaryKeyObj(), watsonVehicleAudit);
@@ -671,19 +671,19 @@ public class WatsonVehicleAuditPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_WATSONVEHICLEAUDIT);
+				sb.append(_SQL_SELECT_WATSONVEHICLEAUDIT);
 
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_WATSONVEHICLEAUDIT;
@@ -696,10 +696,10 @@ public class WatsonVehicleAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
 				list = (List<WatsonVehicleAudit>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -749,9 +749,10 @@ public class WatsonVehicleAuditPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_WATSONVEHICLEAUDIT);
+				Query query = session.createQuery(
+					_SQL_COUNT_WATSONVEHICLEAUDIT);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
