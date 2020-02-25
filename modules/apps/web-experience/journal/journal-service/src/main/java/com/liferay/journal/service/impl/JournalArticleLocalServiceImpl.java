@@ -7768,7 +7768,8 @@ public class JournalArticleLocalServiceImpl
 		subscriptionSender.addPersistedSubscribers(
 			JournalFolder.class.getName(), article.getGroupId());
 
-		JournalFolder folder = article.getFolder();
+		JournalFolder folder = journalFolderPersistence.fetchByPrimaryKey(
+			article.getFolderId());
 
 		if (folder != null) {
 			subscriptionSender.addPersistedSubscribers(
@@ -7868,13 +7869,18 @@ public class JournalArticleLocalServiceImpl
 			"[$ARTICLE_DIFFS$]", DiffHtmlUtil.replaceStyles(articleDiffs),
 			false);
 
-		String folderName = folder.getName();
+		String folderName = StringPool.BLANK;
 
-		if ((folder.getFolderId() ==
-				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
-			Validator.isNull(folderName)) {
+		if (folder != null) {
+			folderName = folder.getName();
 
-			folderName = LanguageUtil.get(LocaleUtil.getSiteDefault(), "home");
+			if ((folder.getFolderId() ==
+					DLFolderConstants.DEFAULT_PARENT_FOLDER_ID) &&
+				Validator.isNull(folderName)) {
+
+				folderName = LanguageUtil.get(
+					LocaleUtil.getSiteDefault(), "home");
+			}
 		}
 
 		subscriptionSender.setContextAttributes(
