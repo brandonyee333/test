@@ -8,6 +8,12 @@
 	<component bodyContent="true" name="DataLayoutBuilder" writeJSP="true">
 		<attributes>
 			<attribute>
+				<name>additionalPanels</name>
+				<inputType><![CDATA[java.util.List<java.util.Map>]]></inputType>
+				<outputType><![CDATA[java.util.List<java.util.Map>]]></outputType>
+				<required>false</required>
+			</attribute>
+			<attribute>
 				<name>componentId</name>
 				<inputType>java.lang.String</inputType>
 				<outputType>java.lang.String</outputType>
@@ -55,12 +61,6 @@
 				<inputType>java.lang.String</inputType>
 				<outputType>java.lang.String</outputType>
 				<required>true</required>
-			</attribute>
-			<attribute>
-				<name>panels</name>
-				<inputType>java.util.HashMap[]</inputType>
-				<outputType>java.util.HashMap[]</outputType>
-				<required>false</required>
 			</attribute>
 			<attribute>
 				<name>scopes</name>

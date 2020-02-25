@@ -38,6 +38,8 @@ data.put("fieldTypes", fieldTypesJSONArray);
 data.put("fieldTypesModules", fieldTypesModules);
 data.put("groupId", groupId);
 data.put("localizable", localizable);
+data.put("panels", panels);
+data.put("sidebarPanels", sidebarPanels);
 data.put("singlePage", singlePage);
 data.put("spritemap", themeDisplay.getPathThemeImages() + "/lexicon/icons.svg");
 %>

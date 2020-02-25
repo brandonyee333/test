@@ -129,5 +129,5 @@ const App = props => {
 };
 
 export default function(props) {
-	return <App {...props} />;
+	return <App {...props} panels={[['fields'], ['properties']]} />;
 }

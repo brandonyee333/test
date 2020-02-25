@@ -9,6 +9,12 @@
 		<tag-class>com.liferay.data.engine.taglib.servlet.taglib.DataLayoutBuilderTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
+			<name>additionalPanels</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.util.List</type>
+		</attribute>
+		<attribute>
 			<name>componentId</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
@@ -52,12 +58,6 @@
 			<name>namespace</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>panels</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-			<type>java.util.HashMap[]</type>
 		</attribute>
 		<attribute>
 			<name>scopes</name>
