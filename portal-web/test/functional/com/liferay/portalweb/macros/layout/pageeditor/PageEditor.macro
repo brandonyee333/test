@@ -172,7 +172,7 @@ definition {
 
 	macro addWidget {
 		Refresh();
-		
+
 		PageEditor.gotoTab(tabName = "Widgets");
 
 		Type.sendKeysApplicationSearch(
@@ -181,7 +181,7 @@ definition {
 
 		var key_portletName = "${portletName}";
 
-		DragAndDrop(
+		DragAndDrop.dragAndDropPortletToPageDropZone(
 			locator1 = "PageEditor#WIDGETS_ADD_PORTLET_DRAG_BUTTON",
 			locator2 = "PageEditor#FRAGMENT_DROP_TARGET",
 			value1 = "${portletName}");
