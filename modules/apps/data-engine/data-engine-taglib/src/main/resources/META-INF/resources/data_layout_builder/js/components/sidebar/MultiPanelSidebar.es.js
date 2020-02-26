@@ -63,7 +63,8 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 		() => {
 			if (panel) {
 				togglePlugin(panel);
-			} else if (sidebarPanelId) {
+			}
+			else if (sidebarPanelId) {
 				dispatch({
 					payload: {
 						sidebarOpen: false,
@@ -111,9 +112,11 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 		useCallback(({instance}) => {
 			if (typeof instance.renderSidebar === 'function') {
 				return instance.renderSidebar();
-			} else if (typeof instance === 'function') {
+			}
+			else if (typeof instance === 'function') {
 				return instance;
-			} else {
+			}
+			else {
 				return null;
 			}
 		}, [])
@@ -152,7 +155,8 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 					isMounted()
 				) {
 					plugin.activate();
-				} else if (!plugin) {
+				}
+				else if (!plugin) {
 					setHasError(true);
 				}
 			});
@@ -227,7 +231,8 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 						// Add separator between groups.
 						if (groupIndex === panels.length - 1) {
 							return elements.concat(buttons);
-						} else {
+						}
+						else {
 							return elements.concat([
 								...buttons,
 								<hr key={`separator-${groupIndex}`} />
@@ -302,7 +307,8 @@ class ErrorBoundary extends React.Component {
 	render() {
 		if (this.state.hasError) {
 			return null;
-		} else {
+		}
+		else {
 			return this.props.children;
 		}
 	}
