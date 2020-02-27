@@ -35,4 +35,13 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 		message="edit"
 		url="<%= editURL %>"
 	/>
+
+	<portlet:actionURL name="deleteAccountEntry" var="deleteURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+		<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
+		<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
+	</portlet:actionURL>
+
+	<liferay-ui:icon-delete
+		url="<%= deleteURL %>"
+	/>
 </liferay-ui:icon-menu>

@@ -204,6 +204,16 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
+	public void deleteAccountEntry(
+			ActionRequest actionRequest, ActionResponse actionResponse)
+		throws Exception {
+
+		long accountEntryId = ParamUtil.getLong(
+			actionRequest, "accountEntryId");
+
+		_accountEntryLocalService.deleteAccountEntry(accountEntryId);
+	}
+
 	public void deleteLicenseEntry(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
