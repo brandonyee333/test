@@ -2036,16 +2036,16 @@ public class HttpImpl implements Http {
 	}
 
 	private URI _getURI(String uriString) throws URISyntaxException {
-		Map<String, URI> uriMap = _uriMap.get();
+		Map<String, URI> uris = _uris.get();
 
 		uriString = uriString.trim();
 
-		URI uri = uriMap.get(uriString);
+		URI uri = uris.get(uriString);
 
 		if (uri == null) {
 			uri = new URI(uriString);
 
-			uriMap.put(uriString, uri);
+			uris.put(uriString, uri);
 		}
 
 		return uri;
@@ -2179,8 +2179,8 @@ public class HttpImpl implements Http {
 	private static final Log _log = LogFactoryUtil.getLog(HttpImpl.class);
 
 	private static final ThreadLocal<Cookie[]> _cookies = new ThreadLocal<>();
-	private static final ThreadLocal<Map<String, URI>> _uriMap =
-		new CentralizedThreadLocal<>(HttpImpl.class + "._uriMap", HashMap::new);
+	private static final ThreadLocal<Map<String, URI>> _uris =
+		new CentralizedThreadLocal<>(HttpImpl.class + "._uris", HashMap::new);
 
 	private final CloseableHttpClient _closeableHttpClient;
 	private final Pattern _nonProxyHostsPattern;
