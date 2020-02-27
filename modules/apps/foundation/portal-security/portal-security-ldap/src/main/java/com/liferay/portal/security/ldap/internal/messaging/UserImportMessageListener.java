@@ -68,7 +68,7 @@ public class UserImportMessageListener extends BaseMessageListener {
 		String className = clazz.getName();
 
 		Trigger trigger = _triggerFactory.createTrigger(
-			className, className, _futureDate(interval), null, interval,
+			className, className, _getFutureDate(interval), null, interval,
 			TimeUnit.MINUTE);
 
 		SchedulerEntry schedulerEntry = new SchedulerEntryImpl(
@@ -150,7 +150,7 @@ public class UserImportMessageListener extends BaseMessageListener {
 		_schedulerEngineHelper = schedulerEngineHelper;
 	}
 
-	private Date _futureDate(int interval) {
+	private Date _getFutureDate(int interval) {
 		Calendar calendar = Calendar.getInstance();
 
 		calendar.setTime(new Date());
