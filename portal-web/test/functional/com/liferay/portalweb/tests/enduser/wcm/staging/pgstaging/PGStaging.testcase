@@ -798,6 +798,8 @@ definition {
 			siteName = "Remote Site");
 
 		WebContent.viewPGViaWCD(webContentContent = "Web Content Content");
+
+		WebContent.viewNoEditWCViaWCD(webContentContent = "Web Content Content");
 	}
 
 	@priority = "3"
