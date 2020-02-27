@@ -526,6 +526,8 @@ public class PortalImplUnitTest extends PowerMockito {
 		sb.append("2f");
 
 		Assert.assertFalse(_portalImpl.isValidResourceId(sb.toString()));
+
+		Assert.assertFalse(_portalImpl.isValidResourceId("%view.jsp"));
 	}
 
 	@Test
