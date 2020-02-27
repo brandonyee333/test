@@ -82,13 +82,13 @@ export default ({
 			Promise.all([globalFieldSetsPromise, groupFieldSetsPromise]).then(
 				([
 					{items: globalFieldSets = []},
-					{items: groupFieldSets = []}
+					{items: groupFieldSets = []},
 				]) => {
 					dispatch({
 						payload: {
-							fieldsets: [...globalFieldSets, ...groupFieldSets]
+							fieldsets: [...globalFieldSets, ...groupFieldSets],
 						},
-						type: UPDATE_FIELDSETS
+						type: UPDATE_FIELDSETS,
 					});
 				}
 			);

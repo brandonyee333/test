@@ -265,7 +265,7 @@ const createReducer = dataLayoutBuilder => {
 				return {
 					...state,
 					sidebarOpen,
-					sidebarPanelId
+					sidebarPanelId,
 				};
 			}
 			case UPDATE_DATA_DEFINITION: {
@@ -320,7 +320,7 @@ const createReducer = dataLayoutBuilder => {
 
 				return {
 					...state,
-					fieldsets
+					fieldsets,
 				};
 			}
 			case UPDATE_FOCUSED_CUSTOM_OBJECT_FIELD: {
