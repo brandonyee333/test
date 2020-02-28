@@ -17,6 +17,7 @@ package com.liferay.osb.service.impl;
 import com.liferay.osb.exception.LicenseKeySetNameException;
 import com.liferay.osb.exception.NoSuchAccountEntryException;
 import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.base.LicenseKeySetLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -54,6 +55,25 @@ public class LicenseKeySetLocalServiceImpl
 		licenseKeySet.setName(name);
 
 		return licenseKeySetPersistence.update(licenseKeySet);
+	}
+
+	@Override
+	public LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet)
+		throws PortalException {
+
+		licenseKeySetPersistence.remove(licenseKeySet.getLicenseKeySetId());
+
+		// License keys
+
+		List<LicenseKey> licenseKeys =
+			licenseKeyPersistence.findByLicenseKeySetId(
+				licenseKeySet.getLicenseKeySetId());
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			licenseKeyPersistence.remove(licenseKey);
+		}
+
+		return licenseKeySet;
 	}
 
 	public List<LicenseKeySet> getAccountEntryLicenseKeySets(

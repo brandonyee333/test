@@ -32,6 +32,7 @@ import com.liferay.osb.model.AccountCustomer;
 import com.liferay.osb.model.AccountCustomerConstants;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEntryConstants;
+import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountWorker;
 import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.model.CorpProject;
@@ -684,6 +685,20 @@ public class AccountEntryLocalServiceImpl
 				accountAttachment);
 		}
 
+		// Account environments
+
+		List<AccountEnvironment> accountEnvironments =
+			accountEnvironmentPersistence.findByAccountEntryId(accountEntryId);
+
+		for (AccountEnvironment accountEnvironment : accountEnvironments) {
+			accountEnvironmentLocalService.deleteAccountEnvironment(
+				accountEnvironment.getAccountEnvironmentId());
+		}
+
+		// Account languages
+
+		accountEntryLanguagePersistence.removeByAccountEntryId(accountEntryId);
+
 		// Addresses
 
 		addressLocalService.deleteAddresses(
@@ -700,6 +715,8 @@ public class AccountEntryLocalServiceImpl
 		// License keys
 
 		licenseKeyPersistence.removeByAccountEntryId(accountEntryId);
+
+		licenseKeySetPersistence.removeByAccountEntryId(accountEntryId);
 
 		// Offering entries
 

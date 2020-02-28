@@ -62,6 +62,7 @@ public class CheckStatusAccountEntriesMessageListener
 				accountEntry.getAccountEntryId());
 
 			AccountEntryLocalServiceUtil.deleteAccountEntry(
+				OSBConstants.USER_DEFAULT_USER_ID,
 				accountEntry.getAccountEntryId());
 
 			RemoteCorpProjectLocalServiceUtil.deleteCorpProject(
