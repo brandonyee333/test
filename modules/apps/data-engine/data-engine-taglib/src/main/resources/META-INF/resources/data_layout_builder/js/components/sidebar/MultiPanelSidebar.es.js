@@ -50,7 +50,7 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 		dispatch,
 		panel,
 		sidebarOpen,
-		sidebarPanelId
+		sidebarPanelId,
 	};
 
 	let registerPanel;
@@ -68,9 +68,9 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 				dispatch({
 					payload: {
 						sidebarOpen: false,
-						sidebarPanelId: null
+						sidebarPanelId: null,
 					},
-					type: 'SWITCH_SIDEBAR_PANEL'
+					type: 'SWITCH_SIDEBAR_PANEL',
 				});
 			}
 		},
@@ -88,9 +88,9 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 			dispatch({
 				payload: {
 					sidebarOpen: false,
-					sidebarPanelId: null
+					sidebarPanelId: null,
 				},
-				type: 'SWITCH_SIDEBAR_PANEL'
+				type: 'SWITCH_SIDEBAR_PANEL',
 			});
 		};
 
@@ -138,7 +138,7 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 				sidebarOpen: open,
 				sidebarPanelId: panel.sidebarPanelId
 			},
-			type: 'SWITCH_SIDEBAR_PANEL'
+			type: 'SWITCH_SIDEBAR_PANEL',
 		});
 	};
 
