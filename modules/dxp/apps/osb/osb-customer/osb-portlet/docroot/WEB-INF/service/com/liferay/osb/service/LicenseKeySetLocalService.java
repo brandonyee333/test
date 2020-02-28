@@ -87,9 +87,11 @@ public interface LicenseKeySetLocalService extends BaseLocalService,
 	*
 	* @param licenseKeySet the license key set
 	* @return the license key set that was removed
+	* @throws PortalException
 	*/
 	@Indexable(type = IndexableType.DELETE)
-	public LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet);
+	public LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet)
+		throws PortalException;
 
 	/**
 	* Deletes the license key set with the primary key from the database. Also notifies the appropriate model listeners.

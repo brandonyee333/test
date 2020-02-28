@@ -133,17 +133,23 @@ public class LicenseKeySetLocalServiceClpInvoker {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName176 = "getAccountEntryLicenseKeySets";
+		_methodName176 = "deleteLicenseKeySet";
 
-		_methodParameterTypes176 = new String[] { "long", "int", "int" };
+		_methodParameterTypes176 = new String[] {
+				"com.liferay.osb.model.LicenseKeySet"
+			};
 
-		_methodName177 = "getAccountEntryLicenseKeySetsCount";
+		_methodName177 = "getAccountEntryLicenseKeySets";
 
-		_methodParameterTypes177 = new String[] { "long" };
+		_methodParameterTypes177 = new String[] { "long", "int", "int" };
 
-		_methodName178 = "updateLicenseKeySet";
+		_methodName178 = "getAccountEntryLicenseKeySetsCount";
 
-		_methodParameterTypes178 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes178 = new String[] { "long" };
+
+		_methodName179 = "updateLicenseKeySet";
+
+		_methodParameterTypes179 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -263,18 +269,23 @@ public class LicenseKeySetLocalServiceClpInvoker {
 
 		if (_methodName176.equals(name) &&
 				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
+			return LicenseKeySetLocalServiceUtil.deleteLicenseKeySet((com.liferay.osb.model.LicenseKeySet)arguments[0]);
+		}
+
+		if (_methodName177.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySets(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName177.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
+		if (_methodName178.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySetsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName178.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
+		if (_methodName179.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -330,4 +341,6 @@ public class LicenseKeySetLocalServiceClpInvoker {
 	private String[] _methodParameterTypes177;
 	private String _methodName178;
 	private String[] _methodParameterTypes178;
+	private String _methodName179;
+	private String[] _methodParameterTypes179;
 }

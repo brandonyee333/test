@@ -75,9 +75,11 @@ public class LicenseKeySetLocalServiceUtil {
 	*
 	* @param licenseKeySet the license key set
 	* @return the license key set that was removed
+	* @throws PortalException
 	*/
 	public static com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
-		com.liferay.osb.model.LicenseKeySet licenseKeySet) {
+		com.liferay.osb.model.LicenseKeySet licenseKeySet)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		return getService().deleteLicenseKeySet(licenseKeySet);
 	}
 

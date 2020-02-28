@@ -232,7 +232,8 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 
 	@Override
 	public com.liferay.osb.model.LicenseKeySet deleteLicenseKeySet(
-		com.liferay.osb.model.LicenseKeySet licenseKeySet) {
+		com.liferay.osb.model.LicenseKeySet licenseKeySet)
+		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
@@ -242,6 +243,10 @@ public class LicenseKeySetLocalServiceClp implements LicenseKeySetLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
+				throw (com.liferay.portal.kernel.exception.PortalException)t;
+			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;

@@ -151,10 +151,12 @@ public abstract class LicenseKeySetLocalServiceBaseImpl
 	 *
 	 * @param licenseKeySet the license key set
 	 * @return the license key set that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
 	@Override
-	public LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet) {
+	public LicenseKeySet deleteLicenseKeySet(LicenseKeySet licenseKeySet)
+		throws PortalException {
 		return licenseKeySetPersistence.remove(licenseKeySet);
 	}
 
