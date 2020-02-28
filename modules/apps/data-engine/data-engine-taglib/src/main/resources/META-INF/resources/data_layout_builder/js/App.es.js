@@ -39,11 +39,51 @@ const parseProps = ({
 	groupId: Number(groupId),
 });
 
-const AppSidebar = ({panels, sidebarPanels}) => {
-	if (panels && sidebarPanels) {
-		return (
-			<MultiPanelSidebar panels={panels} sidebarPanels={sidebarPanels} />
-		);
+// The order should be considered for this Mock!
+// Separators must be concatenated with an uuid.
+
+const SIDEBAR_PANELS = {
+	hello: {
+		icon: 'globe',
+		label: 'hello',
+		panelId: 'hello',
+		pluginEntryPoint:
+			'journal-web@4.0.6/js/ddm_structure/panels/BasicHelloWorld.es',
+	},
+	separator2132123: {
+		panelId: 'separator2132123',
+		separator: true,
+	},
+	fields: {
+		icon: 'grid',
+		label: 'fields',
+		panelId: 'fields',
+		pluginEntryPoint:
+			'data-engine-taglib@2.0.7/data_layout_builder/js/plugins/fields-sidebar/index.es',
+	},
+	separator3122413: {
+		panelId: 'separator3122413',
+		separator: true,
+	},
+	properties: {
+		panelId: 'properties',
+		icon: 'cog',
+		label: 'Properties',
+		pluginEntryPoint:
+			'journal-web@4.0.6/js/ddm_structure/panels/BasicInfo.es',
+	},
+	dxp: {
+		panelId: 'dxp',
+		icon: 'desktop',
+		label: 'Liferay Home',
+		isLink: true,
+		url: 'https://localhost:8080',
+	},
+};
+
+const AppSidebar = ({sidebarPanels}) => {
+	if (sidebarPanels) {
+		return <MultiPanelSidebar sidebarPanels={sidebarPanels} />;
 	}
 
 	return <DataLayoutBuilderSidebar />;
@@ -51,11 +91,13 @@ const AppSidebar = ({panels, sidebarPanels}) => {
 
 const AppContent = ({
 	dataLayoutBuilder,
-	panels,
 	setDataLayoutBuilder,
 	sidebarPanels,
 	...props
 }) => {
+	// Mocking sidebarPanels
+	sidebarPanels = SIDEBAR_PANELS;
+
 	const [state, dispatch] = useContext(AppContext);
 
 	useEffect(() => {
@@ -76,7 +118,7 @@ const AppContent = ({
 				<DataLayoutBuilderContextProvider
 					dataLayoutBuilder={dataLayoutBuilder}
 				>
-					<AppSidebar panels={panels} sidebarPanels={sidebarPanels} />
+					<AppSidebar sidebarPanels={sidebarPanels} />
 
 					<DataLayoutBuilderDragAndDrop
 						dataLayoutBuilder={dataLayoutBuilder}

@@ -34,7 +34,7 @@ const {Suspense, useCallback, useContext, useEffect} = React;
  */
 const swallow = [value => value, _error => undefined];
 
-export default function MultiPanelSidebar({panels, sidebarPanels}) {
+export default function MultiPanelSidebar({sidebarPanels}) {
 	const [{sidebarOpen, sidebarPanelId}, dispatch] = useContext(AppContext);
 	const [hasError, setHasError] = useStateSafe(false);
 	const isMounted = useIsMounted();
@@ -123,8 +123,7 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 	);
 
 	const handleClick = panel => {
-		const open =
-			panel.sidebarPanelId === sidebarPanelId ? !sidebarOpen : true;
+		const open = panel.panelId === sidebarPanelId ? !sidebarOpen : true;
 		const productMenuToggle = document.querySelector(
 			'.product-menu-toggle'
 		);
@@ -136,7 +135,7 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 		dispatch({
 			payload: {
 				sidebarOpen: open,
-				sidebarPanelId: panel.sidebarPanelId
+				sidebarPanelId: panel.panelId,
 			},
 			type: 'SWITCH_SIDEBAR_PANEL',
 		});
@@ -163,87 +162,91 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 		}
 	};
 
+	const panelIds = Object.keys(sidebarPanels);
+
 	return (
 		<ClayTooltipProvider>
 			<div className="multi-panel-sidebar">
 				<div className="multi-panel-sidebar__buttons">
-					{panels.reduce((elements, group, groupIndex) => {
-						const buttons = group.map(panelId => {
-							const panel = sidebarPanels[panelId];
+					{panelIds.map(panelId => {
+						const panel = sidebarPanels[panelId];
 
-							const active =
-								sidebarOpen && sidebarPanelId === panelId;
-							const {
-								icon,
-								isLink,
-								label,
-								pluginEntryPoint,
-								url
-							} = panel;
-
-							if (isLink) {
-								return (
-									<a
-										className={classNames({active})}
-										href={url}
-										key={panelId}
-									>
-										<ClayIcon symbol={icon} />
-									</a>
+						// Fails when not locating the given panelId on the sidebarPanels map.
+						if (!panel) {
+							if (process.env.NODE_ENV === 'development') {
+								console.error(
+									`MultiPanelSidebar: failed when trying to load "${panelId}" panelId`
 								);
 							}
 
-							const prefetch = () =>
-								load(
-									panel.sidebarPanelId,
-									pluginEntryPoint
-								).then(...swallow);
+							return null;
+						}
 
+						if (panel.separator) {
+							return <hr key={panelId} />;
+						}
+
+						const active =
+							sidebarOpen && sidebarPanelId === panel.panelId;
+
+						const {
+							icon,
+							isLink,
+							label,
+							pluginEntryPoint,
+							url,
+						} = panel;
+
+						if (isLink) {
 							return (
-								<>
-									{isLink ? (
-										<a
-											className={classNames({active})}
-											href={url}
-											key={panel.sidebarPanelId}
-										>
-											<ClayIcon symbol={icon} />
-										</a>
-									) : (
-										<ClayButtonWithIcon
-											aria-pressed={active}
-											className={classNames({active})}
-											data-tooltip-align="left"
-											displayType="unstyled"
-											id={panel.sidebarPanelId}
-											key={panel.sidebarPanelId}
-											onClick={() => handleClick(panel)}
-											onFocus={prefetch}
-											onMouseEnter={prefetch}
-											symbol={icon}
-											title={label}
-										/>
-									)}
-								</>
+								<a
+									className={classNames({active})}
+									href={url}
+									key={panel.panelId}
+								>
+									<ClayIcon symbol={icon} />
+								</a>
 							);
-						});
+						}
 
-						// Add separator between groups.
-						if (groupIndex === panels.length - 1) {
-							return elements.concat(buttons);
-						}
-						else {
-							return elements.concat([
-								...buttons,
-								<hr key={`separator-${groupIndex}`} />
-							]);
-						}
-					}, [])}
+						const prefetch = () =>
+							load(panel.panelId, pluginEntryPoint).then(
+								...swallow
+							);
+
+						return (
+							<>
+								{isLink ? (
+									<a
+										className={classNames({active})}
+										href={url}
+										key={panel.panelId}
+									>
+										<ClayIcon symbol={icon} />
+									</a>
+								) : (
+									<ClayButtonWithIcon
+										aria-pressed={active}
+										className={classNames({active})}
+										data-tooltip-align="left"
+										displayType="unstyled"
+										id={panel.panelId}
+										key={panel.panelId}
+										onClick={() => handleClick(panel)}
+										onFocus={prefetch}
+										onMouseEnter={prefetch}
+										symbol={icon}
+										title={label}
+									/>
+								)}
+							</>
+						);
+					})}
 				</div>
 				<div
 					className={classNames({
 						'multi-panel-sidebar__content': true,
-						'multi-panel-sidebar__content--open': sidebarOpen
+						'multi-panel-sidebar__content--open': sidebarOpen,
 					})}
 				>
 					{hasError ? (
@@ -255,10 +258,9 @@ export default function MultiPanelSidebar({panels, sidebarPanels}) {
 									dispatch({
 										payload: {
 											sidebarOpen: false,
-											sidebarPanelId:
-												panels[0] && panels[0][0]
+											sidebarPanelId: panelIds[0],
 										},
-										type: 'SWITCH_SIDEBAR_PANEL'
+										type: 'SWITCH_SIDEBAR_PANEL',
 									});
 									setHasError(false);
 								}}
