@@ -56,11 +56,17 @@ public class DataLayoutBuilderTag extends BaseDataLayoutBuilderTag {
 
 		//List<List<String>> panels = ListUtil.toList(ListUtil.toList("fields"));
 
-		Map<String, Object> sidebarPanels = HashMapBuilder.<String, Object>put("fields",
-			HashMapBuilder.<String, Object>put("icon", "grid"
-				).put("label", "fields"
-				).put("pluginEntryPoint", "data-engine-taglib@2.0.7/data_layout_builder/js/plugins/fields-sidebar/index.es"
-				).put("sidebarPanelId", "fields"
+		Map<String, Object> sidebarPanels = HashMapBuilder.<String, Object>put(
+			"fields",
+			HashMapBuilder.<String, Object>put(
+				"icon", "grid"
+			).put(
+				"label", "fields"
+			).put(
+				"pluginEntryPoint",
+				"data-engine-taglib@2.0.7/data_layout_builder/js/plugins/fields-sidebar/index.es"
+			).put(
+				"sidebarPanelId", "fields"
 			).build()
 		).build();
 
@@ -69,7 +75,9 @@ public class DataLayoutBuilderTag extends BaseDataLayoutBuilderTag {
 		if (Validator.isNotNull(additionalPanels)) {
 			for (Map<String, Object> additionalPanel : additionalPanels) {
 				//panels.add(ListUtil.toList({additionalPanel.sidebarPanelId}));
-				sidebarPanels.put((String)additionalPanel.get("sidebarPanelId"), additionalPanel);
+				sidebarPanels.put(
+					(String)additionalPanel.get("sidebarPanelId"),
+					additionalPanel);
 			}
 		}
 

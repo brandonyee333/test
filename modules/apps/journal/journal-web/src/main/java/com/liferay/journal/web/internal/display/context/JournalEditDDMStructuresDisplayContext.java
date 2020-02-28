@@ -135,6 +135,15 @@ public class JournalEditDDMStructuresDisplayContext {
 			).build()
 		);
 
+		panelsList.add(
+			HashMapBuilder.<String, Object>put("icon", "globe"
+				).put(
+					"label", LanguageUtil.get(_httpServletRequest, "hello")
+				).put("pluginEntryPoint", "journal-web@4.0.6/js/ddm_structure/panels/BasicHelloWorld.es"
+				).put("sidebarPanelId", "hello"
+			).build()
+		);
+
 		return panelsList;
 	}
 
