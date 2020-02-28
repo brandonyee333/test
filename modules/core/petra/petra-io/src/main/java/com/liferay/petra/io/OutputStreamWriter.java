@@ -117,9 +117,14 @@ public class OutputStreamWriter extends Writer {
 
 	@Override
 	public void write(int c) throws IOException {
-		_inputCharBuffer.put((char)c);
+		if (_inputCharBuffer.hasRemaining()) {
+			_inputCharBuffer.put((char)c);
 
-		_write(_EMPTY_CHAR_BUFFER);
+			_write(_EMPTY_CHAR_BUFFER);
+		}
+		else {
+			_write(CharBuffer.wrap(new char[] {(char)c}));
+		}
 	}
 
 	@Override
@@ -152,13 +157,9 @@ public class OutputStreamWriter extends Writer {
 
 		try {
 			_encodeLoop(_inputCharBuffer, endOfInput);
-
-			_inputCharBuffer.compact();
 		}
-		catch (IOException ioException) {
-			_inputCharBuffer.clear();
-
-			throw ioException;
+		finally {
+			_inputCharBuffer.compact();
 		}
 	}
 
@@ -178,10 +179,12 @@ public class OutputStreamWriter extends Writer {
 					_flushBuffer();
 				}
 
-				if ((_inputCharBuffer != inputCharBuffer) &&
-					inputCharBuffer.hasRemaining()) {
+				if (_inputCharBuffer != inputCharBuffer) {
+					_inputCharBuffer.clear();
 
-					_inputCharBuffer.put(inputCharBuffer.get());
+					if (inputCharBuffer.hasRemaining()) {
+						_inputCharBuffer.put(inputCharBuffer.get());
+					}
 				}
 
 				break;
