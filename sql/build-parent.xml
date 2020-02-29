@@ -5,9 +5,6 @@
 
 	<mkdir dir="log" />
 
-	<var name="fork.mode" value="false" />
-	<var if:true="${jvm.debug}" name="fork.mode" value="true" />
-
 	<target depends="replace-portal-data-release-tokens" name="build-db">
 		<if>
 			<equals arg1="${build.profile}" arg2="dxp" />
