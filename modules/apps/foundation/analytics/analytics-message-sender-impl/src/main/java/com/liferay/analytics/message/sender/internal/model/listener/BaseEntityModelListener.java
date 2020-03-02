@@ -78,7 +78,7 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 			return;
 		}
 
-		JSONObject jsonObject = serialize(includeAttributeNames, model);
+		JSONObject jsonObject = serialize(model, includeAttributeNames);
 
 		ShardedModel shardedModel = (ShardedModel)model;
 
@@ -277,7 +277,7 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	}
 
 	protected JSONObject serialize(
-		List<String> includeAttributeNames, BaseModel baseModel) {
+		BaseModel baseModel, List<String> includeAttributeNames) {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
