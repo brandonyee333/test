@@ -148,10 +148,10 @@ public class UpgradeAccountEntry extends BaseUpgradeProcess {
 
 		try {
 			String sql =
-				"select licenseKeyId OSB_LicenseKey where accountEntryId not " +
-					"in (select accountEntryId from OSB_AccountEntry) or " +
-						"licenseKeySetId not in (select licenseKeySetId from " +
-							"OSB_LicenseKeySet)";
+				"select licenseKeyId from OSB_LicenseKey where " +
+					"accountEntryId not in (select accountEntryId from " +
+						"OSB_AccountEntry) or licenseKeySetId not in (select " +
+							"licenseKeySetId from OSB_LicenseKeySet)";
 
 			ps = connection.prepareStatement(sql);
 
