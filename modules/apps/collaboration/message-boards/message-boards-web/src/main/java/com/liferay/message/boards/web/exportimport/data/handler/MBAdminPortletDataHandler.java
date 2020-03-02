@@ -149,7 +149,8 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "categories") ||
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "categories") ||
 			portletDataContext.getBooleanParameter(NAMESPACE, "messages")) {
 
 			ActionableDynamicQuery categoryActionableDynamicQuery =
@@ -159,7 +160,9 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			categoryActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "messages")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "messages")) {
+
 			StagedModelRepository<?> mbMessageStagedModelRepository =
 				StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 					MBMessage.class.getName());
@@ -171,7 +174,9 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			messageActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "thread-flags")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "thread-flags")) {
+
 			ActionableDynamicQuery threadFlagActionableDynamicQuery =
 				_mbThreadFlagLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -179,7 +184,9 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			threadFlagActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "user-bans")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "user-bans")) {
+
 			ActionableDynamicQuery banActionableDynamicQuery =
 				_mbBanLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -198,7 +205,8 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 
 		portletDataContext.importPortletPermissions(MBPermission.RESOURCE_NAME);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "categories") ||
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "categories") ||
 			portletDataContext.getBooleanParameter(NAMESPACE, "messages")) {
 
 			Element categoriesElement =
@@ -212,7 +220,9 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "messages")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "messages")) {
+
 			Element messagesElement =
 				portletDataContext.getImportDataGroupElement(MBMessage.class);
 
@@ -224,7 +234,9 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "thread-flags")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "thread-flags")) {
+
 			Element threadFlagsElement =
 				portletDataContext.getImportDataGroupElement(
 					MBThreadFlag.class);
@@ -237,7 +249,9 @@ public class MBAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "user-bans")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "user-bans")) {
+
 			Element userBansElement =
 				portletDataContext.getImportDataGroupElement(MBBan.class);
 

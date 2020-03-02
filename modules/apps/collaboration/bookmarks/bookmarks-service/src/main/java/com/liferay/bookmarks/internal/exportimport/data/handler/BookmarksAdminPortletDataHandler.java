@@ -123,7 +123,9 @@ public class BookmarksAdminPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+
 			ExportActionableDynamicQuery folderActionableDynamicQuery =
 				_bookmarksFolderStagedModelRepository.
 					getExportActionableDynamicQuery(portletDataContext);
@@ -131,7 +133,9 @@ public class BookmarksAdminPortletDataHandler extends BasePortletDataHandler {
 			folderActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+
 			ActionableDynamicQuery entryActionableDynamicQuery =
 				_bookmarksEntryStagedModelRepository.
 					getExportActionableDynamicQuery(portletDataContext);
@@ -151,7 +155,9 @@ public class BookmarksAdminPortletDataHandler extends BasePortletDataHandler {
 		portletDataContext.importPortletPermissions(
 			BookmarksResourcePermissionChecker.RESOURCE_NAME);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+
 			Element foldersElement =
 				portletDataContext.getImportDataGroupElement(
 					BookmarksFolder.class);
@@ -164,7 +170,9 @@ public class BookmarksAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+
 			Element entriesElement =
 				portletDataContext.getImportDataGroupElement(
 					BookmarksEntry.class);

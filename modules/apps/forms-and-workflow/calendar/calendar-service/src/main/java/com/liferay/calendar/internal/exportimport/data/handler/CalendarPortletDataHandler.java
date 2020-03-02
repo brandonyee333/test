@@ -152,7 +152,9 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "calendars")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "calendars")) {
+
 			ActionableDynamicQuery calendarActionableDynamicQuery =
 				_calendarLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -173,7 +175,8 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 			calendarResourceActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				NAMESPACE, "calendar-bookings")) {
 
 			ActionableDynamicQuery calendarBookingActionableDynamicQuery =
@@ -183,7 +186,8 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 			calendarBookingActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				NAMESPACE, "calendar-notification-templates")) {
 
 			ActionableDynamicQuery
@@ -218,7 +222,9 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 			return portletPreferences;
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "calendars")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "calendars")) {
+
 			Element calendarsElement =
 				portletDataContext.getImportDataGroupElement(Calendar.class);
 
@@ -242,7 +248,8 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				NAMESPACE, "calendar-notification-templates")) {
 
 			Element calendarNotificationTemplatesElement =
@@ -260,7 +267,8 @@ public class CalendarPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				NAMESPACE, "calendar-bookings")) {
 
 			Element calendarBookingsElement =

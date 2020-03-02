@@ -142,7 +142,9 @@ public class PageCommentsPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "comment")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "comment")) {
+
 			return getExportDataRootElementString(rootElement);
 		}
 

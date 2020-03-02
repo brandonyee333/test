@@ -102,7 +102,9 @@ public class AssetCategoryPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "categories")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "categories")) {
+
 			ActionableDynamicQuery categoryActionableDynamicQuery =
 				_assetCategoryLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -110,7 +112,9 @@ public class AssetCategoryPortletDataHandler extends BasePortletDataHandler {
 			categoryActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "vocabularies")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "vocabularies")) {
+
 			ActionableDynamicQuery vocabularyActionableDynamicQuery =
 				_assetVocabularyLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -127,7 +131,9 @@ public class AssetCategoryPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws Exception {
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "categories")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "categories")) {
+
 			Element categoriesElement =
 				portletDataContext.getImportDataGroupElement(
 					AssetCategory.class);
@@ -140,7 +146,9 @@ public class AssetCategoryPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "vocabularies")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "vocabularies")) {
+
 			Element vocabulariesElement =
 				portletDataContext.getImportDataGroupElement(
 					AssetVocabulary.class);

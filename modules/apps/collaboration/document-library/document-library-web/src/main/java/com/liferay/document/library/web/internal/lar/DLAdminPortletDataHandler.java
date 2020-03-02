@@ -169,7 +169,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+
 			StagedModelRepository<?> stagedModelRepository =
 				StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 					DLFolder.class.getName());
@@ -181,7 +183,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			folderActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "documents")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "documents")) {
+
 			StagedModelRepository<?> stagedModelRepository =
 				StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 					DLFileEntry.class.getName());
@@ -193,7 +197,8 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			fileEntryActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				NAMESPACE, "document-types")) {
 
 			StagedModelRepository<?> stagedModelRepository =
@@ -207,7 +212,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			fileEntryTypeActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "repositories")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "repositories")) {
+
 			StagedModelRepository<?> stagedModelRepository =
 				StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 					Repository.class.getName());
@@ -219,7 +226,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			repositoryActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "shortcuts")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "shortcuts")) {
+
 			StagedModelRepository<?> stagedModelRepository =
 				StagedModelRepositoryRegistryUtil.getStagedModelRepository(
 					DLFileShortcut.class.getName());
@@ -242,7 +251,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 
 		portletDataContext.importPortletPermissions(DLPermission.RESOURCE_NAME);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+
 			Element foldersElement =
 				portletDataContext.getImportDataGroupElement(DLFolder.class);
 
@@ -254,7 +265,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "documents")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "documents")) {
+
 			Element fileEntriesElement =
 				portletDataContext.getImportDataGroupElement(DLFileEntry.class);
 
@@ -266,7 +279,8 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				NAMESPACE, "document-types")) {
 
 			Element fileEntryTypesElement =
@@ -282,7 +296,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "repositories")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "repositories")) {
+
 			Element repositoriesElement =
 				portletDataContext.getImportDataGroupElement(Repository.class);
 
@@ -294,7 +310,9 @@ public class DLAdminPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "shortcuts")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "shortcuts")) {
+
 			Element fileShortcutsElement =
 				portletDataContext.getImportDataGroupElement(
 					DLFileShortcut.class);

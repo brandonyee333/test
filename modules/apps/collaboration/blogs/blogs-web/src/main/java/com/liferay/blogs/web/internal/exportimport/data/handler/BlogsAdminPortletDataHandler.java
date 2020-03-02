@@ -116,7 +116,9 @@ public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+
 			return getExportDataRootElementString(rootElement);
 		}
 
@@ -140,7 +142,9 @@ public class BlogsAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws Exception {
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "entries")) {
+
 			return null;
 		}
 

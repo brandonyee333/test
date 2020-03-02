@@ -113,7 +113,9 @@ public class AssetTagsPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "tags")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "tags")) {
+
 			return getExportDataRootElementString(rootElement);
 		}
 
@@ -132,7 +134,9 @@ public class AssetTagsPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws Exception {
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "tags")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "tags")) {
+
 			return null;
 		}
 

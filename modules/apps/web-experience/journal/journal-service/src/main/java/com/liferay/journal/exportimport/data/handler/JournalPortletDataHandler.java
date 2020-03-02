@@ -229,7 +229,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "feeds")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "feeds")) {
+
 			ActionableDynamicQuery feedActionableDynamicQuery =
 				_journalFeedLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -237,7 +239,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			feedActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+
 			ActionableDynamicQuery folderActionableDynamicQuery =
 				_journalFolderLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -245,7 +249,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			folderActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "structures")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "structures")) {
+
 			ActionableDynamicQuery ddmStructureActionableDynamicQuery =
 				getDDMStructureActionableDynamicQuery(portletDataContext);
 
@@ -261,14 +267,18 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			ddmStructureDefaultValueActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "templates")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "templates")) {
+
 			ActionableDynamicQuery ddmTemplateActionableDynamicQuery =
 				getDDMTemplateActionableDynamicQuery(portletDataContext);
 
 			ddmTemplateActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "web-content")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "web-content")) {
+
 			ActionableDynamicQuery articleActionableDynamicQuery =
 				getArticleActionableDynamicQuery(portletDataContext);
 
@@ -287,7 +297,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 		portletDataContext.importPortletPermissions(
 			JournalPermission.RESOURCE_NAME);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "feeds")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "feeds")) {
+
 			Element feedsElement = portletDataContext.getImportDataGroupElement(
 				JournalFeed.class);
 
@@ -299,7 +311,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "folders")) {
+
 			Element foldersElement =
 				portletDataContext.getImportDataGroupElement(
 					JournalFolder.class);
@@ -317,7 +331,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 
 		List<Element> articleElements = articlesElement.elements();
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "structures")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "structures")) {
+
 			Element ddmStructuresElement =
 				portletDataContext.getImportDataGroupElement(
 					DDMStructure.class);
@@ -344,7 +360,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "templates")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "templates")) {
+
 			Element ddmTemplatesElement =
 				portletDataContext.getImportDataGroupElement(DDMTemplate.class);
 
@@ -356,7 +374,9 @@ public class JournalPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "web-content")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "web-content")) {
+
 			for (Element articleElement : articleElements) {
 				StagedModelDataHandlerUtil.importStagedModel(
 					portletDataContext, articleElement);

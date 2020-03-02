@@ -141,7 +141,9 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "record-sets")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "record-sets")) {
+
 			ActionableDynamicQuery recordSetActionableDynamicQuery =
 				_ddlRecordSetStagedModelRepository.
 					getExportActionableDynamicQuery(portletDataContext);
@@ -149,7 +151,9 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 			recordSetActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "records")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "records")) {
+
 			ActionableDynamicQuery recordActionableDynamicQuery =
 				_ddlRecordStagedModelRepository.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -169,7 +173,9 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 		portletDataContext.importPortletPermissions(
 			DDLPermission.RESOURCE_NAME);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "record-sets")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "record-sets")) {
+
 			Element recordSetsElement =
 				portletDataContext.getImportDataGroupElement(
 					DDLRecordSet.class);
@@ -204,7 +210,9 @@ public class DDLPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "records")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "records")) {
+
 			Element recordsElement =
 				portletDataContext.getImportDataGroupElement(DDLRecord.class);
 

@@ -89,8 +89,9 @@ public class PageRatingsPortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		if (!portletDataContext.getBooleanParameter(
-				NAMESPACE, "ratings-entries") ||
+		if ((!isPortletDataAll(portletDataContext) &&
+			 !portletDataContext.getBooleanParameter(
+				 NAMESPACE, "ratings-entries")) ||
 			MergeLayoutPrototypesThreadLocal.isInProgress()) {
 
 			return getExportDataRootElementString(rootElement);

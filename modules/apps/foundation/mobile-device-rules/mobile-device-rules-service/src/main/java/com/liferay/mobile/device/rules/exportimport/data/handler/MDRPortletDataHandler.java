@@ -113,7 +113,9 @@ public class MDRPortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "rules")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "rules")) {
+
 			ActionableDynamicQuery rulesActionableDynamicQuery =
 				_mdrRuleLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -121,7 +123,9 @@ public class MDRPortletDataHandler extends BasePortletDataHandler {
 			rulesActionableDynamicQuery.performActions();
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "actions")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "actions")) {
+
 			ExportActionableDynamicQuery actionsExportActionableDynamicQuery =
 				_mdrActionLocalService.getExportActionableDynamicQuery(
 					portletDataContext);
@@ -145,7 +149,9 @@ public class MDRPortletDataHandler extends BasePortletDataHandler {
 
 		portletDataContext.importPortletPermissions(MDRConstants.SERVICE_NAME);
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "rules")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "rules")) {
+
 			Element rulesElement = portletDataContext.getImportDataGroupElement(
 				MDRRule.class);
 
@@ -157,7 +163,9 @@ public class MDRPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "actions")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "actions")) {
+
 			Element actionsElement =
 				portletDataContext.getImportDataGroupElement(MDRAction.class);
 

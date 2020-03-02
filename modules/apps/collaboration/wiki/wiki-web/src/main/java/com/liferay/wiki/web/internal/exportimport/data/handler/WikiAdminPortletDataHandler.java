@@ -140,7 +140,9 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 
 		Element rootElement = addExportDataRootElement(portletDataContext);
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "wiki-pages")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "wiki-pages")) {
+
 			return getExportDataRootElementString(rootElement);
 		}
 
@@ -171,7 +173,9 @@ public class WikiAdminPortletDataHandler extends BasePortletDataHandler {
 			PortletPreferences portletPreferences, String data)
 		throws Exception {
 
-		if (!portletDataContext.getBooleanParameter(NAMESPACE, "wiki-pages")) {
+		if (!isPortletDataAll(portletDataContext) &&
+			!portletDataContext.getBooleanParameter(NAMESPACE, "wiki-pages")) {
+
 			return null;
 		}
 

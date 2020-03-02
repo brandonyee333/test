@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.plugin.Version;
 import com.liferay.portal.kernel.service.PortletPreferencesLocalServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
@@ -785,6 +786,12 @@ public abstract class BasePortletDataHandler implements PortletDataHandler {
 		}
 
 		return totalModelCount;
+	}
+
+	protected boolean isPortletDataAll(PortletDataContext portletDataContext) {
+		return MapUtil.getBoolean(
+			portletDataContext.getParameterMap(),
+			PortletDataHandlerKeys.PORTLET_DATA_ALL, false);
 	}
 
 	protected void setDataAlwaysStaged(boolean dataAlwaysStaged) {

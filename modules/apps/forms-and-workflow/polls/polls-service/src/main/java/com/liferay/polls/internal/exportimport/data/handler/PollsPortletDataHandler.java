@@ -110,7 +110,8 @@ public class PollsPortletDataHandler extends BasePortletDataHandler {
 		rootElement.addAttribute(
 			"group-id", String.valueOf(portletDataContext.getScopeGroupId()));
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				PollsPortletDataHandler.NAMESPACE, "questions")) {
 
 			ActionableDynamicQuery questionActionableDynamicQuery =
@@ -125,7 +126,8 @@ public class PollsPortletDataHandler extends BasePortletDataHandler {
 
 			choiceActionableDynamicQuery.performActions();
 
-			if (portletDataContext.getBooleanParameter(
+			if (isPortletDataAll(portletDataContext) ||
+				portletDataContext.getBooleanParameter(
 					PollsPortletDataHandler.NAMESPACE, "votes")) {
 
 				ActionableDynamicQuery voteActionableDynamicQuery =
@@ -151,7 +153,8 @@ public class PollsPortletDataHandler extends BasePortletDataHandler {
 		Element questionsElement = portletDataContext.getImportDataGroupElement(
 			PollsQuestion.class);
 
-		if (portletDataContext.getBooleanParameter(
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(
 				PollsPortletDataHandler.NAMESPACE, "questions")) {
 
 			List<Element> questionElements = questionsElement.elements();
@@ -172,7 +175,9 @@ public class PollsPortletDataHandler extends BasePortletDataHandler {
 			}
 		}
 
-		if (portletDataContext.getBooleanParameter(NAMESPACE, "votes")) {
+		if (isPortletDataAll(portletDataContext) ||
+			portletDataContext.getBooleanParameter(NAMESPACE, "votes")) {
+
 			Element votesElement = portletDataContext.getImportDataGroupElement(
 				PollsVote.class);
 
