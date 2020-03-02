@@ -208,10 +208,14 @@ public class AdminPortlet extends MVCPortlet {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 
-		_accountEntryLocalService.deleteAccountEntry(accountEntryId);
+		_accountEntryLocalService.deleteAccountEntry(
+			themeDisplay.getUserId(), accountEntryId);
 	}
 
 	public void deleteLicenseEntry(
