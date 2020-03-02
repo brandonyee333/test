@@ -281,24 +281,24 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	}
 
 	protected JSONObject serialize(
-		List<String> includeAttributeNames, T model) {
+		List<String> includeAttributeNames, BaseModel baseModel) {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		Map<String, Object> modelAttributes = model.getModelAttributes();
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
 
 		for (String includeAttributeName : includeAttributeNames) {
 			if (includeAttributeName.equals("expando")) {
-				ExpandoBridge expandoBridge = model.getExpandoBridge();
+				ExpandoBridge expandoBridge = baseModel.getExpandoBridge();
 
 				jsonObject.put("expando", expandoBridge.getAttributes(false));
 
 				continue;
 			}
 			else if (includeAttributeName.equals("treePath") &&
-					 (model instanceof TreeModel)) {
+					 (baseModel instanceof TreeModel)) {
 
-				TreeModel treeModel = (TreeModel)model;
+				TreeModel treeModel = (TreeModel)baseModel;
 
 				String treePath = treeModel.getTreePath();
 
@@ -332,7 +332,7 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 			}
 		}
 
-		jsonObject.put(getPrimaryKeyName(), model.getPrimaryKeyObj());
+		jsonObject.put(getPrimaryKeyName(), baseModel.getPrimaryKeyObj());
 
 		return jsonObject;
 	}
