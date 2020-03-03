@@ -20,6 +20,11 @@ import com.liferay.analytics.message.storage.service.AnalyticsMessageLocalServic
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationTracker;
 import com.liferay.analytics.settings.security.constants.AnalyticsSecurityConstants;
+import com.liferay.expando.kernel.model.ExpandoBridge;
+import com.liferay.expando.kernel.model.ExpandoRow;
+import com.liferay.expando.kernel.model.ExpandoTable;
+import com.liferay.expando.kernel.model.ExpandoTableConstants;
+import com.liferay.expando.kernel.service.ExpandoTableLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
@@ -32,10 +37,12 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.ShardedModel;
 import com.liferay.portal.kernel.model.TreeModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
+import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.CompanyService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -49,6 +56,7 @@ import com.liferay.portal.kernel.util.Validator;
 import java.nio.charset.Charset;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.List;
@@ -72,13 +80,28 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 			return;
 		}
 
-		JSONObject jsonObject = _serialize(includeAttributeNames, model);
+		JSONObject jsonObject = serialize(model, includeAttributeNames);
 
 		ShardedModel shardedModel = (ShardedModel)model;
 
+		String modelClassName = model.getModelClassName();
+
+		if (modelClassName.equals(ExpandoRow.class.getName())) {
+			ExpandoRow expandoRow = (ExpandoRow)model;
+
+			if (isCustomField(
+					Organization.class.getName(), expandoRow.getTableId())) {
+
+				modelClassName = Organization.class.getName();
+			}
+			else {
+				modelClassName = User.class.getName();
+			}
+		}
+
 		try {
 			AnalyticsMessage.Builder analyticsMessageBuilder =
-				AnalyticsMessage.builder(model.getModelClassName());
+				AnalyticsMessage.builder(modelClassName);
 
 			analyticsMessageBuilder.action(eventType);
 			analyticsMessageBuilder.object(jsonObject);
@@ -182,7 +205,39 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 
 	protected abstract T getModel(long id) throws Exception;
 
+	protected List<String> getOrganizationAttributeNames() {
+		return _organizationAttributeNames;
+	}
+
 	protected abstract String getPrimaryKeyName();
+
+	protected List<String> getUserAttributeNames() {
+		return _userAttributeNames;
+	}
+
+	protected boolean isCustomField(String className, long tableId) {
+		long classNameId = classNameLocalService.getClassNameId(className);
+
+		try {
+			ExpandoTable expandoTable = expandoTableLocalService.getTable(
+				tableId);
+
+			if (Objects.equals(
+					ExpandoTableConstants.DEFAULT_TABLE_NAME,
+					expandoTable.getName()) &&
+				(expandoTable.getClassNameId() == classNameId)) {
+
+				return true;
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Unable to get expando table " + tableId);
+			}
+		}
+
+		return false;
+	}
 
 	protected boolean isExcluded(T model) {
 		return false;
@@ -237,6 +292,63 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 		}
 
 		return true;
+	}
+
+	protected JSONObject serialize(
+		BaseModel<?> baseModel, List<String> includeAttributeNames) {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		Map<String, Object> modelAttributes = baseModel.getModelAttributes();
+
+		for (String includeAttributeName : includeAttributeNames) {
+			if (includeAttributeName.equals("expando")) {
+				ExpandoBridge expandoBridge = baseModel.getExpandoBridge();
+
+				jsonObject.put("expando", expandoBridge.getAttributes(false));
+
+				continue;
+			}
+			else if (includeAttributeName.equals("treePath") &&
+					 (baseModel instanceof TreeModel)) {
+
+				TreeModel treeModel = (TreeModel)baseModel;
+
+				String treePath = treeModel.getTreePath();
+
+				String[] ids = StringUtil.split(
+					treePath.substring(1), StringPool.SLASH);
+
+				jsonObject.put("nameTreePath", _buildNameTreePath(ids));
+
+				if (ids.length > 1) {
+					jsonObject.put(
+						"parentName",
+						_getName(GetterUtil.getLong(ids[ids.length - 2])));
+				}
+
+				continue;
+			}
+
+			Object value = modelAttributes.get(includeAttributeName);
+
+			if (value instanceof Date) {
+				Date date = (Date)value;
+
+				jsonObject.put(includeAttributeName, date.getTime());
+			}
+			else {
+				if (includeAttributeName.equals("name")) {
+					value = _getName(String.valueOf(value));
+				}
+
+				jsonObject.put(includeAttributeName, value);
+			}
+		}
+
+		jsonObject.put(getPrimaryKeyName(), baseModel.getPrimaryKeyObj());
+
+		return jsonObject;
 	}
 
 	protected void updateConfigurationProperties(
@@ -301,10 +413,16 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	protected AnalyticsMessageLocalService analyticsMessageLocalService;
 
 	@Reference
+	protected ClassNameLocalService classNameLocalService;
+
+	@Reference
 	protected CompanyService companyService;
 
 	@Reference
 	protected ConfigurationProvider configurationProvider;
+
+	@Reference
+	protected ExpandoTableLocalService expandoTableLocalService;
 
 	@Reference
 	protected UserLocalService userLocalService;
@@ -332,8 +450,11 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 		List<String> modifiedAttributeNames = new ArrayList<>();
 
 		for (String attributeName : attributeNames) {
-			if (attributeName.equalsIgnoreCase("memberships") ||
-				attributeName.equalsIgnoreCase("modifiedDate")) {
+			if (attributeName.equalsIgnoreCase("expando") ||
+				attributeName.equalsIgnoreCase("memberships") ||
+				(Objects.equals(
+					model.getModelClassName(), ExpandoRow.class.getName()) &&
+				 attributeName.equalsIgnoreCase("modifiedDate"))) {
 
 				continue;
 			}
@@ -437,55 +558,19 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 		}
 	}
 
-	private JSONObject _serialize(List<String> includeAttributeNames, T model) {
-		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
-
-		Map<String, Object> modelAttributes = model.getModelAttributes();
-
-		for (String includeAttributeName : includeAttributeNames) {
-			if (includeAttributeName.equals("treePath") &&
-				(model instanceof TreeModel)) {
-
-				TreeModel treeModel = (TreeModel)model;
-
-				String treePath = treeModel.getTreePath();
-
-				String[] ids = StringUtil.split(
-					treePath.substring(1), StringPool.SLASH);
-
-				jsonObject.put("nameTreePath", _buildNameTreePath(ids));
-
-				if (ids.length > 1) {
-					jsonObject.put(
-						"parentName",
-						_getName(GetterUtil.getLong(ids[ids.length - 2])));
-				}
-
-				continue;
-			}
-
-			Object value = modelAttributes.get(includeAttributeName);
-
-			if (value instanceof Date) {
-				Date date = (Date)value;
-
-				jsonObject.put(includeAttributeName, date.getTime());
-			}
-			else {
-				if (includeAttributeName.equals("name")) {
-					value = _getName(String.valueOf(value));
-				}
-
-				jsonObject.put(includeAttributeName, value);
-			}
-		}
-
-		jsonObject.put(getPrimaryKeyName(), model.getPrimaryKeyObj());
-
-		return jsonObject;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		BaseEntityModelListener.class);
+
+	private static final List<String> _organizationAttributeNames =
+		Arrays.asList(
+			"expando", "modifiedDate", "name", "parentOrganizationId",
+			"treePath", "type");
+	private static final List<String> _userAttributeNames = Arrays.asList(
+		"agreedToTermsOfUse", "comments", "companyId", "contactId",
+		"createDate", "defaultUser", "emailAddress", "emailAddressVerified",
+		"expando", "externalReferenceCode", "facebookId", "firstName",
+		"googleUserId", "greeting", "jobTitle", "languageId", "lastName",
+		"ldapServerId", "memberships", "middleName", "modifiedDate", "openId",
+		"portraitId", "screenName", "status", "timeZoneId", "uuid");
 
 }
