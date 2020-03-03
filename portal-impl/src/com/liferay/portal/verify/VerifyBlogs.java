@@ -16,10 +16,20 @@ package com.liferay.portal.verify;
 
 import com.liferay.blogs.kernel.model.BlogsEntry;
 import com.liferay.blogs.kernel.service.BlogsEntryLocalServiceUtil;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
+import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.util.List;
@@ -33,6 +43,7 @@ public class VerifyBlogs extends VerifyProcess {
 	protected void doVerify() throws Exception {
 		updateEntryAssets();
 		verifyStatus();
+		updateStagedPortletNames();
 	}
 
 	protected void updateEntryAssets() throws Exception {
@@ -65,6 +76,50 @@ public class VerifyBlogs extends VerifyProcess {
 				_log.debug("Assets verified for entries");
 			}
 		}
+	}
+
+	protected void updateStagedPortletNames() throws PortalException {
+		ActionableDynamicQuery groupActionableDynamicQuery =
+			GroupLocalServiceUtil.getActionableDynamicQuery();
+
+		groupActionableDynamicQuery.setAddCriteriaMethod(
+			dynamicQuery -> {
+				Property siteProperty = PropertyFactoryUtil.forName("site");
+
+				dynamicQuery.add(siteProperty.eq(Boolean.TRUE));
+			});
+		groupActionableDynamicQuery.setPerformActionMethod(
+			(ActionableDynamicQuery.PerformActionMethod<Group>)group -> {
+				UnicodeProperties typeSettingsProperties =
+					group.getTypeSettingsProperties();
+
+				if (typeSettingsProperties == null) {
+					return;
+				}
+
+				String propertyKey = StagingUtil.getStagedPortletId(
+					PortletKeys.BLOGS);
+
+				String propertyValue = typeSettingsProperties.getProperty(
+					propertyKey);
+
+				if (Validator.isNull(propertyValue)) {
+					return;
+				}
+
+				typeSettingsProperties.remove(propertyKey);
+
+				propertyKey = StagingUtil.getStagedPortletId(
+					PortletKeys.BLOGS_ADMIN);
+
+				typeSettingsProperties.put(propertyKey, propertyValue);
+
+				group.setTypeSettingsProperties(typeSettingsProperties);
+
+				GroupLocalServiceUtil.updateGroup(group);
+			});
+
+		groupActionableDynamicQuery.performActions();
 	}
 
 	protected void verifyStatus() throws Exception {
