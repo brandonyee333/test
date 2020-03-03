@@ -92,11 +92,11 @@
 			List<WatsonHistory> watsonHistories = null;
 
 			long watsonParentId = ParamUtil.getLong(request, "watsonParentId");
-			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive");
 			int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 			int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
-			String model = ParamUtil.getString(request, "model", StringPool.BLANK);
+			String model = ParamUtil.getString(request, "model");
 
 			if (model.equals("incidents")) {
 				watsonHistories = WatsonIncident.getWatsonHistories(watsonParentId, includeInactive, null, start, end);

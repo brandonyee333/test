@@ -73,29 +73,29 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 		SearchContext searchContext = getSearchContext(WatsonListType.baseModelClass, true);
 
-		String language = ParamUtil.getString(request, "language", StringPool.BLANK);
+		String language = ParamUtil.getString(request, "language");
 
 		String nameType = language.contains("th") ? "name_th" : "name_en_US";
 
-		String countryA2 = ParamUtil.getString(request, "country", StringPool.BLANK);
+		String countryA2 = ParamUtil.getString(request, "country");
 
 		String countryId = _searchCountry(countryA2);
 
 		jsonObject.put("countryId", countryId);
 
-		String province = ParamUtil.getString(request, "province", StringPool.BLANK);
+		String province = ParamUtil.getString(request, "province");
 
 		String provinceWatsonListTypeId = _searchProvinces(searchContext, StringUtil.toLowerCase(province), nameType);
 
 		jsonObject.put("provinceWatsonListTypeId", provinceWatsonListTypeId);
 
-		String district = ParamUtil.getString(request, "district", StringPool.BLANK);
+		String district = ParamUtil.getString(request, "district");
 
 		String districtWatsonListTypeId = _searchDistricts(searchContext, StringUtil.toLowerCase(district), provinceWatsonListTypeId, nameType);
 
 		jsonObject.put("districtWatsonListTypeId", districtWatsonListTypeId);
 
-		String subdistrict = ParamUtil.getString(request, "subdistrict", StringPool.BLANK);
+		String subdistrict = ParamUtil.getString(request, "subdistrict");
 
 		String subdistrictWatsonListTypeId = _searchSubdistricts(searchContext, StringUtil.toLowerCase(subdistrict), districtWatsonListTypeId, nameType);
 

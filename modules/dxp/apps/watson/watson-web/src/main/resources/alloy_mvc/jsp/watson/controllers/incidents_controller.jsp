@@ -367,7 +367,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 		String actionType = ParamUtil.getString(request, "actionType");
 
 		if ((start == 0) && actionType.equals("relate")) {
-			long watsonIncidentId = ParamUtil.getLong(request, "id", 0);
+			long watsonIncidentId = ParamUtil.getLong(request, "id");
 
 			watsonIncidents.add(WatsonIncident.fetch(watsonIncidentId));
 		}

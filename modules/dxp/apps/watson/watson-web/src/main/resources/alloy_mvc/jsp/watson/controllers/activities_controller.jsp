@@ -263,7 +263,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			keywords = new String[] {String.valueOf(watsonIncidentId)};
 		}
 
-		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive");
 
 		SearchContext searchContext = getPopulatedSearchContext(WatsonActivity.baseModelClass, fields, keywords, includeInactive);
 
@@ -391,7 +391,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 
 			watsonActivity.updateTranslations(request, locale);
 
-			boolean returnTranslatedValue = ParamUtil.getBoolean(request, "return", false);
+			boolean returnTranslatedValue = ParamUtil.getBoolean(request, "return");
 
 			JSONObject watsonActivityJSONObject = null;
 

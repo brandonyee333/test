@@ -280,7 +280,7 @@ renderResponse.setTitle((item == null) ? LanguageUtil.get(request, "new-item") :
 						curPriceId++;
 					}
 
-					int minQuantity = ParamUtil.getInteger(request, "minQuantity" + curPriceId, 0);
+					int minQuantity = ParamUtil.getInteger(request, "minQuantity" + curPriceId);
 					String minQuantityParam = request.getParameter("minQuantity" + curPriceId);
 
 					if (((minQuantityParam == null) || minQuantityParam.equals(StringPool.NULL)) && (itemPrices[curPriceId] != null)) {

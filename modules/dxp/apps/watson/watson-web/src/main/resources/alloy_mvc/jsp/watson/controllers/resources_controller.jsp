@@ -222,7 +222,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 				keywords = new String[] {String.valueOf(watsonIncidentId)};
 			}
 
-			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+			boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive");
 
 			SearchContext searchContext = getPopulatedSearchContext(WatsonResource.baseModelClass, fields, keywords, includeInactive);
 

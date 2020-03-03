@@ -120,7 +120,7 @@ public class EditInstanceMVCActionCommand extends BaseMVCActionCommand {
 			actionRequest, "virtualHostname");
 		String mx = ParamUtil.getString(actionRequest, "mx");
 		boolean system = false;
-		int maxUsers = ParamUtil.getInteger(actionRequest, "maxUsers", 0);
+		int maxUsers = ParamUtil.getInteger(actionRequest, "maxUsers");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
 
 		if (companyId <= 0) {

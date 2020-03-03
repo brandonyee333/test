@@ -96,7 +96,7 @@ public static class AlloyControllerImpl extends WatsonAlloyControllerImpl {
 			return;
 		}
 
-		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive", false);
+		boolean includeInactive = ParamUtil.getBoolean(request, "includeInactive");
 		int start = ParamUtil.getInteger(request, "start", QueryUtil.ALL_POS);
 		int end = ParamUtil.getInteger(request, "end", QueryUtil.ALL_POS);
 
