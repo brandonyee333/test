@@ -193,6 +193,7 @@ message.
 	<target name="compile">
 		<setup-libs />
 		<setup-sdk />
+		<setup-yarn />
 
 		<gradle-execute dir="modules/core" task="deploy">
 			<arg value="--parallel" />
@@ -1096,6 +1097,10 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 
 	<target name="setup-sdk">
 		<setup-sdk />
+	</target>
+
+	<target name="setup-yarn">
+		<setup-yarn />
 	</target>
 
 	<target name="snapshot-bundle">
