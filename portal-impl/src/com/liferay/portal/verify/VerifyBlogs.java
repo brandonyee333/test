@@ -42,8 +42,8 @@ public class VerifyBlogs extends VerifyProcess {
 	@Override
 	protected void doVerify() throws Exception {
 		updateEntryAssets();
-		verifyStatus();
 		updateStagedPortletNames();
+		verifyStatus();
 	}
 
 	protected void updateEntryAssets() throws Exception {
