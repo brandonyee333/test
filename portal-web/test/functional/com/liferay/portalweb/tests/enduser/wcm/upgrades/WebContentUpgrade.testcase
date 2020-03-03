@@ -148,10 +148,9 @@ definition {
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
 
-		WebContent.viewCPWithoutContentField(
-			field = "Image",
-			webContentImage = "10470",
-			webContentTitle = "Web Content Title");
+		AssertTextEquals(
+			locator1 = "TextInput#TITLE",
+			value1 = "WC WebContent Title");
 
 		AssertVisible(locator1 = "Button#PREVIEW");
 	}
