@@ -1,4 +1,4 @@
 Bundle-Name: Liferay OSB Customer Metrics RabbitMQ Processor
 Bundle-SymbolicName: com.liferay.osb.customer.metrics.rabbitmq.processor
 Bundle-Version: 1.0.0
--includeresource: @com.liferay.portal.tools.service.builder-[0-9.]*.jar!/com/liferay/portal/tools/service/builder/dependencies/bad_column_names.txt
+-includeresource: @com.liferay.portal.tools.service.builder-*.jar!/com/liferay/portal/tools/service/builder/dependencies/bad_column_names.txt
