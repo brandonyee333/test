@@ -13,5 +13,5 @@ Liferay-Service: true
 Web-ContextPath: /wsrp-service
 -includeresource:\
 	META-INF/=@oasis.names.tc.wsrp-[0-9.]*.jar!/wsdl/*,\
-	@com.liferay.util.java-[0-9.]*(-SNAPSHOT|-TEST_ARTIFACT|).jar!/com/liferay/util/axis/*.class,\
-	@com.liferay.util.java-[0-9.]*(-SNAPSHOT|-TEST_ARTIFACT|).jar!/com/liferay/util/portlet/PortletProps.class
+	@com.liferay.util.java-*.jar!/com/liferay/util/axis/*.class,\
+	@com.liferay.util.java-*.jar!/com/liferay/util/portlet/PortletProps.class
