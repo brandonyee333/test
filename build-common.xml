@@ -1914,6 +1914,8 @@ artifact.url=${remote.repository.url}/com/liferay/portal/com.liferay.${processed
 	</macrodef>
 
 	<macrodef name="setup-yarn">
+		<sequential>
+		</sequential>
 	</macrodef>
 
 	<macrodef name="ssh-execute">
