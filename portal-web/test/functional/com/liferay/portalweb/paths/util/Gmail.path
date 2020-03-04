@@ -81,7 +81,7 @@
 </tr>
 <tr>
 	<td>SIGN_IN_WITH_DIFFERENT_ACCOUNT</td>
-	<td>//p[@class='switch-account']/a[@id='account-chooser-link'] | //div[contains(@id,'profileIdentifier')]</td>
+	<td>//p[@class='switch-account']/a[@id='account-chooser-link'] | //div[contains(@aria-label,'Switch account')]</td>
 	<td></td>
 </tr>
 <tr>
