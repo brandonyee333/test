@@ -107,6 +107,67 @@ definition {
 		}
 	}
 
+	@description = "This is a test for LPS-107833. Assert no option to add displayed page in Global Navigation Menu."
+	@priority = "5"
+	test CannotAddPageItemInGlobalNavigationMenu {
+		task ("Add a navigation menu in Global site") {
+			NavigationMenusAdmin.openNavigationMenusAdmin(siteURLKey = "global");
+
+			NavigationMenusAdmin.addMenu(menuName = "Global Navigation Menu Name");
+		}
+
+		task ("Assert no Page option in drop down list") {
+			LexiconEntry.gotoAdd();
+
+			MenuItem.viewNotPresent(menuItem = "Page");
+
+			MenuItem.viewVisible(menuItem = "Submenu");
+
+			MenuItem.viewVisible(menuItem = "URL");
+
+			Button.click(button = "New");
+
+			MenuItem.viewNotPresent(menuItem = "Page");
+
+			MenuItem.viewVisible(menuItem = "Submenu");
+
+			MenuItem.viewVisible(menuItem = "URL");
+		}
+	}
+
+	@description = "This is a test for LPS-107833. Don't support Add page to Global Navigation Menu when creating a new page."
+	@priority = "5"
+	test CannotAddPageToGlobalNavigationMenuWhenCreatingPageInNormalSite {
+		task ("Add a navigation menu in Global site") {
+			NavigationMenusAdmin.openNavigationMenusAdmin(siteURLKey = "global");
+
+			NavigationMenusAdmin.addMenu(menuName = "Global Navigation Menu Name");
+		}
+
+		task ("Assert no Add New Pages column in Global Navigation Menu entry") {
+			NavigationMenusAdmin.openNavigationMenusAdmin(siteURLKey = "global");
+
+			AssertElementNotPresent(
+				key_addNewPages = "Yes",
+				key_rowEntry = "Global Navigation Menu Name",
+				locator1 = "SiteNavigationMenu#MENU_ADD_NEW_PAGES");
+		}
+
+		task ("Assert no checkbox for Add Page to Global Navigation Menu when creating a page in normal site") {
+			SitePages.openPagesAdmin(siteURLKey = "Test Site Name");
+
+			LexiconEntry.gotoAddMenuItem(menuItem = "Public Page");
+
+			LexiconCard.clickCard(card = "Widget Page");
+
+			SelectFrame(locator1 = "IFrame#DIALOG");
+
+			AssertElementNotPresent(
+				checkboxName = "Global Navigation Menu Name",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+		}
+	}
+
 	@description = "Navigation menus can be marked as Primary Navigation. At any given time, only one navigation menu can be Primary Navigation."
 	@priority = "4"
 	test ConfigurePrimaryNavigationMenu {
