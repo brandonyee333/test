@@ -101,7 +101,9 @@ public class AccountCustomerLocalServiceImpl
 				 (accountEntry.getType() !=
 					 AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) &&
 				 (accountEntry.getType() !=
-					 AccountEntryConstants.TYPE_INTERNAL_TEST)) {
+					 AccountEntryConstants.TYPE_INTERNAL_TEST) &&
+				 !organizationLocalService.hasUserOrganization(
+					 userId, OSBConstants.ORGANIZATION_LIFERAY_INC_ID)) {
 
 			if (roleLocalService.hasUserRole(
 					userId, OSBConstants.ROLE_VERIFIED_USER_ID)) {
@@ -285,12 +287,6 @@ public class AccountCustomerLocalServiceImpl
 
 		int oldRole = accountCustomer.getRole();
 
-		if ((oldRole == role) &&
-			(accountCustomer.getClosedWatcher() == closedWatcher)) {
-
-			return accountCustomer;
-		}
-
 		accountCustomer.setRole(role);
 		accountCustomer.setClosedWatcher(closedWatcher);
 
@@ -328,6 +324,8 @@ public class AccountCustomerLocalServiceImpl
 				OSBConstants.ORGANIZATION_TRIAL_ID);
 		}
 		else if (accountEntry.isApproved() &&
+				 (accountEntry.getType() !=
+					 AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC) &&
 				 (accountEntry.getType() !=
 					 AccountEntryConstants.TYPE_INTERNAL_TEST) &&
 				 !organizationLocalService.hasUserOrganization(
