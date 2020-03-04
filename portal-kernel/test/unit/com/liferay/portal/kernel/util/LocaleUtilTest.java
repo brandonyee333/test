@@ -45,6 +45,19 @@ public class LocaleUtilTest extends PowerMockito {
 	}
 
 	@Test
+	public void testFromBCP47LanguageId() {
+		mockStatic(LanguageUtil.class);
+
+		when(
+			LanguageUtil.isAvailableLocale(Locale.US)
+		).thenReturn(
+			true
+		);
+
+		Assert.assertEquals(Locale.US, LocaleUtil.fromLanguageId("en-US"));
+	}
+
+	@Test
 	public void testFromLanguageId() {
 		mockStatic(LanguageUtil.class);
 
@@ -74,6 +87,35 @@ public class LocaleUtilTest extends PowerMockito {
 			Assert.assertEquals(
 				"en is not a valid language id", logRecord.getMessage());
 		}
+	}
+
+	@Test
+	public void testFromSimplifiedChineseBCP47LanguageIdSpecialCase() {
+		mockStatic(LanguageUtil.class);
+
+		when(
+			LanguageUtil.isAvailableLocale(Locale.SIMPLIFIED_CHINESE)
+		).thenReturn(
+			true
+		);
+
+		Assert.assertEquals(
+			Locale.SIMPLIFIED_CHINESE, LocaleUtil.fromLanguageId("zh-Hans-CN"));
+	}
+
+	@Test
+	public void testFromTraditionalChineseBCP47LanguageIdSpecialCase() {
+		mockStatic(LanguageUtil.class);
+
+		when(
+			LanguageUtil.isAvailableLocale(Locale.TRADITIONAL_CHINESE)
+		).thenReturn(
+			true
+		);
+
+		Assert.assertEquals(
+			Locale.TRADITIONAL_CHINESE,
+			LocaleUtil.fromLanguageId("zh-Hant-TW"));
 	}
 
 }
