@@ -1792,13 +1792,13 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntry.setStatus(getStatus(accountEntryId));
 
-		if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
-			accountCustomerLocalService.resetClosedWorkers(accountEntryId);
-		}
-
 		accountEntryPersistence.update(accountEntry);
 
 		if (oldStatus != accountEntry.getStatus()) {
+			if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+				accountCustomerLocalService.resetClosedWorkers(accountEntryId);
+			}
+
 			long classNameId = classNameLocalService.getClassNameId(
 				AccountEntry.class.getName());
 
