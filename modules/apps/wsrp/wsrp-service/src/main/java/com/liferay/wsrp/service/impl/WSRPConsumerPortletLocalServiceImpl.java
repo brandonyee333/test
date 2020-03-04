@@ -23,6 +23,8 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletApp;
 import com.liferay.portal.kernel.model.PortletInfo;
 import com.liferay.portal.kernel.model.SystemEventConstants;
+import com.liferay.portal.kernel.portlet.FriendlyURLMapper;
+import com.liferay.portal.kernel.portlet.FriendlyURLMapperTracker;
 import com.liferay.portal.kernel.portlet.InvokerPortlet;
 import com.liferay.portal.kernel.portlet.PortletBag;
 import com.liferay.portal.kernel.portlet.PortletBagPool;
@@ -50,7 +52,6 @@ import com.liferay.wsrp.constants.WSRPPortletKeys;
 import com.liferay.wsrp.exception.NoSuchConsumerPortletException;
 import com.liferay.wsrp.exception.WSRPConsumerPortletHandleException;
 import com.liferay.wsrp.exception.WSRPConsumerPortletNameException;
-import com.liferay.wsrp.internal.consumer.portlet.ConsumerFriendlyURLMapper;
 import com.liferay.wsrp.internal.consumer.portlet.ConsumerPortlet;
 import com.liferay.wsrp.internal.util.ExtensionHelperUtil;
 import com.liferay.wsrp.internal.util.LocalizedStringUtil;
@@ -460,9 +461,6 @@ public class WSRPConsumerPortletLocalServiceImpl
 
 		portlet.setPortletInfo(portletInfo);
 
-		portlet.setFriendlyURLMapperClass(
-			ConsumerFriendlyURLMapper.class.getName());
-
 		ParameterDescription[] parameterDescriptions =
 			portletDescription.getNavigationalPublicValueDescriptions();
 
@@ -614,6 +612,11 @@ public class WSRPConsumerPortletLocalServiceImpl
 
 		portletBag.setPortletInstance(getConsumerPortletInstance());
 
+		FriendlyURLMapperTracker friendlyURLMapperTracker =
+			portletBag.getFriendlyURLMapperTracker();
+
+		friendlyURLMapperTracker.register(_friendlyURLMapper);
+
 		PortletBagPool.put(portletId, portletBag);
 
 		return portlet;
@@ -764,6 +767,12 @@ public class WSRPConsumerPortletLocalServiceImpl
 
 	private final Map<Long, Tuple> _failedWSRPConsumerPortlets =
 		new ConcurrentHashMap<>();
+
+	@ServiceReference(
+		filterString = "(javax.portlet.name=" + WSRPPortletKeys.WSRP_CONSUMER + ")",
+		type = FriendlyURLMapper.class
+	)
+	private FriendlyURLMapper _friendlyURLMapper;
 
 	@ServiceReference(type = Http.class)
 	private Http _http;
