@@ -310,7 +310,6 @@ name = HtmlUtil.escapeJS(name);
 
 			var win = window['<%= name %>'];
 
-			debugger;
 			var setHTML = function(data) {
 				if (win._dataReady) {
 					ckEditorInstance.setData(data);
