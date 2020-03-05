@@ -34,9 +34,6 @@ public class ExpandoColumnUtil {
 
 	public static final String PROPERTY_DISPLAY_TYPE_DATE = "date";
 
-	public static final String PROPERTY_DISPLAY_TYPE_GEOLOCATION =
-		"geolocation";
-
 	public static final String PROPERTY_DISPLAY_TYPE_INPUT_FIELD =
 		"input-field";
 
@@ -88,9 +85,6 @@ public class ExpandoColumnUtil {
 		}
 		else if (type == ExpandoColumnConstants.DATE) {
 			return PROPERTY_DISPLAY_TYPE_DATE;
-		}
-		else if (type == ExpandoColumnConstants.GEOLOCATION) {
-			return PROPERTY_DISPLAY_TYPE_GEOLOCATION;
 		}
 		else if ((type == ExpandoColumnConstants.STRING) ||
 				 (type == ExpandoColumnConstants.STRING_LOCALIZED)) {
