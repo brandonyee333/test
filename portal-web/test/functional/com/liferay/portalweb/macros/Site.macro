@@ -856,6 +856,10 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro openSitesAdmin {
+		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage/-/sites");
+	}
+
 	macro removeMemberCP {
 		var key_cardText = "${userScreenName}";
 
