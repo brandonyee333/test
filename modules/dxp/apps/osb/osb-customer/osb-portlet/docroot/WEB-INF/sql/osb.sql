@@ -375,9 +375,12 @@ insert into ListType (listTypeId, name, type_) values (43003, '7.3', 'com.lifera
 insert into ListType (listTypeId, name, type_) values (44000, '1.0', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 insert into ListType (listTypeId, name, type_) values (44020, '1.1', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 insert into ListType (listTypeId, name, type_) values (44100, '2.0', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
+insert into ListType (listTypeId, name, type_) values (44120, '2.1', 'com.liferay.osb.model.ProductEntry.commerceAllVersions');
 
 insert into ListType (listTypeId, name, type_) values (45000, '1', 'com.liferay.osb.model.ProductEntry.commerceMajorVersions');
+insert into ListType (listTypeId, name, type_) values (45001, '2', 'com.liferay.osb.model.ProductEntry.commerceMajorVersions');
 
 insert into ListType (listTypeId, name, type_) values (46000, '1.0', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46001, '1.1', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
 insert into ListType (listTypeId, name, type_) values (46002, '2.0', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');
+insert into ListType (listTypeId, name, type_) values (46003, '2.1', 'com.liferay.osb.model.ProductEntry.commerceMinorVersions');

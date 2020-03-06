@@ -32,6 +32,8 @@ public class ProductEntryConstants {
 
 	public static final int COMMERCE_VERSION_2_0 = 44100;
 
+	public static final int COMMERCE_VERSION_2_1 = 44120;
+
 	public static final int COMMERCE_VERSION_OTHER = 44999;
 
 	public static final int DIGITAL_ENTERPRISE_MAJOR_VERSION_7 = 42000;
@@ -401,6 +403,14 @@ public class ProductEntryConstants {
 
 	public static boolean isCommerceVersion2_0(long commerceVersion) {
 		if (commerceVersion == COMMERCE_VERSION_2_0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean isCommerceVersion2_1(long commerceVersion) {
+		if (commerceVersion == COMMERCE_VERSION_2_1) {
 			return true;
 		}
 

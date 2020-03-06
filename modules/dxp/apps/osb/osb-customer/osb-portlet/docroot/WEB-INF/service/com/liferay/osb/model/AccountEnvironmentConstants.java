@@ -572,6 +572,9 @@ public class AccountEnvironmentConstants {
 		else if (ProductEntryConstants.isCommerceVersion2_0(listTypeId)) {
 			return _envCommerce20.get(envListType);
 		}
+		else if (ProductEntryConstants.isCommerceVersion2_1(listTypeId)) {
+			return _envCommerce21.get(envListType);
+		}
 		else if (ProductEntryConstants.isPortalVersion5_2(listTypeId)) {
 			return _envPortalVersion52.get(envListType);
 		}
@@ -860,6 +863,11 @@ public class AccountEnvironmentConstants {
 		ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_2_10
 	};
 
+	private static final long[] _ENV_LFR_COMMERCE_VERSION_2_1 = {
+		ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_1_10,
+		ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_2_10
+	};
+
 	private static final long[] _ENV_OS_DIGITAL_ENTERPRISE_VERSION_7_0 = {
 		ENV_OS_AIX_7_1, ENV_OS_ALPINE_LINUX_3_8, ENV_OS_AMAZON_LINUX_2,
 		ENV_OS_CENTOS_6, ENV_OS_CENTOS_7, ENV_OS_DEBIAN_7, ENV_OS_DEBIAN_8,
@@ -984,6 +992,7 @@ public class AccountEnvironmentConstants {
 
 	private static final Map<String, long[]> _envCommerce11 = new HashMap<>();
 	private static final Map<String, long[]> _envCommerce20 = new HashMap<>();
+	private static final Map<String, long[]> _envCommerce21 = new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion70 =
 		new HashMap<>();
 	private static final Map<String, long[]> _envDigitalEnterpriseVersion71 =
@@ -1013,6 +1022,10 @@ public class AccountEnvironmentConstants {
 		_envCommerce20.put(
 			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS,
 			_ENV_LFR_COMMERCE_VERSION_2_0);
+
+		_envCommerce21.put(
+			ProductEntryConstants.LIST_TYPE_DIGITAL_ENTERPRISE_ALL_VERSIONS,
+			_ENV_LFR_COMMERCE_VERSION_2_1);
 
 		_envPortalVersion52.put(LIST_TYPE_ENV_AS, _ENV_AS_PORTAL_VERSION_5_2);
 		_envPortalVersion52.put(
