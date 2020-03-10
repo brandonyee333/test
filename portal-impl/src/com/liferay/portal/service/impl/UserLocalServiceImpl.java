@@ -3799,7 +3799,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setLocalizedBodyMap(localizedBodyMap);
 		subscriptionSender.setLocalizedSubjectMap(localizedSubjectMap);
-		subscriptionSender.setMailId("user", user.getUserId());
+		subscriptionSender.setMailId(
+			"user", user.getUserId(), System.currentTimeMillis());
 		subscriptionSender.setServiceContext(serviceContext);
 
 		subscriptionSender.addRuntimeSubscribers(toAddress, toName);
@@ -6393,7 +6394,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		subscriptionSender.setHtmlFormat(true);
 		subscriptionSender.setLocalizedBodyMap(localizedBodyMap);
 		subscriptionSender.setLocalizedSubjectMap(localizedSubjectMap);
-		subscriptionSender.setMailId("user", user.getUserId());
+		subscriptionSender.setMailId(
+			"user", user.getUserId(), System.currentTimeMillis());
 		subscriptionSender.setServiceContext(serviceContext);
 
 		subscriptionSender.addRuntimeSubscribers(toAddress, toName);
@@ -6564,7 +6566,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			subscriptionSender.setSubject(subject);
 		}
 
-		subscriptionSender.setMailId("user", user.getUserId());
+		subscriptionSender.setMailId(
+			"user", user.getUserId(), System.currentTimeMillis());
 		subscriptionSender.setServiceContext(serviceContext);
 
 		subscriptionSender.addRuntimeSubscribers(toAddress, toName);
