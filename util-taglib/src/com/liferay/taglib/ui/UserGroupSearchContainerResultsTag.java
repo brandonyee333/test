@@ -32,8 +32,9 @@ public class UserGroupSearchContainerResultsTag<R> extends IncludeTag {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, with no direct replacement
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
 	 */
+	@Deprecated
 	public void setUseIndexer(boolean useIndexer) {
 	}
 
