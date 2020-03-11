@@ -1,6 +1,6 @@
 Bundle-Name: ${manifest.bundle.name}
 Bundle-SymbolicName: ${manifest.bundle.symbolic.name}
-Bundle-Version: 2.69.8
+Bundle-Version: 2.70.0
 Export-Package:\
 	com.liferay.portal.bean,\
 	com.liferay.portal.cache.thread.local,\
