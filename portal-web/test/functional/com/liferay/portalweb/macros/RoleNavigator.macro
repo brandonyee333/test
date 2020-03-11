@@ -6,6 +6,10 @@ definition {
 		Navigator.gotoNavItem(navItem = "Assignees");
 	}
 
+	macro gotoAssigneeType {
+		Navigator.gotoNavItem(navItem = "${assigneeType}");
+	}
+
 	macro gotoPermissionSectionViaDropdown {
 		var key_navItem = "${contentTitle}";
 
