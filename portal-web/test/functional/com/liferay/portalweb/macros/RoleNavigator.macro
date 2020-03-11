@@ -1,5 +1,11 @@
 definition {
 
+	macro gotoAssignees {
+		LexiconEntry.gotoEntry(rowEntry = "${roleTitle}");
+
+		Navigator.gotoNavItem(navItem = "Assignees");
+	}
+
 	macro gotoPermissionSectionViaDropdown {
 		var key_navItem = "${contentTitle}";
 
