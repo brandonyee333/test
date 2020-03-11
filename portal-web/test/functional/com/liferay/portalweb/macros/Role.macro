@@ -564,6 +564,12 @@ definition {
 		}
 	}
 
+	macro viewAssignee {
+		RoleNavigator.gotoAssignees(roleTitle = "${roleTitle}");
+
+		LexiconEntry.viewEntryName(rowEntry = "${assigneeName}");
+	}
+
 	macro viewCP {
 		if (contains("Organization,Site", "${roleType}")) {
 			Navigator.gotoNavItem(navItem = "${roleType} Roles");
