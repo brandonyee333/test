@@ -109,9 +109,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Regrole Name",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Regrole Name");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -260,9 +262,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Portal Content Reviewer",
-			userScreenName = "usersncr");
+		RoleNavigator.gotoAssignees(roleTitle = "Portal Content Reviewer");
+
+		Role.addAssignees(
+			assigneeName = "userfncr usersncr",
+			assigneeType = "Users");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 
@@ -308,9 +312,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Administrator",
-			userScreenName = "usersna");
+		RoleNavigator.gotoAssignees(roleTitle = "Administrator");
+
+		Role.addAssignees(
+			assigneeName = "userfna userlna",
+			assigneeType = "Users");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

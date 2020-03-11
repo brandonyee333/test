@@ -1224,9 +1224,11 @@ definition {
 
 		Role.openRolesAdmin();
 
-		Role.assignRegRoleCP(
-			roleName = "Web Content Comment Reviewer",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Web Content Comment Reviewer");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		Navigator.openSiteURL(siteName = "Site Name");
 

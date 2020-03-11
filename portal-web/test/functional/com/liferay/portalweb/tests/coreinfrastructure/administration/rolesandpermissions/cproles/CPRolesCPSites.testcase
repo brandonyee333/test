@@ -157,9 +157,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Roles Regrole Name",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Roles Regrole Name");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -332,9 +334,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Regrole Name",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Regrole Name");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		Permissions.definePermissionLoginUserCP(
 			permissionDefinitionKey = "CONTROL_PANEL_SITES_SITES_GENERAL_PERMISSIONS_ACCESS_IN_CONTROL_PANEL_CHECKBOX",

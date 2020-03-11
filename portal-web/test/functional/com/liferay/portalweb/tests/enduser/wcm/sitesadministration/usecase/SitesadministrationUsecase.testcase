@@ -165,9 +165,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Administrator",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Administrator");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		User.firstLoginPG(userEmailAddress = "userea@liferay.com");
 
@@ -418,9 +420,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Roles Regrole Name",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Roles Regrole Name");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",

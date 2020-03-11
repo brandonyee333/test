@@ -379,9 +379,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Portal Content Reviewer",
-			userScreenName = "usersn2");
+		RoleNavigator.gotoAssignees(roleTitle = "Portal Content Reviewer");
+
+		Role.addAssignees(
+			assigneeName = "userfn2 userln2",
+			assigneeType = "Users");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea1@liferay.com",

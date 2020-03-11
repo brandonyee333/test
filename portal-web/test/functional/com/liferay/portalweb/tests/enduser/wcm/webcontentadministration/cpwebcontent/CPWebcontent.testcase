@@ -2145,9 +2145,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Web Content Administrator Role",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Web Content Administrator Role");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		Navigator.openSiteLanding(siteURLKey = "guest");
 

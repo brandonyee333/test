@@ -2591,9 +2591,11 @@ definition {
 
 		Role.openRolesAdmin();
 
-		Role.assignRegRoleCP(
-			roleName = "Web Content Subscriber Role",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Web Content Subscriber Role");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		Navigator.openSiteLanding(siteURLKey = "Test Site");
 

@@ -382,9 +382,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignMembersUserGroupsCP(
-			roleName = "Test UserGroup Role",
-			userGroupName = "UG UserGroup Name");
+		RoleNavigator.gotoAssignees(roleTitle = "Test UserGroup Role");
+
+		Role.addAssignees(
+			assigneeName = "UG UserGroup Name",
+			assigneeType = "User Groups");
 
 		User.logoutPG();
 

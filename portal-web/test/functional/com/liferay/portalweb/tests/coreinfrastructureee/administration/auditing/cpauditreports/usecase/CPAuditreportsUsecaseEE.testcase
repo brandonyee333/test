@@ -182,9 +182,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Role1",
-			userScreenName = "test1");
+		RoleNavigator.gotoAssignees(roleTitle = "Role1");
+
+		Role.addAssignees(
+			assigneeName = "test1 test1",
+			assigneeType = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",

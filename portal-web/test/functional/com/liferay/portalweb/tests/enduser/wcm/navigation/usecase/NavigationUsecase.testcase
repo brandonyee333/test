@@ -135,9 +135,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Power User",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Power User");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -256,9 +258,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Power User",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Power User");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		User.logoutPG();
 

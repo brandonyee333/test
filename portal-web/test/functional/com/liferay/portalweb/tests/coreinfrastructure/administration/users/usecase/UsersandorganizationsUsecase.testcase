@@ -285,18 +285,22 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Impersonating Role Name",
-			userScreenName = "usersn1");
+		RoleNavigator.gotoAssignees(roleTitle = "Impersonating Role Name");
+
+		Role.addAssignees(
+			assigneeName = "userfn1 userln1",
+			assigneeType = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Administrator",
-			userScreenName = "usersn3");
+		RoleNavigator.gotoAssignees(roleTitle = "Administrator");
+
+		Role.addAssignees(
+			assigneeName = "userfn3 userln3",
+			assigneeType = "Users");
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
@@ -363,9 +367,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Administrator",
-			userScreenName = "usersn1");
+		RoleNavigator.gotoAssignees(roleTitle = "Administrator");
+
+		Role.addAssignees(
+			assigneeName = "userfn1 userln1",
+			assigneeType = "Users");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea1@liferay.com",

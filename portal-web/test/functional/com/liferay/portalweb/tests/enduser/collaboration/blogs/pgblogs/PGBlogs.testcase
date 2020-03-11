@@ -1217,9 +1217,11 @@ definition {
 			panel = "Control Panel",
 			portlet = "Roles");
 
-		Role.assignRegRoleCP(
-			roleName = "Administrator",
-			userScreenName = "usersn");
+		RoleNavigator.gotoAssignees(roleTitle = "Administrator");
+
+		Role.addAssignees(
+			assigneeName = "userfn userln",
+			assigneeType = "Users");
 
 		Navigator.gotoPage(pageName = "Blogs Page");
 

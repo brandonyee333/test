@@ -1493,9 +1493,11 @@ definition {
 				panel = "Control Panel",
 				portlet = "Roles");
 
-			Role.assignRegRoleCP(
-				roleName = "WC Author",
-				userScreenName = "${userScreenName}");
+			RoleNavigator.gotoAssignees(roleTitle = "WC Author");
+
+			Role.addAssignees(
+				assigneeName = "${userScreenName}",
+				assigneeType = "Users");
 
 			ProductMenu.gotoPortlet(
 				category = "Users",
