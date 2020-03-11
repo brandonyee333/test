@@ -58,7 +58,7 @@ if (!searchTerms.isSearch() && hasAssignMembersPermission) {
 
 LinkedHashMap<String, Object> userGroupParams = new LinkedHashMap<String, Object>();
 
-userGroupParams.put(UserGroupFinderConstants.PARAM_USER_GROUPS_GROUPS, Long.valueOf(siteMembershipsDisplayContext.getGroupId()));
+userGroupParams.put(UserGroupFinderConstants.PARAM_KEY_USER_GROUPS_GROUPS, Long.valueOf(siteMembershipsDisplayContext.getGroupId()));
 
 if (role != null) {
 	userGroupParams.put("userGroupGroupRole", new Long[] {Long.valueOf(roleId), Long.valueOf(siteMembershipsDisplayContext.getGroupId())});
