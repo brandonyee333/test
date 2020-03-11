@@ -50,10 +50,7 @@ definition {
 			menuItem = "Convert to content page...",
 			pageName = "Test Page Name");
 
-		AssertVisible(
-			key_alertMessage = "The page conversion is shown in the preview below. Make modifications needed before publishing the conversion, or discard the draft to leave the widget page in its original state.",
-			key_type = "warning",
-			locator1 = "Message#CONVERSION_ALERT_MESSAGE");
+		Pause(locator1 = "3000");
 
 		Button.clickPublish();
 
