@@ -41,9 +41,6 @@ import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Shuyang Zhou
@@ -263,15 +260,6 @@ public class ClusterLinkImpl implements ClusterLink {
 		_clusterChannelFactory = clusterChannelFactory;
 	}
 
-	@Reference(
-		cardinality = ReferenceCardinality.OPTIONAL,
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY
-	)
-	protected void setMessageBus(MessageBus messageBus) {
-		_messageBus = messageBus;
-	}
-
 	@Reference(unbind = "-")
 	protected void setPortalExecutorManager(
 		PortalExecutorManager portalExecutorManager) {
@@ -284,10 +272,6 @@ public class ClusterLinkImpl implements ClusterLink {
 		_props = props;
 	}
 
-	protected void unsetMessageBus(MessageBus messageBus) {
-		_messageBus = null;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		ClusterLinkImpl.class);
 
@@ -298,7 +282,10 @@ public class ClusterLinkImpl implements ClusterLink {
 	private boolean _enabled;
 	private ExecutorService _executorService;
 	private List<Address> _localAddresses;
+
+	@Reference
 	private MessageBus _messageBus;
+
 	private PortalExecutorManager _portalExecutorManager;
 	private Props _props;
 
