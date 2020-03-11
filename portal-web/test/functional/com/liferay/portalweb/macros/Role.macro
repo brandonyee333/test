@@ -1,5 +1,31 @@
 definition {
 
+	macro addAssignees {
+		LexiconEntry.gotoAdd();
+
+		SelectFrame(locator1 = "IFrame#SELECT_ASSIGNEES");
+
+		RoleNavigator.gotoAssigneeType(assigneeType = "${assigneeType}");
+
+		Search.searchCP(searchTerm = "${assigneeName}");
+
+		var key_assigneeName = "${assigneeName}";
+
+		AssertTextEquals(
+			locator1 = "RolesAssignMembers#ADD_ASSIGNEE_TABLE_NAME",
+			value1 = "${assigneeName}");
+
+		Check(locator1 = "RolesAssignMembers#ADD_ASSIGNEE_TABLE_CHECKBOX");
+
+		SelectFrameTop(value1 = "relative=top");
+
+		AssertClick(
+			locator1 = "Button#ADD",
+			value1 = "Add");
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro addCP {
 		if ("${roleType}" == "Organization") {
 			Navigator.gotoNavItem(navItem = "Organization Roles");
