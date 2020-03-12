@@ -260,7 +260,9 @@ public class WatsonAddressCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonAddressId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -294,7 +296,7 @@ public class WatsonAddressCacheModel
 		floor = objectInput.readUTF();
 		room = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		otherType = objectInput.readUTF();
 		lastSeenDate = objectInput.readLong();
 
@@ -403,10 +405,10 @@ public class WatsonAddressCacheModel
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		if (otherType == null) {

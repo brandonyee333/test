@@ -167,7 +167,9 @@ public class WatsonResourceAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonResourceAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -188,7 +190,7 @@ public class WatsonResourceAuditCacheModel
 		watsonResourceId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 	}
@@ -236,10 +238,10 @@ public class WatsonResourceAuditCacheModel
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		objectOutput.writeInt(status);

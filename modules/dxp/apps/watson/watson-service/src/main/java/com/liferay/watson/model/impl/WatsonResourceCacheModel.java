@@ -161,7 +161,9 @@ public class WatsonResourceCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonResourceId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -180,7 +182,7 @@ public class WatsonResourceCacheModel
 		watsonIncidentId = objectInput.readLong();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 	}
@@ -226,10 +228,10 @@ public class WatsonResourceCacheModel
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		objectOutput.writeInt(status);

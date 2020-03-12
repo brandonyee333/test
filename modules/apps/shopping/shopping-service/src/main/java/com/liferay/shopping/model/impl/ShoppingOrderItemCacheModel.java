@@ -151,13 +151,15 @@ public class ShoppingOrderItemCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		orderItemId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
 
 		orderId = objectInput.readLong();
-		itemId = objectInput.readUTF();
+		itemId = (String)objectInput.readObject();
 		sku = objectInput.readUTF();
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
@@ -178,10 +180,10 @@ public class ShoppingOrderItemCacheModel
 		objectOutput.writeLong(orderId);
 
 		if (itemId == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(itemId);
+			objectOutput.writeObject(itemId);
 		}
 
 		if (sku == null) {

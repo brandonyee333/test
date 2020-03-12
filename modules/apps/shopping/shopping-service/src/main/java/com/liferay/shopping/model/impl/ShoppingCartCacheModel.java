@@ -144,7 +144,9 @@ public class ShoppingCartCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		cartId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -155,7 +157,7 @@ public class ShoppingCartCacheModel
 		userName = objectInput.readUTF();
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
-		itemIds = objectInput.readUTF();
+		itemIds = (String)objectInput.readObject();
 		couponCodes = objectInput.readUTF();
 
 		altShipping = objectInput.readInt();
@@ -184,10 +186,10 @@ public class ShoppingCartCacheModel
 		objectOutput.writeLong(modifiedDate);
 
 		if (itemIds == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(itemIds);
+			objectOutput.writeObject(itemIds);
 		}
 
 		if (couponCodes == null) {

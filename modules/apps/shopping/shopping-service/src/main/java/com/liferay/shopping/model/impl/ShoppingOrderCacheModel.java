@@ -450,7 +450,9 @@ public class ShoppingOrderCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		orderId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -506,7 +508,7 @@ public class ShoppingOrderCacheModel
 
 		ccExpYear = objectInput.readInt();
 		ccVerNumber = objectInput.readUTF();
-		comments = objectInput.readUTF();
+		comments = (String)objectInput.readObject();
 		ppTxnId = objectInput.readUTF();
 		ppPaymentStatus = objectInput.readUTF();
 
@@ -747,10 +749,10 @@ public class ShoppingOrderCacheModel
 		}
 
 		if (comments == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(comments);
+			objectOutput.writeObject(comments);
 		}
 
 		if (ppTxnId == null) {

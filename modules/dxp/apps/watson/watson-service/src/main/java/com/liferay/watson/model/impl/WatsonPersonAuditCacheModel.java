@@ -259,7 +259,9 @@ public class WatsonPersonAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonPersonAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -293,7 +295,7 @@ public class WatsonPersonAuditCacheModel
 
 		watsonPersonId = objectInput.readLong();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		birthDate = objectInput.readLong();
 		dateAccepted = objectInput.readLong();
 		dateRescued = objectInput.readLong();
@@ -360,10 +362,10 @@ public class WatsonPersonAuditCacheModel
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		objectOutput.writeLong(birthDate);

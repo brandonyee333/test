@@ -205,7 +205,9 @@ public class WatsonReportAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonReportAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -227,7 +229,7 @@ public class WatsonReportAuditCacheModel
 		name = objectInput.readUTF();
 		description = objectInput.readUTF();
 		fullReport = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		timeSpent = objectInput.readUTF();
 		reportedUser = objectInput.readUTF();
 		reportDate = objectInput.readLong();
@@ -287,10 +289,10 @@ public class WatsonReportAuditCacheModel
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		if (timeSpent == null) {

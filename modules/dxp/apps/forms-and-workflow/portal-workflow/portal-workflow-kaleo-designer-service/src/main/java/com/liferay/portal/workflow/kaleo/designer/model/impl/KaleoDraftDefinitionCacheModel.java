@@ -157,7 +157,9 @@ public class KaleoDraftDefinitionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		kaleoDraftDefinitionId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -170,7 +172,7 @@ public class KaleoDraftDefinitionCacheModel
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		title = objectInput.readUTF();
-		content = objectInput.readUTF();
+		content = (String)objectInput.readObject();
 
 		version = objectInput.readInt();
 
@@ -212,10 +214,10 @@ public class KaleoDraftDefinitionCacheModel
 		}
 
 		if (content == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(content);
+			objectOutput.writeObject(content);
 		}
 
 		objectOutput.writeInt(version);

@@ -210,7 +210,7 @@ public class DDLRecordSetCacheModel
 		minDisplayRows = objectInput.readInt();
 
 		scope = objectInput.readInt();
-		settings = objectInput.readUTF();
+		settings = (String)objectInput.readObject();
 		lastPublishDate = objectInput.readLong();
 
 		_ddmFormValues =
@@ -273,10 +273,10 @@ public class DDLRecordSetCacheModel
 		objectOutput.writeInt(scope);
 
 		if (settings == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(settings);
+			objectOutput.writeObject(settings);
 		}
 
 		objectOutput.writeLong(lastPublishDate);

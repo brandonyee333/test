@@ -196,7 +196,9 @@ public class WSRPConsumerCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		wsrpConsumerId = objectInput.readLong();
@@ -206,8 +208,8 @@ public class WSRPConsumerCacheModel
 		modifiedDate = objectInput.readLong();
 		name = objectInput.readUTF();
 		url = objectInput.readUTF();
-		wsdl = objectInput.readUTF();
-		registrationContextString = objectInput.readUTF();
+		wsdl = (String)objectInput.readObject();
+		registrationContextString = (String)objectInput.readObject();
 		registrationPropertiesString = objectInput.readUTF();
 		forwardCookies = objectInput.readUTF();
 		forwardHeaders = objectInput.readUTF();
@@ -245,17 +247,17 @@ public class WSRPConsumerCacheModel
 		}
 
 		if (wsdl == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(wsdl);
+			objectOutput.writeObject(wsdl);
 		}
 
 		if (registrationContextString == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(registrationContextString);
+			objectOutput.writeObject(registrationContextString);
 		}
 
 		if (registrationPropertiesString == null) {

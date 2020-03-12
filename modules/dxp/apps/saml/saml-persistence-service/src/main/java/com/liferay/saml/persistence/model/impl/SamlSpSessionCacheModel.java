@@ -192,7 +192,9 @@ public class SamlSpSessionCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		samlSpSessionId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
@@ -202,7 +204,7 @@ public class SamlSpSessionCacheModel
 		createDate = objectInput.readLong();
 		modifiedDate = objectInput.readLong();
 		samlSpSessionKey = objectInput.readUTF();
-		assertionXml = objectInput.readUTF();
+		assertionXml = (String)objectInput.readObject();
 		jSessionId = objectInput.readUTF();
 		nameIdFormat = objectInput.readUTF();
 		nameIdNameQualifier = objectInput.readUTF();
@@ -239,10 +241,10 @@ public class SamlSpSessionCacheModel
 		}
 
 		if (assertionXml == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(assertionXml);
+			objectOutput.writeObject(assertionXml);
 		}
 
 		if (jSessionId == null) {

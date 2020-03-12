@@ -251,7 +251,9 @@ public class DDMTemplateCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		uuid = objectInput.readUTF();
 
 		templateId = objectInput.readLong();
@@ -275,12 +277,12 @@ public class DDMTemplateCacheModel
 		resourceClassNameId = objectInput.readLong();
 		templateKey = objectInput.readUTF();
 		version = objectInput.readUTF();
-		name = objectInput.readUTF();
-		description = objectInput.readUTF();
+		name = (String)objectInput.readObject();
+		description = (String)objectInput.readObject();
 		type = objectInput.readUTF();
 		mode = objectInput.readUTF();
 		language = objectInput.readUTF();
-		script = objectInput.readUTF();
+		script = (String)objectInput.readObject();
 
 		cacheable = objectInput.readBoolean();
 
@@ -348,17 +350,17 @@ public class DDMTemplateCacheModel
 		}
 
 		if (name == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(name);
+			objectOutput.writeObject(name);
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(description);
+			objectOutput.writeObject(description);
 		}
 
 		if (type == null) {
@@ -383,10 +385,10 @@ public class DDMTemplateCacheModel
 		}
 
 		if (script == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(script);
+			objectOutput.writeObject(script);
 		}
 
 		objectOutput.writeBoolean(cacheable);

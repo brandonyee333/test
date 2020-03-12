@@ -339,8 +339,8 @@ public class JournalArticleCacheModel
 		version = objectInput.readDouble();
 		title = objectInput.readUTF();
 		urlTitle = objectInput.readUTF();
-		description = objectInput.readUTF();
-		content = objectInput.readUTF();
+		description = (String)objectInput.readObject();
+		content = (String)objectInput.readObject();
 		DDMStructureKey = objectInput.readUTF();
 		DDMTemplateKey = objectInput.readUTF();
 		layoutUuid = objectInput.readUTF();
@@ -433,17 +433,17 @@ public class JournalArticleCacheModel
 		}
 
 		if (description == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(description);
+			objectOutput.writeObject(description);
 		}
 
 		if (content == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(content);
+			objectOutput.writeObject(content);
 		}
 
 		if (DDMStructureKey == null) {

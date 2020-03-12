@@ -175,7 +175,9 @@ public class WatsonVehicleCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonVehicleId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -203,7 +205,7 @@ public class WatsonVehicleCacheModel
 
 		year = objectInput.readInt();
 		description = objectInput.readUTF();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 		licensePlate = objectInput.readUTF();
 
 		status = objectInput.readInt();
@@ -253,10 +255,10 @@ public class WatsonVehicleCacheModel
 		}
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		if (licensePlate == null) {

@@ -165,7 +165,9 @@ public class WatsonDocumentAuditCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		watsonDocumentAuditId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -189,7 +191,7 @@ public class WatsonDocumentAuditCacheModel
 
 		originalDocument = objectInput.readBoolean();
 		receivedDate = objectInput.readLong();
-		imagePayload = objectInput.readUTF();
+		imagePayload = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 	}
@@ -228,10 +230,10 @@ public class WatsonDocumentAuditCacheModel
 		objectOutput.writeLong(receivedDate);
 
 		if (imagePayload == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(imagePayload);
+			objectOutput.writeObject(imagePayload);
 		}
 
 		objectOutput.writeInt(status);
