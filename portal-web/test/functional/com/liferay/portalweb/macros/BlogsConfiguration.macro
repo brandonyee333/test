@@ -72,7 +72,7 @@ definition {
 
 		Click(locator1 = "Button#SAVE");
 
-		Alert.viewSuccessMessage();
+		Alert.viewSuccessMessageText(successMessage = "You have successfully updated the setup.");
 
 		BlogsConfiguration.viewScopeSelection(scopeSelection = "${scopeSelection}");
 	}
