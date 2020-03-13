@@ -22,9 +22,10 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PropsValues;
-import org.apache.commons.lang.time.StopWatch;
 
 import com.yahoo.platform.yui.compressor.CssCompressor;
+
+import org.apache.commons.lang.time.StopWatch;
 
 /**
  * @author Brian Wing Shun Chan
@@ -93,19 +94,19 @@ public class MinifierUtil {
 		}
 		finally {
 			if (_log.isDebugEnabled()) {
-				int lenght = 0;
+				int length = 0;
 
 				if (content != null) {
 					byte[] bytes = content.getBytes();
 
-					lenght = bytes.length;
+					length = bytes.length;
 				}
 
 				_log.debug(
 					StringBundler.concat(
-						"_minifyCss for size", String.valueOf(lenght),
-						"B takes ", String.valueOf(stopWatch.getTime()),
-						" ms"));
+						"Minification for ", String.valueOf(length),
+						" bytes of CSS took ",
+						String.valueOf(stopWatch.getTime()), " ms"));
 			}
 		}
 	}
@@ -120,19 +121,19 @@ public class MinifierUtil {
 		}
 		finally {
 			if (_log.isDebugEnabled()) {
-				int lenght = 0;
+				int length = 0;
 
 				if (content != null) {
 					byte[] bytes = content.getBytes();
 
-					lenght = bytes.length;
+					length = bytes.length;
 				}
 
 				_log.debug(
 					StringBundler.concat(
-						"minifyJavaScript for ", resourceName, " with size ",
-						String.valueOf(lenght), "B takes ",
-						String.valueOf(stopWatch.getTime()), " ms"));
+						"Minification for ", String.valueOf(length),
+						" bytes of Javascript in resource ", resourceName,
+						" took ", String.valueOf(stopWatch.getTime()), " ms"));
 			}
 		}
 	}
