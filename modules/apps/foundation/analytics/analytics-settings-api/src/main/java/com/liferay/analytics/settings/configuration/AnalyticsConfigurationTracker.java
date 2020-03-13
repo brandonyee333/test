@@ -14,12 +14,15 @@
 
 package com.liferay.analytics.settings.configuration;
 
+import aQute.bnd.annotation.ProviderType;
+
 import java.util.Dictionary;
 import java.util.Map;
 
 /**
  * @author Rachael Koestartyo
  */
+@ProviderType
 public interface AnalyticsConfigurationTracker {
 
 	public boolean deleteCompanyConfiguration(long companyId);
