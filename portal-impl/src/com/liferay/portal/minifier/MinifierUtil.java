@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.InstanceFactory;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.util.PropsValues;
+import org.apache.commons.lang.time.StopWatch;
 
 import com.yahoo.platform.yui.compressor.CssCompressor;
 
@@ -68,6 +69,10 @@ public class MinifierUtil {
 	}
 
 	private String _minifyCss(String content) {
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
 		UnsyncStringWriter unsyncStringWriter = new UnsyncStringWriter();
 
 		try {
@@ -86,10 +91,50 @@ public class MinifierUtil {
 
 			return unsyncStringWriter.toString();
 		}
+		finally {
+			if (_log.isDebugEnabled()) {
+				int lenght = 0;
+
+				if (content != null) {
+					byte[] bytes = content.getBytes();
+
+					lenght = bytes.length;
+				}
+
+				_log.debug(
+					StringBundler.concat(
+						"_minifyCss for size", String.valueOf(lenght),
+						"B takes ", String.valueOf(stopWatch.getTime()),
+						" ms"));
+			}
+		}
 	}
 
 	private String _minifyJavaScript(String resourceName, String content) {
-		return _javaScriptMinifierInstance.compress(resourceName, content);
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
+
+		try {
+			return _javaScriptMinifierInstance.compress(resourceName, content);
+		}
+		finally {
+			if (_log.isDebugEnabled()) {
+				int lenght = 0;
+
+				if (content != null) {
+					byte[] bytes = content.getBytes();
+
+					lenght = bytes.length;
+				}
+
+				_log.debug(
+					StringBundler.concat(
+						"minifyJavaScript for ", resourceName, " with size ",
+						String.valueOf(lenght), "B takes ",
+						String.valueOf(stopWatch.getTime()), " ms"));
+			}
+		}
 	}
 
 	private String _processMinifiedCss(String minifiedCss) {
