@@ -1496,7 +1496,7 @@ definition {
 			RoleNavigator.gotoAssignees(roleTitle = "WC Author");
 
 			Role.addAssignees(
-				assigneeName = "${userScreenName}",
+				assigneeName = "${userFirstName} ${userLastName}",
 				assigneeType = "Users");
 
 			ProductMenu.gotoPortlet(
