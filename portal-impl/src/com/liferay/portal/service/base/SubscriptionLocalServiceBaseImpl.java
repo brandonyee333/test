@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.SubscriptionLocalService;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
@@ -288,6 +289,10 @@ public abstract class SubscriptionLocalServiceBaseImpl
 
 		return subscriptionLocalService.deleteSubscription(
 			(Subscription)persistedModel);
+	}
+
+	public BasePersistence<Subscription> getBasePersistence() {
+		return subscriptionPersistence;
 	}
 
 	/**

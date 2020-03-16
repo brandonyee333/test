@@ -56,6 +56,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.GroupPersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
@@ -449,6 +450,10 @@ public abstract class BookmarksFolderLocalServiceBaseImpl
 
 		return bookmarksFolderLocalService.deleteBookmarksFolder(
 			(BookmarksFolder)persistedModel);
+	}
+
+	public BasePersistence<BookmarksFolder> getBasePersistence() {
+		return bookmarksFolderPersistence;
 	}
 
 	/**

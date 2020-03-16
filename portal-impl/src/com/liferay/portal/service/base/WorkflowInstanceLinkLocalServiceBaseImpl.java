@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.SubscriptionPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
@@ -303,6 +304,10 @@ public abstract class WorkflowInstanceLinkLocalServiceBaseImpl
 
 		return workflowInstanceLinkLocalService.deleteWorkflowInstanceLink(
 			(WorkflowInstanceLink)persistedModel);
+	}
+
+	public BasePersistence<WorkflowInstanceLink> getBasePersistence() {
+		return workflowInstanceLinkPersistence;
 	}
 
 	/**

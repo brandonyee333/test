@@ -36,6 +36,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.LayoutRevisionLocalService;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ImagePersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutBranchPersistence;
 import com.liferay.portal.kernel.service.persistence.LayoutFinder;
@@ -293,6 +294,10 @@ public abstract class LayoutRevisionLocalServiceBaseImpl
 
 		return layoutRevisionLocalService.deleteLayoutRevision(
 			(LayoutRevision)persistedModel);
+	}
+
+	public BasePersistence<LayoutRevision> getBasePersistence() {
+		return layoutRevisionPersistence;
 	}
 
 	/**

@@ -57,6 +57,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.BrowserTrackerPersistence;
 import com.liferay.portal.kernel.service.persistence.CompanyPersistence;
 import com.liferay.portal.kernel.service.persistence.ContactPersistence;
@@ -404,6 +405,10 @@ public abstract class UserLocalServiceBaseImpl
 		throws PortalException {
 
 		return userLocalService.deleteUser((User)persistedModel);
+	}
+
+	public BasePersistence<User> getBasePersistence() {
+		return userPersistence;
 	}
 
 	/**

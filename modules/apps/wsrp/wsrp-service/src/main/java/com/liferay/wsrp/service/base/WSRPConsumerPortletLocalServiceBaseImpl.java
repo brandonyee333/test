@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.kernel.service.persistence.AddressPersistence;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.EmailAddressPersistence;
 import com.liferay.portal.kernel.service.persistence.ListTypePersistence;
@@ -399,6 +400,10 @@ public abstract class WSRPConsumerPortletLocalServiceBaseImpl
 
 		return wsrpConsumerPortletLocalService.deleteWSRPConsumerPortlet(
 			(WSRPConsumerPortlet)persistedModel);
+	}
+
+	public BasePersistence<WSRPConsumerPortlet> getBasePersistence() {
+		return wsrpConsumerPortletPersistence;
 	}
 
 	/**

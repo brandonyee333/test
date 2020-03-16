@@ -43,6 +43,7 @@ import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.SystemEventPersistence;
 import com.liferay.portal.kernel.service.persistence.UserFinder;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
@@ -357,6 +358,10 @@ public abstract class MBBanLocalServiceBaseImpl
 		throws PortalException {
 
 		return mbBanLocalService.deleteMBBan((MBBan)persistedModel);
+	}
+
+	public BasePersistence<MBBan> getBasePersistence() {
+		return mbBanPersistence;
 	}
 
 	/**
