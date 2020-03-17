@@ -43,11 +43,8 @@ public class BackgroundTaskExecutorConfigurator {
 		registerBackgroundTaskExecutor(
 			bundleContext, reindexPortalBackgroundTaskExecutor);
 
-		BackgroundTaskExecutor reindexSingleIndexerBackgroundTaskExecutor =
-			new ReindexSingleIndexerBackgroundTaskExecutor();
-
 		registerBackgroundTaskExecutor(
-			bundleContext, reindexSingleIndexerBackgroundTaskExecutor);
+			bundleContext, _reindexSingleIndexerBackgroundTaskExecutor);
 	}
 
 	@Deactivate
@@ -79,6 +76,10 @@ public class BackgroundTaskExecutorConfigurator {
 
 	@Reference
 	private PortalExecutorManager _portalExecutorManager;
+
+	@Reference
+	private ReindexSingleIndexerBackgroundTaskExecutor
+		_reindexSingleIndexerBackgroundTaskExecutor;
 
 	private final Set<ServiceRegistration<BackgroundTaskExecutor>>
 		_serviceRegistrations = new HashSet<>();
