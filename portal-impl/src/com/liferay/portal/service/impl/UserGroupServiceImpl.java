@@ -19,6 +19,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.SortFactoryUtil;
 import com.liferay.portal.kernel.security.membershippolicy.UserGroupMembershipPolicyUtil;
@@ -29,10 +31,14 @@ import com.liferay.portal.kernel.service.permission.PortalPermissionUtil;
 import com.liferay.portal.kernel.service.permission.TeamPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserGroupPermissionUtil;
 import com.liferay.portal.kernel.service.permission.UserPermissionUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.comparator.UserGroupIdComparator;
 import com.liferay.portal.service.base.UserGroupServiceBaseImpl;
+import com.liferay.portal.service.persistence.constants.UserGroupFinderConstants;
+import com.liferay.portal.util.PropsValues;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 
 import java.io.Serializable;
@@ -542,6 +548,33 @@ public class UserGroupServiceImpl extends UserGroupServiceBaseImpl {
 		}
 
 		return filteredGroups;
+	}
+
+	/**
+	 * @see UserGroupLocalServiceImpl#isUseCustomSQL
+	 */
+	protected boolean isUseCustomSQL(LinkedHashMap<String, Object> params) {
+		if (MapUtil.isEmpty(params)) {
+			return false;
+		}
+
+		Indexer<?> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			UserGroup.class);
+
+		if (indexer.isIndexerEnabled() &&
+			PropsValues.USER_GROUPS_SEARCH_WITH_INDEX &&
+			MapUtil.isEmpty(params)) {
+
+			return false;
+		}
+
+		for (String key : params.keySet()) {
+			if (ArrayUtil.contains(UserGroupFinderConstants.PARAM_KEYS, key)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
