@@ -20,8 +20,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.model.User;
@@ -30,6 +32,8 @@ import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
 import com.liferay.portal.kernel.service.UserGroupLocalServiceUtil;
@@ -114,6 +118,16 @@ public class LayoutsAdminDisplayContext extends BaseLayoutDisplayContext {
 
 	public UnicodeProperties getGroupTypeSettings() {
 		return _groupDisplayContextHelper.getGroupTypeSettings();
+	}
+
+	public LayoutSet getGuestGroupLayoutSet(long companyId)
+		throws PortalException {
+
+		Group group = GroupLocalServiceUtil.getGroup(
+			companyId, GroupConstants.GUEST);
+
+		return LayoutSetLocalServiceUtil.getLayoutSet(
+			group.getGroupId(), isPrivateLayout());
 	}
 
 	public List<LayoutDescription> getLayoutDescriptions() {
