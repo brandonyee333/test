@@ -27,7 +27,6 @@ definition {
 	}
 
 	@description = "This is a test for LPS-98303. Assert that a page that uses a default layout template, does not have a 'Nested Application' Widget, and is not set as customizable can be converted to a Content Page by default."
-	@ignore = "true"
 	@priority = "5"
 	test ConvertBasicWidgetPageToContentPage {
 
