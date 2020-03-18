@@ -171,7 +171,6 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(resourceBundle, "
 
 			<liferay-ui:search-iterator
 				markupView="lexicon"
-				searchResultCssClass="show-quick-actions-on-hover table table-autofit"
 			/>
 		</liferay-ui:search-container>
 

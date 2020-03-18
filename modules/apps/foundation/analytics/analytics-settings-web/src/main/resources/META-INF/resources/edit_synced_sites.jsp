@@ -91,9 +91,7 @@ String keywords = ParamUtil.getString(request, "keywords");
 				</liferay-frontend:management-bar-filters>
 
 				<liferay-frontend:management-bar-buttons>
-					<liferay-frontend:add-menu
-						inline="<%= true %>"
-					>
+					<liferay-frontend:add-menu>
 						<liferay-frontend:add-menu-item
 							title='<%= LanguageUtil.get(request, "new-property") %>'
 							url="<%= addNewChannelURL.toString() %>"
@@ -130,7 +128,6 @@ String keywords = ParamUtil.getString(request, "keywords");
 
 				<liferay-ui:search-iterator
 					markupView="lexicon"
-					searchResultCssClass="show-quick-actions-on-hover table table-autofit"
 				/>
 			</liferay-ui:search-container>
 		</c:otherwise>
