@@ -30,7 +30,6 @@ import com.liferay.osb.customer.rabbitmq.processor.OrganizationAssignmentMessage
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationUnassignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.OrganizationUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.ProvisioningCreateMessageProcessor;
-import com.liferay.osb.customer.rabbitmq.processor.ProvisioningTrialCreateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.ProvisioningUpdateMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.RoleAssignmentMessageProcessor;
 import com.liferay.osb.customer.rabbitmq.processor.RoleUnassignmentMessageProcessor;
@@ -174,15 +173,6 @@ public class CustomerMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(provisioningCreateMessageProcessor, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setProvisioningTrialCreateMessageProcessor(
-		ProvisioningTrialCreateMessageProcessor
-			provisioningTrialCreateMessageProcessor,
-		Map<String, Object> properties) {
-
-		addRoute(provisioningTrialCreateMessageProcessor, properties);
 	}
 
 	@Reference(unbind = "-")
