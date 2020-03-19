@@ -206,17 +206,8 @@ public class AnalyticsConfigurationTrackerImpl
 
 	@Override
 	public boolean isActive() {
-		try {
-			if (!_active && _hasConfiguration()) {
-				_active = true;
-			}
-		}
-		catch (Exception e) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Unable to check analytics configurations");
-			}
-
-			return false;
+		if (!_active && _hasConfiguration()) {
+			_active = true;
 		}
 
 		return _active;
@@ -468,7 +459,7 @@ public class AnalyticsConfigurationTrackerImpl
 		_addAnalyticsMessages(contacts);
 	}
 
-	private void _deactivate() throws Exception {
+	private void _deactivate() {
 		if (_active && !_hasConfiguration()) {
 			_active = false;
 		}
@@ -550,9 +541,19 @@ public class AnalyticsConfigurationTrackerImpl
 		}
 	}
 
-	private boolean _hasConfiguration() throws Exception {
-		Configuration[] configurations = _configurationAdmin.listConfigurations(
-			"(service.pid=" + AnalyticsConfiguration.class.getName() + "*)");
+	private boolean _hasConfiguration() {
+		Configuration[] configurations = null;
+
+		try {
+			configurations = _configurationAdmin.listConfigurations(
+				"(service.pid=" + AnalyticsConfiguration.class.getName() +
+					"*)");
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Unable to list analytics configurations", e);
+			}
+		}
 
 		if (configurations == null) {
 			return false;
