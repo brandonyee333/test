@@ -59,10 +59,6 @@ if (step == 1) {
 %>
 
 <aui:nav-bar cssClass="collapse-basic-search" markupView="lexicon">
-	<aui:nav cssClass="navbar-nav">
-		<aui:nav-item label="organization-roles" selected="<%= true %>" />
-	</aui:nav>
-
 	<aui:nav-bar-search>
 		<aui:form action="<%= portletURL.toString() %>" name="searchFm">
 			<liferay-ui:input-search
