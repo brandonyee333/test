@@ -693,10 +693,11 @@ public class AnalyticsConfigurationTrackerImpl
 					_addUsersAnalyticsMessages(users);
 				}
 				catch (Exception e) {
-					if (_log.isInfoEnabled()) {
-						_log.info(
+					if (_log.isWarnEnabled()) {
+						_log.warn(
 							"Unable to get organization users for " +
-								"organization " + organizationId);
+								"organization " + organizationId,
+							e);
 					}
 				}
 			}
