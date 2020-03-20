@@ -107,7 +107,7 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setQuantity(quantity);
 		offeringEntry.setStatus(status);
 
-		offeringEntryPersistence.update(offeringEntry);
+		offeringEntry = offeringEntryPersistence.update(offeringEntry);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			accountEntryId);
@@ -352,7 +352,7 @@ public class OfferingEntryLocalServiceImpl
 		offeringEntry.setSizing(sizing);
 		offeringEntry.setQuantity(quantity);
 
-		offeringEntryPersistence.update(offeringEntry);
+		offeringEntry = offeringEntryPersistence.update(offeringEntry);
 
 		accountEntryLocalService.updateSupportStatus(
 			offeringEntry.getAccountEntryId());
@@ -376,7 +376,7 @@ public class OfferingEntryLocalServiceImpl
 
 		offeringEntry.setStatus(status);
 
-		offeringEntryPersistence.update(offeringEntry);
+		offeringEntry = offeringEntryPersistence.update(offeringEntry);
 
 		accountEntryLocalService.recalculateHighestSupportResponse(
 			offeringEntry.getAccountEntryId());

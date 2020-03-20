@@ -537,7 +537,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		licenseKey.setActive(false);
 
-		licenseKeyPersistence.update(licenseKey);
+		licenseKey = licenseKeyPersistence.update(licenseKey);
 
 		AccountEntry accountEntry = licenseKey.getAccountEntry();
 
@@ -608,7 +608,7 @@ public class LicenseKeyLocalServiceImpl extends LicenseKeyLocalServiceBaseImpl {
 
 		lastLicenseKey.setActive(false);
 
-		licenseKeyPersistence.update(lastLicenseKey);
+		lastLicenseKey = licenseKeyPersistence.update(lastLicenseKey);
 
 		int productVersion = lastLicenseKey.getProductVersion();
 

@@ -63,7 +63,7 @@ public class PartnerWorkerLocalServiceImpl
 		partnerWorker.setPartnerEntryId(partnerEntryId);
 		partnerWorker.setRole(role);
 
-		partnerWorkerPersistence.update(partnerWorker);
+		partnerWorker = partnerWorkerPersistence.update(partnerWorker);
 
 		assignOrganizations(user.getUserId());
 
@@ -228,7 +228,7 @@ public class PartnerWorkerLocalServiceImpl
 
 		partnerWorker.setRole(role);
 
-		partnerWorkerPersistence.update(partnerWorker);
+		partnerWorker = partnerWorkerPersistence.update(partnerWorker);
 
 		assignOrganizations(partnerWorker.getUserId());
 

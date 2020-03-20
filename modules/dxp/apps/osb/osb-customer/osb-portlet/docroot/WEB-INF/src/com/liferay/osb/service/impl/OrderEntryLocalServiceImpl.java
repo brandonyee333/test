@@ -330,7 +330,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setActualStartDate(actualStartDate);
 		orderEntry.setStatus(status);
 
-		orderEntryPersistence.update(orderEntry);
+		orderEntry = orderEntryPersistence.update(orderEntry);
 
 		// External ids
 
@@ -466,7 +466,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 
 		orderEntry.setRenewCount(renewCount);
 
-		orderEntryPersistence.update(orderEntry);
+		orderEntry = orderEntryPersistence.update(orderEntry);
 
 		// Offering entries
 
@@ -650,7 +650,7 @@ public class OrderEntryLocalServiceImpl extends OrderEntryLocalServiceBaseImpl {
 		orderEntry.setProrated(prorated);
 		orderEntry.setActualStartDate(actualStartDate);
 
-		orderEntryPersistence.update(orderEntry);
+		orderEntry = orderEntryPersistence.update(orderEntry);
 
 		// External ids
 

@@ -304,7 +304,7 @@ for (SupportRegion supportRegion : supportRegions) {
 								}
 								%>
 
-								<div class="audit user-avatar" style="background-image: url('<%= portraitURL %>&height=30&width=30')"></div>
+								<div class="audit user-avatar" style="background-image: url('<%= portraitURL %>&height=30&width=30');"></div>
 
 								<span>
 									<%= HtmlUtil.escape(auditEntryUserName) %>

@@ -57,7 +57,7 @@ String salesforceOpportunityAction = (String)request.getAttribute("linked_object
 		</h3>
 
 		<%
-		long[] existingOrderEntryIds = StringUtil.split((String)request.getAttribute("linked_objects.jsp-existingOrderEntryIds"), 0l);
+		long[] existingOrderEntryIds = StringUtil.split((String)request.getAttribute("linked_objects.jsp-existingOrderEntryIds"), 0L);
 
 		for (long orderEntryId : existingOrderEntryIds) {
 			PortletURL portletURL = PortletURLFactoryUtil.create(request, OSBPortletKeys.OSB_ADMIN, layout.getPlid(), PortletRequest.RENDER_PHASE);

@@ -290,7 +290,7 @@ public class AccountCustomerLocalServiceImpl
 		accountCustomer.setRole(role);
 		accountCustomer.setClosedWatcher(closedWatcher);
 
-		accountCustomerPersistence.update(accountCustomer);
+		accountCustomer = accountCustomerPersistence.update(accountCustomer);
 
 		if (oldRole != role) {
 			long auditSetId = auditEntryLocalService.getNextAuditSetId(

@@ -528,7 +528,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					}
 
 					for (Object[] lifetimeValues : OfferingDefinitionConstants.LIFETIME_VALUES_ARRAY) {
-						long lifetimeValue = (Time.MINUTE * ((Integer)lifetimeValues[0]).intValue());
+						long lifetimeValue = Time.MINUTE * ((Integer)lifetimeValues[0]).intValue();
 						String lifetimeLabel = String.valueOf(lifetimeValues[1]);
 					%>
 
@@ -564,7 +564,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 					boolean customLifetime = true;
 
 					for (Object[] lifetimeValues : OfferingDefinitionConstants.LIFETIME_VALUES_ARRAY) {
-						long lifetimeValue = (Time.MINUTE * ((Integer)lifetimeValues[0]).intValue());
+						long lifetimeValue = Time.MINUTE * ((Integer)lifetimeValues[0]).intValue();
 						String lifetimeLabel = String.valueOf(lifetimeValues[1]);
 
 						if (supportLifetime == lifetimeValue) {

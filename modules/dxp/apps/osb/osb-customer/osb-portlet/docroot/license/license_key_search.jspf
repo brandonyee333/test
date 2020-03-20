@@ -155,7 +155,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:row>
 
 					<%
-					for (int j = (i * rowLength); j < ((i * rowLength) + rowLength); j++) {
+					for (int j = i * rowLength; j < ((i * rowLength) + rowLength); j++) {
 						if (j >= licenseEntries.size()) {
 							break;
 						}
@@ -193,7 +193,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:row>
 
 					<%
-					for (int j = (i * rowLength); j < ((i * rowLength) + rowLength); j++) {
+					for (int j = i * rowLength; j < ((i * rowLength) + rowLength); j++) {
 						if (j >= productEntries.size()) {
 							break;
 						}
@@ -235,7 +235,7 @@ Date lastEnabledDate = calendar.getTime();
 				<aui:row>
 
 					<%
-					for (int j = (i * rowLength); j < ((i * rowLength) + rowLength); j++) {
+					for (int j = i * rowLength; j < ((i * rowLength) + rowLength); j++) {
 						if (j >= productVersionTypes.size()) {
 							break;
 						}

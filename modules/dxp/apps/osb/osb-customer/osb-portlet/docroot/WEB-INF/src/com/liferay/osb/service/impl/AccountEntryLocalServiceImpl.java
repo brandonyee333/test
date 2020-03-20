@@ -398,7 +398,7 @@ public class AccountEntryLocalServiceImpl
 		if (countryId != 0) {
 			accountEntry.setCountryId(countryId);
 
-			accountEntryPersistence.update(accountEntry);
+			accountEntry = accountEntryPersistence.update(accountEntry);
 		}
 
 		// Account customer
@@ -1095,9 +1095,7 @@ public class AccountEntryLocalServiceImpl
 			user.getUserId(), user.getFullName(), oldAccountEntry,
 			accountEntry);
 
-		accountEntryPersistence.update(accountEntry);
-
-		return accountEntry;
+		return accountEntryPersistence.update(accountEntry);
 	}
 
 	public void updateAccountEntryWithWorkflow(
@@ -1464,7 +1462,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntry.setInstructions(instructions);
 
-		accountEntryPersistence.update(accountEntry);
+		accountEntry = accountEntryPersistence.update(accountEntry);
 
 		updateAuditEntry(
 			user.getUserId(), user.getFullName(), oldAccountEntry,
@@ -1792,7 +1790,7 @@ public class AccountEntryLocalServiceImpl
 
 		accountEntry.setStatus(getStatus(accountEntryId));
 
-		accountEntryPersistence.update(accountEntry);
+		accountEntry = accountEntryPersistence.update(accountEntry);
 
 		if (oldStatus != accountEntry.getStatus()) {
 			if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
