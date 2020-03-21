@@ -16,8 +16,6 @@ package com.liferay.lcs.client.internal.messaging.advisor;
 
 import com.liferay.lcs.client.event.LCSEvent;
 import com.liferay.lcs.client.event.LCSEventListener;
-import com.liferay.lcs.client.internal.advisor.MonitoringAdvisor;
-import com.liferay.lcs.client.internal.advisor.MonitoringAdvisorFactory;
 import com.liferay.lcs.client.internal.event.LCSEventManager;
 import com.liferay.portal.kernel.license.messaging.LCSPortletState;
 import com.liferay.portal.kernel.license.messaging.LicenseManagerMessageType;
@@ -123,11 +121,12 @@ public class MessageBusAdvisor implements LCSEventListener {
 
 		MessageListener messageListener = listenerDescriptor.listenerInstance;
 
-		MonitoringAdvisor monitoringAdvisor =
-			MonitoringAdvisorFactory.getInstance(messageListener.getClass());
-
-		if (monitoringAdvisor != null) {
-			monitoringAdvisor.activateMonitoring();
+		if (messageListener != null) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(
+					"Monitoring and analytics are deprecated for " +
+						messageListener.toString());
+			}
 		}
 	}
 

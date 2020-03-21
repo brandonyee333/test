@@ -22,7 +22,6 @@ import com.liferay.lcs.client.internal.messaging.advisor.MessageBusAdvisor;
 import com.liferay.lcs.client.internal.task.CommandMessageCheckTask;
 import com.liferay.lcs.client.internal.task.CommandQueueCheckTask;
 import com.liferay.lcs.client.internal.task.DownloadPatchTask;
-import com.liferay.lcs.client.internal.task.ExecuteScriptTask;
 import com.liferay.lcs.client.internal.task.HandshakeTask;
 import com.liferay.lcs.client.internal.task.HeartbeatTask;
 import com.liferay.lcs.client.internal.task.LCSClusterEntryTokenCheckTask;
@@ -30,7 +29,6 @@ import com.liferay.lcs.client.internal.task.ScheduleMessageListenersTask;
 import com.liferay.lcs.client.internal.task.SendInstallationEnvironmentTask;
 import com.liferay.lcs.client.internal.task.SendPatchesTask;
 import com.liferay.lcs.client.internal.task.SendPortalPropertiesTask;
-import com.liferay.lcs.client.internal.task.ServerMetricsTask;
 import com.liferay.lcs.client.internal.task.SignOffTask;
 import com.liferay.lcs.client.internal.task.Task;
 import com.liferay.lcs.client.internal.task.TaskDefinition;
@@ -39,7 +37,6 @@ import com.liferay.lcs.client.platform.gateway.LCSGatewayClient;
 import com.liferay.lcs.messaging.CheckHeartbeatCommandMessage;
 import com.liferay.lcs.messaging.CommandMessage;
 import com.liferay.lcs.messaging.DownloadPatchCommandMessage;
-import com.liferay.lcs.messaging.ExecuteScriptCommandMessage;
 import com.liferay.lcs.messaging.ScheduleMessageListenersCommandMessage;
 import com.liferay.lcs.messaging.ScheduleTasksCommandMessage;
 import com.liferay.lcs.messaging.SendInstallationEnvironmentCommandMessage;
@@ -189,10 +186,6 @@ public class TaskAdvisor {
 			return new DownloadPatchTask(
 				(DownloadPatchCommandMessage)commandMessage, _lcsGatewayClient);
 		}
-		else if (clazz.equals(ExecuteScriptCommandMessage.class)) {
-			return new ExecuteScriptTask(
-				(ExecuteScriptCommandMessage)commandMessage, _lcsGatewayClient);
-		}
 		else if (clazz.equals(ScheduleMessageListenersCommandMessage.class)) {
 			return new ScheduleMessageListenersTask(
 				_messageBusAdvisor,
@@ -235,17 +228,6 @@ public class TaskAdvisor {
 			if (serviceReferences.length > 0) {
 				Task task = (Task)_bundleContext.getService(
 					serviceReferences[0]);
-
-				if (task instanceof ServerMetricsTask) {
-					try {
-						((ServerMetricsTask)task).afterPropertiesSet();
-					}
-					catch (Exception e) {
-						_log.error("Unable to initialize scheduled task", e);
-
-						task = null;
-					}
-				}
 
 				return task;
 			}
