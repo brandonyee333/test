@@ -226,10 +226,7 @@ public class TaskAdvisor {
 					Task.class.getName(), filterExpression);
 
 			if (serviceReferences.length > 0) {
-				Task task = (Task)_bundleContext.getService(
-					serviceReferences[0]);
-
-				return task;
+				return (Task)_bundleContext.getService(serviceReferences[0]);
 			}
 		}
 		catch (InvalidSyntaxException ise) {
