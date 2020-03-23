@@ -684,9 +684,11 @@ public class JournalConverterImpl implements JournalConverter {
 						JournalArticleLocalServiceUtil.fetchLatestArticle(
 							resourcePrimKey);
 
-					String title = journalArticle.getTitle(defaultLocale);
+					if (journalArticle != null) {
+						String title = journalArticle.getTitle(defaultLocale);
 
-					jsonObject.put("title", title);
+						jsonObject.put("title", title);
+					}
 				}
 
 				serializable = jsonObject.toString();
