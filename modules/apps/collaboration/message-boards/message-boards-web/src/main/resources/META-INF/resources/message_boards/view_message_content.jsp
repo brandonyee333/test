@@ -25,6 +25,8 @@ MBMessageDisplay messageDisplay = (MBMessageDisplay)request.getAttribute(WebKeys
 
 MBTreeWalker mbTreeWalker = messageDisplay.getTreeWalker();
 
+MBMessage rootMessage = mbTreeWalker.getRoot();
+
 MBMessage message = messageDisplay.getMessage();
 
 MBCategory category = messageDisplay.getCategory();
@@ -82,18 +84,6 @@ if (portletTitleBasedNavigation) {
 				</c:if>
 
 				<c:if test="<%= !thread.isLocked() && MBMessagePermission.contains(permissionChecker, message, ActionKeys.PERMISSIONS) %>">
-
-					<%
-					MBMessage rootMessage = null;
-
-					if (message.isRoot()) {
-						rootMessage = message;
-					}
-					else {
-						rootMessage = mbTreeWalker.getRoot();
-					}
-					%>
-
 					<liferay-security:permissionsURL
 						modelResource="<%= MBMessage.class.getName() %>"
 						modelResourceDescription="<%= rootMessage.getSubject() %>"
@@ -243,7 +233,7 @@ if (portletTitleBasedNavigation) {
 
 		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER, mbTreeWalker);
 		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER_CATEGORY, category);
-		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER_CUR_MESSAGE, mbTreeWalker.getRoot());
+		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER_CUR_MESSAGE, rootMessage);
 		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER_DEPTH, Integer.valueOf(0));
 		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER_LAST_NODE, Boolean.valueOf(false));
 		request.setAttribute(WebKeys.MESSAGE_BOARDS_TREE_WALKER_SEL_MESSAGE, message);
@@ -260,7 +250,7 @@ if (portletTitleBasedNavigation) {
 
 		List<MBMessage> messages = mbTreeWalker.getMessages();
 
-		int[] range = mbTreeWalker.getChildrenRange(mbTreeWalker.getRoot());
+		int[] range = mbTreeWalker.getChildrenRange(rootMessage);
 
 		MBMessageIterator mbMessageIterator = new MBMessageIteratorImpl(messages, range[0], range[1]);
 
@@ -296,10 +286,6 @@ if (portletTitleBasedNavigation) {
 		%>
 
 	</div>
-
-	<%
-	MBMessage rootMessage = mbTreeWalker.getRoot();
-	%>
 
 	<c:if test="<%= !thread.isLocked() && !thread.isDraft() && MBCategoryPermission.contains(permissionChecker, scopeGroupId, rootMessage.getCategoryId(), ActionKeys.REPLY_TO_MESSAGE) %>">
 		<portlet:renderURL var="replyURL">
