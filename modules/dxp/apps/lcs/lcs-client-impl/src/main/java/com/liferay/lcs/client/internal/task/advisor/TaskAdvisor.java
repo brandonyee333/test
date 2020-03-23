@@ -50,7 +50,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Time;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -142,14 +141,24 @@ public class TaskAdvisor {
 			_log.trace("Task discovery for message: " + commandMessage);
 		}
 
-		TaskDefinition taskDefinition = new TaskDefinition(
-			0, 0, 0, _getTask(commandMessage));
+		List<TaskDefinition> taskDefinitions = new ArrayList<>();
 
-		if (_log.isInfoEnabled()) {
-			_log.info("New task definition " + taskDefinition);
+		try {
+			TaskDefinition taskDefinition = new TaskDefinition(
+				0, 0, 0, _getTask(commandMessage));
+
+			taskDefinitions.add(taskDefinition);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("New task definition " + taskDefinition);
+			}
+		}
+		catch (Throwable t) {
+			_log.error(
+				"Unable to create task definition for " + commandMessage, t);
 		}
 
-		return Arrays.asList(taskDefinition);
+		return taskDefinitions;
 	}
 
 	public TaskDefinition getUptimeTaskDefinition() {
