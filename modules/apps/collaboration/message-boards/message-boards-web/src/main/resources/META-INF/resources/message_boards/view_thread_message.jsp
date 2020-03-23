@@ -221,7 +221,7 @@ if (message.isAnonymous()) {
 
 					boolean showAnswerFlag = false;
 
-					if (!message.isRoot()) {
+					if (thread.isQuestion() && !message.isRoot()) {
 						MBMessageDisplay messageDisplay = (MBMessageDisplay)request.getAttribute(WebKeys.MESSAGE_BOARDS_MESSAGE_DISPLAY);
 
 						MBMessage rootMessage;
@@ -235,7 +235,7 @@ if (message.isAnonymous()) {
 							rootMessage = MBMessageLocalServiceUtil.getMessage(thread.getRootMessageId());
 						}
 
-						showAnswerFlag = thread.isQuestion() && MBMessagePermission.contains(permissionChecker, rootMessage, ActionKeys.UPDATE);
+						showAnswerFlag = MBMessagePermission.contains(permissionChecker, rootMessage, ActionKeys.UPDATE);
 					}
 					%>
 
