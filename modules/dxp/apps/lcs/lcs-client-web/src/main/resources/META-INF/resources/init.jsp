@@ -29,6 +29,7 @@ page import="com.liferay.lcs.client.constants.LCSClientConstants" %><%@
 page import="com.liferay.lcs.client.constants.LCSClientWebKeys" %><%@
 page import="com.liferay.lcs.client.platform.gateway.LCSGatewayClient" %><%@
 page import="com.liferay.lcs.client.web.internal.util.LCSInfo" %><%@
+page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.servlet.SessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatConstants" %><%@
@@ -37,7 +38,6 @@ page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
 page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
-page import="com.liferay.portal.kernel.util.StringPool" %><%@
 page import="com.liferay.portal.kernel.util.Validator" %>
 
 <%@ page import="java.text.Format" %>
