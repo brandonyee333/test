@@ -104,8 +104,14 @@ public class MessageBusAdvisor implements LCSEventListener {
 			return;
 		}
 
-		listenerDescriptor.listenerInstance = _getMessageListener(
+		MessageListener messageListener = _getMessageListener(
 			listenerDescriptor.listenerName);
+
+		if (messageListener == null) {
+			return;
+		}
+
+		listenerDescriptor.listenerInstance = messageListener;
 
 		_messageBus.registerMessageListener(
 			listenerDescriptor.destinationName,
@@ -119,14 +125,10 @@ public class MessageBusAdvisor implements LCSEventListener {
 					listenerDescriptor.listenerName);
 		}
 
-		MessageListener messageListener = listenerDescriptor.listenerInstance;
-
-		if (messageListener != null) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Monitoring and analytics are deprecated for " +
-						messageListener.toString());
-			}
+		if (_log.isWarnEnabled()) {
+			_log.warn(
+				"Monitoring and analytics are deprecated for " +
+					messageListener.toString());
 		}
 	}
 
@@ -166,13 +168,26 @@ public class MessageBusAdvisor implements LCSEventListener {
 					MessageListener.class.getName(),
 					"(lcs.client.message.listener.name=" + taskName + ")");
 
-			if (serviceReferences.length > 0) {
+			if ((serviceReferences != null) && (serviceReferences.length > 0)) {
 				return (MessageListener)_bundleContext.getService(
 					serviceReferences[0]);
 			}
 		}
 		catch (InvalidSyntaxException ise) {
 			throw new IllegalArgumentException(ise);
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append("Unable to create the message listener for ");
+		sb.append(taskName);
+		sb.append(". This may be either because LCS does not support ");
+		sb.append("execution of this task in your installation environment ");
+		sb.append("or task is deprecated. Please see LCS documentation or ");
+		sb.append("contact Liferay support.");
+
+		if (_log.isWarnEnabled()) {
+			_log.warn(sb.toString());
 		}
 
 		return null;

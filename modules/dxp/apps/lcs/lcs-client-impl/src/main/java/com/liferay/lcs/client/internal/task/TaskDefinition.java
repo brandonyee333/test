@@ -26,6 +26,11 @@ public class TaskDefinition {
 	public TaskDefinition(
 		long initialDelay, long period, int priority, Task task) {
 
+		if (task == null) {
+			throw new IllegalArgumentException(
+				"Unable to create task definition if task is null");
+		}
+
 		_initialDelay = initialDelay;
 		_period = period;
 		_priority = priority;

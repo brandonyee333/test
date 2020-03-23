@@ -225,7 +225,7 @@ public class TaskAdvisor {
 				_bundleContext.getServiceReferences(
 					Task.class.getName(), filterExpression);
 
-			if (serviceReferences.length > 0) {
+			if ((serviceReferences != null) && (serviceReferences.length > 0)) {
 				return (Task)_bundleContext.getService(serviceReferences[0]);
 			}
 		}
@@ -233,13 +233,14 @@ public class TaskAdvisor {
 			throw new IllegalArgumentException(ise);
 		}
 
-		StringBundler sb = new StringBundler(5);
+		StringBundler sb = new StringBundler(6);
 
 		sb.append("Unable to create the scheduled task ");
 		sb.append(taskName);
-		sb.append(". This may be because LCS does not support execution of ");
-		sb.append("this task in your installation environment. Please see ");
-		sb.append("LCS documentation or contact Liferay support.");
+		sb.append(". This may be either because LCS does not support ");
+		sb.append("execution of this task in your installation environment ");
+		sb.append("or task is deprecated. Please see LCS documentation or ");
+		sb.append("contact Liferay support.");
 
 		if (_log.isWarnEnabled()) {
 			_log.warn(sb.toString());
@@ -251,16 +252,20 @@ public class TaskAdvisor {
 	private TaskDefinition _getTaskDefinition(
 		String priorityKey, Map<String, String> schedulerContext) {
 
+		Task task = _getTask(
+			schedulerContext.get("taskName"), "lcs.client.scheduled.task.name");
+
+		if (task == null) {
+			return null;
+		}
+
 		return new TaskDefinition(
 			GetterUtil.getInteger(schedulerContext.get("initialDelay")) *
 				Time.SECOND,
 			GetterUtil.getInteger(
 				schedulerContext.get("interval"), _DEFAULT_PERIOD) *
 					Time.SECOND,
-			GetterUtil.getInteger(priorityKey),
-			_getTask(
-				schedulerContext.get("taskName"),
-				"lcs.client.scheduled.task.name"));
+			GetterUtil.getInteger(priorityKey), task);
 	}
 
 	private List<TaskDefinition> _getTaskDefinitions(
@@ -291,6 +296,16 @@ public class TaskAdvisor {
 			for (Map<String, String> schedulerContext : schedulerContexts) {
 				TaskDefinition taskDefinition = _getTaskDefinition(
 					priorityKey, schedulerContext);
+
+				if (taskDefinition == null) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(
+							"Unable to create task definition for " +
+								schedulerContext.get("taskName"));
+					}
+
+					continue;
+				}
 
 				if (_log.isInfoEnabled()) {
 					_log.info("New task definition " + taskDefinition);
