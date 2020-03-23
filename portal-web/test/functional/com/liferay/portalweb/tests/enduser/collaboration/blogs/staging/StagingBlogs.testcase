@@ -313,10 +313,6 @@ definition {
 
 		Staging.gotoPublishToLive();
 
-		Staging.configurePublishToLive(
-			checkPageName = "Blogs Page 2",
-			contentDateRange = "All");
-
 		Staging.publishToLive();
 
 		Navigator.gotoSitePage(
