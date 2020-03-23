@@ -25,10 +25,10 @@ import com.liferay.lcs.client.platform.portal.LCSClusterNode;
 import com.liferay.lcs.client.platform.portal.LCSClusterNodeClient;
 import com.liferay.lcs.client.platform.portal.LCSProject;
 import com.liferay.lcs.client.platform.portal.LCSProjectClient;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.PortletQName;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
 import java.util.Iterator;

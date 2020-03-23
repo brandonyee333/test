@@ -14,9 +14,9 @@
 
 package com.liferay.lcs.client.internal.advisor;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
