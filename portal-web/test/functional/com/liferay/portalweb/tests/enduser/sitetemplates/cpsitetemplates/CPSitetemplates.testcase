@@ -135,6 +135,8 @@ definition {
 
 	@priority = "4"
 	test AddSiteTemplateDisablePageModification {
+		property portal.upstream = "quarantine";
+
 		ProductMenu.gotoPortlet(
 			category = "Sites",
 			panel = "Control Panel",
