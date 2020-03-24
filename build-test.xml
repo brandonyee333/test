@@ -4122,7 +4122,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 										</parallel>
 									</then>
 									<else>
-										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" resolveexecutable="true">
+										<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" output="app.server.log" resolveexecutable="true">
 											<arg line="${app.server.start.executable.arg.line}" />
 											<env key="JAVA_HOME" path="${java.jdk.home}" />
 										</exec>
@@ -4166,7 +4166,7 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 											</exec>
 										</then>
 										<else>
-											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" resolveexecutable="true">
+											<exec dir="${test.app.server.bin.dir}" executable="${app.server.start.executable}" failonerror="true" output="app.server.log" resolveexecutable="true">
 												<arg line="${app.server.start.executable.arg.line}" />
 												<env key="JAVA_HOME" path="${java.jdk.home}" />
 											</exec>
@@ -4561,13 +4561,13 @@ org.apache.catalina.startup.ClassLoaderFactory.level=INFO]]>
 
 							<get-java-jdk-home type="${java.jdk.bundle.type}" version="${java.jdk.bundle.version}" />
 
-							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
+							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="app.server.log" resolveexecutable="true">
 								<arg line="${app.server.stop.executable.arg.line}" />
 								<env key="JAVA_HOME" path="${java.jdk.home}" />
 							</exec>
 						</then>
 						<else>
-							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" resolveexecutable="true">
+							<exec dir="${test.app.server.bin.dir}" executable="${app.server.stop.executable}" output="app.server.log" resolveexecutable="true">
 								<arg line="${app.server.stop.executable.arg.line}" />
 							</exec>
 						</else>
