@@ -12,177 +12,147 @@
  * details.
  */
 
-import '../FieldBase/FieldBase.es';
-
 import './FieldsetRegister.soy';
 
-import Component from 'metal-component';
-import Soy from 'metal-soy';
-import {Config} from 'metal-state';
+import classnames from 'classnames';
+import React, {useEffect, useRef} from 'react';
 
-import templates from './Fieldset.soy';
+import {FieldBaseProxy} from '../FieldBase/ReactFieldBase.es';
+import getConnectedReactComponentAdapter from '../util/ReactComponentAdapter.es';
+import {connectStore} from '../util/connectStore.es';
+import FieldType from './FieldType.es';
+import templates from './FieldsetAdapter.soy';
 
-class Fieldset extends Component {
-	_handleFieldEdited(event) {
-		this.emit('fieldEdited', event);
+class NoRender extends React.Component {
+	shouldComponentUpdate() {
+		return false;
+	}
+
+	render() {
+		const {forwardRef, ...otherProps} = this.props;
+
+		return <div ref={forwardRef} {...otherProps} />;
 	}
 }
 
-Fieldset.STATE = {
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(number|undefined)}
-	 */
+// This is a proxy to maintain compatibility with the previous Fieldset, being able to
+// call any registered field type. This should probably be removed by a more friendly
+// implementation when we remove the implementation of calling the fields dynamically
+// through soy.
+const FieldTypeProxy = ({context, events, field, fieldIndex, spritemap}) => {
+	const component = useRef(null);
+	const container = useRef(null);
 
-	columnSize: Config.number(),
+	useEffect(() => {
+		if (!component.current && container.current) {
+			component.current = new FieldType(
+				{
+					events,
+					field,
+					fieldIndex,
+					parentContext: context,
+					spritemap,
+				},
+				container.current
+			);
+		}
 
-	/**
-	 * @default false
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?bool}
-	 */
+		return () => {
+			if (component.current) {
+				component.current.dispose();
+			}
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
-	evaluable: Config.bool().value(false),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	fieldName: Config.string(),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	label: Config.string(),
-
-	/**
-	 * @default {}
-	 * @instance
-	 * @memberof Geolocation
-	 * @type {?(object|undefined)}
-	 */
-
-	localizedValue: Config.object().value({}),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	name: Config.string().required(),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(array|undefined)}
-	 */
-
-	nestedFields: Config.array(),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	placeholder: Config.string(),
-
-	/**
-	 * @default false
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?bool}
-	 */
-
-	readOnly: Config.bool().value(false),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(bool|undefined)}
-	 */
-
-	repeatable: Config.bool(),
-
-	/**
-	 * @default false
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(bool|undefined)}
-	 */
-
-	required: Config.bool().value(false),
-
-	/**
-	 * @default true
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(bool|undefined)}
-	 */
-
-	showLabel: Config.bool().value(true),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	spritemap: Config.string(),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	tip: Config.string(),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	tooltip: Config.string(),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	type: Config.string().value('fieldset'),
-
-	/**
-	 * @default undefined
-	 * @instance
-	 * @memberof Fieldset
-	 * @type {?(string|undefined)}
-	 */
-
-	value: Config.string().value(''),
+	return <NoRender forwardRef={container} />;
 };
 
-Soy.register(Fieldset, templates);
+const Fieldset = ({
+	columnSize,
+	context,
+	fields,
+	label,
+	onChange,
+	showLabel,
+	spritemap,
+}) => (
+	<fieldset className="border-bottom border-top">
+		{showLabel && label && <legend>{label}</legend>}
 
-export default Fieldset;
+		<div className="form-group-autofit">
+			{fields.map((field, index) => (
+				<div
+					className={classnames(
+						`col-md-${columnSize}`,
+						'form-group-item',
+						{
+							hide: !field.visible,
+						}
+					)}
+					key={`${index}${field.fieldName}`}
+				>
+					<div
+						className={classnames(
+							'clearfix lfr-ddm-form-field-container',
+							{
+								hide: field.visible === false,
+							}
+						)}
+					>
+						<FieldTypeProxy
+							context={context}
+							events={{
+								fieldEdited: onChange,
+							}}
+							field={field}
+							fieldIndex={index}
+							spritemap={spritemap}
+						/>
+					</div>
+				</div>
+			))}
+		</div>
+	</fieldset>
+);
+
+const FieldsetProxy = connectStore(
+	({
+		columnSize,
+		context,
+		emit,
+		label,
+		nestedFields,
+		showLabel,
+		spritemap,
+		...otherProps
+	}) => (
+		<div className="liferay-ddm-form-field-fieldset">
+			<FieldBaseProxy
+				{...otherProps}
+				showLabel={false}
+				spritemap={spritemap}
+			>
+				<Fieldset
+					columnSize={columnSize}
+					context={context}
+					fields={nestedFields}
+					label={label}
+					onChange={event =>
+						emit('fieldEdited', event.originalEvent, event.value)
+					}
+					showLabel={showLabel}
+					spritemap={spritemap}
+				/>
+			</FieldBaseProxy>
+		</div>
+	)
+);
+
+const ReactFieldsetAdapter = getConnectedReactComponentAdapter(
+	FieldsetProxy,
+	templates
+);
+
+export {ReactFieldsetAdapter};
+export default ReactFieldsetAdapter;

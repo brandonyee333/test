@@ -1,0 +1,18 @@
+{namespace FieldType}
+
+{template .render}
+	{@param field: ?}
+	{@param fieldIndex: int}
+	{@param? _handleFieldEdited: ?}
+	{@param? spritemap: string}
+
+	{let $variant: $field.type /}
+
+	{delcall PageRenderer.RegisterFieldType data="$field" variant="$variant"}
+		{param events: [
+			'fieldEdited': $_handleFieldEdited
+		] /}
+		{param ref: 'field_type' + $fieldIndex + $field.fieldName /}
+		{param spritemap: $spritemap /}
+	{/delcall}
+{/template}
