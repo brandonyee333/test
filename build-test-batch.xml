@@ -1391,6 +1391,14 @@ app.server.type=@{app.server.type}]]></echo>
 								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
 							</gradle-execute>
 
+							<gradle-execute dir="modules" task=":apps:foundation:petra:petra-encryptor:deploy">
+								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+							</gradle-execute>
+
+							<gradle-execute dir="modules" task=":apps:foundation:petra:petra-xml:deploy">
+								<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+							</gradle-execute>
+
 							<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
 
 							<ant dir="portal-test" inheritAll="false" target="jar" />
