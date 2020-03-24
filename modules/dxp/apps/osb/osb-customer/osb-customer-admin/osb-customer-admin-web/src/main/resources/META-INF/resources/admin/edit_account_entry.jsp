@@ -242,16 +242,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		</tr>
 		<tr>
 			<td>
-				<strong><liferay-ui:message key="additional-notes" /></strong>
-			</td>
-			<td>
-				<c:if test="<%= (koroneikiAccount != null) && Validator.isNotNull(koroneikiAccount.getNotes()) %>">
-					<%= StringUtil.replace(HtmlUtil.escape(koroneikiAccount.getNotes()), CharPool.NEW_LINE, "<br />") %>
-				</c:if>
-			</td>
-		</tr>
-		<tr>
-			<td>
 				<strong><liferay-ui:message key="addresses" /></strong>
 			</td>
 			<td>
