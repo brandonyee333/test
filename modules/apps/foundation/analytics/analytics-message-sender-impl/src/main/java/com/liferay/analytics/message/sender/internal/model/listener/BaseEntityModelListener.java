@@ -250,7 +250,7 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 				return true;
 			}
 		}
-		catch (Exception exception) {
+		catch (Exception e) {
 			if (_log.isWarnEnabled()) {
 				_log.warn("Unable to get expando table " + tableId, e);
 			}
@@ -595,9 +595,9 @@ public abstract class BaseEntityModelListener<T extends BaseModel<T>>
 	private static final List<String> _userAttributeNames = Arrays.asList(
 		"agreedToTermsOfUse", "comments", "companyId", "contactId",
 		"createDate", "defaultUser", "emailAddress", "emailAddressVerified",
-		"expando", "facebookId", "firstName", "googleUserId", "greeting",
-		"jobTitle", "languageId", "lastName", "ldapServerId", "memberships",
-		"middleName", "modifiedDate", "openId", "portraitId", "screenName",
-		"status", "timeZoneId", "uuid");
+		"expando", "externalReferenceCode", "facebookId", "firstName",
+		"googleUserId", "greeting", "jobTitle", "languageId", "lastName",
+		"ldapServerId", "memberships", "middleName", "modifiedDate", "openId",
+		"portraitId", "screenName", "status", "timeZoneId", "uuid");
 
 }
