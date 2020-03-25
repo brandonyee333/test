@@ -21,6 +21,8 @@ import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.service.permission.GroupPermissionUtil;
 import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -133,7 +135,20 @@ public class RSSAction extends BaseRSSStrutsAction {
 						themeDisplay.getSiteGroupId(),
 						BlogsConstants.SERVICE_NAME));
 
-		return blogsGroupServiceOverriddenConfiguration.enableRss();
+		if (!blogsGroupServiceOverriddenConfiguration.enableRss()) {
+			return false;
+		}
+
+		long groupId = ParamUtil.getLong(request, "groupId");
+
+		if (GroupPermissionUtil.contains(
+				themeDisplay.getPermissionChecker(), groupId,
+				ActionKeys.VIEW)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	@Reference(unbind = "-")
