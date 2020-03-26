@@ -45,7 +45,13 @@ export const ContainerBackgroundImageConfiguration = ({
 				<ClaySelectWithOption
 					aria-label={Liferay.Language.get('image-source')}
 					id="containerBackgroundImage"
-					onChange={({target: {value}}) => setImageSource(value)}
+					onChange={({target: {value}}) => {
+						setImageSource(value);
+
+						onValueChange({
+							backgroundImage: {},
+						});
+					}}
 					options={[
 						{
 							label: Liferay.Language.get('manual-selection'),
