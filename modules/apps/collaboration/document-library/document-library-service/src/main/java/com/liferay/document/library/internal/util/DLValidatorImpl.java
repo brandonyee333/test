@@ -110,6 +110,9 @@ public final class DLValidatorImpl implements DLValidator {
 	public void validateFileExtension(String fileName)
 		throws FileExtensionException {
 
+		String fileNameExtension = StringUtil.toLowerCase(
+			FileUtil.getExtension(fileName));
+
 		boolean validFileExtension = false;
 
 		String[] fileExtensions = PrefsPropsUtil.getStringArray(
@@ -117,7 +120,8 @@ public final class DLValidatorImpl implements DLValidator {
 
 		for (String fileExtension : fileExtensions) {
 			if (StringPool.STAR.equals(fileExtension) ||
-				_endsWith(fileName, fileExtension)) {
+				StringUtil.equals(
+					fileNameExtension, StringUtil.toLowerCase(fileExtension))) {
 
 				validFileExtension = true;
 
@@ -269,17 +273,6 @@ public final class DLValidatorImpl implements DLValidator {
 		}
 
 		return title;
-	}
-
-	private boolean _endsWith(String s, String end) {
-		if (s.length() < end.length()) {
-			return false;
-		}
-
-		String tail = s.substring(s.length() - end.length());
-
-		return StringUtil.equals(
-			StringUtil.toLowerCase(tail), StringUtil.toLowerCase(end));
 	}
 
 }
