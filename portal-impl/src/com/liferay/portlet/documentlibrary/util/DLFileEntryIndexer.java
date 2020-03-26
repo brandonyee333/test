@@ -25,8 +25,6 @@ import com.liferay.document.library.kernel.service.DLFileEntryLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFileEntryMetadataLocalServiceUtil;
 import com.liferay.document.library.kernel.service.DLFolderLocalServiceUtil;
 import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
-import com.liferay.dynamic.data.mapping.kernel.DDMStructure;
-import com.liferay.dynamic.data.mapping.kernel.DDMStructureManager;
 import com.liferay.dynamic.data.mapping.kernel.DDMStructureManagerUtil;
 import com.liferay.dynamic.data.mapping.kernel.StorageEngineManagerUtil;
 import com.liferay.expando.kernel.model.ExpandoBridge;
@@ -61,7 +59,6 @@ import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Summary;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.QueryFilter;
-import com.liferay.portal.kernel.search.generic.BooleanQueryImpl;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
@@ -228,55 +225,11 @@ public class DLFileEntryIndexer
 		if (Validator.isNotNull(ddmStructureFieldName) &&
 			Validator.isNotNull(ddmStructureFieldValue)) {
 
-			String[] ddmStructureFieldNameParts = StringUtil.split(
-				ddmStructureFieldName,
-				DDMStructureManager.STRUCTURE_INDEXER_FIELD_SEPARATOR);
+			QueryFilter queryFilter = ddmIndexer.createFieldValueQueryFilter(
+				ddmStructureFieldName, ddmStructureFieldValue,
+				searchContext.getLocale());
 
-			DDMStructure ddmStructure = DDMStructureManagerUtil.getStructure(
-				GetterUtil.getLong(ddmStructureFieldNameParts[2]));
-
-			String fieldName = StringUtil.replaceLast(
-				ddmStructureFieldNameParts[3],
-				StringPool.UNDERLINE.concat(
-					LocaleUtil.toLanguageId(searchContext.getLocale())),
-				StringPool.BLANK);
-
-			try {
-				ddmStructureFieldValue =
-					DDMStructureManagerUtil.getIndexedFieldValue(
-						ddmStructureFieldValue,
-						ddmStructure.getFieldType(fieldName));
-			}
-			catch (Exception e) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(e, e);
-				}
-			}
-
-			BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-			if (ddmStructureFieldValue instanceof String[]) {
-				String[] ddmStructureFieldValueArray =
-					(String[])ddmStructureFieldValue;
-
-				for (String ddmStructureFieldValueString :
-						ddmStructureFieldValueArray) {
-
-					booleanQuery.addRequiredTerm(
-						ddmStructureFieldName,
-						StringPool.QUOTE + ddmStructureFieldValueString +
-							StringPool.QUOTE);
-				}
-			}
-			else {
-				booleanQuery.addRequiredTerm(
-					ddmStructureFieldName,
-					StringPool.QUOTE + ddmStructureFieldValue +
-						StringPool.QUOTE);
-			}
-
-			booleanFilter.add(
-				new QueryFilter(booleanQuery), BooleanClauseOccur.MUST);
+			contextBooleanFilter.add(queryFilter, BooleanClauseOccur.MUST);
 		}
 
 		String[] mimeTypes = (String[])searchContext.getAttribute("mimeTypes");
