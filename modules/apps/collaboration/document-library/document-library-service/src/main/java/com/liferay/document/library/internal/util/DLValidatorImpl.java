@@ -110,15 +110,15 @@ public final class DLValidatorImpl implements DLValidator {
 	public void validateFileExtension(String fileName)
 		throws FileExtensionException {
 
-		String fileNameExtension = StringUtil.toLowerCase(
-			FileUtil.getExtension(fileName));
-
 		boolean validFileExtension = false;
 
 		String[] fileExtensions = PrefsPropsUtil.getStringArray(
 			PropsKeys.DL_FILE_EXTENSIONS, StringPool.COMMA);
 
 		for (String fileExtension : fileExtensions) {
+			String fileNameExtension = StringUtil.toLowerCase(
+				FileUtil.getExtension(fileName));
+
 			if (StringPool.STAR.equals(fileExtension) ||
 				StringUtil.equals(
 					fileNameExtension, StringUtil.toLowerCase(fileExtension))) {
