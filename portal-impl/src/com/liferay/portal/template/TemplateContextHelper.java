@@ -189,7 +189,7 @@ public class TemplateContextHelper {
 		Map<String, Object> helperUtilities = new HashMap<>();
 
 		populateCommonHelperUtilities(helperUtilities);
-		populateExtraHelperUtilities(helperUtilities);
+		populateExtraHelperUtilities(helperUtilities, restricted);
 
 		if (restricted) {
 			Set<String> restrictedVariables = getRestrictedVariables();
@@ -853,6 +853,10 @@ public class TemplateContextHelper {
 	}
 
 	protected void populateExtraHelperUtilities(Map<String, Object> variables) {
+	}
+
+	protected void populateExtraHelperUtilities(
+		Map<String, Object> variables, boolean restricted) {
 	}
 
 	protected void prepareTiles(
