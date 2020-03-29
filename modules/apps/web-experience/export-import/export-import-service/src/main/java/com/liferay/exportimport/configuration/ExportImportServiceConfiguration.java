@@ -50,4 +50,10 @@ public interface ExportImportServiceConfiguration {
 	)
 	public boolean validateLayoutReferences();
 
+	@Meta.AD(
+		deflt = "true", description = "validate-missing-references-help",
+		name = "validate-missing-references", required = false
+	)
+	public boolean validateMissingReferences();
+
 }
