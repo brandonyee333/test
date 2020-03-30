@@ -30,6 +30,8 @@ import com.liferay.portal.search.elasticsearch.internal.cluster.ClusterSettingsC
 import com.liferay.portal.search.elasticsearch.internal.index.IndexFactory;
 import com.liferay.portal.search.elasticsearch.settings.SettingsContributor;
 
+import io.netty.buffer.ByteBufUtil;
+
 import java.io.IOException;
 
 import java.net.InetAddress;
@@ -59,8 +61,6 @@ import org.elasticsearch.threadpool.ThreadPool;
 import org.elasticsearch.transport.TransportChannel;
 import org.elasticsearch.transport.TransportRequestHandler;
 import org.elasticsearch.transport.TransportService;
-
-import org.jboss.netty.util.internal.ByteBufferUtil;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -92,14 +92,13 @@ public class EmbeddedElasticsearchConnection
 		}
 
 		try {
-			Class.forName(ByteBufferUtil.class.getName());
+			Class.forName(ByteBufUtil.class.getName());
 		}
 		catch (ClassNotFoundException cnfe) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
-						"Unable to preload ",
-						String.valueOf(ByteBufferUtil.class),
+						"Unable to preload ", String.valueOf(ByteBufUtil.class),
 						" to prevent Netty shutdown concurrent class loading ",
 						"interruption issue"),
 					cnfe);
