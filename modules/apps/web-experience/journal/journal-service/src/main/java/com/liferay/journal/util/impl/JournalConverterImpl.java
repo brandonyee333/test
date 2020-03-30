@@ -655,23 +655,6 @@ public class JournalConverterImpl implements JournalConverter {
 
 			serializable = jsonObject.toString();
 		}
-		else if (DDMImpl.TYPE_SELECT.equals(type)) {
-			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
-
-			List<Element> optionElements = dynamicContentElement.elements(
-				"option");
-
-			if (!optionElements.isEmpty()) {
-				for (Element optionElement : optionElements) {
-					jsonArray.put(optionElement.getText());
-				}
-			}
-			else {
-				jsonArray.put(dynamicContentElement.getText());
-			}
-
-			serializable = jsonArray.toString();
-		}
 		else if (DDMImpl.TYPE_DDM_JOURNAL_ARTICLE.equals(type)) {
 			try {
 				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
@@ -697,6 +680,23 @@ public class JournalConverterImpl implements JournalConverter {
 				serializable = FieldConstants.getSerializable(
 					dataType, dynamicContentElement.getText());
 			}
+		}
+		else if (DDMImpl.TYPE_SELECT.equals(type)) {
+			JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+			List<Element> optionElements = dynamicContentElement.elements(
+				"option");
+
+			if (!optionElements.isEmpty()) {
+				for (Element optionElement : optionElements) {
+					jsonArray.put(optionElement.getText());
+				}
+			}
+			else {
+				jsonArray.put(dynamicContentElement.getText());
+			}
+
+			serializable = jsonArray.toString();
 		}
 		else {
 			serializable = FieldConstants.getSerializable(
