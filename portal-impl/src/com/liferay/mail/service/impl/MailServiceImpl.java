@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
@@ -227,11 +228,9 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		properties.setProperty(transportPrefix + "password", smtpPassword);
 		properties.setProperty(
 			transportPrefix + "port", String.valueOf(smtpPort));
-
 		properties.setProperty(
 			transportPrefix + "starttls.enable",
 			String.valueOf(smtpStartTlsEnable));
-
 		properties.setProperty(transportPrefix + "user", smtpUser);
 
 		// Advanced
@@ -260,7 +259,7 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		if (smtpAuth) {
 			_session = Session.getInstance(
 				properties,
-				new javax.mail.Authenticator() {
+				new Authenticator() {
 
 					protected PasswordAuthentication
 						getPasswordAuthentication() {
