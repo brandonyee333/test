@@ -25,6 +25,8 @@ Import-Package:\
 	\
 	!groovy.*,\
 	\
+	!io.netty.internal.*,\
+	\
 	!jline.*,\
 	\
 	!junit.*,\
