@@ -156,12 +156,8 @@ AUI.add(
 					if (currentInputLocalized) {
 						var trigger = clone.one('button');
 
-						var id = `#${currentInputLocalized.get(
-							'id'
-						)}PaletteBoundingBox`;
-
-						if (!node.one(id) && A.one(id)) {
-							var palette = A.one(id);
+						if (instance._activeMenuId) {
+							var palette = A.one(instance._activeMenuId);
 
 							var list = A.Node.create(
 								'<ul class="dropdown-menu dropdown-menu-left-side"></ul>'
@@ -544,6 +540,12 @@ AUI.add(
 					var instance = this;
 
 					instance.config = config;
+
+					Liferay.on('dropdownShow', event => {
+						if (event.id) {
+							instance._activeMenuId = '#' + event.id;
+						}
+					})
 				},
 
 				render() {
@@ -716,6 +718,8 @@ AUI.add(
 					return serializedData.join();
 				},
 			},
+
+			_activeMenuId : null,
 		});
 
 		Liferay.AutoFields = AutoFields;
