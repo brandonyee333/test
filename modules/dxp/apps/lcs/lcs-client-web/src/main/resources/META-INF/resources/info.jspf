@@ -29,9 +29,5 @@
 		<liferay-ui:message arguments="<%= new Object[] {LCSInfo.LRDCOM_LCS_PRODUCT_PAGE_URL, LCSInfo.getUserDocumentationUrl(dxpMajorVersion)} %>" key="liferay-connected-services-is-a-set-of-online-tools-and-services-that-lets-you-manage-and-monitor-your-liferay-installations" />
 	</p>
 
-	<%
-	String lcsPortalURL = GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PORTAL_URL));
-	%>
-
-	<aui:a cssClass="btn btn-primary" href="<%= lcsPortalURL %>" label="get-started" target="_blank" />
+	<aui:a cssClass="btn btn-primary" href="<%= GetterUtil.getString(request.getAttribute(LCSClientWebKeys.LCS_PORTAL_URL)) %>" label="get-started" target="_blank" />
 </div>

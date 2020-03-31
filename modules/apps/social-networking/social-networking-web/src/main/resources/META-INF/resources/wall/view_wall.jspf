@@ -173,8 +173,6 @@
 								else {
 									postMessage = LanguageUtil.format(request, "write-on-x-wall", HtmlUtil.escape(wallUser.getFirstName()), false);
 								}
-
-								String postHREF = themeDisplay.getPathFriendlyURLPublic() + StringPool.SLASH + wallUser.getScreenName() + wallLayoutFriendlyURL + "/-/wall";
 								%>
 
 								<liferay-ui:icon
@@ -182,18 +180,13 @@
 									label="<%= true %>"
 									message="<%= postMessage %>"
 									method="get"
-									url="<%= postHREF %>"
+									url='<%= themeDisplay.getPathFriendlyURLPublic() + StringPool.SLASH + wallUser.getScreenName() + wallLayoutFriendlyURL + "/-/wall" %>'
 								/>
 
 								<c:if test="<%= UserPermissionUtil.contains(permissionChecker, user2.getUserId(), ActionKeys.UPDATE) %>">
-
-									<%
-									String deleteHREF = "javascript:" + renderResponse.getNamespace() + "deleteWallEntry(" + wallEntry.getWallEntryId() + ");";
-									%>
-
 									<liferay-ui:icon-delete
 										label="<%= true %>"
-										url="<%= deleteHREF %>"
+										url='<%= "javascript:" + renderResponse.getNamespace() + "deleteWallEntry(" + wallEntry.getWallEntryId() + ");" %>'
 									/>
 								</c:if>
 							</liferay-ui:icon-list>

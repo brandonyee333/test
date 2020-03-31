@@ -149,17 +149,12 @@ String privateMessagingPortletId = PortletProviderUtil.getPortletId("com.liferay
 %>
 
 <c:if test="<%= Validator.isNotNull(privateMessagingPortletId) && (user2.getUserId() != themeDisplay.getUserId()) %>">
-
-	<%
-	String messageTaglibOnClick = liferayPortletResponse.getNamespace() + "sendMessage();";
-	%>
-
 	<liferay-ui:icon
 		cssClass="send-message"
 		image="../aui/envelope"
 		label="<%= true %>"
 		message="message"
-		onClick="<%= messageTaglibOnClick %>"
+		onClick='<%= liferayPortletResponse.getNamespace() + "sendMessage();" %>'
 		url="javascript:;"
 	/>
 </c:if>
