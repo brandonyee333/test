@@ -130,7 +130,7 @@ definition {
 
 	@priority = "5"
 	test AddOrganizationSitesAndDeactivate {
-		property portal.upstream = "quarantine";
+		property portal.acceptance = "testroles";
 		property test.name.skip.portal.instance = "SitesUseCase#AddOrganizationSitesAndDeactivate";
 		property testray.component.names = "Site Administration,Training,Users and Organizations";
 
@@ -355,6 +355,7 @@ definition {
 
 	@priority = "3"
 	test OnlySiteOwnersCanAssignSiteRolesToUserGroups {
+		property portal.acceptance = "testroles";
 		property testray.component.names = "Site Administration,User Groups";
 
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");

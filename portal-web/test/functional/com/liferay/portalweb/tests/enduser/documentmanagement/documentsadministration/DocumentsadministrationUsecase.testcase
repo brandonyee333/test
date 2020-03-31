@@ -469,7 +469,7 @@ definition {
 	@priority = "5"
 	test CheckOutDocument {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
-		property portal.upstream = "quarantine";
+		property portal.acceptance = "testroles";
 
 		JSONUser.addUser(
 			userEmailAddress = "userea@liferay.com",

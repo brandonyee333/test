@@ -212,6 +212,7 @@ definition {
 
 	@priority = "4"
 	test ViewNoAddPagePermissionsPG {
+		property portal.acceptance = "testroles";
 		property testray.component.names = "Navigation,Permissions";
 
 		task ("Add a page to the site") {

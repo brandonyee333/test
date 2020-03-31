@@ -2747,6 +2747,7 @@ definition {
 
 	@priority = "4"
 	test StagingWithPublishTemplate {
+		property portal.acceptance = "testroles";
 		property test.name.skip.portal.instance = "Staging#StagingWithPublishTemplate";
 
 		JSONLayout.addPublicLayout(

@@ -38,6 +38,8 @@ definition {
 
 	@priority = "4"
 	test AccessStaging {
+		property portal.acceptance = "testroles";
+
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		ProductMenu.gotoPortlet(
@@ -130,6 +132,8 @@ definition {
 
 	@priority = "4"
 	test StagingBlogsRolesWorkflow {
+		property portal.acceptance = "testroles";
+
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		JSONUser.addUser(

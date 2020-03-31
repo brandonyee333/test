@@ -101,9 +101,9 @@ definition {
 		AssertElementNotPresent(locator1 = "Button#PLUS");
 	}
 
-	@ignore = "true"
 	@priority = "5"
 	test SearchPermissions {
+		property portal.acceptance = "testroles";
 		property testray.component.names = "Training";
 
 		ProductMenu.gotoPortlet(
@@ -255,9 +255,10 @@ definition {
 		Site.viewSiteAdminPermissionsCP(siteName = "Child SiteName");
 	}
 
-	@ignore = "true"
 	@priority = "4"
 	test ViewSiteManageChildSiteSiteRole {
+		property portal.acceptance = "testroles";
+
 		Permissions.setUpSiteRoleLoginUserCP(
 			pageName = "Site Page",
 			portletName = "Sites",

@@ -234,6 +234,7 @@ definition {
 
 	@priority = "3"
 	test SitesPanelLayout {
+		property portal.acceptance = "testroles";
 		property testray.component.names = "Site Pages Administration";
 		var portalURL = PropsUtil.get("portal.url");
 
@@ -438,6 +439,7 @@ definition {
 	@ignore = "true"
 	@priority = "3"
 	test ViewSecureContentAndPageAsGuest {
+		property portal.acceptance = "testroles";
 		property test.name.skip.portal.instance = "WidgetPagesUseCase#ViewSecureContentAndPageAsGuest";
 		property testray.component.names = "Message Boards,Site Pages Administration";
 
@@ -622,6 +624,7 @@ definition {
 	@ignore = "true"
 	@priority = "3"
 	test ViewSecureContentAndPageAsSiteMember {
+		property portal.acceptance = "testroles";
 		property test.name.skip.portal.instance = "WidgetPagesUseCase#ViewSecureContentAndPageAsSiteMember";
 		property testray.component.names = "Message Boards,Site Pages Administration";
 
@@ -836,6 +839,7 @@ definition {
 	@ignore = "true"
 	@priority = "5"
 	test ViewSecureContentAndPageAsUser {
+		property portal.acceptance = "testroles";
 		property test.name.skip.portal.instance = "WidgetPagesUseCase#ViewSecureContentAndPageAsUser";
 		property testray.component.names = "Message Boards,Site Pages Administration,Training";
 

@@ -35,6 +35,7 @@ definition {
 	@priority = "5"
 	test AddCommentInWorkflowSubmission {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "testroles";
 
 		ProductMenu.gotoPortlet(
 			category = "Users",
