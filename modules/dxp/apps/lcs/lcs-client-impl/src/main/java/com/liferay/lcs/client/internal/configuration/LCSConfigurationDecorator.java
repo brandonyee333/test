@@ -28,21 +28,6 @@ public class LCSConfigurationDecorator implements LCSConfiguration {
 	}
 
 	@Override
-	public String cacheMetricsHibernateObjectName() {
-		return _lcsConfiguration.cacheMetricsHibernateObjectName();
-	}
-
-	@Override
-	public String cacheMetricsMultiVMObjectName() {
-		return _lcsConfiguration.cacheMetricsMultiVMObjectName();
-	}
-
-	@Override
-	public String cacheMetricsSingleVMObjectName() {
-		return _lcsConfiguration.cacheMetricsSingleVMObjectName();
-	}
-
-	@Override
 	public int commandScheduleDefaultInterval() {
 		return _lcsConfiguration.commandScheduleDefaultInterval();
 	}

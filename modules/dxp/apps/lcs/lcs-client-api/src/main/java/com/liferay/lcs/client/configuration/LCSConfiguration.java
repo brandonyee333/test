@@ -28,21 +28,6 @@ import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClass
 )
 public interface LCSConfiguration {
 
-	@Meta.AD(deflt = "Hibernate:name=statistics", required = false)
-	public String cacheMetricsHibernateObjectName();
-
-	@Meta.AD(
-		deflt = "net.sf.ehcache:type=CacheStatistics\\,CacheManager=MULTI_VM_PORTAL_CACHE_MANAGER\\,name=*",
-		required = false
-	)
-	public String cacheMetricsMultiVMObjectName();
-
-	@Meta.AD(
-		deflt = "net.sf.ehcache:type=CacheStatistics\\,CacheManager=SINGLE_VM_PORTAL_CACHE_MANAGER\\,name=*",
-		required = false
-	)
-	public String cacheMetricsSingleVMObjectName();
-
 	@Meta.AD(deflt = "86400", required = false)
 	public int commandScheduleDefaultInterval();
 
