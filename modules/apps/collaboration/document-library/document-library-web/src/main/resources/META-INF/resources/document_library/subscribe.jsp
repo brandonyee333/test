@@ -43,10 +43,8 @@ long fileEntryTypeId = ParamUtil.getLong(request, "fileEntryTypeId", -1);
 		if (fileEntryTypeId == DLFileEntryTypeConstants.FILE_ENTRY_TYPE_ID_ALL) {
 			subscribed = DLUtil.isSubscribedToFolder(themeDisplay.getCompanyId(), scopeGroupId, user.getUserId(), folderId);
 
-			if (subscribed) {
-				if (!DLUtil.isSubscribedToFolder(themeDisplay.getCompanyId(), scopeGroupId, user.getUserId(), folderId, false)) {
-					unsubscribable = false;
-				}
+			if (subscribed && !DLUtil.isSubscribedToFolder(themeDisplay.getCompanyId(), scopeGroupId, user.getUserId(), folderId, false)) {
+				unsubscribable = false;
 			}
 		}
 		else {

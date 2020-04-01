@@ -82,13 +82,11 @@ if (layout != null) {
 	String ppid = ParamUtil.getString(request, "p_p_id");
 
 	if (layout.isTypeEmbedded() || layout.isTypePortlet()) {
-		if (themeDisplay.isStateMaximized() || themeDisplay.isStatePopUp()) {
-			if (Validator.isNotNull(ppid)) {
-				Portlet portlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), ppid);
+		if ((themeDisplay.isStateMaximized() || themeDisplay.isStatePopUp()) && Validator.isNotNull(ppid)) {
+			Portlet portlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), ppid);
 
-				if ((portlet != null) && !portlets.contains(portlet)) {
-					portlets.add(portlet);
-				}
+			if ((portlet != null) && !portlets.contains(portlet)) {
+				portlets.add(portlet);
 			}
 		}
 	}
