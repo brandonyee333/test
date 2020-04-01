@@ -27,6 +27,9 @@ import com.liferay.registry.ServiceReference;
 import com.liferay.registry.ServiceTracker;
 import com.liferay.registry.ServiceTrackerCustomizer;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,6 +42,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class AssetRendererFactoryLookupImpl
 	implements AssetRendererFactoryLookup {
+
+	public AssetRendererFactoryLookupImpl() {
+		_activated = Instant.now();
+	}
 
 	@Override
 	public AssetRendererFactory<?> getAssetRendererFactoryByClassName(
@@ -75,13 +82,24 @@ public class AssetRendererFactoryLookupImpl
 		return _initializedAssetRendererFactories.contains(className);
 	}
 
+	private long _secondsElapsedSinceActivated() {
+		Instant now = Instant.now();
+
+		Duration elapsedDuration = Duration.between(_activated, now);
+
+		return elapsedDuration.getSeconds();
+	}
+
 	private void _waitAssetRendererFactoryLoaded(String className) {
 		CountDownLatch countDownLatch =
 			_assetRenderFactoriesCountDownLatchMap.computeIfAbsent(
 				className, key -> new CountDownLatch(1));
 
+		long secondsToWait = Math.max(
+			0, _INDEX_ON_STARTUP_DELAY - _secondsElapsedSinceActivated());
+
 		try {
-			countDownLatch.await(_INDEX_ON_STARTUP_DELAY, TimeUnit.SECONDS);
+			countDownLatch.await(secondsToWait, TimeUnit.SECONDS);
 		}
 		catch (InterruptedException interruptedException) {
 			if (_log.isInfoEnabled()) {
@@ -106,6 +124,7 @@ public class AssetRendererFactoryLookupImpl
 	private static final ServiceTracker
 		<AssetRendererFactory<?>, AssetRendererFactory<?>> _serviceTracker;
 
+	private final Instant _activated;
 	private final Set<String> _initializedAssetRendererFactories =
 		ConcurrentHashMap.newKeySet();
 
