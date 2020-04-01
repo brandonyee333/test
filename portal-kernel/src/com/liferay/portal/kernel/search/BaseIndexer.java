@@ -14,7 +14,6 @@
 
 package com.liferay.portal.kernel.search;
 
-import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
@@ -28,6 +27,8 @@ import com.liferay.portal.kernel.exception.NoSuchCountryException;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.NoSuchRegionException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.internal.search.AssetRendererFactoryLookup;
+import com.liferay.portal.kernel.internal.search.AssetRendererFactoryLookupImpl;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -729,7 +730,7 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 		Document document, String className, long classPK) {
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+			_assetRendererFactoryLookup.getAssetRendererFactoryByClassName(
 				className);
 
 		if ((assetRendererFactory == null) ||
@@ -2050,6 +2051,8 @@ public abstract class BaseIndexer<T> implements Indexer<T> {
 				SearchResultPermissionFilterFactory.class, BaseIndexer.class,
 				"_searchResultPermissionFilterFactory", false);
 
+	private final AssetRendererFactoryLookup _assetRendererFactoryLookup =
+		new AssetRendererFactoryLookupImpl();
 	private boolean _commitImmediately;
 	private String[] _defaultSelectedFieldNames;
 	private String[] _defaultSelectedLocalizedFieldNames;
