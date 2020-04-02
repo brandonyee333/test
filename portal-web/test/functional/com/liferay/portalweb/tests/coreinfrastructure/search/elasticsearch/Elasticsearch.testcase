@@ -46,6 +46,13 @@ definition {
 		property remote.elasticsearch.enabled = "true";
 
 		ProductMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Server Administration");
+
+		ServerAdministration.executeServerResourcesActions(actionsDescription = "Reindex all search indexes.");
+
+		ProductMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
 			portlet = "Users and Organizations"
