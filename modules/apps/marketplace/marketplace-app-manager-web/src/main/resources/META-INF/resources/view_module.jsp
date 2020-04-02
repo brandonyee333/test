@@ -24,7 +24,7 @@ AppDisplay appDisplay = null;
 List<Bundle> bundles = BundleManagerUtil.getBundles();
 
 if (Validator.isNumber(app)) {
-	appDisplay = AppDisplayFactoryUtil.getAppDisplay(bundles, Long.parseLong(app));
+	appDisplay = AppDisplayFactoryUtil.getAppDisplay(bundles, GetterUtil.getLong(app));
 }
 
 if (appDisplay == null) {
