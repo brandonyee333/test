@@ -147,7 +147,7 @@ ShoppingOrder order = ShoppingOrderLocalServiceUtil.getLatestOrder(user.getUserI
 	</c:if>
 
 	<%
-	StringBundler itemIds = new StringBundler();
+	StringBundler itemIdsSB = new StringBundler();
 	%>
 
 	<liferay-ui:search-container
@@ -171,8 +171,8 @@ ShoppingOrder order = ShoppingOrderLocalServiceUtil.getLatestOrder(user.getUserI
 			ShoppingItemField[] itemFields = (ShoppingItemField[])ShoppingItemFieldLocalServiceUtil.getItemFields(item.getItemId()).toArray(new ShoppingItemField[0]);
 
 			for (int j = 0; j < count.intValue(); j++) {
-				itemIds.append(cartItem.getCartItemId());
-				itemIds.append(",");
+				itemIdsSB.append(cartItem.getCartItemId());
+				itemIdsSB.append(",");
 			}
 			%>
 
@@ -234,7 +234,7 @@ ShoppingOrder order = ShoppingOrderLocalServiceUtil.getLatestOrder(user.getUserI
 		/>
 	</liferay-ui:search-container>
 
-	<aui:input name="itemIds" type="hidden" value="<%= itemIds %>" />
+	<aui:input name="itemIds" type="hidden" value="<%= itemIdsSB %>" />
 	<aui:input name="couponCodes" type="hidden" value="<%= cart.getCouponCodes() %>" />
 
 	<div class="well">
