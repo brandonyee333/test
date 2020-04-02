@@ -734,7 +734,7 @@ portletDisplay.setURLMin(sb.toString());
 
 String urlPortletCss = "javascript:;";
 
-portletDisplay.setURLPortletCss(urlPortletCss.toString());
+portletDisplay.setURLPortletCss(urlPortletCss);
 
 // URL print
 

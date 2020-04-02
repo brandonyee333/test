@@ -85,7 +85,7 @@ if (layoutSetPrototypeId > 0) {
 
 if (!portletName.equals(SiteAdminPortletKeys.SITE_SETTINGS)) {
 	portletDisplay.setShowBackIcon(true);
-	portletDisplay.setURLBack(backURL.toString());
+	portletDisplay.setURLBack(backURL);
 
 	String title = StringPool.BLANK;
 
