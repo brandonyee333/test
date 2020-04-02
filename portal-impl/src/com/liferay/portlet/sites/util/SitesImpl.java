@@ -1853,10 +1853,8 @@ public class SitesImpl implements Sites {
 			return null;
 		}
 
-		List<Layout> layoutSetPrototypeLayouts = null;
-
-		layoutSetPrototypeLayouts = LayoutLocalServiceUtil.getLayouts(
-			layoutSetPrototypeGroupId, true);
+		List<Layout> layoutSetPrototypeLayouts =
+			LayoutLocalServiceUtil.getLayouts(layoutSetPrototypeGroupId, true);
 
 		Map<String, Serializable> exportLayoutSettingsMap =
 			ExportImportConfigurationSettingsMapFactory.
