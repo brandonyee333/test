@@ -381,7 +381,7 @@ if (Validator.isNotNull(keywords)) {
 
 									String fileExtensionSticker = StringUtil.shorten(StringUtil.upperCase(fileEntry.getExtension()), 3, StringPool.BLANK);
 
-									if (Validator.isNotNull(dlMimeTypeDisplayContext)) {
+									if (dlMimeTypeDisplayContext != null) {
 										stickerCssClass = dlMimeTypeDisplayContext.getCssClassFileMimeType(fileEntry.getMimeType());
 									}
 								%>
