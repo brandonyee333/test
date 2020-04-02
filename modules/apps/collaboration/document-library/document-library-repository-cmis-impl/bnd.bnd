@@ -26,6 +26,9 @@ Import-Package:\
 	\
 	!org.relaxng.datatype.*,\
 	\
+	!org.springframework.osgi.io.*,\
+	!org.springframework.osgi.util.*,\
+	\
 	com.liferay.portal.kernel.repository.model;version="[7.0.0,8.0.0)",\
 	\
 	*
