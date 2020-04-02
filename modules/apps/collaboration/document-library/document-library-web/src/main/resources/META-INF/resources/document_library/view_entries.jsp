@@ -198,7 +198,7 @@ else {
 
 dlSearchContainer.setResults(results);
 
-dlSearchContainer.setEmptyResultsMessage(fileEntryTypeId >= 0 ? LanguageUtil.format(request, "there-are-no-documents-or-media-files-of-type-x", HtmlUtil.escape(dlFileEntryTypeName)) : "there-are-no-documents-or-media-files-in-this-folder");
+dlSearchContainer.setEmptyResultsMessage((fileEntryTypeId >= 0) ? LanguageUtil.format(request, "there-are-no-documents-or-media-files-of-type-x", HtmlUtil.escape(dlFileEntryTypeName)) : "there-are-no-documents-or-media-files-in-this-folder");
 
 boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getInitParameter("portlet-title-based-navigation"));
 
