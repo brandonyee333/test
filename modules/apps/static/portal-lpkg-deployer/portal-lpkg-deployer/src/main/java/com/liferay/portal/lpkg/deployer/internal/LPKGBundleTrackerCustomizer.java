@@ -217,10 +217,6 @@ public class LPKGBundleTrackerCustomizer
 						continue;
 					}
 
-					String servletContextName = null;
-
-					String lpkgURL = null;
-
 					StringBundler sb = new StringBundler(10);
 
 					sb.append("lpkg:/");
@@ -232,7 +228,7 @@ public class LPKGBundleTrackerCustomizer
 					String[] servletContextNameAndPortalProfileNames =
 						_readServletContextNameAndPortalProfileNames(url);
 
-					servletContextName =
+					String servletContextName =
 						servletContextNameAndPortalProfileNames[0];
 
 					sb.append(servletContextName);
@@ -248,7 +244,7 @@ public class LPKGBundleTrackerCustomizer
 						sb.append(portalProfileNames);
 					}
 
-					lpkgURL = sb.toString();
+					String lpkgURL = sb.toString();
 
 					// The bundle URL changes after a reboot. To ensure we do
 					// not install the same bundle multiple times over reboots,

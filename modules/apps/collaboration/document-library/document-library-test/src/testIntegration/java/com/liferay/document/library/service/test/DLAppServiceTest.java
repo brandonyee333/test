@@ -358,14 +358,12 @@ public class DLAppServiceTest extends BaseDLAppTestCase {
 
 			_fileEntryIds = new long[_users.length];
 
-			int successCount = 0;
-
 			for (int i = 0; i < doAsUserThreads.length; i++) {
 				doAsUserThreads[i] = new AddFileEntryThread(
 					_users[i].getUserId(), i);
 			}
 
-			successCount = runUserThreads(doAsUserThreads);
+			int successCount = runUserThreads(doAsUserThreads);
 
 			Assert.assertEquals(
 				"Only " + successCount + " out of " + _users.length +

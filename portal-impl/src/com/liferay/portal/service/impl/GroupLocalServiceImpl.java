@@ -3719,9 +3719,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			return group;
 		}
 
-		User user = null;
-
-		user = userPersistence.fetchByPrimaryKey(group.getCreatorUserId());
+		User user = userPersistence.fetchByPrimaryKey(group.getCreatorUserId());
 
 		if (user == null) {
 			user = userPersistence.fetchByPrimaryKey(

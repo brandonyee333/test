@@ -32,14 +32,12 @@ public class TermQueryTranslatorImpl implements TermQueryTranslator {
 
 	@Override
 	public Query translate(TermQuery termQuery) {
-		Query luceneQuery = null;
-
 		QueryTerm queryTerm = termQuery.getQueryTerm();
 
 		String field = queryTerm.getField();
 		String value = queryTerm.getValue();
 
-		luceneQuery = new org.apache.lucene.search.TermQuery(
+		Query luceneQuery = new org.apache.lucene.search.TermQuery(
 			new Term(field, value));
 
 		if (!termQuery.isDefaultBoost()) {

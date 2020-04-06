@@ -326,8 +326,6 @@ public class LCSClusterEntryTokenAdvisorImpl
 			_log.debug("Processing the environment token file");
 		}
 
-		LCSClusterEntryToken lcsClusterEntryToken = null;
-
 		String lcsClusterEntryTokenFileName = getLCSClusterEntryTokenFileName();
 
 		File lcsClusterEntryTokenFile = new File(lcsClusterEntryTokenFileName);
@@ -348,10 +346,8 @@ public class LCSClusterEntryTokenAdvisorImpl
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		lcsClusterEntryToken = objectMapper.readValue(
+		return objectMapper.readValue(
 			lcsClusterEntryTokenJSON, LCSClusterEntryToken.class);
-
-		return lcsClusterEntryToken;
 	}
 
 	private void _resetAttributes() {

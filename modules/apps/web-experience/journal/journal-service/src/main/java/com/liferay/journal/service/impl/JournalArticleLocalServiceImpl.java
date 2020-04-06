@@ -2847,12 +2847,10 @@ public class JournalArticleLocalServiceImpl
 			long groupId, String urlTitle)
 		throws PortalException {
 
-		List<JournalArticle> articles = null;
-
 		OrderByComparator<JournalArticle> orderByComparator =
 			new ArticleVersionComparator();
 
-		articles = journalArticlePersistence.findByG_UT_ST(
+		List<JournalArticle> articles = journalArticlePersistence.findByG_UT_ST(
 			groupId, urlTitle, WorkflowConstants.STATUS_APPROVED,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, orderByComparator);
 
