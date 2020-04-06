@@ -45,7 +45,7 @@ public class CKEditorEditor implements Editor, EditorRenderer {
 
 	@Override
 	public String getJspPath() {
-		return "/ckeditor.jsp";
+		return "/ckeditorreact.jsp";
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class CKEditorEditor implements Editor, EditorRenderer {
 
 	@Override
 	public String getResourcesJspPath() {
-		return "/resources.jsp";
+		return "/resourcesreact.jsp";
 	}
 
 	@Override
