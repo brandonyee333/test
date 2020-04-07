@@ -10,6 +10,9 @@ definition {
 		if ("${configurationName}" == "Dynamic Data Lists") {
 			Click.waitForMenuToggleJSClick(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS_2");
 		}
+		else if ("${configurationName}" == "Web Content") {
+			Click.waitForMenuToggleJSClick(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS_3");
+		}
 		else {
 			Click.waitForMenuToggleJSClick(locator1 = "Icon#ROW_VERTICAL_ELLIPSIS");
 		}
