@@ -63,6 +63,10 @@ public class TeamStagedModelDataHandlerTest
 			UserLocalServiceUtil.deleteUser(_user);
 		}
 
+		if (_siteMemberUser != null) {
+			UserLocalServiceUtil.deleteUser(_siteMemberUser);
+		}
+
 		if (_userGroup != null) {
 			UserGroupLocalServiceUtil.deleteUserGroup(_userGroup);
 		}
@@ -82,7 +86,13 @@ public class TeamStagedModelDataHandlerTest
 			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 			serviceContext);
 
-		_user = UserTestUtil.addUser();
+		_user = UserTestUtil.addUser(group.getGroupId());
+
+		_siteMemberUser = UserTestUtil.addUser(group.getGroupId());
+
+		UserLocalServiceUtil.addGroupUser(liveGroup.getGroupId(),_siteMemberUser);
+
+		UserLocalServiceUtil.addTeamUser(team.getTeamId(), _siteMemberUser);
 
 		UserLocalServiceUtil.addTeamUser(team.getTeamId(), _user);
 
@@ -138,7 +148,7 @@ public class TeamStagedModelDataHandlerTest
 			importedTeam.getTeamId());
 
 		Assert.assertEquals(teamUsers.toString(), 1, teamUsers.size());
-		Assert.assertEquals(_user, teamUsers.get(0));
+		Assert.assertEquals(_siteMemberUser, teamUsers.get(0));
 
 		List<UserGroup> teamUserGroups =
 			UserGroupLocalServiceUtil.getTeamUserGroups(
@@ -150,6 +160,7 @@ public class TeamStagedModelDataHandlerTest
 	}
 
 	private User _user;
+	private User _siteMemberUser;
 	private UserGroup _userGroup;
 
 }
