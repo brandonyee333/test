@@ -93,8 +93,9 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 		HttpResponse httpResponse = httpRequest.send();
 
-		JSONArray jsonArray = _jsonFactory.createJSONArray(
-			httpResponse.bodyText());
+		String responseBodyText = _removeUTFBOM(httpResponse.bodyText());
+
+		JSONArray jsonArray = _jsonFactory.createJSONArray(responseBodyText);
 
 		List<KeyValuePair> results = new ArrayList<>();
 
@@ -130,6 +131,16 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 		_portalCache =
 			(PortalCache<String, DDMRESTDataProviderResult>)
 				multiVMPool.getPortalCache(DDMRESTDataProvider.class.getName());
+	}
+
+	private String _removeUTFBOM(String bodyText) {
+		for (int i = 0; i < bodyText.length(); i++) {
+			if ((bodyText.charAt(i) == '[') || (bodyText.charAt(i) == '{')) {
+				return bodyText.substring(i);
+			}
+		}
+
+		return "";
 	}
 
 	private JSONFactory _jsonFactory;
