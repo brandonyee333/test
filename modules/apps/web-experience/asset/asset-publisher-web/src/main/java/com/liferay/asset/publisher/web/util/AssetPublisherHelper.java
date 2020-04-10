@@ -127,10 +127,8 @@ public class AssetPublisherHelper {
 			viewURL = viewFullContentURL.toString();
 		}
 
-		viewURL = _replacePortletIdIfLinkedToAnotherLayout(
+		return _replacePortletIdIfLinkedToAnotherLayout(
 			liferayPortletRequest, viewURL);
-
-		return viewURL;
 	}
 
 	public static PortletURL getBaseAssetViewURL(

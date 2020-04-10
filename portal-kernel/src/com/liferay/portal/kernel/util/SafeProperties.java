@@ -25,9 +25,7 @@ public class SafeProperties extends Properties {
 	public synchronized Object get(Object key) {
 		Object value = super.get(key);
 
-		value = _decode((String)value);
-
-		return value;
+		return _decode((String)value);
 	}
 
 	public String getEncodedProperty(String key) {

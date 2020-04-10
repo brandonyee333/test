@@ -55,9 +55,7 @@ public class HttpTimelineProcessor implements TimelineProcessor {
 
 			String html = HttpUtil.URLtoString(options);
 
-			jsonArray = getUserTimelineJSONArray(html, sinceId, jsonArray);
-
-			return jsonArray;
+			return getUserTimelineJSONArray(html, sinceId, jsonArray);
 		}
 		catch (Exception e) {
 			if (_log.isWarnEnabled()) {

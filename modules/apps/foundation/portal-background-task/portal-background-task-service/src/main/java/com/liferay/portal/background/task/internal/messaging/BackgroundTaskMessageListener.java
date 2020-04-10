@@ -275,10 +275,8 @@ public class BackgroundTaskMessageListener extends BaseMessageListener {
 				backgroundTaskExecutor);
 		}
 
-		backgroundTaskExecutor = new ThreadLocalAwareBackgroundTaskExecutor(
+		return new ThreadLocalAwareBackgroundTaskExecutor(
 			backgroundTaskExecutor, _backgroundTaskThreadLocalManager);
-
-		return backgroundTaskExecutor;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -184,9 +184,7 @@ public class WikiEngineRenderer {
 			}
 		}
 
-		orphans = ListUtil.sort(orphans);
-
-		return orphans;
+		return ListUtil.sort(orphans);
 	}
 
 	public String getFormatLabel(String format, Locale locale) {

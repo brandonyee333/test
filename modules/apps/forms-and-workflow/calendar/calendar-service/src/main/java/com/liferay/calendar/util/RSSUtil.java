@@ -53,7 +53,7 @@ public class RSSUtil extends com.liferay.rss.util.RSSUtil {
 			CalendarUtil.getCalendarBookingDisplayTimeZone(
 				calendarBooking, themeDisplay.getTimeZone()));
 
-		content = StringUtil.replace(
+		return StringUtil.replace(
 			content,
 			new String[] {
 				"[$EVENT_DESCRIPTION$]", "[$EVENT_END_DATE$]",
@@ -66,8 +66,6 @@ public class RSSUtil extends com.liferay.rss.util.RSSUtil {
 				dateFormatDateTime.format(calendarBooking.getStartTime()),
 				calendarBooking.getTitle(themeDisplay.getLocale())
 			});
-
-		return content;
 	}
 
 }

@@ -680,11 +680,9 @@ public class ShoppingUtil {
 			}
 		}
 
-		breadcrumbs = StringBundler.concat(
+		return StringBundler.concat(
 			"<span class=\"first\">", categoriesLink, " &raquo; </span>",
 			breadcrumbs);
-
-		return breadcrumbs;
 	}
 
 	public static ShoppingCart getCart(PortletRequest portletRequest)

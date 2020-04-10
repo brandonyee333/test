@@ -226,9 +226,7 @@ public class LayoutLocalServiceStagingAdvice implements MethodInterceptor {
 			}
 		}
 
-		returnValue = wrapReturnValue(returnValue, false);
-
-		return returnValue;
+		return wrapReturnValue(returnValue, false);
 	}
 
 	public Layout updateLayout(

@@ -82,9 +82,7 @@ public class WebXMLBuilder {
 
 		xmlMerger.organizeXML(documentImpl.getWrappedDocument());
 
-		webXML = document.formattedString();
-
-		return webXML;
+		return document.formattedString();
 	}
 
 	public WebXMLBuilder(
@@ -145,9 +143,7 @@ public class WebXMLBuilder {
 	protected int getMergedContentIndex(String content) {
 		int x = content.indexOf("<web-app");
 
-		x = content.indexOf(">", x) + 1;
-
-		return x;
+		return content.indexOf(">", x) + 1;
 	}
 
 	protected int getOriginalContentIndex(String content) {

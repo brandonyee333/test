@@ -626,10 +626,8 @@ public class WSRPConsumerPortletLocalServiceImpl
 		String portletId = ConsumerPortlet.PORTLET_NAME_PREFIX.concat(
 			wsrpConsumerPortletUuid);
 
-		portletId = PortalUtil.getJsSafePortletId(
+		return PortalUtil.getJsSafePortletId(
 			PortalUUIDUtil.toJsSafeUuid(portletId));
-
-		return portletId;
 	}
 
 	protected String getProxyURL(long companyId, String url) {

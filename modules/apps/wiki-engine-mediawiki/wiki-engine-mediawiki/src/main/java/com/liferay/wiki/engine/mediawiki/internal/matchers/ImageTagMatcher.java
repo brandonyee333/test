@@ -41,9 +41,7 @@ public class ImageTagMatcher extends CallbackMatcher {
 		public String foundMatch(MatchResult matchResult) {
 			String title = matchResult.group(0);
 
-			title = StringUtil.replace(title, CharPool.UNDERLINE, "%5F");
-
-			return title;
+			return StringUtil.replace(title, CharPool.UNDERLINE, "%5F");
 		}
 
 	};

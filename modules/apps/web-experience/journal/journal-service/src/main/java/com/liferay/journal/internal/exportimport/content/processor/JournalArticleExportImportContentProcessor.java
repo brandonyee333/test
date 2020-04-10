@@ -90,11 +90,9 @@ public class JournalArticleExportImportContentProcessor
 				exportReferencedContent);
 		}
 
-		content = super.replaceExportContentReferences(
+		return super.replaceExportContentReferences(
 			portletDataContext, stagedModel, content, exportReferencedContent,
 			escapeContent);
-
-		return content;
 	}
 
 	@Override

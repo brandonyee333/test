@@ -27,9 +27,7 @@ public class UpdateSignaturePublicKeyCommandMessage extends CommandMessage {
 	public String getSignatureString() {
 		String signatureString = super.getSignatureString();
 
-		signatureString = signatureString.concat(_certificate);
-
-		return signatureString;
+		return signatureString.concat(_certificate);
 	}
 
 	public void setCertificate(String certificate) {

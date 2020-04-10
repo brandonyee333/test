@@ -803,14 +803,12 @@ public class SubscriptionSender implements Serializable {
 
 		Company company = CompanyLocalServiceUtil.getCompany(companyId);
 
-		content = StringUtil.replace(
+		return StringUtil.replace(
 			content, new String[] {"href=\"/", "src=\"/"},
 			new String[] {
 				"href=\"" + company.getPortalURL(groupId) + "/",
 				"src=\"" + company.getPortalURL(groupId) + "/"
 			});
-
-		return content;
 	}
 
 	protected void sendEmail(InternetAddress to, Locale locale)

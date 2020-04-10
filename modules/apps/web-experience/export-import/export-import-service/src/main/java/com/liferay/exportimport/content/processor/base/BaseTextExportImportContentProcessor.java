@@ -1158,11 +1158,9 @@ public class BaseTextExportImportContentProcessor
 			}
 		}
 
-		content = StringUtil.replace(
+		return StringUtil.replace(
 			content, ArrayUtil.toStringArray(oldLinksToLayout.toArray()),
 			ArrayUtil.toStringArray(newLinksToLayout.toArray()));
-
-		return content;
 	}
 
 	protected String replaceImportDLReferences(
@@ -1666,11 +1664,9 @@ public class BaseTextExportImportContentProcessor
 			newLinksToLayout.add(newLinkToLayout);
 		}
 
-		content = StringUtil.replace(
+		return StringUtil.replace(
 			content, ArrayUtil.toStringArray(oldLinksToLayout.toArray()),
 			ArrayUtil.toStringArray(newLinksToLayout.toArray()));
-
-		return content;
 	}
 
 	protected void validateDLReferences(long groupId, String content)

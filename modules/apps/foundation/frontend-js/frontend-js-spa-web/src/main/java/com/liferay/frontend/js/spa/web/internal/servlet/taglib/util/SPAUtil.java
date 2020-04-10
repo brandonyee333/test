@@ -141,10 +141,8 @@ public class SPAUtil {
 		SPAConfiguration spaConfiguration =
 			_spaConfigurationActivator.getSPAConfiguration();
 
-		requestTimeout = GetterUtil.getInteger(
+		return GetterUtil.getInteger(
 			spaConfiguration.requestTimeout(), requestTimeout);
-
-		return requestTimeout;
 	}
 
 	public int getUserNotificationTimeout() {
@@ -153,11 +151,9 @@ public class SPAUtil {
 		SPAConfiguration spaConfiguration =
 			_spaConfigurationActivator.getSPAConfiguration();
 
-		userNotificationTimeout = GetterUtil.getInteger(
+		return GetterUtil.getInteger(
 			spaConfiguration.userNotificationTimeout(),
 			userNotificationTimeout);
-
-		return userNotificationTimeout;
 	}
 
 	public String getValidStatusCodes() {

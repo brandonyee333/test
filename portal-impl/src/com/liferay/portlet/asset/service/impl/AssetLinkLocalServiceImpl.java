@@ -556,9 +556,7 @@ public class AssetLinkLocalServiceImpl extends AssetLinkLocalServiceBaseImpl {
 			}
 		}
 
-		assetLinks = Collections.unmodifiableList(filteredAssetLinks);
-
-		return assetLinks;
+		return Collections.unmodifiableList(filteredAssetLinks);
 	}
 
 	private static final String _FIND_BY_ASSET_ENTRY_GROUP_ID =

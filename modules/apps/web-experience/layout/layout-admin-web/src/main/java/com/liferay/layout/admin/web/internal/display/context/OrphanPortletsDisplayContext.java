@@ -139,9 +139,7 @@ public class OrphanPortletsDisplayContext {
 			new PortletTitleComparator(
 				request.getServletContext(), themeDisplay.getLocale());
 
-		orphanPortlets = ListUtil.sort(orphanPortlets, portletTitleComparator);
-
-		return orphanPortlets;
+		return ListUtil.sort(orphanPortlets, portletTitleComparator);
 	}
 
 	public Layout getSelLayout() {

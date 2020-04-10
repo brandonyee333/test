@@ -2070,12 +2070,9 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		}
 
 		if (webXmlVersion < 2.4) {
-			webXmlContent =
-				webXmlContent.substring(0, x) +
-					getExtraFiltersContent(webXmlVersion, srcFile) +
-						webXmlContent.substring(y);
-
-			return webXmlContent;
+			return webXmlContent.substring(0, x) +
+				getExtraFiltersContent(webXmlVersion, srcFile) +
+					webXmlContent.substring(y);
 		}
 
 		String filtersContent =
@@ -2097,11 +2094,8 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		FileUtil.write(
 			srcFile + "/WEB-INF/liferay-web.xml", liferayWebXmlContent);
 
-		webXmlContent =
-			webXmlContent.substring(0, x) + getInvokerFilterContent() +
-				webXmlContent.substring(y);
-
-		return webXmlContent;
+		return webXmlContent.substring(0, x) + getInvokerFilterContent() +
+			webXmlContent.substring(y);
 	}
 
 	@Override

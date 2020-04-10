@@ -37,9 +37,7 @@ public class RobotsUtil {
 				RobotsUtil.class.getClassLoader(),
 				PropsValues.ROBOTS_TXT_WITH_SITEMAP);
 
-			content = StringUtil.replace(content, "[$HOST$]", virtualHost);
-
-			return content;
+			return StringUtil.replace(content, "[$HOST$]", virtualHost);
 		}
 
 		return ContentUtil.get(

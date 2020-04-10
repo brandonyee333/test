@@ -92,9 +92,7 @@ public class PatchUtil {
 	public static String getPatchName(String patchFileName) {
 		String patchName = patchFileName.replace(_LIFERAY_PREFIX, "");
 
-		patchName = patchName.replace(".zip", "");
-
-		return patchName;
+		return patchName.replace(".zip", "");
 	}
 
 	private static final String _FIX_PACK_PREFIX = "fix-pack-";

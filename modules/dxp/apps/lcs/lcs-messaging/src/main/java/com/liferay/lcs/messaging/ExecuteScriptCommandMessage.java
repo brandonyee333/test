@@ -27,9 +27,7 @@ public class ExecuteScriptCommandMessage extends CommandMessage {
 	public String getSignatureString() {
 		String signatureString = super.getSignatureString();
 
-		signatureString = signatureString.concat(_script);
-
-		return signatureString;
+		return signatureString.concat(_script);
 	}
 
 	public void setScript(String script) {
