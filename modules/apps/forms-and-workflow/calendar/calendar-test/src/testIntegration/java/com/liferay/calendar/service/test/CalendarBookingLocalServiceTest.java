@@ -1702,17 +1702,16 @@ public class CalendarBookingLocalServiceTest {
 
 		int secondReminder = RandomTestUtil.randomInt(1, firstReminder);
 
-		childCalendarBooking =
-			CalendarBookingLocalServiceUtil.updateCalendarBooking(
-				_user.getUserId(), childCalendarBooking.getCalendarBookingId(),
-				childCalendarBooking.getCalendarId(), new long[0],
-				childCalendarBooking.getTitleMap(),
-				childCalendarBooking.getDescriptionMap(),
-				childCalendarBooking.getLocation(), startTime,
-				startTime + 36000000, childCalendarBooking.isAllDay(),
-				childCalendarBooking.getRecurrence(), firstReminder,
-				NotificationType.EMAIL.getValue(), secondReminder,
-				NotificationType.EMAIL.getValue(), serviceContext);
+		CalendarBookingLocalServiceUtil.updateCalendarBooking(
+			_user.getUserId(), childCalendarBooking.getCalendarBookingId(),
+			childCalendarBooking.getCalendarId(), new long[0],
+			childCalendarBooking.getTitleMap(),
+			childCalendarBooking.getDescriptionMap(),
+			childCalendarBooking.getLocation(), startTime, startTime + 36000000,
+			childCalendarBooking.isAllDay(),
+			childCalendarBooking.getRecurrence(), firstReminder,
+			NotificationType.EMAIL.getValue(), secondReminder,
+			NotificationType.EMAIL.getValue(), serviceContext);
 
 		calendarBooking = CalendarBookingLocalServiceUtil.updateCalendarBooking(
 			_user.getUserId(), calendarBooking.getCalendarBookingId(),
@@ -1778,7 +1777,7 @@ public class CalendarBookingLocalServiceTest {
 
 		assertStatus(childCalendarBooking, WorkflowConstants.STATUS_PENDING);
 
-		childCalendarBooking = CalendarBookingLocalServiceUtil.updateStatus(
+		CalendarBookingLocalServiceUtil.updateStatus(
 			_user.getUserId(), childCalendarBooking,
 			CalendarBookingWorkflowConstants.STATUS_MAYBE, serviceContext);
 
@@ -1964,20 +1963,19 @@ public class CalendarBookingLocalServiceTest {
 			_user.getUserId(), childCalendarBooking,
 			CalendarBookingWorkflowConstants.STATUS_MAYBE, serviceContext);
 
-		childCalendarBooking =
-			CalendarBookingLocalServiceUtil.updateCalendarBooking(
-				_user.getUserId(), childCalendarBooking.getCalendarBookingId(),
-				childCalendarBooking.getCalendarId(),
-				new long[] {invitedCalendar.getCalendarId()},
-				RandomTestUtil.randomLocaleStringMap(),
-				RandomTestUtil.randomLocaleStringMap(),
-				RandomTestUtil.randomString(), startTime, startTime + 36000000,
-				childCalendarBooking.isAllDay(),
-				childCalendarBooking.getRecurrence(),
-				childCalendarBooking.getFirstReminder(),
-				childCalendarBooking.getFirstReminderType(),
-				childCalendarBooking.getSecondReminder(),
-				childCalendarBooking.getSecondReminderType(), serviceContext);
+		CalendarBookingLocalServiceUtil.updateCalendarBooking(
+			_user.getUserId(), childCalendarBooking.getCalendarBookingId(),
+			childCalendarBooking.getCalendarId(),
+			new long[] {invitedCalendar.getCalendarId()},
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomLocaleStringMap(),
+			RandomTestUtil.randomString(), startTime, startTime + 36000000,
+			childCalendarBooking.isAllDay(),
+			childCalendarBooking.getRecurrence(),
+			childCalendarBooking.getFirstReminder(),
+			childCalendarBooking.getFirstReminderType(),
+			childCalendarBooking.getSecondReminder(),
+			childCalendarBooking.getSecondReminderType(), serviceContext);
 
 		childCalendarBooking = getChildCalendarBooking(calendarBooking);
 

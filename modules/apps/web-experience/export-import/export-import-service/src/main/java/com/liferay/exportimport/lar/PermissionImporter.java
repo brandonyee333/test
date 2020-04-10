@@ -152,8 +152,6 @@ public class PermissionImporter {
 
 		String name = roleElement.attributeValue("name");
 
-		Role role = null;
-
 		if (ExportImportPermissionUtil.isTeamRoleName(name)) {
 			name = name.substring(
 				ExportImportPermissionUtil.ROLE_TEAM_PREFIX.length());
@@ -183,7 +181,7 @@ public class PermissionImporter {
 
 		String uuid = roleElement.attributeValue("uuid");
 
-		role = layoutCache.getUuidRole(companyId, uuid);
+		Role role = layoutCache.getUuidRole(companyId, uuid);
 
 		if (role == null) {
 			role = layoutCache.getNameRole(companyId, name);

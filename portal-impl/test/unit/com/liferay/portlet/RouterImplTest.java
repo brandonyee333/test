@@ -96,7 +96,7 @@ public class RouterImplTest {
 
 		route.addImplicitParameter("format", "html");
 
-		route = _routerImpl.addRoute(
+		_routerImpl.addRoute(
 			"{method}/{controller}/{id:\\d+}/{action}.{format}");
 
 		route = _routerImpl.addRoute("{method}/{controller}/{action}");
