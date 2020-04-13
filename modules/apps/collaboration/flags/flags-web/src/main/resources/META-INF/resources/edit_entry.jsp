@@ -69,6 +69,12 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 					<aui:input name="reporterEmailAddress" type="hidden" value="<%= user.getEmailAddress() %>" />
 				</c:otherwise>
 			</c:choose>
+
+			<liferay-portlet:resourceURL copyCurrentRenderParameters="<%= false %>" id="/flags/captcha" var="captchaURL" />
+
+			<liferay-captcha:captcha
+				url="<%= captchaURL %>"
+			/>
 		</aui:fieldset>
 
 		<aui:button-row>
@@ -125,9 +131,14 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 
 		var reporterEmailAddress = (reporterEmailAddressNode && reporterEmailAddressNode.val()) || '';
 
+		var captchaTextNode = A.one('#<portlet:namespace />captchaText');
+
+		var captchaText = (captchaTextNode && captchaTextNode.val()) || '';
+
 		var data = Liferay.Util.ns(
 			'<portlet:namespace />',
 			{
+				captchaText: captchaText,
 				className: '<%= HtmlUtil.escape(className) %>',
 				classPK: '<%= classPK %>',
 				contentTitle: '<%= HtmlUtil.escape(contentTitle) %>',
