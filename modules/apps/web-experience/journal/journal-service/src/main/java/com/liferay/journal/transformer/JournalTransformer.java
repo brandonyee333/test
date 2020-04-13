@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.template.StringTemplateResource;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.template.TemplateConstants;
-import com.liferay.portal.kernel.template.TemplateManager;
 import com.liferay.portal.kernel.template.TemplateManagerUtil;
 import com.liferay.portal.kernel.template.TemplateResource;
 import com.liferay.portal.kernel.templateparser.TemplateNode;
@@ -343,14 +342,8 @@ public class JournalTransformer {
 				template.put("viewMode", viewMode);
 
 				if (themeDisplay != null) {
-					TemplateManager templateManager =
-						TemplateManagerUtil.getTemplateManager(langType);
-
-					HttpServletRequest httpServletRequest =
-						themeDisplay.getRequest();
-
-					templateManager.addTaglibSupport(
-						template, httpServletRequest,
+					template.prepareTaglib(
+						themeDisplay.getRequest(),
 						new PipingServletResponse(
 							themeDisplay.getResponse(), unsyncStringWriter));
 				}
