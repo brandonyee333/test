@@ -93,8 +93,6 @@ public class AlloyLanguageUtil extends LanguageUtil {
 
 <liferay-theme:defineObjects />
 
-<portlet:defineObjects />
-
 <%@ include file="/alloy_mvc/jsp/watson/views/config/_input_config.jsp" %>
 
 <%

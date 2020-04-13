@@ -72,8 +72,6 @@ page import="com.liferay.portal.workflow.kaleo.forms.web.internal.util.KaleoForm
 page import="javax.portlet.WindowState" %>
 
 <%
-String refererPortletName = ParamUtil.getString(request, "refererPortletName", portletName);
-
 KaleoFormsAdminDisplayContext kaleoFormsAdminDisplayContext = (KaleoFormsAdminDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
 DDMDisplay ddmDisplay = kaleoFormsAdminDisplayContext.getDDMDisplay();

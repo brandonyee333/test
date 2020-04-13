@@ -40,8 +40,6 @@ page import="com.liferay.site.navigation.menu.web.internal.display.context.SiteN
 
 <liferay-theme:defineObjects />
 
-<portlet:defineObjects />
-
 <%
 String portletResource = ParamUtil.getString(request, "portletResource");
 

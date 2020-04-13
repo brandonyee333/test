@@ -16,11 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String emailMessageBody = portletPreferences.getValue("emailMessageBody", StringPool.BLANK);
-String emailMessageSubject = portletPreferences.getValue("emailMessageSubject", StringPool.BLANK);
-%>
-
 <liferay-portlet:actionURL portletConfiguration="<%= true %>" var="configurationActionURL" />
 
 <aui:form action="<%= configurationActionURL %>" method="post" name="fm">

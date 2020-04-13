@@ -94,8 +94,7 @@ page import="java.util.Map" %><%@
 page import="java.util.Properties" %><%@
 page import="java.util.TreeMap" %>
 
-<%@ page import="javax.portlet.PortletMode" %><%@
-page import="javax.portlet.PortletPreferences" %><%@
+<%@ page import="javax.portlet.PortletPreferences" %><%@
 page import="javax.portlet.PortletURL" %><%@
 page import="javax.portlet.WindowState" %>
 
@@ -108,10 +107,6 @@ page import="org.apache.log4j.Logger" %>
 <liferay-theme:defineObjects />
 
 <portlet:defineObjects />
-
-<%
-PortletMode portletMode = liferayPortletRequest.getPortletMode();
-%>
 
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1", "resources");

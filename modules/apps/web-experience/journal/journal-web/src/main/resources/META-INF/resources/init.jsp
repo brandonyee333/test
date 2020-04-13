@@ -97,7 +97,6 @@ page import="com.liferay.journal.service.permission.JournalArticlePermission" %>
 page import="com.liferay.journal.service.permission.JournalFeedPermission" %><%@
 page import="com.liferay.journal.service.permission.JournalFolderPermission" %><%@
 page import="com.liferay.journal.service.permission.JournalPermission" %><%@
-page import="com.liferay.journal.util.JournalContent" %><%@
 page import="com.liferay.journal.util.comparator.ArticleVersionComparator" %><%@
 page import="com.liferay.journal.util.impl.JournalUtil" %><%@
 page import="com.liferay.journal.web.asset.JournalArticleAssetRenderer" %><%@

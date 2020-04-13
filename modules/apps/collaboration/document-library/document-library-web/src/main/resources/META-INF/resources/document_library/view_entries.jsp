@@ -217,13 +217,8 @@ if (portletTitleBasedNavigation && (folderId != DLFolderConstants.DEFAULT_PARENT
 %>
 
 <div class="document-container" id="<portlet:namespace />entriesContainer">
-
-	<%
-	String searchContainerId = ParamUtil.getString(request, "searchContainerId");
-	%>
-
 	<liferay-ui:search-container
-		id="<%= searchContainerId %>"
+		id='<%= ParamUtil.getString(request, "searchContainerId") %>'
 		searchContainer="<%= dlSearchContainer %>"
 		total="<%= total %>"
 		totalVar="dlSearchContainerTotal"
