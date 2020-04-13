@@ -1,0 +1,39 @@
+@import "node_modules/mathsass/dist/math";
+
+$primary: #0E141A !default;
+$secondary-accent: #344C67;
+$border-dark-gray: #CDCED9;
+$color-light-blue: #78ACFF;
+$color-white: #FFF !default;
+
+$lineHeight: 1.0;
+$scaleFactor: 1.4;
+
+$font-primary: 'Source Sans Pro', sans-serif;
+$font-secondary: 'Source Sans Pro', sans-serif;
+$font-mono: 'Source Sans Pro', sans-serif;
+$font-h1: 1rem * pow($scaleFactor, 3); // 4.25rem
+$font-h2: (1rem * pow($scaleFactor, 4)) / 2; // 3.25rem
+$font-h3: (1rem * pow($scaleFactor, 5)) / 4;// 2.625rem
+$font-h4: 1rem * 2; // 2.125rem
+$font-h5: 1rem * $scaleFactor; // 1.5rem
+$font-h6: (1rem * pow($scaleFactor, 3)) / 4; // 1.0625rem
+$font-p: 1rem; // 1rem
+$font-small: (1rem * $scaleFactor) / 2; // .75rem
+$font-mini: 1rem / 2; // .5rem
+
+$grid-columns: 12;
+$grid-gutter-width: 30px;
+$grid-margin-width: 20px !default;
+
+$screen-xs: 480px;
+$screen-sm: 768px;
+$screen-md: 992px;
+$screen-lg: 1200px;
+
+$container-tablet: (720px + $grid-gutter-width);
+$container-desktop: (940px + $grid-gutter-width);
+$container-large-desktop: (1140px + $grid-gutter-width);
+
+$transition-duration: .3s !default;
+$transition-function: ease-in-out !default;

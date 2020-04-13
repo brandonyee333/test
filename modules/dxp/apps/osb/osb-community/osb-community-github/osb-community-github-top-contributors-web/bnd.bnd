@@ -1,0 +1,7 @@
+Bundle-Name: Liferay OSB Community GitHub Top Contributors Web
+Bundle-SymbolicName: com.liferay.osb.community.github.top.contributors.web
+Bundle-Version: 1.0.0
+Require-Capability:\
+	soy;\
+		filter:="(type=metal)"
+Web-ContextPath: /osb-community-github-top-contributors-web

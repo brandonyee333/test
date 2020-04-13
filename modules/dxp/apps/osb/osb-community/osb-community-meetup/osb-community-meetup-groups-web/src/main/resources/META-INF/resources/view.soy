@@ -1,0 +1,57 @@
+{namespace View}
+
+/**
+ * Renders a list of Meetup Groups.
+ */
+{template .render}
+	{@param meetupGroups: list<[
+		city: string,
+		description: string,
+		memberCount: int,
+		name: string,
+		url: string
+	]>}
+	{@param strings: map<string, string>}
+
+	<div class="user-groups">
+		<div class="container">
+			<div class="groups-list-header">
+				<h4 class="groups-title">
+					{$strings['groups-meeting-nearby']}
+				</h4>
+
+				<p class="groups-desc">
+					{$strings['find-out-where-and-when-people-near-you-meet']}
+				</p>
+			</div>
+
+			<div class="groups-list">
+				{foreach $meetupGroup in $meetupGroups}
+					<div class="col-xs-12 col-sm-6 col-md-4">
+						<div class="groups-card">
+							<a class="group" href="{$meetupGroup.url}" target="_blank">
+								<div class="info">
+									<p class="title">
+										{$meetupGroup.name}
+									</p>
+
+									<p class="location">
+										<span class="icon-12-pin"></span> {$meetupGroup.city} <emphasis>({$meetupGroup.memberCount} Members)</emphasis>
+									</p>
+
+									<p class="description">
+										{$meetupGroup.description}
+									</p>
+								</div>
+
+								<p class="group-learn-more">
+									{$strings['learn-more']} <span class="group-learn-more-icon icon-16-arrow-right-rod"></span>
+								</p>
+							</a>
+						</div>
+					</div>
+				{/foreach}
+			</div>
+		</div>
+	</div>
+{/template}

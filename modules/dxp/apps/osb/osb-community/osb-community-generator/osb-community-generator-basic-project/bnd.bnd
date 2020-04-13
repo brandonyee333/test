@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Community Generator Basic Project
+Bundle-SymbolicName: com.liferay.osb.community.generator.basic.project
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.community.generator.basic.project.site.constants

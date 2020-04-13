@@ -1,0 +1,5 @@
+Bundle-Name: Liferay OSB Community Lang
+Bundle-SymbolicName: com.liferay.osb.community.lang
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.community.lang
+Liferay-Releng-Module-Group-Title: Community Portal

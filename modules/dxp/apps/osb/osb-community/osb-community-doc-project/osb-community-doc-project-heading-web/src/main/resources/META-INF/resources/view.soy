@@ -1,0 +1,36 @@
+{namespace view}
+
+/**
+ * Renders the heading of a doc project.
+ *
+ * @param headerGradientEndColor
+ * @param headerGradientStartColor
+ * @param iconURL
+ * @param layouts
+ * @param projectName
+ */
+{template .render}
+	<style type="text/css">
+		.doc-project-heading .view {lb}
+			background-image: linear-gradient(5deg, {$headerGradientStartColor}, {$headerGradientEndColor});
+		{rb}
+	</style>
+
+	<div class="view">
+		<div class="project">
+			<img src="{$iconURL}" />
+
+			{$projectName}
+		</div>
+
+		<div class="navigation">
+			<ul class="navigation-items">
+				{foreach $layout in $layouts}
+					<li {if $layout.selected}class="selected"{/if}>
+						<a href="{$layout.url}">{$layout.name}</a>
+					</li>
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+{/template}

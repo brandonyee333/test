@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.community.doc.project.service.impl.DocProjectLocalServiceImpl" id="com.liferay.osb.community.doc.project.service.DocProjectLocalService" />
+	<bean class="com.liferay.osb.community.doc.project.service.impl.DocProjectServiceImpl" id="com.liferay.osb.community.doc.project.service.DocProjectService" />
+	<bean class="com.liferay.osb.community.doc.project.service.persistence.impl.DocProjectPersistenceImpl" id="com.liferay.osb.community.doc.project.service.persistence.DocProjectPersistence" parent="basePersistence" />
+</beans>

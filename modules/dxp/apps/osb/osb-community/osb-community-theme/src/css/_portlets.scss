@@ -1,0 +1,59 @@
+.control-menu .lexicon-icon-hidden {
+	display: none;
+}
+
+.portlet {
+	margin: 0;
+
+	.portlet-content-editable {
+		background: transparent;
+		border: none;
+		padding: 10px
+	}
+
+	.portlet-title-text {
+		display: none;
+	}
+
+	.portlet-topper-toolbar .lfr-icon-menu > a {
+		color: #FFF;
+	}
+}
+
+.portlet-login {
+	margin: 104px auto;
+	width: 25%;
+
+	.portlet-icon-back {
+		display: none;
+	}
+}
+
+.portlet-message-boards {
+	a code {
+		text-decoration: underline;
+	}
+
+	.list-group .list-group-item h4 {
+		font-weight: 400;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	.content .portlet > .portlet-topper {
+		background-color: #869CAD;
+		border-color: #869CAD;
+		border-radius: 4px 4px 0 0;
+		border-style: solid;
+		border-width: 1px 1px 1px 1px;
+		bottom: -33px;
+		color: #FFF;
+		right: auto;
+		top: auto;
+		z-index: 300;
+	}
+
+	.content .portlet:hover > .portlet-topper {
+		@include transform(translateY(0));
+	}
+}

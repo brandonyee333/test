@@ -1,0 +1,41 @@
+{namespace view}
+
+/**
+ * Renders a list of GitHub contributors.
+ *
+ * @param gitHubContributors
+ * @param strings
+ */
+{template .render}
+	<div class="view">
+		<p>{$strings['top-members']}</p>
+
+		<div class="top-github-contributors">
+			<ul>
+				{foreach $gitHubContributor in $gitHubContributors}
+					{call .render_github_contributor}
+						{param gitHubContributor: $gitHubContributor /}
+					{/call}
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+{/template}
+
+/**
+ * Renders a GitHub contributor.
+ *
+ * @param gitHubContributor
+ */
+{template .render_github_contributor}
+	<li>
+		<a href="{$gitHubContributor.profileURL}" target="_blank">
+			<span class="icon">
+				<img src="{$gitHubContributor.avatarURL}" />
+			</span>
+			<span class="name">
+				{$gitHubContributor.name}
+			</span>
+		</a>
+	</li>
+{/template}

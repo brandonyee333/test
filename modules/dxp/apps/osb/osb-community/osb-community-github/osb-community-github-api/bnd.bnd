@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Community GitHub API
+Bundle-SymbolicName: com.liferay.osb.community.github.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.community.github.exception,\
+	com.liferay.osb.community.github.model,\
+	com.liferay.osb.community.github.service,\
+	com.liferay.osb.community.github.service.persistence

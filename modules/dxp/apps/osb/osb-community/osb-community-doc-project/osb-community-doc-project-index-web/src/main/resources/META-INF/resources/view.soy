@@ -1,0 +1,79 @@
+{namespace view}
+
+/**
+ * Renders a list of doc projects.
+ *
+ * @param docProjects
+ * @param predefinedFilterTag
+ * @param predefinedFilterTags
+ * @param strings
+ * @param viewURL
+ */
+{template .render}
+	<div class="view">
+		<div class="content-header">
+			<div class="content-title">
+				{$strings['projects']}
+			</div>
+
+			<div class="tag-container">
+				<ul class="predefined-fitler-tags">
+					<li {if $predefinedFilterTag == ''}class="selected"{/if}>
+						<a href="{$viewURL}">{$strings['all']}</a>
+					</li>
+
+					{foreach $tag in $predefinedFilterTags}
+						<li {if $predefinedFilterTag == $tag.name}class="selected"{/if}>
+							<a href="{$tag.url}">{$tag.name}</a>
+						</li>
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+
+		<div class="content-container">
+			<div class="live-search-filter">
+				<div class="filter-input">
+					<span>
+						{$strings['filter']}
+					</span>
+					<span>
+						<input class="input" />
+					</span>
+				</div>
+
+				<div class="count">
+					{$strings['x-projects']}
+				</div>
+			</div>
+
+			<ul class="doc-project">
+				{foreach $docProject in $docProjects}
+					{call .render_doc_project}
+						{param docProject: $docProject /}
+					{/call}
+				{/foreach}
+			</ul>
+		</div>
+	</div>
+{/template}
+
+/**
+ * Renders a doc project.
+ *
+ * @param docProject
+ */
+{template .render_doc_project}
+	<li>
+		<a href="{$docProject.siteURL}" {if $docProject.siteType == 'url'}target="_blank"{/if}>
+			<span class="icon"><img src="{$docProject.iconURL}" /></span>
+			<span class="name">{$docProject.name}</span>
+			<span class="description">{$docProject.description}</span>
+			<span class="doc-project-tags">
+				{foreach $assetTagName in $docProject.assetTagNames}
+					#{$assetTagName}{sp}
+				{/foreach}
+			</span>
+		</a>
+	</li>
+{/template}

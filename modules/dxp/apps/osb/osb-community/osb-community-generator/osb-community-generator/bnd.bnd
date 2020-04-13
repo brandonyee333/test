@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Community Generator
+Bundle-SymbolicName: com.liferay.osb.community.generator
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.community.generator.layout,\
+	com.liferay.osb.community.generator.layout.helper,\
+	com.liferay.osb.community.generator.site,\
+	com.liferay.osb.community.generator.site.helper

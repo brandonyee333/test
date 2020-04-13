@@ -1,0 +1,158 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%
+Map<String, Object> contextObjects = new HashMap<String, Object>();
+
+contextObjects.put("blogsPortletInstanceConfiguration", blogsPortletInstanceConfiguration);
+contextObjects.put("blogsPortletInstanceSettingsHelper", blogsPortletInstanceSettingsHelper);
+%>
+
+<div class="entry-list entry-list-all">
+	<div class="container">
+		<liferay-ddm:template-renderer
+			className="<%= BlogsEntry.class.getName() %>"
+			contextObjects="<%= contextObjects %>"
+			displayStyle="<%= blogsPortletInstanceConfiguration.displayStyle() %>"
+			displayStyleGroupId="<%= blogsPortletInstanceSettingsHelper.getDisplayStyleGroupId() %>"
+			entries="<%= _convertToBlogEntries(results) %>"
+		>
+
+			<%
+			for (Object result : results) {
+				BlogsEntry entry = null;
+
+				AssetEntry assetEntry = null;
+
+				if (result instanceof AssetEntry) {
+					assetEntry = (AssetEntry)result;
+
+					entry = BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK());
+
+					AssetUtil.addLayoutTags(request, assetEntry.getTags());
+				}
+				else {
+					entry = (BlogsEntry)result;
+					assetEntry = AssetEntryLocalServiceUtil.getEntry(BlogsEntry.class.getName(), entry.getPrimaryKey());
+				}
+
+				request.setAttribute("view_entry_content.jsp-searchContainer", searchContainer);
+
+				request.setAttribute("view_entry_content.jsp-entry", entry);
+
+				request.setAttribute("view_entry_content.jsp-assetEntry", assetEntry);
+			%>
+
+				<div class="row">
+					<div class="col-sm-1 col-xs-0">
+						<liferay-ui:user-portrait
+							cssClass="user-icon-lg"
+							userId="<%= entry.getUserId() %>"
+						/>
+					</div>
+
+					<div class="col-sm-11 col-xs-12">
+						<liferay-util:include page="/blogs/view_entry_content.jsp" servletContext="<%= application %>" />
+
+						<div class="separator"><!-- --></div>
+					</div>
+				</div>
+
+			<%
+			}
+			%>
+
+		</liferay-ddm:template-renderer>
+
+		<c:if test="<%= BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.ADD_ENTRY) %>">
+			<div class="button-holder">
+				<portlet:renderURL var="editEntryURL" windowState="<%= WindowState.MAXIMIZED.toString() %>">
+					<portlet:param name="mvcRenderCommandName" value="/blogs/edit_entry" />
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+				</portlet:renderURL>
+
+				<aui:button href="<%= editEntryURL %>" icon="icon-plus" value="add-blog-entry" />
+			</div>
+		</c:if>
+
+		<div class="subscribe">
+			<c:if test="<%= blogsGroupServiceOverriddenConfiguration.enableRss() %>">
+				<liferay-ui:rss
+					delta="<%= GetterUtil.getInteger(blogsGroupServiceOverriddenConfiguration.rssDelta()) %>"
+					displayStyle="<%= blogsGroupServiceOverriddenConfiguration.rssDisplayStyle() %>"
+					feedType="<%= blogsGroupServiceOverriddenConfiguration.rssFeedType() %>"
+					url='<%= themeDisplay.getPathMain() + "/blogs/rss?p_l_id=" + plid + "&groupId=" + themeDisplay.getScopeGroupId() %>'
+				/>
+			</c:if>
+
+			<c:if test="<%= BlogsPermission.contains(permissionChecker, scopeGroupId, ActionKeys.SUBSCRIBE) && (blogsGroupServiceSettings.isEmailEntryAddedEnabled() || blogsGroupServiceSettings.isEmailEntryUpdatedEnabled()) %>">
+				<c:choose>
+					<c:when test="<%= SubscriptionLocalServiceUtil.isSubscribed(company.getCompanyId(), user.getUserId(), BlogsEntry.class.getName(), scopeGroupId) %>">
+						<portlet:actionURL name="/blogs/edit_entry" var="unsubscribeURL">
+							<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.UNSUBSCRIBE %>" />
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+						</portlet:actionURL>
+
+						<liferay-ui:icon
+							iconCssClass="icon-remove-sign"
+							label="<%= true %>"
+							message="unsubscribe"
+							url="<%= unsubscribeURL %>"
+						/>
+					</c:when>
+					<c:otherwise>
+						<portlet:actionURL name="/blogs/edit_entry" var="subscribeURL">
+							<portlet:param name="<%= Constants.CMD %>" value="<%= Constants.SUBSCRIBE %>" />
+							<portlet:param name="redirect" value="<%= currentURL %>" />
+						</portlet:actionURL>
+
+						<liferay-ui:icon
+							iconCssClass="icon-ok-sign"
+							label="<%= true %>"
+							message="subscribe"
+							url="<%= subscribeURL %>"
+						/>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+		</div>
+
+		<liferay-ui:search-paginator
+			searchContainer="<%= searchContainer %>"
+			type="more"
+		/>
+	</div>
+</div>
+
+<%!
+private List<BlogsEntry> _convertToBlogEntries(List results) throws PortalException, SystemException {
+	if (results.isEmpty() || (results.get(0) instanceof BlogsEntry)) {
+		return results;
+	}
+
+	List<BlogsEntry> entries = new ArrayList<BlogsEntry>(results.size());
+
+	for (Object result : results) {
+		AssetEntry assetEntry = (AssetEntry)result;
+
+		BlogsEntry entry = BlogsEntryLocalServiceUtil.getEntry(assetEntry.getClassPK());
+
+		entries.add(entry);
+	}
+
+	return entries;
+}
+%>

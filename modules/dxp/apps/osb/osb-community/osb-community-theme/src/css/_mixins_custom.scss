@@ -1,0 +1,49 @@
+@mixin text-shadow() {
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .1);
+}
+
+@mixin anim($property, $duration: $transition-duration, $function: $transition-function) {
+	-webkit-transition: $property $duration $function;
+	-o-transition: $property $duration $function;
+	transition: $property $duration $function;
+}
+
+@mixin selection {
+	&::selection {
+		background: rgba($primary, .1);
+	}
+
+	&::-moz-selection {
+		background: rgba($primary, .1);
+	}
+}
+
+@mixin h1 {
+	font-size: $font-h1;
+	line-height: calc(3rem * #{$lineHeight});
+}
+
+@mixin h2 {
+	font-size: $font-h2;
+	line-height: calc(3rem * #{$lineHeight});
+}
+
+@mixin h3 {
+	font-size: $font-h3;
+	line-height: calc(2rem * #{$lineHeight});
+}
+
+@mixin h4 {
+	font-size: $font-h4;
+	line-height: calc(2rem * #{$lineHeight});
+}
+
+@mixin h5 {
+	font-size: $font-h5;
+	line-height: calc(2rem * #{$lineHeight});
+}
+
+@mixin h6 {
+	font-size: $font-h6;
+	line-height: calc(1rem * #{$lineHeight});
+}

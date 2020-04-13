@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-namespace-tables="true" package-path="com.liferay.osb.community.meetup">
+	<author>Jamie Sammons</author>
+	<namespace>OSBCommunity</namespace>
+	<entity cache-enabled="true" local-service="true" name="MeetupGroup" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="meetupGroupId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="groupId" type="long" />
+		<column name="companyId" type="long" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="city" type="String" />
+		<column name="memberCount" type="int" />
+		<column name="description" type="String" />
+		<column name="url" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+	</entity>
+	<exceptions>
+		<exception>MeetupAPI</exception>
+		<exception>MeetupAPIException</exception>
+	</exceptions>
+</service-builder>

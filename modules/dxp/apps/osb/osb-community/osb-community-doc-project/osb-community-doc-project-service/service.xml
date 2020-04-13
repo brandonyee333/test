@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 6.2.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_6_2_0.dtd">
+
+<service-builder auto-namespace-tables="true" package-path="com.liferay.osb.community.doc.project">
+	<author>Ryan Park</author>
+	<namespace>OSBCommunity</namespace>
+	<entity local-service="true" name="DocProject" remote-service="true" uuid="true">
+
+		<!-- PK fields -->
+
+		<column name="docProjectId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="iconFileName" type="String" />
+		<column name="unlisted" type="boolean" />
+		<column name="type" type="String" />
+		<column name="typeSettings" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column case-sensitive="false" name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GroupId">
+			<finder-column name="groupId" />
+		</finder>
+		<finder name="Name">
+			<finder-column name="name" />
+		</finder>
+		<finder name="U_S" return-type="Collection">
+			<finder-column name="unlisted" />
+			<finder-column name="status" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>DocProjectDescription</exception>
+		<exception>DocProjectHeaderGradientColor</exception>
+		<exception>DocProjectIcon</exception>
+		<exception>DocProjectIconExtension</exception>
+		<exception>DocProjectName</exception>
+	</exceptions>
+</service-builder>

@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-namespace-tables="true" package-path="com.liferay.osb.community.github">
+	<author>Haote Chou</author>
+	<namespace>OSBCommunity</namespace>
+	<entity local-service="true" name="GitHubContributor" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="gitHubContributorId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="gitHubRepositoryId" type="long" />
+		<column name="name" type="String" />
+		<column name="avatarURL" type="String" />
+		<column name="contributions" type="int" />
+		<column name="profileURL" type="String" />
+
+		<!-- Order -->
+
+		<order by="desc">
+			<order-column name="contributions" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GitHubRepositoryId" return-type="Collection">
+			<finder-column name="gitHubRepositoryId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="GitHubRepository" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="gitHubRepositoryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="owner" type="String" />
+		<column name="name" type="String" />
+		<column name="commits" type="int" />
+		<column name="openIssues" type="int" />
+		<column name="stars" type="int" />
+		<column name="url" type="String" />
+		<column name="repositoryCreateDate" type="Date" />
+
+		<!-- Relationships -->
+
+		<column entity="GitHubContributor" mapping-key="gitHubRepositoryId" name="gitHubContributors" type="Collection" />
+
+		<!-- Finder methods -->
+
+		<finder name="O_N" return-type="GitHubRepository">
+			<finder-column name="owner" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>GitHubAPI</exception>
+		<exception>GitHubContributorAvatarURL</exception>
+		<exception>GitHubContributorContributions</exception>
+		<exception>GitHubContributorCount</exception>
+		<exception>GitHubContributorName</exception>
+		<exception>GitHubRepositoryCommits</exception>
+		<exception>GitHubRepositoryOpenIssues</exception>
+		<exception>GitHubRepositoryStars</exception>
+		<exception>GitHubRepositoryURL</exception>
+	</exceptions>
+</service-builder>

@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Community Meetup Client
+Bundle-SymbolicName: com.liferay.osb.community.meetup.client
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.community.meetup.client

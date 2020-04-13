@@ -1,0 +1,10 @@
+Bundle-Name: Liferay OSB Community Doc Project API
+Bundle-SymbolicName: com.liferay.osb.community.doc.project.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.community.doc.project.constants,\
+	com.liferay.osb.community.doc.project.exception,\
+	com.liferay.osb.community.doc.project.model,\
+	com.liferay.osb.community.doc.project.service,\
+	com.liferay.osb.community.doc.project.service.persistence,\
+	com.liferay.osb.community.doc.project.util

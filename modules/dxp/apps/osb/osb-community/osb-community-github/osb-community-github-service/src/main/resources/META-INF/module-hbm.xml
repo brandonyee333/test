@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="com.liferay.osb.community.github.model.GitHubContributor" />
+	<import class="com.liferay.osb.community.github.model.GitHubRepository" />
+	<class name="com.liferay.osb.community.github.model.impl.GitHubContributorImpl" table="OSBCommunity_GitHubContributor">
+		<id name="gitHubContributorId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="gitHubRepositoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="avatarURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="contributions" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="profileURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.community.github.model.impl.GitHubRepositoryImpl" table="OSBCommunity_GitHubRepository">
+		<id name="gitHubRepositoryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="owner" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="commits" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="openIssues" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="stars" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="url" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="repositoryCreateDate" type="org.hibernate.type.TimestampType" />
+	</class>
+</hibernate-mapping>

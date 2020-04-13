@@ -1,0 +1,125 @@
+/* ---------- Portlet ---------- */
+
+.doc-project-random-nine {
+	.portlet-topper {
+		bottom: 0 !important;
+	}
+}
+
+/* ---------- Pages ---------- */
+
+/* ---------- Configuration ---------- */
+
+.doc-project-random-nine .configuration {
+	.doc-project-random-nine-position-configuration{
+		.title {
+			font-weight: bold;
+			margin: 5px 0 5px 10px;
+		}
+
+		.doc-project-random-nine-position-selection {
+			ul {
+				padding: 0;
+				width: 937px;
+			}
+
+			li {
+				display: inline-block;
+				margin: 0 0 0 10px;
+				width: 300px;
+			}
+		}
+
+		.error-message {
+			color: #FD0202;
+			margin: 0 0 0 10px;
+		}
+	}
+}
+
+/* ---------- View ---------- */
+
+.doc-project-random-nine .view {
+	background-image: linear-gradient(5deg, #20DFDE, #54C2F7);
+	margin-top: -64px;
+	min-height: 1080px;
+
+	.content-container {
+		margin: 0 auto;
+		padding-top: 330px;
+		width: 1200px;
+	}
+
+	.all-doc-projects {
+		float: left;
+		height: 395px;
+		position: relative;
+		width: 615px;
+
+		a {
+			border: 1px solid #FFF;
+			bottom: 0;
+			color: #FFF;
+			display: block;
+			font-size: 16px;
+			left: 0;
+			padding: 20px 95px;
+			position: absolute;
+			text-transform: uppercase;
+
+			&:active, &:hover {
+				background: #FFF;
+				color: #52585F;
+			}
+		}
+
+		p {
+			color: #FFF;
+			font-size: 48px;
+			font-weight: 300;
+			letter-spacing: 4px;
+			line-height: 1.1;
+		}
+	}
+
+	.random-nine-doc-projects {
+		float: right;
+
+		ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			width: 456px;
+		}
+
+		li {
+			display: inline-block;
+			height: 152px;
+			vertical-align: text-top;
+			width: 152px;
+
+			a {
+				text-decoration: none;
+			}
+
+			span {
+				display: block;
+			}
+
+			.icon, .icon img {
+				height: 64px;
+				margin: 0 auto;
+				width: 64px;
+			}
+
+			.name {
+				color: #FFF;
+				font-size: 16px;
+				font-weight: 600;
+				margin-top: 17px;
+				text-align: center;
+				text-transform: uppercase;
+			}
+		}
+	}
+}

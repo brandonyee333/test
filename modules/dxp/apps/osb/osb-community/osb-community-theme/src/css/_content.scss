@@ -1,0 +1,82 @@
+$min_width: 600;
+$max_width: 1800;
+
+:root {
+	font-size: 14px;
+}
+
+:root [class*='icon-12'] {
+	font-size: 16px;
+}
+
+:root [class*='icon-16'] {
+	font-size: 24px;
+}
+
+a:hover, a:focus {
+	text-decoration: none;
+}
+
+body {
+	color: #333;
+	font-family: $font-primary;
+	letter-spacing: -.02rem;
+	line-height: 1.42857;
+	overflow-y: scroll;
+	text-rendering: optimizeLegibility;
+	text-size-adjust: 100%;
+	-webkit-font-smoothing: antialiased;
+
+	.lfr-spa-loading-bar {
+		background: #FFF;
+	}
+}
+
+.community-container-layout {
+	background-color: #F1F2F5;
+}
+
+.community-container-layout, .columns-1, .columns-max {
+	margin-top: 132px;
+
+	.portlet {
+		margin-top: 10px;
+	}
+
+	@media (min-width: $screen-md-min) {
+		margin-top: 60px;
+	}
+}
+
+.community-content-layout .portlet {
+	margin-bottom: 0;
+}
+
+.container {
+	padding-left: $grid-margin-width;
+	padding-right: $grid-margin-width;
+}
+
+.content, .header {
+	margin-top: -132px;
+
+	@media (min-width: $screen-md-min) {
+		margin-top: -60px;
+	}
+}
+
+.portlet-journal-content .portlet {
+	margin: 0;
+}
+
+@media (min-width: #{$min_width}px) and (max-width: #{$max_width}px) {
+	:root {
+		font-size: 16px;
+	}
+}
+
+@media (min-width: #{$max_width}px) {
+	:root {
+		font-size: 18px;
+	}
+}

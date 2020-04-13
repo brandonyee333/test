@@ -1,0 +1,42 @@
+#wrapper {
+	padding-bottom: 0px;
+	padding-top: 0px;
+}
+
+.container-hybrid {
+	@include container-fixed;
+
+	@media (min-width: $screen-sm-min) {
+		width: 100%;
+	}
+
+	@media (min-width: $screen-md-min) {
+		width: 100%;
+	}
+
+	@media (min-width: $screen-lg-min) {
+		width: $container-lg;
+	}
+}
+
+.portlet-layout.row {
+	margin-left: 0px;
+	margin-right: 0px;
+
+	.col-md-12.portlet-column-only {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+@media (max-width: $screen-sm-min) {
+	.staging-ready {
+		padding-top: 0px;
+	}
+}
+
+@media only screen and (min-width: $screen-md-min) {
+	.control-menu-level-2 {
+		min-height: 65px;
+	}
+}

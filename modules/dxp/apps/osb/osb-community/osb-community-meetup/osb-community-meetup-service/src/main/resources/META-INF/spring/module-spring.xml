@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.community.meetup.service.impl.MeetupGroupLocalServiceImpl" id="com.liferay.osb.community.meetup.service.MeetupGroupLocalService" />
+	<bean class="com.liferay.osb.community.meetup.service.persistence.impl.MeetupGroupPersistenceImpl" id="com.liferay.osb.community.meetup.service.persistence.MeetupGroupPersistence" parent="basePersistence" />
+</beans>

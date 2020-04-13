@@ -1,0 +1,45 @@
+/* ---------- Pages ---------- */
+
+/* ---------- View ---------- */
+
+.github-top-contributors .view {
+	p {
+		color: #52585F;
+		font-size: 16px;
+		font-stretch: normal;
+		font-style: normal;
+		font-weight: normal;
+		line-height: 1.5;
+		margin-bottom: 50px;
+		text-align: left;
+	}
+
+	.top-github-contributors {
+		ul {
+			list-style-type: none;
+		}
+
+		li {
+			margin-bottom: 45px;
+
+			a {
+				text-decoration: none;
+
+				.icon, .icon img {
+					border-radius: 50%;
+					height: 64px;
+					margin-right: 10px;
+					width: 64px;
+				}
+
+				.name {
+					color: #52585F;
+					font-size: 24px;
+					font-stretch: normal;
+					font-style: normal;
+					font-weight: normal;
+				}
+			}
+		}
+	}
+}

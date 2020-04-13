@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Community Blogs Web Fragment
+Bundle-SymbolicName: com.liferay.osb.community.blogs.web.fragment
+Bundle-Version: 1.0.0
+Fragment-Host: com.liferay.blogs.web;bundle-version="2.0.3"

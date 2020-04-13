@@ -1,0 +1,82 @@
+/* ---------- Portlet ---------- */
+
+.doc-project-heading {
+	.portlet-topper {
+		bottom: 0 !important;
+	}
+}
+
+/* ---------- Pages ---------- */
+
+/* ---------- View ---------- */
+
+.doc-project-heading .view {
+	margin-top: -64px;
+	min-height: 360px;
+
+	.navigation, .project {
+		margin: 0 auto;
+		width: 1200px;
+	}
+
+	.project {
+		font-size: 48px;
+		font-weight: 300;
+		letter-spacing: 3px;
+		line-height: 1.1;
+		padding: 150px 0 125px 100px;
+		position: relative;
+
+		img {
+			left: 0;
+			max-height: 80px;
+			max-width: 80px;
+			position: absolute;
+			top: 137px;
+		}
+	}
+
+	.navigation {
+		bottom: 0;
+
+		.navigation-items {
+			list-style-type: none;
+			margin-bottom: 0;
+			padding-left: 0;
+
+			li {
+				display: inline-block;
+				margin-bottom: 6px;
+				margin-right: 64px;
+
+				&.selected{
+					border-bottom: 6px solid #DFE1E1;
+					margin-bottom: 0;
+				}
+
+				a {
+					color: #52585F;
+					text-transform: uppercase;
+				}
+			}
+		}
+	}
+}
+
+.light-navigation .doc-project-heading .view {
+	color: #FFF;
+
+	a {
+		color: #FFF;
+	}
+
+	.navigation .navigation-items li {
+		&.selected {
+			border-bottom: 6px solid #FFF;
+		}
+
+		a {
+			color: #FFF;
+		}
+	}
+}

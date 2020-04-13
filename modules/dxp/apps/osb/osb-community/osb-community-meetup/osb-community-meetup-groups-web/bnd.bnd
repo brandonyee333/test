@@ -1,0 +1,11 @@
+Bundle-Name: Liferay OSB Community Meetup Groups Web
+Bundle-SymbolicName: com.liferay.osb.community.meetup.groups.web
+Bundle-Version: 1.0.0
+Provide-Capability:\
+	soy;\
+		type="osb-community-meetup-web";\
+		version:Version="1.0.0"
+Require-Capability:\
+	soy;\
+		filter:="(type=metal)"
+Web-ContextPath: /community-meetup-groups-web

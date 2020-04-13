@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element index-type="keyword" instance-id="gybb" name="content" type="text_area">
+		<dynamic-content language-id="en_US">
+			<![CDATA[
+				<style type="text/css">
+					a {
+						text-decoration: none;
+					}
+
+					.converse-with-the-community {
+						float: left;
+						text-align: center;
+						width: 33%;
+					}
+
+					.discover-how-it-works {
+						float: left;
+						text-align: center;
+						width: 33%;
+					}
+
+					.item-icon {
+						height: 125px;
+						margin-left: auto;
+						margin-right: auto;
+						padding-top: 0px;
+						text-align: center;
+						width: 10%;
+					}
+
+					.item-description {
+						color: #52585f;
+						font-size: 20px;
+						height: 240px;
+						letter-spacing: 1px;
+						line-height: 1.5;
+						margin-left: auto;
+						margin-right: auto;
+						text-align: center;
+						width: 50%;
+					}
+
+					.item-title {
+						color: #52585f;
+						font-size: 28px;
+						font-style: normal;
+						font-stretch: normal;
+						font-weight: normal;
+						height: 125px;
+						line-height: 1.5;
+						margin-left: auto;
+						margin-right: auto;
+						position: relative;
+						width: 241px;
+					}
+
+					.page-title {
+						color: #52585f;
+						font-size: 48px;
+						font-stretch: normal;
+						font-style: normal;
+						font-weight: 300;
+						height: 270px;
+						line-height: 1.67;
+						padding-top: 125px;
+						text-align: center;
+					}
+
+					.share-perspective {
+						float: left;
+						text-align: center;
+						width: 33%;
+					}
+				</style>
+
+				<div class="page-title">Open Source. For Life.</div>
+
+				<div class="page-items">
+					<div class="converse-with-the-community">
+						<a href="">
+							<div class="item-icon">
+								<img src="converse.png">
+							</div>
+
+							<div class="item-title">Converse with the community</div>
+
+							<div class="item-description">Use the forums to ask questions, discuss new features, and establish best prctices.</div>
+						</a>
+					</div>
+
+					<div class="discover-how-it-works">
+						<a href="">
+							<div class="item-icon">
+								<img src="discover.png">
+							</div>
+
+							<div class="item-title">Discover how it works</div>
+
+							<div class="item-description">Use the Liferay forums to ask questions, discuss new features, and establish best practices.</div>
+						</a>
+					</div>
+
+					<div class="share-perspective">
+						<a href="">
+							<div class="item-icon">
+								<img src="share.png">
+							</div>
+
+							<div class="item-title">Share perspective</div>
+
+							<div class="item-description">Use the Liferay forums to ask questions, discuss new features, and establish best practices.</div>
+						</a>
+					</div>
+				</div>
+			]]>
+		</dynamic-content>
+	</dynamic-element>
+</root>

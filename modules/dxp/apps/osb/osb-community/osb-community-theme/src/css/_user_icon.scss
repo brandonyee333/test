@@ -1,0 +1,17 @@
+.user-avatar-link {
+	span.sticker-right {
+		right: 12px;
+		top: 5px;
+	}
+
+	.lexicon-icon-asterisk {
+		position: absolute;
+		top:5px;
+	}
+
+	@media (max-width: 960px) {
+		.sticker-right {
+			display:none;
+		}
+	}
+}

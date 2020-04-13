@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<source-check>
+		<suppress checks="PropertiesLiferayPluginPackageLiferayVersionsCheck" files="src/WEB-INF/liferay-plugin-package\.properties" />
+	</source-check>
+</suppressions>

@@ -1,0 +1,21 @@
+{
+	"devDependencies": {
+		"gulp": "3.9.1",
+		"liferay-theme-deps-7.0": "8.0.0-beta.5",
+		"liferay-theme-tasks": "8.0.0-beta.5",
+		"mathsass": "^0.9.5"
+	},
+	"keywords": [
+		"liferay-theme"
+	],
+	"liferayTheme": {
+		"baseTheme": "styled",
+		"rubySass": false,
+		"screenshot": "",
+		"templateLanguage": "ftl",
+		"version": "7.0"
+	},
+	"main": "package.json",
+	"name": "osb-community-theme",
+	"version": "1.0.0"
+}

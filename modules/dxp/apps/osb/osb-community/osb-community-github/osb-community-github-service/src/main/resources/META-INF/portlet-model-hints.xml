@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.community.github.model.GitHubContributor">
+		<field name="gitHubContributorId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="gitHubRepositoryId" type="long" />
+		<field name="name" type="String" />
+		<field name="avatarURL" type="String" />
+		<field name="contributions" type="int" />
+		<field name="profileURL" type="String" />
+	</model>
+	<model name="com.liferay.osb.community.github.model.GitHubRepository">
+		<field name="gitHubRepositoryId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="owner" type="String" />
+		<field name="name" type="String" />
+		<field name="commits" type="int" />
+		<field name="openIssues" type="int" />
+		<field name="stars" type="int" />
+		<field name="url" type="String" />
+		<field name="repositoryCreateDate" type="Date" />
+	</model>
+</model-hints>

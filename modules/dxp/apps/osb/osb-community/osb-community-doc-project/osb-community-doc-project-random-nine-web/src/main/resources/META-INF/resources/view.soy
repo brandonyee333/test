@@ -1,0 +1,44 @@
+{namespace view}
+
+/**
+ * Renders a list of doc projects.
+ *
+ * @param allProjectsURL
+ * @param docProjects
+ * @param strings
+ */
+{template .render}
+	<div class="view">
+		<div class="content-container">
+			<div class="all-doc-projects">
+				<p>{$strings['docs-news-and-contribution-guidelines-for-our-open-source-projects']}</p>
+
+				<a href="{$allProjectsURL}">{$strings['all-projects']}</a>
+			</div>
+
+			<div class="random-nine-doc-projects">
+				<ul>
+					{foreach $docProject in $docProjects}
+						{call .render_doc_project}
+							{param docProject: $docProject /}
+						{/call}
+					{/foreach}
+				</ul>
+			</div>
+		</div>
+	</div>
+{/template}
+
+/**
+ * Renders a doc project.
+ *
+ * @param docProject
+ */
+{template .render_doc_project}
+	<li>
+		<a href="{$docProject.siteURL}" {if $docProject.siteType == 'url'}target="_blank"{/if}>
+			<span class="icon"><img src="{$docProject.iconURL}" /></span>
+			<span class="name">{$docProject.name}</span>
+		</a>
+	</li>
+{/template}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.community.meetup.model.MeetupGroup">
+		<field name="meetupGroupId" type="long" />
+		<field name="groupId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="city" type="String" />
+		<field name="memberCount" type="int" />
+		<field name="description" type="String">
+			<hint name="max-length">2000</hint>
+		</field>
+		<field name="url" type="String" />
+	</model>
+</model-hints>

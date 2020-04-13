@@ -1,0 +1,156 @@
+$screen-md-min 	: 992px;
+
+@mixin text-shadow() {
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .1);
+}
+
+.user-groups {
+	background-color: #F1F2F5;
+	padding-bottom: 60px;
+
+	.groups-list-header {
+		margin-bottom: 40px;
+		margin-top: 84px;
+		text-align: center;
+
+		.groups-title {
+			color: #344C67;
+			font-size: 24px;
+			font-weight: 600;
+		}
+
+		.groups-desc {
+			color: #344C67;
+			font-size: 18px;
+		}
+	}
+
+	.groups-list {
+		.groups-card {
+			height: 355px;
+
+			p {
+				color: #344C67;
+				font-size: 18px;
+			}
+
+			.group {
+				background: white;
+				border-radius: 8px;
+				display: block;
+				height: 375px;
+				margin-bottom: 30px;
+				margin-top: 30px;
+				overflow: hidden;
+				padding: 32px 32px 18px;
+				position: relative;
+				transition: all .3s ease-in-out;
+				width: 100%;
+
+				@media (min-width: $screen-md-min) {
+					height: 355px;
+
+					&:hover {
+						box-shadow: 0 10px 30px 0 rgba(black, .1);
+						height: 375px;
+						transform: translateY(-10px);
+
+						.group-learn-more {
+							bottom: 20px;
+						}
+					}
+				}
+			}
+
+			.info {
+				.title {
+					font-size: 24px;
+					font-weight: 600;
+				}
+
+				.location {
+					display: inline-block;
+					font-weight: 600;
+
+					emphasis {
+						color: rgba(#344C67, .7);
+						font-weight: 300;
+					}
+
+					span {
+						position: relative;
+						top: 2px;
+					}
+				}
+
+				.description {
+					display: -webkit-box;
+					overflow: hidden;
+					text-overflow: ellipsis;
+
+					-webkit-line-clamp: 7;
+					-webkit-box-orient: vertical;
+
+					@media (min-width: $screen-md-min) {
+						-webkit-line-clamp: 7;
+					}
+				}
+			}
+
+			.group-learn-more {
+				bottom: 20px;
+				color: #4887FF;
+				font-size: 18px;
+				font-weight: 600;
+				margin: 0;
+				position: absolute;
+				transition: bottom .3s ease-in-out;
+
+				@media (min-width: $screen-md-min) {
+					bottom: -20px;
+				}
+
+				.group-learn-more-icon {
+					left: 3px;
+					position: relative;
+					top: 8px;
+				}
+			}
+		}
+	}
+
+	.error {
+		margin: 90px 0 30px;
+		text-align: center;
+
+		.error-info {
+			color: #344C67;
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+		.highlight-btn {
+			font-size: 18px;
+			margin-top: 20px;
+			padding: 10px 45px;
+
+			 &:hover, &:focus {
+				.highlight-btn-icon {
+					right: 22px;
+				}
+			}
+		}
+
+		.highlight-btn-icon {
+			font-size: 18px;
+			right: 32px;
+			top: 16px;
+		}
+	}
+
+	.loading {
+		color: #344C67;
+		font-size: 24px;
+		font-weight: 600;
+	}
+}

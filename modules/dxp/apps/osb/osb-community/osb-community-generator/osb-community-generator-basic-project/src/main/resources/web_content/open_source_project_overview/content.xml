@@ -1,0 +1,217 @@
+<?xml version="1.0"?>
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element index-type="keyword" instance-id="proj_overview" name="content" type="text_area">
+		<dynamic-content language-id="en_US">
+			<![CDATA[
+				<style type="text/css">
+					.overview-content .container {
+						margin: 0 auto;
+						width: 1200px;
+					}
+
+					.overview-content .about, .overview-content .call-to-action, .overview-content .features {
+						padding: 150px 0;
+					}
+
+					.overview-content .features, .overview-content .highlights {
+						background: #F1F5F7;
+						padding: 150px 0;
+					}
+
+					.overview-content .content {
+						text-align: center;
+					}
+
+					.overview-content .about-title {
+						font-size: 36px;
+					}
+
+					.overview-content .about-description {
+						font-size: 1.1em;
+						margin-bottom: 30px;
+					}
+
+					.overview-content .btn {
+						margin-right: 10px;
+					}
+
+					.overview-content .feature {
+						float: left;
+						margin: 0 25px;
+						text-align: center;
+						width: 350px;
+					}
+
+					.overview-content .feature-icon img {
+						border-radius: 10px;
+					}
+
+					.overview-content .feature-title {
+						margin: .3em 0;
+					}
+
+					.overview-content .highlight {
+						margin: 100px -15px;
+					}
+
+					.overview-content .highlight .cell {
+						display: inline-block;
+					}
+
+					.overview-content .highlight .cell:first-child {
+						margin-right: 50px;
+					}
+
+					.overview-content .highlight .cell-large {
+						width: 665px;
+					}
+
+					.overview-content .highlight .cell-small {
+						width: 480px;
+					}
+
+					.overview-content .highlight-image {
+						border-radius: 25%;
+					}
+				</style>
+
+				<div class="overview-content">
+					<article class="call-to-action">
+						<div class="container">
+							<div class="row">
+								<div class="content">
+									<h3 class="about-title">Start with why</h3>
+
+									<p class="about-description">Through the WHY, a story will arise, which will create trust and make an idea, a service, or a project unique. As Simon Sinek has said, having loyal users is all about attracting the people who share your fundamental beliefs. Remember: People don&#39;t buy what you do. They buy why you do it. I&#39;ll say it again: People don&#39;t buy what you do. They buy why you do it.</p>
+
+									<div class="header-cta">
+										<a class="btn btn-accent" href="#">Main call to action</a>
+
+										<a class="btn btn-default" href="#">Secondary action</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<div class="features">
+						<div class="container">
+							<div class="row">
+								<section class="feature">
+									<div class="feature-icon">
+										<img alt="Placeholder" src="http://placehold.it/42x42/4285f4/ffffff" />
+									</div>
+
+									<h3 class="feature-title">
+										Heading
+									</h3>
+
+									<p class="feature-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo.
+									</p>
+								</section>
+
+								<section class="feature">
+									<div class="feature-icon">
+										<img alt="Placeholder" src="http://placehold.it/42x42/4285f4/ffffff" />
+									</div>
+
+									<h3 class="feature-title">
+										Heading
+									</h3>
+
+									<p class="feature-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo.
+									</p>
+								</section>
+
+								<section class="feature">
+									<div class="feature-icon">
+										<img alt="Placeholder" src="http://placehold.it/42x42/4285f4/ffffff" />
+									</div>
+
+									<h3 class="feature-title">
+										Heading
+									</h3>
+
+									<p class="feature-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo.
+									</p>
+								</section>
+							</div>
+						</div>
+					</div>
+
+					<article class="about">
+						<div class="container">
+							<div class="row">
+								<div class="content">
+									<h3 class="about-title">
+										It&#39;s easier than you think
+									</h3>
+
+									<p class="about-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo ultricies vehicula ut.
+									</p>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<div class="highlights">
+						<div class="container">
+							<section class="highlight row">
+								<div class="cell cell-large">
+									<h4 class="highlight-title">
+										First highlight. It&#39;ll blow your mind.
+									</h4>
+
+									<p class="highlight-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo ultricies vehicula ut.
+									</p>
+								</div>
+
+								<div class="cell cell-small">
+									<img alt="Placeholder" class="highlight-image" src="http://placehold.it/500x400/4285f4/ffffff" />
+								</div>
+							</section>
+
+							<section class="highlight row">
+								<div class="cell cell-small">
+									<img alt="Placeholder" class="highlight-image" src="http://placehold.it/500x400/4285f4/ffffff" />
+								</div>
+
+								<div class="cell cell-large">
+									<h4 class="highlight-title">
+										It&#39;s that good. See for yourself.
+									</h4>
+
+									<p class="highlight-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo ultricies vehicula ut.
+									</p>
+								</div>
+							</section>
+
+							<section class="highlight row">
+								<div class="cell cell-large">
+									<h4 class="highlight-title">
+										And lastly, this one. Checkmate.
+									</h4>
+
+									<p class="highlight-description">
+										Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros praesent commodo ultricies vehicula ut.
+									</p>
+								</div>
+
+								<div class="cell cell-small">
+									<img alt="Placeholder" class="highlight-image" src="http://placehold.it/500x400/4285f4/ffffff" />
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			]]>
+		</dynamic-content>
+	</dynamic-element>
+</root>

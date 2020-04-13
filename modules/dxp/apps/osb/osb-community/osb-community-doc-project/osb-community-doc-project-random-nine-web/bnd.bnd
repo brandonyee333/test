@@ -1,0 +1,7 @@
+Bundle-Name: Liferay OSB Community Doc Project Random Nine Web
+Bundle-SymbolicName: com.liferay.osb.community.doc.project.random.nine.web
+Bundle-Version: 1.0.0
+Require-Capability:\
+	soy;\
+		filter:="(type=metal)"
+Web-ContextPath: /osb-community-doc-project-random-nine-web

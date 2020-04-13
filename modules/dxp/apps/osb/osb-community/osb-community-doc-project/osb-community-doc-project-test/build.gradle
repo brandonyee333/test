@@ -1,0 +1,6 @@
+dependencies {
+	testIntegrationCompile group: "com.liferay", name: "com.liferay.arquillian.extension.junit.bridge", version: "1.0.19"
+	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	testIntegrationCompile project(":private:apps:osb-community:osb-community-doc-project:osb-community-doc-project-api")
+	testIntegrationCompile project(":private:apps:osb-community:osb-community-doc-project:osb-community-doc-project-service")
+}
