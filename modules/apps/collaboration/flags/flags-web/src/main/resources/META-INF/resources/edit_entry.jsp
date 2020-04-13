@@ -34,6 +34,9 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 
 <div class="portlet-flags" id="<portlet:namespace />flagsPopup">
 	<aui:form method="post" name="flagsForm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "flag();" %>'>
+		<div class="alert alert-danger hide" id="<portlet:namespace />inlineError">
+		</div>
+
 		<p>
 			<liferay-ui:message arguments='<%= themeDisplay.getPathMain() + "/portal/terms_of_use" %>' key="you-are-about-to-report-a-violation-of-our-x-terms-of-use.-all-reports-are-strictly-confidential" translateArguments="<%= false %>" />
 		</p>
@@ -164,7 +167,17 @@ long reportedUserId = ParamUtil.getLong(request, "reportedUserId");
 						setDialogContent(errorMessage);
 					},
 					success: function() {
-						setDialogContent(confirmationMessage);
+						var responseData = JSON.parse(this.get('responseData'));
+
+						if (responseData.error) {
+							var inlineErrorNode = A.one('#<portlet:namespace />inlineError');
+
+							inlineErrorNode.html(responseData.error);
+							inlineErrorNode.removeClass('hide');
+						}
+						else {
+							setDialogContent(confirmationMessage);
+						}
 					}
 				}
 			}
