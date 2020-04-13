@@ -62,7 +62,7 @@ if (!TrashUtil.isInTrash(className, classPK)) {
 								{
 									dialog: {
 										destroyOnHide: true,
-										height: 400,
+										height: 500,
 										width: 400
 									},
 									title: '<%= UnicodeLanguageUtil.get(request, "report-inappropriate-content") %>'
