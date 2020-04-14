@@ -10,8 +10,8 @@ dependencies {
 	compileOnly group: "javax.servlet", name: "servlet-api", version: "2.5"
 	compileOnly group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", version: "2.3.1"
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
-	compileOnly project(":private:apps:osb-community:osb-community-doc-project:osb-community-doc-project-api")
-	compileOnly project(":private:apps:osb-community:osb-community-generator:osb-community-generator")
-	compileOnly project(":private:apps:osb-community:osb-community-generator:osb-community-generator-basic-project")
-	compileOnly project(":private:apps:osb-community:osb-community-product-navigation")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-doc-project:osb-community-doc-project-api")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-generator:osb-community-generator")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-generator:osb-community-generator-basic-project")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-product-navigation")
 }

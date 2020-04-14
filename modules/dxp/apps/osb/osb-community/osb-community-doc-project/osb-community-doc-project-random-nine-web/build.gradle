@@ -8,6 +8,6 @@ dependencies {
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "2.0"
 	compileOnly group: "javax.servlet", name: "servlet-api", version: "2.5"
 	compileOnly group: "org.osgi", name: "org.osgi.compendium", version: "5.0.0"
-	compileOnly project(":private:apps:osb-community:osb-community-doc-project:osb-community-doc-project-api")
-	compileOnly project(":private:apps:osb-community:osb-community-generator:osb-community-generator")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-doc-project:osb-community-doc-project-api")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-generator:osb-community-generator")
 }

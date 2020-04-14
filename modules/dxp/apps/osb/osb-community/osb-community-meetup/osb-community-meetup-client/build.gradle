@@ -5,5 +5,5 @@ dependencies {
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.26.0"
 	compileOnly group: "javax.servlet", name: "servlet-api", version: "2.5"
 	compileOnly group: "org.osgi", name: "osgi.core", version: "6.0.0"
-	compileOnly project(":private:apps:osb-community:osb-community-meetup:osb-community-meetup-api")
+	compileOnly project(":dxp:apps:osb:osb-community:osb-community-meetup:osb-community-meetup-api")
 }
