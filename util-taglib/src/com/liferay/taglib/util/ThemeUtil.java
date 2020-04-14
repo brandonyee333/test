@@ -86,7 +86,9 @@ public class ThemeUtil {
 				theme, true);
 		}
 		else if (extension.equals(ThemeHelper.TEMPLATE_EXTENSION_VM)) {
-			includeVM(servletContext, request, response, path, theme, true);
+			includeVM(
+				servletContext, httpServletRequest, httpServletResponse, path,
+				theme, true);
 		}
 		else {
 			path = theme.getTemplatesPath() + StringPool.SLASH + path;
@@ -175,8 +177,8 @@ public class ThemeUtil {
 			}
 			else if (extension.equals(ThemeHelper.TEMPLATE_EXTENSION_VM)) {
 				return doIncludeVM(
-					servletContext, request, response, path, theme, false,
-					write);
+					servletContext, httpServletRequest, httpServletResponse,
+					path, theme, false, write);
 			}
 
 			return null;
@@ -305,8 +307,8 @@ public class ThemeUtil {
 		throws Exception {
 
 		DynamicIncludeUtil.include(
-			request, response, ThemeUtil.class.getName() + "#doIncludeJSP",
-			true);
+			httpServletRequest, httpServletResponse,
+			ThemeUtil.class.getName() + "#doIncludeJSP", true);
 
 		if (theme.isWARFile()) {
 			ServletContext themeServletContext = servletContext.getContext(
@@ -422,10 +424,6 @@ public class ThemeUtil {
 				"Unable to load template resource " + resourcePath);
 		}
 
-		TemplateManager templateManager =
-			TemplateManagerUtil.getTemplateManager(
-				TemplateConstants.LANG_TYPE_VM);
-
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_VM, templateResource, restricted);
 
@@ -461,9 +459,6 @@ public class ThemeUtil {
 			httpServletResponse = new PipingServletResponse(
 				httpServletResponse, writer);
 		}
-
-		templateManager.addTaglibTheme(
-			template, "taglibLiferay", httpServletRequest, httpServletResponse);
 
 		template.put(TemplateConstants.WRITER, writer);
 
