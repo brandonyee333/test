@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-namespace-tables="true" package-path="com.liferay.osb.email.blacklist">
+	<author>Jamie Sammons</author>
+	<namespace>OSB</namespace>
+	<entity local-service="true" name="BlacklistEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="blacklistEntryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="emailAddress" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="EmailAddress" return-type="EmailBlacklistEntry">
+			<finder-column name="emailAddress" />
+		</finder>
+
+		<!-- References -->
+
+		<reference entity="Company" package-path="com.liferay.portal" />
+	</entity>
+	<entity local-service="false" name="BounceableEmail" remote-service="true" />
+	<entity local-service="true" name="BounceEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="bounceEntryId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="emailAddress" type="String" />
+		<column name="bounceDate" type="Date" />
+		<column name="bounceType" type="String" />
+		<column name="bounceSubtype" type="String" />
+
+		<!-- Order -->
+
+		<order by="desc">
+			<order-column name="bounceDate" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="LtBounceDate" return-type="Collection">
+			<finder-column comparator="&lt;" name="bounceDate" />
+		</finder>
+		<finder name="EA_GtBD" return-type="Collection">
+			<finder-column name="emailAddress" />
+			<finder-column name="bounceDate" comparator=">=" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>BlacklistEntryEmailAddress</exception>
+		<exception>BounceEntryDate</exception>
+		<exception>BounceEntryEmailAddress</exception>
+	</exceptions>
+</service-builder>

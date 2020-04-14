@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.email.blacklist.model.BlacklistEntry">
+		<field name="blacklistEntryId" type="long" />
+		<field name="createDate" type="Date" />
+		<field name="emailAddress" type="String" />
+	</model>
+	<model name="com.liferay.osb.email.blacklist.model.BounceEntry">
+		<field name="bounceEntryId" type="long" />
+		<field name="emailAddress" type="String" />
+		<field name="bounceDate" type="Date" />
+		<field name="bounceType" type="String" />
+		<field name="bounceSubtype" type="String" />
+	</model>
+</model-hints>

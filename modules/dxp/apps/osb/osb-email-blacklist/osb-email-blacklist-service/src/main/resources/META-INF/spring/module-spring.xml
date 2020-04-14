@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.email.blacklist.service.impl.BlacklistEntryLocalServiceImpl" id="com.liferay.osb.email.blacklist.service.BlacklistEntryLocalService" />
+	<bean class="com.liferay.osb.email.blacklist.service.persistence.impl.BlacklistEntryPersistenceImpl" id="com.liferay.osb.email.blacklist.service.persistence.BlacklistEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.email.blacklist.service.impl.BounceableEmailServiceImpl" id="com.liferay.osb.email.blacklist.service.BounceableEmailService" />
+	<bean class="com.liferay.osb.email.blacklist.service.impl.BounceEntryLocalServiceImpl" id="com.liferay.osb.email.blacklist.service.BounceEntryLocalService" />
+	<bean class="com.liferay.osb.email.blacklist.service.persistence.impl.BounceEntryPersistenceImpl" id="com.liferay.osb.email.blacklist.service.persistence.BounceEntryPersistence" parent="basePersistence" />
+</beans>

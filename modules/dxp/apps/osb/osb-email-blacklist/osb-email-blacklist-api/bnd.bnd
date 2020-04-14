@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Email Blacklist API
+Bundle-SymbolicName: com.liferay.osb.email.blacklist.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.email.blacklist.exception,\
+	com.liferay.osb.email.blacklist.model,\
+	com.liferay.osb.email.blacklist.service,\
+	com.liferay.osb.email.blacklist.service.persistence
