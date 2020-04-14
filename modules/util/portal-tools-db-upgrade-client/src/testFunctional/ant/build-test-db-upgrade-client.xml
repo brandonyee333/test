@@ -229,6 +229,20 @@
 		<clean-database-upgrade-client />
 	</target>
 
+	<target name="check-upgrade-client-gogoshell-help-output">
+		<rebuild-upgrade-database />
+
+		<get-database-upgrade-client-paths />
+
+		<run-expect
+			db.upgrade.client.home="${db.upgrade.client.home}"
+			file.suffix.bat="${file.suffix.bat}"
+			expect.file="check-upgrade-client-gogoshell-help-output.expect"
+		/>
+
+		<clean-database-upgrade-client />
+	</target>
+
 	<target name="check-upgrade-client-help">
 		<get-database-upgrade-client-paths />
 
