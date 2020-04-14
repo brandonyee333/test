@@ -1,0 +1,52 @@
+#!/usr/bin/expect
+
+spawn [db.upgrade.client.home]/db_upgrade[file.suffix.bat] -s
+
+set timeout 900
+
+expect {
+    "Type \\\"help\\\" to get available upgrade and verify commands" {send "help upgrade:check\r"}
+    timeout {send_user "Connect Gogoshell FAILED";exit 2}
+}
+
+set timeout 5
+
+expect {
+    "check - List pending or running upgrades" {send "help upgrade:execute\r"}
+    timeout {send_user "No output for upgrade:check";exit 2}
+}
+
+expect {
+    "execute - Execute upgrade for a specific module and final version" {send "help upgrade:executeAll\r"}
+    timeout {send_user "No output for upgrade:execute";exit 2}
+}
+
+expect {
+    "executeAll - Execute all pending upgrades" {send "help upgrade:list\r"}
+    timeout {send_user "No output for upgrade:executeAll";exit 2}
+}
+
+expect {
+    "list - List registered upgrade processes for all modules" {send "help verify:execute\r"}
+    timeout {send_user "No output for upgrade:list";exit 2}
+}
+
+expect {
+    "execute - Execute a specific verify process" {send "help verify:executeAll\r"}
+    timeout {send_user "No output for verify:execute";exit 2}
+}
+
+expect {
+    "executeAll - Execute all verify processes" {send "help verify:list\r"}
+    timeout {send_user "No output for verify:executeAll";exit 2}
+}
+
+expect {
+    "list - List all registered verify processes" {send "help verify:show\r"}
+    timeout {send_user "No output for verify:list";exit 2}
+}
+
+expect {
+    "show - Show all verify processes for a specific verify process name" {send_user "PASS"}
+    timeout {send_user "No output for verify:show";exit 2}
+}
