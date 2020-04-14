@@ -96,7 +96,9 @@ public class DefaultCommentTreeDisplayContext
 
 	@Override
 	public boolean isDiscussionVisible() throws PortalException {
-		if (!isCommentApproved() && !isCommentAuthor() && !isGroupAdmin()) {
+		if (!isCommentApproved() && !isCommentAuthor() &&
+			!isContentReviewer() && !isGroupAdmin()) {
+
 			return false;
 		}
 
@@ -237,6 +239,15 @@ public class DefaultCommentTreeDisplayContext
 		}
 
 		return pending;
+	}
+
+	protected boolean isContentReviewer() {
+		PermissionChecker permissionChecker =
+			_discussionRequestHelper.getPermissionChecker();
+
+		return permissionChecker.isContentReviewer(
+			_discussionRequestHelper.getCompanyId(),
+			_discussionRequestHelper.getScopeGroupId());
 	}
 
 	protected boolean isGroupAdmin() {
