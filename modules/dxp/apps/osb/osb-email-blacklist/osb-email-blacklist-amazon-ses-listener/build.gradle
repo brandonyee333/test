@@ -3,5 +3,5 @@ dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.portal.configuration.metatype", version: "2.0.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.26.0"
 	compileOnly group: "javax.servlet", name: "servlet-api", version: "2.5"
-	compileOnly project(":private:apps:osb-email-blacklist:osb-email-blacklist-api")
+	compileOnly project(":dxp:apps:osb:osb-email-blacklist:osb-email-blacklist-api")
 }
