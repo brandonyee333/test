@@ -75,7 +75,7 @@ public class CollaboratorModelImpl
 		{"collaboratorId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"createDate", Types.TIMESTAMP}, {"accountEntryId", Types.BIGINT},
 		{"emailAddress", Types.VARCHAR}, {"fullName", Types.VARCHAR},
-		{"gitHubUserName", Types.VARCHAR}, {"status", Types.BOOLEAN}
+		{"gitHubUserName", Types.VARCHAR}, {"status", Types.INTEGER}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -89,11 +89,11 @@ public class CollaboratorModelImpl
 		TABLE_COLUMNS_MAP.put("emailAddress", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("fullName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("gitHubUserName", Types.VARCHAR);
-		TABLE_COLUMNS_MAP.put("status", Types.BOOLEAN);
+		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table OSBCustomer_Collaborator (collaboratorId LONG not null primary key,userId LONG,createDate DATE null,accountEntryId LONG,emailAddress VARCHAR(75) null,fullName VARCHAR(75) null,gitHubUserName VARCHAR(75) null,status BOOLEAN)";
+		"create table OSBCustomer_Collaborator (collaboratorId LONG not null primary key,userId LONG,createDate DATE null,accountEntryId LONG,emailAddress VARCHAR(75) null,fullName VARCHAR(75) null,gitHubUserName VARCHAR(75) null,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table OSBCustomer_Collaborator";
@@ -151,7 +151,7 @@ public class CollaboratorModelImpl
 		model.setEmailAddress(soapModel.getEmailAddress());
 		model.setFullName(soapModel.getFullName());
 		model.setGitHubUserName(soapModel.getGitHubUserName());
-		model.setStatus(soapModel.isStatus());
+		model.setStatus(soapModel.getStatus());
 
 		return model;
 	}
@@ -481,7 +481,7 @@ public class CollaboratorModelImpl
 				public void accept(
 					Collaborator collaborator, Object statusObject) {
 
-					collaborator.setStatus((Boolean)statusObject);
+					collaborator.setStatus((Integer)statusObject);
 				}
 
 			});
@@ -624,18 +624,12 @@ public class CollaboratorModelImpl
 
 	@JSON
 	@Override
-	public boolean getStatus() {
-		return _status;
-	}
-
-	@JSON
-	@Override
-	public boolean isStatus() {
+	public int getStatus() {
 		return _status;
 	}
 
 	@Override
-	public void setStatus(boolean status) {
+	public void setStatus(int status) {
 		_status = status;
 	}
 
@@ -682,7 +676,7 @@ public class CollaboratorModelImpl
 		collaboratorImpl.setEmailAddress(getEmailAddress());
 		collaboratorImpl.setFullName(getFullName());
 		collaboratorImpl.setGitHubUserName(getGitHubUserName());
-		collaboratorImpl.setStatus(isStatus());
+		collaboratorImpl.setStatus(getStatus());
 
 		collaboratorImpl.resetOriginalValues();
 
@@ -800,7 +794,7 @@ public class CollaboratorModelImpl
 			collaboratorCacheModel.gitHubUserName = null;
 		}
 
-		collaboratorCacheModel.status = isStatus();
+		collaboratorCacheModel.status = getStatus();
 
 		return collaboratorCacheModel;
 	}
@@ -885,7 +879,7 @@ public class CollaboratorModelImpl
 	private String _fullName;
 	private String _gitHubUserName;
 	private String _originalGitHubUserName;
-	private boolean _status;
+	private int _status;
 	private long _columnBitmask;
 	private Collaborator _escapedModel;
 

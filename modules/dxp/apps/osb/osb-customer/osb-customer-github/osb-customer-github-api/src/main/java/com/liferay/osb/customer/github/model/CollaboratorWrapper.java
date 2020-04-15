@@ -62,7 +62,7 @@ public class CollaboratorWrapper
 		attributes.put("emailAddress", getEmailAddress());
 		attributes.put("fullName", getFullName());
 		attributes.put("gitHubUserName", getGitHubUserName());
-		attributes.put("status", isStatus());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -111,7 +111,7 @@ public class CollaboratorWrapper
 			setGitHubUserName(gitHubUserName);
 		}
 
-		Boolean status = (Boolean)attributes.get("status");
+		Integer status = (Integer)attributes.get("status");
 
 		if (status != null) {
 			setStatus(status);
@@ -214,7 +214,7 @@ public class CollaboratorWrapper
 	 * @return the status of this collaborator
 	 */
 	@Override
-	public boolean getStatus() {
+	public int getStatus() {
 		return _collaborator.getStatus();
 	}
 
@@ -256,16 +256,6 @@ public class CollaboratorWrapper
 	@Override
 	public boolean isNew() {
 		return _collaborator.isNew();
-	}
-
-	/**
-	 * Returns <code>true</code> if this collaborator is status.
-	 *
-	 * @return <code>true</code> if this collaborator is status; <code>false</code> otherwise
-	 */
-	@Override
-	public boolean isStatus() {
-		return _collaborator.isStatus();
 	}
 
 	@Override
@@ -376,12 +366,12 @@ public class CollaboratorWrapper
 	}
 
 	/**
-	 * Sets whether this collaborator is status.
+	 * Sets the status of this collaborator.
 	 *
 	 * @param status the status of this collaborator
 	 */
 	@Override
-	public void setStatus(boolean status) {
+	public void setStatus(int status) {
 		_collaborator.setStatus(status);
 	}
 

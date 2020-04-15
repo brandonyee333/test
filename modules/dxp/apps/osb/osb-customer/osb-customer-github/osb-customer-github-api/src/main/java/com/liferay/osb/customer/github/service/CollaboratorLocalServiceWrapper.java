@@ -100,15 +100,6 @@ public class CollaboratorLocalServiceWrapper
 		return _collaboratorLocalService.deleteCollaborator(collaboratorId);
 	}
 
-	@Override
-	public com.liferay.osb.customer.github.model.Collaborator
-			deleteCollaborator(long accountEntryId, String gitHubUserName)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _collaboratorLocalService.deleteCollaborator(
-			accountEntryId, gitHubUserName);
-	}
-
 	/**
 	 * @throws PortalException
 	 */

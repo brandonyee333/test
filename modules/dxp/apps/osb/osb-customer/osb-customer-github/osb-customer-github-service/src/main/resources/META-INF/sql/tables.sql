@@ -6,5 +6,5 @@ create table OSBCustomer_Collaborator (
 	emailAddress VARCHAR(75) null,
 	fullName VARCHAR(75) null,
 	gitHubUserName VARCHAR(75) null,
-	status BOOLEAN
+	status INTEGER
 );

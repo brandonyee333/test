@@ -141,7 +141,7 @@ public class CollaboratorCacheModel
 		fullName = objectInput.readUTF();
 		gitHubUserName = objectInput.readUTF();
 
-		status = objectInput.readBoolean();
+		status = objectInput.readInt();
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class CollaboratorCacheModel
 			objectOutput.writeUTF(gitHubUserName);
 		}
 
-		objectOutput.writeBoolean(status);
+		objectOutput.writeInt(status);
 	}
 
 	public long collaboratorId;
@@ -184,6 +184,6 @@ public class CollaboratorCacheModel
 	public String emailAddress;
 	public String fullName;
 	public String gitHubUserName;
-	public boolean status;
+	public int status;
 
 }

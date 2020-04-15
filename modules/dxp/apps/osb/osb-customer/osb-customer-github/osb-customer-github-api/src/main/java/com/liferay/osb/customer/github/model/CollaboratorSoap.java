@@ -38,7 +38,7 @@ public class CollaboratorSoap implements Serializable {
 		soapModel.setEmailAddress(model.getEmailAddress());
 		soapModel.setFullName(model.getFullName());
 		soapModel.setGitHubUserName(model.getGitHubUserName());
-		soapModel.setStatus(model.isStatus());
+		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
 	}
@@ -148,15 +148,11 @@ public class CollaboratorSoap implements Serializable {
 		_gitHubUserName = gitHubUserName;
 	}
 
-	public boolean getStatus() {
+	public int getStatus() {
 		return _status;
 	}
 
-	public boolean isStatus() {
-		return _status;
-	}
-
-	public void setStatus(boolean status) {
+	public void setStatus(int status) {
 		_status = status;
 	}
 
@@ -167,6 +163,6 @@ public class CollaboratorSoap implements Serializable {
 	private String _emailAddress;
 	private String _fullName;
 	private String _gitHubUserName;
-	private boolean _status;
+	private int _status;
 
 }

@@ -180,21 +180,14 @@ public interface CollaboratorModel extends BaseModel<Collaborator> {
 	 *
 	 * @return the status of this collaborator
 	 */
-	public boolean getStatus();
+	public int getStatus();
 
 	/**
-	 * Returns <code>true</code> if this collaborator is status.
-	 *
-	 * @return <code>true</code> if this collaborator is status; <code>false</code> otherwise
-	 */
-	public boolean isStatus();
-
-	/**
-	 * Sets whether this collaborator is status.
+	 * Sets the status of this collaborator.
 	 *
 	 * @param status the status of this collaborator
 	 */
-	public void setStatus(boolean status);
+	public void setStatus(int status);
 
 	@Override
 	public boolean isNew();

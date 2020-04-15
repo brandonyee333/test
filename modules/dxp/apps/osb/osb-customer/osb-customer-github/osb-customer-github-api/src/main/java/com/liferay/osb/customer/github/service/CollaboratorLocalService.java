@@ -106,10 +106,6 @@ public interface CollaboratorLocalService
 	public Collaborator deleteCollaborator(long collaboratorId)
 		throws PortalException;
 
-	public Collaborator deleteCollaborator(
-			long accountEntryId, String gitHubUserName)
-		throws PortalException;
-
 	/**
 	 * @throws PortalException
 	 */

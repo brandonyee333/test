@@ -9,6 +9,6 @@
 		<field name="emailAddress" type="String" />
 		<field name="fullName" type="String" />
 		<field name="gitHubUserName" type="String" />
-		<field name="status" type="boolean" />
+		<field name="status" type="int" />
 	</model>
 </model-hints>

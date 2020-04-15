@@ -13,6 +13,6 @@
 		<property name="emailAddress" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="fullName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="gitHubUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 </hibernate-mapping>

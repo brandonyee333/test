@@ -19,20 +19,20 @@ import com.liferay.portal.kernel.exception.PortalException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class GitHubUserNameException extends PortalException {
+public class CollaboratorFullNameException extends PortalException {
 
-	public GitHubUserNameException() {
+	public CollaboratorFullNameException() {
 	}
 
-	public GitHubUserNameException(String msg) {
+	public CollaboratorFullNameException(String msg) {
 		super(msg);
 	}
 
-	public GitHubUserNameException(String msg, Throwable cause) {
+	public CollaboratorFullNameException(String msg, Throwable cause) {
 		super(msg, cause);
 	}
 
-	public GitHubUserNameException(Throwable cause) {
+	public CollaboratorFullNameException(Throwable cause) {
 		super(cause);
 	}
 

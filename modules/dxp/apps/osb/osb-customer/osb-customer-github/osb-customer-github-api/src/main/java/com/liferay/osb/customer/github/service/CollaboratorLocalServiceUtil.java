@@ -102,13 +102,6 @@ public class CollaboratorLocalServiceUtil {
 		return getService().deleteCollaborator(collaboratorId);
 	}
 
-	public static com.liferay.osb.customer.github.model.Collaborator
-			deleteCollaborator(long accountEntryId, String gitHubUserName)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return getService().deleteCollaborator(accountEntryId, gitHubUserName);
-	}
-
 	/**
 	 * @throws PortalException
 	 */
