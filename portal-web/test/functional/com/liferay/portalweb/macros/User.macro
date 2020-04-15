@@ -1124,6 +1124,8 @@ definition {
 			locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME_LINK",
 			value1 = "${userScreenName}");
 
+		Navigator.gotoNavTab(navTab = "User Information");
+
 		Pause(locator1 = "3000");
 
 		if (!(isSet(newPassword))) {
@@ -2239,6 +2241,8 @@ definition {
 			AssertClick(
 				locator1 = "UsersAndOrganizations#USER_TABLE_NAME",
 				value1 = "${userFirstName} ${userLastName}");
+
+			Navigator.gotoNavTab(navTab = "User Information");
 
 			AssertTextEquals(
 				locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD",

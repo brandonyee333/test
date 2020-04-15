@@ -855,6 +855,8 @@ definition {
 
 		User.gotoEditCP(userScreenName = "usersn1");
 
+		Navigator.gotoNavTab(navTab = "User Information");
+
 		AssetCategorization.removeTag(tagName = "tag1");
 
 		PortletEntry.save();
