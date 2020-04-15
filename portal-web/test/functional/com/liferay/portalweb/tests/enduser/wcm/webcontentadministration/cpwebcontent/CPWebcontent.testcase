@@ -466,24 +466,40 @@ definition {
 
 		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
 
+		AssertTextEquals(
+			locator1 = "TextInput#TITLE",
+			value1 = "WC WebContent Title");
+
+		FormFields.viewTextValue(
+			fieldName = "Text",
+			fieldValue = "Text");
+
+		FormFields.viewMultilineTextValue(
+			fieldName = "TextBox",
+			fieldValue = "Text Box");
+
 		WebContent.addTranslation(
 			localizedLanguage = "Spanish (Spain)",
-			localizedText = "Text Spanish",
-			localizedTextBox = "Text Box Spanish",
-			localizedTitle = "Title Spanish",
 			webContentTitle = "WC WebContent Title");
 
-		PortletEntry.publish();
+		WebContent.addCP(webContentTitle = "Title Spanish");
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+		AssertTextEquals(
+			locator1 = "TextInput#TITLE",
+			value1 = "Title Spanish");
 
-		WebContent.viewUnlocalizableTextBox(
-			editLocalizedTextBox = "Text Box Unlocalized",
-			localizedText = "Text Spanish",
-			localizedTextBox = "Text Box",
-			localizedTitle = "Title Spanish",
-			webContentTextBox = "Text Box",
-			webContentTitle = "WC WebContent Title");
+		Type(
+			key_fieldName = "Text",
+			locator1 = "TextInput#DDM",
+			value1 = "Text Spanish");
+
+		FormFields.viewTextValue(
+			fieldName = "Text",
+			fieldValue = "Text Spanish");
+
+		AssertNotEditable(
+			key_fieldName = "TextBox",
+			locator1 = "DDMField#TEXT_BOX");
 	}
 
 	@description = "This is a use case for LPS-69560."
