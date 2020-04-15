@@ -480,6 +480,8 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
+		Navigator.gotoNavTab(navTab = "Organization Information");
+
 		Type(
 			locator1 = "TextInput#NAME",
 			value1 = "${orgNameEdit}");
