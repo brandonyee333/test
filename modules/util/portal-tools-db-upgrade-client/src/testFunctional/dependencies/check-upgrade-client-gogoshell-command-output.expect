@@ -1,0 +1,23 @@
+#!/usr/bin/expect
+
+spawn [db.upgrade.client.home]/db_upgrade[file.suffix.bat] -s
+
+set timeout 900
+
+expect {
+    "Type \\\"help\\\" to get available upgrade and verify commands" {send "upgrade:check\r"}
+    timeout {send_user "Connecting to Gogoshell FAILED";exit 2}
+}
+
+set timeout 5
+
+expect {
+    "upgrade:check" {exp_continue;}
+    "upgrade:check" {send_user "Command is printed twice!";exit 2}
+    timeout {send "\r"}
+}
+
+expect {
+    "\n" {send_user "White line is printed!";exit 2}
+    timeout {send "exit\r";send_user "PASS"}
+}

@@ -170,6 +170,29 @@
 		<clean-database-upgrade-client />
 	</target>
 
+	<target name="check-upgrade-client-gogoshell-command-output">
+		<rebuild-upgrade-database />
+
+		<get-database-upgrade-client-paths />
+
+		<run-expect
+			db.upgrade.client.home="${db.upgrade.client.home}"
+			file.suffix.bat="${file.suffix.bat}"
+			expect.file="check-upgrade-client-gogoshell-command-output.expect"
+		/>
+
+		<fail message="Prefix g! for commands should not exist!">
+			<condition>
+				<resourcecontains
+					resource="${db.upgrade.client.log}"
+					substring="g!"
+				/>
+			</condition>
+		</fail>
+
+		<clean-database-upgrade-client />
+	</target>
+
 	<target name="check-upgrade-client-gogoshell-failed-upgrade">
 		<rebuild-upgrade-database />
 
