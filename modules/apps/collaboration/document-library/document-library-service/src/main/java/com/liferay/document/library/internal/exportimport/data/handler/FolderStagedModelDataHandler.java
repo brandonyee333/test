@@ -252,51 +252,48 @@ public class FolderStagedModelDataHandler
 
 		Folder importedFolder = null;
 
-		if (portletDataContext.isDataStrategyMirror()) {
-			boolean rootFolder = GetterUtil.getBoolean(
-				folderElement.attributeValue("rootFolder"));
+		boolean rootFolder = GetterUtil.getBoolean(
+			folderElement.attributeValue("rootFolder"));
 
-			if (rootFolder) {
-				Repository repository = _repositoryLocalService.getRepository(
-					repositoryId);
+		if (rootFolder) {
+			Repository repository = _repositoryLocalService.getRepository(
+				repositoryId);
 
-				importedFolder = _dlAppLocalService.getFolder(
-					repository.getDlFolderId());
-			}
-			else {
-				Folder existingFolder = fetchStagedModelByUuidAndGroupId(
-					folder.getUuid(), portletDataContext.getScopeGroupId());
-
-				if (existingFolder == null) {
-					String name = getFolderName(
-						null, portletDataContext.getScopeGroupId(),
-						parentFolderId, folder.getName(), 2);
-
-					serviceContext.setUuid(folder.getUuid());
-
-					importedFolder = _dlAppLocalService.addFolder(
-						userId, repositoryId, parentFolderId, name,
-						folder.getDescription(), serviceContext);
-				}
-				else {
-					String name = getFolderName(
-						folder.getUuid(), portletDataContext.getScopeGroupId(),
-						parentFolderId, folder.getName(), 2);
-
-					importedFolder = _dlAppLocalService.updateFolder(
-						existingFolder.getFolderId(), parentFolderId, name,
-						folder.getDescription(), serviceContext);
-				}
-			}
+			importedFolder = _dlAppLocalService.getFolder(
+				repository.getDlFolderId());
 		}
 		else {
-			String name = getFolderName(
-				null, portletDataContext.getScopeGroupId(), parentFolderId,
-				folder.getName(), 2);
+			Folder existingFolder = fetchStagedModelByUuidAndGroupId(
+				folder.getUuid(), portletDataContext.getScopeGroupId());
 
-			importedFolder = _dlAppLocalService.addFolder(
-				userId, repositoryId, parentFolderId, name,
-				folder.getDescription(), serviceContext);
+			if ((existingFolder == null) ||
+				!portletDataContext.isDataStrategyMirror()) {
+
+				String uuid = null;
+
+				if (portletDataContext.isDataStrategyMirror()) {
+					uuid = folder.getUuid();
+
+					serviceContext.setUuid(uuid);
+				}
+
+				String name = getFolderName(
+					uuid, portletDataContext.getScopeGroupId(), parentFolderId,
+					folder.getName(), 2);
+
+				importedFolder = _dlAppLocalService.addFolder(
+					userId, repositoryId, parentFolderId, name,
+					folder.getDescription(), serviceContext);
+			}
+			else {
+				String name = getFolderName(
+					folder.getUuid(), portletDataContext.getScopeGroupId(),
+					parentFolderId, folder.getName(), 2);
+
+				importedFolder = _dlAppLocalService.updateFolder(
+					existingFolder.getFolderId(), parentFolderId, name,
+					folder.getDescription(), serviceContext);
+			}
 		}
 
 		importFolderFileEntryTypes(
