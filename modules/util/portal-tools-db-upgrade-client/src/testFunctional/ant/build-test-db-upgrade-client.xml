@@ -240,6 +240,17 @@
 			expect.file="check-upgrade-client-gogoshell-help-output.expect"
 		/>
 
+		<fail message="Exception thrown, failing.">
+			<condition>
+				<resourcecontains
+					resource="${db.upgrade.client.log}"
+					substring="Exception"
+				/>
+			</condition>
+		</fail>
+
+		<print-file file.name="${db.upgrade.client.log}" />
+
 		<clean-database-upgrade-client />
 	</target>
 
