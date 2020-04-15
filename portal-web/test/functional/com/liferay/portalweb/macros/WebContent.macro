@@ -2247,35 +2247,6 @@ definition {
 		SelectFrame(value1 = "relative=top");
 	}
 
-	macro viewUnlocalizableTextBox {
-		AssertTextEquals(
-			locator1 = "TextInput#TITLE",
-			value1 = "${webContentTitle}");
-
-		AssertTextEquals(
-			key_fieldName = "TextBox",
-			locator1 = "DDMField#TEXT_BOX",
-			value1 = "${webContentTextBox}");
-
-		Click(
-			key_localizedLanguage = "Spanish (Spain)",
-			locator1 = "Translation#AVAILABLE_TRANSLATION");
-
-		AssertTextEquals(
-			locator1 = "TextInput#TITLE",
-			value1 = "${localizedTitle}");
-
-		AssertTextEquals(
-			key_fieldName = "Text",
-			locator1 = "TextInput#DDM",
-			value1 = "${localizedText}");
-
-		AssertTextEquals(
-			key_fieldName = "TextBox",
-			locator1 = "DDMField#TEXT_BOX",
-			value1 = "${localizedTextBox}");
-	}
-
 	macro viewUserEditCP {
 		AssertTextEquals.assertPartialText(
 			key_webContentTitle = "${webContentTitle}",
