@@ -17,6 +17,8 @@ package com.liferay.osb.customer.account.entry.details.web.internal.display.cont
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys;
 import com.liferay.osb.customer.account.entry.details.web.internal.display.context.util.AccountEntryDetailsRequestHelper;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.github.model.Collaborator;
+import com.liferay.osb.customer.github.service.CollaboratorLocalServiceUtil;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.model.AccountEnvironment;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
@@ -148,6 +150,51 @@ public class AccountEntryViewDisplayContext {
 
 		for (AccountEnvironment accountEnvironment : accountEnvironments) {
 			JSONObject jsonObject = getDisplayJSONObject(accountEnvironment);
+
+			jsonArray.put(jsonObject);
+		}
+
+		return jsonArray;
+	}
+
+	public String getCollaboratorAddURL(
+			AccountEntry accountEntry, String emailAddress, String fullName,
+			String gitHubUserName)
+		throws PortletException {
+
+		PortletURL portletURL = _mimeResponse.createActionURL();
+
+		portletURL.setParameter(ActionRequest.ACTION_NAME, "addCollaborator");
+		portletURL.setParameter(
+			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
+		portletURL.setParameter(
+			"accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
+		portletURL.setParameter("emailAddress", emailAddress);
+		portletURL.setParameter("fullName", fullName);
+		portletURL.setParameter("gitHubUserName", gitHubUserName);
+
+		return portletURL.toString();
+	}
+
+	public JSONArray getCollaboratorsJSONArray() throws Exception {
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		List<Collaborator> collaborators =
+			CollaboratorLocalServiceUtil.getCollaborators(
+				_accountEntry.getAccountEntryId());
+
+		for (Collaborator collaborator : collaborators) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("collaboratorId", collaborator.getCollaboratorId());
+
+			jsonObject.put(
+				"deleteCollaboratorURL",
+				getCollaboratorDeleteURL(collaborator));
+
+			jsonObject.put("emailAddress", collaborator.getEmailAddress());
+			jsonObject.put("fullName", collaborator.getFullName());
+			jsonObject.put("gitHubUserName", collaborator.getGitHubUserName());
 
 			jsonArray.put(jsonObject);
 		}
@@ -324,6 +371,21 @@ public class AccountEntryViewDisplayContext {
 		portletURL.setParameter(
 			"accountEnvironmentId",
 			String.valueOf(accountEnvironment.getAccountEnvironmentId()));
+
+		return portletURL.toString();
+	}
+
+	protected String getCollaboratorDeleteURL(Collaborator collaborator) {
+		PortletURL portletURL = _mimeResponse.createActionURL();
+
+		portletURL.setParameter(
+			ActionRequest.ACTION_NAME, "deleteCollaborator");
+		portletURL.setParameter(
+			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
+		portletURL.setParameter(
+			"accountEntryId", String.valueOf(collaborator.getAccountEntryId()));
+		portletURL.setParameter(
+			"gitHubUserName", collaborator.getGitHubUserName());
 
 		return portletURL.toString();
 	}

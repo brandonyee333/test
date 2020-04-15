@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Customer GitHub API
+Bundle-SymbolicName: com.liferay.osb.customer.github.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.github.exception,\
+	com.liferay.osb.customer.github.model,\
+	com.liferay.osb.customer.github.service,\
+	com.liferay.osb.customer.github.service.persistence
