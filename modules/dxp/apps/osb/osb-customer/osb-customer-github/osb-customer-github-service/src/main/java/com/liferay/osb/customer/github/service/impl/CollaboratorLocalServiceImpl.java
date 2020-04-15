@@ -14,17 +14,18 @@
 
 package com.liferay.osb.customer.github.service.impl;
 
+import com.liferay.osb.customer.github.exception.CollaboratorEmailAddressException;
+import com.liferay.osb.customer.github.exception.CollaboratorFullNameException;
+import com.liferay.osb.customer.github.exception.CollaboratorGitHubUserNameException;
 import com.liferay.osb.customer.github.exception.DuplicateCollaboratorException;
-import com.liferay.osb.customer.github.exception.FullNameException;
-import com.liferay.osb.customer.github.exception.GitHubUserNameException;
 import com.liferay.osb.customer.github.model.Collaborator;
-import com.liferay.osb.customer.github.service.GitHubWebService;
 import com.liferay.osb.customer.github.service.base.CollaboratorLocalServiceBaseImpl;
+import com.liferay.osb.customer.github.web.service.GitHubWebService;
 import com.liferay.osb.exception.RequiredAccountEntryException;
-import com.liferay.portal.kernel.exception.EmailAddressException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -51,30 +52,36 @@ public class CollaboratorLocalServiceImpl
 
 		collaborator.setUserId(userId);
 		collaborator.setCreateDate(new Date());
-
 		collaborator.setAccountEntryId(accountEntryId);
 		collaborator.setEmailAddress(emailAddress);
 		collaborator.setFullName(fullName);
 		collaborator.setGitHubUserName(gitHubUserName);
+		collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
 
 		JSONObject jsonObject = _gitHubWebService.addCollaborator(
 			gitHubUserName);
 
 		if (jsonObject != null) {
-			collaborator.setStatus(true);
+			collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
 		}
 
-		collaboratorPersistence.update(collaborator);
-
-		return collaborator;
+		return collaboratorPersistence.update(collaborator);
 	}
 
 	@Override
 	public Collaborator deleteCollaborator(Collaborator collaborator)
 		throws PortalException {
 
-		return deleteCollaborator(
-			collaborator.getAccountEntryId(), collaborator.getGitHubUserName());
+		List<Collaborator> collaborators =
+			collaboratorPersistence.findByGitHubUserName(
+				collaborator.getGitHubUserName());
+
+		if (collaborators.size() == 1) {
+			_gitHubWebService.deleteCollaborator(
+				collaborator.getGitHubUserName());
+		}
+
+		return collaboratorPersistence.remove(collaborator);
 	}
 
 	@Override
@@ -83,23 +90,7 @@ public class CollaboratorLocalServiceImpl
 
 		Collaborator collaborator = getCollaborator(collaboratorId);
 
-		return deleteCollaborator(
-			collaborator.getAccountEntryId(), collaborator.getGitHubUserName());
-	}
-
-	public Collaborator deleteCollaborator(
-			long accountEntryId, String gitHubUserName)
-		throws PortalException {
-
-		List<Collaborator> collaborators =
-			collaboratorPersistence.findByGitHubUserName(gitHubUserName);
-
-		if (collaborators.size() == 1) {
-			_gitHubWebService.deleteCollaborator(gitHubUserName);
-		}
-
-		return collaboratorPersistence.removeByAEI_GHUN(
-			accountEntryId, gitHubUserName);
+		return deleteCollaborator(collaborator);
 	}
 
 	public List<Collaborator> getCollaborators(long accountEntryId) {
@@ -116,15 +107,15 @@ public class CollaboratorLocalServiceImpl
 		}
 
 		if (Validator.isNull(emailAddress)) {
-			throw new EmailAddressException();
+			throw new CollaboratorEmailAddressException();
 		}
 
 		if (Validator.isNull(fullName)) {
-			throw new FullNameException();
+			throw new CollaboratorFullNameException();
 		}
 
 		if (Validator.isNull(gitHubUserName)) {
-			throw new GitHubUserNameException();
+			throw new CollaboratorGitHubUserNameException();
 		}
 
 		Collaborator collaborator = collaboratorPersistence.fetchByAEI_GHUN(

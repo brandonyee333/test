@@ -20,7 +20,7 @@
 		<column name="emailAddress" type="String" />
 		<column name="fullName" type="String" />
 		<column name="gitHubUserName" type="String" />
-		<column name="status" type="boolean" />
+		<column name="status" type="int" />
 
 		<!-- Finder methods -->
 
@@ -36,8 +36,9 @@
 		</finder>
 	</entity>
 	<exceptions>
+		<exception>CollaboratorEmailAddress</exception>
+		<exception>CollaboratorFullName</exception>
+		<exception>CollaboratorGitHubUserName</exception>
 		<exception>DuplicateCollaborator</exception>
-		<exception>FullName</exception>
-		<exception>GitHubUserName</exception>
 	</exceptions>
 </service-builder>

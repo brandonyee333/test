@@ -157,21 +157,15 @@ public class AccountEntryViewDisplayContext {
 		return jsonArray;
 	}
 
-	public String getCollaboratorAddURL(
-			AccountEntry accountEntry, String emailAddress, String fullName,
-			String gitHubUserName)
-		throws PortletException {
-
+	public String getCollaboratorAddURL() throws PortletException {
 		PortletURL portletURL = _mimeResponse.createActionURL();
 
 		portletURL.setParameter(ActionRequest.ACTION_NAME, "addCollaborator");
 		portletURL.setParameter(
 			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
 		portletURL.setParameter(
-			"accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
-		portletURL.setParameter("emailAddress", emailAddress);
-		portletURL.setParameter("fullName", fullName);
-		portletURL.setParameter("gitHubUserName", gitHubUserName);
+			"accountEntryId",
+			String.valueOf(_accountEntry.getAccountEntryId()));
 
 		return portletURL.toString();
 	}
@@ -383,9 +377,7 @@ public class AccountEntryViewDisplayContext {
 		portletURL.setParameter(
 			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
 		portletURL.setParameter(
-			"accountEntryId", String.valueOf(collaborator.getAccountEntryId()));
-		portletURL.setParameter(
-			"gitHubUserName", collaborator.getGitHubUserName());
+			"collaboratorId", String.valueOf(collaborator.getCollaboratorId()));
 
 		return portletURL.toString();
 	}

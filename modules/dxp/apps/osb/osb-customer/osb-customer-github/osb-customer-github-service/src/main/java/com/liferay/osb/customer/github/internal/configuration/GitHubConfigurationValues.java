@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.customer.github.configuration;
+package com.liferay.osb.customer.github.internal.configuration;
 
 import com.liferay.portal.kernel.util.GetterUtil;
 

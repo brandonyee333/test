@@ -12,22 +12,19 @@
  *
  */
 
-package com.liferay.osb.customer.github.configuration;
+package com.liferay.osb.customer.github.web.service;
 
-import com.liferay.portal.kernel.configuration.Configuration;
-import com.liferay.portal.kernel.configuration.ConfigurationFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONObject;
 
 /**
  * @author Jenny Chen
  */
-public class GitHubConfigurationUtil {
+public interface GitHubWebService {
 
-	public static String get(String key) {
-		return _configuration.get(key);
-	}
+	public JSONObject addCollaborator(String userName) throws PortalException;
 
-	private static final Configuration _configuration =
-		ConfigurationFactoryUtil.getConfiguration(
-			GitHubConfigurationUtil.class.getClassLoader(), "portlet");
+	public JSONObject deleteCollaborator(String userName)
+		throws PortalException;
 
 }

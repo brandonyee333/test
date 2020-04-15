@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -65,7 +66,7 @@ public class AddCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getUserId(), accountEntryId, emailAddress,
 					fullName, gitHubUserName);
 
-			if (!collaborator.getStatus()) {
+			if (collaborator.getStatus() != WorkflowConstants.STATUS_APPROVED) {
 				SessionErrors.add(actionRequest, "Pending Invitation Limit");
 			}
 		}

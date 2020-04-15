@@ -43,13 +43,10 @@ public class DeleteCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-		String gitHubUserName = ParamUtil.getString(
-			actionRequest, "gitHubUserName");
+		long collaboratorId = ParamUtil.getLong(
+			actionRequest, "collaboratorId");
 
-		_collaboratorLocalService.deleteCollaborator(
-			accountEntryId, gitHubUserName);
+		_collaboratorLocalService.deleteCollaborator(collaboratorId);
 	}
 
 	@Reference

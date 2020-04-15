@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.customer.github.remote;
+package com.liferay.osb.customer.github.internal.web.service;
 
-import com.liferay.osb.customer.github.configuration.GitHubConfigurationValues;
-import com.liferay.osb.customer.github.service.GitHubWebService;
+import com.liferay.osb.customer.github.internal.configuration.GitHubConfigurationValues;
+import com.liferay.osb.customer.github.web.service.GitHubWebService;
 import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
