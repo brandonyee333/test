@@ -7769,7 +7769,7 @@ public class PortalImpl implements Portal {
 		}
 
 		layouts = LayoutLocalServiceUtil.getLayouts(
-			groupId, privateLayout, LayoutConstants.TYPE_FULL_PAGE_APPLICATION);
+			groupId, privateLayout, "full_page_application");
 
 		plid = doGetPlidFromPortletId(layouts, portletId, scopeGroupId);
 

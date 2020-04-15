@@ -1520,10 +1520,7 @@ public class LayoutTypePortletImpl
 		Layout layout = getLayout();
 
 		if (layout.isTypePortlet()) {
-			if (Objects.equals(
-					layout.getType(),
-					LayoutConstants.TYPE_FULL_PAGE_APPLICATION)) {
-
+			if (Objects.equals(layout.getType(), "full_page_application")) {
 				columns.add("fullPageApplicationPortlet");
 			}
 			else {
