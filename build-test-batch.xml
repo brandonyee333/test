@@ -3557,7 +3557,7 @@ log.sanitizer.enabled=false</echo>
 
 				<trycatch property="junit.failure.message">
 					<try>
-						<for keepgoing="true" list="check-upgrade-client-gogoshell-command-output,check-upgrade-client-gogoshell-failed-upgrade,check-upgrade-client-gogoshell-help-output" param="upgrade.test.target">
+						<for keepgoing="true" list="check-upgrade-client-gogoshell-command-output" param="upgrade.test.target">
 							<sequential>
 								<ant antfile="modules/util/portal-tools-db-upgrade-client/src/testFunctional/ant/build-test-db-upgrade-client.xml" target="@{upgrade.test.target}" />
 							</sequential>

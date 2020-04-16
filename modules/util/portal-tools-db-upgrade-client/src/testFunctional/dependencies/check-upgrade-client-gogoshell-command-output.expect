@@ -18,6 +18,6 @@ expect {
 }
 
 expect {
-    "g!\n" {send_user "White line is printed!";exit 2}
+    "g!\n\n" {send_user "White line is printed!";exit 2}
     timeout {send "exit\r";send_user "PASS"}
 }
