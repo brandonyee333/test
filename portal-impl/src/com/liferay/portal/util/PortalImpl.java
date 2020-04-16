@@ -7719,29 +7719,6 @@ public class PortalImpl implements Portal {
 	}
 
 	protected long doGetPlidFromPortletId(
-		List<Layout> layouts, String portletId, long scopeGroupId) {
-
-		for (Layout layout : layouts) {
-			LayoutTypePortlet layoutTypePortlet =
-				(LayoutTypePortlet)layout.getLayoutType();
-
-			if (getScopeGroupId(layout, portletId) != scopeGroupId) {
-				continue;
-			}
-
-			for (Portlet portlet : layoutTypePortlet.getAllPortlets()) {
-				if (portletId.equals(portlet.getPortletId()) ||
-					portletId.equals(portlet.getRootPortletId())) {
-
-					return layout.getPlid();
-				}
-			}
-		}
-
-		return LayoutConstants.DEFAULT_PLID;
-	}
-
-	protected long doGetPlidFromPortletId(
 		long groupId, boolean privateLayout, String portletId) {
 
 		long scopeGroupId = groupId;
@@ -7762,7 +7739,7 @@ public class PortalImpl implements Portal {
 		List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
 			groupId, privateLayout, LayoutConstants.TYPE_PORTLET);
 
-		long plid = doGetPlidFromPortletId(layouts, portletId, scopeGroupId);
+		long plid = _getPlidFromPortletId(layouts, portletId, scopeGroupId);
 
 		if (plid != LayoutConstants.DEFAULT_PLID) {
 			return plid;
@@ -7771,7 +7748,7 @@ public class PortalImpl implements Portal {
 		layouts = LayoutLocalServiceUtil.getLayouts(
 			groupId, privateLayout, "full_page_application");
 
-		plid = doGetPlidFromPortletId(layouts, portletId, scopeGroupId);
+		plid = _getPlidFromPortletId(layouts, portletId, scopeGroupId);
 
 		if (plid != LayoutConstants.DEFAULT_PLID) {
 			return plid;
@@ -7780,7 +7757,7 @@ public class PortalImpl implements Portal {
 		layouts = LayoutLocalServiceUtil.getLayouts(
 			groupId, privateLayout, LayoutConstants.TYPE_PANEL);
 
-		return doGetPlidFromPortletId(layouts, portletId, scopeGroupId);
+		return _getPlidFromPortletId(layouts, portletId, scopeGroupId);
 	}
 
 	protected List<Portlet> filterControlPanelPortlets(
@@ -8852,6 +8829,29 @@ public class PortalImpl implements Portal {
 		sb.append(group.getFriendlyURL());
 
 		return sb.toString();
+	}
+
+	private long _getPlidFromPortletId(
+		List<Layout> layouts, String portletId, long scopeGroupId) {
+
+		for (Layout layout : layouts) {
+			LayoutTypePortlet layoutTypePortlet =
+				(LayoutTypePortlet)layout.getLayoutType();
+
+			if (getScopeGroupId(layout, portletId) != scopeGroupId) {
+				continue;
+			}
+
+			for (Portlet portlet : layoutTypePortlet.getAllPortlets()) {
+				if (portletId.equals(portlet.getPortletId()) ||
+					portletId.equals(portlet.getRootPortletId())) {
+
+					return layout.getPlid();
+				}
+			}
+		}
+
+		return LayoutConstants.DEFAULT_PLID;
 	}
 
 	private String _getPortalURL(
