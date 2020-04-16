@@ -93,6 +93,10 @@ public class CollaboratorLocalServiceImpl
 		return deleteCollaborator(collaborator);
 	}
 
+	public List<Collaborator> getCollaborators(int status, int start, int end) {
+		return collaboratorPersistence.findByStatus(status, start, end);
+	}
+
 	public List<Collaborator> getCollaborators(long accountEntryId) {
 		return collaboratorPersistence.findByAccountEntryId(accountEntryId);
 	}

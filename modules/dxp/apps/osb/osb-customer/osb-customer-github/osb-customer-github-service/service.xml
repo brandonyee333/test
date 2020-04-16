@@ -22,6 +22,12 @@
 		<column name="gitHubUserName" type="String" />
 		<column name="status" type="int" />
 
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="createDate" />
+		</order>
+
 		<!-- Finder methods -->
 
 		<finder name="AccountEntryId" return-type="Collection">
@@ -29,6 +35,9 @@
 		</finder>
 		<finder name="GitHubUserName" return-type="Collection">
 			<finder-column name="gitHubUserName" />
+		</finder>
+		<finder name="Status" return-type="Collection">
+			<finder-column name="status" />
 		</finder>
 		<finder name="AEI_GHUN" return-type="Collaborator">
 			<finder-column name="accountEntryId" />
