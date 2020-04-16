@@ -480,6 +480,174 @@ public class CollaboratorUtil {
 	}
 
 	/**
+	 * Returns all the collaborators where status = &#63;.
+	 *
+	 * @param status the status
+	 * @return the matching collaborators
+	 */
+	public static List<Collaborator> findByStatus(int status) {
+		return getPersistence().findByStatus(status);
+	}
+
+	/**
+	 * Returns a range of all the collaborators where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @return the range of matching collaborators
+	 */
+	public static List<Collaborator> findByStatus(
+		int status, int start, int end) {
+
+		return getPersistence().findByStatus(status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collaborators
+	 */
+	public static List<Collaborator> findByStatus(
+		int status, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().findByStatus(
+			status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collaborators
+	 */
+	public static List<Collaborator> findByStatus(
+		int status, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByStatus(
+			status, start, end, orderByComparator, useFinderCache);
+	}
+
+	/**
+	 * Returns the first collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collaborator
+	 * @throws NoSuchCollaboratorException if a matching collaborator could not be found
+	 */
+	public static Collaborator findByStatus_First(
+			int status, OrderByComparator<Collaborator> orderByComparator)
+		throws com.liferay.osb.customer.github.exception.
+			NoSuchCollaboratorException {
+
+		return getPersistence().findByStatus_First(status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collaborator, or <code>null</code> if a matching collaborator could not be found
+	 */
+	public static Collaborator fetchByStatus_First(
+		int status, OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().fetchByStatus_First(status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collaborator
+	 * @throws NoSuchCollaboratorException if a matching collaborator could not be found
+	 */
+	public static Collaborator findByStatus_Last(
+			int status, OrderByComparator<Collaborator> orderByComparator)
+		throws com.liferay.osb.customer.github.exception.
+			NoSuchCollaboratorException {
+
+		return getPersistence().findByStatus_Last(status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collaborator, or <code>null</code> if a matching collaborator could not be found
+	 */
+	public static Collaborator fetchByStatus_Last(
+		int status, OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().fetchByStatus_Last(status, orderByComparator);
+	}
+
+	/**
+	 * Returns the collaborators before and after the current collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param collaboratorId the primary key of the current collaborator
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collaborator
+	 * @throws NoSuchCollaboratorException if a collaborator with the primary key could not be found
+	 */
+	public static Collaborator[] findByStatus_PrevAndNext(
+			long collaboratorId, int status,
+			OrderByComparator<Collaborator> orderByComparator)
+		throws com.liferay.osb.customer.github.exception.
+			NoSuchCollaboratorException {
+
+		return getPersistence().findByStatus_PrevAndNext(
+			collaboratorId, status, orderByComparator);
+	}
+
+	/**
+	 * Removes all the collaborators where status = &#63; from the database.
+	 *
+	 * @param status the status
+	 */
+	public static void removeByStatus(int status) {
+		getPersistence().removeByStatus(status);
+	}
+
+	/**
+	 * Returns the number of collaborators where status = &#63;.
+	 *
+	 * @param status the status
+	 * @return the number of matching collaborators
+	 */
+	public static int countByStatus(int status) {
+		return getPersistence().countByStatus(status);
+	}
+
+	/**
 	 * Returns the collaborator where accountEntryId = &#63; and gitHubUserName = &#63; or throws a <code>NoSuchCollaboratorException</code> if it could not be found.
 	 *
 	 * @param accountEntryId the account entry ID

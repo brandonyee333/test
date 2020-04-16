@@ -1141,6 +1141,502 @@ public class CollaboratorPersistenceImpl
 	private static final String _FINDER_COLUMN_GITHUBUSERNAME_GITHUBUSERNAME_3 =
 		"(collaborator.gitHubUserName IS NULL OR collaborator.gitHubUserName = '')";
 
+	private FinderPath _finderPathWithPaginationFindByStatus;
+	private FinderPath _finderPathWithoutPaginationFindByStatus;
+	private FinderPath _finderPathCountByStatus;
+
+	/**
+	 * Returns all the collaborators where status = &#63;.
+	 *
+	 * @param status the status
+	 * @return the matching collaborators
+	 */
+	@Override
+	public List<Collaborator> findByStatus(int status) {
+		return findByStatus(status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the collaborators where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @return the range of matching collaborators
+	 */
+	@Override
+	public List<Collaborator> findByStatus(int status, int start, int end) {
+		return findByStatus(status, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collaborators
+	 */
+	@Override
+	public List<Collaborator> findByStatus(
+		int status, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator) {
+
+		return findByStatus(status, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collaborators
+	 */
+	@Override
+	public List<Collaborator> findByStatus(
+		int status, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByStatus;
+				finderArgs = new Object[] {status};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByStatus;
+			finderArgs = new Object[] {status, start, end, orderByComparator};
+		}
+
+		List<Collaborator> list = null;
+
+		if (useFinderCache) {
+			list = (List<Collaborator>)finderCache.getResult(
+				finderPath, finderArgs, this);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Collaborator collaborator : list) {
+					if (status != collaborator.getStatus()) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_COLLABORATOR_WHERE);
+
+			sb.append(_FINDER_COLUMN_STATUS_STATUS_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(CollaboratorModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(status);
+
+				list = (List<Collaborator>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collaborator
+	 * @throws NoSuchCollaboratorException if a matching collaborator could not be found
+	 */
+	@Override
+	public Collaborator findByStatus_First(
+			int status, OrderByComparator<Collaborator> orderByComparator)
+		throws NoSuchCollaboratorException {
+
+		Collaborator collaborator = fetchByStatus_First(
+			status, orderByComparator);
+
+		if (collaborator != null) {
+			return collaborator;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("status=");
+		sb.append(status);
+
+		sb.append("}");
+
+		throw new NoSuchCollaboratorException(sb.toString());
+	}
+
+	/**
+	 * Returns the first collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collaborator, or <code>null</code> if a matching collaborator could not be found
+	 */
+	@Override
+	public Collaborator fetchByStatus_First(
+		int status, OrderByComparator<Collaborator> orderByComparator) {
+
+		List<Collaborator> list = findByStatus(status, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collaborator
+	 * @throws NoSuchCollaboratorException if a matching collaborator could not be found
+	 */
+	@Override
+	public Collaborator findByStatus_Last(
+			int status, OrderByComparator<Collaborator> orderByComparator)
+		throws NoSuchCollaboratorException {
+
+		Collaborator collaborator = fetchByStatus_Last(
+			status, orderByComparator);
+
+		if (collaborator != null) {
+			return collaborator;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("status=");
+		sb.append(status);
+
+		sb.append("}");
+
+		throw new NoSuchCollaboratorException(sb.toString());
+	}
+
+	/**
+	 * Returns the last collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collaborator, or <code>null</code> if a matching collaborator could not be found
+	 */
+	@Override
+	public Collaborator fetchByStatus_Last(
+		int status, OrderByComparator<Collaborator> orderByComparator) {
+
+		int count = countByStatus(status);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Collaborator> list = findByStatus(
+			status, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the collaborators before and after the current collaborator in the ordered set where status = &#63;.
+	 *
+	 * @param collaboratorId the primary key of the current collaborator
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collaborator
+	 * @throws NoSuchCollaboratorException if a collaborator with the primary key could not be found
+	 */
+	@Override
+	public Collaborator[] findByStatus_PrevAndNext(
+			long collaboratorId, int status,
+			OrderByComparator<Collaborator> orderByComparator)
+		throws NoSuchCollaboratorException {
+
+		Collaborator collaborator = findByPrimaryKey(collaboratorId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Collaborator[] array = new CollaboratorImpl[3];
+
+			array[0] = getByStatus_PrevAndNext(
+				session, collaborator, status, orderByComparator, true);
+
+			array[1] = collaborator;
+
+			array[2] = getByStatus_PrevAndNext(
+				session, collaborator, status, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Collaborator getByStatus_PrevAndNext(
+		Session session, Collaborator collaborator, int status,
+		OrderByComparator<Collaborator> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_COLLABORATOR_WHERE);
+
+		sb.append(_FINDER_COLUMN_STATUS_STATUS_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(CollaboratorModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(status);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(collaborator)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Collaborator> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the collaborators where status = &#63; from the database.
+	 *
+	 * @param status the status
+	 */
+	@Override
+	public void removeByStatus(int status) {
+		for (Collaborator collaborator :
+				findByStatus(
+					status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(collaborator);
+		}
+	}
+
+	/**
+	 * Returns the number of collaborators where status = &#63;.
+	 *
+	 * @param status the status
+	 * @return the number of matching collaborators
+	 */
+	@Override
+	public int countByStatus(int status) {
+		FinderPath finderPath = _finderPathCountByStatus;
+
+		Object[] finderArgs = new Object[] {status};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_COLLABORATOR_WHERE);
+
+			sb.append(_FINDER_COLUMN_STATUS_STATUS_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(status);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				finderCache.removeResult(finderPath, finderArgs);
+
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_STATUS_STATUS_2 =
+		"collaborator.status = ?";
+
 	private FinderPath _finderPathFetchByAEI_GHUN;
 	private FinderPath _finderPathCountByAEI_GHUN;
 
@@ -1734,6 +2230,12 @@ public class CollaboratorPersistenceImpl
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindByGitHubUserName, args);
 
+			args = new Object[] {collaboratorModelImpl.getStatus()};
+
+			finderCache.removeResult(_finderPathCountByStatus, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByStatus, args);
+
 			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
 			finderCache.removeResult(
 				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
@@ -1779,6 +2281,25 @@ public class CollaboratorPersistenceImpl
 					_finderPathCountByGitHubUserName, args);
 				finderCache.removeResult(
 					_finderPathWithoutPaginationFindByGitHubUserName, args);
+			}
+
+			if ((collaboratorModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByStatus.getColumnBitmask()) !=
+					 0) {
+
+				Object[] args = new Object[] {
+					collaboratorModelImpl.getOriginalStatus()
+				};
+
+				finderCache.removeResult(_finderPathCountByStatus, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByStatus, args);
+
+				args = new Object[] {collaboratorModelImpl.getStatus()};
+
+				finderCache.removeResult(_finderPathCountByStatus, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByStatus, args);
 			}
 		}
 
@@ -2219,7 +2740,8 @@ public class CollaboratorPersistenceImpl
 			CollaboratorModelImpl.FINDER_CACHE_ENABLED, CollaboratorImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByAccountEntryId",
 			new String[] {Long.class.getName()},
-			CollaboratorModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK);
+			CollaboratorModelImpl.ACCOUNTENTRYID_COLUMN_BITMASK |
+			CollaboratorModelImpl.CREATEDATE_COLUMN_BITMASK);
 
 		_finderPathCountByAccountEntryId = new FinderPath(
 			CollaboratorModelImpl.ENTITY_CACHE_ENABLED,
@@ -2241,13 +2763,37 @@ public class CollaboratorPersistenceImpl
 			CollaboratorModelImpl.FINDER_CACHE_ENABLED, CollaboratorImpl.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGitHubUserName",
 			new String[] {String.class.getName()},
-			CollaboratorModelImpl.GITHUBUSERNAME_COLUMN_BITMASK);
+			CollaboratorModelImpl.GITHUBUSERNAME_COLUMN_BITMASK |
+			CollaboratorModelImpl.CREATEDATE_COLUMN_BITMASK);
 
 		_finderPathCountByGitHubUserName = new FinderPath(
 			CollaboratorModelImpl.ENTITY_CACHE_ENABLED,
 			CollaboratorModelImpl.FINDER_CACHE_ENABLED, Long.class,
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGitHubUserName",
 			new String[] {String.class.getName()});
+
+		_finderPathWithPaginationFindByStatus = new FinderPath(
+			CollaboratorModelImpl.ENTITY_CACHE_ENABLED,
+			CollaboratorModelImpl.FINDER_CACHE_ENABLED, CollaboratorImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByStatus",
+			new String[] {
+				Integer.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByStatus = new FinderPath(
+			CollaboratorModelImpl.ENTITY_CACHE_ENABLED,
+			CollaboratorModelImpl.FINDER_CACHE_ENABLED, CollaboratorImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByStatus",
+			new String[] {Integer.class.getName()},
+			CollaboratorModelImpl.STATUS_COLUMN_BITMASK |
+			CollaboratorModelImpl.CREATEDATE_COLUMN_BITMASK);
+
+		_finderPathCountByStatus = new FinderPath(
+			CollaboratorModelImpl.ENTITY_CACHE_ENABLED,
+			CollaboratorModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByStatus",
+			new String[] {Integer.class.getName()});
 
 		_finderPathFetchByAEI_GHUN = new FinderPath(
 			CollaboratorModelImpl.ENTITY_CACHE_ENABLED,

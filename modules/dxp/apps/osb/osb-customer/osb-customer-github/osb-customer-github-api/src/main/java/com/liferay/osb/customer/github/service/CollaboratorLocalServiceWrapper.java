@@ -250,6 +250,13 @@ public class CollaboratorLocalServiceWrapper
 
 	@Override
 	public java.util.List<com.liferay.osb.customer.github.model.Collaborator>
+		getCollaborators(int status, int start, int end) {
+
+		return _collaboratorLocalService.getCollaborators(status, start, end);
+	}
+
+	@Override
+	public java.util.List<com.liferay.osb.customer.github.model.Collaborator>
 		getCollaborators(long accountEntryId) {
 
 		return _collaboratorLocalService.getCollaborators(accountEntryId);

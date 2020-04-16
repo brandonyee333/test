@@ -244,6 +244,13 @@ public class CollaboratorLocalServiceUtil {
 
 	public static java.util.List
 		<com.liferay.osb.customer.github.model.Collaborator> getCollaborators(
+			int status, int start, int end) {
+
+		return getService().getCollaborators(status, start, end);
+	}
+
+	public static java.util.List
+		<com.liferay.osb.customer.github.model.Collaborator> getCollaborators(
 			long accountEntryId) {
 
 		return getService().getCollaborators(accountEntryId);

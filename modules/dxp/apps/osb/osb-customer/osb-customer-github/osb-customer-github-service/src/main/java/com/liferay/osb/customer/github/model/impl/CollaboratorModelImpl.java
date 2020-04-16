@@ -28,6 +28,7 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
+import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -99,10 +100,10 @@ public class CollaboratorModelImpl
 		"drop table OSBCustomer_Collaborator";
 
 	public static final String ORDER_BY_JPQL =
-		" ORDER BY collaborator.collaboratorId ASC";
+		" ORDER BY collaborator.createDate ASC";
 
 	public static final String ORDER_BY_SQL =
-		" ORDER BY OSBCustomer_Collaborator.collaboratorId ASC";
+		" ORDER BY OSBCustomer_Collaborator.createDate ASC";
 
 	public static final String DATA_SOURCE = "liferayDataSource";
 
@@ -129,7 +130,9 @@ public class CollaboratorModelImpl
 
 	public static final long GITHUBUSERNAME_COLUMN_BITMASK = 2L;
 
-	public static final long COLLABORATORID_COLUMN_BITMASK = 4L;
+	public static final long STATUS_COLUMN_BITMASK = 4L;
+
+	public static final long CREATEDATE_COLUMN_BITMASK = 8L;
 
 	/**
 	 * Converts the soap model instance into a normal model instance.
@@ -538,6 +541,8 @@ public class CollaboratorModelImpl
 
 	@Override
 	public void setCreateDate(Date createDate) {
+		_columnBitmask = -1L;
+
 		_createDate = createDate;
 	}
 
@@ -630,7 +635,19 @@ public class CollaboratorModelImpl
 
 	@Override
 	public void setStatus(int status) {
+		_columnBitmask |= STATUS_COLUMN_BITMASK;
+
+		if (!_setOriginalStatus) {
+			_setOriginalStatus = true;
+
+			_originalStatus = _status;
+		}
+
 		_status = status;
+	}
+
+	public int getOriginalStatus() {
+		return _originalStatus;
 	}
 
 	public long getColumnBitmask() {
@@ -685,17 +702,16 @@ public class CollaboratorModelImpl
 
 	@Override
 	public int compareTo(Collaborator collaborator) {
-		long primaryKey = collaborator.getPrimaryKey();
+		int value = 0;
 
-		if (getPrimaryKey() < primaryKey) {
-			return -1;
+		value = DateUtil.compareTo(
+			getCreateDate(), collaborator.getCreateDate());
+
+		if (value != 0) {
+			return value;
 		}
-		else if (getPrimaryKey() > primaryKey) {
-			return 1;
-		}
-		else {
-			return 0;
-		}
+
+		return 0;
 	}
 
 	@Override
@@ -746,6 +762,10 @@ public class CollaboratorModelImpl
 
 		collaboratorModelImpl._originalGitHubUserName =
 			collaboratorModelImpl._gitHubUserName;
+
+		collaboratorModelImpl._originalStatus = collaboratorModelImpl._status;
+
+		collaboratorModelImpl._setOriginalStatus = false;
 
 		collaboratorModelImpl._columnBitmask = 0;
 	}
@@ -880,6 +900,8 @@ public class CollaboratorModelImpl
 	private String _gitHubUserName;
 	private String _originalGitHubUserName;
 	private int _status;
+	private int _originalStatus;
+	private boolean _setOriginalStatus;
 	private long _columnBitmask;
 	private Collaborator _escapedModel;
 

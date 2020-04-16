@@ -211,6 +211,9 @@ public interface CollaboratorLocalService
 	public List<Collaborator> getCollaborators(int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Collaborator> getCollaborators(int status, int start, int end);
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Collaborator> getCollaborators(long accountEntryId);
 
 	/**
