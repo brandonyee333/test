@@ -653,7 +653,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-bmp.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: BMP plugin</project-name>
 				<licenses>
 					<license>
@@ -664,7 +664,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-core.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: Core</project-name>
 				<licenses>
 					<license>
@@ -675,7 +675,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-hdr.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: HDR plugin</project-name>
 				<licenses>
 					<license>
@@ -686,7 +686,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-icns.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: ICNS plugin</project-name>
 				<licenses>
 					<license>
@@ -697,7 +697,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-iff.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: IFF plugin</project-name>
 				<licenses>
 					<license>
@@ -708,7 +708,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-jpeg.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: JPEG plugin</project-name>
 				<licenses>
 					<license>
@@ -719,7 +719,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-metadata.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: Metadata</project-name>
 				<licenses>
 					<license>
@@ -730,7 +730,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-pcx.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PCX plugin</project-name>
 				<licenses>
 					<license>
@@ -741,7 +741,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-pict.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PICT plugin</project-name>
 				<licenses>
 					<license>
@@ -752,7 +752,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-pnm.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PNM plugin</project-name>
 				<licenses>
 					<license>
@@ -763,7 +763,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-psd.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: PSD plugin</project-name>
 				<licenses>
 					<license>
@@ -774,7 +774,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-sgi.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: SGI plugin</project-name>
 				<licenses>
 					<license>
@@ -785,7 +785,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-tga.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: TGA plugin</project-name>
 				<licenses>
 					<license>
@@ -796,7 +796,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-thumbsdb.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: Thumbs.db plugin</project-name>
 				<licenses>
 					<license>
@@ -807,7 +807,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-tiff.jar</file-name>
-				<version>3.3.2</version>
+				<version>3.5</version>
 				<project-name>TwelveMonkeys :: ImageIO :: TIFF plugin</project-name>
 				<licenses>
 					<license>
@@ -1099,18 +1099,6 @@
 					<license>
 						<license-name>GNU Lesser General Public Licence</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
-					</license>
-				</licenses>
-			</library>
-			<library>
-				<file-name>com.liferay.portal.cluster.multiple.jar!jgroups.jar</file-name>
-				<version>3.6.16.Final</version>
-				<project-name>JGroups</project-name>
-				<project-url>http://www.jgroups.org</project-url>
-				<licenses>
-					<license>
-						<license-name>Apache License, Version 2.0</license-name>
-						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
