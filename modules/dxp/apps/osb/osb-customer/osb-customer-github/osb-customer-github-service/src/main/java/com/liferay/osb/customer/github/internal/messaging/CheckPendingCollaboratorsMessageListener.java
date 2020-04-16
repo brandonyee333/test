@@ -41,8 +41,11 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Jenny Chen
  */
-@Component(immediate = true, service = GitHubRateLimitMessageListener.class)
-public class GitHubRateLimitMessageListener extends BaseMessageListener {
+@Component(
+	immediate = true, service = CheckPendingCollaboratorsMessageListener.class
+)
+public class CheckPendingCollaboratorsMessageListener
+	extends BaseMessageListener {
 
 	@Activate
 	@Modified
