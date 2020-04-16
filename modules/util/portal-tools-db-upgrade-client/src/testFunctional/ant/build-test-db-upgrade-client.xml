@@ -190,6 +190,15 @@
 			</condition>
 		</fail>
 
+		<fail message="Exception thrown, failing.">
+			<condition>
+				<resourcecontains
+					resource="${db.upgrade.client.log}"
+					substring="Exception"
+				/>
+			</condition>
+		</fail>
+
 		<print-file file.name="${db.upgrade.client.log}" />
 
 		<clean-database-upgrade-client />
