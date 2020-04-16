@@ -190,6 +190,8 @@
 			</condition>
 		</fail>
 
+		<print-file file.name="${db.upgrade.client.log}" />
+
 		<clean-database-upgrade-client />
 	</target>
 
