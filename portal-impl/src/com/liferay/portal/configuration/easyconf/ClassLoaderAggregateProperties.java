@@ -33,6 +33,7 @@ import java.lang.reflect.Field;
 import java.net.URL;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +63,8 @@ public class ClassLoaderAggregateProperties extends AggregatedProperties {
 
 		_prefixedSystemConfiguration = new SubsetConfiguration(
 			_systemConfiguration, _getPrefix(), null);
+
+		setProperty("include-and-override", _includeAndOverride);
 	}
 
 	@Override
@@ -233,6 +236,8 @@ public class ClassLoaderAggregateProperties extends AggregatedProperties {
 
 		String[] fileNames = tempCompositeConfiguration.getStringArray(
 			Conventions.INCLUDE_PROPERTY);
+
+		Collections.addAll(_includeAndOverride, fileNames);
 
 		ArrayUtil.reverse(fileNames);
 
@@ -449,6 +454,7 @@ public class ClassLoaderAggregateProperties extends AggregatedProperties {
 	private final String _componentName;
 	private final CompositeConfiguration _globalCompositeConfiguration =
 		new CompositeConfiguration();
+	private final List<String> _includeAndOverride = new ArrayList<>();
 	private final List<String> _loadedSources = new ArrayList<>();
 	private final Configuration _prefixedSystemConfiguration;
 	private final SystemConfiguration _systemConfiguration =
