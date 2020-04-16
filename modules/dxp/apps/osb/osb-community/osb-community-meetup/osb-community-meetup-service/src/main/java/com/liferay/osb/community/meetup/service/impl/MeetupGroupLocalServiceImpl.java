@@ -49,9 +49,7 @@ public class MeetupGroupLocalServiceImpl
 		meetupGroup.setDescription(description);
 		meetupGroup.setUrl(url);
 
-		meetupGroupPersistence.update(meetupGroup);
-
-		return meetupGroup;
+		return meetupGroupPersistence.update(meetupGroup);
 	}
 
 	public void deleteMeetupGroups() throws PortalException {

@@ -107,7 +107,7 @@ public class DocProjectLocalServiceImpl extends DocProjectLocalServiceBaseImpl {
 		docProject.setTypeSettings(typeSettings);
 		docProject.setStatus(status);
 
-		docProjectPersistence.update(docProject);
+		docProject = docProjectPersistence.update(docProject);
 
 		// Assets
 
@@ -238,7 +238,7 @@ public class DocProjectLocalServiceImpl extends DocProjectLocalServiceBaseImpl {
 		docProject.setTypeSettings(typeSettings);
 		docProject.setStatus(status);
 
-		docProjectPersistence.update(docProject);
+		docProject = docProjectPersistence.update(docProject);
 
 		// Assets
 

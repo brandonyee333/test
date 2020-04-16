@@ -57,7 +57,7 @@ public class BounceEntryLocalServiceImpl
 		bounceEntry.setBounceType(bounceType);
 		bounceEntry.setBounceSubtype(bounceSubtype);
 
-		bounceEntryPersistence.update(bounceEntry);
+		bounceEntry = bounceEntryPersistence.update(bounceEntry);
 
 		checkBounceLimit(emailAddress);
 

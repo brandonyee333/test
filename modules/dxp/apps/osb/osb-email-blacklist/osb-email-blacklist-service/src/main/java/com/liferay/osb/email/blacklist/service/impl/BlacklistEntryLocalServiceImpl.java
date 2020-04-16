@@ -51,7 +51,7 @@ public class BlacklistEntryLocalServiceImpl
 		blacklistEntry.setCreateDate(new Date());
 		blacklistEntry.setEmailAddress(emailAddress);
 
-		blacklistEntryPersistence.update(blacklistEntry);
+		blacklistEntry = blacklistEntryPersistence.update(blacklistEntry);
 
 		List<Company> companies = companyLocalService.getCompanies();
 

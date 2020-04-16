@@ -117,7 +117,8 @@ public class GitHubRepositoryLocalServiceImpl
 			gitHubRepository.setStars(gitHubRepositoryHolder.getStars());
 			gitHubRepository.setUrl(gitHubRepositoryHolder.getUrl());
 
-			gitHubRepositoryPersistence.update(gitHubRepository);
+			gitHubRepository = gitHubRepositoryPersistence.update(
+				gitHubRepository);
 
 			updateGitHubContributorCache(
 				gitHubRepository.getGitHubRepositoryId(),
