@@ -218,8 +218,6 @@ public class GitHubCommunicatorUtil {
 
 		Http.Response response = options.getResponse();
 
-		response = options.getResponse();
-
 		if (response.getResponseCode() != HttpServletResponse.SC_OK) {
 			throw new Exception(
 				"Unable to get total commits from GitHub repository " + name);
@@ -258,8 +256,6 @@ public class GitHubCommunicatorUtil {
 		String content = HttpUtil.URLtoString(options);
 
 		Http.Response response = options.getResponse();
-
-		response = options.getResponse();
 
 		if (response.getResponseCode() != HttpServletResponse.SC_OK) {
 			throw new Exception(
