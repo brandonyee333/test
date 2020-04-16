@@ -55,8 +55,6 @@ if (threadId > 0) {
 	}
 }
 
-String body = BeanParamUtil.getString(message, request, "body");
-
 List<FileEntry> existingAttachmentsFileEntries = new ArrayList<FileEntry>();
 
 if (message != null) {
