@@ -16,6 +16,7 @@ package com.liferay.adaptive.media.document.library.internal.repository.registry
 
 import com.liferay.adaptive.media.processor.AMAsyncProcessor;
 import com.liferay.adaptive.media.processor.AMAsyncProcessorLocator;
+import com.liferay.document.library.security.io.InputStreamSanitizer;
 import com.liferay.exportimport.kernel.lar.ExportImportThreadLocal;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -26,7 +27,9 @@ import com.liferay.portal.kernel.repository.capabilities.Capability;
 import com.liferay.portal.kernel.repository.event.RepositoryEventAware;
 import com.liferay.portal.kernel.repository.event.RepositoryEventType;
 import com.liferay.portal.kernel.repository.model.FileEntry;
+import com.liferay.portal.kernel.repository.model.FileEntryWrapper;
 import com.liferay.portal.kernel.repository.model.FileVersion;
+import com.liferay.portal.kernel.repository.model.FileVersionWrapper;
 import com.liferay.portal.kernel.repository.registry.CapabilityRegistry;
 import com.liferay.portal.kernel.repository.registry.RepositoryDefiner;
 import com.liferay.portal.kernel.repository.registry.RepositoryEventRegistry;
@@ -35,6 +38,8 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.repository.registry.RepositoryClassDefinition;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalog;
 import com.liferay.portal.repository.registry.RepositoryClassDefinitionCatalogUtil;
+
+import java.io.InputStream;
 
 import java.lang.reflect.Field;
 
@@ -198,7 +203,7 @@ public abstract class BaseOverridingRepositoryDefiner
 				true);
 
 			amAsyncProcessor.triggerProcess(
-				latestFileVersion,
+				_wrap(latestFileVersion),
 				String.valueOf(latestFileVersion.getFileVersionId()));
 		}
 		catch (PortalException pe) {
@@ -206,7 +211,19 @@ public abstract class BaseOverridingRepositoryDefiner
 		}
 	}
 
+	private FileVersion _wrap(FileVersion fileVersion) {
+		if (fileVersion == null) {
+			return null;
+		}
+
+		return new SafeFileVersion(fileVersion);
+	}
+
 	private AMAsyncProcessorLocator _amAsyncProcessorLocator;
+
+	@Reference
+	private InputStreamSanitizer _inputStreamSanitizer;
+
 	private RepositoryDefiner _overridenRepositoryDefiner;
 
 	private class AdaptiveMediaCapabiliy
@@ -224,6 +241,72 @@ public abstract class BaseOverridingRepositoryDefiner
 			repositoryEventRegistry.registerRepositoryEventListener(
 				RepositoryEventType.Update.class, FileEntry.class,
 				BaseOverridingRepositoryDefiner.this::_updateAdaptiveMedia);
+		}
+
+	}
+
+	private class SafeFileEntry extends FileEntryWrapper {
+
+		public SafeFileEntry(FileEntry fileEntry) {
+			super(fileEntry);
+		}
+
+		@Override
+		public InputStream getContentStream() throws PortalException {
+			return _inputStreamSanitizer.sanitize(super.getContentStream());
+		}
+
+		@Override
+		public InputStream getContentStream(String version)
+			throws PortalException {
+
+			return _inputStreamSanitizer.sanitize(
+				super.getContentStream(version));
+		}
+
+		@Override
+		public FileVersion getFileVersion() throws PortalException {
+			return new SafeFileVersion(super.getFileVersion());
+		}
+
+		@Override
+		public FileVersion getFileVersion(String version)
+			throws PortalException {
+
+			return new SafeFileVersion(super.getFileVersion(version));
+		}
+
+		@Override
+		public FileVersion getLatestFileVersion() throws PortalException {
+			return new SafeFileVersion(super.getLatestFileVersion());
+		}
+
+		@Override
+		public FileVersion getLatestFileVersion(boolean trusted)
+			throws PortalException {
+
+			return new SafeFileVersion(super.getLatestFileVersion(trusted));
+		}
+
+	}
+
+	private class SafeFileVersion extends FileVersionWrapper {
+
+		public SafeFileVersion(FileVersion fileVersion) {
+			super(fileVersion);
+		}
+
+		@Override
+		public InputStream getContentStream(boolean incrementCounter)
+			throws PortalException {
+
+			return _inputStreamSanitizer.sanitize(
+				super.getContentStream(incrementCounter));
+		}
+
+		@Override
+		public FileEntry getFileEntry() throws PortalException {
+			return new SafeFileEntry(super.getFileEntry());
 		}
 
 	}
