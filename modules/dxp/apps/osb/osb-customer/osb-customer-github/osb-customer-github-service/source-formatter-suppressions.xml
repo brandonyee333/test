@@ -4,5 +4,6 @@
 	<source-check>
 		<suppress checks="GradleDependencyArtifactsCheck" files="build.gradle" />
 		<suppress checks="JavaModuleServiceReferenceCheck" files="src/main/java/com/liferay/osb/customer/github/service/impl/CollaboratorLocalServiceImpl.java" />
+		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/github/internal/model/listener/AccountEntryModelListener.java" />
 	</source-check>
 </suppressions>
