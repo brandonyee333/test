@@ -9,6 +9,7 @@ Export-Package:\
 	com.liferay.document.library.exportimport.data.handler,\
 	com.liferay.document.library.model,\
 	com.liferay.document.library.portlet.toolbar.contributor,\
+	com.liferay.document.library.security.io,\
 	com.liferay.document.library.service,\
 	com.liferay.document.library.service.persistence
 Liferay-Releng-Module-Group-Title: Document Library
