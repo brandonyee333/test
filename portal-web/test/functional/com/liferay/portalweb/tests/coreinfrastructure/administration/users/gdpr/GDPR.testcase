@@ -75,11 +75,26 @@ definition {
 			portlet = "Users and Organizations");
 
 		User.deletePersonalDataCP(
-			applications = "Blogs",
-			itemsCount = "1",
-			rowEntry = "Blogs Entry Title",
 			userFirstName = "userfn",
 			userLastName = "userln");
+
+		GDPR.deactivateUser(
+			userFirstName = "userfn",
+			userLastName = "userln");
+
+		GDPR.deletePersonalSite(
+			userFirstName = "userfn",
+			userLastName = "userln");
+
+		GDPR.reviewPersonalData(
+			applications = "Blogs",
+			itemsCount = "1",
+			userFirstName = "userfn",
+			userLastName = "userln");
+
+		GDPR.deletePersonalApplicationsData(
+			applications = "Blogs",
+			rowEntry = "Blogs Entry Title");
 
 		Navigator.openURL();
 
