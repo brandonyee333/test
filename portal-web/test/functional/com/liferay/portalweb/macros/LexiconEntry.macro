@@ -83,4 +83,10 @@ definition {
 			value1 = "${rowEntry}");
 	}
 
+	macro viewNoEntry {
+		AssertElementNotPresent(
+			key_rowEntry = "${rowEntry}",
+			locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME");
+	}
+
 }

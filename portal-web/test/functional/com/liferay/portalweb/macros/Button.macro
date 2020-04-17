@@ -30,6 +30,12 @@ definition {
 		Button.click(button = "Next");
 	}
 
+	macro clickNoError {
+		ClickNoError.mouseDownMouseUp(
+			key_text = "${button}",
+			locator1 = "Button#ANY");
+	}
+
 	macro clickPublish {
 		ScrollWebElementIntoView(
 			key_text = "Publish",

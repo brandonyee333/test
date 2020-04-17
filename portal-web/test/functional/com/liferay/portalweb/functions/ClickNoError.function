@@ -20,6 +20,14 @@ definition {
 		selenium.click();
 	}
 
+	function mouseDownMouseUp {
+		WaitForSPARefresh();
+
+		selenium.mouseDown();
+
+		selenium.mouseUp();
+	}
+
 	function waitForMenuToggleJSClick {
 		selenium.waitForElementPresent(
 			"//script[contains(@src,'/o/frontend-js-web/liferay/menu_toggle.js')]"

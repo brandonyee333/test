@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>DataErasure</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">DataErasure</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>HEADER</td>
+	<td>//ul[contains(@class,'control-menu-nav')]//span[contains(@data-qa-id,'headerTitle') and contains(.,'${key_firstName} ${key_lastName} - Personal Data Erasure')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REMAINING_ITEMS_COUNT</td>
+	<td>//div[contains(@class,'panel-body') and contains(.,'Remaining Items:') and contains(.,'${key_itemsCount}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REMAINING_ITEMS_LABEL</td>
+	<td>//div[contains(@class,'sheet-section')]//strong[contains(.,'Remaining Items: ')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

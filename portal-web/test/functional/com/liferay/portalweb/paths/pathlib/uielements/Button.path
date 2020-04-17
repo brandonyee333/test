@@ -74,6 +74,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ANY_DISABLED</td>
+	<td>//*[contains(@class,'disabled')]//*[contains(@class,'btn')][normalize-space(text())='${key_text}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ANY_ENABLED</td>
 	<td>//*[contains(@class,'btn')][normalize-space(text())='${key_text}'][not(@disabled='')]</td>
 	<td></td>
