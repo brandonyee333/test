@@ -35,7 +35,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 </h1>
 
 <liferay-ui:tabs
-	names="overview,team-members,liferay-contacts,offerings"
+	names="overview,team-members,liferay-contacts,offerings,source-code-access"
 	url="<%= portletURL.toString() %>"
 />
 
@@ -75,6 +75,9 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 	</c:when>
 	<c:when test='<%= tabs1.equals("team-members") %>'>
 		<liferay-util:include page="/account_entry_details/team_members.jsp" servletContext="<%= application %>" />
+	</c:when>
+	<c:when test='<%= tabs1.equals("source-code-access") %>'>
+		<liferay-util:include page="/account_entry_details/source_code_access.jsp" servletContext="<%= application %>" />
 	</c:when>
 	<c:otherwise>
 		<liferay-util:include page="/account_entry_details/customer/overview.jsp" servletContext="<%= application %>" />

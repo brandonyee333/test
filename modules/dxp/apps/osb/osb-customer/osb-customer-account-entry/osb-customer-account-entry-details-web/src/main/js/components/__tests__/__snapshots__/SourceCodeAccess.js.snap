@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SourceCodeAccess renders correctly 1`] = `
+<div>
+  <div
+    class="card-header small-title"
+  >
+    team-members-who-have-access-to-liferays-source-code
+  </div>
+  <div
+    aria-orientation="vertical"
+    class="panel-group"
+    role="tablist"
+  >
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test1 Test1
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser1
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test1@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test2 Test2
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser2
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test2@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test3 Test3
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser3
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test3@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
+<div>
+  <div
+    class="card-header small-title"
+  >
+    team-members-who-have-access-to-liferays-source-code
+  </div>
+  <div
+    aria-orientation="vertical"
+    class="panel-group"
+    role="tablist"
+  >
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header expanded"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test1 Test1
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser1
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test1@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+      <div
+        role="tabpanel"
+      >
+        <div
+          class="panel-body"
+        >
+          <div
+            class="col-sm-6"
+          >
+            <div
+              class="collaborator-detail"
+            >
+              <div
+                class="collaborator-label"
+              >
+                name
+              </div>
+              <div>
+                Test1 Test1
+              </div>
+            </div>
+            <div
+              class="collaborator-detail"
+            >
+              <div
+                class="collaborator-label"
+              >
+                email
+              </div>
+              <div>
+                test1@liferay.com
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-sm-6"
+          >
+            <div
+              class="collaborator-detail"
+            >
+              <div
+                class="collaborator-label"
+              >
+                github-user-name
+              </div>
+              <div>
+                testuser1
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test2 Test2
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser2
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test2@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test3 Test3
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser3
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test3@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SourceCodeAccess renders no results message when there are no collaborators 1`] = `
+<div>
+  <div
+    class="card-header small-title"
+  >
+    team-members-who-have-access-to-liferays-source-code
+  </div>
+  <div
+    class="no-results"
+  >
+    no-collaborator-details
+  </div>
+</div>
+`;
+
+exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
+<div>
+  <div
+    class="card-header small-title"
+  >
+    team-members-who-have-access-to-liferays-source-code
+  </div>
+  <div
+    aria-orientation="vertical"
+    class="panel-group"
+    role="tablist"
+  >
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test1 Test1
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser1
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test1@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test2 Test2
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser2
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test2@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test3 Test3
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser3
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test3@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
