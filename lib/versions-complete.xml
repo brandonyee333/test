@@ -653,7 +653,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.imageio.plugins.jar!imageio-bmp.jar</file-name>
-				<version>3.5</version>
+				<version>3.4.3</version>
 				<project-name>TwelveMonkeys :: ImageIO :: BMP plugin</project-name>
 				<licenses>
 					<license>
@@ -1099,6 +1099,18 @@
 					<license>
 						<license-name>GNU Lesser General Public Licence</license-name>
 						<license-url>http://www.gnu.org/licenses/lgpl.txt</license-url>
+					</license>
+				</licenses>
+			</library>
+			<library>
+				<file-name>com.liferay.portal.cluster.multiple.jar!jgroups.jar</file-name>
+				<version>3.6.16.Final</version>
+				<project-name>JGroups</project-name>
+				<project-url>http://www.jgroups.org</project-url>
+				<licenses>
+					<license>
+						<license-name>Apache License, Version 2.0</license-name>
+						<license-url>https://www.apache.org/licenses/LICENSE-2.0</license-url>
 					</license>
 				</licenses>
 			</library>
