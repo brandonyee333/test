@@ -686,7 +686,7 @@ definition {
 
 		Navigator.gotoNavItem(navItem = "Users");
 
-		AssertClick(
+		AssertClick.assertPartialTextClickAt(
 			locator1 = "Pagination#ITEMS_PER_PAGE_SELECT",
 			value1 = "20 Entries");
 
