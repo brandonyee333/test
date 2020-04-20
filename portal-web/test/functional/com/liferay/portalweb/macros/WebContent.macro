@@ -1991,7 +1991,7 @@ definition {
 	}
 
 	macro viewPaginateRelatedAssets {
-		AssertTextEquals(
+		AssertTextEquals.assertPartialText(
 			locator1 = "Pagination#ITEMS_PER_PAGE_SELECT",
 			value1 = "${itemsPerPage}");
 
