@@ -325,7 +325,7 @@ definition {
 	}
 
 	macro editFieldSetPagination {
-		AssertClick(
+		AssertClick.assertPartialTextClickAt(
 			locator1 = "KaleoFormsAdminEditProcess#FIELD_SET_PAGINATION_SELECTOR_BUTTON",
 			value1 = "20 Entries");
 
@@ -333,7 +333,7 @@ definition {
 
 		MenuItem.click(menuItem = "${paginationNumber}");
 
-		AssertTextEquals(
+		AssertTextEquals.assertPartialText(
 			locator1 = "KaleoFormsAdminEditProcess#FIELD_SET_PAGINATION_SELECTOR_BUTTON",
 			value1 = "${paginationNumber} Entries");
 	}
