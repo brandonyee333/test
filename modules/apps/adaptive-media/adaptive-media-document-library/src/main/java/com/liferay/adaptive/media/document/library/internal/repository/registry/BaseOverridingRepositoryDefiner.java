@@ -145,6 +145,9 @@ public abstract class BaseOverridingRepositoryDefiner
 		repositoryClassDefinitions.put(className, repositoryClassDefinition);
 	}
 
+	@Reference
+	protected InputStreamSanitizer inputStreamSanitizer;
+
 	private void _deleteAdaptiveMedia(FileEntry fileEntry) {
 		if (ExportImportThreadLocal.isImportInProcess()) {
 			return;
@@ -220,10 +223,6 @@ public abstract class BaseOverridingRepositoryDefiner
 	}
 
 	private AMAsyncProcessorLocator _amAsyncProcessorLocator;
-
-	@Reference
-	private InputStreamSanitizer _inputStreamSanitizer;
-
 	private RepositoryDefiner _overridenRepositoryDefiner;
 
 	private class AdaptiveMediaCapabiliy
@@ -253,14 +252,14 @@ public abstract class BaseOverridingRepositoryDefiner
 
 		@Override
 		public InputStream getContentStream() throws PortalException {
-			return _inputStreamSanitizer.sanitize(super.getContentStream());
+			return inputStreamSanitizer.sanitize(super.getContentStream());
 		}
 
 		@Override
 		public InputStream getContentStream(String version)
 			throws PortalException {
 
-			return _inputStreamSanitizer.sanitize(
+			return inputStreamSanitizer.sanitize(
 				super.getContentStream(version));
 		}
 
@@ -300,7 +299,7 @@ public abstract class BaseOverridingRepositoryDefiner
 		public InputStream getContentStream(boolean incrementCounter)
 			throws PortalException {
 
-			return _inputStreamSanitizer.sanitize(
+			return inputStreamSanitizer.sanitize(
 				super.getContentStream(incrementCounter));
 		}
 
