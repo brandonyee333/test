@@ -1760,7 +1760,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 				String fieldName, Element rootElement)
 			throws PortalException {
 
-			Value value = extractDDMFormFieldValueValues(
+			Value value = extractDDMFormFieldValue(
 				fieldName, ddmFormField, rootElement, ddmFieldsCounter);
 
 			if ((value == null) && !ddmFormField.isTransient()) {
@@ -1785,16 +1785,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			return ddmFormFieldValue;
 		}
 
-		protected Value extractDDMFormFieldValueLocalizedValue(
-			Element dynamicElementElement, int index) {
+		protected Value extractDDMFormFieldLocalizedValue(
+			Element element, int index) {
 
-			Value value = new LocalizedValue(
-				getDefaultLocale(dynamicElementElement));
+			Value value = new LocalizedValue(getDefaultLocale(element));
 
-			Map<String, Integer> dynamicContentValuesMap = new HashMap<>();
+			Map<String, Integer> dynamicContentValues = new HashMap<>();
 
 			for (Element dynamicContentElement :
-					dynamicElementElement.elements("dynamic-content")) {
+					element.elements("dynamic-content")) {
 
 				String languageId = dynamicContentElement.attributeValue(
 					"language-id");
@@ -1814,8 +1813,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 					value.addString(locale, content);
 				}
 
-				dynamicContentValuesMap.put(
-					languageId, localizedContentIndex + 1);
+				dynamicContentValues.put(languageId, localizedContentIndex + 1);
 			}
 
 			return value;
@@ -1830,21 +1828,21 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			return new UnlocalizedValue(valueString);
 		}
 
-		protected Value extractDDMFormFieldValueValues(
+		protected Value extractDDMFormFieldValue(
 			String fieldName, DDMFormField ddmFormField, Element rootElement,
 			DDMFieldsCounter ddmFieldsCounter) {
 
 			Value value = null;
 
-			Element dynamicElement = getDynamicElementElementByName(
+			Element element = getDynamicElementElementByName(
 				rootElement, fieldName);
 
 			if (Validator.isNotNull(ddmFormField.getDataType()) &&
-				(dynamicElement != null)) {
+				(element != null)) {
 
 				if (ddmFormField.isLocalizable()) {
-					value = extractDDMFormFieldValueLocalizedValue(
-						dynamicElement, ddmFieldsCounter.get(fieldName));
+					value = extractDDMFormFieldLocalizedValue(
+						element, ddmFieldsCounter.get(fieldName));
 				}
 				else {
 					value = extractDDMFormFieldValueUnlocalizedValue(
