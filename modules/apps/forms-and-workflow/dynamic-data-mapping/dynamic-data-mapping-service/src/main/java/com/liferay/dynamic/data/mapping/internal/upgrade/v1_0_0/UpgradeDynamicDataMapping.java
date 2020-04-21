@@ -1761,7 +1761,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			throws PortalException {
 
 			Value value = extractDDMFormFieldValue(
-				fieldName, ddmFormField, rootElement, ddmFieldsCounter);
+				ddmFormField, ddmFieldsCounter, fieldName, rootElement);
 
 			if ((value == null) && !ddmFormField.isTransient()) {
 				return null;
@@ -1814,8 +1814,8 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		}
 
 		protected Value extractDDMFormFieldValue(
-			String fieldName, DDMFormField ddmFormField, Element rootElement,
-			DDMFieldsCounter ddmFieldsCounter) {
+			DDMFormField ddmFormField, DDMFieldsCounter ddmFieldsCounter,
+			String fieldName, Element rootElement) {
 
 			Value value = null;
 
