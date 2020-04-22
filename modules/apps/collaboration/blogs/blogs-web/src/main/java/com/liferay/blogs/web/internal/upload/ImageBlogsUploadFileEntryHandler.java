@@ -70,7 +70,7 @@ public class ImageBlogsUploadFileEntryHandler
 			_PARAMETER_NAME);
 
 		_validateFile(
-			contentType, fileName,
+			fileName, contentType,
 			uploadPortletRequest.getSize(_PARAMETER_NAME));
 
 		try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
@@ -118,7 +118,7 @@ public class ImageBlogsUploadFileEntryHandler
 		}
 	}
 
-	private void _validateFile(String contentType, String fileName, long size)
+	private void _validateFile(String fileName, String contentType, long size)
 		throws PortalException {
 
 		if ((PropsValues.BLOGS_IMAGE_MAX_SIZE > 0) &&
