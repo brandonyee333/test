@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalServiceUtil;
 import com.liferay.blogs.kernel.exception.EntryContentException;
+import com.liferay.blogs.kernel.exception.EntrySmallImageNameException;
 import com.liferay.blogs.kernel.exception.EntryTitleException;
 import com.liferay.blogs.kernel.exception.NoSuchEntryException;
 import com.liferay.blogs.kernel.model.BlogsEntry;
@@ -169,6 +170,21 @@ public class BlogsEntryLocalServiceTest {
 		Folder folder = portletFileEntry.getFolder();
 
 		Assert.assertEquals(BlogsConstants.SERVICE_NAME, folder.getName());
+	}
+
+	@Test(expected = EntrySmallImageNameException.class)
+	public void testAddSmallImageWithNotSupportedExtension() throws Exception {
+		BlogsEntry entry = addEntry(false);
+
+		FileEntry fileEntry = getTempFileEntry(
+			_user.getUserId(), _group.getGroupId(), "image1.svg");
+
+		ImageSelector imageSelector = new ImageSelector(
+			FileUtil.getBytes(fileEntry.getContentStream()),
+			fileEntry.getTitle(), fileEntry.getMimeType(), StringPool.BLANK);
+
+		BlogsEntryLocalServiceUtil.addSmallImage(
+			entry.getEntryId(), imageSelector);
 	}
 
 	@Test(expected = NoSuchEntryException.class)
