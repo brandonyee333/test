@@ -1,11 +1,12 @@
 import React from "react";
 import {
 	fireEvent,
-	queryAllByRole,
+	getByAltText,
+	getByText,
 	queryByRole,
 	queryByText,
-	queryByValue,
 	render,
+	within,
 } from "react-testing-library";
 
 import SourceCodeAccess from "../SourceCodeAccess";
@@ -13,140 +14,107 @@ import SourceCodeAccess from "../SourceCodeAccess";
 describe("SourceCodeAccess", () => {
 	const collaboratorsJSON = [
 		{
+			collaboratorId: 101,
+			deleteCollaboratorURL: "/url",
 			emailAddress: "test1@liferay.com",
 			fullName: "Test1 Test1",
 			gitHubUserName: "testuser1",
 		},
 		{
+			collaboratorId: 102,
+			deleteCollaboratorURL: "/url",
 			emailAddress: "test2@liferay.com",
 			fullName: "Test2 Test2",
 			gitHubUserName: "testuser2",
 		},
 		{
+			collaboratorId: 103,
+			deleteCollaboratorURL: "/url",
 			emailAddress: "test3@liferay.com",
 			fullName: "Test3 Test3",
 			gitHubUserName: "testuser3",
 		},
 	];
 
-	it("renders correctly", () => {
-		const { container } = render(
+	function renderSourceCodeAccess(props) {
+		return render(
 			<SourceCodeAccess
 				addCollaboratorURL="/url"
 				collaborators={collaboratorsJSON}
+				{...props}
 			/>
 		);
+	}
+
+	it("renders correctly", () => {
+		const { container } = renderSourceCodeAccess();
 
 		expect(container).toMatchSnapshot();
 	});
 
 	it("renders the header for collaborators list", () => {
-		const { container } = render(
-			<SourceCodeAccess
-				addCollaboratorURL="/url"
-				collaborators={collaboratorsJSON}
-			/>
-		);
+		const { container } = renderSourceCodeAccess();
 
-		const sourceCodeAccessHeader = queryByText(
+		getByText(
 			container,
 			"team-members-who-have-access-to-liferays-source-code"
 		);
-
-		expect(sourceCodeAccessHeader).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});
 
 	it("renders no results message when there are no collaborators", () => {
-		const { container } = render(
-			<SourceCodeAccess addCollaboratorURL="/url" collaborators={[]} />
-		);
+		const { container } = renderSourceCodeAccess({
+			collaborators: [],
+		});
 
-		const noResultsMsgs = queryByText(container, "no-collaborator-details");
-
-		expect(noResultsMsgs).toBeTruthy();
+		getByText(container, "no-collaborator-details");
 		expect(container).toMatchSnapshot();
 	});
 
 	it("renders details when a collaborator is clicked", () => {
-		const { container, getByText } = render(
-			<SourceCodeAccess
-				addCollaboratorURL="/url"
-				collaborators={collaboratorsJSON}
-			/>
-		);
+		const { container } = renderSourceCodeAccess();
 
-		fireEvent.click(queryByRole(container, "tab"));
+		fireEvent.click(queryByText(container, "Test1 Test1"));
 
-		const email = queryByText(container, "email");
-		const gitHubUserName = queryByText(container, "github-user-name");
-		const name = queryByText(container, "name");
+		const { getByText } = within(queryByRole(container, "tabpanel"));
 
-		expect(email).toBeTruthy();
-		expect(gitHubUserName).toBeTruthy();
-		expect(name).toBeTruthy();
+		getByText("test1@liferay.com");
+		getByText("testuser1");
+		getByText("Test1 Test1");
+
 		expect(container).toMatchSnapshot();
 	});
 
 	xit("shows an add collaborator button", () => {
-		const { container } = render(
-			<SourceCodeAccess
-				addCollaboratorURL="/url"
-				collaborators={collaboratorsJSON}
-			/>
-		);
+		const { container } = renderSourceCodeAccess();
 
-		const addButton = queryByValue(container, "add");
-
-		expect(addButton).toBeTruthy();
+		getByAltText(container, "add");
 	});
 
 	xit("renders the description for add collaborators button", () => {
-		const { container } = render(
-			<SourceCodeAccess
-				addCollaboratorURL="/url"
-				collaborators={collaboratorsJSON}
-			/>
-		);
+		const { container } = renderSourceCodeAccess();
 
-		const addCollaboratorDescription = queryByText(
+		getByText(
 			container,
 			"add-your-github-id-and-email-address-to-get-access-to-liferays-source-code"
 		);
-
-		expect(addCollaboratorDescription).toBeTruthy();
 		expect(container).toMatchSnapshot();
 	});
 
 	xit("shows delete button when a collaborator is clicked", () => {
-		const { container } = render(
-			<AccountEnvironments
-				addEnvironmentURL="/url"
-				environmentConfiguration={environmentConfigJSON}
-				environments={accountEnvironmentsJSON}
-			/>
-		);
+		const { container } = renderSourceCodeAccess();
 
-		fireEvent.click(queryByRole(container, "tab"));
+		fireEvent.click(queryByText(container, "Test1 Test1"));
 
-		const deleteButton = queryByValue(container, "delete");
+		const { getByText } = within(queryByRole(container, "tabpanel"));
 
-		expect(deleteButton).toBeTruthy();
+		getByText("delete");
 	});
 
 	xit("opens a modal when add button is clicked", () => {
-		const { container } = render(
-			<AccountEnvironments
-				addEnvironmentURL="/url"
-				environmentConfiguration={environmentConfigJSON}
-				environments={accountEnvironmentsJSON}
-				permitAdd
-			/>
-		);
+		const { container } = renderSourceCodeAccess();
 
-		const addButton = queryByValue(container, "add");
-
-		fireEvent.click(addButton);
+		fireEvent.click(getByAltText(container, "add"));
 
 		const modal = queryByRole(container, "dialog");
 

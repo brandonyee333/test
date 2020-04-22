@@ -6,15 +6,23 @@ import Accordion from "./Accordion";
 export default class SourceCodeAccess extends React.Component {
 	static propTypes = {
 		addCollaboratorURL: PropTypes.string.isRequired,
-		collaborators: PropTypes.arrayOf(PropTypes.object).isRequired,
+		collaborators: PropTypes.arrayOf(
+			PropTypes.shape({
+				collaboratorId: PropTypes.number.isRequired,
+				deleteCollaboratorURL: PropTypes.string.isRequired,
+				emailAddress: PropTypes.string.isRequired,
+				fullName: PropTypes.string.isRequired,
+				gitHubUserName: PropTypes.string.isRequired,
+			})
+		).isRequired,
 	};
 
 	render() {
 		const { collaborators } = this.props;
 
-		const accordionItems = collaborators.map((collaborator, index) => ({
+		const accordionItems = collaborators.map((collaborator) => ({
 			body: (
-				<React.Fragment key={index}>
+				<React.Fragment>
 					<div className="col-sm-6">
 						<CollaboratorDetail
 							label={Liferay.Language.get("name")}
@@ -36,7 +44,7 @@ export default class SourceCodeAccess extends React.Component {
 				</React.Fragment>
 			),
 			title: (
-				<React.Fragment key={index}>
+				<React.Fragment>
 					<h4>{collaborator.fullName}</h4>
 
 					<div className="panel-subtitle">{collaborator.gitHubUserName}</div>
