@@ -65,7 +65,7 @@ definition {
 
 		AssertElementPresent(locator1 = "Message#SUCCESS");
 
-		AssertTextEquals(
+		AssertTextEquals.assertPartialText(
 			locator1 = "Message#SUCCESS",
 			value1 = "${successMessage}");
 	}
