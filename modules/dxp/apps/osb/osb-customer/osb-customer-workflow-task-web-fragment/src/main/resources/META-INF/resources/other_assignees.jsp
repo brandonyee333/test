@@ -101,12 +101,6 @@ portletURL.setParameter("tabs1", tabs1);
 			long workflowTaskId = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
 
 			WorkflowTask workflowTask = WorkflowTaskManagerUtil.getWorkflowTask(company.getCompanyId(), workflowTaskId);
-
-			WorkflowInstance workflowInstance = WorkflowInstanceManagerUtil.getWorkflowInstance(company.getCompanyId(), workflowTask.getWorkflowInstanceId());
-
-			Map<String, Serializable> workflowContext = workflowInstance.getWorkflowContext();
-
-			String className = (String)workflowContext.get(WorkflowConstants.CONTEXT_ENTRY_CLASS_NAME);
 			%>
 
 			<liferay-ui:search-container-row-parameter

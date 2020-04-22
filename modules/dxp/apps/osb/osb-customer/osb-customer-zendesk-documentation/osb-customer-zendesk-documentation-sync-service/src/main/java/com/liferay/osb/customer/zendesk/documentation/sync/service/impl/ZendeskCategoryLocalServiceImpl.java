@@ -102,7 +102,7 @@ public class ZendeskCategoryLocalServiceImpl
 		zendeskCategory.setArticleLabels(articleLabels);
 		zendeskCategory.setRemoteUserSegmentId(remoteUserSegmentId);
 
-		zendeskCategoryPersistence.update(zendeskCategory);
+		zendeskCategory = zendeskCategoryPersistence.update(zendeskCategory);
 
 		if (oldRemoteUserSegmentId != remoteUserSegmentId) {
 			List<ZendeskArticle> zendeskArticles =

@@ -92,7 +92,7 @@ public class ZendeskArticleLocalServiceImpl
 			articleJSONObject.getString("html_url"));
 		zendeskArticle.setRemoteTitleMap(remoteTitleMap);
 
-		zendeskArticlePersistence.update(zendeskArticle);
+		zendeskArticle = zendeskArticlePersistence.update(zendeskArticle);
 
 		// Zendesk article attachments
 

@@ -80,7 +80,7 @@ public class TicketAttachmentLocalServiceImpl
 		ticketAttachment.setFileSize(fileSize);
 		ticketAttachment.setType(type);
 
-		ticketAttachmentPersistence.update(ticketAttachment);
+		ticketAttachment = ticketAttachmentPersistence.update(ticketAttachment);
 
 		_fileRepositoryWebService.updateFile(
 			fileRepositoryId, zendeskTicketId, fileName,

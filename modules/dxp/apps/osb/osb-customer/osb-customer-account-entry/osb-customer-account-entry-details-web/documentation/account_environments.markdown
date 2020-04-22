@@ -63,7 +63,7 @@ This field is a not required.
 
 ##### Other Operating Systems
 
-`Other` is a value for the _Operating System_ select field. When `Other` is selected,  a _Custom Operating System_ input text field will appear for the user to enter a value.
+`Other` is a value for the _Operating System_ select field. When `Other` is selected, a _Custom Operating System_ input text field will appear for the user to enter a value.
 
 This field is not required.
 

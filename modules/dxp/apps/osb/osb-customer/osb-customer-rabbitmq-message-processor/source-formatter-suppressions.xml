@@ -13,7 +13,6 @@
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectUnassignedMessageProcessor.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/CorpProjectUpdateMessageProcessor.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ProvisioningCreateMessageProcessor.java" />
-		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ProvisioningTrialCreateMessageProcessor.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ProvisioningUpdateMessageProcessor.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/UserUpdateMessageProcessor.java" />
 		<suppress checks="JavaOSGiReferenceCheck" files="src/main/java/com/liferay/osb/customer/rabbitmq/processor/ZendeskOrganizationCreateMessageProcessor.java" />
