@@ -16,7 +16,6 @@ package com.liferay.portal.workflow.kaleo.runtime.internal.graph.messaging;
 
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.messaging.MessageBus;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.workflow.kaleo.runtime.constants.KaleoRuntimeDestinationNames;
 import com.liferay.portal.workflow.kaleo.runtime.graph.GraphWalker;
@@ -59,7 +58,6 @@ public class PathElementMessageListener extends BaseMessageListener {
 		List<PathElement> pathElements = null;
 
 		while ((pathElements = queue.poll()) != null) {
-
 			for (PathElement pathElement : pathElements) {
 				List<PathElement> remainingPathElements = new ArrayList<>();
 
@@ -77,6 +75,4 @@ public class PathElementMessageListener extends BaseMessageListener {
 	@Reference
 	private GraphWalker _graphWalker;
 
-	@Reference
-	private MessageBus _messageBus;
 }
