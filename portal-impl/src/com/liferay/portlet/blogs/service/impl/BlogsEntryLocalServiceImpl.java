@@ -99,6 +99,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -2082,27 +2083,11 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 	}
 
 	protected void validate(long smallImageFileEntryId) throws PortalException {
-		String[] imageExtensions = PrefsPropsUtil.getStringArray(
-			PropsKeys.BLOGS_IMAGE_EXTENSIONS, StringPool.COMMA);
-
 		if (smallImageFileEntryId != 0) {
 			FileEntry fileEntry = PortletFileRepositoryUtil.getPortletFileEntry(
 				smallImageFileEntryId);
 
-			boolean validSmallImageExtension = false;
-
-			for (String imageExtension : imageExtensions) {
-				if (StringPool.STAR.equals(imageExtension) ||
-					imageExtension.equals(
-						StringPool.PERIOD + fileEntry.getExtension())) {
-
-					validSmallImageExtension = true;
-
-					break;
-				}
-			}
-
-			if (!validSmallImageExtension) {
+			if (!_isValidImageMimeType(fileEntry)) {
 				throw new EntrySmallImageNameException(
 					"Invalid small image for file entry " +
 						smallImageFileEntryId);
@@ -2186,6 +2171,22 @@ public class BlogsEntryLocalServiceImpl extends BlogsEntryLocalServiceBaseImpl {
 			StringBundler.concat(
 				"Unable to get a unique file name for ", fileName,
 				" in folder ", String.valueOf(folderId)));
+	}
+
+	private boolean _isValidImageMimeType(FileEntry fileEntry) {
+		List<String> imageExtensions = Arrays.asList(
+			PrefsPropsUtil.getStringArray(
+				PropsKeys.BLOGS_IMAGE_EXTENSIONS, StringPool.COMMA));
+
+		if (imageExtensions.contains(StringPool.STAR)) {
+			return true;
+		}
+
+		Set<String> supportedMimeTypes = MimeTypesUtil.getExtensionsMimeTypes(
+			PrefsPropsUtil.getStringArray(
+				PropsKeys.BLOGS_IMAGE_MIME_TYPES, StringPool.COMMA));
+
+		return supportedMimeTypes.contains(fileEntry.getMimeType());
 	}
 
 	private static final String _COVER_IMAGE_FOLDER_NAME = "Cover Image";

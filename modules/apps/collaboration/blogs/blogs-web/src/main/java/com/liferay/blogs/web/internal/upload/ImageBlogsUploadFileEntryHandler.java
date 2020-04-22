@@ -29,7 +29,7 @@ import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.ResourcePermissionCheckerUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.upload.UploadPortletRequest;
-import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.MimeTypesUtil;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PrefsPropsUtil;
@@ -40,6 +40,10 @@ import com.liferay.upload.UploadFileEntryHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -62,12 +66,13 @@ public class ImageBlogsUploadFileEntryHandler
 		_checkPermission(themeDisplay);
 
 		String fileName = uploadPortletRequest.getFileName(_PARAMETER_NAME);
-		long size = uploadPortletRequest.getSize(_PARAMETER_NAME);
-
-		_validateFile(fileName, size);
 
 		String contentType = uploadPortletRequest.getContentType(
 			_PARAMETER_NAME);
+
+		_validateFile(
+			contentType, fileName,
+			uploadPortletRequest.getSize(_PARAMETER_NAME));
 
 		try (InputStream inputStream = uploadPortletRequest.getFileAsStream(
 				_PARAMETER_NAME)) {
@@ -114,7 +119,7 @@ public class ImageBlogsUploadFileEntryHandler
 		}
 	}
 
-	private void _validateFile(String fileName, long size)
+	private void _validateFile(String contentType, String fileName, long size)
 		throws PortalException {
 
 		if ((PropsValues.BLOGS_IMAGE_MAX_SIZE > 0) &&
@@ -123,17 +128,20 @@ public class ImageBlogsUploadFileEntryHandler
 			throw new EntryImageSizeException();
 		}
 
-		String extension = FileUtil.getExtension(fileName);
+		List<String> imageExtensions = Arrays.asList(
+			PrefsPropsUtil.getStringArray(
+				PropsKeys.BLOGS_IMAGE_EXTENSIONS, StringPool.COMMA));
 
-		String[] imageExtensions = PrefsPropsUtil.getStringArray(
-			PropsKeys.BLOGS_IMAGE_EXTENSIONS, StringPool.COMMA);
+		if (imageExtensions.contains(StringPool.STAR)) {
+			return;
+		}
 
-		for (String imageExtension : imageExtensions) {
-			if (StringPool.STAR.equals(imageExtension) ||
-				imageExtension.equals(StringPool.PERIOD + extension)) {
+		Set<String> supportedMimeTypes = MimeTypesUtil.getExtensionsMimeTypes(
+			PrefsPropsUtil.getStringArray(
+				PropsKeys.BLOGS_IMAGE_MIME_TYPES, StringPool.COMMA));
 
-				return;
-			}
+		if (supportedMimeTypes.contains(contentType)) {
+			return;
 		}
 
 		throw new EntryImageNameException(
