@@ -6,13 +6,16 @@
 @import "components/panels";
 
 .osb-account-entry-details-portlet {
-	@import "_account-environments";
 	@import "_add-ticket-attachment";
 	@import "_accordion";
 	@import "_history";
 	@import "_overview";
 	@import "_select-project";
-	@import "_source-code-access";
+
+	.account-environments,
+	.source-code-access {
+		@import "_panel";
+	}
 
 	h1 {
 		margin-bottom: $margin-default;

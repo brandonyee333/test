@@ -1,0 +1,118 @@
+&.card .panel-group {
+	margin: 0;
+
+	.panel {
+		border-color: $color-divider;
+		border-width: 0 0 1px;
+		box-shadow: none;
+		margin: 0;
+
+		.panel-body {
+			border-top: 1px solid $color-divider;
+			padding: $padding-default $padding-md;
+
+			.btn-link {
+				margin-right: $margin-md;
+
+				&,
+				&:focus,
+				&:hover {
+					border: 1px solid $color-border;
+					color: $secondary-text-color;
+					text-decoration: none;
+				}
+
+				&:focus,
+				&:hover {
+					background-color: $color-grey;
+				}
+			}
+
+			.panel-detail {
+				color: $color-default;
+				padding-bottom: $padding-default;
+			}
+
+			.panel-label {
+				color: $secondary-text-color;
+
+				&.widespace {
+					padding-bottom: 8px;
+				}
+			}
+		}
+	}
+}
+
+h4 {
+	padding-bottom: 4px;
+}
+
+.card-header,
+.panel-header {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	text-align: left;
+}
+
+.file-list {
+	padding: $padding-sm 0;
+	width: 50%;
+
+	.attachment-pool {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		.attachment {
+			border-radius: $border-radius;
+			color: $secondary-text-color;
+			font-size: 14px;
+			font-weight: $font-weight-normal;
+			text-transform: initial;
+		}
+
+		.attachment-name {
+			margin-left: 8px;
+		}
+
+		.icon-delete-file {
+			cursor: pointer;
+			float: right;
+		}
+	}
+}
+
+.panel-body {
+	a {
+		color: $color-primary;
+		font-weight: $font-weight-semi-bold;
+	}
+}
+
+.panel-header {
+	padding: $padding-sm $padding-default;
+
+	&.btn-link,
+	&.btn-link:active:focus,
+	&.btn-link:active:hover {
+		color: $color-body;
+		text-decoration: none;
+	}
+}
+
+.panel-subtitle {
+	color: $secondary-text-color;
+	display: inline;
+	font-size: 14px;
+
+	&:not(:last-child):after {
+		content: "\00B7";
+		margin: 4px;
+	}
+
+	span {
+		font-weight: $font-weight-semi-bold;
+	}
+}

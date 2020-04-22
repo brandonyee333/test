@@ -252,8 +252,8 @@ EnvironmentDetail.propTypes = {
 
 function EnvironmentDetail(props) {
 	return (
-		<div className="environment-detail">
-			<div className="environment-label">{props.label}</div>
+		<div className="panel-detail">
+			<div className="panel-label">{props.label}</div>
 
 			{props.value && props.href ? (
 				<a href={props.href} rel="noopener noreferrer" target="_blank">

@@ -173,10 +173,10 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
             class="col-sm-6"
           >
             <div
-              class="collaborator-detail"
+              class="panel-detail"
             >
               <div
-                class="collaborator-label"
+                class="panel-label widespace"
               >
                 name
               </div>
@@ -185,10 +185,10 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
               </div>
             </div>
             <div
-              class="collaborator-detail"
+              class="panel-detail"
             >
               <div
-                class="collaborator-label"
+                class="panel-label widespace"
               >
                 email
               </div>
@@ -201,10 +201,10 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
             class="col-sm-6"
           >
             <div
-              class="collaborator-detail"
+              class="panel-detail"
             >
               <div
-                class="collaborator-label"
+                class="panel-label widespace"
               >
                 github-user-name
               </div>

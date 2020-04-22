@@ -82,8 +82,8 @@ CollaboratorDetail.propTypes = {
 
 function CollaboratorDetail(props) {
 	return (
-		<div className="collaborator-detail">
-			<div className="collaborator-label">{props.label}</div>
+		<div className="panel-detail">
+			<div className="panel-label widespace">{props.label}</div>
 
 			{props.value && props.href ? (
 				<a href={props.href} rel="noopener noreferrer" target="_blank">

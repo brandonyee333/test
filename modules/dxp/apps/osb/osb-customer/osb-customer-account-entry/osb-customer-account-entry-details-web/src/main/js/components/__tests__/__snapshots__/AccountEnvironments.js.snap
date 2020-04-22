@@ -153,10 +153,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
             class="col-sm-6"
           >
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 commerce-version
               </div>
@@ -165,10 +165,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 operating-system
               </div>
@@ -177,10 +177,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 application-server
               </div>
@@ -189,10 +189,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 search
               </div>
@@ -201,10 +201,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 cloud-services
               </div>
@@ -213,10 +213,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 portal-ext
               </div>
@@ -233,10 +233,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
             class="col-sm-6"
           >
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 java-version
               </div>
@@ -245,10 +245,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 database
               </div>
@@ -257,10 +257,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 browser
               </div>
@@ -269,10 +269,10 @@ exports[`AccountEnvironments renders details when an environment is clicked 1`] 
               </div>
             </div>
             <div
-              class="environment-detail"
+              class="panel-detail"
             >
               <div
-                class="environment-label"
+                class="panel-label"
               >
                 patch-info
               </div>
