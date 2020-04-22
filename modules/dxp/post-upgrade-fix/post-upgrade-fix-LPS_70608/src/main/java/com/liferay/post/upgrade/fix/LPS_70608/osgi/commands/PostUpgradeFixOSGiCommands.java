@@ -26,7 +26,7 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
-import com.liferay.post.upgrade.fix.BasePostUpgradeFixOSGiCommands;
+import com.liferay.post.upgrade.fix.osgi.commands.BasePostUpgradeFixOSGiCommands;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

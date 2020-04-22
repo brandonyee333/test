@@ -17,7 +17,7 @@ package com.liferay.post.upgrade.fix.LPS_66599.osgi.commands;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.post.upgrade.fix.BasePostUpgradeFixOSGiCommands;
+import com.liferay.post.upgrade.fix.osgi.commands.BasePostUpgradeFixOSGiCommands;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

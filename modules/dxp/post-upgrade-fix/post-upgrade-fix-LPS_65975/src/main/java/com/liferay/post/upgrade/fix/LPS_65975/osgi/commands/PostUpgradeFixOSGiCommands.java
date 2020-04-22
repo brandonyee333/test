@@ -15,7 +15,7 @@
 package com.liferay.post.upgrade.fix.LPS_65975.osgi.commands;
 
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.post.upgrade.fix.BasePostUpgradeFixOSGiCommands;
+import com.liferay.post.upgrade.fix.osgi.commands.BasePostUpgradeFixOSGiCommands;
 
 import org.osgi.service.component.annotations.Component;
 

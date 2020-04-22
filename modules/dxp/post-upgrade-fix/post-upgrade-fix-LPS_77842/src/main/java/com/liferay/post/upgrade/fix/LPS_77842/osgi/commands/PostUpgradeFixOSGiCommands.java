@@ -15,7 +15,7 @@
 package com.liferay.post.upgrade.fix.LPS_77842.osgi.commands;
 
 import com.liferay.portal.upgrade.v7_0_6.UpgradeRepository;
-import com.liferay.post.upgrade.fix.BasePostUpgradeFixOSGiCommands;
+import com.liferay.post.upgrade.fix.osgi.commands.BasePostUpgradeFixOSGiCommands;
 
 import org.osgi.service.component.annotations.Component;
 

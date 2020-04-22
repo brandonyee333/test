@@ -20,7 +20,7 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.post.upgrade.fix.BasePostUpgradeFixOSGiCommands;
+import com.liferay.post.upgrade.fix.osgi.commands.BasePostUpgradeFixOSGiCommands;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
