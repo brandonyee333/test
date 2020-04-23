@@ -23,20 +23,19 @@ export default class AddTicketAttachment extends React.Component {
 		} = this.props;
 
 		return (
-			<div className='add-ticket-attachment container-fluid-max-md'>
+			<div className="add-ticket-attachment container-fluid-max-md">
 				<h1>
-					{Liferay.Language.get('attach-file-to-ticket')}
-					{' '}
+					{Liferay.Language.get('attach-file-to-ticket')}{' '}
 					<a href={zendeskTicketURL}>#{zendeskTicketId}</a>
 				</h1>
 
 				<Alert type="info">
 					<span className="lead">
 						{`${Liferay.Language.get('info')}:`}
-					</span>
-
-					{' '}
-					{Liferay.Language.get('only-one-file-can-be-attached-at-a-time')}
+					</span>{' '}
+					{Liferay.Language.get(
+						'only-one-file-can-be-attached-at-a-time'
+					)}
 				</Alert>
 
 				<DynamicUploaderForm

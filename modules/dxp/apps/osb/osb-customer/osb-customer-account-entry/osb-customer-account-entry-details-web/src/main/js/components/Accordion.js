@@ -10,11 +10,13 @@ Accordion.propTypes = {
 function Accordion(props) {
 	return (
 		<div aria-orientation="vertical" className="panel-group" role="tablist">
-			{props.items.map(
-				(item, index) => (
-					<AccordionItem key={index} body={item.body} title={item.title} />
-				)
-			)}
+			{props.items.map((item, index) => (
+				<AccordionItem
+					key={index}
+					body={item.body}
+					title={item.title}
+				/>
+			))}
 		</div>
 	);
 }
@@ -37,19 +39,19 @@ class AccordionItem extends React.Component {
 		const {body, title} = this.props;
 		const {expanded} = this.state;
 
-		const className = getCN(
-			'btn-link panel-header',
-			{
-				'expanded': expanded
-			}
-		);
+		const className = getCN('btn-link panel-header', {
+			expanded: expanded
+		});
 
 		return (
 			<div className="panel">
-				<button className={className} onClick={this.handleClick} role="tab" type="button">
-					<div className="panel-title">
-						{title}
-					</div>
+				<button
+					className={className}
+					onClick={this.handleClick}
+					role="tab"
+					type="button"
+				>
+					<div className="panel-title">{title}</div>
 
 					<svg className="lexicon-icon lexicon-icon-angle-right">
 						<use xlinkHref="#angle-right" />
@@ -58,9 +60,7 @@ class AccordionItem extends React.Component {
 
 				{expanded && (
 					<div role="tabpanel">
-						<div className="panel-body">
-							{body}
-						</div>
+						<div className="panel-body">{body}</div>
 					</div>
 				)}
 			</div>

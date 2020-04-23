@@ -2,7 +2,7 @@ export const handleFileError = (file, message) => {
 	return JSON.parse(message);
 };
 
-export const getFileProgress = (file) => {
+export const getFileProgress = file => {
 	return Math.floor(file.progress() * 100);
 };
 
@@ -16,7 +16,7 @@ export const handleFileSuccess = (file, message) => {
 		submitForm: false
 	};
 
-	if ((response.message == 'complete') || (response.message == 'file-exists')) {
+	if (response.message == 'complete' || response.message == 'file-exists') {
 		retVal.fileAttachment = file;
 		retVal.file = JSON.stringify(response.file);
 		retVal.submitForm = true;

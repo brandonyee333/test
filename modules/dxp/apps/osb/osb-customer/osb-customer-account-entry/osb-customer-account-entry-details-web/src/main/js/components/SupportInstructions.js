@@ -19,25 +19,21 @@ export default class SupportInstructions extends React.Component {
 	};
 
 	handleCloseModal = () =>
-		this.setState(
-			{
-				showModal: false
-			}
-		);
+		this.setState({
+			showModal: false
+		});
 
 	handleShowModal = () =>
-		this.setState(
-			{
-				showModal: true
-			}
-		);
+		this.setState({
+			showModal: true
+		});
 
 	handleUpdate = () =>
-		this.setState(
-			{
-				instructions: CKEDITOR.instances.editor1.document.getBody().getHtml()
-			}
-		);
+		this.setState({
+			instructions: CKEDITOR.instances.editor1.document
+				.getBody()
+				.getHtml()
+		});
 
 	render() {
 		const {accountEntryId, editInstructionsURL} = this.props;
@@ -45,9 +41,21 @@ export default class SupportInstructions extends React.Component {
 		const {namespace} = window.AccountDetailsConstants;
 
 		const modalFooter = (
-			<form action={editInstructionsURL} onSubmit={this.handleUpdate} method="post">
-				<input name={`${namespace}accountEntryId`} type="hidden" value={accountEntryId} />
-				<input name={`${namespace}instructions`} type="hidden" value={instructions} />
+			<form
+				action={editInstructionsURL}
+				onSubmit={this.handleUpdate}
+				method="post"
+			>
+				<input
+					name={`${namespace}accountEntryId`}
+					type="hidden"
+					value={accountEntryId}
+				/>
+				<input
+					name={`${namespace}instructions`}
+					type="hidden"
+					value={instructions}
+				/>
 
 				<div className="btn-row">
 					<Button
@@ -97,13 +105,13 @@ export default class SupportInstructions extends React.Component {
 					{showModal && (
 						<Modal
 							footer={modalFooter}
-							header={Liferay.Language.get('edit-support-instructions')}
+							header={Liferay.Language.get(
+								'edit-support-instructions'
+							)}
 							onClose={this.handleCloseModal}
 							show={showModal}
 						>
-							<CKEditor
-								content={instructions}
-							/>
+							<CKEditor content={instructions} />
 						</Modal>
 					)}
 				</div>
