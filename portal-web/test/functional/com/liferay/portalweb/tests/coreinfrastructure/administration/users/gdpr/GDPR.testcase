@@ -234,4 +234,115 @@ definition {
 			tableEntryPartialTextList = "Edit DM Document Title,Edit DM Document Description");
 	}
 
+	@priority = "4"
+	test ExportAllEntries {
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "userea@liferay.com",
+			userLoginFullName = "userfn userln");
+
+		Page.add(pageName = "Announcements Page");
+
+		Navigator.gotoPage(pageName = "Announcements Page");
+
+		SitePageNavigator.gotoEditPage(page = "Announcements Page");
+
+		Page.editPageLayoutColumn(columnName = "1 Column");
+
+		Navigator.gotoPage(pageName = "Announcements Page");
+
+		Portlet.addPG(portletName = "Announcements");
+
+		AnnouncementsEntry.addPG(
+			distributionScope = "General",
+			entryContent = "Announcements Entry Content",
+			entryTitle = "Announcements Entry Title",
+			entryURL = "http://www.liferay.com");
+
+		Navigator.gotoPage(pageName = "Announcements Page");
+
+		AnnouncementsEntry.viewPG(
+			announcementType = "General",
+			distributionScope = "General",
+			entryContent = "Announcements Entry Content",
+			entryTitle = "Announcements Entry Title");
+
+		Page.add(pageName = "Contacts Center Page");
+
+		SitePageNavigator.gotoEditPage(page = "Contacts Center Page");
+
+		Page.editPageLayoutColumn(columnName = "1 Column");
+
+		Navigator.gotoPage(pageName = "Contacts Center Page");
+
+		Portlet.addPG(portletName = "Contacts Center");
+
+		ContactsCenter.addPG(
+			contactName = "test1",
+			emailAddress = "test1@liferay.com");
+
+		ContactsCenter.viewContactPG(
+			contactName = "test1",
+			emailAddress = "test1@liferay.com");
+
+		Navigator.openURL();
+
+		BlogsNavigator.openBlogsAdmin(siteURLKey = "guest");
+
+		Blogs.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "guest");
+
+		DMDocument.addCP(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentFile = "Document_1.txt",
+			dmDocumentTitle = "DM Document Title");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Message Boards");
+
+		MessageboardsThread.addCP(
+			threadBody = "MB Thread Message Body",
+			threadSubject = "MB Thread Message Subject");
+
+		ProductMenu.gotoPortlet(
+			category = "Content",
+			panel = "Site Administration",
+			portlet = "Wiki");
+
+		WikiNavigator.gotoNode(wikiNodeName = "Main");
+
+		WikiNavigator.gotoAllPagesCP();
+
+		WikiPage.addCP(
+			wikiPageContent = "Wiki Page Content",
+			wikiPageTitle = "Wiki Page Title");
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
+		ProductMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.exportPersonalDataCP(
+			userFirstName = "userfn",
+			userLastName = "userln");
+
+		GDPR.addExportProcessCP(
+			userFirstName = "userfn",
+			userLastName = "userln");
+
+		GDPR.downloadExportedPersonalData(applications = "Wiki,Message Boards,Contacts Center,Blogs,Announcements,Documents and Media");
+
+		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
+	}
+
 }
