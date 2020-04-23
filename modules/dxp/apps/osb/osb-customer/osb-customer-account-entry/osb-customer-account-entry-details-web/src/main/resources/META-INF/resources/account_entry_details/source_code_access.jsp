@@ -16,19 +16,14 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
-<%
-String addCollaboratorURL = accountEntryViewDisplayContext.getCollaboratorAddURL();
-JSONArray collaboratorsJSONArray = accountEntryViewDisplayContext.getCollaboratorsJSONArray();
-%>
-
 <div class="card source-code-access" id="<portlet:namespace />sourceCodeAccess"></div>
 
 <aui:script>
 	AccountDetails.render(
 		AccountDetails.SourceCodeAccess,
 		{
-			addCollaboratorURL: '<%= addCollaboratorURL %>',
-			collaborators: <%= collaboratorsJSONArray %>
+			addCollaboratorURL: '<%= accountEntryViewDisplayContext.getCollaboratorAddURL() %>',
+			collaborators: <%= accountEntryViewDisplayContext.getCollaboratorsJSONArray() %>
 		},
 		document.getElementById('<portlet:namespace />sourceCodeAccess')
 	);

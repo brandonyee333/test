@@ -206,7 +206,7 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
               <div
                 class="panel-label widespace"
               >
-                github-user-name
+                github-username
               </div>
               <div>
                 testuser1

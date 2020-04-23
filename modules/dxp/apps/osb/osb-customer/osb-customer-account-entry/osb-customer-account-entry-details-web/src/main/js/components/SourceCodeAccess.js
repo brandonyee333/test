@@ -37,7 +37,7 @@ export default class SourceCodeAccess extends React.Component {
 
 					<div className="col-sm-6">
 						<CollaboratorDetail
-							label={Liferay.Language.get('github-user-name')}
+							label={Liferay.Language.get('github-username')}
 							value={collaborator.gitHubUserName}
 						/>
 					</div>

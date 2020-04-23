@@ -96,7 +96,7 @@ describe("SourceCodeAccess", () => {
 
 		getByText(
 			container,
-			"add-your-github-id-and-email-address-to-get-access-to-liferays-source-code"
+			"add-your-email-address-and-github-username-to-get-access-to-liferays-source-code"
 		);
 		expect(container).toMatchSnapshot();
 	});
