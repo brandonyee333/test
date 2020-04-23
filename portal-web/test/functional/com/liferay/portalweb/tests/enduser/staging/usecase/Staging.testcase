@@ -166,7 +166,6 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-94325."
-	@ignore = "true"
 	@priority = "3"
 	test ActivateStagingWithWCDOnFragment {
 		JSONFragment.addFragmentCollection(
