@@ -251,7 +251,7 @@ definition {
 	@description = "This is a use case for LPS-87081."
 	@priority = "5"
 	test DeleteSiteTemplate {
-		property portal.acceptance = "quarantine";
+		property portal.acceptance = "true";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
@@ -410,7 +410,7 @@ definition {
 
 	@priority = "5"
 	test EditSiteTemplateStatus {
-		property portal.acceptance = "quarantine";
+		property portal.acceptance = "true";
 
 		ProductMenu.gotoPortlet(
 			category = "Sites",
