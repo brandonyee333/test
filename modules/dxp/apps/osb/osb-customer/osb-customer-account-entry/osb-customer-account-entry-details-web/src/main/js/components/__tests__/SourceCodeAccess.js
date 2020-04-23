@@ -57,7 +57,7 @@ describe("SourceCodeAccess", () => {
 
 		getByText(
 			container,
-			"team-members-who-have-access-to-liferays-source-code"
+			"team-members-who-have-access-to-liferay's-source-code"
 		);
 		expect(container).toMatchSnapshot();
 	});

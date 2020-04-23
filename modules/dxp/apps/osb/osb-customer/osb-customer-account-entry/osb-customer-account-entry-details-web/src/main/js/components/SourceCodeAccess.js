@@ -62,7 +62,7 @@ export default class SourceCodeAccess extends React.Component {
 			<React.Fragment>
 				<div className="card-header small-title">
 					{Liferay.Language.get(
-						'team-members-who-have-access-to-liferays-source-code'
+						"team-members-who-have-access-to-liferay's-source-code"
 					)}
 				</div>
 
