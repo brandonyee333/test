@@ -5,7 +5,7 @@ exports[`SourceCodeAccess renders correctly 1`] = `
   <div
     class="card-header small-title"
   >
-    team-members-who-have-access-to-liferays-source-code
+    team-members-who-have-access-to-liferay's-source-code
   </div>
   <div
     aria-orientation="vertical"
@@ -123,7 +123,7 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
   <div
     class="card-header small-title"
   >
-    team-members-who-have-access-to-liferays-source-code
+    team-members-who-have-access-to-liferay's-source-code
   </div>
   <div
     aria-orientation="vertical"
@@ -293,7 +293,7 @@ exports[`SourceCodeAccess renders no results message when there are no collabora
   <div
     class="card-header small-title"
   >
-    team-members-who-have-access-to-liferays-source-code
+    team-members-who-have-access-to-liferay's-source-code
   </div>
   <div
     class="no-results"
@@ -308,7 +308,7 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
   <div
     class="card-header small-title"
   >
-    team-members-who-have-access-to-liferays-source-code
+    team-members-who-have-access-to-liferay's-source-code
   </div>
   <div
     aria-orientation="vertical"
