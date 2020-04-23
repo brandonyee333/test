@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -86,22 +85,8 @@ public class DXPTrialLicenseServlet extends HttpServlet {
 			_log.error(e, e);
 		}
 
-		httpServletResponse.setContentType(ContentTypes.TEXT_HTML);
-
-		ServletResponseUtil.write(httpServletResponse, _getExpiredMessage());
-	}
-
-	private String _getExpiredMessage() {
-		StringBundler sb = new StringBundler(6);
-
-		sb.append("<!DOCTYPE html><html><head><title>Link Expired</title>");
-		sb.append("</head><body>This activation key has expired. You can ");
-		sb.append("renew your activation key by completing the renewal form ");
-		sb.append("on the <a href=\"");
-		sb.append("https://www.liferay.com/products/dxp/trial-download\">");
-		sb.append("downloads page</a>.</body></html>");
-
-		return sb.toString();
+		httpServletResponse.sendRedirect(
+			ProvisioningTrialConfigurationValues.DXP_TRIAL_EXPIRED_PAGE);
 	}
 
 	private String _getLicenseXML(String versionLabel, long dayHash)

@@ -14,12 +14,16 @@
 
 package com.liferay.osb.customer.provisioning.trial.internal.configuration;
 
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Amos Fong
  */
 public class ProvisioningTrialConfigurationValues {
+
+	public static final String DXP_TRIAL_EXPIRED_PAGE = GetterUtil.getString(
+		ProvisioningTrialConfigurationUtil.get("dxp.trial.expired.page"));
 
 	public static final String[] DXP_TRIAL_VERSIONS = StringUtil.split(
 		ProvisioningTrialConfigurationUtil.get("dxp.trial.versions"));
