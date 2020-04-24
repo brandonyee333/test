@@ -158,6 +158,10 @@ public class LoopPermission extends AlloyPermission {
 					baseModel.getModelClassName(), otherActionId);
 			}
 			catch (NoSuchResourceActionException nsrae) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(nsrae, nsrae);
+				}
+
 				return actionId;
 			}
 
