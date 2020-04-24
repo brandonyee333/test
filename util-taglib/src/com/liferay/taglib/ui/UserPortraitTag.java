@@ -45,6 +45,14 @@ import javax.servlet.jsp.JspWriter;
  */
 public class UserPortraitTag extends IncludeTag {
 
+	public User getUser() {
+		return _user;
+	}
+
+	public String getCssClass() {
+		return _cssClass;
+	}
+
 	@Override
 	public int processEndTag() throws Exception {
 		User user = getUser();
@@ -136,10 +144,6 @@ public class UserPortraitTag extends IncludeTag {
 		}
 
 		return portraitURL;
-	}
-
-	protected User getUser() {
-		return _user;
 	}
 
 	protected String getUserInitials(User user) {
