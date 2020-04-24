@@ -8,5 +8,5 @@ dependencies {
 	compileOnly group: "com.liferay", name: "com.liferay.portal.upgrade", version: "2.8.0"
 	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.61.0"
 	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
-	compileOnly project(":private:apps:osb-loop:osb-loop-asset-sharing:osb-loop-asset-sharing-api")
+	compileOnly project(":dxp:apps:osb:osb-loop:osb-loop-asset-sharing:osb-loop-asset-sharing-api")
 }

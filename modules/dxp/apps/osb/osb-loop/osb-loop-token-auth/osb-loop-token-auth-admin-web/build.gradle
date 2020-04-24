@@ -12,6 +12,6 @@ dependencies {
 	compileOnly group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", version: "2.3.1"
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: "5.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
-	compileOnly project(":private:apps:osb-loop:osb-loop-token-auth:osb-loop-token-auth-api")
-	compileOnly project(":private:apps:osb-loop:osb-loop-token-auth:osb-loop-token-auth-service")
+	compileOnly project(":dxp:apps:osb:osb-loop:osb-loop-token-auth:osb-loop-token-auth-api")
+	compileOnly project(":dxp:apps:osb:osb-loop:osb-loop-token-auth:osb-loop-token-auth-service")
 }
