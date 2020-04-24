@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toolbar renders 1`] = `
+<div class="creator-toolbar-container">
+  <div class="spacer"></div>
+  <div class="tab">
+    <div title="preview-post" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-eye loop-icon-large-1x" data-tooltip="">
+        <use href="#loop-icon-eye-24"></use>
+      </svg>
+    </div>
+  </div>
+  <div class="checkbox-container private-post-checkbox">
+    <input title="share-privately-with-the-people-groups-and-topics-that-are-mentioned" data-tooltip="" id="checkbox1" class="checkbox-input" type="checkbox">
+    <div class="checkbox"></div>
+    <label for="checkbox1" class="checkbox-label">private</label>
+  </div>
+  <button class="btn btn-container btn-primary" type="button"></button>
+</div>
+`;

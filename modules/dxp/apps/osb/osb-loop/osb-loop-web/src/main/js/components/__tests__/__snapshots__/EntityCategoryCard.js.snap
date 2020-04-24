@@ -1,0 +1,445 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntityCategoryCard renders 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content"></div>
+  </div>
+  <div class="card-footer-container">
+    <a href="#">#</a>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should not render items 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content"></div>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should render See More 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <div class="category">
+        <div class="category-label">Group 2</div>
+        <div class="category-content category-row">
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY51">
+            <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY52">
+            <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY53">
+            <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY54">
+            <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY55">
+            <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY56">
+            <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY57">
+            <a href="/people/6" style="" title="Joe Bloggs6" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY58">
+            <a href="/people/7" style="" title="Joe Bloggs7" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY59">
+            <a href="/people/8" style="" title="Joe Bloggs8" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY60">
+            <a href="/people/9" style="" title="Joe Bloggs9" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer-container">
+    <a href="#">#</a>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should render as column 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <div class="category">
+        <div class="category-label">Group 2</div>
+        <div class="category-content category-column">
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY11">
+              <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/0" class="name">Joe Bloggs0</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY12">
+              <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/1" class="name">Joe Bloggs1</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY13">
+              <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/2" class="name">Joe Bloggs2</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY14">
+              <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/3" class="name">Joe Bloggs3</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY15">
+              <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/4" class="name">Joe Bloggs4</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY16">
+              <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/5" class="name">Joe Bloggs5</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY17">
+              <a href="/people/6" style="" title="Joe Bloggs6" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/6" class="name">Joe Bloggs6</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY18">
+              <a href="/people/7" style="" title="Joe Bloggs7" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/7" class="name">Joe Bloggs7</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY19">
+              <a href="/people/8" style="" title="Joe Bloggs8" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/8" class="name">Joe Bloggs8</a>
+          </div>
+          <div class="entity">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY20">
+              <a href="/people/9" style="" title="Joe Bloggs9" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+            <a href="/people/9" class="name">Joe Bloggs9</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should render as medium 1`] = `
+<div class="card-container entity-category-card-container medium">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <div class="category">
+        <div class="category-label">Group 2</div>
+        <div class="category-content category-row">
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY31">
+            <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY32">
+            <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY33">
+            <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY34">
+            <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY35">
+            <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY36">
+            <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY37">
+            <a href="/people/6" style="" title="Joe Bloggs6" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY38">
+            <a href="/people/7" style="" title="Joe Bloggs7" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY39">
+            <a href="/people/8" style="" title="Joe Bloggs8" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY40">
+            <a href="/people/9" style="" title="Joe Bloggs9" class="avatar avatar-size-small">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should render as row 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <div class="category">
+        <div class="category-label">Group 2</div>
+        <div class="category-content category-row">
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY21">
+            <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY22">
+            <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY23">
+            <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY24">
+            <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY25">
+            <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY26">
+            <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY27">
+            <a href="/people/6" style="" title="Joe Bloggs6" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY28">
+            <a href="/people/7" style="" title="Joe Bloggs7" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY29">
+            <a href="/people/8" style="" title="Joe Bloggs8" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY30">
+            <a href="/people/9" style="" title="Joe Bloggs9" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should render as small 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <div class="category">
+        <div class="category-label">Group 2</div>
+        <div class="category-content category-row">
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY41">
+            <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY42">
+            <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY43">
+            <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY44">
+            <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY45">
+            <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY46">
+            <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY47">
+            <a href="/people/6" style="" title="Joe Bloggs6" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY48">
+            <a href="/people/7" style="" title="Joe Bloggs7" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY49">
+            <a href="/people/8" style="" title="Joe Bloggs8" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY50">
+            <a href="/people/9" style="" title="Joe Bloggs9" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`EntityCategoryCard should render items 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container"></div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <div class="category">
+        <div class="category-label">Group 2</div>
+        <div class="category-content category-row">
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+            <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY2">
+            <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY3">
+            <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY4">
+            <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY5">
+            <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY6">
+            <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY7">
+            <a href="/people/6" style="" title="Joe Bloggs6" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY8">
+            <a href="/people/7" style="" title="Joe Bloggs7" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY9">
+            <a href="/people/8" style="" title="Joe Bloggs8" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+          <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY10">
+            <a href="/people/9" style="" title="Joe Bloggs9" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page renders 1`] = `
+<div class="loading-wrapper-container page-container">
+  <div class="loading-content">
+    <div class="page-header-container">
+      <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+        <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="header-info">
+        <a class="entity-link-container" href="/people/1" id="unit_tests_namespace_ENTITY_SUMMARY2">Joe Bloggs1</a>
+        <span class="secondary-info" data-tooltip=""></span>
+      </div>
+    </div>
+    <svg id="unit_tests_namespace_PAGE_MENU3" class="loop-icon-container loop-icon-ellipsis loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-ellipsis-24"></use>
+    </svg>
+    <h1 class="title">testing test1</h1>
+    <div class="markdown-content-container">test content1</div>
+  </div>
+</div>
+`;

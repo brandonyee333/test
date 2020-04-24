@@ -1,0 +1,126 @@
+<html>
+<head>
+<title>LoopGroupsOrgChart</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopGroupsOrgChart</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>GROUP_CHART_EXIT</td>
+	<td>//*[local-name()='svg' and contains(@class,'loop-icon-cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_NODE</td>
+	<td>//*[local-name()='g' and @class='node' and contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_NAME</td>
+	<td>//*[local-name()='g' and @class='node' and contains(.,'${key_groupName}')]/*[local-name()='text' and @class='name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_SUBDEPARTMENT_COUNT</td>
+	<td>//*[local-name()='g' and @class='node' and contains(.,'${key_groupName}')]/*[local-name()='text' and @class='secondary-info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ORG_CHART_ZOOM_IN</td>
+	<td>//*[local-name()='svg' and contains(@class,'loop-icon-plus')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ORG_CHART_ZOOM_PERCENTAGE</td>
+	<td>//*[local-name()='span' and contains(@ref,'zoomPercent')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ORG_CHART_ZOOM_OUT</td>
+	<td>//*[local-name()='svg' and contains(@class,'loop-icon-minus')]</td>
+	<td></td>
+</tr>
+<!---->
+<!--GROUP_DETAILS-->
+<tr>
+	<td>GROUP_DETAILS_GROUP_AVATAR</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[contains(@class,'entity-display-container') and contains(.,'${key_groupName}')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_GROUP_NAME</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[contains(@class,'entity-display-container') and contains(.,'${key_groupName}')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_GROUP_TYPE</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[contains(@class,'entity-display-container') and contains(.,'${key_groupName}')]//div[@class='details' and contains(.,'Department')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_GROUP_MEMBERSHIP_INFO</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[contains(@class,'entity-display-container') and contains(.,'${key_groupName}')]//div[@class='details' and contains(.,'Member')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_LEAD_HEADER</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Leads')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_LEAD_COUNT</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Leads')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_LEAD_AVATAR</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Leads')]//following-sibling::div[contains(@class,'entity-display-container') and contains(.,'${key_leadName}')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_LEAD_NAME</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Leads')]//following-sibling::div[contains(@class,'entity-display-container') and contains(.,'${key_leadName}')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_LEAD_DETAILS</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Leads')]//following-sibling::div[contains(@class,'entity-display-container') and contains(.,'${key_leadName}')]//div[@class='details']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_MEMBER_HEADER</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Members')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_MEMBER_COUNT</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Members')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_MEMBER_AVATAR</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Members')]//following-sibling::div//div[contains(@class,'entity-display-container') and contains(.,'${key_memberName}')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_MEMBER_NAME</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Members')]//following-sibling::div//div[contains(@class,'entity-display-container') and contains(.,'${key_memberName}')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_DETAILS_MEMBER_DETAILS</td>
+	<td>//div[contains(@class,'org-chart-data-pane-container')]//div[@class='category-title' and contains(.,'Members')]//following-sibling::div//div[contains(@class,'entity-display-container') and contains(.,'${key_memberName}')]//div[@class='details']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

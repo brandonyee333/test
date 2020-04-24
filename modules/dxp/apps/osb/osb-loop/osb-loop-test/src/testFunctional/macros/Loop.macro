@@ -1,0 +1,151 @@
+<definition>
+	<command name="firstSetupPG">
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="roleNames" value="${roleNames}" />
+			<var name="userEmailAddress" value="loopuser01@liferay.com" />
+			<var name="userFirstName" value="Loop01" />
+			<var name="userLastName" value="User01" />
+			<var name="userScreenName" value="loopuser01" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="loopuser01@liferay.com" />
+		</execute>
+	</command>
+
+	<command name="gotoCP">
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="/group/control_panel" />
+		</execute>
+	</command>
+
+	<command name="loginUserPG">
+		<execute macro="Loop#openURL" />
+
+		<execute function="Type" locator1="LoopLogin#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
+
+		<if>
+			<and>
+				<isset var="password" />
+				<not>
+					<contains string="${password}" substring="{password}" />
+				</not>
+			</and>
+			<then>
+				<execute function="Type" locator1="LoopLogin#PASSWORD_FIELD" value1="${password}" />
+			</then>
+			<else>
+				<execute function="Type" locator1="LoopLogin#PASSWORD_FIELD" value1="test" />
+			</else>
+		</if>
+
+		<execute function="Check" locator1="LoopLogin#REMEMBER_ME_CHECKBOX" />
+		<execute function="Click" locator1="LoopLogin#SIGN_IN_BUTTON" value1="Sign In" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
+			<then>
+				<execute function="AssertClick" locator1="LoopLoginTermsofservice#I_AGREE_BUTTON" value1="I Agree" />
+			</then>
+		</if>
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopLoginNewpassword#PASSWORD_FIELD" />
+			<then>
+				<execute function="Type" locator1="LoopLoginNewpassword#PASSWORD_FIELD" value1="test" />
+				<execute function="Type" locator1="LoopLoginNewpassword#ENTER_AGAIN_FIELD" value1="test" />
+				<execute function="AssertClick" locator1="LoopLoginNewpassword#SAVE_BUTTON" value1="Save" />
+			</then>
+		</if>
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopLoginPasswordreminder#ANSWER_FIELD" />
+			<then>
+				<execute function="Type" locator1="LoopLoginPasswordreminder#ANSWER_FIELD" value1="test" />
+				<execute function="AssertClick" locator1="LoopLoginPasswordreminder#SAVE_BUTTON" value1="Save" />
+			</then>
+		</if>
+	</command>
+
+	<command name="logout">
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_SIGN_OUT_LINK" />
+	</command>
+
+	<command name="logoutAndLogin">
+		<execute macro="Loop#openURL" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopToolbar#TOOLBAR_USER_DROPDOWN_LINK" />
+			<then>
+				<execute macro="LoopNavigation#clickDropdownLink" />
+
+				<var method="StringUtil#replace('${userLoginEmailAddress}', '@liferay.com', '')" name="userLoginScreenName" />
+
+				<var name="key_userScreenName" value="${userLoginScreenName}" />
+
+				<if>
+					<condition function="IsElementNotPresent" locator1="LoopToolbar#TOOLBAR_SPECIFIC_USER_MY_PROFILE_LINK" />
+					<then>
+						<execute function="Click" locator1="LoopToolbar#TOOLBAR_SIGN_OUT_LINK" />
+
+						<execute macro="Loop#loginUserPG">
+							<var name="password" value="${password}" />
+							<var name="userEmailAddress" value="${userLoginEmailAddress}" />
+						</execute>
+					</then>
+					<else>
+						<execute macro="LoopNavigation#clickDropdownLink" />
+					</else>
+				</if>
+			</then>
+			<else>
+				<execute macro="Loop#loginUserPG">
+					<var name="password" value="${password}" />
+					<var name="userEmailAddress" value="${userLoginEmailAddress}" />
+				</execute>
+			</else>
+		</if>
+	</command>
+
+	<command name="logoutUserPG">
+		<execute macro="Loop#openURL" />
+
+		<var method="StringUtil#replace('${userLoginEmailAddress}', '@liferay.com', '')" name="userLoginScreenName" />
+
+		<var name="key_userScreenName" value="${userLoginScreenName}" />
+
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopToolbar#TOOLBAR_SPECIFIC_USER_MY_PROFILE_LINK" />
+			<then>
+				<execute function="Click" locator1="LoopToolbar#TOOLBAR_SIGN_OUT_LINK" />
+			</then>
+		</if>
+	</command>
+
+	<command name="openSpecificURL">
+		<execute function="Open" locator1="${url}" />
+	</command>
+
+	<command name="openURL">
+		<execute function="Open" locator1="/web/guest/home" />
+	</command>
+
+	<command name="removeLocationFinderMessage">
+		<!--<execute function="Pause" locator1="2000" />-->
+		<execute function="KeyPress" locator1="LoopToolbar#TOOLBAR" value1="\ESCAPE" />
+	</command>
+</definition>

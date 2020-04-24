@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorWrapper renders 1`] = `
+<div class="error-wrapper-container loading">
+  <div class="card-container loading-card-container">
+    <div class="spinner-container">
+      <div class="spinner small"></div>
+    </div>loading</div>
+</div>
+`;
+
+exports[`ErrorWrapper should render children 1`] = `
+<div class="error-wrapper-container">
+  <div class="error-page">
+    <div class="message">
+      <div class="title">404</div>we-cant-seem-to-find-what-you-are-looking-for
+      <div class="custom-message">looking-to-play-a-game-instead
+        <a href="https://loop.liferay.com/web/guest/name-game">play-here</a>
+      </div>
+      <div class="footer">
+        <a href="/web/guest/home/-/loop">back-to-loop</a>
+      </div>
+    </div>
+    <img src="/images/error.svg">
+  </div>
+</div>
+`;
+
+exports[`ErrorWrapper should render error page 1`] = `
+<div class="error-wrapper-container">
+  <div class="error-page">
+    <div class="message">
+      <div class="title">404</div>we-cant-seem-to-find-what-you-are-looking-for
+      <div class="custom-message">looking-to-play-a-game-instead
+        <a href="https://loop.liferay.com/web/guest/name-game">play-here</a>
+      </div>
+      <div class="footer">
+        <a href="/web/guest/home/-/loop">back-to-loop</a>
+      </div>
+    </div>
+    <img src="/images/error.svg">
+  </div>
+</div>
+`;

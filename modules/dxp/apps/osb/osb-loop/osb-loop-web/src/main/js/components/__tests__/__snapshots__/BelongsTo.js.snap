@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BelongsTo renders 1`] = `
+<span class="belongs-to-container">
+  <div class="verbiage">
+    <div>belongs-to</div>
+    <a class="entity-link-container" href="/divisions/0" id="unit_tests_namespace_ENTITY_SUMMARY1">Division0</a>
+  </div>
+  <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY2">
+    <a href="/divisions/0" style="" title="Division0" class="avatar avatar-size-smallest">
+      <div class="avatar-placeholder">
+        <svg class="loop-icon-container loop-icon-undefined loop-icon-small-1x" data-tooltip="">
+          <use href="#loop-icon-undefined-16"></use>
+        </svg>
+      </div>
+    </a>
+  </div>
+</span>
+`;

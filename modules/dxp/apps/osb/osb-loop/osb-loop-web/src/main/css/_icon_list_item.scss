@@ -1,0 +1,32 @@
+.loop-icon-list-item-container {
+	$iconBgColors: (
+		('facebook', #3B5998),
+		('github', #333),
+		('linkedin', #0077B5),
+		('skype', #12A5F4),
+		('twitter', #55ACEE)
+	);
+
+	.loop-icon-container {
+		@each $pair in $iconBgColors {
+			&.loop-icon-#{nth($pair, 1)} {
+				background-color: nth($pair, 2);
+			}
+		}
+
+		background-color: $theme;
+		border-radius: 50%;
+		margin-right: 12px;
+		padding: 4px;
+	}
+
+	.list-item-label {
+		@include ellipsis;
+
+		display: inline;
+	}
+
+	.list-item-label, .loop-icon-container {
+		vertical-align: middle;
+	}
+}

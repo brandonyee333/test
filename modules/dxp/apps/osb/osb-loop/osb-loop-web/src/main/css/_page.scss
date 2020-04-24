@@ -1,0 +1,49 @@
+.page-container {
+	$anchorSpacing: $cardSpacing + $toolbarHeight + $subnavHeight;
+
+	padding: 0 20px;
+	position: relative;
+
+	.loop-icon-container {
+		color: rgba($primary, 0.6);
+		cursor: pointer;
+		position: absolute;
+		right: 20px;
+		top: 0;
+	}
+
+	.markdown-content-container {
+		font-size: 15px;
+		min-height: 324px;
+
+		a[id] {
+			color: $primary;
+			display: block;
+			margin-top: -$anchorSpacing;
+			padding-top: $anchorSpacing;
+		}
+	}
+
+	.page-header-container {
+		margin-bottom: 48px;
+	}
+
+	.title {
+		border-width: 0;
+		font-size: 38px;
+		font-weight: bold;
+		height: auto;
+		line-height: 48px;
+		margin-bottom: 24px;
+		overflow: hidden;
+		padding: 0;
+		text-overflow: ellipsis;
+		width: 100%;
+	}
+
+	@media #{$mediaMiniMax} {
+		.loop-icon-container {
+			display: none;
+		}
+	}
+}

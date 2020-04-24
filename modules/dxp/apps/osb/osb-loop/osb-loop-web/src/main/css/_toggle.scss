@@ -1,0 +1,53 @@
+.toggle-container {
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(space-between);
+
+	position: relative;
+	width: 100%;
+
+	&.checked .toggle .toggle-dot {
+		@include transform(translateX(14px));
+
+		background-color: $theme;
+	}
+
+	.toggle-input {
+		cursor: pointer;
+		height: 100%;
+		left: 0;
+		margin: 0;
+		opacity: 0;
+		padding: 0;
+		pointer-events: all;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+	}
+
+	.toggle {
+		margin-left: 20px;
+		padding: 8px 0;
+		position: relative;
+		width: 32px;
+
+		.toggle-slide {
+			background-color: rgba($primary, 0.4);
+			border-radius: 2px;
+			height: 4px;
+			width: 100%;
+		}
+
+		.toggle-dot {
+			@include transition(background-color 0.16s ease-in, transform 0.16s ease-in);
+
+			background-color: #4F5B66;
+			border-radius: 50%;
+			height: 18px;
+			left: 0;
+			position: absolute;
+			top: 0;
+			width: 18px;
+		}
+	}
+}

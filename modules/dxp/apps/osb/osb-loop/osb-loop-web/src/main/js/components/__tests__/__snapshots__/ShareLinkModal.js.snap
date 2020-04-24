@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShareLinkModal renders 1`] = `
+<div class="share-link-container">
+  <div class="modal-header-container">
+    <h1 class="title" ref="title" tabindex="0">share-this-post</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-close-long-16"></use>
+    </svg>
+  </div>
+  <div class="modal-body-container">
+    <p>copy-the-link-below</p>
+    <div class="input-append">
+      <input value="http://www.liferay.com" class="input" readonly="" type="text">
+      <button data-clipboard-text="http://www.liferay.com" data-tooltip-response="copied" title="click-to-copy" class="btn btn-container btn-primary" type="button">copy</button>
+    </div>
+  </div>
+</div>
+`;

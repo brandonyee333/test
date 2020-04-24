@@ -1,0 +1,11 @@
+.base-layout-container {
+	margin: 0 auto;
+
+	.card-container {
+		margin-bottom: $cardSpacing;
+	}
+
+	@media #{$mediaSmallMin} {
+		padding-top: $cardSpacing;
+	}
+}

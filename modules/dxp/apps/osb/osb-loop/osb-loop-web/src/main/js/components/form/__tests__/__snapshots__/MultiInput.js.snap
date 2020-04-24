@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MultiInput renders 1`] = `
+<div class="multi-input-container">
+  <label for="formMultiInput1" class="label-container">qux</label>
+  <span>
+    <div class="form-input-container default">
+      <div class="input-container input-default">
+        <input id="FormInput2" name="foo0" value="" type="text" ref="input">
+      </div>
+    </div>
+    <div class="form-select-container default">
+      <select class="default" id="formSelect3">
+        <option selected=""></option>
+        <option selected=""></option>
+      </select>
+    </div>
+  </span>
+  <button class="btn btn-container btn-primary" type="button">+</button>
+</div>
+`;

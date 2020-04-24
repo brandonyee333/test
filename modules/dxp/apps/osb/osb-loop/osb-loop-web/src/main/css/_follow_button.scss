@@ -1,0 +1,30 @@
+.follow-button-container {
+	@include transition(background-color 400ms, border-color 400ms, color 400ms);
+
+	background-color: $secondary;
+	color: rgba($primary, 0.6);
+
+	&, &.active {
+		box-shadow: none;
+		text-shadow: none;
+	}
+
+	&.following {
+		background-color: $theme;
+		border-color: $theme;
+		color: $secondary;
+		cursor: default;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+
+	&.mini {
+		padding: 7px 10px;
+	}
+
+	&.regular > .dropdown-arrow {
+		margin-left: 8px;
+	}
+}

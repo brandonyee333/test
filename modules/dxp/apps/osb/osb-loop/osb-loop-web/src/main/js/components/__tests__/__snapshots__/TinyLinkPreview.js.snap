@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TinyLinkPreview should render 1`] = `
+<a rel="noopener noreferrer" target="_blank" class="tiny-link-preview-container">
+  <div class="link-info">
+    <div class="link-title"></div>
+    <div class="link-url"></div>
+  </div>
+</a>
+`;

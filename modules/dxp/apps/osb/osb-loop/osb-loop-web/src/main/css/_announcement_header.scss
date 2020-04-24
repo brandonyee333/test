@@ -1,0 +1,55 @@
+.announcement-header-container {
+	background-color: rgba($primary, 0.02);
+	padding: 60px $postPadding 0;
+	position: relative;
+
+	&:hover .sticky-time {
+		@include opacity(1);
+	}
+
+	.avatar-container {
+		display: inline-block;
+		margin: 24px 0 8px;
+	}
+
+	.header-content {
+		border-bottom: 1px solid $borderLightGray;
+		margin: 0 auto;
+		padding-bottom: 32px;
+	}
+
+	.secondary-info {
+		font-size: 13px;
+
+		&:hover {
+			color: rgba($primary, 0.4);
+		}
+	}
+
+	.shared-to-summary-container {
+		display: block;
+		margin-bottom: 4px;
+	}
+
+	.sticky-time {
+		@include opacity(0);
+		@include transition(color, 0.4s, opacity 0.4s);
+
+		color: rgba($primary, 0.4);
+		left: 0;
+		margin: $postPadding 0 0 $postPadding;
+		position: absolute;
+		top: 0;
+
+		&:hover {
+			color: $theme;
+		}
+	}
+
+	.title {
+		font-size: 38px;
+		font-weight: bold;
+		line-height: 52px;
+		word-wrap: break-word;
+	}
+}

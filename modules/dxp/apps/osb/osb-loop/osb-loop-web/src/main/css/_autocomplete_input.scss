@@ -1,0 +1,15 @@
+.autocomplete-input-container {
+	position: relative;
+
+	.input-container {
+		@include flex-grow(1);
+
+		margin: -4px 2px;
+	}
+
+	.spinner-container {
+		position: absolute;
+		right: 12px;
+		top: 12px;
+	}
+}

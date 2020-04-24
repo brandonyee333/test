@@ -1,0 +1,20 @@
+.share-link-container {
+	.modal-body-container {
+		padding: 24px;
+	}
+
+	.input-append {
+		@include flexbox;
+		@include transition(border linear 0.2s, box-shadow linear 0.2s);
+
+		font-size: inherit;
+
+		&.success .input {
+			border-color: $theme;
+		}
+	}
+
+	.input {
+		@include flex-grow(1);
+	}
+}

@@ -1,0 +1,38 @@
+.create-page-card-container {
+	@include align-items(center);
+	@include flex-direction(column);
+	@include flexbox;
+	@include justify-content(center);
+
+	box-sizing: border-box;
+	padding: 80px;
+	width: 100%;
+
+	.loop-icon-container {
+		background-color: rgba($theme, 0.1);
+		border-radius: 50%;
+		padding: 28px;
+	}
+
+	.loop-icon-container, .title, .secondary-info {
+		margin-bottom: 12px;
+	}
+
+	.title {
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	.secondary-info {
+		font-size: 14px;
+		line-height: 24px;
+		max-width: 300px;
+		text-align: center;
+	}
+
+	@media #{$mediaMiniMax} {
+		.btn-container {
+			display: none;
+		}
+	}
+}

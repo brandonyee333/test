@@ -1,0 +1,661 @@
+<definition>
+	<command name="applyNotificationSettings">
+		<if>
+			<condition function="IsElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_CONFIRMATION_MESSAGE" />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATIONS_SETTING_CONFIRMATION_MESSAGE" value1="This change will apply to all existing notification settings for this category." />
+				<execute function="AssertClick" locator1="LoopNotifications#NOTIFICATIONS_SETTING_CONFIRMATION_APPLY" value1="Apply" />
+			</then>
+		</if>
+	</command>
+
+	<command name="clickNotification">
+		<if>
+			<isset var="notificationActionPartial" />
+			<then>
+				<var name="key_notificationAction" value="${notificationActionPartial}" />
+			</then>
+			<else>
+				<var name="key_notificationAction" value="${notificationAction}" />
+			</else>
+		</if>
+
+		<execute function="Click" locator1="LoopNotifications#NOTIFICATION_ITEM" />
+
+		<execute macro="LoopNavigation#assertSennaLoadComplete" />
+	</command>
+
+	<command name="clickNotificationIcon">
+		<if>
+			<condition function="IsElementNotPresent" locator1="LoopNotifications#NOTIFICATION_MENU_HEADER" />
+			<then>
+				<if>
+					<and>
+						<isset var="notificationCount" />
+						<not>
+							<contains string="${notificationCount}" substring="{notificationCount}" />
+						</not>
+					</and>
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_COUNT" value1="${notificationCount}" />
+						<execute function="Click" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_LINK" />
+						<execute function="AssertElementNotPresent" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_COUNT" />
+					</then>
+					<else>
+						<execute function="Click" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_LINK" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="clickNotificationSettings">
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_LINK" />
+		<execute function="Click" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOGGLE" />
+	</command>
+
+	<command name="goBacktoNotifications">
+		<execute function="Click" locator1="LoopNotifications#NOTIFICATIONS_SETTING_BACK" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOffForAnythingIHaveBeenMentioned">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_MENTION_EMAIL" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_MENTION_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOffForCommentsOnMyPosts">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_EMAIL" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOffForGroupsIAmAMemberOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_EMAIL" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOffForPostsICommentedOn">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_EMAIL" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOffForRepliesToMyComments">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS_EMAIL" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOffForTopicsIAmAnExpertOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_EMAIL" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOnForAnythingIHaveBeenMentioned">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_MENTION_EMAIL" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_MENTION_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOnForCommentsOnMyPosts">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_EMAIL" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOnForGroupsIAmAMemberOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_EMAIL" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOnForPostsICommentedOn">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_EMAIL" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOnForRepliesToMyComments">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS_EMAIL" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnEmailNotificationSettingsOnForTopicsIAmAnExpertOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_EMAIL" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_EMAIL" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForAnythingIAmFollowing">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForCommentsOnMyPosts">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForGroupsIAmAMemberOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForLikesOnMyComments">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_COMMENTS_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_COMMENTS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForLikesOnMyPosts">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_POSTS_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_POSTS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForPostsICommentedOn">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForRepliesToMyComments">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOffForTopicsIAmAnExpertOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForAnythingIAmFollowing">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForCommentsOnMyPosts">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForGroupsIAmAMemberOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_GROUPS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForLikesOnMyComments">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_COMMENTS_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_COMMENTS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForLikesOnMyPosts">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_POSTS_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_LIKES_ON_MY_POSTS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForPostsICommentedOn">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForRepliesToMyComments">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="turnNotificationSettingsOnForTopicsIAmAnExpertOf">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOPICS_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute macro="LoopNotifications#goBacktoNotifications" />
+	</command>
+
+	<command name="viewNoNotification">
+		<if>
+			<isset var="notificationActionPartial" />
+			<then>
+				<var name="key_notificationAction" value="${notificationActionPartial}" />
+			</then>
+			<else>
+				<var name="key_notificationAction" value="${notificationAction}" />
+			</else>
+		</if>
+
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_LINK" />
+
+		<if>
+			<isset var="notificationDetails" />
+			<then>
+				<var name="key_notificationDetails" value="${notificationDetails}" />
+
+				<execute function="AssertElementNotPresent" locator1="LoopNotifications#NOTIFICATION_DETAILS_SPECIFIC" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopNotifications#NOTIFICATION_ITEM" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNoNotificationCount">
+		<execute function="AssertElementNotPresent" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_COUNT" />
+	</command>
+
+	<command name="viewNoNotificationDetails">
+		<execute function="AssertTextNotPresent" value1="${notificationDetails}" />
+	</command>
+
+	<command name="viewNoNotificationDetailsSpecific">
+		<var name="key_notificationAction" value="${notificationAction}" />
+		<var name="key_notificationDetails" value="${notificationDetails}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopNotifications#NOTIFICATION_DETAILS_SPECIFIC" />
+	</command>
+
+	<command name="viewNotification">
+		<if>
+			<isset var="notificationActionPartial" />
+			<then>
+				<var name="key_notificationAction" value="${notificationActionPartial}" />
+			</then>
+			<else>
+				<var name="key_notificationAction" value="${notificationAction}" />
+			</else>
+		</if>
+
+		<var name="key_userName" value="${userName}" />
+
+		<execute macro="LoopNotifications#clickNotificationIcon">
+			<var name="notificationCount" value="${notificationCount}" />
+		</execute>
+
+		<if>
+			<and>
+				<isset var="notificationDate" />
+				<not>
+					<contains string="${notificationDate}" substring="{notificationDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_TIMESTAMP" value1="${notificationDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_TIMESTAMP" />
+			</else>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_USER_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_ACTION" value1="${notificationAction}" />
+
+		<if>
+			<and>
+				<isset var="notificationDetails" />
+				<not>
+					<contains string="${notificationDetails}" substring="{notificationDetails}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_DETAILS" value1="${notificationDetails}" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${private}" arg2="true" />
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_DETAILS_PRIVATE_POST_LOCK" />
+			</then>
+		</if>
+	</command>
+
+	<command name="viewNotificationByDeactivatedUser">
+		<if>
+			<isset var="notificationActionPartial" />
+			<then>
+				<var name="key_notificationAction" value="${notificationActionPartial}" />
+			</then>
+			<else>
+				<var name="key_notificationAction" value="${notificationAction}" />
+			</else>
+		</if>
+
+		<var name="key_userName" value="${userName}" />
+
+		<execute macro="LoopNotifications#clickNotificationIcon">
+			<var name="notificationCount" value="${notificationCount}" />
+		</execute>
+
+		<if>
+			<and>
+				<isset var="notificationDate" />
+				<not>
+					<contains string="${notificationDate}" substring="{notificationDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_TIMESTAMP" value1="${notificationDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_TIMESTAMP" />
+			</else>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_USER_NAME_DEACTIVATED" value1="${userName}" />
+		<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_ACTION" value1="${notificationAction}" />
+
+		<if>
+			<and>
+				<isset var="notificationDetails" />
+				<not>
+					<contains string="${notificationDetails}" substring="{notificationDetails}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_DETAILS" value1="${notificationDetails}" />
+			</then>
+		</if>
+	</command>
+
+	<command name="viewNotificationDetailsSpecific">
+		<var name="key_notificationAction" value="${notificationAction}" />
+		<var name="key_notificationDetails" value="${notificationDetails}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_DETAILS_SPECIFIC" />
+	</command>
+
+	<command name="viewNotificationForMultipleActions">
+		<if>
+			<isset var="notificationActionPartial" />
+			<then>
+				<var name="key_notificationAction" value="${notificationActionPartial}" />
+			</then>
+			<else>
+				<var name="key_notificationAction" value="${notificationAction}" />
+			</else>
+		</if>
+
+		<execute macro="LoopNotifications#clickNotificationIcon">
+			<var name="notificationCount" value="${notificationCount}" />
+		</execute>
+
+		<if>
+			<and>
+				<isset var="notificationDate" />
+				<not>
+					<contains string="${notificationDate}" substring="{notificationDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_TIMESTAMP" value1="${notificationDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_TIMESTAMP" />
+			</else>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATION_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopNotifications#NOTIFICATION_ACTION" value1="${notificationAction}" />
+	</command>
+
+	<command name="viewNotificationSettingDefaults">
+		<execute macro="LoopNotifications#clickNotificationSettings" />
+
+		<var name="descriptionInAppOnList" value="Anything I Have Been Mentioned In,Likes on My Posts,Likes on My Comments and Replies,Comments on My Posts,Posts I Commented On,Replies to My Comments,Groups I Am a Member Of,Topics I Am an Expert Of" />
+
+		<for list="${descriptionInAppOnList}" param="description">
+			<execute macro="LoopNotifications#viewNotificationSettingInAppOn">
+				<var name="notificationSettingDescription" value="${description}" />
+			</execute>
+		</for>
+
+		<execute macro="LoopNotifications#viewNotificationSettingInAppOff">
+			<var name="notificationSettingDescription" value="Anything I Am Following" />
+		</execute>
+
+		<execute macro="LoopNotifications#viewNotificationSettingInAppDisabled">
+			<var name="notificationSettingDescription" value="Anything I Have Been Mentioned In" />
+		</execute>
+
+		<execute macro="LoopNotifications#viewNotificationSettingEmailOn">
+			<var name="notificationSettingDescription" value="Anything I Have Been Mentioned In" />
+		</execute>
+
+		<var name="descriptionEmailOffList" value="Likes on My Posts,Likes on My Comments and Replies,Comments on My Posts,Posts I Commented On,Replies to My Comments,Groups I Am a Member Of,Topics I Am an Expert Of" />
+
+		<for list="${descriptionEmailOffList}" param="description">
+			<execute macro="LoopNotifications#viewNotificationSettingEmailOff">
+				<var name="notificationSettingDescription" value="${description}" />
+			</execute>
+		</for>
+
+		<var name="descriptionEmailDisabledList" value="Likes on My Posts,Likes on My Comments and Replies" />
+
+		<for list="${descriptionEmailDisabledList}" param="description">
+			<execute macro="LoopNotifications#viewNotificationSettingEmailDisabled">
+				<var name="notificationSettingDescription" value="${description}" />
+			</execute>
+		</for>
+
+		<execute macro="LoopNotifications#viewNotificationSettingDefaultsForAnythingIAmFollowing" />
+	</command>
+
+	<command name="viewNotificationSettingDefaultsForAnythingIAmFollowing">
+		<execute function="AssertElementNotPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_EMAIL" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+		<execute function="Check#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_EMAIL" />
+
+		<execute function="MakeVisible" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+		<execute function="Uncheck#clickAt" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP" />
+
+		<execute macro="LoopNotifications#applyNotificationSettings" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_EMAIL" />
+	</command>
+
+	<command name="viewNotificationSettingEmailDisabled">
+		<var name="key_description" value="${notificationSettingDescription}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_DISABLED_EMAIL" />
+	</command>
+
+	<command name="viewNotificationSettingEmailOff">
+		<var name="key_description" value="${notificationSettingDescription}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_OFF_EMAIL" />
+	</command>
+
+	<command name="viewNotificationSettingEmailOn">
+		<var name="key_description" value="${notificationSettingDescription}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ON_EMAIL" />
+	</command>
+
+	<command name="viewNotificationSettingInAppDisabled">
+		<var name="key_description" value="${notificationSettingDescription}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_DISABLED_IN_APP" />
+	</command>
+
+	<command name="viewNotificationSettingInAppOff">
+		<var name="key_description" value="${notificationSettingDescription}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_OFF_IN_APP" />
+	</command>
+
+	<command name="viewNotificationSettingInAppOn">
+		<var name="key_description" value="${notificationSettingDescription}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_ON_IN_APP" />
+	</command>
+
+	<command name="viewNotificationSettingsLink">
+		<execute function="AssertElementPresent" locator1="LoopNotifications#NOTIFICATIONS_SETTING_TOGGLE" />
+	</command>
+
+	<command name="viewNotificationTooltip">
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_NOTIFICATION_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopToolbar#TOOLTIP" value1="Notifications" />
+	</command>
+</definition>

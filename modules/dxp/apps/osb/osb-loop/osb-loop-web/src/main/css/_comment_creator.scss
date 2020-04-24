@@ -1,0 +1,65 @@
+.comment-creator-container {
+	@include align-items(flex-start);
+	@include flexbox;
+
+	margin-bottom: 0;
+	position: relative;
+
+	.asset-file-uploader {
+		margin-top: 8px;
+	}
+
+	.avatar-container {
+		@include flex-shrink(0);
+	}
+
+	.cancel-edit {
+		margin-left: 28px;
+	}
+
+	.comment-control {
+		@include align-items(center);
+		@include flexbox;
+
+		height: 38px;
+	}
+
+	.comment-input {
+		@include flex(1);
+
+		background-color: $secondary;
+		border: 1px solid $borderLightGray;
+		border-radius: 4px;
+		margin: 0 28px;
+		min-width: 0;
+		padding: 8px 12px;
+		position: relative;
+
+		&.focus {
+			border-color: $theme;
+		}
+	}
+
+	.comment-loading-mask {
+		@include stretch;
+
+		background-color: rgba($secondary, 0.8);
+
+		.spinner-container {
+			@include center(both);
+		}
+	}
+
+	.editor-container {
+		position: initial;
+	}
+
+	.image-sorter-container {
+		margin-top: 8px;
+	}
+
+	.upload-image {
+		color: rgba($primary, 0.6);
+		cursor: pointer;
+	}
+}

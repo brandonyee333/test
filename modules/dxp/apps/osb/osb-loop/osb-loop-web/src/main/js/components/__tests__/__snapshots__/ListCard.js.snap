@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ListCard Component renders 1`] = `
+<div class="card-container list-card-container">
+  <div class="card-header-container"></div>
+  <div class="card-body-container">
+    <div class="loading-wrapper-container">
+      <div class="loading-content">
+        <ul class="category-items"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

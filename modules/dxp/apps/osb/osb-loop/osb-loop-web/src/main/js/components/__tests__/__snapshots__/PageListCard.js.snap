@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageListCard renders 1`] = `
+<div class="card-container entity-list-card-container">
+  <div class="card-header-container">test test</div>
+  <div class="loading-wrapper-container">
+    <div class="loading-content">
+      <ul>
+        <li class="page-list-item-container">
+          <a href="/people/0" class="name"></a>
+          <div class="details"></div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,15 @@
+.alert-feed-container {
+	bottom: 36px;
+	left: 40px;
+	max-width: 380px;
+	position: fixed;
+	z-index: $alertZIndex;
+
+	&.modal-active {
+		z-index: $windowZIndex + $alertZIndex;
+	}
+
+	.alert-container {
+		margin-bottom: 8px;
+	}
+}

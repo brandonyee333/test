@@ -1,0 +1,10 @@
+Bundle-Name: Liferay OSB Loop Asset Entry Set API
+Bundle-SymbolicName: com.liferay.osb.loop.asset.entry.set.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.loop.asset.entry.set.constants,\
+	com.liferay.osb.loop.asset.entry.set.exception,\
+	com.liferay.osb.loop.asset.entry.set.model,\
+	com.liferay.osb.loop.asset.entry.set.service,\
+	com.liferay.osb.loop.asset.entry.set.service.persistence,\
+	com.liferay.osb.loop.asset.entry.set.util

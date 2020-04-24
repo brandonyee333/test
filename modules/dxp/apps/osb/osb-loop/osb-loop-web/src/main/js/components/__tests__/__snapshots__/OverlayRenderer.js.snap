@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OverlayRenderer renders 1`] = `
+<span class="overlay-base-container">
+  <div class="overlay-container" style="z-index: 1000;">
+    <div style="" class="card-container floating overlay-content">
+      <div class="overlay-error-message-container">test test -
+        <button type="button" class="inline-button-container">dismiss</button>
+      </div>
+    </div>
+  </div>
+</span>
+`;
+
+exports[`OverlayRenderer should render with a zIndex of 2200 1`] = `
+<span class="overlay-base-container">
+  <div class="overlay-container" style="z-index: 2200;">
+    <div style="margin-bottom: 0px;" class="card-container floating overlay-content">
+      <div class="overlay-error-message-container">test test -
+        <button type="button" class="inline-button-container">dismiss</button>
+      </div>
+    </div>
+  </div>
+</span>
+`;

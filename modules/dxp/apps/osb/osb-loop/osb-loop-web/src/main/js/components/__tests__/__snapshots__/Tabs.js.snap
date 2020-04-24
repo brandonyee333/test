@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tabs renders 1`] = `
+<div class="tabs-container align-top">
+  <ul class="tabs">
+    <li class="tab active" role="presentation">
+      <a href="javascript:;" role="tab">foo</a>
+    </li>
+    <li class="tab" role="presentation">
+      <a href="javascript:;" role="tab">bar</a>
+    </li>
+  </ul>
+  <div class="content">foo</div>
+</div>
+`;

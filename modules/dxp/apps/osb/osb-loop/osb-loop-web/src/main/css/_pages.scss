@@ -1,0 +1,24 @@
+.pages-container {
+	position: relative;
+
+	> .btn-container {
+		font-size: 13px;
+		position: absolute;
+		right: 20px;
+		top: 12px;
+	}
+
+	.tabs-container .tabs > .tab {
+		font-weight: 600;
+
+		&.active > a {
+			cursor: pointer;
+		}
+	}
+
+	@media #{$mediaMiniMax} {
+		> .btn-container {
+			display: none;
+		}
+	}
+}

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SharedToSummary renders 1`] = `
+<span class="shared-to-summary-container">
+  <a class="entity-link-container" href="javascript:;"></a>
+</span>
+`;

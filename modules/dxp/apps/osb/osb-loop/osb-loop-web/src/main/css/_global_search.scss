@@ -1,0 +1,148 @@
+.global-search-container {
+	background-color: $theme;
+	border-radius: 4px;
+	position: relative;
+
+	&.focused .input-wrapper {
+		color: $theme;
+
+		> input {
+			@include input-placeholder {
+				color: rgba($primary, 0.6);
+			}
+
+			background-color: $secondary;
+			color: $primary;
+			min-width: 498px;
+		}
+	}
+
+	.input-wrapper {
+		@include align-items(center);
+		@include flexbox;
+		@include transition(color 0.4s ease-out);
+
+		color: $secondary;
+
+		> input {
+			@include input-placeholder {
+				color: rgba($secondary, 0.6);
+			}
+
+			@include transition(background-color 0.4s ease-out, color 0.4s ease-out, min-width 0.4s ease-out);
+
+			background-color: rgba($secondary, 0.2);
+			border-radius: 4px;
+			border-width: 0;
+			box-sizing: border-box;
+			color: $secondary;
+			height: 34px;
+			margin: 0;
+			min-width: 310px;
+			outline: 0;
+			padding-left: 48px;
+		}
+
+		> .loop-icon-container {
+			left: 0;
+			padding: 5px 12px;
+			pointer-events: none;
+			position: absolute;
+			top: 0;
+		}
+	}
+
+	.autocomplete-menu-container {
+		margin-top: 12px;
+
+		&:after {
+			background: rgba($primary, 0.6);
+			bottom: 0;
+			content: '';
+			left: 0;
+			position: fixed;
+			right: 0;
+			top: $toolbarHeight;
+		}
+	}
+
+	.search-icon-wrapper {
+		@include align-items(center);
+		@include flex-shrink(0);
+		@include flexbox;
+		@include justify-content(center);
+
+		background-color: rgba($theme, 0.1);
+		border-radius: 50%;
+		height: 48px;
+		width: 48px;
+	}
+
+	.search-query {
+		@include align-items(center);
+		@include flexbox;
+
+		padding: 5px 12px;
+		word-break: break-all;
+
+		div:last-child {
+			margin-left: 8px;
+
+			.query {
+				font-weight: 600;
+			}
+		}
+	}
+
+	@media #{$mediaMediumMax} {
+		.input-wrapper > input {
+			min-width: 200px;
+		}
+	}
+
+	@media #{$mediaSmallMax} {
+		&.focused {
+			border-radius: 0;
+			box-sizing: border-box;
+			left: 0;
+			padding: 12px;
+			position: fixed;
+			right: 0;
+			top: $toolbarHeight;
+			width: 100%;
+
+			.autocomplete-menu-container {
+				margin-top: 0;
+
+				&:after {
+					top: calc(2 * #{$toolbarHeight});
+				}
+			}
+
+			.input-wrapper {
+				> input {
+					display: block;
+					min-width: 100%;
+				}
+
+				> .loop-icon-container {
+					left: 12px;
+					position: absolute;
+					top: 12px;
+				}
+			}
+		}
+
+		.input-wrapper {
+			cursor: pointer;
+
+			> input {
+				display: none;
+			}
+
+			.loop-icon-container {
+				position: initial;
+			}
+		}
+	}
+}

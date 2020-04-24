@@ -1,0 +1,22 @@
+.shared-to-modal-container {
+	.content ul {
+		list-style: none;
+		margin: 0;
+
+		li {
+			padding: 12px;
+
+			&:first-child {
+				padding-top: 24px;
+			}
+
+			&:last-child {
+				padding-bottom: 24px;
+			}
+		}
+	}
+
+	.modal-header-container {
+		border-bottom-width: 0;
+	}
+}

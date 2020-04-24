@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FollowersCount should render 1`] = `
+<a href="/people/0/followers">
+  <span class="loop-icon-label-container" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-star loop-icon-small-1x loop-icon-warning" data-tooltip="">
+      <use href="#loop-icon-star-16"></use>
+    </svg>
+    <span class="loop-icon-label"></span>
+  </span>
+</a>
+`;

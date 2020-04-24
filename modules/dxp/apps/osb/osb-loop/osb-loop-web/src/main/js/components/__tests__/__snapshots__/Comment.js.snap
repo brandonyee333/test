@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Comment renders 1`] = `
+<div class="comment-container ">
+  <div class="view">
+    <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+      <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+    <div class="content">
+      <a class="entity-link-container" href="/people/0" id="unit_tests_namespace_ENTITY_SUMMARY2">Joe Bloggs0</a>
+      <div class="markdown-content-container inline">
+        <p>0Lorem ipsum dolor sit amet,
+          <a class="mention" href="#">Joe Bloggs</a> assa sit amet ultricies rutrum. Aenean finibus
+          <a class="mention" href="#">Joe Bloggs</a> felis, eget varius mauris scelerisque quis. Pellentesque nisl tortor, semper at libero sit amet, consequat aliquet nulla. Morbi sit amet malesuada lacus. Aenean rutrum sit amet nulla id dictum. Phasellus tempor vel nisl eget scelerisque. Curabitur ut convallis enim. Aliquam fermentum vehicula velit a maximus. Donec varius dictum orci, commodo efficitur arcu fringilla vitae. Donec risus orci, imperdiet a placerat at, luctus rhoncus sem. Cras suscipit vulputate ligula. In at enim nisl.</p>
+      </div>
+      <div class="meta-data">
+        <a href="/web/guest/home/-/loop/feed/0" class="secondary-info">
+          <span data-tooltip=""></span>
+        </a>
+        <span class="reply-to">reply</span>
+        <span class="comment-like-counter-container">
+          <button type="button" class="inline-button-container like-action liked">liked</button>
+          <a title="click-to-see-likes" class="counter" data-tooltip="" href="javascript:;"></a>
+        </span>
+      </div>
+      <svg id="unit_tests_namespace_COMMENT_MENU3" class="loop-icon-container loop-icon-pen loop-icon-large-1x" data-tooltip="">
+        <use href="#loop-icon-pen-24"></use>
+      </svg>
+    </div>
+  </div>
+  <div class="replies"></div>
+</div>
+`;

@@ -1,0 +1,29 @@
+<html>
+<head>
+<title>LoopJobTitlesDeleteJobTitle</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopJobTitlesDeleteJobTitle</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>JOB_TITLE_WARNING_MESSAGE</td>
+	<td>//div[contains(@class,'modal-body-container') and contains(.,'Are you sure you want to')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

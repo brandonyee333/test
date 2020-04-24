@@ -1,0 +1,21 @@
+.page-search-result-item-container {
+	padding: 24px 28px;
+
+	.content {
+		margin-bottom: 24px;
+
+		.markdown-content-container {
+			margin-top: 12px;
+		}
+
+		.title {
+			color: $primary;
+			font-size: 26px;
+			font-weight: bold;
+
+			&:hover {
+				color: $theme;
+			}
+		}
+	}
+}

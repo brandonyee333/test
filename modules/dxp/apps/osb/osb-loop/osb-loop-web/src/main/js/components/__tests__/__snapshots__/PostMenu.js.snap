@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostMenu renders 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-bookmark loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-bookmark-16"></use>
+      </svg>
+      <span class="loop-icon-label">bookmark</span>
+    </span>
+  </li>
+  <li class="menu-item-container">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-external loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-external-16"></use>
+      </svg>
+      <span class="loop-icon-label">share</span>
+    </span>
+  </li>
+  <li id="unit_tests_namespace_FOLLOW_MENU1" class="menu-item-container justify-between">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-star loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-star-16"></use>
+      </svg>
+      <span class="loop-icon-label">unfollow-post</span>
+    </span>
+    <svg class="loop-icon-container loop-icon-arrow-right-short loop-icon-small-1x follow-item-arrow menu-icon" data-tooltip="">
+      <use href="#loop-icon-arrow-right-short-16"></use>
+    </svg>
+  </li>
+  <li class="menu-item-container">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-trash loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-trash-16"></use>
+      </svg>
+      <span class="loop-icon-label">delete</span>
+    </span>
+  </li>
+  <li class="menu-item-container">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-pen loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-pen-16"></use>
+      </svg>
+      <span class="loop-icon-label">edit</span>
+    </span>
+  </li>
+</ul>
+`;

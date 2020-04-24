@@ -1,0 +1,50 @@
+.tiny-link-preview-container {
+	@include transition(border-color 400ms);
+
+	border: 1px solid $borderLightGray;
+	border-radius: 4px;
+	line-height: 24px;
+	width: 156px;
+
+	&:hover {
+		border-color: $theme;
+
+		.link-title {
+			color: $theme;
+		}
+	}
+
+	.link-image {
+		background-position: center;
+		background-size: cover;
+		border-radius: 4px 4px 0 0;
+		height: 84px;
+	}
+
+	.link-info {
+		@include flex-direction(column);
+		@include flexbox;
+		@include justify-content(center);
+
+		overflow: hidden;
+		padding: 12px;
+	}
+
+	.link-title, .link-url {
+		@include ellipsis;
+
+		line-height: 16px;
+	}
+
+	.link-title {
+		color: rgba($primary, 0.8);
+		font-size: 13px;
+	}
+
+	.link-url {
+		@include ellipsis;
+
+		color: rgba($primary, 0.4);
+		font-size: 11px;
+	}
+}

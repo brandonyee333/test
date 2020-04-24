@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SortableListItem renders 1`] = `
+<li class="sortable-list-item-container">
+  <a href="/pages/0" class="title">Hello World</a>
+  <span class="creator-info">
+    <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+      <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-tiny">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+    <a class="entity-link-container" href="/people/0" id="unit_tests_namespace_ENTITY_SUMMARY2">Joe Bloggs0</a>
+  </span>
+  <span class="secondary-info">December 1, 2017</span>
+</li>
+`;
+
+exports[`SortableListItem renders as selected 1`] = `
+<li class="sortable-list-item-container selected">
+  <a href="/pages/0" class="title">Hello World</a>
+  <span class="creator-info">
+    <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY3">
+      <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-tiny">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+    <a class="entity-link-container" href="/people/0" id="unit_tests_namespace_ENTITY_SUMMARY4">Joe Bloggs0</a>
+  </span>
+  <span class="secondary-info">December 1, 2017</span>
+</li>
+`;

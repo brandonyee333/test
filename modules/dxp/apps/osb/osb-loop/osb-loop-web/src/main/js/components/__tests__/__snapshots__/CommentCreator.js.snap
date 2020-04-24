@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommentCreator renders 1`] = `
+<div class="comment-creator-container">
+  <div class="comment-control">
+    <div class="avatar-container">
+      <a href="/people/100" style="" title="Joe Bloggs100" class="avatar avatar-size-smallest">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+  </div>
+  <div class="drop-target-container comment-input">
+    <span></span>
+    <div class="editor-container"></div>
+  </div>
+  <div class="comment-control">
+    <svg class="loop-icon-container loop-icon-camera loop-icon-large-1x upload-image" data-tooltip="">
+      <use href="#loop-icon-camera-24"></use>
+    </svg>
+  </div>
+</div>
+`;

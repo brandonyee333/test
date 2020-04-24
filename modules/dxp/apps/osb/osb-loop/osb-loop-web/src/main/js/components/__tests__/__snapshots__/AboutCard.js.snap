@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AboutCard renders 1`] = `
+<div class="card-container about-card-container">
+  <div class="card-header-container">about</div>
+</div>
+`;

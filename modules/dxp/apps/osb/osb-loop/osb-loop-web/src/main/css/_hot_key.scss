@@ -1,0 +1,35 @@
+.hot-key-container {
+	.definition, .key, .keys-wrapper {
+		box-sizing: border-box;
+		display: inline-block;
+	}
+
+	.definition {
+		padding-right: 8px;
+		text-align: right;
+		width: 50%;
+	}
+
+	.key {
+		@include box-shadow(0 1px 0 rgba(0, 0, 0, 0.2), 0 0 0 2px $secondary inset);
+
+		background-color: #F7F7F7;
+		border: 1px solid #CCC;
+		border-radius: 3px;
+		color: #333;
+		font-family: inherit;
+		min-width: 28px;
+		padding: 4px;
+		text-align: center;
+	}
+
+	.keys-wrapper {
+		padding-left: 8px;
+		width: 50%;
+
+		.key, .seperator {
+			margin-right: 4px;
+			vertical-align: middle;
+		}
+	}
+}

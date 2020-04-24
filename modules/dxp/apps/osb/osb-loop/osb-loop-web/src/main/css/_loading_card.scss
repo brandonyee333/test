@@ -1,0 +1,14 @@
+.loading-card-container {
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(center);
+
+	box-sizing: border-box;
+	color: rgba($primary, 0.8);
+	font-size: 12px;
+	padding: 8px;
+
+	.spinner-container {
+		margin-right: 4px;
+	}
+}

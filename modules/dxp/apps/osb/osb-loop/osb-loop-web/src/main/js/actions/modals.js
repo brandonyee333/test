@@ -1,0 +1,58 @@
+export const modalTypes = {
+	ASSIGN_CHILDREN: 'ASSIGN_CHILDREN',
+	ASSIGN_PARENT: 'ASSIGN_PARENT',
+	CONFIRM_DIALOG: 'CONFIRM_DIALOG',
+	CONVERT_DIVISION_TYPE: 'CONVERT_DIVISION_TYPE',
+	CREATE_DIVISION: 'CREATE_DIVISION',
+	CREATE_JOB_TITLE: 'CREATE_JOB_TITLE',
+	CREATE_PERSON: 'CREATE_PERSON',
+	CREATE_TOPIC: 'CREATE_TOPIC',
+	CROP_IMAGE: 'CROP_IMAGE',
+	EDIT_JOB_TITLE: 'EDIT_JOB_TITLE',
+	EDIT_POST_MODAL: 'EDIT_POST_MODAL',
+	ENTITY_LIST: 'ENTITY_LIST',
+	FEATURED_TOPICS: 'FEATURED_TOPICS',
+	FEATURED_TOPICS_SETTINGS: 'FEATURED_TOPICS_SETTINGS',
+	HOT_KEYS: 'HOT_KEYS',
+	LIKED_PARTICIPANTS: 'LIKED_PARTICIPANTS',
+	MARKDOWN_CHEATSHEET: 'MARKDOWN_CHEATSHEET',
+	MERGE_TOPICS: 'MERGE_TOPICS',
+	NEW_DIVISIONS: 'NEW_DIVISIONS',
+	NEW_PEOPLE: 'NEW_PEOPLE',
+	ORG_CHART: 'ORG_CHART',
+	POST_PREVIEW: 'POST_PREVIEW',
+	SHARE_LINK: 'SHARE_LINK',
+	SHARED_TO: 'SHARED_TO'
+};
+
+export const actionTypes = {
+	HIDE_MODAL: 'HIDE_MODAL',
+	SHOW_MODAL: 'SHOW_MODAL'
+};
+
+export function showModal(config) {
+	const {
+		fullScreen = false,
+		hideOnBlur = true,
+		modalProps,
+		modalType,
+		onClose,
+		redirectURL
+	} = config;
+
+	return {
+		fullScreen,
+		hideOnBlur,
+		modalProps,
+		modalType,
+		onClose,
+		redirectURL,
+		type: actionTypes.SHOW_MODAL
+	};
+}
+
+export function hideModal() {
+	return {
+		type: actionTypes.HIDE_MODAL
+	};
+}

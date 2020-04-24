@@ -1,0 +1,39 @@
+.follow-menu-container {
+	.notify-email {
+		@include transition(max-height 400ms ease, opacity 400ms ease, padding 400ms ease);
+
+		max-height: 48px;
+		opacity: 1;
+
+		&.off {
+			max-height: 0;
+			opacity: 0;
+			padding: 0;
+		}
+	}
+
+	.stream-options {
+		list-style-type: none;
+		margin: 0;
+
+		.radio-group-option-container {
+			@include align-items(center);
+			@include flexbox;
+
+			box-sizing: border-box;
+			line-height: 24px;
+			max-width: 100%;
+			padding: 6px 20px;
+			white-space: nowrap;
+
+			&:focus, &:hover {
+				background-color: rgba($theme, 0.1);
+				color: $theme;
+			}
+
+			input {
+				display: none;
+			}
+		}
+	}
+}

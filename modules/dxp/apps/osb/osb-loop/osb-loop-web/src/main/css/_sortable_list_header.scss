@@ -1,0 +1,30 @@
+.sortable-list-header-container {
+	@include flexbox;
+	@include justify-content(space-between);
+
+	box-sizing: border-box;
+	font-size: 13px;
+	padding: 0 20px 20px;
+	white-space: nowrap;
+	width: 100%;
+
+	.creator-header, .secondary-info-header {
+		@include flex-basis(160px);
+
+		margin-right: 12px;
+	}
+
+	.creator-header, .secondary-info-header, .title-header {
+		@include align-items(center);
+		@include flexbox;
+
+		color: rgba($primary, 0.6);
+		font-size: 13px;
+	}
+
+	.title-header {
+		@include flex-basis(380px);
+
+		margin-right: 12px;
+	}
+}

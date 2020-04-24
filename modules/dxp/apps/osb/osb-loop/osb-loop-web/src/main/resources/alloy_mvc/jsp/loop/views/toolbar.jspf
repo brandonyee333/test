@@ -1,0 +1,82 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<c:set value="${request.getParameter('q')}" var="searchQuery" />
+
+<div class="toolbar-global">
+	<div id="${renderResponse.namespace}toolbar"></div>
+
+	<div class="senna-loading-bar"></div>
+
+	<div id="${renderResponse.namespace}alertFeed"></div>
+
+	<div id="${renderResponse.namespace}modal"></div>
+
+	<div id="${renderResponse.namespace}overlays"></div>
+
+	<div id="${renderResponse.namespace}tooltip"></div>
+</div>
+
+<aui:script use="aui-node,liferay-store">
+	var RC = window.RC;
+
+	var actions = RC.actions;
+
+	Liferay.Loop.SPA = new RC.SPA(
+		{
+			clearFeed: actions.clearFeed,
+			hideModal: actions.hideModal,
+			removeDisplay: actions.removeDisplay,
+			setActiveTabIndex: actions.setActiveTabIndex,
+			showModal: actions.showModal,
+			store: RC.store
+		}
+	);
+
+	RC.actions.hydratePerson(${currentLoopPersonComposite.entityClassPK}, ${currentLoopPersonComposite.JSONObject});
+
+	RC.render(
+		RC.Toolbar,
+		{
+			query: '${loop:escapeJS(searchQuery)}'
+		},
+		A.one('#${renderResponse.namespace}toolbar').getDOMNode()
+	);
+
+	RC.render(
+		RC.AlertFeed,
+		{},
+		A.one('#${renderResponse.namespace}alertFeed').getDOMNode()
+	);
+
+	RC.render(
+		RC.Modal,
+		{},
+		A.one('#${renderResponse.namespace}modal').getDOMNode()
+	);
+
+	RC.render(
+		RC.OverlayRenderer,
+		{},
+		A.one('#${renderResponse.namespace}overlays').getDOMNode()
+	);
+
+	RC.render(
+		RC.Tooltip,
+		{},
+		A.one('#${renderResponse.namespace}tooltip').getDOMNode()
+	);
+</aui:script>

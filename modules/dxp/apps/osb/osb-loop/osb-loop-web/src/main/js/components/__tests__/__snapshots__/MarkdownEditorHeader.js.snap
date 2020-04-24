@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownEditorHeader renders 1`] = `
+<ul class="markdown-editor-header-container">
+  <li class="active">write</li>
+  <li class="">preview-markdown</li>
+</ul>
+`;
+
+exports[`MarkdownEditorHeader renders as disabled 1`] = `
+<ul class="markdown-editor-header-container">
+  <li class="">preview-markdown</li>
+</ul>
+`;
+
+exports[`MarkdownEditorHeader renders as preview 1`] = `
+<ul class="markdown-editor-header-container">
+  <li class="">write</li>
+  <li class="active">preview-markdown</li>
+</ul>
+`;

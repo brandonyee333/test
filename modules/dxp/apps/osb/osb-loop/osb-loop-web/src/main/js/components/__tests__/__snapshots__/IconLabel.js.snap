@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconLabel renders 1`] = `
+<span class="loop-icon-label-container" data-tooltip="">
+  <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+    <use href="#loop-icon-undefined-24"></use>
+  </svg>
+  <span class="loop-icon-label"></span>
+</span>
+`;
+
+exports[`IconLabel renders with a label 1`] = `
+<span class="loop-icon-label-container" data-tooltip="">
+  <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+    <use href="#loop-icon-undefined-24"></use>
+  </svg>
+  <span class="loop-icon-label"></span>
+</span>
+`;

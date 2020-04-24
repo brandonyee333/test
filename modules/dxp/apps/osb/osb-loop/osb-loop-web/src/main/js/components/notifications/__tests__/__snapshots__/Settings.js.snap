@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Settings renders 1`] = `
+<div class="notification-settings-container">
+  <div class="confirm-mask-container settings">
+    <table>
+      <tbody>
+        <tr>
+          <th class="category-head left">Test Category</th>
+          <th class="category-head">in-app</th>
+          <th class="category-head">email</th>
+        </tr>
+        <tr>
+          <th class="left">Test Setting</th>
+          <td>
+            <div class="checkbox-container checked">
+              <input title="turn-off" data-tooltip="" checked="" id="checkbox1" class="checkbox-input" type="checkbox">
+              <svg class="loop-icon-container loop-icon-bell loop-icon-large-1x loop-icon-primary toggle-icon" data-tooltip="">
+                <use href="#loop-icon-bell-24"></use>
+              </svg>
+            </div>
+          </td>
+          <td>
+            <span>
+              <div class="checkbox-container checked transition-scale-in-out-appear">
+                <input title="stop-email-notifications" data-tooltip="" checked="" id="checkbox2" class="checkbox-input" type="checkbox">
+                <svg class="loop-icon-container loop-icon-mail-full loop-icon-large-1x loop-icon-primary toggle-icon" data-tooltip="">
+                  <use href="#loop-icon-mail-full-24"></use>
+                </svg>
+              </div>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <th class="left">Test Setting2</th>
+          <td>
+            <div class="checkbox-container checked">
+              <input title="turn-off" data-tooltip="" checked="" id="checkbox3" class="checkbox-input" type="checkbox">
+              <svg class="loop-icon-container loop-icon-bell loop-icon-large-1x loop-icon-primary toggle-icon" data-tooltip="">
+                <use href="#loop-icon-bell-24"></use>
+              </svg>
+            </div>
+          </td>
+          <td>
+            <span>
+              <div class="checkbox-container checked transition-scale-in-out-appear">
+                <input title="stop-email-notifications" data-tooltip="" checked="" id="checkbox4" class="checkbox-input" type="checkbox">
+                <svg class="loop-icon-container loop-icon-mail-full loop-icon-large-1x loop-icon-primary toggle-icon" data-tooltip="">
+                  <use href="#loop-icon-mail-full-24"></use>
+                </svg>
+              </div>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <span></span>
+  </div>
+</div>
+`;

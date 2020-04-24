@@ -1,0 +1,15 @@
+.loading-wrapper-container {
+	position: relative;
+
+	.mask {
+		@include stretch;
+
+		background-color: rgba($secondary, 0.8);
+		position: absolute;
+		z-index: $overlayZIndex;
+	}
+
+	> .mask .spinner-container, > .spinner-container {
+		@include center(both);
+	}
+}

@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Image renders 1`] = `
+<div class="image-container" style="background-image: url(web1);">
+  <img class="image hide" src="web1">
+</div>
+`;
+
+exports[`Image renders a GIF as a background image without autoplay 1`] = `
+<div class="image-container" style="background-image: url(web1);">
+  <img class="image hide" src="web1">
+</div>
+`;
+
+exports[`Image renders a GIF within the img tag, full screen, and with autoplay 1`] = `
+<div class="image-container" style="">
+  <img class="image" src="full1">
+</div>
+`;
+
+exports[`Image renders a loading indicator 1`] = `
+<div class="image-container" style="">
+  <img class="image hide" src="web1">
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+</div>
+`;
+
+exports[`Image renders an error message 1`] = `
+<div class="image-container" style="">
+  <img class="image hide" src="web1">
+  <div class="error-message">
+    <span class="loop-icon-label-container" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-alert loop-icon-small-1x loop-icon-danger" data-tooltip="">
+        <use href="#loop-icon-alert-16"></use>
+      </svg>
+      <span class="loop-icon-label">there-was-an-error-loading-this-image</span>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Image renders in fullscreen within an img tag 1`] = `
+<div class="image-container" style="">
+  <img class="image" src="full1">
+</div>
+`;
+
+exports[`Image should hide image and display background on image wrapper 1`] = `
+<div class="image-container" style="background-image: url(web1);">
+  <img class="image hide" src="web1">
+</div>
+`;
+
+exports[`Image should use image and not background on image wrapper 1`] = `
+<div class="image-container" style="">
+  <img class="image" src="web1">
+</div>
+`;
+
+exports[`ImageViewer renders 1`] = `
+<div class="image-viewer-container">
+  <div style="" class="grid">
+    <div class="image-container grid-item" style="">
+      <img class="image hide" src="web1">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <div class="image-container grid-item" style="">
+      <img class="image hide" src="web2">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ImageViewer renders a single image 1`] = `
+<div class="image-viewer-container">
+  <div style="" class="grid">
+    <div class="image-container grid-item" style="">
+      <img class="image hide" src="web1">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

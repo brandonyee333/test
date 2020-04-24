@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkPreviewEditor renders 1`] = `
+<div class="link-preview-editor-container">
+  <div class="link-preview-container">
+    <div class="image-wrapper">
+      <div class="link-preview-image-container">
+        <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank" class="image-link">
+          <img alt="Liferay" src="/image2.jpeg">
+        </a>
+      </div>
+      <div class="edit-image">
+        <div>
+          <svg class="loop-icon-container loop-icon-arrow-left-rod loop-icon-small-2x previous-image" title="previous-image" data-tooltip="">
+            <use href="#loop-icon-arrow-left-rod-16"></use>
+          </svg>
+          <svg class="loop-icon-container loop-icon-arrow-right-rod loop-icon-small-2x next-image" title="next-image" data-tooltip="">
+            <use href="#loop-icon-arrow-right-rod-16"></use>
+          </svg>
+        </div>
+        <svg class="loop-icon-container loop-icon-close-long loop-icon-small-1x remove-image" title="remove-image" data-tooltip="">
+          <use href="#loop-icon-close-long-16"></use>
+        </svg>
+      </div>
+    </div>
+    <div class="content-wrapper">
+      <div class="link-preview-content-container">
+        <div class="title">
+          <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank">Liferay</a>
+        </div>
+        <div class="short-url">
+          <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank">www.liferay.com</a>
+        </div>
+        <div class="description">
+          <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank">Liferay: Put people at the heart of your business</a>
+        </div>
+      </div>
+      <svg class="loop-icon-container loop-icon-close-long loop-icon-small-1x remove-preview" title="remove-link" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+  </div>
+  <div class="control-group control-group-inline link-input-wrapper">
+    <label class="control-label" id="unit_tests_namespace_OVERLAY_ERROR_MESSAGE1">link</label>
+    <input disabled="" placeholder="type-or-paste-a-website-url-here" class="field link-input" ref="linkInput" type="text">
+  </div>
+</div>
+`;

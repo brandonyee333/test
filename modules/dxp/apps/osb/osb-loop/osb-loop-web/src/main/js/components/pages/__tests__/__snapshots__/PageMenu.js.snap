@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageMenu renders 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container menu-link">
+    <a href="0/edit">
+      <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-pen loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+          <use href="#loop-icon-pen-16"></use>
+        </svg>
+        <span class="loop-icon-label">edit</span>
+      </span>
+    </a>
+  </li>
+  <li class="menu-item-container">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-trash loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-trash-16"></use>
+      </svg>
+      <span class="loop-icon-label">delete</span>
+    </span>
+  </li>
+</ul>
+`;
+
+exports[`PageMenu renders with delete button only 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container">
+    <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-trash loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+        <use href="#loop-icon-trash-16"></use>
+      </svg>
+      <span class="loop-icon-label">delete</span>
+    </span>
+  </li>
+</ul>
+`;
+
+exports[`PageMenu renders with edit button only 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container menu-link">
+    <a href="0/edit">
+      <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-pen loop-icon-small-1x loop-icon-default menu-icon" data-tooltip="">
+          <use href="#loop-icon-pen-16"></use>
+        </svg>
+        <span class="loop-icon-label">edit</span>
+      </span>
+    </a>
+  </li>
+</ul>
+`;

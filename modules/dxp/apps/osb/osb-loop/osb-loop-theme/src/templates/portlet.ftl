@@ -1,0 +1,11 @@
+<#assign
+	portlet_display=portletDisplay
+
+	portlet_id=htmlUtil.escapeAttribute(portlet_display.getId())
+/>
+
+<section class="portlet" id="portlet_${portlet_id}">
+	<div class="portlet-content">
+		${portlet_display.writeContent(writer)}
+	</div>
+</section>

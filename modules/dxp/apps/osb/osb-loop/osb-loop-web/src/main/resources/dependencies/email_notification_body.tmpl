@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta content="charset=utf-8 text/html;" http-equiv="Content-Type" />
+		<meta content="initial-scale=1.0 width=device-width," name="viewport"/>
+
+		<title>[$SUMMARY$]</title>
+
+		<style type="text/css">
+			@media only screen and (max-width: 480px) {
+				.container {
+					padding-left: 10px !important;
+					padding-right: 10px !important;
+					width: 100% !important;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<table
+			border="0"
+			cellpadding="0"
+			cellspacing="0"
+			class="email-container"
+			height="100%"
+			width="100%"
+		>
+			<tbody>
+				<tr>
+					<td
+						align="center"
+						valign="middle"
+					>
+						<table
+							border="0"
+							cellpadding="0"
+							cellspacing="0"
+							class="container email-header"
+							height="auto"
+							width="560px"
+						>
+							<tbody>
+								<tr>
+									<td
+										class="loop-icon"
+										valign="middle"
+									>
+										<a href="[$PORTAL_URL$]">
+											<img
+												height="44px"
+												src="[$LOOP_ICON$]"
+												width="73px"
+											>
+										</a>
+									</td>
+
+									<td
+										class="email-summary-container"
+										valign="middle"
+									>
+										<a class="email-summary" href="[$NOTIFICATION_DISPLAY_URL$]">
+											[$SUMMARY$]
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td align="center">
+						<table
+							border="0"
+							cellpadding="0"
+							cellspacing="0"
+							class="container email-body"
+							height="100%"
+							width="560px"
+						>
+							<tbody>
+								<tr>
+									<td
+										class="creator-avatar-container"
+										valign="middle"
+									>
+										<a href="[$CREATOR_DISPLAY_URL$]">
+											<img
+												height="60px"
+												src="[$CREATOR_PROFILE_IMAGE_URL$]"
+												width="60px"
+											>
+										</a>
+									</td>
+									<td
+										align="center"
+										class="creator-name-container"
+										valign="middle">
+											<a
+												class="creator-name"
+												href="[$CREATOR_DISPLAY_URL$]"
+											>
+												[$CREATOR_NAME$]
+											</a>
+									</td>
+								</tr>
+								<tr>
+									<td
+										align="left"
+										class="message"
+										valign="middle"
+									>
+										[$MESSAGE$]
+									</td>
+								</tr>
+								[$ATTACHED_CONTENT$]
+								[$COMMENT$]
+								<tr>
+									<td
+										align="center"
+										class="add-comment-container"
+										valign="middle"
+									>
+										<table
+											border="0"
+											cellpadding="0"
+											cellspacing="0"
+											class="add-comment-btn btn btn-container"
+										>
+											<tbody>
+												<tr>
+													<td
+														align="center"
+														class="btn-cell"
+														valign="middle"
+													>
+														<a
+															class="btn-content"
+															href="[$NOTIFICATION_DISPLAY_URL$]"
+														>
+															[$ADD_COMMENT_TEXT$]
+														</a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+
+				[$FEEDBACK$]
+			</tbody>
+		</table>
+	</body>
+</html>

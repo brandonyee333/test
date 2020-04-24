@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntityDisplay renders 1`] = `
+<div class="entity-display-container">
+  <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+    <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-small">
+      <div class="avatar-placeholder"></div>
+    </a>
+  </div>
+  <div class="entity-info">
+    <div class="name">
+      <a class="entity-link-container" href="/people/0" id="unit_tests_namespace_ENTITY_SUMMARY2">Joe Bloggs0</a>
+    </div>
+    <div class="details">Test Engineer • Diamond Bar, USA</div>
+  </div>
+</div>
+`;
+
+exports[`EntityDisplay renders for a division 1`] = `
+<div class="entity-display-container">
+  <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY3">
+    <a href="/divisions/0" style="" title="Division0" class="avatar avatar-size-small">
+      <div class="avatar-placeholder">
+        <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+          <use href="#loop-icon-undefined-24"></use>
+        </svg>
+      </div>
+    </a>
+  </div>
+  <div class="entity-info">
+    <div class="name">
+      <a class="entity-link-container" href="/divisions/0" id="unit_tests_namespace_ENTITY_SUMMARY4">Division0</a>
+    </div>
+    <div class="details">team • x-members</div>
+  </div>
+</div>
+`;
+
+exports[`EntityDisplay renders for a division 2`] = `
+<div class="entity-display-container">
+  <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY5">
+    <a href="/topics/0" style="" title="Topic0" class="avatar avatar-size-small">
+      <div class="avatar-placeholder">
+        <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+          <use href="#loop-icon-undefined-24"></use>
+        </svg>
+      </div>
+    </a>
+  </div>
+  <div class="entity-info">
+    <div class="name">
+      <a class="entity-link-container" href="/topics/0" id="unit_tests_namespace_ENTITY_SUMMARY6">Topic0</a>
+    </div>
+    <div class="details">x-followers</div>
+  </div>
+</div>
+`;

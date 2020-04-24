@@ -1,0 +1,1014 @@
+<definition>
+	<command name="addPage">
+		<execute macro="LoopGroupsGroup#clickCreatePageButton" />
+
+		<execute macro="LoopGroupsGroup#typePageTitle">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="${pageText}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#previewPage">
+			<var name="pageText" value="${pageText}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickPublishButton" />
+
+		<execute macro="LoopGroups#viewPage">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageModifiedTime" value="a few seconds ago" />
+			<var name="pageText" value="${pageText}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoAllPages" />
+	</command>
+
+	<command name="addPageWithMarkdown">
+		<execute macro="LoopGroupsGroup#clickCreatePageButton" />
+
+		<execute macro="LoopGroupsGroup#typePageTitle">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroups#typeMarkdownContentViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#clickPublishButton" />
+
+		<execute macro="LoopGroups#viewPage">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageModifiedTime" value="a few seconds ago" />
+			<var name="pageText" value="Heading Sub-heading Another deeper heading Paragraphs are separated by a blank line. Text attributes: italic, bold, inline code as you can see. Shopping list: apples oranges pears Numbered list: apples oranges Blockquotes are very handy in email to emulate reply text. This line is part of the same quote. Piece of code A link. A number reference link A text reference link" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoAllPages" />
+	</command>
+
+	<command name="deletePage">
+		<execute macro="LoopGroupsGroup#clickPageListItem">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickDeletePageButton" />
+
+		<execute macro="LoopGroupsGroup#confirmDeletePage" />
+
+		<execute macro="LoopGroupsGroup#viewNoPageListItem">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+	</command>
+
+	<command name="editPage">
+		<execute macro="LoopGroupsGroup#clickPageListItem">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickEditPageButton" />
+
+		<execute macro="LoopGroupsGroup#typeSpaceViaPageTitleField" />
+
+		<execute macro="LoopGroupsGroup#typePageTitle">
+			<var name="pageTitle" value="${pageTitleEdit}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeSpaceViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="${pageTextEdit}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#previewPage">
+			<var name="pageText" value="${pageText} ${pageTextEdit}" />
+			<var name="pageTitle" value="${pageTitle} ${pageTitleEdit}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickPublishButton" />
+
+		<!-- Workaround until LOOP-5456 is fixed -->
+
+		<execute macro="LoopGroups#viewPage">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<!--<var name="pageModifiedTime" value="a few seconds ago" />-->
+			<var name="pageText" value="${pageText} ${pageTextEdit}" />
+			<var name="pageTitle" value="${pageTitle} ${pageTitleEdit}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoAllPages" />
+	</command>
+
+	<command name="followGroup">
+		<execute macro="LoopGroups#gotoGroupProfile">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickFollowButton" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#SUCCESS_MESSAGE" value1="You just followed ${groupName}." />
+	</command>
+
+	<command name="followGroupViaIndex">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<execute macro="LoopGroups#gotoGroupTab">
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickFollowLinkViaIndex">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#SUCCESS_MESSAGE" value1="You just followed ${groupName}." />
+	</command>
+
+	<command name="gotoGroupProfile">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<!-- Workaround for recent automation fails on LRQA-35323 -->
+
+		<execute macro="LoopNavigation#reloadPage" />
+
+		<execute macro="LoopGroups#gotoGroupTab">
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="gotoGroupProfileViaSearch">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoGroup">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="gotoGroupTab">
+		<if>
+			<equals arg1="${groupType}" arg2="Team" />
+			<then>
+				<execute function="Click" locator1="LoopGroups#TEAMS_TAB" />
+			</then>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Location" />
+				<then>
+					<execute function="Click" locator1="LoopGroups#LOCATIONS_TAB" />
+				</then>
+			</elseif>
+		</if>
+	</command>
+
+	<command name="gotoOrgChart">
+		<execute function="AssertClick" locator1="LoopGroups#SEE_COMPANY_ORG_CHART_LINK" value1="See Company Org Chart" />
+	</command>
+
+	<command name="removeChildGroup">
+		<execute macro="LoopGroupsGroup#clickAssignChildGroupLink" />
+
+		<execute macro="LoopGroupsGroup#removeChildGroup">
+			<var name="childGroupName" value="${childGroupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#saveNetworkChanges" />
+	</command>
+
+	<command name="removeParentGroup">
+		<execute macro="LoopGroupsGroup#clickAssignParentGroupLink" />
+
+		<execute macro="LoopGroupsGroup#removeParentGroup">
+			<var name="parentGroupName" value="${parentGroupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#saveNetworkChanges" />
+	</command>
+
+	<command name="typeMarkdownContentViaDescription">
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Heading" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="=======" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Sub-heading" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="-----------" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="### Another deeper heading" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Paragraphs are separated" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="by a blank line." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Text attributes: *italic*, **bold**, inline `code` as you can see." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Shopping list:" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="* apples" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="+ oranges" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="- pears" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Numbered list:" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="1. apples" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="2. oranges" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="> Blockquotes are very handy in email to emulate reply text." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="> This line is part of the same quote." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="```" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="Piece of code" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="```" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="A [link](http://www.google.com)." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="A [number reference link][1]" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="A [text reference link]" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="[1]: http://www.yahoo.com" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopGroupsGroup#typeDescription">
+			<var name="groupDescription" value="[text reference link]: http://www.bing.com" />
+		</execute>
+	</command>
+
+	<command name="typeMarkdownContentViaPageTextField">
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Heading" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="=======" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Sub-heading" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="-----------" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="### Another deeper heading" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Paragraphs are separated" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="by a blank line." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Text attributes: *italic*, **bold**, inline `code` as you can see." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Shopping list:" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="* apples" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="+ oranges" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="- pears" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Numbered list:" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="1. apples" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="2. oranges" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="> Blockquotes are very handy in email to emulate reply text." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="> This line is part of the same quote." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="```" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="Piece of code" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="```" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="A [link](http://www.google.com)." />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="A [number reference link][1]" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="A [text reference link]" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="[1]: http://www.yahoo.com" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typeReturnViaPageTextField" />
+
+		<execute macro="LoopGroupsGroup#typePageText">
+			<var name="pageText" value="[text reference link]: http://www.bing.com" />
+		</execute>
+	</command>
+
+	<command name="unfollowGroup">
+		<execute macro="LoopGroups#gotoGroupProfile">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickUnfollowLink" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#SUCCESS_MESSAGE" value1="You just unfollowed ${groupName}." />
+	</command>
+
+	<command name="unfollowGroupViaIndex">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<execute macro="LoopGroups#gotoGroupTab">
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickUnfollowLinkViaIndex">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#SUCCESS_MESSAGE" value1="You just unfollowed ${groupName}." />
+	</command>
+
+	<command name="updateChildGroup">
+		<execute macro="LoopGroupsGroup#clickAssignChildGroupLink" />
+
+		<execute macro="LoopGroupsGroup#assignChildGroup">
+			<var name="childGroupName" value="${childGroupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#saveNetworkChanges" />
+	</command>
+
+	<command name="updateChildGroups">
+		<execute macro="LoopGroupsGroup#clickAssignChildGroupLink" />
+
+		<for list="${childGroupNameList}" param="childGroupName">
+			<execute macro="LoopGroupsGroup#assignChildGroup">
+				<var name="childGroupName" value="${childGroupName}" />
+			</execute>
+		</for>
+
+		<execute macro="LoopGroupsGroup#saveNetworkChanges" />
+	</command>
+
+	<command name="updateGroupAssistant">
+		<execute macro="LoopGroupsGroup#clickEditButton" />
+
+		<execute macro="LoopGroupsGroup#assignAssistant">
+			<var name="assistantName" value="${assistantName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#saveChanges" />
+	</command>
+
+	<command name="updateGroupInformation">
+		<execute macro="LoopGroupsGroup#clickEditButton" />
+
+		<if>
+			<isset var="groupNameEdit" />
+			<then>
+				<execute macro="LoopGroupsGroup#editGroupName">
+					<var name="groupNameEdit" value="${groupNameEdit}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<isset var="groupDescriptionEdit" />
+			<then>
+				<execute macro="LoopGroupsGroup#editGroupDescription">
+					<var name="groupDescriptionEdit" value="${groupDescriptionEdit}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<isset var="groupSubtypeEdit" />
+			<then>
+				<execute macro="LoopGroupsGroup#editGroupSubtype">
+					<var name="groupSubtypeEdit" value="${groupSubtypeEdit}" />
+				</execute>
+			</then>
+		</if>
+
+		<execute macro="LoopGroupsGroup#saveChanges" />
+	</command>
+
+	<command name="updateGroupLead">
+		<execute macro="LoopGroupsGroup#clickEditButton" />
+
+		<execute macro="LoopGroupsGroup#assignLead">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#saveChanges" />
+	</command>
+
+	<command name="updateGroupMembers">
+		<execute macro="LoopGroupsGroup#clickEditButton" />
+
+		<for list="${memberNameList}" param="memberName">
+			<execute macro="LoopGroupsGroup#assignMember">
+				<var name="memberName" value="${memberName}" />
+			</execute>
+		</for>
+
+		<execute macro="LoopGroupsGroup#saveChanges" />
+	</command>
+
+	<command name="updateParentGroup">
+		<execute macro="LoopGroupsGroup#clickAssignParentGroupLink" />
+
+		<execute macro="LoopGroupsGroup#assignParentGroup">
+			<var name="parentGroupName" value="${parentGroupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#saveNetworkChanges" />
+	</command>
+
+	<command name="viewChildGroup">
+		<execute macro="LoopGroups#gotoGroupProfileViaSearch">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewChildGroupViaStreamTab">
+			<var name="childGroupName" value="${childGroupName}" />
+		</execute>
+
+		<if>
+			<equals arg1="${childGroupType}" arg2="Department" />
+			<then>
+				<execute macro="LoopGroupsGroup#viewFunctionalDepartment">
+					<var name="childGroupName" value="${childGroupName}" />
+					<var name="followerCount" value="${followerCount}" />
+					<var name="memberCount" value="${memberCount}" />
+				</execute>
+
+				<execute macro="LoopGroupsGroup#gotoFunctionalDepartmentProfile">
+					<var name="childGroupName" value="${childGroupName}" />
+				</execute>
+			</then>
+			<else>
+				<execute macro="LoopGroupsGroup#viewChildGroup">
+					<var name="childGroupName" value="${childGroupName}" />
+					<var name="followerCount" value="${followerCount}" />
+					<var name="memberCount" value="${memberCount}" />
+				</execute>
+
+				<execute macro="LoopGroupsGroup#gotoChildGroupProfile">
+					<var name="childGroupName" value="${childGroupName}" />
+				</execute>
+			</else>
+		</if>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${childGroupDescription}" />
+			<var name="groupName" value="${childGroupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${childGroupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewChildGroupLead">
+		<execute macro="LoopGroups#gotoGroupProfileViaSearch">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewLead">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#gotoLeadProfileViaMembersSection">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${leadEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${leadName}" />
+		</execute>
+	</command>
+
+	<command name="viewChildGroupMember">
+		<execute macro="LoopGroups#gotoGroupProfileViaSearch">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewMember">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#gotoMemberProfileViaMembersSection">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${memberEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${memberName}" />
+		</execute>
+	</command>
+
+	<command name="viewGroup">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<!-- Workaround for recent automation fails on LRQA-35323 -->
+
+		<execute macro="LoopNavigation#reloadPage" />
+
+		<execute macro="LoopGroups#gotoGroupTab">
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewGroupViaGroupsList">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<execute macro="LoopGroups#gotoGroupTab">
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewGroupViaToolbar">
+		<execute macro="LoopNavigation#gotoGroup">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewGroupViaToolbarMoreGroupsList">
+		<execute macro="LoopNavigation#gotoGroupViaMoreGroupsList">
+			<var name="groupName" value="${groupName}" />
+			<var name="numberOfGroupMemberships" value="${numberOfGroupMemberships}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewLead">
+		<execute macro="LoopGroups#gotoGroupProfile">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewLead">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#gotoLeadProfileViaMembersSection">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${leadEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${leadName}" />
+		</execute>
+	</command>
+
+	<command name="viewMember">
+		<execute macro="LoopGroups#gotoGroupProfile">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewMember">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#gotoMemberProfileViaMembersSection">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${memberEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${memberName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoChildGroupLead">
+		<execute macro="LoopGroups#gotoGroupProfileViaSearch">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewNoLead">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#viewNoLeadViaMembersSection">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoChildGroupMember">
+		<execute macro="LoopGroups#gotoGroupProfileViaSearch">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewNoMember">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#viewNoMemberViaMembersSection">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoGroupViaGroupsList">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<execute macro="LoopGroups#gotoGroupTab">
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewNoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoLead">
+		<execute macro="LoopGroups#gotoGroupProfile">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewNoLead">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#viewNoLeadViaMembersSection">
+			<var name="leadName" value="${leadName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoMember">
+		<execute macro="LoopGroups#gotoGroupProfile">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewNoMember">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoMembersSection" />
+
+		<execute macro="LoopGroupsGroup#viewNoMemberViaMembersSection">
+			<var name="memberName" value="${memberName}" />
+		</execute>
+	</command>
+
+	<command name="viewPage">
+		<execute macro="LoopGroupsGroup#viewPageListItem">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageModifiedTime" value="${pageModifiedTime}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickPageListItem">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewPage">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageText" value="${pageText}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+	</command>
+
+	<command name="viewParentGroup">
+		<execute macro="LoopGroups#gotoGroupProfileViaSearch">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewParentGroup">
+			<var name="parentGroupName" value="${parentGroupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoParentGroupProfile">
+			<var name="parentGroupName" value="${parentGroupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${parentGroupDescription}" />
+			<var name="groupName" value="${parentGroupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${parentGroupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+</definition>

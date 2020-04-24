@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AffixHeader Component renders 1`] = `<span class="affix-header-container"></span>`;
+
+exports[`AffixHeader Component should not render the content 1`] = `<span class="affix-header-container"></span>`;
+
+exports[`AffixHeader Component should render the content 1`] = `
+<span class="affix-header-container">
+  <div class="content-wrapper transition-affix-header-slide-down-appear">
+    <div class="content">
+      <div class="entity">
+        <div class="avatar-container">
+          <span style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+            <div class="avatar-placeholder"></div>
+          </span>
+        </div>
+        <div class="entity-info">
+          <div class="name">Joe Bloggs0</div>
+          <div class="details">Test Engineer • Diamond Bar, USA</div>
+        </div>
+      </div>
+      <button id="unit_tests_namespace_FOLLOW_MENU1" class="btn btn-container btn-secondary btn-following follow-button-container regular" type="button">
+        <span class="loop-icon-label-container" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-star loop-icon-large-1x" data-tooltip="">
+            <use href="#loop-icon-star-24"></use>
+          </svg>
+          <span class="loop-icon-label">follow</span>
+        </span>
+      </button>
+    </div>
+  </div>
+</span>
+`;

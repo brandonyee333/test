@@ -1,0 +1,11 @@
+.modal-footer-container {
+	@include flexbox;
+	@include justify-content(flex-end);
+
+	border-top: 1px solid $borderLightGray;
+	padding: 24px 20px;
+
+	&.modal-footer-no-border {
+		border-top-width: 0;
+	}
+}

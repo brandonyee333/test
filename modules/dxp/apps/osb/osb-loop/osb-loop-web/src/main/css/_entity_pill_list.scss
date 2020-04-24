@@ -1,0 +1,23 @@
+.entity-pill-list-container {
+	@include flex-wrap(wrap);
+	@include flexbox;
+
+	margin: -4px;
+
+	.entity-pill {
+		@include ellipsis;
+
+		border: 1px solid rgba($primary, 0.6);
+		border-radius: 4px;
+		color: rgba($primary, 0.6);
+		display: block;
+		margin: 4px;
+		padding: 4px 12px;
+
+		&:hover {
+			background-color: rgba($theme, 0.1);
+			border-color: $theme;
+			color: $theme;
+		}
+	}
+}

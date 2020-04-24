@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+
+<roles>
+	<role>
+		<name>Loop Admin</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>ADD#DIVISIONS</action-key>
+			<action-key>ADD#JOB_TITLES</action-key>
+			<action-key>ADMIN#HOME</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE#DIVISIONS</action-key>
+			<action-key>CREATE#JOB_TITLES</action-key>
+			<action-key>INDEX#JOB_TITLES</action-key>
+			<action-key>SET_ROLE#PEOPLE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopDivision">
+			<action-key>ADD</action-key>
+			<action-key>ADD_PAGES</action-key>
+			<action-key>ADD_PAGES_OTHERS</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE_PAGES</action-key>
+			<action-key>CREATE_PAGES_OTHERS</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>DELETE_PAGES</action-key>
+			<action-key>DELETE_PAGES_OTHERS</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>EDIT_OTHERS</action-key>
+			<action-key>EDIT_PAGES</action-key>
+			<action-key>EDIT_PAGES_OTHERS</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>SET_CHILD_LOOP_DIVISIONS</action-key>
+			<action-key>SET_CHILD_LOOP_DIVISIONS_OTHERS</action-key>
+			<action-key>SET_COVER_IMAGE</action-key>
+			<action-key>SET_COVER_IMAGE_OTHERS</action-key>
+			<action-key>SET_PROFILE_IMAGE</action-key>
+			<action-key>SET_PROFILE_IMAGE_OTHERS</action-key>
+			<action-key>SET_TYPE</action-key>
+			<action-key>SET_TYPE_OTHERS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_OTHERS</action-key>
+			<action-key>UPDATE_PAGES</action-key>
+			<action-key>UPDATE_PAGES_OTHERS</action-key>
+			<action-key>UPLOAD_COVER_IMAGE</action-key>
+			<action-key>UPLOAD_COVER_IMAGE_OTHERS</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE_OTHERS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopJobTitle">
+			<action-key>ACTIVATE</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>DEACTIVATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopPerson">
+			<action-key>ACTIVATE</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT_OTHERS</action-key>
+			<action-key>IMPORT_EXTRA_DATA</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>SET_COVER_IMAGE_OTHERS</action-key>
+			<action-key>SET_PROFILE_IMAGE_OTHERS</action-key>
+			<action-key>UPDATE_OTHERS</action-key>
+			<action-key>UPLOAD_COVER_IMAGE_OTHERS</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE_OTHERS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopTopic">
+			<action-key>DELETE</action-key>
+			<action-key>REMOVE_PARENT</action-key>
+			<action-key>SET_PARENT</action-key>
+			<action-key>VIEW_PENDING_EXPERTS</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Curator</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>UPDATE_FEATURED_CONTENT</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Division Admin</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>ADD#DIVISIONS</action-key>
+			<action-key>CREATE#DIVISIONS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopDivision">
+			<action-key>ADD</action-key>
+			<action-key>ADD_PAGES</action-key>
+			<action-key>ADD_PAGES_OTHERS</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE_PAGES</action-key>
+			<action-key>CREATE_PAGES_OTHERS</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>DELETE_PAGES</action-key>
+			<action-key>DELETE_PAGES_OTHERS</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>EDIT_OTHERS</action-key>
+			<action-key>EDIT_PAGES</action-key>
+			<action-key>EDIT_PAGES_OTHERS</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>SET_CHILD_LOOP_DIVISIONS</action-key>
+			<action-key>SET_CHILD_LOOP_DIVISIONS_OTHERS</action-key>
+			<action-key>SET_COVER_IMAGE</action-key>
+			<action-key>SET_COVER_IMAGE_OTHERS</action-key>
+			<action-key>SET_PROFILE_IMAGE</action-key>
+			<action-key>SET_PROFILE_IMAGE_OTHERS</action-key>
+			<action-key>SET_TYPE</action-key>
+			<action-key>SET_TYPE_OTHERS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_OTHERS</action-key>
+			<action-key>UPDATE_PAGES</action-key>
+			<action-key>UPDATE_PAGES_OTHERS</action-key>
+			<action-key>UPLOAD_COVER_IMAGE</action-key>
+			<action-key>UPLOAD_COVER_IMAGE_OTHERS</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE_OTHERS</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Division Lead</name>
+		<organization-role>true</organization-role>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopDivision">
+			<action-key>ADD_PAGES</action-key>
+			<action-key>CREATE_PAGES</action-key>
+			<action-key>DELETE_PAGES</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>EDIT_PAGES</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>SET_CHILD_LOOP_DIVISIONS</action-key>
+			<action-key>SET_COVER_IMAGE</action-key>
+			<action-key>SET_PROFILE_IMAGE</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_PAGES</action-key>
+			<action-key>UPLOAD_COVER_IMAGE</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Division Member</name>
+		<organization-role>true</organization-role>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopDivision">
+			<action-key>ADD_PAGES</action-key>
+			<action-key>CREATE_PAGES</action-key>
+			<action-key>DELETE_PAGES</action-key>
+			<action-key>EDIT_PAGES</action-key>
+			<action-key>UPDATE_PAGES</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop External System Admin</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>ADD#DIVISIONS</action-key>
+			<action-key>CREATE#DIVISIONS</action-key>
+			<action-key>REMOVE_EXTERNAL_REFERENCE#DIVISIONS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopDivision">
+			<action-key>ADD_EXTERNAL_REFERENCE</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop GitHub Admin</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>SET_GITHUB_REPOSITORIES#DIVISIONS</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Global Announcer</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>ADD_ANNOUNCEMENT#FEED</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Person</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>PERMISSIONS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet">
+			<action-key>CONFIGURATION</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopPerson">
+			<action-key>EDIT</action-key>
+			<action-key>SET_COVER_IMAGE</action-key>
+			<action-key>SET_PROFILE_IMAGE</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPLOAD_COVER_IMAGE</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopTopic">
+			<action-key>CONFIGURATION</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>REMOVE_OWN_TOPIC</action-key>
+			<action-key>SET_COVER_IMAGE</action-key>
+			<action-key>SET_OWN_TOPIC</action-key>
+			<action-key>SET_PROFILE_IMAGE</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_COVER_IMAGE</action-key>
+			<action-key>UPDATE_PROFILE_IMAGE</action-key>
+			<action-key>VIEW_VERIFIED_EXPERTS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.document.library.kernel.model.DLFolder">
+			<action-key>ADD_DOCUMENT</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.push.notifications">
+			<action-key>MANAGE_DEVICES</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.token.auth">
+			<action-key>ADD_TOKEN</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Loop Person Admin</name>
+		<organization-role>false</organization-role>
+		<default-action-keys resourceName="com_liferay_osb_loop_web_internal_portlet_LoopPortlet">
+			<action-key>INDEX#JOB_TITLES</action-key>
+			<action-key>SET_ROLE#PEOPLE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet">
+			<action-key>DELETE_OTHERS</action-key>
+			<action-key>EDIT_OTHERS</action-key>
+			<action-key>UPDATE_OTHERS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.loop.model.LoopPerson">
+			<action-key>CONFIGURATION</action-key>
+			<action-key>EDIT_OTHERS</action-key>
+			<action-key>IMPORT_EXTRA_DATA</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>SET_COVER_IMAGE_OTHERS</action-key>
+			<action-key>SET_PROFILE_IMAGE_OTHERS</action-key>
+			<action-key>UPDATE_OTHERS</action-key>
+			<action-key>UPLOAD_COVER_IMAGE_OTHERS</action-key>
+			<action-key>UPLOAD_PROFILE_IMAGE_OTHERS</action-key>
+		</default-action-keys>
+	</role>
+</roles>

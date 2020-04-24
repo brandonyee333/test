@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE resource-action-mapping PUBLIC "-//Liferay//DTD Resource Action Mapping 7.0.0//EN" "http://www.liferay.com/dtd/liferay-resource-action-mapping_7_0_0.dtd">
+
+<resource-action-mapping>
+	<model-resource>
+		<model-name>com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet</model-name>
+		<portlet-ref>
+			<portlet-name>com_liferay_osb_loop_asset_entry_set_web_internal_portlet_AssetEntrySetPortlet</portlet-name>
+		</portlet-ref>
+		<permissions>
+			<supports>
+				<action-key>CONFIGURATION</action-key>
+				<action-key>DELETE</action-key>
+				<action-key>EDIT</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+				<action-key>VIEW</action-key>
+			</supports>
+			<site-member-defaults />
+			<guest-defaults />
+			<guest-unsupported>
+				<action-key>DELETE</action-key>
+				<action-key>PERMISSIONS</action-key>
+				<action-key>UPDATE</action-key>
+			</guest-unsupported>
+			<owner-defaults>
+				<action-key>DELETE</action-key>
+				<action-key>UPDATE</action-key>
+			</owner-defaults>
+		</permissions>
+	</model-resource>
+</resource-action-mapping>

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BookmarkFlag renders 1`] = `
+<button title="remove-from-bookmarks" data-tooltip="" type="button" class="inline-button-container bookmark-flag-container">
+  <svg class="loop-icon-container loop-icon-bookmark loop-icon-large-1x loop-icon-warning" data-tooltip="">
+    <use href="#loop-icon-bookmark-24"></use>
+  </svg>
+</button>
+`;
+
+exports[`BookmarkFlag renders visibility based on bookmarked boolean 1`] = `
+<button title="remove-from-bookmarks" data-tooltip="" type="button" class="inline-button-container bookmark-flag-container visible">
+  <svg class="loop-icon-container loop-icon-bookmark loop-icon-large-1x loop-icon-warning" data-tooltip="">
+    <use href="#loop-icon-bookmark-24"></use>
+  </svg>
+</button>
+`;

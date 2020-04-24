@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toggle renders 1`] = `
+<div class="toggle-container">
+  <input class="toggle-input" type="checkbox">
+  <div title="turn-on" class="toggle" data-tooltip="">
+    <div class="toggle-slide"></div>
+    <div class="toggle-dot"></div>
+  </div>
+</div>
+`;

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-namespace-tables="false" package-path="com.liferay.osb.loop.token.auth">
+	<author>Bruno Farache</author>
+	<namespace>TokenAuth</namespace>
+	<entity local-service="true" name="TokenAuthEntry" remote-service="true">
+
+		<!-- PK fields -->
+
+		<column name="tokenAuthEntryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="device" type="String" />
+		<column name="token" type="String" />
+		<column name="loginDate" type="Date" />
+		<column name="loginIP" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="UserId" return-type="Collection">
+			<finder-column name="userId" />
+		</finder>
+		<finder name="Token" return-type="TokenAuthEntry" unique="true">
+			<finder-column name="token" />
+		</finder>
+	</entity>
+	<exceptions>
+		<exception>TokenAuthEntryDevice</exception>
+	</exceptions>
+</service-builder>

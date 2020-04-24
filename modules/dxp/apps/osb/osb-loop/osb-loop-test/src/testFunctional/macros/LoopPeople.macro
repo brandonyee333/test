@@ -1,0 +1,609 @@
+<definition>
+	<command name="activatePerson">
+		<execute macro="LoopPeople#gotoPersonProfileViaSearch">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickActivateButton" />
+
+		<execute macro="LoopPeoplePerson#activateUserCmd">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="deactivatePerson">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickDeactivateButton" />
+
+		<execute macro="LoopPeoplePerson#deactivateUserCmd">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="followPerson">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickFollowButton" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="You just followed ${userName}." />
+	</command>
+
+	<command name="followPersonOnlyPosts">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickFollowButton" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="You just followed ${userName}." />
+
+		<execute macro="LoopPeoplePerson#mouseOverUnfollowButton" />
+
+		<execute macro="LoopPeoplePerson#clickFollowOnlyPostsNotificationsLink" />
+	</command>
+
+	<command name="followPersonViaPeopleList">
+		<execute macro="LoopNavigation#gotoPeople" />
+
+		<execute macro="LoopPeoplePerson#clickFollowLinkViaIndex">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="You just followed ${userName}." />
+	</command>
+
+	<command name="gotoDeactivatedPersonProfile">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPerson">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="gotoPersonProfile">
+		<execute macro="LoopNavigation#gotoPeople" />
+
+		<!-- Workaround for recent automation fails on LRQA-35323 -->
+
+		<execute macro="LoopNavigation#reloadPage" />
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="gotoPersonProfileViaSearch">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPerson">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="removeManager">
+		<execute macro="LoopPeoplePerson#gotoNetworkSection" />
+
+		<execute macro="LoopPeoplePerson#removeManager">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#removeManagerFromNetworkCmd">
+			<var name="managerName" value="${managerName}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="removeSubordinate">
+		<execute macro="LoopPeoplePerson#gotoNetworkSection" />
+
+		<execute macro="LoopPeoplePerson#removeSubordinate">
+			<var name="subordinateName" value="${subordinateName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#removeSubordinateFromNetworkCmd">
+			<var name="subordinateName" value="${subordinateName}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="typeMarkdownContentViaDescription">
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Heading" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="=======" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Sub-heading" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="-----------" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="### Another deeper heading" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Paragraphs are separated" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="by a blank line." />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Text attributes: *italic*, **bold**, inline `code` as you can see." />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Shopping list:" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="* apples" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="+ oranges" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="- pears" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Numbered list:" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="1. apples" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="2. oranges" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="> Blockquotes are very handy in email to emulate reply text." />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="> This line is part of the same quote." />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="```" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="Piece of code" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="```" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="A [link](http://www.google.com)." />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="A [number reference link][1]" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="A [text reference link]" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="[1]: http://www.yahoo.com" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopPeoplePerson#typeDescriptionUsingSendKeys">
+			<var name="userDescription" value="[text reference link]: http://www.bing.com" />
+		</execute>
+	</command>
+
+	<command name="unfollowPerson">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickUnfollowLink" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="You just unfollowed ${userName}." />
+	</command>
+
+	<command name="unfollowPersonViaPeopleList">
+		<execute macro="LoopNavigation#gotoPeople" />
+
+		<execute macro="LoopPeoplePerson#clickUnfollowLinkViaIndex">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="You just unfollowed ${userName}." />
+	</command>
+
+	<command name="updateDepartments">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignDepartments">
+			<var name="departmentNameList" value="${departmentNameList}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updateExpertise">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignExpertise">
+			<var name="expertiseName" value="${expertiseName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updateExpertises">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignExpertises">
+			<var name="expertiseNameList" value="${expertiseNameList}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updateGroup">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignGroup">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updateLocations">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignLocations">
+			<var name="locationNameList" value="${locationNameList}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updateManager">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignManager">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updatePrimaryManager">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignPrimaryManager">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="updateSubordinates">
+		<for list="${subordinateNameList}" param="subordinateName">
+			<execute macro="LoopPeople#gotoPersonProfile">
+				<var name="userName" value="${subordinateName}" />
+			</execute>
+
+			<execute macro="LoopPeoplePerson#clickEditButton" />
+
+			<execute macro="LoopPeoplePerson#assignManager">
+				<var name="managerName" value="${managerName}" />
+			</execute>
+
+			<execute macro="LoopPeoplePerson#saveChanges" />
+		</for>
+	</command>
+
+	<command name="updateTeams">
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#assignTeams">
+			<var name="teamNameList" value="${teamNameList}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+	</command>
+
+	<command name="viewCreatePersonLink">
+		<execute function="AssertElementPresent" locator1="LoopPeople#CREATE_PERSON_LINK" />
+	</command>
+
+	<command name="viewDeactivatedPerson">
+		<execute macro="LoopPeople#gotoDeactivatedPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewDeactivatedPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewExpertise">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${expertiseName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickExpertiseLink">
+			<var name="expertiseName" value="${expertiseName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicDescription" value="${expertiseDescription}" />
+			<var name="topicName" value="${expertiseName}" />
+		</execute>
+	</command>
+
+	<command name="viewGroup">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${groupType}" />
+		</execute>
+	</command>
+
+	<command name="viewManager">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewManager">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoNetworkSection" />
+
+		<execute macro="LoopPeoplePerson#gotoManagerProfileViaNetworkSection">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${managerEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${managerName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoCreatePersonLink">
+		<execute function="AssertElementNotPresent" locator1="LoopPeople#CREATE_PERSON_LINK" />
+	</command>
+
+	<command name="viewNoExpertise">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${expertiseName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${expertiseName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoManager">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoManager">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoNetworkSection" />
+
+		<execute macro="LoopPeoplePerson#viewNoManagerViaNetworkSection">
+			<var name="managerName" value="${managerName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoSubordinate">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoSubordinate">
+			<var name="subordinateName" value="${subordinateName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoNetworkSection" />
+
+		<execute macro="LoopPeoplePerson#viewNoSubordinateViaNetworkSection">
+			<var name="subordinateName" value="${subordinateName}" />
+		</execute>
+	</command>
+
+	<command name="viewPerson">
+		<execute macro="LoopNavigation#gotoPeople" />
+
+		<!-- Workaround for recent automation fails on LRQA-35323 -->
+
+		<execute macro="LoopNavigation#reloadPage" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewSubordinate">
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewSubordinate">
+			<var name="subordinateName" value="${subordinateName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoNetworkSection" />
+
+		<execute macro="LoopPeoplePerson#gotoSubordinateProfileViaNetworkSection">
+			<var name="subordinateName" value="${subordinateName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${subordinateEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${subordinateName}" />
+		</execute>
+	</command>
+</definition>

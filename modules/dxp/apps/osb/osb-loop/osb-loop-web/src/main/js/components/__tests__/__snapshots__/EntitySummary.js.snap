@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntitySummary renders 1`] = `
+<div class="entity-summary-container">
+  <div class="header">
+    <div class="cover-image avatar-cover-image-color-1" style="background-image: url(/loop-portlet/images/cover_images/cover_image_1_web.jpg);"></div>
+    <div class="avatar-container">
+      <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-color-1 avatar-size-large">
+        <div class="avatar-placeholder">JB</div>
+      </a>
+    </div>
+  </div>
+  <div class="body">
+    <a class="entity-link-container" href="/people/0">Joe Bloggs0</a>
+    <div class="entity-details secondary-info">
+      <p>Test Engineer</p>
+      <p>Diamond Bar, USA</p>
+    </div>
+    <div class="entity-stats secondary-info">
+      <span class="loop-icon-label-container" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-star loop-icon-small-1x loop-icon-warning" data-tooltip="">
+          <use href="#loop-icon-star-16"></use>
+        </svg>
+        <span class="loop-icon-label">x-followers</span>
+      </span>
+      <span class="loop-icon-label-container" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-groups loop-icon-small-1x loop-icon-success" data-tooltip="">
+          <use href="#loop-icon-groups-16"></use>
+        </svg>
+        <span class="loop-icon-label">x-groups</span>
+      </span>
+      <span class="loop-icon-label-container" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-hash loop-icon-small-1x loop-icon-primary" data-tooltip="">
+          <use href="#loop-icon-hash-16"></use>
+        </svg>
+        <span class="loop-icon-label">x-expertise</span>
+      </span>
+    </div>
+  </div>
+  <div class="footer">
+    <button id="unit_tests_namespace_FOLLOW_MENU1" class="btn btn-container btn-secondary btn-following follow-button-container regular" type="button">
+      <span class="loop-icon-label-container" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-star loop-icon-large-1x" data-tooltip="">
+          <use href="#loop-icon-star-24"></use>
+        </svg>
+        <span class="loop-icon-label">follow</span>
+      </span>
+    </button>
+  </div>
+</div>
+`;

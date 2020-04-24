@@ -1,0 +1,62 @@
+.post-container {
+	position: relative;
+
+	&.private-post {
+		.loop-icon-ellipsis {
+			top: 52px;
+		}
+
+		&.bookmarked {
+			.loop-icon-ellipsis {
+				top: 64px;
+			}
+
+			.private-post-bar-container {
+				margin-top: 24px;
+			}
+		}
+	}
+
+	.card-actions {
+		margin: 44px $postPadding 20px;
+
+		.card-action {
+			color: rgba($primary, 0.6);
+
+			.liked {
+				color: $heartRed;
+			}
+
+			&:hover {
+				color: rgba($primary, 0.2);
+			}
+		}
+
+		.loop-icon-label-container {
+			margin-right: 20px;
+		}
+	}
+
+	.comments {
+		background-color: rgba($primary, 0.02);
+		border-radius: 0 0 4px 4px;
+		padding: 8px $postPadding 24px;
+	}
+
+	.comment-creator-container {
+		margin-top: 16px;
+	}
+
+	.comments, .like-counter-container {
+		border-top: 1px solid $borderLightGray;
+	}
+
+	> .loop-icon-container {
+		color: rgba($primary, 0.6);
+		cursor: pointer;
+		margin: $postPadding $postPadding 0 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+}

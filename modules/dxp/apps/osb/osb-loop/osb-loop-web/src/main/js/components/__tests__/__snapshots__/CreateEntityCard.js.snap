@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateEntityCard renders 1`] = `
+<div class="card-container create-entity-card-container">
+  <a class="modal-link-container">
+    <svg class="loop-icon-container loop-icon-plus loop-icon-small-1x loop-icon-secondary" data-tooltip="">
+      <use href="#loop-icon-plus-16"></use>
+    </svg>
+  </a>
+</div>
+`;

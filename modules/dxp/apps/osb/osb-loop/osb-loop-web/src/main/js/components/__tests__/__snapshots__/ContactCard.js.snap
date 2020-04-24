@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContactCard renders 1`] = `
+<div class="card-container list-card-container">
+  <div class="card-header-container">contact</div>
+  <div class="card-body-container">
+    <div class="loading-wrapper-container">
+      <div class="loading-content">
+        <ul class="category-items">
+          <li class="item">
+            <div class="loop-icon-list-item-container item">
+              <svg class="loop-icon-container loop-icon-mail loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+                <use href="#loop-icon-mail-24"></use>
+              </svg>
+              <span class="list-item-label" data-tooltip="">
+                <a href="mailto:0test@test.com">0test@test.com</a>
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Feed renders 1`] = `
+<div class="notification-feed-container">
+  <div class="item">
+    <div class="entity-item">
+      <div class="avatar-container">
+        <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="entity-item-info">
+        <div class="markdown-content-container title">
+          <a href="/web/guest/home/-/loop/people/_joe.bloggs">Joe Bloggs0 </a> shared a post with
+          <a href="/web/guest/home/-/loop/company/_Everyone">Everyone</a>.</div>
+        <div class="details">Bacon ipsum dolor amet rump beef ribs andouille bacon...</div>
+        <span class="display-time">
+          <svg class="loop-icon-container loop-icon-lock loop-icon-small-1x loop-icon-default" data-tooltip="">
+            <use href="#loop-icon-lock-16"></use>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="item read">
+    <div class="entity-item">
+      <div class="avatar-container">
+        <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="entity-item-info">
+        <div class="markdown-content-container title">
+          <a href="/web/guest/home/-/loop/people/_joe.bloggs">Joe Bloggs1 </a> shared a post with
+          <a href="/web/guest/home/-/loop/company/_Everyone">Everyone</a>.</div>
+        <div class="details">Bacon ipsum dolor amet rump beef ribs andouille bacon...</div>
+        <span class="display-time"></span>
+      </div>
+    </div>
+  </div>
+  <div class="item">
+    <div class="entity-item">
+      <div class="avatar-container">
+        <a href="/people/2" style="" title="Joe Bloggs2" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="entity-item-info">
+        <div class="markdown-content-container title">
+          <a href="/web/guest/home/-/loop/people/_joe.bloggs">Joe Bloggs2 </a> shared a post with
+          <a href="/web/guest/home/-/loop/company/_Everyone">Everyone</a>.</div>
+        <div class="details">Bacon ipsum dolor amet rump beef ribs andouille bacon...</div>
+        <span class="display-time">
+          <svg class="loop-icon-container loop-icon-lock loop-icon-small-1x loop-icon-default" data-tooltip="">
+            <use href="#loop-icon-lock-16"></use>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="item read">
+    <div class="entity-item">
+      <div class="avatar-container">
+        <a href="/people/3" style="" title="Joe Bloggs3" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="entity-item-info">
+        <div class="markdown-content-container title">
+          <a href="/web/guest/home/-/loop/people/_joe.bloggs">Joe Bloggs3 </a> shared a post with
+          <a href="/web/guest/home/-/loop/company/_Everyone">Everyone</a>.</div>
+        <div class="details">Bacon ipsum dolor amet rump beef ribs andouille bacon...</div>
+        <span class="display-time"></span>
+      </div>
+    </div>
+  </div>
+  <div class="item">
+    <div class="entity-item">
+      <div class="avatar-container">
+        <a href="/people/4" style="" title="Joe Bloggs4" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="entity-item-info">
+        <div class="markdown-content-container title">
+          <a href="/web/guest/home/-/loop/people/_joe.bloggs">Joe Bloggs4 </a> shared a post with
+          <a href="/web/guest/home/-/loop/company/_Everyone">Everyone</a>.</div>
+        <div class="details">Bacon ipsum dolor amet rump beef ribs andouille bacon...</div>
+        <span class="display-time">
+          <svg class="loop-icon-container loop-icon-lock loop-icon-small-1x loop-icon-default" data-tooltip="">
+            <use href="#loop-icon-lock-16"></use>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="item read">
+    <div class="entity-item">
+      <div class="avatar-container">
+        <a href="/people/5" style="" title="Joe Bloggs5" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="entity-item-info">
+        <div class="markdown-content-container title">
+          <a href="/web/guest/home/-/loop/people/_joe.bloggs">Joe Bloggs5 </a> shared a post with
+          <a href="/web/guest/home/-/loop/company/_Everyone">Everyone</a>.</div>
+        <div class="details">Bacon ipsum dolor amet rump beef ribs andouille bacon...</div>
+        <span class="display-time"></span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

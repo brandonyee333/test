@@ -1,0 +1,8 @@
+Bundle-Name: Liferay OSB Loop Asset Sharing API
+Bundle-SymbolicName: com.liferay.osb.loop.asset.sharing.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.loop.asset.sharing.exception,\
+	com.liferay.osb.loop.asset.sharing.model,\
+	com.liferay.osb.loop.asset.sharing.service,\
+	com.liferay.osb.loop.asset.sharing.service.persistence

@@ -1,0 +1,7 @@
+/coverage
+/docroot/js/tests/util/user-config.json
+/node_modules
+/test/functional/test.*.properties
+/tests
+/test-classes
+/test-results

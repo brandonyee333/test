@@ -1,0 +1,21 @@
+.page-list-item-container {
+	&, .details {
+		@include ellipsis;
+	}
+
+	.creator, .name {
+		font-weight: 600;
+	}
+
+	.details {
+		font-size: 12px;
+	}
+
+	.name {
+		color: $primary;
+
+		&:hover {
+			color: $theme;
+		}
+	}
+}

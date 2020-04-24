@@ -1,0 +1,523 @@
+<definition>
+	<command name="addCoverPicture">
+		<execute macro="LoopTopicsTopic#uploadCoverPicture">
+			<var name="coverPictureFileName" value="${coverPictureFileName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#confirmCoverPicture" />
+	</command>
+
+	<command name="addProfilePicture">
+		<execute macro="LoopTopicsTopic#uploadProfilePicture">
+			<var name="profilePictureFileName" value="${profilePictureFileName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#confirmProfilePicture" />
+
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="cancelCoverPicture">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_COVER_PICTURE_CANCEL_BUTTON" />
+	</command>
+
+	<command name="clickAssignExpertButton">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_OPTIONS_ASSIGN_EXPERT_LINK" value1="I Am an Expert" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_OPTIONS_ASSIGN_EXPERT_LINK" value1="Oops! I Am Not an Expert" />
+	</command>
+
+	<command name="clickDescriptionField">
+		<execute function="Click" locator1="LoopTopicsUpdateTopic#DESCRIPTION_FIELD" />
+		<execute function="SelectFieldText" locator1="LoopTopicsUpdateTopic#DESCRIPTION_FIELD" />
+		<execute function="KeyPress" locator1="LoopTopicsUpdateTopic#DESCRIPTION_FIELD" value1="\BACK_SPACE" />
+	</command>
+
+	<command name="clickEditButton">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_OPTIONS_EDIT_LINK" value1="Edit Topic" />
+	</command>
+
+	<command name="clickFollowButton">
+		<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" value1="Follow" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" value1="Following" />
+	</command>
+
+	<command name="clickFollowButtonViaOverlay">
+		<execute function="AssertClick" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickFollowLinkViaIndex">
+		<execute macro="LoopTopicsTopic#mouseOverTopicName">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<var name="key_topicName" value="${topicName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+			</then>
+			<else>
+				<execute macro="LoopTopicsTopic#clickFollowButtonViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickMergeTopicButton">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_OPTIONS_MERGE_TOPIC_LINK" value1="Merge with Another Topic" />
+	</command>
+
+	<command name="clickMoreExpertsLink">
+		<execute function="AssertClick" locator1="LoopTopicsTopic#EXPERT_MORE_LINK" value1="See All" />
+	</command>
+
+	<command name="clickTurnOffEmailNotification">
+		<execute function="MouseOver" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsTopic#TOPIC_EMAIL_NOTIFICATIONS_CHECKBOX" />
+	</command>
+
+	<command name="clickTurnOffNotifications">
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn off Notifications" />
+		<execute function="AssertVisible" locator1="LoopTopicsTopic#TOPIC_EMAIL_NOTIFICATIONS_LABEL" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsTopic#TOPIC_TOGGLE_NOTIFICATIONS_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn on Notifications" />
+		<execute function="AssertNotVisible" locator1="LoopTopicsTopic#TOPIC_EMAIL_NOTIFICATIONS_LABEL" />
+	</command>
+
+	<command name="clickTurnOffNotificationsButton">
+		<execute function="MouseOver" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" />
+
+		<execute macro="LoopTopicsTopic#clickTurnOffNotifications" />
+	</command>
+
+	<command name="clickTurnOffNotificationsLinkViaIndex">
+		<execute macro="LoopTopicsTopic#mouseOverTopicName">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<var name="key_topicName" value="${topicName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+
+				<execute macro="LoopTopicsTopic#clickTurnOffNotifications" />
+			</then>
+			<else>
+				<execute function="MouseOver" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" />
+
+				<execute macro="LoopTopicsTopic#clickTurnOffNotifications" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickTurnOnEmailNotification">
+		<execute macro="LoopTopicsTopic#clickTurnOnNotificationsButton" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsTopic#TOPIC_EMAIL_NOTIFICATIONS_CHECKBOX" />
+	</command>
+
+	<command name="clickTurnOnNotifications">
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn on Notifications" />
+		<execute function="AssertNotVisible" locator1="LoopTopicsTopic#TOPIC_EMAIL_NOTIFICATIONS_LABEL" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsTopic#TOPIC_TOGGLE_NOTIFICATIONS_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn off Notifications" />
+		<execute function="AssertVisible" locator1="LoopTopicsTopic#TOPIC_EMAIL_NOTIFICATIONS_LABEL" />
+	</command>
+
+	<command name="clickTurnOnNotificationsButton">
+		<if>
+			<condition function="IsTextEqual" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" value1="Follow" />
+			<then>
+				<execute macro="LoopTopicsTopic#clickFollowButton" />
+			</then>
+		</if>
+
+		<execute function="MouseOver" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" />
+
+		<execute macro="LoopTopicsTopic#clickTurnOnNotifications" />
+	</command>
+
+	<command name="clickTurnOnNotificationsLinkViaIndex">
+		<execute macro="LoopTopicsTopic#mouseOverTopicName">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<var name="key_topicName" value="${topicName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+
+				<execute macro="LoopTopicsTopic#clickTurnOnNotifications" />
+			</then>
+			<else>
+				<if>
+					<condition function="IsTextEqual" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+					<then>
+						<execute macro="LoopTopicsTopic#clickFollowButtonViaOverlay" />
+					</then>
+				</if>
+
+				<execute function="MouseOver" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" />
+
+				<execute macro="LoopTopicsTopic#clickTurnOnNotifications" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickUnassignExpertButton">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_OPTIONS_ASSIGN_EXPERT_LINK" value1="Oops! I Am Not an Expert" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_OPTIONS_ASSIGN_EXPERT_LINK" value1="I Am an Expert" />
+	</command>
+
+	<command name="clickUnfollowButtonViaOverlay">
+		<execute function="MouseOver" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" />
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_UNFOLLOW_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickUnfollowLink">
+		<execute function="MouseOver" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" />
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_UNFOLLOW_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickUnfollowLinkViaIndex">
+		<execute macro="LoopTopicsTopic#mouseOverTopicName">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<var name="key_topicName" value="${topicName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopTopics#TOPIC_FOLLOW_MENU_BUTTON" />
+
+				<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_UNFOLLOW_LINK" value1="Unfollow ${topicName}" />
+			</then>
+			<else>
+				<execute macro="LoopTopicsTopic#clickUnfollowButtonViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="confirmCoverPicture">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_COVER_PICTURE_CONFIRM_BUTTON" />
+	</command>
+
+	<command name="confirmProfilePicture">
+		<execute function="AssertClick" locator1="LoopTopicsUpdatePicture#SAVE_BUTTON" value1="Save" />
+	</command>
+
+	<command name="createTopic">
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute function="Click" locator1="LoopTopics#CREATE_TOPIC_LINK" />
+
+		<execute function="Type" locator1="LoopTopicsAddTopic#NAME_FIELD" value1="${topicName}" />
+
+		<if>
+			<isset var="topicDescription" />
+			<then>
+				<execute function="Type" locator1="LoopTopicsAddTopic#DESCRIPTION_FIELD" value1="${topicDescription}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="LoopTopicsAddTopic#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsAddTopic#SUCCESS_MESSAGE" value1="${topicName} was successfully created." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="createTopicWithError">
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute function="Click" locator1="LoopTopics#CREATE_TOPIC_LINK" />
+
+		<execute function="Type" locator1="LoopTopicsAddTopic#NAME_FIELD" value1="${topicName}" />
+
+		<if>
+			<isset var="topicDescription" />
+			<then>
+				<execute function="Type" locator1="LoopTopicsAddTopic#DESCRIPTION_FIELD" value1="${topicDescription}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="LoopTopicsAddTopic#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsAddTopic#ERROR_MESSAGE" value1="${errorMessage}" />
+		<execute function="AssertClick" locator1="LoopTopicsAddTopic#CANCEL_BUTTON" value1="Cancel" />
+	</command>
+
+	<command name="editTopicDescription">
+		<execute function="Type" locator1="LoopTopicsUpdateTopic#DESCRIPTION_FIELD" value1="${topicDescriptionEdit}" />
+	</command>
+
+	<command name="gotoExpertsSection">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_EXPERTS_TAB" />
+	</command>
+
+	<command name="gotoFollowersSection">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_FOLLOWERS_TAB" />
+	</command>
+
+	<command name="gotoStreamSection">
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_STREAM_TAB" />
+	</command>
+
+	<command name="gotoTopicViaTopicsList">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertClick" locator1="LoopTopics#TOPIC_NAME" value1="${topicName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopTopicsTopic#TOPIC_NAME" />
+	</command>
+
+	<command name="mergeTopic">
+		<var name="key_topicName" value="${mergeTopicName}" />
+
+		<execute function="Type" locator1="LoopTopicsMergeTopic#ADD_MERGE_TOPIC_FIELD" value1="${mergeTopicName}" />
+		<execute function="AssertClick" locator1="LoopSearch#TOPIC_NAME" value1="${mergeTopicName}" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsMergeTopic#MERGE_TOPIC_CONFIRMATION_MESSAGE" value1="Are you sure you want to merge ${topicName} into ${mergeTopicName}? All data related to ${topicName} will be moved." />
+		<execute function="AssertTextEquals" locator1="LoopTopicsMergeTopic#REMOVE_TOPIC_PAGE_CHECKBOX_DESCRIPTION" value1="${topicName} page will be removed." />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsMergeTopic#REMOVE_TOPIC_PAGE_CHECKBOX" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsMergeTopic#REDIRECT_TOPIC_MENTIONS_CHECKBOX_DESCRIPTION" value1="All of its current mentions will now redirect to ${mergeTopicName}." />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsMergeTopic#REDIRECT_TOPIC_MENTIONS_CHECKBOX" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsMergeTopic#MOVE_TOPIC_FOLLOWERS_CHECKBOX_DESCRIPTION" value1="All of its followers/experts will be moved to ${mergeTopicName}." />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopTopicsMergeTopic#MOVE_TOPIC_FOLLOWERS_CHECKBOX" />
+		<execute function="AssertClick" locator1="LoopTopicsMergeTopic#MERGE_BUTTON" value1="Merge" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsMergeTopic#SUCCESS_MESSAGE" value1="You successfully merged ${topicName} into ${mergeTopicName}." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="mouseOverTopicName">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="Pause" locator1="2000" />
+
+		<execute function="MouseOver" locator1="LoopTopics#TOPIC_NAME" />
+	</command>
+
+	<command name="pause">
+		<execute function="Pause" locator1="${pauseTime}" />
+	</command>
+
+	<command name="saveChanges">
+		<execute function="AssertClick" locator1="LoopTopicsUpdateTopic#SUBMIT_BUTTON" value1="Submit" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopTopicsUpdateTopic#SUCCESS_MESSAGE" value1="was successfully updated." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="scrollDown">
+		<execute function="KeyPress" locator1="LoopTopics#TOPIC_LIST" value1="\SPACE" />
+	</command>
+
+	<command name="typeDescription">
+		<execute function="Type#sendKeys" locator1="LoopTopicsUpdateTopic#DESCRIPTION_FIELD" value1="${topicDescription}" />
+	</command>
+
+	<command name="typeReturnViaDescriptionField">
+		<execute function="KeyPress" locator1="LoopTopicsUpdateTopic#DESCRIPTION_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="uploadCoverPicture">
+		<execute function="MouseOver" locator1="LoopTopicsTopic#TOPIC_COVER_PICTURE" />
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_COVER_PICTURE_SELECT_BUTTON" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${coverPictureFileName}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${coverPictureFileName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="uploadProfilePicture">
+		<execute function="MouseOver" locator1="LoopTopicsTopic#TOPIC_PROFILE_PICTURE" />
+		<execute function="Click" locator1="LoopTopicsTopic#TOPIC_PROFILE_PICTURE_SELECT_BUTTON" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${profilePictureFileName}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${profilePictureFileName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewDescriptionMarkdown">
+		<execute function="KeyPress" locator1="LoopTopicsTopic#TOPIC_PROFILE" value1="\SPACE" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopTopicsTopic#ABOUT_DESCRIPTION_SEE_MORE_LINK" />
+			<then>
+				<execute function="AssertClick" locator1="LoopTopicsTopic#ABOUT_DESCRIPTION_SEE_MORE_LINK" value1="See More" />
+			</then>
+		</if>
+
+		<execute function="SikuliAssertElementPresent" locator1="LoopTopicsTopic#ABOUT_DESCRIPTION_MARKDOWN_1" />
+		<execute function="KeyPress" locator1="LoopTopicsTopic#TOPIC_PROFILE" value1="\SPACE" />
+		<execute function="SikuliAssertElementPresent" locator1="LoopTopicsTopic#ABOUT_DESCRIPTION_MARKDOWN_2" />
+	</command>
+
+	<command name="viewExpert">
+		<var name="key_expertName" value="${expertName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopTopicsTopic#EXPERT_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#EXPERT_NAME" value1="${expertName}" />
+	</command>
+
+	<command name="viewExpertCountViaOverlay">
+		<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_EXPERTS" value1="${expertCount} Experts" />
+	</command>
+
+	<command name="viewNoExpert">
+		<var name="key_expertName" value="${expertName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopTopicsTopic#EXPERT_PROFILE_PICTURE" />
+		<execute function="AssertElementNotPresent" locator1="LoopTopicsTopic#EXPERT_NAME" />
+	</command>
+
+	<command name="viewNoTopicViaTopicsList">
+		<var name="key_topicName" value="${topicName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopTopics#TOPIC_NAME" />
+			<then>
+				<execute function="AssertNotVisible" locator1="LoopTopics#TOPIC_NAME" value1="${topicName}" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopTopics#TOPIC_NAME" value1="${topicName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewTopicDetails">
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_NAME" value1="${topicName}" />
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_TYPE" value1="Topic" />
+
+		<if>
+			<and>
+				<isset var="topicDescription" />
+				<not>
+					<contains string="${topicDescription}" substring="{topicDescription}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopTopicsTopic#ABOUT_DESCRIPTION" value1="${topicDescription}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_FOLLOWER_COUNT" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopTopicsTopic#TOPIC_FOLLOWER_COUNT" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewTopicOverlay">
+		<execute function="AssertElementPresent" locator1="LoopTopics#TOPIC_OVERLAY_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_NAME" value1="#${topicName}" />
+		<execute function="AssertElementPresent" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOW_BUTTON" />
+
+		<execute function="AssertElementPresent" locator1="LoopTopics#TOPIC_OVERLAY_TYPE" />
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOWERS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_FOLLOWERS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="expertCount" />
+				<not>
+					<contains string="${expertCount}" substring="{expertCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${expertCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_EXPERTS" value1="1 Expert" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_OVERLAY_EXPERTS" value1="${expertCount} Experts" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute macro="LoopNavigation#closeOverlay" />
+	</command>
+
+	<command name="viewTopicViaTopicsList">
+		<var name="key_topicDescription" value="${topicDescription}" />
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_NAME" value1="${topicName}" />
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_FOLLOWER_COUNT" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_FOLLOWER_COUNT" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+</definition>

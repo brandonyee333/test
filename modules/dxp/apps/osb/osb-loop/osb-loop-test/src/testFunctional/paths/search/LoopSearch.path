@@ -1,0 +1,84 @@
+<html>
+<head>
+<title>LoopSearch</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopSearch</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>LIST</td>
+	<td>//ul[@role='listbox'] | //ul[@class='autocomplete-list']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RESULTS_PAGE_LINK</td>
+	<td>//ul[@role='listbox']/li[contains(@data-text,'Search for')]//div[contains(@class,'name')] | //ul[@class='autocomplete-list']//div[@class='search-query']//div[contains(.,'Search for')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RECENT_KEYWORD_LINK</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_keyword}']//div[contains(@class,'name')] | //ul[@class='autocomplete-list']//li[contains(@class,'menu-item')]/div[.//text()='${key_keyword}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_NAME</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_userName}']//div[contains(@class,'name')] | //ul[@class='autocomplete-list']//a[contains(@class,'entity-link-container') and contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_PROFILE_PICTURE</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_userName}']//div[contains(@class,'avatar')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_userName}')]/div//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_JOB_TITLE</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_userName}']//span[contains(@class,'item-detail') and contains(.,'${key_jobTitleName}')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_userName}')]/div//div[contains(@class,'details') and contains(.,'${key_jobTitleName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_LOCATION</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_userName}']//span[contains(@class,'item-detail') and contains(.,'${key_userLocation}')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_userName}')]/div//div[contains(@class,'details') and contains(.,'${key_userLocation}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_NAME</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_groupName}']//div[contains(@class,'name')] | //ul[@class='autocomplete-list']//a[contains(@class,'entity-link-container') and contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_PROFILE_PICTURE</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_groupName}']//div[contains(@class,'avatar')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_groupName}')]/div//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_TYPE</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_groupName}']//span[contains(@class,'item-detail') and contains(.,'${key_groupType}')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_groupName}')]/div//div[contains(@class,'details') and contains(.,'${key_groupType}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_MEMBER_COUNT</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_groupName}']//span[contains(@class,'item-detail') and contains(.,'${key_memberCount}')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_groupName}')]/div//div[contains(@class,'details') and contains(.,'${key_memberCount}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_NAME</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_topicName}']//div[contains(@class,'name')] | //ul[@class='autocomplete-list']//a[contains(@class,'entity-link-container') and contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_PROFILE_PICTURE</td>
+	<td>//ul[@role='listbox']/li[@data-text='${key_topicName}']//div[contains(@class,'avatar')] | //ul[@class='autocomplete-list']/li[contains(.,'${key_topicName}')]/div//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

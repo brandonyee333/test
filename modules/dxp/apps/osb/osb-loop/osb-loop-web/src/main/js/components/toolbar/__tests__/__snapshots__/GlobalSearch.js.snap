@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalSearch renders 1`] = `
+<div class="global-search-container">
+  <div class="input-wrapper">
+    <svg class="loop-icon-container loop-icon-magnifier loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-magnifier-24"></use>
+    </svg>
+    <input placeholder="search" ref="input">
+  </div>
+</div>
+`;

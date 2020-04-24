@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExpertiseCard renders 1`] = `
+<div class="card-container expertise-card-container">
+  <div class="card-header-container">
+    <a href="#">
+      <span class="loop-icon-label-container loop-icon-label-spacing-medium" data-tooltip="">
+        <svg class="loop-icon-container loop-icon-hash loop-icon-small-1x" data-tooltip="">
+          <use href="#loop-icon-hash-16"></use>
+        </svg>
+        <span class="loop-icon-label">expertise</span>
+      </span>
+    </a>
+  </div>
+  <div class="loading-wrapper-container content">
+    <div class="loading-content">
+      <span>none</span>
+    </div>
+  </div>
+</div>
+`;

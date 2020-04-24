@@ -1,0 +1,8 @@
+dependencies {
+	compileInclude group: "org.json", name: "json", version: "20171018"
+	compileInclude group: "org.jsoup", name: "jsoup", version: "1.11.2"
+
+	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.5.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.61.0"
+	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
+}

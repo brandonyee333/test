@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-namespace-tables="false" package-path="com.liferay.osb.loop">
+	<author>Ethan Bustad</author>
+	<namespace>OSB</namespace>
+	<entity local-service="true" name="LoopAuditEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopAuditEntryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="name" type="String" />
+	</entity>
+	<entity local-service="true" name="LoopDivision" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopDivisionId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="organizationId" type="long" />
+		<column name="parentLoopDivisionId" type="long" />
+		<column name="type" type="int" />
+		<column name="subtype" type="int" />
+		<column name="extraData" type="String" />
+		<column name="imagePayload" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="OrganizationId" return-type="LoopDivision" unique="true">
+			<finder-column name="organizationId" />
+		</finder>
+		<finder name="CI_T" return-type="Collection">
+			<finder-column name="companyId" />
+			<finder-column name="type" />
+		</finder>
+
+		<!-- References -->
+
+		<reference entity="Organization" package-path="com.liferay.portal" />
+	</entity>
+	<entity local-service="true" name="LoopDivisionRel" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopDivisionRelId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="childLoopDivisionId" type="long" />
+		<column name="loopPersonId" type="long" />
+		<column name="parentLoopDivisionId" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="CLDI_LPI" return-type="LoopDivisionRel">
+			<finder-column name="childLoopDivisionId" />
+			<finder-column name="loopPersonId" />
+		</finder>
+		<finder name="LPI_PLDI" return-type="LoopDivisionRel">
+			<finder-column name="loopPersonId" />
+			<finder-column name="parentLoopDivisionId" />
+		</finder>
+		<finder name="CLDI_LPI_PLDI" return-type="LoopDivisionRel" unique="true">
+			<finder-column name="childLoopDivisionId" />
+			<finder-column name="loopPersonId" />
+			<finder-column name="parentLoopDivisionId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopExternalReferenceRel" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopExternalReferenceRelId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="externalReferenceName" type="String" />
+		<column name="externalReferencePK" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="ERP_ESN" return-type="LoopExternalReferenceRel" unique="true">
+			<finder-column name="externalReferenceName" />
+			<finder-column name="externalReferencePK" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopJobTitle" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopJobTitleId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="LoopJobTitle" unique="true">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopParticipantAssignment" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopParticipantAssignmentId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="loopDivisionId" type="long" />
+		<column name="loopPersonId" type="long" />
+		<column name="description" type="String" />
+		<column name="type" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="LDI_LPI" return-type="LoopParticipantAssignment" unique="true">
+			<finder-column name="loopDivisionId" />
+			<finder-column name="loopPersonId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopPerson" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopPersonId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="loopJobTitleId" type="long" />
+		<column name="managerLoopPersonId" type="long" />
+		<column name="personUserId" type="long" />
+		<column name="extraData" type="String" />
+		<column name="groupedUserNotificationEventsCount" type="int" />
+		<column name="imagePayload" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="PersonUserId" return-type="LoopPerson" unique="true">
+			<finder-column name="personUserId" />
+		</finder>
+
+		<!-- References -->
+
+		<reference entity="PortletPreferences" package-path="com.liferay.portal" />
+	</entity>
+	<entity local-service="true" name="LoopPersonRel" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopPersonRelId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="childLoopPersonId" type="long" />
+		<column name="parentLoopPersonId" type="long" />
+		<column name="type" type="int" />
+	</entity>
+	<entity local-service="true" name="LoopStatsEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopStatsEntryId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="modifiedTime" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="score" type="double" />
+	</entity>
+	<entity local-service="true" name="LoopStream" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopStreamId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="loopPersonId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+	</entity>
+	<entity local-service="true" name="LoopStreamEntry" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopStreamEntryId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="loopPersonId" type="long" />
+		<column name="loopStreamId" type="long" />
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="following" type="boolean" />
+		<column name="followingType" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="CPI_CSI_F" return-type="LoopStreamEntry">
+			<finder-column name="loopPersonId" />
+			<finder-column name="loopStreamId" />
+			<finder-column name="following" />
+		</finder>
+		<finder name="CPI_CNI_CP" return-type="LoopStreamEntry">
+			<finder-column name="loopPersonId" />
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="CPI_CSI_CNI_CP" return-type="LoopStreamEntry" unique="true">
+			<finder-column name="loopPersonId" />
+			<finder-column name="loopStreamId" />
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopTopic" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopTopicId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="parentLoopTopicId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="imagePayload" type="String" />
+		<column name="mergeTime" type="long" />
+
+		<!-- Finder methods -->
+
+		<finder name="C_N" return-type="LoopTopic" unique="true">
+			<finder-column name="companyId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopTopicAssignment" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopTopicAssignmentId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="loopPersonId" type="long" />
+		<column name="loopTopicId" type="long" />
+		<column name="statusByDate" type="Date" />
+		<column name="statusByUserId" type="long" />
+		<column name="statusByUserName" type="String" />
+		<column name="status" type="int" />
+	</entity>
+	<entity local-service="true" name="LoopUserNotificationEvent" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopUserNotificationEventId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="createTime" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="recipientUserId" type="long" />
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="groupClassNameId" type="long" />
+		<column name="groupClassPK" type="long" />
+		<column name="groupKey" type="long" />
+		<column name="type" type="int" />
+		<column name="received" type="boolean" />
+		<column name="opened" type="boolean" />
+
+		<!-- Finder methods -->
+
+		<finder name="GroupKey" return-type="Collection">
+			<finder-column name="groupKey" />
+		</finder>
+		<finder name="GCNI_GCP" return-type="Collection">
+			<finder-column name="groupClassNameId" />
+			<finder-column name="groupClassPK" />
+		</finder>
+		<finder name="GCNI_GCP_T" return-type="Collection">
+			<finder-column name="groupClassNameId" />
+			<finder-column name="groupClassPK" />
+			<finder-column name="type" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="LoopUserNotificationRecord" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopUserNotificationRecordId" primary="true" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="userId" type="long" />
+		<column name="createTime" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="deliveryType" type="int" />
+	</entity>
+	<entity local-service="true" name="LoopUserNotificationSubscription" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="loopUserNotificationSubscriptionId" primary="true" type="long" />
+
+		<!-- Other fields -->
+
+		<column name="loopPersonId" type="long" />
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="deliveryType" type="int" />
+
+		<!-- Finder methods -->
+
+		<finder name="LPI_CNI_CP_DT" return-type="LoopUserNotificationSubscription" unique="true">
+			<finder-column name="loopPersonId" />
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="deliveryType" />
+		</finder>
+	</entity>
+</service-builder>

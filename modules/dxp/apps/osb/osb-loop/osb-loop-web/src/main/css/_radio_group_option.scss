@@ -1,0 +1,17 @@
+.radio-group-option-container {
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(space-between);
+
+	cursor: pointer;
+	width: 100%;
+
+	&.radio-checked {
+		font-weight: 600;
+	}
+
+	.loop-icon-container {
+		padding-left: 20px;
+		padding-right: 0;
+	}
+}

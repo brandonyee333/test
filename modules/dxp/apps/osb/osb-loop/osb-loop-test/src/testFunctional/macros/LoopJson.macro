@@ -1,0 +1,966 @@
+<definition>
+	<var method="PropsUtil#get('portal.url')" name="portalUrl" />
+
+	<command name="addEntry">
+		<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${feedEntryAuthorScreenName}/view.json -u test@liferay.com:test" />
+
+		<var name="jsonPathClassName" value="$.data.entityClassNameId" />
+		<var name="jsonPathCreator" value="$.data.entityClassPK" />
+
+		<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+		<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathCreator}')" name="creatorId" />
+
+		<var method="StringUtil#replace('${feedEntryText}', ' ', '+')" name="feedEntryText" />
+
+		<if>
+			<and>
+				<isset var="hashtagTopicName" />
+				<not>
+					<contains string="${hashtagTopicName}" substring="{hashtagTopicName}" />
+				</not>
+			</and>
+			<then>
+				<var name="hashtagTopicName" value="&quot;${hashtagTopicName}&quot;" />
+			</then>
+			<else>
+				<var name="hashtagTopicName" value="null" />
+			</else>
+		</if>
+
+		<if>
+			<or>
+				<isset var="shareWithUserScreenNameList" />
+				<isset var="shareWithDepartmentNameList" />
+				<isset var="shareWithTeamNameList" />
+				<isset var="shareWithLocationNameList" />
+			</or>
+			<then>
+				<var name="shareJsonList" value="dummy" />
+
+				<if>
+					<and>
+						<isset var="shareWithUserScreenNameList" />
+						<not>
+							<contains string="${shareWithUserScreenNameList}" substring="{shareWithUserScreenNameList}" />
+						</not>
+					</and>
+					<then>
+						<for list="${shareWithUserScreenNameList}" param="shareWithUserScreenName">
+							<var name="shareJsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${shareWithUserScreenName}/view.json -u test@liferay.com:test" />
+
+							<var name="shareJsonPathClassName" value="$.data.entityClassNameId" />
+							<var name="shareJsonPathClassPK" value="$.data.entityClassPK" />
+
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassName}')" name="shareClassNameId" />
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassPK}')" name="shareClassPK" />
+
+							<var method="StringUtil#add('${shareJsonList}', ',{&quot;entityClassNameId&quot;:${shareClassNameId},&quot;entityClassPK&quot;:${shareClassPK},&quot;removable&quot;:true}', '')" name="shareJsonList" />
+						</for>
+					</then>
+				</if>
+
+				<if>
+					<and>
+						<isset var="shareWithDepartmentNameList" />
+						<not>
+							<contains string="${shareWithDepartmentNameList}" substring="{shareWithDepartmentNameList}" />
+						</not>
+					</and>
+					<then>
+						<for list="${shareWithDepartmentNameList}" param="shareWithGroupName">
+							<var method="StringUtil#replace('${shareWithGroupName}', ' ', '+')" name="shareWithGroupName" />
+
+							<var name="shareJsonURL" value="${portalUrl}/web/guest/home/-/loop/departments/_${shareWithGroupName}/view.json -u test@liferay.com:test" />
+
+							<var name="jsonPath" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+							<var name="shareJsonPathClassName" value="$.data.loopDivisionCompositeJSONObject.entityClassNameId" />
+							<var name="shareJsonPathClassPK" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassName}')" name="shareClassNameId" />
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassPK}')" name="shareClassPK" />
+
+							<var method="StringUtil#add('${shareJsonList}', ',{&quot;entityClassNameId&quot;:${shareClassNameId},&quot;entityClassPK&quot;:${shareClassPK},&quot;removable&quot;:true}', '')" name="shareJsonList" />
+						</for>
+					</then>
+				</if>
+
+				<if>
+					<and>
+						<isset var="shareWithTeamNameList" />
+						<not>
+							<contains string="${shareWithTeamNameList}" substring="{shareWithTeamNameList}" />
+						</not>
+					</and>
+					<then>
+						<for list="${shareWithTeamNameList}" param="shareWithGroupName">
+							<var method="StringUtil#replace('${shareWithGroupName}', ' ', '+')" name="shareWithGroupName" />
+
+							<var name="shareJsonURL" value="${portalUrl}/web/guest/home/-/loop/teams/_${shareWithGroupName}/view.json -u test@liferay.com:test" />
+
+							<var name="jsonPath" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+							<var name="shareJsonPathClassName" value="$.data.loopDivisionCompositeJSONObject.entityClassNameId" />
+							<var name="shareJsonPathClassPK" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassName}')" name="shareClassNameId" />
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassPK}')" name="shareClassPK" />
+
+							<var method="StringUtil#add('${shareJsonList}', ',{&quot;entityClassNameId&quot;:${shareClassNameId},&quot;entityClassPK&quot;:${shareClassPK},&quot;removable&quot;:true}', '')" name="shareJsonList" />
+						</for>
+					</then>
+				</if>
+
+				<if>
+					<and>
+						<isset var="shareWithLocationNameList" />
+						<not>
+							<contains string="${shareWithLocationNameList}" substring="{shareWithLocationNameList}" />
+						</not>
+					</and>
+					<then>
+						<for list="${shareWithLocationNameList}" param="shareWithGroupName">
+							<var method="StringUtil#replace('${shareWithGroupName}', ' ', '+')" name="shareWithGroupName" />
+
+							<var name="shareJsonURL" value="${portalUrl}/web/guest/home/-/loop/locations/_${shareWithGroupName}/view.json -u test@liferay.com:test" />
+
+							<var name="jsonPath" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+							<var name="shareJsonPathClassName" value="$.data.loopDivisionCompositeJSONObject.entityClassNameId" />
+							<var name="shareJsonPathClassPK" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassName}')" name="shareClassNameId" />
+							<var method="JSONCurlUtil#get('${shareJsonURL}', '${shareJsonPathClassPK}')" name="shareClassPK" />
+
+							<var method="StringUtil#add('${shareJsonList}', ',{&quot;entityClassNameId&quot;:${shareClassNameId},&quot;entityClassPK&quot;:${shareClassPK},&quot;removable&quot;:true}', '')" name="shareJsonList" />
+						</for>
+					</then>
+				</if>
+
+				<var method="StringUtil#extractLast('${shareJsonList}', 'dummy,')" name="shareJsonList" />
+
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/addPost.json -u ${feedEntryAuthorScreenName}@liferay.com:test -d creatorClassNameId=${classNameId} -d creatorClassPK=${creatorId} -d parentAssetEntrySetId=0 -d privateAssetEntrySet=0 -d payload={&quot;assetTagNames&quot;:${hashtagTopicName},&quot;geolocation&quot;:null,&quot;imageData&quot;:null,&quot;linkData&quot;:null,&quot;message&quot;:&quot;${feedEntryText}&quot;,&quot;sharedTo&quot;:[${shareJsonList}],&quot;type&quot;:&quot;text&quot;}" />
+			</then>
+			<else>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/addPost.json -u ${feedEntryAuthorScreenName}@liferay.com:test -d creatorClassNameId=${classNameId} -d creatorClassPK=${creatorId} -d parentAssetEntrySetId=0 -d privateAssetEntrySet=0 -d payload={&quot;assetTagNames&quot;:${hashtagTopicName},&quot;geolocation&quot;:null,&quot;imageData&quot;:null,&quot;linkData&quot;:null,&quot;message&quot;:&quot;${feedEntryText}&quot;,&quot;sharedTo&quot;:[],&quot;type&quot;:&quot;text&quot;}" />
+			</else>
+		</if>
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="addPeople">
+		<for list="${personNumberList}" param="personNumber">
+			<var method="StringUtil#replace('loopuserX@liferay.com', 'X', '${personNumber}')" name="userEmailAddress" />
+			<var method="StringUtil#replace('LoopX', 'X', '${personNumber}')" name="userFirstName" />
+			<var method="StringUtil#replace('UserX', 'X', '${personNumber}')" name="userLastName" />
+
+			<var name="personProperties" value="" />
+
+			<if>
+				<and>
+					<isset var="jobTitleName" />
+					<not>
+						<contains string="${jobTitleName}" substring="{jobTitleName}" />
+					</not>
+				</and>
+				<then>
+					<var method="StringUtil#replace('QA+EngineerX', 'X', '${personNumber}')" name="jobTitleName" />
+
+					<var name="jsonPath" value="$.data.entityClassPK" />
+					<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/job_titles/_${jobTitleName}/view.json -u test@liferay.com:test" />
+
+					<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="jobTitleId" />
+
+					<var method="StringUtil#add('${personProperties}', ' -d loopJobTitleId=${jobTitleId}', '')" name="personProperties" />
+				</then>
+			</if>
+
+			<if>
+				<and>
+					<isset var="roleNames" />
+					<not>
+						<contains string="${roleNames}" substring="{roleNames}" />
+					</not>
+				</and>
+				<then>
+					<var method="StringUtil#replace('${roleNames}', ' ', '+')" name="roleNames" />
+
+					<var method="StringUtil#add('${personProperties}', ' -d roleNames=${roleNames}', '')" name="personProperties" />
+				</then>
+			</if>
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/people/add.json -u test@liferay.com:test -d emailAddress=${userEmailAddress} -d firstName=${userFirstName} -d lastName=${userLastName} -d password=test${personProperties}" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="addPerson">
+		<var name="personProperties" value="" />
+
+		<if>
+			<and>
+				<isset var="jobTitleName" />
+				<not>
+					<contains string="${jobTitleName}" substring="{jobTitleName}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${jobTitleName}', ' ', '+')" name="jobTitleName" />
+
+				<var name="jsonPath" value="$.data.entityClassPK" />
+				<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/job_titles/_${jobTitleName}/view.json -u test@liferay.com:test" />
+
+				<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="jobTitleId" />
+
+				<var method="StringUtil#add('${personProperties}', ' -d loopJobTitleId=${jobTitleId}', '')" name="personProperties" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="roleNames" />
+				<not>
+					<contains string="${roleNames}" substring="{roleNames}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${roleNames}', ' ', '+')" name="roleNames" />
+
+				<var method="StringUtil#add('${personProperties}', ' -d roleNames=${roleNames}', '')" name="personProperties" />
+			</then>
+		</if>
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/people/add.json -u test@liferay.com:test -d emailAddress=${userEmailAddress} -d firstName=${userFirstName} -d lastName=${userLastName} -d password=test${personProperties}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="assignGroupLeadsAndMembers">
+		<var method="StringUtil#replace('${groupDescription}', ' ', '+')" name="groupDescription" />
+		<var method="StringUtil#replace('${groupName}', ' ', '+')" name="groupName" />
+		<var method="StringUtil#lowerCase('${groupType}')" name="groupType" />
+
+		<var name="leadIdList" value="" />
+		<var name="memberIdList" value="" />
+
+		<if>
+			<and>
+				<isset var="leadScreenNameList" />
+				<not>
+					<contains string="${leadScreenNameList}" substring="{leadScreenNameList}" />
+				</not>
+			</and>
+			<then>
+				<for list="${leadScreenNameList}" param="leadScreenName">
+					<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${leadScreenName}/view.json -u test@liferay.com:test" />
+
+					<var name="jsonPath" value="$.data.entityClassPK" />
+
+					<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="leadId" />
+
+					<if>
+						<equals arg1="${leadIdList}" arg2="" />
+						<then>
+							<var name="leadIdList" value="${leadId}" />
+						</then>
+						<else>
+							<var name="leadIdList" value="${leadIdList},${leadId}" />
+						</else>
+					</if>
+				</for>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberScreenNameList" />
+				<not>
+					<contains string="${memberScreenNameList}" substring="{memberScreenNameList}" />
+				</not>
+			</and>
+			<then>
+				<for list="${memberScreenNameList}" param="memberScreenName">
+					<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${memberScreenName}/view.json -u test@liferay.com:test" />
+
+					<var name="jsonPath" value="$.data.entityClassPK" />
+
+					<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="memberId" />
+
+					<if>
+						<equals arg1="${memberIdList}" arg2="" />
+						<then>
+							<var name="memberIdList" value="${memberId}" />
+						</then>
+						<else>
+							<var name="memberIdList" value="${memberIdList},${memberId}" />
+						</else>
+					</if>
+				</for>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="groupDescription" />
+				<not>
+					<contains string="${groupDescription}" substring="{groupDescription}" />
+				</not>
+			</and>
+			<then>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/${groupType}s/_${groupName}/update.json -u test@liferay.com:test -d name=${groupName} -d comments=${groupDescription} -d subtype=${groupSubtypeInt} -d leadLoopPersonIds=${leadIdList} -d memberLoopPersonIds=${memberIdList}" />
+			</then>
+			<else>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/${groupType}s/_${groupName}/update.json -u test@liferay.com:test -d name=${groupName} -d leadLoopPersonIds=${leadIdList} -d subtype=${groupSubtypeInt} -d memberLoopPersonIds=${memberIdList}" />
+			</else>
+		</if>
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="createGroup">
+		<var method="StringUtil#replace('${groupDescription}', ' ', '+')" name="groupDescription" />
+		<var method="StringUtil#replace('${groupName}', ' ', '+')" name="groupName" />
+
+		<if>
+			<equals arg1="${groupType}" arg2="Team" />
+			<then>
+				<var name="groupTypeInt" value="3" />
+				<var name="groupSubtypeInt" value="0" />
+			</then>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Location" />
+				<then>
+					<var name="groupTypeInt" value="4" />
+
+					<if>
+						<equals arg1="${groupSubtype}" arg2="Office" />
+						<then>
+							<var name="groupSubtypeInt" value="1" />
+						</then>
+						<elseif>
+							<equals arg1="${groupSubtype}" arg2="Region" />
+							<then>
+								<var name="groupSubtypeInt" value="2" />
+							</then>
+						</elseif>
+						<elseif>
+							<equals arg1="${groupSubtype}" arg2="Work from Home" />
+							<then>
+								<var name="groupSubtypeInt" value="3" />
+							</then>
+						</elseif>
+						<else>
+							<var name="groupSubtypeInt" value="1" />
+						</else>
+					</if>
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Department" />
+				<then>
+					<var name="groupTypeInt" value="2" />
+
+					<if>
+						<equals arg1="${groupSubtype}" arg2="Functional" />
+						<then>
+							<var name="groupSubtypeInt" value="1" />
+						</then>
+						<elseif>
+							<equals arg1="${groupSubtype}" arg2="Regional" />
+							<then>
+								<var name="groupSubtypeInt" value="2" />
+							</then>
+						</elseif>
+						<else>
+							<var name="groupSubtypeInt" value="1" />
+						</else>
+					</if>
+				</then>
+			</elseif>
+		</if>
+
+		<if>
+			<and>
+				<isset var="groupDescription" />
+				<not>
+					<contains string="${groupDescription}" substring="{groupDescription}" />
+				</not>
+			</and>
+			<then>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/divisions/add.json -u test@liferay.com:test -d name=${groupName} -d comments=${groupDescription} -d type=${groupTypeInt} -d subtype=${groupSubtypeInt}" />
+			</then>
+			<else>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/divisions/add.json -u test@liferay.com:test -d name=${groupName} -d type=${groupTypeInt} -d subtype=${groupSubtypeInt}" />
+			</else>
+		</if>
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+
+		<if>
+			<or>
+				<isset var="leadScreenNameList" />
+				<isset var="memberScreenNameList" />
+			</or>
+			<then>
+				<execute macro="LoopJson#assignGroupLeadsAndMembers">
+					<var name="groupDescription" value="${groupDescription}" />
+					<var name="groupName" value="${groupName}" />
+					<var name="groupSubtypeInt" value="${groupSubtypeInt}" />
+					<var name="groupType" value="${groupType}" />
+					<var name="leadScreenNameList" value="${leadScreenNameList}" />
+					<var name="memberScreenNameList" value="${memberScreenNameList}" />
+				</execute>
+			</then>
+		</if>
+	</command>
+
+	<command name="createGroups">
+		<if>
+			<equals arg1="${groupType}" arg2="Team" />
+			<then>
+				<var name="groupTypeInt" value="3" />
+				<var name="groupSubtypeInt" value="0" />
+				<var name="groupName" value="Team+NameX" />
+				<var name="groupDescription" value="Team+DescriptionX" />
+			</then>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Location" />
+				<then>
+					<var name="groupDescription" value="Location+DescriptionX" />
+					<var name="groupName" value="Location+NameX" />
+					<var name="groupTypeInt" value="4" />
+
+					<if>
+						<equals arg1="${groupSubtype}" arg2="Office" />
+						<then>
+							<var name="groupSubtypeInt" value="1" />
+						</then>
+						<elseif>
+							<equals arg1="${groupSubtype}" arg2="Region" />
+							<then>
+								<var name="groupSubtypeInt" value="2" />
+							</then>
+						</elseif>
+						<elseif>
+							<equals arg1="${groupSubtype}" arg2="Work from Home" />
+							<then>
+								<var name="groupSubtypeInt" value="3" />
+							</then>
+						</elseif>
+						<else>
+							<var name="groupSubtypeInt" value="1" />
+						</else>
+					</if>
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Department" />
+				<then>
+					<var name="groupTypeInt" value="2" />
+					<var name="groupSubtypeInt" value="1" />
+					<var name="groupName" value="Department+NameX" />
+					<var name="groupDescription" value="Department+DescriptionX" />
+				</then>
+			</elseif>
+		</if>
+
+		<for list="${groupNumberList}" param="groupNumber">
+			<var method="StringUtil#replace('${groupDescription}', 'X', '${groupNumber}')" name="newGroupDescription" />
+			<var method="StringUtil#replace('${groupName}', 'X', '${groupNumber}')" name="newGroupName" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/divisions/add.json -u test@liferay.com:test -d name=${newGroupName} -d comments=${newGroupDescription} -d type=${groupTypeInt} -d subtype=${groupSubtypeInt}" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="createJobTitle">
+		<var method="StringUtil#replace('${jobTitleName}', ' ', '+')" name="jobTitleName" />
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/job_titles/add.json -u test@liferay.com:test -d name=${jobTitleName}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="createJobTitles">
+		<for list="${jobTitleNumberList}" param="jobTitleNumber">
+			<var method="StringUtil#replace('QA+EngineerX', 'X', '${jobTitleNumber}')" name="jobTitleName" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/job_titles/add.json -u test@liferay.com:test -d name=${jobTitleName}" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="createTopic">
+		<var method="StringUtil#replace('${topicDescription}', ' ', '+')" name="topicDescription" />
+
+		<if>
+			<and>
+				<isset var="topicDescription" />
+				<not>
+					<contains string="${topicDescription}" substring="{topicDescription}" />
+				</not>
+			</and>
+			<then>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/topics/add.json -u test@liferay.com:test -d name=${topicName} -d description=${topicDescription}" />
+			</then>
+			<else>
+				<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/topics/add.json -u test@liferay.com:test -d name=${topicName}" />
+			</else>
+		</if>
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="createTopics">
+		<for list="${topicNumberList}" param="topicNumber">
+			<var method="StringUtil#replace('Topic+DescriptionX', 'X', '${topicNumber}')" name="topicDescription" />
+			<var method="StringUtil#replace('TopicNameX', 'X', '${topicNumber}')" name="topicName" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/topics/add.json -u test@liferay.com:test -d name=${topicName} -d description=${topicDescription}" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="deleteGroup">
+		<var method="StringUtil#replace('${groupName}', ' ', '+')" name="groupName" />
+		<var method="StringUtil#lowerCase('${groupType}')" name="groupType" />
+
+		<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/${groupType}s/_${groupName}/view.json -u test@liferay.com:test" />
+
+		<var name="jsonPath" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+		<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="groupId" />
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/divisions/delete.json -u test@liferay.com:test -d id=${groupId}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="deleteGroupsOfLeadMember">
+		<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${userScreenName}/viewLeadingDivisions.json -u test@liferay.com:test" />
+
+		<var name="jsonPath" value="$.data[*].entityClassPK" />
+
+		<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="groupIds" />
+
+		<var method="StringUtil#replace('${groupIds}', '[', '')" name="groupIds" />
+
+		<var method="StringUtil#replace('${groupIds}', ']', '')" name="groupIds" />
+
+		<var method="StringUtil#replace('${groupIds}', ' ', ',')" name="groupIds" />
+
+		<for list="${groupIds}" param="groupId">
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/divisions/delete.json -u test@liferay.com:test -d id=${groupId}" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="deleteTopic">
+		<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/topics/_${topicName}/view.json -u test@liferay.com:test" />
+
+		<var name="jsonPath" value="$.data.loopTopicCompositeJSONObject.entityClassPK" />
+
+		<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="topicId" />
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/topics/delete.json -u test@liferay.com:test -d id=${topicId}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="executeCurl">
+		<echo>curl ${curlArgs}</echo>
+
+		<var method="JSONCurlUtil#get('${curlArgs}', '$[\'status\']')" name="status" />
+
+		<echo>status: ${status}</echo>
+	</command>
+
+	<command name="followGroups">
+		<for list="${groupNameList}" param="groupName">
+			<var method="StringUtil#replace('${groupName}', ' ', '+')" name="groupName" />
+			<var method="StringUtil#lowerCase('${groupType}')" name="groupType" />
+
+			<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/${groupType}s/_${groupName}/view.json -u test@liferay.com:test" />
+
+			<var name="jsonPathClassName" value="$.data.loopDivisionCompositeJSONObject.entityClassNameId" />
+			<var name="jsonPathClassPK" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassPK}')" name="classPK" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/addToStream.json -u ${followerEmailAddress}:test -d classNameId=${classNameId} -d classPK=${classPK} -d followingType=1" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="followPeople">
+		<for list="${userScreenNameList}" param="userScreenName">
+			<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${userScreenName}/view.json -u test@liferay.com:test" />
+
+			<var name="jsonPathClassName" value="$.data.entityClassNameId" />
+			<var name="jsonPathClassPK" value="$.data.entityClassPK" />
+
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassPK}')" name="classPK" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/addToStream.json -u ${followerEmailAddress}:test -d classNameId=${classNameId} -d classPK=${classPK} -d followingType=1" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="followTopics">
+		<for list="${topicNameList}" param="topicName">
+			<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/topics/_${topicName}/view.json -u test@liferay.com:test" />
+
+			<var name="jsonPathClassName" value="$.data.loopTopicCompositeJSONObject.entityClassNameId" />
+			<var name="jsonPathClassPK" value="$.data.loopTopicCompositeJSONObject.entityClassPK" />
+
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassPK}')" name="classPK" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/addToStream.json -u ${followerEmailAddress}:test -d classNameId=${classNameId} -d classPK=${classPK} -d followingType=1" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="getJobTitleId">
+		<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/job_titles/_${jobTitleName}/view.json -u test@liferay.com:test" />
+
+		<var name="jsonPath" value="$.data.entityClassPK" />
+
+		<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPath}')" name="jobTitleId" />
+	</command>
+
+	<command name="syncGroup">
+		<if>
+			<equals arg1="${groupType}" arg2="Location" />
+			<then>
+				<var name="entityName" value="location" />
+			</then>
+			<else>
+				<var name="entityName" value="branch" />
+			</else>
+		</if>
+
+		<var method="StringUtil#replace('${groupName}', ' ', '+')" name="groupName" />
+
+		<var name="dataString" value="name:${groupName}" />
+
+		<if>
+			<and>
+				<isset var="groupParentName" />
+				<not>
+					<contains string="${groupParentName}" substring="{groupParentName}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${groupParentName}', ' ', '+')" name="groupParentName" />
+
+				<var method="StringUtil#add('${dataString}', ',parentName:${groupParentName}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/home/testSendSyncMessage.json -u test@liferay.com:test -d message={entityName:${entityName},apiName:${apiName},id:${groupName},data:{${dataString}}}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="syncJobTitle">
+		<var method="StringUtil#replace('${jobTitleName}', ' ', '+')" name="jobTitleName" />
+
+		<var name="dataString" value="name:${jobTitleName}" />
+
+		<if>
+			<and>
+				<isset var="jobTitleDescription" />
+				<not>
+					<contains string="${jobTitleDescription}" substring="{jobTitleDescription}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${jobTitleDescription}', ' ', '+')" name="jobTitleDescription" />
+
+				<var method="StringUtil#add('${dataString}', ',description:${jobTitleDescription}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/home/testSendSyncMessage.json -u test@liferay.com:test -d message={entityName:job_title,apiName:${apiName},id:${jobTitleName},data:{${dataString}}}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="syncPerson">
+		<var name="dataString" value="emailAddress:${userEmailAddress}" />
+
+		<if>
+			<and>
+				<isset var="jobTitleName" />
+				<not>
+					<contains string="${jobTitleName}" substring="{jobTitleName}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${jobTitleName}', ' ', '+')" name="jobTitleName" />
+
+				<var method="StringUtil#add('${dataString}', ',jobTitle:${jobTitleName}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="locationName" />
+				<not>
+					<contains string="${locationName}" substring="{locationName}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${locationName}', ' ', '+')" name="locationName" />
+
+				<var method="StringUtil#add('${dataString}', ',location:${locationName}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="departmentName" />
+				<not>
+					<contains string="${departmentName}" substring="{departmentName}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${departmentName}', ' ', '+')" name="departmentName" />
+
+				<var method="StringUtil#add('${dataString}', ',department:${departmentName}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userEmploymentType" />
+				<not>
+					<contains string="${userEmploymentType}" substring="{userEmploymentType}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#add('${dataString}', ',employmentTypeLabel:${userEmploymentType}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userBirthDateTime" />
+				<not>
+					<contains string="${userBirthDateTime}" substring="{userBirthDateTime}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#add('${dataString}', ',birthDateTime:${userBirthDateTime}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userHireDateTime" />
+				<not>
+					<contains string="${userHireDateTime}" substring="{userHireDateTime}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#add('${dataString}', ',hireDateTime:${userHireDateTime}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${userGender}" arg2="Female" />
+			<then>
+				<var method="StringUtil#add('${dataString}', ',male:false', '')" name="dataString" />
+			</then>
+			<else>
+				<var method="StringUtil#add('${dataString}', ',male:true', '')" name="dataString" />
+			</else>
+		</if>
+
+		<if>
+			<and>
+				<isset var="managerScreenNameList" />
+				<not>
+					<contains string="${managerScreenNameList}" substring="{managerScreenNameList}" />
+				</not>
+			</and>
+			<then>
+				<var name="managerUUIDList" value="dummy" />
+
+				<for list="${managerScreenNameList}" param="managerScreenName">
+					<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${managerScreenName}/view.json -u test@liferay.com:test" />
+
+					<var name="jsonPathUUID" value="$.data.uuid" />
+
+					<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathUUID}')" name="managerUUID" />
+
+					<var method="StringUtil#add('${managerUUIDList}', ',${managerUUID}', '')" name="managerUUIDList" />
+				</for>
+
+				<var method="StringUtil#extractLast('${managerUUIDList}', 'dummy,')" name="managerUUIDList" />
+
+				<var method="StringUtil#add('${dataString}', ',additionalManagerUuids:[${managerUUIDList}]', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="primaryManagerScreenName" />
+				<not>
+					<contains string="${primaryManagerScreenName}" substring="{primaryManagerScreenName}" />
+				</not>
+			</and>
+			<then>
+				<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${primaryManagerScreenName}/view.json -u test@liferay.com:test" />
+
+				<var name="jsonPathUUID" value="$.data.uuid" />
+
+				<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathUUID}')" name="primaryManagerUUID" />
+
+				<var method="StringUtil#add('${dataString}', ',primaryManagerUuid:${primaryManagerUUID}', '')" name="dataString" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="oldDepartmentName" />
+				<not>
+					<contains string="${oldDepartmentName}" substring="{oldDepartmentName}" />
+				</not>
+			</and>
+			<then>
+				<var method="StringUtil#replace('${oldDepartmentName}', ' ', '+')" name="oldDepartmentName" />
+
+				<var name="oldDataString" value="department:${oldDepartmentName}" />
+			</then>
+			<else>
+				<var name="oldDataString" value="" />
+			</else>
+		</if>
+
+		<if>
+			<equals arg1="${apiName}" arg2="add" />
+			<then>
+				<var name="userId" value="${userEmailAddress}" />
+			</then>
+			<else>
+				<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${userScreenName}/view.json -u test@liferay.com:test" />
+
+				<var name="jsonPathUUID" value="$.data.uuid" />
+
+				<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathUUID}')" name="userId" />
+			</else>
+		</if>
+
+		<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/home/testSendSyncMessage.json -u test@liferay.com:test -d message={entityName:worker,apiName:${apiName},id:${userId},data:{${dataString}},oldData:{${oldDataString}}}" />
+
+		<execute macro="LoopJson#executeCurl">
+			<var name="curlArgs" value="${curlArgs}" />
+		</execute>
+	</command>
+
+	<command name="unfollowGroups">
+		<for list="${groupNameList}" param="groupName">
+			<var method="StringUtil#replace('${groupName}', ' ', '+')" name="groupName" />
+			<var method="StringUtil#lowerCase('${groupType}')" name="groupType" />
+
+			<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/${groupType}s/_${groupName}/view.json -u test@liferay.com:test" />
+
+			<var name="jsonPathClassName" value="$.data.loopDivisionCompositeJSONObject.entityClassNameId" />
+			<var name="jsonPathClassPK" value="$.data.loopDivisionCompositeJSONObject.entityClassPK" />
+
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassPK}')" name="classPK" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/removeFromStream.json -u ${followerEmailAddress}:test -d classNameId=${classNameId} -d classPK=${classPK} -d followingType=1" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="unfollowPeople">
+		<for list="${userScreenNameList}" param="userScreenName">
+			<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/people/_${userScreenName}/view.json -u test@liferay.com:test" />
+
+			<var name="jsonPathClassName" value="$.data.entityClassNameId" />
+			<var name="jsonPathClassPK" value="$.data.entityClassPK" />
+
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassPK}')" name="classPK" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/removeFromStream.json -u ${followerEmailAddress}:test -d classNameId=${classNameId} -d classPK=${classPK} -d followingType=1" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="unfollowTopics">
+		<for list="${topicNameList}" param="topicName">
+			<var name="jsonURL" value="${portalUrl}/web/guest/home/-/loop/topics/_${topicName}/view.json -u test@liferay.com:test" />
+
+			<var name="jsonPathClassName" value="$.data.loopTopicCompositeJSONObject.entityClassNameId" />
+			<var name="jsonPathClassPK" value="$.data.loopTopicCompositeJSONObject.entityClassPK" />
+
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassName}')" name="classNameId" />
+			<var method="JSONCurlUtil#get('${jsonURL}', '${jsonPathClassPK}')" name="classPK" />
+
+			<var name="curlArgs" value="${portalUrl}/web/guest/home/-/loop/feed/removeFromStream.json -u ${followerEmailAddress}:test -d classNameId=${classNameId} -d classPK=${classPK} -d followingType=1" />
+
+			<execute macro="LoopJson#executeCurl">
+				<var name="curlArgs" value="${curlArgs}" />
+			</execute>
+		</for>
+	</command>
+</definition>

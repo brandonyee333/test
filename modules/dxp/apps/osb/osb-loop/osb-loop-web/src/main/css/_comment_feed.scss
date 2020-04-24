@@ -1,0 +1,25 @@
+.comment-feed-container {
+	&:empty {
+		display: none;
+	}
+
+	.comment-container {
+		padding: 16px 0 8px;
+	}
+
+	.previous-comments {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(space-between);
+
+		margin: 24px 0 12px;
+
+		.secondary-info {
+			font-size: 14px;
+		}
+	}
+
+	.spinner-container {
+		margin-top: 12px;
+	}
+}

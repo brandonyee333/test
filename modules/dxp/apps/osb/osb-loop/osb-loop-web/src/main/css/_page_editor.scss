@@ -1,0 +1,65 @@
+.page-editor-container {
+	width: 100%;
+
+	.card-body-container {
+		margin: 0 20px;
+		position: relative;
+
+		> .loop-icon-container {
+			bottom: 12px;
+			opacity: 0.6;
+			position: absolute;
+			right: 0;
+		}
+
+		.content {
+			resize: none;
+		}
+
+		.content, .markdown-content-container {
+			font-size: 15px;
+			min-height: 324px;
+		}
+
+		.content, .title {
+			border-width: 0;
+			color: $primary;
+			overflow: hidden;
+			padding: 0;
+			width: 100%;
+		}
+
+		.warning {
+			.length-warning, .title {
+				color: $lightRed;
+			}
+
+			.length-warning {
+				margin-bottom: 24px;
+			}
+
+			.title {
+				margin-bottom: 0;
+			}
+		}
+
+		.title {
+			font-size: 38px;
+			font-weight: bold;
+			height: auto;
+			line-height: 48px;
+			margin-bottom: 24px;
+		}
+	}
+
+	.card-footer-container {
+		@include flexbox;
+		@include justify-content(flex-end);
+
+		padding: 16px 20px;
+
+		.btn-container {
+			margin-left: 16px;
+		}
+	}
+}

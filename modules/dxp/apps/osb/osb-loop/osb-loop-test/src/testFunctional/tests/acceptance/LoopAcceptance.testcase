@@ -1,0 +1,4239 @@
+<definition component-name="loop-acceptance">
+	<property name="loop.acceptance" value="true" />
+	<property name="loop.enabled" value="true" />
+	<!--<property name="hook.plugins.includes" value="portal-compat-hook" />-->
+	<property name="osgi.module.configuration.file.names" value="com.liferay.portal.security.auto.login.basic.auth.header.module.configuration.BasicAuthHeaderAutoLoginConfiguration.cfg:com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.cfg" />
+	<property name="osgi.module.configurations" value="enabled=true:blacklistBundleSymbolicNames=['com.liferay.portal.search.elasticsearch', 'com.liferay.portal.search.elasticsearch.shield', 'com.liferay.portal.search.elasticsearch.marvel.web']" />
+	<!--<property name="portlet.plugins.includes" value="asset-entry-set-portlet,asset-feed-portlet,asset-sharing-portlet,loop-portlet" />-->
+	<property name="skip.clean-app-server-deploy-dir" value="true" />
+	<property name="testray.main.component.name" value="Loop" />
+	<!--<property name="theme.plugins.includes" value="loop-theme" />
+	<property name="web.plugins.includes" value="url-metadata-scraper-web" />-->
+
+	<var name="userEmailAddress" value="loopuser01@liferay.com" />
+	<var name="userFirstName" value="Loop01" />
+	<var name="userLastName" value="User01" />
+	<var name="userName" value="Loop01 User01" />
+	<var name="userScreenName" value="loopuser01" />
+
+	<set-up>
+		<execute macro="Loop#firstSetupPG">
+			<var name="roleNames" value="Loop Admin" />
+		</execute>
+	</set-up>
+
+	<command name="AddEntry" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTimestamp">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTimestamp">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddEntryCommentHashtags" priority="5">
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="shareWithUserNameList" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="hashtagTopicNameList" value="${topicName1},${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntryComment#viewHashtag">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddEntryCommentReplies" priority="5">
+		<var name="feedEntryCommentReplyText1" value="Feed Entry Comment Reply1 Text" />
+		<var name="feedEntryCommentReplyText2" value="Feed Entry Comment Reply2 Text" />
+		<var name="feedEntryCommentReplyText3" value="Feed Entry Comment Reply3 Text" />
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryCommentReply">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyText1}" />
+			<var name="feedEntryCommentReplyText" value="${feedEntryCommentReplyText1}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryCommentReply">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyText2}" />
+			<var name="feedEntryCommentReplyText" value="${feedEntryCommentReplyText2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryCommentReply">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyText3}" />
+			<var name="feedEntryCommentReplyText" value="${feedEntryCommentReplyText3}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#showCommentReplies">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfCommentReplies" value="3" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyText3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#hideCommentReplies">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfCommentReplies" value="3" />
+		</execute>
+	</command>
+
+	<command name="AddEntryComments" priority="5">
+		<var name="feedEntryCommentText1" value="Feed Entry1 Comment1 Text" />
+		<var name="feedEntryCommentText2" value="Feed Entry1 Comment2 Text" />
+		<var name="feedEntryCommentText3" value="Feed Entry2 Comment1 Text" />
+		<var name="feedEntryCommentText4" value="Feed Entry2 Comment2 Text" />
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+	</command>
+
+	<command name="AddEntryCommentUserMentions" priority="5">
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="shareWithUserNameList" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="mentionUserNameList" value="${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUserMention">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${userName3} ${userName4}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="AddEntryHashtags" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="hashtagTopicNameList" value="${topicName1},${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewHashtag">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText} #${topicName1} #${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="AddEntrySharedWithTopics" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="shareWithTopicNameList" value="${topicName1},${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfTopicShares" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddEntrySharedWithUsers" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddEntryUserMentions" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+			<var name="mentionUserNameList" value="${userName2},${userName3}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserMention">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewUserViaSharedToList">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+			<var name="numberOfUserShares" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText} ${userName2} ${userName3}" />
+		</execute>
+	</command>
+
+	<command name="AddImageEntry" priority="5">
+		<var name="feedEntryImage" value="/Document_1.jpg" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTimestamp">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTimestamp">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddLinkEntry" priority="5">
+		<var name="feedEntryLinkUrl" value="http://www.yahoo.com" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryLinkUrl" value="${feedEntryLinkUrl}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTimestamp">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTimestamp">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="DeleteEntry" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#deleteEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="DeleteEntryComments" priority="5">
+		<var name="feedEntryCommentText1" value="Feed Entry1 Comment1 Text" />
+		<var name="feedEntryCommentText2" value="Feed Entry1 Comment2 Text" />
+		<var name="feedEntryCommentText3" value="Feed Entry2 Comment1 Text" />
+		<var name="feedEntryCommentText4" value="Feed Entry2 Comment2 Text" />
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#deleteEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#deleteEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNoReadMoreLink">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNoReadMoreLink">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNoReadMoreLink">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNoReadMoreLink">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+	</command>
+
+	<command name="EditEntryComments" priority="5">
+		<var name="feedEntryCommentText1" value="Feed Entry1 Comment1 Text" />
+		<var name="feedEntryCommentText2" value="Feed Entry1 Comment2 Text" />
+		<var name="feedEntryCommentText3" value="Feed Entry2 Comment1 Text" />
+		<var name="feedEntryCommentText4" value="Feed Entry2 Comment2 Text" />
+		<var name="feedEntryCommentTextEdit" value="Edit" />
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+			<var name="shareWithUserNameList" value="${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#editEntryCommentText">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryCommentContentEdit" value="${feedEntryCommentText2} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryCommentTextEdit" value="${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText3}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#editEntryCommentText">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3}" />
+			<var name="feedEntryCommentContentEdit" value="${feedEntryCommentText3} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryCommentTextEdit" value="${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewEditIndication">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewEditIndication">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewEditIndication">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName3}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewEditIndication">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText3} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName4}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText4}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+	</command>
+
+	<command name="EditEntryText" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="feedEntryTextEdit" value="Edit" />
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#editEntryText">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryContentEdit" value="${feedEntryText} ${feedEntryTextEdit}" />
+			<var name="feedEntryTextEdit" value="${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewEditIndication">
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewEditIndication">
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+	</command>
+
+	<command name="FollowGroups" priority="5">
+		<var name="departmentDescription1" value="Department Description1" />
+		<var name="departmentDescription2" value="Department Description2" />
+		<var name="departmentName1" value="Department Name1" />
+		<var name="departmentName2" value="Department Name2" />
+		<var name="locationDescription1" value="Location Description1" />
+		<var name="locationDescription2" value="Location Description2" />
+		<var name="locationName1" value="Location Name1" />
+		<var name="locationName2" value="Location Name2" />
+		<var name="teamDescription1" value="Team Description1" />
+		<var name="teamDescription2" value="Team Description2" />
+		<var name="teamName1" value="Team Name1" />
+		<var name="teamName2" value="Team Name2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${teamDescription1}" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${teamDescription2}" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${departmentDescription1}" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${departmentDescription2}" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopGroups#followGroup">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="2" />
+			<var name="groupDescription" value="${teamDescription1}" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="0" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="2" />
+			<var name="groupDescription" value="${teamDescription2}" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="0" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="2" />
+			<var name="groupDescription" value="${departmentDescription1}" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="0" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="2" />
+			<var name="groupDescription" value="${departmentDescription2}" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="0" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="2" />
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="0" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="2" />
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="0" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="FollowPeople" priority="5">
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userEmailAddress5" value="loopuser05@liferay.com" />
+		<var name="userEmailAddress6" value="loopuser06@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userFirstName5" value="Loop05" />
+		<var name="userFirstName6" value="Loop06" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userLastName5" value="User05" />
+		<var name="userLastName6" value="User06" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userName5" value="Loop05 User05" />
+		<var name="userName6" value="Loop06 User06" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+		<var name="userScreenName5" value="loopuser05" />
+		<var name="userScreenName6" value="loopuser06" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress5}" />
+			<var name="userFirstName" value="${userFirstName5}" />
+			<var name="userLastName" value="${userLastName5}" />
+			<var name="userScreenName" value="${userScreenName5}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress6}" />
+			<var name="userFirstName" value="${userFirstName6}" />
+			<var name="userLastName" value="${userLastName6}" />
+			<var name="userScreenName" value="${userScreenName6}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopPeople#followPerson">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopPeople#followPerson">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress5}" />
+		</execute>
+
+		<execute macro="LoopPeople#followPerson">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress6}" />
+		</execute>
+
+		<execute macro="LoopPeople#followPerson">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopPeople#viewPerson">
+			<var name="followerCount" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#viewPerson">
+			<var name="followerCount" value="2" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName6}" />
+		</execute>
+	</command>
+
+	<command name="FollowTopics" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="SearchPeople" priority="5">
+		<var name="jobTitleName2" value="QA Engineer02" />
+		<var name="jobTitleName3" value="QA Engineer03" />
+		<var name="jobTitleName4" value="QA Engineer04" />
+		<var name="locationDescription1" value="Location Description1" />
+		<var name="locationDescription2" value="Location Description2" />
+		<var name="locationDescription3" value="Location Description3" />
+		<var name="locationName1" value="Location Name1" />
+		<var name="locationName2" value="Location Name2" />
+		<var name="locationName3" value="Location Name3" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#createJobTitle">
+			<var name="jobTitleName" value="${jobTitleName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createJobTitle">
+			<var name="jobTitleName" value="${jobTitleName3}" />
+		</execute>
+
+		<execute macro="LoopJson#createJobTitle">
+			<var name="jobTitleName" value="${jobTitleName4}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="jobTitleName" value="${jobTitleName2}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="jobTitleName" value="${jobTitleName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="jobTitleName" value="${jobTitleName4}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription3}" />
+			<var name="groupName" value="${locationName3}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${locationName3}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName2}" />
+			<var name="keyword" value="${userName2}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userLocation" value="${locationName1}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName3}" />
+			<var name="keyword" value="${userName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userLocation" value="${locationName2}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName4}" />
+			<var name="keyword" value="${userName4}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userLocation" value="${locationName3}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName2}" />
+			<var name="keyword" value="${userFirstName2}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userLocation" value="${locationName1}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName3}" />
+			<var name="keyword" value="${userFirstName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userLocation" value="${locationName2}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName4}" />
+			<var name="keyword" value="${userFirstName4}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userLocation" value="${locationName3}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName2}" />
+			<var name="keyword" value="${userLastName2}" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userLocation" value="${locationName1}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName3}" />
+			<var name="keyword" value="${userLastName3}" />
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userLocation" value="${locationName2}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopSearch#searchPerson">
+			<var name="jobTitleName" value="${jobTitleName4}" />
+			<var name="keyword" value="${userLastName4}" />
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userLocation" value="${locationName3}" />
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="ViewExpertise" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicDescription3" value="Topic Description3" />
+		<var name="topicDescription4" value="Topic Description4" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="topicName3" value="TopicName3" />
+		<var name="topicName4" value="TopicName4" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription3}" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription4}" />
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="ViewGroupMemberships" priority="5">
+		<var name="departmentDescription1" value="Department Description1" />
+		<var name="departmentDescription2" value="Department Description2" />
+		<var name="departmentName1" value="Department Name1" />
+		<var name="departmentName2" value="Department Name2" />
+		<var name="locationDescription1" value="Location Description1" />
+		<var name="locationDescription2" value="Location Description2" />
+		<var name="locationName1" value="Location Name1" />
+		<var name="locationName2" value="Location Name2" />
+		<var name="teamDescription1" value="Team Description1" />
+		<var name="teamDescription2" value="Team Description2" />
+		<var name="teamName1" value="Team Name1" />
+		<var name="teamName2" value="Team Name2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userEmailAddress5" value="loopuser05@liferay.com" />
+		<var name="userEmailAddress6" value="loopuser06@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userFirstName5" value="Loop05" />
+		<var name="userFirstName6" value="Loop06" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userLastName5" value="User05" />
+		<var name="userLastName6" value="User06" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userName5" value="Loop05 User05" />
+		<var name="userName6" value="Loop06 User06" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+		<var name="userScreenName5" value="loopuser05" />
+		<var name="userScreenName6" value="loopuser06" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress5}" />
+			<var name="userFirstName" value="${userFirstName5}" />
+			<var name="userLastName" value="${userLastName5}" />
+			<var name="userScreenName" value="${userScreenName5}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress6}" />
+			<var name="userFirstName" value="${userFirstName6}" />
+			<var name="userLastName" value="${userLastName6}" />
+			<var name="userScreenName" value="${userScreenName6}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${teamDescription1}" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="leadScreenNameList" value="${userScreenName}" />
+			<var name="memberScreenNameList" value="${userScreenName2},${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${teamDescription2}" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="leadScreenNameList" value="${userScreenName4}" />
+			<var name="memberScreenNameList" value="${userScreenName5},${userScreenName6}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${departmentDescription1}" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="leadScreenNameList" value="${userScreenName2}" />
+			<var name="memberScreenNameList" value="${userScreenName},${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${departmentDescription2}" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="leadScreenNameList" value="${userScreenName5}" />
+			<var name="memberScreenNameList" value="${userScreenName4},${userScreenName6}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="leadScreenNameList" value="${userScreenName3}" />
+			<var name="memberScreenNameList" value="${userScreenName},${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="leadScreenNameList" value="${userScreenName6}" />
+			<var name="memberScreenNameList" value="${userScreenName4},${userScreenName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="3" />
+			<var name="groupDescription" value="${teamDescription1}" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="3" />
+		</execute>
+
+		<execute macro="LoopGroups#viewLead">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="leadEmailAddress" value="${userEmailAddress}" />
+			<var name="leadName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberEmailAddress" value="${userEmailAddress2}" />
+			<var name="memberName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberEmailAddress" value="${userEmailAddress3}" />
+			<var name="memberName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="3" />
+			<var name="groupDescription" value="${teamDescription2}" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="3" />
+		</execute>
+
+		<execute macro="LoopGroups#viewLead">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="leadEmailAddress" value="${userEmailAddress4}" />
+			<var name="leadName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberEmailAddress" value="${userEmailAddress5}" />
+			<var name="memberName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberEmailAddress" value="${userEmailAddress6}" />
+			<var name="memberName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="3" />
+			<var name="groupDescription" value="${departmentDescription1}" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="3" />
+		</execute>
+
+		<execute macro="LoopGroups#viewLead">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="leadEmailAddress" value="${userEmailAddress2}" />
+			<var name="leadName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberEmailAddress" value="${userEmailAddress}" />
+			<var name="memberName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberEmailAddress" value="${userEmailAddress3}" />
+			<var name="memberName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="3" />
+			<var name="groupDescription" value="${departmentDescription2}" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="3" />
+		</execute>
+
+		<execute macro="LoopGroups#viewLead">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="leadEmailAddress" value="${userEmailAddress5}" />
+			<var name="leadName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberEmailAddress" value="${userEmailAddress4}" />
+			<var name="memberName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberEmailAddress" value="${userEmailAddress6}" />
+			<var name="memberName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="3" />
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="3" />
+		</execute>
+
+		<execute macro="LoopGroups#viewLead">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="leadEmailAddress" value="${userEmailAddress3}" />
+			<var name="leadName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberEmailAddress" value="${userEmailAddress}" />
+			<var name="memberName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberEmailAddress" value="${userEmailAddress2}" />
+			<var name="memberName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewGroup">
+			<var name="followerCount" value="3" />
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="3" />
+		</execute>
+
+		<execute macro="LoopGroups#viewLead">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="leadEmailAddress" value="${userEmailAddress6}" />
+			<var name="leadName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberEmailAddress" value="${userEmailAddress4}" />
+			<var name="memberName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewMember">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberEmailAddress" value="${userEmailAddress5}" />
+			<var name="memberName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopGroups#viewNoMember">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberName" value="${userName3}" />
+		</execute>
+	</command>
+
+	<command name="ViewGroups" priority="5">
+		<var name="departmentDescription1" value="Department Description1" />
+		<var name="departmentDescription2" value="Department Description2" />
+		<var name="departmentName1" value="Department Name1" />
+		<var name="departmentName2" value="Department Name2" />
+		<var name="locationDescription1" value="Location Description1" />
+		<var name="locationDescription2" value="Location Description2" />
+		<var name="locationName1" value="Location Name1" />
+		<var name="locationName2" value="Location Name2" />
+		<var name="teamDescription1" value="Team Description1" />
+		<var name="teamDescription2" value="Team Description2" />
+		<var name="teamName1" value="Team Name1" />
+		<var name="teamName2" value="Team Name2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${teamDescription1}" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${teamDescription2}" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${departmentDescription1}" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${departmentDescription2}" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopJson#createGroup">
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopPeople#updateGroup">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeople#viewPerson">
+			<var name="groupCount" value="3" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${locationName1}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoGroup">
+			<var name="groupName" value="${departmentName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoGroup">
+			<var name="groupName" value="${teamName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoGroup">
+			<var name="groupName" value="${locationName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="1" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${departmentName1}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="1" />
+			<var name="groupDescription" value="${departmentDescription1}" />
+			<var name="groupName" value="${departmentName1}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="1" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${teamName1}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="1" />
+			<var name="groupDescription" value="${teamDescription1}" />
+			<var name="groupName" value="${teamName1}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="1" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${locationName1}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="1" />
+			<var name="groupDescription" value="${locationDescription1}" />
+			<var name="groupName" value="${locationName1}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopPeople#viewPerson">
+			<var name="groupCount" value="3" />
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userLocation" value="${locationName2}" />
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewGroup">
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoGroup">
+			<var name="groupName" value="${departmentName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoGroup">
+			<var name="groupName" value="${teamName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoGroup">
+			<var name="groupName" value="${locationName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="1" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${departmentName2}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="1" />
+			<var name="groupDescription" value="${departmentDescription2}" />
+			<var name="groupName" value="${departmentName2}" />
+			<var name="groupType" value="Department" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="1" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${teamName2}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="1" />
+			<var name="groupDescription" value="${teamDescription2}" />
+			<var name="groupName" value="${teamName2}" />
+			<var name="groupType" value="Team" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoGroupsSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="followerCount" value="1" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="1" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${locationName2}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="1" />
+			<var name="groupDescription" value="${locationDescription2}" />
+			<var name="groupName" value="${locationName2}" />
+			<var name="groupType" value="Location" />
+			<var name="memberCount" value="1" />
+		</execute>
+	</command>
+
+	<command name="ViewTopicExperts" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userEmailAddress5" value="loopuser05@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userFirstName5" value="Loop05" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userLastName5" value="User05" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userName5" value="Loop05 User05" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+		<var name="userScreenName5" value="loopuser05" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress3}" />
+			<var name="userFirstName" value="${userFirstName3}" />
+			<var name="userLastName" value="${userLastName3}" />
+			<var name="userScreenName" value="${userScreenName3}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress4}" />
+			<var name="userFirstName" value="${userFirstName4}" />
+			<var name="userLastName" value="${userLastName4}" />
+			<var name="userScreenName" value="${userScreenName4}" />
+		</execute>
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress5}" />
+			<var name="userFirstName" value="${userFirstName5}" />
+			<var name="userLastName" value="${userLastName5}" />
+			<var name="userScreenName" value="${userScreenName5}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress2}" />
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress3}" />
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress4}" />
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress5}" />
+			<var name="expertName" value="${userName5}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+	</command>
+</definition>

@@ -1,0 +1,89 @@
+.sortable-list-item-container {
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(space-between);
+	@include transition(background-color 0.4s, border-color 0.4s, box-shadow 0.4s);
+
+	background-color: $secondary;
+	border: 1px solid rgba($primary, 0.1);
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-size: 13px;
+	min-width: 0;
+	overflow: hidden;
+	padding: 12px 20px;
+	white-space: nowrap;
+	width: 100%;
+
+	&:hover {
+		background-color: $hoverLightGray;
+		border: 1px solid $inputBorderColor;
+		box-shadow: 0 3px 10px rgba($black, 0.1);
+		color: $theme;
+		cursor: pointer;
+	}
+
+	&.selected {
+		background-color: rgba($theme, 0.1);
+		border-color: $theme;
+	}
+
+	.avatar-container, .creator-info, .secondary-info, .title {
+		margin-right: 12px;
+	}
+
+	.creator-info {
+		@include align-items(center);
+		@include flexbox;
+
+		overflow: hidden;
+	}
+
+	.creator-info .entity-link-container, .title {
+		@include ellipsis;
+
+		color: $primary;
+		font-weight: 600;
+
+		&:hover {
+			color: $theme;
+		}
+	}
+
+	.secondary-info {
+		@include ellipsis;
+	}
+
+	@media #{$mediaMiniMin} {
+		.creator-info, .secondary-info {
+			@include flex-basis(160px);
+
+			font-size: 13px;
+		}
+
+		.title {
+			@include flex-basis(380px);
+		}
+	}
+
+	@media #{$mediaMiniMax} {
+		padding: 12px;
+
+		.creator-info {
+			margin-right: 0;
+			overflow: visible;
+
+			> .avatar-container {
+				margin-right: 0;
+			}
+
+			> .entity-link-container {
+				display: none;
+			}
+		}
+
+		.secondary-info {
+			display: none;
+		}
+	}
+}

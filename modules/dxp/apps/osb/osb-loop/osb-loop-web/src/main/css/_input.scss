@@ -1,0 +1,76 @@
+.input-container {
+	position: relative;
+
+	&.focus .prefix-wrapper, input:focus {
+		border-color: $theme;
+	}
+
+	&.input-error > input {
+		border-color: $error;
+		color: $error;
+	}
+
+	&.input-icon input {
+		padding-left: 40px;
+	}
+
+	&.input-success > input {
+		border-color: $success;
+		color: $success;
+	}
+
+	&.prefix > input {
+		border-left-width: 0;
+		border-radius: 0 4px 4px 0;
+	}
+
+	&.row > input {
+		width: 100%;
+	}
+
+	.prefix-wrapper {
+		@include align-items(center);
+		@include inline-flex;
+		@include transition(border-color 0.4s ease-in);
+
+		background-color: rgba($primary, 0.05);
+		border: 1px solid $borderLightGray;
+		border-radius: 4px 0 0 4px;
+		border-right-width: 0;
+		box-sizing: border-box;
+		color: $primary;
+		height: 40px;
+		padding: 0 12px;
+		vertical-align: bottom;
+	}
+
+	> input {
+		@include transition(border-color 0.4s ease-in, color 0.4s ease-in);
+
+		background-color: $secondary;
+		border: 1px solid $borderLightGray;
+		border-radius: 4px;
+		box-sizing: border-box;
+		height: 40px;
+		line-height: 40px;
+		margin-bottom: 0;
+		overflow: hidden;
+		padding: 0 12px;
+
+		&:focus {
+			outline: none;
+		}
+
+		&:disabled {
+			background: rgba($primary, 0.05);
+		}
+	}
+
+	.loop-icon-container {
+		color: rgba($primary, 0.6);
+		left: 12px;
+		pointer-events: none;
+		position: absolute;
+		top: 12px;
+	}
+}

@@ -1,0 +1,22 @@
+.entity-list-modal-container {
+	ul {
+		list-style: none;
+		margin: 0;
+
+		li {
+			padding: 12px;
+
+			&:first-child {
+				padding-top: 24px;
+			}
+
+			&:last-child {
+				padding-bottom: 24px;
+			}
+		}
+	}
+
+	.loading-wrapper-container.loading {
+		min-height: 300px;
+	}
+}

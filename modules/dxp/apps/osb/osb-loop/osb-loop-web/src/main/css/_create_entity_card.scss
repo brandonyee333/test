@@ -1,0 +1,25 @@
+.create-entity-card-container {
+	padding: 12px 0;
+
+	> a {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(space-between);
+
+		border-left: 2px solid transparent;
+		font-weight: 600;
+		padding: 12px 20px;
+		white-space: nowrap;
+
+		&:hover {
+			background-color: rgba($theme, 0.1);
+		}
+
+		> .loop-icon-container {
+			background-color: $theme;
+			border-radius: 50%;
+			margin-left: 12px;
+			padding: 4px;
+		}
+	}
+}

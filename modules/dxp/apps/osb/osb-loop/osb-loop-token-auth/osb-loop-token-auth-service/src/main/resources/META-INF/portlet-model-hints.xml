@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.loop.token.auth.model.TokenAuthEntry">
+		<field name="tokenAuthEntryId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="device" type="String" />
+		<field name="token" type="String">
+			<hint name="max-length">1000</hint>
+		</field>
+		<field name="loginDate" type="Date" />
+		<field name="loginIP" type="String" />
+	</model>
+</model-hints>

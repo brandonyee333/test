@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmMask Confirm Mask to only be shown when active is true. 1`] = `
+<div class="confirm-mask-container">
+  <span>
+    <div class="confirm-mask">
+      <div class="confirm-mask-content">
+        <div class="message"></div>
+        <div class="controls">
+          <button class="btn btn-container btn-secondary" type="button">cancel</button>
+          <button class="btn btn-container btn-primary" type="button">apply</button>
+        </div>
+        <div class="checkbox-container">
+          <input id="checkbox1" class="checkbox-input" type="checkbox">
+          <div class="checkbox"></div>
+          <label for="checkbox1" class="checkbox-label">do-not-show-this-message-again</label>
+        </div>
+      </div>
+    </div>
+  </span>
+</div>
+`;
+
+exports[`ConfirmMask renders 1`] = `
+<div class="confirm-mask-container">
+  <span></span>
+</div>
+`;

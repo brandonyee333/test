@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewDivisionsModal renders 1`] = `
+<div class="entity-list-modal-container">
+  <div class="modal-header-container">
+    <h1 class="title" ref="title" tabindex="0">new-groups</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-close-long-16"></use>
+    </svg>
+  </div>
+  <div class="modal-body-container modal-body-scrollable">
+    <div class="loading-wrapper-container loading">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

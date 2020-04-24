@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SinglePostView should render loading 1`] = `
+<div class="error-wrapper-container loading single-post-view-container">
+  <div class="card-container loading-card-container">
+    <div class="spinner-container">
+      <div class="spinner small"></div>
+    </div>loading</div>
+</div>
+`;
+
+exports[`SinglePostView should render with loading set to false 1`] = `
+<div class="error-wrapper-container single-post-view-container">
+  <div class="card-container post-container">
+    <div class="post-header-container">
+      <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+        <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-small">
+          <div class="avatar-placeholder"></div>
+        </a>
+      </div>
+      <div class="header-text-container">
+        <span class="shared-to-summary-container">
+          <a class="entity-link-container" href="/people/0">Joe Bloggs0</a>
+        </span>
+        <a href="/web/guest/home/-/loop/feed/0" class="secondary-info">
+          <span data-tooltip=""></span>
+        </a>
+      </div>
+    </div>
+    <button title="remove-from-bookmarks" data-tooltip="" type="button" class="inline-button-container bookmark-flag-container">
+      <svg class="loop-icon-container loop-icon-bookmark loop-icon-large-1x loop-icon-warning" data-tooltip="">
+        <use href="#loop-icon-bookmark-24"></use>
+      </svg>
+    </button>
+    <svg id="unit_tests_namespace_POST_MENU2" class="loop-icon-container loop-icon-ellipsis loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-ellipsis-24"></use>
+    </svg>
+    <div class="post-content-container">
+      <div class="markdown-content-container">
+        <p>0Lorem ipsum dolor sit amet,
+          <a class="mention" href="#">Joe Bloggs</a> assa sit amet ultricies rutrum. Aenean finibus
+          <a class="mention" href="#">Joe Bloggs</a> felis, eget varius mauris scelerisque quis. Pellentesque nisl tortor, semper at libero sit amet, consequat aliquet nulla. Morbi sit amet malesuada lacus. Aenean rutrum sit amet nulla id dictum. Phasellus tempor vel nisl eget scelerisque. Curabitur ut convallis enim. Aliquam fermentum vehicula velit a maximus. Donec varius dictum orci, commodo efficitur arcu fringilla vitae. Donec risus orci, imperdiet a placerat at, luctus rhoncus sem. Cras suscipit vulputate ligula. In at enim nisl.</p>
+      </div>
+    </div>
+    <div class="card-actions">
+      <button type="button" class="inline-button-container card-action">
+        <span class="loop-icon-label-container loop-icon-label-spacing-small liked" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-heart-full loop-icon-large-1x heart liked" data-tooltip="">
+            <use href="#loop-icon-heart-full-24"></use>
+          </svg>
+          <span class="loop-icon-label">liked</span>
+        </span>
+      </button>
+      <a class="card-action" href="javascript:;">
+        <span class="loop-icon-label-container loop-icon-label-spacing-small" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-balloon-topic loop-icon-large-1x" data-tooltip="">
+            <use href="#loop-icon-balloon-topic-24"></use>
+          </svg>
+          <span class="loop-icon-label">comment</span>
+        </span>
+      </a>
+    </div>
+    <div class="comments">
+      <div class="comment-creator-container">
+        <div class="comment-control">
+          <div class="avatar-container">
+            <a href="/people/100" style="" title="Joe Bloggs100" class="avatar avatar-size-smallest">
+              <div class="avatar-placeholder"></div>
+            </a>
+          </div>
+        </div>
+        <div class="drop-target-container comment-input">
+          <span></span>
+          <div class="editor-container"></div>
+        </div>
+        <div class="comment-control">
+          <svg class="loop-icon-container loop-icon-camera loop-icon-large-1x upload-image" data-tooltip="">
+            <use href="#loop-icon-camera-24"></use>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

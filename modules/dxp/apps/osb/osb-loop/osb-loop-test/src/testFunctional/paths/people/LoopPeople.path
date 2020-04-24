@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>LoopPeople</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopPeople</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>CREATE_PERSON_LINK</td>
+	<td>//a[contains(.,'Create Person')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_COUNT</td>
+	<td>//div[contains(@class,'sub-nav-container')]//a[contains(@href,'all')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_LIST</td>
+	<td>//div[contains(@class,'entity-index')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_CARD</td>
+	<td>//div[contains(@class,'entity')]/div[contains(@class,'index') and contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_PROFILE_IMAGE</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(.,'${key_userName}') and contains(@class,'container')]/div[contains(@class,'avatar')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_NAME</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_userName}')]//a | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_userName}')]//a[contains(@class,'link')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_JOB_TITLE</td>
+	<td>//div/div/div/div[contains(@class,'entity') and contains(.,'${key_userName}')]/div[contains(@class,'details')]/div[contains(.,'${key_jobTitleName}')] | //div/div/div/div[contains(@class,'entity') and contains(.,'${key_userName}')]/div[contains(@class,'details')]/span[contains(.,'${key_jobTitleName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_LOCATION</td>
+	<td>//div/div/div/div[contains(@class,'entity') and contains(.,'${key_userName}')]/div[contains(@class,'details')]/div[contains(.,'${key_userLocation}')] | //div/div/div/div[contains(@class,'entity') and contains(.,'${key_userName}')]/div[contains(@class,'details')]/span[contains(.,'${key_userLocation}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWER_COUNT</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(.,'${key_userName}') and contains(@class,'container')]//div[contains(@class,'user-participation-summary')]//div[contains(@class,'follower-count')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_GROUP_COUNT</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(.,'${key_userName}') and contains(@class,'container')]//div[contains(@class,'user-participation-summary')]//div[contains(@class,'groups')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOW_BUTTON</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(.,'${key_userName}') and contains(@class,'container')]/button/*[local-name()='svg' and contains(@title,'Follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_UNFOLLOW_BUTTON</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(.,'${key_userName}') and contains(@class,'container')]/button/*[local-name()='svg' and contains(@title,'Unfollow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOW_MENU_BUTTON</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_userName}')]//parent::div//button | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_userName}')]//button[contains(@class,'follow')]/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--PERSON_OVERLAY-->
+<tr>
+	<td>PERSON_OVERLAY_AVATAR</td>
+	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OVERLAY_NAME</td>
+	<td>//div[contains(@class,'entity-summary-container')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OVERLAY_FOLLOWERS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Follower')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OVERLAY_GROUPS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Group')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OVERLAY_EXPERTISE</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Expertise')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OVERLAY_FOLLOW_BUTTON</td>
+	<td>//div[contains(@class,'entity-summary-container')]//button[contains(@class,'follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

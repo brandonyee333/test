@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DivisionMembersCard renders 1`] = `
+<div class="card-container entity-category-card-container small">
+  <div class="card-header-container">members</div>
+  <div class="loading-wrapper-container loading">
+    <div class="mask">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <div class="loading-content"></div>
+  </div>
+</div>
+`;

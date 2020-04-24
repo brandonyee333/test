@@ -1,0 +1,120 @@
+.btn-container {
+	@include box-shadow(none);
+	@include text-shadow(none);
+
+	background: $secondary;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	color: $theme;
+	font-size: inherit;
+	font-weight: 600;
+	padding: 6px 16px;
+
+	&:focus, &.focused {
+		@include box-shadow(0 0 0 2px rgba($theme, 0.3));
+
+		outline: none;
+	}
+
+	&:hover, &.active, &.hovered {
+		opacity: 0.8;
+	}
+
+	@each $pair in $displayColors {
+		&.btn-#{nth($pair, 1)} {
+			background: nth($pair, 2);
+			color: $secondary;
+		}
+
+		&.btn-text-#{nth($pair, 1)} {
+			color: nth($pair, 2);
+		}
+	}
+
+	&.btn-anchor {
+		text-transform: none;
+	}
+
+	&.btn-badge, &.btn-badge-large {
+		border-radius: 50%;
+		padding: 0;
+		position: relative;
+
+		.loop-icon {
+			@include center(both);
+		}
+	}
+
+	&.btn-badge {
+		height: 36px;
+		width: 36px;
+	}
+
+	&.btn-badge-large {
+		height: 48px;
+		width: 48px;
+	}
+
+	&.btn-cancel {
+		background-color: rgba($primary, 0.4);
+		color: $secondary;
+	}
+
+	&.btn-empty, &.btn-inverted {
+		background: transparent;
+	}
+
+	&.btn-inverted {
+		border-color: currentColor;
+	}
+
+	&.btn-large {
+		padding: 12px 32px;
+
+		&.btn-pill {
+			border-radius: 24px;
+		}
+	}
+
+	&.btn-pill {
+		border-radius: 18px;
+		padding: 6px 11px;
+	}
+
+	&.btn-plus-more-pill {
+		background-color: rgba($theme, 0.1);
+		font-size: 12px;
+		height: 36px;
+	}
+
+	&.btn-secondary {
+		background-color: $secondary;
+		border-color: rgba($primary, 0.2);
+		color: rgba($primary, 0.4);
+
+		&.active {
+			@include box-shadow(none);
+		}
+	}
+
+	&.close {
+		color: $primary;
+
+		&:focus {
+			@include box-shadow(none);
+		}
+	}
+
+	&.disabled, &[disabled] {
+		opacity: 0.4;
+	}
+
+	.loop-icon-container {
+		vertical-align: middle;
+	}
+
+	@media #{$mediaMediumMax} {
+		margin-top: 0;
+		width: auto;
+	}
+}

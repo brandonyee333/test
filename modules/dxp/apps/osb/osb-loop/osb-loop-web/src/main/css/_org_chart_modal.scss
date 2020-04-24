@@ -1,0 +1,156 @@
+.org-chart-modal-container {
+	@include flex-direction(column);
+	@include flexbox;
+
+	height: 100%;
+
+	.modal-body-container {
+		@include flexbox;
+
+		height: 100%;
+		min-height: 0;
+
+		> .no-results-container, > .org-chart-data-pane-container {
+			@include flex-basis(327px);
+			@include flex-direction(column);
+			@include flexbox;
+
+			background-color: #FAFAFA;
+			border-left: 1px solid $borderLightGray;
+			overflow: hidden;
+		}
+
+		.org-chart-container {
+			@include flex(1);
+
+			position: relative;
+
+			.svg-wrapper {
+				height: 100%;
+				width: 100%;
+
+				svg {
+					cursor: move;
+					position: absolute;
+				}
+			}
+
+			.node {
+				cursor: pointer;
+
+				&:hover rect {
+					stroke: $theme;
+				}
+
+				rect {
+					@include transition(all 400ms ease);
+
+					fill: $secondary;
+					stroke: $borderLightGray;
+					stroke-width: 1px;
+				}
+
+				&.selected {
+					stroke: $theme;
+					stroke-width: 2px;
+				}
+
+				@each $color in $avatarColors {
+					.color-#{index($avatarColors, $color)} {
+						fill: $color;
+					}
+				}
+
+				.avatar-icon {
+					fill: $secondary;
+				}
+
+				.name {
+					font-size: 14px;
+					font-weight: 600;
+				}
+
+				.secondary-info {
+					fill: rgba($primary, 0.6);
+					font-size: 12px;
+				}
+			}
+
+			.link {
+				fill: none;
+				stroke: rgba($primary, 0.4);
+				stroke-width: 2px;
+
+				&.highlight {
+					stroke: $theme;
+				}
+			}
+
+			.org-chart {
+				background-color: #F4F8FF;
+			}
+
+			.tree-drag {
+				cursor: move;
+				fill: none;
+				pointer-events: all;
+			}
+
+			.zoom-controls {
+				@include align-items(center);
+				@include flexbox;
+
+				background: #FFF;
+				border: 1px solid rgba($primary, 0.2);
+				border-radius: 4px;
+				bottom: 24px;
+				box-shadow: 0 3px 10px 0 rgba($black, 0.1);
+				font-size: 12px;
+				font-weight: 600;
+				padding: 0 8px;
+				position: absolute;
+				right: 24px;
+
+				.loop-icon-container {
+					background: rgba($theme, 0.1);
+					border-radius: 50%;
+					color: $theme;
+					cursor: pointer;
+					margin: 12px;
+					padding: 4px;
+				}
+			}
+		}
+	}
+
+	.org-chart-data-pane-container {
+		> div {
+			padding: 0 20px;
+
+			&:first-child {
+				background: $secondary;
+				border-bottom: 1px solid $borderLightGray;
+				padding: 12px 20px;
+			}
+
+			&:last-child {
+				height: 100%;
+				overflow-y: scroll;
+			}
+		}
+
+		.category-title {
+			font-size: 12px;
+			font-weight: 600;
+
+			> span {
+				color: rgba($primary, 0.4);
+				margin-left: 4px;
+			}
+		}
+
+		.category-title, .entity-display-container {
+			padding: 12px 0;
+		}
+	}
+}

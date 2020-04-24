@@ -1,0 +1,39 @@
+.announcement-title-container {
+	box-sizing: border-box;
+	color: rgba($primary, 0.4);
+	padding: 36px 92px 0 28px;
+	width: 100%;
+
+	&.required-highlight input {
+		@include input-placeholder {
+			color: rgba($lightRed, 0.4);
+		}
+	}
+
+	&.warn {
+		input, .length-warning {
+			color: $lightRed;
+		}
+
+		.length-warning {
+			margin-top: 16px;
+		}
+	}
+
+	input {
+		border-width: 0;
+		box-shadow: none;
+		box-sizing: border-box;
+		font-size: 22px;
+		font-weight: 600;
+		height: 1.5em;
+		line-height: 1.5em;
+		margin-bottom: 0;
+		padding: 0;
+		width: 100%;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}

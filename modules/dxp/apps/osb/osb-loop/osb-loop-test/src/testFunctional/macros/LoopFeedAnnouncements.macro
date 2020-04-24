@@ -1,0 +1,175 @@
+<definition>
+	<command name="addAnnouncementEntry">
+		<execute macro="LoopFeedEntryAnnouncements#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#makeAnnouncement">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryStickyTimeInDays" value="${feedEntryStickyTimeInDays}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+			<var name="sendEmailNotification" value="${sendEmailNotification}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#post" />
+
+		<execute macro="LoopFeedEntryAnnouncements#viewAnnouncementAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+		</execute>
+	</command>
+
+	<command name="addEntryComment">
+		<execute macro="LoopFeedEntryAnnouncements#clickAddCommentLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentAnnouncements#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedAnnouncements#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentAnnouncements#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentAnnouncements#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="deleteEntry">
+		<execute macro="LoopFeedEntryAnnouncements#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickDeleteLink" />
+
+		<execute macro="LoopFeedEntry#deleteCmd" />
+
+		<execute macro="LoopFeedEntryAnnouncements#viewNone">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="editAnnouncementEntry">
+		<execute macro="LoopFeedEntryAnnouncements#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickEditLink" />
+
+		<execute macro="LoopFeedEntry#clickEditTextField" />
+
+		<execute macro="LoopFeedEntry#typeSpaceInEditTextField" />
+
+		<execute macro="LoopFeedEntry#typeTextInEditTextField">
+			<var name="feedEntryText" value="${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryInEditTextField">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#editAnnouncementEntry">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryStickyTimeInDays" value="${feedEntryStickyTimeInDays}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+			<var name="sendEmailNotification" value="${sendEmailNotification}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#postEdit" />
+
+		<execute macro="LoopFeedEntryAnnouncements#viewAnnouncementAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContentEdit}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+		</execute>
+	</command>
+
+	<command name="followEntryAuthorViaAnnouncementOverlay">
+		<execute macro="LoopFeedEntry#gotoAnnouncementsTab" />
+
+		<execute macro="LoopFeedEntryAnnouncements#mouseOverAuthorProfilePicture">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickFollowButtonViaOverlay" />
+	</command>
+
+	<command name="shareEntryComment">
+		<if>
+			<and>
+				<isset var="mentionUserNameList" />
+				<not>
+					<contains string="${mentionUserNameList}" substring="{mentionUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryCommentAnnouncements#mentionUsers">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="mentionUserNameList" value="${mentionUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="mentionGroupNameList" />
+				<not>
+					<contains string="${mentionGroupNameList}" substring="{mentionGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryCommentAnnouncements#mentionGroups">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="hashtagTopicNameList" />
+				<not>
+					<contains string="${hashtagTopicNameList}" substring="{hashtagTopicNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryCommentAnnouncements#hashtagTopics">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+				</execute>
+			</then>
+		</if>
+	</command>
+
+	<command name="unfollowEntryAuthorViaAnnouncementOverlay">
+		<execute macro="LoopFeedEntry#gotoAnnouncementsTab" />
+
+		<execute macro="LoopFeedEntryAnnouncements#mouseOverAuthorProfilePicture">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickUnfollowButtonViaOverlay" />
+	</command>
+</definition>

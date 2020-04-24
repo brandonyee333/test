@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IndexPagination renders 1`] = `
+<div class="card-container index-pagination-container">
+  <div class="loading-wrapper-container loading">
+    <div class="mask">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <div class="loading-content">
+      <div class="entity-index-item-wrapper-container"></div>
+    </div>
+  </div>
+</div>
+`;

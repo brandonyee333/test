@@ -1,0 +1,121 @@
+$entityCategoryAvatarBorderColor: #1B83FB;
+
+.entity-category-card-container {
+	&.medium .category {
+		@include flexbox;
+
+		.category-content {
+			width: 75%;
+		}
+
+		.category-label {
+			padding: 12px 20px 0 0;
+			text-align: right;
+			width: 25%;
+		}
+	}
+
+	.category {
+		margin-top: 12px;
+
+		&.line-bottom .avatar-container:first-child:after, &.line-top .avatar-container:first-child:before {
+			border-left: 2px solid $entityCategoryAvatarBorderColor;
+			content: "";
+			height: 32px;
+			position: absolute;
+			right: 48%;
+		}
+
+		&.line-bottom {
+			margin-bottom: 20px;
+
+			.avatar-container:first-child:after {
+				border-image: linear-gradient(to top, transparent 0%, $entityCategoryAvatarBorderColor) 1 100%;
+				top: 100%;
+			}
+		}
+
+		&.line-top {
+			margin-top: 20px;
+
+			.avatar-container:first-child:before {
+				border-image: linear-gradient(to bottom, transparent 0%, $entityCategoryAvatarBorderColor) 1 100%;
+				bottom: 100%;
+			}
+		}
+
+		&.line-bottom, &.line-top {
+			.avatar-container:first-child {
+				@include flex-basis(initial);
+
+				border: 2px solid $entityCategoryAvatarBorderColor;
+				margin-left: -2px;
+				position: relative;
+			}
+		}
+
+		.category-content {
+			@include flex-wrap(wrap);
+			@include flexbox;
+		}
+
+		.category-label {
+			@include ellipsis;
+
+			box-sizing: border-box;
+			font-size: 12px;
+			font-weight: 600;
+			padding: 0 12px 8px 0;
+		}
+	}
+
+	.category-column {
+		@include flex-direction(column);
+
+		.avatar-container {
+			display: inline-block;
+			margin-bottom: 0;
+			margin-right: 12px;
+		}
+
+		.entity {
+			@include align-items(center);
+			@include flexbox;
+
+			margin-bottom: 12px;
+			width: 100%;
+
+			.name {
+				@include ellipsis;
+
+				font-size: 13px;
+				font-weight: 600;
+			}
+		}
+	}
+
+	.category-row .avatar-container {
+		@include flex-basis(18%);
+
+		margin-bottom: 12px;
+		margin-right: 4px;
+	}
+
+	.card-footer-container {
+		text-align: center;
+	}
+
+	.entity-count {
+		color: rgba($primary, 0.4);
+		display: inline-block;
+		margin-left: 4px;
+	}
+
+	.loading-wrapper-container {
+		padding: 12px 20px;
+	}
+
+	.reverse {
+		@include flex-direction(row-reverse);
+	}
+}

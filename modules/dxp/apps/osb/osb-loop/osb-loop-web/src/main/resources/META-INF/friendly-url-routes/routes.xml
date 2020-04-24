@@ -1,0 +1,427 @@
+<?xml version="1.0"?>
+<!DOCTYPE routes PUBLIC "-//Liferay//DTD Friendly URL Routes 7.0.0//EN" "http://www.liferay.com/dtd/liferay-friendly-url-routes_7_0_0.dtd">
+
+<routes>
+	<route>
+		<pattern>GET</pattern>
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">@controller@</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/groups</pattern>
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/groups/{whitelist:(\w)+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/{whitelist:(?!groups$|job_titles$|people$|topics$)\w+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">home</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/{controller}</pattern>
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/{controller}</pattern>
+		<implicit-parameter name="action">create</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/{controller}.{format}</pattern>
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/{controller}.{format}</pattern>
+		<implicit-parameter name="action">create</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}{whitelist:(\/(?!add$|delete$|edit$|update$)\w+)(\/.+)*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}{whitelist:(\/(?!add$|delete$|edit$|update$)\w+)(\/.+)*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/home/admin/{whitelist:(?!add$|delete$|edit$|update$)\w+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">admin</implicit-parameter>
+		<implicit-parameter name="controller">home</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/home/search/{whitelist:(?!add\?|delete\?|edit\?|update\?)\w+\\?.*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">search</implicit-parameter>
+		<implicit-parameter name="controller">home</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/home/uiKit/{whitelist:(?!\_|add$|delete$|edit$|update$)\w+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">uiKit</implicit-parameter>
+		<implicit-parameter name="controller">home</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/job_titles/{whitelist:(?!\_|add$|delete$|update$)\w+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}{whitelist:(\/(?!add$|delete$|update$)\w+)(\/.+)*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}{whitelist:(\/(?!add$|delete$|edit$|update$)\w+)(\/.+)*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/people/{whitelist:(?!\_|add$|delete$|edit$|importFile$|update$)\w+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">people</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/people/{id:_\w+[\w\.-]*}/{whitelist:(?!add$|delete$|edit$|update$)\w+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">people</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/people/{id:_\w+[\w\.-]*}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">people</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/people/{id:_\w+[\w\.-]*}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">people</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/people/{id:_\w+[\w\.-]*}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">people</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/people/{id:_\w+[\w\.-]*}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">people</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}{whitelist:(\/(?!add$|delete$|edit$|update$)\w+)(\/.+)*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/topics/{whitelist:(?!\_|add$|delete$|edit$|update$)[\-\w]+}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">index</implicit-parameter>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/topics/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}{whitelist:(\/(?!add$|delete$|edit$|update$)\w+)(\/.+)*}</pattern>
+		<ignored-parameter name="whitelist" />
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/topics/{id:_\w+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/topics/{id:_\w+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/topics/{id:_\w+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/topics/{id:_\w+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/{controller}/{id:\d+}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/{controller}/{id:\d+}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>GET/{controller}/{id:\d+}.{format}</pattern>
+		<implicit-parameter name="action">view</implicit-parameter>
+		<implicit-parameter name="method">GET</implicit-parameter>
+	</route>
+	<route>
+		<pattern>POST/{controller}/{id:\d+}.{format}</pattern>
+		<implicit-parameter name="action">update</implicit-parameter>
+		<implicit-parameter name="method">POST</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/company/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/departments/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/departments/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="type">2</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/home/help/{id:_\w+}</pattern>
+		<implicit-parameter name="action">help</implicit-parameter>
+		<implicit-parameter name="controller">home</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/home/search/{tab}</pattern>
+		<implicit-parameter name="controller">home</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}</pattern>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/job_titles/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">job_titles</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/locations/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/locations/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="type">4</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/people/{id:_\w+[\w\.-]*}/{action}</pattern>
+		<implicit-parameter name="controller">people</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/people/{id:_\w+[\w\.-]*}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">people</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/teams/{id:_[\!\%\'\(\)\*\+\-\.\@\[\]\|\~\w]+}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/teams/{action}.{format}</pattern>
+		<implicit-parameter name="controller">divisions</implicit-parameter>
+		<implicit-parameter name="type">3</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/topics/{id:_\w+}/{action}</pattern>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/topics/{id:_\w+}/{action}.{format}</pattern>
+		<implicit-parameter name="controller">topics</implicit-parameter>
+	</route>
+	<route>
+		<pattern>{method}/{controller}/{id:\d+}/{action}.{format}</pattern>
+	</route>
+	<route>
+		<pattern>{method}/{controller}/{id:\d+}/{action}</pattern>
+	</route>
+	<route>
+		<pattern>{method}/{controller}/{action}.{format}</pattern>
+	</route>
+	<route>
+		<pattern>{method}/{controller}/{action}</pattern>
+	</route>
+	<route>
+		<pattern>{method}/{controller}/{action}/{className}/{folderId:\d+}/{fileName:[^/]+}</pattern>
+		<implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+		<implicit-parameter name="p_p_resource_id">download</implicit-parameter>
+	</route>
+</routes>

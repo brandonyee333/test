@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PersonNetworkCard renders 1`] = `
+<span>
+  <div class="card-container entity-category-card-container small">
+    <div class="card-header-container">network</div>
+    <div class="loading-wrapper-container loading">
+      <div class="mask">
+        <div class="spinner-container">
+          <div class="spinner"></div>
+        </div>
+      </div>
+      <div class="loading-content">
+        <div class="category">
+          <div class="category-content category-row">
+            <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+              <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+                <div class="avatar-placeholder"></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</span>
+`;

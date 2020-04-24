@@ -1,0 +1,27 @@
+.editable-avatar-container {
+	border-radius: 50%;
+	position: relative;
+
+	&:hover, &.active {
+		.controls {
+			@include align-items(center);
+			@include flexbox;
+			@include justify-content(center);
+
+			background-color: rgba($primary, 0.8);
+			border-radius: 50%;
+			height: 100%;
+			position: absolute;
+			width: 100%;
+			z-index: 1;
+
+			.loop-icon-container {
+				cursor: pointer;
+			}
+		}
+	}
+
+	.controls {
+		display: none;
+	}
+}

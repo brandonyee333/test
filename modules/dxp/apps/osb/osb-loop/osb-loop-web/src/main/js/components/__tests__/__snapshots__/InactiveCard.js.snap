@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InactiveCard renders 1`] = `
+<div class="card-container inactive-card-container">
+  <span class="loop-icon-label-container loop-icon-label-spacing-medium" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-alert loop-icon-small-2x loop-icon-primary" data-tooltip="">
+      <use href="#loop-icon-alert-16"></use>
+    </svg>
+    <span class="loop-icon-label"></span>
+  </span>
+</div>
+`;

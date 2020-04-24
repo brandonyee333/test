@@ -1,0 +1,123 @@
+$colors: (
+	('alert', $alert),
+	('black', $black),
+	('error', $error),
+	('light-green', $lightGreen),
+	('light-red', $lightRed),
+	('onix', $onix),
+	('orange', $orange),
+	('primary', $primary),
+	('purple', $purple),
+	('royal-blue', $royalBlue),
+	('secondary', $secondary),
+	('success', $success),
+	('theme', $theme),
+	('violet', $violet)
+);
+
+.loop-ui-kit {
+	padding: 28px 0;
+
+	> .card-container, > .select-input-container {
+		margin-bottom: $cardSpacing;
+	}
+
+	.bookmark-flag-kit .card-container {
+		position: relative;
+	}
+
+	.color-circle {
+		border-radius: 50%;
+		height: 60px;
+		width: 60px;
+
+		@each $pair in $colors {
+			&.color-#{nth($pair, 1)} {
+				background-color: nth($pair, 2);
+			}
+		}
+	}
+
+	.element {
+		@include center(horizontal);
+		@include flexbox;
+
+		justify-content: center;
+		margin-bottom: 12px;
+	}
+
+	.element-container {
+		@include flex-wrap(wrap);
+		@include flexbox;
+
+		margin-bottom: 24px;
+	}
+
+	.element-display {
+		float: left;
+		margin-bottom: 54px;
+		width: 20%;
+	}
+
+	.element-header-1 {
+		font-size: 20px;
+		font-weight: 500;
+		margin-bottom: 60px;
+	}
+
+	.element-header-2 {
+		font-size: 11px;
+		font-weight: 500;
+		margin-bottom: 24px;
+		text-transform: uppercase;
+	}
+
+	.element-wrapper {
+		@include flex-basis(20%);
+
+		box-sizing: border-box;
+		min-width: 140px;
+		padding: 0 12px 24px;
+	}
+
+	.kit-container {
+		padding: 20px;
+	}
+
+	.kit-select-item {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(space-between);
+
+		cursor: pointer;
+		padding: 8px 16px;
+	}
+
+	.select-input-demo {
+		min-width: 250px;
+	}
+
+	.store-state-switcher-container {
+		background-color: rgba($theme, 0.1);
+		border: 1px solid rgba($theme, 0.2);
+		border-radius: 4px;
+		margin-bottom: 24px;
+		padding: 16px;
+
+		.element-container {
+			margin: 0;
+		}
+	}
+
+	.transition-container {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(center);
+
+		background-color: $lightRed;
+		border-radius: 4px;
+		color: $primary;
+		height: 40px;
+		margin-top: 12px;
+	}
+}

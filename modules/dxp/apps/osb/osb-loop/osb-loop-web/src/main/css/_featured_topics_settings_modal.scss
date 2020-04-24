@@ -1,0 +1,21 @@
+.featured-topics-settings-modal-container {
+	.autocomplete-input-container {
+		margin: 28px 16px 0;
+	}
+
+	.loading-wrapper-container .entity-display-container {
+		padding: 12px;
+
+		&:first-child {
+			padding-top: 24px;
+		}
+
+		&:last-child {
+			padding-bottom: 24px;
+		}
+	}
+
+	.loading-wrapper-container {
+		min-height: 300px;
+	}
+}

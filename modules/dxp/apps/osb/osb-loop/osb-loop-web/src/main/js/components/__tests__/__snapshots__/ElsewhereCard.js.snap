@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ElsewhereCard renders 1`] = `
+<div class="card-container list-card-container">
+  <div class="card-header-container">elsewhere</div>
+  <div class="card-body-container">
+    <div class="loading-wrapper-container">
+      <div class="loading-content">
+        <ul class="category-items">
+          <li class="item">
+            <div class="loop-icon-list-item-container item">
+              <svg class="loop-icon-container loop-icon-facebook loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+                <use href="#loop-icon-facebook-24"></use>
+              </svg>
+              <span class="list-item-label" data-tooltip="">
+                <a href="undefined/foo">foo</a>
+              </span>
+            </div>
+          </li>
+          <li class="item">
+            <div class="loop-icon-list-item-container item">
+              <svg class="loop-icon-container loop-icon-github loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+                <use href="#loop-icon-github-24"></use>
+              </svg>
+              <span class="list-item-label" data-tooltip="">
+                <a href="undefined/bar">bar</a>
+              </span>
+            </div>
+          </li>
+          <li class="item">
+            <div class="loop-icon-list-item-container item">
+              <svg class="loop-icon-container loop-icon-twitter loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+                <use href="#loop-icon-twitter-24"></use>
+              </svg>
+              <span class="list-item-label" data-tooltip="">
+                <a href="undefined/foobar">foobar</a>
+              </span>
+            </div>
+          </li>
+          <li class="item">
+            <div class="loop-icon-list-item-container item">
+              <svg class="loop-icon-container loop-icon-linkedin loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+                <use href="#loop-icon-linkedin-24"></use>
+              </svg>
+              <span class="list-item-label" data-tooltip="">
+                <a href="undefined/baz">baz</a>
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

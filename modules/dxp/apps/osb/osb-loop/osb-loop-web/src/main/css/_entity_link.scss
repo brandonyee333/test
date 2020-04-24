@@ -1,0 +1,10 @@
+.entity-link-container {
+	&.disabled:hover {
+		color: $theme;
+		cursor: default;
+	}
+
+	&.inactive {
+		color: $primary;
+	}
+}

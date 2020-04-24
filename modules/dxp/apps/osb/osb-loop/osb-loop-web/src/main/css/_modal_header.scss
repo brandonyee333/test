@@ -1,0 +1,42 @@
+.modal-header-container {
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(space-between);
+
+	border-bottom: 1px solid rgba($primary, 0.1);
+	padding: 24px;
+
+	&.full {
+		@include justify-content(initial);
+
+		box-shadow: 0 1px 4px 0 rgba($black, 0.1);
+		overflow: hidden;
+		padding: 0;
+		z-index: 1;
+
+		.modal-close {
+			border-left: 1px solid rgba($primary, 0.1);
+			color: rgba($primary, 0.6);
+			cursor: pointer;
+			margin-left: auto;
+			padding: 24px;
+		}
+
+		.title {
+			color: $primary;
+			font-size: 14px;
+			font-weight: 600;
+			margin-left: 24px;
+		}
+	}
+
+	.modal-close {
+		color: rgba($primary, 0.4);
+		cursor: pointer;
+	}
+
+	.title {
+		color: rgba($primary, 0.8);
+		font-size: 14px;
+	}
+}

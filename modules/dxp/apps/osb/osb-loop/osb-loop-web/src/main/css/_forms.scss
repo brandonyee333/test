@@ -1,0 +1,19 @@
+input[type="text"], textarea {
+	&, &:focus {
+		box-shadow: none;
+	}
+}
+
+.input-append {
+	margin-bottom: 0;
+
+	input[type="text"], .btn-container {
+		box-sizing: border-box;
+		height: 34px;
+	}
+
+	.btn-container {
+		margin-left: 0;
+		min-width: 92px;
+	}
+}

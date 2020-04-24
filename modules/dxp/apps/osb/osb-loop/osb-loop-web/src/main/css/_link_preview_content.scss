@@ -1,0 +1,33 @@
+.link-preview-content-container {
+	padding: 24px 32px 24px 16px;
+	position: relative;
+
+	.description {
+		font-size: 12px;
+
+		> a {
+			color: rgba($primary, 0.8);
+		}
+	}
+
+	.short-url {
+		margin-bottom: 8px;
+
+		> a {
+			@include ellipsis;
+
+			color: rgba($primary, 0.4);
+			display: block;
+			font-size: 12px;
+		}
+	}
+
+	.title {
+		font-size: 18px;
+		margin-bottom: 4px;
+
+		> a {
+			color: rgba($primary, 0.8);
+		}
+	}
+}

@@ -1,0 +1,11 @@
+Bundle-Name: Liferay OSB Loop Token Auth API
+Bundle-SymbolicName: com.liferay.osb.loop.token.auth.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.loop.token.auth.comparator,\
+	com.liferay.osb.loop.token.auth.constants,\
+	com.liferay.osb.loop.token.auth.exception,\
+	com.liferay.osb.loop.token.auth.model,\
+	com.liferay.osb.loop.token.auth.service,\
+	com.liferay.osb.loop.token.auth.service.persistence,\
+	com.liferay.osb.loop.token.auth.util

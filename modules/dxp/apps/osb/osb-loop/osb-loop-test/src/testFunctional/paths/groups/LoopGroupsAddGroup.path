@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>LoopGroupsAddGroup</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopGroupsAddGroup</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ERROR_MESSAGE</td>
+	<td>//div[contains(@class,'error-message')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NAME_FIELD</td>
+	<td>//input[contains(@name,'name')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREFERRED_NAME_FIELD</td>
+	<td>//input[contains(@name,'preferredName')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TYPE_FIELD</td>
+	<td>//div[contains(@class,'form-select-container') and contains(.,'Type (Required)')]//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUBTYPE_FIELD</td>
+	<td>//div[contains(@class,'form-select-container') and contains(.,'Subtype (Required)')]//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DESCRIPTION_FIELD</td>
+	<td>//textarea[contains(@placeholder,'Give more info about this group')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_LEAD_FIELD</td>
+	<td>//div[contains(@class,'input-list-container')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LEAD_NAME</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_leadName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LEAD_REMOVE_ICON</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_leadName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CREATE_BUTTON</td>
+	<td>//button[contains(.,'Create')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<definition>
+	<command name="clickOptionsLink">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute function="Click" locator1="LoopJobTitles#JOB_TITLE_NAME" />
+		<execute function="Click" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_BUTTON" />
+	</command>
+
+	<command name="createJobTitle">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute function="Click" locator1="LoopJobTitles#CREATE_JOB_TITLE_LINK" />
+
+		<execute function="Type" locator1="LoopJobTitlesAddJobTitle#NAME_FIELD" value1="${jobTitleName}" />
+
+		<if>
+			<isset var="jobTitleDescription" />
+			<then>
+				<execute function="Type" locator1="LoopJobTitlesAddJobTitle#DESCRIPTION_FIELD" value1="${jobTitleDescription}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesAddJobTitle#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopJobTitles#SUCCESS_MESSAGE" value1="${jobTitleName} was successfully created." />
+		<execute function="Pause" locator1="5000" />
+
+		<!-- Workaround until LOOP-5071 is fixed -->
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitles#JOB_TITLE_NAME" value1="${jobTitleName}" />
+	</command>
+
+	<command name="deactivateJobTitle">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopJobTitles#clickOptionsLink">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_ACTIVATE_LINK" value1="Deactivate Job Title" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesDeleteJobTitle#JOB_TITLE_WARNING_MESSAGE" value1="Are you sure you want to deactivate ${jobTitleName}?" />
+		<execute function="AssertClick" locator1="LoopJobTitlesDeleteJobTitle#CONFIRM_BUTTON" value1="Confirm" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitles#SUCCESS_MESSAGE" value1="${jobTitleName} was successfully deactivated." />
+		<execute function="Pause" locator1="5000" />
+
+		<execute macro="LoopJobTitles#viewDeactivatedJobTitle">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+	</command>
+
+	<command name="deactivateJobTitleInUse">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopJobTitles#clickOptionsLink">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_ACTIVATE_LINK" value1="Deactivate Job Title" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesDeleteJobTitle#JOB_TITLE_WARNING_MESSAGE" value1="Are you sure you want to deactivate ${jobTitleName}?" />
+		<execute function="AssertClick" locator1="LoopJobTitlesDeleteJobTitle#CONFIRM_BUTTON" value1="Confirm" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitles#SUCCESS_MESSAGE" value1="The job title cannot be removed because there are people assigned to it." />
+		<execute function="Pause" locator1="5000" />
+
+		<execute macro="LoopJobTitles#viewActivatedJobTitle">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+	</command>
+
+	<command name="deleteJobTitle">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopJobTitles#clickOptionsLink">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_DELETE_LINK" value1="Delete Job Title" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesDeleteJobTitle#JOB_TITLE_WARNING_MESSAGE" value1="Are you sure you want to delete this job title?" />
+		<execute function="AssertClick" locator1="LoopJobTitlesDeleteJobTitle#CONFIRM_BUTTON" value1="Confirm" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitles#SUCCESS_MESSAGE" value1="${jobTitleName} was successfully deleted." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="deleteJobTitleInUse">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopJobTitles#clickOptionsLink">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_DELETE_LINK" value1="Delete Job Title" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesDeleteJobTitle#JOB_TITLE_WARNING_MESSAGE" value1="Are you sure you want to delete this job title?" />
+		<execute function="AssertClick" locator1="LoopJobTitlesDeleteJobTitle#CONFIRM_BUTTON" value1="Confirm" />
+
+		<!-- Workaround until LOOP-5432 is fixed -->
+
+		<!--<execute function="AssertTextEquals" locator1="LoopJobTitles#SUCCESS_MESSAGE" value1="The job title cannot be removed because there are people assigned to it." />-->
+		<execute function="Pause" locator1="5000" />
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute function="AssertElementPresent" locator1="LoopJobTitles#JOB_TITLE_NAME" value1="${jobTitleName}" />
+	</command>
+
+	<command name="editJobTitle">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopJobTitles#clickOptionsLink">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_EDIT_LINK" value1="Edit Job Title" />
+
+		<execute function="Type" locator1="LoopJobTitlesUpdateJobTitle#NAME_FIELD" value1="${jobTitleNameEdit}" />
+
+		<if>
+			<isset var="jobTitleDescriptionEdit" />
+			<then>
+				<execute function="Type" locator1="LoopJobTitlesUpdateJobTitle#DESCRIPTION_FIELD" value1="${jobTitleDescriptionEdit}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesUpdateJobTitle#SUBMIT_BUTTON" value1="Submit" />
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesJobTitle#SUCCESS_MESSAGE" value1="${jobTitleNameEdit} was successfully updated." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="reactivateJobTitle">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopJobTitles#clickOptionsLink">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopJobTitlesJobTitle#JOB_TITLE_OPTIONS_ACTIVATE_LINK" value1="Activate Job Title" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesDeleteJobTitle#JOB_TITLE_WARNING_MESSAGE" value1="Are you sure you want to activate ${jobTitleName}?" />
+		<execute function="AssertClick" locator1="LoopJobTitlesDeleteJobTitle#CONFIRM_BUTTON" value1="Confirm" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitles#SUCCESS_MESSAGE" value1="${jobTitleName} was successfully activated." />
+		<execute function="Pause" locator1="5000" />
+
+		<execute macro="LoopJobTitles#viewActivatedJobTitle">
+			<var name="jobTitleName" value="${jobTitleName}" />
+		</execute>
+	</command>
+
+	<command name="viewActivatedJobTitle">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute function="AssertClick" locator1="LoopJobTitles#JOB_TITLE_NAME" value1="${jobTitleName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesJobTitle#JOB_TITLE_NAME" value1="${jobTitleName}" />
+		<execute function="AssertElementNotPresent" locator1="LoopJobTitlesJobTitle#JOB_TITLE_INACTIVE_ALERT" />
+	</command>
+
+	<command name="viewDeactivatedJobTitle">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute function="AssertClick" locator1="LoopJobTitles#JOB_TITLE_NAME" value1="${jobTitleName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesJobTitle#JOB_TITLE_NAME" value1="${jobTitleName}" />
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesJobTitle#JOB_TITLE_INACTIVE_ALERT" value1="${jobTitleName} is no longer active." />
+	</command>
+
+	<command name="viewJobTitle">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute function="AssertClick" locator1="LoopJobTitles#JOB_TITLE_NAME" value1="${jobTitleName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopJobTitlesJobTitle#JOB_TITLE_NAME" value1="${jobTitleName}" />
+
+		<if>
+			<isset var="jobTitleDescription" />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopJobTitlesJobTitle#ABOUT_DESCRIPTION" value1="${jobTitleDescription}" />
+			</then>
+		</if>
+	</command>
+
+	<command name="viewNoJobTitle">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopJobTitles#JOB_TITLE_NAME" />
+	</command>
+
+	<command name="viewNoJobTitleList">
+		<execute macro="LoopNavigation#gotoJobTitles" />
+
+		<execute macro="LoopNavigation#viewPageNotFound" />
+	</command>
+</definition>

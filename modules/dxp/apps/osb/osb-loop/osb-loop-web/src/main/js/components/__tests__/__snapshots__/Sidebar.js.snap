@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Sidebar should render 1`] = `
+<ul class="sidebar-container" role="menubar">
+  <li role="presentation">
+    <h2 class="sidebar-header">
+      <a href="/web/guest/home/-/loop">
+        <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-house loop-icon-large-1x loop-icon-primary" data-tooltip="">
+            <use href="#loop-icon-house-24"></use>
+          </svg>
+          <span class="loop-icon-label">home</span>
+        </span>
+      </a>
+    </h2>
+  </li>
+  <li role="presentation">
+    <h2 class="sidebar-header">
+      <a href="/web/guest/home/-/loop/people">
+        <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-persons loop-icon-large-1x loop-icon-primary" data-tooltip="">
+            <use href="#loop-icon-persons-24"></use>
+          </svg>
+          <span class="loop-icon-label">people</span>
+        </span>
+      </a>
+    </h2>
+  </li>
+  <li role="presentation">
+    <h2 class="sidebar-header">
+      <a href="/web/guest/home/-/loop/groups">
+        <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-groups loop-icon-large-1x loop-icon-primary" data-tooltip="">
+            <use href="#loop-icon-groups-24"></use>
+          </svg>
+          <span class="loop-icon-label">groups</span>
+        </span>
+      </a>
+    </h2>
+    <ul class="follow-list"></ul>
+  </li>
+  <li role="presentation">
+    <h2 class="sidebar-header">
+      <a href="/web/guest/home/-/loop/topics">
+        <span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-balloon-topic loop-icon-large-1x loop-icon-primary" data-tooltip="">
+            <use href="#loop-icon-balloon-topic-24"></use>
+          </svg>
+          <span class="loop-icon-label">topics</span>
+        </span>
+      </a>
+    </h2>
+    <ul class="follow-list"></ul>
+  </li>
+</ul>
+`;

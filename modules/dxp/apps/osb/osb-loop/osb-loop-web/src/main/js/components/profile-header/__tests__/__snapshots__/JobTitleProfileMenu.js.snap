@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JobTitleProfileMenu renders 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container">edit-job-title</li>
+  <li class="menu-item-container">deactivate-job-title</li>
+  <li class="menu-item-container">delete-job-title</li>
+</ul>
+`;

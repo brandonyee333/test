@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Select renders 1`] = `
+<div class="form-select-container default">
+  <select class="default" id="formSelect1">
+    <option selected=""></option>
+  </select>
+</div>
+`;
+
+exports[`Select should render with an error message 1`] = `
+<div class="form-select-container error">
+  <select class="error" id="formSelect3">
+    <option selected=""></option>
+  </select>
+  <div class="error-message"></div>
+</div>
+`;

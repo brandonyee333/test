@@ -1,0 +1,151 @@
+.toolbar-global {
+	.senna-loading-bar, .toolbar-container {
+		left: 0;
+		padding: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: $toolbarZIndex;
+	}
+}
+
+.toolbar-container {
+	@include box-shadow(0 1px 4px rgba($black, 0.2));
+	@include transition(background-color 400ms ease);
+
+	background-color: $theme;
+	padding: 0 24px;
+	width: 100%;
+
+	&.display-primary {
+		&, .global-search-container {
+			background-color: $primary;
+		}
+	}
+
+	> .content {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(center);
+
+		margin: 0 auto;
+		max-width: $portletBodyWidth;
+		min-height: $toolbarHeight;
+		padding: 0 $horizontalPadding;
+	}
+
+	.accessibility-button {
+		left: -9999px;
+		position: fixed;
+		top: 0;
+
+		&:focus {
+			left: 0;
+		}
+	}
+
+	.nav-item, .toolbar-item {
+		margin-right: 36px;
+	}
+
+	.toolbar-item:last-child {
+		margin-right: 0;
+		padding: 0;
+	}
+
+	.page-title {
+		@include ellipsis;
+
+		color: $secondary;
+		display: none;
+		font-size: 18px;
+		font-weight: 600;
+		line-height: normal;
+	}
+
+	.nav {
+		margin-bottom: 0;
+
+		ul {
+			@include align-items(center);
+			@include flexbox;
+			@include justify-content(center);
+
+			list-style: none;
+			margin: 0;
+		}
+	}
+
+	.nav-item {
+		margin-right: 36px;
+	}
+
+	.nav-link {
+		border-bottom: 2px solid transparent;
+		color: rgba($secondary, 0.4);
+		display: inline-block;
+		font-weight: 600;
+		padding: 16px 0;
+
+		&:hover, &.active:hover, &.nav-active:hover {
+			color: rgba($secondary, 0.8);
+		}
+
+		&.active, &.nav-active {
+			border-bottom-color: $secondary;
+			color: $secondary;
+		}
+	}
+
+	.search {
+		margin-left: auto;
+		padding: 0;
+
+		> div {
+			@include flexbox;
+			@include justify-content(flex-end);
+		}
+	}
+
+	@media #{$mediaMediumMax} {
+		.nav-item, .toolbar-item {
+			margin-right: 20px;
+		}
+	}
+
+	@media #{$mediaSmallMax} {
+		.nav-item, .toolbar-item {
+			margin-right: 28px;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+
+		.page-title {
+			display: block;
+		}
+
+		.nav {
+			background-color: $secondary;
+			border-top: 1px solid $borderLightGray;
+			bottom: 0;
+			left: 0;
+			margin: 0;
+			position: fixed;
+			right: 0;
+
+			.nav-link, .menu-trigger {
+				color: rgba($primary, 0.4);
+
+				&:hover {
+					color: rgba($primary, 0.6);
+				}
+
+				&.active, &.nav-active {
+					color: $theme;
+				}
+			}
+		}
+	}
+}

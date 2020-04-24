@@ -1,0 +1,126 @@
+<definition>
+	<command name="clickMailTitle">
+		<var name="key_notificationAction" value="${notificationAction}" />
+
+		<execute function="AssertClick" locator1="LoopNotificationsEmail#NOTIFICATION_ACTION" value1="${notificationAction}" />
+	</command>
+
+	<command name="viewMailCommentDetails">
+		<var name="key_notificationAction" value="${notificationAction}" />
+		<var name="key_notificationDetails1" value="${notificationDetails1}" />
+		<var name="key_notificationDetails2" value="${notificationDetails2}" />
+		<var name="key_topicName" value="${topicName}" />
+		<var name="key_userScreenName1" value="${userScreenName1}" />
+		<var name="key_userScreenName2" value="${userScreenName2}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotificationsEmail#LOOP_ICON" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_ACTION" value1="${notificationAction}" />
+		<execute function="AssertElementPresent" locator1="LoopNotificationsEmail#NOTIFICATION_PROFILE_PICTURE_1" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_USER_NAME_1" value1="${userName1}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_DETAILS_1" value1="${notificationDetails1}" />
+
+		<if>
+			<contains string="${notificationDetails1}" substring="..." />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotificationsEmail#NOTIFICATION_DETAILS_SEE_MORE_LINK_1" value1="See More" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="numberOfComments" />
+				<not>
+					<contains string="${numberOfComments}" substring="{numberOfComments}" />
+				</not>
+				<not>
+					<equals arg1="${numberOfComments}" arg2="1" />
+				</not>
+			</and>
+			<then>
+				<var method="MathUtil#difference('${numberOfComments}', '1')" name="numberOfRemainingComments" />
+
+				<if>
+					<equals arg1="${numberOfRemainingComments}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_READ_MORE_COMMENTS_LINK" value1="Read One More Comment" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_READ_MORE_COMMENTS_LINK" value1="Read ${numberOfRemainingComments} More Comments" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopNotificationsEmail#NOTIFICATION_PROFILE_PICTURE_2" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_USER_NAME_2" value1="${userName2}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_DETAILS_2" value1="${notificationDetails2}" />
+
+		<if>
+			<contains string="${notificationDetails2}" substring="..." />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotificationsEmail#NOTIFICATION_DETAILS_SEE_MORE_LINK_2" value1="See More" />
+			</then>
+		</if>
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_WRITE_COMMENT_LINK" value1="View post or comment on Loop." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_FEEDBACK_LINK" value1="Share to #${topicName}" />
+	</command>
+
+	<command name="viewMailDetails">
+		<var name="key_notificationAction" value="${notificationAction}" />
+		<var name="key_notificationDetails" value="${notificationDetails}" />
+		<var name="key_topicName" value="${topicName}" />
+		<var name="key_userScreenName" value="${userScreenName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopNotificationsEmail#LOOP_ICON" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_ACTION" value1="${notificationAction}" />
+		<execute function="AssertElementPresent" locator1="LoopNotificationsEmail#NOTIFICATION_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_USER_NAME" value1="${userName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_DETAILS" value1="${notificationDetails}" />
+
+		<if>
+			<contains string="${notificationDetails}" substring="..." />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopNotificationsEmail#NOTIFICATION_DETAILS_SEE_MORE_LINK" value1="See More" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="numberOfImages" />
+				<not>
+					<contains string="${numberOfImages}" substring="{numberOfImages}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${numberOfImages}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_ATTACHMENT_LINK" value1="View 1 Attached Image" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_ATTACHMENT_LINK" value1="View ${numberOfImages} Attached Images" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="feedEntryLinkUrl" />
+				<not>
+					<contains string="${feedEntryLinkUrl}" substring="{feedEntryLinkUrl}" />
+				</not>
+			</and>
+			<then>
+				<var name="key_feedEntryLinkUrl" value="${feedEntryLinkUrl}" />
+
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_ATTACHMENT_LINK" value1="View Attached Link" />
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_FEED_ENTRY_LINK_URL" value1="${feedEntryLinkUrl}" />
+			</then>
+		</if>
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_WRITE_COMMENT_LINK" value1="View post or comment on Loop." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopNotificationsEmail#NOTIFICATION_FEEDBACK_LINK" value1="Share to #${topicName}" />
+	</command>
+</definition>

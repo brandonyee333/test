@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FollowingListMenu renders 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container display-only">following</li>
+</ul>
+`;

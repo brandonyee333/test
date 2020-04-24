@@ -1,0 +1,220 @@
+<html>
+<head>
+<title>LoopNotifications</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopNotifications</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_MENU_HEADER</td>
+	<td>//div[contains(@class,'notifications-drop-down-container')]//div[contains(@class,'card-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_ITEM</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_TIMESTAMP</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//span[contains(@class,'display-time')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_USER_NAME</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//div[contains(@class,'title')]//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_USER_NAME_DEACTIVATED</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//div[contains(@class,'title')]//a[contains(.,'${key_userName}') and contains(@class,'inactive')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_ACTION</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//div[contains(@class,'title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_SPECIFIC</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//div[contains(.,'${key_notificationDetails}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_PRIVATE_POST_LOCK</td>
+	<td>//div[contains(@class,'notification-feed-container')]//div[contains(@class,'item') and contains(.,"${key_notificationAction}")]//span//*[local-name()='svg' and contains(@class,'loop-icon-lock')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--NOTIFICATIONS_SETTING-->
+<tr>
+	<td>NOTIFICATIONS_SETTING_TOGGLE</td>
+	<td>//div[contains(.,'Notifications')]//a[contains(@class,'settings-toggle')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_BACK</td>
+	<td>//span[contains(.,'Notification Settings:')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_DISABLED_IN_APP</td>
+	<td>//tr[contains(.,'${key_description}')]//td[1]//div[contains(@class,'checkbox-container')]/input[@disabled='disabled']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_DISABLED_EMAIL</td>
+	<td>//tr[contains(.,'${key_description}')]//td[2]//div[contains(@class,'checkbox-container')]/input[@disabled='disabled']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_ON_IN_APP</td>
+	<td>//tr[contains(.,'${key_description}')]//div[contains(@class,'checkbox-container')]/*[local-name()='svg' and contains(@class,'loop-icon-bell ')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_ON_EMAIL</td>
+	<td>//tr[contains(.,'${key_description}')]//div[contains(@class,'checkbox-container')]/*[local-name()='svg' and contains(@class,'loop-icon-mail-full')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_OFF_IN_APP</td>
+	<td>//tr[contains(.,'${key_description}')]//div[contains(@class,'checkbox-container')]/*[local-name()='svg' and contains(@class,'loop-icon-bell-off')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_OFF_EMAIL</td>
+	<td>//tr[contains(.,'${key_description}')]//div[contains(@class,'checkbox-container')]/*[local-name()='svg' and contains(@class,'loop-icon-mail-off')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_ANY_MENTION_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Mentioned')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_ANY_MENTION_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Mentioned')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Following')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_ANY_FOLLOWING_IN_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Following')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_LIKES_ON_MY_POSTS_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Likes on My Posts')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_LIKES_ON_MY_POSTS_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Likes on My Posts')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_LIKES_ON_MY_COMMENTS_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Likes on My Comments')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_LIKES_ON_MY_COMMENTS_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Likes on My Comments')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Comments on My Posts')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_COMMENTS_ON_MY_POSTS_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Comments on My Posts')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Posts I Commented On')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_POSTS_I_COMMENTED_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Posts I Commented On')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS</td>
+	<td>xpath=(//tr[contains(.,'Replies to My Comments')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_REPLIES_TO_MY_COMMENTS_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Replies to My Comments')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_GROUPS_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Groups')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_GROUPS_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Groups')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_TOPICS_IN_APP</td>
+	<td>xpath=(//tr[contains(.,'Topics')]//div[contains(@class,'checkbox-container')]/input)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_TOPICS_EMAIL</td>
+	<td>xpath=(//tr[contains(.,'Topics')]//div[contains(@class,'checkbox-container')]/input)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_CONFIRMATION_MESSAGE</td>
+	<td>//div[contains(@class,'confirm-mask')]//div[@class='message']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_CONFIRMATION_CANCEL</td>
+	<td>//div[contains(@class,'confirm-mask')]//div[@class='controls']//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATIONS_SETTING_CONFIRMATION_APPLY</td>
+	<td>//div[contains(@class,'confirm-mask')]//div[@class='controls']//button[contains(.,'Apply')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

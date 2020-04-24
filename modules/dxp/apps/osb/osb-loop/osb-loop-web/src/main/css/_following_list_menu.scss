@@ -1,0 +1,14 @@
+.following-list-menu-container {
+	&.menu-trigger {
+		color: rgba($secondary, 0.4);
+		font-weight: 600;
+
+		&.menu-active {
+			color: rgba($secondary, 0.8);
+		}
+
+		&.nav-active {
+			color: $secondary;
+		}
+	}
+}

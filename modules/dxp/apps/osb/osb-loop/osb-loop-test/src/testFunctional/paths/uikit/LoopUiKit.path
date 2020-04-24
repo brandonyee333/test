@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>LoopUiKit</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopUiKit</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>UI_KIT_PAGE</td>
+	<td>//div[@class='loop-ui-kit']</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

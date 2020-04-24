@@ -1,0 +1,31 @@
+.markdown-editor-container {
+	border: 1px solid $borderLightGray;
+	border-radius: 4px;
+	padding: 20px;
+	position: relative;
+
+	&.disabled {
+		background-color: rgba(35, 50, 64, 0.05);
+		cursor: not-allowed;
+	}
+
+	> textarea {
+		border-width: 0;
+		min-height: 324px;
+		overflow: hidden;
+		padding: 0;
+		resize: none;
+		width: 100%;
+	}
+
+	.loop-icon-container {
+		bottom: 7px;
+		opacity: 0.6;
+		position: absolute;
+		right: 20px;
+	}
+
+	.markdown-content-container {
+		min-height: 324px;
+	}
+}

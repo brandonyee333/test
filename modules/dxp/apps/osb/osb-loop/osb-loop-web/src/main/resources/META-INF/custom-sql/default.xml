@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+
+<custom-sql>
+	<sql id="com.liferay.osb.loop.model.LoopDivision.countByLoopDivisionId">
+		<![CDATA[
+			SELECT
+				COUNT(DISTINCT LoopDivision.loopDivisionId) AS COUNT_VALUE
+			FROM
+				LoopDivision
+			INNER JOIN
+				Organization_ ON
+					LoopDivision.organizationId = Organization_.organizationId
+			[$INNER_JOIN$]
+			[$WHERE_CLAUSE$]
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopDivision.findByLoopDivisionId">
+		<![CDATA[
+			SELECT
+				LoopDivision.loopDivisionId
+			FROM
+				LoopDivision
+			INNER JOIN
+				Organization_ ON
+					LoopDivision.organizationId = Organization_.organizationId
+			[$INNER_JOIN$]
+			[$WHERE_CLAUSE$]
+			[$ORDER_BY$]
+			[$LIMIT$]
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopPerson.countByLoopPersonId">
+		<![CDATA[
+			SELECT
+				COUNT(DISTINCT LoopPerson.loopPersonId) AS COUNT_VALUE
+			FROM
+				LoopPerson
+			INNER JOIN
+				User_ ON
+					LoopPerson.personUserId = User_.userId
+			[$JOINS$]
+				(User_.status = ?)
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopPerson.findByLoopPersonId">
+		<![CDATA[
+			SELECT
+				LoopPerson.loopPersonId
+			FROM
+				LoopPerson
+			INNER JOIN
+				User_ ON
+					LoopPerson.personUserId = User_.userId
+			[$JOINS$]
+				(User_.status = ?)
+			ORDER BY
+				User_.firstName ASC,
+				User_.lastName ASC
+			[$LIMIT$]
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopPerson.innerJoin">
+		<![CDATA[
+			[$INNER_JOIN$]
+			[$WHERE_CLAUSE$]
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopPerson.joinByLoopParticipantAssignment">
+		<![CDATA[
+			INNER JOIN
+				LoopParticipantAssignment loopParticipantAssignment1 ON
+					LoopPerson.loopPersonId = loopParticipantAssignment1.loopPersonId
+			INNER JOIN
+				LoopDivision ON
+					loopParticipantAssignment1.loopDivisionId = LoopDivision.loopDivisionId
+			LEFT JOIN
+				LoopParticipantAssignment loopParticipantAssignment2 ON
+					(loopParticipantAssignment1.loopPersonId = loopParticipantAssignment2.loopPersonId) AND
+					(loopParticipantAssignment2.loopDivisionId = ?) AND
+					(loopParticipantAssignment2.type_ = ?)
+			WHERE
+				(loopParticipantAssignment2.loopPersonId IS NULL) AND
+				(LoopDivision.loopDivisionId IN ([$VALUES$]))
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopUserNotificationEvent.findByCT_RUI">
+		<![CDATA[
+			SELECT
+				TEMP_TABLE.loopUserNotificationEventId AS loopUserNotificationEventId
+			FROM
+				(
+					SELECT
+						LoopUserNotificationEvent.loopUserNotificationEventId, LoopUserNotificationEvent.createTime, LoopUserNotificationEvent.groupKey
+					FROM
+						LoopUserNotificationEvent
+					WHERE
+						(LoopUserNotificationEvent.createTime [$TIMESTAMP_COMPARATOR$] ?) AND
+						(LoopUserNotificationEvent.recipientUserId = ?)
+				) TEMP_TABLE
+			GROUP BY
+				TEMP_TABLE.groupKey
+			ORDER BY
+				MAX(TEMP_TABLE.createTime) DESC
+			[$LIMIT$]
+		]]>
+	</sql>
+	<sql id="com.liferay.osb.loop.model.LoopUserNotificationEvent.findLoopUserNotificationEventIds">
+		<![CDATA[
+			SELECT
+				LoopUserNotificationEvent.loopUserNotificationEventId
+			FROM
+				LoopUserNotificationEvent
+			[$WHERE_CLAUSE$]
+		]]>
+	</sql>
+</custom-sql>

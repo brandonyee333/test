@@ -1,0 +1,8 @@
+*.lar
+.web_bundle_build
+.yo-rc.json
+build
+build_gradle
+dist
+liferay-theme.json
+node_modules

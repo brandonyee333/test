@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageSearchResultItem renders 1`] = `
+<div class="card-container page-search-result-item-container">
+  <div class="content">
+    <a href="/web/guest/home/-/loop/departments/_test/pages/test" class="title">testing test0</a>
+    <div class="markdown-content-container">test content0</div>
+  </div>
+  <div class="page-header-container">
+    <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+      <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-smallest">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+    <div class="header-info">
+      <div class="created-summary"></div>
+      <span class="secondary-info" data-tooltip=""></span>
+    </div>
+  </div>
+</div>
+`;

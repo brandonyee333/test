@@ -1,0 +1,46 @@
+.undo-card-container {
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(space-between);
+
+	background-color: rgba($theme, 0.1);
+	border: 1px solid $theme;
+	border-radius: 4px;
+	box-sizing: border-box;
+	color: rgba($theme, 0.8);
+	padding: 20px;
+	position: relative;
+	width: 100%;
+
+	&.card-hidden {
+		overflow: hidden;
+	}
+
+	a, .undo {
+		font-weight: 600;
+	}
+
+	.dismiss {
+		@include flex-shrink(0);
+
+		margin-left: 12px;
+
+		.loop-icon-container {
+			display: block;
+		}
+	}
+
+	.dismiss, .undo {
+		color: $theme;
+		cursor: pointer;
+
+		&:hover {
+			color: rgba($theme, 0.4);
+		}
+	}
+
+	.undo {
+		margin-left: 4px;
+		position: relative;
+	}
+}

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditJobTitleModal renders 1`] = `
+<div class="loading-wrapper-container edit-job-title-modal-container">
+  <div class="loading-content">
+    <div class="modal-header-container">
+      <h1 class="title" ref="title" tabindex="0">edit-job-title</h1>
+      <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+    <div class="modal-body-container">
+      <form class="form-container">
+        <div class="form-input-container default">
+          <label for="FormInput1" class="label-container">name (required)</label>
+          <div class="input-container input-default">
+            <input id="FormInput1" name="name" value="" type="text" ref="input">
+          </div>
+        </div>
+        <div class="form-textarea-container default">
+          <label for="FormTextarea2" class="label-container">description</label>
+          <textarea id="FormTextarea2" name="description" value=""></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer-container">
+      <button class="btn btn-container btn-secondary" type="button">cancel</button>
+      <button class="btn btn-container btn-primary" type="button">submit</button>
+    </div>
+  </div>
+</div>
+`;

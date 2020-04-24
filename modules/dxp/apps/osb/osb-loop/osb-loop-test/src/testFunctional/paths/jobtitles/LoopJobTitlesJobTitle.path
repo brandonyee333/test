@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>LoopJobTitlesJobTitle</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopJobTitlesJobTitle</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_NAME</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_OPTIONS_BUTTON</td>
+	<td>//button[contains(@class,'btn-secondary')]//*[local-name()='svg' and contains(@class,'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_OPTIONS_EDIT_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit Job Title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_OPTIONS_DELETE_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Delete Job Title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_OPTIONS_ACTIVATE_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'vate Job Title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_INACTIVE_ALERT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'inactive-card-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION</td>
+	<td>//div[contains(@class,'about')]//div[contains(@class,'content')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

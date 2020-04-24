@@ -1,0 +1,931 @@
+<definition>
+	<command name="clickAndTypeKeyword">
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopSearch#typeKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+	</command>
+
+	<command name="clickFollowLinkViaGroupsResultsPage">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="MouseOver" locator1="LoopSearchResults#GROUPS_RESULTS_GROUP_NAME_LINK" />
+		<execute function="Click" locator1="LoopSearchResults#GROUPS_RESULTS_GROUP_FOLLOW_MENU_BUTTON" />
+	</command>
+
+	<command name="clickFollowLinkViaPeopleResultsPage">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="MouseOver" locator1="LoopSearchResults#PEOPLE_RESULTS_PERSON_NAME_LINK" />
+		<execute function="Click" locator1="LoopSearchResults#PEOPLE_RESULTS_PERSON_FOLLOW_MENU_BUTTON" />
+	</command>
+
+	<command name="clickFollowLinkViaTopicsResultsPage">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="MouseOver" locator1="LoopSearchResults#TOPICS_RESULTS_TOPIC_NAME_LINK" />
+		<execute function="Click" locator1="LoopSearchResults#TOPICS_RESULTS_TOPIC_FOLLOW_MENU_BUTTON" />
+	</command>
+
+	<command name="clickSeeMoreGroupsLink">
+		<execute function="AssertClick" locator1="LoopSearchResults#SEE_MORE_GROUPS_RESULTS_LINK" value1="See All" />
+	</command>
+
+	<command name="clickSeeMorePagesLink">
+		<execute function="AssertClick" locator1="LoopSearchResults#SEE_MORE_PAGES_RESULTS_LINK" value1="See All" />
+	</command>
+
+	<command name="clickSeeMorePeopleLink">
+		<execute function="AssertClick" locator1="LoopSearchResults#SEE_MORE_PEOPLE_RESULTS_LINK" value1="See All" />
+	</command>
+
+	<command name="clickSeeMorePostsLink">
+		<execute function="AssertClick" locator1="LoopSearchResults#SEE_MORE_POSTS_RESULTS_LINK" value1="See All" />
+	</command>
+
+	<command name="clickSeeMoreTopicsLink">
+		<execute function="AssertClick" locator1="LoopSearchResults#SEE_MORE_TOPICS_RESULTS_LINK" value1="See All" />
+	</command>
+
+	<command name="clickTurnOffNotificationsLinkViaGroupsResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaGroupsResultsPage">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickTurnOffNotifications" />
+	</command>
+
+	<command name="clickTurnOffNotificationsLinkViaPeopleResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaPeopleResultsPage">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickTurnOffNotifications" />
+	</command>
+
+	<command name="clickTurnOffNotificationsLinkViaTopicsResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickTurnOffNotifications" />
+	</command>
+
+	<command name="clickTurnOnNotificationsLinkViaGroupsResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaGroupsResultsPage">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#clickTurnOnNotifications" />
+	</command>
+
+	<command name="clickTurnOnNotificationsLinkViaPeopleResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaPeopleResultsPage">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickTurnOnNotifications" />
+	</command>
+
+	<command name="clickTurnOnNotificationsLinkViaTopicsResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickTurnOnNotifications" />
+	</command>
+
+	<command name="clickUnfollowLinkViaGroupsResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaGroupsResultsPage">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopGroupsGroup#GROUP_UNFOLLOW_LINK" value1="Unfollow ${groupName}" />
+	</command>
+
+	<command name="clickUnfollowLinkViaPeopleResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaPeopleResultsPage">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_UNFOLLOW_LINK" value1="Unfollow ${userName}" />
+	</command>
+
+	<command name="clickUnfollowLinkViaTopicsResultsPage">
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="LoopTopicsTopic#TOPIC_UNFOLLOW_LINK" value1="Unfollow ${topicName}" />
+	</command>
+
+	<command name="gotoGroup">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${groupName}" />
+	</command>
+
+	<command name="gotoGroupsResultTab">
+		<if>
+			<and>
+				<isset var="groupResultCount" />
+				<not>
+					<contains string="${groupResultCount}" substring="{groupResultCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertClick" locator1="LoopSearchResults#GROUPS_TAB" value1="Groups ${groupResultCount}" />
+			</then>
+			<else>
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopSearchResults#GROUPS_TAB" value1="Groups" />
+			</else>
+		</if>
+	</command>
+
+	<command name="gotoGroupViaGroupsResultTabList">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertClick" locator1="LoopSearchResults#GROUPS_RESULTS_GROUP_NAME_LINK" value1="${groupName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#GROUP_NAME" />
+	</command>
+
+	<command name="gotoPagesResultTab">
+		<if>
+			<and>
+				<isset var="pageResultCount" />
+				<not>
+					<contains string="${pageResultCount}" substring="{pageResultCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertClick" locator1="LoopSearchResults#PAGES_TAB" value1="Pages ${pageResultCount}" />
+			</then>
+			<else>
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopSearchResults#PAGES_TAB" value1="Pages" />
+			</else>
+		</if>
+	</command>
+
+	<command name="gotoPageViaAllResultsTab">
+		<var name="key_pageTitle" value="${pageTitle}" />
+
+		<execute function="AssertClick" locator1="LoopSearchResults#ALL_RESULTS_PAGE_TITLE" value1="${pageTitle}" />
+	</command>
+
+	<command name="gotoPageViaPagesResultTabList">
+		<var name="key_pageTitle" value="${pageTitle}" />
+
+		<execute function="AssertClick" locator1="LoopSearchResults#PAGES_RESULTS_PAGE_TITLE" value1="${pageTitle}" />
+	</command>
+
+	<command name="gotoPeopleResultTab">
+		<if>
+			<and>
+				<isset var="personResultCount" />
+				<not>
+					<contains string="${personResultCount}" substring="{personResultCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertClick" locator1="LoopSearchResults#PEOPLE_TAB" value1="People ${personResultCount}" />
+			</then>
+			<else>
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopSearchResults#PEOPLE_TAB" value1="People" />
+			</else>
+		</if>
+	</command>
+
+	<command name="gotoPerson">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertClick" locator1="LoopSearch#USER_NAME" value1="${userName}" />
+	</command>
+
+	<command name="gotoPersonViaPeopleResultTabList">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertClick" locator1="LoopSearchResults#PEOPLE_RESULTS_PERSON_NAME_LINK" value1="${userName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_NAME" />
+	</command>
+
+	<command name="gotoPostsResultTab">
+		<if>
+			<and>
+				<isset var="postResultCount" />
+				<not>
+					<contains string="${postResultCount}" substring="{postResultCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertClick" locator1="LoopSearchResults#POSTS_TAB" value1="Posts ${postResultCount}" />
+			</then>
+			<else>
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopSearchResults#POSTS_TAB" value1="Posts" />
+			</else>
+		</if>
+	</command>
+
+	<command name="gotoResultsPage">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopSearch#RESULTS_PAGE_LINK" value1="${keyword}" />
+	</command>
+
+	<command name="gotoResultsPageViaRecentKeyword">
+		<var name="key_keyword" value="${keyword}" />
+
+		<execute macro="Loop#openURL" />
+
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_SEARCH_FIELD" />
+
+		<execute function="AssertClick" locator1="LoopSearch#RECENT_KEYWORD_LINK" value1="${keyword}" />
+	</command>
+
+	<command name="gotoTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertClick" locator1="LoopSearch#TOPIC_NAME" value1="${topicName}" />
+	</command>
+
+	<command name="gotoTopicsResultTab">
+		<if>
+			<and>
+				<isset var="topicResultCount" />
+				<not>
+					<contains string="${topicResultCount}" substring="{topicResultCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertClick" locator1="LoopSearchResults#TOPICS_TAB" value1="Topics ${topicResultCount}" />
+			</then>
+			<else>
+				<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopSearchResults#TOPICS_TAB" value1="Topics" />
+			</else>
+		</if>
+	</command>
+
+	<command name="gotoTopicViaTopicsResultTabList">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertClick" locator1="LoopSearchResults#TOPICS_RESULTS_TOPIC_NAME_LINK" value1="${topicName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopTopicsTopic#TOPIC_NAME" />
+	</command>
+
+	<command name="reindexAllSearchIndexesCP">
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="/group/control_panel/manage/-/server/resources" />
+		</execute>
+
+		<var name="key_resourcesAction" value="Reindex all search indexes." />
+
+		<execute function="Click" locator1="CPServeradministrationResources#SERVER_RESOURCES_EXECUTE_BUTTON" />
+
+		<execute function="AssertTextEquals" locator1="CPServeradministrationResources#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+	</command>
+
+	<command name="scrollDown">
+		<execute function="KeyPress" locator1="LoopSearchResults#SEARCH_RESULTS" value1="\SPACE" />
+		<execute function="KeyPress" locator1="LoopSearchResults#SEARCH_RESULTS" value1="\SPACE" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopSearchResults#SEARCH_RESULTS" value1="\END" />-->
+	</command>
+
+	<command name="searchAnnouncementViaAllResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#viewAnnouncementAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+		</execute>
+	</command>
+
+	<command name="searchDeactivatedPerson">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewPerson">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPerson">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewDeactivatedPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchDeactivatedPersonViaPeopleResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPeopleResultTab">
+			<var name="personResultCount" value="${personResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPersonViaPeopleResultTabList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewDeactivatedPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchFeedEntryViaAllResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="searchFeedEntryViaPostsResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPostsResultTab">
+			<var name="postResultCount" value="${postResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewAuthorAndContentViaPostsList">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="searchFeedEntryViaRecentKeyword">
+		<execute macro="LoopSearch#gotoResultsPageViaRecentKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="searchFeedEntryViaSeeMoreLink">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#scrollDown" />
+
+		<execute macro="LoopSearch#clickSeeMorePostsLink">
+			<var name="postResultCount" value="${postResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#scrollDown" />
+
+		<execute macro="LoopSearch#viewAuthorAndContentViaPostsList">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="searchGroup">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewGroup">
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoGroup">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="searchGroupViaAllResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="searchGroupViaGroupsResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoGroupsResultTab">
+			<var name="groupResultCount" value="${groupResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoGroupViaGroupsResultTabList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="searchGroupViaRecentKeyword">
+		<execute macro="LoopSearch#gotoResultsPageViaRecentKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="searchGroupViaSeeMoreLink">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickSeeMoreGroupsLink">
+			<var name="groupResultCount" value="${groupResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoGroupViaGroupsResultTabList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="searchPageViaAllResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewPageListItem">
+			<var name="groupName" value="${groupName}" />
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPageViaAllResultsTab">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewPage">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageText" value="${pageText}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+	</command>
+
+	<command name="searchPageViaPagesResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPagesResultTab">
+			<var name="pageResultCount" value="${pageResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewPageListItemViaPageResultsTab">
+			<var name="groupName" value="${groupName}" />
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageText" value="${pageText}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPageViaPagesResultTabList">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+	</command>
+
+	<command name="searchPageViaSeeMoreLink">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickSeeMorePagesLink">
+			<var name="pageResultCount" value="${pageResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPageViaPagesResultTabList">
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewPage">
+			<var name="pageCreatorName" value="${pageCreatorName}" />
+			<var name="pageText" value="${pageText}" />
+			<var name="pageTitle" value="${pageTitle}" />
+		</execute>
+	</command>
+
+	<command name="searchPerson">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewPerson">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPerson">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchPersonViaAllResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchPersonViaPeopleResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPeopleResultTab">
+			<var name="personResultCount" value="${personResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPersonViaPeopleResultTabList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchPersonViaRecentKeyword">
+		<execute macro="LoopSearch#gotoResultsPageViaRecentKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchPersonViaSeeMoreLink">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickSeeMorePeopleLink">
+			<var name="personResultCount" value="${personResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoPersonViaPeopleResultTabList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="searchTopic">
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewTopic">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopic">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="searchTopicViaAllResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="searchTopicViaRecentKeyword">
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopSearch#gotoResultsPageViaRecentKeyword">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="searchTopicViaSeeMoreLink">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickSeeMoreTopicsLink">
+			<var name="topicResultCount" value="${topicResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicViaTopicsResultTabList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="searchTopicViaTopicsResultsTab">
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${keyword}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicsResultTab">
+			<var name="topicResultCount" value="${topicResultCount}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicViaTopicsResultTabList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="typeKeyword">
+		<execute function="KeyPress" locator1="LoopToolbar#TOOLBAR_SEARCH_FIELD" value1="\SPACE" />
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR_SEARCH_FIELD" value1="${keyword}" />
+	</command>
+
+	<command name="viewAuthorAndContentViaPostsList">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopSearchResults#POSTS_RESULTS_ENTRY_AUTHOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#POSTS_RESULTS_ENTRY_AUTHOR" value1="${feedEntryAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryDate" />
+				<not>
+					<contains string="${feedEntryDate}" substring="{feedEntryDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopSearchResults#POSTS_RESULTS_ENTRY_DATE" value1="${feedEntryDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopSearchResults#POSTS_RESULTS_ENTRY_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#POSTS_RESULTS_ENTRY_CONTENT" value1="${feedEntryContent}" />
+	</command>
+
+	<command name="viewGroup">
+		<var name="key_groupName" value="${groupName}" />
+		<var name="key_groupType" value="${groupType}" />
+		<var name="key_memberCount" value="${memberCount}" />
+
+		<execute function="AssertTextEquals" locator1="LoopSearch#GROUP_NAME" value1="${groupName}" />
+		<execute function="AssertElementPresent" locator1="LoopSearch#GROUP_PROFILE_PICTURE" />
+
+		<if>
+			<and>
+				<isset var="groupType" />
+				<not>
+					<contains string="${groupType}" substring="{groupType}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopSearch#GROUP_TYPE" value1="${groupType}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopSearch#GROUP_MEMBER_COUNT" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopSearch#GROUP_MEMBER_COUNT" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewNoGroup">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#GROUP_NAME" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#GROUP_PROFILE_PICTURE" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#GROUP_TYPE" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#GROUP_MEMBER_COUNT" />
+	</command>
+
+	<command name="viewNoPerson">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+		<var name="key_userLocation" value="${userLocation}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#USER_NAME" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#USER_PROFILE_PICTURE" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#USER_JOB_TITLE" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#USER_LOCATION" />
+	</command>
+
+	<command name="viewNoResults">
+		<execute function="AssertElementPresent" locator1="LoopSearchResults#NO_RESULTS_ICON" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#NO_RESULTS_MESSAGE" value1="We could not find any results for ${keyword}." />
+	</command>
+
+	<command name="viewNoResultsSidebar">
+		<execute function="AssertElementPresent" locator1="LoopSearchResults#NO_RESULTS_ICON" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#NO_RESULTS_MESSAGE" value1="We could not find any Page, Person, Group, or Topic for ${keyword}." />
+	</command>
+
+	<command name="viewNoTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#TOPIC_NAME" />
+		<execute function="AssertElementNotPresent" locator1="LoopSearch#TOPIC_PROFILE_PICTURE" />
+	</command>
+
+	<command name="viewPageListItem">
+		<var name="key_pageTitle" value="${pageTitle}" />
+
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#ALL_RESULTS_PAGE_TITLE" value1="${pageTitle}" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#ALL_RESULTS_PAGE_CREATOR_NAME" value1="${pageCreatorName}" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#ALL_RESULTS_PAGE_GROUP_NAME" value1="${groupName}" />
+	</command>
+
+	<command name="viewPageListItemViaPageResultsTab">
+		<var name="key_pageTitle" value="${pageTitle}" />
+
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#PAGES_RESULTS_PAGE_TITLE" value1="${pageTitle}" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#PAGES_RESULTS_PAGE_TEXT" value1="${pageText}" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#PAGES_RESULTS_PAGE_CREATOR_NAME" value1="${pageCreatorName}" />
+		<execute function="AssertTextEquals" locator1="LoopSearchResults#PAGES_RESULTS_PAGE_GROUP_NAME" value1="${groupName}" />
+	</command>
+
+	<command name="viewPerson">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+		<var name="key_userLocation" value="${userLocation}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopSearch#USER_NAME" value1="${userName}" />
+		<execute function="AssertElementPresent" locator1="LoopSearch#USER_PROFILE_PICTURE" />
+
+		<if>
+			<and>
+				<isset var="jobTitleName" />
+				<not>
+					<contains string="${jobTitleName}" substring="{jobTitleName}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopSearch#USER_JOB_TITLE" value1="${jobTitleName}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userLocation" />
+				<not>
+					<contains string="${userLocation}" substring="{userLocation}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopSearch#USER_LOCATION" value1="${userLocation}" />
+			</then>
+		</if>
+	</command>
+
+	<command name="viewTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopSearch#TOPIC_NAME" value1="${topicName}" />
+		<execute function="AssertElementPresent" locator1="LoopSearch#TOPIC_PROFILE_PICTURE" />
+	</command>
+</definition>

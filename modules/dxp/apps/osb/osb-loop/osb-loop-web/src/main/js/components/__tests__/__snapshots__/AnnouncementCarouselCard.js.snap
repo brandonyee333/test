@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnnouncementCarouselCard renders 1`] = `
+<div class="announcement-carousel-card-container">
+  <div class="content">
+    <div class="text">
+      <a href="/web/guest/home/-/loop/feed/1" title="test title" class="title" ref="title">test title</a>
+      <div class="markdown-content-container">
+        <p>1Lorem ipsum dolor sit amet,
+          <a class="mention" href="#">Joe Bloggs</a> assa sit amet ultricies rutrum. Aenean finibus
+          <a class="mention" href="#">Joe Bloggs</a> felis, eget varius mauris scelerisque quis. Pellentesque nisl tortor, semper at libero sit amet, consequat aliquet nulla. Morbi sit amet malesuada lacus. Aenean rutrum sit amet nulla id dictum. Phasellus tempor vel nisl eget scelerisque. Curabitur ut convallis enim. Aliquam fermentum vehicula velit a maximus. Donec varius dictum orci, commodo efficitur arcu fringilla vitae. Donec risus orci, imperdiet a placerat at, luctus rhoncus sem. Cras suscipit vulputate ligula. In at enim nisl.</p>
+      </div>
+      <a href="/web/guest/home/-/loop/feed/1" class="read-more">see-more</a>
+    </div>
+  </div>
+  <div class="post-info">
+    <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+      <a href="/people/1" style="" title="Joe Bloggs1" class="avatar avatar-size-smallest">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+    <div class="header-text-container">
+      <span class="shared-to-summary-container nowrap">
+        <a class="entity-link-container" href="/people/1">Joe Bloggs1</a>
+      </span>
+      <a href="/web/guest/home/-/loop/feed/1" class="secondary-info">
+        <span data-tooltip=""></span>
+      </a>
+    </div>
+  </div>
+</div>
+`;

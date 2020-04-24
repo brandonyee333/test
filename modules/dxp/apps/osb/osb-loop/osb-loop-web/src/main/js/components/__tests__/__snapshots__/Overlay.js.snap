@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Overlay renders 1`] = `
+<div class="test-overlay">
+  <div class="trigger" id="unit_tests_namespace_DEFAULT_OVERLAY1"></div>
+</div>
+`;

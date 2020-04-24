@@ -1,0 +1,131 @@
+<html>
+<head>
+<title>LoopGroupsUpdateGroup</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopGroupsUpdateGroup</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>SUBMIT_BUTTON</td>
+	<td>//button[contains(.,'Submit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ABOUT_TAB</td>
+	<td>//ul[contains(@class,'tabs')]//li[contains(.,'About')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_MEMBERS_TAB</td>
+	<td>//ul[contains(@class,'tabs')]//li[contains(.,'Members')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ABOUT-->
+<tr>
+	<td>NAME_FIELD</td>
+	<td>//input[contains(@name,'name')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREFERRED_NAME_FIELD</td>
+	<td>//input[contains(@name,'preferredName')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUBTYPE_FIELD</td>
+	<td>//label[contains(.,'Subtype (Required)')]//following-sibling::select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DESCRIPTION_FIELD</td>
+	<td>//label[contains(.,'Description')]//following-sibling::div//textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GITHUB_REPOSITORIES</td>
+	<td>//label[contains(.,'GitHub Repositories')]//following-sibling::textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--MEMBERS-->
+<tr>
+	<td>ADD_LEAD_FIELD</td>
+	<td>//label[contains(.,'Group Leads')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LEAD_NAME</td>
+	<td>//label[contains(.,'Group Leads')]//following-sibling::div//span[contains(.,'${key_leadName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LEAD_REMOVE_ICON</td>
+	<td>//label[contains(.,'Group Leads')]//following-sibling::div//span[contains(.,'${key_leadName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ASSISTANT_FIELD</td>
+	<td>//label[contains(.,'Group Assistants')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSISTANT_NAME</td>
+	<td>//label[contains(.,'Group Assistants')]//following-sibling::div//span[contains(.,'${key_assistantName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSISTANT_REMOVE_ICON</td>
+	<td>//label[contains(.,'Group Assistants')]//following-sibling::div//span[contains(.,'${key_assistantName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_MEMBERS_FIELD</td>
+	<td>//label[contains(.,'Group Members')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBERS_NAME</td>
+	<td>//label[contains(.,'Group Members')]//following-sibling::div//span[contains(.,'${key_memberName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBERS_REMOVE_ICON</td>
+	<td>//label[contains(.,'Group Members')]//following-sibling::div//span[contains(.,'${key_memberName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>IMPLIED_MEMBERS_FIELD</td>
+	<td>//label[contains(.,'Inherited Group Members')]//following-sibling::div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>IMPLIED_MEMBERS_NAME</td>
+	<td>//label[contains(.,'Inherited Group Members')]//following-sibling::div//span[contains(.,'${key_memberName}')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

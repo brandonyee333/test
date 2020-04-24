@@ -1,0 +1,729 @@
+<definition>
+	<command name="clickAddCommentLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_ADD_COMMENT_LINK" value1="Comment" />
+	</command>
+
+	<command name="clickAndTypeHashtag">
+		<execute macro="LoopFeedEntryAnnouncements#clickAndTypeText">
+			<var name="feedEntryText" value="#" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="clickAndTypeMention">
+		<execute macro="LoopFeedEntryAnnouncements#clickAndTypeText">
+			<var name="feedEntryText" value="@" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="${entityName}" />
+		</execute>
+	</command>
+
+	<command name="clickAndTypeText">
+		<execute macro="LoopFeedEntryAnnouncements#clickTextField" />
+
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="clickAuthorNameLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR" value1="${feedEntryAuthorName}" />
+	</command>
+
+	<command name="clickLikedLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="clickLikeLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="clickOptionsLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedAnnouncements#ENTRY_OPTIONS_LINK" />
+	</command>
+
+	<command name="clickTextField">
+		<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" />
+		<execute function="SelectFieldText" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" />
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\RIGHT" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\END" />-->
+	</command>
+
+	<command name="clickTextFieldAndPause">
+		<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" />
+		<execute function="Pause" locator1="3000" />
+		<execute function="SelectFieldText" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" />
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\RIGHT" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\END" />-->
+	</command>
+
+	<command name="clickTimestamp">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedAnnouncements#ENTRY_DATE" />
+	</command>
+
+	<command name="clickUserSharedToListLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_SHARED_TO_PERSON_LIST_LINK" value1="${numberOfUserShares} People" />
+	</command>
+
+	<command name="editAnnouncementEntry">
+		<var name="key_feedEntryAuthorName" value="${feedEntryAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryTitle" />
+				<not>
+					<contains string="${feedEntryTitle}" substring="{feedEntryTitle}" />
+				</not>
+			</and>
+			<then>
+				<execute function="Type" locator1="LoopFeedAnnouncements#EDIT_ENTRY_TITLE_FIELD" value1="${feedEntryTitle}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="feedEntryStickyTimeInDays" />
+				<not>
+					<contains string="${feedEntryStickyTimeInDays}" substring="{feedEntryStickyTimeInDays}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${feedEntryStickyTimeInDays}" arg2="1" />
+					<then>
+						<execute function="Select" locator1="LoopFeedAnnouncements#EDIT_ENTRY_STICKY_TIME_SELECT" value1="${feedEntryStickyTimeInDays} Day" />
+					</then>
+					<else>
+						<execute function="Select" locator1="LoopFeedAnnouncements#EDIT_ENTRY_STICKY_TIME_SELECT" value1="${feedEntryStickyTimeInDays} Days" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#EDIT_ENTRY_AUTHOR_NAME" />
+
+		<if>
+			<equals arg1="${sendEmailNotification}" arg2="true" />
+			<then>
+				<execute function="Click#makeVisibleClickAt" locator1="LoopFeedAnnouncements#EDIT_ENTRY_EMAIL_NOTIFICATION" />
+				<execute function="Check" locator1="LoopFeedAnnouncements#EDIT_ENTRY_EMAIL_NOTIFICATION" />
+				<execute function="AssertChecked" locator1="LoopFeedAnnouncements#EDIT_ENTRY_EMAIL_NOTIFICATION" />
+			</then>
+			<else>
+				<execute function="Click#makeVisibleClickAt" locator1="LoopFeedAnnouncements#EDIT_ENTRY_EMAIL_NOTIFICATION" />
+				<execute function="Uncheck" locator1="LoopFeedAnnouncements#EDIT_ENTRY_EMAIL_NOTIFICATION" />
+				<execute function="AssertNotChecked" locator1="LoopFeedAnnouncements#EDIT_ENTRY_EMAIL_NOTIFICATION" />
+			</else>
+		</if>
+	</command>
+
+	<command name="expandCreator">
+		<if>
+			<condition function="IsElementPresent" locator1="LoopFeedAnnouncements#ADD_ENTRY_MINIMIZED" />
+			<then>
+				<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD_MINIMIZER" />
+			</then>
+		</if>
+	</command>
+
+	<command name="generateLinkPreview">
+		<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_LINK_TAB" />
+
+		<execute function="Type" locator1="LoopFeed#ADD_ENTRY_URL_FIELD" value1="${feedEntryLinkUrl}" />
+		<execute function="KeyPress" locator1="LoopFeed#ADD_ENTRY_URL_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="generateLinkPreviewViaTextField">
+		<execute macro="LoopFeedEntryAnnouncements#typeSpace" />
+
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="${feedEntryLinkUrl}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#typeSpace" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ADD_ENTRY_URL_PREVIEW" />
+
+		<execute macro="LoopFeedEntryAnnouncements#typeBackSpace" />
+	</command>
+
+	<command name="gotoEndOfTextLine">
+		<execute function="SelectFieldText" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" />
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\RIGHT" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\END" />-->
+	</command>
+
+	<command name="gotoSingleViewViaShare">
+		<var method="PropsUtil#get('portal.url')" name="portalUrl" />
+
+		<execute macro="LoopFeedEntryAnnouncements#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickShareLink" />
+
+		<var method="selenium#getText('LoopFeed#ENTRY_SHARE_LINK')" name="feedEntryUrl" />
+
+		<if>
+			<not>
+				<contains string="${feedEntryUrl}" substring="${portalUrl}" />
+			</not>
+			<then>
+				<fail message="Feed URL is missing the Portal URL" />
+			</then>
+		</if>
+
+		<execute function="Click" locator1="LoopFeed#ENTRY_SHARE_CLOSE_BUTTON" />
+
+		<var method="StringUtil#replace('${feedEntryUrl}', '${portalUrl}', '')" name="feedEntryUrl" />
+
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="${feedEntryUrl}" />
+		</execute>
+	</command>
+
+	<command name="gotoStartOfTextLine">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\HOME" />
+	</command>
+
+	<command name="goUpTextField">
+		<if>
+			<isset var="numberOfKeyPresses" />
+			<then>
+				<var name="keyPressNumber" value="0" />
+
+				<while>
+					<not>
+						<equals arg1="${keyPressNumber}" arg2="${numberOfKeyPresses}" />
+					</not>
+					<then>
+						<var method="MathUtil#sum('${keyPressNumber}', '1')" name="keyPressNumber" />
+
+						<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\UP" />
+					</then>
+				</while>
+			</then>
+			<else>
+				<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\UP" />
+			</else>
+		</if>
+	</command>
+
+	<command name="hashtagTopics">
+		<for list="${hashtagTopicNameList}" param="topicName">
+			<execute macro="LoopFeedEntryAnnouncements#typeSpace" />
+
+			<execute macro="LoopFeedEntryAnnouncements#typeHashtag">
+				<var name="topicName" value="${topicName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#selectTopicFromDropdown">
+				<var name="topicName" value="${topicName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="likeEntry">
+		<execute macro="LoopFeedEntryAnnouncements#clickLikeLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#viewLikedEntry">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="makeAnnouncement">
+		<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_ANNOUNCEMENT_TAB" />
+
+		<execute function="Type" locator1="LoopFeed#ADD_ENTRY_ANNOUNCEMENT_TITLE_FIELD" value1="${feedEntryTitle}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryStickyTimeInDays" />
+				<not>
+					<contains string="${feedEntryStickyTimeInDays}" substring="{feedEntryStickyTimeInDays}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#selectAnnouncementStickyTime">
+					<var name="feedEntryStickyTimeInDays" value="${feedEntryStickyTimeInDays}" />
+				</execute>
+			</then>
+		</if>
+
+		<execute macro="LoopFeedEntry#selectAnnouncementAuthorName">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+		</execute>
+
+		<if>
+			<equals arg1="${sendEmailNotification}" arg2="false" />
+			<then>
+				<execute macro="LoopFeedEntry#uncheckSendEmailNotification" />
+			</then>
+			<else>
+				<execute macro="LoopFeedEntry#checkSendEmailNotification" />
+			</else>
+		</if>
+	</command>
+
+	<command name="mentionGroups">
+		<for list="${mentionGroupNameList}" param="groupName">
+			<execute macro="LoopFeedEntryAnnouncements#typeSpace" />
+
+			<execute macro="LoopFeedEntryAnnouncements#typeMention">
+				<var name="entityName" value="${groupName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#selectGroupFromDropdown">
+				<var name="groupName" value="${groupName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="mentionUsers">
+		<for list="${mentionUserNameList}" param="userName">
+			<execute macro="LoopFeedEntryAnnouncements#typeSpace" />
+
+			<execute macro="LoopFeedEntryAnnouncements#typeMention">
+				<var name="entityName" value="${userName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#selectUserFromDropdown">
+				<var name="userName" value="${userName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="minimizeCreator">
+		<if>
+			<condition function="IsElementNotPresent" locator1="LoopFeedAnnouncements#ADD_ENTRY_MINIMIZED" />
+			<then>
+				<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD_MINIMIZER" />
+			</then>
+		</if>
+	</command>
+
+	<command name="mouseOverAuthorProfilePicture">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="MouseOver" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR_PROFILE_PICTURE" />
+	</command>
+
+	<command name="pasteText">
+		<execute function="Type" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="${feedEntryText}" />
+	</command>
+
+	<command name="post">
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ADD_ENTRY_POST_BUTTON" value1="Post" />
+	</command>
+
+	<command name="scrollDown">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ENTRY_STREAM" value1="\SPACE" />
+	</command>
+
+	<command name="scrollFeedEntryControlsIntoView">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="ScrollWebElementIntoView" locator1="LoopFeedAnnouncements#ENTRY_OPTIONS_LINK" />
+	</command>
+
+	<command name="scrollToEnd">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ENTRY_STREAM" value1="\SPACE" />
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ENTRY_STREAM" value1="\SPACE" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopFeedAnnouncements#ENTRY_STREAM" value1="\END" />-->
+	</command>
+
+	<command name="scrollUp">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ENTRY_STREAM" value1="\HOME" />
+	</command>
+
+	<command name="shareWithGroups">
+		<for list="${shareWithGroupNameList}" param="groupName">
+			<execute macro="LoopFeedEntryAnnouncements#typeToFieldContent">
+				<var name="toFieldContent" value="${groupName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#selectGroupFromDropdown">
+				<var name="groupName" value="${groupName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="shareWithTopics">
+		<for list="${shareWithTopicNameList}" param="topicName">
+			<execute macro="LoopFeedEntryAnnouncements#typeToFieldContent">
+				<var name="toFieldContent" value="${topicName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#selectTopicFromDropdown">
+				<var name="topicName" value="${topicName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="shareWithUsers">
+		<for list="${shareWithUserNameList}" param="userName">
+			<execute macro="LoopFeedEntryAnnouncements#typeToFieldContent">
+				<var name="toFieldContent" value="${userName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#selectUserFromDropdown">
+				<var name="userName" value="${userName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="typeBackSpace">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\BACK_SPACE" />
+	</command>
+
+	<command name="typeHashtag">
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="#" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="typeMention">
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="@" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#typeText">
+			<var name="feedEntryText" value="${entityName}" />
+		</execute>
+	</command>
+
+	<command name="typeReturn">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="typeSpace">
+		<execute function="KeyPress" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="\SPACE" />
+	</command>
+
+	<command name="typeText">
+		<execute function="Type#sendKeys" locator1="LoopFeedAnnouncements#ADD_ENTRY_TEXT_FIELD" value1="${feedEntryText}" />
+	</command>
+
+	<command name="typeToFieldContent">
+		<execute function="Type" locator1="LoopFeedAnnouncements#ADD_ENTRY_TO_FIELD" value1="${toFieldContent}" />
+	</command>
+
+	<command name="unlikeEntry">
+		<execute macro="LoopFeedEntryAnnouncements#clickLikedLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryAnnouncements#viewNotLikedEntry">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="uploadImage">
+		<execute function="Click" locator1="LoopFeedAnnouncements#ADD_ENTRY_PHOTO_TAB" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${feedEntryImage}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${feedEntryImage}" />
+			</else>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ADD_ENTRY_IMAGE_PREVIEW_IMAGE" />
+	</command>
+
+	<command name="viewAnnouncementAuthorAndContent">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_ANNOUNCEMENT_HEADER_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR" value1="${feedEntryAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryDate" />
+				<not>
+					<contains string="${feedEntryDate}" substring="{feedEntryDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_DATE" value1="${feedEntryDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_ANNOUNCEMENT_HEADER_TITLE" value1="${feedEntryTitle}" />
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_CONTENT" value1="${feedEntryContent}" />
+	</command>
+
+	<command name="viewAnnouncementControls">
+		<execute macro="LoopFeedEntry#expandCreator" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ADD_ENTRY_ANNOUNCEMENT_TAB" />
+
+		<execute macro="LoopFeedEntry#minimizeCreator" />
+
+		<execute macro="LoopFeedEntry#gotoAnnouncementsTab" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ADD_ENTRY_MINIMIZED" />
+	</command>
+
+	<command name="viewAuthorAndContent">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_BOOKMARK" />
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR" value1="${feedEntryAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryDate" />
+				<not>
+					<contains string="${feedEntryDate}" substring="{feedEntryDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_DATE" value1="${feedEntryDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_CONTENT" value1="${feedEntryContent}" />
+	</command>
+
+	<command name="viewImage">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedAnnouncements#ENTRY_IMAGE" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+	</command>
+
+	<command name="viewImages">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+		<var name="key_positionValue" value="${numberOfImages}" />
+
+		<var name="imageNumber" value="1" />
+
+		<if>
+			<not>
+				<or>
+					<equals arg1="${numberOfImages}" arg2="0" />
+					<equals arg1="${numberOfImages}" arg2="1" />
+					<equals arg1="${numberOfImages}" arg2="2" />
+					<equals arg1="${numberOfImages}" arg2="3" />
+					<equals arg1="${numberOfImages}" arg2="4" />
+					<contains string="${numberOfImages}" substring="{numberOfImages}" />
+				</or>
+			</not>
+			<then>
+				<var name="key_positionValue" value="4" />
+				<var method="MathUtil#difference('${numberOfImages}', '4')" name="remainingNumberOfImages" />
+
+				<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_IMAGE_SEE_MORE" />
+				<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_IMAGE_SEE_MORE" value1="+ ${remainingNumberOfImages}" />
+
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="4 of ${numberOfImages}" />
+				<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+			</then>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_IMAGE_SPECIFIC" />
+
+		<execute function="Click" locator1="LoopFeedAnnouncements#ENTRY_IMAGE" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+
+		<var method="MathUtil#sum('${imageNumber}', '1')" name="imageNumber" />
+
+		<while>
+			<not>
+				<equals arg1="${imageNumber}" arg2="${numberOfImages}" />
+			</not>
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW" />
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+				<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+
+				<var method="MathUtil#sum('${imageNumber}', '1')" name="imageNumber" />
+			</then>
+		</while>
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW" />
+
+		<var method="MathUtil#difference('${imageNumber}', '1')" name="imageNumber" />
+
+		<while>
+			<not>
+				<equals arg1="${imageNumber}" arg2="1" />
+			</not>
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+				<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW" />
+
+				<var method="MathUtil#difference('${imageNumber}', '1')" name="imageNumber" />
+			</then>
+		</while>
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+		<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+	</command>
+
+	<command name="viewLikedEntry">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="viewLikeSummary">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_LIKE_SUMMARY_TITLE" value1="People Who Liked This Post:" />
+
+		<for list="${likeUserNameList}" param="userName">
+			<var name="key_userName" value="${userName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_LIKE_SUMMARY_USER_AVATAR_LINK" />
+		</for>
+	</command>
+
+	<command name="viewLinkPreview">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_LINK_PREVIEW_IMAGE" />
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_LINK_PREVIEW_TITLE" />
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_LINK_PREVIEW_DESCRIPTION" />
+		<execute function="AssertElementPresent" locator1="LoopFeedAnnouncements#ENTRY_LINK_PREVIEW_SHORT_URL" />
+	</command>
+
+	<command name="viewNoAnnouncementControls">
+		<execute macro="LoopFeedEntry#expandCreator" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeed#ADD_ENTRY_ANNOUNCEMENT_TAB" />
+
+		<execute macro="LoopFeedEntry#gotoAnnouncementsTab" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ADD_ENTRY_MINIMIZED" />
+	</command>
+
+	<command name="viewNoBookmark">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ENTRY_BOOKMARK" />
+	</command>
+
+	<command name="viewNone">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopFeedAnnouncements#ENTRY_CONTENT" />
+			<then>
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedAnnouncements#ENTRY_DATE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedAnnouncements#ENTRY_CONTENT" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ENTRY_AUTHOR" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ENTRY_DATE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ENTRY_CONTENT" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNotLikedEntry">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeedAnnouncements#ENTRY_LIKED_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopFeedAnnouncements#ENTRY_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="viewUserViaLikeSummaryLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="Click#clickNoMouseOver" locator1="LoopFeedAnnouncements#ENTRY_LIKE_SUMMARY_USER_AVATAR_LINK" />
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewUserViaSharedToLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertClick" locator1="LoopFeedAnnouncements#ENTRY_SHARED_TO_PERSON_LINK" value1="${userName}" />
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewUserViaSharedToList">
+		<execute macro="LoopFeedEntryAnnouncements#clickUserSharedToListLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="numberOfUserShares" value="${numberOfUserShares}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+</definition>

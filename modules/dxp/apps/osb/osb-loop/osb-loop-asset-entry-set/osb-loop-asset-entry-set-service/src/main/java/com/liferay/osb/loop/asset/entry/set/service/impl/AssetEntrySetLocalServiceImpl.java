@@ -1,0 +1,700 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.loop.asset.entry.set.service.impl;
+
+import com.liferay.document.library.kernel.model.DLFileEntry;
+import com.liferay.osb.loop.asset.entry.set.constants.AssetEntrySetConstants;
+import com.liferay.osb.loop.asset.entry.set.constants.AssetEntrySetPortletKeys;
+import com.liferay.osb.loop.asset.entry.set.internal.configuration.AssetEntrySetServiceConfigurationKeys;
+import com.liferay.osb.loop.asset.entry.set.internal.configuration.AssetEntrySetServiceConfigurationUtil;
+import com.liferay.osb.loop.asset.entry.set.internal.configuration.AssetEntrySetServiceConfigurationValues;
+import com.liferay.osb.loop.asset.entry.set.internal.handler.AssetEntrySetHandler;
+import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
+import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetLike;
+import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetReference;
+import com.liferay.osb.loop.asset.entry.set.service.base.AssetEntrySetLocalServiceBaseImpl;
+import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetLikePK;
+import com.liferay.osb.loop.asset.entry.set.util.AssetEntrySetImage;
+import com.liferay.osb.loop.asset.entry.set.util.AssetEntrySetParticipantInfoUtil;
+import com.liferay.osb.loop.asset.sharing.service.AssetSharingEntryLocalService;
+import com.liferay.petra.string.CharPool;
+import com.liferay.portal.kernel.configuration.Filter;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexer;
+import com.liferay.portal.kernel.search.IndexerRegistry;
+import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.ObjectValuePair;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.io.File;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ * @author Calvin Keum
+ * @author Sherry Yang
+ */
+public class AssetEntrySetLocalServiceImpl
+	extends AssetEntrySetLocalServiceBaseImpl {
+
+	@Override
+	public AssetEntrySet addAssetEntrySet(
+			long userId, long parentAssetEntrySetId, long classNameId,
+			long classPK, long creatorClassNameId, long creatorClassPK,
+			JSONObject payloadJSONObject, boolean privateAssetEntrySet,
+			long stickyTime, String title, int type, int status)
+		throws PortalException {
+
+		long assetEntrySetId = counterLocalService.increment();
+
+		AssetEntrySet assetEntrySet = assetEntrySetPersistence.create(
+			assetEntrySetId);
+
+		User user = userLocalService.getUser(userId);
+
+		assetEntrySet.setCompanyId(user.getCompanyId());
+		assetEntrySet.setUserId(user.getUserId());
+
+		long currentTime = System.currentTimeMillis();
+
+		assetEntrySet.setCreateTime(currentTime);
+		assetEntrySet.setModifiedTime(currentTime);
+
+		assetEntrySet.setParentAssetEntrySetId(parentAssetEntrySetId);
+		assetEntrySet.setClassNameId(classNameId);
+		assetEntrySet.setClassPK(classPK);
+		assetEntrySet.setCreatorClassNameId(creatorClassNameId);
+		assetEntrySet.setCreatorClassPK(creatorClassPK);
+		assetEntrySet.setCreatorName(
+			AssetEntrySetParticipantInfoUtil.getParticipantName(
+				creatorClassNameId, creatorClassPK));
+
+		assetEntrySet.setLevel(getLevel(parentAssetEntrySetId));
+
+		filterAssetTagNames(payloadJSONObject);
+
+		assetEntrySet.setPayload(
+			jsonFactory.looseSerialize(
+				assetEntrySetHandler.interpret(
+					user.getUserId(), assetEntrySetId, null,
+					payloadJSONObject)));
+
+		assetEntrySet.setPrivateAssetEntrySet(privateAssetEntrySet);
+		assetEntrySet.setStickyTime(stickyTime);
+		assetEntrySet.setTitle(title);
+		assetEntrySet.setType(type);
+		assetEntrySet.setStatus(status);
+
+		assetEntrySet = assetEntrySetPersistence.update(assetEntrySet);
+
+		updateChildAssetEntrySetsCount(parentAssetEntrySetId);
+		updateModifiedTime(parentAssetEntrySetId, currentTime);
+
+		updateAssetEntry(
+			assetEntrySet,
+			StringUtil.split(
+				payloadJSONObject.getString(
+					AssetEntrySetConstants.PAYLOAD_KEY_ASSET_TAG_NAMES)));
+
+		updateAssetSharingEntries(assetEntrySet);
+
+		Indexer indexer = indexerRegistry.nullSafeGetIndexer(
+			AssetEntrySet.class);
+
+		indexer.reindex(assetEntrySet);
+
+		return assetEntrySet;
+	}
+
+	@Override
+	public JSONObject addFileAttachment(long userId, File file)
+		throws PortalException {
+
+		String extension =
+			StringPool.PERIOD + FileUtil.getExtension(file.getName());
+
+		if (ArrayUtil.contains(
+				AssetEntrySetServiceConfigurationValues.
+					ASSET_ENTRY_SET_IMAGE_EXTENSIONS,
+				extension)) {
+
+			return assetEntrySetImage.addImageFile(
+				userId, portal.getClassNameId(AssetEntrySet.class), 0L,
+				AssetEntrySetPortletKeys.ASSET_ENTRY_SET, file, _imageMaxSizes);
+		}
+
+		return jsonFactory.createJSONObject();
+	}
+
+	@Override
+	public AssetEntrySet deleteAssetEntrySet(AssetEntrySet assetEntrySet)
+		throws PortalException {
+
+		assetEntrySetPersistence.remove(assetEntrySet);
+
+		assetEntryLocalService.deleteEntry(
+			AssetEntrySet.class.getName(), assetEntrySet.getAssetEntrySetId());
+
+		assetEntrySetLikeLocalService.deleteAssetEntrySetLikes(
+			assetEntrySet.getAssetEntrySetId());
+
+		assetSharingEntryLocalService.deleteAssetSharingEntries(
+			portal.getClassNameId(AssetEntrySet.class),
+			assetEntrySet.getAssetEntrySetId());
+
+		if (assetEntrySet.getChildAssetEntrySetsCount() > 0) {
+			deleteChildAssetEntrySets(assetEntrySet.getAssetEntrySetId());
+		}
+
+		Indexer indexer = indexerRegistry.nullSafeGetIndexer(
+			AssetEntrySet.class);
+
+		if (assetEntrySet.getParentAssetEntrySetId() > 0) {
+			AssetEntrySet parentAssetEntrySet = fetchAssetEntrySet(
+				assetEntrySet.getParentAssetEntrySetId());
+
+			if (parentAssetEntrySet != null) {
+				updateAssetSharingEntries(parentAssetEntrySet);
+				updateChildAssetEntrySetsCount(
+					parentAssetEntrySet.getAssetEntrySetId());
+				updateModifiedTime(
+					parentAssetEntrySet.getAssetEntrySetId(),
+					System.currentTimeMillis());
+
+				indexer.reindex(parentAssetEntrySet);
+			}
+		}
+
+		List<Long> fileEntryIds = getFileEntryIds(
+			jsonFactory.createJSONObject(assetEntrySet.getPayload()));
+
+		for (long fileEntryId : fileEntryIds) {
+			dlAppLocalService.deleteFileEntry(fileEntryId);
+		}
+
+		indexer.delete(assetEntrySet);
+
+		return assetEntrySet;
+	}
+
+	@Override
+	public AssetEntrySet deleteAssetEntrySet(long assetEntrySetId)
+		throws PortalException {
+
+		AssetEntrySet assetEntrySet = assetEntrySetPersistence.findByPrimaryKey(
+			assetEntrySetId);
+
+		return deleteAssetEntrySet(assetEntrySet);
+	}
+
+	@Override
+	public AssetEntrySet fetchAssetEntrySet(
+		long classNameId, long classPK, String title) {
+
+		return assetEntrySetPersistence.fetchByCNI_CPK_Title(
+			classNameId, classPK, title);
+	}
+
+	@Override
+	public List<AssetEntrySet> getAssetEntrySets(
+		long classNameId, long classPK) {
+
+		return assetEntrySetPersistence.findByCNI_CPK(classNameId, classPK);
+	}
+
+	@Override
+	public int getAssetEntrySetsCount(
+		long classNameId, long classPK, int type) {
+
+		return assetEntrySetPersistence.countByCNI_CPK_Type(
+			classNameId, classPK, type);
+	}
+
+	@Override
+	public List<AssetEntrySet> getChildAssetEntrySets(
+		long parentAssetEntrySetId) {
+
+		return assetEntrySetPersistence.findByParentAssetEntrySetId(
+			parentAssetEntrySetId);
+	}
+
+	@Override
+	public int getChildAssetEntrySetsCount(long parentAssetEntrySetId) {
+		return assetEntrySetPersistence.countByParentAssetEntrySetId(
+			parentAssetEntrySetId);
+	}
+
+	@Override
+	public List<AssetEntrySet> getNewChildAssetEntrySets(
+			long createTime, long parentAssetEntrySetId, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
+
+		return assetEntrySetPersistence.findByGtCT_PAESI(
+			createTime, parentAssetEntrySetId, start, end, orderByComparator);
+	}
+
+	@Override
+	public List<AssetEntrySet> getOldChildAssetEntrySets(
+			long createTime, long parentAssetEntrySetId, int start, int end,
+			OrderByComparator orderByComparator)
+		throws PortalException {
+
+		return assetEntrySetPersistence.findByLtCT_PAESI(
+			createTime, parentAssetEntrySetId, start, end, orderByComparator);
+	}
+
+	@Override
+	public AssetEntrySet likeAssetEntrySet(long userId, long assetEntrySetId)
+		throws PortalException {
+
+		return updateAssetEntrySetLike(userId, assetEntrySetId, true);
+	}
+
+	@Override
+	public AssetEntrySet unlikeAssetEntrySet(long userId, long assetEntrySetId)
+		throws PortalException {
+
+		return updateAssetEntrySetLike(userId, assetEntrySetId, false);
+	}
+
+	@Override
+	public void updateAssetEntry(long assetEntrySetId, String[] assetTagNames)
+		throws PortalException {
+
+		AssetEntrySet assetEntrySet = assetEntrySetPersistence.findByPrimaryKey(
+			assetEntrySetId);
+
+		updateAssetEntry(assetEntrySet, assetTagNames);
+	}
+
+	@Override
+	public AssetEntrySet updateAssetEntrySet(
+			long assetEntrySetId, JSONObject payloadJSONObject,
+			boolean privateAssetEntrySet, long stickyTime, String title,
+			int type, int status)
+		throws PortalException {
+
+		AssetEntrySet assetEntrySet = assetEntrySetPersistence.findByPrimaryKey(
+			assetEntrySetId);
+
+		boolean updateAssetSharingEntries = true;
+
+		JSONObject oldPayloadJSONObject = jsonFactory.createJSONObject(
+			assetEntrySet.getPayload());
+
+		List<Long> fileEntryIds = getFileEntryIds(oldPayloadJSONObject);
+
+		for (long fileEntryId : fileEntryIds) {
+			DLFileEntry dlFileEntry = dlFileEntryLocalService.getDLFileEntry(
+				fileEntryId);
+
+			dlFileEntry.setClassPK(0);
+
+			dlFileEntryLocalService.updateDLFileEntry(dlFileEntry);
+		}
+
+		JSONArray oldSharedToJSONArray = jsonFactory.createJSONArray(
+			oldPayloadJSONObject.getString(
+				AssetEntrySetConstants.PAYLOAD_KEY_SHARED_TO));
+
+		payloadJSONObject = assetEntrySetHandler.interpret(
+			assetEntrySet.getUserId(), assetEntrySet.getAssetEntrySetId(),
+			oldPayloadJSONObject, payloadJSONObject);
+
+		JSONArray sharedTOJSONArray = jsonFactory.createJSONArray(
+			payloadJSONObject.getString(
+				AssetEntrySetConstants.PAYLOAD_KEY_SHARED_TO));
+
+		if (Objects.equals(
+				oldSharedToJSONArray.toString(),
+				sharedTOJSONArray.toString())) {
+
+			updateAssetSharingEntries = false;
+		}
+
+		assetEntrySet.setModifiedTime(System.currentTimeMillis());
+
+		filterAssetTagNames(payloadJSONObject);
+
+		assetEntrySet.setPayload(jsonFactory.looseSerialize(payloadJSONObject));
+
+		assetEntrySet.setPrivateAssetEntrySet(privateAssetEntrySet);
+		assetEntrySet.setStickyTime(stickyTime);
+		assetEntrySet.setTitle(title);
+		assetEntrySet.setType(type);
+		assetEntrySet.setStatus(status);
+
+		assetEntrySet = assetEntrySetPersistence.update(assetEntrySet);
+
+		updateAssetEntry(
+			assetEntrySet,
+			StringUtil.split(
+				payloadJSONObject.getString(
+					AssetEntrySetConstants.PAYLOAD_KEY_ASSET_TAG_NAMES)));
+
+		if (updateAssetSharingEntries) {
+			updateAssetSharingEntries(assetEntrySet);
+		}
+
+		Indexer indexer = indexerRegistry.nullSafeGetIndexer(
+			AssetEntrySet.class);
+
+		indexer.reindex(assetEntrySet);
+
+		return assetEntrySet;
+	}
+
+	protected void deleteChildAssetEntrySets(long parentAssetEntrySetId)
+		throws PortalException {
+
+		List<AssetEntrySet> childAssetEntrySets = getChildAssetEntrySets(
+			parentAssetEntrySetId);
+
+		for (AssetEntrySet assetEntrySet : childAssetEntrySets) {
+			deleteAssetEntrySet(assetEntrySet);
+		}
+	}
+
+	protected void filterAssetTagNames(JSONObject payloadJSONObject) {
+		List<String> newAssetTagNames = new ArrayList<>();
+
+		String[] curAssetTagNames = StringUtil.split(
+			payloadJSONObject.getString(
+				AssetEntrySetConstants.PAYLOAD_KEY_ASSET_TAG_NAMES));
+
+		for (String assetTagName : curAssetTagNames) {
+			if (isValidAssetTagName(assetTagName)) {
+				newAssetTagNames.add(assetTagName);
+			}
+		}
+
+		payloadJSONObject.put(
+			AssetEntrySetConstants.PAYLOAD_KEY_ASSET_TAG_NAMES,
+			StringUtil.merge(newAssetTagNames));
+	}
+
+	protected List<Long> getFileEntryIds(JSONObject payloadJSONObject)
+		throws PortalException {
+
+		List<Long> fileEntryIds = new ArrayList<>();
+
+		JSONArray imageDataJSONArray = payloadJSONObject.getJSONArray(
+			"imageData");
+
+		if (imageDataJSONArray != null) {
+			for (int i = 0; i < imageDataJSONArray.length(); i++) {
+				JSONObject imageDataJSONObject =
+					imageDataJSONArray.getJSONObject(i);
+
+				JSONObject fileEntryIdsJSONObject =
+					imageDataJSONObject.getJSONObject("fileEntryIds");
+
+				Iterator<String> iterator = fileEntryIdsJSONObject.keys();
+
+				while (iterator.hasNext()) {
+					String key = iterator.next();
+
+					fileEntryIds.add(fileEntryIdsJSONObject.getLong(key));
+				}
+			}
+		}
+
+		return fileEntryIds;
+	}
+
+	protected int getLevel(long parentAssetEntrySetId) throws PortalException {
+		int level = 0;
+
+		while (parentAssetEntrySetId > 0) {
+			level++;
+
+			AssetEntrySet assetEntrySet = getAssetEntrySet(
+				parentAssetEntrySetId);
+
+			parentAssetEntrySetId = assetEntrySet.getParentAssetEntrySetId();
+		}
+
+		return level;
+	}
+
+	protected Map<Long, Set<Long>> getSharedToClassPKsMap(
+			AssetEntrySet assetEntrySet)
+		throws PortalException {
+
+		Map<Long, Set<Long>> sharedToClassPKsMap = new LinkedHashMap<>();
+
+		JSONObject payloadJSONObject = jsonFactory.createJSONObject(
+			assetEntrySet.getPayload());
+
+		JSONArray sharedToJSONArray = payloadJSONObject.getJSONArray(
+			AssetEntrySetConstants.PAYLOAD_KEY_SHARED_TO);
+
+		if (sharedToJSONArray == null) {
+			return sharedToClassPKsMap;
+		}
+
+		for (int i = 0; i < sharedToJSONArray.length(); i++) {
+			JSONObject sharedToJSONObject = sharedToJSONArray.getJSONObject(i);
+
+			long entityClassNameId = sharedToJSONObject.getLong(
+				"entityClassNameId");
+			long entityClassPK = sharedToJSONObject.getLong("entityClassPK");
+
+			setSharedToClassPKsMap(
+				sharedToClassPKsMap, entityClassNameId, entityClassPK);
+		}
+
+		setSharedToClassPKsMap(
+			sharedToClassPKsMap, assetEntrySet.getCreatorClassNameId(),
+			assetEntrySet.getCreatorClassPK());
+
+		ObjectValuePair<Long, Long> classNameIdAndClassPKOVP =
+			AssetEntrySetParticipantInfoUtil.getClassNameIdAndClassPKOVP(
+				assetEntrySet.getUserId());
+
+		setSharedToClassPKsMap(
+			sharedToClassPKsMap, classNameIdAndClassPKOVP.getKey(),
+			classNameIdAndClassPKOVP.getValue());
+
+		return sharedToClassPKsMap;
+	}
+
+	protected boolean isValidAssetTagName(String assetTagName) {
+		if (Validator.isDigit(assetTagName.charAt(0)) ||
+			(assetTagName.length() > _ASSET_TAG_NAME_MAX_LENGTH)) {
+
+			return false;
+		}
+
+		for (char c : assetTagName.toCharArray()) {
+			if (!Validator.isChar(c) && !Validator.isDigit(c) &&
+				(c != CharPool.UNDERLINE)) {
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	protected void setSharedToClassPKsMap(
+			Map<Long, Set<Long>> sharedToClassPKsMap, long classNameId,
+			long classPK)
+		throws PortalException {
+
+		if (Validator.isNull(
+				AssetEntrySetParticipantInfoUtil.getParticipantName(
+					classNameId, classPK))) {
+
+			return;
+		}
+
+		Set<Long> classNamePks = new HashSet<>();
+
+		if (sharedToClassPKsMap.containsKey(classNameId)) {
+			classNamePks = sharedToClassPKsMap.get(classNameId);
+		}
+
+		classNamePks.add(classPK);
+
+		sharedToClassPKsMap.put(classNameId, classNamePks);
+	}
+
+	protected void updateAssetEntry(
+			AssetEntrySet assetEntrySet, String[] assetTagNames)
+		throws PortalException {
+
+		Group group = groupLocalService.getCompanyGroup(
+			assetEntrySet.getCompanyId());
+
+		assetEntryLocalService.updateEntry(
+			assetEntrySet.getUserId(), group.getGroupId(),
+			AssetEntrySet.class.getName(), assetEntrySet.getAssetEntrySetId(),
+			null, assetTagNames);
+	}
+
+	protected AssetEntrySet updateAssetEntrySetLike(
+			long userId, long assetEntrySetId, boolean like)
+		throws PortalException {
+
+		ObjectValuePair<Long, Long> classNameIdAndClassPKOVP =
+			AssetEntrySetParticipantInfoUtil.getClassNameIdAndClassPKOVP(
+				userId);
+
+		AssetEntrySetLikePK assetEntrySetLikePK = new AssetEntrySetLikePK(
+			assetEntrySetId, classNameIdAndClassPKOVP.getKey(),
+			classNameIdAndClassPKOVP.getValue());
+
+		if (like) {
+			AssetEntrySetLike assetEntrySetLike =
+				assetEntrySetLikePersistence.fetchByPrimaryKey(
+					assetEntrySetLikePK);
+
+			if (assetEntrySetLike == null) {
+				assetEntrySetLike = assetEntrySetLikePersistence.create(
+					assetEntrySetLikePK);
+
+				assetEntrySetLikePersistence.update(assetEntrySetLike);
+			}
+		}
+		else {
+			assetEntrySetLikePersistence.remove(assetEntrySetLikePK);
+		}
+
+		int assetEntrySetLikesCount =
+			assetEntrySetLikePersistence.countByAssetEntrySetId(
+				assetEntrySetId);
+
+		AssetEntrySet assetEntrySet =
+			assetEntrySetPersistence.fetchByPrimaryKey(assetEntrySetId);
+
+		assetEntrySet.setAssetEntrySetLikesCount(assetEntrySetLikesCount);
+
+		return assetEntrySetPersistence.update(assetEntrySet);
+	}
+
+	protected void updateAssetSharingEntries(AssetEntrySet assetEntrySet)
+		throws PortalException {
+
+		assetSharingEntryLocalService.deleteAssetSharingEntries(
+			portal.getClassNameId(AssetEntrySet.class),
+			assetEntrySet.getAssetEntrySetId());
+
+		Map<Long, Set<Long>> sharedToClassPKsMap = getSharedToClassPKsMap(
+			assetEntrySet);
+
+		if (assetEntrySet.getChildAssetEntrySetsCount() > 0) {
+			List<AssetEntrySetReference> assetEntrySetReferences =
+				assetEntrySetFinder.findAssetEntrySetReferenceByPAESI_CNI(
+					assetEntrySet.getAssetEntrySetId());
+
+			for (AssetEntrySetReference assetEntrySetReference :
+					assetEntrySetReferences) {
+
+				setSharedToClassPKsMap(
+					sharedToClassPKsMap,
+					assetEntrySetReference.getSharedToClassNameId(),
+					assetEntrySetReference.getSharedToClassPK());
+			}
+		}
+
+		assetSharingEntryLocalService.addAssetSharingEntries(
+			portal.getClassNameId(AssetEntrySet.class),
+			assetEntrySet.getAssetEntrySetId(), sharedToClassPKsMap);
+
+		if (assetEntrySet.getParentAssetEntrySetId() > 0) {
+			AssetEntrySet parentAssetEntrySet = getAssetEntrySet(
+				assetEntrySet.getParentAssetEntrySetId());
+
+			updateAssetSharingEntries(parentAssetEntrySet);
+		}
+	}
+
+	protected void updateChildAssetEntrySetsCount(long assetEntrySetId)
+		throws PortalException {
+
+		if (assetEntrySetId == 0) {
+			return;
+		}
+
+		AssetEntrySet assetEntrySet = assetEntrySetPersistence.findByPrimaryKey(
+			assetEntrySetId);
+
+		int childAssetEntrySetsCount =
+			assetEntrySetPersistence.countByParentAssetEntrySetId(
+				assetEntrySetId);
+
+		assetEntrySet.setChildAssetEntrySetsCount(childAssetEntrySetsCount);
+
+		assetEntrySetPersistence.update(assetEntrySet);
+	}
+
+	protected void updateModifiedTime(long assetEntrySetId, long modifiedTime)
+		throws PortalException {
+
+		if (assetEntrySetId == 0) {
+			return;
+		}
+
+		AssetEntrySet assetEntrySet = assetEntrySetPersistence.findByPrimaryKey(
+			assetEntrySetId);
+
+		assetEntrySet.setModifiedTime(modifiedTime);
+
+		assetEntrySet = assetEntrySetPersistence.update(assetEntrySet);
+
+		if (assetEntrySet.getParentAssetEntrySetId() > 0) {
+			updateModifiedTime(
+				assetEntrySet.getParentAssetEntrySetId(), modifiedTime);
+		}
+	}
+
+	@ServiceReference(type = AssetEntrySetHandler.class)
+	protected AssetEntrySetHandler assetEntrySetHandler;
+
+	@ServiceReference(type = AssetEntrySetImage.class)
+	protected AssetEntrySetImage assetEntrySetImage;
+
+	@ServiceReference(type = AssetSharingEntryLocalService.class)
+	protected AssetSharingEntryLocalService assetSharingEntryLocalService;
+
+	@ServiceReference(type = IndexerRegistry.class)
+	protected IndexerRegistry indexerRegistry;
+
+	@ServiceReference(type = JSONFactory.class)
+	protected JSONFactory jsonFactory;
+
+	@ServiceReference(type = Portal.class)
+	protected Portal portal;
+
+	private static final int _ASSET_TAG_NAME_MAX_LENGTH = 75;
+
+	private static final Map<String, String> _imageMaxSizes = new HashMap<>();
+
+	static {
+		for (String imageType :
+				AssetEntrySetServiceConfigurationValues.
+					ASSET_ENTRY_SET_IMAGE_TYPES) {
+
+			String imageMaxSize = AssetEntrySetServiceConfigurationUtil.get(
+				AssetEntrySetServiceConfigurationKeys.
+					ASSET_ENTRY_SET_IMAGE_MAX_SIZE,
+				new Filter(imageType));
+
+			_imageMaxSizes.put(imageType, imageMaxSize);
+		}
+	}
+
+}

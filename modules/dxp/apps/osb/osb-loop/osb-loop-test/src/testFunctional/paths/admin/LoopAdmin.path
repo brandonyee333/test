@@ -1,0 +1,24 @@
+<html>
+<head>
+<title>LoopAdmin</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopAdmin</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>ADMIN_HEADER</td>
+	<td>//div[contains(@class,'card-header-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADMIN_JOB_TITLES</td>
+	<td>//span[contains(@class,'list-item-label') and contains(.,'Job Titles')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

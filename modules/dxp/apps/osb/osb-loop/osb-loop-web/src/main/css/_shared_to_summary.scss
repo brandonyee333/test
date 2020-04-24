@@ -1,0 +1,26 @@
+.shared-to-summary-container {
+	font-size: 14px;
+	overflow: hidden;
+
+	&.nowrap {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	.entity-link-container {
+		@include ellipsis;
+
+		display: inline-block;
+		font-weight: normal;
+		max-width: 100%;
+		vertical-align: bottom;
+
+		&:first-child {
+			font-weight: 600;
+		}
+	}
+
+	.summary {
+		color: rgba($primary, 0.8);
+	}
+}

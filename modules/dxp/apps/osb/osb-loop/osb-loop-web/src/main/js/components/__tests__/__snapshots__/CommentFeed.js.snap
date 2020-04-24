@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommentFeed renders 1`] = `
+<div class="comment-feed-container">
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+  <span></span>
+</div>
+`;

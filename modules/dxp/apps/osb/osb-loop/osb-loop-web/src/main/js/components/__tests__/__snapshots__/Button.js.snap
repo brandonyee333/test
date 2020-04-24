@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should pass through other props to element 1`] = `<button title="test" class="btn btn-container" type="button"></button>`;
+
+exports[`Button should render 1`] = `<button class="btn btn-container" type="button"></button>`;
+
+exports[`Button should render active class 1`] = `<button class="btn btn-container active" type="button"></button>`;
+
+exports[`Button should render children 1`] = `
+<button class="btn btn-container" type="button">
+  <div class="test">test</div>
+</button>
+`;

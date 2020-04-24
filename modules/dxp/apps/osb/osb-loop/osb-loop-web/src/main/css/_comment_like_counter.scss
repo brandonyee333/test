@@ -1,0 +1,23 @@
+.comment-like-counter-container {
+	.counter {
+		color: $heartRed;
+	}
+
+	.inline-button-container {
+		font-size: 12px;
+	}
+
+	.like-action {
+		margin-right: 8px;
+		vertical-align: top;
+
+		&.liked {
+			color: $heartRed;
+		}
+	}
+
+	.loop-icon-container {
+		margin-right: 4px;
+		vertical-align: sub;
+	}
+}

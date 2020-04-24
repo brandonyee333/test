@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Carousel renders 1`] = `
+<div class="carousel-container">
+  <div class="card-container">
+    <div class="header"></div>
+    <span class="slider"></span>
+  </div>
+</div>
+`;

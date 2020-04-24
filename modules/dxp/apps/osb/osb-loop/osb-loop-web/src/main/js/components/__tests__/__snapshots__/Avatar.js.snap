@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Avatar renders 1`] = `
+<div class="avatar-container">
+  <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-small">
+    <div class="avatar-placeholder"></div>
+  </a>
+</div>
+`;
+
+exports[`Avatar renders an icon placeholder for entities other than people 1`] = `
+<div class="avatar-container">
+  <a href="/divisions/0" style="" title="Division0" class="avatar avatar-size-small">
+    <div class="avatar-placeholder">
+      <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+        <use href="#loop-icon-undefined-24"></use>
+      </svg>
+    </div>
+  </a>
+</div>
+`;
+
+exports[`Avatar renders initials placeholder for people 1`] = `
+<div class="avatar-container">
+  <a href="/people/0" style="" title="Test Test" class="avatar avatar-size-small">
+    <div class="avatar-placeholder"></div>
+  </a>
+</div>
+`;
+
+exports[`Avatar renders placeholder if no profile image 1`] = `
+<div class="avatar-container">
+  <a style="" class="avatar avatar-size-small">
+    <div class="avatar-placeholder">
+      <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+        <use href="#loop-icon-undefined-24"></use>
+      </svg>
+    </div>
+  </a>
+</div>
+`;

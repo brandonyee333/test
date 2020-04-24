@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownWithOverlay renders 1`] = `<div class="markdown-content-container">undefined</div>`;
+
+exports[`MarkdownWithOverlay should rerender and display new message if message prop changes 1`] = `<div class="markdown-content-container">test test 2</div>`;

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreatePageCard renders 1`] = `
+<div class="card-container create-page-card-container">
+  <svg class="loop-icon-container loop-icon-file loop-icon-small-3x loop-icon-primary" data-tooltip="">
+    <use href="#loop-icon-file-16"></use>
+  </svg>
+  <div class="title">no-page-yet</div>
+  <div class="secondary-info">pages-is-a-place-where-you-can-find-official-content-related-to-a-group</div>
+</div>
+`;
+
+exports[`CreatePageCard renders with button 1`] = `
+<div class="card-container create-page-card-container">
+  <svg class="loop-icon-container loop-icon-file loop-icon-small-3x loop-icon-primary" data-tooltip="">
+    <use href="#loop-icon-file-16"></use>
+  </svg>
+  <div class="title">no-page-yet</div>
+  <div class="secondary-info">pages-is-a-place-where-you-can-find-official-content-related-to-a-group</div>
+  <a href="/people/0/pages/create" class="btn btn-container btn-primary btn-anchor" type="button">create-page</a>
+</div>
+`;

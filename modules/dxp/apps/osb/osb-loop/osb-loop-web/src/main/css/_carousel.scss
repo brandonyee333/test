@@ -1,0 +1,117 @@
+.carousel-container {
+	width: 100%;
+
+	&:hover .arrow-nav {
+		opacity: 1;
+	}
+
+	> .card-container {
+		margin-bottom: 12px;
+		position: relative;
+
+		.header {
+			border-bottom: 1px solid $borderLightGray;
+			padding: 12px 24px;
+		}
+	}
+
+	.arrow-nav {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(center);
+		@include transition(opacity, 0.4s);
+
+		background: $secondary;
+		border: 1px solid $borderLightGray;
+		border-radius: 50%;
+		color: rgba($primary, 0.4);
+		height: 50px;
+		opacity: 0;
+		position: absolute;
+		top: 50%;
+		width: 50px;
+
+		&:first-child {
+			@include transform(translate(-50%, -50%));
+
+			left: 0;
+		}
+
+		&:last-child {
+			@include transform(translate(50%, -50%));
+
+			right: 0;
+		}
+
+		&:hover {
+			color: $theme;
+		}
+
+		&.empty {
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		.loop-icon-container {
+			display: block;
+		}
+	}
+
+	.header {
+		color: $primary;
+		font-size: 11px;
+		font-weight: 600;
+		text-transform: uppercase;
+
+		.see-all {
+			float: right;
+			font-size: 13px;
+			font-weight: normal;
+			text-transform: none;
+		}
+	}
+
+	.page {
+		@include transition(color, 0.4s);
+
+		background-color: rgba($theme, 0.3);
+		border-radius: 50%;
+		cursor: pointer;
+		display: inline-block;
+		height: 8px;
+		margin: 0 4px;
+		width: 8px;
+
+		&.active, &:hover {
+			background-color: $theme;
+		}
+	}
+
+	.page-index {
+		list-style: none;
+		margin: 0;
+	}
+
+	.slider {
+		@include flexbox;
+
+		overflow: hidden;
+		position: relative;
+
+		> .item {
+			@include flexbox;
+
+			box-sizing: border-box;
+			padding: 24px;
+			width: 100%;
+		}
+	}
+
+	@media #{$mediaSmallMax} {
+		.pagination-nav .arrow-nav {
+			&:first-child, &:last-child {
+				@include transform(translate(0, -50%));
+			}
+		}
+	}
+}

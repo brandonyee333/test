@@ -1,0 +1,106 @@
+$carouselContentHeight: 156px;
+
+.announcement-carousel-card-container {
+	@include transition(border 400ms ease, box-shadow 400ms ease);
+
+	border-radius: 4px;
+	position: relative;
+	text-align: left;
+	width: 100%;
+
+	&:after {
+		@include stretch;
+		@include transition(border-color 0.4s ease);
+
+		border: 1px solid transparent;
+		border-radius: 6px;
+		box-sizing: content-box;
+		content: "";
+		margin: -1px;
+		pointer-events: none;
+		position: absolute;
+		z-index: 1;
+	}
+
+	.entity-link-container {
+		font-weight: 600;
+	}
+
+	.content {
+		@include flexbox;
+
+		box-sizing: border-box;
+		margin-bottom: 20px;
+
+		.markdown-content-container {
+			color: $primary;
+			font-size: 14px;
+			line-height: 24px;
+
+			&:after {
+				@include background-image(linear-gradient($transparent 40%, $secondary 75%));
+
+				bottom: 0;
+				content: '';
+				height: 100px;
+				left: 0;
+				pointer-events: none;
+				position: absolute;
+				width: 100%;
+			}
+		}
+
+		.photo {
+			background-position: center;
+			background-size: cover;
+			border-radius: 4px;
+			height: $carouselContentHeight;
+			width: 156px;
+		}
+
+		.text {
+			@include flex(1);
+
+			height: $carouselContentHeight;
+			margin-right: 24px;
+			overflow: hidden;
+			position: relative;
+
+			.read-more {
+				bottom: 0;
+				left: 0;
+				line-height: 1em;
+				position: absolute;
+			}
+		}
+	}
+
+	.post-info {
+		@include flex-shrink(0);
+		@include flexbox;
+
+		padding: 0;
+
+		.header-text-container {
+			margin-left: 12px;
+		}
+	}
+
+	.title {
+		@include flex-shrink(0);
+
+		color: $primary;
+		display: block;
+		font-size: 26px;
+		font-weight: 600;
+		line-height: 36px;
+		margin-bottom: 12px;
+		max-height: 72px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
+		&:hover {
+			color: $theme;
+		}
+	}
+}

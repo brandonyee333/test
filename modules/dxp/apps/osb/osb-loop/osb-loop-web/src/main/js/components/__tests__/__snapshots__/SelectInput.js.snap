@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectInput renders 1`] = `
+<div class="select-input-container">
+  <select id="UIKitSelectInput" style="display: none;" value="3_0">
+    <option value="3_0">Joe Bloggs0</option>
+    <option value="3_1">Joe Bloggs1</option>
+    <option value="3_2">Joe Bloggs2</option>
+    <option value="3_3">Joe Bloggs3</option>
+    <option value="3_4">Joe Bloggs4</option>
+    <option value="3_5">Joe Bloggs5</option>
+    <option value="3_6">Joe Bloggs6</option>
+    <option value="3_7">Joe Bloggs7</option>
+  </select>
+  <div class="selected-item" tabindex="0">
+    <div class="item-container">
+      <div class="display-item">Joe Bloggs0</div>
+    </div>
+    <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-small-1x select-arrow" data-tooltip="">
+      <use href="#loop-icon-arrow-down-short-16"></use>
+    </svg>
+  </div>
+  <span></span>
+</div>
+`;

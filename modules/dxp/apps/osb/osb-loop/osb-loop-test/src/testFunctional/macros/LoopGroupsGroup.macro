@@ -1,0 +1,1393 @@
+<definition>
+	<command name="addCoverPicture">
+		<execute macro="LoopGroupsGroup#uploadCoverPicture">
+			<var name="coverPictureFileName" value="${coverPictureFileName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#confirmCoverPicture" />
+	</command>
+
+	<command name="addProfilePicture">
+		<execute macro="LoopGroupsGroup#uploadProfilePicture">
+			<var name="profilePictureFileName" value="${profilePictureFileName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#confirmProfilePicture" />
+
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="assignAssistant">
+		<var name="key_assistantName" value="${assistantName}" />
+		<var name="key_userName" value="${assistantName}" />
+
+		<execute macro="LoopGroupsGroup#gotoEditMembersSection" />
+
+		<execute function="Type" locator1="LoopGroupsUpdateGroup#ADD_ASSISTANT_FIELD" value1="${assistantName}" />
+		<execute function="AssertClick" locator1="LoopSearch#USER_NAME" value1="${assistantName}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsUpdateGroup#ASSISTANT_NAME" value1="${assistantName}" />
+	</command>
+
+	<command name="assignChildGroup">
+		<var name="key_groupName" value="${childGroupName}" />
+
+		<execute function="Type" locator1="LoopGroupsUpdateNetwork#ADD_GROUP_FIELD" value1="${childGroupName}" />
+		<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${childGroupName}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsUpdateNetwork#GROUP_NAME" value1="${childGroupName}" />
+	</command>
+
+	<command name="assignLead">
+		<var name="key_leadName" value="${leadName}" />
+		<var name="key_userName" value="${leadName}" />
+
+		<execute macro="LoopGroupsGroup#gotoEditMembersSection" />
+
+		<execute function="Type" locator1="LoopGroupsUpdateGroup#ADD_LEAD_FIELD" value1="${leadName}" />
+		<execute function="AssertClick" locator1="LoopSearch#USER_NAME" value1="${leadName}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsUpdateGroup#LEAD_NAME" value1="${leadName}" />
+	</command>
+
+	<command name="assignMember">
+		<var name="key_memberName" value="${memberName}" />
+		<var name="key_userName" value="${memberName}" />
+
+		<execute macro="LoopGroupsGroup#gotoEditMembersSection" />
+
+		<execute function="Type" locator1="LoopGroupsUpdateGroup#ADD_MEMBERS_FIELD" value1="${memberName}" />
+		<execute function="AssertClick" locator1="LoopSearch#USER_NAME" value1="${memberName}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsUpdateGroup#MEMBERS_NAME" value1="${memberName}" />
+	</command>
+
+	<command name="assignParentGroup">
+		<var name="key_groupName" value="${parentGroupName}" />
+
+		<execute function="Type" locator1="LoopGroupsUpdateNetwork#ADD_GROUP_FIELD" value1="${parentGroupName}" />
+		<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${parentGroupName}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsUpdateNetwork#GROUP_NAME" value1="${parentGroupName}" />
+	</command>
+
+	<command name="cancelCoverPicture">
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_COVER_PICTURE_CANCEL_BUTTON" />
+	</command>
+
+	<command name="clickAssignChildGroupLink">
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_OPTIONS_BUTTON" />
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopGroupsGroup#GROUP_OPTIONS_ASSIGN_CHILD_LINK" value1="Assign Child" />
+	</command>
+
+	<command name="clickAssignParentGroupLink">
+		<var method="selenium#getText('LoopGroupsGroup#GROUP_TYPE')" name="groupTypeFull" />
+
+		<if>
+			<contains string="${groupTypeFull}" substring="Location" />
+			<then>
+				<var name="groupType" value="Location" />
+			</then>
+			<else>
+				<if>
+					<contains string="${groupTypeFull}" substring="Team" />
+					<then>
+						<var name="groupType" value="Team" />
+					</then>
+					<else>
+						<var name="groupType" value="Department" />
+					</else>
+				</if>
+			</else>
+		</if>
+
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopGroupsGroup#GROUP_OPTIONS_ASSIGN_PARENT_LINK" value1="Assign Parent ${groupType}" />
+	</command>
+
+	<command name="clickConfirmButton">
+		<execute function="Click" locator1="LoopGroupsGroup#CONFIRM_BUTTON" />
+	</command>
+
+	<command name="clickCreatePageButton">
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_CREATE_PAGE_BUTTON" />
+	</command>
+
+	<command name="clickDeletePageButton">
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_BUTTON" />
+
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_DELETE_LINK" />
+	</command>
+
+	<command name="clickDescriptionField">
+		<execute function="Click" locator1="LoopGroupsUpdateGroup#DESCRIPTION_FIELD" />
+		<execute function="SelectFieldText" locator1="LoopGroupsUpdateGroup#DESCRIPTION_FIELD" />
+		<execute function="KeyPress" locator1="LoopGroupsUpdateGroup#DESCRIPTION_FIELD" value1="\BACK_SPACE" />
+	</command>
+
+	<command name="clickEditButton">
+		<var method="selenium#getText('LoopGroupsGroup#GROUP_TYPE')" name="groupTypeFull" />
+
+		<if>
+			<contains string="${groupTypeFull}" substring="Location" />
+			<then>
+				<var name="groupType" value="Location" />
+			</then>
+			<else>
+				<if>
+					<contains string="${groupTypeFull}" substring="Team" />
+					<then>
+						<var name="groupType" value="Team" />
+					</then>
+					<else>
+						<var name="groupType" value="Department" />
+					</else>
+				</if>
+			</else>
+		</if>
+
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopGroupsGroup#GROUP_OPTIONS_EDIT_LINK" value1="Edit Group" />
+	</command>
+
+	<command name="clickEditPageButton">
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_BUTTON" />
+
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_EDIT_LINK" />
+	</command>
+
+	<command name="clickFollowButton">
+		<execute function="AssertClick" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" value1="Follow" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" value1="Following" />
+	</command>
+
+	<command name="clickFollowButtonViaOverlay">
+		<execute function="AssertClick" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickFollowLinkViaIndex">
+		<execute macro="LoopGroupsGroup#mouseOverGroupName">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			</then>
+			<else>
+				<execute macro="LoopGroupsGroup#clickFollowButtonViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickMoreChildGroupsLink">
+		<execute function="AssertClick" locator1="LoopGroupsGroup#NETWORK_MORE_LINK" value1="See Full Network" />
+	</command>
+
+	<command name="clickMoreMembersLink">
+		<execute function="AssertClick" locator1="LoopGroupsGroup#MEMBERS_MORE_LINK" value1="See All" />
+	</command>
+
+	<command name="clickOrgChart">
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_ORG_CHART_BUTTON" />
+	</command>
+
+	<command name="clickOrgChartViaIndex">
+		<execute macro="LoopGroupsGroup#mouseOverGroupName">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroups#GROUP_SEE_ORG_CHART_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopGroups#GROUP_SEE_ORG_CHART_MENU_BUTTON" />
+			</then>
+			<else>
+				<execute macro="LoopGroupsGroup#clickOrgChartViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickOrgChartViaOverlay">
+		<execute function="Click" locator1="LoopGroups#GROUP_OVERLAY_SEE_ORG_CHART_BUTTON" />
+	</command>
+
+	<command name="clickPageListItem">
+		<var name="key_pageDetail" value="${pageTitle}" />
+
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_TITLE" />
+	</command>
+
+	<command name="clickPublishButton">
+		<execute function="Click" locator1="LoopGroupsGroup#PUBLISH_BUTTON" />
+	</command>
+
+	<command name="clickTurnOffEmailNotification">
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopGroupsGroup#GROUP_EMAIL_NOTIFICATIONS_CHECKBOX" />
+	</command>
+
+	<command name="clickTurnOffNotifications">
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn off Notifications" />
+		<execute function="AssertVisible" locator1="LoopGroupsGroup#GROUP_EMAIL_NOTIFICATIONS_LABEL" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopGroupsGroup#GROUP_TOGGLE_NOTIFICATIONS_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn on Notifications" />
+		<execute function="AssertNotVisible" locator1="LoopGroupsGroup#GROUP_EMAIL_NOTIFICATIONS_LABEL" />
+	</command>
+
+	<command name="clickTurnOffNotificationsButton">
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" />
+
+		<execute macro="LoopGroupsGroup#clickTurnOffNotifications" />
+	</command>
+
+	<command name="clickTurnOffNotificationsLinkViaIndex">
+		<execute macro="LoopGroupsGroup#mouseOverGroupName">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+
+				<execute macro="LoopGroupsGroup#clickTurnOffNotifications" />
+			</then>
+			<else>
+				<execute function="MouseOver" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" />
+
+				<execute macro="LoopGroupsGroup#clickTurnOffNotifications" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickTurnOnEmailNotification">
+		<execute macro="LoopGroupsGroup#clickTurnOnNotificationsButton" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopGroupsGroup#GROUP_EMAIL_NOTIFICATIONS_CHECKBOX" />
+	</command>
+
+	<command name="clickTurnOnNotifications">
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn on Notifications" />
+		<execute function="AssertNotVisible" locator1="LoopGroupsGroup#GROUP_EMAIL_NOTIFICATIONS_LABEL" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopGroupsGroup#GROUP_TOGGLE_NOTIFICATIONS_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn off Notifications" />
+		<execute function="AssertVisible" locator1="LoopGroupsGroup#GROUP_EMAIL_NOTIFICATIONS_LABEL" />
+	</command>
+
+	<command name="clickTurnOnNotificationsButton">
+		<if>
+			<condition function="IsTextEqual" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" value1="Follow" />
+			<then>
+				<execute macro="LoopGroupsGroup#clickFollowButton" />
+			</then>
+		</if>
+
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" />
+
+		<execute macro="LoopGroupsGroup#clickTurnOnNotifications" />
+	</command>
+
+	<command name="clickTurnOnNotificationsLinkViaIndex">
+		<execute macro="LoopGroupsGroup#mouseOverGroupName">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+
+				<execute macro="LoopGroupsGroup#clickTurnOnNotifications" />
+			</then>
+			<else>
+				<if>
+					<condition function="IsTextEqual" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+					<then>
+						<execute macro="LoopGroupsGroup#clickFollowButtonViaOverlay" />
+					</then>
+				</if>
+
+				<execute function="MouseOver" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" />
+
+				<execute macro="LoopGroupsGroup#clickTurnOnNotifications" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickUnfollowButtonViaOverlay">
+		<execute function="MouseOver" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" />
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_UNFOLLOW_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickUnfollowLink">
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" />
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_UNFOLLOW_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickUnfollowLinkViaIndex">
+		<execute macro="LoopGroupsGroup#mouseOverGroupName">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+
+				<execute function="AssertClick" locator1="LoopGroupsGroup#GROUP_UNFOLLOW_LINK" value1="Unfollow ${groupName}" />
+			</then>
+			<else>
+				<execute macro="LoopGroupsGroup#clickUnfollowButtonViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="confirmCoverPicture">
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_COVER_PICTURE_CONFIRM_BUTTON" />
+	</command>
+
+	<command name="confirmDeletePage">
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#PAGES_DELETE_PAGE_MESSAGE" />
+
+		<execute macro="LoopGroupsGroup#clickConfirmButton" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#SUCCESS_MESSAGE" value1="Page was successfully deleted." />
+	</command>
+
+	<command name="confirmProfilePicture">
+		<execute function="AssertClick" locator1="LoopGroupsUpdatePicture#SAVE_BUTTON" value1="Save" />
+	</command>
+
+	<command name="createGroup">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<!-- Workaround until LOOP-5203 is fixed -->
+
+		<if>
+			<condition function="IsElementNotPresent" locator1="LoopGroups#CREATE_GROUP_LINK" />
+			<then>
+				<execute macro="LoopNavigation#reloadPage" />
+			</then>
+		</if>
+
+		<execute function="Click" locator1="LoopGroups#CREATE_GROUP_LINK" />
+
+		<execute function="Type" locator1="LoopGroupsAddGroup#NAME_FIELD" value1="${groupName}" />
+
+		<execute function="Select" locator1="LoopGroupsAddGroup#TYPE_FIELD" value1="${groupType}" />
+
+		<if>
+			<isset var="groupDescription" />
+			<then>
+				<execute function="Type" locator1="LoopGroupsAddGroup#DESCRIPTION_FIELD" value1="${groupDescription}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="groupPreferredName" />
+			<then>
+				<execute function="Type" locator1="LoopGroupsAddGroup#PREFERRED_NAME_FIELD" value1="${groupPreferredName}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="groupLeadNameList" />
+			<then>
+				<for list="${groupLeadNameList}" param="userName">
+					<execute function="Type" locator1="LoopGroupsAddGroup#ADD_LEAD_FIELD" value1="${userName}" />
+
+					<execute macro="LoopFeedEntry#selectUserFromDropdown">
+						<var name="userName" value="${userName}" />
+					</execute>
+				</for>
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${groupType}" arg2="Location" />
+			<then>
+				<if>
+					<isset var="groupSubtype" />
+					<then>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="${groupSubtype}" />
+					</then>
+					<else>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="Office" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${groupType}" arg2="Department" />
+			<then>
+				<if>
+					<isset var="groupSubtype" />
+					<then>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="${groupSubtype}" />
+					</then>
+					<else>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="Functional" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="LoopGroupsAddGroup#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsAddGroup#SUCCESS_MESSAGE" value1="${groupName} was successfully created." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="createGroupWithError">
+		<execute macro="LoopNavigation#gotoGroups" />
+
+		<!-- Workaround until LOOP-5203 is fixed -->
+
+		<if>
+			<condition function="IsElementNotPresent" locator1="LoopGroups#CREATE_GROUP_LINK" />
+			<then>
+				<execute macro="LoopNavigation#reloadPage" />
+			</then>
+		</if>
+
+		<execute function="Click" locator1="LoopGroups#CREATE_GROUP_LINK" />
+
+		<execute function="Type" locator1="LoopGroupsAddGroup#NAME_FIELD" value1="${groupName}" />
+
+		<execute function="Select" locator1="LoopGroupsAddGroup#TYPE_FIELD" value1="${groupType}" />
+
+		<if>
+			<isset var="groupDescription" />
+			<then>
+				<execute function="Type" locator1="LoopGroupsAddGroup#DESCRIPTION_FIELD" value1="${groupDescription}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="groupPreferredName" />
+			<then>
+				<execute function="Type" locator1="LoopGroupsAddGroup#PREFERRED_NAME_FIELD" value1="${groupPreferredName}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="groupLeadNameList" />
+			<then>
+				<for list="${groupLeadNameList}" param="userName">
+					<execute function="Type" locator1="LoopGroupsAddGroup#ADD_LEAD_FIELD" value1="${userName}" />
+
+					<execute macro="LoopFeedEntry#selectUserFromDropdown">
+						<var name="userName" value="${userName}" />
+					</execute>
+				</for>
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${groupType}" arg2="Location" />
+			<then>
+				<if>
+					<isset var="groupSubtype" />
+					<then>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="${groupSubtype}" />
+					</then>
+					<else>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="Office" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<equals arg1="${groupType}" arg2="Department" />
+			<then>
+				<if>
+					<isset var="groupSubtype" />
+					<then>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="${groupSubtype}" />
+					</then>
+					<else>
+						<execute function="Select" locator1="LoopGroupsAddGroup#SUBTYPE_FIELD" value1="Functional" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute function="AssertClick" locator1="LoopGroupsAddGroup#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsAddGroup#ERROR_MESSAGE" value1="${errorMessage}" />
+		<execute function="AssertClick" locator1="LoopGroupsAddGroup#CANCEL_BUTTON" value1="Cancel" />
+	</command>
+
+	<command name="editGroupDescription">
+		<execute function="Type" locator1="LoopGroupsUpdateGroup#DESCRIPTION_FIELD" value1="${groupDescriptionEdit}" />
+	</command>
+
+	<command name="editGroupName">
+		<execute function="Type" locator1="LoopGroupsUpdateGroup#NAME_FIELD" value1="${groupNameEdit}" />
+	</command>
+
+	<command name="editGroupSubtype">
+		<execute function="Select" locator1="LoopGroupsUpdateGroup#SUBTYPE_FIELD" value1="${groupSubtypeEdit}" />
+	</command>
+
+	<command name="gotoAllPages">
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_ALL_PAGES_LINK" />
+	</command>
+
+	<command name="gotoChildGroupProfile">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_NAME_LINK" value1="${childGroupName}" />
+	</command>
+
+	<command name="gotoEditMembersSection">
+		<execute function="AssertClick" locator1="LoopGroupsUpdateGroup#EDIT_MEMBERS_TAB" value1="Members" />
+	</command>
+
+	<command name="gotoFollowersSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopGroupsGroup#GROUP_FOLLOWERS_TAB" value1="Followers" />
+	</command>
+
+	<command name="gotoFunctionalDepartmentProfile">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsGroup#NETWORK_FUNCTIONAL_DEPARTMENT_NAME_LINK" value1="${childGroupName}" />
+	</command>
+
+	<command name="gotoGroupViaGroupsList">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertClick" locator1="LoopGroups#GROUP_NAME" value1="${groupName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#GROUP_NAME" />
+	</command>
+
+	<command name="gotoLeadProfileViaMembersSection">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsGroup#MEMBERS_TAB_LEAD_NAME_LINK" value1="${leadName}" />
+	</command>
+
+	<command name="gotoMemberProfileViaMembersSection">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsGroup#MEMBERS_TAB_MEMBER_NAME_LINK" value1="${memberName}" />
+	</command>
+
+	<command name="gotoMembersSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopGroupsGroup#GROUP_MEMBERS_TAB" value1="Members" />
+	</command>
+
+	<command name="gotoNetworkSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopGroupsGroup#GROUP_NETWORK_TAB" value1="Network" />
+	</command>
+
+	<command name="gotoPagesSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopGroupsGroup#GROUP_PAGES_TAB" value1="Pages" />
+	</command>
+
+	<command name="gotoParentGroupProfile">
+		<execute function="AssertClick" locator1="LoopGroupsGroup#GROUP_PARENT_GROUP_NAME_LINK" value1="${parentGroupName}" />
+	</command>
+
+	<command name="gotoRegionalDepartmentProfile">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsGroup#NETWORK_REGIONAL_DEPARTMENT_NAME_LINK" value1="${childGroupName}" />
+	</command>
+
+	<command name="mouseOverGroupName">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="Pause" locator1="2000" />
+
+		<execute function="MouseOver" locator1="LoopGroups#GROUP_NAME" />
+	</command>
+
+	<command name="previewPage">
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_PREVIEW_TAB" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_PAGE_PREVIEW_TITLE" value1="${pageTitle}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_PAGE_PREVIEW_TEXT" value1="${pageText}" />
+
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_WRITE_TAB" />
+	</command>
+
+	<command name="removeChildGroup">
+		<var name="key_groupName" value="${childGroupName}" />
+
+		<execute function="Click" locator1="LoopGroupsUpdateNetwork#GROUP_REMOVE_ICON" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsUpdateNetwork#GROUP_NAME" value1="${childGroupName}" />
+	</command>
+
+	<command name="removeLead">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute macro="LoopGroupsGroup#gotoEditMembersSection" />
+
+		<execute function="Click" locator1="LoopGroupsUpdateGroup#LEAD_REMOVE_ICON" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsUpdateGroup#LEAD_NAME" />
+	</command>
+
+	<command name="removeMember">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute macro="LoopGroupsGroup#gotoEditMembersSection" />
+
+		<execute function="Click" locator1="LoopGroupsUpdateGroup#MEMBERS_REMOVE_ICON" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsUpdateGroup#MEMBERS_NAME" />
+	</command>
+
+	<command name="removeParentGroup">
+		<var name="key_groupName" value="${parentGroupName}" />
+
+		<execute function="Click" locator1="LoopGroupsUpdateNetwork#GROUP_REMOVE_ICON" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsUpdateNetwork#GROUP_NAME" value1="${parentGroupName}" />
+	</command>
+
+	<command name="reorderPageListItems">
+		<if>
+			<equals arg1="${orderBy}" arg2="Time" />
+			<then>
+				<execute function="Click" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_HEADER_MODIFIED_TIME" />
+			</then>
+			<elseif>
+				<equals arg1="${orderBy}" arg2="Creator" />
+				<then>
+					<execute function="Click" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_HEADER_CREATOR" />
+				</then>
+			</elseif>
+			<else>
+				<execute function="Click" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_HEADER_TITLE" />
+			</else>
+		</if>
+
+		<var name="key_pageOrder" value="1" />
+
+		<for list="${pageItemsList}" param="pageItem">
+			<var name="key_pageDetail" value="${pageItem}" />
+
+			<execute function="AssertElementPresent" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_ORDERED" />
+
+			<var method="MathUtil#sum('${key_pageOrder}', '1')" name="key_pageOrder" />
+		</for>
+	</command>
+
+	<command name="saveChanges">
+		<execute function="AssertClick" locator1="LoopGroupsUpdateGroup#SUBMIT_BUTTON" value1="Submit" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsUpdateGroup#SUCCESS_MESSAGE" value1="was successfully updated." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="saveNetworkChanges">
+		<execute function="AssertClick" locator1="LoopGroupsUpdateNetwork#SAVE_BUTTON" value1="Save" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsUpdateNetwork#SUCCESS_MESSAGE" value1="You successfully updated" />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="scrollDown">
+		<execute function="KeyPress" locator1="LoopGroups#GROUP_LIST" value1="\SPACE" />
+	</command>
+
+	<command name="typeDescription">
+		<execute function="Type#sendKeys" locator1="LoopGroupsUpdateGroup#DESCRIPTION_FIELD" value1="${groupDescription}" />
+	</command>
+
+	<command name="typeGitHubRepositories">
+		<for list="${groupGitHubRepositoryList}" param="groupGitHubRepository">
+			<execute macro="LoopGroupsGroup#typeGitHubRepository">
+				<var name="groupGitHubRepository" value="${groupGitHubRepository}" />
+			</execute>
+
+			<execute macro="LoopGroupsGroup#typeReturnViaGitHubRepositoryField" />
+		</for>
+	</command>
+
+	<command name="typeGitHubRepository">
+		<execute function="Type#sendKeys" locator1="LoopGroupsUpdateGroup#GITHUB_REPOSITORIES" value1="${groupGitHubRepository}" />
+	</command>
+
+	<command name="typePageText">
+		<execute function="Type#sendKeys" locator1="LoopGroupsGroup#PAGES_ADD_PAGE_TEXT_FIELD" value1="${pageText}" />
+	</command>
+
+	<command name="typePageTitle">
+		<execute function="Type#sendKeys" locator1="LoopGroupsGroup#PAGES_ADD_PAGE_TITLE_FIELD" value1="${pageTitle}" />
+	</command>
+
+	<command name="typePreferredName">
+		<execute function="Type#sendKeys" locator1="LoopGroupsUpdateGroup#PREFERRED_NAME_FIELD" value1="${groupPreferredName}" />
+	</command>
+
+	<command name="typeReturnViaDescriptionField">
+		<execute function="KeyPress" locator1="LoopGroupsUpdateGroup#DESCRIPTION_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="typeReturnViaGitHubRepositoryField">
+		<execute function="KeyPress" locator1="LoopGroupsUpdateGroup#GITHUB_REPOSITORIES" value1="\RETURN" />
+	</command>
+
+	<command name="typeReturnViaPageTextField">
+		<execute function="KeyPress" locator1="LoopGroupsGroup#PAGES_ADD_PAGE_TEXT_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="typeSpaceViaPageTextField">
+		<execute function="KeyPress" locator1="LoopGroupsGroup#PAGES_ADD_PAGE_TEXT_FIELD" value1="\SPACE" />
+	</command>
+
+	<command name="typeSpaceViaPageTitleField">
+		<execute function="KeyPress" locator1="LoopGroupsGroup#PAGES_ADD_PAGE_TITLE_FIELD" value1="\SPACE" />
+	</command>
+
+	<command name="uploadCoverPicture">
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_COVER_PICTURE" />
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_COVER_PICTURE_SELECT_BUTTON" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${coverPictureFileName}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${coverPictureFileName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="uploadProfilePicture">
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_PROFILE_PICTURE" />
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_PROFILE_PICTURE_SELECT_BUTTON" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${profilePictureFileName}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${profilePictureFileName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewChildGroup">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute macro="LoopGroupsGroup#gotoNetworkSection" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_NAME_LINK" value1="${childGroupName}" />
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_DETAILS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_DETAILS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_DETAILS" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_DETAILS" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewChildGroupsViaStreamTab">
+		<for list="${childGroupNameList}" param="childGroupName">
+			<var name="key_childGroupName" value="${childGroupName}" />
+
+			<execute function="AssertTextEquals" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP" value1="${childGroupName}" />
+		</for>
+	</command>
+
+	<command name="viewChildGroupViaStreamTab">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP" value1="${childGroupName}" />
+	</command>
+
+	<command name="viewDescriptionMarkdown">
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroupsGroup#ABOUT_DESCRIPTION_SEE_MORE_LINK" />
+			<then>
+				<execute function="AssertClick" locator1="LoopGroupsGroup#ABOUT_DESCRIPTION_SEE_MORE_LINK" value1="See More" />
+			</then>
+		</if>
+
+		<execute function="KeyPress" locator1="LoopGroupsGroup#GROUP_PROFILE" value1="\HOME" />
+		<execute function="SikuliAssertElementPresent" locator1="LoopGroupsGroup#ABOUT_DESCRIPTION_MARKDOWN_1" />
+		<execute function="KeyPress" locator1="LoopGroupsGroup#GROUP_PROFILE" value1="\SPACE" />
+		<execute function="SikuliAssertElementPresent" locator1="LoopGroupsGroup#ABOUT_DESCRIPTION_MARKDOWN_2" />
+	</command>
+
+	<command name="viewDisabledPublishButton">
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#PUBLISH_BUTTON_DISABLED" />
+	</command>
+
+	<command name="viewEditControls">
+		<var method="selenium#getText('LoopGroupsGroup#GROUP_TYPE')" name="groupTypeFull" />
+
+		<if>
+			<contains string="${groupTypeFull}" substring="Location" />
+			<then>
+				<var name="groupType" value="Location" />
+			</then>
+			<else>
+				<if>
+					<contains string="${groupTypeFull}" substring="Team" />
+					<then>
+						<var name="groupType" value="Team" />
+					</then>
+					<else>
+						<var name="groupType" value="Department" />
+					</else>
+				</if>
+			</else>
+		</if>
+
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_PROFILE_PICTURE" />
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#GROUP_PROFILE_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#GROUP_COVER_PICTURE_SELECT_BUTTON" />
+		<execute function="Click" locator1="LoopGroupsGroup#GROUP_OPTIONS_BUTTON" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_OPTIONS_EDIT_LINK" value1="Edit Group" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_OPTIONS_ASSIGN_PARENT_LINK" value1="Assign Parent ${groupType}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_OPTIONS_ASSIGN_CHILD_LINK" value1="Assign Child ${groupType}s" />
+	</command>
+
+	<command name="viewFollowOptionViaIndexPage">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="MouseOver" locator1="LoopGroups#GROUP_NAME" />
+
+		<if>
+			<condition function="IsElementNotPresent" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopGroups#GROUP_FOLLOW_MENU_BUTTON" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewFunctionalDepartment">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute macro="LoopGroupsGroup#gotoNetworkSection" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#NETWORK_FUNCTIONAL_DEPARTMENT_NAME_LINK" value1="${childGroupName}" />
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_FUNCTIONAL_DEPARTMENT_DETAILS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_FUNCTIONAL_DEPARTMENT_DETAILS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_FUNCTIONAL_DEPARTMENT_DETAILS" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_FUNCTIONAL_DEPARTMENT_DETAILS" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewGroupDetails">
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_NAME" value1="${groupName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#GROUP_TYPE" value1="${groupType}" />
+
+		<if>
+			<and>
+				<isset var="groupSubtype" />
+				<not>
+					<contains string="${groupSubtype}" substring="{groupSubtype}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#GROUP_TYPE" value1="${groupSubtype}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_FOLLOWER_COUNT" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_FOLLOWER_COUNT" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_MEMBER_COUNT" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_MEMBER_COUNT" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="groupDescription" />
+				<not>
+					<contains string="${groupDescription}" substring="{groupDescription}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopGroupsGroup#ABOUT_DESCRIPTION" value1="${groupDescription}" />
+			</then>
+		</if>
+	</command>
+
+	<command name="viewGroupOverlay">
+		<execute function="AssertElementPresent" locator1="LoopGroups#GROUP_OVERLAY_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_NAME" value1="${groupName}" />
+		<execute function="AssertElementPresent" locator1="LoopGroups#GROUP_OVERLAY_FOLLOW_BUTTON" />
+
+		<if>
+			<and>
+				<isset var="groupType" />
+				<not>
+					<contains string="${groupType}" substring="{groupType}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_TYPE" value1="${groupType}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_FOLLOWERS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_FOLLOWERS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_MEMBERS" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_OVERLAY_MEMBERS" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute macro="LoopNavigation#closeOverlay" />
+	</command>
+
+	<command name="viewGroupsViaGroupsList">
+		<for list="${groupNameList}" param="groupName">
+			<var name="key_groupName" value="${groupName}" />
+
+			<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_NAME" value1="${groupName}" />
+		</for>
+	</command>
+
+	<command name="viewGroupViaGroupsList">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroups#GROUP_NAME" value1="${groupName}" />
+
+		<if>
+			<equals arg1="${groupType}" arg2="Team" />
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopGroups#TEAM_ICON" />
+			</then>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Location" />
+				<then>
+					<execute function="AssertElementPresent" locator1="LoopGroups#LOCATION_ICON" />
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Department" />
+				<then>
+					<execute function="AssertElementPresent" locator1="LoopGroups#DEPARTMENT_ICON" />
+				</then>
+			</elseif>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroups#GROUP_MEMBER_COUNT" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroups#GROUP_MEMBER_COUNT" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroups#GROUP_FOLLOWER_COUNT" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroups#GROUP_FOLLOWER_COUNT" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewImpliedMember">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute macro="LoopGroupsGroup#gotoEditMembersSection" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsUpdateGroup#IMPLIED_MEMBERS_NAME" value1="${memberName}" />
+	</command>
+
+	<command name="viewLead">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#MEMBERS_LEAD" />
+	</command>
+
+	<command name="viewLeadViaMembersSection">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#MEMBERS_TAB_LEAD_NAME_LINK" value1="${leadName}" />
+	</command>
+
+	<command name="viewMember">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#MEMBERS_MEMBER" />
+	</command>
+
+	<command name="viewMembers">
+		<for list="${memberNameList}" param="memberName">
+			<var name="key_memberName" value="${memberName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopGroupsGroup#MEMBERS_MEMBER" />
+		</for>
+	</command>
+
+	<command name="viewMembersViaMembersSection">
+		<for list="${memberNameList}" param="memberName">
+			<var name="key_memberName" value="${memberName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopGroupsGroup#MEMBERS_TAB_MEMBER_NAME_LINK" value1="${memberName}" />
+		</for>
+	</command>
+
+	<command name="viewMemberViaMembersSection">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#MEMBERS_TAB_MEMBER_NAME_LINK" value1="${memberName}" />
+	</command>
+
+	<command name="viewNoChildGroup">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute macro="LoopGroupsGroup#gotoNetworkSection" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#NETWORK_CHILD_GROUP_NAME_LINK" value1="${childGroupName}" />
+	</command>
+
+	<command name="viewNoCreatePageButton">
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#PAGES_CREATE_PAGE_BUTTON" />
+	</command>
+
+	<command name="viewNoCreatePermissions">
+		<var method="StringUtil#lowerCaseFirstLetter('${groupType}')" name="group" />
+
+		<var name="group" value="${group}s" />
+
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="/web/guest/home/-/loop/${group}/_${groupName}/create" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewPageNotFound" />
+	</command>
+
+	<command name="viewNoEditControls">
+		<execute function="MouseOver" locator1="LoopGroupsGroup#GROUP_PROFILE_PICTURE" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#GROUP_PROFILE_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#GROUP_COVER_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#GROUP_OPTIONS_BUTTON" />
+	</command>
+
+	<command name="viewNoGroupViaGroupsList">
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroups#GROUP_NAME" />
+			<then>
+				<execute function="AssertNotVisible" locator1="LoopGroups#GROUP_NAME" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopGroups#GROUP_NAME" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNoLead">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#MEMBERS_LEAD" />
+	</command>
+
+	<command name="viewNoLeadViaMembersSection">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#MEMBERS_TAB_LEAD_NAME_LINK" />
+	</command>
+
+	<command name="viewNoMember">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#MEMBERS_MEMBER" />
+	</command>
+
+	<command name="viewNoMemberViaMembersSection">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#MEMBERS_TAB_MEMBER_NAME_LINK" />
+	</command>
+
+	<command name="viewNoPageListItem">
+		<var name="key_pageDetail" value="${pageTitle}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_TITLE" />
+	</command>
+
+	<command name="viewNoPageOptions">
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_BUTTON" />
+	</command>
+
+	<command name="viewNoPages">
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_NO_PAGE_YET_TITLE" value1="No Page Yet" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_NO_PAGE_YET_DESCRIPTION" value1="Pages is a place where you can find official content related to a Group." />
+	</command>
+
+	<command name="viewNoPagesSection">
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#GROUP_PAGES_TAB" />
+	</command>
+
+	<command name="viewNoParentGroup">
+		<if>
+			<condition function="IsElementPresent" locator1="LoopGroupsGroup#GROUP_PARENT_GROUP_NAME_LINK" />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_PARENT_GROUP_NAME_LINK" value1="Loop Division" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopGroupsGroup#GROUP_PARENT_GROUP_NAME_LINK" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewPage">
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#PAGES_PAGE_CREATOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_PAGE_CREATOR_NAME" value1="${pageCreatorName}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_PAGE_TITLE" value1="${pageTitle}" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_PAGE_TEXT" value1="${pageText}" />
+	</command>
+
+	<command name="viewPageListItem">
+		<var name="key_pageDetail" value="${pageTitle}" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_TITLE" value1="${pageTitle}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_CREATOR" value1="${pageCreatorName}" />
+
+		<if>
+			<and>
+				<isset var="pageModifiedTime" />
+				<not>
+					<contains string="${pageModifiedTime}" substring="{pageModifiedTime}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopGroupsGroup#PAGES_LIST_ITEM_MODIFIED_TIME" value1="${pageModifiedTime}" />
+			</then>
+		</if>
+	</command>
+
+	<command name="viewPageOptions">
+		<execute function="Click" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_BUTTON" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_EDIT_LINK" />
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#PAGES_PAGE_OPTIONS_DELETE_LINK" />
+	</command>
+
+	<command name="viewParentGroup">
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#GROUP_PARENT_GROUP_NAME_LINK" value1="${parentGroupName}" />
+	</command>
+
+	<command name="viewRegionalDepartment">
+		<var name="key_childGroupName" value="${childGroupName}" />
+
+		<execute macro="LoopGroupsGroup#gotoNetworkSection" />
+
+		<execute function="AssertTextEquals" locator1="LoopGroupsGroup#NETWORK_REGIONAL_DEPARTMENT_NAME_LINK" value1="${childGroupName}" />
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_REGIONAL_DEPARTMENT_DETAILS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_REGIONAL_DEPARTMENT_DETAILS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_REGIONAL_DEPARTMENT_DETAILS" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_REGIONAL_DEPARTMENT_DETAILS" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+</definition>

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SortaListHeader renders 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name</button>
+  <button type="button" class="inline-button-container creator-header">Creator</button>
+  <button type="button" class="inline-button-container secondary-info-header">Date</button>
+</div>
+`;
+
+exports[`SortaListHeader renders with creator column selected ascending 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name</button>
+  <button type="button" class="inline-button-container creator-header">Creator
+    <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-tiny-1x" data-tooltip="">
+      <use href="#loop-icon-arrow-down-short-16"></use>
+    </svg>
+  </button>
+  <button type="button" class="inline-button-container secondary-info-header">Date</button>
+</div>
+`;
+
+exports[`SortaListHeader renders with creator column selected descending 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name</button>
+  <button type="button" class="inline-button-container creator-header">Creator
+    <svg class="loop-icon-container loop-icon-arrow-up-short loop-icon-tiny-1x" data-tooltip="">
+      <use href="#loop-icon-arrow-up-short-16"></use>
+    </svg>
+  </button>
+  <button type="button" class="inline-button-container secondary-info-header">Date</button>
+</div>
+`;
+
+exports[`SortaListHeader renders with secondaryInfo column selected ascending 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name</button>
+  <button type="button" class="inline-button-container creator-header">Creator</button>
+  <button type="button" class="inline-button-container secondary-info-header">Date
+    <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-tiny-1x" data-tooltip="">
+      <use href="#loop-icon-arrow-down-short-16"></use>
+    </svg>
+  </button>
+</div>
+`;
+
+exports[`SortaListHeader renders with secondaryInfo column selected descending 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name</button>
+  <button type="button" class="inline-button-container creator-header">Creator</button>
+  <button type="button" class="inline-button-container secondary-info-header">Date
+    <svg class="loop-icon-container loop-icon-arrow-up-short loop-icon-tiny-1x" data-tooltip="">
+      <use href="#loop-icon-arrow-up-short-16"></use>
+    </svg>
+  </button>
+</div>
+`;
+
+exports[`SortaListHeader renders with title column selected ascending 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name
+    <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-tiny-1x" data-tooltip="">
+      <use href="#loop-icon-arrow-down-short-16"></use>
+    </svg>
+  </button>
+  <button type="button" class="inline-button-container creator-header">Creator</button>
+  <button type="button" class="inline-button-container secondary-info-header">Date</button>
+</div>
+`;
+
+exports[`SortaListHeader renders with title column selected descending 1`] = `
+<div class="sortable-list-header-container">
+  <button type="button" class="inline-button-container title-header">File Name
+    <svg class="loop-icon-container loop-icon-arrow-up-short loop-icon-tiny-1x" data-tooltip="">
+      <use href="#loop-icon-arrow-up-short-16"></use>
+    </svg>
+  </button>
+  <button type="button" class="inline-button-container creator-header">Creator</button>
+  <button type="button" class="inline-button-container secondary-info-header">Date</button>
+</div>
+`;

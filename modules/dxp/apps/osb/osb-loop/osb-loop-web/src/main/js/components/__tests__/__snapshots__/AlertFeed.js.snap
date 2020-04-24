@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AlertFeed renders 1`] = `
+<div class="alert-feed-container">
+  <span></span>
+</div>
+`;

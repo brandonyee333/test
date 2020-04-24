@@ -1,0 +1,39 @@
+.alert-container {
+	@include align-items(center);
+	@include box-shadow($overlayBoxShadow rgba($black, 0.16));
+	@include inline-flex;
+
+	background-color: $secondary;
+	border-radius: $overlayBorderRadius;
+	min-width: 160px;
+	padding: 20px;
+
+	.icon-wrapper {
+		margin-right: 20px;
+
+		.transition-wrapper {
+			@include transform(scale(0));
+
+			&.active {
+				@include transform(scale(1));
+				@include transition(transform 150ms ease-in);
+			}
+		}
+
+		.spinner-container {
+			@include inline-flex;
+
+			vertical-align: middle;
+		}
+	}
+
+	.dismiss {
+		color: rgba($primary, 0.6);
+		margin-left: 24px;
+
+		> .loop-icon-container {
+			cursor: pointer;
+			float: right;
+		}
+	}
+}

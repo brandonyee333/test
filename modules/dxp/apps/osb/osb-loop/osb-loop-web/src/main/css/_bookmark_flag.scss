@@ -1,0 +1,17 @@
+.bookmark-flag-container.inline-button-container {
+	@include transform(rotate(90deg) scale(0));
+	@include transition(transform 400ms ease-in);
+
+	font-size: 16px;
+	left: 24px;
+	position: absolute;
+	top: -6px;
+
+	&:hover {
+		opacity: 0.8;
+	}
+
+	&.visible {
+		@include transform(rotate(0) scale(1));
+	}
+}

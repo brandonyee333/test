@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fetchHierarchy should return an api call to fetch division hierarchy 1`] = `
+Object {
+  "controller": "divisions",
+  "controllerMethod": "viewLoopDivisionHierarchy.json",
+  "data": Object {
+    "id": 5,
+    "type": undefined,
+  },
+  "method": "GET",
+  "types": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+}
+`;
+
+exports[`setType should return an api call to set division type 1`] = `
+Object {
+  "controller": "divisions",
+  "controllerMethod": "setType.json",
+  "data": Object {
+    "id": 1,
+    "parentId": 2,
+    "subtype": 3,
+    "type": 4,
+  },
+  "types": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+}
+`;

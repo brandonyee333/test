@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostHeaderText renders 1`] = `
+<div class="header-text-container">
+  <span class="shared-to-summary-container">
+    <a class="entity-link-container" href="javascript:;">Joe Bloggs</a>
+  </span>
+  <a class="secondary-info">
+    <span title="January 9, 2017 9:28 AM" data-tooltip="">3 days ago</span>
+  </a>
+</div>
+`;

@@ -1,0 +1,22 @@
+.sortable-list-container {
+	box-sizing: border-box;
+
+	.loading-card-container {
+		margin-top: 12px;
+		padding: 12px;
+	}
+
+	.loading-card-container, .sortable-list-item-container {
+		margin-bottom: 12px;
+	}
+
+	ul, li:last-child {
+		margin: 0;
+	}
+
+	@media #{$mediaMiniMax} {
+		.sortable-list-header-container {
+			display: none;
+		}
+	}
+}

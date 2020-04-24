@@ -1,0 +1,100 @@
+.input-list-container {
+	font-size: 12px;
+	position: relative;
+
+	&.disabled {
+		background-color: rgba($primary, 0.05);
+		cursor: not-allowed;
+		max-height: 200px;
+		overflow-y: auto;
+
+		input {
+			display: none;
+		}
+
+		.item-content {
+			background-color: rgba($primary, 0.1);
+			color: $primary;
+		}
+	}
+
+	&.inline-label {
+		position: relative;
+
+		.autocomplete-input-container {
+			margin-left: 12px;
+		}
+
+		.control-label {
+			font-size: 12px;
+			font-weight: normal;
+			position: absolute;
+			top: 6px;
+		}
+	}
+
+	&.border input {
+		border-width: 1px;
+	}
+
+	input {
+		border-width: 0;
+		box-shadow: none;
+		margin: 0;
+
+		@include input-placeholder {
+			font-size: 12px;
+		}
+	}
+
+	.autocomplete-input-container {
+		@include flexbox;
+		@include flex-wrap(wrap);
+
+		border-width: 0;
+		cursor: text;
+		height: auto;
+		min-height: 28px;
+		padding: 0;
+	}
+
+	.item-content {
+		@include ellipsis;
+		@include flex(1 0 0);
+
+		background-color: rgba($theme, 0.1);
+		color: $theme;
+		padding: 2px 10px;
+	}
+
+	.item-wrapper {
+		@include flexbox;
+
+		background-color: transparent;
+		border-radius: 4px;
+		float: left;
+		font-size: inherit;
+		margin: 3px 0 5px 5px;
+		max-width: 100%;
+		overflow: hidden;
+		padding: 0;
+
+		.loop-icon-container {
+			margin-right: 5px;
+		}
+
+		.remove {
+			background-color: rgba($theme, 0.4);
+			color: $secondary;
+			height: 16px;
+			margin: 0;
+			padding: 4px 3px 5px;
+			width: 16px;
+
+			&:hover {
+				color: $theme;
+				cursor: pointer;
+			}
+		}
+	}
+}

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OverlayErrorMessage renders 1`] = `
+<div class="overlay-error-message-container">test test -
+  <button type="button" class="inline-button-container">dismiss</button>
+</div>
+`;

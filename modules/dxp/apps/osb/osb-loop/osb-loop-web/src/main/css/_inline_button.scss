@@ -1,0 +1,17 @@
+.inline-button-container {
+	@include transition(color 400ms ease);
+
+	background: none;
+	border-width: 0;
+	box-shadow: none;
+	color: $theme;
+	padding: 0;
+
+	&:focus {
+		outline: none;
+	}
+
+	&:hover {
+		color: rgba($theme, 0.6);
+	}
+}

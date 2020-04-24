@@ -1,0 +1,456 @@
+<html>
+<head>
+<title>LoopGroupsGroup</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopGroupsGroup</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>GROUP_PROFILE</td>
+	<td>//div[contains(@class,'profile-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_COVER_PICTURE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_COVER_PICTURE_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_COVER_PICTURE_CONFIRM_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']//*[local-name()='svg' and contains(@class,'success')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_COVER_PICTURE_CANCEL_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']//*[local-name()='svg' and contains(@class,'danger')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_PROFILE_PICTURE_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[contains(@class,'avatar')]//*[local-name()='svg' and contains(@class,'loop-icon-camera')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_NAME</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_TYPE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='description']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_FOLLOWER_COUNT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//span[contains(.,'Follower')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_MEMBER_COUNT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//span[contains(.,'Member')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_PARENT_GROUP_NAME_LINK</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//span[contains(@class,'belongs-to')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_STREAM_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Stream')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_MEMBERS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Members')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_NETWORK_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Network')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_FOLLOWERS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Followers')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_PAGES_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Pages')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_ORG_CHART_BUTTON</td>
+	<td>//a[@class='modal-link-container']//*[local-name()='svg' and contains(@class,'loop-icon-org-chart')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_FOLLOW_BUTTON</td>
+	<td>//button[contains(.,'Follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OPTIONS_BUTTON</td>
+	<td>//button[contains(@class,'btn-secondary')]//*[local-name()='svg' and contains(@class,'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--GROUP_FOLLOW_MENU-->
+<tr>
+	<td>GROUP_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Posts, Comments, and Mentions')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_ONLY_POSTS_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Only Posts')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_TOGGLE_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//span[contains(@class,'toggle-label')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_TOGGLE_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//div[contains(@class,'toggle-dot')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_EMAIL_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_EMAIL_NOTIFICATIONS_CHECKBOX</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_UNFOLLOW_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item-container unfollow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--GROUP_OPTIONS_MENU-->
+<tr>
+	<td>GROUP_OPTIONS_EDIT_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OPTIONS_ASSIGN_PARENT_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Assign Parent')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OPTIONS_ASSIGN_CHILD_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Assign Child')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ABOUT-->
+<tr>
+	<td>ABOUT_DESCRIPTION</td>
+	<td>//div[contains(@class,'about')]//div[contains(@class,'content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_SEE_MORE_LINK</td>
+	<td>//div[contains(@class,'about')]//span[contains(@class,'see-more')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN</td>
+	<td>loop/screenshots/profile/profile_description_markdown.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN_1</td>
+	<td>loop/screenshots/profile/profile_description_markdown_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN_2</td>
+	<td>loop/screenshots/profile/profile_description_markdown_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--MEMBERS-->
+<tr>
+	<td>MEMBERS_LEAD</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Leads')]/following-sibling::div//a[@title='${key_leadName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBERS_MEMBER</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Members')]/following-sibling::div//a[@title='${key_memberName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBERS_MORE_LINK</td>
+	<td>//a[contains(.,'See All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBERS_TAB_LEAD_NAME_LINK</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Leads')]/following-sibling::div//div[contains(@class,'entity-index-item-container') and contains(.,'${key_leadName}')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBERS_TAB_MEMBER_NAME_LINK</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Members')]/following-sibling::div//div[contains(@class,'entity-index-item-container') and contains(.,'${key_memberName}')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--NETWORK-->
+<tr>
+	<td>NETWORK_CHILD_GROUP</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Contains')]/following-sibling::div//div[contains(@class,'entity')]//a[contains(.,'${key_childGroupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_MORE_LINK</td>
+	<td>//a[contains(.,'See Full Network')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_CHILD_GROUP_NAME_LINK</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Contains')]/following-sibling::div//a[contains(@class,'entity-link-container') and contains(.,'${key_childGroupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_FUNCTIONAL_DEPARTMENT_NAME_LINK</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Functional')]/following-sibling::div//a[contains(@class,'entity-link-container') and contains(.,'${key_childGroupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_REGIONAL_DEPARTMENT_NAME_LINK</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Regional')]/following-sibling::div//a[contains(@class,'entity-link-container') and contains(.,'${key_childGroupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_CHILD_GROUP_DETAILS</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Contains')]/following-sibling::div//div[contains(@class,'entity-index-item-container') and contains(.,'${key_childGroupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_FUNCTIONAL_DEPARTMENT_DETAILS</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Functional')]/following-sibling::div//div[contains(@class,'entity-index-item-container') and contains(.,'${key_childGroupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_REGIONAL_DEPARTMENT_DETAILS</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Regional')]/following-sibling::div//div[contains(@class,'entity-index-item-container') and contains(.,'${key_childGroupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_REMOVE_MESSAGE</td>
+	<td>//div[contains(.,'Are you sure you want to remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--PAGES-->
+<tr>
+	<td>PAGES_NO_PAGE_YET_TITLE</td>
+	<td>//div[contains(@class,'create-page-card-container')]//div[@class='title']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_NO_PAGE_YET_DESCRIPTION</td>
+	<td>//div[contains(@class,'create-page-card-container')]//div[@class='secondary-info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_CREATE_PAGE_BUTTON</td>
+	<td>//a[contains(.,'Create Page') and @type='button']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_ALL_PAGES_LINK</td>
+	<td>//a[contains(.,'All pages')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_HEADER_TITLE</td>
+	<td>//button[contains(@class,'title-header')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_HEADER_CREATOR</td>
+	<td>//button[contains(@class,'creator-header')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_HEADER_MODIFIED_TIME</td>
+	<td>//button[contains(@class,'secondary-info-header') and contains(.,'Modified')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_ORDERED</td>
+	<td>xpath=(//li[@class='sortable-list-item-container'])[${key_pageOrder}]//a[contains(.,'${key_pageDetail}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_TITLE</td>
+	<td>//li[@class='sortable-list-item-container' and contains(.,'${key_pageDetail}')]//a[@class='title']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_CREATOR</td>
+	<td>//li[@class='sortable-list-item-container' and contains(.,'${key_pageDetail}')]//span[@class='creator-info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_LIST_ITEM_MODIFIED_TIME</td>
+	<td>//li[@class='sortable-list-item-container' and contains(.,'${key_pageDetail}')]//span[@class='secondary-info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_WRITE_TAB</td>
+	<td>//div[contains(@class,'page-editor-container')]//li[contains(.,'Write')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_PREVIEW_TAB</td>
+	<td>//div[contains(@class,'page-editor-container')]//li[contains(.,'Preview')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_PREVIEW_TITLE</td>
+	<td>//div[contains(@class,'page-editor-container')]//h1[contains(@class,'title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_PREVIEW_TEXT</td>
+	<td>//div[contains(@class,'page-editor-container')]//div[contains(@class,'markdown-content-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_CREATOR_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'page-container')]//div[contains(@class,'avatar')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_CREATOR_NAME</td>
+	<td>//div[contains(@class,'page-container')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_TITLE</td>
+	<td>//div[contains(@class,'page-container')]//h1[contains(@class,'title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_TEXT</td>
+	<td>//div[contains(@class,'page-container')]//div[contains(@class,'markdown-content-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_OPTIONS_BUTTON</td>
+	<td>//div[contains(@class,'page-container')]//*[local-name()='svg' and contains(@class,'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_OPTIONS_EDIT_LINK</td>
+	<td>//li[contains(@class,'menu-item-container')]//span[contains(@class,'loop-icon-label') and contains(.,'Edit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_PAGE_OPTIONS_DELETE_LINK</td>
+	<td>//li[contains(@class,'menu-item-container')]//span[contains(@class,'loop-icon-label') and contains(.,'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_ADD_PAGE_TITLE_FIELD</td>
+	<td>//input[contains(@placeholder,'Title (Required)')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_ADD_PAGE_TEXT_FIELD</td>
+	<td>//textarea[contains(@placeholder,'Write content here...')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGES_DELETE_PAGE_MESSAGE</td>
+	<td>//div[contains(@class,'confirm-dialog-modal-container')]/div[contains(.,'Are you sure you want to delete this page?')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CONTROLS-->
+<tr>
+	<td>CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PUBLISH_BUTTON</td>
+	<td>//button[contains(.,'Publish')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PUBLISH_BUTTON_DISABLED</td>
+	<td>//button[contains(.,'Publish') and @disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

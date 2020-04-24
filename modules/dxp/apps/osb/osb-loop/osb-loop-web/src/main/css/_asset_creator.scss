@@ -1,0 +1,56 @@
+.asset-creator-container {
+	position: relative;
+
+	&.loading {
+		overflow: hidden;
+	}
+
+	&.minimized {
+		.announcement-title-container {
+			display: none;
+		}
+
+		.creator-container {
+			max-height: 84px;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			word-break: normal;
+		}
+
+		.minimizer {
+			@include transform(rotate(0));
+
+			background-color: $theme;
+		}
+
+		.private-post-bar-container {
+			display: none;
+		}
+	}
+
+	&.private-post:not(.minimized) .minimizer {
+		top: 80px;
+	}
+
+	.creator-container {
+		.editor-container, .input-list-container {
+			padding-right: 64px;
+		}
+	}
+
+	.minimizer {
+		@include transform(rotate(45deg));
+		@include transition(background-color 200ms ease, color 200ms ease, transform 200ms ease);
+
+		background-color: rgba($primary, 0.4);
+		border-radius: 50%;
+		color: $secondary;
+		cursor: pointer;
+		line-height: 10px;
+		padding: 10px;
+		position: absolute;
+		right: 28px;
+		top: 24px;
+	}
+}

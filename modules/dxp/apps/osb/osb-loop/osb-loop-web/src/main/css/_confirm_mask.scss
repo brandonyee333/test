@@ -1,0 +1,43 @@
+.confirm-mask-container {
+	position: relative;
+
+	.checkbox .loop-icon {
+		height: 16px;
+		width: 16px;
+	}
+
+	.confirm-mask {
+		background-color: rgba($secondary, 0.9);
+		bottom: 0;
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		z-index: 1;
+	}
+
+	.confirm-mask-content {
+		@include center(both);
+
+		padding: 40px;
+		text-align: center;
+	}
+
+	.controls {
+		margin-bottom: 28px;
+
+		.btn {
+			padding: 8px 36px;
+		}
+
+		.btn-cancel {
+			margin-right: 20px;
+		}
+	}
+
+	.message {
+		font-size: 16px;
+		font-weight: 600;
+		margin-bottom: 32px;
+	}
+}

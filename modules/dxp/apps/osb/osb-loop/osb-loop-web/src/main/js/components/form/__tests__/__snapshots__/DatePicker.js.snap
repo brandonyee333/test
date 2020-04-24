@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DatePicker renders 1`] = `
+<div>
+  <div class="form-input-container default">
+    <div class="input-container input-default">
+      <input id="FormInput2" name="foo" value="" type="text" ref="input">
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DatePicker renders as disabled 1`] = `
+<div>
+  <div class="form-input-container default">
+    <div class="input-container input-default">
+      <input disabled="" id="FormInput4" name="foo" value="" type="text" ref="input">
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,130 @@
+<html>
+<head>
+<title>LoopGroups</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopGroups</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>GROUP_LIST</td>
+	<td>//div[contains(@class,'entity-index')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEAMS_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'teams')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPARTMENTS_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'departments')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOCATIONS_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'locations')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEE_COMPANY_ORG_CHART_LINK</td>
+	<td>//a[contains(.,'See Company Org Chart')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CREATE_GROUP_LINK</td>
+	<td>//div[contains(@class,'create-entity')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_NAME</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_groupName}')]//a | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//a[contains(@class,'link')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEAM_ICON</td>
+	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//div[contains(@class,'avatar-placeholder')]/*[local-name()='svg' and contains(@class,'loop-icon-people')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPARTMENT_ICON</td>
+	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//div[contains(@class,'avatar-placeholder')]/*[local-name()='svg' and contains(@class,'loop-icon-person-card')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOCATION_ICON</td>
+	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//div[contains(@class,'avatar-placeholder')]/*[local-name()='svg' and contains(@class,'loop-icon-building')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_MEMBER_COUNT</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_groupName}')]//div[contains(@class,'details')] | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_FOLLOWER_COUNT</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_groupName}')]//div[contains(@class,'details')] | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_FOLLOW_MENU_BUTTON</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_groupName}')]//parent::div//button | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//button[contains(@class,'follow')]/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_SEE_ORG_CHART_MENU_BUTTON</td>
+	<td>//div[contains(@class,'entity-index-item-container') and contains(.,'${key_groupName}')]//button//*[local-name()='svg' and contains(@class,'loop-icon-org-chart')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--GROUP_OVERLAY-->
+<tr>
+	<td>GROUP_OVERLAY_AVATAR</td>
+	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OVERLAY_NAME</td>
+	<td>//div[contains(@class,'entity-summary-container')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OVERLAY_TYPE</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Department')] | //div[contains(@class,'entity-summary-container')]//span[contains(.,'Location')] | //div[contains(@class,'entity-summary-container')]//span[contains(.,'Team')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OVERLAY_FOLLOWERS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Follower')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OVERLAY_MEMBERS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Member')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OVERLAY_FOLLOW_BUTTON</td>
+	<td>//div[contains(@class,'entity-summary-container')]//button[contains(@class,'follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUP_OVERLAY_SEE_ORG_CHART_BUTTON</td>
+	<td>//div[contains(@class,'entity-summary-container')]//*[local-name()='svg' and contains(@class,'loop-icon-org-chart')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

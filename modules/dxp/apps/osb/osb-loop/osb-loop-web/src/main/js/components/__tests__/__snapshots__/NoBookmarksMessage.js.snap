@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoBookmarksMessage renders 1`] = `
+<span>save-posts-that-you-think-are-important-or-that-you-would-like-to-read-later
+  <br>
+</span>
+`;

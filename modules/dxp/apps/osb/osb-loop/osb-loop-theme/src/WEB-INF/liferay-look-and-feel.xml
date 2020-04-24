@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE look-and-feel PUBLIC "-//Liferay//DTD Look and Feel 7.0.0//EN" "http://www.liferay.com/dtd/liferay-look-and-feel_7_0_0.dtd">
+
+<look-and-feel>
+	<compatibility>
+		<version>7.0.10+</version>
+	</compatibility>
+	<theme id="osb-loop" name="osb-loop-theme">
+		<template-extension>ftl</template-extension>
+		<settings>
+			<setting configurable="true" key="google-tag-manager-id" value="" />
+		</settings>
+	</theme>
+</look-and-feel>

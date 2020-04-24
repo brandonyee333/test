@@ -1,0 +1,168 @@
+<definition>
+	<command name="clickGroupLink">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsOrgChart#GROUP_DETAILS_GROUP_NAME" value1="${groupName}" />
+
+		<execute function="Pause" locator1="5000" />
+
+		<execute function="SelectWindow#selectPopUp" locator1="title=${groupName}" />
+	</command>
+
+	<command name="clickGroupNode">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="Click" locator1="LoopGroupsOrgChart#GROUP_NODE" />
+	</command>
+
+	<command name="clickLeadLink">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_NAME" value1="${leadName}" />
+
+		<execute function="Pause" locator1="5000" />
+
+		<execute function="SelectWindow#selectPopUp" locator1="title=${leadName}" />
+	</command>
+
+	<command name="clickMemberLink">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertClick" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_NAME" value1="${memberName}" />
+
+		<execute function="Pause" locator1="5000" />
+
+		<execute function="SelectWindow#selectPopUp" locator1="title=${memberName}" />
+	</command>
+
+	<command name="clickZoomInLink">
+		<execute function="Click" locator1="LoopGroupsOrgChart#ORG_CHART_ZOOM_IN" />
+	</command>
+
+	<command name="clickZoomOutLink">
+		<execute function="Click" locator1="LoopGroupsOrgChart#ORG_CHART_ZOOM_OUT" />
+	</command>
+
+	<command name="closeChildGroupNodes">
+		<execute macro="LoopGroupsOrgChart#clickGroupNode">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsOrgChart#clickGroupNode">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="closeOrgChart">
+		<execute function="Click" locator1="LoopGroupsOrgChart#GROUP_CHART_EXIT" />
+	</command>
+
+	<command name="viewGroupDetails">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_GROUP_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_GROUP_NAME" value1="${groupName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_GROUP_TYPE" value1="Department" />
+
+		<var method="MathUtil#sum('${memberCount}', '${leadCount}')" name="totalMemberCount" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_GROUP_MEMBERSHIP_INFO" value1="${totalMemberCount} Members" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_HEADER" value1="Leads" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_COUNT" value1="${leadCount}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_HEADER" value1="Members" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_COUNT" value1="${memberCount}" />
+	</command>
+
+	<command name="viewGroupNode">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_NAME" />
+
+		<if>
+			<condition function="IsVisible" locator1="LoopGroupsOrgChart#GROUP_NAME" />
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_NAME" value1="${groupName}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="childGroupCount" />
+				<not>
+					<contains string="${childGroupCount}" substring="{childGroupCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${childGroupCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_SUBDEPARTMENT_COUNT" value1="${childGroupCount} Subdepartment" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_SUBDEPARTMENT_COUNT" value1="${childGroupCount} Subdepartments" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewLead">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_NAME" value1="${leadName}" />
+	</command>
+
+	<command name="viewLeadDetails">
+		<var name="key_leadName" value="${leadName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_NAME" value1="${leadName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_DETAILS" value1="${jobTitleName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_DETAILS" value1="${locationName}" />
+	</command>
+
+	<command name="viewLeads">
+		<for list="${leadNameList}" param="leadName">
+			<var name="key_leadName" value="${leadName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_AVATAR" />
+			<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_LEAD_NAME" value1="${leadName}" />
+		</for>
+	</command>
+
+	<command name="viewMember">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_NAME" value1="${memberName}" />
+	</command>
+
+	<command name="viewMemberDetails">
+		<var name="key_memberName" value="${memberName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_NAME" value1="${memberName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_DETAILS" value1="${jobTitleName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_DETAILS" value1="${locationName}" />
+	</command>
+
+	<command name="viewMembers">
+		<for list="${memberNameList}" param="memberName">
+			<var name="key_memberName" value="${memberName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_AVATAR" />
+			<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#GROUP_DETAILS_MEMBER_NAME" value1="${memberName}" />
+		</for>
+	</command>
+
+	<command name="viewNoGroupNode">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopGroupsOrgChart#GROUP_NODE" />
+	</command>
+
+	<command name="viewZoomPercentage">
+		<execute function="AssertTextEquals" locator1="LoopGroupsOrgChart#ORG_CHART_ZOOM_PERCENTAGE" value1="${zoomPercentage}" />
+	</command>
+</definition>

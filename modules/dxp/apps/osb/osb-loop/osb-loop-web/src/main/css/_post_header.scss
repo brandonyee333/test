@@ -1,0 +1,12 @@
+.post-header-container {
+	@include align-items(flex-start);
+	@include flexbox;
+
+	margin-bottom: 36px;
+	padding: 28px $postPadding 0;
+	position: relative;
+
+	.header-text-container {
+		margin: 0 24px 0 16px;
+	}
+}

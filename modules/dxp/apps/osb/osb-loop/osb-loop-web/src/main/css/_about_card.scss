@@ -1,0 +1,16 @@
+.about-card-container {
+	th {
+		font-weight: 600;
+		padding-right: 20px;
+		text-align: right;
+	}
+
+	.details {
+		padding: 24px;
+	}
+
+	.markdown-content-container {
+		border-bottom: 1px solid $borderLightGray;
+		padding: 24px;
+	}
+}

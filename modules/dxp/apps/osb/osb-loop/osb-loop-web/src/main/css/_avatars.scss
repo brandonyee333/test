@@ -1,0 +1,74 @@
+$avatarSizes: (
+	('tiny', 24px, 10px),
+	('smallest', 36px, 11px),
+	('small', 48px, 12px),
+	('large', 84px, 16px),
+	('largest', 120px, 20px)
+);
+
+.avatar-container {
+	background-color: $secondary;
+	border-radius: 50%;
+
+	.avatar {
+		@include border-radius(50%);
+
+		background-color: rgba($primary, 0.1);
+		background-position: center;
+		background-size: cover;
+		color: $theme;
+		display: block;
+		font-size: 12px;
+		font-weight: 600;
+		height: 60px;
+		overflow: hidden;
+		position: relative;
+		text-align: center;
+		width: 60px;
+
+		@each $color in $avatarColors {
+			&.avatar-color-#{index($avatarColors, $color)} {
+				background-color: $color;
+				color: $secondary;
+
+				&.inverted {
+					background-color: $secondary;
+					color: $color;
+				}
+			}
+		}
+
+		@each $size in $avatarSizes {
+			&.avatar-size-#{nth($size, 1)} {
+				height: nth($size, 2);
+				width: nth($size, 2);
+
+				.avatar-placeholder {
+					font-size: nth($size, 3);
+				}
+			}
+		}
+
+		&:disabled, &.disabled {
+			@include filter(grayscale(1));
+
+			.avatar-placeholder {
+				opacity: 0.4;
+			}
+		}
+
+		.avatar-placeholder, .loop-icon-container {
+			@include center(both);
+		}
+	}
+
+	a.avatar[href] {
+		&:focus, &.focus {
+			@include box-shadow(0 0 0 3px rgba($theme, 0.3));
+		}
+
+		&:hover, &.hover {
+			opacity: 0.6;
+		}
+	}
+}

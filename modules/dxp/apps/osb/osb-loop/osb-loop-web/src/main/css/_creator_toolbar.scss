@@ -1,0 +1,69 @@
+.creator-toolbar-container {
+	@include align-items(center);
+	@include flexbox;
+
+	border-top: 1px solid $borderLightGray;
+	padding: 24px 28px;
+
+	.post-preview, .tab {
+		margin-right: 24px;
+	}
+
+	.private-post-checkbox {
+		background-color: rgba($primary, 0.05);
+		border-radius: 4px;
+		color: rgba($primary, 0.8);
+		margin-right: 16px;
+		padding: 6px 12px;
+
+		&:hover:not(.disabled) {
+			background-color: rgba($primary, 0.1);
+			color: $primary;
+		}
+	}
+
+	.spacer {
+		@include flex(1);
+	}
+
+	.tab {
+		color: rgba($primary, 0.6);
+		cursor: pointer;
+		overflow: hidden;
+
+		&:hover {
+			color: rgba($primary, 0.8);
+		}
+
+		&.selected {
+			&.announcement-toggle .loop-icon-container {
+				background-color: transparent;
+			}
+
+			> div {
+				display: inline-block;
+
+				.loop-icon-container {
+					@include border-radius(4px 0 0 4px);
+
+					background-color: rgba($theme, 0.1);
+					color: $theme;
+					padding: 2px 6px 2px 4px;
+				}
+			}
+
+			.exit-tab {
+				display: inline-block;
+			}
+		}
+
+		.exit-tab {
+			@include border-radius(0 4px 4px 0);
+
+			background-color: rgba($theme, 0.4);
+			color: $secondary;
+			display: none;
+			padding: 6px 5px;
+		}
+	}
+}

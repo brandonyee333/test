@@ -1,0 +1,115 @@
+.markdown-content-container {
+	overflow-x: auto;
+	word-wrap: break-word;
+
+	&.inline {
+		> p:first-child {
+			display: inline;
+		}
+
+		> p:nth-child(2) {
+			margin-top: 10px;
+		}
+	}
+
+	blockquote {
+		border-color: rgba($primary, 0.2);
+
+		p {
+			color: $primary;
+			font-size: 14px;
+			font-style: italic;
+		}
+	}
+
+	code {
+		background-color: $secondary;
+		border-color: $primary;
+		color: $primary;
+		white-space: inherit;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		color: $primary;
+		font-weight: 600;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+
+	h3, h4, h5, h6 {
+		font-size: 14px;
+		margin: 12px 0;
+	}
+
+	h1 {
+		font-size: 18px;
+		margin: 24px 0;
+	}
+
+	h2 {
+		font-size: 16px;
+		margin: 16px 0;
+	}
+
+	img {
+		max-height: 300px;
+	}
+
+	pre {
+		background-color: $secondary;
+		border-color: rgba($theme, 0.6);
+	}
+
+	table {
+		border: 1px solid $borderLightGray;
+		border-collapse: separate;
+		border-radius: 4px;
+		padding: 0;
+
+		* {
+			border-collapse: collapse;
+		}
+
+		tr {
+			background-color: #FFF;
+			border-top: 1px solid $borderLightGray;
+			margin: 0;
+			padding: 0;
+
+			&:nth-child(2n) {
+				background-color: rgba($primary, 0.05);
+			}
+
+			td {
+				border: 1px solid $borderLightGray;
+				margin: 0;
+				padding: 6px 12px;
+				text-align: left;
+			}
+
+			th {
+				border: 1px solid $borderLightGray;
+				font-weight: 600;
+				margin: 0;
+				padding: 6px 12px;
+				text-align: left;
+			}
+
+			th:first-child, td:first-child {
+				margin-top: 0;
+			}
+
+			th:last-child, td:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	ul {
+		list-style: disc;
+		margin: 0 0 10px 25px;
+		padding: 0;
+	}
+}

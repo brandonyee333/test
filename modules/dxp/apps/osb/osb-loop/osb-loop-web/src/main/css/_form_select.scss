@@ -1,0 +1,35 @@
+.form-select-container {
+	&.error {
+		color: $error;
+
+		select {
+			border-color: $error;
+		}
+	}
+
+	&.success {
+		color: $success;
+
+		select {
+			border-color: $success;
+		}
+	}
+
+	select {
+		border-radius: 2px;
+		display: inline-block;
+		height: 30px;
+		margin-bottom: 0;
+		padding: 4px 6px;
+		width: 220px;
+
+		&[disabled] {
+			background-color: $disabledFormFieldColor;
+			cursor: not-allowed;
+		}
+	}
+
+	.input-label {
+		@include transition(color 0.4s ease-in);
+	}
+}

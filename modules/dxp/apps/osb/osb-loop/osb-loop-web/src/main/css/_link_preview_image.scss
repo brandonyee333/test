@@ -1,0 +1,52 @@
+.link-preview-image-container {
+	$linkPreviewImageHeight: 245px;
+
+	margin-bottom: -1px;
+	position: relative;
+	width: 100%;
+
+	&.embedded-video {
+		background-color: $primary;
+		height: 276px;
+
+		> iframe {
+			height: 100%;
+			width: 100%;
+		}
+
+		.play-overlay, .image-link {
+			display: none;
+		}
+	}
+
+	.image-link {
+		background-color: #F6F7F8;
+		display: block;
+		height: $linkPreviewImageHeight;
+		line-height: $linkPreviewImageHeight;
+		overflow: hidden;
+		text-align: center;
+		width: 100%;
+	}
+
+	.play-overlay {
+		@include stretch;
+
+		cursor: pointer;
+		position: absolute;
+		z-index: 1;
+
+		&:hover .loop-icon-container {
+			background-color: $primary;
+		}
+
+		.loop-icon-container {
+			@include center(both);
+
+			background-color: rgba($primary, 0.6);
+			border-color: $secondary;
+			border-radius: 50%;
+			color: $secondary;
+		}
+	}
+}

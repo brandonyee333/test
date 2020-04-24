@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>CPServeradministrationResources</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CPServeradministrationResources</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert') and contains(@class,'alert-success')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--SERVER_RESOURCES_ACTION_MENU-->
+<tr>
+	<td>SERVER_RESOURCES_ACTION_DESCRIPTION</td>
+	<td>//div[@id='adminServerAdministrationActionsPanelContent']//table//td[contains(.,'${key_resourcesAction}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SERVER_RESOURCES_EXECUTE_BUTTON</td>
+	<td>//div[@id='adminServerAdministrationActionsPanelContent']//table//td[contains(.,'${key_resourcesAction}')]/following-sibling::td/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IconListItem renders 1`] = `
+<div class="loop-icon-list-item-container">
+  <svg class="loop-icon-container loop-icon-skype loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+    <use href="#loop-icon-skype-24"></use>
+  </svg>
+  <span class="list-item-label" data-tooltip="">
+    <a href="skype:testTest?chat">testTest</a>
+  </span>
+</div>
+`;

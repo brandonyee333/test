@@ -1,0 +1,18 @@
+.private-post-bar-container {
+	background-color: rgba($primary, 0.9);
+	border-radius: 4px;
+	box-sizing: border-box;
+	color: $secondary;
+	margin: 12px 12px 0;
+	padding: 8px 16px;
+
+	.make-public-button {
+		color: rgba($secondary, 0.6);
+		vertical-align: middle;
+
+		&:hover {
+			color: $secondary;
+			cursor: pointer;
+		}
+	}
+}

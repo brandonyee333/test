@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SharedToModal renders 1`] = `
+<div class="shared-to-modal-container">
+  <div class="modal-header-container">
+    <h1 class="title" ref="title" tabindex="0">shared-with</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-close-long-16"></use>
+    </svg>
+  </div>
+  <div class="modal-body-container">
+    <div class="tabs-container align-top">
+      <ul class="tabs">
+        <li class="tab active" role="presentation">
+          <a href="javascript:;" role="tab">undefined (0)</a>
+        </li>
+      </ul>
+      <div class="content">
+        <ul></ul>
+      </div>
+    </div>
+  </div>
+</div>
+`;

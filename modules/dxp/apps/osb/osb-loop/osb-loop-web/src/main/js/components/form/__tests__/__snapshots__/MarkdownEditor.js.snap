@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownEditor renders 1`] = `
+<div>
+  <div class="markdown-editor-container">
+    <ul class="markdown-editor-header-container">
+      <li class="active">write</li>
+      <li class="">preview-markdown</li>
+    </ul>
+    <textarea placeholder="" value="" ref="textarea"></textarea>
+    <div opennewwindow=""></div>
+  </div>
+</div>
+`;

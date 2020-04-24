@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UndoCard renders 1`] = `
+<div class="undo-card-container">
+  <div class="undo-card-content">
+    <span title="undo" class="undo" data-tooltip="">undo.</span>
+  </div>
+  <span title="close" class="dismiss" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-cancel loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-cancel-24"></use>
+    </svg>
+  </span>
+</div>
+`;

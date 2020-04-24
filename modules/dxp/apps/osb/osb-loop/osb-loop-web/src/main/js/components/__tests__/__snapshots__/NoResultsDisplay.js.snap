@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NoResultsDisplay message to be rendered correctly 1`] = `
+<div class="no-results-container text-center">
+  <div class="no-results-background large-2x">
+    <svg class="loop-icon-container loop-icon-streams loop-icon-large-2x" data-tooltip="">
+      <use href="#loop-icon-streams-24"></use>
+    </svg>
+  </div>
+  <div class="message">No results display message.</div>
+</div>
+`;
+
+exports[`NoResultsDisplay renders 1`] = `
+<div class="no-results-container text-center">
+  <div class="no-results-background large-2x">
+    <svg class="loop-icon-container loop-icon-streams loop-icon-large-2x" data-tooltip="">
+      <use href="#loop-icon-streams-24"></use>
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`NoResultsDisplay should render in size large 1`] = `
+<div class="no-results-container text-center">
+  <div class="no-results-background large-2x">
+    <svg class="loop-icon-container loop-icon-streams loop-icon-large-2x" data-tooltip="">
+      <use href="#loop-icon-streams-24"></use>
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`NoResultsDisplay should render in size small 1`] = `
+<div class="no-results-container text-center">
+  <div class="no-results-background small-2x">
+    <svg class="loop-icon-container loop-icon-streams loop-icon-small-2x" data-tooltip="">
+      <use href="#loop-icon-streams-16"></use>
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`NoResultsDisplay title container to only be rendered when title is passed in 1`] = `
+<div class="no-results-container text-center">
+  <div class="no-results-background large-2x">
+    <svg class="loop-icon-container loop-icon-streams loop-icon-large-2x" data-tooltip="">
+      <use href="#loop-icon-streams-24"></use>
+    </svg>
+  </div>
+  <div class="title">No Results Title</div>
+  <div class="message">No results display message.</div>
+</div>
+`;

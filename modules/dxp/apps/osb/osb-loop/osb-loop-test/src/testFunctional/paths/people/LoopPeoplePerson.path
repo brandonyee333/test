@@ -1,0 +1,465 @@
+<html>
+<head>
+<title>LoopPeoplePerson</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopPeoplePerson</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>PERSON_PROFILE</td>
+	<td>//div[contains(@class,'profile-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_COVER_PICTURE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_COVER_PICTURE_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_COVER_PICTURE_CONFIRM_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']//*[local-name()='svg' and contains(@class,'success')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_COVER_PICTURE_CANCEL_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']//*[local-name()='svg' and contains(@class,'danger')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_PROFILE_PICTURE_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[contains(@class,'avatar')]//*[local-name()='svg' and contains(@class,'loop-icon-camera')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_NAME</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_JOB_TITLE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='description' and contains(.,'${key_jobTitleName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_LOCATION</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='description' and contains(.,'${key_locationName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_DESCRIPTION</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='description']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWER_COUNT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//span[contains(.,'Follower')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_GROUP_COUNT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//span[contains(.,'Group')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_INACTIVE_ALERT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'inactive-card-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_STREAM_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Stream')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_NETWORK_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Network')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_GROUPS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Groups')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWERS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Followers')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWING_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Following')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWING_PEOPLE_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'tabs-container align-top')]//a[contains(.,'People')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWING_GROUPS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'tabs-container align-top')]//a[contains(.,'Groups')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOWING_TOPICS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'tabs-container align-top')]//a[contains(.,'Topics')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_ABOUT_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'About')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_FOLLOW_BUTTON</td>
+	<td>//button[contains(.,'Follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OPTIONS_BUTTON</td>
+	<td>//button[contains(@class,'btn-secondary')]//*[local-name()='svg' and contains(@class,'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--PERSON_FOLLOW_MENU-->
+<tr>
+	<td>PERSON_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li//span[contains(.,'Posts, Comments, and Mentions')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_ONLY_POSTS_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li//span[contains(.,'Only Posts')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_TOGGLE_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//span[contains(@class,'toggle-label')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_TOGGLE_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//div[contains(@class,'toggle-dot')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_EMAIL_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_EMAIL_NOTIFICATIONS_CHECKBOX</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_UNFOLLOW_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item-container unfollow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--PERSON_OPTIONS_MENU-->
+<tr>
+	<td>PERSON_OPTIONS_EDIT_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit User Information')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PERSON_OPTIONS_TOGGLE_ACTIVATE_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'vate User')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CONTACT-->
+<tr>
+	<td>CONTACT_EMAIL_ADDRESS</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Contact')]//a[contains(@href,'mailto:${key_userEmailAddress}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONTACT_PHONE</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Contact')]//a[contains(@href,'tel:${key_userPhoneNumber}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONTACT_SKYPE</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Contact')]//a[contains(@href,'skype:${key_userSkype}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ELSEWHERE-->
+<tr>
+	<td>ELSEWHERE_TWITTER</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Elsewhere')]//a[contains(@href,'https://twitter.com/${key_userTwitter}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ELSEWHERE_FACEBOOK</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Elsewhere')]//a[contains(@href,'https://www.facebook.com/${key_userFacebook}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ELSEWHERE_GITHUB</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Elsewhere')]//a[contains(@href,'https://github.com/${key_userGitHub}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ELSEWHERE_LINKEDIN</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Elsewhere')]//a[contains(@href,'https://www.linkedin.com/in/${key_userLinkedIn}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--NETWORK-->
+<tr>
+	<td>NETWORK_MANAGER</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Reports To')]//parent::div//a[@title='${key_managerName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_SUBORDINATE</td>
+	<td>//div[contains(@class,'category-label') and contains(.,'Manages')]//parent::div//a[@title='${key_subordinateName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_SEE_FULL_NETWORK_LINK</td>
+	<td>//a[contains(.,'See Full Network')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_TAB_MANAGER_NAME_LINK</td>
+	<td>//div[contains(@class,'index-pagination-container') and contains(.,'Reports To')]//div[contains(@class,'entity') and contains(.,'${key_managerName}')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_TAB_MANAGER_OPTIONS_LINK</td>
+	<td>//div[contains(@class,'index-pagination-container') and contains(.,'Reports To')]//div[contains(@class,'entity') and contains(.,'${key_managerName}')]//span[contains(@class,'loop-card-options')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_TAB_SUBORDINATE_NAME_LINK</td>
+	<td>//div[contains(@class,'index-pagination-container') and contains(.,'Manages')]//div[contains(@class,'entity') and contains(.,'${key_subordinateName}')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_TAB_SUBORDINATE_OPTIONS_LINK</td>
+	<td>//div[contains(@class,'index-pagination-container') and contains(.,'Manages')]//div[contains(@class,'entity') and contains(.,'${key_subordinateName}')]//span[contains(@class,'loop-card-options')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_TAB_REMOVE_LINK</td>
+	<td>//ul[contains(@class,'overlay-menu')]//li[@class='menu-item remove-from-network']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NETWORK_REMOVE_MESSAGE</td>
+	<td>//div[contains(.,'Are you sure you want to remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--TOGGLE_ACTIVATE-->
+<tr>
+	<td>TOGGLE_ACTIVATE_ACTIVATE_MESSAGE</td>
+	<td>//div[contains(.,'Are you sure you want to activate')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOGGLE_ACTIVATE_DEACTIVATE_MESSAGE</td>
+	<td>//div[contains(.,'Are you sure you want to deactivate')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOGGLE_ACTIVATE_CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOGGLE_ACTIVATE_CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--GROUPS-->
+<tr>
+	<td>GROUPS_GROUP_NAME</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'name')]/a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUPS_GROUP_DETAILS</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'entity-info') and contains(.,'${key_groupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GROUPS_MORE_LINK</td>
+	<td>//a[contains(.,'See All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--WORK-->
+<tr>
+	<td>WORK_START_DATE</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Work')]//ul[contains(@class,'category-items') and contains(.,'${key_userHireDate}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WORK_EMPLOYMENT_TYPE</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Work')]//ul[contains(@class,'category-items') and contains(.,'${key_userEmploymentType}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WORK_OCCUPATION</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Work')]//ul[contains(@class,'category-items') and contains(.,'${key_jobTitleName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WORK_EXPERTISE</td>
+	<td>//div[contains(@class,'entity-pill-list-container')]//a[contains(.,'${key_expertiseName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WORK_LANGUAGES</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Work')]//ul[contains(@class,'category-items') and contains(.,'${key_userLanguage}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--JOB_RESPONSIBILITIES-->
+<tr>
+	<td>JOB_RESPONSIBILITIES_DESCRIPTION</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Job Responsibilities')]//div[contains(@class,'markdown-content-container') and contains(.,'${key_userJobResponsibilities}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ABOUT-->
+<tr>
+	<td>ABOUT_CARD</td>
+	<td>//div[contains(@class,'about')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_PREFERRED_NAME</td>
+	<td>//div[contains(@class,'about')]//tr[contains(@key,'Preferred Name')]//td[contains(.,'${key_userPreferredName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION</td>
+	<td>//div[contains(@class,'about')]//div[contains(.,'${key_userDescription}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_SEE_MORE_LINK</td>
+	<td>//div[contains(@class,'about')]//span[contains(@class,'see-more')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN</td>
+	<td>loop/screenshots/profile/profile_description_markdown.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN_1</td>
+	<td>loop/screenshots/profile/profile_description_markdown_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN_3</td>
+	<td>loop/screenshots/profile/profile_description_markdown_3.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_GENDER</td>
+	<td>//div[contains(@class,'about')]//th[contains(.,'Gender')]//following-sibling::td</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_AGE</td>
+	<td>//div[contains(@class,'about')]//th[contains(.,'Age')]//following-sibling::td</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_BIRTHDAY</td>
+	<td>//div[contains(@class,'about')]//th[contains(.,'Birthday')]//following-sibling::td</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CONTROLS-->
+<tr>
+	<td>CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

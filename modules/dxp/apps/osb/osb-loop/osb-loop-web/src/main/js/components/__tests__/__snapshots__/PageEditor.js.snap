@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageEditor renders 1`] = `
+<div class="card-container page-editor-container">
+  <div class="card-body-container">
+    <ul class="markdown-editor-header-container">
+      <li class="active">write</li>
+      <li class="">preview-markdown</li>
+    </ul>
+    <div class="">
+      <input placeholder="" value="" class="title" ref="title" type="text">
+      <textarea placeholder="" value="" class="content" ref="content" type="text"></textarea>
+    </div>
+    <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+      <use href="#loop-icon-markdown-24"></use>
+    </svg>
+  </div>
+  <div class="card-footer-container">
+    <a href="/pages" class="btn btn-container btn-secondary btn-anchor" type="button">cancel</a>
+    <button disabled="" class="btn btn-container btn-primary" type="button">publish</button>
+  </div>
+</div>
+`;
+
+exports[`PageEditor renders Title Character Count Warning 1`] = `
+<div class="card-container page-editor-container">
+  <div class="card-body-container">
+    <ul class="markdown-editor-header-container">
+      <li class="active">write</li>
+      <li class="">preview-markdown</li>
+    </ul>
+    <div class="warning">
+      <input placeholder="" value="Lorem ipsum dolor sit amet, vel aliquip legimus dissentiunt ea. An per elitr veritus" class="title" ref="title" type="text">
+      <div class="length-warning">
+        <span class="loop-icon-label-container" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-alert loop-icon-small-1x" data-tooltip="">
+            <use href="#loop-icon-alert-16"></use>
+          </svg>
+          <span class="loop-icon-label"></span>
+        </span>
+      </div>
+      <textarea placeholder="" value="" class="content" ref="content" type="text"></textarea>
+    </div>
+    <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+      <use href="#loop-icon-markdown-24"></use>
+    </svg>
+  </div>
+  <div class="card-footer-container">
+    <a href="/pages" class="btn btn-container btn-secondary btn-anchor" type="button">cancel</a>
+    <button disabled="" class="btn btn-container btn-primary" type="button">publish</button>
+  </div>
+</div>
+`;
+
+exports[`PageEditor renders submit button 1`] = `
+<div class="card-container page-editor-container">
+  <div class="card-body-container">
+    <ul class="markdown-editor-header-container">
+      <li class="active">write</li>
+      <li class="">preview-markdown</li>
+    </ul>
+    <div class="">
+      <input placeholder="" value="test title" class="title" ref="title" type="text">
+      <textarea placeholder="" value="test content" class="content" ref="content" type="text" style="height: 0px;"></textarea>
+    </div>
+    <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+      <use href="#loop-icon-markdown-24"></use>
+    </svg>
+  </div>
+  <div class="card-footer-container">
+    <a href="/pages" class="btn btn-container btn-secondary btn-anchor" type="button">cancel</a>
+    <button class="btn btn-container btn-primary" type="button">publish</button>
+  </div>
+</div>
+`;
+
+exports[`PageEditor renders with content 1`] = `
+<div class="card-container page-editor-container">
+  <div class="card-body-container">
+    <ul class="markdown-editor-header-container">
+      <li class="active">write</li>
+      <li class="">preview-markdown</li>
+    </ul>
+    <div class="">
+      <input placeholder="" value="test title" class="title" ref="title" type="text">
+      <textarea placeholder="" value="test content" class="content" ref="content" type="text" style="height: 0px;"></textarea>
+    </div>
+    <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+      <use href="#loop-icon-markdown-24"></use>
+    </svg>
+  </div>
+  <div class="card-footer-container">
+    <a href="/pages/1" class="btn btn-container btn-secondary btn-anchor" type="button">cancel</a>
+    <button class="btn btn-container btn-primary" type="button">publish</button>
+  </div>
+</div>
+`;
+
+exports[`PageEditor should be in edit mode on handleEditClick_ 1`] = `
+<div class="card-container page-editor-container">
+  <div class="card-body-container">
+    <ul class="markdown-editor-header-container">
+      <li class="active">write</li>
+      <li class="">preview-markdown</li>
+    </ul>
+    <div class="">
+      <input placeholder="" value="" class="title" ref="title" type="text">
+      <textarea placeholder="" value="" class="content" ref="content" type="text" style="height: 0px;"></textarea>
+    </div>
+    <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+      <use href="#loop-icon-markdown-24"></use>
+    </svg>
+  </div>
+  <div class="card-footer-container">
+    <a href="/pages" class="btn btn-container btn-secondary btn-anchor" type="button">cancel</a>
+    <button disabled="" class="btn btn-container btn-primary" type="button">publish</button>
+  </div>
+</div>
+`;
+
+exports[`PageEditor should be in preview mode on handlePreviewClick_ 1`] = `
+<div class="card-container page-editor-container">
+  <div class="card-body-container">
+    <ul class="markdown-editor-header-container">
+      <li class="">write</li>
+      <li class="active">preview-markdown</li>
+    </ul>
+    <div>
+      <h1 class="title"></h1>
+      <div class="markdown-content-container">test</div>
+    </div>
+    <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+      <use href="#loop-icon-markdown-24"></use>
+    </svg>
+  </div>
+  <div class="card-footer-container">
+    <a href="/pages" class="btn btn-container btn-secondary btn-anchor" type="button">cancel</a>
+    <button disabled="" class="btn btn-container btn-primary" type="button">publish</button>
+  </div>
+</div>
+`;

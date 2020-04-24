@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnnouncementTitle renders 1`] = `
+<div class="announcement-title-container">
+  <input placeholder="title-required" type="text">
+</div>
+`;

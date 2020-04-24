@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input renders 1`] = `
+<div class="form-input-container default">
+  <div class="input-container input-default">
+    <input id="FormInput1" name="test" value="" type="text" ref="input">
+  </div>
+</div>
+`;
+
+exports[`Input should render if show_ and valid_ are true 1`] = `
+<div class="form-input-container error">
+  <div class="input-container input-error">
+    <input id="FormInput2" name="test" value="" type="text" ref="input">
+  </div>
+  <div class="error-message"></div>
+</div>
+`;

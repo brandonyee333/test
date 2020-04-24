@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pages renders 1`] = `
+<div class="card-container pages-container">
+  <a href="/pages/create" class="btn btn-container btn-primary btn-anchor" type="button">create-page</a>
+  <div class="tabs-container align-top">
+    <ul class="tabs">
+      <li class="tab active" role="presentation">
+        <a href="/pages/allPages" role="tab">all-pages</a>
+      </li>
+    </ul>
+    <div href="/pages/allPages" class="content">
+      <div class="card-body-container">
+        <div class="sortable-list-container">
+          <div class="sortable-list-header-container">
+            <button type="button" class="inline-button-container title-header">name
+              <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-tiny-1x" data-tooltip="">
+                <use href="#loop-icon-arrow-down-short-16"></use>
+              </svg>
+            </button>
+            <button type="button" class="inline-button-container creator-header">created-by</button>
+            <button type="button" class="inline-button-container secondary-info-header">modified</button>
+          </div>
+          <div>
+            <ul></ul>
+            <div class="card-container loading-card-container">
+              <div class="spinner-container">
+                <div class="spinner small"></div>
+              </div>loading</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Pages should render list without a create button 1`] = `
+<div class="card-container pages-container">
+  <div class="tabs-container align-top">
+    <ul class="tabs">
+      <li class="tab active" role="presentation">
+        <a href="/pages/allPages" role="tab">all-pages</a>
+      </li>
+    </ul>
+    <div href="/pages/allPages" class="content">
+      <div class="card-body-container">
+        <div class="sortable-list-container">
+          <div class="sortable-list-header-container">
+            <button type="button" class="inline-button-container title-header">name
+              <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-tiny-1x" data-tooltip="">
+                <use href="#loop-icon-arrow-down-short-16"></use>
+              </svg>
+            </button>
+            <button type="button" class="inline-button-container creator-header">created-by</button>
+            <button type="button" class="inline-button-container secondary-info-header">modified</button>
+          </div>
+          <div>
+            <ul></ul>
+            <div class="card-container loading-card-container">
+              <div class="spinner-container">
+                <div class="spinner small"></div>
+              </div>loading</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

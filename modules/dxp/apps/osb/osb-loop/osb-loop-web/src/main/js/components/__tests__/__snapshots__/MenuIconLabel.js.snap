@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MenuIconLabel renders 1`] = `
+<span class="loop-icon-label-container loop-icon-label-spacing-large" data-tooltip="">
+  <svg class="loop-icon-container loop-icon-tests loop-icon-small-1x loop-icon-default" data-tooltip="">
+    <use href="#loop-icon-tests-16"></use>
+  </svg>
+  <span class="loop-icon-label">test label</span>
+</span>
+`;

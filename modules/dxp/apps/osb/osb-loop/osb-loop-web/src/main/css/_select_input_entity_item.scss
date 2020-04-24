@@ -1,0 +1,23 @@
+.select-input-entity-item-container {
+	@include align-items(center);
+	@include flexbox;
+
+	cursor: pointer;
+	height: 48px;
+	padding: 0 12px;
+
+	&.selected {
+		font-weight: 600;
+	}
+
+	.avatar-container {
+		display: inline-block;
+		margin-right: 12px;
+	}
+
+	.name {
+		@include flex-grow(1);
+
+		display: inline-block;
+	}
+}

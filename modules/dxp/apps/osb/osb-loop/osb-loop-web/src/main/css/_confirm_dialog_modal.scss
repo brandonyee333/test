@@ -1,0 +1,24 @@
+.confirm-dialog-modal-container {
+	.btn-container {
+		margin-left: 12px;
+	}
+
+	.modal-body-container {
+		padding: 24px 16px;
+	}
+
+	.modal-footer-container {
+		border-top-width: 0;
+	}
+
+	.make-public-message {
+		div:first-child {
+			font-weight: 600;
+			margin-bottom: 12px;
+		}
+
+		div:last-child {
+			color: rgba($primary, 0.8);
+		}
+	}
+}

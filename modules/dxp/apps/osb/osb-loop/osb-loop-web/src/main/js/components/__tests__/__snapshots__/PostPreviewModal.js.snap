@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preview renders 1`] = `
+<div>
+  <div class="modal-header-container">
+    <h1 class="title" ref="title" tabindex="0">preview-post</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-close-long-16"></use>
+    </svg>
+  </div>
+  <div class="post-preview-container">
+    <div class="modal-body-container">
+      <div class="post-header-container">
+        <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+          <a style="" class="avatar avatar-size-small">
+            <div class="avatar-placeholder">
+              <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+                <use href="#loop-icon-undefined-24"></use>
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div class="header-text-container">
+          <span class="shared-to-summary-container">
+            <a class="entity-link-container" href="javascript:;"></a>
+          </span>
+          <a class="secondary-info">
+            <span data-tooltip=""></span>
+          </a>
+        </div>
+      </div>
+      <div class="post-content-container"></div>
+    </div>
+    <div class="modal-footer-container">
+      <button class="btn btn-container btn-secondary" type="button">back</button>
+      <button disabled="" class="btn btn-container btn-primary" type="button">post</button>
+    </div>
+  </div>
+</div>
+`;

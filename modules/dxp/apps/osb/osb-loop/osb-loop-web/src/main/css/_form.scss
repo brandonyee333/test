@@ -1,0 +1,35 @@
+.form-container {
+	.checkbox-container,
+	.form-input-container,
+	.form-select-container,
+	.input-list-container,
+	.markdown-editor-container,
+	.multi-input-container,
+	.select-input-container {
+		margin-bottom: 24px;
+	}
+
+	.input-list-container {
+		border: 1px solid rgba($primary, 0.1);
+		border-radius: 4px;
+		padding: 4px;
+	}
+
+	.multi-input-container {
+		> span {
+			@include flexbox;
+
+			.form-select-container {
+				margin-left: 12px;
+
+				> select {
+					width: auto;
+				}
+			}
+		}
+
+		.btn-container {
+			margin-right: 8px;
+		}
+	}
+}

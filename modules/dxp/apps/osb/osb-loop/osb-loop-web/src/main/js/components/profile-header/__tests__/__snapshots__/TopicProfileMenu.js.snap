@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TopicProfileMenu renders 1`] = `
+<ul class="menu-list-container">
+  <li class="menu-item-container menu-link">
+    <a href="undefined/edit">edit-topic</a>
+  </li>
+  <li class="menu-item-container">i-am-an-expert</li>
+</ul>
+`;

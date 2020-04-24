@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LinkPreview renders 1`] = `
+<div class="link-preview-container">
+  <div class="link-preview-image-container">
+    <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank" class="image-link">
+      <img alt="Liferay" src="/loop-portlet/images/cover_images/cover_image_2_web.jpg">
+    </a>
+  </div>
+  <div class="link-preview-content-container">
+    <div class="title">
+      <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank">Liferay</a>
+    </div>
+    <div class="short-url">
+      <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank">www.liferay.com</a>
+    </div>
+    <div class="description">
+      <a href="http://www.liferay.com" rel="noopener noreferrer" target="_blank">Liferay: Put people at the heart of your business</a>
+    </div>
+  </div>
+</div>
+`;

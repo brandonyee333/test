@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnnouncementHeader should render 1`] = `
+<div class="announcement-header-container">
+  <span title="this-announcement-is-not-pinned" class="sticky-time" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-bullhorn loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-bullhorn-24"></use>
+    </svg>
+  </span>
+  <div class="header-content text-center">
+    <div class="title"></div>
+    <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+      <a href="" style="" title="Joe Bloggs" class="avatar avatar-size-small">
+        <div class="avatar-placeholder"></div>
+      </a>
+    </div>
+    <span class="shared-to-summary-container">
+      <a class="entity-link-container" href="javascript:;">Joe Bloggs</a>
+    </span>
+    <a href="/web/guest/home/-/loop/feed/0" class="secondary-info">
+      <span data-tooltip=""></span>
+    </a>
+  </div>
+</div>
+`;

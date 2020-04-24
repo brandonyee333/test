@@ -1,0 +1,35 @@
+.loop-icon-label-container {
+	@include ellipsis;
+
+	&.loop-icon-label-spacing-large .loop-icon-container {
+		margin-right: 20px;
+	}
+
+	&.loop-icon-label-spacing-medium .loop-icon-container {
+		margin-right: 8px;
+	}
+
+	&.loop-icon-label-spacing-small .loop-icon-container {
+		margin-right: 4px;
+	}
+
+	.loop-icon-container, .loop-icon-label {
+		vertical-align: middle;
+	}
+
+	@media #{$mediaSmallMax} {
+		&.responsive-wrap {
+			@include align-items(center);
+			@include flex-direction(column);
+			@include flexbox;
+
+			.loop-icon-container {
+				margin-right: 0;
+			}
+
+			.loop-icon-label {
+				margin-left: 0;
+			}
+		}
+	}
+}

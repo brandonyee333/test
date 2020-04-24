@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SeeMore renders see-all in seeMoreLink if an id is passed in, expanded is true, and messageInfo truncated is true 1`] = `<a class="see-more-container" href="#">see-all</a>`;
+
+exports[`SeeMore renders seeMoreLink if expanded is false and truncated is true 1`] = `<a class="see-more-container" href="#">see-more</a>`;

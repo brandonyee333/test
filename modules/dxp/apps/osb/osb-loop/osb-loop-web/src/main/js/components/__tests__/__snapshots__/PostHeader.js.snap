@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostHeader should render 1`] = `
+<div class="post-header-container">
+  <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+    <a href="" style="" title="Joe Bloggs" class="avatar avatar-size-small">
+      <div class="avatar-placeholder"></div>
+    </a>
+  </div>
+  <div class="header-text-container">
+    <span class="shared-to-summary-container">
+      <a class="entity-link-container" href="javascript:;">Joe Bloggs</a>
+    </span>
+    <a href="/web/guest/home/-/loop/feed/0" class="secondary-info">
+      <span data-tooltip=""></span>
+    </a>
+  </div>
+</div>
+`;

@@ -1,0 +1,9 @@
+Bundle-Name: Liferay OSB Loop API
+Bundle-SymbolicName: com.liferay.osb.loop.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.loop.constants,\
+	com.liferay.osb.loop.exception,\
+	com.liferay.osb.loop.model,\
+	com.liferay.osb.loop.service,\
+	com.liferay.osb.loop.service.persistence

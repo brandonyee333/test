@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SettingToggle renders 1`] = `
+<div class="checkbox-container">
+  <input title="get-email-notifications" data-tooltip="" id="checkbox1" class="checkbox-input" type="checkbox">
+  <div class="checkbox"></div>
+</div>
+`;

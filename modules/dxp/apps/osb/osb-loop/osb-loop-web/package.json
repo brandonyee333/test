@@ -1,0 +1,195 @@
+{
+	"babel": {
+		"plugins": [
+			"lodash"
+		],
+		"presets": [
+			"es2015",
+			"metal-jsx",
+			"stage-2"
+		]
+	},
+	"csfConfig": {
+		"js": {
+			"lint": {
+				"globals": {}
+			}
+		},
+		"path:**/src/main/js/**/*.js": {
+			"js": {
+				"lint": {
+					"parserOptions": {
+						"ecmaVersion": 7
+					}
+				}
+			}
+		},
+		"path:**/src/main/js/**/{__tests__,__mocks__}/*.js": {
+			"js": {
+				"lint": {
+					"env": {
+						"jest": true
+					},
+					"globals": {
+						"LoopAssets": true,
+						"LoopConstants": true,
+						"snap": true,
+						"useFakeDate": true,
+						"useRealDate": true
+					}
+				}
+			}
+		},
+		"path:**/src/main/js/**/{components,lib,pages}/**/*": {
+			"js": {
+				"lint": {
+					"rules": {
+						"no-direct-mutation-state": 0,
+						"no-unknown-property": 0
+					}
+				}
+			}
+		},
+		"path:**/src/main/js/tests/**/*.js": {
+			"js": {
+				"lint": {
+					"env": {
+						"jest": true
+					},
+					"globals": {
+						"LoopAssets": true,
+						"LoopConstants": true
+					}
+				}
+			}
+		}
+	},
+	"dependencies": {
+		"classnames": "^2.2.3",
+		"clipboard": "^1.5.9",
+		"cropperjs": "^1.3.5",
+		"d3": "^4.7.4",
+		"draft-js": "^0.3.0",
+		"favico.js": "^0.3.10",
+		"immutable": "^3.7.6",
+		"lodash": "^4.6.1",
+		"metal-ajax": "^2.0.3",
+		"metal-css-transitions": "^2.3.5",
+		"metal-dom": "^2.6.0",
+		"metal-drag-drop": "^2.0.1",
+		"metal-incremental-dom": "^2.13.2",
+		"metal-jsx": "^2.6.2",
+		"metal-promise": "^2.0.1",
+		"metal-react": "^2.0.0",
+		"metal-redux": "^2.0.0",
+		"metal-router": "^3.6.3",
+		"metal-structs": "^1.0.1",
+		"moment": "^2.11.2",
+		"mousetrap": "^1.6.0",
+		"normalizr": "^2.0.0",
+		"pikaday": "^1.5.1",
+		"react": "15.4.2",
+		"react-dom": "15.4.2",
+		"redux": "^3.4.0",
+		"redux-immutable": "^3.0.6",
+		"redux-thunk": "^2.0.1"
+	},
+	"description": "Loop Portlet",
+	"devDependencies": {
+		"ajv": "^6.2.1",
+		"autoprefixer": "^8.1.0",
+		"babel-core": "^6.26.0",
+		"babel-jest": "^15.0.0",
+		"babel-loader": "^7.1.2",
+		"babel-plugin-lodash": "^3.2.3",
+		"babel-preset-es2015": "^6.24.1",
+		"babel-preset-jest": "^15.0.0",
+		"babel-preset-metal-jsx": "0.0.3",
+		"babel-preset-stage-2": "^6.24.1",
+		"clean-webpack-plugin": "^0.1.17",
+		"css-loader": "^0.28.7",
+		"enzyme": "^2.2.0",
+		"extract-text-webpack-plugin": "^3.0.2",
+		"file-loader": "^0.11.2",
+		"gulp": "^3.9.0",
+		"gulp-svg-sprite": "^1.3.6",
+		"jest": "^20.0.4",
+		"js-beautify": "^1.6.8",
+		"lazypipe": "^1.0.1",
+		"liferay-theme-deps-7.0": "~1.2.1",
+		"metal-jest-serializer": "^1.0.1",
+		"node-sass": "^4.7.2",
+		"postcss-loader": "^2.1.3",
+		"properties": "^1.2.1",
+		"react-addons-test-utils": "^15.3.0",
+		"sass-loader": "^6.0.6",
+		"style-loader": "^0.18.2",
+		"webpack": "^3.8.1",
+		"webpack-dev-server": "^2.9.4",
+		"webpack-merge": "^4.1.1"
+	},
+	"homepage": "https://github.com/liferay/com-liferay-osb-loop-private",
+	"jest": {
+		"automock": true,
+		"collectCoverageFrom": [
+			"**/*.js"
+		],
+		"coveragePathIgnorePatterns": [
+			"<rootDir>/src/main/js/components/ui-kit",
+			"<rootDir>/src/main/js/init.js",
+			"<rootDir>/src/main/js/main.js",
+			"<rootDir>/src/main/js/pages",
+			"<rootDir>/src/main/js/store",
+			"<rootDir>/src/main/js/tests",
+			"<rootDir>/src/main/js/ui-kit.js"
+		],
+		"roots": [
+			"<rootDir>/src/main/js/"
+		],
+		"setupTestFrameworkScriptFile": "<rootDir>/src/main/js/tests/setup.js",
+		"snapshotSerializers": [
+			"metal-jest-serializer"
+		],
+		"timers": "fake",
+		"unmockedModulePathPatterns": [
+			"<rootDir>/src/main/js/components",
+			"<rootDir>/src/main/js/lib/metal-util",
+			"<rootDir>/src/main/js/tests/mock-store",
+			"babel-polyfill",
+			"classnames",
+			"d3",
+			"draft-js",
+			"enzyme",
+			"fbjs",
+			"immutable",
+			"lodash",
+			"metal/",
+			"metal-css-transitions",
+			"metal-dom",
+			"metal-drag-drop",
+			"metal-jsx",
+			"metal-jest",
+			"metal-promise",
+			"metal-react",
+			"metal-redux",
+			"moment",
+			"react",
+			"redux"
+		]
+	},
+	"name": "com-liferay-osb-loop-private",
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/liferay/com-liferay-osb-loop-private.git"
+	},
+	"scripts": {
+		"build": "webpack --config webpack.prod.js",
+		"build:dev": "webpack --config webpack.dev.js",
+		"build:icons": "gulp icons",
+		"start": "webpack-dev-server --config webpack.dev.js",
+		"test": "echo \"Test script is temporarily removed. Replace this echo command with 'jest' when development is set to continue.\"",
+		"watch": "webpack --config webpack.dev.js --watch"
+	},
+	"version": "1.0.0"
+}

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MergeTopicsModal renders 1`] = `
+<div class="merge-topics-modal-container">
+  <div class="modal-header-container">
+    <h1 class="title" ref="title" tabindex="0">merge-with-another-topic</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-close-long-16"></use>
+    </svg>
+  </div>
+  <div class="modal-body-container">
+    <div class="input-list-container">
+      <label for="inputList1" class="control-label">topic</label>
+      <div class="autocomplete-input-container">
+        <div class="input-container row">
+          <input id="inputList1" placeholder="select-topic" value="" type="text" ref="input">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer-container">
+    <button class="btn btn-container btn-secondary" type="button">cancel</button>
+    <button disabled="" class="btn btn-container btn-primary" type="button">merge</button>
+  </div>
+</div>
+`;

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Feed renders 1`] = `
+<div class="feed-container">
+  <div class="card-container loading-card-container">
+    <div class="spinner-container">
+      <div class="spinner small"></div>
+    </div>loading</div>
+</div>
+`;

@@ -1,0 +1,19 @@
+<html>
+<head>
+<title>LoopKeyboardShortcuts</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopKeyboardShortcuts</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>KEYBOARD_SHORTCUTS</td>
+	<td>//div[@class='hot-keys-modal-container']</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

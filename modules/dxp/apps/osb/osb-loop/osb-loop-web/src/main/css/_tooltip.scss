@@ -1,0 +1,21 @@
+.tooltip-container {
+	.tooltip-content {
+		@include box-shadow(0 2px 8px rgba($black, 0.16));
+
+		background-color: $primary;
+		border: $borderLightGray;
+		border-radius: 4px;
+		box-sizing: border-box;
+		color: $secondary;
+		font-size: 12px;
+		max-width: 200px;
+		padding: 8px 20px;
+		text-align: center;
+	}
+
+	.tooltip-wrapper {
+		padding: 12px;
+		position: absolute;
+		z-index: $tooltipZIndex;
+	}
+}

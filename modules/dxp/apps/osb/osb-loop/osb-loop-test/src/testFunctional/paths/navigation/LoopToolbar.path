@@ -1,0 +1,164 @@
+<html>
+<head>
+<title>LoopToolbar</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopToolbar</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>TOOLBAR</td>
+	<td>//div[contains(@class,'toolbar-global')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_SENNA_LOAD</td>
+	<td>//div[contains(@class,'senna-loading')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_HOME_LINK</td>
+	<td>//div[contains(@class,'toolbar-global')]//a[contains(.,'Home')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_PEOPLE_LINK</td>
+	<td>//div[contains(@class,'toolbar-global')]//a[contains(.,'People')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_GROUPS_LINK</td>
+	<td>//div[contains(@class,'toolbar-global')]//a[contains(.,'Groups')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_TOPICS_LINK</td>
+	<td>//div[contains(@class,'toolbar-global')]//a[contains(.,'Topics')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_GROUP_NAME_LINK</td>
+	<td>//li[contains(@class,'menu-item-container') and contains(.,'${key_groupName}')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_MORE_GROUPS_LINK</td>
+	<td>//li[contains(.,'+') and contains(.,'More')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_TOPIC_NAME_LINK</td>
+	<td>//li[contains(@class,'menu-item-container') and contains(.,'${key_topicName}')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_MORE_TOPICS_LINK</td>
+	<td>//li[contains(.,'+') and contains(.,'More')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_SEARCH_FIELD</td>
+	<td>//div[contains(@class,'toolbar-global')]//input[contains(@placeholder,'Search')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_NOTIFICATION_LINK</td>
+	<td>//div[contains(@class,'toolbar-global')]//div[contains(@class,'notifications')]//a[contains(@class,'toggle-icon')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_NOTIFICATION_COUNT</td>
+	<td>//div[contains(@class,'toolbar-global')]//div[contains(@class,'notifications')]//div[@class='count']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_DROPDOWN_LINK</td>
+	<td>//div[contains(@class,'toolbar-global')]//div[contains(@class,'global-menu-container')]/div[contains(@class,'toggle')]/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_ICON</td>
+	<td>//div[contains(@class,'toolbar-global')]//div[contains(@class,'avatar')] | //div[contains(@class,'toolbar-wrapper')]//img[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_ICON_DEFAULT</td>
+	<td>loop/screenshots/toolbar/toolbar_user_icon_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_ICON_1</td>
+	<td>loop/screenshots/toolbar/toolbar_user_icon_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_ICON_2</td>
+	<td>loop/screenshots/toolbar/toolbar_user_icon_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_ICON_3</td>
+	<td>loop/screenshots/toolbar/toolbar_user_icon_3.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_USER_ICON_4</td>
+	<td>loop/screenshots/toolbar/toolbar_user_icon_4.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_DROPDOWN_MENU</td>
+	<td>//ul[@class='dropdown']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_MY_PROFILE_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'My Profile')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_SPECIFIC_USER_MY_PROFILE_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(@href,'${key_userScreenName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_ADMIN_PAGE_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'Admin Page')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_PROVIDE_FEEDBACK_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'Provide Feedback')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_HELP_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'Help')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_UI_KIT_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'UI Kit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_KEYBOARD_SHORTCUTS_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'Keyboard Shortcuts')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLBAR_SIGN_OUT_LINK</td>
+	<td>//ul[contains(@class,'dropdown')]//a[contains(.,'Sign Out')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOOLTIP</td>
+	<td>//div[contains(@class,'tooltip')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

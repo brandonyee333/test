@@ -1,0 +1,44 @@
+.global-menu-container {
+	position: relative;
+
+	.dropdown {
+		@include basic-card;
+
+		border: 1px solid $borderLightGray;
+		list-style: none;
+		margin: 0;
+		min-width: 160px;
+		position: absolute;
+		right: 0;
+		top: calc(100% + 4px);
+
+		> li {
+			&.menu-divider {
+				border-bottom: 1px solid $borderLightGray;
+
+				> a {
+					padding: 0;
+				}
+			}
+
+			> a {
+				clear: both;
+				color: rgba($primary, 0.8);
+				display: block;
+				padding: 16px 20px;
+				white-space: nowrap;
+
+				&:hover {
+					background: rgba($theme, 0.1);
+				}
+			}
+		}
+	}
+
+	.toggle {
+		@include align-items(center);
+		@include flexbox;
+
+		cursor: pointer;
+	}
+}

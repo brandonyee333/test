@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InlineButton should pass through other props to element 1`] = `<button title="test" type="button" class="inline-button-container"></button>`;
+
+exports[`InlineButton should render 1`] = `<button type="button" class="inline-button-container"></button>`;
+
+exports[`InlineButton should render children 1`] = `
+<button type="button" class="inline-button-container">
+  <div class="test">test</div>
+</button>
+`;

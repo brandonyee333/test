@@ -1,0 +1,85 @@
+/* ---------- Colors ---------- */
+
+$primary: #233240;
+$secondary: #FFF;
+$theme: #1F7AFF;
+$transparent: rgba(255, 255, 255, 0.001);
+
+$alert: #FFB700;
+$error: #E64545;
+$success: #77D55A;
+
+$black: #000;
+$heartRed: #FF5653;
+$lightGreen: #88FF89;
+$lightRed: #FF536B;
+$onix: #0E141A;
+$orange: #FC9409;
+$purple: #9552EF;
+$royalBlue: #647EFB;
+$violet: #AD52A8;
+
+$inactive: rgba($onix, 0.7);
+
+$borderLightGray: rgba($primary, 0.1);
+$disabledFormFieldColor: #EEE;
+$formBackgroundColor: #FFF;
+$formTextColor: #555;
+$hoverLightGray: #FBFBFC;
+$inputBorderColor: rgba($primary, 0.2);
+
+$avatarColors: (
+	$alert,
+	$success,
+	$error,
+	$lightRed,
+	$orange,
+	$primary,
+	$purple,
+	$royalBlue,
+	$theme,
+	$violet
+);
+
+$displayColors: (
+	('danger', $error),
+	('dark', $primary),
+	('inactive', $inactive),
+	('info', $purple),
+	('primary', $theme),
+	('secondary', $secondary),
+	('success', $success),
+	('warning', $alert)
+);
+
+/* ---------- Misc. Variables ---------- */
+
+$cardSpacing: 24px;
+$horizontalPadding: 15px;
+$likedAvatarPadding: 4px;
+$loopMenuWidth: 250px;
+$overlayBorderRadius: 4px;
+$overlayBoxShadow: 0 2px 8px 0;
+$overlayBoxShadowColor: rgba(0, 0, 0, 0.2);
+$portletBodyWidth: 1170px;
+$postPadding: 28px;
+$subnavHeight: 68px;
+$toolbarHeight: 58px;
+
+/* ---------- Z-indexes ---------- */
+
+$alertZIndex: 430;
+$overlayZIndex: 1000;
+$toolbarChildZIndex: 10;
+$toolbarZIndex: 20;
+$tooltipZIndex: 10000;
+$windowZIndex: 1200;
+
+/* ---------- BreakPoints ---------- */
+
+$mediaMediumMax: "(max-width: 969px)";
+$mediaMediumMin: "(min-width: 970px)";
+$mediaMiniMax: "(max-width: 479px)";
+$mediaMiniMin: "(min-width: 480px)";
+$mediaSmallMax: "(max-width: 749px)";
+$mediaSmallMin: "(min-width: 750px)";

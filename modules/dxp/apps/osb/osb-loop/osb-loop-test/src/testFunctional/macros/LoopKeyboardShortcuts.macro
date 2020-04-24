@@ -1,0 +1,9 @@
+<definition>
+	<command name="viewKeyboardShortcuts">
+		<execute function="AssertElementPresent" locator1="LoopKeyboardShortcuts#KEYBOARD_SHORTCUTS" />
+	</command>
+
+	<command name="viewNoKeyboardShortcuts">
+		<execute function="AssertElementNotPresent" locator1="LoopKeyboardShortcuts#KEYBOARD_SHORTCUTS" />
+	</command>
+</definition>

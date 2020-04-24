@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MarkdownContentCard renders 1`] = `
+<div class="card-container markdown-content-card-container">
+  <div class="card-header-container"></div>
+  <div class="content">
+    <div class="markdown-content-container">test</div>
+  </div>
+</div>
+`;

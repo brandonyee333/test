@@ -1,0 +1,387 @@
+<definition>
+	<command name="assignSelfAsExpert">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickAssignExpertButton" />
+	</command>
+
+	<command name="followTopic">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickFollowButton" />
+
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#SUCCESS_MESSAGE" value1="You just followed ${topicName}." />
+	</command>
+
+	<command name="followTopicViaIndex">
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#SUCCESS_MESSAGE" value1="You just followed ${topicName}." />
+	</command>
+
+	<command name="gotoAZTab">
+		<execute function="AssertClick" locator1="LoopTopics#AZ_TAB" value1="A-Z" />
+	</command>
+
+	<command name="gotoFollowersTab">
+		<execute function="AssertClick" locator1="LoopTopics#FOLLOWERS_TAB" value1="Followers" />
+	</command>
+
+	<command name="gotoNewestTab">
+		<execute function="AssertClick" locator1="LoopTopics#NEWEST_TAB" value1="Newest" />
+	</command>
+
+	<command name="gotoTopicDetails">
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<!-- Workaround for recent automation fails on LRQA-35323 -->
+
+		<execute macro="LoopNavigation#reloadPage" />
+
+		<execute macro="LoopTopicsTopic#gotoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="gotoTrendingTab">
+		<execute function="AssertClick" locator1="LoopTopics#TRENDING_TAB" value1="Trending" />
+	</command>
+
+	<command name="mergeTopicWithAnotherTopic">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickMergeTopicButton" />
+
+		<execute macro="LoopTopicsTopic#mergeTopic">
+			<var name="mergeTopicName" value="${mergeTopicName}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="typeMarkdownContentViaDescription">
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Heading" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="=======" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Sub-heading" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="-----------" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="### Another deeper heading" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Paragraphs are separated" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="by a blank line." />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Text attributes: *italic*, **bold**, inline `code` as you can see." />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Shopping list:" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="* apples" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="+ oranges" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="- pears" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Numbered list:" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="1. apples" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="2. oranges" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="> Blockquotes are very handy in email to emulate reply text." />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="> This line is part of the same quote." />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="```" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="Piece of code" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="```" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="A [link](http://www.google.com)." />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="A [number reference link][1]" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="A [text reference link]" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="[1]: http://www.yahoo.com" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeReturnViaDescriptionField" />
+
+		<execute macro="LoopTopicsTopic#typeDescription">
+			<var name="topicDescription" value="[text reference link]: http://www.bing.com" />
+		</execute>
+	</command>
+
+	<command name="unassignSelfAsExpert">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickUnassignExpertButton" />
+	</command>
+
+	<command name="unfollowTopic">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickUnfollowLink" />
+
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#SUCCESS_MESSAGE" value1="You just unfollowed ${topicName}." />
+	</command>
+
+	<command name="unfollowTopicViaIndex">
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#clickUnfollowLinkViaIndex">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute function="AssertTextEquals" locator1="LoopTopicsTopic#SUCCESS_MESSAGE" value1="You just unfollowed ${topicName}." />
+	</command>
+
+	<command name="updateTopicInformation">
+		<execute macro="LoopTopicsTopic#clickEditButton" />
+
+		<if>
+			<isset var="topicDescriptionEdit" />
+			<then>
+				<execute macro="LoopTopicsTopic#editTopicDescription">
+					<var name="topicDescriptionEdit" value="${topicDescriptionEdit}" />
+				</execute>
+			</then>
+		</if>
+
+		<execute macro="LoopTopicsTopic#saveChanges" />
+	</command>
+
+	<command name="viewExpert">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpert">
+			<var name="expertName" value="${expertName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoExpertsSection" />
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${expertName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${expertEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${expertName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoExpert">
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewNoExpert">
+			<var name="expertName" value="${expertName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoExpertsSection" />
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${expertName}" />
+		</execute>
+	</command>
+
+	<command name="viewTopic">
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<!-- Workaround for recent automation fails on LRQA-35323 -->
+
+		<execute macro="LoopNavigation#reloadPage" />
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewTopicPosition">
+		<var name="key_positionValue" value="${positionValue}" />
+
+		<execute function="AssertTextEquals" locator1="LoopTopics#TOPIC_NAME_GENERIC" value1="${topicName}" />
+	</command>
+
+	<command name="viewTopicViaToolbar">
+		<execute macro="LoopNavigation#gotoTopic">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewTopicViaToolbarMoreTopicsList">
+		<execute macro="LoopNavigation#gotoTopicViaMoreTopicsList">
+			<var name="numberOfAssignedTopics" value="${numberOfAssignedTopics}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+</definition>

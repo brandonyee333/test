@@ -1,0 +1,219 @@
+<html>
+<head>
+<title>LoopTopicsTopic</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopTopicsTopic</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>TOPIC_PROFILE</td>
+	<td>//div[contains(@class,'profile-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_COVER_PICTURE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_COVER_PICTURE_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_COVER_PICTURE_CONFIRM_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']//*[local-name()='svg' and contains(@class,'success')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_COVER_PICTURE_CANCEL_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]/span[@class='controls']//*[local-name()='svg' and contains(@class,'danger')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_PROFILE_PICTURE_SELECT_BUTTON</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[contains(@class,'avatar')]//*[local-name()='svg' and contains(@class,'loop-icon-camera')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_NAME</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_TYPE</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//div[@class='description']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_FOLLOWER_COUNT</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'profile-header')]//span[contains(.,'Follower')]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_STREAM_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Stream')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_EXPERTS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Experts')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_FOLLOWERS_TAB</td>
+	<td>//div[contains(@class,'profile-container')]//div[contains(@class,'sub-nav-container')]//a[contains(.,'Followers')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_FOLLOW_BUTTON</td>
+	<td>//button[contains(.,'Follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OPTIONS_BUTTON</td>
+	<td>//button[contains(@class,'btn-secondary')]//*[local-name()='svg' and contains(@class,'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--TOPIC_FOLLOW_MENU-->
+<tr>
+	<td>TOPIC_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Posts, Comments, and Mentions')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_ONLY_POSTS_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Only Posts')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_TOGGLE_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//span[contains(@class,'toggle-label')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_TOGGLE_NOTIFICATIONS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//div[contains(@class,'toggle-dot')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_EMAIL_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_EMAIL_NOTIFICATIONS_CHECKBOX</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_UNFOLLOW_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item-container unfollow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--TOPIC_OPTIONS_MENU-->
+<tr>
+	<td>TOPIC_OPTIONS_EDIT_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OPTIONS_ASSIGN_EXPERT_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Expert')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OPTIONS_MERGE_TOPIC_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Merge')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ABOUT-->
+<tr>
+	<td>ABOUT_DESCRIPTION</td>
+	<td>//div[contains(@class,'about')]//div[contains(@class,'content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_SEE_MORE_LINK</td>
+	<td>//div[contains(@class,'about')]//span[contains(@class,'see-more')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN</td>
+	<td>loop/screenshots/profile/profile_description_markdown.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN_1</td>
+	<td>loop/screenshots/profile/profile_description_markdown_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ABOUT_DESCRIPTION_MARKDOWN_2</td>
+	<td>loop/screenshots/profile/profile_description_markdown_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--EXPERT-->
+<tr>
+	<td>EXPERT_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Experts')]//div[contains(@class,'entity') and contains(.,'${key_expertName}')]//a[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EXPERT_NAME</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Experts')]//div[contains(@class,'entity') and contains(.,'${key_expertName}')]//div[contains(@class,'entity-info')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EXPERT_MORE_LINK</td>
+	<td>//a[contains(.,'See All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--SUCCESS_MESSAGE-->
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrgChartModal renders 1`] = `
+<div class="org-chart-modal-container">
+  <div class="modal-header-container full">
+    <h1 class="title" ref="title" tabindex="0">org-chart</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-cancel loop-icon-large-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-cancel-24"></use>
+    </svg>
+  </div>
+  <div class="modal-body-container"></div>
+</div>
+`;

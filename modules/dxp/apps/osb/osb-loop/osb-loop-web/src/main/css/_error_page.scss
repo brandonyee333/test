@@ -1,0 +1,27 @@
+.error-page {
+	display: flex;
+	justify-content: center;
+
+	.message {
+		align-self: center;
+		flex-basis: 50%;
+		font-size: 32px;
+		line-height: initial;
+		text-align: center;
+
+		.title {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		.custom-message {
+			font-size: 24px;
+			margin-top: 20px;
+		}
+
+		.footer {
+			font-size: 16px;
+			margin-top: 20px;
+		}
+	}
+}

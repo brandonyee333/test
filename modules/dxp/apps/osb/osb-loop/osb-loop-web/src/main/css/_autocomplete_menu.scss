@@ -1,0 +1,50 @@
+.autocomplete-menu-container {
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 100%;
+
+	> .autocomplete-list {
+		padding-top: 20px;
+	}
+
+	.autocomplete-list {
+		@include box-shadow(0 2px 8px rgba($black, 0.2));
+
+		background-color: $secondary;
+		list-style: none;
+		margin: 0;
+		position: relative;
+		width: 100%;
+		z-index: $overlayZIndex;
+
+		> .active {
+			background-color: mix($theme, $secondary, 10%);
+		}
+
+		.autocomplete-list {
+			@include box-shadow(none);
+		}
+	}
+
+	.category-header {
+		color: $primary;
+		font-size: 11px;
+		font-weight: 600;
+		padding: 20px 12px 0;
+		text-transform: uppercase;
+	}
+
+	.menu-item {
+		cursor: pointer;
+
+		&:first-child .category-header {
+			padding-top: 0;
+		}
+	}
+
+	.entity-display-container {
+		margin: 0;
+		padding: 5px 12px;
+	}
+}

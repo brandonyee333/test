@@ -1,0 +1,48 @@
+.loop-icon-container {
+	color: inherit;
+	display: inline-block;
+	fill: currentColor;
+	position: relative;
+
+	@each $size in 1, 2, 3, 4 {
+		&.loop-icon-small-#{$size}x {
+			height: 16px * $size;
+			width: 16px * $size;
+		}
+
+		&.loop-icon-large-#{$size}x {
+			height: 24px * $size;
+			width: 24px * $size;
+		}
+	}
+
+	&.loop-icon-tiny-1x {
+		height: 12px;
+		width: 12px;
+	}
+
+	@each $pair in $displayColors {
+		&.loop-icon-#{nth($pair, 1)} {
+			color: nth($pair, 2);
+
+			&.inverted {
+				background-color: nth($pair, 2);
+			}
+		}
+	}
+
+	&.heart.liked {
+		color: $lightRed;
+	}
+
+	&.inverted {
+		background-color: $primary;
+		border-radius: 50%;
+		color: $secondary;
+		padding: 4px;
+	}
+
+	use {
+		pointer-events: none;
+	}
+}

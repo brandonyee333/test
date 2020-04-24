@@ -1,0 +1,358 @@
+<html>
+<head>
+<title>LoopPeopleUpdatePerson</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopPeopleUpdatePerson</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>SUBMIT_BUTTON</td>
+	<td>//button[contains(.,'Submit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_WORK_TAB</td>
+	<td>//ul[contains(@class,'tabs')]//li[contains(.,'Work')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ABOUT_TAB</td>
+	<td>//ul[contains(@class,'tabs')]//li[contains(.,'About')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_CONTACT_TAB</td>
+	<td>//ul[contains(@class,'tabs')]//li[contains(.,'Contact')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ELSEWHERE_TAB</td>
+	<td>//ul[contains(@class,'tabs')]//li[contains(.,'Elsewhere')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--WORK-->
+<tr>
+	<td>EMPLOYMENT_TYPE_SELECT</td>
+	<td>//label[contains(.,'Employment Type')]/following-sibling::select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EMPLOYMENT_TYPE_SELECT_DISABLED</td>
+	<td>//label[contains(.,'Employment Type')]/following-sibling::select[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_SELECT</td>
+	<td>//label[contains(.,'Job Title')]/following-sibling::select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_SELECT_DISABLED</td>
+	<td>//label[contains(.,'Job Title')]/following-sibling::select[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>HIRE_DATE_FIELD</td>
+	<td>//label[contains(.,'Hire Date')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>HIRE_DATE_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Hire Date')]//following-sibling::div//input[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_RESPONSIBILITIES_FIELD</td>
+	<td>//label[contains(.,'Job Responsibilities')]//following-sibling::div//textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_RESPONSIBILITIES_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Job Responsibilities')]//following-sibling::div[contains(@class,'disabled')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EXPERTISE_FIELD</td>
+	<td>//label[contains(.,'Expertise')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EXPERTISE_NAME</td>
+	<td>//span[contains(@class,'item-wrapper')]//span[contains(.,'${key_expertiseName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EXPERTISE_REMOVE_ICON</td>
+	<td>//span[contains(@class,'item-wrapper') and contains(.,'${key_expertiseName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRIMARY_MANAGER_FIELD</td>
+	<td>//label[contains(.,'Primary Manager')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGERS_FIELD</td>
+	<td>//label[contains(.,'Managers')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGERS_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Managers')]/following-sibling::div//input[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGERS_NAME</td>
+	<td>//span[contains(@class,'item-wrapper')]//span[contains(.,'${key_managerName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGERS_REMOVE_ICON</td>
+	<td>//span[contains(@class,'item-wrapper') and contains(.,'${key_managerName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPARTMENTS_FIELD</td>
+	<td>//label[contains(.,'Departments')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPARTMENTS_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Managers')]/following-sibling::div[contains(@class,'disabled')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPARTMENTS_NAME</td>
+	<td>//span[contains(@class,'item-wrapper')]//span[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEPARTMENTS_REMOVE_ICON</td>
+	<td>//span[contains(@class,'item-wrapper') and contains(.,'${key_groupName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEAMS_FIELD</td>
+	<td>//label[contains(.,'Teams')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEAMS_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Teams')]/following-sibling::div[contains(@class,'disabled')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEAMS_NAME</td>
+	<td>//span[contains(@class,'item-wrapper')]//span[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TEAMS_REMOVE_ICON</td>
+	<td>//span[contains(@class,'item-wrapper') and contains(.,'${key_groupName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOCATIONS_FIELD</td>
+	<td>//label[contains(.,'Locations')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOCATIONS_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Teams')]/following-sibling::div[contains(@class,'disabled')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOCATIONS_NAME</td>
+	<td>//span[contains(@class,'item-wrapper')]//span[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOCATIONS_REMOVE_ICON</td>
+	<td>//span[contains(@class,'item-wrapper') and contains(.,'${key_groupName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LANGUAGES_FIELD</td>
+	<td>//label[contains(.,'Spoken Languages')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECTED_ENTITY_NAME_GENERAL_FIELD</td>
+	<td>//label[contains(.,'${key_fieldLabel}')]//following-sibling::div//span[@class='loop-icon-label' and contains(.,'${key_entityName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ABOUT-->
+<tr>
+	<td>FIRST_NAME_FIELD</td>
+	<td>//label[contains(.,'First Name')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FIRST_NAME_FIELD_DISABLED</td>
+	<td>//label[contains(.,'First Name')]/following-sibling::div//input[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LAST_NAME_FIELD</td>
+	<td>//label[contains(.,'Last Name')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LAST_NAME_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Last Name')]/following-sibling::div//input[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREFERRED_NAME_FIELD</td>
+	<td>//label[contains(.,'Preferred Name')]/following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREFERRED_NAME_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Preferred Name')]/following-sibling::div//input[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DESCRIPTION_FIELD</td>
+	<td>//label[contains(.,'Short Bio')]//following-sibling::div//textarea</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENDER_SELECT</td>
+	<td>//label[contains(.,'Gender')]//following-sibling::select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BIRTHDAY_FIELD</td>
+	<td>//label[contains(.,'Birthday')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_AGE_CHECKBOX</td>
+	<td>//input[contains(@name,'showAge')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_AGE_CHECKBOX_CHECKED</td>
+	<td>//input[contains(@name,'showAge') and @checked='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_BIRTHDAY_CHECKBOX</td>
+	<td>//input[contains(@name,'showBirthday')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_BIRTHDAY_CHECKBOX_CHECKED</td>
+	<td>//input[contains(@name,'showBirthday') and @checked='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CONTACT-->
+<tr>
+	<td>EMAIL_ADDRESS_FIELD</td>
+	<td>//label[contains(.,'Email (Required)')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EMAIL_ADDRESS_FIELD_DISABLED</td>
+	<td>//label[contains(.,'Email (Required)')]//following-sibling::div//input[@disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADDITIONAL_EMAIL_ADDRESS_FIELD</td>
+	<td>xpath=(//input[contains(@name,'additionalEmailAddress')])[${key_row}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADDITIONAL_EMAIL_ADD_ROW_BUTTON</td>
+	<td>//label[contains(.,'Other Email Addresses')]//parent::div//button[contains(.,'+')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADDITIONAL_EMAIL_DELETE_ROW_BUTTON</td>
+	<td>//label[contains(.,'Other Email Addresses')]//parent::div//button[contains(.,'-')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PHONE_NUMBER_NUMBER_FIELD</td>
+	<td>xpath=(//label[contains(.,'Phone Numbers')]//following-sibling::span//input)[${key_row}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PHONE_NUMBER_TYPE_SELECT</td>
+	<td>xpath=(//label[contains(.,'Phone Numbers')]//following-sibling::span//select)[${key_row}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PHONE_NUMBER_ADD_ROW_BUTTON</td>
+	<td>//label[contains(.,'Phone Numbers')]//parent::div//button[contains(.,'+')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PHONE_NUMBER_DELETE_ROW_BUTTON</td>
+	<td>//label[contains(.,'Phone Numbers')]//parent::div//button[contains(.,'-')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SKYPE_FIELD</td>
+	<td>//label[contains(.,'Skype')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ELSEWHERE-->
+<tr>
+	<td>TWITTER_FIELD</td>
+	<td>//label[contains(.,'Twitter')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FACEBOOK_FIELD</td>
+	<td>//label[contains(.,'Facebook')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GITHUB_FIELD</td>
+	<td>//label[contains(.,'GitHub')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LINKEDIN_FIELD</td>
+	<td>//label[contains(.,'LinkedIn')]//following-sibling::div//input</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

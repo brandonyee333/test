@@ -1,0 +1,1601 @@
+<html>
+<head>
+<title>LoopFeed</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopFeed</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>FOLLOWING_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'following')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ANNOUNCEMENTS_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'announcements')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PRIVATE_POSTS_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'privatePosts')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BOOKMARKS_TAB</td>
+	<td>//ul[@class='sub-nav']/li/a[contains(@href,'bookmarks')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--NO_ENTRIES-->
+<tr>
+	<td>NO_POSTS_ICON</td>
+	<td>//div[@class='no-results-container text-center']//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NO_POSTS_TITLE</td>
+	<td>//div[@class='no-results-container text-center']//div[@class='title']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ADD_ENTRY-->
+<tr>
+	<td>ADD_ENTRY_MINIMIZED</td>
+	<td>//div[contains(@class,'asset-creator') and contains(@class,'minimized')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TEXT_FIELD_PLACEHOLDER</td>
+	<td>//div[contains(@class,'DraftEditorPlaceholder')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TEXT_FIELD_MINIMIZER</td>
+	<td>//div[contains(@class,'asset-creator')]//div[contains(@class,'minimizer')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TEXT_FIELD</td>
+	<td>//div[contains(@class,'DraftEditor-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_USER_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_user_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_TOPIC_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_topic_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_LOCATION_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_location_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_DEPARTMENT_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_department_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_TEAM_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_team_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_PROFILE_PICTURE_1</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_profile_picture_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_PROFILE_PICTURE_2</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_profile_picture_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_PROFILE_PICTURE_3</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_profile_picture_3.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_DROPDOWN_LIST_PROFILE_PICTURE_4</td>
+	<td>loop/screenshots/feed/add_entry_dropdown_list_profile_picture_4.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD</td>
+	<td>//input[contains(@placeholder,'Share with')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_SELECT_USER</td>
+	<td>//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_SELECT_PRIVATE_USER</td>
+	<td>//h2[contains(.,'Not Mentioned in This Private Post')]//parent::li//ul[contains(@class,'autocomplete-list')]//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_SELECT_GROUP</td>
+	<td>//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_SELECT_PRIVATE_GROUP</td>
+	<td>//h2[contains(.,'Not Mentioned in This Private Post')]//parent::li//ul[contains(@class,'autocomplete-list')]//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_SELECT_TOPIC</td>
+	<td>//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_USER_NAME</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_REMOVE_USER_ICON</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_userName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_GROUP_NAME</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_REMOVE_GROUP_ICON</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_groupName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_TOPIC_NAME</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TO_FIELD_REMOVE_TOPIC_ICON</td>
+	<td>//div[contains(@class,'input-list-container')]//span[contains(.,'${key_topicName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_PHOTO_TAB</td>
+	<td>//div[contains(@class,'creator-toolbar-container')]//*[local-name()='svg' and contains(@class,'loop-icon-camera')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_LINK_TAB</td>
+	<td>//div[contains(@class,'creator-toolbar-container')]//*[local-name()='svg' and contains(@class,'loop-icon-link')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_TAB</td>
+	<td>//div[contains(@class,'creator-toolbar-container')]//*[local-name()='svg' and contains(@class,'loop-icon-bullhorn')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_EXIT_TAB</td>
+	<td>//*[local-name()='svg' and contains(@class,'exit-tab')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_IMAGE_PREVIEW</td>
+	<td>//div[contains(@class,'image-sorter-container')]//div[contains(@class,'sortable-image-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_IMAGE_PREVIEW_IMAGE</td>
+	<td>//div[contains(@class,'image-sorter-container')]//div[contains(@class,'sortable-image-container')]//img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_IMAGE_PREVIEW_REMOVE_IMAGE</td>
+	<td>//div[contains(@class,'image-sorter-container')]//div[contains(@class,'sortable-image-container')]//div[contains(@class,'cancel')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_IMAGE_PREVIEW_SPECIFIC</td>
+	<td>xpath=(//div[contains(@class,'image-sorter-container')]//div[contains(@class,'sortable-image-container')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_IMAGE_PREVIEW_IMAGE_SPECIFIC</td>
+	<td>xpath=(//div[contains(@class,'image-sorter-container')]//div[contains(@class,'sortable-image-container')]//img)[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_IMAGE_PREVIEW_REMOVE_IMAGE_SPECIFIC</td>
+	<td>xpath=(//div[contains(@class,'image-sorter-container')]//div[contains(@class,'sortable-image-container')]//div[contains(@class,'cancel')]//*[local-name()='svg'])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_FIELD</td>
+	<td>//input[contains(@class,'link-input')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_INVALID_MESSAGE</td>
+	<td>//div[contains(@class,'error-message-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_INVALID_MESSAGE_DISMISS_LINK</td>
+	<td>//div[contains(@class,'error-message-container')]//button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW</td>
+	<td>//div[@class='link-preview-editor-container']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_IMAGE</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[contains(@class,'image-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_IMAGE_SPECIFIC</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[contains(@class,'image-container')]//img[contains(@src,'${key_feedEntryLinkImageKeyword}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_REMOVE_IMAGE_LINK</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[contains(@class,'edit-image')]//*[local-name()='svg' and contains(@class,'remove-image')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_PREVIOUS_IMAGE_LINK</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[contains(@class,'edit-image')]//*[local-name()='svg' and contains(@class,'loop-icon-arrow-left')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_NEXT_IMAGE_LINK</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[contains(@class,'edit-image')]//*[local-name()='svg' and contains(@class,'loop-icon-arrow-right')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_LINK</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[@class='title']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_DESCRIPTION</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[@class='description']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_PREVIEW_SHORT_URL</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//div[@class='short-url']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_URL_REMOVE_PREVIEW_BUTTON</td>
+	<td>//div[@class='link-preview-editor-container']//div[@class='link-preview-container']//*[local-name()='svg' and contains(@class,'remove-preview')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_TITLE_FIELD</td>
+	<td>//div[contains(@class,'announcement-title')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_STICKY_TIME_SELECT</td>
+	<td>//div[@class='days']//select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_STICKY_TIME_OPTION</td>
+	<td>//div[@class='days']//select//option[contains(.,'${key_stickyTimeInDays}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_POST_AS_SELECT</td>
+	<td>//div[contains(@class,'post-as')]//*[local-name()='svg' and contains(@class,'arrow-down')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_POST_AS_OPTION</td>
+	<td>//div[@class='post-as']//div[contains(@class,'drop-down')]//div[contains(.,'${key_feedEntryAuthorName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_ANNOUNCEMENT_EMAIL_NOTIFICATION</td>
+	<td>//div[@class='send-email']//div[contains(@class,'checkbox-container')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_PRIVATE_POST_CHECKBOX</td>
+	<td>//div[contains(@class,'private-post-checkbox')]//input[@type='checkbox']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_PREVIEW_BUTTON</td>
+	<td>//div[contains(@class,'creator-toolbar-container')]//*[local-name()='svg' and contains(@class,'loop-icon-eye')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_POST_BUTTON</td>
+	<td>//button[contains(.,'Post')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_POST_BUTTON_DISABLED</td>
+	<td>//button[contains(.,'Post') and @disabled='']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_ENTRY_TOOLBAR</td>
+	<td>//div[contains(@class,'creator-toolbar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--EDIT_ENTRY-->
+<tr>
+	<td>EDIT_ENTRY_TEXT_FIELD</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'DraftEditor-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_PHOTO_TAB</td>
+	<td>//div[contains(@class,'modal-container')]//div[@class='tab']//*[local-name()='svg' and contains(@class,'loop-icon-camera')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_LINK_TAB</td>
+	<td>//div[contains(@class,'modal-container')]//*[local-name()='svg' and contains(@class,'loop-icon-link')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_EXIT_TAB</td>
+	<td>//div[contains(@class,'modal-container')]//*[local-name()='svg' and contains(@class,'exit-tab')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_IMAGE_PREVIEW_SPECIFIC</td>
+	<td>xpath=(//div[contains(@class,'modal-container')]//div[contains(@class,'sortable-image-container')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_IMAGE_PREVIEW_IMAGE_SPECIFIC</td>
+	<td>xpath=(//div[contains(@class,'modal-container')]//div[contains(@class,'sortable-image-container')]//img)[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_IMAGE_PREVIEW_REMOVE_IMAGE_SPECIFIC</td>
+	<td>xpath=(//div[contains(@class,'modal-container')]//div[contains(@class,'sortable-image-container')]//div[contains(@class,'cancel')]/*[local-name()='svg'])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_IMAGE_PREVIEW</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'sortable-image-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_IMAGE_PREVIEW_IMAGE</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'sortable-image-container')]//img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_IMAGE_PREVIEW_REMOVE_IMAGE</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'sortable-image-container')]//div[contains(@class,'cancel')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_FIELD</td>
+	<td>//div[contains(@class,'modal-container')]//input[contains(@class,'link-input')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_PREVIEW</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_PREVIEW_IMAGE</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]//div[contains(@class,'link-preview-image-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_PREVIEW_LINK</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]//div[@class='title']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_PREVIEW_DESCRIPTION</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]//div[@class='description']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_PREVIEW_SHORT_URL</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]//div[@class='short-url']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_REMOVE_IMAGE_PREVIEW_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]//*[local-name()='svg' and contains(@class,'remove-image')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_URL_REMOVE_PREVIEW_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'link-preview-container')]//*[local-name()='svg' and contains(@class,'remove-preview')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_PREVIEW_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//*[local-name()='svg' and contains(@class,'loop-icon-eye')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_POST_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD</td>
+	<td>//div[contains(@class,'modal-container')]//input[contains(@placeholder,'Share with')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_SELECT_USER</td>
+	<td>//div[contains(@class,'modal-container')]//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_SELECT_GROUP</td>
+	<td>//div[contains(@class,'modal-container')]//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_SELECT_TOPIC</td>
+	<td>//div[contains(@class,'modal-container')]//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_USER_NAME</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'input-list-container')]//span[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_REMOVE_USER_ICON</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'input-list-container')]//span[contains(.,'${key_userName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_GROUP_NAME</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'input-list-container')]//span[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_REMOVE_GROUP_ICON</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'input-list-container')]//span[contains(.,'${key_groupName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_TOPIC_NAME</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'input-list-container')]//span[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TO_FIELD_REMOVE_TOPIC_ICON</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'input-list-container')]//span[contains(.,'${key_topicName}')]//*[local-name()='svg' and contains(@class,'remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_TOOLBAR</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'asset-creator-toolbar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EDIT_ENTRY_BACKGROUND</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'wrapper')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_PREVIEW-->
+<tr>
+	<td>ENTRY_PREVIEW_AUTHOR_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'avatar')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_AUTHOR</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_DATE</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//a[contains(@class,'secondary-info')]//span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_CONTENT</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'markdown-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_URL_PREVIEW_IMAGE</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'link-preview-container')]//div[contains(@class,'image-container')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_URL_PREVIEW_IMAGE_PLAY_VIDEO_LINK</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'link-preview-container')]//div[contains(@class,'image-container')]//div[contains(@class,'play-video')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_URL_PREVIEW_IMAGE_SPECIFIC</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'link-preview-container')]//div[contains(@class,'image-container')]//a//img[contains(@src,'${key_feedEntryLinkImageKeyword}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_URL_PREVIEW_LINK</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'link-preview-container')]//div[@class='title']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_URL_PREVIEW_DESCRIPTION</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'link-preview-container')]//div[@class='description']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_URL_PREVIEW_SHORT_URL</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'post-preview-container')]//div[contains(@class,'link-preview-container')]//div[@class='short-url']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_BACK_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//button[contains(.,'Back')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_POST_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//button[contains(.,'Post')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_FOOTER</td>
+	<td>//div[contains(@class,'modal-container')]//div[contains(@class,'modal-footer')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PREVIEW_IMAGE_2</td>
+	<td>loop/screenshots/feed/entry_preview_image_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY-->
+<tr>
+	<td>ENTRY_STREAM</td>
+	<td>//div[contains(@class,'home-container')] | //div[contains(@class,'loop-profile-page')] | //div[contains(@class,'portlet-content-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_BOOKMARK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//button[contains(@class,'bookmark-flag') and contains(@class,'visible')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'avatar')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/entry_author_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_PROFILE_PICTURE_1</td>
+	<td>loop/screenshots/feed/entry_author_profile_picture_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_PROFILE_PICTURE_2</td>
+	<td>loop/screenshots/feed/entry_author_profile_picture_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_PROFILE_PICTURE_3</td>
+	<td>loop/screenshots/feed/entry_author_profile_picture_3.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_PROFILE_PICTURE_4</td>
+	<td>loop/screenshots/feed/entry_author_profile_picture_4.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_DEACTIVATED</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'entity-link-container inactive')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARED_TO_PERSON_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//span[contains(@class,'shared-to-summary')]//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARED_TO_GROUP_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//span[contains(@class,'shared-to-summary')]//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARED_TO_TOPIC_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//span[contains(@class,'shared-to-summary')]//a[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARED_TO_PERSON_LIST_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'entity-link-container') and contains(.,'People')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARED_TO_GROUP_LIST_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'entity-link-container') and contains(.,'Groups')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARED_TO_TOPIC_LIST_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'entity-link-container') and contains(.,'Topics')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_DATE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'secondary-info')]//span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_EDITED_INDICATION</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'secondary-info') and contains(.,'- Edited')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_DATE_GENERIC</td>
+	<td>xpath=(//div[contains(@class,'card-container post-container')]//a[contains(@class,'secondary-info')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LOCATION</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//span[contains(@class,'creator-location')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'markdown-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_MARKDOWN</td>
+	<td>loop/screenshots/feed/entry_content_markdown.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_LINE_BREAK</td>
+	<td>xpath=(//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content-container')]//p)[${key_lineBreakNumber}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_GENERIC</td>
+	<td>xpath=(//div[contains(@class,'card-container post-container')]/div[contains(@class,'post-content')]//div[contains(@class,'content-container')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_SEE_MORE_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'post-content')]//a[contains(@class,'see-more')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_SEE_MORE_LINK_GENERIC</td>
+	<td>xpath=(//div[contains(@class,'card-container post-container')]//div[contains(@class,'post-content')]//a[contains(@class,'see-more')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_URL_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content-container')]//a[contains(.,'${key_feedEntryLinkUrl}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_USER_MENTION_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content-container')]//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_GROUP_MENTION_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content-container')]//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_HASHTAG_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content-container')]//a[contains(.,'#${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIST_CONTENT</td>
+	<td>//div[contains(@class,'card-container post-container')]//div[contains(@class,'content-container')]//li[contains(.,'${key_feedEntryListContent}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_NESTED_LIST_CONTENT</td>
+	<td>//div[contains(@class,'card-container post-container')]//div[contains(@class,'content-container')]//li[contains(.,'${key_feedEntryListContent}')]//li[contains(.,'${key_feedEntryNestedListContent}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_SPECIFIC</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_SEE_MORE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][4]//span[@class='more']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_ANIMATION_LABEL</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][1]//span[@class='gif']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_FULL_SCREEN</td>
+	<td>//div[contains(@class,'maximized')]//img[contains(@class,'image')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON</td>
+	<td>//div[contains(@class,'maximized')]//span[@class='viewer-close']//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW</td>
+	<td>//div[contains(@class,'maximized')]//div[@class='viewer-control right']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW</td>
+	<td>//div[contains(@class,'maximized')]//div[@class='viewer-control left']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT</td>
+	<td>//div[contains(@class,'maximized')]//div[@class='viewer-info']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_1</td>
+	<td>loop/screenshots/feed/entry_image_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_2</td>
+	<td>loop/screenshots/feed/entry_image_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_IMAGE_2_SMALL</td>
+	<td>loop/screenshots/feed/entry_image_2_small.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_IMAGE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-container')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_IMAGE_PLAY_VIDEO_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-container')]//div[contains(@class,'play-video')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_IMAGE_SPECIFIC</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-container')]//a//img[contains(@src,'${key_feedEntryLinkImageKeyword}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_TITLE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[@class='title']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_DESCRIPTION</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[@class='description']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_SHORT_URL</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[@class='short-url']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_IMAGE_NO_OPENER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'image-container')]//a[@rel='noopener noreferrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_TITLE_NO_OPENER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[@class='title']//a[@rel='noopener noreferrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_DESCRIPTION_NO_OPENER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[@class='description']//a[@rel='noopener noreferrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LINK_PREVIEW_SHORT_URL_NO_OPENER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[@class='short-url']//a[@rel='noopener noreferrer']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_TITLE</td>
+	<td>//div[contains(@class,'announcement-carousel-card-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content')]//a[contains(@class,'title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_STICKY_TIME</td>
+	<td>//div[contains(@class,'announcement-carousel-card-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'card-actions')]//a[contains(@class,'pull-right')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'announcement-carousel-card-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'post-info')]//div[@class='avatar-container']//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_AUTHOR</td>
+	<td>//div[contains(@class,'announcement-carousel-card-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'post-info')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_DATE</td>
+	<td>//div[contains(@class,'announcement-carousel-card-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'post-info')]//a[contains(@class,'secondary-info')]//span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_CONTENT</td>
+	<td>//div[contains(@class,'announcement-carousel-card-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'content')]//div[contains(@class,'markdown-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_LEFT_ARROW</td>
+	<td>//div[contains(@class,'announcement-carousel-container')]//div[contains(@class,'card-container')]//*[local-name()='svg' and contains(@class,'arrow-left')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ANNOUNCEMENT_HEADER_RIGHT_ARROW</td>
+	<td>//div[contains(@class,'announcement-carousel-container')]//div[contains(@class,'card-container')]//*[local-name()='svg' and contains(@class,'arrow-right')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_PRIVATE_POST_HEADER</td>
+	<td>//div[contains(@class,'card-container post-container private-post') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'private-post-bar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIKE_SUMMARY</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'like-counter')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIKE_SUMMARY_TITLE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'like-counter')]//span[contains(@class,'secondary-info')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIKE_SUMMARY_USER_AVATAR_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'like-counter')]//a[contains(@title,'${key_userName}')] | //div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'like-counter')]//a[contains(@data-title,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIKE_SUMMARY_USER_LIST</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'like-counter')]//button[contains(.,'${key_numberOfRemainingLikes}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_READ_MORE_COMMENTS_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'previous-comments')]//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_VISIBLE_COMMENTS_COUNT</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'previous-comments')]/span[contains(@class,'secondary-info')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SEE_FULL_COMMENTS_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'view-post')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIKE_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'card-action')]//span[contains(@class,'loop-icon-label') and contains(.,'Like')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_LIKED_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'card-action')]//span[contains(@class,'loop-icon-label') and contains(.,'Liked')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ADD_COMMENT_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//a[contains(@class,'card-action') and contains(.,'Comment')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//*[local-name()='svg' and contains(@class,'ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_FOOTER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comments')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_OPTIONS-->
+<tr>
+	<td>ENTRY_OPTIONS_BOOKMARK_POST_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Bookmark')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_REMOVE_POST_FROM_BOOKMARKS_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Remove from Bookmarks')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_SHARE_POST_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Share')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_FOLLOW_POST_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'ollow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_TOGGLE_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//span[contains(@class,'toggle-label')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_TOGGLE_NOTIFICATIONS_FOR_POST_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(.,'Notifications')]//div[contains(@class,'toggle-dot')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_EMAIL_NOTIFICATIONS_LABEL</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_EMAIL_NOTIFICATIONS_CHECKBOX</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//div[contains(@class,'checkbox') and contains(.,'Email Notifications')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_TOGGLE_NOTIFICATIONS_FOR_AUTHOR_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item')]//span[contains(.,'Notifications for ${key_authorName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_EDIT_POST_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Edit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_OPTIONS_DELETE_POST_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item') and contains(.,'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_AUTHOR_OVERLAY-->
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_AVATAR</td>
+	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_NAME</td>
+	<td>//div[contains(@class,'entity-summary-container')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_FOLLOWERS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Followers')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_GROUPS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Groups')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_EXPERTISE</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Expertise')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_FOLLOW_BUTTON</td>
+	<td>//div[contains(@class,'entity-summary-container')]//button[contains(@class,'follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_AUTHOR_OVERLAY_UNFOLLOW_LINK</td>
+	<td>//ul[contains(@class,'menu-list-container')]//li[contains(@class,'menu-item-container unfollow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_UNDO_MESSAGE-->
+<tr>
+	<td>ENTRY_UNDO_MESSAGE</td>
+	<td>//div[contains(@class,'undo-card-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_UNDO_MESSAGE_VIEW_POST_LINK</td>
+	<td>//div[contains(@class,'undo-card-content')]/a[contains(@href,'${key_feedEntryUrl}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_UNDO_MESSAGE_UNDO_LINK</td>
+	<td>//div[contains(@class,'undo-card-content')]/span[contains(@class,'undo')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_UNDO_MESSAGE_CLOSE_LINK</td>
+	<td>//div[contains(@class,'undo-card-content')]/span[contains(@class,'dismiss')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_ADD_COMMENT-->
+<tr>
+	<td>ENTRY_ADD_COMMENT_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ADD_COMMENT_TEXT_FIELD_PLACEHOLDER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[@class='placeholder']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ADD_COMMENT_TEXT_FIELD</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator-container')]//div[contains(@class,'comment-input')]//div[contains(@class,'DraftEditor-content')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ADD_COMMENT_ADD_PHOTO_ICON</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//*[local-name()='svg' and contains(@class,'loop-icon-camera')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ADD_COMMENT_IMAGE_PREVIEW_IMAGE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[contains(@class,'sortable-image-container')]//img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_ADD_COMMENT_IMAGE_PREVIEW_REMOVE_IMAGE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//div[contains(@class,'cancel')]//*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_EDIT_COMMENT_CANCEL_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-creator')]//button[contains(@class,'cancel-edit')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_SHARE-->
+<tr>
+	<td>ENTRY_SHARE_LINK</td>
+	<td>//div[contains(@class,'share-link')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARE_CLOSE_BUTTON</td>
+	<td>//div[contains(@class,'share-link')]//*[local-name()='svg' and contains(@class,'close')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_DELETE-->
+<tr>
+	<td>ENTRY_DELETE_MESSAGE</td>
+	<td>//div[contains(@class,'confirm-dialog-modal-container')]//div[contains(.,'Are you sure you want to delete this')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_DELETE_CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_DELETE_CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_EDIT-->
+<tr>
+	<td>ENTRY_EDIT_LOAD</td>
+	<td>//div[contains(@class,'edit-post-modal loop-portlet loading yui3')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_COMMENT-->
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div/a[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE_DEFAULT</td>
+	<td>loop/screenshots/feed/entry_comment_author_profile_picture_default.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE_1</td>
+	<td>loop/screenshots/feed/entry_comment_author_profile_picture_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE_2</td>
+	<td>loop/screenshots/feed/entry_comment_author_profile_picture_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE_3</td>
+	<td>loop/screenshots/feed/entry_comment_author_profile_picture_3.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE_4</td>
+	<td>loop/screenshots/feed/entry_comment_author_profile_picture_4.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_AUTHOR</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_DATE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div[contains(@class,'meta-data')]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_EDITED_INDICATION</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div[contains(@class,'meta-data')]/a/span[contains(.,'- Edited')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_ADD_REPLY_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//span[@class='reply-to']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_LIKE_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//button[contains(@class,'like-action')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_LIKED_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//button[contains(@class,'like-action liked')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_LIKE_COUNTER</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//span[contains(@class,'like-counter')]//a[contains(@class,'counter')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT_SEE_MORE_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//a[contains(@class,'see-more')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT_GENERIC</td>
+	<td>xpath=(//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT_URL_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//a[contains(.,'${key_feedEntryCommentLinkUrl}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT_USER_MENTION_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT_GROUP_MENTION_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_CONTENT_HASHTAG_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//a[contains(.,'#${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_IMAGE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_IMAGE_1</td>
+	<td>loop/screenshots/feed/entry_comment_image_1.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_IMAGE_2</td>
+	<td>loop/screenshots/feed/entry_comment_image_2.png</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_IMAGE_ANIMATION_LABEL</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][1]//span[@class='gif']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_OPTIONS_LINK</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//*[local-name()='svg' and contains(@class,'loop-icon-pen')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_COMMENT_REPLY-->
+<tr>
+	<td>ENTRY_COMMENT_REPLY_TOGGLE</td>
+	<td>//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentContent}')]//span[@class='toggle-replies']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_AUTHOR_PROFILE_PICTURE</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//div/a[contains(@class,'avatar')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_AUTHOR</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_DATE</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//div[contains(@class,'meta-data')]/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_EDITED_INDICATION</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//div[contains(@class,'meta-data')]/span[contains(.,'- Edited')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_ADD_REPLY_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//span[contains(@class,'reply-to')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_LIKE_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//button[contains(@class,'like-action')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_LIKED_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//button[contains(@class,'like-action liked')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_LIKE_COUNTER</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//span[contains(@class,'like-counter')]//a[contains(@class,'counter')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT_SEE_MORE_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//a[contains(@class,'see-more')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT_GENERIC</td>
+	<td>xpath=(//div[contains(@class,'card-container post-container') and contains(.,'${key_feedEntryContent}')]//div[contains(@class,'comment-container')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT_URL_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//a[contains(.,'${key_feedEntryCommentReplyLinkUrl}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT_USER_MENTION_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT_GROUP_MENTION_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_CONTENT_HASHTAG_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//a[contains(.,'#${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_IMAGE</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_IMAGE_ANIMATION_LABEL</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//div[contains(@class,'image-viewer-container')]//div[contains(@class,'grid-item')][1]//span[@class='gif']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_COMMENT_REPLY_OPTIONS_LINK</td>
+	<td>//div[contains(@class,'comment-container')]//div[@class='view' and contains(.,'${key_feedEntryCommentContent}')]//following-sibling::div[@class='replies']//div[contains(@class,'comment-container') and contains(.,'${key_feedEntryCommentReplyContent}')]//*[local-name()='svg' and contains(@class,'loop-icon-pen')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_NAVIGATE_AWAY-->
+<tr>
+	<td>ENTRY_NAVIGATE_AWAY_MESSAGE</td>
+	<td>//div[contains(.,'Are you sure you want to navigate away?')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_NAVIGATE_AWAY_CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_NAVIGATE_AWAY_CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--ENTRY_SHARE_PRIVATE_POST-->
+<tr>
+	<td>ENTRY_SHARE_PRIVATE_POST_MESSAGE</td>
+	<td>//div[contains(@class,'confirm-dialog-modal-container')]//div[contains(.,'This post is not already shared to')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARE_PRIVATE_POST_CANCEL_BUTTON</td>
+	<td>//button[contains(.,'Cancel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_SHARE_PRIVATE_POST_CONFIRM_BUTTON</td>
+	<td>//button[contains(.,'Confirm')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--FEATURED_TOPICS-->
+<tr>
+	<td>FEATURED_TOPICS_HEADER</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Featured Topics')]//div[contains(@class,'card-header-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FEATURED_TOPICS_SETTINGS</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Featured Topics')]//div[contains(@class,'card-header-container')]/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FEATURED_TOPICS_TOPIC_NAME</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Featured Topics')]//div[contains(@class,'name')]/a[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FEATURED_TOPICS_TOPIC_DETAILS</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Featured Topics')]//div[contains(@class,'entity-info') and contains(.,'${key_topicName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FEATURED_TOPICS_MORE_LINK</td>
+	<td>//a[contains(@href,'FEATURED_TOPICS') and contains(.,'See All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--MANAGE_FEATURED_TOPICS-->
+<tr>
+	<td>MANAGE_FEATURED_TOPICS_SEARCH</td>
+	<td>//div[contains(@class,'modal-content')]//div[contains(@class,'input-container')]//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGE_FEATURED_TOPICS_NO_RESULTS</td>
+	<td>//div[contains(@class,'modal-content')]//div[contains(@class,'no-results-container')]//div[@class='title']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGE_FEATURED_TOPICS_SELECT_TOPIC</td>
+	<td>//ul[contains(@class,'autocomplete-list')]//li//a[contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGE_FEATURED_TOPICS_TOPIC_NAME</td>
+	<td>//div[contains(@class,'modal-content')]//a[contains(@class,'entity-link-container') and contains(.,'${key_topicName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MANAGE_FEATURED_TOPICS_TOPIC_NAME_REMOVE</td>
+	<td>//div[contains(@class,'modal-content')]//div[contains(@class,'entity-display-container') and contains(.,'${key_topicName}')]//button[contains(.,'Remove')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--NEW_HIRES-->
+<tr>
+	<td>NEW_HIRES_HEADER</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'New Hires')]//div[contains(@class,'card-header-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_HIRES_PERSON_NAME</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'New Hires')]//div[contains(@class,'name')]/a[contains(.,'${key_userName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_HIRES_MORE_LINK</td>
+	<td>//a[contains(@href,'NEW_PEOPLE') and contains(.,'See All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--NEW_GROUPS-->
+<tr>
+	<td>NEW_GROUPS_HEADER</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'card-header-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_GROUPS_GROUP_NAME</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'name')]/a[contains(.,'${key_groupName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_GROUPS_GROUP_DETAILS</td>
+	<td>//div[contains(@class,'card-container') and contains(.,'Groups')]//div[contains(@class,'entity-info') and contains(.,'${key_groupName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_GROUPS_MORE_LINK</td>
+	<td>//a[contains(@href,'NEW_DIVISION') and contains(.,'See All')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--MODAL_CLOSE_BUTTON-->
+<tr>
+	<td>MODAL_CLOSE_BUTTON</td>
+	<td>//div[contains(@class,'modal-container')]//*[local-name()='svg' and contains(@class,'close')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--SUCCESS_MESSAGE-->
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

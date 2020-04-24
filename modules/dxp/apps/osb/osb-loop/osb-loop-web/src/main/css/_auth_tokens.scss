@@ -1,0 +1,15 @@
+.auth-tokens-container {
+	.device {
+		font-weight: 600;
+		margin-bottom: 12px;
+
+		.btn-container {
+			margin-right: 12px;
+		}
+
+		> span {
+			color: rgba($primary, 0.8);
+			font-weight: normal;
+		}
+	}
+}

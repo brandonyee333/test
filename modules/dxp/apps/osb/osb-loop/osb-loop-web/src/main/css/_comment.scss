@@ -1,0 +1,142 @@
+.comment-container {
+	position: relative;
+	width: 100%;
+
+	&.focused {
+		&:before {
+			background-color: rgba($theme, 0.1);
+			bottom: 0;
+			content: '';
+			left: 0;
+			margin-left: -28px;
+			margin-right: -28px;
+			pointer-events: none;
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+	}
+
+	.entity-link-container {
+		display: inline-block;
+		font-weight: 600;
+		margin-right: 4px;
+	}
+
+	.view {
+		@include align-items(flex-start);
+		@include flexbox;
+
+		padding-bottom: 4px;
+		word-wrap: break-word;
+
+		&:hover .content > .loop-icon-container {
+			opacity: 1;
+		}
+
+		> .avatar-container {
+			margin-right: 20px;
+		}
+
+		> .content {
+			margin-right: 48px;
+			overflow: hidden;
+			width: 100%;
+
+			> .entity-link-container {
+				font-weight: 600;
+			}
+
+			> .loop-icon-container {
+				@include transition(opacity, 0.4s);
+
+				color: rgba($primary, 0.4s);
+				margin-right: 16px;
+				opacity: 0;
+				position: absolute;
+				right: 0;
+				top: 20px;
+			}
+		}
+	}
+
+	.markdown-content-container {
+		display: inline;
+	}
+
+	.meta-data {
+		font-size: 12px;
+
+		> .comment-like-counter-container, > .reply-to {
+			margin-left: 12px;
+		}
+
+		.reply-to {
+			color: $theme;
+			cursor: pointer;
+
+			&:hover {
+				color: rgba($theme, 0.6);
+			}
+		}
+
+		> .secondary-info {
+			color: rgba($primary, 0.4);
+
+			&:hover {
+				color: rgba($primary, 0.2);
+			}
+		}
+	}
+
+	.see-more-container {
+		display: block;
+		margin: 12px 0;
+	}
+
+	.replies {
+		margin: 4px 0 0 56px;
+
+		.focused:before {
+			margin-left: -84px;
+		}
+
+		.toggle-replies {
+			background: rgba($primary, 0.05);
+			border-radius: 20px;
+			color: rgba($primary, 0.7);
+			cursor: pointer;
+			font-size: 12px;
+			font-weight: 600;
+			padding: 4px 12px;
+
+			.loop-icon-container {
+				color: rgba($primary, 0.7);
+				vertical-align: text-top;
+			}
+		}
+
+		.reply-feed {
+			margin-top: 16px;
+			position: relative;
+
+			&.show-line:before {
+				background: rgba($primary, 0.05);
+				bottom: 24px;
+				content: '';
+				left: 16px;
+				position: absolute;
+				top: -14px;
+				width: 4px;
+			}
+
+			.comment-container {
+				padding: 8px 0 4px;
+			}
+
+			.comment-creator-container {
+				margin: 8px 0 12px;
+			}
+		}
+	}
+}

@@ -1,0 +1,97 @@
+$menuItemPadding: 8px 20px;
+
+.menu-list-container {
+	font-size: 12px;
+	list-style-type: none;
+	margin: 0;
+	min-width: 260px;
+	overflow: hidden;
+	padding: 12px 0;
+
+	> .overlay {
+		display: block;
+	}
+
+	.menu-divider-container {
+		border-bottom: 1px solid $borderLightGray;
+		margin: 12px 0;
+	}
+
+	.menu-item-container, .menu-label-container {
+		@include align-items(center);
+		@include flexbox;
+
+		line-height: 24px;
+		max-width: 100%;
+		padding: $menuItemPadding;
+		white-space: nowrap;
+
+		&:first-child {
+			margin-top: 0;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		&.justify-between {
+			@include justify-content(space-between);
+		}
+
+		&.menu-link {
+			padding: 0;
+
+			> a {
+				color: inherit;
+				padding: $menuItemPadding;
+				text-align: left;
+				width: 100%;
+			}
+		}
+	}
+
+	.menu-label-container {
+		color: rgba($primary, 0.4);
+		font-size: 11px;
+		margin: 12px 0;
+		text-transform: uppercase;
+	}
+
+	.active.menu-item-container, .menu-item-container:focus, .menu-item-container:hover {
+		background-color: rgba($theme, 0.1);
+		color: $theme;
+	}
+
+	.menu-item-container {
+		color: $primary;
+		cursor: pointer;
+
+		&:hover a {
+			color: $theme;
+		}
+
+		&.display-only {
+			&:hover {
+				background-color: initial;
+				color: $primary;
+			}
+
+			cursor: default;
+			font-size: 11px;
+			font-weight: 600;
+			text-transform: uppercase;
+		}
+
+		&.indent {
+			padding-left: 40px;
+		}
+
+		a {
+			color: $primary;
+
+			&:focus, &:hover {
+				color: $theme;
+			}
+		}
+	}
+}

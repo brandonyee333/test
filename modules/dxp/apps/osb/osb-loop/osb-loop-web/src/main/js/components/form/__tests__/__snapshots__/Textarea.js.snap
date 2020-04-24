@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input renders 1`] = `
+<div class="form-textarea-container default">
+  <textarea id="FormTextarea1" name="test" value="foo"></textarea>
+</div>
+`;
+
+exports[`Input should render error message 1`] = `
+<div class="form-textarea-container error">
+  <textarea id="FormTextarea2" name="test" value="foo"></textarea>
+  <div class="error-message"></div>
+</div>
+`;

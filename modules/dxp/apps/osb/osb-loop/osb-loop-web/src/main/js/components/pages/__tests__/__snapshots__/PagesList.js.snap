@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pages renders 1`] = `
+<div class="card-body-container">
+  <div class="sortable-list-container">
+    <div class="sortable-list-header-container">
+      <button type="button" class="inline-button-container title-header">name
+        <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-tiny-1x" data-tooltip="">
+          <use href="#loop-icon-arrow-down-short-16"></use>
+        </svg>
+      </button>
+      <button type="button" class="inline-button-container creator-header">created-by</button>
+      <button type="button" class="inline-button-container secondary-info-header">modified</button>
+    </div>
+    <div>
+      <ul></ul>
+      <div class="card-container loading-card-container">
+        <div class="spinner-container">
+          <div class="spinner small"></div>
+        </div>loading</div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Pages should renders with Page 1`] = `
+<div class="card-body-container">
+  <div class="loading-wrapper-container loading page-container">
+    <div class="mask">
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    <div class="loading-content">
+      <div class="page-header-container">
+        <div class="avatar-container" id="unit_tests_namespace_ENTITY_SUMMARY1">
+          <a style="" class="avatar avatar-size-smallest">
+            <div class="avatar-placeholder">
+              <svg class="loop-icon-container loop-icon-undefined loop-icon-small-1x" data-tooltip="">
+                <use href="#loop-icon-undefined-16"></use>
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div class="header-info">
+          <a class="entity-link-container" href="javascript:;" id="unit_tests_namespace_ENTITY_SUMMARY2"></a>
+          <span class="secondary-info" data-tooltip=""></span>
+        </div>
+      </div>
+      <h1 class="title"></h1>
+      <div class="markdown-content-container">undefined</div>
+    </div>
+  </div>
+</div>
+`;

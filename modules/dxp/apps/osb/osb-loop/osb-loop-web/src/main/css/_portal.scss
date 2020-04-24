@@ -1,0 +1,242 @@
+html {
+	height: 100%;
+	overflow-y: scroll;
+
+	&, body {
+		background-color: #F4F8FF;
+	}
+
+	& * {
+		box-sizing: unset;
+	}
+}
+
+body {
+	color: $primary;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	line-height: 20px;
+	text-rendering: optimizeLegibility;
+
+	#wrapper, .portlet-content, .portlet-minimized .portlet-content-container, .edit-post-modal .modal-body {
+		padding: 0;
+	}
+
+	&.signed-out {
+		background-color: $theme;
+		min-height: 100%;
+		overflow-y: auto;
+	}
+}
+
+body, button, input, label, select, textarea {
+	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	margin: inherit;
+}
+
+a {
+	@include transition(color 400ms ease);
+
+	color: $theme;
+
+	&:focus, &:hover {
+		color: rgba($theme, 0.6);
+		text-decoration: none;
+	}
+
+	&.inactive {
+		color: $primary;
+	}
+}
+
+input[type="file"] {
+	display: none;
+}
+
+input[type="text"], textarea {
+	background-color: $formBackgroundColor;
+	border: 1px solid $inputBorderColor;
+	color: $formTextColor;
+
+	&:focus, &.search-query {
+		border-color: $theme;
+	}
+}
+
+select {
+	background-color: $formBackgroundColor;
+	border-color: $inputBorderColor;
+	color: $formTextColor;
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+[data-clipboard-text] {
+	cursor: copy;
+}
+
+#skip-to-content {
+	display: none;
+}
+
+.alert {
+	background-color: $alert;
+	border-width: 0;
+	color: $secondary;
+
+	@include experimental(animation, slide-down 4s ease forwards);
+
+	&.alert-error {
+		background-color: $error;
+	}
+
+	&.alert-success {
+		background-color: $success;
+	}
+}
+
+.col-md-12 {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.loop-icon-label {
+	margin-left: 4px;
+
+	&:first-child {
+		margin-left: 0;
+	}
+}
+
+.menu-item .loop-icon {
+	height: 16px;
+	opacity: 0.6;
+	padding-right: 20px;
+	width: 16px;
+}
+
+.bookmark-flag, .overlay-menu .bookmarked .loop-icon {
+	color: $alert;
+}
+
+.popup-alert-notice, .popup-alert-warning {
+	display: none;
+}
+
+.portlet-body {
+	margin: $toolbarHeight auto 0;
+	max-width: $portletBodyWidth;
+
+	.sidebar-container {
+		@include transition(margin-top 0.4s ease);
+	}
+
+	&.sub-nav-active {
+		&, .loop-menu .sidebar-container {
+			margin-top: ($toolbarHeight + $subnavHeight);
+		}
+
+		.toolbar-wrapper .sub-nav {
+			height: $subnavHeight;
+		}
+	}
+}
+
+.portlet-topper {
+	display: none;
+}
+
+.tooltip-inner {
+	@include box-shadow(0 2px 8px rgba($black, 0.2));
+
+	background-color: $secondary;
+	border-width: 0;
+	color: rgba($primary, 0.6);
+	font-size: 12px;
+}
+
+/* ---------- Modal ---------- */
+
+/* ---------- Sortable layout ---------- */
+
+.sortable-layout-drag-indicator {
+	background: $theme;
+}
+
+/* ---------- Text styles ---------- */
+
+.primary-action, .secondary-action, .tab-title.active {
+	color: $theme;
+}
+
+.card-header, .card-title {
+	color: $theme;
+	font-size: 14px;
+}
+
+.card-title {
+	font-weight: 600;
+}
+
+.divider-heading {
+	color: rgba($primary, 0.7);
+	font-size: 14px;
+}
+
+.primary-action {
+	color: $primary;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.ReactModal__Body--open {
+	overflow-y: hidden;
+
+	#wrapper {
+		overflow-y: scroll;
+	}
+}
+
+.secondary-action {
+	color: rgba($primary, 0.8);
+	font-size: 13px;
+}
+
+.secondary-info {
+	color: rgba($primary, 0.6);
+	font-size: 12px;
+}
+
+.tab-title {
+	color: rgba($primary, 0.6);
+	font-size: 14px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media #{$mediaSmallMin} {
+	body {
+		padding: 0 $horizontalPadding;
+	}
+}
+
+@media #{$mediaSmallMax} {
+	body {
+		overflow-x: hidden;
+		padding: 0;
+	}
+
+	.portlet-body {
+		margin-bottom: $toolbarHeight;
+	}
+}

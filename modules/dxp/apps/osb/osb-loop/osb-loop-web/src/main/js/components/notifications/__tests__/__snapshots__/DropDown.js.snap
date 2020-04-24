@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropDown renders 1`] = `
+<div class="notifications-drop-down-container">
+  <a title="notifications" class="toggle-icon" data-tooltip="" href="javascript:;">
+    <svg class="loop-icon-container loop-icon-bell loop-icon-large-1x loop-icon-secondary" data-tooltip="">
+      <use href="#loop-icon-bell-24"></use>
+    </svg>
+  </a>
+</div>
+`;

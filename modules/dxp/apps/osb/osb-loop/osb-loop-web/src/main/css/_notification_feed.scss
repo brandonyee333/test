@@ -1,0 +1,77 @@
+.notification-feed-container {
+	$notificationsPadding: 20px;
+
+	overflow-y: auto;
+	position: relative;
+
+	.item {
+		background-color: rgba($theme, 0.05);
+		cursor: pointer;
+		padding: 24px $notificationsPadding $notificationsPadding;
+		position: relative;
+
+		&, &.read {
+			&:hover {
+				background-color: rgba($theme, 0.1);
+			}
+		}
+
+		&.read {
+			background-color: $secondary;
+		}
+
+		.display-time {
+			color: rgba($primary, 0.4);
+			font-size: 13px;
+			font-weight: 600;
+
+			.loop-icon-container {
+				color: rgba($primary, 0.6);
+				margin-right: 8px;
+				vertical-align: text-bottom;
+			}
+		}
+
+		.entity-item {
+			@include align-items(center);
+			@include flexbox;
+		}
+
+		.entity-item-info {
+			line-height: 24px;
+			overflow: hidden;
+			padding-left: 20px;
+
+			.details {
+				@include ellipsis;
+
+				color: rgba($primary, 0.8);
+				overflow: hidden;
+				white-space: nowrap;
+			}
+
+			.title {
+				color: rgba($primary, 0.4);
+
+				> a {
+					font-weight: 600;
+				}
+			}
+		}
+	}
+
+	.view-more {
+		display: block;
+		padding: 28px $notificationsPadding 32px;
+	}
+
+	.view-more-wrapper {
+		border-top: 1px solid $borderLightGray;
+		min-height: 80px;
+		position: relative;
+
+		.spinner-container {
+			@include center(both);
+		}
+	}
+}

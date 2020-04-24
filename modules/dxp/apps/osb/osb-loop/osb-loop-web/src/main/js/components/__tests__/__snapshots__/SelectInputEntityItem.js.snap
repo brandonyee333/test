@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectInputEntityItem renders 1`] = `
+<div class="select-input-entity-item-container">
+  <div class="avatar-container">
+    <span style="" title="Joe Bloggs0" class="avatar avatar-size-tiny">
+      <div class="avatar-placeholder"></div>
+    </span>
+  </div>
+  <div class="name">Joe Bloggs0</div>
+</div>
+`;

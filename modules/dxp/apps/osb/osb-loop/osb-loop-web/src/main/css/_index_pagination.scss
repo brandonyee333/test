@@ -1,0 +1,14 @@
+.index-pagination-container {
+	padding: $cardSpacing 20px;
+
+	.category-label {
+		font-size: 11px;
+		font-weight: 600;
+		margin-bottom: $cardSpacing;
+		text-transform: uppercase;
+	}
+
+	.loading-card-container {
+		margin: $cardSpacing 0 0;
+	}
+}

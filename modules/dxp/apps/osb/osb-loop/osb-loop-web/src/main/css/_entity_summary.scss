@@ -1,0 +1,102 @@
+.entity-summary-container {
+	margin-bottom: 0;
+	width: 304px;
+
+	&.inactive .body .secondary-info {
+		color: $inactive;
+	}
+
+	@each $color in $avatarColors {
+		.avatar-cover-image-color-#{index($avatarColors, $color)} {
+			background-color: $color;
+			color: $secondary;
+		}
+	}
+
+	.body {
+		text-align: center;
+
+		.entity-details {
+			margin-bottom: 12px;
+
+			> p {
+				margin-bottom: 0;
+			}
+		}
+
+		.entity-link-container {
+			display: block;
+			font-size: 20px;
+			font-weight: 500;
+			margin-bottom: 16px;
+		}
+
+		.entity-stats {
+			padding-bottom: 20px;
+
+			.loop-icon-label-container {
+				margin-left: 8px;
+
+				&:first-child {
+					margin-left: 0;
+				}
+			}
+		}
+	}
+
+	.footer {
+		@include flexbox;
+		@include justify-content(center);
+
+		border-top: 1px solid $borderLightGray;
+		padding: 24px;
+
+		.modal-link-container {
+			@include inline-flex;
+
+			background: $secondary;
+			border: 1px solid rgba($primary, 0.2);
+			border-radius: 4px;
+			color: rgba($primary, 0.4);
+			margin-left: 12px;
+			padding: 4px 10px;
+			vertical-align: bottom;
+
+			> .loop-icon-container {
+				@include align-self(center);
+			}
+
+			&:hover {
+				opacity: 0.8;
+			}
+		}
+	}
+
+	.header {
+		overflow: hidden;
+		padding-bottom: 56px;
+		position: relative;
+
+		.avatar-container {
+			@include transform(translate(-50%, -50%));
+
+			border: 2px solid $secondary;
+			margin-left: 50%;
+			position: absolute;
+		}
+
+		.cover-image {
+			background-position: center;
+			background-size: cover;
+			height: 120px;
+			width: 100%;
+		}
+	}
+
+	.inactive-alert {
+		color: $inactive;
+		font-size: 12px;
+		padding: 20px 20px 56px;
+		text-align: center;
+	}
+}

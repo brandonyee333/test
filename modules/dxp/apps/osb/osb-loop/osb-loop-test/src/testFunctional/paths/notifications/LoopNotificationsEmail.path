@@ -1,0 +1,119 @@
+<html>
+<head>
+<title>LoopNotificationsEmail</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopNotificationsEmail</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>LOOP_ICON</td>
+	<td>//img[contains(@src,'loop_icon')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_ACTION</td>
+	<td>//td/a[contains(.,'${key_notificationAction}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_TIMESTAMP</td>
+	<td>//td/span/span[contains(.,'${key_notificationDate}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_PROFILE_PICTURE</td>
+	<td>//a[contains(@href,'${key_userScreenName}')]/div | //a[contains(@href,'${key_userScreenName}')]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_USER_NAME</td>
+	<td>xpath=(//a[contains(@href,'${key_userScreenName}')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_notificationDetails}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_SEE_MORE_LINK</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_notificationDetails}')]/a[contains(.,'See More')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_ATTACHMENT_LINK</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'View') and contains(.,'Attached')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_FEED_ENTRY_LINK_URL</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_feedEntryLinkUrl}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_PROFILE_PICTURE_1</td>
+	<td>//a[contains(@href,'${key_userScreenName1}')]/div | //a[contains(@href,'${key_userScreenName1}')]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_USER_NAME_1</td>
+	<td>xpath=(//a[contains(@href,'${key_userScreenName1}')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_1</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_notificationDetails1}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_SEE_MORE_LINK_1</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_notificationDetails1}')]/a[contains(.,'See More')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_PROFILE_PICTURE_2</td>
+	<td>//a[contains(@href,'${key_userScreenName2}')]/div | //a[contains(@href,'${key_userScreenName2}')]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_USER_NAME_2</td>
+	<td>xpath=(//a[contains(@href,'${key_userScreenName2}')])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_2</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_notificationDetails2}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DETAILS_SEE_MORE_LINK_2</td>
+	<td>//tr/td[contains(@valign,'middle') and contains(.,'${key_notificationDetails2}')]/a[contains(.,'See More')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_READ_MORE_COMMENTS_LINK</td>
+	<td>//tr/td[contains(@valign,'top')]/a[contains(.,'Read')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_WRITE_COMMENT_LINK</td>
+	<td>//a[contains(.,'View post or comment on Loop.')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_FEEDBACK_LINK</td>
+	<td>//a[contains(.,'#${key_topicName}')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

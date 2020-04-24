@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="com.liferay.osb.loop.model.LoopAuditEntry" />
+	<import class="com.liferay.osb.loop.model.LoopDivision" />
+	<import class="com.liferay.osb.loop.model.LoopDivisionRel" />
+	<import class="com.liferay.osb.loop.model.LoopExternalReferenceRel" />
+	<import class="com.liferay.osb.loop.model.LoopJobTitle" />
+	<import class="com.liferay.osb.loop.model.LoopParticipantAssignment" />
+	<import class="com.liferay.osb.loop.model.LoopPerson" />
+	<import class="com.liferay.osb.loop.model.LoopPersonRel" />
+	<import class="com.liferay.osb.loop.model.LoopStatsEntry" />
+	<import class="com.liferay.osb.loop.model.LoopStream" />
+	<import class="com.liferay.osb.loop.model.LoopStreamEntry" />
+	<import class="com.liferay.osb.loop.model.LoopTopic" />
+	<import class="com.liferay.osb.loop.model.LoopTopicAssignment" />
+	<import class="com.liferay.osb.loop.model.LoopUserNotificationEvent" />
+	<import class="com.liferay.osb.loop.model.LoopUserNotificationRecord" />
+	<import class="com.liferay.osb.loop.model.LoopUserNotificationSubscription" />
+	<class name="com.liferay.osb.loop.model.impl.LoopAuditEntryImpl" table="LoopAuditEntry">
+		<id name="loopAuditEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopDivisionImpl" table="LoopDivision">
+		<id name="loopDivisionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="parentLoopDivisionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="subtype" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopDivisionRelImpl" table="LoopDivisionRel">
+		<id name="loopDivisionRelId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="childLoopDivisionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="parentLoopDivisionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopExternalReferenceRelImpl" table="LoopExternalReferenceRel">
+		<id name="loopExternalReferenceRelId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="externalReferenceName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="externalReferencePK" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopJobTitleImpl" table="LoopJobTitle">
+		<id name="loopJobTitleId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopParticipantAssignmentImpl" table="LoopParticipantAssignment">
+		<id name="loopParticipantAssignmentId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="loopDivisionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopPersonImpl" table="LoopPerson">
+		<id name="loopPersonId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="loopJobTitleId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="managerLoopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="personUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="extraData" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="groupedUserNotificationEventsCount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopPersonRelImpl" table="LoopPersonRel">
+		<id name="loopPersonRelId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="childLoopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="parentLoopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopStatsEntryImpl" table="LoopStatsEntry">
+		<id name="loopStatsEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="modifiedTime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="score" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopStreamImpl" table="LoopStream">
+		<id name="loopStreamId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopStreamEntryImpl" table="LoopStreamEntry">
+		<id name="loopStreamEntryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="loopStreamId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="following" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="followingType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopTopicImpl" table="LoopTopic">
+		<id name="loopTopicId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="parentLoopTopicId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="imagePayload" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="mergeTime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopTopicAssignmentImpl" table="LoopTopicAssignment">
+		<id name="loopTopicAssignmentId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="loopTopicId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="statusByDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopUserNotificationEventImpl" table="LoopUserNotificationEvent">
+		<id name="loopUserNotificationEventId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="createTime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="recipientUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupClassNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupClassPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="groupKey" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="received" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="opened" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopUserNotificationRecordImpl" table="LoopUserNotificationRecord">
+		<id name="loopUserNotificationRecordId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="createTime" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="deliveryType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.loop.model.impl.LoopUserNotificationSubscriptionImpl" table="LoopUserNotificationSubscription">
+		<id name="loopUserNotificationSubscriptionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="deliveryType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+</hibernate-mapping>

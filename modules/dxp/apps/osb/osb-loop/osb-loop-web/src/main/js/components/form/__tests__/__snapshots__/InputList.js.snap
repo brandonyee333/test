@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputList renders 1`] = `
+<div class="input-list-container">
+  <div class="autocomplete-input-container">
+    <div class="input-container row">
+      <input id="inputList1" placeholder="search" value="" type="text" ref="input">
+    </div>
+  </div>
+</div>
+`;

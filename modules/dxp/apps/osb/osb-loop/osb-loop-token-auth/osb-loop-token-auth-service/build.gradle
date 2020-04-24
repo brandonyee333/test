@@ -1,0 +1,14 @@
+buildService {
+	apiDir = "../osb-loop-token-auth-api/src/main/java"
+}
+
+dependencies {
+	compileInclude group: "com.auth0", name: "java-jwt", version: "2.2.0"
+
+	compileOnly group: "biz.aQute.bnd", name: "biz.aQute.bndlib", version: "3.5.0"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.spring.extender", version: "2.1.0"
+	compileOnly group: "com.liferay", name: "com.liferay.portal.upgrade", version: "2.8.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.61.0"
+	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
+	compileOnly project(":private:apps:osb-loop:osb-loop-token-auth:osb-loop-token-auth-api")
+}

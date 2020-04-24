@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert renders 1`] = `
+<div class="alert-container">
+  <span class="icon-wrapper">
+    <div class="transition-wrapper active">
+      <svg class="loop-icon-container loop-icon-alert loop-icon-small-1x loop-icon-warning inverted" data-tooltip="">
+        <use href="#loop-icon-alert-16"></use>
+      </svg>
+    </div>
+  </span>
+  <span>Version 2.0 is available! Refresh the page.</span>
+  <span title="close" class="dismiss" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-cancel loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-cancel-24"></use>
+    </svg>
+  </span>
+</div>
+`;
+
+exports[`Alert should render message 1`] = `
+<div class="alert-container">
+  <span class="icon-wrapper">
+    <div class="transition-wrapper active">
+      <svg class="loop-icon-container loop-icon-alert loop-icon-small-1x loop-icon-warning inverted" data-tooltip="">
+        <use href="#loop-icon-alert-16"></use>
+      </svg>
+    </div>
+  </span>
+  <span>Version 2.0 is available! Refresh the page.</span>
+  <span title="close" class="dismiss" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-cancel loop-icon-large-1x" data-tooltip="">
+      <use href="#loop-icon-cancel-24"></use>
+    </svg>
+  </span>
+</div>
+`;

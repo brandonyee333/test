@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AnnouncementToolbar renders 1`] = `
+<div class="announcement-toolbar-container">
+  <div class="select-wrapper">
+    <div class="days">
+      <label htmlfor="1_days">remain-pinned-on-following-tab-for</label>
+      <select id="1_days" value="1">
+        <option value="0">not-pinned</option>
+        <option selected="" value="1">x-day</option>
+        <option value="2">x-days</option>
+        <option value="3">x-days</option>
+        <option value="4">x-days</option>
+        <option value="5">x-days</option>
+      </select>
+    </div>
+    <div class="post-as">
+      <label htmlfor="1_postAs">post-as</label>
+      <div class="select-input-container">
+        <select id="1_postAs" style="display: none;" value="3_100">
+          <option value="3_100">Joe Bloggs100</option>
+        </select>
+        <div class="selected-item" tabindex="0">
+          <div class="item-container">
+            <div class="select-input-entity-item-container">
+              <div class="avatar-container">
+                <span style="" title="Joe Bloggs100" class="avatar avatar-color-1 avatar-size-tiny">
+                  <div class="avatar-placeholder">JB</div>
+                </span>
+              </div>
+              <div class="name">Joe Bloggs100</div>
+            </div>
+          </div>
+          <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-small-1x select-arrow" data-tooltip="">
+            <use href="#loop-icon-arrow-down-short-16"></use>
+          </svg>
+        </div>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <div class="send-email">
+    <div class="checkbox-container">
+      <input title="emails-only-notify-mentions" data-tooltip="" id="checkbox2" class="checkbox-input" type="checkbox">
+      <div class="checkbox"></div>
+      <label for="checkbox2" class="checkbox-label">send-email-notification</label>
+    </div>
+  </div>
+</div>
+`;

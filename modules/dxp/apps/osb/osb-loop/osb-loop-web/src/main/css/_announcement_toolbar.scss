@@ -1,0 +1,58 @@
+.announcement-toolbar-container {
+	background-color: rgba($primary, 0.02);
+	border-top: 1px solid $borderLightGray;
+	padding: 24px $postPadding;
+
+	.days {
+		@include flex-basis(212px);
+
+		margin-right: 28px;
+
+		label {
+			white-space: nowrap;
+		}
+
+		select {
+			border: 1px solid $borderLightGray;
+			border-radius: 4px;
+			height: 48px;
+			margin: 0;
+			padding: 0 6px;
+			width: 220px;
+
+			&:focus {
+				border-color: $theme;
+				outline: none;
+			}
+
+			&:hover {
+				border-color: rgba($borderLightGray, 0.4);
+			}
+		}
+	}
+
+	.post-as {
+		@include flex-basis(246px);
+	}
+
+	.send-email {
+		color: rgba($primary, 0.8);
+		display: inline-block;
+		margin-top: 24px;
+
+		&:hover {
+			color: $primary;
+		}
+	}
+
+	.select-wrapper {
+		@include flexbox;
+
+		label {
+			color: rgba($primary, 0.8);
+			cursor: default;
+			font-weight: normal;
+			margin-bottom: 8px;
+		}
+	}
+}

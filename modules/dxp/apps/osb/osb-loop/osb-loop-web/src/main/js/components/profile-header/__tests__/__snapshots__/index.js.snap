@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProfileHeader renders 1`] = `
+<div class="card-container profile-header-container image">
+  <span style="background-image: url(/loop-portlet/images/cover_images/cover_image_1_web.jpg);" class="background-image"></span>
+  <span class="affix-header-container"></span>
+  <div class="entity-toolbar-wrapper">
+    <div class="entity-info-wrapper">
+      <div class="editable-avatar-container">
+        <span class="controls">
+          <svg class="loop-icon-container loop-icon-camera loop-icon-large-1x loop-icon-secondary" title="update-profile-photo" data-tooltip="">
+            <use href="#loop-icon-camera-24"></use>
+          </svg>
+        </span>
+        <div class="avatar-container">
+          <span style="" title="Joe Bloggs0" class="avatar avatar-color-1 avatar-size-large">
+            <div class="avatar-placeholder">JB</div>
+          </span>
+        </div>
+      </div>
+      <div class="details">
+        <div class="name">Joe Bloggs0</div>
+        <div class="description">Test Engineer • Diamond Bar, USA</div>
+        <div>
+          <a href="/people/0/followers">
+            <span class="loop-icon-label-container" data-tooltip="">
+              <svg class="loop-icon-container loop-icon-star loop-icon-small-1x loop-icon-warning" data-tooltip="">
+                <use href="#loop-icon-star-16"></use>
+              </svg>
+              <span class="loop-icon-label">x-followers</span>
+            </span>
+          </a>
+          <span class="secondary-info">
+            <a href="/people/0/groups">
+              <span class="loop-icon-label-container" data-tooltip="">
+                <svg class="loop-icon-container loop-icon-groups loop-icon-small-1x loop-icon-primary" data-tooltip="">
+                  <use href="#loop-icon-groups-16"></use>
+                </svg>
+                <span class="loop-icon-label">x-groups</span>
+              </span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="unit_tests_namespace_FOLLOW_MENU1" class="btn btn-container btn-secondary btn-following follow-button-container regular" type="button">
+        <span class="loop-icon-label-container" data-tooltip="">
+          <svg class="loop-icon-container loop-icon-star loop-icon-large-1x" data-tooltip="">
+            <use href="#loop-icon-star-24"></use>
+          </svg>
+          <span class="loop-icon-label">follow</span>
+        </span>
+      </button>
+      <button id="unit_tests_namespace_PERSON_PROFILE_MENU2" class="btn btn-container btn-secondary" type="button">
+        <svg class="loop-icon-container loop-icon-ellipsis loop-icon-large-1x" data-tooltip="">
+          <use href="#loop-icon-ellipsis-24"></use>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <span class="controls">
+    <svg class="loop-icon-container loop-icon-camera loop-icon-large-1x loop-icon-secondary" title="update-cover-photo" data-tooltip="">
+      <use href="#loop-icon-camera-24"></use>
+    </svg>
+  </span>
+</div>
+`;

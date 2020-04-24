@@ -1,0 +1,3712 @@
+<definition component-name="loop-topics">
+	<property name="loop.enabled" value="true" />
+	<!--<property name="hook.plugins.includes" value="portal-compat-hook" />-->
+	<property name="osgi.module.configuration.file.names" value="com.liferay.portal.security.auto.login.basic.auth.header.module.configuration.BasicAuthHeaderAutoLoginConfiguration.cfg:com.liferay.portal.bundle.blacklist.internal.BundleBlacklistConfiguration.cfg" />
+	<property name="osgi.module.configurations" value="enabled=true:blacklistBundleSymbolicNames=['com.liferay.portal.search.elasticsearch', 'com.liferay.portal.search.elasticsearch.shield', 'com.liferay.portal.search.elasticsearch.marvel.web']" />
+	<!--<property name="portlet.plugins.includes" value="asset-entry-set-portlet,asset-feed-portlet,asset-sharing-portlet,loop-portlet" />-->
+	<property name="skip.clean-app-server-deploy-dir" value="true" />
+	<property name="testray.main.component.name" value="Loop" />
+	<!--<property name="theme.plugins.includes" value="loop-theme" />
+	<property name="web.plugins.includes" value="url-metadata-scraper-web" />-->
+
+	<var name="userEmailAddress" value="loopuser01@liferay.com" />
+	<var name="userFirstName" value="Loop01" />
+	<var name="userLastName" value="User01" />
+	<var name="userName" value="Loop01 User01" />
+	<var name="userScreenName" value="loopuser01" />
+
+	<set-up>
+		<execute macro="Loop#firstSetupPG">
+			<var name="roleNames" value="Loop Admin" />
+		</execute>
+	</set-up>
+
+	<command name="AddCoverAndProfilePictures" priority="5">
+		<var name="imageFileName1" value="/Document_4.jpg" />
+		<var name="imageFileName2" value="/Document_2.jpg" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#addProfilePicture">
+			<var name="profilePictureFileName" value="${imageFileName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#addCoverPicture">
+			<var name="coverPictureFileName" value="${imageFileName2}" />
+		</execute>
+	</command>
+
+	<command name="AddExpertViaTopicPage" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicDescription3" value="Topic Description3" />
+		<var name="topicDescription4" value="Topic Description4" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="topicName3" value="TopicName3" />
+		<var name="topicName4" value="TopicName4" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopics">
+			<var name="topicNumberList" value="1,2,3,4" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopTopics#unassignSelfAsExpert">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#unassignSelfAsExpert">
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopTopics#unassignSelfAsExpert">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#unassignSelfAsExpert">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress}" />
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress}" />
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress2}" />
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress2}" />
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+	</command>
+
+	<command name="AddFeedback" priority="5">
+		<property name="portlet.properties.loop-portlet" value="loop.topic.feedback.name=loopfeedback" />
+
+		<var name="feedEntryText" value="Feedback Text" />
+		<var name="topicDescription" value="A place to add feedback for Loop" />
+		<var name="topicName" value="loopfeedback" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoProvideFeedback" />
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoProvideFeedback" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToLink">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoProvideFeedback" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName2}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewTopicViaSharedToLink">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="AddFeedEntries" priority="5">
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+	</command>
+
+	<command name="AddFeedEntryComment" priority="5">
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddFeedEntryCommentWithImage" priority="5">
+		<var name="feedEntryCommentImage" value="/Document_4.jpg" />
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryCommentWithImage">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentImage" value="${feedEntryCommentImage}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#viewEntryCommentWithImage">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeed#viewEntryCommentWithImage">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentWithImage">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="AddImageFeedEntries" priority="5">
+		<var name="feedEntryImage1" value="/Document_1.jpg" />
+		<var name="feedEntryImage2" value="/Document_2.jpg" />
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeed#addImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryImage" value="${feedEntryImage1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryImage" value="${feedEntryImage2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+	</command>
+
+	<command name="AddLinkFeedEntries" priority="5">
+		<var name="feedEntryLinkUrl1" value="http://www.yahoo.com" />
+		<var name="feedEntryLinkUrl2" value="http://www.newsweek.com" />
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeed#addLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryLinkUrl" value="${feedEntryLinkUrl1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryLinkUrl" value="${feedEntryLinkUrl2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+	</command>
+
+	<command name="AddTopicWithExistingName" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#createTopicWithError">
+			<var name="errorMessage" value="The name already exists." />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="AddTopicWithLongName" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName1TopicName2TopicName3TopicName4TopicName5TopicName6TopicName7TopicName9TopicName0" />
+
+		<execute macro="LoopTopicsTopic#createTopicWithError">
+			<var name="errorMessage" value="The name is too long." />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#viewNoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="AddTopicWithMissingName" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopTopicsTopic#createTopicWithError">
+			<var name="errorMessage" value="Field is required." />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="" />
+		</execute>
+	</command>
+
+	<command name="CancelTopicCoverPicture" priority="5">
+		<var name="imageFileName" value="/Document_2.jpg" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#uploadCoverPicture">
+			<var name="coverPictureFileName" value="${imageFileName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#cancelCoverPicture" />
+	</command>
+
+	<command name="DeleteFeedEntry" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#deleteEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="DeleteFeedEntryComment" priority="5">
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#deleteEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="DeleteTopics" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicDescription3" value="Topic Description3" />
+		<var name="topicDescription4" value="Topic Description4" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="topicName3" value="TopicName3" />
+		<var name="topicName4" value="TopicName4" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopics">
+			<var name="topicNumberList" value="1,2,3,4" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopJson#deleteTopic">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopJson#deleteTopic">
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#viewNoTopicViaTopicsList">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#viewNoTopicViaTopicsList">
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewNoTopic">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewNoTopic">
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="EditFeedEntryComment" priority="5">
+		<var name="feedEntryCommentText" value="Feed Entry Comment Text" />
+		<var name="feedEntryCommentTextEdit" value="Edit" />
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#editEntryCommentText">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText}" />
+			<var name="feedEntryCommentContentEdit" value="${feedEntryCommentText} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryCommentTextEdit" value="${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${userName2}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText} ${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+		</execute>
+	</command>
+
+	<command name="EditFeedEntryText" priority="5">
+		<var name="feedEntryText" value="Feed Entry Text" />
+		<var name="feedEntryTextEdit" value="Edit" />
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#editEntryText">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText}" />
+			<var name="feedEntryContentEdit" value="${feedEntryText} ${feedEntryTextEdit}" />
+			<var name="feedEntryTextEdit" value="${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText} ${feedEntryTextEdit}" />
+		</execute>
+	</command>
+
+	<command name="EditTopicDescription" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicDescriptionEdit" value="Topic Description Edit" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#updateTopicInformation">
+			<var name="topicDescriptionEdit" value="${topicDescriptionEdit}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescriptionEdit}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="EditTopicDescriptionWithMarkdown" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickEditButton" />
+
+		<execute macro="LoopTopicsTopic#clickDescriptionField" />
+
+		<execute macro="LoopTopics#typeMarkdownContentViaDescription" />
+
+		<execute macro="LoopTopicsTopic#saveChanges" />
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewDescriptionMarkdown" />
+	</command>
+
+	<command name="FollowAndUnfollowTopics" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicViaToolbar">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#unfollowTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewNoTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicViaToolbar">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#unfollowTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewNoTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoMyProfile" />
+
+		<execute macro="LoopPeoplePerson#viewTopicViaFollowingSection">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoTopicViaFollowingSection">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewTopicViaFollowingSection">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoTopicViaFollowingSection">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="FollowAndUnfollowTopicsViaIndex" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopicViaIndex">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopicViaIndex">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#unfollowTopicViaIndex">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopicViaIndex">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopicViaIndex">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#unfollowTopicViaIndex">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="FollowAndUnfollowTopicsViaSearchAllResultsPage" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickUnfollowLinkViaIndex">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickUnfollowLinkViaIndex">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="FollowAndUnfollowTopicsViaSearchTopicsResultsPage" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicsResultTab" />
+
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicsResultTab" />
+
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickUnfollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicsResultTab" />
+
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoTopicsResultTab" />
+
+		<execute macro="LoopSearch#clickFollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickUnfollowLinkViaTopicsResultsPage">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="MergeTopics" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicDescription3" value="Topic Description3" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="topicName3" value="TopicName3" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopics">
+			<var name="topicNumberList" value="1,2,3" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#mergeTopicWithAnotherTopic">
+			<var name="mergeTopicName" value="${topicName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="4" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPeopleViaPeopleList">
+			<var name="userNameList" value="${userName},${userName2},${userName3},${userName4}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress}" />
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress3}" />
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#viewExpertise">
+			<var name="expertiseDescription" value="${topicDescription2}" />
+			<var name="expertiseName" value="${topicName2}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#viewExpertise">
+			<var name="expertiseDescription" value="${topicDescription2}" />
+			<var name="expertiseName" value="${topicName2}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopTopics#viewTopicViaToolbar">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#viewNoTopicViaTopicsList">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewNoTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#viewNoExpertise">
+			<var name="expertiseDescription" value="${topicDescription1}" />
+			<var name="expertiseName" value="${topicName1}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#viewNoExpertise">
+			<var name="expertiseDescription" value="${topicDescription1}" />
+			<var name="expertiseName" value="${topicName1}" />
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopSearch#clickAndTypeKeyword">
+			<var name="keyword" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopSearch#viewNoTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="0" />
+			<var name="topicDescription" value="${topicDescription3}" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicViaToolbar">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicViaToolbar">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicViaToolbar">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="SortTopics" priority="5">
+		<property name="portlet.properties.loop-portlet" value="loop.stats.entry.score.decay.cron.interval=1${line.separator}loop.stats.entry.score.decay.time=3" />
+
+		<var name="feedEntryCommentText1" value="Feed Entry Comment1 Text" />
+		<var name="feedEntryCommentText2" value="Feed Entry Comment2 Text" />
+		<var name="feedEntryText1" value="Feed Entry1 Text" />
+		<var name="feedEntryText2" value="Feed Entry2 Text" />
+		<var name="feedEntryText3" value="Feed Entry3 Text" />
+		<var name="feedEntryText4" value="Feed Entry4 Text" />
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicDescription3" value="Topic Description3" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="topicName3" value="TopicName3" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#pause">
+			<var name="pauseTime" value="1000" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#pause">
+			<var name="pauseTime" value="1000" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription3}" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+			<var name="feedEntryText" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#likeEntry">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText1}" />
+			<var name="feedEntryContent" value="${feedEntryText1}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+			<var name="feedEntryText" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText3}" />
+			<var name="feedEntryText" value="${feedEntryText3}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntryComment">
+			<var name="feedEntryCommentAuthorName" value="${userName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentText2}" />
+			<var name="feedEntryCommentText" value="${feedEntryCommentText2}" />
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#likeEntry">
+			<var name="feedEntryContent" value="${feedEntryText2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTopicDetails">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopFeed#addEntry">
+			<var name="feedEntryAuthorName" value="${userName}" />
+			<var name="feedEntryContent" value="${feedEntryText4}" />
+			<var name="feedEntryText" value="${feedEntryText4}" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopics#gotoAZTab" />
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="1" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="2" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="3" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoTrendingTab" />
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="1" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="2" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="3" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoFollowersTab" />
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="1" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="2" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="3" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#gotoNewestTab" />
+
+		<!-- Workaround until LOOP-5156 is fixed -->
+
+		<!--<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="1" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="2" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopicPosition">
+			<var name="positionValue" value="3" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>-->
+	</command>
+
+	<command name="ViewDeactivatedExperts" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#deactivatePerson">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#deactivatePerson">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress}" />
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress4}" />
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoDeactivatedPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoDeactivatedPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="ViewDeactivatedFollowers" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress3}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress4}" />
+		</execute>
+
+		<execute macro="LoopTopics#followTopic">
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress}" />
+		</execute>
+
+		<execute macro="LoopPeople#deactivatePerson">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#deactivatePerson">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="1" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewNoExpert">
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoFollowersSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName4}" />
+		</execute>
+	</command>
+
+	<command name="ViewEditedTopicExperts" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userEmailAddress5" value="loopuser05@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userFirstName5" value="Loop05" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userLastName5" value="User05" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userName5" value="Loop05 User05" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+		<var name="userScreenName5" value="loopuser05" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04,05" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#removeExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#assignExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#removeExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#assignExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#removeExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#assignExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#clickEditButton" />
+
+		<execute macro="LoopPeoplePerson#removeExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#assignExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#saveChanges" />
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="4" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress4}" />
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress5}" />
+			<var name="expertName" value="${userName5}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="4" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress2}" />
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress3}" />
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="ViewExpertCount" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userLastName2" value="User02" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userScreenName2" value="loopuser02" />
+
+		<execute macro="LoopJson#addPerson">
+			<var name="userEmailAddress" value="${userEmailAddress2}" />
+			<var name="userFirstName" value="${userFirstName2}" />
+			<var name="userLastName" value="${userLastName2}" />
+			<var name="userScreenName" value="${userScreenName2}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#mouseOverTopicName">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpertCountViaOverlay">
+			<var name="expertCount" value="0" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="${userEmailAddress2}" />
+		</execute>
+
+		<execute macro="LoopTopics#assignSelfAsExpert">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopSearch#gotoResultsPage">
+			<var name="keyword" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#mouseOverTopicName">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpertCountViaOverlay">
+			<var name="expertCount" value="2" />
+		</execute>
+	</command>
+
+	<command name="ViewLongExpertList" priority="5">
+		<var name="topicDescription" value="Topic Description" />
+		<var name="topicName" value="TopicName" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userEmailAddress5" value="loopuser05@liferay.com" />
+		<var name="userEmailAddress6" value="loopuser06@liferay.com" />
+		<var name="userEmailAddress7" value="loopuser07@liferay.com" />
+		<var name="userEmailAddress8" value="loopuser08@liferay.com" />
+		<var name="userEmailAddress9" value="loopuser09@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userFirstName5" value="Loop05" />
+		<var name="userFirstName6" value="Loop06" />
+		<var name="userFirstName7" value="Loop07" />
+		<var name="userFirstName8" value="Loop08" />
+		<var name="userFirstName9" value="Loop09" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userLastName5" value="User05" />
+		<var name="userLastName6" value="User06" />
+		<var name="userLastName7" value="User07" />
+		<var name="userLastName8" value="User08" />
+		<var name="userLastName9" value="User09" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userName5" value="Loop05 User05" />
+		<var name="userName6" value="Loop06 User06" />
+		<var name="userName7" value="Loop07 User07" />
+		<var name="userName8" value="Loop08 User08" />
+		<var name="userName9" value="Loop09 User09" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+		<var name="userScreenName5" value="loopuser05" />
+		<var name="userScreenName6" value="loopuser06" />
+		<var name="userScreenName7" value="loopuser07" />
+		<var name="userScreenName8" value="loopuser08" />
+		<var name="userScreenName9" value="loopuser09" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04,05,06,07,08,09" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName7}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName8}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName9}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpert">
+			<var name="expertName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpert">
+			<var name="expertName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpert">
+			<var name="expertName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpert">
+			<var name="expertName" value="${userName5}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewExpert">
+			<var name="expertName" value="${userName6}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#clickMoreExpertsLink" />
+
+		<execute macro="LoopPeoplePerson#viewPeopleViaPeopleList">
+			<var name="userNameList" value="${userName2},${userName3},${userName4},${userName5},${userName6},${userName7},${userName8},${userName9}" />
+		</execute>
+	</command>
+
+	<command name="ViewReactivatedExperts" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+		<var name="userEmailAddress2" value="loopuser02@liferay.com" />
+		<var name="userEmailAddress3" value="loopuser03@liferay.com" />
+		<var name="userEmailAddress4" value="loopuser04@liferay.com" />
+		<var name="userFirstName2" value="Loop02" />
+		<var name="userFirstName3" value="Loop03" />
+		<var name="userFirstName4" value="Loop04" />
+		<var name="userLastName2" value="User02" />
+		<var name="userLastName3" value="User03" />
+		<var name="userLastName4" value="User04" />
+		<var name="userName2" value="Loop02 User02" />
+		<var name="userName3" value="Loop03 User03" />
+		<var name="userName4" value="Loop04 User04" />
+		<var name="userScreenName2" value="loopuser02" />
+		<var name="userScreenName3" value="loopuser03" />
+		<var name="userScreenName4" value="loopuser04" />
+
+		<execute macro="LoopJson#addPeople">
+			<var name="personNumberList" value="02,03,04" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopJson#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName4}" />
+		</execute>
+
+		<execute macro="LoopPeople#updateExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#deactivatePerson">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#deactivatePerson">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeople#activatePerson">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#activatePerson">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="2" />
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress}" />
+			<var name="expertName" value="${userName}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress2}" />
+			<var name="expertName" value="${userName2}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="followerCount" value="2" />
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress3}" />
+			<var name="expertName" value="${userName3}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewExpert">
+			<var name="expertEmailAddress" value="${userEmailAddress4}" />
+			<var name="expertName" value="${userName4}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName2}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopPeople#gotoPersonProfile">
+			<var name="userName" value="${userName3}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoAboutSection" />
+
+		<execute macro="LoopPeoplePerson#viewExpertise">
+			<var name="expertiseName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="ViewTopics" priority="5">
+		<var name="topicDescription1" value="Topic Description1" />
+		<var name="topicDescription2" value="Topic Description2" />
+		<var name="topicName1" value="TopicName1" />
+		<var name="topicName2" value="TopicName2" />
+
+		<execute macro="LoopTopicsTopic#createTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#createTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+	</command>
+
+	<command name="ViewTopicsList" priority="5">
+		<var name="topicDescription1" value="Topic Description01" />
+		<var name="topicDescription10" value="Topic Description10" />
+		<var name="topicDescription11" value="Topic Description11" />
+		<var name="topicDescription12" value="Topic Description12" />
+		<var name="topicDescription13" value="Topic Description13" />
+		<var name="topicDescription14" value="Topic Description14" />
+		<var name="topicDescription15" value="Topic Description15" />
+		<var name="topicDescription16" value="Topic Description16" />
+		<var name="topicDescription17" value="Topic Description17" />
+		<var name="topicDescription18" value="Topic Description18" />
+		<var name="topicDescription19" value="Topic Description19" />
+		<var name="topicDescription2" value="Topic Description02" />
+		<var name="topicDescription20" value="Topic Description20" />
+		<var name="topicDescription21" value="Topic Description21" />
+		<var name="topicDescription22" value="Topic Description22" />
+		<var name="topicDescription23" value="Topic Description23" />
+		<var name="topicDescription24" value="Topic Description24" />
+		<var name="topicDescription25" value="Topic Description25" />
+		<var name="topicDescription26" value="Topic Description26" />
+		<var name="topicDescription27" value="Topic Description27" />
+		<var name="topicDescription28" value="Topic Description28" />
+		<var name="topicDescription29" value="Topic Description29" />
+		<var name="topicDescription3" value="Topic Description03" />
+		<var name="topicDescription30" value="Topic Description30" />
+		<var name="topicDescription31" value="Topic Description31" />
+		<var name="topicDescription32" value="Topic Description32" />
+		<var name="topicDescription33" value="Topic Description33" />
+		<var name="topicDescription34" value="Topic Description34" />
+		<var name="topicDescription35" value="Topic Description35" />
+		<var name="topicDescription36" value="Topic Description36" />
+		<var name="topicDescription37" value="Topic Description37" />
+		<var name="topicDescription38" value="Topic Description38" />
+		<var name="topicDescription39" value="Topic Description39" />
+		<var name="topicDescription4" value="Topic Description04" />
+		<var name="topicDescription40" value="Topic Description40" />
+		<var name="topicDescription41" value="Topic Description41" />
+		<var name="topicDescription42" value="Topic Description42" />
+		<var name="topicDescription43" value="Topic Description43" />
+		<var name="topicDescription44" value="Topic Description44" />
+		<var name="topicDescription45" value="Topic Description45" />
+		<var name="topicDescription5" value="Topic Description05" />
+		<var name="topicDescription6" value="Topic Description06" />
+		<var name="topicDescription7" value="Topic Description07" />
+		<var name="topicDescription8" value="Topic Description08" />
+		<var name="topicDescription9" value="Topic Description09" />
+		<var name="topicName1" value="TopicName01" />
+		<var name="topicName10" value="TopicName10" />
+		<var name="topicName11" value="TopicName11" />
+		<var name="topicName12" value="TopicName12" />
+		<var name="topicName13" value="TopicName13" />
+		<var name="topicName14" value="TopicName14" />
+		<var name="topicName15" value="TopicName15" />
+		<var name="topicName16" value="TopicName16" />
+		<var name="topicName17" value="TopicName17" />
+		<var name="topicName18" value="TopicName18" />
+		<var name="topicName19" value="TopicName19" />
+		<var name="topicName2" value="TopicName02" />
+		<var name="topicName20" value="TopicName20" />
+		<var name="topicName21" value="TopicName21" />
+		<var name="topicName22" value="TopicName22" />
+		<var name="topicName23" value="TopicName23" />
+		<var name="topicName24" value="TopicName24" />
+		<var name="topicName25" value="TopicName25" />
+		<var name="topicName26" value="TopicName26" />
+		<var name="topicName27" value="TopicName27" />
+		<var name="topicName28" value="TopicName28" />
+		<var name="topicName29" value="TopicName29" />
+		<var name="topicName3" value="TopicName03" />
+		<var name="topicName30" value="TopicName30" />
+		<var name="topicName31" value="TopicName31" />
+		<var name="topicName32" value="TopicName32" />
+		<var name="topicName33" value="TopicName33" />
+		<var name="topicName34" value="TopicName34" />
+		<var name="topicName35" value="TopicName35" />
+		<var name="topicName36" value="TopicName36" />
+		<var name="topicName37" value="TopicName37" />
+		<var name="topicName38" value="TopicName38" />
+		<var name="topicName39" value="TopicName39" />
+		<var name="topicName4" value="TopicName04" />
+		<var name="topicName40" value="TopicName40" />
+		<var name="topicName41" value="TopicName41" />
+		<var name="topicName42" value="TopicName42" />
+		<var name="topicName43" value="TopicName43" />
+		<var name="topicName44" value="TopicName44" />
+		<var name="topicName45" value="TopicName45" />
+		<var name="topicName5" value="TopicName05" />
+		<var name="topicName6" value="TopicName06" />
+		<var name="topicName7" value="TopicName07" />
+		<var name="topicName8" value="TopicName08" />
+		<var name="topicName9" value="TopicName09" />
+
+		<execute macro="LoopJson#createTopics">
+			<var name="topicNumberList" value="01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#pause">
+			<var name="pauseTime" value="5000" />
+		</execute>
+
+		<execute macro="Loop#openURL" />
+
+		<execute macro="LoopNavigation#gotoTopics" />
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription1}" />
+			<var name="topicName" value="${topicName1}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription2}" />
+			<var name="topicName" value="${topicName2}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription3}" />
+			<var name="topicName" value="${topicName3}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription4}" />
+			<var name="topicName" value="${topicName4}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription5}" />
+			<var name="topicName" value="${topicName5}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription6}" />
+			<var name="topicName" value="${topicName6}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription7}" />
+			<var name="topicName" value="${topicName7}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription8}" />
+			<var name="topicName" value="${topicName8}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription9}" />
+			<var name="topicName" value="${topicName9}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription10}" />
+			<var name="topicName" value="${topicName10}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription11}" />
+			<var name="topicName" value="${topicName11}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription12}" />
+			<var name="topicName" value="${topicName12}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription13}" />
+			<var name="topicName" value="${topicName13}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription14}" />
+			<var name="topicName" value="${topicName14}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription15}" />
+			<var name="topicName" value="${topicName15}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription16}" />
+			<var name="topicName" value="${topicName16}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription17}" />
+			<var name="topicName" value="${topicName17}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription18}" />
+			<var name="topicName" value="${topicName18}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription19}" />
+			<var name="topicName" value="${topicName19}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription20}" />
+			<var name="topicName" value="${topicName20}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#scrollDown" />
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription21}" />
+			<var name="topicName" value="${topicName21}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription22}" />
+			<var name="topicName" value="${topicName22}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription23}" />
+			<var name="topicName" value="${topicName23}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription24}" />
+			<var name="topicName" value="${topicName24}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription25}" />
+			<var name="topicName" value="${topicName25}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription26}" />
+			<var name="topicName" value="${topicName26}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription27}" />
+			<var name="topicName" value="${topicName27}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription28}" />
+			<var name="topicName" value="${topicName28}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription29}" />
+			<var name="topicName" value="${topicName29}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription30}" />
+			<var name="topicName" value="${topicName30}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription31}" />
+			<var name="topicName" value="${topicName31}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription32}" />
+			<var name="topicName" value="${topicName32}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription33}" />
+			<var name="topicName" value="${topicName33}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription34}" />
+			<var name="topicName" value="${topicName34}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription35}" />
+			<var name="topicName" value="${topicName35}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription36}" />
+			<var name="topicName" value="${topicName36}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription37}" />
+			<var name="topicName" value="${topicName37}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription38}" />
+			<var name="topicName" value="${topicName38}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription39}" />
+			<var name="topicName" value="${topicName39}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription40}" />
+			<var name="topicName" value="${topicName40}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#scrollDown" />
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription41}" />
+			<var name="topicName" value="${topicName41}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription42}" />
+			<var name="topicName" value="${topicName42}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription43}" />
+			<var name="topicName" value="${topicName43}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription44}" />
+			<var name="topicName" value="${topicName44}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicDescription" value="${topicDescription45}" />
+			<var name="topicName" value="${topicName45}" />
+		</execute>
+	</command>
+
+	<command name="ViewTopicWithColonDescription" priority="5">
+		<var name="topicDescription" value="Topic: Description" />
+		<var name="topicName" value="TopicName" />
+
+		<execute macro="LoopTopicsTopic#createTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopics#viewTopic">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+</definition>

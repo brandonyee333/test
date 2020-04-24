@@ -1,0 +1,3 @@
+Bundle-Name: Liferay OSB Loop URL Metadata Scraper
+Bundle-SymbolicName: com.liferay.osb.loop.url.metadata.scraper
+Bundle-Version: 1.0.0

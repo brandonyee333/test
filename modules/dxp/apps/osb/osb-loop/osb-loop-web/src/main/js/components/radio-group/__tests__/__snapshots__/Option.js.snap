@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Option renders 1`] = `
+<div class="radio-group-option-container">
+  <input class="radio" hidden="" readonly="" type="radio">
+</div>
+`;

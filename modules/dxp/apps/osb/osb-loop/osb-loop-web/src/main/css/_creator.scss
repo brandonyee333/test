@@ -1,0 +1,40 @@
+$creatorPaddingLeft: 28px;
+
+.creator-container {
+	.creator-content {
+		position: relative;
+
+		.markdown-supported-icon-container {
+			bottom: 0;
+			opacity: 0.6;
+			padding: 4px 0;
+			position: absolute;
+			right: 28px;
+		}
+	}
+
+	.drop-target-container {
+		max-height: inherit;
+	}
+
+	.editor-container {
+		min-height: 80px;
+		padding: 32px $creatorPaddingLeft 20px;
+		width: auto;
+	}
+
+	.image-sorter-container {
+		padding: 0 $creatorPaddingLeft 20px;
+		width: initial;
+	}
+
+	.input-list-container {
+		color: rgba($primary, 0.7);
+		margin: 0 0 24px;
+		padding: 0 $creatorPaddingLeft;
+	}
+
+	.link-preview-editor-container {
+		padding: 0 $creatorPaddingLeft;
+	}
+}

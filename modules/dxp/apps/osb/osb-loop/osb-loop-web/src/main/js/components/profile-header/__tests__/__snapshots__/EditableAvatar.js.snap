@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditableAvatar renders 1`] = `
+<div class="editable-avatar-container">
+  <div class="avatar-container">
+    <a style="" class="avatar avatar-size-small">
+      <div class="avatar-placeholder">
+        <svg class="loop-icon-container loop-icon-undefined loop-icon-large-1x" data-tooltip="">
+          <use href="#loop-icon-undefined-24"></use>
+        </svg>
+      </div>
+    </a>
+  </div>
+</div>
+`;

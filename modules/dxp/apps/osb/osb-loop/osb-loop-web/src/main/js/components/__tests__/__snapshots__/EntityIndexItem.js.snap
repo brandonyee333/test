@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EntityIndexItem should render 1`] = `
+<div class="entity-index-item-container">
+  <button id="unit_tests_namespace_FOLLOW_MENU1" class="btn btn-container btn-secondary btn-following follow-button-container mini" type="button">
+    <svg class="loop-icon-container loop-icon-star loop-icon-small-1x" title="follow" data-tooltip="">
+      <use href="#loop-icon-star-16"></use>
+    </svg>
+  </button>
+  <div class="avatar-container">
+    <a href="/people/0" style="" title="Joe Bloggs0" class="avatar avatar-size-large">
+      <div class="avatar-placeholder"></div>
+    </a>
+  </div>
+  <a class="entity-link-container" href="/people/0">Joe Bloggs0</a>
+  <div class="details secondary-info"></div>
+</div>
+`;

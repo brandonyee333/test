@@ -1,0 +1,15 @@
+.division-index-container {
+	.sub-nav-container .modal-link-container {
+		background: $theme;
+		border-radius: 4px;
+		color: $secondary;
+		display: block;
+		font-weight: 600;
+		padding: 14px 0;
+		width: 100%;
+
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}

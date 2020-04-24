@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadingWrapper renders 1`] = `
+<div class="loading-wrapper-container loading">
+  <div class="spinner-container">
+    <div class="spinner"></div>
+  </div>
+</div>
+`;

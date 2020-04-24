@@ -1,0 +1,10 @@
+.editor-spinner-container {
+	@include stretch;
+
+	background-color: rgba($secondary, 0.8);
+	z-index: 1;
+
+	.spinner-container {
+		@include center(both);
+	}
+}

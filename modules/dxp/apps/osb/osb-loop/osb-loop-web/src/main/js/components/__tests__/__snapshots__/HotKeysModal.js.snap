@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HotKeysModal renders 1`] = `
+<div class="hot-keys-modal-container">
+  <div class="modal-header-container">
+    <h1 class="title" ref="title" tabindex="0">keyboard-shortcuts</h1>
+    <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+      <use href="#loop-icon-close-long-16"></use>
+    </svg>
+  </div>
+  <div class="modal-body-container">
+    <ul class="hot-keys"></ul>
+  </div>
+</div>
+`;

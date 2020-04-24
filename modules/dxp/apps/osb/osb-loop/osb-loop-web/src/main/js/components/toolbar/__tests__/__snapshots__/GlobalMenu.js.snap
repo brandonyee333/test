@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalMenu renders 1`] = `
+<div class="global-menu-container">
+  <div class="toggle">
+    <div class="avatar-container">
+      <span style="" title="Joe Bloggs" class="avatar avatar-size-smallest">
+        <div class="avatar-placeholder"></div>
+      </span>
+    </div>
+    <svg class="loop-icon-container loop-icon-arrow-down-short loop-icon-small-1x loop-icon-secondary" data-tooltip="">
+      <use href="#loop-icon-arrow-down-short-16"></use>
+    </svg>
+  </div>
+</div>
+`;

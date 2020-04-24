@@ -1,0 +1,300 @@
+<definition>
+	<command name="assertNoAlert">
+		<execute function="AssertAlertNotPresent" />
+	</command>
+
+	<command name="assertSennaLoadComplete">
+		<execute function="AssertNotVisible" locator1="LoopToolbar#TOOLBAR_SENNA_LOAD" />
+	</command>
+
+	<command name="clickDropdownLink">
+		<if>
+			<condition function="IsElementNotPresent" locator1="LoopToolbar#TOOLBAR_DROPDOWN_MENU" />
+			<then>
+				<execute function="Click" locator1="LoopToolbar#TOOLBAR_USER_DROPDOWN_LINK" />
+			</then>
+		</if>
+	</command>
+
+	<command name="clickGroupLink">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute macro="Loop#removeLocationFinderMessage" />
+
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_GROUPS_LINK" />
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_GROUP_NAME_LINK" value1="${groupName}" />
+	</command>
+
+	<command name="clickGroupsLink">
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_GROUPS_LINK" />
+	</command>
+
+	<command name="clickHomeLink">
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_HOME_LINK" />
+	</command>
+
+	<command name="clickMyProfileLink">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_MY_PROFILE_LINK" value1="My Profile" />
+	</command>
+
+	<command name="clickPeopleLink">
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_PEOPLE_LINK" />
+	</command>
+
+	<command name="clickProvideFeedbackLink">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_PROVIDE_FEEDBACK_LINK" value1="Provide Feedback" />
+	</command>
+
+	<command name="clickTopicLink">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute macro="Loop#removeLocationFinderMessage" />
+
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_TOPICS_LINK" />
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_TOPIC_NAME_LINK" value1="${topicName}" />
+	</command>
+
+	<command name="clickTopicsLink">
+		<execute function="Click" locator1="LoopToolbar#TOOLBAR_TOPICS_LINK" />
+	</command>
+
+	<command name="closeDropdown">
+		<if>
+			<condition function="IsElementPresent" locator1="LoopToolbar#TOOLBAR_DROPDOWN_MENU" />
+			<then>
+				<execute function="Click" locator1="LoopToolbar#TOOLBAR_USER_DROPDOWN_LINK" />
+			</then>
+		</if>
+	</command>
+
+	<command name="closeMenuViaHotkeys">
+		<execute function="KeyPress" locator1="LoopToolbar#TOOLBAR" value1="\ESCAPE" />
+	</command>
+
+	<command name="closeOverlay">
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR" />
+	</command>
+
+	<command name="closeWindow">
+		<execute function="Close#closeWindow" locator1="title=${windowTitle}" />
+	</command>
+
+	<command name="gotoAdminPage">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_ADMIN_PAGE_LINK" value1="Admin Page" />
+	</command>
+
+	<command name="gotoGroup">
+		<execute macro="LoopNavigation#clickGroupLink">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute function="AssertElementPresent" locator1="LoopGroupsGroup#GROUP_NAME" />
+	</command>
+
+	<command name="gotoGroups">
+		<execute macro="LoopNavigation#clickGroupsLink" />
+
+		<execute function="AssertElementPresent" locator1="LoopGroups#GROUP_LIST" />
+	</command>
+
+	<command name="gotoGroupsViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="gg" />
+	</command>
+
+	<command name="gotoGroupViaMoreGroupsList">
+		<execute macro="LoopNavigation#gotoMoreGroupsList">
+			<var name="numberOfGroupMemberships" value="${numberOfGroupMemberships}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="gotoHelp">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_HELP_LINK" value1="Help" />
+	</command>
+
+	<command name="gotoHomeViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="gh" />
+	</command>
+
+	<command name="gotoJobTitles">
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="/web/guest/home/-/loop/job_titles" />
+		</execute>
+	</command>
+
+	<command name="gotoKeyboardShortcuts">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_KEYBOARD_SHORTCUTS_LINK" value1="Keyboard Shortcuts" />
+	</command>
+
+	<command name="gotoKeyboardShortcutsViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="?" />
+	</command>
+
+	<command name="gotoMoreGroupsList">
+		<var method="MathUtil#difference('${numberOfGroupMemberships}', '10')" name="numberOfHiddenGroups" />
+
+		<execute macro="Loop#removeLocationFinderMessage" />
+
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_GROUPS_LINK" />
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_MORE_GROUPS_LINK" value1="+${numberOfHiddenGroups} More" />
+	</command>
+
+	<command name="gotoMoreTopicsList">
+		<var method="MathUtil#difference('${numberOfAssignedTopics}', '10')" name="numberOfHiddenTopics" />
+
+		<execute macro="Loop#removeLocationFinderMessage" />
+
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_TOPICS_LINK" />
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_MORE_TOPICS_LINK" value1="+${numberOfHiddenTopics} More" />
+	</command>
+
+	<command name="gotoMyProfile">
+		<execute macro="LoopNavigation#clickMyProfileLink" />
+
+		<execute macro="LoopNavigation#assertSennaLoadComplete" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_NAME" />
+
+		<execute macro="LoopNavigation#closeDropdown" />
+	</command>
+
+	<command name="gotoNewPostViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="c" />
+	</command>
+
+	<command name="gotoPeople">
+		<execute macro="LoopNavigation#clickPeopleLink" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeople#PERSON_LIST" />
+	</command>
+
+	<command name="gotoPeopleViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="gp" />
+	</command>
+
+	<command name="gotoProfileViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="gm" />
+	</command>
+
+	<command name="gotoProvideFeedback">
+		<execute macro="LoopNavigation#clickProvideFeedbackLink" />
+
+		<execute function="AssertElementPresent" locator1="LoopTopicsTopic#TOPIC_NAME" />
+	</command>
+
+	<command name="gotoSearchViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="/" />
+	</command>
+
+	<command name="gotoTopic">
+		<execute macro="LoopNavigation#clickTopicLink">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute function="AssertElementPresent" locator1="LoopTopicsTopic#TOPIC_NAME" />
+	</command>
+
+	<command name="gotoTopics">
+		<execute macro="LoopNavigation#clickTopicsLink" />
+
+		<execute function="AssertElementPresent" locator1="LoopTopics#TOPIC_LIST" />
+	</command>
+
+	<command name="gotoTopicsViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="gt" />
+	</command>
+
+	<command name="gotoTopicViaMoreTopicsList">
+		<execute macro="LoopNavigation#gotoMoreTopicsList">
+			<var name="numberOfAssignedTopics" value="${numberOfAssignedTopics}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#gotoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="gotoUiKit">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertClick" locator1="LoopToolbar#TOOLBAR_UI_KIT_LINK" value1="UI Kit" />
+	</command>
+
+	<command name="reloadPage">
+		<execute function="KeyPress" locator1="LoopToolbar#TOOLBAR" value1="\F5" />
+	</command>
+
+	<command name="selectWindow">
+		<execute function="SelectWindow#selectPopUp" locator1="title=${windowTitle}" />
+	</command>
+
+	<command name="toggleNotificationsViaHotkeys">
+		<execute function="Type#sendKeys" locator1="LoopToolbar#TOOLBAR" value1="n" />
+	</command>
+
+	<command name="viewLoopToolbar">
+		<execute function="AssertElementPresent" locator1="LoopToolbar#TOOLBAR" />
+		<execute function="AssertElementPresent" locator1="LoopToolbar#TOOLBAR_SEARCH_FIELD" />
+		<execute function="AssertElementPresent" locator1="LoopToolbar#TOOLBAR_USER_ICON" />
+	</command>
+
+	<command name="viewNoAdminPage">
+		<execute macro="LoopNavigation#clickDropdownLink" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopToolbar#TOOLBAR_ADMIN_PAGE_LINK" />
+	</command>
+
+	<command name="viewNoGroup">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_GROUPS_LINK" />
+		<execute function="AssertElementNotPresent" locator1="LoopToolbar#TOOLBAR_GROUP_NAME_LINK" value1="${groupName}" />
+	</command>
+
+	<command name="viewNoTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="MouseOver" locator1="LoopToolbar#TOOLBAR_TOPICS_LINK" />
+		<execute function="AssertElementNotPresent" locator1="LoopToolbar#TOOLBAR_TOPIC_NAME_LINK" value1="${topicName}" />
+	</command>
+
+	<command name="viewPageNotFound">
+		<execute function="AssertTextEquals" locator1="LoopError#ERROR_PAGE_TITLE" value1="404" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopError#ERROR_PAGE_MESSAGE" value1="We can't seem to find what you are looking for." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopError#ERROR_PAGE_CUSTOM_MESSAGE" value1="Looking to play a game instead?" />
+		<execute function="AssertClick" locator1="LoopError#ERROR_PAGE_REDIRECT" value1="Back to Loop" />
+	</command>
+
+	<command name="viewToolbarAvatar1">
+		<execute function="SikuliAssertElementPresent" locator1="LoopToolbar#TOOLBAR_USER_ICON_1" />
+	</command>
+
+	<command name="viewToolbarAvatar2">
+		<execute function="SikuliAssertElementPresent" locator1="LoopToolbar#TOOLBAR_USER_ICON_2" />
+	</command>
+
+	<command name="viewToolbarAvatar3">
+		<execute function="SikuliAssertElementPresent" locator1="LoopToolbar#TOOLBAR_USER_ICON_3" />
+	</command>
+
+	<command name="viewToolbarAvatar4">
+		<execute function="SikuliAssertElementPresent" locator1="LoopToolbar#TOOLBAR_USER_ICON_4" />
+	</command>
+
+	<command name="viewToolbarAvatarDefault">
+		<execute function="SikuliAssertElementPresent" locator1="LoopToolbar#TOOLBAR_USER_ICON_DEFAULT" />
+	</command>
+</definition>

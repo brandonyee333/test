@@ -1,0 +1,9 @@
+.overlay-container {
+	pointer-events: none;
+	position: absolute;
+
+	.overlay-content {
+		overflow: hidden;
+		pointer-events: auto;
+	}
+}

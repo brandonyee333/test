@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ImageSorter renders 1`] = `
+<div class="image-sorter-container">
+  <div class="sortable-image-container loading" data-index="0" draggable="true">
+    <img src="/loop-portlet/images/cover_images/cover_image_1_web.jpg" class="image">
+    <div title="remove-photo" class="cancel post" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-close-long loop-icon-small-1x" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+    <div style="opacity: 1;" class="progress-bar"></div>
+  </div>
+  <div class="sortable-image-container loading" data-index="1" draggable="true">
+    <img src="/loop-portlet/images/cover_images/cover_image_2_web.jpg" class="image">
+    <div title="remove-photo" class="cancel post" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-close-long loop-icon-small-1x" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+    <div style="opacity: 1;" class="progress-bar"></div>
+  </div>
+</div>
+`;
+
+exports[`ImageSorter renders image from imageURL_web 1`] = `
+<div class="image-sorter-container">
+  <div class="sortable-image-container" data-index="0" draggable="true">
+    <img src="/loop-portlet/images/cover_images/cover_image_3_web.jpg" class="image">
+    <div title="remove-photo" class="cancel post" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-close-long loop-icon-small-1x" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+    <div style="opacity: 1;" class="progress-bar"></div>
+  </div>
+</div>
+`;
+
+exports[`ImageSorter renders image from response 1`] = `
+<div class="image-sorter-container">
+  <div class="sortable-image-container loading" data-index="0" draggable="true">
+    <img src="/loop-portlet/images/cover_images/cover_image_4_web.jpg" class="image">
+    <div title="remove-photo" class="cancel post" data-tooltip="">
+      <svg class="loop-icon-container loop-icon-close-long loop-icon-small-1x" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+    <div style="opacity: 1;" class="progress-bar"></div>
+  </div>
+</div>
+`;

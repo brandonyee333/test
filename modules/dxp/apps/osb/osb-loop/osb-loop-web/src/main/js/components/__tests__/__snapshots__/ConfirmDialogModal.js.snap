@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmDialogModal renders 1`] = `
+<div class="confirm-dialog-modal-container">
+  <div class="modal-body-container"></div>
+  <div class="modal-footer-container">
+    <button class="btn btn-container btn-secondary" type="button">cancel</button>
+    <button class="btn btn-container btn-primary" type="button">confirm</button>
+  </div>
+</div>
+`;

@@ -1,0 +1,80 @@
+$flexColumns: (
+	(1, calc(8.33% - 2 * #{$horizontalPadding})),
+	(2, calc(16.66% - 2 * #{$horizontalPadding})),
+	(3, calc(25% - 2 * #{$horizontalPadding})),
+	(4, calc(33.33% - 2 * #{$horizontalPadding})),
+	(5, calc(41.66% - 2 * #{$horizontalPadding})),
+	(6, calc(50% - 2 * #{$horizontalPadding})),
+	(7, calc(58.33% - 2 * #{$horizontalPadding})),
+	(8, calc(66.66% - 2 * #{$horizontalPadding})),
+	(9, calc(75% - 2 * #{$horizontalPadding})),
+	(10, calc(83.33% - 2 * #{$horizontalPadding})),
+	(11, calc(91.66% - 2 * #{$horizontalPadding})),
+	(12, calc(100% - 2 * #{$horizontalPadding}))
+);
+
+.flex-row {
+	@include flexbox;
+
+	height: 100%;
+
+	@each $flexColumn in $flexColumns {
+		.flex-col-#{nth($flexColumn, 1)} {
+			@include flex(1 1 nth($flexColumn, 2));
+		}
+	}
+
+	.flex-col-1, .flex-col-2, .flex-col-3, .flex-col-4, .flex-col-5, .flex-col-6 {
+		.card-container {
+			margin-left: auto;
+			margin-right: auto;
+			max-width: 594px;
+		}
+	}
+
+	@media #{$mediaSmallMax} {
+		.card-container.sub-nav-container {
+			margin-left: 0;
+			margin-right: 0;
+			max-width: initial;
+		}
+	}
+
+	@media #{$mediaSmallMin} {
+		margin: 0 (-$horizontalPadding);
+
+		@each $flexColumn in $flexColumns {
+			.flex-col-#{nth($flexColumn, 1)} {
+				padding: 0 $horizontalPadding;
+			}
+		}
+	}
+
+	@media #{$mediaMediumMax} {
+		@include flex-wrap(wrap);
+
+		@each $flexColumn in $flexColumns {
+			.flex-col-#{nth($flexColumn, 1)} {
+				@include flex-basis(100%);
+
+				width: 100%;
+			}
+		}
+
+		.flex-order-first {
+			@include order(-1);
+		}
+
+		.flex-order-last {
+			@include order(1);
+		}
+	}
+
+	@media #{$mediaMediumMin} {
+		@each $flexColumn in $flexColumns {
+			.flex-col-#{nth($flexColumn, 1)} {
+				max-width: nth($flexColumn, 2);
+			}
+		}
+	}
+}

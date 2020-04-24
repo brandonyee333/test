@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.loop.service.impl.LoopAuditEntryLocalServiceImpl" id="com.liferay.osb.loop.service.LoopAuditEntryLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopAuditEntryPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopAuditEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopDivisionLocalServiceImpl" id="com.liferay.osb.loop.service.LoopDivisionLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopDivisionPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopDivisionPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopDivisionRelLocalServiceImpl" id="com.liferay.osb.loop.service.LoopDivisionRelLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopDivisionRelPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopDivisionRelPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopExternalReferenceRelLocalServiceImpl" id="com.liferay.osb.loop.service.LoopExternalReferenceRelLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopExternalReferenceRelPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopExternalReferenceRelPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopJobTitleLocalServiceImpl" id="com.liferay.osb.loop.service.LoopJobTitleLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopJobTitlePersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopJobTitlePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopParticipantAssignmentLocalServiceImpl" id="com.liferay.osb.loop.service.LoopParticipantAssignmentLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopParticipantAssignmentPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopParticipantAssignmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopPersonLocalServiceImpl" id="com.liferay.osb.loop.service.LoopPersonLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopPersonPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopPersonPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopPersonRelLocalServiceImpl" id="com.liferay.osb.loop.service.LoopPersonRelLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopPersonRelPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopPersonRelPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopStatsEntryLocalServiceImpl" id="com.liferay.osb.loop.service.LoopStatsEntryLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopStatsEntryPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopStatsEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopStreamLocalServiceImpl" id="com.liferay.osb.loop.service.LoopStreamLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopStreamPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopStreamPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopStreamEntryLocalServiceImpl" id="com.liferay.osb.loop.service.LoopStreamEntryLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopStreamEntryPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopStreamEntryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopTopicLocalServiceImpl" id="com.liferay.osb.loop.service.LoopTopicLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopTopicPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopTopicPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopTopicAssignmentLocalServiceImpl" id="com.liferay.osb.loop.service.LoopTopicAssignmentLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopTopicAssignmentPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopTopicAssignmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopUserNotificationEventLocalServiceImpl" id="com.liferay.osb.loop.service.LoopUserNotificationEventLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopUserNotificationEventPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopUserNotificationEventPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopUserNotificationRecordLocalServiceImpl" id="com.liferay.osb.loop.service.LoopUserNotificationRecordLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopUserNotificationRecordPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopUserNotificationRecordPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.loop.service.impl.LoopUserNotificationSubscriptionLocalServiceImpl" id="com.liferay.osb.loop.service.LoopUserNotificationSubscriptionLocalService" />
+	<bean class="com.liferay.osb.loop.service.persistence.impl.LoopUserNotificationSubscriptionPersistenceImpl" id="com.liferay.osb.loop.service.persistence.LoopUserNotificationSubscriptionPersistence" parent="basePersistence" />
+</beans>

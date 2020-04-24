@@ -1,0 +1,83 @@
+<html>
+<head>
+<title>CPUsersandorganizations</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">CPUsersandorganizations</td></tr>
+</thead>
+<tbody>
+<!--CP_USERS_AND_ORGANIZATIONS-->
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert') and contains(@class,'alert-success')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>USER_LINK</td>
+	<td>//tr[@data-qa-id='row']/td/a[contains(.,'${key_userScreenName}')]</td>
+	<td></td>
+</tr>
+<!--CP_USERS_AND_ORGANIZATIONS_USER_PASSWORD-->
+<tr>
+	<td>EXPAND_PASSWORD</td>
+	<td>//div[@id='passwordTitle']//span[contains(@class,'collapse-icon-closed')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_PASSWORD_FIELD</td>
+	<td>//input[contains(@id,'UsersAdminPortlet_password1')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEW_PASSWORD_ENTER_AGAIN_FIELD</td>
+	<td>//input[contains(@id,'UsersAdminPortlet_password2')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CP_USERS_AND_ORGANIZATIONS_USER_ROLES-->
+<tr>
+	<td>EXPAND_ROLES</td>
+	<td>//div[@id='rolesTitle']//span[contains(@class,'collapse-icon-closed')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_ROLES_BUTTON</td>
+	<td>//a[contains(@id,'selectRegularRoleLink')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_ROLES_FRAME</td>
+	<td>//iframe[contains(@id,'_UsersAdminPortlet_selectRegularRole')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CHOOSE_ROLE_BUTTON</td>
+	<td>//tr[@data-qa-id='row'and contains(.,'${key_roleName}')]//button</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--CP_USERS_AND_ORGANIZATIONS_USER-->
+<tr>
+	<td>SAVE_BUTTON</td>
+	<td>//span[contains(.,'Save')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

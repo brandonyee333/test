@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageListItem renders 1`] = `
+<li class="page-list-item-container">
+  <a href="/web/guest/home/-/loop/departments/_test/pages/test" class="name">testing test0</a>
+  <div class="details"></div>
+</li>
+`;

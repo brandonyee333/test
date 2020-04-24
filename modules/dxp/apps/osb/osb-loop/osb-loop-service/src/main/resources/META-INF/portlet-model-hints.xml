@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.liferay.osb.loop.model.LoopAuditEntry">
+		<field name="loopAuditEntryId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="name" type="String" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopDivision">
+		<field name="loopDivisionId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="organizationId" type="long" />
+		<field name="parentLoopDivisionId" type="long" />
+		<field name="type" type="int" />
+		<field name="subtype" type="int" />
+		<field name="extraData" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="imagePayload" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopDivisionRel">
+		<field name="loopDivisionRelId" type="long" />
+		<field name="childLoopDivisionId" type="long" />
+		<field name="loopPersonId" type="long" />
+		<field name="parentLoopDivisionId" type="long" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopExternalReferenceRel">
+		<field name="loopExternalReferenceRelId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="externalReferenceName" type="String" />
+		<field name="externalReferencePK" type="String" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopJobTitle">
+		<field name="loopJobTitleId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="name" type="String" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="status" type="int" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopParticipantAssignment">
+		<field name="loopParticipantAssignmentId" type="long" />
+		<field name="loopDivisionId" type="long" />
+		<field name="loopPersonId" type="long" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopPerson">
+		<field name="loopPersonId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="loopJobTitleId" type="long" />
+		<field name="managerLoopPersonId" type="long" />
+		<field name="personUserId" type="long" />
+		<field name="extraData" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="groupedUserNotificationEventsCount" type="int" />
+		<field name="imagePayload" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopPersonRel">
+		<field name="loopPersonRelId" type="long" />
+		<field name="childLoopPersonId" type="long" />
+		<field name="parentLoopPersonId" type="long" />
+		<field name="type" type="int" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopStatsEntry">
+		<field name="loopStatsEntryId" type="long" />
+		<field name="modifiedTime" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="score" type="double" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopStream">
+		<field name="loopStreamId" type="long" />
+		<field name="loopPersonId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopStreamEntry">
+		<field name="loopStreamEntryId" type="long" />
+		<field name="loopPersonId" type="long" />
+		<field name="loopStreamId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="following" type="boolean" />
+		<field name="followingType" type="int" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopTopic">
+		<field name="loopTopicId" type="long" />
+		<field name="companyId" type="long" />
+		<field name="userId" type="long" />
+		<field name="userName" type="String" />
+		<field name="createDate" type="Date" />
+		<field name="modifiedDate" type="Date" />
+		<field name="parentLoopTopicId" type="long" />
+		<field name="name" type="String" />
+		<field name="description" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="imagePayload" type="String">
+			<hint-collection name="TEXTAREA" />
+		</field>
+		<field name="mergeTime" type="long" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopTopicAssignment">
+		<field name="loopTopicAssignmentId" type="long" />
+		<field name="loopPersonId" type="long" />
+		<field name="loopTopicId" type="long" />
+		<field name="status" type="int" />
+		<field name="statusByUserId" type="long" />
+		<field name="statusByUserName" type="String" />
+		<field name="statusByDate" type="Date" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopUserNotificationEvent">
+		<field name="loopUserNotificationEventId" type="long" />
+		<field name="createTime" type="long" />
+		<field name="recipientUserId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="groupClassNameId" type="long" />
+		<field name="groupClassPK" type="long" />
+		<field name="groupKey" type="long" />
+		<field name="type" type="int" />
+		<field name="received" type="boolean" />
+		<field name="opened" type="boolean" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopUserNotificationRecord">
+		<field name="loopUserNotificationRecordId" type="long" />
+		<field name="userId" type="long" />
+		<field name="createTime" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="deliveryType" type="int" />
+	</model>
+	<model name="com.liferay.osb.loop.model.LoopUserNotificationSubscription">
+		<field name="loopUserNotificationSubscriptionId" type="long" />
+		<field name="loopPersonId" type="long" />
+		<field name="classNameId" type="long" />
+		<field name="classPK" type="long" />
+		<field name="deliveryType" type="int" />
+	</model>
+</model-hints>

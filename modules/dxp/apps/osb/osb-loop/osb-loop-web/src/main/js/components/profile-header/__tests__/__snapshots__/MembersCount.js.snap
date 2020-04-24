@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MembersCount renders 1`] = `
+<a href="/people/0/members">
+  <span class="loop-icon-label-container" data-tooltip="">
+    <svg class="loop-icon-container loop-icon-persons loop-icon-small-1x loop-icon-primary" data-tooltip="">
+      <use href="#loop-icon-persons-16"></use>
+    </svg>
+    <span class="loop-icon-label">x-members</span>
+  </span>
+</a>
+`;

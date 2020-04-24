@@ -1,0 +1,278 @@
+<definition>
+	<command name="clickAddCommentLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_LINK" value1="Comment" />
+	</command>
+
+	<command name="clickLikedLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="clickLikeLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="clickOptionsLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedBookmarks#ENTRY_OPTIONS_LINK" />
+	</command>
+
+	<command name="clickRemoveBookmarkLinkViaIcon">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedBookmarks#ENTRY_BOOKMARK" />
+	</command>
+
+	<command name="clickUserSharedToListLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_SHARED_TO_PERSON_LIST_LINK" value1="${numberOfUserShares} People" />
+	</command>
+
+	<command name="likeEntry">
+		<execute macro="LoopFeedEntryBookmarks#clickLikeLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryBookmarks#viewLikedEntry">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="scrollDown">
+		<execute function="KeyPress" locator1="LoopFeedBookmarks#ENTRY_STREAM" value1="\SPACE" />
+	</command>
+
+	<command name="unlikeEntry">
+		<execute macro="LoopFeedEntryBookmarks#clickLikedLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryBookmarks#viewNotLikedEntry">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="viewAuthorAndContent">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_BOOKMARK" />
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_AUTHOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_AUTHOR" value1="${feedEntryAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryDate" />
+				<not>
+					<contains string="${feedEntryDate}" substring="{feedEntryDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_DATE" value1="${feedEntryDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_CONTENT" value1="${feedEntryContent}" />
+	</command>
+
+	<command name="viewImage">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedBookmarks#ENTRY_IMAGE" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+	</command>
+
+	<command name="viewImages">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+		<var name="key_positionValue" value="${numberOfImages}" />
+
+		<var name="imageNumber" value="1" />
+
+		<if>
+			<not>
+				<or>
+					<equals arg1="${numberOfImages}" arg2="0" />
+					<equals arg1="${numberOfImages}" arg2="1" />
+					<equals arg1="${numberOfImages}" arg2="2" />
+					<equals arg1="${numberOfImages}" arg2="3" />
+					<equals arg1="${numberOfImages}" arg2="4" />
+					<contains string="${numberOfImages}" substring="{numberOfImages}" />
+				</or>
+			</not>
+			<then>
+				<var name="key_positionValue" value="4" />
+				<var method="MathUtil#difference('${numberOfImages}', '4')" name="remainingNumberOfImages" />
+
+				<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_IMAGE_SEE_MORE" />
+				<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_IMAGE_SEE_MORE" value1="+ ${remainingNumberOfImages}" />
+
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="4 of ${numberOfImages}" />
+				<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+			</then>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_IMAGE_SPECIFIC" />
+
+		<execute function="Click" locator1="LoopFeedBookmarks#ENTRY_IMAGE" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+
+		<var method="MathUtil#sum('${imageNumber}', '1')" name="imageNumber" />
+
+		<while>
+			<not>
+				<equals arg1="${imageNumber}" arg2="${numberOfImages}" />
+			</not>
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW" />
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+				<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+
+				<var method="MathUtil#sum('${imageNumber}', '1')" name="imageNumber" />
+			</then>
+		</while>
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW" />
+
+		<var method="MathUtil#difference('${imageNumber}', '1')" name="imageNumber" />
+
+		<while>
+			<not>
+				<equals arg1="${imageNumber}" arg2="1" />
+			</not>
+			<then>
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+				<execute function="Click#makeVisibleClickAt" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_PREVIOUS_ARROW" />
+
+				<var method="MathUtil#difference('${imageNumber}', '1')" name="imageNumber" />
+			</then>
+		</while>
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_NEXT_ARROW" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_IMAGE_COUNT" value1="${imageNumber} of ${numberOfImages}" />
+		<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+	</command>
+
+	<command name="viewLikedEntry">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="viewLikeSummary">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_LIKE_SUMMARY_TITLE" value1="People Who Liked This Post:" />
+
+		<for list="${likeUserNameList}" param="userName">
+			<var name="key_userName" value="${userName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_LIKE_SUMMARY_USER_AVATAR_LINK" />
+		</for>
+	</command>
+
+	<command name="viewLinkPreview">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_LINK_PREVIEW_IMAGE" />
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_LINK_PREVIEW_TITLE" />
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_LINK_PREVIEW_DESCRIPTION" />
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_LINK_PREVIEW_SHORT_URL" />
+	</command>
+
+	<command name="viewNoBookmark">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_BOOKMARK" />
+	</command>
+
+	<command name="viewNone">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopFeedBookmarks#ENTRY_CONTENT" />
+			<then>
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_AUTHOR" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_DATE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_CONTENT" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_AUTHOR" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_DATE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_CONTENT" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNotLikedEntry">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_LIKED_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="viewUserViaLikeSummaryLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="Click#clickNoMouseOver" locator1="LoopFeedBookmarks#ENTRY_LIKE_SUMMARY_USER_AVATAR_LINK" />
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewUserViaSharedToLink">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_SHARED_TO_PERSON_LINK" value1="${userName}" />
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewUserViaSharedToList">
+		<execute macro="LoopFeedEntryBookmarks#clickUserSharedToListLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="numberOfUserShares" value="${numberOfUserShares}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+</definition>

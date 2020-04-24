@@ -1,0 +1,24 @@
+.search-summary-container {
+	width: 100%;
+
+	> .no-results-container {
+		text-align: center;
+	}
+
+	.results {
+		@include flexbox;
+	}
+
+	.search-entites-summary-container {
+		@include flex(1);
+
+		height: 100%;
+	}
+
+	.search-feed-container {
+		@include flex(0 0 536px);
+
+		margin-right: 24px;
+		max-width: 536px;
+	}
+}

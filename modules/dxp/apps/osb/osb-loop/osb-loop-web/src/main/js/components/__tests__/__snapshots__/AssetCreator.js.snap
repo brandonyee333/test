@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetCreator renders 1`] = `
+<div class="card-container asset-creator-container minimized">
+  <div>
+    <div class="creator-container">
+      <div class="drop-target-container">
+        <span></span>
+        <div class="creator-content">
+          <div class="editor-container"></div>
+          <div class="input-list-container inline-label creator">
+            <label for="inputList2" class="control-label">to</label>
+            <div class="autocomplete-input-container">
+              <div class="input-container row">
+                <input id="inputList2" placeholder="share-with-people-groups-or-topics" value="" type="text" ref="input">
+              </div>
+            </div>
+          </div>
+          <svg class="loop-icon-container loop-icon-markdown loop-icon-large-1x loop-icon-dark markdown-supported-icon-container" title="markdown-supported" data-tooltip="">
+            <use href="#loop-icon-markdown-24"></use>
+          </svg>
+        </div>
+        <div class="creator-toolbar-container">
+          <div class="tab">
+            <div title="add-photos" data-tooltip="">
+              <svg class="loop-icon-container loop-icon-camera loop-icon-large-1x" data-tooltip="">
+                <use href="#loop-icon-camera-24"></use>
+              </svg>
+            </div>
+            <svg class="loop-icon-container loop-icon-close-short loop-icon-small-1x exit-tab" data-tooltip="">
+              <use href="#loop-icon-close-short-16"></use>
+            </svg>
+          </div>
+          <div class="tab">
+            <div title="add-link" data-tooltip="">
+              <svg class="loop-icon-container loop-icon-link loop-icon-large-1x" data-tooltip="">
+                <use href="#loop-icon-link-24"></use>
+              </svg>
+            </div>
+            <svg class="loop-icon-container loop-icon-close-short loop-icon-small-1x exit-tab" data-tooltip="">
+              <use href="#loop-icon-close-short-16"></use>
+            </svg>
+          </div>
+          <div class="spacer"></div>
+          <div class="tab">
+            <div title="preview-post" data-tooltip="">
+              <svg class="loop-icon-container loop-icon-eye loop-icon-large-1x" data-tooltip="">
+                <use href="#loop-icon-eye-24"></use>
+              </svg>
+            </div>
+          </div>
+          <div class="checkbox-container private-post-checkbox">
+            <input title="share-privately-with-the-people-groups-and-topics-that-are-mentioned" data-tooltip="" id="checkbox3" class="checkbox-input" type="checkbox">
+            <div class="checkbox"></div>
+            <label for="checkbox3" class="checkbox-label">private</label>
+          </div>
+          <button disabled="" class="btn btn-container btn-primary" type="button">post</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="minimizer">
+    <svg class="loop-icon-container loop-icon-plus loop-icon-small-1x" data-tooltip="">
+      <use href="#loop-icon-plus-16"></use>
+    </svg>
+  </div>
+</div>
+`;

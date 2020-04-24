@@ -1,0 +1,12 @@
+.hot-keys-modal-container {
+	.hot-key-container {
+		@include align-items(center);
+		@include flexbox;
+
+		margin: 8px;
+	}
+
+	.modal-body-container {
+		padding: 16px;
+	}
+}

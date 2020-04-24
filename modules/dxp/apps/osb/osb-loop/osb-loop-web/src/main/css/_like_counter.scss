@@ -1,0 +1,32 @@
+.like-counter-container {
+	$likedAvatarPadding: 4px;
+
+	@include align-items(center);
+	@include flexbox;
+	@include justify-content(space-between);
+
+	box-sizing: border-box;
+	height: 56px;
+	padding: 0 ($postPadding - $likedAvatarPadding) 0 $postPadding;
+	width: 100%;
+
+	.participants {
+		@include flex-direction(row-reverse);
+		@include flex-wrap(wrap);
+		@include flexbox;
+
+		height: 36px;
+		overflow: hidden;
+		padding: $likedAvatarPadding;
+
+		.avatar-container, .btn-container {
+			margin: 0 0 $likedAvatarPadding 12px;
+		}
+	}
+
+	.secondary-info {
+		@include flex-shrink(0);
+
+		font-size: 13px;
+	}
+}

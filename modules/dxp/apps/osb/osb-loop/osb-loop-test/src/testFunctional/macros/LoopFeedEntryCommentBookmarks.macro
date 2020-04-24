@@ -1,0 +1,214 @@
+<definition>
+	<command name="clickAndTypeText">
+		<execute macro="LoopFeedEntryCommentBookmarks#clickTextField">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentBookmarks#typeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="clickLikedLink">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_COMMENT_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="clickLikeLink">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeedBookmarks#ENTRY_COMMENT_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="clickTextField">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Click" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" />
+		<execute function="SelectFieldText" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" />
+		<execute function="KeyPress" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" value1="\RIGHT" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" value1="\END" />-->
+	</command>
+
+	<command name="hashtagTopics">
+		<for list="${hashtagTopicNameList}" param="topicName">
+			<execute macro="LoopFeedEntryCommentBookmarks#typeSpace">
+				<var name="feedEntryContent" value="${feedEntryContent}" />
+			</execute>
+
+			<execute macro="LoopFeedEntryCommentBookmarks#typeHashtag">
+				<var name="feedEntryContent" value="${feedEntryContent}" />
+				<var name="topicName" value="${topicName}" />
+			</execute>
+
+			<execute macro="LoopFeedEntryComment#selectTopicFromDropdown">
+				<var name="topicName" value="${topicName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="likeEntry">
+		<execute macro="LoopFeedEntryCommentBookmarks#clickLikeLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentBookmarks#viewLikedEntry">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="mentionGroups">
+		<for list="${mentionGroupNameList}" param="groupName">
+			<execute macro="LoopFeedEntryCommentBookmarks#typeSpace">
+				<var name="feedEntryContent" value="${feedEntryContent}" />
+			</execute>
+
+			<execute macro="LoopFeedEntryCommentBookmarks#typeMention">
+				<var name="entityName" value="${groupName}" />
+				<var name="feedEntryContent" value="${feedEntryContent}" />
+			</execute>
+
+			<execute macro="LoopFeedEntryComment#selectGroupFromDropdown">
+				<var name="groupName" value="${groupName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="mentionUsers">
+		<for list="${mentionUserNameList}" param="userName">
+			<execute macro="LoopFeedEntryCommentBookmarks#typeSpace">
+				<var name="feedEntryContent" value="${feedEntryContent}" />
+			</execute>
+
+			<execute macro="LoopFeedEntryCommentBookmarks#typeMention">
+				<var name="entityName" value="${userName}" />
+				<var name="feedEntryContent" value="${feedEntryContent}" />
+			</execute>
+
+			<execute macro="LoopFeedEntryComment#selectUserFromDropdown">
+				<var name="userName" value="${userName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="post">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="KeyPress" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="typeHashtag">
+		<execute macro="LoopFeedEntryCommentBookmarks#typeText">
+			<var name="feedEntryCommentText" value="#" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentBookmarks#typeText">
+			<var name="feedEntryCommentText" value="${topicName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="typeMention">
+		<execute macro="LoopFeedEntryCommentBookmarks#typeText">
+			<var name="feedEntryCommentText" value="@" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentBookmarks#typeText">
+			<var name="feedEntryCommentText" value="${entityName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="typeSpace">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="KeyPress" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" value1="\SPACE" />
+	</command>
+
+	<command name="typeText">
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="Type#sendKeys" locator1="LoopFeedBookmarks#ENTRY_ADD_COMMENT_TEXT_FIELD" value1="${feedEntryCommentText}" />
+	</command>
+
+	<command name="unlikeEntry">
+		<execute macro="LoopFeedEntryCommentBookmarks#clickLikedLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentBookmarks#viewNotLikedEntry">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="viewAuthorAndContent">
+		<var name="key_feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_COMMENT_AUTHOR" value1="${feedEntryCommentAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryCommentDate" />
+				<not>
+					<contains string="${feedEntryCommentDate}" substring="{feedEntryCommentDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_COMMENT_DATE" value1="${feedEntryCommentDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeedBookmarks#ENTRY_COMMENT_CONTENT" value1="${feedEntryCommentContent}" />
+	</command>
+
+	<command name="viewLikedEntry">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_COMMENT_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="viewNone">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_CONTENT" />
+			<then>
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_COMMENT_AUTHOR" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_COMMENT_DATE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeedBookmarks#ENTRY_COMMENT_CONTENT" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_AUTHOR" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_DATE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeedBookmarks#ENTRY_COMMENT_CONTENT" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNotLikedEntry">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeedBookmarks#ENTRY_COMMENT_LIKE_LINK" value1="Like" />
+	</command>
+</definition>

@@ -1,0 +1,33 @@
+.entity-display-container {
+	@include align-items(center);
+	@include flexbox;
+
+	max-width: 100%;
+
+	.entity-info {
+		@include flex-grow(1);
+
+		overflow: hidden;
+		padding: 0 8px;
+
+		.name {
+			@include ellipsis;
+
+			color: $theme;
+			font-size: 14px;
+			font-weight: 600;
+		}
+
+		.details {
+			@include flex-wrap(wrap);
+			@include flexbox;
+
+			color: rgba($primary, 0.6);
+			font-size: 12px;
+
+			.loop-icon-label-container {
+				margin-right: 10px;
+			}
+		}
+	}
+}

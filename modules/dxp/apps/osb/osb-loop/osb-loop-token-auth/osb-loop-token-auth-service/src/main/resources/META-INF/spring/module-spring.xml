@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.loop.token.auth.service.impl.TokenAuthEntryLocalServiceImpl" id="com.liferay.osb.loop.token.auth.service.TokenAuthEntryLocalService" />
+	<bean class="com.liferay.osb.loop.token.auth.service.impl.TokenAuthEntryServiceImpl" id="com.liferay.osb.loop.token.auth.service.TokenAuthEntryService" />
+	<bean class="com.liferay.osb.loop.token.auth.service.persistence.impl.TokenAuthEntryPersistenceImpl" id="com.liferay.osb.loop.token.auth.service.persistence.TokenAuthEntryPersistence" parent="basePersistence" />
+</beans>

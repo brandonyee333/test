@@ -1,0 +1,34 @@
+<html>
+<head>
+<title>LoopJobTitles</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopJobTitles</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>SUCCESS_MESSAGE</td>
+	<td>//div[contains(@class,'alert-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_LIST</td>
+	<td>//div[contains(@class,'entity-index')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CREATE_JOB_TITLE_LINK</td>
+	<td>//a[contains(.,'Create Job Title')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>JOB_TITLE_NAME</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(@class,'container')]//a[contains(.,'${key_jobTitleName}')]</td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

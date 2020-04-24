@@ -1,0 +1,12 @@
+.spinner-container {
+	@include flexbox;
+	@include justify-content(center);
+
+	.spinner {
+		@include spinner(20px, 3px);
+
+		&.small {
+			@include spinner(10px, 2px);
+		}
+	}
+}

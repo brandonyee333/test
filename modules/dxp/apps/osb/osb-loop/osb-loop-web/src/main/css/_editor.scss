@@ -1,0 +1,28 @@
+.editor-container {
+	position: relative;
+	width: 100%;
+
+	&.editor-large .editor {
+		min-height: 80px;
+	}
+
+	.autocomplete-menu-container {
+		left: 0;
+		right: 0;
+	}
+
+	.editor {
+		cursor: text;
+		min-height: inherit;
+	}
+
+	.mention {
+		color: $theme;
+		font-weight: 500;
+	}
+
+	.public-DraftEditorPlaceholder-root {
+		color: rgba($primary, 0.6);
+		position: absolute;
+	}
+}

@@ -1,0 +1,54 @@
+.sidebar-container {
+	&, ul {
+		list-style: none;
+		margin-left: 0;
+	}
+
+	a {
+		@include ellipsis;
+
+		color: inherit;
+		display: block;
+		padding: 10px 30px;
+		white-space: nowrap;
+
+		&:hover {
+			background-color: rgba($theme, 0.1);
+
+			&, &.see-more, .loop-icon-label-container, .loop-icon-label-container > .loop-icon-label {
+				color: $theme;
+			}
+		}
+	}
+
+	> li {
+		padding-top: 10px;
+	}
+
+	.follow-list {
+		color: rgba($primary, 0.6);
+		font-size: 13px;
+
+		.loop-icon-label-container > .loop-icon-label, .see-more {
+			color: rgba($primary, 0.8);
+		}
+
+		> li {
+			padding-bottom: 5px;
+
+			> a {
+				padding-left: 60px;
+			}
+		}
+	}
+
+	.sidebar-header {
+		color: $theme;
+		font-size: 14px;
+		font-weight: 600;
+
+		.loop-icon-label-container > .loop-icon-label {
+			color: $primary;
+		}
+	}
+}

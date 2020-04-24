@@ -1,0 +1,222 @@
+<definition>
+	<command name="clickAddReplyLink">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_ADD_REPLY_LINK" value1="Reply" />
+	</command>
+
+	<command name="clickLikedLink">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="clickLikeLink">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="clickTimestamp">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="Click" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" />
+	</command>
+
+	<command name="likeEntry">
+		<execute macro="LoopFeedEntryCommentReply#clickLikeLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewLikedEntry">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		</execute>
+	</command>
+
+	<command name="unlikeEntry">
+		<execute macro="LoopFeedEntryCommentReply#clickLikedLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewNotLikedEntry">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		</execute>
+	</command>
+
+	<command name="viewAuthorAndContent">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR" value1="${feedEntryCommentReplyAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryCommentReplyDate" />
+				<not>
+					<contains string="${feedEntryCommentReplyDate}" substring="{feedEntryCommentReplyDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" value1="${feedEntryCommentReplyDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT" value1="${feedEntryCommentReplyContent}" />
+	</command>
+
+	<command name="viewAuthorAndPartialContent">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyPartialContent}" />
+
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR" value1="${feedEntryCommentReplyAuthorName}" />
+
+		<if>
+			<and>
+				<isset var="feedEntryCommentReplyDate" />
+				<not>
+					<contains string="${feedEntryCommentReplyDate}" substring="{feedEntryCommentDate}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" value1="${feedEntryCommentReplyDate}" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" />
+			</else>
+		</if>
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT" value1="${feedEntryCommentReplyPartialContent}" />
+	</command>
+
+	<command name="viewHashtag">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT_HASHTAG_LINK" value1="#${topicName}" />
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewImage">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="Click" locator1="LoopFeed#ENTRY_COMMENT_REPLY_IMAGE" />
+		<execute function="AssertElementPresent" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN" />
+		<execute function="Click" locator1="LoopFeed#ENTRY_IMAGE_FULL_SCREEN_CLOSE_BUTTON" />
+	</command>
+
+	<command name="viewLikedEntry">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_LIKED_LINK" value1="Liked" />
+	</command>
+
+	<command name="viewNoImage">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_IMAGE" />
+	</command>
+
+	<command name="viewNone">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		<var name="key_feedEntryContent" value="${feedEntryContent}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT" />
+			<then>
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" />
+				<execute function="AssertElementNotPresent#assertNotVisible" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR_PROFILE_PICTURE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_AUTHOR" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_DATE" />
+				<execute function="AssertElementNotPresent" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNotLikedEntry">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_LIKE_LINK" value1="Like" />
+	</command>
+
+	<command name="viewNoUserViaLikeSummaryList">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_LIKE_COUNTER" value1="${numberOfLikes}" />
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewUrlLink">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		<var name="key_feedEntryCommentReplyLinkUrl" value="${feedEntryCommentReplyLinkUrl}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT_URL_LINK" value1="${feedEntryCommentReplyLinkUrl}" />
+	</command>
+
+	<command name="viewUserMention">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute macro="LoopNavigation#closeOverlay" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_CONTENT_USER_MENTION_LINK" value1="${userName}" />
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewUserViaLikeSummaryList">
+		<var name="key_feedEntryCommentContent" value="${feedEntryCommentContent}" />
+		<var name="key_feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+
+		<execute function="AssertClick" locator1="LoopFeed#ENTRY_COMMENT_REPLY_LIKE_COUNTER" value1="${numberOfLikes}" />
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+</definition>

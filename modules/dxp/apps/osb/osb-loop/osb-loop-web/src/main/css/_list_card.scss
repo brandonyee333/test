@@ -1,0 +1,39 @@
+.list-card-container {
+	.category {
+		@include align-items(baseline);
+		@include flexbox;
+
+		margin-bottom: 12px;
+	}
+
+	.category-items {
+		@include ellipsis;
+
+		margin: 0;
+	}
+
+	.category-label {
+		@include flex(0 0 25%);
+
+		font-weight: 600;
+		margin-right: 12px;
+		text-align: right;
+	}
+
+	.item {
+		@include ellipsis;
+
+		display: block;
+		margin-bottom: 12px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		> a {
+			@include ellipsis;
+
+			display: block;
+		}
+	}
+}

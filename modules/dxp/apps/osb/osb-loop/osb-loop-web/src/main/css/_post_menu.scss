@@ -1,0 +1,13 @@
+.post-menu-container {
+	.menu-icon {
+		color: rgba($primary, 0.6);
+	}
+
+	.menu-item-container {
+		&:hover, &.active {
+			.menu-icon {
+				color: $theme;
+			}
+		}
+	}
+}

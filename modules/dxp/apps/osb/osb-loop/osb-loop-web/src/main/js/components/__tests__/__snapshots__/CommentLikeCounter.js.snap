@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommentLikeCounter renders 1`] = `
+<span class="comment-like-counter-container">
+  <button type="button" class="inline-button-container like-action">like</button>
+  <a title="click-to-see-likes" class="counter" data-tooltip="" href="javascript:;">
+    <svg class="loop-icon-container loop-icon-heart-full loop-icon-small-1x" data-tooltip="">
+      <use href="#loop-icon-heart-full-16"></use>
+    </svg>5</a>
+</span>
+`;
+
+exports[`CommentLikeCounter renders 2`] = `
+<span class="comment-like-counter-container">
+  <button type="button" class="inline-button-container like-action">like</button>
+  <a title="click-to-see-likes" class="counter" data-tooltip="" href="javascript:;">
+    <svg class="loop-icon-container loop-icon-heart-full loop-icon-small-1x" data-tooltip="">
+      <use href="#loop-icon-heart-full-16"></use>
+    </svg>5</a>
+</span>
+`;

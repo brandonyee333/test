@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JobTitleSelect renders 1`] = `
+<div class="form-select-container default">
+  <label for="formSelect1" class="label-container">job-title (required)</label>
+  <select class="default" id="formSelect1">
+    <option selected=""></option>
+  </select>
+</div>
+`;
+
+exports[`JobTitleSelect should render with jobTitles 1`] = `
+<div class="form-select-container default">
+  <label for="formSelect2" class="label-container">job-title (required)</label>
+  <select class="default" id="formSelect2">
+    <option selected=""></option>
+  </select>
+</div>
+`;

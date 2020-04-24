@@ -1,0 +1,105 @@
+<html>
+<head>
+<title>LoopTopics</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">LoopTopics</td></tr>
+</thead>
+<tbody>
+<tr>
+	<td>TOPIC_LIST</td>
+	<td>//div[contains(@class,'entity-index')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TRENDING_TAB</td>
+	<td>//ul[@class='sub-nav']//li/a[contains(@href,'trending')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FOLLOWERS_TAB</td>
+	<td>//ul[@class='sub-nav']//li/a[contains(@href,'followers')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>AZ_TAB</td>
+	<td>//ul[@class='sub-nav']//li/a[contains(@href,'a-z')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NEWEST_TAB</td>
+	<td>//ul[@class='sub-nav']//li/a[contains(@href,'newest')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CREATE_TOPIC_LINK</td>
+	<td>//div[contains(@class,'create-entity')]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_NAME</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_topicName}')]//a | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_topicName}')]//a[contains(@class,'link')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_NAME_GENERIC</td>
+	<td>xpath=(//div[contains(@class,'entity-index-item-container')]//a[contains(@class,'link')])[${key_positionValue}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_FOLLOWER_COUNT</td>
+	<td>//div/div/div[contains(@class,'entity') and contains(@class,'container')]//div[contains(@class,'info') and contains(.,'${key_topicName}')]//div[contains(@class,'details')]//span[contains(@class,'follower-count')] | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_topicName}')]//div[contains(@class,'details')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_FOLLOW_MENU_BUTTON</td>
+	<td>//div[contains(@class,'entity-display-container')]//div[contains(@class,'info') and contains(.,'${key_topicName}')]//parent::div//button | //div[contains(@class,'entity-index-item-container') and contains(.,'${key_topicName}')]//button[contains(@class,'follow')]/*[local-name()='svg']</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<!--TOPIC_OVERLAY-->
+<tr>
+	<td>TOPIC_OVERLAY_AVATAR</td>
+	<td>//div[contains(@class,'entity-summary-container')]//div[contains(@class,'avatar-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OVERLAY_NAME</td>
+	<td>//div[contains(@class,'entity-summary-container')]//a[contains(@class,'entity-link-container')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OVERLAY_TYPE</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[./text()='Topic']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OVERLAY_FOLLOWERS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Follower')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OVERLAY_EXPERTS</td>
+	<td>//div[contains(@class,'entity-summary-container')]//span[contains(.,'Expert')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>TOPIC_OVERLAY_FOLLOW_BUTTON</td>
+	<td>//div[contains(@class,'entity-summary-container')]//button[contains(@class,'follow')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

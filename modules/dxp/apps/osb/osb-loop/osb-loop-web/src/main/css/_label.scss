@@ -1,0 +1,6 @@
+.label-container {
+	@include transition(color 0.4s ease-in);
+
+	display: block;
+	font-weight: normal;
+}

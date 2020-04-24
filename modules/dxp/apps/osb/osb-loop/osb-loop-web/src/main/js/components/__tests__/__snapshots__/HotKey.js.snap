@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hotkey should render 1`] = `
+<li class="hot-key-container" tabindex="0">
+  <span class="definition">test</span>
+  <span class="keys-wrapper">
+    <kbd class="key">t</kbd>
+  </span>
+</li>
+`;

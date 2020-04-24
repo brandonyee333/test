@@ -1,0 +1,1802 @@
+<definition>
+	<command name="addAnimatedImageEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#uploadImage">
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeed#viewAnimatedImageEntry">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+		</execute>
+	</command>
+
+	<command name="addAnimatedImagesEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<var name="positionValue" value="0" />
+
+		<for list="${feedEntryImageList}" param="feedEntryImage">
+			<var method="MathUtil#sum('${positionValue}', '1')" name="positionValue" />
+
+			<execute macro="LoopFeedEntry#uploadImage">
+				<var name="feedEntryImage" value="${feedEntryImage}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#viewSpecificImagePreview">
+				<var name="positionValue" value="${positionValue}" />
+			</execute>
+		</for>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeed#viewAnimatedImagesEntry">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="numberOfImages" value="${numberOfImages}" />
+		</execute>
+	</command>
+
+	<command name="addAnnouncementEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#makeAnnouncement">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryStickyTimeInDays" value="${feedEntryStickyTimeInDays}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+			<var name="sendEmailNotification" value="${sendEmailNotification}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#makePrivate">
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeedEntry#viewAnnouncementAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="feedEntryTitle" value="${feedEntryTitle}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="addEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#makePrivate">
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="addEntryComment">
+		<execute macro="LoopFeedEntry#clickAddCommentLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentReply">
+		<execute macro="LoopFeedEntryComment#clickAddReplyLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentReplyText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyDate}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentReplytoCommentReply">
+		<execute macro="LoopFeedEntryCommentReply#clickAddReplyLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentReplyReplyText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyReplyDate}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentReplyWithImage">
+		<execute macro="LoopFeedEntryComment#clickAddReplyLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentReplyText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#uploadImage">
+			<var name="feedEntryCommentImage" value="${feedEntryCommentReplyImage}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentReplyWithImage">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyDate}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentReplyWithLink">
+		<execute macro="LoopFeedEntryComment#clickAddReplyLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentReplyText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#typeLink">
+			<var name="feedEntryCommentLinkUrl" value="${feedEntryCommentReplyLinkUrl}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentReplyWithLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyDate}" />
+			<var name="feedEntryCommentReplyLinkUrl" value="${feedEntryCommentReplyLinkUrl}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentWithAnimatedImage">
+		<execute macro="LoopFeedEntry#clickAddCommentLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#uploadImage">
+			<var name="feedEntryCommentImage" value="${feedEntryCommentImage}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentWithAnimatedImage">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentWithImage">
+		<execute macro="LoopFeedEntry#clickAddCommentLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#uploadImage">
+			<var name="feedEntryCommentImage" value="${feedEntryCommentImage}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentWithImage">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="addEntryCommentWithLink">
+		<execute macro="LoopFeedEntry#clickAddCommentLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#clickAndTypeText">
+			<var name="feedEntryCommentText" value="${feedEntryCommentText}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#typeLink">
+			<var name="feedEntryCommentLinkUrl" value="${feedEntryCommentLinkUrl}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentWithLink">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryCommentLinkUrl" value="${feedEntryCommentLinkUrl}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="addFeaturedTopic">
+		<execute macro="LoopFeed#clickFeaturedTopicsSettings" />
+
+		<execute macro="LoopFeed#selectFeaturedTopic">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#clickModalCloseButton" />
+
+		<execute macro="LoopFeed#viewFeaturedTopic">
+			<var name="expertCount" value="${expertCount}" />
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="addImageEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#uploadImage">
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#makePrivate">
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeed#viewImageEntry">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="addImagesEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<var name="positionValue" value="0" />
+
+		<for list="${feedEntryImageList}" param="feedEntryImage">
+			<var method="MathUtil#sum('${positionValue}', '1')" name="positionValue" />
+
+			<execute macro="LoopFeedEntry#uploadImage">
+				<var name="feedEntryImage" value="${feedEntryImage}" />
+			</execute>
+
+			<execute macro="LoopFeedEntry#viewSpecificImagePreview">
+				<var name="positionValue" value="${positionValue}" />
+			</execute>
+		</for>
+
+		<execute macro="LoopFeedEntry#makePrivate">
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeed#viewImagesEntry">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="numberOfImages" value="${numberOfImages}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="addLinkEntry">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#generateLinkPreview">
+			<var name="feedEntryLinkUrl" value="${feedEntryLinkUrl}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewLinkPreviewViaTextField" />
+
+		<execute macro="LoopFeedEntry#makePrivate">
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeed#viewLinkEntry">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="addLinkEntryAndViewPreviewText">
+		<execute macro="LoopFeedEntry#clickAndTypeText">
+			<var name="feedEntryText" value="${feedEntryText}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntry">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#generateLinkPreview">
+			<var name="feedEntryLinkUrl" value="${feedEntryLinkUrl}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewLinkPreviewTextViaTextField">
+			<var name="feedEntryLinkDescription" value="${feedEntryLinkDescription}" />
+			<var name="feedEntryLinkName" value="${feedEntryLinkName}" />
+			<var name="feedEntryLinkShortUrl" value="${feedEntryLinkShortUrl}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#post" />
+
+		<execute macro="LoopFeed#viewLinkEntryWithPreviewText">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryLinkDescription" value="${feedEntryLinkDescription}" />
+			<var name="feedEntryLinkName" value="${feedEntryLinkName}" />
+			<var name="feedEntryLinkShortUrl" value="${feedEntryLinkShortUrl}" />
+		</execute>
+	</command>
+
+	<command name="bookmarkEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickBookmarkLink" />
+
+		<execute macro="LoopFeedEntry#viewBookmark">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="clickFeaturedTopicsSettings">
+		<execute function="Click" locator1="LoopFeed#FEATURED_TOPICS_SETTINGS" />
+	</command>
+
+	<command name="clickModalCloseButton">
+		<execute function="Click" locator1="LoopFeed#MODAL_CLOSE_BUTTON" />
+	</command>
+
+	<command name="clickRemoveFeaturedTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="Click" locator1="LoopFeed#MANAGE_FEATURED_TOPICS_TOPIC_NAME_REMOVE" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#SUCCESS_MESSAGE" value1="The item was successfully removed from the featured list." />
+	</command>
+
+	<command name="clickSeeAllFeaturedTopics">
+		<execute function="Click" locator1="LoopFeed#FEATURED_TOPICS_MORE_LINK" />
+	</command>
+
+	<command name="clickSeeAllNewGroups">
+		<execute function="Click" locator1="LoopFeed#NEW_GROUPS_MORE_LINK" />
+	</command>
+
+	<command name="clickSeeAllNewHires">
+		<execute function="Click" locator1="LoopFeed#NEW_HIRES_MORE_LINK" />
+	</command>
+
+	<command name="deleteEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickDeleteLink" />
+
+		<execute macro="LoopFeedEntry#deleteCmd" />
+
+		<execute macro="LoopFeedEntry#viewNone">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="deleteEntryComment">
+		<execute macro="LoopFeedEntryComment#clickOptionsLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickDeleteLink" />
+
+		<execute macro="LoopFeedEntry#deleteCmd" />
+
+		<execute macro="LoopFeedEntryComment#viewNone">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="editEntryCommentReplyText">
+		<execute macro="LoopFeedEntryComment#clickOptionsLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickEditLink" />
+
+		<execute macro="LoopFeedEntryComment#editTextCmd">
+			<var name="feedEntryCommentTextEdit" value="${feedEntryCommentReplyTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyDate}" />
+		</execute>
+	</command>
+
+	<command name="editEntryCommentText">
+		<execute macro="LoopFeedEntryComment#clickOptionsLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickEditLink" />
+
+		<execute macro="LoopFeedEntryComment#editTextCmd">
+			<var name="feedEntryCommentTextEdit" value="${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryComment">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+			<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContentEdit}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="editEntryCommentTextAndImage">
+		<execute macro="LoopFeedEntryComment#clickOptionsLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickEditLink" />
+
+		<execute macro="LoopFeedEntryComment#editTextCmd">
+			<var name="feedEntryCommentTextEdit" value="${feedEntryCommentTextEdit}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#editImageCmd">
+			<var name="feedEntryCommentImageEdit" value="${feedEntryCommentImageEdit}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#post">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeed#viewEntryCommentWithImage">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContentEdit}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="editEntryText">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickEditLink" />
+
+		<execute macro="LoopFeedEntry#clickEditTextField" />
+
+		<execute macro="LoopFeedEntry#typeSpaceInEditTextField" />
+
+		<execute macro="LoopFeedEntry#typeTextInEditTextField">
+			<var name="feedEntryText" value="${feedEntryTextEdit}" />
+		</execute>
+
+		<execute macro="LoopFeed#shareEntryInEditTextField">
+			<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+			<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+			<var name="mentionUserNameList" value="${mentionUserNameList}" />
+			<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+			<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+			<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#postEdit" />
+
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContentEdit}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+	</command>
+
+	<command name="followEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickFollowLink" />
+	</command>
+
+	<command name="followEntryAuthor">
+		<execute macro="LoopFeedEntry#mouseOverAuthorProfilePicture">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickFollowEntryAuthorLink" />
+	</command>
+
+	<command name="followGroupsViaNewGroupsList">
+		<execute macro="LoopFeed#clickSeeAllNewGroups" />
+
+		<for list="${groupNameList}" param="groupName">
+			<execute macro="LoopGroupsGroup#clickFollowLinkViaIndex">
+				<var name="groupName" value="${groupName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="followGroupViaNewGroupsList">
+		<execute macro="LoopFeed#clickSeeAllNewGroups" />
+
+		<execute macro="LoopGroupsGroup#clickFollowLinkViaIndex">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="followPeopleViaNewHiresList">
+		<execute macro="LoopFeed#clickSeeAllNewHires" />
+
+		<for list="${userNameList}" param="userName">
+			<execute macro="LoopPeoplePerson#clickFollowLinkViaIndex">
+				<var name="userName" value="${userName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="followPersonViaNewHiresList">
+		<execute macro="LoopFeed#clickSeeAllNewHires" />
+
+		<execute macro="LoopPeoplePerson#clickFollowLinkViaIndex">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="followTopicsViaFeaturedTopicsList">
+		<execute macro="LoopFeed#clickSeeAllFeaturedTopics" />
+
+		<for list="${topicNameList}" param="topicName">
+			<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+				<var name="topicName" value="${topicName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="followTopicViaFeaturedTopicsList">
+		<execute macro="LoopFeed#clickSeeAllFeaturedTopics" />
+
+		<execute macro="LoopTopicsTopic#clickFollowLinkViaIndex">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="removeBookmarkFromEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickRemoveBookmarkLink" />
+
+		<execute macro="LoopFeedEntry#viewNoBookmark">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="removeBookmarkFromEntryViaIcon">
+		<execute macro="LoopFeedEntry#clickRemoveBookmarkLinkViaIcon">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewNoBookmark">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="removeFeaturedTopic">
+		<execute macro="LoopFeed#clickFeaturedTopicsSettings" />
+
+		<execute macro="LoopFeed#clickRemoveFeaturedTopic">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopFeed#clickModalCloseButton" />
+
+		<execute macro="LoopFeed#viewNoFeaturedTopic">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="selectFeaturedTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="Type#sendKeys" locator1="LoopFeed#MANAGE_FEATURED_TOPICS_SEARCH" value1="${topicName}" />
+		<execute function="Click" locator1="LoopFeed#MANAGE_FEATURED_TOPICS_SELECT_TOPIC" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#MANAGE_FEATURED_TOPICS_TOPIC_NAME" value1="${topicName}" />
+		<execute function="AssertTextEquals" locator1="LoopFeed#SUCCESS_MESSAGE" value1="${topicName} was set as featured." />
+	</command>
+
+	<command name="shareEntry">
+		<if>
+			<and>
+				<isset var="mentionUserNameList" />
+				<not>
+					<contains string="${mentionUserNameList}" substring="{mentionUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#mentionUsers">
+					<var name="mentionUserNameList" value="${mentionUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="mentionGroupNameList" />
+				<not>
+					<contains string="${mentionGroupNameList}" substring="{mentionGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#mentionGroups">
+					<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="hashtagTopicNameList" />
+				<not>
+					<contains string="${hashtagTopicNameList}" substring="{hashtagTopicNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#hashtagTopics">
+					<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="shareWithUserNameList" />
+				<not>
+					<contains string="${shareWithUserNameList}" substring="{shareWithUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#shareWithUsers">
+					<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="shareWithGroupNameList" />
+				<not>
+					<contains string="${shareWithGroupNameList}" substring="{shareWithGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#shareWithGroups">
+					<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="shareWithTopicNameList" />
+				<not>
+					<contains string="${shareWithTopicNameList}" substring="{shareWithTopicNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#shareWithTopics">
+					<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+				</execute>
+			</then>
+		</if>
+	</command>
+
+	<command name="shareEntryComment">
+		<if>
+			<and>
+				<isset var="mentionUserNameList" />
+				<not>
+					<contains string="${mentionUserNameList}" substring="{mentionUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryComment#mentionUsers">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="mentionUserNameList" value="${mentionUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="mentionPrivateUserNameList" />
+				<not>
+					<contains string="${mentionPrivateUserNameList}" substring="{mentionPrivateUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryComment#mentionUsersInPrivatePost">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="mentionPrivateUserNameList" value="${mentionPrivateUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="mentionGroupNameList" />
+				<not>
+					<contains string="${mentionGroupNameList}" substring="{mentionGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryComment#mentionGroups">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="mentionPrivateGroupNameList" />
+				<not>
+					<contains string="${mentionPrivateGroupNameList}" substring="{mentionPrivateGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryComment#mentionGroupsInPrivatePost">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="mentionPrivateGroupNameList" value="${mentionPrivateGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="hashtagTopicNameList" />
+				<not>
+					<contains string="${hashtagTopicNameList}" substring="{hashtagTopicNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntryComment#hashtagTopics">
+					<var name="feedEntryContent" value="${feedEntryContent}" />
+					<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+				</execute>
+			</then>
+		</if>
+	</command>
+
+	<command name="shareEntryInEditTextField">
+		<if>
+			<and>
+				<isset var="mentionUserNameList" />
+				<not>
+					<contains string="${mentionUserNameList}" substring="{mentionUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#mentionUsersInEditTextField">
+					<var name="mentionUserNameList" value="${mentionUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="mentionGroupNameList" />
+				<not>
+					<contains string="${mentionGroupNameList}" substring="{mentionGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#mentionGroupsInEditTextField">
+					<var name="mentionGroupNameList" value="${mentionGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="hashtagTopicNameList" />
+				<not>
+					<contains string="${hashtagTopicNameList}" substring="{hashtagTopicNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#hashtagTopicsInEditTextField">
+					<var name="hashtagTopicNameList" value="${hashtagTopicNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="shareWithUserNameList" />
+				<not>
+					<contains string="${shareWithUserNameList}" substring="{shareWithUserNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#shareWithUsersInEditTextField">
+					<var name="shareWithUserNameList" value="${shareWithUserNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="shareWithGroupNameList" />
+				<not>
+					<contains string="${shareWithGroupNameList}" substring="{shareWithGroupNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#shareWithGroupsInEditTextField">
+					<var name="shareWithGroupNameList" value="${shareWithGroupNameList}" />
+				</execute>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="shareWithTopicNameList" />
+				<not>
+					<contains string="${shareWithTopicNameList}" substring="{shareWithTopicNameList}" />
+				</not>
+			</and>
+			<then>
+				<execute macro="LoopFeedEntry#shareWithTopicsInEditTextField">
+					<var name="shareWithTopicNameList" value="${shareWithTopicNameList}" />
+				</execute>
+			</then>
+		</if>
+	</command>
+
+	<command name="turnOffEmailNotificationsForEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTurnOffEmailNotificationsLink" />
+	</command>
+
+	<command name="turnOffNotificationsForEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTurnOffNotificationsLink" />
+	</command>
+
+	<command name="turnOffNotificationsForEntryAuthor">
+		<execute macro="LoopFeedEntry#mouseOverAuthorProfilePicture">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTurnOffNotificationsForEntryAuthorLink" />
+	</command>
+
+	<command name="turnOnEmailNotificationsForEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTurnOnEmailNotificationsLink" />
+	</command>
+
+	<command name="turnOnNotificationsForEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTurnOnNotificationsLink" />
+	</command>
+
+	<command name="turnOnNotificationsForEntryAuthor">
+		<execute macro="LoopFeedEntry#mouseOverAuthorProfilePicture">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickTurnOnNotificationsForEntryAuthorLink" />
+	</command>
+
+	<command name="typeMarkdownContent">
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Heading" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="=======" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Sub-heading" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="-----------" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="### Another deeper heading" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Paragraphs are separated" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="by a blank line." />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Text attributes: *italic*, **bold**, inline `code` as you can see." />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Shopping list:" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="* apples" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="+ oranges" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="- pears" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Numbered list:" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="1. apples" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="2. oranges" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="> Blockquotes are very handy in email to emulate reply text." />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="> This line is part of the same quote." />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="```" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="Piece of code" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="```" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="A [link](http://www.google.com)." />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="A [number reference link][1]" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="A [text reference link]" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="[1]: http://www.yahoo.com" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeReturn" />
+
+		<execute macro="LoopFeedEntry#typeText">
+			<var name="feedEntryText" value="[text reference link]: http://www.bing.com" />
+		</execute>
+	</command>
+
+	<command name="unfollowEntry">
+		<execute macro="LoopFeedEntry#clickOptionsLink">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickUnfollowLink" />
+	</command>
+
+	<command name="unfollowEntryAuthor">
+		<execute macro="LoopFeedEntry#mouseOverAuthorProfilePicture">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#clickUnfollowEntryAuthorLink" />
+	</command>
+
+	<command name="unfollowGroupsViaNewGroupsList">
+		<execute macro="LoopFeed#clickSeeAllNewGroups" />
+
+		<for list="${groupNameList}" param="groupName">
+			<execute macro="LoopGroupsGroup#clickUnfollowLinkViaIndex">
+				<var name="groupName" value="${groupName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="unfollowGroupViaNewGroupsList">
+		<execute macro="LoopFeed#clickSeeAllNewGroups" />
+
+		<execute macro="LoopGroupsGroup#clickUnfollowLinkViaIndex">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="unfollowPeopleViaNewHiresList">
+		<execute macro="LoopFeed#clickSeeAllNewHires" />
+
+		<for list="${userNameList}" param="userName">
+			<execute macro="LoopPeoplePerson#clickUnfollowLinkViaIndex">
+				<var name="userName" value="${userName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="unfollowPersonViaNewHiresList">
+		<execute macro="LoopFeed#clickSeeAllNewHires" />
+
+		<execute macro="LoopPeoplePerson#clickUnfollowLinkViaIndex">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="unfollowTopicsViaFeaturedTopicsList">
+		<execute macro="LoopFeed#clickSeeAllFeaturedTopics" />
+
+		<for list="${topicNameList}" param="topicName">
+			<execute macro="LoopTopicsTopic#clickUnfollowLinkViaIndex">
+				<var name="topicName" value="${topicName}" />
+			</execute>
+		</for>
+	</command>
+
+	<command name="unfollowTopicViaFeaturedTopicsList">
+		<execute macro="LoopFeed#clickSeeAllFeaturedTopics" />
+
+		<execute macro="LoopTopicsTopic#clickUnfollowLinkViaIndex">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewAnimatedImageEntry">
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAnimatedImage">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+		</execute>
+	</command>
+
+	<command name="viewAnimatedImagesEntry">
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewAnimatedImages">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="numberOfImages" value="${numberOfImages}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryAuthorViaNameLink">
+		<execute macro="LoopFeedEntry#clickAuthorNameLink">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="userEmailAddress" value="${feedEntryAuthorEmailAddress}" />
+			<var name="userName" value="${feedEntryAuthorName}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryAuthorViaProfilePicture">
+		<execute macro="LoopFeedEntry#clickAuthorProfilePicture">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="userEmailAddress" value="${feedEntryAuthorEmailAddress}" />
+			<var name="userName" value="${feedEntryAuthorName}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentAuthorViaNameLink">
+		<execute macro="LoopFeedEntryComment#clickAuthorNameLink">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="userEmailAddress" value="${feedEntryCommentAuthorEmailAddress}" />
+			<var name="userName" value="${feedEntryCommentAuthorName}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentAuthorViaProfilePicture">
+		<execute macro="LoopFeedEntryComment#clickAuthorProfilePicture">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="userEmailAddress" value="${feedEntryCommentAuthorEmailAddress}" />
+			<var name="userName" value="${feedEntryCommentAuthorName}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentReplyWithImage">
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyDate}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewImage">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentReplyWithLink">
+		<execute macro="LoopFeedEntryCommentReply#viewAuthorAndContent">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyAuthorName" value="${feedEntryCommentReplyAuthorName}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyDate" value="${feedEntryCommentReplyDate}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryCommentReply#viewUrlLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentReplyContent" value="${feedEntryCommentReplyContent}" />
+			<var name="feedEntryCommentReplyLinkUrl" value="${feedEntryCommentReplyLinkUrl}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentWithAnimatedImage">
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewAnimatedImage">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentWithImage">
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewImage">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryCommentWithLink">
+		<execute macro="LoopFeedEntryComment#viewAuthorAndContent">
+			<var name="feedEntryCommentAuthorName" value="${feedEntryCommentAuthorName}" />
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentDate" value="${feedEntryCommentDate}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopFeedEntryComment#viewUrlLink">
+			<var name="feedEntryCommentContent" value="${feedEntryCommentContent}" />
+			<var name="feedEntryCommentLinkUrl" value="${feedEntryCommentLinkUrl}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="viewEntryDeactivatedAuthorViaProfilePicture">
+		<execute macro="LoopFeedEntry#clickAuthorProfilePicture">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewDeactivatedPersonProfile">
+			<var name="userEmailAddress" value="${feedEntryAuthorEmailAddress}" />
+			<var name="userName" value="${feedEntryAuthorName}" />
+		</execute>
+	</command>
+
+	<command name="viewFeaturedTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeed#FEATURED_TOPICS_TOPIC_NAME" value1="${topicName}" />
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#FEATURED_TOPICS_TOPIC_DETAILS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#FEATURED_TOPICS_TOPIC_DETAILS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute function="MouseOver" locator1="LoopFeed#FEATURED_TOPICS_TOPIC_NAME" />
+
+		<execute macro="LoopTopicsTopic#viewTopicOverlay">
+			<var name="expertCount" value="${expertCount}" />
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewFeaturedTopicsCount">
+		<execute function="AssertTextEquals" locator1="LoopFeed#FEATURED_TOPICS_HEADER" value1="FEATURED TOPICS ${featuredTopicsCount}" />
+	</command>
+
+	<command name="viewGroupViaNewGroupsList">
+		<execute macro="LoopFeed#clickSeeAllNewGroups" />
+
+		<execute macro="LoopGroupsGroup#gotoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupDescription" value="${groupDescription}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupSubtype" value="${groupSubtype}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewImageEntry">
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewImage">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryImage" value="${feedEntryImage}" />
+		</execute>
+	</command>
+
+	<command name="viewImagesEntry">
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewImages">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="numberOfImages" value="${numberOfImages}" />
+		</execute>
+	</command>
+
+	<command name="viewLinkEntry">
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewLinkPreview">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+		</execute>
+	</command>
+
+	<command name="viewLinkEntryWithPreviewText">
+		<execute macro="LoopFeedEntry#viewAuthorAndContent">
+			<var name="feedEntryAuthorName" value="${feedEntryAuthorName}" />
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryDate" value="${feedEntryDate}" />
+			<var name="private" value="${private}" />
+		</execute>
+
+		<execute macro="LoopFeedEntry#viewLinkPreviewText">
+			<var name="feedEntryContent" value="${feedEntryContent}" />
+			<var name="feedEntryLinkDescription" value="${feedEntryLinkDescription}" />
+			<var name="feedEntryLinkName" value="${feedEntryLinkName}" />
+			<var name="feedEntryLinkShortUrl" value="${feedEntryLinkShortUrl}" />
+		</execute>
+	</command>
+
+	<command name="viewNewGroup">
+		<var name="key_groupName" value="${groupName}" />
+		<var name="key_groupType" value="${groupType}" />
+		<var name="key_memberCount" value="${memberCount}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeed#NEW_GROUPS_GROUP_NAME" value1="${groupName}" />
+		<execute function="AssertElementPresent" locator1="LoopFeed#NEW_GROUPS_GROUP_DETAILS" />
+
+		<if>
+			<and>
+				<isset var="groupType" />
+				<not>
+					<contains string="${groupType}" substring="{groupType}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#NEW_GROUPS_GROUP_DETAILS" value1="${groupType}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="memberCount" />
+				<not>
+					<contains string="${memberCount}" substring="{memberCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${memberCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#NEW_GROUPS_GROUP_DETAILS" value1="1 Member" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopFeed#NEW_GROUPS_GROUP_DETAILS" value1="${memberCount} Members" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute function="MouseOver" locator1="LoopFeed#NEW_GROUPS_GROUP_NAME" />
+
+		<execute macro="LoopGroupsGroup#viewGroupOverlay">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupName" value="${groupName}" />
+			<var name="groupType" value="${groupType}" />
+			<var name="memberCount" value="${memberCount}" />
+		</execute>
+	</command>
+
+	<command name="viewNewGroupsCount">
+		<execute function="AssertTextEquals" locator1="LoopFeed#NEW_GROUPS_HEADER" value1="NEW GROUPS ${newGroupsCount}" />
+	</command>
+
+	<command name="viewNewHire">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopFeed#NEW_HIRES_PERSON_NAME" value1="${userName}" />
+
+		<execute function="MouseOver" locator1="LoopFeed#NEW_HIRES_PERSON_NAME" />
+
+		<execute macro="LoopPeoplePerson#viewPersonOverlay">
+			<var name="expertiseCount" value="${expertiseCount}" />
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="selfOverlay" value="${selfOverlay}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewNewHiresCount">
+		<execute function="AssertTextEquals" locator1="LoopFeed#NEW_HIRES_HEADER" value1="NEW HIRES ${newHiresCount}" />
+	</command>
+
+	<command name="viewNoFeaturedTopic">
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopFeed#FEATURED_TOPICS_TOPIC_NAME" />
+	</command>
+
+	<command name="viewPersonViaNewHiresList">
+		<execute macro="LoopFeed#clickSeeAllNewHires" />
+
+		<execute macro="LoopPeoplePerson#gotoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonProfile">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="groupCount" value="${groupCount}" />
+			<var name="jobTitleName" value="${jobTitleName}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userLocation" value="${userLocation}" />
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewTopicViaFeaturedTopicsList">
+		<execute macro="LoopFeed#clickSeeAllFeaturedTopics" />
+
+		<execute macro="LoopTopicsTopic#gotoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicDetails">
+			<var name="followerCount" value="${followerCount}" />
+			<var name="topicDescription" value="${topicDescription}" />
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+</definition>

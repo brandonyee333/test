@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreatePersonModal renders 1`] = `
+<div class="loading-wrapper-container create-person-modal-container">
+  <div class="loading-content">
+    <div class="modal-header-container">
+      <h1 class="title" ref="title" tabindex="0">create-person</h1>
+      <svg tabindex="0" class="loop-icon-container loop-icon-close-long loop-icon-small-1x modal-close" data-tooltip="">
+        <use href="#loop-icon-close-long-16"></use>
+      </svg>
+    </div>
+    <div class="modal-body-container">
+      <form class="form-container">
+        <div class="form-input-container default">
+          <label for="FormInput1" class="label-container">email-address (required)</label>
+          <div class="input-container input-default">
+            <input id="FormInput1" name="emailAddress" value="" type="text" ref="input">
+          </div>
+        </div>
+        <div class="form-input-container default">
+          <label for="FormInput2" class="label-container">first-name (required)</label>
+          <div class="input-container input-default">
+            <input id="FormInput2" name="firstName" value="" type="text" ref="input">
+          </div>
+        </div>
+        <div class="form-input-container default">
+          <label for="FormInput3" class="label-container">last-name (required)</label>
+          <div class="input-container input-default">
+            <input id="FormInput3" name="lastName" value="" type="text" ref="input">
+          </div>
+        </div>
+        <div class="form-input-container default">
+          <label for="FormInput4" class="label-container">preferred-name</label>
+          <div class="input-container input-default">
+            <input id="FormInput4" name="preferredName" value="" type="text" ref="input">
+          </div>
+        </div>
+        <div class="form-select-container default">
+          <label for="formSelect5" class="label-container">employment-type (required)</label>
+          <select class="default" id="formSelect5">
+            <option selected=""></option>
+          </select>
+        </div>
+        <div class="form-select-container default">
+          <label for="formSelect6" class="label-container">job-title (required)</label>
+          <select class="default" id="formSelect6">
+            <option selected=""></option>
+          </select>
+        </div>
+        <div>
+          <label for="formFormDatePicker7" class="label-container">hire-date</label>
+          <div class="form-input-container default">
+            <div class="input-container input-default">
+              <input placeholder="MM/DD/YYYY" id="FormInput8" name="startDate" value="1/9/2017" type="text" ref="input">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer-container">
+      <button class="btn btn-container btn-secondary" type="button">cancel</button>
+      <button class="btn btn-container btn-primary" type="button">create</button>
+    </div>
+  </div>
+</div>
+`;

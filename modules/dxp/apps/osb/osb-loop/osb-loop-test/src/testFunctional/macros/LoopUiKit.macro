@@ -1,0 +1,5 @@
+<definition>
+	<command name="viewUiKitPage">
+		<execute function="AssertElementPresent" locator1="LoopUiKit#UI_KIT_PAGE" value1="Avatars" />
+	</command>
+</definition>

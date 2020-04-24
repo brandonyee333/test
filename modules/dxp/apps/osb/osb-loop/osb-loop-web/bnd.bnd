@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Loop Web
+Bundle-SymbolicName: com.liferay.osb.loop.web
+Bundle-Version: 1.0.0
+Web-ContextPath: /osb-loop-web

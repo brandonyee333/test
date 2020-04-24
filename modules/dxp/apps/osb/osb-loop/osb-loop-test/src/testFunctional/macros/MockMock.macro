@@ -1,0 +1,72 @@
+<definition>
+	<command name="backtoInbox">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="MockMock#MOCKMOCK_HOME_LINK" value1="Home" />
+	</command>
+
+	<command name="deleteAllMail">
+		<execute function="AssertClick" locator1="MockMock#MOCKMOCK_DELETE_ALL_LINK" value1="Delete all" />
+
+		<execute macro="MockMock#viewNoMailCount" />
+	</command>
+
+	<command name="gotoMail">
+		<execute function="Pause" locator1="5000" />
+		<execute function="Open" locator1="http://localhost:8282" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_HEADER_LINK" value1="MockMock" />
+	</command>
+
+	<command name="gotoMailMessage">
+		<var name="key_columnEntry" value="${mockMockAsset}" />
+
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="MockMock#MOCKMOCK_SUBJECT_FIELD_LINK" value1="${mockMockAsset}" />
+	</command>
+
+	<command name="viewAndClickMail">
+		<execute macro="MockMock#viewMailFromInbox">
+			<var name="mockMockAsset" value="${mockMockAsset}" />
+			<var name="mockMockRecipient" value="${mockMockRecipient}" />
+			<var name="mockMockSender" value="${mockMockSender}" />
+		</execute>
+
+		<execute macro="MockMock#gotoMailMessage">
+			<var name="mockMockAsset" value="${mockMockAsset}" />
+		</execute>
+	</command>
+
+	<command name="viewMailCount">
+		<var name="key_emailCount" value="${emailCount}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_EMAIL_COUNT_MESSAGE" value1="You have ${emailCount}" />
+	</command>
+
+	<command name="viewMailFromInbox">
+		<var name="key_columnEntry" value="${mockMockAsset}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_HAVE_EMAILS_MESSAGE" value1="You have" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_FROM_FIELD" value1="${mockMockSender}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_TO_FIELD" value1="${mockMockRecipient}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_SUBJECT_FIELD" value1="${mockMockAsset}" />
+	</command>
+
+	<command name="viewMailMessage">
+		<var name="key_asset" value="${mockMockAsset}" />
+
+		<execute function="AssertElementPresent" locator1="MockMock#MOCKMOCK_MESSAGE_BODY" />
+	</command>
+
+	<command name="viewNoMailCount">
+		<execute function="AssertTextEquals#assertPartialText" locator1="MockMock#MOCKMOCK_NO_EMAILS_MESSAGE" value1="No emails in queue" />
+	</command>
+
+	<command name="viewNoMailFromInbox">
+		<var name="key_columnEntry" value="${mockMockAsset}" />
+
+		<if>
+			<condition function="IsTextEqual" locator1="MockMock#MOCKMOCK_TO_FIELD" value1="${mockMockRecipient}" />
+			<then>
+				<execute function="AssertTextNotPresent" locator1="MockMock#MOCKMOCK_SUBJECT_FIELD" value1="${mockMockAsset}" />
+			</then>
+		</if>
+	</command>
+</definition>

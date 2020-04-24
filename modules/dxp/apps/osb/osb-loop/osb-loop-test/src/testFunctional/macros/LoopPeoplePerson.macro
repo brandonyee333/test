@@ -1,0 +1,1704 @@
+<definition>
+	<command name="activateUserCmd">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#TOGGLE_ACTIVATE_ACTIVATE_MESSAGE" value1="Are you sure you want to activate ${userName}?" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#TOGGLE_ACTIVATE_CONFIRM_BUTTON" value1="Confirm" />
+
+		<!-- Workaround until LOOP-5208 is fixed -->
+
+		<!--<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="${userName} was successfully activated." />-->
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="addAdditionalEmail">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<if>
+			<isset var="row" />
+			<then>
+				<var name="key_row" value="${row}" />
+			</then>
+			<else>
+				<var name="key_row" value="1" />
+			</else>
+		</if>
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#ADDITIONAL_EMAIL_ADDRESS_FIELD" value1="${userAdditionalEmailAddress}" />
+	</command>
+
+	<command name="addAdditionalEmailRow">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<execute function="Click" locator1="LoopPeopleUpdatePerson#ADDITIONAL_EMAIL_ADD_ROW_BUTTON" />
+	</command>
+
+	<command name="addCoverPicture">
+		<execute macro="LoopPeoplePerson#uploadCoverPicture">
+			<var name="coverPictureFileName" value="${coverPictureFileName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#confirmCoverPicture" />
+	</command>
+
+	<command name="addPerson">
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoPeople" />
+
+		<execute function="Click" locator1="LoopPeople#CREATE_PERSON_LINK" />
+
+		<execute function="Type" locator1="LoopPeopleAddPerson#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
+		<execute function="Type" locator1="LoopPeopleAddPerson#FIRST_NAME_FIELD" value1="${userFirstName}" />
+		<execute function="Type" locator1="LoopPeopleAddPerson#LAST_NAME_FIELD" value1="${userLastName}" />
+
+		<if>
+			<isset var="userPreferredName" />
+			<then>
+				<execute function="Type" locator1="LoopPeopleAddPerson#PREFERRED_NAME_FIELD" value1="${userPreferredName}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="userEmploymentType" />
+			<then>
+				<execute function="Select" locator1="LoopPeopleAddPerson#EMPLOYMENT_TYPE_SELECT" value1="${userEmploymentType}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="jobTitleName" />
+			<then>
+				<execute function="Select" locator1="LoopPeopleAddPerson#JOB_TITLE_SELECT" value1="${jobTitleName}" />
+			</then>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopPeopleAddPerson#HIRE_DATE_FIELD" />
+		<execute function="AssertClick" locator1="LoopPeopleAddPerson#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopPeopleAddPerson#SUCCESS_MESSAGE" value1="${userFirstName} ${userLastName} was successfully created." />
+		<execute function="Pause" locator1="5000" />
+
+		<execute macro="LoopPeoplePerson#editUserCP">
+			<var name="roleNames" value="${roleNames}" />
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+			<var name="userScreenName" value="${userScreenName}" />
+		</execute>
+	</command>
+
+	<command name="addPersonWithError">
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="LoopNavigation#gotoPeople" />
+
+		<execute function="Click" locator1="LoopPeople#CREATE_PERSON_LINK" />
+
+		<execute function="Type" locator1="LoopPeopleAddPerson#EMAIL_ADDRESS_FIELD" value1="${userEmailAddress}" />
+		<execute function="Type" locator1="LoopPeopleAddPerson#FIRST_NAME_FIELD" value1="${userFirstName}" />
+		<execute function="Type" locator1="LoopPeopleAddPerson#LAST_NAME_FIELD" value1="${userLastName}" />
+
+		<if>
+			<isset var="userPreferredName" />
+			<then>
+				<execute function="Type" locator1="LoopPeopleAddPerson#PREFERRED_NAME_FIELD" value1="${userPreferredName}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="userEmploymentType" />
+			<then>
+				<execute function="Select" locator1="LoopPeopleAddPerson#EMPLOYMENT_TYPE_SELECT" value1="${userEmploymentType}" />
+			</then>
+		</if>
+
+		<if>
+			<isset var="jobTitleName" />
+			<then>
+				<execute function="Select" locator1="LoopPeopleAddPerson#JOB_TITLE_SELECT" value1="${jobTitleName}" />
+			</then>
+		</if>
+
+		<execute function="AssertElementPresent" locator1="LoopPeopleAddPerson#HIRE_DATE_FIELD" />
+		<execute function="AssertClick" locator1="LoopPeopleAddPerson#CREATE_BUTTON" value1="Create" />
+		<execute function="AssertTextEquals" locator1="LoopPeopleAddPerson#ERROR_MESSAGE" value1="${errorMessage}" />
+		<execute function="AssertClick" locator1="LoopPeopleAddPerson#CANCEL_BUTTON" value1="Cancel" />
+	</command>
+
+	<command name="addPhoneNumber">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<if>
+			<isset var="row" />
+			<then>
+				<var name="key_row" value="${row}" />
+			</then>
+			<else>
+				<var name="key_row" value="1" />
+			</else>
+		</if>
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#PHONE_NUMBER_NUMBER_FIELD" value1="${userPhoneNumberNumber}" />
+
+		<execute function="Select" locator1="LoopPeopleUpdatePerson#PHONE_NUMBER_TYPE_SELECT" value1="${userPhoneNumberType}" />
+	</command>
+
+	<command name="addPhoneNumberRow">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<execute function="Click" locator1="LoopPeopleUpdatePerson#PHONE_NUMBER_ADD_ROW_BUTTON" />
+	</command>
+
+	<command name="addProfilePicture">
+		<execute macro="LoopPeoplePerson#uploadProfilePicture">
+			<var name="profilePictureFileName" value="${profilePictureFileName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#confirmProfilePicture" />
+
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="assignDepartments">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<for list="${departmentNameList}" param="departmentName">
+			<var name="key_groupName" value="${departmentName}" />
+
+			<execute function="Type" locator1="LoopPeopleUpdatePerson#DEPARTMENTS_FIELD" value1="${departmentName}" />
+			<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${departmentName}" />
+			<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#DEPARTMENTS_NAME" value1="${departmentName}" />
+		</for>
+	</command>
+
+	<command name="assignExpertise">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<var name="key_expertiseName" value="${expertiseName}" />
+		<var name="key_topicName" value="${expertiseName}" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#EXPERTISE_FIELD" value1="${expertiseName}" />
+		<execute function="AssertClick" locator1="LoopSearch#TOPIC_NAME" value1="${expertiseName}" />
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#EXPERTISE_NAME" value1="${expertiseName}" />
+	</command>
+
+	<command name="assignExpertises">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<for list="${expertiseNameList}" param="expertiseName">
+			<var name="key_expertiseName" value="${expertiseName}" />
+			<var name="key_topicName" value="${expertiseName}" />
+
+			<execute function="Type" locator1="LoopPeopleUpdatePerson#EXPERTISE_FIELD" value1="${expertiseName}" />
+			<execute function="AssertClick" locator1="LoopSearch#TOPIC_NAME" value1="${expertiseName}" />
+			<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#EXPERTISE_NAME" value1="${expertiseName}" />
+		</for>
+	</command>
+
+	<command name="assignGroup">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<var name="key_groupName" value="${groupName}" />
+
+		<if>
+			<equals arg1="${groupType}" arg2="Team" />
+			<then>
+				<execute function="Type" locator1="LoopPeopleUpdatePerson#TEAMS_FIELD" value1="${groupName}" />
+				<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${groupName}" />
+				<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#TEAMS_NAME" value1="${groupName}" />
+			</then>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Location" />
+				<then>
+					<execute function="Type" locator1="LoopPeopleUpdatePerson#LOCATIONS_FIELD" value1="${groupName}" />
+					<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${groupName}" />
+					<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#LOCATIONS_NAME" value1="${groupName}" />
+				</then>
+			</elseif>
+			<elseif>
+				<equals arg1="${groupType}" arg2="Department" />
+				<then>
+					<execute function="Type" locator1="LoopPeopleUpdatePerson#DEPARTMENTS_FIELD" value1="${groupName}" />
+					<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${groupName}" />
+					<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#DEPARTMENTS_NAME" value1="${groupName}" />
+				</then>
+			</elseif>
+		</if>
+	</command>
+
+	<command name="assignLocations">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<for list="${locationNameList}" param="locationName">
+			<var name="key_groupName" value="${locationName}" />
+
+			<execute function="Type" locator1="LoopPeopleUpdatePerson#LOCATIONS_FIELD" value1="${locationName}" />
+			<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${locationName}" />
+			<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#LOCATIONS_NAME" value1="${locationName}" />
+		</for>
+	</command>
+
+	<command name="assignManager">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<var name="key_managerName" value="${managerName}" />
+		<var name="key_userName" value="${managerName}" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#MANAGERS_FIELD" value1="${managerName}" />
+		<execute function="AssertClick" locator1="LoopSearch#USER_NAME" value1="${managerName}" />
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#MANAGERS_NAME" value1="${managerName}" />
+	</command>
+
+	<command name="assignPrimaryManager">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<var name="key_managerName" value="${managerName}" />
+		<var name="key_userName" value="${managerName}" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#PRIMARY_MANAGER_FIELD" value1="${managerName}" />
+		<execute function="AssertClick" locator1="LoopSearch#USER_NAME" value1="${managerName}" />
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#MANAGERS_NAME" value1="${managerName}" />
+	</command>
+
+	<command name="assignTeams">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<for list="${teamNameList}" param="teamName">
+			<var name="key_groupName" value="${teamName}" />
+
+			<execute function="Type" locator1="LoopPeopleUpdatePerson#TEAMS_FIELD" value1="${teamName}" />
+			<execute function="AssertClick" locator1="LoopSearch#GROUP_NAME" value1="${teamName}" />
+			<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#TEAMS_NAME" value1="${teamName}" />
+		</for>
+	</command>
+
+	<command name="cancelCoverPicture">
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE_CANCEL_BUTTON" />
+	</command>
+
+	<command name="clickActivateButton">
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_OPTIONS_TOGGLE_ACTIVATE_LINK" value1="Activate User" />
+	</command>
+
+	<command name="clickDeactivateButton">
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_OPTIONS_TOGGLE_ACTIVATE_LINK" value1="Deactivate User" />
+	</command>
+
+	<command name="clickDescriptionField">
+		<execute function="Click" locator1="LoopPeopleUpdatePerson#DESCRIPTION_FIELD" />
+		<execute function="SelectFieldText" locator1="LoopPeopleUpdatePerson#DESCRIPTION_FIELD" />
+		<execute function="KeyPress" locator1="LoopPeopleUpdatePerson#DESCRIPTION_FIELD" value1="\BACK_SPACE" />
+	</command>
+
+	<command name="clickEditButton">
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_OPTIONS_EDIT_LINK" value1="Edit User Information" />
+	</command>
+
+	<command name="clickExpertiseLink">
+		<var name="key_expertiseName" value="${expertiseName}" />
+
+		<execute function="AssertClick" locator1="LoopPeoplePerson#WORK_EXPERTISE" value1="${expertiseName}" />
+	</command>
+
+	<command name="clickFollowButton">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" value1="Follow" />
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" value1="Following" />
+	</command>
+
+	<command name="clickFollowButtonViaOverlay">
+		<execute function="AssertClick" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickFollowLinkViaIndex">
+		<execute macro="LoopPeoplePerson#mouseOverPersonName">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<var name="key_userName" value="${userName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+			</then>
+			<elseif>
+				<condition function="IsElementPresent" locator1="LoopPeople#PERSON_FOLLOW_BUTTON" />
+				<then>
+					<execute function="Click" locator1="LoopPeople#PERSON_FOLLOW_BUTTON" />
+				</then>
+			</elseif>
+			<else>
+				<execute macro="LoopPeoplePerson#clickFollowButtonViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickFollowOnlyPostsNotificationsLink">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_ONLY_POSTS_NOTIFICATIONS_LINK" value1="Only Posts" />
+	</command>
+
+	<command name="clickFollowPostsAndCommentedPostsNotificationsLink">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK" value1="Posts, Comments, and Mentions" />
+	</command>
+
+	<command name="clickGroupLink">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertClick" locator1="LoopPeoplePerson#GROUPS_GROUP_NAME" value1="${groupName}" />
+	</command>
+
+	<command name="clickMoreGroupsLink">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#GROUPS_MORE_LINK" value1="See All" />
+	</command>
+
+	<command name="clickSeeFullNetworkLink">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#NETWORK_SEE_FULL_NETWORK_LINK" value1="See Full Network" />
+	</command>
+
+	<command name="clickTurnOffEmailNotification">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" />
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeoplePerson#PERSON_EMAIL_NOTIFICATIONS_CHECKBOX" />
+	</command>
+
+	<command name="clickTurnOffNotifications">
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn off Notifications" />
+		<execute function="AssertVisible" locator1="LoopPeoplePerson#PERSON_EMAIL_NOTIFICATIONS_LABEL" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeoplePerson#PERSON_TOGGLE_NOTIFICATIONS_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn on Notifications" />
+		<execute function="AssertNotVisible" locator1="LoopPeoplePerson#PERSON_EMAIL_NOTIFICATIONS_LABEL" />
+	</command>
+
+	<command name="clickTurnOffNotificationsButton">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" />
+
+		<execute macro="LoopPeoplePerson#clickTurnOffNotifications" />
+	</command>
+
+	<command name="clickTurnOffNotificationsLinkViaIndex">
+		<execute macro="LoopPeoplePerson#mouseOverPersonName">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<var name="key_userName" value="${userName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+
+				<execute macro="LoopPeoplePerson#clickTurnOffNotifications" />
+			</then>
+			<else>
+				<execute function="MouseOver" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" />
+
+				<execute macro="LoopPeoplePerson#clickTurnOffNotifications" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickTurnOnEmailNotification">
+		<execute macro="LoopPeoplePerson#clickTurnOnNotificationsButton" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeoplePerson#PERSON_EMAIL_NOTIFICATIONS_CHECKBOX" />
+	</command>
+
+	<command name="clickTurnOnNotifications">
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn on Notifications" />
+		<execute function="AssertNotVisible" locator1="LoopPeoplePerson#PERSON_EMAIL_NOTIFICATIONS_LABEL" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeoplePerson#PERSON_TOGGLE_NOTIFICATIONS_LINK" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_TOGGLE_NOTIFICATIONS_LABEL" value1="Turn off Notifications" />
+		<execute function="AssertVisible" locator1="LoopPeoplePerson#PERSON_EMAIL_NOTIFICATIONS_LABEL" />
+	</command>
+
+	<command name="clickTurnOnNotificationsButton">
+		<if>
+			<condition function="IsTextEqual" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" value1="Follow" />
+			<then>
+				<execute macro="LoopPeoplePerson#clickFollowButton" />
+			</then>
+		</if>
+
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" />
+
+		<execute macro="LoopPeoplePerson#clickTurnOnNotifications" />
+
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_POSTS_AND_COMMENTED_POSTS_NOTIFICATIONS_LINK" value1="Posts, Comments, and Mentions" />
+	</command>
+
+	<command name="clickTurnOnNotificationsLinkViaIndex">
+		<execute macro="LoopPeoplePerson#mouseOverPersonName">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<var name="key_userName" value="${userName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+
+				<execute macro="LoopPeoplePerson#clickTurnOnNotifications" />
+			</then>
+			<else>
+				<if>
+					<condition function="IsTextEqual" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+					<then>
+						<execute macro="LoopPeoplePerson#clickFollowButtonViaOverlay" />
+					</then>
+				</if>
+
+				<execute function="MouseOver" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" />
+
+				<execute macro="LoopPeoplePerson#clickTurnOnNotifications" />
+			</else>
+		</if>
+	</command>
+
+	<command name="clickUnfollowButtonViaOverlay">
+		<execute function="MouseOver" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" />
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_UNFOLLOW_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickUnfollowLink">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" />
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_UNFOLLOW_LINK" />
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" value1="Follow" />
+	</command>
+
+	<command name="clickUnfollowLinkViaIndex">
+		<execute macro="LoopPeoplePerson#mouseOverPersonName">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<var name="key_userName" value="${userName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+			<then>
+				<execute function="Click" locator1="LoopPeople#PERSON_FOLLOW_MENU_BUTTON" />
+
+				<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_UNFOLLOW_LINK" value1="Unfollow ${userName}" />
+			</then>
+			<elseif>
+				<condition function="IsElementPresent" locator1="LoopPeople#PERSON_UNFOLLOW_BUTTON" />
+				<then>
+					<execute function="Click" locator1="LoopPeople#PERSON_UNFOLLOW_BUTTON" />
+				</then>
+			</elseif>
+			<else>
+				<execute macro="LoopPeoplePerson#clickUnfollowButtonViaOverlay" />
+			</else>
+		</if>
+	</command>
+
+	<command name="confirmCoverPicture">
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE_CONFIRM_BUTTON" />
+	</command>
+
+	<command name="confirmProfilePicture">
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePicture#SAVE_BUTTON" value1="Save" />
+	</command>
+
+	<command name="deactivateUserCmd">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#TOGGLE_ACTIVATE_DEACTIVATE_MESSAGE" value1="Are you sure you want to deactivate ${userName}?" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#TOGGLE_ACTIVATE_CONFIRM_BUTTON" value1="Confirm" />
+
+		<!-- Workaround until LOOP-5208 is fixed -->
+
+		<!--<execute function="AssertTextEquals" locator1="LoopPeoplePerson#SUCCESS_MESSAGE" value1="${userName} was successfully deactivated." />-->
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="deleteAdditionalEmailRow">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<execute function="Click" locator1="LoopPeopleUpdatePerson#ADDITIONAL_EMAIL_DELETE_ROW_BUTTON" />
+	</command>
+
+	<command name="deletePhoneNumberRow">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<execute function="Click" locator1="LoopPeopleUpdatePerson#PHONE_NUMBER_DELETE_ROW_BUTTON" />
+	</command>
+
+	<command name="disableAgeDisplay">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeopleUpdatePerson#DISPLAY_AGE_CHECKBOX" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#DISPLAY_AGE_CHECKBOX_CHECKED" />
+	</command>
+
+	<command name="disableBirthdayDisplay">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeopleUpdatePerson#DISPLAY_BIRTHDAY_CHECKBOX" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#DISPLAY_BIRTHDAY_CHECKBOX_CHECKED" />
+	</command>
+
+	<command name="editPasswordCP">
+		<if>
+			<condition function="IsNotVisible" locator1="CPUsersandorganizations#NEW_PASSWORD_FIELD" />
+			<then>
+				<execute function="Click" locator1="CPUsersandorganizations#EXPAND_PASSWORD" />
+			</then>
+		</if>
+
+		<execute function="Type" locator1="CPUsersandorganizations#NEW_PASSWORD_FIELD" value1="test" />
+		<execute function="Type" locator1="CPUsersandorganizations#NEW_PASSWORD_ENTER_AGAIN_FIELD" value1="test" />
+	</command>
+
+	<command name="editRolesCP">
+		<if>
+			<and>
+				<isset var="roleNames" />
+				<not>
+					<contains string="${roleNames}" substring="{roleNames}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<condition function="IsNotVisible" locator1="CPUsersandorganizations#SELECT_ROLES_BUTTON" />
+					<then>
+						<execute function="Click" locator1="CPUsersandorganizations#EXPAND_ROLES" />
+					</then>
+				</if>
+
+				<for list="${roleNames}" param="roleName">
+					<var name="key_roleName" value="${roleName}" />
+
+					<execute function="Click" locator1="CPUsersandorganizations#SELECT_ROLES_BUTTON" />
+
+					<execute function="SelectFrame" locator1="CPUsersandorganizations#SELECT_ROLES_FRAME" />
+
+					<execute function="Click" locator1="CPUsersandorganizations#CHOOSE_ROLE_BUTTON" />
+
+					<execute function="SelectWindow#selectWindowTop" />
+				</for>
+			</then>
+		</if>
+	</command>
+
+	<command name="editUserCP">
+		<execute macro="Loop#logoutAndLogin">
+			<var name="userLoginEmailAddress" value="test@liferay.com" />
+		</execute>
+
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="/group/control_panel/manage?p_p_id=com_liferay_users_admin_web_portlet_UsersAdminPortlet" />
+		</execute>
+
+		<var name="key_userScreenName" value="${userScreenName}" />
+
+		<execute function="AssertClick" locator1="CPUsersandorganizations#USER_LINK" value1="${userScreenName}" />
+
+		<execute macro="LoopPeoplePerson#editPasswordCP" />
+
+		<execute macro="LoopPeoplePerson#editRolesCP">
+			<var name="roleNames" value="${roleNames}" />
+		</execute>
+
+		<execute function="AssertClick" locator1="CPUsersandorganizations#SAVE_BUTTON" value1="Save" />
+
+		<execute function="AssertTextEquals" locator1="CPUsersandorganizations#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="Pause" locator1="5000" />
+	</command>
+
+	<command name="enableAgeDisplay">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeopleUpdatePerson#DISPLAY_AGE_CHECKBOX" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#DISPLAY_AGE_CHECKBOX_CHECKED" />
+	</command>
+
+	<command name="enableBirthdayDisplay">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Click#makeVisibleClickAt" locator1="LoopPeopleUpdatePerson#DISPLAY_BIRTHDAY_CHECKBOX" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#DISPLAY_BIRTHDAY_CHECKBOX_CHECKED" />
+	</command>
+
+	<command name="gotoAboutSection">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_ABOUT_TAB" value1="About" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#ABOUT_CARD" />
+	</command>
+
+	<command name="gotoEditAboutSection">
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#EDIT_ABOUT_TAB" value1="About" />
+	</command>
+
+	<command name="gotoEditContactSection">
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#EDIT_CONTACT_TAB" value1="Contact" />
+	</command>
+
+	<command name="gotoEditElsewhereSection">
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#EDIT_ELSEWHERE_TAB" value1="Elsewhere" />
+	</command>
+
+	<command name="gotoEditWorkSection">
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#EDIT_WORK_TAB" value1="Work" />
+	</command>
+
+	<command name="gotoFollowersSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopPeoplePerson#PERSON_FOLLOWERS_TAB" value1="Followers" />
+	</command>
+
+	<command name="gotoFollowingSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopPeoplePerson#PERSON_FOLLOWING_TAB" value1="Following" />
+	</command>
+
+	<command name="gotoFollowingSectionGroupsTab">
+		<if>
+			<and>
+				<isset var="followingGroupsCount" />
+				<not>
+					<contains string="${followingGroupsCount}" substring="{followingGroupsCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWING_GROUPS_TAB" value1="Groups ${followingGroupsCount}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopPeoplePerson#PERSON_FOLLOWING_GROUPS_TAB" value1="Groups" />
+	</command>
+
+	<command name="gotoFollowingSectionPeopleTab">
+		<if>
+			<and>
+				<isset var="followingPeopleCount" />
+				<not>
+					<contains string="${followingPeopleCount}" substring="{followingPeopleCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWING_PEOPLE_TAB" value1="People ${followingPeopleCount}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopPeoplePerson#PERSON_FOLLOWING_PEOPLE_TAB" value1="People" />
+	</command>
+
+	<command name="gotoFollowingSectionTopicsTab">
+		<if>
+			<and>
+				<isset var="followingTopicsCount" />
+				<not>
+					<contains string="${followingTopicsCount}" substring="{followingTopicsCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWING_TOPICS_TAB" value1="Topics ${followingTopicsCount}" />
+			</then>
+		</if>
+
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopPeoplePerson#PERSON_FOLLOWING_TOPICS_TAB" value1="Topics" />
+	</command>
+
+	<command name="gotoGroupsSection">
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="LoopPeoplePerson#PERSON_GROUPS_TAB" value1="Groups" />
+	</command>
+
+	<command name="gotoManagerProfileViaNetworkSection">
+		<var name="key_managerName" value="${managerName}" />
+
+		<execute function="AssertClick" locator1="LoopPeoplePerson#NETWORK_TAB_MANAGER_NAME_LINK" value1="${managerName}" />
+	</command>
+
+	<command name="gotoNetworkSection">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_NETWORK_TAB" value1="Network" />
+	</command>
+
+	<command name="gotoPersonViaPeopleList">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertClick" locator1="LoopPeople#PERSON_NAME" value1="${userName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_NAME" />
+	</command>
+
+	<command name="gotoPersonViaPeopleListViaProfileImage">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="Click" locator1="LoopPeople#PERSON_PROFILE_IMAGE" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_NAME" />
+	</command>
+
+	<command name="gotoStreamSection">
+		<execute function="AssertClick" locator1="LoopPeoplePerson#PERSON_STREAM_TAB" value1="Stream" />
+	</command>
+
+	<command name="gotoSubordinateProfileViaNetworkSection">
+		<var name="key_subordinateName" value="${subordinateName}" />
+
+		<execute function="AssertClick" locator1="LoopPeoplePerson#NETWORK_TAB_SUBORDINATE_NAME_LINK" value1="${subordinateName}" />
+	</command>
+
+	<command name="mouseOverPersonName">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="Pause" locator1="2000" />
+
+		<execute function="MouseOver" locator1="LoopPeople#PERSON_NAME" />
+	</command>
+
+	<command name="mouseOverUnfollowButton">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" />
+	</command>
+
+	<command name="removeExpertise">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<var name="key_expertiseName" value="${expertiseName}" />
+
+		<execute function="Click" locator1="LoopPeopleUpdatePerson#EXPERTISE_REMOVE_ICON" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#EXPERTISE_NAME" />
+	</command>
+
+	<command name="removeManager">
+		<var name="key_managerName" value="${managerName}" />
+
+		<execute function="MouseOver" locator1="LoopPeoplePerson#NETWORK_TAB_MANAGER_NAME_LINK" />
+		<execute function="Click" locator1="LoopPeoplePerson#NETWORK_TAB_MANAGER_OPTIONS_LINK" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#NETWORK_TAB_REMOVE_LINK" value1="Remove from This Network" />
+	</command>
+
+	<command name="removeManagerFromNetworkCmd">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#NETWORK_REMOVE_MESSAGE" value1="Are you sure you want to remove ${managerName} from ${userName}'s network?" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#CONFIRM_BUTTON" value1="Confirm" />
+	</command>
+
+	<command name="removeSubordinate">
+		<var name="key_subordinateName" value="${subordinateName}" />
+
+		<execute function="MouseOver" locator1="LoopPeoplePerson#NETWORK_TAB_SUBORDINATE_NAME_LINK" />
+		<execute function="Click" locator1="LoopPeoplePerson#NETWORK_TAB_SUBORDINATE_OPTIONS_LINK" />
+		<execute function="AssertClick" locator1="LoopPeoplePerson#NETWORK_TAB_REMOVE_LINK" value1="Remove from This Network" />
+	</command>
+
+	<command name="removeSubordinateFromNetworkCmd">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopGroupsGroup#NETWORK_REMOVE_MESSAGE" value1="Are you sure you want to remove ${subordinateName} from ${userName}'s network?" />
+		<execute function="AssertClick" locator1="LoopGroupsGroup#CONFIRM_BUTTON" value1="Confirm" />
+	</command>
+
+	<command name="saveChanges">
+		<execute function="AssertClick" locator1="LoopPeopleUpdatePerson#SUBMIT_BUTTON" value1="Submit" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeopleUpdatePerson#SUCCESS_MESSAGE" value1="was successfully updated." />
+	</command>
+
+	<command name="scrollDown">
+		<execute function="KeyPress" locator1="LoopPeople#PERSON_LIST" value1="\SPACE" />
+	</command>
+
+	<command name="scrollDownViaProfile">
+		<execute function="KeyPress" locator1="LoopPeoplePerson#PERSON_PROFILE" value1="\SPACE" />
+		<execute function="KeyPress" locator1="LoopPeoplePerson#PERSON_PROFILE" value1="\SPACE" />
+		<!--LRQA-26661 Issue with Keypress END not working-->
+		<!--<execute function="KeyPress" locator1="LoopPeoplePerson#PERSON_PROFILE" value1="\END" />-->
+	</command>
+
+	<command name="selectEmploymentType">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<execute function="Select" locator1="LoopPeopleUpdatePerson#EMPLOYMENT_TYPE_SELECT" value1="${userEmploymentType}" />
+	</command>
+
+	<command name="selectGender">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Select" locator1="LoopPeopleUpdatePerson#GENDER_SELECT" value1="${userGender}" />
+	</command>
+
+	<command name="selectJobTitle">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<execute function="Select" locator1="LoopPeopleUpdatePerson#JOB_TITLE_SELECT" value1="${jobTitleName}" />
+	</command>
+
+	<command name="typeBirthday">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#BIRTHDAY_FIELD" value1="${userBirthday}" />
+	</command>
+
+	<command name="typeDescription">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#DESCRIPTION_FIELD" value1="${userDescription}" />
+	</command>
+
+	<command name="typeDescriptionUsingSendKeys">
+		<execute function="Type#sendKeys" locator1="LoopPeopleUpdatePerson#DESCRIPTION_FIELD" value1="${userDescription}" />
+	</command>
+
+	<command name="typeFacebook">
+		<execute macro="LoopPeoplePerson#gotoEditElsewhereSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#FACEBOOK_FIELD" value1="${userFacebook}" />
+	</command>
+
+	<command name="typeGitHub">
+		<execute macro="LoopPeoplePerson#gotoEditElsewhereSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#GITHUB_FIELD" value1="${userGitHub}" />
+	</command>
+
+	<command name="typeHireDate">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#HIRE_DATE_FIELD" value1="${userHireDate}" />
+	</command>
+
+	<command name="typeJobResponsibilities">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#JOB_RESPONSIBILITIES_FIELD" value1="${userJobResponsibilities}" />
+	</command>
+
+	<command name="typeLanguage">
+		<execute macro="LoopPeoplePerson#gotoEditWorkSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#LANGUAGES_FIELD" value1="${userLanguage}" />
+	</command>
+
+	<command name="typeLinkedIn">
+		<execute macro="LoopPeoplePerson#gotoEditElsewhereSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#LINKEDIN_FIELD" value1="${userLinkedIn}" />
+	</command>
+
+	<command name="typePreferredName">
+		<execute macro="LoopPeoplePerson#gotoEditAboutSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#PREFERRED_NAME_FIELD" value1="${userPreferredName}" />
+	</command>
+
+	<command name="typeReturnViaDescriptionField">
+		<execute function="KeyPress" locator1="LoopPeopleUpdatePerson#DESCRIPTION_FIELD" value1="\RETURN" />
+	</command>
+
+	<command name="typeSkype">
+		<execute macro="LoopPeoplePerson#gotoEditContactSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#SKYPE_FIELD" value1="${userSkype}" />
+	</command>
+
+	<command name="typeTwitter">
+		<execute macro="LoopPeoplePerson#gotoEditElsewhereSection" />
+
+		<execute function="Type" locator1="LoopPeopleUpdatePerson#TWITTER_FIELD" value1="${userTwitter}" />
+	</command>
+
+	<command name="uploadCoverPicture">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE" />
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE_SELECT_BUTTON" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${coverPictureFileName}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${coverPictureFileName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="uploadProfilePicture">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE" />
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE_SELECT_BUTTON" />
+
+		<if>
+			<equals arg1="${uploadTempFile}" arg2="true" />
+			<then>
+				<execute function="SikuliUploadTempFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${profilePictureFileName}" />
+			</then>
+			<else>
+				<execute function="SikuliUploadCommonFile" locator1="OS#FILE_DIALOG_BOX_FILE_NAME_FIELD_PNG" value1="${profilePictureFileName}" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewAge">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#ABOUT_AGE" value1="${userAge}" />
+	</command>
+
+	<command name="viewBirthday">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#ABOUT_BIRTHDAY" value1="${userBirthday}" />
+	</command>
+
+	<command name="viewDeactivatedPersonProfile">
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_INACTIVE_ALERT" value1="${userName} is no longer active." />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_NAME" value1="${userName}" />
+
+		<if>
+			<and>
+				<isset var="jobTitleName" />
+				<not>
+					<contains string="${jobTitleName}" substring="{jobTitleName}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#PERSON_DESCRIPTION" value1="${jobTitleName}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userLocation" />
+				<not>
+					<contains string="${userLocation}" substring="{userLocation}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#PERSON_DESCRIPTION" value1="${userLocation}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWER_COUNT" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWER_COUNT" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="groupCount" />
+				<not>
+					<contains string="${groupCount}" substring="{groupCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${groupCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_GROUP_COUNT" value1="1 Group" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_GROUP_COUNT" value1="${groupCount} Groups" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute macro="LoopPeoplePerson#viewEmailAddress">
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+		</execute>
+	</command>
+
+	<command name="viewDepartmentsFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#DEPARTMENTS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewDepartmentsFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#DEPARTMENTS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewDescription">
+		<var name="key_userDescription" value="${userDescription}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#ABOUT_DESCRIPTION" value1="${userDescription}" />
+	</command>
+
+	<command name="viewDescriptionMarkdown">
+		<execute function="KeyPress" locator1="LoopTopicsTopic#TOPIC_PROFILE" value1="\SPACE" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopPeoplePerson#ABOUT_DESCRIPTION_SEE_MORE_LINK" />
+			<then>
+				<execute function="AssertClick" locator1="LoopPeoplePerson#ABOUT_DESCRIPTION_SEE_MORE_LINK" value1="See More" />
+			</then>
+		</if>
+
+		<execute function="SikuliAssertElementPresent" locator1="LoopPeoplePerson#ABOUT_DESCRIPTION_MARKDOWN_3" />
+	</command>
+
+	<command name="viewEditControls">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE_SELECT_BUTTON" />
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_OPTIONS_EDIT_LINK" value1="Edit User Information" />
+	</command>
+
+	<command name="viewEditControlsForDeactivatedUser">
+		<execute function="Click" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_OPTIONS_EDIT_LINK" value1="Edit User Information" />
+	</command>
+
+	<command name="viewEmailAddress">
+		<var name="key_userEmailAddress" value="${userEmailAddress}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#CONTACT_EMAIL_ADDRESS" value1="${userEmailAddress}" />
+	</command>
+
+	<command name="viewEmailAddressFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#EMAIL_ADDRESS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewEmailAddressFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#EMAIL_ADDRESS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewEmploymentType">
+		<var name="key_userEmploymentType" value="${userEmploymentType}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#WORK_EMPLOYMENT_TYPE" value1="${userEmploymentType}" />
+	</command>
+
+	<command name="viewEmploymentTypeSelectDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#EMPLOYMENT_TYPE_SELECT_DISABLED" />
+	</command>
+
+	<command name="viewEmploymentTypeSelectEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#EMPLOYMENT_TYPE_SELECT_DISABLED" />
+	</command>
+
+	<command name="viewEntityInField">
+		<var name="key_entityName" value="${entityName}" />
+		<var name="key_fieldLabel" value="${fieldLabel}" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#SELECTED_ENTITY_NAME_GENERAL_FIELD" />
+	</command>
+
+	<command name="viewExpertise">
+		<var name="key_expertiseName" value="${expertiseName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#WORK_EXPERTISE" value1="${expertiseName}" />
+	</command>
+
+	<command name="viewFacebook">
+		<var name="key_userFacebook" value="${userFacebook}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#ELSEWHERE_FACEBOOK" value1="${userFacebook}" />
+	</command>
+
+	<command name="viewFirstNameFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#FIRST_NAME_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewFirstNameFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#FIRST_NAME_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewGender">
+		<var name="key_userGender" value="${userGender}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#ABOUT_GENDER" value1="${userGender}" />
+	</command>
+
+	<command name="viewGitHub">
+		<var name="key_userGitHub" value="${userGitHub}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#ELSEWHERE_GITHUB" value1="${userGitHub}" />
+	</command>
+
+	<command name="viewGroup">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#GROUPS_GROUP_NAME" value1="${groupName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#GROUPS_GROUP_DETAILS" value1="${groupType}" />
+	</command>
+
+	<command name="viewGroupViaFollowingSection">
+		<var name="key_entityType" value="Groups" />
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSection" />
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSectionGroupsTab">
+			<var name="followingGroupsCount" value="${followingGroupsCount}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="viewHireDateFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#HIRE_DATE_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewHireDateFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#HIRE_DATE_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewJobResponsibilities">
+		<var name="key_userJobResponsibilities" value="${userJobResponsibilities}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#JOB_RESPONSIBILITIES_DESCRIPTION" value1="${userJobResponsibilities}" />
+	</command>
+
+	<command name="viewJobResponsibilitiesFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#JOB_RESPONSIBILITIES_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewJobResponsibilitiesFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#JOB_RESPONSIBILITIES_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewJobTitleSelectDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#JOB_TITLE_SELECT_DISABLED" />
+	</command>
+
+	<command name="viewJobTitleSelectEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#JOB_TITLE_SELECT_DISABLED" />
+	</command>
+
+	<command name="viewLanguage">
+		<var name="key_userLanguage" value="${userLanguage}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#WORK_LANGUAGES" value1="${userLanguage}" />
+	</command>
+
+	<command name="viewLastNameFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#LAST_NAME_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewLastNameFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#LAST_NAME_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewLinkedIn">
+		<var name="key_userLinkedIn" value="${userLinkedIn}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#ELSEWHERE_LINKEDIN" value1="${userLinkedIn}" />
+	</command>
+
+	<command name="viewLocationsFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#LOCATIONS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewLocationsFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#LOCATIONS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewManager">
+		<var name="key_managerName" value="${managerName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#NETWORK_MANAGER" />
+	</command>
+
+	<command name="viewManagersFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#MANAGERS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewManagersFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#MANAGERS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewManagerViaNetworkSection">
+		<var name="key_managerName" value="${managerName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#NETWORK_TAB_MANAGER_NAME_LINK" value1="${managerName}" />
+	</command>
+
+	<command name="viewNoAge">
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#ABOUT_AGE" />
+	</command>
+
+	<command name="viewNoBirthday">
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#ABOUT_BIRTHDAY" />
+	</command>
+
+	<command name="viewNoCreatePermissions">
+		<execute macro="Loop#openSpecificURL">
+			<var name="url" value="/web/guest/home/-/loop/people/_${userScreenName}/create" />
+		</execute>
+
+		<execute macro="LoopNavigation#viewPageNotFound" />
+	</command>
+
+	<command name="viewNoEditControls">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+	</command>
+
+	<command name="viewNoEditControlsForDeactivatedUser">
+		<execute function="MouseOver" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE_SELECT_BUTTON" />
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_OPTIONS_BUTTON" />
+	</command>
+
+	<command name="viewNoEmailAddress">
+		<var name="key_userEmailAddress" value="${userEmailAddress}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#CONTACT_EMAIL_ADDRESS" />
+	</command>
+
+	<command name="viewNoEntityInField">
+		<var name="key_entityName" value="${entityName}" />
+		<var name="key_fieldLabel" value="${fieldLabel}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#SELECTED_ENTITY_NAME_GENERAL_FIELD" />
+	</command>
+
+	<command name="viewNoExpertise">
+		<var name="key_expertiseName" value="${expertiseName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#WORK_EXPERTISE" />
+	</command>
+
+	<command name="viewNoFollowButton">
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_FOLLOW_BUTTON" />
+	</command>
+
+	<command name="viewNoGroup">
+		<var name="key_groupName" value="${groupName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#GROUPS_GROUP_NAME" />
+	</command>
+
+	<command name="viewNoGroupViaFollowingSection">
+		<execute macro="LoopPeoplePerson#gotoFollowingSection" />
+
+		<execute macro="LoopGroupsGroup#viewNoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSectionGroupsTab">
+			<var name="followingGroupsCount" value="${followingGroupsCount}" />
+		</execute>
+
+		<execute macro="LoopGroupsGroup#viewNoGroupViaGroupsList">
+			<var name="groupName" value="${groupName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoJobTitle">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#PERSON_JOB_TITLE" />
+	</command>
+
+	<command name="viewNoManager">
+		<var name="key_managerName" value="${managerName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#NETWORK_MANAGER" />
+	</command>
+
+	<command name="viewNoManagerViaNetworkSection">
+		<var name="key_managerName" value="${managerName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#NETWORK_TAB_MANAGER_NAME_LINK" />
+	</command>
+
+	<command name="viewNoPersonViaFollowingSection">
+		<execute macro="LoopPeoplePerson#gotoFollowingSection" />
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSectionPeopleTab">
+			<var name="followingPeopleCount" value="${followingPeopleCount}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewNoPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewNoPersonViaPeopleList">
+		<var name="key_userName" value="${userName}" />
+
+		<if>
+			<condition function="IsElementPresent" locator1="LoopPeople#PERSON_NAME" />
+			<then>
+				<execute function="AssertNotVisible" locator1="LoopPeople#PERSON_PROFILE_IMAGE" />
+				<execute function="AssertNotVisible" locator1="LoopPeople#PERSON_NAME" />
+			</then>
+			<else>
+				<execute function="AssertElementNotPresent" locator1="LoopPeople#PERSON_PROFILE_IMAGE" />
+				<execute function="AssertElementNotPresent" locator1="LoopPeople#PERSON_NAME" />
+			</else>
+		</if>
+	</command>
+
+	<command name="viewNoPhoneNumber">
+		<var name="key_userPhoneNumber" value="${userPhoneNumber}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#CONTACT_PHONE" />
+	</command>
+
+	<command name="viewNoSubordinate">
+		<var name="key_subordinateName" value="${subordinateName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#NETWORK_SUBORDINATE" />
+	</command>
+
+	<command name="viewNoSubordinateViaNetworkSection">
+		<var name="key_subordinateName" value="${subordinateName}" />
+
+		<execute function="AssertElementNotPresent" locator1="LoopPeoplePerson#NETWORK_TAB_SUBORDINATE_NAME_LINK" />
+	</command>
+
+	<command name="viewNoTopicViaFollowingSection">
+		<execute macro="LoopPeoplePerson#gotoFollowingSection" />
+
+		<execute macro="LoopTopicsTopic#viewNoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSectionTopicsTab">
+			<var name="followingTopicsCount" value="${followingTopicsCount}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewNoTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewOccupation">
+		<var name="key_jobTitleName" value="${jobTitleName}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#WORK_OCCUPATION" value1="${jobTitleName}" />
+	</command>
+
+	<command name="viewPeopleViaPeopleList">
+		<for list="${userNameList}" param="userName">
+			<var name="key_userName" value="${userName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopPeople#PERSON_PROFILE_IMAGE" />
+			<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_NAME" value1="${userName}" />
+		</for>
+	</command>
+
+	<command name="viewPersonCount">
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeople#PERSON_COUNT" value1="${personCount}" />
+	</command>
+
+	<command name="viewPersonOverlay">
+		<execute function="AssertElementPresent" locator1="LoopPeople#PERSON_OVERLAY_AVATAR" />
+		<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_NAME" value1="${userName}" />
+
+		<if>
+			<equals arg1="${selfOverlay}" arg2="true" />
+			<then>
+				<execute function="AssertElementNotPresent" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" />
+			</then>
+			<else>
+				<execute function="AssertElementPresent" locator1="LoopPeople#PERSON_OVERLAY_FOLLOW_BUTTON" />
+			</else>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_FOLLOWERS" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_FOLLOWERS" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="groupCount" />
+				<not>
+					<contains string="${groupCount}" substring="{groupCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${groupCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_GROUPS" value1="1 Group" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_GROUPS" value1="${groupCount} Groups" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="expertiseCount" />
+				<not>
+					<contains string="${expertiseCount}" substring="{expertiseCount}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_OVERLAY_EXPERTISE" value1="${expertiseCount} Expertise" />
+			</then>
+		</if>
+
+		<execute macro="LoopNavigation#closeOverlay" />
+	</command>
+
+	<command name="viewPersonProfile">
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_COVER_PICTURE" />
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#PERSON_PROFILE_PICTURE" />
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_NAME" value1="${userName}" />
+
+		<if>
+			<and>
+				<isset var="jobTitleName" />
+				<not>
+					<contains string="${jobTitleName}" substring="{jobTitleName}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#PERSON_DESCRIPTION" value1="${jobTitleName}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userLocation" />
+				<not>
+					<contains string="${userLocation}" substring="{userLocation}" />
+				</not>
+			</and>
+			<then>
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#PERSON_DESCRIPTION" value1="${userLocation}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="followerCount" />
+				<not>
+					<contains string="${followerCount}" substring="{followerCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${followerCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWER_COUNT" value1="1 Follower" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_FOLLOWER_COUNT" value1="${followerCount} Followers" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="groupCount" />
+				<not>
+					<contains string="${groupCount}" substring="{groupCount}" />
+				</not>
+			</and>
+			<then>
+				<if>
+					<equals arg1="${groupCount}" arg2="1" />
+					<then>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_GROUP_COUNT" value1="1 Group" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals" locator1="LoopPeoplePerson#PERSON_GROUP_COUNT" value1="${groupCount} Groups" />
+					</else>
+				</if>
+			</then>
+		</if>
+
+		<execute macro="LoopPeoplePerson#viewEmailAddress">
+			<var name="userEmailAddress" value="${userEmailAddress}" />
+		</execute>
+	</command>
+
+	<command name="viewPersonViaFollowingSection">
+		<var name="key_entityType" value="People" />
+		<var name="key_userName" value="${userName}" />
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSection" />
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSectionPeopleTab">
+			<var name="followingPeopleCount" value="${followingPeopleCount}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#viewPersonViaPeopleList">
+			<var name="userName" value="${userName}" />
+		</execute>
+	</command>
+
+	<command name="viewPersonViaPeopleList">
+		<var name="key_userName" value="${userName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeople#PERSON_PROFILE_IMAGE" />
+		<execute function="AssertTextEquals" locator1="LoopPeople#PERSON_NAME" value1="${userName}" />
+
+		<if>
+			<and>
+				<isset var="jobTitleName" />
+				<not>
+					<contains string="${jobTitleName}" substring="{jobTitleName}" />
+				</not>
+			</and>
+			<then>
+				<var name="key_jobTitleName" value="${jobTitleName}" />
+
+				<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeople#PERSON_JOB_TITLE" value1="${jobTitleName}" />
+			</then>
+		</if>
+
+		<if>
+			<and>
+				<isset var="userLocation" />
+				<not>
+					<contains string="${userLocation}" substring="{userLocation}" />
+				</not>
+			</and>
+			<then>
+				<var name="key_userLocation" value="${userLocation}" />
+
+				<if>
+					<condition function="IsNotVisible" locator1="LoopPeople#PERSON_LOCATION" />
+					<then>
+						<execute function="MouseOver" locator1="LoopPeople#PERSON_NAME" />
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeople#PERSON_LOCATION" value1="${userLocation}" />
+					</then>
+					<else>
+						<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeople#PERSON_LOCATION" value1="${userLocation}" />
+					</else>
+				</if>
+			</then>
+		</if>
+	</command>
+
+	<command name="viewPhoneNumber">
+		<var name="key_userPhoneNumber" value="${userPhoneNumber}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#CONTACT_PHONE" value1="${userPhoneNumber}" />
+	</command>
+
+	<command name="viewPreferredName">
+		<var name="key_userPreferredName" value="${userPreferredName}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#ABOUT_PREFERRED_NAME" value1="${userPreferredName}" />
+	</command>
+
+	<command name="viewPreferredNameFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#PREFERRED_NAME_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewPreferredNameFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#PREFERRED_NAME_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewSkype">
+		<var name="key_userSkype" value="${userSkype}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#CONTACT_SKYPE" value1="${userSkype}" />
+	</command>
+
+	<command name="viewStartDate">
+		<var name="key_userHireDate" value="${userHireDate}" />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="LoopPeoplePerson#WORK_START_DATE" value1="${userHireDate}" />
+	</command>
+
+	<command name="viewSubordinate">
+		<var name="key_subordinateName" value="${subordinateName}" />
+
+		<execute function="AssertElementPresent" locator1="LoopPeoplePerson#NETWORK_SUBORDINATE" />
+	</command>
+
+	<command name="viewSubordinates">
+		<for list="${subordinateNameList}" param="subordinateName">
+			<var name="key_subordinateName" value="${subordinateName}" />
+
+			<execute function="AssertElementPresent" locator1="LoopPeoplePerson#NETWORK_SUBORDINATE" />
+		</for>
+	</command>
+
+	<command name="viewSubordinatesViaNetworkSection">
+		<for list="${subordinateNameList}" param="subordinateName">
+			<var name="key_subordinateName" value="${subordinateName}" />
+
+			<execute function="AssertTextEquals" locator1="LoopPeoplePerson#NETWORK_TAB_SUBORDINATE_NAME_LINK" value1="${subordinateName}" />
+		</for>
+	</command>
+
+	<command name="viewSubordinateViaNetworkSection">
+		<var name="key_subordinateName" value="${subordinateName}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#NETWORK_TAB_SUBORDINATE_NAME_LINK" value1="${subordinateName}" />
+	</command>
+
+	<command name="viewTeamsFieldDisabled">
+		<execute function="AssertElementPresent" locator1="LoopPeopleUpdatePerson#TEAMS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewTeamsFieldEnabled">
+		<execute function="AssertElementNotPresent" locator1="LoopPeopleUpdatePerson#TEAMS_FIELD_DISABLED" />
+	</command>
+
+	<command name="viewTopicViaFollowingSection">
+		<var name="key_entityType" value="Topics" />
+		<var name="key_topicName" value="${topicName}" />
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSection" />
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+
+		<execute macro="LoopPeoplePerson#gotoFollowingSectionTopicsTab">
+			<var name="followingTopicsCount" value="${followingTopicsCount}" />
+		</execute>
+
+		<execute macro="LoopTopicsTopic#viewTopicViaTopicsList">
+			<var name="topicName" value="${topicName}" />
+		</execute>
+	</command>
+
+	<command name="viewTwitter">
+		<var name="key_userTwitter" value="${userTwitter}" />
+
+		<execute function="AssertTextEquals" locator1="LoopPeoplePerson#ELSEWHERE_TWITTER" value1="${userTwitter}" />
+	</command>
+</definition>

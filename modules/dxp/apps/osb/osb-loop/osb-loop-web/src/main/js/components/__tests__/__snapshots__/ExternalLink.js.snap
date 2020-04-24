@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ExternalLink renders 1`] = `<a rel="noopener noreferrer" target="_blank"></a>`;

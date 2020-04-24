@@ -1,0 +1,21 @@
+.header-text-container {
+	overflow: hidden;
+
+	> .loop-icon-container {
+		color: rgba($primary, 0.6);
+		padding-right: 8px;
+		vertical-align: middle;
+	}
+
+	.secondary-info {
+		font-size: 13px;
+
+		&:hover {
+			color: rgba($primary, 0.4);
+		}
+	}
+
+	.shared-to-summary-container {
+		display: block;
+	}
+}

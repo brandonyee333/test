@@ -1,0 +1,79 @@
+.notifications-drop-down-container {
+	line-height: 20px;
+	position: relative;
+
+	.card-container {
+		@include experimental(animation, fade-in 0.4s ease);
+
+		left: -176px;
+		overflow: hidden;
+		position: absolute;
+		top: 28px;
+		width: 440px;
+	}
+
+	.card-header-container {
+		@include align-items(center);
+		@include flexbox;
+		@include justify-content(space-between);
+
+		border-bottom: 1px solid $borderLightGray;
+		color: rgba($primary, 0.7);
+		line-height: 20px;
+		padding: 36px 20px 32px;
+
+		.settings-toggle {
+			color: rgba($primary, 0.5);
+
+			&:hover {
+				color: rgba($primary, 0.7);
+			}
+
+			.loop-icon-container {
+				vertical-align: middle;
+			}
+		}
+	}
+
+	.count {
+		@include experimental(animation, fade-in 0.4s ease);
+
+		background-color: $error;
+		border-radius: 10px;
+		box-sizing: border-box;
+		color: $secondary;
+		font-size: 12px;
+		font-weight: bold;
+		height: 18px;
+		line-height: 18px;
+		min-width: 18px;
+		padding: 0 4px;
+		position: absolute;
+		right: -8px;
+		text-align: center;
+		top: -8px;
+	}
+
+	.toggle-icon {
+		position: relative;
+
+		.loop-icon-container {
+			vertical-align: middle;
+
+			&:hover {
+				color: rgba($secondary, 0.8);
+			}
+		}
+	}
+
+	@media #{$mediaMiniMax} {
+		.card-container {
+			height: calc(100% - 63px);
+			left: 15px;
+			position: fixed;
+			right: 15px;
+			top: 45px;
+			width: calc(100% - 30px);
+		}
+	}
+}

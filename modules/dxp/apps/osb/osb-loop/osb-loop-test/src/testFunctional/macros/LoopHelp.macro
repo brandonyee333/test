@@ -1,0 +1,5 @@
+<definition>
+	<command name="viewHelpPage">
+		<execute function="AssertElementPresent" locator1="LoopHelp#HELP_PAGE" />
+	</command>
+</definition>
