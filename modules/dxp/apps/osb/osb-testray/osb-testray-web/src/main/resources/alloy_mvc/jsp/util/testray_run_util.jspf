@@ -1,0 +1,362 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayRunUtil {
+
+	public static TestrayRun addTestrayRun(AlloyController alloyController, long testrayBuildId, int testrayFactorCategoriesCount, Set<Set<Long>> testrayFactorOptionIdSets, String fieldModifier, int index) throws Exception {
+		List<TestrayFactor> testrayFactors = new ArrayList<TestrayFactor>();
+
+		TestrayRun testrayRun = TestrayRunLocalServiceUtil.createTestrayRun(CounterLocalServiceUtil.increment());
+
+		Set<Long> testrayFactorOptionIds = new HashSet<Long>();
+
+		for (int i = 0; i < testrayFactorCategoriesCount; i++) {
+			StringBundler sb = new StringBundler(5);
+
+			sb.append("testrayFactorCategoryId");
+			sb.append("_column");
+			sb.append(i);
+
+			long testrayFactorCategoryId = ParamUtil.getLong(alloyController.getRequest(), sb.toString());
+
+			if (testrayFactorCategoryId <= 0) {
+				return null;
+			}
+
+			sb.setStringAt("testrayFactorOptionId", 0);
+
+			sb.append(fieldModifier);
+			sb.append(index);
+
+			long testrayFactorOptionId = ParamUtil.getLong(alloyController.getRequest(), sb.toString());
+
+			if (testrayFactorOptionId <= 0) {
+				return null;
+			}
+
+			testrayFactorOptionIds.add(testrayFactorOptionId);
+
+			testrayFactors.add(TestrayFactorUtil.createTestrayFactor(TestrayRun.class.getName(), testrayRun.getTestrayRunId(), testrayFactorCategoryId, null, testrayFactorOptionId, null));
+		}
+
+		boolean uniqueTestrayFactorCombination = testrayFactorOptionIdSets.add(testrayFactorOptionIds);
+
+		if (!uniqueTestrayFactorCombination) {
+			return null;
+		}
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			alloyController.updateModelIgnoreRequest(testrayFactor);
+		}
+
+		String environmentHash = getEnvironmentHash(testrayRun.getTestrayRunId());
+
+		testrayRun.setEnvironmentHash(environmentHash);
+
+		testrayRun.setExternalReferencePK(String.valueOf(testrayRun.getTestrayRunId()));
+		testrayRun.setName(String.valueOf(testrayRun.getTestrayRunId()));
+
+		long number = getNumber(testrayFactorOptionIds, testrayBuildId);
+
+		testrayRun.setNumber(number);
+
+		testrayRun.setTestrayBuildId(testrayBuildId);
+
+		alloyController.updateModelIgnoreRequest(testrayRun, "testrayRunId", testrayRun.getTestrayRunId());
+
+		return testrayRun;
+	}
+
+	public static int autoFill(AlloyController alloyController, TestrayRunComposite testrayRunCompositeA, TestrayRunComposite testrayRunCompositeB) throws Exception {
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapA = _getTestrayCaseIdCompositeMap(testrayRunCompositeA);
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapB = _getTestrayCaseIdCompositeMap(testrayRunCompositeB);
+
+		int testrayCaseResultsCount = 0;
+
+		for (Map.Entry<Long, TestrayCaseResultComposite> entry : testrayCaseIdCompositeMapA.entrySet()) {
+			TestrayCaseResultComposite testrayCaseResultCompositeA = entry.getValue();
+
+			TestrayCaseResultComposite testrayCaseResultCompositeB = testrayCaseIdCompositeMapB.get(entry.getKey());
+
+			if (testrayCaseResultCompositeB == null) {
+				continue;
+			}
+
+			if (Validator.isNull(testrayCaseResultCompositeA.getErrors()) || Validator.isNull(testrayCaseResultCompositeB.getErrors())) {
+				continue;
+			}
+
+			String errorsA = testrayCaseResultCompositeA.getErrors();
+
+			if (!errorsA.equals(testrayCaseResultCompositeB.getErrors())) {
+				continue;
+			}
+
+			boolean autoFilled = TestrayCaseResultUtil.autoFill(alloyController, testrayCaseResultCompositeA, testrayCaseResultCompositeB);
+
+			if (autoFilled) {
+				testrayCaseResultsCount++;
+			}
+		}
+
+		return testrayCaseResultsCount;
+	}
+
+	public static TestrayRunComparison compare(TestrayRunComposite testrayRunCompositeA, TestrayRunComposite testrayRunCompositeB, List<Integer> testrayCasePriorities, long testrayTeamId) throws Exception {
+		Set<TestrayCaseResultComparison> testrayCaseResultComparisons = new HashSet<>();
+
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapA = _getTestrayCaseIdCompositeMap(testrayRunCompositeA);
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapB = _getTestrayCaseIdCompositeMap(testrayRunCompositeB);
+
+		for (Map.Entry<Long, TestrayCaseResultComposite> entry : testrayCaseIdCompositeMapA.entrySet()) {
+			TestrayCaseResultComposite testrayCaseResultCompositeA = entry.getValue();
+
+			if (!testrayCasePriorities.isEmpty() && !testrayCasePriorities.contains(testrayCaseResultCompositeA.getPriority())) {
+				continue;
+			}
+
+			if ((testrayTeamId > 0) && (testrayTeamId != testrayCaseResultCompositeA.getTestrayTeamId())) {
+				continue;
+			}
+
+			TestrayCaseResultComparison testrayCaseResultComparison = new TestrayCaseResultComparison(testrayCaseResultCompositeA, testrayCaseIdCompositeMapB.remove(entry.getKey()));
+
+			testrayCaseResultComparisons.add(testrayCaseResultComparison);
+		}
+
+		for (Map.Entry<Long, TestrayCaseResultComposite> entry : testrayCaseIdCompositeMapB.entrySet()) {
+			TestrayCaseResultComposite testrayCaseResultCompositeB = entry.getValue();
+
+			if (!testrayCasePriorities.isEmpty() && !testrayCasePriorities.contains(testrayCaseResultCompositeB.getPriority())) {
+				continue;
+			}
+
+			if ((testrayTeamId > 0) && (testrayTeamId != testrayCaseResultCompositeB.getTestrayTeamId())) {
+				continue;
+			}
+
+			TestrayCaseResultComparison testrayCaseResultComparison = new TestrayCaseResultComparison(null, testrayCaseResultCompositeB);
+
+			testrayCaseResultComparisons.add(testrayCaseResultComparison);
+		}
+
+		return new TestrayRunComparison(testrayCaseResultComparisons);
+	}
+
+	public static TestrayRunComparison compare(TestrayRunComposite testrayRunCompositeA, TestrayRunComposite testrayRunCompositeB, String testrayCaseName, long testrayComponentId, long testrayTeamId, long statusA, long statusB, List<Integer> testrayCasePriorities) throws Exception {
+		Set<TestrayCaseResultComparison> testrayCaseResultComparisons = new HashSet<>();
+
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapA = _getTestrayCaseIdCompositeMap(testrayRunCompositeA);
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMapB = _getTestrayCaseIdCompositeMap(testrayRunCompositeB);
+
+		for (Map.Entry<Long, TestrayCaseResultComposite> entry : testrayCaseIdCompositeMapA.entrySet()) {
+			TestrayCaseResultComposite testrayCaseResultCompositeA = entry.getValue();
+
+			if (!testrayCasePriorities.isEmpty() && !testrayCasePriorities.contains(testrayCaseResultCompositeA.getPriority())) {
+				continue;
+			}
+
+			if ((testrayComponentId > 0) && (testrayComponentId != testrayCaseResultCompositeA.getTestrayComponentId())) {
+				continue;
+			}
+
+			if ((testrayTeamId > 0) && (testrayTeamId != testrayCaseResultCompositeA.getTestrayTeamId())) {
+				continue;
+			}
+
+			if ((statusA >= 0) && (statusA != testrayCaseResultCompositeA.getStatus())) {
+				continue;
+			}
+
+			int curStatusB = TestrayCaseResultConstants.STATUS_DID_NOT_RUN;
+
+			TestrayCaseResultComposite testrayCaseResultCompositeB = testrayCaseIdCompositeMapB.remove(entry.getKey());
+
+			if (testrayCaseResultCompositeB != null) {
+				curStatusB = testrayCaseResultCompositeB.getStatus();
+			}
+
+			if ((statusB >= 0) && (statusB != curStatusB)) {
+				continue;
+			}
+
+			TestrayCaseResultComparison testrayCaseResultComparison = new TestrayCaseResultComparison(testrayCaseResultCompositeA, testrayCaseResultCompositeB);
+
+			String curTestrayCaseName = testrayCaseResultComparison.getTestrayCaseName();
+
+			if (Validator.isNotNull(testrayCaseName) && !curTestrayCaseName.contains(testrayCaseName)) {
+				continue;
+			}
+
+			testrayCaseResultComparisons.add(testrayCaseResultComparison);
+		}
+
+		for (Map.Entry<Long, TestrayCaseResultComposite> entry : testrayCaseIdCompositeMapB.entrySet()) {
+			TestrayCaseResultComposite testrayCaseResultCompositeB = entry.getValue();
+
+			if (!testrayCasePriorities.isEmpty() && !testrayCasePriorities.contains(testrayCaseResultCompositeB.getPriority())) {
+				continue;
+			}
+
+			if ((testrayComponentId > 0) && (testrayComponentId != testrayCaseResultCompositeB.getTestrayComponentId())) {
+				continue;
+			}
+
+			if ((testrayTeamId > 0) && (testrayTeamId != testrayCaseResultCompositeB.getTestrayTeamId())) {
+				continue;
+			}
+
+			if ((statusB >= 0) && (statusB != testrayCaseResultCompositeB.getStatus())) {
+				continue;
+			}
+
+			if ((statusA >= 0) && (statusA != TestrayCaseResultConstants.STATUS_DID_NOT_RUN)) {
+				continue;
+			}
+
+			if ((statusA == TestrayCaseResultConstants.STATUS_DID_NOT_RUN) && testrayCaseIdCompositeMapA.containsKey(testrayCaseResultCompositeB.getTestrayCaseId())) {
+				continue;
+			}
+
+			TestrayCaseResultComparison testrayCaseResultComparison = new TestrayCaseResultComparison(null, testrayCaseResultCompositeB);
+
+			String curTestrayCaseName = testrayCaseResultComparison.getTestrayCaseName();
+
+			if (Validator.isNotNull(testrayCaseName) && !curTestrayCaseName.contains(testrayCaseName)) {
+				continue;
+			}
+
+			testrayCaseResultComparisons.add(testrayCaseResultComparison);
+		}
+
+		return new TestrayRunComparison(testrayCaseResultComparisons);
+	}
+
+	public static TestrayRun deleteTestrayRun(TestrayRun testrayRun) throws Exception {
+		TestrayRunLocalServiceUtil.deleteTestrayRun(testrayRun);
+
+		TestrayCaseResultUtil.deleteTestrayCaseResults(testrayRun.getCompanyId(), "testrayRunId", testrayRun.getTestrayRunId());
+		TestrayFactorUtil.deleteTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+
+		return testrayRun;
+	}
+
+	public static void deleteTestrayRuns(long testrayBuildId) throws Exception {
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		List<TestrayRun> testrayRuns = testrayRunAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuildId});
+
+		for (TestrayRun testrayRun : testrayRuns) {
+			deleteTestrayRun(testrayRun);
+		}
+	}
+
+	public static TestrayRun fetchTestrayRun(TestrayBuild testrayBuild, String externalReferencePK) throws Exception {
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		List<TestrayRun> testrayRuns = testrayRunAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId(), "externalReferencePK", externalReferencePK});
+
+		if (!testrayRuns.isEmpty()) {
+			return testrayRuns.get(0);
+		}
+
+		return null;
+	}
+
+	public static String getEnvironmentHash(long testrayRunId) throws Exception {
+		List<TestrayFactor> testrayFactors = TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), testrayRunId);
+
+		StringBundler sb = new StringBundler(2 * testrayFactors.size());
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			sb.append(testrayFactor.getTestrayFactorCategoryId());
+			sb.append(testrayFactor.getTestrayFactorOptionId());
+		}
+
+		String testrayFactorsString = sb.toString();
+
+		return String.valueOf(testrayFactorsString.hashCode());
+	}
+
+	public static long getNumber(Set<Long> testrayFactorOptionIds, long testrayBuildId) throws Exception {
+		return CounterLocalServiceUtil.increment(TestrayBuild.class.getName() + StringPool.POUND + testrayBuildId);
+	}
+
+	public static TestrayRun getTestrayRun(HttpServletRequest request) throws Exception {
+		long testrayRunId = ParamUtil.getLong(request, "testrayRunId", -1);
+
+		if (testrayRunId >= 0) {
+			TestrayRun testrayRun = TestrayRunLocalServiceUtil.fetchTestrayRun(testrayRunId);
+
+			if (testrayRun == null) {
+				throw new AlloyException("the-run-with-id-x-does-not-exist", new Object[] {testrayRunId}, false);
+			}
+
+			return testrayRun;
+		}
+
+		long number = ParamUtil.getLong(request, "testrayRunNumber", -1);
+
+		if (number < 0) {
+			throw new AlloyException("the-run-id-or-number-provided-does-not-match-an-existing-run", false);
+		}
+
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		TestrayBuild testrayBuild = TestrayBuildUtil.getTestrayBuild(request);
+
+		List<TestrayRun> testrayRuns = testrayRunAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId(), "number", number});
+
+		if (testrayRuns.isEmpty()) {
+			throw new AlloyException("the-run-with-number-x-does-not-exist-for-the-build-with-id-x", new Object[] {number, testrayBuild.getTestrayBuildId()}, false);
+		}
+
+		return testrayRuns.get(0);
+	}
+
+	public static List<Long> getTestrayRunIds(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		DynamicQuery testrayRunDynamicQuery = testrayRunAlloyServiceInvoker.buildDynamicQuery();
+
+		Property testrayBuildIdProperty = PropertyFactoryUtil.forName("testrayBuildId");
+
+		testrayRunDynamicQuery.add(testrayBuildIdProperty.in(TestrayBuildUtil.getTestrayBuildIds(testrayProjectId)));
+
+		Projection testrayRunIdProjection = ProjectionFactoryUtil.property("testrayRunId");
+
+		testrayRunDynamicQuery.setProjection(testrayRunIdProjection);
+
+		return testrayRunAlloyServiceInvoker.executeDynamicQuery(testrayRunDynamicQuery);
+	}
+
+	private static Map<Long, TestrayCaseResultComposite> _getTestrayCaseIdCompositeMap(TestrayRunComposite testrayRunComposite) throws Exception {
+		Map<Long, TestrayCaseResultComposite> testrayCaseIdCompositeMap = new HashMap<>();
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRunId", testrayRunComposite.getTestrayRunId()});
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			testrayCaseIdCompositeMap.put(testrayCaseResult.getTestrayCaseId(), new TestrayCaseResultComposite(testrayCaseResult, testrayRunComposite.getThemeDisplay()));
+		}
+
+		return testrayCaseIdCompositeMap;
+	}
+
+}
+%>

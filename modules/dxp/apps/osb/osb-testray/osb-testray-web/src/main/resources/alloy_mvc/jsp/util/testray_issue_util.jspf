@@ -1,0 +1,136 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayIssueUtil {
+
+	public static TestrayIssue addTestrayIssue(AlloyController alloyController, String name) throws Exception {
+		TestrayIssue testrayIssue = TestrayIssueLocalServiceUtil.createTestrayIssue(0);
+
+		testrayIssue.setName(StringUtil.trim(name));
+
+		alloyController.updateModelIgnoreRequest(testrayIssue);
+
+		return testrayIssue;
+	}
+
+	public static List<TestrayIssue> fetchOrAddTestrayIssues(AlloyController alloyController, String[] names) throws Exception {
+		List<TestrayIssue> testrayIssues = new ArrayList<TestrayIssue>();
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		for (String name : ArrayUtil.distinct(names)) {
+			name = StringUtil.trim(name);
+
+			TestrayIssue testrayIssue = fetchTestrayIssue(themeDisplay.getCompanyId(), name);
+
+			if (testrayIssue == null) {
+				testrayIssue = addTestrayIssue(alloyController, name);
+			}
+
+			testrayIssues.add(testrayIssue);
+		}
+
+		return testrayIssues;
+	}
+
+	public static TestrayIssue fetchTestrayIssue(long companyId, String name) throws Exception {
+		AlloyServiceInvoker testrayIssueAlloyServiceInvoker = new AlloyServiceInvoker(TestrayIssue.class.getName());
+
+		List<TestrayIssue> testrayIssues = testrayIssueAlloyServiceInvoker.executeDynamicQuery(new Object[] {"companyId", companyId, "name", StringUtil.trim(name)});
+
+		if (!testrayIssues.isEmpty()) {
+			return testrayIssues.get(0);
+		}
+
+		return null;
+	}
+
+	public static String getTestrayCaseResultTestrayIssuesString(long testrayCaseResultId) {
+		List<TestrayIssue> testrayIssues = TestrayIssueLocalServiceUtil.getTestrayCaseResultTestrayIssues(testrayCaseResultId);
+
+		if (testrayIssues.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(testrayIssues.size() * 2);
+
+		for (TestrayIssue testrayIssue : testrayIssues) {
+			sb.append(TestrayIndexerUtil.sanitizeString(testrayIssue.getName()));
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		return sb.toString();
+	}
+
+	public static String getTestrayCaseResultTestrayIssuesString(TestrayCaseResult testrayCaseResult) {
+		return getTestrayCaseResultTestrayIssuesString(testrayCaseResult.getTestrayCaseResultId());
+	}
+
+	public static Set<Long> getTestrayCaseTestrayIssueIds(long testrayCaseId) throws Exception {
+		Set<Long> testrayIssueIds = new HashSet<>();
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayCaseId", testrayCaseId});
+
+		Projection testrayCaseResultIdProjection = ProjectionFactoryUtil.property("testrayCaseResultId");
+
+		testrayCaseResultDynamicQuery.setProjection(testrayCaseResultIdProjection);
+
+		List<Long> testrayCaseResultIds = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			long[] testrayCaseResultTestrayIssueIds = TestrayCaseResultLocalServiceUtil.getTestrayIssuePrimaryKeys(testrayCaseResultId);
+
+			for (long testrayIssueId : testrayCaseResultTestrayIssueIds) {
+				testrayIssueIds.add(testrayIssueId);
+			}
+		}
+
+		return testrayIssueIds;
+	}
+
+	public static String getTestrayCaseTestrayIssuesString(long testrayCaseId) throws Exception {
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+
+		try {
+			connection = DataAccess.getConnection();
+
+			statement = connection.createStatement();
+
+			resultSet = statement.executeQuery("SELECT GROUP_CONCAT(DISTINCT OSB_TestrayIssue.name SEPARATOR ', ') as issues FROM OSB_TestrayCaseResults_TestrayIssues INNER JOIN OSB_TestrayIssue USING(testrayIssueId) INNER JOIN OSB_TestrayCaseResult USING(testrayCaseResultId) WHERE OSB_TestrayCaseResult.testrayCaseId = " + testrayCaseId);
+
+			resultSet.next();
+
+			return resultSet.getString("issues");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
+		}
+		finally {
+			DataAccess.cleanUp(connection, statement, resultSet);
+		}
+	}
+
+}
+%>

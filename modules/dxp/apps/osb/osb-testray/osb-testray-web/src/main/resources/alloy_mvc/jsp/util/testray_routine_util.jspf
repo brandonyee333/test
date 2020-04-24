@@ -1,0 +1,85 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayRoutineUtil {
+
+	public static void deleteTestrayRoutine(TestrayRoutine testrayRoutine) throws Exception {
+		TestrayRoutineLocalServiceUtil.deleteTestrayRoutine(testrayRoutine);
+
+		TestrayBuildUtil.deleteTestrayBuilds(testrayRoutine.getTestrayRoutineId());
+	}
+
+	public static void deleteTestrayRoutines(long testrayProjectId) throws Exception {
+		List<TestrayRoutine> testrayRoutines = getTestrayRoutines(testrayProjectId);
+
+		for (TestrayRoutine testrayRoutine : testrayRoutines) {
+			deleteTestrayRoutine(testrayRoutine);
+		}
+	}
+
+	public static TestrayRoutine getTestrayRoutine(HttpServletRequest request) throws Exception {
+		long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId", -1);
+
+		if (testrayRoutineId >= 0) {
+			TestrayRoutine testrayRoutine = TestrayRoutineLocalServiceUtil.fetchTestrayRoutine(testrayRoutineId);
+
+			if (testrayRoutine == null) {
+				throw new AlloyException("the-routine-with-id-x-does-not-exist", new Object[] {testrayRoutineId}, false);
+			}
+
+			return testrayRoutine;
+		}
+
+		String name = ParamUtil.getString(request, "testrayRoutineName");
+
+		if (Validator.isNull(name)) {
+			throw new AlloyException("the-routine-id-or-name-provided-does-not-match-an-existing-routine", false);
+		}
+
+		AlloyServiceInvoker testrayRoutineAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRoutine.class.getName());
+
+		TestrayProject testrayProject = TestrayProjectUtil.getTestrayProject(request);
+
+		List<TestrayRoutine> testrayRoutines = testrayRoutineAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProject.getTestrayProjectId(), "name", name});
+
+		if (testrayRoutines.isEmpty()) {
+			throw new AlloyException("the-routine-with-name-x-does-not-exist-for-the-project-with-id-x", new Object[] {name, testrayProject.getTestrayProjectId()}, false);
+		}
+
+		return testrayRoutines.get(0);
+	}
+
+	public static List<Long> getTestrayRoutineIds(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayRoutineAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRoutine.class.getName());
+
+		DynamicQuery testrayRoutineDynamicQuery = testrayRoutineAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+
+		Projection testrayRoutineIdProjection = ProjectionFactoryUtil.property("testrayRoutineId");
+
+		testrayRoutineDynamicQuery.setProjection(testrayRoutineIdProjection);
+
+		return testrayRoutineAlloyServiceInvoker.executeDynamicQuery(testrayRoutineDynamicQuery);
+	}
+
+	public static List<TestrayRoutine> getTestrayRoutines(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayRoutineAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRoutine.class.getName());
+
+		return testrayRoutineAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+	}
+
+}
+%>

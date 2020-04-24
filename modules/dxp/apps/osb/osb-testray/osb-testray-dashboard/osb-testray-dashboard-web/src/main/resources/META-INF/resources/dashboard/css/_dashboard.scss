@@ -1,0 +1,279 @@
+body, html {
+	background: $backgroundColor;
+	color: $fontColor;
+	height: 100%;
+}
+
+h1 {
+	&.dashboard-panel-header {
+		@include font-small;
+
+		margin: 0 0 10px 0;
+
+		.subtitle {
+			color: $labelColor;
+
+			&:before {
+				content: '•';
+				display: inline;
+				padding: 0 3px;
+			}
+		}
+	}
+}
+
+.alert {
+	border-width: 0;
+	margin-bottom: 0;
+	padding: 0;
+}
+
+.dashboard-alert-wrapper {
+	.dashboard-alert {
+		align-items: center;
+		display: flex;
+		font-size: 1vw;
+
+		.dashboard-alert-content, .dashboard-alert-icon {
+			display: inline-block;
+			padding: 10px 15px;
+		}
+
+		.dashboard-alert-content {
+			flex: 1;
+
+			.description, .title {
+				padding-right: 20px;
+			}
+
+			.description {
+				@include font-small;
+			}
+
+			.title {
+				font-weight: bold;
+			}
+
+			&.status-label {
+				&.status-label-failed {
+					&:after {
+						background-color: rgba(0, 0, 0, 0.2);
+						content: 'Failed';
+						float: right;
+						font-size: 0.7vw;
+						letter-spacing: 0.03vw;
+						margin-left: auto;
+						margin-right: 10px;
+						padding: 5px 7px;
+						text-transform: uppercase;
+					}
+				}
+			}
+		}
+
+		.dashboard-alert-icon {
+			background-color: darken($failedBackgroundColor, 40%);
+		}
+
+		&.status-failed {
+			background-color: $failedBackgroundColor;
+		}
+	}
+}
+
+.data-row {
+	align-items: center;
+	display: flex;
+	justify-content: flex-start;
+
+	.data-column {
+		flex: 1;
+	}
+
+	.data-column-main {
+		flex: 2;
+	}
+
+	.data-column-server-bar {
+		flex: 8;
+	}
+
+	.data-column-label {
+		color: $labelColor;
+
+		@include font-xsmall;
+
+		&.data-column-server-bar {
+			text-align: center;
+		}
+	}
+}
+
+.dashboard-panel {
+	background-color: $panelBackgroundColor;
+	margin-bottom: 10px;
+	padding: 10px 15px;
+
+	&.pr-tester-queue {
+		padding-bottom: 10px;
+	}
+}
+
+.error {
+	color: $failedColor;
+}
+
+.error-text {
+	color: $labelColor;
+
+	@include font-xsmall;
+}
+
+.navbar {
+	border-radius: 0;
+	box-shadow: 1px 1px 1px #1D1D1D;
+	margin-bottom: 0;
+
+	.navbar-btn {
+		float: right;
+		margin-right: 15px;
+	}
+}
+
+.status-bar {
+	&.status-bar-blocked {
+		background-color: $blockedColor;
+	}
+
+	&.status-bar-failed {
+		background-color: $failedColor;
+	}
+
+	&.status-bar-high {
+		background-color: $primaryColor;
+	}
+
+	&.status-bar-low {
+		background-color: $primaryColorLighter;
+	}
+
+	&.status-bar-mid {
+		background-color: $primaryColorLight;
+	}
+
+	&.status-bar-passed {
+		background-color: $passedColor;
+	}
+
+	&.status-bar-test-fix {
+		background-color: $testFixColor;
+	}
+
+	&.status-bar-untested {
+		background-color: $untestedColor;
+	}
+}
+
+.testray-dashboard-container {
+	height: 100%;
+	padding: 15px;
+
+	.testray-dashboard-column {
+		&:not(:last-child) {
+			padding-right: 0;
+		}
+	}
+}
+
+/* ---------- Responsive ---------- */
+
+@include respond-to(tablet, phone) {
+	h1 {
+		font-size: 20px;
+	}
+
+	h2 {
+		font-size: 16px;
+	}
+
+	h3 {
+		font-size: 14px;
+	}
+
+	h4 {
+		font-size: 12px;
+	}
+
+	.test-wrapper {
+		.environment, .functional {
+			.message {
+				font-size: 12px;
+			}
+		}
+
+		.functional .status-bar {
+			height: 35px;
+
+			.status .tests {
+				font-size: 12px;
+				line-height: 35px;
+			}
+		}
+	}
+}
+
+@include respond-to(tablet) {
+	.pull-request-wrapper .server-wrapper .server-container {
+		width: 50%;
+
+		.server {
+			height: 4.5vw;
+
+			.percent .message {
+				font-size: 20px;
+			}
+		}
+
+		.in-queue {
+			font-size: 10px;
+		}
+	}
+}
+
+@include respond-to(phone) {
+	body, html {
+		height: auto;
+	}
+
+	.pull-request-wrapper {
+		.server-wrapper .server-container {
+			margin: 10px auto;
+			max-width: 100%;
+			width: 100%;
+
+			.server {
+				height: 8vw;
+
+				.free-space {
+					transition: width 0.2s;
+				}
+
+				.percent {
+					.message {
+						font-size: 28px;
+					}
+
+					&:after {
+						height: 22%;
+						right: -5%;
+						width: 5%;
+					}
+				}
+			}
+
+			.in-queue {
+				font-size: 10px;
+			}
+		}
+	}
+}

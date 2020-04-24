@@ -1,0 +1,43 @@
+.nav-tabs {
+	border-bottom-color: $border-color;
+
+	.tab {
+		font-size: 1.1em;
+		margin-right: 40px;
+
+		a {
+			border-radius: $border-radius;
+			border-width: 0;
+			color: $label-color;
+			padding-left: 2px;
+			padding-right: 2px;
+			padding-top: 5px;
+
+			&:active, &:focus, &:hover {
+				background-color: transparent;
+				border-width: 0;
+				color: $content-color;
+			}
+		}
+
+		&.active {
+			a {
+				&, &:focus, &:hover {
+					border-bottom: 2px solid $color-primary;
+					border-left-width: 0;
+					border-right-width: 0;
+					border-top-width: 0;
+					color: $color-primary;
+				}
+			}
+		}
+	}
+
+	&.testray-nav-tabs {
+		border-bottom-width: 0;
+		font-weight: $font-header-weight;
+		margin-bottom: 0;
+		margin-top: 10px;
+		padding: 0 $layout-padding-horizontal;
+	}
+}

@@ -1,0 +1,78 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<testray:filter>
+	<aui:input name="archived" type="hidden" value="${param.archived}" />
+	<aui:input name="testrayRoutineId" type="hidden" value="${testrayRoutine.testrayRoutineId}" />
+
+	<testray:filter-element
+		items="${TestrayCaseConstants.PRIORITIES}"
+		label="priority"
+		name="priorities"
+		selectedLabel="priority-x"
+		selectedValue="${testrayCasePriorities}"
+		type="checkboxes"
+	/>
+
+	<testray:filter-element
+		items="${testrayProductVersions}"
+		label="product-version"
+		modelClassName="com.liferay.osb.testray.model.TestrayProductVersion"
+		name="testrayProductVersionId"
+		selectedLabel="product-version-name-x"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		items="${testrayCaseTypes}"
+		label="case-type"
+		modelClassName="com.liferay.osb.testray.model.TestrayCaseType"
+		name="testrayCaseTypeId"
+		optionLabelProperty="name"
+		optionValueProperty="testrayCaseTypeId"
+		selectedLabel="case-type-x"
+		selectedValue="${testrayCaseTypeIds}"
+		type="select-models"
+	/>
+
+	<testray:filter-element
+		label="build-name"
+		name="name"
+		selectedLabel="build-name-x"
+		type="text"
+	/>
+
+	<testray:filter-element
+		items="${TestrayTaskConstants.STATUSES_ALL}"
+		label="status"
+		labelHelper="${TestrayTaskConstantsMethods}"
+		name="testrayTaskStatuses"
+		nullable="${true}"
+		nullableLabel="open"
+		selectedLabel="status-x"
+		selectedValue="${testrayTaskStatuses}"
+		type="checkboxes"
+	/>
+
+	<testray:filter-element
+		items="${testrayTeams}"
+		label="team"
+		modelClassName="com.liferay.osb.testray.model.TestrayTeam"
+		name="testrayTeamId"
+		selectedLabel="team-x"
+		type="select-model"
+	/>
+</testray:filter>

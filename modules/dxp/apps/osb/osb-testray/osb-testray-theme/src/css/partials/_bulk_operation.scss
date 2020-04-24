@@ -1,0 +1,29 @@
+.bulk-input-option {
+	border: 1px solid #CECECE;
+	margin-bottom: 1em;
+	padding: 1em 1.5em;
+
+	.replace-append-textarea {
+		width: 100%;
+	}
+
+	.replace-append-toggle-box {
+		label {
+			background: $button-disabled-background-color;
+			border-radius: $border-radius;
+			color: $color-gray-dark;
+			text-align: center;
+			width: 5em;
+			z-index: 1;
+
+			&.selected {
+				background: $color-primary;
+				color: $color-white;
+			}
+		}
+
+		.radio {
+			padding-left: 0;
+		}
+	}
+}

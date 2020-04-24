@@ -1,0 +1,272 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayTaskComposite extends BaseTestrayComposite {
+
+	public TestrayTaskComposite(TestrayTask testrayTask, ThemeDisplay themeDisplay, User user) throws Exception {
+		_testrayTask = testrayTask;
+		_themeDisplay = themeDisplay;
+		_user = user;
+	}
+
+	public long[] getAssignedUserIds() throws Exception {
+		List<Long> assignedUserIds = new ArrayList<Long>();
+
+		List<User> users = getAssignedUsers();
+
+		for (User user : users) {
+			assignedUserIds.add(user.getUserId());
+		}
+
+		return ArrayUtil.toLongArray(assignedUserIds);
+	}
+
+	public String getAssignedUserNamesString() throws Exception {
+		List<User> users = getAssignedUsers();
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create("User_", "firstName", true, "lastName", true);
+
+		Collections.sort(users, obc);
+
+		return ListUtil.toString(users, "fullName", StringPool.COMMA_AND_SPACE);
+	}
+
+	public List<User> getAssignedUsers() throws Exception {
+		List<User> users = new ArrayList<User>();
+
+		List<TestrayAssignment> testrayAssignments = getTestrayAssignments();
+
+		for (TestrayAssignment testrayAssignment : testrayAssignments) {
+			User user = UserLocalServiceUtil.fetchUser(testrayAssignment.getAssignedUserId());
+
+			if (user != null) {
+				users.add(user);
+			}
+		}
+
+		return users;
+	}
+
+	public JSONObject getBuildMetricsJSONObject() throws Exception {
+		TestrayBuildComposite testrayBuildComposite = getTestrayBuildComposite();
+
+		return testrayBuildComposite.getBuildMetricsJSONObject();
+	}
+
+	public long getCompleteScore() throws Exception {
+		return TestrayTaskUtil.getScore(_testrayTask, TestraySubtaskConstants.STATUS_COMPLETE, null);
+	}
+
+	public Date getCreateDate() {
+		return _testrayTask.getCreateDate();
+	}
+
+	public String getCreateDateString() {
+		return formatDate(getCreateDate());
+	}
+
+	public long getCurrentUserCompleteScore() throws Exception {
+		return TestrayTaskUtil.getScore(_testrayTask, TestraySubtaskConstants.STATUS_COMPLETE, _user);
+	}
+
+	public long getIncompleteScore() throws Exception {
+		return TestrayTaskUtil.getScore(_testrayTask, TestraySubtaskConstants.STATUS_IN_ANALYSIS, null) + TestrayTaskUtil.getScore(_testrayTask, TestraySubtaskConstants.STATUS_OPEN, null);
+	}
+
+	public List<TestrayTeam> getInvolvedTestrayTeams() throws Exception {
+		if (_involvedTestrayTeams == null) {
+			AlloyServiceInvoker testrayTeamAlloyServiceInvoker = new AlloyServiceInvoker(TestrayTeam.class.getName());
+
+			OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayTeamModelImpl.TABLE_NAME, "name", true);
+
+			_involvedTestrayTeams = testrayTeamAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", getTestrayProjectId()}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+		}
+
+		return _involvedTestrayTeams;
+	}
+
+	public JSONObject getJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		JSONArray assignedUsersJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (User user : getAssignedUsers()) {
+			JSONObject assignedUserJSONObject = JSONFactoryUtil.createJSONObject();
+
+			assignedUserJSONObject.put("profileImageURL", user.getPortraitURL(_themeDisplay));
+			assignedUserJSONObject.put("userId", user.getUserId());
+			assignedUserJSONObject.put("userName", user.getFullName());
+
+			assignedUsersJSONArray.put(assignedUserJSONObject);
+		}
+
+		jsonObject.put("assignedUsers", assignedUsersJSONArray);
+		jsonObject.put("assignedUsersCount", assignedUsersJSONArray.length());
+
+		jsonObject.put("buildName", getTestrayBuildName());
+		jsonObject.put("createDate", getCreateDateString());
+		jsonObject.put("name", getName());
+		jsonObject.put("projectName", getTestrayProjectName());
+		jsonObject.put("routineName", getTestrayRoutineName());
+		jsonObject.put("score", getTotalScore());
+		jsonObject.put("statusLabel", getStatusLabel());
+		jsonObject.put("testrayTaskId", getTestrayTaskId());
+
+		return jsonObject;
+	}
+
+	public Date getModifiedDate() {
+		return _testrayTask.getModifiedDate();
+	}
+
+	public String getModifiedDateString() {
+		return formatDate(getModifiedDate());
+	}
+
+	public String getName() {
+		return _testrayTask.getName();
+	}
+
+	public int getStatus() {
+		return _testrayTask.getStatus();
+	}
+
+	public String getStatusLabel() {
+		return TestrayTaskConstants.getStatusLabel(getStatus());
+	}
+
+	public JSONObject getTaskCompletionMetricsJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("completeScore", getCompleteScore());
+		jsonObject.put("currentUserCompleteScore", getCurrentUserCompleteScore());
+		jsonObject.put("incompleteScore", getIncompleteScore());
+		jsonObject.put("otherUsersCompleteScore", getCompleteScore() - getCurrentUserCompleteScore());
+		jsonObject.put("totalScore", getTotalScore());
+
+		return jsonObject;
+	}
+
+	public List<TestrayAssignment> getTestrayAssignments() throws Exception {
+		AlloyServiceInvoker testrayAssignmentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayAssignment.class.getName());
+
+		return testrayAssignmentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(TestrayTask.class), "classPK", getTestrayTaskId()});
+	}
+
+	public TestrayBuild getTestrayBuild() throws Exception {
+		if (_testrayBuild == null) {
+			_testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(getTestrayBuildId());
+		}
+
+		return _testrayBuild;
+	}
+
+	public TestrayBuildComposite getTestrayBuildComposite() throws Exception {
+		if (_testrayBuildComposite == null) {
+			_testrayBuildComposite = new TestrayBuildComposite(getTestrayBuild(), _themeDisplay);
+		}
+
+		return _testrayBuildComposite;
+	}
+
+	public long getTestrayBuildId() {
+		return _testrayTask.getTestrayBuildId();
+	}
+
+	public String getTestrayBuildName() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getName();
+	}
+
+	public TestrayProject getTestrayProject() throws Exception {
+		if (_testrayProject == null) {
+			_testrayProject = TestrayProjectLocalServiceUtil.getTestrayProject(getTestrayProjectId());
+		}
+
+		return _testrayProject;
+	}
+
+	public long getTestrayProjectId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayProjectId();
+	}
+
+	public String getTestrayProjectName() throws Exception {
+		TestrayProject testrayProject = getTestrayProject();
+
+		return testrayProject.getName();
+	}
+
+	public TestrayRoutine getTestrayRoutine() throws Exception {
+		if (_testrayRoutine == null) {
+			_testrayRoutine = TestrayRoutineLocalServiceUtil.getTestrayRoutine(getTestrayRoutineId());
+		}
+
+		return _testrayRoutine;
+	}
+
+	public long getTestrayRoutineId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayRoutineId();
+	}
+
+	public String getTestrayRoutineName() throws Exception {
+		TestrayRoutine testrayRoutine = getTestrayRoutine();
+
+		return testrayRoutine.getName();
+	}
+
+	public TestrayTask getTestrayTask() {
+		return _testrayTask;
+	}
+
+	public long getTestrayTaskId() {
+		return _testrayTask.getTestrayTaskId();
+	}
+
+	public long getTotalScore() throws Exception {
+		return TestrayTaskUtil.getScore(_testrayTask, -1, null);
+	}
+
+	public boolean isComplete() throws Exception {
+		Map<String, Integer> progressCountsMap = TestrayTaskUtil.getTestrayTaskProgressCountsMap(getTestrayTaskId(), _themeDisplay);
+
+		if ((progressCountsMap.get("completeTasks") == 1) && Objects.equals(progressCountsMap.get("completeSubtasks"), progressCountsMap.get("totalSubtasks"))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean isTestrayBuildArchived() throws Exception {
+		return TestrayBuildUtil.isArchived(getTestrayBuild());
+	}
+
+	private List<TestrayTeam> _involvedTestrayTeams;
+	private TestrayBuild _testrayBuild;
+	private TestrayBuildComposite _testrayBuildComposite;
+	private TestrayProject _testrayProject;
+	private TestrayRoutine _testrayRoutine;
+	private final TestrayTask _testrayTask;
+	private final ThemeDisplay _themeDisplay;
+	private final User _user;
+
+}
+%>

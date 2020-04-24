@@ -1,0 +1,9 @@
+@mixin font-small() {
+	font-size: 0.9vw;
+	letter-spacing: 0.02vw;
+}
+
+@mixin font-xsmall() {
+	font-size: 0.8vw;
+	letter-spacing: 0.02vw;
+}

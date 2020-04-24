@@ -1,0 +1,83 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseChecker extends TestrayRowChecker {
+
+	@Override
+	public boolean isChecked(Object obj) {
+		TestrayCase testrayCase = (TestrayCase)obj;
+
+		Thread currentThread = Thread.currentThread();
+
+		ClassLoader contextClassLoader = currentThread.getContextClassLoader();
+
+		ClassLoader portletClassLoader = TestrayCaseChecker.class.getClassLoader();
+
+		try {
+			if (contextClassLoader != portletClassLoader) {
+				currentThread.setContextClassLoader(portletClassLoader);
+			}
+
+			if (_clazz == TestrayBuild.class) {
+				return TestrayCaseLocalServiceUtil.hasTestrayBuildTestrayCase(_classPK, testrayCase.getTestrayCaseId());
+			}
+			else if (_clazz == TestrayRequirement.class) {
+				return TestrayCaseLocalServiceUtil.hasTestrayRequirementTestrayCase(_classPK, testrayCase.getTestrayCaseId());
+			}
+			else if (_clazz == TestrayRun.class) {
+				AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+				long testrayCaseResultsCount = testrayCaseResultAlloyServiceInvoker.executeDynamicQueryCount(new Object[] {"testrayCaseId", testrayCase.getTestrayCaseId(), "testrayRunId", _classPK});
+
+				if (testrayCaseResultsCount > 0) {
+					return true;
+				}
+			}
+			else if (_clazz == TestraySuite.class) {
+				return TestrayCaseLocalServiceUtil.hasTestraySuiteTestrayCase(_classPK, testrayCase.getTestrayCaseId());
+			}
+
+			return false;
+		}
+		catch (Exception e) {
+			if (_log.isErrorEnabled()) {
+				_log.error(e, e);
+			}
+
+			return false;
+		}
+		finally {
+			if (contextClassLoader != portletClassLoader) {
+				currentThread.setContextClassLoader(contextClassLoader);
+			}
+		}
+	}
+
+	private TestrayCaseChecker(RenderResponse renderResponse, Class<?> clazz, long classPK) {
+		super(renderResponse);
+
+		_clazz = clazz;
+		_classPK = classPK;
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(TestrayCaseChecker.class);
+
+	private final long _classPK;
+	private Class<?> _clazz;
+
+}
+%>

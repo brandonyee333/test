@@ -1,0 +1,227 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<c:set value="${htmlNamespace}testrayRunIdA" var="cookieNameA" />
+<c:set value="${htmlNamespace}testrayRunIdB" var="cookieNameB" />
+
+<c:set value="${cookie[cookieNameA].value}" var="testrayRunIdA" />
+<c:set value="${cookie[cookieNameB].value}" var="testrayRunIdB" />
+
+<div class="compare-runs-popover-content hide">
+	<div class="compare-runs-popover-body">
+		<portlet:renderURL var="compareTestrayRunsURL">
+			<portlet:param name="controller" value="runs" />
+			<portlet:param name="action" value="compare" />
+		</portlet:renderURL>
+
+		<c:set var="selectRunPlaceholder">
+			<liferay-ui:message key="add-run" />
+		</c:set>
+
+		<aui:form action="${compareTestrayRunsURL}" cssClass="form-compare-runs" method="get" name="compareCartFm">
+			<aui:input name="testrayRunIdA" type="hidden" value="${testrayRunIdA}" />
+			<aui:input name="testrayRunIdB" type="hidden" value="${testrayRunIdB}" />
+
+			<aui:fieldset>
+				<aui:field-wrapper cssClass="select-run-field" label="run-a">
+					<aui:button cssClass="select-run-button" disabled="${empty param.testrayRunId}" name="testrayRunIdAButton" onClick="${htmlNamespace}compareCartSelectRun('testrayRunIdA'${(not empty testrayRunComposite.testrayRunId) ? (', ' + testrayRunComposite.testrayRunId) : StringPool.BLANK})" primary="${(not empty testrayRunIdA) ? true : false}" title="${(not empty testrayRunIdA) ? testrayRunIdA : StringPool.BLANK}" value="${(not empty testrayRunIdA) ? testrayRunIdA : selectRunPlaceholder}" />
+				</aui:field-wrapper>
+
+				<aui:field-wrapper cssClass="select-run-field" label="run-b">
+					<aui:button cssClass="select-run-button" disabled="${empty param.testrayRunId}" name="testrayRunIdBButton" onClick="${htmlNamespace}compareCartSelectRun('testrayRunIdB'${(not empty testrayRunComposite.testrayRunId) ? (', ' + testrayRunComposite.testrayRunId) : StringPool.BLANK})" primary="${(not empty testrayRunIdB) ? true : false}" title="${(not empty testrayRunIdB) ? testrayRunIdB : StringPool.BLANK}" value="${(not empty testrayRunIdB) ? testrayRunIdB : selectRunPlaceholder}" />
+				</aui:field-wrapper>
+			</aui:fieldset>
+
+			<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartCompareRunsButton" type="submit" value="compare-runs" />
+		</aui:form>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayRunClass, "autoFill")}'>
+			<portlet:actionURL var="autoFillTestrayRunsURL">
+				<portlet:param name="controller" value="runs" />
+				<portlet:param name="action" value="autoFill" />
+			</portlet:actionURL>
+
+			<aui:form action="${autoFillTestrayRunsURL}" cssClass="form-auto-fill" method="post" name="autoFillCartFm">
+				<aui:input name="redirect" type="hidden" value="${portletURL}" />
+
+				<aui:input name="testrayRunIdA" type="hidden" value="${testrayRunIdA}" />
+				<aui:input name="testrayRunIdB" type="hidden" value="${testrayRunIdB}" />
+
+				<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartAutoFillRunsButton" type="submit" value="auto-fill" />
+			</aui:form>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayBuildClass, "autoFill")}'>
+			<portlet:actionURL var="autoFillTestrayBuildsURL">
+				<portlet:param name="controller" value="builds" />
+				<portlet:param name="action" value="autoFill" />
+			</portlet:actionURL>
+
+			<aui:form action="${autoFillTestrayBuildsURL}" cssClass="form-auto-fill" method="post" name="autoFillBuildsCartFm">
+				<aui:input name="redirect" type="hidden" value="${portletURL}" />
+
+				<aui:input name="testrayRunIdA" type="hidden" value="${testrayRunIdA}" />
+				<aui:input name="testrayRunIdB" type="hidden" value="${testrayRunIdB}" />
+
+				<aui:button cssClass="button-action" disabled="${empty testrayRunIdA || empty testrayRunIdB}" name="compareCartAutoFillBuildsButton" type="submit" value="auto-fill-builds" />
+			</aui:form>
+		</c:if>
+
+		<aui:button cssClass="btn-primary button-action" onClick="${htmlNamespace}compareCartClear();" value="clear" />
+	</div>
+</div>
+
+<aui:script>
+	function ${htmlNamespace}compareCartUpdateRunsButton(buttonSelector) {
+		Liferay.Util.toggleDisabled(buttonSelector, !${htmlNamespace}compareCartIsFull());
+	}
+
+	function ${htmlNamespace}compareCartIsFull() {
+		var A = AUI();
+
+		var testrayRunIdAVal;
+
+		var testrayRunIdA = A.one('#${htmlNamespace}testrayRunIdA');
+
+		if (testrayRunIdA) {
+			testrayRunIdAVal = testrayRunIdA.val();
+		}
+
+		var testrayRunIdBVal;
+
+		var testrayRunIdB = A.one('#${htmlNamespace}testrayRunIdB');
+
+		if (testrayRunIdB) {
+			testrayRunIdBVal = testrayRunIdB.val();
+		}
+
+		var returnValue = false;
+
+		if (testrayRunIdAVal && testrayRunIdBVal) {
+			returnValue = true;
+		}
+
+		return returnValue;
+	}
+
+	Liferay.provide(
+		window,
+		'${htmlNamespace}compareCartClear',
+		function() {
+			${htmlNamespace}compareCartSelectRun('testrayRunIdA', '');
+			${htmlNamespace}compareCartSelectRun('testrayRunIdB', '');
+
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillBuildsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillRunsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartCompareRunsButton');
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'${htmlNamespace}compareCartSelectRun',
+		function(name, testrayRunId) {
+			${htmlNamespace}compareCartSet(name, testrayRunId);
+
+			${htmlNamespace}compareCartSetCookie(name, testrayRunId);
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'${htmlNamespace}compareCartSet',
+		function(name, value) {
+			var A = AUI();
+
+			A.all('#${htmlNamespace}' + name).val(value);
+
+			var button = A.one('#${htmlNamespace}' + name + 'Button');
+
+			if (button) {
+				var buttonText = value || '<liferay-ui:message key="add-run" />';
+
+				button.text(buttonText);
+
+				button.set('title', value);
+
+				button.toggleClass('btn-primary', value);
+			}
+
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillBuildsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartAutoFillRunsButton');
+			${htmlNamespace}compareCartUpdateRunsButton('#${htmlNamespace}compareCartCompareRunsButton');
+		},
+		['aui-base']
+	);
+
+	Liferay.provide(
+		window,
+		'${htmlNamespace}compareCartSetCookie',
+		function(name, value) {
+			AUI().Cookie.set(
+				'${htmlNamespace}' + name,
+				value,
+				{
+					path: '/'
+				}
+			);
+		},
+		['cookie']
+	);
+</aui:script>
+
+<aui:script use="aui-popover,event-outside">
+	var trigger = A.one('#${htmlNamespace}compareRunsToggle');
+
+	if (trigger) {
+		var popover = new A.Popover(
+			{
+				after: {
+					render: function(event) {
+						var instance = this;
+
+						instance.get('contentBox').show();
+					}
+				},
+				align: {
+					node: trigger,
+					points: [A.WidgetPositionAlign.TL, A.WidgetPositionAlign.TR]
+				},
+				contentBox: '.compare-runs-popover-content',
+				cssClass: 'compare-runs-popover testray-sidebar-popover',
+				headerContent: '<liferay-ui:message key="compare-runs" unicode="<%= true %>" />',
+				position: 'right',
+				visible: false,
+				zIndex: Liferay.zIndex.POPOVER
+			}
+		).render();
+
+		trigger.on(
+			'click',
+			function(event) {
+				event.stopPropagation();
+
+				popover.toggle();
+
+				var boundingBox = popover.get('boundingBox');
+
+				boundingBox.once('clickoutside', popover.hide, popover);
+			}
+		);
+	}
+</aui:script>

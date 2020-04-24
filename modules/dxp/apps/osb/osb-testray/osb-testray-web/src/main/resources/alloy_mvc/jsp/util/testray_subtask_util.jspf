@@ -1,0 +1,270 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestraySubtaskUtil {
+
+	public static void deleteTestraySubtask(TestraySubtask testraySubtask) throws Exception {
+		long testraySubtaskId = testraySubtask.getTestraySubtaskId();
+
+		TestrayCaseResultLocalServiceUtil.clearTestraySubtaskTestrayCaseResults(testraySubtaskId);
+		TestrayIssueLocalServiceUtil.clearTestraySubtaskTestrayIssues(testraySubtaskId);
+
+		AlloyServiceInvoker testrayAssignmentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayAssignment.class.getName());
+
+		List<TestrayAssignment> testrayAssignments = testrayAssignmentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(TestraySubtask.class), "classPK", testraySubtaskId});
+
+		for (TestrayAssignment testrayAssignment : testrayAssignments) {
+			TestrayAssignmentLocalServiceUtil.deleteTestrayAssignment(testrayAssignment);
+		}
+
+		TestraySubtaskLocalServiceUtil.deleteTestraySubtask(testraySubtask);
+	}
+
+	public static TestraySubtask fetchTestraySubtask(HttpServletRequest request) throws Exception {
+		return fetchTestraySubtask(request, "id");
+	}
+
+	public static TestraySubtask fetchTestraySubtask(HttpServletRequest request, String paramName) throws Exception {
+		TestraySubtask testraySubtask = null;
+
+		String id = ParamUtil.getString(request, paramName);
+
+		if (Validator.isNumber(id)) {
+			testraySubtask = TestraySubtaskLocalServiceUtil.fetchTestraySubtask(GetterUtil.getLong(id));
+		}
+		else if (id.indexOf(StringPool.UNDERLINE) == 0) {
+			AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+			TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(request, "testrayTaskId");
+
+			List<TestraySubtask> testraySubtasks = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayTaskId", testrayTask.getTestrayTaskId(), "name", id.substring(1)});
+
+			if (!testraySubtasks.isEmpty()) {
+				testraySubtask = testraySubtasks.get(0);
+			}
+		}
+
+		return testraySubtask;
+	}
+
+	public static List<TestraySubtask> fetchTestraySubtasks(long testrayTaskId, String[] names) throws Exception {
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		DynamicQuery testraySubtaskDynamicQuery = testraySubtaskAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayTaskId", testrayTaskId});
+
+		Property testraySubtaskNameProperty = PropertyFactoryUtil.forName("name");
+
+		testraySubtaskDynamicQuery.add(testraySubtaskNameProperty.in(names));
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestraySubtaskModelImpl.TABLE_NAME, "score", false);
+
+		return testraySubtaskAlloyServiceInvoker.executeDynamicQuery(testraySubtaskDynamicQuery, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+	}
+
+	public static List<TestraySubtask> fetchTestraySubtasks(long[] testraySubtaskIds) throws Exception {
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		DynamicQuery testraySubtaskDynamicQuery = testraySubtaskAlloyServiceInvoker.buildDynamicQuery();
+
+		Property testraySubtaskIdProperty = PropertyFactoryUtil.forName("testraySubtaskId");
+
+		testraySubtaskDynamicQuery.add(testraySubtaskIdProperty.in(testraySubtaskIds));
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestraySubtaskModelImpl.TABLE_NAME, "score", false);
+
+		return testraySubtaskAlloyServiceInvoker.executeDynamicQuery(testraySubtaskDynamicQuery, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+	}
+
+	public static long getNextNumber(long testrayTaskId) throws Exception {
+		return CounterLocalServiceUtil.increment(TestrayTask.class.getName() + StringPool.POUND + testrayTaskId);
+	}
+
+	public static int getScore(List<TestrayCaseResult> testrayCaseResults) throws Exception {
+		int score = 0;
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			TestrayCaseResultComposite testrayCaseResultComposite = new TestrayCaseResultComposite(testrayCaseResult, null);
+
+			score += testrayCaseResultComposite.getPriority();
+		}
+
+		return score;
+	}
+
+	public static int getScore(long[] testrayCaseResultIds) throws Exception {
+		List<TestrayCaseResult> testrayCaseResults = new ArrayList<TestrayCaseResult>();
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			testrayCaseResults.add(TestrayCaseResultLocalServiceUtil.getTestrayCaseResult(testrayCaseResultId));
+		}
+
+		return getScore(testrayCaseResults);
+	}
+
+	public static TestraySubtask merge(AlloyController alloyController, List<TestraySubtask> testraySubtasks) throws Exception {
+		TestraySubtask parentTestraySubtask = testraySubtasks.get(0);
+
+		for (TestraySubtask testraySubtask : testraySubtasks) {
+			if (testraySubtask.getScore() > parentTestraySubtask.getScore()) {
+				parentTestraySubtask = testraySubtask;
+			}
+		}
+
+		List<TestraySubtask> childTestraySubtasks = ListUtil.subList(testraySubtasks, 1, testraySubtasks.size());
+
+		for (TestraySubtask childTestraySubtask : childTestraySubtasks) {
+			childTestraySubtask.setMergedToTestraySubtaskId(parentTestraySubtask.getTestraySubtaskId());
+			childTestraySubtask.setStatus(TestraySubtaskConstants.STATUS_MERGED);
+
+			alloyController.updateModelIgnoreRequest(childTestraySubtask);
+
+			List<TestrayCaseResult> migratableTestrayCaseResults = TestrayCaseResultLocalServiceUtil.getTestraySubtaskTestrayCaseResults(childTestraySubtask.getTestraySubtaskId());
+
+			for (TestrayCaseResult migratableTestrayCaseResult : migratableTestrayCaseResults) {
+				MBMessage sourceMBMessage = TestrayUtil.fetchMBMessage(parentTestraySubtask.getCommentMBMessageId());
+
+				if (sourceMBMessage == null) {
+					break;
+				}
+
+				HttpServletRequest request = alloyController.getRequest();
+
+				long commentMBMessageId = TestrayUtil.updateMBMessage(alloyController.getThemeDisplay(), migratableTestrayCaseResult.getCommentMBMessageId(), TestrayCaseResult.class.getName(), migratableTestrayCaseResult.getTestrayCaseResultId(), sourceMBMessage.getBody(), (PortletRequest)request.getAttribute(JavaConstants.JAVAX_PORTLET_REQUEST));
+
+				migratableTestrayCaseResult.setCommentMBMessageId(commentMBMessageId);
+
+				alloyController.updateModelIgnoreRequest(migratableTestrayCaseResult);
+			}
+
+			updateTestrayIssuesTestrayCaseResults(parentTestraySubtask, childTestraySubtask, migratableTestrayCaseResults);
+
+			TestrayCaseResultLocalServiceUtil.addTestraySubtaskTestrayCaseResults(parentTestraySubtask.getTestraySubtaskId(), migratableTestrayCaseResults);
+
+			for (TestrayCaseResult testrayCaseResult : migratableTestrayCaseResults) {
+				alloyController.indexModel(testrayCaseResult);
+			}
+		}
+
+		int newScore = getScore(TestrayCaseResultLocalServiceUtil.getTestraySubtaskTestrayCaseResults(parentTestraySubtask.getTestraySubtaskId()));
+
+		parentTestraySubtask.setScore(newScore);
+
+		alloyController.updateModelIgnoreRequest(parentTestraySubtask);
+
+		return parentTestraySubtask;
+	}
+
+	public static TestraySubtask merge(AlloyController alloyController, long testrayTaskId, String[] names) throws Exception {
+		if (ArrayUtil.isEmpty(names)) {
+			return null;
+		}
+
+		return merge(alloyController, fetchTestraySubtasks(testrayTaskId, names));
+	}
+
+	public static TestraySubtask split(AlloyController alloyController, long testrayTaskId, String name, long[] testrayCaseResultIds) throws Exception {
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		List<TestraySubtask> testraySubtasks = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayTaskId", testrayTaskId, "name", name});
+
+		return split(alloyController, testraySubtasks.get(0), testrayCaseResultIds);
+	}
+
+	public static TestraySubtask split(AlloyController alloyController, TestraySubtask testraySubtask, long[] testrayCaseResultIds) throws Exception {
+		TestraySubtask childTestraySubtask = TestraySubtaskLocalServiceUtil.createTestraySubtask(0);
+
+		childTestraySubtask.setName("ST-" + getNextNumber(testraySubtask.getTestrayTaskId()));
+		childTestraySubtask.setSplitFromTestraySubtaskId(testraySubtask.getTestraySubtaskId());
+		childTestraySubtask.setStatus(testraySubtask.getStatus());
+		childTestraySubtask.setScore(getScore(testrayCaseResultIds));
+		childTestraySubtask.setStatusUpdateDate(testraySubtask.getStatusUpdateDate());
+		childTestraySubtask.setTestrayTaskId(testraySubtask.getTestrayTaskId());
+
+		alloyController.updateModelIgnoreRequest(childTestraySubtask);
+
+		TestrayAssignment testrayAssignment = TestrayAssignmentLocalServiceUtil.createTestrayAssignment(0);
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		testrayAssignment.setAssignedUserId(themeDisplay.getUserId());
+
+		testrayAssignment.setClassName(TestraySubtask.class.getName());
+		testrayAssignment.setClassPK(childTestraySubtask.getTestraySubtaskId());
+
+		alloyController.updateModelIgnoreRequest(testrayAssignment);
+
+		TestrayCaseResultLocalServiceUtil.addTestraySubtaskTestrayCaseResults(childTestraySubtask.getTestraySubtaskId(), testrayCaseResultIds);
+
+		TestrayCaseResultLocalServiceUtil.deleteTestraySubtaskTestrayCaseResults(testraySubtask.getTestraySubtaskId(), testrayCaseResultIds);
+
+		Indexer testrayCaseResultIndexer = IndexerRegistryUtil.getIndexer(TestrayCaseResult.class);
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			testrayCaseResultIndexer.reindex(TestrayCaseResult.class.getName(), testrayCaseResultId);
+		}
+
+		int newParentScore = getScore(TestrayCaseResultLocalServiceUtil.getTestraySubtaskTestrayCaseResults(testraySubtask.getTestraySubtaskId()));
+
+		testraySubtask.setScore(newParentScore);
+
+		alloyController.updateModelIgnoreRequest(testraySubtask);
+
+		return childTestraySubtask;
+	}
+
+	public static void updateTestrayIssuesTestrayCaseResults(TestraySubtask testraySubtask1, TestraySubtask testraySubtask2, List<TestrayCaseResult> testrayCaseResults) throws Exception {
+		List<TestrayIssue> testraySubtask2TestrayIssues = TestrayIssueLocalServiceUtil.getTestraySubtaskTestrayIssues(testraySubtask2.getTestraySubtaskId());
+
+		for (TestrayIssue testrayIssue : testraySubtask2TestrayIssues) {
+			TestrayCaseResultLocalServiceUtil.deleteTestrayIssueTestrayCaseResults(testrayIssue.getTestrayIssueId(), testrayCaseResults);
+		}
+
+		List<TestrayIssue> testraySubtask1TestrayIssues = TestrayIssueLocalServiceUtil.getTestraySubtaskTestrayIssues(testraySubtask1.getTestraySubtaskId());
+
+		for (TestrayIssue testrayIssue : testraySubtask1TestrayIssues) {
+			TestrayCaseResultLocalServiceUtil.addTestrayIssueTestrayCaseResults(testrayIssue.getTestrayIssueId(), testrayCaseResults);
+		}
+	}
+
+	public static void updateTestraySubtaskScore(TestraySubtask testraySubtask, Integer score) throws Exception {
+		Integer testraySubtaskScore = testraySubtask.getScore();
+
+		testraySubtaskScore += score;
+
+		testraySubtask.setScore(testraySubtaskScore);
+
+		TestraySubtaskLocalServiceUtil.updateTestraySubtask(testraySubtask);
+	}
+
+	public static void updateTestraySubtasksTestrayIssues(AlloyController alloyController, String[] testrayIssueNames, long testraySubtaskId, User user, String issueComment) throws Exception {
+		List<TestrayIssue> oldTestrayIssues = TestrayIssueLocalServiceUtil.getTestraySubtaskTestrayIssues(testraySubtaskId);
+
+		List<TestrayIssue> newTestrayIssues = TestrayIssueUtil.fetchOrAddTestrayIssues(alloyController, testrayIssueNames);
+
+		TestrayUtil.updateTestrayIssuesRelationships(TestraySubtask.class.getName(), testraySubtaskId, newTestrayIssues);
+
+		TestrayIssueEngineUtil.updateIssues(SetUtil.symmetricDifference(oldTestrayIssues, newTestrayIssues), user);
+
+		if (Validator.isNotNull(issueComment)) {
+			for (TestrayIssue testrayIssue : newTestrayIssues) {
+				TestrayIssueEngineUtil.addComment(issueComment, testrayIssue.getName(), user);
+			}
+		}
+	}
+
+}
+%>

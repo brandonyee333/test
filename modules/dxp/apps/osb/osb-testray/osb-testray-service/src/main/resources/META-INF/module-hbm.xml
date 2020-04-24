@@ -1,0 +1,370 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping auto-import="false" default-lazy="false">
+	<import class="com.liferay.osb.testray.model.TestrayArchive" />
+	<import class="com.liferay.osb.testray.model.TestrayAssignment" />
+	<import class="com.liferay.osb.testray.model.TestrayBuild" />
+	<import class="com.liferay.osb.testray.model.TestrayCase" />
+	<import class="com.liferay.osb.testray.model.TestrayCaseResult" />
+	<import class="com.liferay.osb.testray.model.TestrayCaseResultWarning" />
+	<import class="com.liferay.osb.testray.model.TestrayCaseType" />
+	<import class="com.liferay.osb.testray.model.TestrayComponent" />
+	<import class="com.liferay.osb.testray.model.TestrayFactor" />
+	<import class="com.liferay.osb.testray.model.TestrayFactorCategory" />
+	<import class="com.liferay.osb.testray.model.TestrayFactorOption" />
+	<import class="com.liferay.osb.testray.model.TestrayIssue" />
+	<import class="com.liferay.osb.testray.model.TestrayProductVersion" />
+	<import class="com.liferay.osb.testray.model.TestrayProject" />
+	<import class="com.liferay.osb.testray.model.TestrayRequirement" />
+	<import class="com.liferay.osb.testray.model.TestrayRoutine" />
+	<import class="com.liferay.osb.testray.model.TestrayRun" />
+	<import class="com.liferay.osb.testray.model.TestraySubtask" />
+	<import class="com.liferay.osb.testray.model.TestraySuite" />
+	<import class="com.liferay.osb.testray.model.TestrayTask" />
+	<import class="com.liferay.osb.testray.model.TestrayTeam" />
+	<class name="com.liferay.osb.testray.model.impl.TestrayArchiveImpl" table="OSB_TestrayArchive">
+		<id name="testrayArchiveId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<one-to-one access="com.liferay.portal.dao.orm.hibernate.PrivatePropertyAccessor" cascade="save-update" class="com.liferay.osb.testray.model.TestrayArchiveCompressedDataBlobModel" constrained="true" name="compressedDataBlobModel" outer-join="false" />
+	</class>
+	<class lazy="true" name="com.liferay.osb.testray.model.TestrayArchiveCompressedDataBlobModel" table="OSB_TestrayArchive">
+		<id column="testrayArchiveId" name="testrayArchiveId">
+			<generator class="foreign">
+				<param name="property">com.liferay.osb.testray.model.impl.TestrayArchiveImpl</param>
+			</generator>
+		</id>
+		<property column="compressedData" name="compressedDataBlob" type="blob" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayAssignmentImpl" table="OSB_TestrayAssignment">
+		<id name="testrayAssignmentId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="assignedUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayBuildImpl" table="OSB_TestrayBuild">
+		<id name="testrayBuildId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="templateTestrayBuildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayRoutineId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayProductVersionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="descriptionType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="template" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="dueDate" type="org.hibernate.type.TimestampType" />
+		<property name="gitHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="githubCompareURLs" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="promoted" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayCaseImpl" table="OSB_TestrayCase">
+		<id name="testrayCaseId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayCaseTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayComponentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="descriptionType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="originationKey" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="priority" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="estimatedDuration" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="steps" type="com.liferay.portal.dao.orm.hibernate.StringClobType" />
+		<property name="stepsType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="caseNumber" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayCaseResultImpl" table="OSB_TestrayCaseResult">
+		<id name="testrayCaseResultId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="commentMBMessageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayBuildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayCaseId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayComponentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayRunId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="assignedUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="startDate" type="org.hibernate.type.TimestampType" />
+		<property name="closedDate" type="org.hibernate.type.TimestampType" />
+		<property name="attachments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="errors" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayCaseResultWarningImpl" table="OSB_TestrayCaseResultWarning">
+		<id name="testrayCaseResultWarningId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayCaseResultId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="content" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayCaseTypeImpl" table="OSB_TestrayCaseType">
+		<id name="testrayCaseTypeId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayComponentImpl" table="OSB_TestrayComponent">
+		<id name="testrayComponentId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayTeamId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="originationKey" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayFactorImpl" table="OSB_TestrayFactor">
+		<id name="testrayFactorId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="classNameId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="classPK" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayFactorCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayFactorCategoryName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="testrayFactorOptionId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayFactorOptionName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayFactorCategoryImpl" table="OSB_TestrayFactorCategory">
+		<id name="testrayFactorCategoryId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayFactorOptionImpl" table="OSB_TestrayFactorOption">
+		<id name="testrayFactorOptionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayFactorCategoryId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayIssueImpl" table="OSB_TestrayIssue">
+		<id name="testrayIssueId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayProductVersionImpl" table="OSB_TestrayProductVersion">
+		<id name="testrayProductVersionId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayProjectImpl" table="OSB_TestrayProject">
+		<id name="testrayProjectId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayRequirementImpl" table="OSB_TestrayRequirement">
+		<id name="testrayRequirementId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayComponentId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property column="key_" name="key" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="summary" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="components" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="linkTitle" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="linkURL" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="descriptionType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="goals" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="goalsType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="variations" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="variationsType" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayRoutineImpl" table="OSB_TestrayRoutine">
+		<id name="testrayRoutineId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="autoanalyze" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayRunImpl" table="OSB_TestrayRun">
+		<id name="testrayRunId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayBuildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="externalReferencePK" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="externalReferenceType" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="jenkinsJobKey" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property column="number_" name="number" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="environmentHash" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestraySubtaskImpl" table="OSB_TestraySubtask">
+		<id name="testraySubtaskId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="commentMBMessageId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="mergedToTestraySubtaskId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="splitFromTestraySubtaskId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="testrayTaskId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="score" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="statusUpdateDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestraySuiteImpl" table="OSB_TestraySuite">
+		<id name="testraySuiteId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="caseParameters" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayTaskImpl" table="OSB_TestrayTask">
+		<id name="testrayTaskId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayBuildId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="statusUpdateDate" type="org.hibernate.type.TimestampType" />
+	</class>
+	<class name="com.liferay.osb.testray.model.impl.TestrayTeamImpl" table="OSB_TestrayTeam">
+		<id name="testrayTeamId" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="groupId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="companyId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="userName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="createDate" type="org.hibernate.type.TimestampType" />
+		<property name="modifiedDate" type="org.hibernate.type.TimestampType" />
+		<property name="testrayProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+</hibernate-mapping>

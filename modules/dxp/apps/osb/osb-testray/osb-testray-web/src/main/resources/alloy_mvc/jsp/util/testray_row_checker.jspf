@@ -1,0 +1,34 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayRowChecker extends RowChecker {
+
+	@Override
+	protected String getNamespacedValue(String value) {
+		return value;
+	}
+
+	private TestrayRowChecker(RenderResponse renderResponse) {
+		super(renderResponse);
+
+		setAllRowIds(ALL_ROW_IDS);
+		setFormName(FORM_NAME);
+		setRowIds(ROW_IDS);
+	}
+
+}
+%>

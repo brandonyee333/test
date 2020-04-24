@@ -1,0 +1,136 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayRunComparison {
+
+	public TestrayRunComparison(Set<TestrayCaseResultComparison> testrayCaseResultComparisons) {
+		_testrayCaseResultComparisons = testrayCaseResultComparisons;
+	}
+
+	public Set<TestrayCaseResultComparison> getTestrayCaseResultComparisons() {
+		return _testrayCaseResultComparisons;
+	}
+
+	public Map<TestrayComponent, Map<Integer, Map<Integer, Integer>>> getTestrayComponentsSummaryMap() throws Exception {
+		if (_testrayComponentsSummaryMap != null) {
+			return _testrayComponentsSummaryMap;
+		}
+
+		Map<TestrayComponent, Map<Integer, Map<Integer, Integer>>> testrayComponentsSummaryMap = new TreeMap<TestrayComponent, Map<Integer, Map<Integer, Integer>>>(new TestrayCompositeComparator("name", true));
+
+		for (TestrayCaseResultComparison testrayCaseResultComparison : _testrayCaseResultComparisons) {
+			TestrayComponent testrayComponent = TestrayComponentLocalServiceUtil.getTestrayComponent(testrayCaseResultComparison.getTestrayComponentId());
+
+			Map<Integer, Map<Integer, Integer>> testrayComponentSummaryMap = testrayComponentsSummaryMap.get(testrayComponent);
+
+			if (testrayComponentSummaryMap == null) {
+				testrayComponentSummaryMap = new HashMap<Integer, Map<Integer, Integer>>();
+
+				testrayComponentsSummaryMap.put(testrayComponent, testrayComponentSummaryMap);
+			}
+
+			Map<Integer, Integer> bStatusCountsMap = testrayComponentSummaryMap.get(testrayCaseResultComparison.getStatusA());
+
+			if (bStatusCountsMap == null) {
+				bStatusCountsMap = new HashMap<Integer, Integer>();
+
+				testrayComponentSummaryMap.put(testrayCaseResultComparison.getStatusA(), bStatusCountsMap);
+			}
+
+			_incrementStatusCount(bStatusCountsMap, testrayCaseResultComparison.getStatusB());
+		}
+
+		_testrayComponentsSummaryMap = testrayComponentsSummaryMap;
+
+		return _testrayComponentsSummaryMap;
+	}
+
+	public Map<Integer, Map<Integer, Integer>> getTestrayRunSummaryMap() {
+		if (_testrayRunSummaryMap != null) {
+			return _testrayRunSummaryMap;
+		}
+
+		Map<Integer, Map<Integer, Integer>> testrayRunSummaryMap = new HashMap<Integer, Map<Integer, Integer>>();
+
+		for (TestrayCaseResultComparison testrayCaseResultComparison : _testrayCaseResultComparisons) {
+			Map<Integer, Integer> bStatusCountsMap = testrayRunSummaryMap.get(testrayCaseResultComparison.getStatusA());
+
+			if (bStatusCountsMap == null) {
+				bStatusCountsMap = new HashMap<Integer, Integer>();
+
+				testrayRunSummaryMap.put(testrayCaseResultComparison.getStatusA(), bStatusCountsMap);
+			}
+
+			_incrementStatusCount(bStatusCountsMap, testrayCaseResultComparison.getStatusB());
+		}
+
+		_testrayRunSummaryMap = testrayRunSummaryMap;
+
+		return _testrayRunSummaryMap;
+	}
+
+	public Map<TestrayTeam, Map<Integer, Map<Integer, Integer>>> getTestrayTeamsSummaryMap() throws Exception {
+		if (_testrayTeamsSummaryMap != null) {
+			return _testrayTeamsSummaryMap;
+		}
+
+		Map<TestrayTeam, Map<Integer, Map<Integer, Integer>>> testrayTeamsSummaryMap = new TreeMap<TestrayTeam, Map<Integer, Map<Integer, Integer>>>();
+
+		for (TestrayCaseResultComparison testrayCaseResultComparison : _testrayCaseResultComparisons) {
+			TestrayTeam testrayTeam = TestrayTeamLocalServiceUtil.getTestrayTeam(testrayCaseResultComparison.getTestrayTeamId());
+
+			Map<Integer, Map<Integer, Integer>> testrayTeamSummaryMap = testrayTeamsSummaryMap.get(testrayTeam);
+
+			if (testrayTeamSummaryMap == null) {
+				testrayTeamSummaryMap = new HashMap<Integer, Map<Integer, Integer>>();
+
+				testrayTeamsSummaryMap.put(testrayTeam, testrayTeamSummaryMap);
+			}
+
+			Map<Integer, Integer> bStatusCountsMap = testrayTeamSummaryMap.get(testrayCaseResultComparison.getStatusA());
+
+			if (bStatusCountsMap == null) {
+				bStatusCountsMap = new HashMap<Integer, Integer>();
+
+				testrayTeamSummaryMap.put(testrayCaseResultComparison.getStatusA(), bStatusCountsMap);
+			}
+
+			_incrementStatusCount(bStatusCountsMap, testrayCaseResultComparison.getStatusB());
+		}
+
+		_testrayTeamsSummaryMap = testrayTeamsSummaryMap;
+
+		return _testrayTeamsSummaryMap;
+	}
+
+	private void _incrementStatusCount(Map<Integer, Integer> bStatusCountsMap, int status) {
+		Integer count = bStatusCountsMap.get(status);
+
+		if (count == null) {
+			count = 0;
+		}
+
+		bStatusCountsMap.put(status, count + 1);
+	}
+
+	private final Set<TestrayCaseResultComparison> _testrayCaseResultComparisons;
+	private Map<TestrayComponent, Map<Integer, Map<Integer, Integer>>> _testrayComponentsSummaryMap;
+	private Map<Integer, Map<Integer, Integer>> _testrayRunSummaryMap;
+	private Map<TestrayTeam, Map<Integer, Map<Integer, Integer>>> _testrayTeamsSummaryMap;
+
+}
+%>

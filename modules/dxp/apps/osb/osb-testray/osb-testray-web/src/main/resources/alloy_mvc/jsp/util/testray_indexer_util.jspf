@@ -1,0 +1,145 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayIndexerUtil {
+
+	public static final int ELASTICSEARCH_FIELD_SIZE_LIMIT = 16383;
+
+	public static void executeReindex(long companyId) {
+		TestrayReindexer testrayReindexer = new TestrayReindexer(companyId);
+
+		testrayReindexer.reindex();
+	}
+
+	public static void executeReindex(long companyId, String className) {
+		TestrayReindexer testrayReindexer = new TestrayReindexer(companyId);
+
+		testrayReindexer.reindex(className);
+	}
+
+	public static String extractNumber(String name) {
+		String numberString = name.replaceFirst("[A-Z]+-", StringPool.BLANK);
+
+		return String.format("%05d", GetterUtil.getInteger(numberString));
+	}
+
+	public static void processBooleanAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) {
+		Object value = searchContext.getAttribute(attribute);
+
+		if (Validator.isNull(value)) {
+			return;
+		}
+
+		if (value instanceof Boolean) {
+			booleanFilter.addRequiredTerm(attribute, (Boolean)value);
+		}
+		else {
+			String s = (String)value;
+
+			if (StringUtil.equalsIgnoreCase(s, Boolean.TRUE.toString())) {
+				booleanFilter.addRequiredTerm(attribute, true);
+			}
+			else if (StringUtil.equalsIgnoreCase(s, Boolean.FALSE.toString())) {
+				booleanFilter.addRequiredTerm(attribute, false);
+			}
+		}
+	}
+
+	public static void processIntArrayAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) throws Exception {
+		String attributeString = String.valueOf(searchContext.getAttribute(attribute));
+
+		if (Validator.isNotNull(attributeString)) {
+			int[] attributeArray = GetterUtil.getIntegerValues(StringUtil.split(attributeString));
+
+			if (attributeArray.length > 0) {
+				BooleanFilter attributeFilter = new BooleanFilter();
+
+				for (int attributeValue : attributeArray) {
+					attributeFilter.addTerm(attribute, String.valueOf(attributeValue), BooleanClauseOccur.SHOULD);
+				}
+
+				booleanFilter.add(attributeFilter, BooleanClauseOccur.MUST);
+			}
+		}
+	}
+
+	public static void processIntAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) {
+		int value = GetterUtil.getInteger(searchContext.getAttribute(attribute));
+
+		if (value > 0) {
+			booleanFilter.addRequiredTerm(attribute, value);
+		}
+	}
+
+	public static void processLongArrayAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) throws Exception {
+		String attributeString = String.valueOf(searchContext.getAttribute(attribute));
+
+		if (Validator.isNotNull(attributeString)) {
+			long[] attributeArray = GetterUtil.getLongValues(StringUtil.split(attributeString, StringPool.COMMA));
+
+			if (attributeArray.length > 0) {
+				BooleanFilter attributeFilter = new BooleanFilter();
+
+				for (long attributeValue : attributeArray) {
+					attributeFilter.addTerm(attribute, String.valueOf(attributeValue), BooleanClauseOccur.SHOULD);
+				}
+
+				booleanFilter.add(attributeFilter, BooleanClauseOccur.MUST);
+			}
+		}
+	}
+
+	public static void processLongAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) {
+		long value = GetterUtil.getLong(searchContext.getAttribute(attribute));
+
+		if (value > 0) {
+			booleanFilter.addRequiredTerm(attribute, value);
+		}
+	}
+
+	public static void processStringArrayAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) throws Exception {
+		String attributeString = String.valueOf(searchContext.getAttribute(attribute));
+
+		if (Validator.isNotNull(attributeString)) {
+			String[] attributeArray = StringUtil.split(attributeString, StringPool.COMMA);
+
+			if (attributeArray.length > 0) {
+				BooleanFilter attributeFilter = new BooleanFilter();
+
+				for (String attributeValue : attributeArray) {
+					attributeFilter.addTerm(attribute, StringUtil.toLowerCase(attributeValue), BooleanClauseOccur.SHOULD);
+				}
+
+				booleanFilter.add(attributeFilter, BooleanClauseOccur.MUST);
+			}
+		}
+	}
+
+	public static void processStringAttribute(BooleanFilter booleanFilter, SearchContext searchContext, String attribute) {
+		String value = GetterUtil.getString(searchContext.getAttribute(attribute));
+
+		if (Validator.isNotNull(value)) {
+			booleanFilter.addRequiredTerm(attribute, StringUtil.toLowerCase(value));
+		}
+	}
+
+	public static String sanitizeString(String name) {
+		return StringUtil.removeSubstring(name, StringPool.DASH);
+	}
+
+}
+%>

@@ -1,0 +1,11 @@
+Bundle-Name: Liferay OSB Testray Taglib
+Bundle-SymbolicName: com.liferay.osb.testray.taglib
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.testray.taglib.servlet.taglib
+Liferay-JS-Config: /META-INF/resources/config.js
+Provide-Capability:\
+	osgi.extender;\
+		osgi.extender="jsp.taglib";\
+		uri="http://liferay.com/tld/testray";\
+		version:Version="${Bundle-Version}"
+Web-ContextPath: /osb-testray-taglib

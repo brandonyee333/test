@@ -1,0 +1,41 @@
+.testray-form {
+	max-width: 800px;
+
+	.testray-form-section {
+		border-top: 1px solid $border-color;
+		padding: 30px 0;
+
+		&, .row {
+			margin: 0;
+		}
+
+		&:first-of-type {
+			border-width: 0;
+			padding-top: 10px;
+		}
+
+		.testray-form-content, .testray-form-description {
+			padding: 0;
+		}
+
+		.testray-form-description {
+			h2 {
+				margin-top: 0;
+			}
+		}
+	}
+}
+
+.testray-input-right {
+	float: right;
+}
+
+.testray-input-right-wrapper {
+	align-items: flex-end;
+	display: flex;
+	flex-direction: column;
+}
+
+.testray-input-small {
+	width: 150px;
+}

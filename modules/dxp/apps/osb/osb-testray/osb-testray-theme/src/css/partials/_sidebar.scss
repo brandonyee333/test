@@ -1,0 +1,209 @@
+.testray-sidebar {
+	background-color: $sidebar-background-color;
+	box-sizing: border-box;
+
+	@include display(flex);
+	@include flex-direction(column);
+
+	padding: 20px 0 0;
+	width: $sidebar-width;
+
+	.divider {
+		background-color: $sidebar-divider-color;
+		height: 1px;
+		margin: 20px 25px;
+		min-height: 1px;
+		opacity: 0.25;
+
+		&.divider-full {
+			margin: 0;
+		}
+	}
+
+	.item-count {
+		background-color: $sidebar-background-active-color;
+
+		&.item-count-subtask {
+			margin-right: 5px;
+		}
+	}
+
+	.nameplate-content, .nameplate-field {
+		padding: 0;
+	}
+
+	.nameplate-content {
+		font-size: 1.2em;
+		padding-left: 15px;
+		vertical-align: middle;
+	}
+
+	.spacer {
+		margin: 20px 0;
+	}
+
+	.testray-logo {
+		margin: 5px 25px 30px;
+
+		svg {
+			height: 35px;
+
+			circle, path, polygon {
+				fill: #FFF;
+			}
+		}
+	}
+
+	.testray-sidebar-content {
+		box-sizing: border-box;
+
+		@include display(flex);
+		@include flex(1);
+		@include flex-direction(column);
+
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	.testray-sidebar-footer {
+		background-color: $sidebar-background-color;
+		width: 100%;
+	}
+
+	.testray-sidebar-item {
+		color: $color-gray-lighter;
+		display: block;
+		padding: 10px 25px;
+		position: relative;
+		white-space: nowrap;
+
+		&:active, &:focus, &:hover {
+			background-color: $sidebar-background-hover-color;
+			text-decoration: none;
+		}
+
+		&.active {
+			background-color: $sidebar-background-active-color;
+			color: $sidebar-text-active-color;
+		}
+
+		&.testray-sidebar-item-user {
+			cursor: pointer;
+			padding: 15px 25px;
+		}
+
+		.testray-sidebar-icon {
+			font-size: 1.5em;
+			vertical-align: middle;
+		}
+
+		.testray-sidebar-text {
+			color: $color-gray-lighter;
+			font-size: 1.3em;
+			font-weight: $font-header-weight;
+			padding-left: 10px;
+			vertical-align: middle;
+
+			@include transition($transition);
+		}
+	}
+
+	.testray-sidebar-section-title {
+		@include align-items(center);
+
+		color: $sidebar-text-color;
+
+		@include display(flex);
+		@include justify-content(space-between);
+
+		line-height: 1;
+		min-height: 1em;
+		padding: 10px 25px;
+
+		h3 {
+			margin: 0;
+		}
+	}
+
+	.testray-sidebar-separator {
+		margin-top: 20px;
+	}
+
+	.testray-sidebar-tasks-container {
+		@include display(flex);
+		@include flex-direction(column);
+
+		min-height: 250px;
+		overflow: auto;
+		width: 250px;
+
+		.subtask-list {
+			list-style: none;
+			margin: 10px 0;
+
+			.subtask-item {
+				background-color: $sidebar-background-active-color;
+				box-shadow: $box-shadow-light;
+				color: $sidebar-text-color;
+				display: block;
+				margin: 8px 0;
+				padding: 10px 20px;
+
+				@include transition($transition);
+
+				.subtask-score {
+					float: right;
+
+					.subtask-score-label {
+						@include label-text();
+
+						padding-right: 10px;
+					}
+				}
+
+				&:hover {
+					box-shadow: $box-shadow;
+					text-decoration: none;
+				}
+			}
+		}
+
+		.task-build-name {
+			color: $sidebar-text-color;
+			display: block;
+			font-size: $font-size-smallest;
+			line-height: 1.5;
+			margin: 5px 0 10px;
+		}
+
+		.task-list {
+			list-style: none;
+			margin: 0;
+			overflow: auto;
+			padding: 15px 25px;
+
+			.task-item {
+				margin-bottom: 25px;
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+
+				.metrics-bar {
+					height: 10px;
+				}
+			}
+		}
+
+		.task-name {
+			color: $sidebar-text-color;
+			font-size: 1em;
+		}
+	}
+}
+
+.testray-sidebar-popover {
+	max-width: none;
+	padding: 0;
+	position: fixed;
+}

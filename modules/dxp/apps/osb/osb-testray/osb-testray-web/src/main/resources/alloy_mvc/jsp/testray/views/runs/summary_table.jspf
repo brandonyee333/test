@@ -1,0 +1,86 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<c:if test="${not empty summaryMap}">
+	<table class="comparison-results table table-bordered">
+		<thead>
+			<tr>
+				<th colspan="${fn:length(TestrayCaseResultConstants.STATUSES_COMPARE) + 1}">
+					${summaryTableName}
+				</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr>
+				<th></th>
+
+				<c:forEach items="${TestrayCaseResultConstants.STATUSES_COMPARE}" var="status">
+					<c:set value="b;${TestrayCaseResultConstants.getStatusLabel(status)}" var="arguments" />
+
+					<th>
+						<liferay-ui:message arguments="${fn:split(arguments, StringPool.SEMICOLON)}" key="x-x" />
+					</th>
+				</c:forEach>
+			</tr>
+
+			<c:forEach items="${TestrayCaseResultConstants.STATUSES_COMPARE}" var="statusA">
+				<c:set value="${TestrayCaseResultConstants.getStatusLabel(statusA)}" var="statusLabelA" />
+
+				<tr>
+					<th>
+						<c:set value="a;${statusLabelA}" var="arguments" />
+
+						<liferay-ui:message arguments="${fn:split(arguments, StringPool.SEMICOLON)}" key="x-x" />
+					</th>
+
+					<c:forEach items="${TestrayCaseResultConstants.STATUSES_COMPARE}" var="statusB">
+						<c:set value="${TestrayCaseResultConstants.getStatusLabel(statusB)}" var="statusLabelB" />
+
+						<td class="compare-status ${statusLabelA} ${statusLabelB}">
+							<c:set value="${summaryMap[statusA][statusB]}" var="currentCount" />
+
+							<c:if test="${not empty currentCount}">
+								<portlet:renderURL var="url">
+									<portlet:param name="controller" value="runs" />
+									<portlet:param name="action" value="compare" />
+									<portlet:param name="compare" value="${true}" />
+									<portlet:param name="redirect" value="${redirect}" />
+									<portlet:param name="statusA" value="${statusA}" />
+									<portlet:param name="statusB" value="${statusB}" />
+									<portlet:param name="view" value="details" />
+
+									<c:if test="${not empty testrayComponent}">
+										<portlet:param name="testrayComponentId" value="${testrayComponent.testrayComponentId}" />
+									</c:if>
+
+									<portlet:param name="testrayRunIdA" value="${testrayRunCompositeA.testrayRunId}" />
+									<portlet:param name="testrayRunIdB" value="${testrayRunCompositeB.testrayRunId}" />
+
+									<c:if test="${not empty testrayTeam}">
+										<portlet:param name="testrayTeamId" value="${testrayTeam.testrayTeamId}" />
+									</c:if>
+								</portlet:renderURL>
+
+								<aui:a href="${url}" label="${currentCount}" localizeLabel="${false}" />
+							</c:if>
+						</td>
+					</c:forEach>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+</c:if>

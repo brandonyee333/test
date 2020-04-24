@@ -1,0 +1,74 @@
+body, html, #content, #main-content, #wrapper, .portlet, .portlet-body, .portlet-column, .portlet-column-content, .portlet-content, .portlet-content-container, .portlet-layout, .portlet-login, .testray-portlet {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+}
+
+body {
+	min-width: $portlet-min-width;
+
+	&, &.has-control-menu {
+		&, &.open {
+			overflow-x: auto;
+
+			#wrapper {
+				margin-top: 0;
+				padding: 0;
+				position: relative;
+			}
+		}
+
+		&.open-admin-panel {
+			padding-right: 0;
+		}
+	}
+
+	&.portal-popup {
+		min-width: auto;
+
+		.columns-max {
+			> .portlet-layout {
+				&.row {
+					padding: 20px;
+				}
+			}
+		}
+	}
+}
+
+.testray-body {
+	@include display(flex);
+	@include flex(1);
+	@include flex-direction(row);
+
+	min-height: 0;
+}
+
+.testray-content-wrapper {
+	@include flex(1);
+
+	overflow: auto;
+}
+
+.testray-content {
+	padding: 25px $layout-padding-horizontal 30px;
+	position: relative;
+}
+
+.testray-main {
+	@include display(flex);
+	@include flex-direction(column);
+
+	height: 100%;
+}
+
+.testray-page {
+	@include display(flex);
+	@include flex(1);
+	@include flex-direction(column);
+
+	overflow: auto;
+	padding: 0;
+	position: relative;
+}

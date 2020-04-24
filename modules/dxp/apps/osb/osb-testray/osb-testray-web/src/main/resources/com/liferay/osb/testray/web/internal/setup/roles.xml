@@ -1,0 +1,568 @@
+<?xml version="1.0"?>
+
+<roles>
+	<role>
+		<name>Owner</name>
+		<reset-permissions>false</reset-permissions>
+		<default-action-keys resourceName="com.liferay.portal.kernel.model.User">
+			<action-key>EDIT</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Testray Administrator</name>
+		<reset-permissions>false</reset-permissions>
+		<subtype>com.liferay.osb.testray</subtype>
+		<default-action-keys resourceName="com_liferay_osb_testray_portlet_TestrayPortlet">
+			<action-key>ADD#ATTACHMENTS</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE#ATTACHMENTS</action-key>
+			<action-key>EDIT_CASE_RESULTS#BULK</action-key>
+			<action-key>MANAGE#CONTROL_PANEL</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UNSET_CASE_RESULT#BULK</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayBuild">
+			<action-key>ADD</action-key>
+			<action-key>AUTO_FILL</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_ARCHIVED</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>UPDATE_PROMOTED</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCase">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>IMPORT_CASES</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_REQUIREMENTS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseResult">
+			<action-key>ADD</action-key>
+			<action-key>ADD_TESTRAY_CASE_RESULTS</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>METRICS</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>UPDATE_USER</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseType">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayComponent">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayFactor">
+			<action-key>ADD_TESTRAY_FACTORS</action-key>
+			<action-key>ADD_TESTRAY_RUNS</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>PERMISSIONS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayFactorCategory">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayFactorOption">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayProductVersion">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayProject">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>DELETE_TREE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRequirement">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>IMPORT</action-key>
+			<action-key>IMPORT_ISSUES</action-key>
+			<action-key>IMPORT_REQUIREMENTS</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>REMOVE_CASE</action-key>
+			<action-key>SELECT</action-key>
+			<action-key>SYNC</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRoutine">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRun">
+			<action-key>ADD</action-key>
+			<action-key>AUTO_FILL</action-key>
+			<action-key>COMPARE</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySubtask">
+			<action-key>EDIT_STATUS</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>MERGE</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>SPLIT</action-key>
+			<action-key>UPDATE_USER</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySuite">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>REFRESH_CASES</action-key>
+			<action-key>REMOVE_CASE</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_CASE_PARAMETERS</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTask">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>UPDATE_USERS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTeam">
+			<action-key>ADD</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.portal.kernel.model.User">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>PERMISSIONS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.portal.kernel.search.Indexer">
+			<action-key>EXECUTE_ROLLING_REINDEX</action-key>
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Testray Analyst</name>
+		<reset-permissions>false</reset-permissions>
+		<subtype>com.liferay.osb.testray</subtype>
+		<default-action-keys resourceName="com_liferay_osb_testray_portlet_TestrayPortlet">
+			<action-key>ADD#ATTACHMENTS</action-key>
+			<action-key>CREATE#ATTACHMENTS</action-key>
+			<action-key>EDIT_CASE_RESULTS#BULK</action-key>
+			<action-key>UNSET_CASE_RESULT#BULK</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayBuild">
+			<action-key>AUTO_FILL</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCase">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>IMPORT_CASES</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_REQUIREMENTS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseResult">
+			<action-key>ADD</action-key>
+			<action-key>ADD_TESTRAY_CASE_RESULTS</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>METRICS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>UPDATE_USER</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseType">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayComponent">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayProject">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRequirement">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>REMOVE_CASE</action-key>
+			<action-key>SELECT</action-key>
+			<action-key>SYNC</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRoutine">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRun">
+			<action-key>AUTO_FILL</action-key>
+			<action-key>COMPARE</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySubtask">
+			<action-key>EDIT_STATUS</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>MERGE</action-key>
+			<action-key>SPLIT</action-key>
+			<action-key>UPDATE_USER</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySuite">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTask">
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE_USERS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTeam">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.portal.kernel.model.User">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Testray Lead</name>
+		<reset-permissions>false</reset-permissions>
+		<subtype>com.liferay.osb.testray</subtype>
+		<default-action-keys resourceName="com_liferay_osb_testray_portlet_TestrayPortlet">
+			<action-key>ADD#ATTACHMENTS</action-key>
+			<action-key>CONFIGURATION</action-key>
+			<action-key>CREATE#ATTACHMENTS</action-key>
+			<action-key>EDIT_CASE_RESULTS#BULK</action-key>
+			<action-key>UNSET_CASE_RESULT#BULK</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayBuild">
+			<action-key>ADD</action-key>
+			<action-key>AUTO_FILL</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_ARCHIVED</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>UPDATE_PROMOTED</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCase">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>IMPORT_CASES</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_REQUIREMENTS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseResult">
+			<action-key>ADD</action-key>
+			<action-key>ADD_TESTRAY_CASE_RESULTS</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>METRICS</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>UPDATE_USER</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseType">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayComponent">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayFactor">
+			<action-key>ADD_TESTRAY_FACTORS</action-key>
+			<action-key>ADD_TESTRAY_RUNS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayFactorCategory">
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayFactorOption">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayProductVersion">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayProject">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRequirement">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>IMPORT</action-key>
+			<action-key>IMPORT_ISSUES</action-key>
+			<action-key>IMPORT_REQUIREMENTS</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>REMOVE_CASE</action-key>
+			<action-key>SELECT</action-key>
+			<action-key>SYNC</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRoutine">
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRun">
+			<action-key>ADD</action-key>
+			<action-key>AUTO_FILL</action-key>
+			<action-key>COMPARE</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySubtask">
+			<action-key>EDIT_STATUS</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>MERGE</action-key>
+			<action-key>SPLIT</action-key>
+			<action-key>UPDATE_USER</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySuite">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>REFRESH_CASES</action-key>
+			<action-key>REMOVE_CASE</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_CASE_PARAMETERS</action-key>
+			<action-key>UPDATE_CASES</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTask">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+			<action-key>UPDATE_STATUS</action-key>
+			<action-key>UPDATE_USERS</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTeam">
+			<action-key>ADD</action-key>
+			<action-key>CREATE</action-key>
+			<action-key>DELETE</action-key>
+			<action-key>EDIT</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>UPDATE</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.portal.kernel.model.User">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+	</role>
+	<role>
+		<name>Testray User</name>
+		<reset-permissions>false</reset-permissions>
+		<subtype>com.liferay.osb.testray</subtype>
+		<default-action-keys resourceName="com_liferay_osb_testray_portlet_TestrayPortlet">
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayBuild">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCase">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseResult">
+			<action-key>INDEX</action-key>
+			<action-key>METRICS</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayCaseType">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayComponent">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayProject">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRequirement">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRoutine">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayRun">
+			<action-key>COMPARE</action-key>
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySubtask">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestraySuite">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTask">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.osb.testray.model.TestrayTeam">
+			<action-key>INDEX</action-key>
+		</default-action-keys>
+		<default-action-keys resourceName="com.liferay.portal.kernel.model.User">
+			<action-key>INDEX</action-key>
+			<action-key>VIEW</action-key>
+		</default-action-keys>
+	</role>
+</roles>

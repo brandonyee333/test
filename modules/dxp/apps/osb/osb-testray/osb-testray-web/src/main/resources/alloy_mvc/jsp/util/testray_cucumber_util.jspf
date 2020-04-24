@@ -1,0 +1,454 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCucumberUtil {
+
+	public static JSONArray getResultsJSONArray(String[] resultsArray) throws Exception {
+		JSONArray resultsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		for (String resultsString : resultsArray) {
+			try {
+				resultsJSONArray.put(JSONFactoryUtil.createJSONObject(resultsString));
+			}
+			catch (JSONException jsone) {
+				try {
+					JSONArray jsonArray = JSONFactoryUtil.createJSONArray(resultsString);
+
+					for (int i = 0; i < jsonArray.length(); i++) {
+						JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+						if (jsonObject == null) {
+							throw new AlloyException("results-may-not-contain-nested-json-arrays", false);
+						}
+
+						resultsJSONArray.put(jsonObject);
+					}
+				}
+				catch (JSONException jsone2) {
+					throw new AlloyException("results-must-be-valid-json-arrays-or-json-objects", false);
+				}
+			}
+		}
+
+		return resultsJSONArray;
+	}
+
+	public static List<TestrayCaseResult> processImportResults(AlloyController alloyController, JSONArray resultsJSONArray, long testrayProjectId, TestrayRun testrayRun) throws Exception {
+		_validateImportResults(resultsJSONArray);
+
+		List<TestrayCaseResult> testrayCaseResults = new ArrayList<TestrayCaseResult>();
+
+		for (int i = 0; i < resultsJSONArray.length(); i++) {
+			JSONObject resultsJSONObject = resultsJSONArray.getJSONObject(i);
+
+			TestrayCase testrayCase = _fetchOrCreateTestrayCase(alloyController, resultsJSONObject, testrayProjectId);
+
+			testrayCase.setDescription(resultsJSONObject.getString("description"));
+			testrayCase.setPriority(_getPriority(resultsJSONObject));
+			testrayCase.setSteps(_getSteps(resultsJSONObject));
+
+			TestrayComponent testrayComponent = _fetchOrAddTestrayComponent(alloyController, resultsJSONObject, testrayProjectId);
+
+			if (testrayCase.getTestrayComponentId() != testrayComponent.getTestrayComponentId()) {
+				testrayCase.setTestrayComponentId(testrayComponent.getTestrayComponentId());
+			}
+
+			alloyController.updateModelIgnoreRequest(testrayCase);
+
+			testrayCaseResults.add(_updateTestrayCaseResult(alloyController, resultsJSONObject, testrayCase, testrayRun));
+		}
+
+		return testrayCaseResults;
+	}
+
+	private static TestrayComponent _fetchOrAddTestrayComponent(AlloyController alloyController, JSONObject resultsJSONObject, long testrayProjectId) throws Exception {
+		TestrayTeam testrayTeam = _fetchOrAddTestrayTeam(alloyController, resultsJSONObject, testrayProjectId);
+
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		String testrayComponentName = _getTag(resultsJSONObject, "@component_");
+
+		List<TestrayComponent> testrayComponents = testrayComponentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", testrayComponentName});
+
+		if (!testrayComponents.isEmpty()) {
+			TestrayComponent testrayComponent = testrayComponents.get(0);
+
+			if ((testrayTeam != null) && (testrayComponent.getTestrayTeamId() != testrayTeam.getTestrayTeamId())) {
+				testrayComponent.setTestrayTeamId(testrayTeam.getTestrayTeamId());
+
+				alloyController.updateModelIgnoreRequest(testrayComponent);
+
+				TestrayCaseUtil.indexTestrayCases(alloyController, testrayComponent.getTestrayComponentId());
+			}
+
+			return testrayComponent;
+		}
+
+		TestrayComponent testrayComponent = TestrayComponentLocalServiceUtil.createTestrayComponent(alloyController.increment());
+
+		testrayComponent.setName(testrayComponentName);
+		testrayComponent.setOriginationKey(testrayComponent.getTestrayComponentId());
+		testrayComponent.setTestrayProjectId(testrayProjectId);
+
+		if (testrayTeam != null) {
+			testrayComponent.setTestrayTeamId(testrayTeam.getTestrayTeamId());
+		}
+
+		alloyController.updateModelIgnoreRequest(testrayComponent, "testrayComponentId", testrayComponent.getTestrayComponentId());
+
+		return testrayComponent;
+	}
+
+	private static TestrayTeam _fetchOrAddTestrayTeam(AlloyController alloyController, JSONObject resultsJSONObject, long testrayProjectId) throws Exception {
+		String testrayTeamName = _getTag(resultsJSONObject, "@team_");
+
+		if (Validator.isNull(testrayTeamName)) {
+			return null;
+		}
+
+		AlloyServiceInvoker testrayTeamAlloyServiceInvoker = new AlloyServiceInvoker(TestrayTeam.class.getName());
+
+		List<TestrayTeam> testrayTeams = testrayTeamAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", testrayTeamName});
+
+		if (!testrayTeams.isEmpty()) {
+			return testrayTeams.get(0);
+		}
+
+		TestrayTeam testrayTeam = TestrayTeamLocalServiceUtil.createTestrayTeam(0);
+
+		testrayTeam.setName(testrayTeamName);
+		testrayTeam.setTestrayProjectId(testrayProjectId);
+
+		alloyController.updateModelIgnoreRequest(testrayTeam);
+
+		return testrayTeam;
+	}
+
+	private static TestrayCase _fetchOrCreateTestrayCase(AlloyController alloyController, JSONObject resultsJSONObject, long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayCaseTypeId", _getTestrayCaseTypeId(alloyController), "testrayProjectId", testrayProjectId, "name", resultsJSONObject.getString("name")});
+
+		if (!testrayCases.isEmpty()) {
+			return testrayCases.get(0);
+		}
+
+		TestrayCase testrayCase = TestrayCaseLocalServiceUtil.createTestrayCase(alloyController.increment());
+
+		testrayCase.setCaseNumber(CounterLocalServiceUtil.increment(TestrayProject.class.getName() + StringPool.POUND + testrayProjectId));
+		testrayCase.setName(resultsJSONObject.getString("name"));
+		testrayCase.setOriginationKey(testrayCase.getTestrayCaseId());
+		testrayCase.setTestrayCaseTypeId(_getTestrayCaseTypeId(alloyController));
+		testrayCase.setTestrayProjectId(testrayProjectId);
+
+		return testrayCase;
+	}
+
+	private static TestrayCaseResult _fetchOrCreateTestrayCaseResult(TestrayCase testrayCase, TestrayRun testrayRun) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayCaseId", testrayCase.getTestrayCaseId(), "testrayRunId", testrayRun.getTestrayRunId()});
+
+		if (!testrayCaseResults.isEmpty()) {
+			return testrayCaseResults.get(0);
+		}
+
+		TestrayCaseResult testrayCaseResult = TestrayCaseResultLocalServiceUtil.createTestrayCaseResult(0);
+
+		testrayCaseResult.setTestrayBuildId(testrayRun.getTestrayBuildId());
+		testrayCaseResult.setTestrayCaseId(testrayCase.getTestrayCaseId());
+		testrayCaseResult.setTestrayComponentId(testrayCase.getTestrayComponentId());
+		testrayCaseResult.setTestrayRunId(testrayRun.getTestrayRunId());
+
+		return testrayCaseResult;
+	}
+
+	private static Map<String, String> _getFailedSteps(JSONObject resultsJSONObject) {
+		Map<String, String> failedSteps = new HashMap<String, String>();
+
+		JSONArray elementsJSONArray = resultsJSONObject.getJSONArray("elements");
+
+		for (int i = 0; i < elementsJSONArray.length(); i++) {
+			JSONObject elementJSONObject = elementsJSONArray.getJSONObject(i);
+
+			JSONArray stepsJSONArray = elementJSONObject.getJSONArray("steps");
+
+			for (int j = 0; j < stepsJSONArray.length(); j++) {
+				JSONObject stepJSONObject = stepsJSONArray.getJSONObject(j);
+
+				JSONObject resultJSONObject = stepJSONObject.getJSONObject("result");
+
+				String resultStatus = resultJSONObject.getString("status");
+
+				if (resultStatus.equals(TestrayCaseResultConstants.LABEL_FAILED)) {
+					failedSteps.put(stepJSONObject.getString("name"), resultJSONObject.getString("error_message"));
+
+					return failedSteps;
+				}
+			}
+		}
+
+		return failedSteps;
+	}
+
+	private static int _getPriority(JSONObject resultsJSONObject) throws Exception {
+		int priority = -1;
+
+		String priorityString = _getTag(resultsJSONObject, "@priority_");
+
+		if (Validator.isNotNull(priorityString)) {
+			priority = GetterUtil.getInteger(priorityString);
+		}
+
+		return priority;
+	}
+
+	private static String _getSteps(JSONObject resultsJSONObject) throws Exception {
+		StringBundler sb = new StringBundler();
+
+		JSONArray elementsJSONArray = resultsJSONObject.getJSONArray("elements");
+
+		for (int i = 0; i < elementsJSONArray.length(); i++) {
+			JSONObject elementJSONObject = elementsJSONArray.getJSONObject(i);
+
+			sb.append(elementJSONObject.getString("keyword"));
+
+			sb.append(StringPool.COLON);
+			sb.append(StringPool.SPACE);
+
+			sb.append(elementJSONObject.getString("name"));
+
+			sb.append(StringPool.NEW_LINE);
+
+			JSONArray stepsJSONArray = elementJSONObject.getJSONArray("steps");
+
+			for (int j = 0; j < stepsJSONArray.length(); j++) {
+				JSONObject stepJSONObject = stepsJSONArray.getJSONObject(j);
+
+				sb.append(StringPool.TAB);
+				sb.append(stepJSONObject.getString("keyword"));
+				sb.append(stepJSONObject.getString("name"));
+
+				if (stepJSONObject.has("rows")) {
+					JSONArray rowsJSONArray = stepJSONObject.getJSONArray("rows");
+
+					for (int k = 0; k < rowsJSONArray.length(); k++) {
+						sb.append(StringPool.NEW_LINE);
+						sb.append(StringPool.TAB);
+						sb.append(StringPool.TAB);
+						sb.append(StringPool.PIPE);
+
+						JSONObject rowJSONObject = rowsJSONArray.getJSONObject(k);
+
+						JSONArray cellsJSONArray = rowJSONObject.getJSONArray("cells");
+
+						for (int l = 0; l < cellsJSONArray.length(); l++) {
+							sb.append(StringPool.SPACE);
+							sb.append(cellsJSONArray.getString(l));
+							sb.append(StringPool.SPACE);
+							sb.append(StringPool.PIPE);
+						}
+					}
+				}
+
+				sb.append(StringPool.NEW_LINE);
+			}
+
+			sb.append(StringPool.NEW_LINE);
+		}
+
+		return sb.toString();
+	}
+
+	private static String _getTag(JSONObject resultsJSONObject, String tag) throws Exception {
+		JSONArray tagsJSONArray = resultsJSONObject.getJSONArray("tags");
+
+		for (int i = 0; i < tagsJSONArray.length(); i++) {
+			JSONObject tagJSONObject = tagsJSONArray.getJSONObject(i);
+
+			String name = tagJSONObject.getString("name");
+
+			if (!name.contains(tag)) {
+				continue;
+			}
+
+			int index = name.indexOf(StringPool.UNDERLINE);
+
+			return StringUtil.replace(name.substring(index + 1), CharPool.UNDERLINE, CharPool.SPACE);
+		}
+
+		return StringPool.BLANK;
+	}
+
+	private static TestrayCaseType _getTestrayCaseType(AlloyController alloyController) throws Exception {
+		if (_testrayCaseType != null) {
+			return _testrayCaseType;
+		}
+
+		AlloyServiceInvoker testrayCaseTypeAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseType.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		List<TestrayCaseType> testrayCaseTypes = testrayCaseTypeAlloyServiceInvoker.executeDynamicQuery(new Object[] {"groupId", themeDisplay.getScopeGroupId(), "name", "Cucumber"});
+
+		if (testrayCaseTypes.isEmpty()) {
+			_testrayCaseType = TestrayCaseTypeLocalServiceUtil.createTestrayCaseType(0);
+
+			_testrayCaseType.setName("Cucumber");
+
+			alloyController.updateModelIgnoreRequest(_testrayCaseType);
+		}
+		else {
+			_testrayCaseType = testrayCaseTypes.get(0);
+		}
+
+		return _testrayCaseType;
+	}
+
+	private static long _getTestrayCaseTypeId(AlloyController alloyController) throws Exception {
+		TestrayCaseType testrayCaseType = _getTestrayCaseType(alloyController);
+
+		return testrayCaseType.getTestrayCaseTypeId();
+	}
+
+	private static boolean _isUntested(JSONObject resultsJSONObject) throws Exception {
+		JSONArray elementsJSONArray = resultsJSONObject.getJSONArray("elements");
+
+		for (int i = 0; i < elementsJSONArray.length(); i++) {
+			JSONObject elementJSONObject = elementsJSONArray.getJSONObject(i);
+
+			JSONArray stepsJSONArray = elementJSONObject.getJSONArray("steps");
+
+			for (int j = 0; j < stepsJSONArray.length(); j++) {
+				JSONObject stepJSONObject = stepsJSONArray.getJSONObject(j);
+
+				JSONObject resultJSONObject = stepJSONObject.getJSONObject("result");
+
+				String status = resultJSONObject.getString("status");
+
+				if (Validator.isNotNull(status) && !status.equals("skipped")) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private static TestrayCaseResult _updateTestrayCaseResult(AlloyController alloyController, JSONObject resultsJSONObject, TestrayCase testrayCase, TestrayRun testrayRun) throws Exception {
+		TestrayCaseResult testrayCaseResult = _fetchOrCreateTestrayCaseResult(testrayCase, testrayRun);
+
+		int status = TestrayCaseResultConstants.STATUS_UNTESTED;
+
+		if (!_isUntested(resultsJSONObject)) {
+			status = TestrayCaseResultConstants.STATUS_PASSED;
+
+			Map<String, String> failedSteps = _getFailedSteps(resultsJSONObject);
+
+			if (!failedSteps.isEmpty()) {
+				status = TestrayCaseResultConstants.STATUS_FAILED;
+
+				List<String> failedStepErrors = new ArrayList<String>(failedSteps.values());
+
+				testrayCaseResult.setErrors(failedStepErrors.get(0));
+			}
+		}
+
+		testrayCaseResult.setStatus(status);
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+
+		return testrayCaseResult;
+	}
+
+	private static void _validateDescription(JSONObject resultsJSONObject) throws Exception {
+		String description = resultsJSONObject.getString("description");
+
+		if (Validator.isNull(description)) {
+			throw new AlloyException("results-must-include-a-case-description", false);
+		}
+	}
+
+	private static void _validateImportResults(JSONArray resultsJSONArray) throws Exception {
+		for (int i = 0; i < resultsJSONArray.length(); i++) {
+			JSONObject resultsJSONObject = resultsJSONArray.getJSONObject(i);
+
+			_validateDescription(resultsJSONObject);
+			_validateName(resultsJSONObject);
+			_validatePriority(resultsJSONObject);
+			_validateStatusesAndErrors(resultsJSONObject);
+			_validateTestrayComponentName(resultsJSONObject);
+		}
+	}
+
+	private static void _validateName(JSONObject resultsJSONObject) throws Exception {
+		String name = resultsJSONObject.getString("name");
+
+		if (Validator.isNull(name)) {
+			throw new AlloyException("results-must-include-a-case-name", false);
+		}
+	}
+
+	private static void _validatePriority(JSONObject resultsJSONObject) throws Exception {
+		int priority = _getPriority(resultsJSONObject);
+
+		if (priority < 0) {
+			throw new AlloyException("results-must-include-a-case-priority", false);
+		}
+	}
+
+	private static void _validateStatusesAndErrors(JSONObject resultsJSONObject) throws Exception {
+		JSONArray elementsJSONArray = resultsJSONObject.getJSONArray("elements");
+
+		for (int i = 0; i < elementsJSONArray.length(); i++) {
+			JSONObject elementJSONObject = elementsJSONArray.getJSONObject(i);
+
+			JSONArray stepsJSONArray = elementJSONObject.getJSONArray("steps");
+
+			for (int j = 0; j < stepsJSONArray.length(); j++) {
+				JSONObject stepJSONObject = stepsJSONArray.getJSONObject(j);
+
+				JSONObject resultJSONObject = stepJSONObject.getJSONObject("result");
+
+				String status = resultJSONObject.getString("status");
+
+				if (Validator.isNull(status)) {
+					throw new AlloyException("results-must-include-a-status-for-each-result", false);
+				}
+				else if (Validator.isNotNull(status) && status.equals(TestrayCaseResultConstants.LABEL_FAILED)) {
+					String errorMessage = resultJSONObject.getString("error_message");
+
+					if (Validator.isNull(errorMessage)) {
+						throw new AlloyException("results-must-include-an-error-message-for-each-failed-status", false);
+					}
+				}
+			}
+		}
+	}
+
+	private static void _validateTestrayComponentName(JSONObject resultsJSONObject) throws Exception {
+		String testrayComponentName = _getTag(resultsJSONObject, "@component_");
+
+		if (Validator.isNull(testrayComponentName)) {
+			throw new AlloyException("results-must-include-a-component-name", false);
+		}
+	}
+
+	private static TestrayCaseType _testrayCaseType;
+
+}
+%>

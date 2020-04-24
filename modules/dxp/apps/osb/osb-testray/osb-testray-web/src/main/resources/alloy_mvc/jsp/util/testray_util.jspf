@@ -1,0 +1,801 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayUtil {
+
+	public static Map<String, Serializable> buildAttributes(Object... properties) throws Exception {
+		if ((properties.length % 2) != 0) {
+			throw new IllegalArgumentException("Properties length is not a multiple of 2");
+		}
+
+		Map<String, Serializable> attributes = new HashMap<String, Serializable>();
+
+		for (int i = 0; i < properties.length; i += 2) {
+			String propertyName = String.valueOf(properties[i]);
+			Serializable propertyValue = (Serializable)properties[i + 1];
+
+			attributes.put(propertyName, propertyValue);
+		}
+
+		return attributes;
+	}
+
+	public static boolean caseInsensitiveContains(String s1, String s2) throws Exception {
+		s1 = StringUtil.toLowerCase(s1);
+
+		return s1.contains(StringUtil.toLowerCase(s2));
+	}
+
+	public static byte[] compress(byte[] bytes) throws Exception {
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+		GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
+
+		try {
+			gzipOutputStream.write(bytes);
+		}
+		finally {
+			gzipOutputStream.close();
+		}
+
+		return byteArrayOutputStream.toByteArray();
+	}
+
+	public static byte[] compress(String content) throws Exception {
+		return compress(content.getBytes());
+	}
+
+	public static boolean containsFieldValue(List<?> list, String fieldName, Object value) {
+		String valueString = String.valueOf(value);
+
+		for (Object element : list) {
+			Object elementFieldValue = BeanPropertiesUtil.getObjectSilent(element, fieldName);
+
+			String elementFieldValueString = String.valueOf(elementFieldValue);
+
+			if (valueString.equals(elementFieldValueString)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public static String decompress(byte[] target) throws Exception {
+		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(target);
+
+		GZIPInputStream gzipInputStream = new GZIPInputStream(byteArrayInputStream, _BUFFER_SIZE);
+
+		StringBundler sb = new StringBundler();
+
+		try {
+			byte[] data = new byte[_BUFFER_SIZE];
+			int bytesRead;
+
+			while ((bytesRead = gzipInputStream.read(data)) != -1) {
+				sb.append(new String(data, 0, bytesRead));
+			}
+		}
+		finally {
+			gzipInputStream.close();
+		}
+
+		return sb.toString();
+	}
+
+	public static Date fetchDate(String dateString) throws Exception {
+		if (Validator.isNull(dateString)) {
+			return null;
+		}
+
+		Pattern pattern = Pattern.compile(_REGEX_M_SLASH_DD_SLASH_YYYY);
+
+		Matcher matcher = pattern.matcher(dateString);
+
+		if (!matcher.find()) {
+			return null;
+		}
+
+		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("MM/dd/yyyy");
+
+		return dateFormat.parse(dateString);
+	}
+
+	public static MBMessage fetchMBMessage(long mbMessageId) throws Exception {
+		if (mbMessageId <= 0) {
+			return null;
+		}
+
+		return MBMessageLocalServiceUtil.getMBMessage(mbMessageId);
+	}
+
+	public static void filterResultsByError(List<TestrayCaseResult> testrayCaseResults, String errors) throws Exception {
+		errors = StringUtil.toLowerCase(errors);
+
+		Iterator<TestrayCaseResult> iterator = testrayCaseResults.iterator();
+
+		while (iterator.hasNext()) {
+			TestrayCaseResult testrayCaseResult = iterator.next();
+
+			String curErrors = StringUtil.toLowerCase(testrayCaseResult.getErrors());
+
+			if (!curErrors.contains(errors)) {
+				iterator.remove();
+			}
+		}
+	}
+
+	public static void filterResultsByIssues(List<TestrayCaseResult> testrayCaseResults, String issues) throws Exception {
+		String[] issueNames = issues.split(StringPool.COMMA);
+
+		Iterator<TestrayCaseResult> iterator = testrayCaseResults.iterator();
+
+		while (iterator.hasNext()) {
+			TestrayCaseResult testrayCaseResult = iterator.next();
+
+			List<TestrayIssue> testrayIssues = TestrayIssueLocalServiceUtil.getTestrayCaseResultTestrayIssues(testrayCaseResult.getTestrayCaseResultId());
+
+			boolean keep = false;
+
+			for (TestrayIssue testrayIssue : testrayIssues) {
+				for (String issueName : issueNames) {
+					String testrayIssueName = testrayIssue.getName();
+
+					if (testrayIssueName.contains(issueName)) {
+						keep = true;
+
+						break;
+					}
+				}
+			}
+
+			if (!keep) {
+				iterator.remove();
+			}
+		}
+	}
+
+	public static void filterTestrayCaseResultWarnings(HttpServletRequest request, List<TestrayCaseResult> testrayCaseResults) throws Exception {
+		String testrayCaseResultWarning = ParamUtil.getString(request, "testrayCaseResultWarning");
+
+		filterTestrayCaseResultWarnings(testrayCaseResults, testrayCaseResultWarning);
+	}
+
+	public static void filterTestrayCaseResultWarnings(List<TestrayCaseResult> testrayCaseResults, String testrayCaseResultWarningText) throws Exception {
+		if (Validator.isNull(testrayCaseResultWarningText)) {
+			return;
+		}
+
+		testrayCaseResultWarningText = StringUtil.toLowerCase(testrayCaseResultWarningText);
+
+		Iterator<TestrayCaseResult> testrayCaseResultsIterator = testrayCaseResults.iterator();
+
+		while (testrayCaseResultsIterator.hasNext()) {
+			boolean matches = false;
+
+			TestrayCaseResult testrayCaseResult = testrayCaseResultsIterator.next();
+
+			List<TestrayCaseResultWarning> testrayCaseResultWarnings = TestrayCaseResultWarningUtil.getTestrayCaseResultWarnings(testrayCaseResult.getTestrayCaseResultId());
+
+			for (TestrayCaseResultWarning testrayCaseResultWarning : testrayCaseResultWarnings) {
+				String curTestrayCaseResultWarningText = StringUtil.toLowerCase(testrayCaseResultWarning.getContent());
+
+				if (curTestrayCaseResultWarningText.contains(testrayCaseResultWarningText)) {
+					matches = true;
+
+					break;
+				}
+			}
+
+			if (!matches) {
+				testrayCaseResultsIterator.remove();
+			}
+		}
+	}
+
+	public static void filterTestrayProductVersionName(HttpServletRequest request, List<TestrayCaseResult> testrayCaseResults) throws Exception {
+		String testrayProductVersionName = ParamUtil.getString(request, "testrayProductVersionName");
+
+		if (Validator.isNull(testrayProductVersionName)) {
+			return;
+		}
+
+		Iterator<TestrayCaseResult> testrayCaseResultsIterator = testrayCaseResults.iterator();
+
+		while (testrayCaseResultsIterator.hasNext()) {
+			TestrayCaseResult testrayCaseResult = testrayCaseResultsIterator.next();
+
+			TestrayBuild testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(testrayCaseResult.getTestrayBuildId());
+
+			TestrayProductVersion testrayProductVersion = TestrayProductVersionLocalServiceUtil.getTestrayProductVersion(testrayBuild.getTestrayProductVersionId());
+
+			if (!caseInsensitiveContains(testrayProductVersion.getName(), testrayProductVersionName)) {
+				testrayCaseResultsIterator.remove();
+			}
+		}
+	}
+
+	public static void filterTestrayRoutineName(HttpServletRequest request, List<TestrayCaseResult> testrayCaseResults) throws Exception {
+		String testrayRoutineName = ParamUtil.getString(request, "testrayRoutineName");
+
+		if (Validator.isNull(testrayRoutineName)) {
+			return;
+		}
+
+		Iterator<TestrayCaseResult> testrayCaseResultsIterator = testrayCaseResults.iterator();
+
+		while (testrayCaseResultsIterator.hasNext()) {
+			TestrayCaseResult testrayCaseResult = testrayCaseResultsIterator.next();
+
+			TestrayBuild testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(testrayCaseResult.getTestrayBuildId());
+
+			TestrayRoutine testrayRoutine = TestrayRoutineLocalServiceUtil.getTestrayRoutine(testrayBuild.getTestrayRoutineId());
+
+			if (!caseInsensitiveContains(testrayRoutine.getName(), testrayRoutineName)) {
+				testrayCaseResultsIterator.remove();
+			}
+		}
+	}
+
+	public static List<TestrayCaseResult> getFilteredTestrayCaseResults(long testrayRunId, long assignedUserId, String errors, boolean errorsBlankOnly, String issues, boolean issuesBlankOnly, String comments, boolean commentsBlankOnly, List<Integer> statuses, long testrayTeamId, String name, long testrayComponentId, List<Integer> testrayCasePriorities) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = getTestrayCaseResultsDynamicQuery(testrayRunId, assignedUserId, errors, errorsBlankOnly, issues, issuesBlankOnly, comments, commentsBlankOnly, statuses, testrayTeamId, name, testrayComponentId, testrayCasePriorities);
+
+		if (testrayCaseResultDynamicQuery == null) {
+			return Collections.emptyList();
+		}
+
+		return testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+	}
+
+	public static <T> Set<T> getIntersection(Collection<T> collection1, Collection<T> collection2) {
+		return SetUtil.intersect(collection1, collection2);
+	}
+
+	public static <T> Set<T> getRelativeComplement(Collection<T> collection1, Collection<T> collection2) {
+		Set<T> set = SetUtil.fromCollection(collection1);
+
+		set.removeAll(collection2);
+
+		return set;
+	}
+
+	public static MBMessage getRootMBMessage(long userId, long groupId, String className, long classPK) throws Exception {
+		MBMessageDisplay messageDisplay = MBMessageLocalServiceUtil.getDiscussionMessageDisplay(userId, groupId, className, classPK, WorkflowConstants.STATUS_ANY, MBThreadConstants.THREAD_VIEW_FLAT);
+
+		MBThread thread = messageDisplay.getThread();
+
+		return MBMessageLocalServiceUtil.getMessage(thread.getRootMessageId());
+	}
+
+	public static int[] getStartAndEnd(HttpServletRequest request, PortletRequest portletRequest, PortletURL portletURL) throws Exception {
+		return getStartAndEnd(request, portletRequest, portletURL, 0);
+	}
+
+	public static int[] getStartAndEnd(HttpServletRequest request, PortletRequest portletRequest, PortletURL portletURL, int delta) throws Exception {
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
+
+		if (Validator.isNull(start) || Validator.isNull(end)) {
+			SearchContainer<TestrayCaseType> searchContainer = new SearchContainer<TestrayCaseType>(portletRequest, portletURL, null, null);
+
+			if (delta > 0) {
+				searchContainer.setDelta(delta);
+			}
+
+			return new int[] {searchContainer.getStart(), searchContainer.getEnd()};
+		}
+
+		int startValue = GetterUtil.getInteger(start);
+		int endValue = GetterUtil.getInteger(end);
+
+		if ((startValue < 0) && (endValue > 0)) {
+			return new int[] {0, endValue};
+		}
+		else if ((startValue >= 0) && (endValue == -1)) {
+			return new int[] {startValue, Integer.MAX_VALUE};
+		}
+
+		TestrayValidator.validateStartEnd(startValue, endValue);
+
+		return new int[] {startValue, endValue};
+	}
+
+	public static String getStatusLabels(HttpServletRequest request, IntFunction<String> getStatusLabelFunction, List<Integer> statuses) {
+		if (statuses.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(2 * statuses.size());
+
+		for (int status : statuses) {
+			String statusLabel = getStatusLabelFunction.apply(status);
+
+			sb.append(LanguageUtil.get(request, statusLabel));
+
+			sb.append(StringPool.COMMA_AND_SPACE);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		return sb.toString();
+	}
+
+	public static <S, T extends S> List<T> getSubclassList(List<S> superclassList, Class<T> subclass) {
+		List<T> list = new ArrayList<T>(superclassList.size());
+
+		for (S element : superclassList) {
+			list.add((T)element);
+		}
+
+		return list;
+	}
+
+	public static <T> Set<T> getUnion(Collection<T> collection1, Collection<T> collection2) {
+		Set<T> set = SetUtil.fromCollection(collection1);
+
+		set.addAll(collection2);
+
+		return set;
+	}
+
+	public static String getURL(AlloyController alloyController, String controller, String action, long classPK, Object... attributes) throws Exception {
+		StringBundler sb = new StringBundler(10 + (2 * attributes.length));
+
+		String layoutFriendlyURL = StringPool.BLANK;
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		Layout layout = themeDisplay.getLayout();
+
+		if (layout != null) {
+			layoutFriendlyURL = PortalUtil.getLayoutFriendlyURL(layout, themeDisplay);
+		}
+
+		if (!StringUtil.startsWith(layoutFriendlyURL, Http.HTTP_WITH_SLASH) && !StringUtil.startsWith(layoutFriendlyURL, Http.HTTPS_WITH_SLASH)) {
+			HttpServletRequest request = alloyController.getRequest();
+
+			sb.append(PortalUtil.getPortalURL(request, request.isSecure()));
+		}
+
+		sb.append(layoutFriendlyURL);
+
+		sb.append(Portal.FRIENDLY_URL_SEPARATOR);
+
+		Portlet portlet = alloyController.getPortlet();
+
+		sb.append(portlet.getFriendlyURLMapping());
+
+		sb.append(StringPool.SLASH);
+		sb.append(controller);
+
+		if (classPK > 0) {
+			sb.append(StringPool.SLASH);
+			sb.append(classPK);
+		}
+
+		if (action != null) {
+			sb.append(StringPool.SLASH);
+			sb.append(action);
+		}
+
+		for (int i = 0; i < attributes.length; i += 2) {
+			if (i > 0) {
+				sb.append(StringPool.AMPERSAND);
+			}
+			else {
+				sb.append(StringPool.QUESTION);
+			}
+
+			sb.append(attributes[i]);
+			sb.append(StringPool.EQUAL);
+
+			String value = URLCodec.encodeURL(String.valueOf(attributes[i + 1]));
+
+			sb.append(value);
+		}
+
+		return sb.toString();
+	}
+
+	public static String getUserGroupsString(User user) throws Exception {
+		if (user == null) {
+			return StringPool.BLANK;
+		}
+
+		List<UserGroup> userGroups = UserGroupLocalServiceUtil.getUserUserGroups(user.getUserId());
+
+		return ListUtil.toString(userGroups, UserGroup.NAME_ACCESSOR);
+	}
+
+	public static <T> List<T> paginate(List<T> list, PortletRequest portletRequest, PortletURL portletURL, Comparator<? super T> comparator) {
+		list = ListUtil.sort(list, comparator);
+
+		SearchContainer<T> searchContainer = new SearchContainer<T>(portletRequest, portletURL, null, null);
+
+		return ListUtil.subList(list, searchContainer.getStart(), searchContainer.getEnd());
+	}
+
+	public static <T extends BaseModel<?>> void pollIndexState(ThemeDisplay themeDisplay, Indexer indexer, Object... properties) throws Exception {
+		Map<String, Serializable> attributes = buildAttributes(properties);
+
+		for (int i = 0; i < _POLL_INDEX_MAX_COUNT; i++) {
+			int modelsCount = searchCount(themeDisplay, indexer, attributes);
+
+			if (modelsCount > 0) {
+				return;
+			}
+
+			Thread.sleep(_POLL_INDEX_WAIT_INTERVAL);
+		}
+	}
+
+	public static void sendEmail(ThemeDisplay themeDisplay, String subject, List<String> messages) throws Exception {
+		StringBundler sb = new StringBundler(messages.size() * 2);
+
+		for (String message : messages) {
+			sb.append(message);
+			sb.append("<br />");
+		}
+
+		sendEmail(themeDisplay, subject, sb.toString());
+	}
+
+	public static void sendEmail(ThemeDisplay themeDisplay, String subject, String message) throws Exception {
+		SubscriptionSender subscriptionSender = new SubscriptionSender();
+
+		subscriptionSender.setBody(message);
+		subscriptionSender.setCompanyId(themeDisplay.getCompanyId());
+
+		String fromAddress = PrefsPropsUtil.getString(themeDisplay.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_ADDRESS);
+		String fromName = PrefsPropsUtil.getString(themeDisplay.getCompanyId(), PropsKeys.ADMIN_EMAIL_FROM_NAME);
+
+		subscriptionSender.setFrom(fromAddress, fromName);
+
+		subscriptionSender.setGroupId(themeDisplay.getScopeGroupId());
+		subscriptionSender.setHtmlFormat(true);
+
+		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyyMMddHHmmss");
+
+		subscriptionSender.setMailId("testray_entry", dateFormat.format(new Date()));
+
+		subscriptionSender.setReplyToAddress(fromAddress);
+		subscriptionSender.setSubject(subject);
+		subscriptionSender.setUserId(themeDisplay.getDefaultUserId());
+
+		String[] emailAddresses = StringUtil.split(PortletPropsValues.TESTRAY_SUBSCRIBER_EMAIL_ADDRESSES, StringPool.COMMA);
+
+		if (emailAddresses.length == 0) {
+			return;
+		}
+
+		for (String emailAddress : emailAddresses) {
+			subscriptionSender.addRuntimeSubscribers(emailAddress, emailAddress);
+		}
+
+		subscriptionSender.flushNotificationsAsync();
+	}
+
+	public static void setDateProperties(Object bean, HttpServletRequest request) throws Exception {
+		Class<?> clazz = bean.getClass();
+
+		for (Method method : clazz.getMethods()) {
+			Class<?> propertyTypeClass = method.getReturnType();
+
+			if (!propertyTypeClass.equals(Date.class)) {
+				continue;
+			}
+
+			String methodName = method.getName();
+
+			if (!methodName.startsWith("get")) {
+				continue;
+			}
+
+			String fieldName = TextFormatter.format(methodName.substring(3), TextFormatter.I);
+
+			String dateString = ParamUtil.getString(request, fieldName + "String");
+
+			if (Validator.isNull(dateString)) {
+				continue;
+			}
+
+			BeanPropertiesUtil.setProperty(bean, fieldName, fetchDate(dateString));
+		}
+	}
+
+	public static void setPortletURL(HttpServletRequest request, PortletURL portletURL, String... parameters) {
+		for (String parameter : parameters) {
+			String value = ParamUtil.getString(request, parameter, null);
+
+			if (value == null) {
+				continue;
+			}
+
+			portletURL.setParameter(parameter, value);
+		}
+	}
+
+	public static String shorten(String string, int length, String suffix) {
+		if (string.length() > length) {
+			return string.substring(0, length) + suffix;
+		}
+		else {
+			return string;
+		}
+	}
+
+	public static long updateMBMessage(ThemeDisplay themeDisplay, long commentMBMessageId, String className, long classPK, String body, PortletRequest portletRequest) throws Exception {
+		User user = themeDisplay.getUser();
+
+		ServiceContext serviceContext = null;
+
+		if (portletRequest != null) {
+			serviceContext = ServiceContextFactory.getInstance(MBMessage.class.getName(), portletRequest);
+		}
+		else {
+			serviceContext = new ServiceContext();
+
+			serviceContext.setScopeGroupId(themeDisplay.getScopeGroupId());
+		}
+
+		MBMessage mbMessage = fetchMBMessage(commentMBMessageId);
+
+		if (mbMessage != null) {
+			if (Validator.isNull(body)) {
+				MBMessageLocalServiceUtil.deleteMBMessage(mbMessage);
+
+				return 0L;
+			}
+			else if (!body.equals(mbMessage.getBody())) {
+				int pos = Math.min(body.length(), 50);
+
+				MBMessageLocalServiceUtil.updateDiscussionMessage(user.getUserId(), commentMBMessageId, className, classPK, body.substring(0, pos) + StringPool.TRIPLE_PERIOD, body, serviceContext);
+			}
+
+			return mbMessage.getMessageId();
+		}
+		else if (Validator.isNotNull(body)) {
+			MBMessage rootMBMessage = getRootMBMessage(user.getUserId(), themeDisplay.getScopeGroupId(), className, classPK);
+
+			int pos = Math.min(body.length(), 50);
+
+			mbMessage = MBMessageLocalServiceUtil.addDiscussionMessage(user.getUserId(), user.getFullName(), serviceContext.getScopeGroupId(), className, rootMBMessage.getClassPK(), rootMBMessage.getThreadId(), 0, body.substring(0, pos) + StringPool.TRIPLE_PERIOD, body, serviceContext);
+
+			return mbMessage.getMessageId();
+		}
+
+		return 0;
+	}
+
+	public static void updateTestrayIssuesRelationships(String className, long classPK, List<TestrayIssue> testrayIssues) throws Exception {
+		if (className.equals(TestrayCaseResult.class.getName())) {
+			TestrayIssueLocalServiceUtil.clearTestrayCaseResultTestrayIssues(classPK);
+
+			TestrayIssueLocalServiceUtil.addTestrayCaseResultTestrayIssues(classPK, testrayIssues);
+		}
+		else if (className.equals(TestraySubtask.class.getName())) {
+			TestrayIssueLocalServiceUtil.clearTestraySubtaskTestrayIssues(classPK);
+
+			TestrayIssueLocalServiceUtil.addTestraySubtaskTestrayIssues(classPK, testrayIssues);
+		}
+	}
+
+	protected static Set<Long> getTestrayCaseResultIds(List<TestrayIssue> testrayIssues, long testrayRunId) throws Exception {
+		Set<Long> testrayCaseResultIds = new HashSet<Long>();
+
+		for (TestrayIssue testrayIssue : testrayIssues) {
+			List<TestrayCaseResult> testrayCaseResults = TestrayCaseResultLocalServiceUtil.getTestrayIssueTestrayCaseResults(testrayIssue.getTestrayIssueId());
+
+			for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+				if (testrayCaseResult.getTestrayRunId() == testrayRunId) {
+					testrayCaseResultIds.add(testrayCaseResult.getTestrayCaseResultId());
+				}
+			}
+		}
+
+		return testrayCaseResultIds;
+	}
+
+	protected static DynamicQuery getTestrayCaseResultsDynamicQuery(long testrayRunId, long assignedUserId, String errors, boolean errorsBlankOnly, String issues, boolean issuesBlankOnly, String comments, boolean commentsBlankOnly, List<Integer> statuses, long testrayTeamId, String name, long testrayComponentId, List<Integer> testrayCasePriorities) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayRunId", testrayRunId});
+
+		Property assignedUserIdProperty = PropertyFactoryUtil.forName("assignedUserId");
+
+		if (assignedUserId >= 0) {
+			testrayCaseResultDynamicQuery.add(assignedUserIdProperty.eq(assignedUserId));
+		}
+
+		Property errorsProperty = PropertyFactoryUtil.forName("errors");
+
+		if (errorsBlankOnly) {
+			testrayCaseResultDynamicQuery.add(errorsProperty.eq(StringPool.BLANK));
+		}
+		else if (Validator.isNotNull(errors)) {
+			testrayCaseResultDynamicQuery.add(errorsProperty.like(prepareDynamicQueryPropertyLike(errors)));
+		}
+
+		Property testrayCaseResultIdProperty = PropertyFactoryUtil.forName("testrayCaseResultId");
+
+		if (issuesBlankOnly) {
+			AlloyServiceInvoker testrayIssueAlloyServiceInvoker = new AlloyServiceInvoker(TestrayIssue.class.getName());
+
+			TestrayRun testrayRun = TestrayRunLocalServiceUtil.getTestrayRun(testrayRunId);
+
+			List<TestrayIssue> testrayIssues = testrayIssueAlloyServiceInvoker.executeDynamicQuery(new Object[] {"groupId", testrayRun.getGroupId()});
+
+			Set<Long> testrayCaseResultIds = getTestrayCaseResultIds(testrayIssues, testrayRunId);
+
+			for (long testrayCaseResultId : testrayCaseResultIds) {
+				testrayCaseResultDynamicQuery.add(testrayCaseResultIdProperty.ne(testrayCaseResultId));
+			}
+		}
+		else if (Validator.isNotNull(issues)) {
+			AlloyServiceInvoker testrayIssueAlloyServiceInvoker = new AlloyServiceInvoker(TestrayIssue.class.getName());
+
+			DynamicQuery testrayIssueDynamicQuery = testrayIssueAlloyServiceInvoker.buildDynamicQuery();
+
+			Property nameProperty = PropertyFactoryUtil.forName("name");
+
+			for (String issue : StringUtil.split(issues)) {
+				testrayIssueDynamicQuery.add(nameProperty.like(prepareDynamicQueryPropertyLike(issue)));
+			}
+
+			List<TestrayIssue> testrayIssues = testrayIssueAlloyServiceInvoker.executeDynamicQuery(testrayIssueDynamicQuery);
+
+			Set<Long> testrayCaseResultIds = getTestrayCaseResultIds(testrayIssues, testrayRunId);
+
+			if (!testrayCaseResultIds.isEmpty()) {
+				testrayCaseResultDynamicQuery.add(testrayCaseResultIdProperty.in(testrayCaseResultIds));
+			}
+			else {
+				return null;
+			}
+		}
+
+		Property commentMBMessageIdProperty = PropertyFactoryUtil.forName("commentMBMessageId");
+
+		if (commentsBlankOnly) {
+			testrayCaseResultDynamicQuery.add(RestrictionsFactoryUtil.or(commentMBMessageIdProperty.eq(0L), commentMBMessageIdProperty.isNull()));
+		}
+		else if (Validator.isNotNull(comments)) {
+			List<Long> testrayCommentMBMessageIds = getTestrayCommentMBMessageIds(comments);
+
+			if (!testrayCommentMBMessageIds.isEmpty()) {
+				testrayCaseResultDynamicQuery.add(commentMBMessageIdProperty.in(testrayCommentMBMessageIds));
+			}
+			else {
+				return null;
+			}
+		}
+
+		if (!statuses.isEmpty()) {
+			Property statusProperty = PropertyFactoryUtil.forName("status");
+
+			testrayCaseResultDynamicQuery.add(statusProperty.in(statuses));
+		}
+
+		Property testrayComponentIdProperty = PropertyFactoryUtil.forName("testrayComponentId");
+
+		if (testrayComponentId > 0) {
+			testrayCaseResultDynamicQuery.add(testrayComponentIdProperty.eq(testrayComponentId));
+		}
+		else if (testrayTeamId > 0) {
+			AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+			DynamicQuery testrayComponentDynamicQuery = testrayComponentAlloyServiceInvoker.buildDynamicQuery();
+
+			Property testrayTeamIdProperty = PropertyFactoryUtil.forName("testrayTeamId");
+
+			testrayComponentDynamicQuery.add(testrayTeamIdProperty.eq(testrayTeamId));
+
+			Projection testrayComponentIdProjection = ProjectionFactoryUtil.property("testrayComponentId");
+
+			testrayComponentDynamicQuery.setProjection(testrayComponentIdProjection);
+
+			testrayCaseResultDynamicQuery.add(testrayComponentIdProperty.in(testrayComponentDynamicQuery));
+		}
+
+		Property testrayCaseIdProperty = PropertyFactoryUtil.forName("testrayCaseId");
+
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		DynamicQuery testrayCaseDynamicQuery = testrayCaseAlloyServiceInvoker.buildDynamicQuery();
+
+		if (Validator.isNotNull(name)) {
+			Property nameProperty = PropertyFactoryUtil.forName("name");
+
+			testrayCaseDynamicQuery.add(nameProperty.like(prepareDynamicQueryPropertyLike(name)));
+		}
+
+		if (!testrayCasePriorities.isEmpty()) {
+			Property priorityProperty = PropertyFactoryUtil.forName("priority");
+
+			testrayCaseDynamicQuery.add(priorityProperty.in(testrayCasePriorities));
+		}
+
+		Projection testrayCaseIdProjection = ProjectionFactoryUtil.property("testrayCaseId");
+
+		testrayCaseDynamicQuery.setProjection(testrayCaseIdProjection);
+
+		testrayCaseResultDynamicQuery.add(testrayCaseIdProperty.in(testrayCaseDynamicQuery));
+
+		return testrayCaseResultDynamicQuery;
+	}
+
+	protected static List<Long> getTestrayCommentMBMessageIds(String body) throws Exception {
+		AlloyServiceInvoker mbMessageAlloyServiceInvoker = new AlloyServiceInvoker(MBMessage.class.getName());
+
+		DynamicQuery mbMessageDynamicQuery = mbMessageAlloyServiceInvoker.buildDynamicQuery();
+
+		Property bodyProperty = PropertyFactoryUtil.forName("body");
+
+		mbMessageDynamicQuery.add(bodyProperty.like(prepareDynamicQueryPropertyLike(body)));
+
+		Projection messageIdProjection = ProjectionFactoryUtil.property("messageId");
+
+		mbMessageDynamicQuery.setProjection(messageIdProjection);
+
+		return mbMessageAlloyServiceInvoker.executeDynamicQuery(mbMessageDynamicQuery);
+	}
+
+	protected static String prepareDynamicQueryPropertyLike(String s) {
+		return StringPool.PERCENT + s + StringPool.PERCENT;
+	}
+
+	protected static int searchCount(ThemeDisplay themeDisplay, Indexer indexer, Map<String, Serializable> attributes) throws Exception {
+		SearchContext searchContext = new SearchContext();
+
+		if ((attributes != null) && !attributes.isEmpty()) {
+			searchContext.setAttributes(attributes);
+		}
+
+		searchContext.setCompanyId(themeDisplay.getCompanyId());
+		searchContext.setEnd(QueryUtil.ALL_POS);
+
+		String indexerClassName = indexer.getClassNames()[0];
+
+		Class<?> indexerClass = Class.forName(indexerClassName);
+
+		try {
+			indexerClass.getField(Field.GROUP_ID);
+
+			searchContext.setGroupIds(new long[] {themeDisplay.getScopeGroupId()});
+		}
+		catch (Exception e) {
+			searchContext.setGroupIds(null);
+		}
+
+		searchContext.setStart(QueryUtil.ALL_POS);
+		searchContext.setUserId(themeDisplay.getUserId());
+
+		return (int)indexer.searchCount(searchContext);
+	}
+
+	private static final int _BUFFER_SIZE = 32;
+
+	private static final long _POLL_INDEX_MAX_COUNT = 100;
+
+	private static final long _POLL_INDEX_WAIT_INTERVAL = 250;
+
+	private static final String _REGEX_M_SLASH_DD_SLASH_YYYY = "(\\d{1,2})[/](\\d{1,2})[/](\\d{4})";
+
+}
+%>

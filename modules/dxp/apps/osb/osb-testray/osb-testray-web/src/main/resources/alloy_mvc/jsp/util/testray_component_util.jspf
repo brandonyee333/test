@@ -1,0 +1,99 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayComponentUtil {
+
+	public static void deleteTestrayComponents(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		List<TestrayComponent> testrayComponents = testrayComponentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+
+		for (TestrayComponent testrayComponent : testrayComponents) {
+			TestrayComponentLocalServiceUtil.deleteTestrayComponent(testrayComponent);
+		}
+	}
+
+	public static TestrayComponent fetchTestrayComponent(long testrayProjectId, String name) throws Exception {
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		List<TestrayComponent> testrayComponents = testrayComponentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", name});
+
+		if (!testrayComponents.isEmpty()) {
+			return testrayComponents.get(0);
+		}
+
+		return null;
+	}
+
+	public static List<Long> getTestrayComponentIds(long testrayTeamId) throws Exception {
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		DynamicQuery testrayComponentDynamicQuery = testrayComponentAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayTeamId", testrayTeamId});
+
+		Projection testrayComponentIdProjection = ProjectionFactoryUtil.property("testrayComponentId");
+
+		testrayComponentDynamicQuery.setProjection(testrayComponentIdProjection);
+
+		return testrayComponentAlloyServiceInvoker.executeDynamicQuery(testrayComponentDynamicQuery);
+	}
+
+	public static List<TestrayComponent> getTestrayComponents(long testrayTeamId) throws Exception {
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		return testrayComponentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayTeamId", testrayTeamId});
+	}
+
+	public static List<TestrayComponent> getTestrayComponents(long testrayTeamId, Object... testrayCaseResultProperties) throws Exception {
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		DynamicQuery testrayComponentDynamicQuery = testrayComponentAlloyServiceInvoker.buildDynamicQuery();
+
+		if (testrayTeamId > 0) {
+			Property testrayTeamIdProperty = PropertyFactoryUtil.forName("testrayTeamId");
+
+			testrayComponentDynamicQuery.add(testrayTeamIdProperty.eq(testrayTeamId));
+		}
+
+		Property testrayComponentIdProperty = PropertyFactoryUtil.forName("testrayComponentId");
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(testrayCaseResultProperties);
+
+		Projection testrayComponentIdsProjection = ProjectionFactoryUtil.property("testrayComponentId");
+
+		testrayCaseResultDynamicQuery.setProjection(testrayComponentIdsProjection);
+
+		testrayComponentDynamicQuery.add(testrayComponentIdProperty.in(testrayCaseResultDynamicQuery));
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayComponentModelImpl.TABLE_NAME, "name", true);
+
+		return testrayComponentAlloyServiceInvoker.executeDynamicQuery(testrayComponentDynamicQuery, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+	}
+
+	public static void updateTestrayTeamId(AlloyController alloyController, Collection<Long> testrayComponentIds, long testrayTeamId) throws Exception {
+		for (long testrayComponentId : testrayComponentIds) {
+			TestrayComponent testrayComponent = TestrayComponentLocalServiceUtil.getTestrayComponent(testrayComponentId);
+
+			testrayComponent.setTestrayTeamId(testrayTeamId);
+
+			alloyController.updateModelIgnoreRequest(testrayComponent);
+		}
+	}
+
+}
+%>

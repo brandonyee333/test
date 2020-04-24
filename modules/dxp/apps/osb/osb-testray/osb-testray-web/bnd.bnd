@@ -1,0 +1,6 @@
+Bundle-Name: Liferay OSB Testray Web
+Bundle-SymbolicName: com.liferay.osb.testray.web
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.testray.web.constants
+Liferay-JS-Config: /META-INF/resources/js/config.js
+Web-ContextPath: /osb-testray-web

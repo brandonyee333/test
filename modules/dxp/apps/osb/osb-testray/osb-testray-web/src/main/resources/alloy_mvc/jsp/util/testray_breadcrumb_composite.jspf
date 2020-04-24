@@ -1,0 +1,58 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayBreadcrumbComposite {
+
+	public TestrayBreadcrumbComposite(String className, long classPK, String cssClassName, String displayName, String url) {
+		_className = className;
+		_classPK = classPK;
+		_cssClassName = cssClassName;
+		_displayName = displayName;
+		_url = url;
+	}
+
+	public String getClassName() {
+		return _className;
+	}
+
+	public String getClassNameFieldName() {
+		return TestrayBreadcrumbConstants.getClassNameFieldName(_className);
+	}
+
+	public long getClassPK() {
+		return _classPK;
+	}
+
+	public String getCSSClassName() {
+		return _cssClassName;
+	}
+
+	public String getDisplayName() {
+		return _displayName;
+	}
+
+	public String getURL() {
+		return _url;
+	}
+
+	private String _className;
+	private long _classPK;
+	private String _cssClassName;
+	private String _displayName;
+	private String _url;
+}
+%>

@@ -1,0 +1,34 @@
+apply plugin: "com.liferay.lang.merger"
+
+configurations {
+	jspCTool {
+		exclude group: "javax.servlet.jsp", module: "jsp-api"
+	}
+}
+
+dependencies {
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark", version: "0.28.32"
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark-ext-anchorlink", version: "0.28.32"
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark-ext-autolink", version: "0.28.32"
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark-ext-gfm-strikethrough", version: "0.28.32"
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark-ext-tables", version: "0.28.32"
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark-formatter", version: "0.28.32"
+	compileInclude group: "com.vladsch.flexmark", name: "flexmark-util", version: "0.28.32"
+	compileInclude group: "org.nibor.autolink", name: "autolink", version: "0.6.0"
+
+	compileOnly group: "com.liferay", name: "com.liferay.alloy.mvc", version: "2.3.0"
+	compileOnly group: "com.liferay", name: "com.liferay.frontend.taglib", version: "2.0.0"
+	compileOnly group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "2.0.0"
+	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "2.8.0"
+	compileOnly group: "javax.portlet", name: "portlet-api", version: "2.0"
+	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
+	compileOnly group: "javax.servlet.jsp", name: "javax.servlet.jsp-api", version: "2.3.1"
+	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
+}
+
+mergeLang {
+	sourceDirs = [
+		"../osb-testray-lang/src/main/resources/content"
+	]
+}

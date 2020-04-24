@@ -1,0 +1,453 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayValidator {
+
+	public static String translate(HttpServletRequest request, String pattern, Object... arguments) {
+		PortletConfig portletConfig = (PortletConfig)request.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+
+		return LanguageUtil.format(portletConfig.getResourceBundle(themeDisplay.getLocale()), pattern, arguments);
+	}
+
+	public static void validateBaseModel(HttpServletRequest request, BaseModel<?> baseModel, String message, long id) throws Exception {
+		if ((baseModel == null) || baseModel.isNew()) {
+			throw new AlloyException(translate(request, message, id), false);
+		}
+	}
+
+	public static void validateBaseModel(HttpServletRequest request, BaseModel<?> baseModel, String message, String idName) throws Exception {
+		long id = ParamUtil.getLong(request, idName);
+
+		validateBaseModel(request, baseModel, message, id);
+	}
+
+	public static void validateClassIdentifier(HttpServletRequest request, Class<?> clazz, String errorMessageInvalid, long classPK) throws Exception {
+		AlloyServiceInvoker alloyServiceInvoker = new AlloyServiceInvoker(clazz.getName());
+
+		BaseModel baseModel = alloyServiceInvoker.fetchModel(classPK);
+
+		validateBaseModel(request, baseModel, errorMessageInvalid, classPK);
+	}
+
+	public static void validateClassIdentifier(HttpServletRequest request, Class<?> clazz, String classPKFieldName, String errorMessageInvalid) throws Exception {
+		long classPK = ParamUtil.getLong(request, classPKFieldName);
+
+		validateClassIdentifier(request, clazz, errorMessageInvalid, classPK);
+	}
+
+	public static void validateName(HttpServletRequest request, String parentIdFieldName, String className, String classPKFieldName, String errorMessageInvalid, String errorMessageDuplicate) throws Exception {
+		String name = ParamUtil.getString(request, "name");
+
+		if (Validator.isNull(name)) {
+			throw new AlloyException(errorMessageInvalid, false);
+		}
+
+		AlloyServiceInvoker alloyServiceInvoker = new AlloyServiceInvoker(className);
+
+		long parentId = ParamUtil.getLong(request, parentIdFieldName);
+
+		DynamicQuery classNameDynamicQuery = alloyServiceInvoker.buildDynamicQuery(new Object[] {parentIdFieldName, parentId, "name", name});
+
+		Projection classPKProjection = ProjectionFactoryUtil.property(classPKFieldName);
+
+		classNameDynamicQuery.setProjection(classPKProjection);
+
+		List<Long> resultIds = alloyServiceInvoker.executeDynamicQuery(classNameDynamicQuery);
+
+		if (!resultIds.isEmpty()) {
+			long id = ParamUtil.getLong(request, "id");
+
+			long resultId = resultIds.get(0);
+
+			if (resultId != id) {
+				throw new AlloyException(errorMessageDuplicate, false);
+			}
+		}
+	}
+
+	public static void validateStartEnd(int start, int end) throws Exception {
+		if ((end <= start) && (end >= 0)) {
+			throw new AlloyException("end-parameter-must-be-greater-than-start", false);
+		}
+	}
+
+	public static void validateStatus(HttpServletRequest request) throws Exception {
+		int status = ParamUtil.getInteger(request, "status");
+
+		if (!ArrayUtil.contains(TestrayCaseResultConstants.STATUSES_ALL, status)) {
+			throw new AlloyException(translate(request, "the-status-x-is-invalid", status), false);
+		}
+	}
+
+	public static void validateTaskStatusLabel(HttpServletRequest request) throws Exception {
+		String statusLabel = ParamUtil.getString(request, "statusLabel");
+
+		if (!ArrayUtil.contains(TestrayTaskConstants.LABELS_ALL, statusLabel)) {
+			throw new AlloyException(translate(request, "the-task-status-label-is-invalid", statusLabel), false);
+		}
+	}
+
+	public static void validateTestrayBuild(HttpServletRequest request, TestrayBuild testrayBuild) throws Exception {
+		if (testrayBuild == null) {
+			String testrayBuildIdentifier = request.getParameter("testrayBuildId");
+
+			validateTestrayBuildIdentifier(request, testrayBuildIdentifier);
+		}
+	}
+
+	public static void validateTestrayBuildIdentifier(HttpServletRequest request, String testrayBuildIdentifier) throws Exception {
+		if (Validator.isNull(testrayBuildIdentifier)) {
+			throw new AlloyException("a-build-id-is-required", false);
+		}
+		else if (Validator.isNumber(testrayBuildIdentifier)) {
+			throw new AlloyException(translate(request, "the-build-with-id-x-does-not-exist", testrayBuildIdentifier), false);
+		}
+		else if (testrayBuildIdentifier.equals("latest")) {
+			long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
+
+			TestrayRoutine testrayRoutine = TestrayRoutineLocalServiceUtil.fetchTestrayRoutine(testrayRoutineId);
+
+			if (testrayRoutine == null) {
+				throw new AlloyException(translate(request, "the-routine-with-id-x-does-not-exist", testrayRoutineId), false);
+			}
+		}
+		else if (testrayBuildIdentifier.indexOf(StringPool.UNDERLINE) == 0) {
+			long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
+
+			throw new AlloyException(translate(request, "the-build-with-name-x-does-not-exist-for-the-routine-with-id-x", testrayBuildIdentifier.substring(1), testrayRoutineId), false);
+		}
+		else {
+			throw new AlloyException(translate(request, "the-build-id-x-is-invalid", testrayBuildIdentifier), false);
+		}
+	}
+
+	public static void validateTestrayBuildOrRunId(HttpServletRequest request) throws Exception {
+		String testrayBuildIdentifier = request.getParameter("testrayBuildId");
+		long testrayRunId = ParamUtil.getLong(request, "testrayRunId");
+
+		if (Validator.isNotNull(testrayBuildIdentifier)) {
+			TestrayBuild testrayBuild = TestrayBuildUtil.fetchTestrayBuild(request, testrayBuildIdentifier);
+
+			if (testrayBuild == null) {
+				validateTestrayBuildIdentifier(request, testrayBuildIdentifier);
+			}
+		}
+		else if (testrayRunId > 0) {
+			validateClassIdentifier(request, TestrayRun.class, "testrayRunId", "the-run-with-id-x-does-not-exist");
+		}
+		else {
+			throw new AlloyException("please-include-a-valid-build-or-run-id", false);
+		}
+	}
+
+	public static void validateTestrayCase(long testrayBuildId, long testrayCaseId) throws Exception {
+		long testrayBuildTestrayProjectId = TestrayProjectUtil.getTestrayProjectId(TestrayBuild.class.getName(), testrayBuildId);
+		long testrayCaseTestrayProjectId = TestrayProjectUtil.getTestrayProjectId(TestrayCase.class.getName(), testrayCaseId);
+
+		if (testrayBuildTestrayProjectId != testrayCaseTestrayProjectId) {
+			throw new AlloyException("the-build-and-case-must-come-from-the-same-project", false);
+		}
+	}
+
+	public static void validateTestrayCaseResultsJSONArray(HttpServletRequest request) throws Exception {
+		String caseResultsJSONArrayString = ParamUtil.getString(request, "caseResultsJSONArrayString");
+
+		JSONArray testrayCaseResultsJSONArray = JSONFactoryUtil.createJSONArray(caseResultsJSONArrayString);
+
+		if (testrayCaseResultsJSONArray.length() == 0) {
+			throw new AlloyException("please-include-at-least-one-case-result-to-import", false);
+		}
+
+		for (int i = 0; i < testrayCaseResultsJSONArray.length(); i++) {
+			JSONObject testrayCaseResultJSONObject = testrayCaseResultsJSONArray.getJSONObject(i);
+
+			_validateTestrayCaseAndRunId(request, testrayCaseResultJSONObject);
+		}
+	}
+
+	public static void validateTestrayCases(HttpServletRequest request) throws Exception {
+		long[] addTestrayCaseIds = ParamUtil.getLongValues(request, "addTestrayCaseIds");
+
+		if (ArrayUtil.isEmpty(addTestrayCaseIds)) {
+			throw new AlloyException("at-least-one-case-is-required", false);
+		}
+	}
+
+	public static void validateTestrayFactors(HttpServletRequest request, TestrayBuild testrayBuild, boolean required) throws Exception {
+		int environmentStackCount = 0;
+
+		if (!testrayBuild.isNew()) {
+			AlloyServiceInvoker testrayRunsAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+			List<TestrayRun> testrayRuns = testrayRunsAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId()});
+
+			for (TestrayRun testrayRun : testrayRuns) {
+				boolean atLeastOneMissing = false;
+				boolean atLeastOnePresent = false;
+
+				List<TestrayFactor> testrayFactors = TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+
+				for (TestrayFactor testrayFactor : testrayFactors) {
+					long testrayFactorOptionId = ParamUtil.getLong(request, "testrayFactorOptionId_column" + testrayFactor.getTestrayFactorCategoryId() + "_existing" + testrayRun.getTestrayRunId());
+
+					if (testrayFactorOptionId <= 0) {
+						atLeastOneMissing = true;
+					}
+					else {
+						atLeastOnePresent = true;
+					}
+				}
+
+				if (atLeastOneMissing && atLeastOnePresent) {
+					throw new AlloyException("an-option-is-missing-for-an-environment-stack", false);
+				}
+
+				if (atLeastOnePresent) {
+					environmentStackCount++;
+				}
+			}
+		}
+
+		int testrayFactorCategoriesCount = ParamUtil.getInteger(request, "testrayFactorCategoriesCount");
+
+		int[] testrayFactorIndexes = ParamUtil.getIntegerValues(request, "testrayFactorIndexes");
+
+		for (int testrayFactorIndex : testrayFactorIndexes) {
+			boolean atLeastOneMissing = false;
+			boolean atLeastOnePresent = false;
+
+			for (int i = 0; i < testrayFactorCategoriesCount; i++) {
+				StringBundler sb = new StringBundler(4);
+
+				sb.append("testrayFactorOptionId_column");
+				sb.append(i);
+				sb.append("_new");
+				sb.append(testrayFactorIndex);
+
+				long testrayFactorOptionId = ParamUtil.getLong(request, sb.toString());
+
+				if (testrayFactorOptionId <= 0) {
+					atLeastOneMissing = true;
+				}
+				else {
+					atLeastOnePresent = true;
+				}
+			}
+
+			if (atLeastOneMissing && atLeastOnePresent) {
+				throw new AlloyException("an-option-is-missing-for-an-environment-stack", false);
+			}
+
+			if (atLeastOnePresent) {
+				environmentStackCount++;
+			}
+		}
+
+		if (required && (environmentStackCount <= 0)) {
+			throw new IllegalArgumentException(new AlloyException("at-least-one-environment-stack-is-required", false));
+		}
+	}
+
+	public static void validateTestrayFactorsJSONArray(String testrayFactors, HttpServletRequest request) throws Exception {
+		List<Long> testrayFactorCategoryIds = new ArrayList<Long>();
+
+		long companyId = PortalUtil.getCompanyId(request);
+
+		JSONArray testrayFactorsJSONArray = JSONFactoryUtil.createJSONArray(testrayFactors);
+
+		for (int i = 0; i < testrayFactorsJSONArray.length(); i++) {
+			JSONObject testrayFactorJSONObject = testrayFactorsJSONArray.getJSONObject(i);
+
+			_validateTestrayFactorJSONObject(testrayFactorJSONObject, request);
+
+			TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryUtil.fetchTestrayFactorCategory(companyId, testrayFactorJSONObject);
+
+			if (testrayFactorCategoryIds.contains(testrayFactorCategory.getTestrayFactorCategoryId())) {
+				throw new AlloyException(translate(request, "the-category-with-id-x-can-only-have-one-option-selected", testrayFactorCategory.getTestrayFactorCategoryId()), false);
+			}
+
+			testrayFactorCategoryIds.add(testrayFactorCategory.getTestrayFactorCategoryId());
+		}
+	}
+
+	public static void validateTestrayRoutine(HttpServletRequest request) throws Exception {
+		long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
+
+		TestrayRoutine testrayRoutine = TestrayRoutineLocalServiceUtil.fetchTestrayRoutine(testrayRoutineId);
+
+		if (testrayRoutine == null) {
+			throw new AlloyException(translate(request, "the-routine-with-id-x-does-not-exist", testrayRoutineId), false);
+		}
+	}
+
+	public static void validateTestrayRun(HttpServletRequest request, TestrayRun testrayRun) throws Exception {
+		if (testrayRun == null) {
+			validateTestrayRunIdentifier(request);
+		}
+	}
+
+	public static void validateTestrayRunIdentifier(HttpServletRequest request) throws Exception {
+		String id = ParamUtil.getString(request, "id");
+
+		if (Validator.isNumber(id)) {
+			throw new AlloyException(translate(request, "the-run-with-id-x-does-not-exist", id), false);
+		}
+		else if (id.indexOf(StringPool.UNDERLINE) == 0) {
+			throw new AlloyException(translate(request, "the-run-with-number-x-does-not-exist", id.substring(1)), false);
+		}
+		else {
+			throw new AlloyException(translate(request, "the-run-id-x-is-invalid", id), false);
+		}
+	}
+
+	public static void validateTestrayRuns(HttpServletRequest request, ThemeDisplay themeDisplay) throws Exception {
+		long testrayRunIdA = ParamUtil.getLong(request, "testrayRunIdA");
+		long testrayRunIdB = ParamUtil.getLong(request, "testrayRunIdB");
+
+		if ((testrayRunIdA == 0) || (testrayRunIdB == 0)) {
+			throw new AlloyException("please-select-two-runs-to-compare", false);
+		}
+
+		Map<String, Serializable> testrayCaseResultProperties = new HashMap<String, Serializable>();
+
+		testrayCaseResultProperties.put("testrayTeamId", 0L);
+
+		TestrayRunComposite testrayRunCompositeA = new TestrayRunComposite(TestrayRunLocalServiceUtil.getTestrayRun(testrayRunIdA), themeDisplay, testrayCaseResultProperties);
+		TestrayRunComposite testrayRunCompositeB = new TestrayRunComposite(TestrayRunLocalServiceUtil.getTestrayRun(testrayRunIdB), themeDisplay, testrayCaseResultProperties);
+
+		if (testrayRunCompositeA.getTestrayProjectId() != testrayRunCompositeB.getTestrayProjectId()) {
+			throw new AlloyException("please-select-two-runs-from-a-single-project", false);
+		}
+	}
+
+	public static void validateUser(HttpServletRequest request) throws Exception {
+		long assignedUserId = ParamUtil.getLong(request, "assignedUserId");
+
+		try {
+			UserLocalServiceUtil.getUser(assignedUserId);
+		}
+		catch (Exception e) {
+			throw new AlloyException(e.getMessage(), false);
+		}
+	}
+
+	private static void _validateTestrayCaseAndRunId(HttpServletRequest request, JSONObject testrayCaseResultJSONObject) throws Exception {
+		long testrayCaseId = testrayCaseResultJSONObject.getLong("testrayCaseId");
+		long testrayRunId = testrayCaseResultJSONObject.getLong("testrayRunId");
+
+		if ((testrayCaseId == 0L) || (testrayRunId == 0L)) {
+			throw new AlloyException("please-include-a-valid-case-and-run-id-for-each-case-result-to-import", false);
+		}
+
+		validateClassIdentifier(request, TestrayCase.class, "the-case-with-id-x-does-not-exist", testrayCaseId);
+		validateClassIdentifier(request, TestrayRun.class, "the-run-with-id-x-does-not-exist", testrayRunId);
+	}
+
+	private static void _validateTestrayFactorCategory(long testrayFactorCategoryId, HttpServletRequest request) throws Exception {
+		TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryLocalServiceUtil.fetchTestrayFactorCategory(testrayFactorCategoryId);
+
+		if (testrayFactorCategory == null) {
+			throw new AlloyException(translate(request, "the-category-with-id-x-does-not-exist", testrayFactorCategoryId), false);
+		}
+	}
+
+	private static void _validateTestrayFactorCategory(String testrayFactorCategoryName, HttpServletRequest request) throws Exception {
+		long companyId = PortalUtil.getCompanyId(request);
+
+		List<TestrayFactorCategory> testrayFactorCategories = TestrayFactorCategoryUtil.getTestrayFactorCategories(companyId, testrayFactorCategoryName);
+
+		if (testrayFactorCategories.isEmpty()) {
+			throw new AlloyException("the-category-is-invalid", false);
+		}
+	}
+
+	private static void _validateTestrayFactorCategoryIdOrName(JSONObject testrayFactorJSONObject, HttpServletRequest request) throws Exception {
+		if (testrayFactorJSONObject.has("testrayFactorCategoryId")) {
+			long testrayFactorCategoryId = testrayFactorJSONObject.getLong("testrayFactorCategoryId");
+
+			_validateTestrayFactorCategory(testrayFactorCategoryId, request);
+		}
+		else if (testrayFactorJSONObject.has("testrayFactorCategoryName")) {
+			String testrayFactorCategoryName = testrayFactorJSONObject.getString("testrayFactorCategoryName");
+
+			_validateTestrayFactorCategory(testrayFactorCategoryName, request);
+		}
+		else {
+			throw new AlloyException("a-category-id-or-name-is-required", false);
+		}
+	}
+
+	private static void _validateTestrayFactorCategoryTestrayFactorOption(JSONObject testrayFactorJSONObject, HttpServletRequest request) throws Exception {
+		long companyId = PortalUtil.getCompanyId(request);
+
+		TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryUtil.fetchTestrayFactorCategory(companyId, testrayFactorJSONObject);
+
+		TestrayFactorOption testrayFactorOption = TestrayFactorUtil.getTestrayFactorOption(request, testrayFactorJSONObject);
+
+		if (testrayFactorOption.getTestrayFactorCategoryId() != testrayFactorCategory.getTestrayFactorCategoryId()) {
+			throw new AlloyException(translate(request, "the-option-x-does-not-exist-in-category-x", testrayFactorOption.getName(), testrayFactorCategory.getName()), false);
+		}
+	}
+
+	private static void _validateTestrayFactorJSONObject(JSONObject testrayFactorJSONObject, HttpServletRequest request) throws Exception {
+		_validateTestrayFactorCategoryIdOrName(testrayFactorJSONObject, request);
+
+		_validateTestrayFactorOptionIdOrName(testrayFactorJSONObject, request);
+
+		_validateTestrayFactorCategoryTestrayFactorOption(testrayFactorJSONObject, request);
+	}
+
+	private static void _validateTestrayFactorOption(long testrayFactorOptionId, HttpServletRequest request) throws Exception {
+		TestrayFactorOption testrayFactorOption = TestrayFactorOptionLocalServiceUtil.fetchTestrayFactorOption(testrayFactorOptionId);
+
+		if (testrayFactorOption == null) {
+			throw new AlloyException(translate(request, "the-option-with-id-x-does-not-exist", testrayFactorOptionId), false);
+		}
+	}
+
+	private static void _validateTestrayFactorOption(String testrayFactorOptionName, HttpServletRequest request) throws Exception {
+		AlloyServiceInvoker testrayFactoryOptionAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactorOption.class.getName());
+
+		long companyId = PortalUtil.getCompanyId(request);
+
+		List<TestrayFactorOption> testrayFactorOptions = testrayFactoryOptionAlloyServiceInvoker.executeDynamicQuery(new Object[] {"companyId", companyId, "name", testrayFactorOptionName});
+
+		if (testrayFactorOptions.isEmpty()) {
+			throw new AlloyException("the-option-name-is-invalid", false);
+		}
+	}
+
+	private static void _validateTestrayFactorOptionIdOrName(JSONObject testrayFactorJSONObject, HttpServletRequest request) throws Exception {
+		if (testrayFactorJSONObject.has("testrayFactorOptionId")) {
+			long testrayFactorOptionId = testrayFactorJSONObject.getLong("testrayFactorOptionId");
+
+			_validateTestrayFactorOption(testrayFactorOptionId, request);
+		}
+		else if (testrayFactorJSONObject.has("testrayFactorOptionName")) {
+			String testrayFactorOptionName = testrayFactorJSONObject.getString("testrayFactorOptionName");
+
+			_validateTestrayFactorOption(testrayFactorOptionName, request);
+		}
+		else {
+			throw new AlloyException("an-option-id-or-name-is-required", false);
+		}
+	}
+
+}
+%>

@@ -1,0 +1,118 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<testray:filter>
+	<c:if test="${not empty scopeByProject}">
+		<aui:input name="scopeByProject" type="hidden" value="${scopeByProject}" />
+	</c:if>
+
+	<c:if test="${not empty testrayBuildId}">
+		<aui:input name="testrayBuildId" type="hidden" value="${testrayBuildId}" />
+	</c:if>
+
+	<c:if test="${not empty param.testrayProjectId}">
+		<aui:input name="testrayProjectId" type="hidden" value="${param.testrayProjectId}" />
+	</c:if>
+
+	<c:if test="${not empty param.testrayRequirementId}">
+		<aui:input name="testrayRequirementId" type="hidden" value="${param.testrayRequirementId}" />
+	</c:if>
+
+	<c:if test="${not empty testrayRunId}">
+		<aui:input name="testrayRunId" type="hidden" value="${testrayRunId}" />
+	</c:if>
+
+	<c:if test="${not empty testraySuiteId}">
+		<aui:input name="testraySuiteId" type="hidden" value="${testraySuiteId}" />
+	</c:if>
+
+	<testray:filter-element
+		items="${TestrayCaseConstants.PRIORITIES}"
+		label="priority"
+		name="priorities"
+		selectedLabel="priority-x"
+		selectedValue="${testrayCasePriorities}"
+		type="checkboxes"
+	/>
+
+	<testray:filter-element
+		items="${testrayCaseTypes}"
+		label="case-type"
+		modelClassName="com.liferay.osb.testray.model.TestrayCaseType"
+		name="testrayCaseTypeId"
+		selectedLabel="case-type-x"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		label="case-name"
+		name="name"
+		selectedLabel="name-x"
+		type="text"
+	/>
+
+	<testray:filter-element
+		items="${testrayTeams}"
+		label="team"
+		modelClassName="com.liferay.osb.testray.model.TestrayTeam"
+		name="testrayTeamId"
+		selectedLabel="team-x"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		label="component"
+		name="testrayComponentName"
+		selectedLabel="component-x"
+		type="text"
+	/>
+
+	<testray:filter-element
+		label="description"
+		name="description"
+		nullable="${true}"
+		nullableLabel="no-description"
+		selectedLabel="description-x"
+		type="textarea"
+	/>
+
+	<testray:filter-element
+		label="steps"
+		name="steps"
+		nullable="${true}"
+		nullableLabel="no-steps"
+		selectedLabel="steps-x"
+		type="textarea"
+	/>
+
+	<testray:filter-element
+		label="issues"
+		name="issues"
+		nullable="${true}"
+		nullableLabel="no-issues"
+		selectedLabel="issues-x"
+		type="textarea"
+	/>
+
+	<testray:filter-element
+		label="has-requirements"
+		name="hasTestrayRequirements"
+		nullableLabel="no-requirements"
+		selectedLabel="has-requirements"
+		showEmptyOption="${true}"
+		type="boolean"
+	/>
+</testray:filter>

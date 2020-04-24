@@ -1,0 +1,396 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseUtil {
+
+	public static void deleteTestrayCase(long testrayCaseId) throws Exception {
+		TestrayCaseLocalServiceUtil.deleteTestrayCase(testrayCaseId);
+
+		MBMessageLocalServiceUtil.deleteDiscussionMessages(TestrayCase.class.getName(), testrayCaseId);
+	}
+
+	public static void deleteTestrayCases(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+
+		for (TestrayCase testrayCase : testrayCases) {
+			deleteTestrayCase(testrayCase.getTestrayCaseId());
+		}
+	}
+
+	public static JSONObject fetchCaseParameterJSONObject(HttpServletRequest request, String fieldName, String fieldType) throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("fieldName", fieldName);
+		jsonObject.put("fieldType", fieldType);
+
+		String fieldValues = null;
+
+		if (StringUtil.equalsIgnoreCase(fieldType, "boolean")) {
+			boolean[] fieldValuesArray = ParamUtil.getBooleanValues(request, fieldName);
+
+			fieldValues = JSONFactoryUtil.looseSerialize(fieldValuesArray);
+		}
+		else if (StringUtil.equalsIgnoreCase(fieldType, "double")) {
+			double[] fieldValuesArray = ParamUtil.getDoubleValues(request, fieldName);
+
+			fieldValues = JSONFactoryUtil.looseSerialize(fieldValuesArray);
+		}
+		else if (StringUtil.equalsIgnoreCase(fieldType, "int")) {
+			int[] fieldValuesArray = ParamUtil.getIntegerValues(request, fieldName);
+
+			fieldValues = JSONFactoryUtil.looseSerialize(fieldValuesArray);
+		}
+		else if (StringUtil.equalsIgnoreCase(fieldType, "long")) {
+			long[] fieldValuesArray = ParamUtil.getLongValues(request, fieldName);
+
+			fieldValues = JSONFactoryUtil.looseSerialize(fieldValuesArray);
+		}
+		else {
+			String[] fieldValuesArray = ParamUtil.getParameterValues(request, fieldName);
+
+			fieldValues = JSONFactoryUtil.looseSerialize(fieldValuesArray);
+		}
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(fieldValues);
+
+		if (jsonArray.length() == 0) {
+			return null;
+		}
+
+		jsonObject.put("fieldValues", jsonArray);
+
+		if (jsonArray.length() > 1) {
+			jsonObject.put("criterionMethodName", "in");
+			jsonObject.put("criterionMethodParameterClassNames", Object[].class.getName());
+		}
+		else {
+			jsonObject.put("criterionMethodName", "eq");
+			jsonObject.put("criterionMethodParameterClassNames", Object.class.getName());
+		}
+
+		return jsonObject;
+	}
+
+	public static TestrayCase fetchTestrayCase(long testrayProjectId, String name) throws Exception {
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", name});
+
+		if (testrayCases.isEmpty()) {
+			return null;
+		}
+
+		return testrayCases.get(0);
+	}
+
+	public static TestrayCase getTestrayCase(HttpServletRequest request) throws Exception {
+		long testrayCaseId = ParamUtil.getLong(request, "testrayCaseId", -1);
+
+		if (testrayCaseId >= 0) {
+			TestrayCase testrayCase = TestrayCaseLocalServiceUtil.fetchTestrayCase(testrayCaseId);
+
+			if (testrayCase == null) {
+				throw new AlloyException("the-case-with-id-x-does-not-exist", new Object[] {testrayCaseId}, false);
+			}
+
+			return testrayCase;
+		}
+
+		String name = ParamUtil.getString(request, "testrayCaseName");
+
+		if (Validator.isNull(name)) {
+			throw new AlloyException("the-case-id-or-name-provided-does-not-match-an-existing-case", false);
+		}
+
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		TestrayProject testrayProject = TestrayProjectUtil.getTestrayProject(request);
+
+		List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProject.getTestrayProjectId(), "name", name});
+
+		if (testrayCases.isEmpty()) {
+			throw new AlloyException("the-case-with-name-x-does-not-exist-for-the-project-with-id-x", new Object[] {name, testrayProject.getTestrayProjectId()}, false);
+		}
+
+		return testrayCases.get(0);
+	}
+
+	public static List<Long> getTestrayCaseIds(ThemeDisplay themeDisplay, long testrayTeamId) throws Exception {
+		Map<String, Serializable> attributes = _getTestrayCaseAttributes(testrayTeamId);
+
+		return _getTestrayCaseIds(themeDisplay, attributes);
+	}
+
+	public static List<Long> getTestrayCaseIds(ThemeDisplay themeDisplay, long testrayTeamId, List<Integer> testrayCasePriorities) throws Exception {
+		if ((testrayCasePriorities == null) || testrayCasePriorities.isEmpty()) {
+			return getTestrayCaseIds(themeDisplay, testrayTeamId);
+		}
+
+		Map<String, Serializable> attributes = _getTestrayCaseAttributes(testrayTeamId);
+
+		attributes.put("testrayCasePriority", (Serializable)testrayCasePriorities);
+
+		return _getTestrayCaseIds(themeDisplay, attributes);
+	}
+
+	public static List<Long> getTestrayCaseIds(long testrayProjectId, String caseParameterString) throws Exception {
+		if (Objects.equals(caseParameterString, _NULL_JSON_ARRAY)) {
+			return Collections.emptyList();
+		}
+
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		DynamicQuery testrayCaseDynamicQuery = _getTestrayCaseDynamicQuery(testrayCaseAlloyServiceInvoker, testrayProjectId, caseParameterString);
+
+		Projection testrayCaseIdProjection = ProjectionFactoryUtil.property("testrayCaseId");
+
+		testrayCaseDynamicQuery.setProjection(testrayCaseIdProjection);
+
+		return testrayCaseAlloyServiceInvoker.executeDynamicQuery(testrayCaseDynamicQuery);
+	}
+
+	public static List<TestrayCase> getTestrayCases(long testrayProjectId, String caseParametersString) throws Exception {
+		if (Validator.isNull(caseParametersString) || Objects.equals(caseParametersString, _NULL_JSON_ARRAY)) {
+			return Collections.emptyList();
+		}
+
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		DynamicQuery testrayCaseDynamicQuery = _getTestrayCaseDynamicQuery(testrayCaseAlloyServiceInvoker, testrayProjectId, caseParametersString);
+
+		return testrayCaseAlloyServiceInvoker.executeDynamicQuery(testrayCaseDynamicQuery);
+	}
+
+	private static DynamicQuery _getTestrayCaseDynamicQuery(AlloyServiceInvoker testrayCaseAlloyServiceInvoker, long testrayProjectId, String caseParameterString) throws Exception {
+		DynamicQuery testrayCaseDynamicQuery = testrayCaseAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+
+		JSONArray caseParametersJSONArray = JSONFactoryUtil.createJSONArray(caseParameterString);
+
+		for (int i = 0; i < caseParametersJSONArray.length(); i++) {
+			JSONObject caseParameterJSONObject = caseParametersJSONArray.getJSONObject(i);
+
+			String[] criterionMethodParameterClassNames = StringUtil.split(caseParameterJSONObject.getString("criterionMethodParameterClassNames"));
+
+			Class<?>[] criterionMethodParameterClasses = new Class<?>[criterionMethodParameterClassNames.length];
+
+			for (int j = 0; j < criterionMethodParameterClassNames.length; j++) {
+				criterionMethodParameterClasses[j] = Class.forName(criterionMethodParameterClassNames[j]);
+			}
+
+			Method criterionMethod = Property.class.getMethod(caseParameterJSONObject.getString("criterionMethodName"), criterionMethodParameterClasses);
+
+			String fieldName = caseParameterJSONObject.getString("fieldName");
+
+			Property property = PropertyFactoryUtil.forName(fieldName);
+
+			Object[] parameters = new Object[criterionMethodParameterClasses.length];
+
+			JSONArray fieldValuesJSONArray = caseParameterJSONObject.getJSONArray("fieldValues");
+
+			String fieldType = caseParameterJSONObject.getString("fieldType");
+
+			if (fieldName.equals("subcomponentId")) {
+				criterionMethod = Property.class.getMethod("in", long[].class);
+
+				property = PropertyFactoryUtil.forName("testrayCaseId");
+
+				Set<Long> testrayCaseIdsSet = new HashSet<Long>();
+
+				for (int j = 0; j < fieldValuesJSONArray.length(); j++) {
+					long testrayComponentId = (Long)getFieldValue(fieldValuesJSONArray, j, "long");
+
+					long[] testrayCaseIds = TestrayComponentLocalServiceUtil.getTestrayCasePrimaryKeys(testrayComponentId);
+
+					for (long testrayCaseId : testrayCaseIds) {
+						testrayCaseIdsSet.add(testrayCaseId);
+					}
+				}
+
+				if (testrayCaseIdsSet.isEmpty()) {
+					continue;
+				}
+
+				parameters[0] = ArrayUtil.toLongArray(testrayCaseIdsSet);
+			}
+			else if (fieldName.equals("testrayRequirementId")) {
+				criterionMethod = Property.class.getMethod("in", long[].class);
+
+				property = PropertyFactoryUtil.forName("testrayCaseId");
+
+				Set<Long> testrayCaseIdsSet = new HashSet<Long>();
+
+				for (int j = 0; j < fieldValuesJSONArray.length(); j++) {
+					long testrayRequirementId = (Long)getFieldValue(fieldValuesJSONArray, j, "long");
+
+					long[] testrayCaseIds = TestrayRequirementLocalServiceUtil.getTestrayCasePrimaryKeys(testrayRequirementId);
+
+					for (long testrayCaseId : testrayCaseIds) {
+						testrayCaseIdsSet.add(testrayCaseId);
+					}
+				}
+
+				if (testrayCaseIdsSet.isEmpty()) {
+					continue;
+				}
+
+				parameters[0] = ArrayUtil.toLongArray(testrayCaseIdsSet);
+			}
+			else if (fieldName.equals("testrayTeamId")) {
+				criterionMethod = Property.class.getMethod("in", long[].class);
+
+				property = PropertyFactoryUtil.forName("testrayCaseId");
+
+				Set<Long> testrayCaseIdsSet = new HashSet<>();
+
+				for (int j = 0; j < fieldValuesJSONArray.length(); j++) {
+					long testrayTeamId = (Long)getFieldValue(fieldValuesJSONArray, j, "long");
+
+					List<Long> testrayComponentIds = TestrayComponentUtil.getTestrayComponentIds(testrayTeamId);
+
+					for (long testrayComponentId : testrayComponentIds) {
+						long[] testrayCaseIds = TestrayComponentLocalServiceUtil.getTestrayCasePrimaryKeys(testrayComponentId);
+
+						for (long testrayCaseId : testrayCaseIds) {
+							testrayCaseIdsSet.add(testrayCaseId);
+						}
+					}
+				}
+
+				if (testrayCaseIdsSet.isEmpty()) {
+					continue;
+				}
+
+				parameters[0] = ArrayUtil.toLongArray(testrayCaseIdsSet);
+			}
+			else if (fieldValuesJSONArray.length() == 1) {
+				parameters[0] = getFieldValue(fieldValuesJSONArray, 0, fieldType);
+			}
+			else if (criterionMethodParameterClasses.length == 1) {
+				Object[] arrayParameter = new Object[fieldValuesJSONArray.length()];
+
+				for (int j = 0; j < fieldValuesJSONArray.length(); j++) {
+					arrayParameter[j] = getFieldValue(fieldValuesJSONArray, j, fieldType);
+				}
+
+				parameters[0] = arrayParameter;
+			}
+			else {
+				for (int j = 0; j < fieldValuesJSONArray.length(); j++) {
+					parameters[j] = getFieldValue(fieldValuesJSONArray, j, fieldType);
+				}
+			}
+
+			testrayCaseDynamicQuery.add((Criterion)criterionMethod.invoke(property, parameters));
+		}
+
+		return testrayCaseDynamicQuery;
+	}
+
+	public static List<Long> getTestrayCaseIds(TestrayComponent testrayComponent) throws Exception {
+		if (testrayComponent == null) {
+			return Collections.emptyList();
+		}
+
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		DynamicQuery testrayCaseDynamicQuery = testrayCaseAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayComponentId", testrayComponent.getTestrayComponentId()});
+
+		Projection testrayCaseIdProjection = ProjectionFactoryUtil.property("testrayCaseId");
+
+		testrayCaseDynamicQuery.setProjection(testrayCaseIdProjection);
+
+		return testrayCaseAlloyServiceInvoker.executeDynamicQuery(testrayCaseDynamicQuery);
+	}
+
+	public static void indexTestrayCases(AlloyController alloyController, long testrayComponentId) throws Exception {
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayComponentId", testrayComponentId});
+
+		for (TestrayCase testrayCase : testrayCases) {
+			alloyController.indexModel(testrayCase);
+
+			TestraySuiteUtil.indexTestraySuites(alloyController, testrayCase.getTestrayCaseId());
+		}
+	}
+
+	protected static Object getFieldValue(JSONArray jsonArray, int index, String fieldType) {
+		if (StringUtil.equalsIgnoreCase(fieldType, "boolean")) {
+			return jsonArray.getBoolean(index);
+		}
+		else if (StringUtil.equalsIgnoreCase(fieldType, "double")) {
+			return jsonArray.getDouble(index);
+		}
+		else if (StringUtil.equalsIgnoreCase(fieldType, "int")) {
+			return jsonArray.getInt(index);
+		}
+		else if (StringUtil.equalsIgnoreCase(fieldType, "long")) {
+			return jsonArray.getLong(index);
+		}
+		else {
+			return jsonArray.getString(index);
+		}
+	}
+
+	private static Map<String, Serializable> _getTestrayCaseAttributes(long testrayTeamId) throws Exception {
+		Map<String, Serializable> attributes = new HashMap<String, Serializable>();
+
+		List<Long> testrayComponentIds = TestrayComponentUtil.getTestrayComponentIds(testrayTeamId);
+
+		attributes.put("testrayComponentId", (Serializable)testrayComponentIds);
+
+		return attributes;
+	}
+
+	private static List<Long> _getTestrayCaseIds(ThemeDisplay themeDisplay, Map<String, Serializable> attributes) throws Exception {
+		SearchContext searchContext = new SearchContext();
+
+		if ((attributes != null) && !attributes.isEmpty()) {
+			searchContext.setAttributes(attributes);
+		}
+
+		searchContext.setCompanyId(themeDisplay.getCompanyId());
+		searchContext.setEnd(QueryUtil.ALL_POS);
+
+		searchContext.setGroupIds(null);
+
+		searchContext.setStart(QueryUtil.ALL_POS);
+		searchContext.setUserId(themeDisplay.getUserId());
+
+		Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(TestrayCase.class);
+
+		Hits hits = indexer.search(searchContext);
+
+		List<Document> documents = hits.toList();
+
+		List<Long> testrayCaseIds = new ArrayList<Long>();
+
+		for (Document document : documents) {
+			Long testrayCaseId = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
+
+			testrayCaseIds.add(testrayCaseId);
+		}
+
+		return testrayCaseIds;
+	}
+
+	private static final String _NULL_JSON_ARRAY = "[]";
+
+}
+%>

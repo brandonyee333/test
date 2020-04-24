@@ -1,0 +1,21 @@
+.popover {
+	border-radius: $border-radius;
+	border-width: 0;
+	box-shadow: $box-shadow;
+	font-weight: $font-weight;
+	letter-spacing: $letter-spacing;
+
+	.arrow {
+		display: none;
+	}
+}
+
+.popover-title {
+	background-color: $color-gray-light;
+	border-radius: $border-radius;
+	border-width: 0;
+	font-size: 16px;
+	font-weight: $font-header-weight;
+	letter-spacing: $letter-spacing;
+	padding: 16px 14px 6px;
+}

@@ -1,0 +1,48 @@
+@mixin label-text() {
+	color: $label-color;
+	font-size: 11px;
+	font-weight: $font-header-weight;
+	text-transform: uppercase;
+}
+
+@mixin keyframes($name) {
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+
+	@-o-keyframes #{$name} {
+		@content;
+	}
+
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+/* ---------- Animations ---------- */
+
+@include keyframes(fade-in-down) {
+	0% {
+		margin-top: -15px;
+		opacity: 0;
+	}
+
+	100% {
+		margin-top: 0;
+		opacity: 1;
+	}
+}
+
+@include keyframes(flash-row-background) {
+	0% {
+		background-color: #D3F6FF;
+	}
+
+	100% {
+		background-color: $background-color;
+	}
+}

@@ -1,0 +1,32 @@
+/* ---------- Color palette ---------- */
+
+$primaryColor: #3FBCDF;
+$primaryColorBright: #6ADFFF;
+$primaryColorLight: lighten($primaryColor, 20%);
+$primaryColorLighter: lighten($primaryColor, 40%);
+
+/* ---------- Component colors ---------- */
+
+$backgroundColor: #13181F;
+$fontColor: #ECECEC;
+$labelColor: #A6AFBD;
+
+$itemBackgroundColor: #474F5F;
+$panelBackgroundColor: #262D39;
+
+/* ---------- Status colors ---------- */
+
+$blockedColor: #FFD764;
+$failedColor: #FE5160;
+$incompleteColor: #BCBDC0;
+$passedColor: #37D27E;
+$testFixColor: #68D8FF;
+$untestedColor: #BCBDC0;
+
+$blockedBackgroundColor: rgba(255, 200, 41, 0.65);
+$failedBackgroundColor: rgba(255, 43, 61, 0.65);
+$testFixBackgroundColor: rgba(52, 203, 255, 0.65);
+
+/* ---------- Sizing ---------- */
+
+$centurionBarHeight: 1.3vw;

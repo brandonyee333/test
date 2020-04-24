@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<beans
+	default-destroy-method="destroy"
+	default-init-method="afterPropertiesSet"
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+	<bean class="com.liferay.osb.testray.service.impl.TestrayArchiveLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayArchiveLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayArchivePersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayArchivePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayAssignmentLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayAssignmentLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayAssignmentPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayAssignmentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayBuildLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayBuildLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayBuildPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayBuildPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayCaseLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayCaseLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayCasePersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayCasePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayCaseResultLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayCaseResultLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayCaseResultPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayCaseResultPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayCaseResultWarningLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayCaseResultWarningLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayCaseResultWarningPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayCaseResultWarningPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayCaseTypeLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayCaseTypeLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayCaseTypePersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayCaseTypePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayComponentLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayComponentLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayComponentPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayComponentPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayFactorLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayFactorLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayFactorPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayFactorPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayFactorCategoryLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayFactorCategoryLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayFactorCategoryPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayFactorCategoryPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayFactorOptionLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayFactorOptionLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayFactorOptionPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayFactorOptionPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayIssueLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayIssueLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayIssuePersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayIssuePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayProductVersionLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayProductVersionLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayProductVersionPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayProductVersionPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayProjectLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayProjectLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayProjectPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayProjectPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayRequirementLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayRequirementLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayRequirementPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayRequirementPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayRoutineLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayRoutineLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayRoutinePersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayRoutinePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayRunLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayRunLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayRunPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayRunPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestraySubtaskLocalServiceImpl" id="com.liferay.osb.testray.service.TestraySubtaskLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestraySubtaskPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestraySubtaskPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestraySuiteLocalServiceImpl" id="com.liferay.osb.testray.service.TestraySuiteLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestraySuitePersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestraySuitePersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayTaskLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayTaskLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayTaskPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayTaskPersistence" parent="basePersistence" />
+	<bean class="com.liferay.osb.testray.service.impl.TestrayTeamLocalServiceImpl" id="com.liferay.osb.testray.service.TestrayTeamLocalService" />
+	<bean class="com.liferay.osb.testray.service.persistence.impl.TestrayTeamPersistenceImpl" id="com.liferay.osb.testray.service.persistence.TestrayTeamPersistence" parent="basePersistence" />
+</beans>

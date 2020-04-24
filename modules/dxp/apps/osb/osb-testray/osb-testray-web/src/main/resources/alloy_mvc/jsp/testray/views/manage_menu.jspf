@@ -1,0 +1,237 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<c:if test="${manageMenuPermission}">
+	<ul class="hide testray-menu" id="${htmlNamespace}manageMenuContent">
+		<li class="testray-menu-header testray-menu-item">
+			<liferay-ui:message key="system" />
+		</li>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayProjectClass, "create")}'>
+			<portlet:renderURL var="createTestrayProjectURL">
+				<portlet:param name="redirect" value="${portletURL}" />
+				<portlet:param name="controller" value="projects" />
+				<portlet:param name="action" value="create" />
+			</portlet:renderURL>
+
+			<li class="testray-menu-item">
+				<aui:a href="${createTestrayProjectURL}">
+					<aui:icon image="plus" label="new-project" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayCaseTypeClass, "index")}'>
+			<portlet:renderURL var="viewTestrayProjectsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="controller" value="case_types" />
+				<portlet:param name="action" value="index" />
+			</portlet:renderURL>
+
+			<c:set value='${AlloyLanguageUtil.getUnicode("case-types")}' var="viewTestrayProjectsURLTitle" />
+
+			<c:set value="javascript:Liferay.Testray.openWindow('${viewTestrayProjectsURL}', '${viewTestrayProjectsURLTitle}')" var="viewTestrayProjectsURL" />
+
+			<li class="testray-menu-item">
+				<aui:a href="${viewTestrayProjectsURL}">
+					<aui:icon image="cog" label="case-types" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<li class="testray-menu-divider testray-menu-item"></li>
+
+		<li class="testray-menu-header testray-menu-item">
+			<liferay-ui:message key="environment-factors" />
+		</li>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayFactorCategoryClass, "index")}'>
+			<portlet:renderURL var="viewTestrayFactorCategoriesURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="controller" value="factor_categories" />
+				<portlet:param name="action" value="index" />
+			</portlet:renderURL>
+
+			<c:set value='${AlloyLanguageUtil.getUnicode("categories")}' var="viewTestrayFactorCategoriesURLTitle" />
+
+			<c:set value="javascript:Liferay.Testray.openWindow('${viewTestrayFactorCategoriesURL}', '${viewTestrayFactorCategoriesURLTitle}')" var="viewTestrayFactorCategoriesURL" />
+
+			<li class="testray-menu-item">
+				<aui:a href="${viewTestrayFactorCategoriesURL}">
+					<aui:icon image="cog" label="categories" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayFactorOptionClass, "index")}'>
+			<portlet:renderURL var="viewTestrayFactorOptionsURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="controller" value="factor_options" />
+				<portlet:param name="action" value="index" />
+				<portlet:param name="title" value="" />
+			</portlet:renderURL>
+
+			<c:set value='${AlloyLanguageUtil.getUnicode("options")}' var="viewTestrayFactorOptionsURLTitle" />
+
+			<c:set value="javascript:Liferay.Testray.openWindow('${viewTestrayFactorOptionsURL}', '${viewTestrayFactorOptionsURLTitle}')" var="viewTestrayFactorOptionsURL" />
+
+			<li class="testray-menu-item">
+				<aui:a href="${viewTestrayFactorOptionsURL}">
+					<aui:icon image="cog" label="options" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test='${(testrayProjectId > 0) && (testrayPermission:containsClassAction(themeDisplay, testrayCaseClass, "create") || testrayPermission:containsClassAction(themeDisplay, testrayRequirementClass, "create"))}'>
+			<li class="testray-menu-divider testray-menu-item"></li>
+
+			<li class="testray-menu-header testray-menu-item">
+				<liferay-ui:message key="this-project" />
+			</li>
+
+			<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayCaseClass, "create")}'>
+				<portlet:renderURL var="createTestrayCaseURL">
+					<portlet:param name="controller" value="cases" />
+					<portlet:param name="action" value="create" />
+					<portlet:param name="testrayProjectId" value="${testrayProjectId}" />
+				</portlet:renderURL>
+
+				<li class="testray-menu-item">
+					<aui:a href="${createTestrayCaseURL}">
+						<aui:icon image="plus" label="add-case" />
+					</aui:a>
+				</li>
+			</c:if>
+
+			<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayRequirementClass, "create")}'>
+				<portlet:renderURL var="createTestrayRequirementURL">
+					<portlet:param name="controller" value="requirements" />
+					<portlet:param name="action" value="create" />
+					<portlet:param name="testrayProjectId" value="${testrayProjectId}" />
+				</portlet:renderURL>
+
+				<li class="testray-menu-item">
+					<aui:a href="${createTestrayRequirementURL}">
+						<aui:icon image="plus" label="add-requirement" />
+					</aui:a>
+				</li>
+			</c:if>
+		</c:if>
+
+		<li class="testray-menu-divider testray-menu-item"></li>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, userClass, "index")}'>
+			<portlet:renderURL var="viewUsersIndexURL">
+				<portlet:param name="controller" value="users" />
+				<portlet:param name="action" value="index" />
+			</portlet:renderURL>
+
+			<li class="testray-menu-item">
+				<aui:a href="${viewUsersIndexURL}">
+					<aui:icon image="wrench" label="manage-users" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test="${testrayPermission:containsActionId(permissionChecker, themeDisplay.scopeGroupId, PortletKeys.USER_GROUPS_ADMIN, themeDisplay.companyId, ActionKeys.ACCESS_IN_CONTROL_PANEL)}">
+			<li class="testray-menu-item">
+				<aui:a href="<%= PortalUtil.getControlPanelPortletURL(request, themeDisplay.getSiteGroup(), PortletKeys.USER_GROUPS_ADMIN, 0, 0, PortletRequest.RENDER_PHASE).toString() %>">
+					<aui:icon image="wrench" label="manage-user-groups" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test="${testrayPermission:containsActionId(permissionChecker, themeDisplay.scopeGroupId, PortletKeys.ROLES_ADMIN, themeDisplay.companyId, ActionKeys.ACCESS_IN_CONTROL_PANEL)}">
+			<li class="testray-menu-item">
+				<aui:a href="<%= PortalUtil.getControlPanelPortletURL(request, themeDisplay.getSiteGroup(), PortletKeys.ROLES_ADMIN, 0, 0, PortletRequest.RENDER_PHASE).toString() %>">
+					<aui:icon image="wrench" label="manage-roles" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, indexerClass, "index")}'>
+			<li class="testray-menu-divider testray-menu-item"></li>
+
+			<portlet:renderURL var="viewIndexersURL">
+				<portlet:param name="controller" value="indexers" />
+				<portlet:param name="action" value="index" />
+			</portlet:renderURL>
+
+			<li class="testray-menu-item">
+				<aui:a href="${viewIndexersURL}">
+					<aui:icon image="filter" label="manage-indexers" />
+				</aui:a>
+			</li>
+		</c:if>
+
+		<c:if test="${testrayPermission:containsActionId(permissionChecker, themeDisplay.scopeGroupId, PortletKeys.SERVER_ADMIN, themeDisplay.companyId, ActionKeys.ACCESS_IN_CONTROL_PANEL)}">
+			<li class="testray-menu-item">
+				<aui:a href="<%= PortalUtil.getControlPanelPortletURL(request, themeDisplay.getSiteGroup(), PortletKeys.SERVER_ADMIN, 0, 0, PortletRequest.RENDER_PHASE).toString() %>">
+					<aui:icon image="wrench" label="manage-server" />
+				</aui:a>
+			</li>
+		</c:if>
+	</ul>
+
+	<aui:script use="aui-popover,event-outside">
+		var manageMenuTrigger = A.one('#${htmlNamespace}manageMenuToggle');
+
+		if (manageMenuTrigger) {
+			var manageMenuPopover = new A.Popover(
+				{
+					after: {
+						render: function(event) {
+							var instance = this;
+
+							var contentBox = instance.get('contentBox');
+
+							contentBox.show();
+						}
+					},
+					align: {
+						node: manageMenuTrigger,
+						points: [A.WidgetPositionAlign.BL, A.WidgetPositionAlign.BR]
+					},
+					contentBox: '#${htmlNamespace}manageMenuContent',
+					cssClass: 'testray-sidebar-popover',
+					position: 'right',
+					visible: false,
+					zIndex: Liferay.zIndex.POPOVER
+				}
+			).render();
+
+			var manageMenuContentNode = manageMenuPopover.get('contentBox');
+
+			manageMenuContentNode.delegate(
+				'click',
+				function() {
+					manageMenuPopover.hide();
+				},
+				'.testray-menu-item'
+			);
+
+			manageMenuTrigger.on(
+				'click',
+				function(event) {
+					event.stopPropagation();
+
+					manageMenuPopover.toggle();
+
+					var boundingBox = manageMenuPopover.get('boundingBox');
+
+					boundingBox.once('clickoutside', manageMenuPopover.hide, manageMenuPopover);
+				}
+			);
+		}
+	</aui:script>
+</c:if>

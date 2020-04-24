@@ -1,0 +1,43 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseConstants {
+
+	public static final String COLUMN_LABEL_CASE_TYPE = "case-type";
+
+	public static final String COLUMN_LABEL_COMPONENT = "component";
+
+	public static final String COLUMN_LABEL_CREATE_DATE = "create-date";
+
+	public static final String COLUMN_LABEL_DESCRIPTION = "description";
+
+	public static final String COLUMN_LABEL_MODIFIED_DATE = "modified-date";
+
+	public static final String COLUMN_LABEL_NAME = "case-name";
+
+	public static final String COLUMN_LABEL_PRIORITY = "priority";
+
+	public static final String COLUMN_LABEL_TEAM = "team";
+
+	public static final String[] COLUMN_LABELS = {COLUMN_LABEL_CREATE_DATE, COLUMN_LABEL_MODIFIED_DATE, COLUMN_LABEL_PRIORITY, COLUMN_LABEL_CASE_TYPE, COLUMN_LABEL_NAME, COLUMN_LABEL_TEAM, COLUMN_LABEL_COMPONENT, COLUMN_LABEL_DESCRIPTION, TestrayCaseResultConstants.COLUMN_LABEL_ISSUES};
+
+	public static final String[] COLUMN_LABELS_DEFAULT = {COLUMN_LABEL_PRIORITY, COLUMN_LABEL_NAME, COLUMN_LABEL_COMPONENT};
+
+	public static final int[] PRIORITIES = {5, 4, 3, 2, 1};
+
+}
+%>

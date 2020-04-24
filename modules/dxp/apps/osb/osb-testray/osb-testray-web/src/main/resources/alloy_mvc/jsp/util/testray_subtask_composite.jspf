@@ -1,0 +1,454 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestraySubtaskComposite extends BaseTestrayComposite {
+
+	public TestraySubtaskComposite(TestraySubtask testraySubtask, ThemeDisplay themeDisplay) throws Exception {
+		_testraySubtask = testraySubtask;
+		_themeDisplay = themeDisplay;
+	}
+
+	public User getAssignedUser() throws Exception {
+		TestrayAssignment testrayAssignment = getTestrayAssignment();
+
+		if (testrayAssignment == null) {
+			return null;
+		}
+
+		return UserLocalServiceUtil.fetchUser(testrayAssignment.getAssignedUserId());
+	}
+
+	public long getAssignedUserId() throws Exception {
+		User user = getAssignedUser();
+
+		if (user == null) {
+			return 0;
+		}
+
+		return user.getUserId();
+	}
+
+	public String getAssignedUserName() throws Exception {
+		User user = getAssignedUser();
+
+		if (user == null) {
+			return StringPool.BLANK;
+		}
+
+		return user.getFullName();
+	}
+
+	public String getAssignedUserPortraitURL() throws Exception {
+		User user = getAssignedUser();
+
+		if (user == null) {
+			return StringPool.BLANK;
+		}
+
+		return user.getPortraitURL(_themeDisplay);
+	}
+
+	public List<TestraySubtaskComposite> getChildrenTestraySubtaskComposites() throws Exception {
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		List<TestraySubtask> testraySubtasks = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(new Object[] {"splitFromTestraySubtaskId", getTestraySubtaskId()});
+
+		return TestrayCompositeUtil.getComposites(testraySubtasks, TestraySubtaskComposite.class, new Class<?>[] {TestraySubtask.class, ThemeDisplay.class}, new Object[] {_themeDisplay});
+	}
+
+	public String getComment() throws Exception {
+		MBMessage mbMessage = getMBMessage();
+
+		if (mbMessage == null) {
+			return StringPool.BLANK;
+		}
+
+		return mbMessage.getBody();
+	}
+
+	public User getCommentAuthor() throws Exception {
+		MBMessage mbMessage = getMBMessage();
+
+		if ((mbMessage != null) && (_commentAuthor == null)) {
+			_commentAuthor = UserLocalServiceUtil.getUser(mbMessage.getUserId());
+		}
+
+		return _commentAuthor;
+	}
+
+	public String getCommentAuthorFullName() throws Exception {
+		User user = getCommentAuthor();
+
+		return user.getFullName();
+	}
+
+	public Date getCommentDate() throws Exception {
+		MBMessage mbMessage = getMBMessage();
+
+		if (mbMessage == null) {
+			return null;
+		}
+
+		return mbMessage.getModifiedDate();
+	}
+
+	public long getCommentMBMessageId() {
+		return _testraySubtask.getCommentMBMessageId();
+	}
+
+	public String getErrors() throws Exception {
+		List<TestrayCaseResult> testrayCaseResults = getTestrayCaseResults();
+
+		if (testrayCaseResults.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		TestrayCaseResult testrayCaseResult = testrayCaseResults.get(0);
+
+		return testrayCaseResult.getErrors();
+	}
+
+	public long getGroupId() throws Exception {
+		return _testraySubtask.getGroupId();
+	}
+
+	public long[] getInvolvedTestrayCaseTypeIds() throws Exception {
+		if (_involvedTestrayCaseTypeIds != null) {
+			return _involvedTestrayCaseTypeIds;
+		}
+
+		Set<Long> testrayCaseTypeIds = new HashSet<Long>();
+
+		Set<Long> testrayCaseIds = new HashSet<Long>();
+
+		for (TestrayCaseResult testrayCaseResult : getTestrayCaseResults()) {
+			testrayCaseIds.add(testrayCaseResult.getTestrayCaseId());
+		}
+
+		for (long testrayCaseId : testrayCaseIds) {
+			TestrayCase testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId);
+
+			testrayCaseTypeIds.add(testrayCase.getTestrayCaseTypeId());
+		}
+
+		_involvedTestrayCaseTypeIds = ArrayUtil.toLongArray(testrayCaseTypeIds);
+
+		return _involvedTestrayCaseTypeIds;
+	}
+
+	public List<TestrayCaseType> getInvolvedTestrayCaseTypes() throws Exception {
+		if (_involvedTestrayCaseTypes != null) {
+			return _involvedTestrayCaseTypes;
+		}
+
+		_involvedTestrayCaseTypes = new ArrayList<TestrayCaseType>();
+
+		for (long testrayCaseTypeId : getInvolvedTestrayCaseTypeIds()) {
+			_involvedTestrayCaseTypes.add(TestrayCaseTypeLocalServiceUtil.getTestrayCaseType(testrayCaseTypeId));
+		}
+
+		return _involvedTestrayCaseTypes;
+	}
+
+	public String[] getInvolvedTestrayComponentNames() throws Exception {
+		List<TestrayComponent> testrayComponents = getInvolvedTestrayComponents();
+
+		String[] testrayComponentNames = new String[testrayComponents.size()];
+
+		for (int i = 0; i < testrayComponents.size(); i++) {
+			TestrayComponent testrayComponent = testrayComponents.get(i);
+
+			testrayComponentNames[i] = testrayComponent.getName();
+		}
+
+		return testrayComponentNames;
+	}
+
+	public List<TestrayComponent> getInvolvedTestrayComponents() throws Exception {
+		if (_testrayComponents != null) {
+			return _testrayComponents;
+		}
+
+		_testrayComponents = new ArrayList<TestrayComponent>();
+
+		Set<Long> testrayComponentIds = new HashSet<Long>();
+
+		for (TestrayCaseResult testrayCaseResult : getTestrayCaseResults()) {
+			testrayComponentIds.add(testrayCaseResult.getTestrayComponentId());
+		}
+
+		for (long testrayComponentId : testrayComponentIds) {
+			TestrayComponent testrayComponent = TestrayComponentLocalServiceUtil.getTestrayComponent(testrayComponentId);
+
+			_testrayComponents.add(testrayComponent);
+		}
+
+		return _testrayComponents;
+	}
+
+	public List<TestrayRun> getInvolvedTestrayRuns() throws Exception {
+		if (_involvedTestrayRuns != null) {
+			return _involvedTestrayRuns;
+		}
+
+		List<TestrayRun> testrayRuns = new ArrayList<>();
+
+		Set<Long> testrayRunIds = new HashSet<Long>();
+
+		for (TestrayCaseResult testrayCaseResult : getTestrayCaseResults()) {
+			testrayRunIds.add(testrayCaseResult.getTestrayRunId());
+		}
+
+		for (long testrayRunId : testrayRunIds) {
+			TestrayRun testrayRun = TestrayRunLocalServiceUtil.getTestrayRun(testrayRunId);
+
+			testrayRuns.add(testrayRun);
+		}
+
+		_involvedTestrayRuns = testrayRuns;
+
+		return _involvedTestrayRuns;
+	}
+
+	public long[] getInvolvedTestrayTeamIds() throws Exception {
+		if (_involvedTestrayTeamIds != null) {
+			return _involvedTestrayTeamIds;
+		}
+
+		Set<Long> testrayTeamIds = new HashSet<Long>();
+
+		for (TestrayComponent testrayComponent : getInvolvedTestrayComponents()) {
+			testrayTeamIds.add(testrayComponent.getTestrayTeamId());
+		}
+
+		_involvedTestrayTeamIds = ArrayUtil.toLongArray(testrayTeamIds);
+
+		return _involvedTestrayTeamIds;
+	}
+
+	public List<TestrayTeam> getInvolvedTestrayTeams() throws Exception {
+		if (_involvedTestrayTeams != null) {
+			return _involvedTestrayTeams;
+		}
+
+		_involvedTestrayTeams = new ArrayList<TestrayTeam>();
+
+		for (long testrayTeamId : getInvolvedTestrayTeamIds()) {
+			_involvedTestrayTeams.add(TestrayTeamLocalServiceUtil.getTestrayTeam(testrayTeamId));
+		}
+
+		return _involvedTestrayTeams;
+	}
+
+	public String getIssues() throws Exception {
+		return ListUtil.toString(getTestrayIssues(), "name", StringPool.COMMA);
+	}
+
+	public JSONObject getJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject assignedUserJSONObject = JSONFactoryUtil.createJSONObject();
+
+		User user = getAssignedUser();
+
+		assignedUserJSONObject.put("profileImageURL", getAssignedUserPortraitURL());
+		assignedUserJSONObject.put("userId", getAssignedUserId());
+		assignedUserJSONObject.put("userName", getAssignedUserName());
+
+		jsonObject.put("assignedUser", assignedUserJSONObject);
+
+		jsonObject.put("comment", getComment());
+		jsonObject.put("errors", getErrors());
+		jsonObject.put("issues", getIssues());
+
+		JSONArray mergedWithJSONArray = JSONFactoryUtil.createJSONArray();
+
+		List<TestraySubtaskComposite> mergeeTestraySubtaskComposites = getMergeeTestraySubtaskComposites();
+
+		for (TestraySubtaskComposite testraySubtaskComposite : mergeeTestraySubtaskComposites) {
+			mergedWithJSONArray.put(testraySubtaskComposite.getName());
+		}
+
+		jsonObject.put("mergedWith", mergedWithJSONArray);
+
+		jsonObject.put("modifiedDate", getModifiedDateString());
+		jsonObject.put("name", getName());
+		jsonObject.put("score", getScore());
+
+		JSONArray splitFromChildrenJSONArray = JSONFactoryUtil.createJSONArray();
+
+		List<TestraySubtaskComposite> childrenTestraySubtaskComposites = getChildrenTestraySubtaskComposites();
+
+		for (TestraySubtaskComposite testraySubtaskComposite : childrenTestraySubtaskComposites) {
+			splitFromChildrenJSONArray.put(testraySubtaskComposite.getName());
+		}
+
+		jsonObject.put("splitFromChildren", splitFromChildrenJSONArray);
+
+		String splitFromParentTestraySubtaskName = StringPool.BLANK;
+
+		TestraySubtaskComposite parentTestraySubtaskComposite = getParentTestraySubtaskComposite();
+
+		if (parentTestraySubtaskComposite != null) {
+			splitFromParentTestraySubtaskName = parentTestraySubtaskComposite.getName();
+		}
+
+		jsonObject.put("splitFromParent", splitFromParentTestraySubtaskName);
+
+		jsonObject.put("statusLabel", getStatusLabel());
+		jsonObject.put("testraySubtaskId", getTestraySubtaskId());
+		jsonObject.put("testrayTaskId", getTestrayTaskId());
+		jsonObject.put("tests", getTestsCount());
+
+		return jsonObject;
+	}
+
+	public MBMessage getMBMessage() throws Exception {
+		if (_mbMessage == null) {
+			_mbMessage = TestrayUtil.fetchMBMessage(getCommentMBMessageId());
+		}
+
+		return _mbMessage;
+	}
+
+	public TestraySubtaskComposite getMergedToTestraySubtaskComposite() throws Exception {
+		TestraySubtask mergedToTestraySubtask = TestraySubtaskLocalServiceUtil.fetchTestraySubtask(getMergedToTestraySubtaskId());
+
+		return new TestraySubtaskComposite(mergedToTestraySubtask, _themeDisplay);
+	}
+
+	public long getMergedToTestraySubtaskId() {
+		return _testraySubtask.getMergedToTestraySubtaskId();
+	}
+
+	public List<TestraySubtaskComposite> getMergeeTestraySubtaskComposites() throws Exception {
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		List<TestraySubtask> testraySubtasks = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(new Object[] {"mergedToTestraySubtaskId", getTestraySubtaskId()});
+
+		return TestrayCompositeUtil.getComposites(testraySubtasks, TestraySubtaskComposite.class, new Class<?>[] {TestraySubtask.class, ThemeDisplay.class}, new Object[] {_themeDisplay});
+	}
+
+	public Date getModifiedDate() {
+		return _testraySubtask.getModifiedDate();
+	}
+
+	public String getModifiedDateString() {
+		return formatDate(getModifiedDate());
+	}
+
+	public String getName() throws Exception {
+		return _testraySubtask.getName();
+	}
+
+	public TestraySubtaskComposite getParentTestraySubtaskComposite() throws Exception {
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		List<TestraySubtask> testraySubtasks = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testraySubtaskId", _testraySubtask.getSplitFromTestraySubtaskId()});
+
+		if (testraySubtasks.isEmpty()) {
+			return null;
+		}
+
+		return new TestraySubtaskComposite(testraySubtasks.get(0), _themeDisplay);
+	}
+
+	public MBMessage getRootMBMessage() throws Exception {
+		if (_rootMBMessage == null) {
+			_rootMBMessage = TestrayUtil.getRootMBMessage(getUserId(), getGroupId(), TestraySubtask.class.getName(), getTestraySubtaskId());
+		}
+
+		return _rootMBMessage;
+	}
+
+	public long getScore() throws Exception {
+		return _testraySubtask.getScore();
+	}
+
+	public int getStatus() throws Exception {
+		return _testraySubtask.getStatus();
+	}
+
+	public String getStatusLabel() throws Exception {
+		return TestraySubtaskConstants.getStatusLabel(getStatus());
+	}
+
+	public TestrayAssignment getTestrayAssignment() throws Exception {
+		AlloyServiceInvoker testrayAssignmentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayAssignment.class.getName());
+
+		List<TestrayAssignment> testrayAssignments = testrayAssignmentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(TestraySubtask.class), "classPK", getTestraySubtaskId()});
+
+		if (testrayAssignments.isEmpty()) {
+			return null;
+		}
+
+		return testrayAssignments.get(0);
+	}
+
+	public List<TestrayCaseResult> getTestrayCaseResults() throws Exception {
+		return TestrayCaseResultLocalServiceUtil.getTestraySubtaskTestrayCaseResults(getTestraySubtaskId());
+	}
+
+	public List<TestrayIssue> getTestrayIssues() throws Exception {
+		if (_testrayIssues == null) {
+			_testrayIssues = TestrayIssueLocalServiceUtil.getTestraySubtaskTestrayIssues(getTestraySubtaskId());
+		}
+
+		return _testrayIssues;
+	}
+
+	public TestraySubtask getTestraySubtask() throws Exception {
+		return _testraySubtask;
+	}
+
+	public long getTestraySubtaskId() throws Exception {
+		return _testraySubtask.getTestraySubtaskId();
+	}
+
+	public long getTestrayTaskId() throws Exception {
+		return _testraySubtask.getTestrayTaskId();
+	}
+
+	public long getTestsCount() throws Exception {
+		return TestrayCaseResultLocalServiceUtil.getTestraySubtaskTestrayCaseResultsCount(getTestraySubtaskId());
+	}
+
+	public long getThreadId() throws Exception {
+		MBMessage rootMBMessage = getRootMBMessage();
+
+		return rootMBMessage.getThreadId();
+	}
+
+	public long getUserId() throws Exception {
+		return _testraySubtask.getUserId();
+	}
+
+	private User _commentAuthor;
+	private long[] _involvedTestrayCaseTypeIds;
+	private List<TestrayCaseType> _involvedTestrayCaseTypes;
+	private List<TestrayRun> _involvedTestrayRuns;
+	private long[] _involvedTestrayTeamIds;
+	private List<TestrayTeam> _involvedTestrayTeams;
+	private MBMessage _mbMessage;
+	private MBMessage _rootMBMessage;
+	private List<TestrayComponent> _testrayComponents;
+	private List<TestrayIssue> _testrayIssues;
+	private final TestraySubtask _testraySubtask;
+	private final ThemeDisplay _themeDisplay;
+
+}
+%>

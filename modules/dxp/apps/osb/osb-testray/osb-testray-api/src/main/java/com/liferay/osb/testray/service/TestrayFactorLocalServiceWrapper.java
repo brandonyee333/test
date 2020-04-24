@@ -1,0 +1,304 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.testray.service;
+
+import aQute.bnd.annotation.ProviderType;
+
+import com.liferay.portal.kernel.service.ServiceWrapper;
+
+/**
+ * Provides a wrapper for {@link TestrayFactorLocalService}.
+ *
+ * @author Ethan Bustad
+ * @see TestrayFactorLocalService
+ * @generated
+ */
+@ProviderType
+public class TestrayFactorLocalServiceWrapper
+	implements TestrayFactorLocalService,
+			   ServiceWrapper<TestrayFactorLocalService> {
+
+	public TestrayFactorLocalServiceWrapper(
+		TestrayFactorLocalService testrayFactorLocalService) {
+
+		_testrayFactorLocalService = testrayFactorLocalService;
+	}
+
+	/**
+	 * Adds the testray factor to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param testrayFactor the testray factor
+	 * @return the testray factor that was added
+	 */
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor addTestrayFactor(
+		com.liferay.osb.testray.model.TestrayFactor testrayFactor) {
+
+		return _testrayFactorLocalService.addTestrayFactor(testrayFactor);
+	}
+
+	/**
+	 * Creates a new testray factor with the primary key. Does not add the testray factor to the database.
+	 *
+	 * @param testrayFactorId the primary key for the new testray factor
+	 * @return the new testray factor
+	 */
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor createTestrayFactor(
+		long testrayFactorId) {
+
+		return _testrayFactorLocalService.createTestrayFactor(testrayFactorId);
+	}
+
+	/**
+	 * @throws PortalException
+	 */
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
+			com.liferay.portal.kernel.model.PersistedModel persistedModel)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _testrayFactorLocalService.deletePersistedModel(persistedModel);
+	}
+
+	/**
+	 * Deletes the testray factor with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param testrayFactorId the primary key of the testray factor
+	 * @return the testray factor that was removed
+	 * @throws PortalException if a testray factor with the primary key could not be found
+	 */
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor deleteTestrayFactor(
+			long testrayFactorId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _testrayFactorLocalService.deleteTestrayFactor(testrayFactorId);
+	}
+
+	/**
+	 * Deletes the testray factor from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param testrayFactor the testray factor
+	 * @return the testray factor that was removed
+	 */
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor deleteTestrayFactor(
+		com.liferay.osb.testray.model.TestrayFactor testrayFactor) {
+
+		return _testrayFactorLocalService.deleteTestrayFactor(testrayFactor);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
+		return _testrayFactorLocalService.dynamicQuery();
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
+		return _testrayFactorLocalService.dynamicQuery(dynamicQuery);
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayFactorModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+		int end) {
+
+		return _testrayFactorLocalService.dynamicQuery(
+			dynamicQuery, start, end);
+	}
+
+	/**
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayFactorModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
+	@Override
+	public <T> java.util.List<T> dynamicQuery(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
+		int end,
+		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
+
+		return _testrayFactorLocalService.dynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
+		return _testrayFactorLocalService.dynamicQueryCount(dynamicQuery);
+	}
+
+	/**
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
+	@Override
+	public long dynamicQueryCount(
+		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
+		com.liferay.portal.kernel.dao.orm.Projection projection) {
+
+		return _testrayFactorLocalService.dynamicQueryCount(
+			dynamicQuery, projection);
+	}
+
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor fetchTestrayFactor(
+		long testrayFactorId) {
+
+		return _testrayFactorLocalService.fetchTestrayFactor(testrayFactorId);
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
+		getActionableDynamicQuery() {
+
+		return _testrayFactorLocalService.getActionableDynamicQuery();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
+
+		return _testrayFactorLocalService.getIndexableActionableDynamicQuery();
+	}
+
+	/**
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
+	@Override
+	public String getOSGiServiceIdentifier() {
+		return _testrayFactorLocalService.getOSGiServiceIdentifier();
+	}
+
+	@Override
+	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
+			java.io.Serializable primaryKeyObj)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _testrayFactorLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	/**
+	 * Returns the testray factor with the primary key.
+	 *
+	 * @param testrayFactorId the primary key of the testray factor
+	 * @return the testray factor
+	 * @throws PortalException if a testray factor with the primary key could not be found
+	 */
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor getTestrayFactor(
+			long testrayFactorId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _testrayFactorLocalService.getTestrayFactor(testrayFactorId);
+	}
+
+	/**
+	 * Returns a range of all the testray factors.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayFactorModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of testray factors
+	 * @param end the upper bound of the range of testray factors (not inclusive)
+	 * @return the range of testray factors
+	 */
+	@Override
+	public java.util.List<com.liferay.osb.testray.model.TestrayFactor>
+		getTestrayFactors(int start, int end) {
+
+		return _testrayFactorLocalService.getTestrayFactors(start, end);
+	}
+
+	/**
+	 * Returns the number of testray factors.
+	 *
+	 * @return the number of testray factors
+	 */
+	@Override
+	public int getTestrayFactorsCount() {
+		return _testrayFactorLocalService.getTestrayFactorsCount();
+	}
+
+	/**
+	 * Updates the testray factor in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param testrayFactor the testray factor
+	 * @return the testray factor that was updated
+	 */
+	@Override
+	public com.liferay.osb.testray.model.TestrayFactor updateTestrayFactor(
+		com.liferay.osb.testray.model.TestrayFactor testrayFactor) {
+
+		return _testrayFactorLocalService.updateTestrayFactor(testrayFactor);
+	}
+
+	@Override
+	public TestrayFactorLocalService getWrappedService() {
+		return _testrayFactorLocalService;
+	}
+
+	@Override
+	public void setWrappedService(
+		TestrayFactorLocalService testrayFactorLocalService) {
+
+		_testrayFactorLocalService = testrayFactorLocalService;
+	}
+
+	private TestrayFactorLocalService _testrayFactorLocalService;
+
+}

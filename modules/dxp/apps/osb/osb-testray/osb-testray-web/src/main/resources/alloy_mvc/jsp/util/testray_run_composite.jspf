@@ -1,0 +1,295 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayRunComposite {
+
+	public TestrayRunComposite(TestrayRun testrayRun, ThemeDisplay themeDisplay) throws Exception {
+		this(testrayRun, themeDisplay, Collections.emptyMap());
+	}
+
+	public TestrayRunComposite(TestrayRun testrayRun, ThemeDisplay themeDisplay, Map<String, Serializable> testrayCaseResultProperties) throws Exception {
+		_testrayRun = testrayRun;
+		_themeDisplay = themeDisplay;
+
+		_testrayCaseResultProperties = new HashMap<>(testrayCaseResultProperties);
+	}
+
+	public List<TestrayFactor> getAllTestrayFactors() throws Exception {
+		return TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), getTestrayRunId(), getTestrayBuildId());
+	}
+
+	public Date getCreateDate() {
+		return _testrayRun.getCreateDate();
+	}
+
+	public JSONObject getDashboardJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("environment", getTitle());
+
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		jsonObject.put("executionDate", testrayBuild.getDueDate());
+
+		jsonObject.put("jenkinsJobKey", getJenkinsJobKey());
+
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		jsonObject.put("results", JSONFactoryUtil.createJSONObject(JSONFactoryUtil.looseSerialize(testrayCaseResultReporter.getTestrayCaseResultStatusCounts())));
+
+		return jsonObject;
+	}
+
+	public String getDescription() {
+		return _testrayRun.getDescription();
+	}
+
+	public long getJenkinsJobKey() {
+		return _testrayRun.getJenkinsJobKey();
+	}
+
+	public JSONObject getJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("description", getDescription());
+		jsonObject.put("number", getNumber());
+		jsonObject.put("testrayBuildId", getTestrayBuildId());
+		jsonObject.put("testrayFactors", getTestrayFactorsJSONArray());
+		jsonObject.put("testrayRunId", getTestrayRunId());
+
+		return jsonObject;
+	}
+
+	public String getName() {
+		return _testrayRun.getName();
+	}
+
+	public long getNumber() {
+		return _testrayRun.getNumber();
+	}
+
+	public JSONObject getRunMetricsJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("metrics", getTestrayCaseResultStatusCountsJSONObject());
+		jsonObject.put("number", getNumber());
+		jsonObject.put("testrayRunId", getTestrayRunId());
+
+		return jsonObject;
+	}
+
+	public Set<Long> getSelectedTestrayFactorOptionIds() throws Exception {
+		Set<Long> selectedTestrayFactorOptionIds = new HashSet<Long>();
+
+		for (TestrayFactor testrayFactor : getAllTestrayFactors()) {
+			selectedTestrayFactorOptionIds.add(testrayFactor.getTestrayFactorOptionId());
+		}
+
+		return selectedTestrayFactorOptionIds;
+	}
+
+	public TestrayBuild getTestrayBuild() throws Exception {
+		if (_testrayBuild == null) {
+			_testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(getTestrayBuildId());
+		}
+
+		return _testrayBuild;
+	}
+
+	public long getTestrayBuildId() {
+		return _testrayRun.getTestrayBuildId();
+	}
+
+	public String getTestrayBuildName() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getName();
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultComposites();
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites(int[] statuses, long[] testrayCaseIds) throws Exception {
+		String statusesLabel = TestrayCaseResultConstants.getStatusesLabel(statuses);
+
+		List<TestrayCaseResultComposite> testrayCaseResultComposites = _testrayCaseResultCompositesMap.get(statusesLabel);
+
+		if (testrayCaseResultComposites != null) {
+			return testrayCaseResultComposites;
+		}
+
+		testrayCaseResultComposites = new ArrayList<TestrayCaseResultComposite>();
+
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		for (TestrayCaseResultComposite testrayCaseResultComposite : testrayCaseResultReporter.getTestrayCaseResultComposites()) {
+			if (ArrayUtil.contains(statuses, testrayCaseResultComposite.getStatus()) && ((testrayCaseIds.length <= 0) || ArrayUtil.contains(testrayCaseIds, testrayCaseResultComposite.getTestrayCaseId()))) {
+				testrayCaseResultComposites.add(testrayCaseResultComposite);
+			}
+		}
+
+		_testrayCaseResultCompositesMap.put(statusesLabel, testrayCaseResultComposites);
+
+		return testrayCaseResultComposites;
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites(int[] statuses, long[] testrayCaseIds, Comparator<? super TestrayCaseResultComposite> comparator) throws Exception {
+		return getTestrayCaseResultComposites(statuses, testrayCaseIds, QueryUtil.ALL_POS, QueryUtil.ALL_POS, comparator);
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites(int[] statuses, long[] testrayCaseIds, int start, int end, Comparator<? super TestrayCaseResultComposite> comparator) throws Exception {
+		List<TestrayCaseResultComposite> testrayCaseResultComposites = getTestrayCaseResultComposites(statuses, testrayCaseIds);
+
+		ListUtil.sort(testrayCaseResultComposites, comparator);
+
+		return ListUtil.subList(testrayCaseResultComposites, start, end);
+	}
+
+	public int getTestrayCaseResultCompositesCount(int[] statuses, long[] testrayCaseIds) throws Exception {
+		List<TestrayCaseResultComposite> testrayCaseResultComposites = getTestrayCaseResultComposites(statuses, testrayCaseIds);
+
+		return testrayCaseResultComposites.size();
+	}
+
+	public TestrayCaseResultReporter getTestrayCaseResultReporter() throws Exception {
+		if (_testrayCaseResultReporter != null) {
+			return _testrayCaseResultReporter;
+		}
+
+		_testrayCaseResultProperties.put("testrayRunId", getTestrayRunId());
+
+		_testrayCaseResultReporter = new TestrayCaseResultReporter(_themeDisplay, _testrayCaseResultProperties);
+
+		return _testrayCaseResultReporter;
+	}
+
+	public JSONObject getTestrayCaseResultStatusCountsJSONObject() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		String testrayCaseResultStatusCountsJSON = JSONFactoryUtil.looseSerialize(testrayCaseResultReporter.getTestrayCaseResultStatusCounts());
+
+		return JSONFactoryUtil.createJSONObject(testrayCaseResultStatusCountsJSON);
+	}
+
+	public List<TestrayFactor> getTestrayFactors() throws Exception {
+		if (_testrayFactors != null) {
+			return _testrayFactors;
+		}
+
+		_testrayFactors = TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), getTestrayRunId());
+
+		return _testrayFactors;
+	}
+
+	public int getTestrayFactorsCount() throws Exception {
+		List<TestrayFactor> testrayFactors = getTestrayFactors();
+
+		return testrayFactors.size();
+	}
+
+	public JSONArray getTestrayFactorsJSONArray() throws Exception {
+		JSONArray testrayFactorsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		List<TestrayFactor> testrayFactors = getTestrayFactors();
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			JSONObject testrayFactorsJSONObject = JSONFactoryUtil.createJSONObject();
+
+			testrayFactorsJSONObject.put("testrayFactorCategoryId", testrayFactor.getTestrayFactorCategoryId());
+			testrayFactorsJSONObject.put("testrayFactorCategoryName", testrayFactor.getTestrayFactorCategoryName());
+			testrayFactorsJSONObject.put("testrayFactorOptionId", testrayFactor.getTestrayFactorOptionId());
+			testrayFactorsJSONObject.put("testrayFactorOptionName", testrayFactor.getTestrayFactorOptionName());
+
+			testrayFactorsJSONArray.put(testrayFactorsJSONObject);
+		}
+
+		return testrayFactorsJSONArray;
+	}
+
+	public TestrayProject getTestrayProject() throws Exception {
+		if (_testrayProject == null) {
+			_testrayProject = TestrayProjectLocalServiceUtil.getTestrayProject(getTestrayProjectId());
+		}
+
+		return _testrayProject;
+	}
+
+	public long getTestrayProjectId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayProjectId();
+	}
+
+	public String getTestrayProjectName() throws Exception {
+		TestrayProject testrayProject = getTestrayProject();
+
+		return testrayProject.getName();
+	}
+
+	public TestrayRoutine getTestrayRoutine() throws Exception {
+		if (_testrayRoutine == null) {
+			TestrayBuild testrayBuild = getTestrayBuild();
+
+			_testrayRoutine = TestrayRoutineLocalServiceUtil.getTestrayRoutine(testrayBuild.getTestrayRoutineId());
+		}
+
+		return _testrayRoutine;
+	}
+
+	public long getTestrayRoutineId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayRoutineId();
+	}
+
+	public String getTestrayRoutineName() throws Exception {
+		TestrayRoutine testrayRoutine = getTestrayRoutine();
+
+		return testrayRoutine.getName();
+	}
+
+	public TestrayRun getTestrayRun() {
+		return _testrayRun;
+	}
+
+	public long getTestrayRunId() {
+		return _testrayRun.getTestrayRunId();
+	}
+
+	public ThemeDisplay getThemeDisplay() {
+		return _themeDisplay;
+	}
+
+	public String getTitle() throws Exception {
+		return TestrayFactorUtil.getTestrayFactorOptionNamesString(TestrayRun.class.getName(), getTestrayRunId());
+	}
+
+	private TestrayBuild _testrayBuild;
+	private final Map<String, List<TestrayCaseResultComposite>> _testrayCaseResultCompositesMap = new HashMap<String, List<TestrayCaseResultComposite>>();
+	private final Map<String, Serializable> _testrayCaseResultProperties;
+	private TestrayCaseResultReporter _testrayCaseResultReporter;
+	private List<TestrayFactor> _testrayFactors;
+	private TestrayProject _testrayProject;
+	private TestrayRoutine _testrayRoutine;
+	private final TestrayRun _testrayRun;
+	private final ThemeDisplay _themeDisplay;
+
+}
+%>

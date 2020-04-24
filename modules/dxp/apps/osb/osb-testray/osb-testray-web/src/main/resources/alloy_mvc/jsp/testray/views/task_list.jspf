@@ -1,0 +1,119 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<div class="divider"></div>
+
+<div class="testray-sidebar-tasks-container" id="${htmlNamespace}testraySidebarTasksContainer">
+	<div class="testray-sidebar-section-title">
+		<h3>
+			<liferay-ui:message key="tasks" />
+		</h3>
+
+		<span class="item-count item-count-task">${testrayTaskTestraySubtasksMap.size()}</span>
+	</div>
+
+	<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayTaskClass, "index")}'>
+		<ul class="task-list">
+			<c:forEach items="${testrayTaskTestraySubtasksMap.keySet()}" var="testrayTaskComposite">
+				<li class="task-item">
+					<c:set value="<%= StringUtil.merge(TestraySubtaskConstants.STATUSES_DEFAULT) %>" var="defaultSubtaskStatuses" />
+
+					<portlet:renderURL var="viewTestraySubtaskIndexURL">
+						<portlet:param name="controller" value="subtasks" />
+						<portlet:param name="action" value="index" />
+						<portlet:param name="statuses" value='${(testrayTaskComposite.status == TestrayTaskConstants.STATUS_IN_ANALYSIS) ? defaultSubtaskStatuses : ""}' />
+						<portlet:param name="testrayTaskId" value="${testrayTaskComposite.testrayTaskId}" />
+
+						<testray:filter-preference
+							value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "subtasks", "index", testrayProjectId)}'
+						/>
+					</portlet:renderURL>
+
+					<c:set value="${testrayTaskTestraySubtasksMap.get(testrayTaskComposite)}" var="testraySubtasks" />
+
+					<c:if test="${testraySubtasks.size() != 0}">
+						<span class="item-count item-count-alt item-count-subtask">${testraySubtasks.size()}</span>
+					</c:if>
+
+					<aui:a cssClass="task-name" href="${viewTestraySubtaskIndexURL}" label="${fn:escapeXml(testrayTaskComposite.name)}" localizeLabel="${false}" title="${fn:escapeXml(testrayTaskComposite.name)}" />
+
+					<portlet:renderURL var="viewTestrayRunsIndexURL">
+						<portlet:param name="controller" value="runs" />
+						<portlet:param name="action" value="index" />
+						<portlet:param name="testrayBuildId" value="${testrayTaskComposite.testrayBuildId}" />
+
+						<testray:filter-preference
+							value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "runs", "index", testrayProjectId)}'
+						/>
+					</portlet:renderURL>
+
+					<aui:a cssClass="task-build-name" href="${viewTestrayRunsIndexURL}" label="${fn:escapeXml(testrayTaskComposite.testrayBuildName)}" localizeLabel="${false}" />
+
+					<div class="metrics-bar" id="${htmlNamespace}sidebarTaskMetricsBar${testrayTaskComposite.testrayTaskId}"></div>
+
+					<aui:script use="testray-metrics-bar">
+						new Liferay.Testray.MetricsBar(
+							{
+								container: '#${htmlNamespace}sidebarTaskMetricsBar${testrayTaskComposite.testrayTaskId}',
+								data: {
+									'incomplete': {
+										label: '<liferay-ui:message key="incomplete" />',
+										value: ${testrayTaskComposite.incompleteScore}
+									},
+									'others-completed': {
+										label: '<liferay-ui:message key="others-completed" />',
+										value: ${testrayTaskComposite.completeScore} - ${testrayTaskComposite.currentUserCompleteScore}
+									},
+									'self-completed': {
+										label: '<liferay-ui:message key="self-completed" />',
+										value: ${testrayTaskComposite.currentUserCompleteScore}
+									}
+								},
+								total: ${testrayTaskComposite.totalScore}
+							}
+						).render();
+					</aui:script>
+
+					<ul class="subtask-list">
+						<c:forEach items="${testraySubtasks}" var="testraySubtask">
+							<portlet:renderURL var="viewTestraySubtaskIndexURL">
+								<portlet:param name="controller" value="subtasks" />
+								<portlet:param name="action" value="view" />
+								<portlet:param name="id" value="${testraySubtask.testraySubtaskId}" />
+
+								<testray:filter-preference
+									value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "subtasks", "view", testrayProjectId)}'
+								/>
+							</portlet:renderURL>
+
+							<li>
+								<aui:a cssClass="subtask-item" href="${viewTestraySubtaskIndexURL}" title="${testraySubtask.name}">
+									<span class="subtask-name">${testraySubtask.name}</span>
+
+									<span class="subtask-score">
+										<span class="subtask-score-label"><liferay-ui:message key="score" /></span>
+
+										${testraySubtask.score}
+									</span>
+								</aui:a>
+							</li>
+						</c:forEach>
+					</ul>
+				</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+</div>

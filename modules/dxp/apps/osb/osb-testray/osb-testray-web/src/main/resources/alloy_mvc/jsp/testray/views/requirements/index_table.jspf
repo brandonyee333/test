@@ -1,0 +1,121 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<liferay-ui:search-container
+	emptyResultsMessage="there-are-no-requirements"
+	id="requirementsSearchContainer"
+	iteratorURL="${portletURL}"
+	orderByCol="${orderByCol}"
+	orderByType="${orderByType}"
+	rowChecker="${(not empty rowChecker) ? rowChecker : StringPool.BLANK}"
+	total="${alloySearchResult.size}"
+>
+	<liferay-ui:search-container-results
+		results="${testrayRequirementComposites}"
+	/>
+
+	<liferay-ui:search-container-row
+		className="java.lang.Object"
+		escapedModel="${true}"
+		keyProperty="testrayRequirementId"
+		modelVar="testrayRequirementComposite"
+	>
+		<portlet:renderURL var="viewTestrayRequirementURL">
+			<portlet:param name="controller" value="requirements" />
+			<portlet:param name="action" value="view" />
+			<portlet:param name="id" value="${testrayRequirementComposite.testrayRequirementId}" />
+
+			<testray:filter-preference
+				value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "requirements", "view", testrayProjectId)}'
+			/>
+		</portlet:renderURL>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_KEY)}">
+			<liferay-ui:search-container-column-text
+				cssClass="table-column-main"
+				href="${viewTestrayRequirementURL}"
+				orderable="${true}"
+				orderableProperty="key_sortable"
+				property="key"
+			/>
+		</c:if>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_LINK)}">
+			<liferay-ui:search-container-column-text
+				name="link"
+				orderable="${true}"
+				orderableProperty="linkTitle_sortable"
+			>
+				<aui:a href="${testrayRequirementComposite.linkURL}" label="${fn:escapeXml(testrayRequirementComposite.linkTitle)}" target="_blank" />
+			</liferay-ui:search-container-column-text>
+		</c:if>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_TEAM)}">
+			<liferay-ui:search-container-column-text
+				href="${viewTestrayRequirementURL}"
+				name="team"
+				orderable="${true}"
+				orderableProperty="testrayTeamName_sortable"
+				property="testrayTeamName"
+			/>
+		</c:if>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_COMPONENT)}">
+			<liferay-ui:search-container-column-text
+				href="${viewTestrayRequirementURL}"
+				name="component"
+				orderable="${true}"
+				orderableProperty="testrayComponentName_sortable"
+				property="testrayComponentName"
+			/>
+		</c:if>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_JIRA_COMPONENTS)}">
+			<liferay-ui:search-container-column-text
+				href="${viewTestrayRequirementURL}"
+				name="jira-components"
+				orderable="${true}"
+				orderableProperty="components_sortable"
+				property="components"
+			/>
+		</c:if>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_SUMMARY)}">
+			<liferay-ui:search-container-column-text
+				href="${viewTestrayRequirementURL}"
+				orderable="${true}"
+				orderableProperty="summary_sortable"
+				property="summary"
+			/>
+		</c:if>
+
+		<c:if test="${testrayRequirementsIndexColumns.contains(TestrayRequirementConstants.COLUMN_LABEL_DESCRIPTION)}">
+			<liferay-ui:search-container-column-text
+				href="${viewTestrayRequirementURL}"
+				name="description"
+				orderable="${true}"
+				orderableProperty="description_sortable"
+			>
+				<testray:rich-output
+					type="${testrayRequirementComposite.descriptionType}"
+					value="${testrayRequirementComposite.description}"
+				/>
+			</liferay-ui:search-container-column-text>
+		</c:if>
+	</liferay-ui:search-container-row>
+
+	<liferay-ui:search-iterator />
+</liferay-ui:search-container>

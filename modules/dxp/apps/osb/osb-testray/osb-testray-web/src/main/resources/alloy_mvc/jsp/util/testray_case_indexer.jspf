@@ -1,0 +1,159 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseIndexer extends BaseAlloyIndexer {
+
+	public static TestrayCaseIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	public void postProcessContextBooleanFilter(BooleanFilter booleanFilter, SearchContext searchContext) throws Exception {
+		super.postProcessContextBooleanFilter(booleanFilter, searchContext);
+
+		if (searchContext.getAttribute("issues") != null) {
+			searchContext.setAttribute("issues", TestrayIndexerUtil.sanitizeString((String)searchContext.getAttribute("issues")));
+		}
+
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, Field.ENTRY_CLASS_PK);
+		TestrayIndexerUtil.processBooleanAttribute(booleanFilter, searchContext, "blankDescription");
+		TestrayIndexerUtil.processBooleanAttribute(booleanFilter, searchContext, "blankIssues");
+		TestrayIndexerUtil.processBooleanAttribute(booleanFilter, searchContext, "blankSteps");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "description");
+		TestrayIndexerUtil.processBooleanAttribute(booleanFilter, searchContext, "hasTestrayRequirements");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "issues");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "name");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "steps");
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, "testrayCaseTypeId");
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, "testrayComponentId");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "testrayComponentName");
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, "testrayTeamId");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "testrayTeamName");
+		TestrayIndexerUtil.processIntArrayAttribute(booleanFilter, searchContext, "testrayCasePriority");
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, "testrayRequirementId");
+
+		long testraySuiteId = GetterUtil.getLong(searchContext.getAttribute("testraySuiteId"));
+
+		if (testraySuiteId > 0) {
+			booleanFilter.addRequiredTerm("testraySuiteId", testraySuiteId);
+		}
+		else {
+			long testrayProjectId = GetterUtil.getLong(searchContext.getAttribute("testrayProjectId"));
+
+			booleanFilter.addRequiredTerm("testrayProjectId", testrayProjectId);
+		}
+	}
+
+	@Override
+	public void postProcessSearchQuery(BooleanQuery searchQuery, BooleanFilter booleanFilter, SearchContext searchContext) throws Exception {
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> baseModel) throws Exception {
+		TestrayCase testrayCase = (TestrayCase)baseModel;
+
+		Document document = getBaseModelDocument(null, testrayCase);
+
+		document.addText("description", testrayCase.getDescription());
+
+		if (Validator.isNull(testrayCase.getDescription())) {
+			document.addKeyword("blankDescription", true);
+		}
+
+		document.addKeyword("hasTestrayRequirements", TestrayRequirementLocalServiceUtil.hasTestrayCaseTestrayRequirements(testrayCase.getTestrayCaseId()));
+
+		String testrayIssuesString = TestrayIssueUtil.getTestrayCaseTestrayIssuesString(testrayCase.getTestrayCaseId());
+
+		if (Validator.isNull(testrayIssuesString)) {
+			document.addKeyword("blankIssues", true);
+		}
+		else {
+			document.addKeyword("issues", testrayIssuesString);
+			document.addKeyword("issues_sortable", testrayIssuesString);
+		}
+
+		document.addText("name", testrayCase.getName());
+		document.addKeyword("name_sortable", testrayCase.getName());
+		document.addText("steps", testrayCase.getSteps());
+
+		if (Validator.isNull(testrayCase.getSteps())) {
+			document.addKeyword("blankSteps", true);
+		}
+
+		document.addKeyword("testrayCasePriority", testrayCase.getPriority());
+		document.addKeyword("testrayCasePriority_sortable", testrayCase.getPriority());
+
+		TestrayCaseType testrayCaseType = TestrayCaseTypeLocalServiceUtil.fetchTestrayCaseType(testrayCase.getTestrayCaseTypeId());
+
+		if (testrayCaseType != null) {
+			document.addKeyword("testrayCaseTypeId", testrayCase.getTestrayCaseTypeId());
+			document.addText("testrayCaseTypeName", testrayCaseType.getName());
+			document.addKeyword("testrayCaseTypeName_sortable", testrayCaseType.getName());
+		}
+
+		TestrayComponent testrayComponent = TestrayComponentLocalServiceUtil.fetchTestrayComponent(testrayCase.getTestrayComponentId());
+
+		if (testrayComponent != null) {
+			document.addKeyword("testrayComponentId", testrayCase.getTestrayComponentId());
+			document.addText("testrayComponentName", testrayComponent.getName());
+			document.addKeyword("testrayComponentName_sortable", testrayComponent.getName());
+
+			TestrayTeam testrayTeam = TestrayTeamLocalServiceUtil.fetchTestrayTeam(testrayComponent.getTestrayTeamId());
+
+			if (testrayTeam != null) {
+				document.addKeyword("testrayTeamId", testrayTeam.getTestrayTeamId());
+				document.addText("testrayTeamName", testrayTeam.getName());
+				document.addKeyword("testrayTeamName_sortable", testrayTeam.getName());
+			}
+		}
+
+		document.addKeyword("testrayProjectId", testrayCase.getTestrayProjectId());
+
+		long[] testraySuiteIds = TestrayCaseLocalServiceUtil.getTestraySuitePrimaryKeys(testrayCase.getTestrayCaseId());
+
+		document.addKeyword("testraySuiteId", testraySuiteIds);
+
+		List<TestrayRequirement> testrayRequirements = TestrayRequirementLocalServiceUtil.getTestrayCaseTestrayRequirements(testrayCase.getTestrayCaseId());
+
+		if (!testrayRequirements.isEmpty()) {
+			List<Long> testrayRequirementIds = new ArrayList<>();
+
+			for (TestrayRequirement testrayRequirement : testrayRequirements) {
+				testrayRequirementIds.add(testrayRequirement.getTestrayRequirementId());
+			}
+
+			document.addKeyword("testrayRequirementId", ArrayUtil.toLongArray(testrayRequirementIds));
+		}
+
+		return document;
+	}
+
+	@Override
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) {
+		String title = document.get(Field.ENTRY_CLASS_PK);
+
+		return new Summary(locale, title, null);
+	}
+
+	private TestrayCaseIndexer() {
+		setClassName(TestrayCase.class.getName());
+	}
+
+	private static final TestrayCaseIndexer _instance = new TestrayCaseIndexer();
+
+}
+%>

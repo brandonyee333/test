@@ -1,0 +1,89 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseResultBulkOperation {
+
+	public TestrayCaseResultBulkOperation() throws Exception {
+		this(0, null, null);
+	}
+
+	public TestrayCaseResultBulkOperation(long userId, Set<Long> testrayCaseResultIds, ThemeDisplay themeDisplay) throws Exception {
+		assignedUserId = userId;
+
+		if (testrayCaseResultIds != null) {
+			selectedTestrayCaseResultIds = testrayCaseResultIds;
+		}
+		else {
+			selectedTestrayCaseResultIds = new HashSet<Long>();
+		}
+
+		_themeDisplay = themeDisplay;
+	}
+
+	public boolean addTestrayCaseResultId(long testrayCaseResultId) {
+		return selectedTestrayCaseResultIds.add(testrayCaseResultId);
+	}
+
+	public boolean addTestrayCaseResultIds(long[] testrayCaseResultIds) {
+		return selectedTestrayCaseResultIds.addAll(SetUtil.fromArray(testrayCaseResultIds));
+	}
+
+	public boolean containsTestrayCaseResultId(long testrayCaseResultId) {
+		return selectedTestrayCaseResultIds.contains(testrayCaseResultId);
+	}
+
+	public String getAssignedUserFullName() throws Exception {
+		User assignedUser = UserLocalServiceUtil.fetchUser(assignedUserId);
+
+		if (assignedUser == null) {
+			return StringPool.BLANK;
+		}
+
+		return assignedUser.getFullName();
+	}
+
+	public long getAssignedUserId() {
+		return assignedUserId;
+	}
+
+	public List<TestrayCaseResultComposite> getSelectedTestrayCaseResultComposites() throws Exception {
+		return TestrayCompositeUtil.getComposites(ListUtil.fromCollection(selectedTestrayCaseResultIds), TestrayCaseResultComposite.class, new Class<?>[] {Long.class, ThemeDisplay.class}, new Object[] {_themeDisplay});
+	}
+
+	public Set<Long> getSelectedTestrayCaseResultIds() {
+		return selectedTestrayCaseResultIds;
+	}
+
+	public int getSelectedTestrayCaseResultsCount() {
+		return selectedTestrayCaseResultIds.size();
+	}
+
+	public boolean removeTestrayCaseResultId(long testrayCaseResultId) {
+		return selectedTestrayCaseResultIds.remove(testrayCaseResultId);
+	}
+
+	public void setAssignedUserId(long userId) {
+		assignedUserId = userId;
+	}
+
+	protected long assignedUserId;
+	protected Set<Long> selectedTestrayCaseResultIds;
+
+	private final ThemeDisplay _themeDisplay;
+
+}
+%>

@@ -1,0 +1,414 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayFileArchiver {
+
+	public void doArchiveTree(AlloyController alloyController, TestrayBuild testrayBuild) throws Exception {
+		Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
+
+		File tempFolder = _getTempFolder(parentDirectoryPath, testrayBuild);
+
+		String tempFolderPathString = tempFolder.getPath();
+
+		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(testrayBuild.getTestrayBuildId());
+
+		if (testrayTask != null) {
+			AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+			DynamicQuery testraySubtaskDynamicQuery = testraySubtaskAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayTaskId", testrayTask.getTestrayTaskId()});
+
+			Projection testraySubtaskIdProjection = ProjectionFactoryUtil.property("testraySubtaskId");
+
+			testraySubtaskDynamicQuery.setProjection(testraySubtaskIdProjection);
+
+			List<Long> testraySubtaskIds = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(testraySubtaskDynamicQuery);
+
+			if (!testraySubtaskIds.isEmpty()) {
+				_archiveTestraySubtaskTestrayCaseResultMappings(testrayBuild.getTestrayBuildId(), testraySubtaskIds, tempFolderPathString);
+				_archiveTestraySubtaskTestrayIssueMappings(testrayBuild.getTestrayBuildId(), testraySubtaskIds, tempFolderPathString);
+				_archiveTestrayAssignments(testrayBuild.getTestrayBuildId(), testraySubtaskIds, tempFolderPathString);
+				_archiveTestraySubtasks(testrayBuild.getTestrayBuildId(), testrayTask.getTestrayTaskId(), tempFolderPathString);
+			}
+		}
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId()});
+
+		Projection testrayCaseResultIdProjection = ProjectionFactoryUtil.property("testrayCaseResultId");
+
+		testrayCaseResultDynamicQuery.setProjection(testrayCaseResultIdProjection);
+
+		List<Long> testrayCaseResultIds = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+
+		_archiveTestrayCaseResultWarnings(testrayBuild.getTestrayBuildId(), testrayCaseResultIds, tempFolderPathString);
+		_archiveTestrayCaseResultTestrayIssueMappings(testrayBuild.getTestrayBuildId(), testrayCaseResultIds, tempFolderPathString);
+
+		_archiveTestrayCaseResults(testrayBuild.getTestrayBuildId(), tempFolderPathString);
+
+		_archiveTestrayFactors(testrayBuild.getTestrayBuildId(), tempFolderPathString);
+		_archiveTestrayRuns(testrayBuild.getTestrayBuildId(), tempFolderPathString);
+
+		Path zipFilePath = parentDirectoryPath.resolve(String.valueOf(testrayBuild.getTestrayBuildId()) + ".zip");
+
+		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter(zipFilePath.toFile());
+
+		try {
+			_zipDirectory(StringPool.BLANK, tempFolder, zipWriter);
+
+			FileUtil.deltree(tempFolder);
+		}
+		catch (Exception e) {
+			Log log = LogFactoryUtil.getLog("jsp.testray.util.TestrayFileArchiver");
+
+			log.error(e, e);
+
+			throw new AlloyException(e.getMessage(), e);
+		}
+		finally {
+			zipWriter.finish();
+		}
+
+		TestrayArchive testrayArchive = TestrayArchiveLocalServiceUtil.createTestrayArchive(alloyController.increment());
+
+		testrayArchive.setClassPK(testrayBuild.getTestrayBuildId());
+		testrayArchive.setClassName(TestrayBuild.class.getName());
+
+		TestrayArchiveLocalServiceUtil.addTestrayArchive(testrayArchive);
+	}
+
+	public void doRestoreTree(TestrayArchive testrayArchive) throws Exception {
+		String testrayBuildId = String.valueOf(testrayArchive.getClassPK());
+
+		Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ARCHIVES_PATH);
+
+		Path zipFilePath = parentDirectoryPath.resolve(testrayBuildId + ".zip");
+
+		ZipReader zipReader = ZipReaderFactoryUtil.getZipReader(zipFilePath.toFile());
+
+		_restoreTestrayAssignments(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.ASSIGNMENTS);
+		_restoreTestrayCaseResults(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.CASE_RESULTS);
+		_restoreTestrayCaseResultTestrayIssueMappings(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.CASE_RESULT_ISSUE_MAPPINGS);
+		_restoreTestrayCaseResultWarnings(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.CASE_RESULT_WARNINGS);
+		_restoreTestrayFactors(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.FACTORS);
+		_restoreTestrayRuns(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.RUNS);
+		_restoreTestraySubtasks(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.SUBTASKS);
+		_restoreTestraySubtaskTestrayCaseResultMappings(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.SUBTASK_CASE_RESULT_MAPPINGS);
+		_restoreTestraySubtaskTestrayIssueMappings(zipReader, testrayBuildId + StringPool.SLASH + TestrayFileArchiverConstants.SUBTASK_ISSUE_MAPPINGS);
+
+		FileUtil.delete(zipFilePath.toFile());
+	}
+
+	private void _archiveTestrayAssignments(long testrayBuildId, List<Long> testraySubtaskIds, String tempFolderPath) throws Exception {
+		for (TestrayAssignment testrayAssignment : TestrayArchiveUtil.retrieveTestrayAssignments(testraySubtaskIds)) {
+			_writeArchiveFile(String.valueOf(testrayAssignment.getTestrayAssignmentId()), TestrayJSONUtil.serialize(testrayAssignment), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.ASSIGNMENTS);
+
+			TestrayAssignmentLocalServiceUtil.deleteTestrayAssignment(testrayAssignment);
+		}
+	}
+
+	private void _archiveTestrayCaseResults(long testrayBuildId, String tempFolderPath) throws Exception {
+		List<TestrayCaseResult> testrayCaseResults = TestrayArchiveUtil.retrieveTestrayCaseResults(testrayBuildId, true, 1000);
+
+		while (!testrayCaseResults.isEmpty()) {
+			for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+				_writeArchiveFile(String.valueOf(testrayCaseResult.getTestrayCaseResultId()), TestrayJSONUtil.serialize(testrayCaseResult), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.CASE_RESULTS);
+
+				TestrayCaseResultLocalServiceUtil.deleteTestrayCaseResult(testrayCaseResult);
+			}
+
+			testrayCaseResults = TestrayArchiveUtil.retrieveTestrayCaseResults(testrayBuildId, true, 1000);
+		}
+	}
+
+	private void _archiveTestrayCaseResultTestrayIssueMappings(long testrayBuildId, List<Long> testrayCaseResultIds, String tempFolderPath) throws Exception {
+		if (ListUtil.isEmpty(testrayCaseResultIds)) {
+			return;
+		}
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			List<Long> testrayIssueIds = TestrayArchiveUtil.retrieveTestrayCaseResultTestrayIssueIds(testrayCaseResultId);
+
+			if (!testrayIssueIds.isEmpty()) {
+				_writeArchiveFile(String.valueOf(testrayCaseResultId), TestrayJSONUtil.serialize(testrayIssueIds), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.CASE_RESULT_ISSUE_MAPPINGS);
+			}
+
+			TestrayIssueLocalServiceUtil.clearTestrayCaseResultTestrayIssues(testrayCaseResultId);
+		}
+	}
+
+	private void _archiveTestrayCaseResultWarnings(long testrayBuildId, List<Long> testrayCaseResultIds, String tempFolderPath) throws Exception {
+		if (ListUtil.isEmpty(testrayCaseResultIds)) {
+			return;
+		}
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			List<TestrayCaseResultWarning> testrayCaseResultWarnings = TestrayArchiveUtil.retrieveTestrayCaseResultWarnings(testrayCaseResultId, true, 1000);
+
+			while (!testrayCaseResultWarnings.isEmpty()) {
+				for (TestrayCaseResultWarning testrayCaseResultWarning : testrayCaseResultWarnings) {
+					TestrayCaseResultWarningLocalServiceUtil.deleteTestrayCaseResultWarning(testrayCaseResultWarning);
+
+					_writeArchiveFile(String.valueOf(testrayCaseResultWarning.getTestrayCaseResultWarningId()), TestrayJSONUtil.serialize(testrayCaseResultWarning), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.CASE_RESULT_WARNINGS);
+				}
+
+				testrayCaseResultWarnings = TestrayArchiveUtil.retrieveTestrayCaseResultWarnings(testrayCaseResultId, true, 1000);
+			}
+		}
+	}
+
+	private void _archiveTestrayFactors(long testrayBuildId, String tempFolderPath) throws Exception {
+		List<TestrayFactor> testrayFactors = new ArrayList<TestrayFactor>();
+
+		for (TestrayRun testrayRun : TestrayArchiveUtil.retrieveTestrayRuns(testrayBuildId)) {
+			List<TestrayFactor> testrayRunTestrayFactors = TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+
+			for (TestrayFactor testrayFactor : testrayRunTestrayFactors) {
+				_writeArchiveFile(String.valueOf(testrayFactor.getTestrayFactorId()), TestrayJSONUtil.serialize(testrayFactor), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.FACTORS);
+			}
+
+			TestrayFactorUtil.deleteTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+		}
+	}
+
+	private void _archiveTestrayRuns(long testrayBuildId, String tempFolderPath) throws Exception {
+		for (TestrayRun testrayRun : TestrayArchiveUtil.retrieveTestrayRuns(testrayBuildId)) {
+			TestrayRunLocalServiceUtil.deleteTestrayRun(testrayRun);
+
+			_writeArchiveFile(String.valueOf(testrayRun.getTestrayRunId()), TestrayJSONUtil.serialize(testrayRun), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.RUNS);
+		}
+	}
+
+	private void _archiveTestraySubtasks(long testrayBuildId, long testrayTaskId, String tempFolderPath) throws Exception {
+		for (TestraySubtask testraySubtask : TestrayArchiveUtil.retrieveTestraySubtasks(testrayTaskId)) {
+			TestraySubtaskLocalServiceUtil.deleteTestraySubtask(testraySubtask);
+
+			_writeArchiveFile(String.valueOf(testraySubtask.getTestraySubtaskId()), TestrayJSONUtil.serialize(testraySubtask), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.SUBTASKS);
+		}
+	}
+
+	private void _archiveTestraySubtaskTestrayCaseResultMappings(long testrayBuildId, List<Long> testraySubtaskIds, String tempFolderPath) throws Exception {
+		if (ListUtil.isEmpty(testraySubtaskIds)) {
+			return;
+		}
+
+		for (long testraySubtaskId : testraySubtaskIds) {
+			List<Long> testrayCaseResultIds = TestrayArchiveUtil.retrieveTestraySubtaskTestrayCaseResultIds(testraySubtaskId);
+
+			if (!testrayCaseResultIds.isEmpty()) {
+				_writeArchiveFile(String.valueOf(testraySubtaskId), TestrayJSONUtil.serialize(testrayCaseResultIds), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.SUBTASK_CASE_RESULT_MAPPINGS);
+			}
+
+			TestrayCaseResultLocalServiceUtil.clearTestraySubtaskTestrayCaseResults(testraySubtaskId);
+		}
+	}
+
+	private void _archiveTestraySubtaskTestrayIssueMappings(long testrayBuildId, List<Long> testraySubtaskIds, String tempFolderPath) throws Exception {
+		if (ListUtil.isEmpty(testraySubtaskIds)) {
+			return;
+		}
+
+		for (long testraySubtaskId : testraySubtaskIds) {
+			List<Long> testrayIssueIds = TestrayArchiveUtil.retrieveTestraySubtaskTestrayIssueIds(testraySubtaskId);
+
+			if (!testrayIssueIds.isEmpty()) {
+				_writeArchiveFile(String.valueOf(testraySubtaskId), TestrayJSONUtil.serialize(testrayIssueIds), tempFolderPath, String.valueOf(testrayBuildId), TestrayFileArchiverConstants.SUBTASK_ISSUE_MAPPINGS);
+			}
+
+			TestrayIssueLocalServiceUtil.clearTestraySubtaskTestrayIssues(testraySubtaskId);
+		}
+	}
+
+	private File _getTempFolder(Path parentDirectoryPath, TestrayBuild testrayBuild) throws Exception {
+		Path tempFolderPath = parentDirectoryPath.resolve(String.valueOf(testrayBuild.getTestrayBuildId()));
+
+		File tempFolder = tempFolderPath.toFile();
+
+		tempFolder.mkdir();
+
+		return tempFolder;
+	}
+
+	private void _restoreTestrayAssignments(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			String content = zipReader.getEntryAsString(entry);
+
+			TestrayAssignment testrayAssignment = (TestrayAssignment)TestrayJSONUtil.deserialize(content);
+
+			TestrayAssignmentLocalServiceUtil.addTestrayAssignment(testrayAssignment);
+		}
+	}
+
+	private void _restoreTestrayCaseResults(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			String content = zipReader.getEntryAsString(entry);
+
+			TestrayCaseResult testrayCaseResult = (TestrayCaseResult)TestrayJSONUtil.deserialize(content);
+
+			TestrayCase testrayCase = TestrayCaseLocalServiceUtil.fetchTestrayCase(testrayCaseResult.getTestrayCaseId());
+
+			if (testrayCase == null) {
+				continue;
+			}
+
+			JSONObject attachmentsJSONObject = JSONFactoryUtil.createJSONObject(testrayCaseResult.getAttachments());
+
+			Iterator<String> keysIterator = attachmentsJSONObject.keys();
+
+			while (keysIterator.hasNext()) {
+				String key = keysIterator.next();
+
+				String attachmentAbsolutePath = PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+
+				if (!FileUtil.exists(attachmentAbsolutePath)) {
+					keysIterator.remove();
+				}
+			}
+
+			testrayCaseResult.setAttachments(attachmentsJSONObject.toString());
+
+			TestrayCaseResultLocalServiceUtil.addTestrayCaseResult(testrayCaseResult);
+		}
+	}
+
+	private void _restoreTestrayCaseResultTestrayIssueMappings(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			int index = entry.lastIndexOf(StringPool.SLASH);
+
+			long testrayCaseResultId = GetterUtil.getLong(entry.substring(index + 1));
+
+			String content = zipReader.getEntryAsString(entry);
+
+			List<Object> testrayIssueIdsList = (List<Object>)TestrayJSONUtil.deserialize(content);
+
+			long[] testrayIssueIds = new long[testrayIssueIdsList.size()];
+
+			for (int i = 0; i < testrayIssueIds.length; i++) {
+				testrayIssueIds[i] = GetterUtil.getLong(testrayIssueIdsList.get(i));
+			}
+
+			TestrayIssueLocalServiceUtil.addTestrayCaseResultTestrayIssues(testrayCaseResultId, testrayIssueIds);
+		}
+	}
+
+	private void _restoreTestrayCaseResultWarnings(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			String content = zipReader.getEntryAsString(entry);
+
+			TestrayCaseResultWarning testrayCaseResultWarning = (TestrayCaseResultWarning)TestrayJSONUtil.deserialize(content);
+
+			TestrayCaseResultWarningLocalServiceUtil.addTestrayCaseResultWarning(testrayCaseResultWarning);
+		}
+	}
+
+	private void _restoreTestrayFactors(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			String content = zipReader.getEntryAsString(entry);
+
+			TestrayFactor testrayFactor = (TestrayFactor)TestrayJSONUtil.deserialize(content);
+
+			TestrayFactorLocalServiceUtil.addTestrayFactor(testrayFactor);
+		}
+	}
+
+	private void _restoreTestrayRuns(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			String content = zipReader.getEntryAsString(entry);
+
+			TestrayRun testrayRun = (TestrayRun)TestrayJSONUtil.deserialize(content);
+
+			TestrayRunLocalServiceUtil.addTestrayRun(testrayRun);
+		}
+	}
+
+	private void _restoreTestraySubtasks(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			String content = zipReader.getEntryAsString(entry);
+
+			TestraySubtask testraySubtask = (TestraySubtask)TestrayJSONUtil.deserialize(content);
+
+			TestraySubtaskLocalServiceUtil.addTestraySubtask(testraySubtask);
+		}
+	}
+
+	private void _restoreTestraySubtaskTestrayCaseResultMappings(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			int index = entry.lastIndexOf(CharPool.SLASH);
+
+			long testraySubtaskId = GetterUtil.getLong(entry.substring(index + 1));
+
+			String content = zipReader.getEntryAsString(entry);
+
+			List<Object> testrayCaseResultIdsList = (List<Object>)TestrayJSONUtil.deserialize(content);
+
+			long[] testrayCaseResultIds = new long[testrayCaseResultIdsList.size()];
+
+			for (int i = 0; i < testrayCaseResultIds.length; i++) {
+				testrayCaseResultIds[i] = GetterUtil.getLong(testrayCaseResultIdsList.get(i));
+			}
+
+			TestrayCaseResultLocalServiceUtil.addTestraySubtaskTestrayCaseResults(testraySubtaskId, testrayCaseResultIds);
+		}
+	}
+
+	private void _restoreTestraySubtaskTestrayIssueMappings(ZipReader zipReader, String path) throws Exception {
+		for (String entry : zipReader.getFolderEntries(path)) {
+			int index = entry.lastIndexOf(CharPool.SLASH);
+
+			long testraySubtaskId = GetterUtil.getLong(entry.substring(index + 1));
+
+			String content = zipReader.getEntryAsString(entry);
+
+			List<Object> testrayIssueIdsList = (List<Object>)TestrayJSONUtil.deserialize(content);
+
+			long[] testrayIssueIds = new long[testrayIssueIdsList.size()];
+
+			for (int i = 0; i < testrayIssueIds.length; i++) {
+				testrayIssueIds[i] = GetterUtil.getLong(testrayIssueIdsList.get(i));
+			}
+
+			TestrayIssueLocalServiceUtil.addTestraySubtaskTestrayIssues(testraySubtaskId, testrayIssueIds);
+		}
+	}
+
+	private void _writeArchiveFile(String fileName, String content, String tempFolderPath, String... pathElements) throws Exception {
+		Path parentDirectoryPath = Paths.get(tempFolderPath, pathElements);
+
+		Path archiveFilePath = parentDirectoryPath.resolve(fileName);
+
+		FileUtil.write(archiveFilePath.toFile(), content);
+	}
+
+	private void _zipDirectory(String path, File dir, ZipWriter zipWriter) throws IOException {
+		if ((dir == null) || !dir.exists()) {
+			return;
+		}
+
+		File[] files = dir.listFiles();
+
+		for (File file : files) {
+			if (file.isDirectory()) {
+				_zipDirectory(path + file.getName() + StringPool.SLASH, file, zipWriter);
+			}
+			else {
+				zipWriter.addEntry(path + file.getName(), FileUtil.getBytes(file));
+			}
+		}
+	}
+
+}
+%>

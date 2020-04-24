@@ -1,0 +1,320 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayBuildComposite extends BaseTestrayComposite {
+
+	public TestrayBuildComposite(TestrayBuild testrayBuild, ThemeDisplay themeDisplay) throws Exception {
+		this(testrayBuild, themeDisplay, Collections.emptyMap());
+	}
+
+	public TestrayBuildComposite(TestrayBuild testrayBuild, ThemeDisplay themeDisplay, Map<String, Serializable> testrayCaseResultProperties) throws Exception {
+		_testrayBuild = testrayBuild;
+		_themeDisplay = themeDisplay;
+
+		_testrayCaseResultProperties = new HashMap<>(testrayCaseResultProperties);
+	}
+
+	public Date getArchiveDate() throws Exception {
+		TestrayArchive testrayArchive = getTestrayArchive();
+
+		if (testrayArchive == null) {
+			return null;
+		}
+
+		return testrayArchive.getCreateDate();
+	}
+
+	public JSONObject getBuildMetricsJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("metrics", getTestrayCaseResultStatusCountsJSONObject());
+		jsonObject.put("name", getName());
+		jsonObject.put("testrayBuildId", getTestrayBuildId());
+
+		return jsonObject;
+	}
+
+	public Date getCreateDate() {
+		return _testrayBuild.getCreateDate();
+	}
+
+	public String getDescription() {
+		return _testrayBuild.getDescription();
+	}
+
+	public String getDescriptionType() {
+		return _testrayBuild.getDescriptionType();
+	}
+
+	public int getEstimatedTestrayCaseResultsCount() throws Exception {
+		int testrayCasesCount = getTestrayCasesCount();
+		int testrayRunsCount = getTestrayRunsCount();
+
+		return testrayCasesCount * testrayRunsCount;
+	}
+
+	public String getGitHash() {
+		return _testrayBuild.getGitHash();
+	}
+
+	public String getGitHashShortened() {
+		return StringUtil.shorten(getGitHash(), 8, StringPool.BLANK);
+	}
+
+	public String getHtmlURL() {
+		if (_htmlURL != null) {
+			return _htmlURL;
+		}
+
+		return StringPool.BLANK;
+	}
+
+	public JSONObject getJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("archived", isArchived());
+		jsonObject.put("description", getDescription());
+		jsonObject.put("descriptionType", getDescriptionType());
+		jsonObject.put("htmlURL", getHtmlURL());
+		jsonObject.put("name", getName());
+		jsonObject.put("promoted", isPromoted());
+		jsonObject.put("testrayBuildId", getTestrayBuildId());
+		jsonObject.put("testrayProductVersionId", getTestrayProductVersionId());
+		jsonObject.put("testrayProductVersionName", getTestrayProductVersionName());
+		jsonObject.put("testrayRoutineId", getTestrayRoutineId());
+
+		return jsonObject;
+	}
+
+	public TestrayBuild getLatestTestrayBuild() throws Exception {
+		if (!isTemplate()) {
+			return null;
+		}
+
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayBuildModelImpl.TABLE_NAME, "createDate", false);
+
+		List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(new Object[] {"templateTestrayBuildId", getTestrayBuildId()}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+
+		if (!testrayBuilds.isEmpty()) {
+			return testrayBuilds.get(0);
+		}
+
+		return null;
+	}
+
+	public String getName() {
+		return _testrayBuild.getName();
+	}
+
+	public int getStatus() {
+		return _testrayBuild.getStatus();
+	}
+
+	public TestrayArchive getTestrayArchive() throws Exception {
+		if ((_testrayArchive == null) && isArchived()) {
+			AlloyServiceInvoker testrayArchiveAlloyServiceInvoker = new AlloyServiceInvoker(TestrayArchive.class.getName());
+
+			List<TestrayArchive> testrayArchives = testrayArchiveAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(TestrayBuild.class.getName()), "classPK", _testrayBuild.getTestrayBuildId()});
+
+			if (!testrayArchives.isEmpty()) {
+				_testrayArchive = testrayArchives.get(0);
+			}
+		}
+
+		return _testrayArchive;
+	}
+
+	public TestrayBuild getTestrayBuild() {
+		return _testrayBuild;
+	}
+
+	public long getTestrayBuildId() {
+		return _testrayBuild.getTestrayBuildId();
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultComposites();
+	}
+
+	public TestrayCaseResultReporter getTestrayCaseResultReporter() throws Exception {
+		if (_testrayCaseResultReporter != null) {
+			return _testrayCaseResultReporter;
+		}
+
+		_testrayCaseResultProperties.put("testrayBuildId", _testrayBuild.getTestrayBuildId());
+
+		_testrayCaseResultReporter = TestrayBuildUtil.getTestrayCaseResultReporter(_themeDisplay, _testrayCaseResultProperties);
+
+		return _testrayCaseResultReporter;
+	}
+
+	public JSONObject getTestrayCaseResultStatusCountsJSONObject() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		String testrayCaseResultStatusCountsJSON = JSONFactoryUtil.looseSerialize(testrayCaseResultReporter.getTestrayCaseResultStatusCounts());
+
+		return JSONFactoryUtil.createJSONObject(testrayCaseResultStatusCountsJSON);
+	}
+
+	public int getTestrayCasesCount() throws Exception {
+		return TestrayCaseLocalServiceUtil.getTestrayBuildTestrayCasesCount(getTestrayBuildId());
+	}
+
+	public TestrayProductVersion getTestrayProductVersion() throws Exception {
+		if (_testrayProductVersion == null) {
+			_testrayProductVersion = TestrayProductVersionLocalServiceUtil.getTestrayProductVersion(getTestrayProductVersionId());
+		}
+
+		return _testrayProductVersion;
+	}
+
+	public long getTestrayProductVersionId() throws Exception {
+		return _testrayBuild.getTestrayProductVersionId();
+	}
+
+	public String getTestrayProductVersionName() throws Exception {
+		TestrayProductVersion testrayProductVersion = getTestrayProductVersion();
+
+		return testrayProductVersion.getName();
+	}
+
+	public TestrayProject getTestrayProject() throws Exception {
+		if (_testrayProject == null) {
+			_testrayProject = TestrayProjectLocalServiceUtil.getTestrayProject(getTestrayProjectId());
+		}
+
+		return _testrayProject;
+	}
+
+	public long getTestrayProjectId() {
+		return _testrayBuild.getTestrayProjectId();
+	}
+
+	public String getTestrayProjectName() throws Exception {
+		TestrayProject testrayProject = getTestrayProject();
+
+		return testrayProject.getName();
+	}
+
+	public TestrayRoutine getTestrayRoutine() throws Exception {
+		if (_testrayRoutine == null) {
+			_testrayRoutine = TestrayRoutineLocalServiceUtil.getTestrayRoutine(getTestrayRoutineId());
+		}
+
+		return _testrayRoutine;
+	}
+
+	public long getTestrayRoutineId() {
+		return _testrayBuild.getTestrayRoutineId();
+	}
+
+	public String getTestrayRoutineName() throws Exception {
+		TestrayRoutine testrayRoutine = getTestrayRoutine();
+
+		return testrayRoutine.getName();
+	}
+
+	public int getTestrayRunsCount() throws Exception {
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		return (int)testrayRunAlloyServiceInvoker.executeDynamicQueryCount(new Object[] {"testrayBuildId", getTestrayBuildId()});
+	}
+
+	public TestrayTask getTestrayTask() throws Exception {
+		if (_testrayTask == null) {
+			_testrayTask = TestrayTaskUtil.fetchOrCreateTestrayTask(getTestrayBuild());
+		}
+
+		return _testrayTask;
+	}
+
+	public TestrayTaskComposite getTestrayTaskComposite() throws Exception {
+		if (_testrayTaskComposite == null) {
+			_testrayTaskComposite = new TestrayTaskComposite(getTestrayTask(), _themeDisplay, _themeDisplay.getUser());
+		}
+
+		return _testrayTaskComposite;
+	}
+
+	public long getTestrayTaskId() throws Exception {
+		TestrayTask testrayTask = getTestrayTask();
+
+		return testrayTask.getTestrayTaskId();
+	}
+
+	public int getTestrayTaskStatus() throws Exception {
+		TestrayTask testrayTask = getTestrayTask();
+
+		if (testrayTask.isNew()) {
+			return 0;
+		}
+
+		return testrayTask.getStatus();
+	}
+
+	public String getTestrayTaskStatusLabel() throws Exception {
+		int status = getTestrayTaskStatus();
+
+		if (status == 0) {
+			return StringPool.BLANK;
+		}
+
+		return TestrayTaskConstants.getStatusLabel(status);
+	}
+
+	public ThemeDisplay getThemeDisplay() {
+		return _themeDisplay;
+	}
+
+	public String getUserName() throws Exception {
+		return _testrayBuild.getUserName();
+	}
+
+	public boolean isArchived() throws Exception {
+		return TestrayBuildUtil.isArchived(_testrayBuild);
+	}
+
+	public boolean isPromoted() {
+		return _testrayBuild.isPromoted();
+	}
+
+	public boolean isTemplate() {
+		return _testrayBuild.isTemplate();
+	}
+
+	public void setHtmlURL(String htmlURL) {
+		_htmlURL = htmlURL;
+	}
+
+	private String _htmlURL;
+	private TestrayArchive _testrayArchive;
+	private final TestrayBuild _testrayBuild;
+	private final Map<String, Serializable> _testrayCaseResultProperties;
+	private TestrayCaseResultReporter _testrayCaseResultReporter;
+	private TestrayProductVersion _testrayProductVersion;
+	private TestrayProject _testrayProject;
+	private TestrayRoutine _testrayRoutine;
+	private TestrayTask _testrayTask;
+	private TestrayTaskComposite _testrayTaskComposite;
+	private final ThemeDisplay _themeDisplay;
+
+}
+%>

@@ -1,0 +1,157 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<testray:table-toolbar
+	title="details"
+>
+	<testray:filter>
+		<aui:input name="redirect" type="hidden" value="${redirect}" />
+
+		<aui:input name="compare" type="hidden" value="${true}" />
+		<aui:input name="testrayRunIdA" type="hidden" value="${testrayRunCompositeA.testrayRunId}" />
+		<aui:input name="testrayRunIdB" type="hidden" value="${testrayRunCompositeB.testrayRunId}" />
+		<aui:input name="view" type="hidden" value="details" />
+
+		<testray:filter-element
+			items="${TestrayCaseConstants.PRIORITIES}"
+			label="priority"
+			name="priorities"
+			selectedLabel="priority-x"
+			selectedValue="${testrayCasePriorities}"
+			type="checkboxes"
+		/>
+
+		<testray:filter-element
+			items="${testrayTeams}"
+			label="team"
+			modelClassName="com.liferay.osb.testray.model.TestrayTeam"
+			name="testrayTeamId"
+			selectedLabel="team-x"
+			type="select-model"
+		/>
+
+		<testray:filter-element
+			items="${testrayComponents}"
+			label="component"
+			modelClassName="com.liferay.osb.testray.model.TestrayComponent"
+			name="testrayComponentId"
+			selectedLabel="component-x"
+			type="select-model"
+		/>
+
+		<testray:filter-element
+			label="case-name"
+			name="testrayCaseName"
+			selectedLabel="case-name-x"
+			type="text"
+		/>
+
+		<aui:field-wrapper>
+			<aui:select label="status-in-run-a" name="statusA">
+				<aui:option label="" value="${-1}" />
+
+				<c:forEach items="${TestrayCaseResultConstants.STATUSES_COMPARE}" var="status">
+					<aui:option label="${TestrayCaseResultConstants.getStatusLabel(status)}" value="${status}" />
+				</c:forEach>
+			</aui:select>
+		</aui:field-wrapper>
+
+		<aui:field-wrapper>
+			<aui:select label="status-in-run-b" name="statusB">
+				<aui:option label="" value="${-1}" />
+
+				<c:forEach items="${TestrayCaseResultConstants.STATUSES_COMPARE}" var="status">
+					<aui:option label="${TestrayCaseResultConstants.getStatusLabel(status)}" value="${status}" />
+				</c:forEach>
+			</aui:select>
+		</aui:field-wrapper>
+	</testray:filter>
+</testray:table-toolbar>
+
+<liferay-ui:search-container
+	emptyResultsMessage="there-are-no-results"
+	iteratorURL="${portletURL}"
+	orderByCol="${orderByCol}"
+	orderByType="${orderByType}"
+	total="${testrayCaseResultComparisons.size()}"
+>
+	<liferay-ui:search-container-results
+		results="${testrayCaseResultComparisons}"
+	/>
+
+	<liferay-ui:search-container-row
+		className="java.lang.Object"
+		escapedModel="${true}"
+		keyProperty="testrayCaseId"
+		modelVar="testrayCaseResultComparison"
+	>
+		<liferay-ui:search-container-column-text
+			orderable="${true}"
+			property="priority"
+		/>
+
+		<liferay-ui:search-container-column-text
+			name="component"
+			orderable="${true}"
+			orderableProperty="testrayComponentName"
+			property="testrayComponentName"
+		/>
+
+		<liferay-ui:search-container-column-text
+			cssClass="table-column-main"
+			name="case"
+			orderable="${true}"
+			orderableProperty="testrayCaseName"
+			property="testrayCaseName"
+		/>
+
+		<portlet:renderURL var="viewTestrayCaseResultAURL">
+			<portlet:param name="controller" value="case_results" />
+			<portlet:param name="action" value="view" />
+			<portlet:param name="id" value="${testrayCaseResultComparison.testrayCaseResultIdA}" />
+		</portlet:renderURL>
+
+		<c:set value="${testrayCaseResultComparison.statusLabelA}" var="statusA" />
+
+		<liferay-ui:search-container-column-text
+			name="status-in-run-a"
+			orderable="${true}"
+			orderableProperty="statusLabelA"
+		>
+			<aui:a cssClass="status ${statusA}" href="${(testrayCaseResultComparison.testrayCaseResultIdA > 0) ? viewTestrayCaseResultAURL : StringPool.BLANK}" label="${statusA}" target="blank" />
+		</liferay-ui:search-container-column-text>
+
+		<portlet:renderURL var="viewTestrayCaseResultBURL">
+			<portlet:param name="controller" value="case_results" />
+			<portlet:param name="action" value="view" />
+			<portlet:param name="id" value="${testrayCaseResultComparison.testrayCaseResultIdB}" />
+		</portlet:renderURL>
+
+		<c:set value="${testrayCaseResultComparison.statusLabelB}" var="statusB" />
+
+		<liferay-ui:search-container-column-text
+			name="status-in-run-b"
+			orderable="${true}"
+			orderableProperty="statusLabelB"
+		>
+			<aui:a cssClass="status ${statusB}" href="${(testrayCaseResultComparison.testrayCaseResultIdB > 0) ? viewTestrayCaseResultBURL : StringPool.BLANK}" label="${statusB}" target="blank" />
+		</liferay-ui:search-container-column-text>
+	</liferay-ui:search-container-row>
+
+	<liferay-ui:search-iterator
+		paginate="${false}"
+	/>
+</liferay-ui:search-container>

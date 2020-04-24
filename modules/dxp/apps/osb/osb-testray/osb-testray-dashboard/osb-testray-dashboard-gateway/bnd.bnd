@@ -1,0 +1,3 @@
+Bundle-Name: Liferay OSB Testray Dashboard Gateway
+Bundle-SymbolicName: com.liferay.osb.testray.dashboard.gateway
+Bundle-Version: 1.0.0

@@ -1,0 +1,39 @@
+.pull-request-item {
+	display: inline-block;
+	margin-bottom: 1vw;
+	position: relative;
+	width: 16.667%;
+
+	.pull-request-hidden-amount, .pull-request-receiver, .pull-request-sender {
+		background-size: 100%;
+		border-radius: 2vw;
+		display: inline-block;
+		font-size: 1.2vw;
+		vertical-align: top;
+	}
+
+	.pull-request-hidden-amount, .pull-request-sender {
+		height: 2.5vw;
+		width: 2.5vw;
+	}
+
+	.pull-request-hidden-amount {
+		background-color: $itemBackgroundColor;
+		font-weight: 500;
+		line-height: 2.5vw;
+		text-align: center;
+	}
+
+	.pull-request-receiver, .pull-request-sender {
+		background-color: $itemBackgroundColor;
+	}
+
+	.pull-request-receiver {
+		border: 3px solid $panelBackgroundColor;
+		height: 1.8vw;
+		left: 1.2vw;
+		position: absolute;
+		top: 1.2vw;
+		width: 1.8vw;
+	}
+}

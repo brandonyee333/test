@@ -1,0 +1,166 @@
+.comment-metadata {
+	color: $label-color;
+	font-size: 0.9em;
+	padding-top: 5px;
+}
+
+.data-list {
+	margin: 0;
+
+	dd {
+		padding-bottom: $default-vertical-spacing;
+
+		@media (max-width: $breakpoint-large) {
+			padding-bottom: $compact-vertical-spacing;
+		}
+
+		&:last-child {
+			padding-bottom: 0;
+		}
+	}
+
+	dt {
+		@include label-text();
+
+		margin-bottom: 5px;
+		overflow: initial;
+		text-align: left;
+		white-space: normal;
+	}
+
+	input, textarea {
+		width: 100%;
+	}
+
+	li {
+		padding-bottom: 5px;
+	}
+
+	&.dl-horizontal {
+		dd {
+			margin-left: 150px;
+
+			&:after, &:before {
+				content: " ";
+				display: table;
+			}
+
+			&:after {
+				clear: both;
+			}
+		}
+
+		dt {
+			margin-bottom: 0;
+			width: 130px;
+		}
+	}
+}
+
+.legend-container {
+	&.metadata-block-counts {
+		margin-top: 40px;
+	}
+}
+
+.metadata-panel.panel-group .panel {
+	border: 1px solid $table-border-color;
+	border-radius: $border-radius;
+	box-shadow: none;
+
+	.panel-heading {
+		background-color: $background-color;
+
+		&.toggler-header {
+			.panel-toggle {
+				&:before {
+					color: $label-color;
+					content: "\f105";
+					display: inline-block;
+					font-family: "fontawesome-alloy";
+					font-size: 1.2em;
+					margin-right: 10px;
+					text-align: center;
+					width: 0.8em;
+				}
+			}
+		}
+
+		&.toggler-header-expanded {
+			.panel-toggle {
+				&:before {
+					content: "\f107";
+				}
+			}
+		}
+
+		.panel-toggle {
+			font-size: 1.2em;
+			font-weight: $font-header-weight;
+			padding: 10px 18px;
+
+			@media (max-width: $breakpoint-large) {
+				padding: 8px 24px;
+			}
+		}
+	}
+
+	.panel-body {
+		border-top: 1px solid $table-border-color;
+		padding: 18px 24px;
+	}
+}
+
+.score-text {
+	font-size: 1.2em;
+}
+
+.no-issues {
+	color: $content-empty-color;
+}
+
+.testray-issue-list {
+	@include display(flex);
+	@include flex-wrap(wrap);
+
+	list-style: none;
+	margin: 0;
+
+	.testray-issue-link {
+		@include display(flex);
+
+		padding: 0;
+		white-space: nowrap;
+
+		&:not(:last-child):after {
+			content: ',\00a0';
+		}
+	}
+}
+
+.testray-data-content {
+	margin-bottom: 25px;
+}
+
+.testray-data-divider {
+	background-color: $border-color;
+	height: 1px;
+	margin-bottom: 25px;
+	width: 100%;
+}
+
+.testray-data-header {
+	margin: 0 0 20px;
+}
+
+.testray-description-block {
+	background-color: $background-color;
+	border-width: 0;
+	font: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+.view-issue-link {
+	font-size: $font-size-small;
+}

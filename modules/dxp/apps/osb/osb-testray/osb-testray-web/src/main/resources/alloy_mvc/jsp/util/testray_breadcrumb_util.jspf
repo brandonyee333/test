@@ -1,0 +1,229 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayBreadcrumbUtil {
+
+	public static List<TestrayBreadcrumbComposite> getTestrayBreadcrumbComposites(AlloyController alloyController, String actionPath, String controllerPath) throws Exception {
+		String className = TestrayProject.class.getName();
+		long classPK = 0;
+
+		if (actionPath.equals("compare")) {
+			long testrayRunId = ParamUtil.getLong(alloyController.getRequest(), "testrayRunIdA");
+
+			classPK = TestrayProjectUtil.getTestrayProjectId(TestrayRun.class.getName(), testrayRunId);
+		}
+		else if (actionPath.equals("metrics")) {
+			className = TestrayBuild.class.getName();
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayBuildId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_USER)) {
+			className = User.class.getName();
+		}
+		else if (actionPath.equals("edit") || actionPath.equals("history") || actionPath.equals("requirements") || actionPath.equals("view")) {
+			className = TestrayBreadcrumbConstants.getControllerClassName(controllerPath);
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "id");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_BUILD)) {
+			className = TestrayRoutine.class.getName();
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayRoutineId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_BULK)) {
+			className = TestrayRun.class.getName();
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayRunId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_CASE_RESULT)) {
+			className = TestrayBuild.class.getName();
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayBuildId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_CASE)) {
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayProjectId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_INDEXERS)) {
+			className = Indexer.class.getName();
+
+			classPK = 0;
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_REQUIREMENT)) {
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayProjectId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_ROUTINE)) {
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayProjectId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_RUN)) {
+			className = TestrayBuild.class.getName();
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayBuildId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_SUBTASK)) {
+			className = TestrayTask.class.getName();
+
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayTaskId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_SUITE)) {
+			classPK = ParamUtil.getLong(alloyController.getRequest(), "testrayProjectId");
+		}
+		else if (controllerPath.equals(TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_TASK)) {
+			className = TestrayTask.class.getName();
+		}
+
+		List<TestrayBreadcrumbComposite> testrayBreadcrumbComposites = _getTestrayBreadcrumbComposites(alloyController, className, classPK);
+
+		return testrayBreadcrumbComposites;
+	}
+
+	private static BaseModel<?> _fetchBaseModel(String className, long classPK) throws Exception {
+		AlloyServiceInvoker alloyServiceInvoker = new AlloyServiceInvoker(className);
+
+		return alloyServiceInvoker.fetchModel(classPK);
+	}
+
+	private static String _getDisplayName(String className, long classPK) throws Exception {
+		if (className.equals(Indexer.class.getName())) {
+			return "manage-indexers";
+		}
+		else if (className.equals(TestrayProject.class.getName()) && (classPK == 0)) {
+			return "project-directory";
+		}
+		else if (className.equals(TestrayTask.class.getName()) && (classPK == 0)) {
+			return "testflow";
+		}
+		else if (className.equals(User.class.getName()) && (classPK == 0)) {
+			return "manage-users";
+		}
+
+		BaseModel<?> baseModel = _fetchBaseModel(className, classPK);
+
+		if (className.equals(TestrayRun.class.getName())) {
+			NumberFormat numberFormat = NumberFormat.getIntegerInstance();
+
+			numberFormat.setMinimumIntegerDigits(2);
+
+			int runNumber = BeanPropertiesUtil.getInteger(baseModel, "number", -1);
+
+			if (runNumber < 0) {
+				return null;
+			}
+
+			return numberFormat.format(runNumber);
+		}
+		else if (className.equals(TestrayRequirement.class.getName())) {
+			return HtmlUtil.escape(BeanPropertiesUtil.getString(baseModel, "key", null));
+		}
+		else if (className.equals(TestrayCaseResult.class.getName())) {
+			long testrayCaseId = BeanPropertiesUtil.getLong(baseModel, "testrayCaseId");
+
+			TestrayCase testrayCase = TestrayCaseLocalServiceUtil.fetchTestrayCase(testrayCaseId);
+
+			if (testrayCase == null) {
+				return null;
+			}
+
+			return HtmlUtil.escape(testrayCase.getName());
+		}
+
+		return HtmlUtil.escape(BeanPropertiesUtil.getString(baseModel, "name", null));
+	}
+
+	private static TestrayBreadcrumbComposite _getTestrayBreadcrumbComposite(AlloyController alloyController, String className, long classPK) throws Exception {
+		String controller = StringPool.BLANK;
+		String cssClassName = TestrayBreadcrumbConstants.getCSSClassName(className);
+
+		String displayName = _getDisplayName(className, classPK);
+
+		if (displayName == null) {
+			return null;
+		}
+
+		String url = null;
+
+		if (classPK == 0) {
+			url = StringPool.BLANK;
+		}
+		else if (className.equals(TestrayBuild.class.getName())) {
+			controller = TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_CASE_RESULT;
+
+			url = TestrayUtil.getURL(alloyController, controller, null, 0, "testrayBuildId", classPK);
+		}
+		else if (className.equals(TestrayProject.class.getName())) {
+			controller = TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_ROUTINE;
+
+			url = TestrayUtil.getURL(alloyController, controller, null, 0, "testrayProjectId", classPK);
+		}
+		else if (className.equals(TestrayRoutine.class.getName())) {
+			controller = TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_BUILD;
+
+			url = TestrayUtil.getURL(alloyController, controller, null, 0, "testrayRoutineId", classPK);
+		}
+		else if (className.equals(TestrayRun.class.getName())) {
+			controller = TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_CASE_RESULT;
+
+			TestrayRun testrayRun = TestrayRunLocalServiceUtil.getTestrayRun(classPK);
+
+			url = TestrayUtil.getURL(alloyController, controller, null, 0, "testrayBuildId", testrayRun.getTestrayBuildId(), "testrayRunId", classPK, "statuses", StringUtil.merge(TestrayCaseResultConstants.STATUSES_NOT_PASSED));
+		}
+		else if (className.equals(TestrayTask.class.getName())) {
+			controller = TestrayBreadcrumbConstants.CONTROLLER_TESTRAY_SUBTASK;
+
+			url = TestrayUtil.getURL(alloyController, controller, null, 0, "testrayTaskId", classPK, "statuses", StringUtil.merge(TestraySubtaskConstants.STATUSES_DEFAULT));
+		}
+		else {
+			controller = TestrayBreadcrumbConstants.getClassNameController(className);
+
+			url = TestrayUtil.getURL(alloyController, controller, null, classPK);
+		}
+
+		url = TestrayFilterUtil.setFilterPreferences(alloyController.getRequest(), controller, "index", TestrayProjectUtil.getTestrayProjectId(className, classPK), url);
+
+		return new TestrayBreadcrumbComposite(className, classPK, cssClassName, displayName, url);
+	}
+
+	private static List<TestrayBreadcrumbComposite> _getTestrayBreadcrumbComposites(AlloyController alloyController, String className, long classPK) throws Exception {
+		List<TestrayBreadcrumbComposite> testrayBreadcrumbComposites = new ArrayList<TestrayBreadcrumbComposite>();
+
+		while (Validator.isNotNull(className)) {
+			TestrayBreadcrumbComposite testrayBreadcrumbComposite = _getTestrayBreadcrumbComposite(alloyController, className, classPK);
+
+			if (testrayBreadcrumbComposite == null) {
+				break;
+			}
+
+			testrayBreadcrumbComposites.add(testrayBreadcrumbComposite);
+
+			try {
+				BaseModel<?> baseModel = _fetchBaseModel(className, classPK);
+
+				className = TestrayBreadcrumbConstants.getParentClassName(className);
+
+				classPK = BeanPropertiesUtil.getLongSilent(baseModel, TestrayBreadcrumbConstants.getClassNameFieldName(className));
+			}
+			catch (Exception e) {
+				break;
+			}
+		}
+
+		Collections.reverse(testrayBreadcrumbComposites);
+
+		return testrayBreadcrumbComposites;
+	}
+
+}
+%>

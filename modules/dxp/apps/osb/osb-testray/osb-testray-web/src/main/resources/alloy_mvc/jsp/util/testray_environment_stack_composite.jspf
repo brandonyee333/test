@@ -1,0 +1,73 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayEnvironmentStackComposite {
+
+	public TestrayEnvironmentStackComposite(Class<? extends BaseModel<?>> clazz, long classPK) throws Exception {
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		_testrayFactors = testrayFactorAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(clazz), "classPK", classPK});
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof TestrayEnvironmentStackComposite)) {
+			return false;
+		}
+
+		TestrayEnvironmentStackComposite testrayEnvironmentStackComposite = (TestrayEnvironmentStackComposite)obj;
+
+		List<TestrayFactor> testrayFactors1 = getTestrayFactors();
+		List<TestrayFactor> testrayFactors2 = testrayEnvironmentStackComposite.getTestrayFactors();
+
+		if (testrayFactors1.size() != testrayFactors2.size()) {
+			return false;
+		}
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayFactorModelImpl.TABLE_NAME, "testrayFactorCategoryId", true);
+
+		testrayFactors1 = ListUtil.sort(testrayFactors1, obc);
+		testrayFactors2 = ListUtil.sort(testrayFactors2, obc);
+
+		for (int i = 0; i < testrayFactors1.size(); i++) {
+			TestrayFactor testrayFactor1 = testrayFactors1.get(i);
+			TestrayFactor testrayFactor2 = testrayFactors2.get(i);
+
+			if (testrayFactor1.getTestrayFactorCategoryId() != testrayFactor2.getTestrayFactorCategoryId()) {
+				return false;
+			}
+
+			if (testrayFactor1.getTestrayFactorOptionId() != testrayFactor2.getTestrayFactorOptionId()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public List<TestrayFactor> getTestrayFactors() {
+		return _testrayFactors;
+	}
+
+	private final List<TestrayFactor> _testrayFactors;
+
+}
+%>

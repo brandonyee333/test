@@ -1,0 +1,65 @@
+/* ---------- Overrides for choices library ---------- */
+
+.choices[data-type*=select-multiple], .choices[data-type*=text] {
+	.choices__button {
+		background-image: url('../images/cross.svg');
+		border-width: 0;
+		margin: 0 -4px;
+	}
+}
+
+.choices__input {
+	background-color: $color-white;
+
+	&:not([type="checkbox"]):not([type="radio"]) {
+		&, &:focus {
+			border-width: 0;
+			box-shadow: none;
+		}
+	}
+}
+
+.choices__list--multiple {
+	.choices__item {
+		background-color: $color-primary;
+		border-radius: 0;
+		border-width: 0;
+		font-size: $font-size-small;
+		line-height: 1.4;
+
+		&.is-highlighted {
+			background-color: $color-primary-dark;
+			border-width: 0;
+		}
+	}
+}
+
+.choices__inner {
+	background-color: $color-white;
+	border: 1px solid $input-border-color;
+	border-radius: $border-radius;
+}
+
+.choices__list--dropdown {
+	background-color: $color-white;
+	border-width: 0;
+	box-shadow: $box-shadow;
+
+	.choices__item {
+		padding: 8px 10px;
+	}
+
+	.choices__item--selectable {
+		padding-right: 10px;
+	}
+}
+
+.is-focused, .is-open {
+	&, &.is-flipped {
+		.choices__inner {
+			border: 1px solid $input-border-focus-color;
+			border-radius: $border-radius;
+			box-shadow: 0 0 0 1px $input-border-focus-color;
+		}
+	}
+}

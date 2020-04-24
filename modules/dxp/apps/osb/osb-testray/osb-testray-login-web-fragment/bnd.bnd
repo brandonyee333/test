@@ -1,0 +1,5 @@
+Bundle-Name: Liferay OSB Testray Login Web Fragment
+Bundle-SymbolicName: com.liferay.osb.testray.login.web.fragment
+Bundle-Version: 1.0.0
+Fragment-Host: com.liferay.login.web;bundle-version="1.0.0"
+-sources: true

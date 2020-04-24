@@ -1,0 +1,45 @@
+.breadcrumb-content {
+	.breadcrumb-icon-edit {
+		cursor: pointer;
+	}
+
+	.breadcrumb-build:before {
+		content: 'Build';
+	}
+
+	.breadcrumb-case:before {
+		content: 'Case';
+	}
+
+	.breadcrumb-case-result:before {
+		content: 'Case Result';
+	}
+
+	.breadcrumb-indexer:before {
+		content: 'Indexer';
+	}
+
+	.breadcrumb-project:before {
+		content: 'Project';
+	}
+
+	.breadcrumb-routine:before {
+		content: 'Routine';
+	}
+
+	.breadcrumb-run:before {
+		content: 'Run';
+	}
+
+	.breadcrumb-subtask:before {
+		content: 'Subtask';
+	}
+
+	.breadcrumb-suite:before {
+		content: 'Suite';
+	}
+
+	.breadcrumb-task:before {
+		content: 'Task';
+	}
+}

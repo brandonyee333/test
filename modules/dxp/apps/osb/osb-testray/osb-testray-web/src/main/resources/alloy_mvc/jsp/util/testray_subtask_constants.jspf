@@ -1,0 +1,91 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestraySubtaskConstants {
+
+	public static final String COLUMN_LABEL_ASSIGNEE = "assignee";
+
+	public static final String COLUMN_LABEL_ERRORS = "errors";
+
+	public static final String COLUMN_LABEL_SCORE = "score";
+
+	public static final String COLUMN_LABEL_STATUS = "status";
+
+	public static final String COLUMN_LABEL_TESTS = "tests";
+
+	public static final String[] COLUMN_LABELS = {COLUMN_LABEL_STATUS, COLUMN_LABEL_SCORE, COLUMN_LABEL_TESTS, COLUMN_LABEL_ERRORS, COLUMN_LABEL_ASSIGNEE};
+
+	public static final String[] COLUMN_LABELS_DEFAULT = {COLUMN_LABEL_STATUS, COLUMN_LABEL_SCORE, COLUMN_LABEL_TESTS, COLUMN_LABEL_ERRORS, COLUMN_LABEL_ASSIGNEE};
+
+	public static final String LABEL_COMPLETE = "complete";
+
+	public static final String LABEL_IN_ANALYSIS = "in-analysis";
+
+	public static final String LABEL_MERGED = "merged";
+
+	public static final String LABEL_OPEN = "open";
+
+	public static final String[] LABELS_ALL = {LABEL_COMPLETE, LABEL_IN_ANALYSIS, LABEL_MERGED, LABEL_OPEN};
+
+	public static final String[] LABELS_SEARCHABLE = {LABEL_COMPLETE, LABEL_IN_ANALYSIS, LABEL_OPEN};
+
+	public static final int STATUS_COMPLETE = 2;
+
+	public static final int STATUS_IN_ANALYSIS = 1;
+
+	public static final int STATUS_MERGED = 3;
+
+	public static final int STATUS_OPEN = 0;
+
+	public static final int[] STATUSES_ALL = {STATUS_COMPLETE, STATUS_IN_ANALYSIS, STATUS_MERGED, STATUS_OPEN};
+
+	public static final int[] STATUSES_DEFAULT = {STATUS_IN_ANALYSIS, STATUS_OPEN};
+
+	public static final int[] STATUSES_SEARCHABLE = {STATUS_COMPLETE, STATUS_IN_ANALYSIS, STATUS_OPEN};
+
+	public static int getLabelStatus(String label) {
+		if (StringUtil.equalsIgnoreCase(label, LABEL_COMPLETE)) {
+			return STATUS_COMPLETE;
+		}
+		else if (StringUtil.equalsIgnoreCase(label, LABEL_IN_ANALYSIS)) {
+			return STATUS_IN_ANALYSIS;
+		}
+		else if (StringUtil.equalsIgnoreCase(label, LABEL_MERGED)) {
+			return STATUS_MERGED;
+		}
+		else {
+			return STATUS_OPEN;
+		}
+	}
+
+	public static String getStatusLabel(int status) {
+		if (status == STATUS_COMPLETE) {
+			return LABEL_COMPLETE;
+		}
+		else if (status == STATUS_IN_ANALYSIS) {
+			return LABEL_IN_ANALYSIS;
+		}
+		else if (status == STATUS_MERGED) {
+			return LABEL_MERGED;
+		}
+		else {
+			return LABEL_OPEN;
+		}
+	}
+
+}
+%>

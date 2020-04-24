@@ -1,0 +1,63 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class PortletPropsKeys {
+
+	public static final String IMAGE_EXTENSIONS = "image.extensions";
+
+	public static final String TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS = "testray.automated.archiving.threshold.hours";
+
+	public static final String TESTRAY_AUTOMATION_ARCHIVES_PATH = "testray.automation.archives.path";
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS = "testray.automation.attachment.expiration.age.days";
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT = "testray.automation.attachment.minimum.case.results.count";
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_PATH = "testray.automation.attachment.path";
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_SUBDIRECTORY = "testray.automation.attachment.subdirectory";
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_URL = "testray.automation.attachment.url";
+
+	public static final String TESTRAY_AUTOMATION_COMPUTER_NAMES = "testray.automation.computer.names";
+
+	public static final String TESTRAY_AUTOMATION_RESULTS_PATH = "testray.automation.results.path";
+
+	public static final String TESTRAY_AUTOMATION_THREAD_COUNT = "testray.automation.thread.count";
+
+	public static final String TESTRAY_CASE_RESULT_ERRORS_TRUNCATED_CHAR_COUNT = "testray.case.result.errors.truncated.char.count";
+
+	public static final String TESTRAY_CRON_TRIGGER_BUILDS_CONTROLLER = "testray.cron.trigger.builds.controller";
+
+	public static final String TESTRAY_CRON_TRIGGER_CASES_CONTROLLER = "testray.cron.trigger.cases.controller";
+
+	public static final String TESTRAY_CRON_TRIGGER_CASE_RESULTS_CONTROLLER = "testray.cron.trigger.case.results.controller";
+
+	public static final String TESTRAY_CRON_TRIGGER_REQUIREMENTS_CONTROLLER = "testray.cron.trigger.requirements.controller";
+
+	public static final String TESTRAY_DELETE_TREE_ENABLED = "testray.delete.tree.enabled";
+
+	public static final String TESTRAY_GITHUB_COMPARE_URLS_ENABLED = "testray.github.compare.urls.enabled";
+
+	public static final String TESTRAY_SIMPLIFIED_CASES = "testray.simplified.cases";
+
+	public static final String TESTRAY_SUBSCRIBER_EMAIL_ADDRESSES = "testray.subscriber.email.addresses";
+
+	public static final String TESTRAY_CASE_REINDEX_THRESHOLD_HOURS = "testray.case.reindex.threshold.hours";
+
+}
+%>

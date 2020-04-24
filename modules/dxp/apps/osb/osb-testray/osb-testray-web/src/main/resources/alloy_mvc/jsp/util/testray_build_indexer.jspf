@@ -1,0 +1,117 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayBuildIndexer extends BaseAlloyIndexer {
+
+	public static TestrayBuildIndexer getInstance() {
+		return _instance;
+	}
+
+	@Override
+	public void postProcessContextBooleanFilter(BooleanFilter booleanFilter, SearchContext searchContext) throws Exception {
+		super.postProcessContextBooleanFilter(booleanFilter, searchContext);
+
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, Field.ENTRY_CLASS_PK);
+
+		boolean value = GetterUtil.getBoolean(searchContext.getAttribute("archived"));
+
+		booleanFilter.addRequiredTerm("archived", value);
+
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "description");
+		TestrayIndexerUtil.processStringAttribute(booleanFilter, searchContext, "name");
+		TestrayIndexerUtil.processIntAttribute(booleanFilter, searchContext, "status");
+
+		Boolean template = (Boolean)searchContext.getAttribute("template");
+
+		if (template != null) {
+			booleanFilter.addRequiredTerm("template", template);
+		}
+
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, "testrayProductVersionId");
+		TestrayIndexerUtil.processLongAttribute(booleanFilter, searchContext, "testrayRoutineId");
+		TestrayIndexerUtil.processIntArrayAttribute(booleanFilter, searchContext, "testrayTaskStatus");
+
+		long testrayProjectId = GetterUtil.getLong(searchContext.getAttribute("testrayProjectId"));
+
+		booleanFilter.addRequiredTerm("testrayProjectId", testrayProjectId);
+	}
+
+	@Override
+	public void postProcessSearchQuery(BooleanQuery searchQuery, BooleanFilter booleanFilter, SearchContext searchContext) throws Exception {
+		addSearchTerm(searchQuery, searchContext, "name", true);
+	}
+
+	@Override
+	protected Document doGetDocument(BaseModel<?> baseModel) throws Exception {
+		TestrayBuild testrayBuild = (TestrayBuild)baseModel;
+
+		Document document = getBaseModelDocument(null, testrayBuild);
+
+		document.addKeyword("archived", TestrayBuildUtil.isArchived(testrayBuild));
+		document.addText("description", testrayBuild.getDescription());
+
+		if (testrayBuild.getDueDate() != null) {
+			document.addDate("dueDate", testrayBuild.getDueDate());
+		}
+		else {
+			document.addDate("dueDate", new Date(Long.MAX_VALUE));
+		}
+
+		document.addText("name", testrayBuild.getName());
+		document.addKeyword("name_sortable", testrayBuild.getName());
+		document.addKeyword("promoted", testrayBuild.isPromoted());
+		document.addKeyword("promoted_sortable", testrayBuild.isPromoted());
+		document.addKeyword("status", testrayBuild.getStatus());
+		document.addKeyword("template", testrayBuild.isTemplate());
+		document.addKeyword("testrayProjectId", testrayBuild.getTestrayProjectId());
+
+		TestrayProductVersion testrayProductVersion = TestrayProductVersionLocalServiceUtil.fetchTestrayProductVersion(testrayBuild.getTestrayProductVersionId());
+
+		if (testrayProductVersion != null) {
+			document.addKeyword("testrayProductVersionId", testrayProductVersion.getTestrayProductVersionId());
+			document.addText("testrayProductVersionName", testrayProductVersion.getName());
+			document.addKeyword("testrayProductVersionName_sortable", testrayProductVersion.getName());
+		}
+
+		document.addKeyword("testrayRoutineId", testrayBuild.getTestrayRoutineId());
+
+		TestrayBuildComposite testrayBuildComposite = new TestrayBuildComposite(testrayBuild, null);
+
+		document.addKeyword("testrayTaskStatus", testrayBuildComposite.getTestrayTaskStatus());
+
+		if (testrayBuildComposite.getArchiveDate() != null) {
+			document.addDate("archiveDate", testrayBuildComposite.getArchiveDate());
+		}
+
+		return document;
+	}
+
+	@Override
+	protected Summary doGetSummary(Document document, Locale locale, String snippet, PortletRequest portletRequest, PortletResponse portletResponse) {
+		String title = document.get(Field.ENTRY_CLASS_PK);
+
+		return new Summary(locale, title, null);
+	}
+
+	private TestrayBuildIndexer() {
+		setClassName(TestrayBuild.class.getName());
+	}
+
+	private static final TestrayBuildIndexer _instance = new TestrayBuildIndexer();
+
+}
+%>

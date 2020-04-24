@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+
+<taglib
+	version="2.1"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+>
+	<description>Provides the Testray component tags, prefixed with <![CDATA[<code>testray:</code>]]>.</description>
+	<tlib-version>1.0</tlib-version>
+	<short-name>testray</short-name>
+	<uri>http://liferay.com/tld/testray</uri>
+	<tag>
+		<description>Displays the breadcrumb for navigating through Testray as well as the breadcrumb finder to jump between pages.</description>
+		<name>breadcrumb</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.BreadcrumbTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>A list of BreadcrumbComposites that will be used to construct the breadcrumb.</description>
+			<name>composites</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays a dropdown menu with checkboxes to configure which table columns to show or hide.</description>
+		<name>configure-columns</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.ConfigureColumnsTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>The <![CDATA[<code>String</code>]]> list of the column names on the table.</description>
+			<name>columnLabels</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>A <![CDATA[<code>String</code>]]> list of the column names that should be displayed by default.</description>
+			<name>columnLabelsDefault</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>A unique id that will be used to store the selected column names in a <![CDATA[<code>SessionClick</code>]]>.</description>
+			<name>sessionKey</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays a date that can be configured to show the exact or relative date. This provides a way for dates to be consistently formatted throughout the portlet.</description>
+		<name>date</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.DateTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>Whether to display the time along with the date or not. Defaults to <![CDATA[<code>false</code>]]>.</description>
+			<name>hideTime</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Whether display the relative time. Defaults to <![CDATA[<code>false</code>]]>.</description>
+			<name>relative</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The date value. Must be a valid date.</description>
+			<name>value</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays a dropdown action menu.</description>
+		<name>dropdown</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.DropdownTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>CSS class to add to the wrapping <![CDATA[<code>div</code>]]> element for additional styling.</description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Icon that will be used as the trigger to click for opening the menu.</description>
+			<name>icon</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Message that will display when hovering over the icon.</description>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>A single menu item that must be nested inside of the <![CDATA[<code>testray:dropdown</code>]]> tag.</description>
+		<name>dropdown-item</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.DropdownItemTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>CSS class for additional styling that is added to the <![CDATA[<code>li</code>]]> element.</description>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Icon to display next to the menu item.</description>
+			<name>icon</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Icon to display next to the menu item.</description>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>A function to be called when a user clicks the menu item.</description>
+			<name>onClick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The link for the menu item. Optional if an <![CDATA[<code>onClick</code>]]> is provided.</description>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays a popover to filter a search container table. Content inside of the filter tag can be any form field that will be submitted.</description>
+		<name>filter</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.FilterTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>Whether to allow this filter to be pinned</description>
+			<name>pinnable</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays an input element with which to filter results.</description>
+		<name>filter-date-element</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.FilterDateElementTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>The day parameter used for the <![CDATA[<code>liferay-ui:input-date</code>]]> tag.</description>
+			<name>dayParam</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Has no effect.</description>
+			<name>items</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>The name that will display above the input field.</description>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Has no effect.</description>
+			<name>labelHelper</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>The month parameter used for the <![CDATA[<code>liferay-ui:input-date</code>]]> tag.</description>
+			<name>monthParam</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The name of the input field, which will also name the request parameter generated from submitting a form containing this field.</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Whether or not to allow explicitly filtering for null/empty values for this field. Currently has no effect.</description>
+			<name>nullable</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. The display label for the option used to explicitly filter for a null/empty value (only used when <![CDATA[<code>nullable=true</code>]]>). Currently has no effect.</description>
+			<name>nullableLabel</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Has no effect.</description>
+			<name>optionLabelProperty</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Has no effect.</description>
+			<name>optionValueProperty</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The language key that should be used to generate a label indicating that this filter element is activated when the user enters a value.</description>
+			<name>selectedLabel</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Has no effect, as the default date value is constructed from the values of the <![CDATA[<code>dayParam</code>]]>, <![CDATA[<code>monthParam</code>]]>, and <![CDATA[<code>yearParam</code>]]> elements.</description>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>Whether or not to allow a blank value for this field, which will leave the field unfiltered.</description>
+			<name>showEmptyOption</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>Inherited from <![CDATA[<code>filter-element</code>]]> tag. Has no effect.</description>
+			<name>type</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The year parameter used for the <![CDATA[<code>liferay-ui:input-date</code>]]> tag.</description>
+			<name>yearParam</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays an input element with which to filter results.</description>
+		<name>filter-element</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.FilterElementTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>A list of possible values to filter.</description>
+			<name>items</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>The name that will display above the input field.</description>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>An object containing a <![CDATA[<code>getStatusLabel</code>]]> method that can be used to generate relevant sublabels.</description>
+			<name>labelHelper</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>When <![CDATA[<code>type="select-model"</code>]]>, the class name of the objects being selected.</description>
+			<name>modelClassName</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The name of the input field, which will also name the request parameter generated from submitting a form containing this field.</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>Whether or not to allow explicitly filtering for null/empty values for this field.</description>
+			<name>nullable</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>The display label for the option used to explicitly filter for a null/empty value (only used when <![CDATA[<code>nullable=true</code>]]>).</description>
+			<name>nullableLabel</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The name of the bean property whose value should be used to label each of the options in a list of items. Defaults to "name".</description>
+			<name>optionLabelProperty</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The name of the bean property whose value should be used as the submitted input value when a given option in a list of items is chosen. Defaults to "primaryKey".</description>
+			<name>optionValueProperty</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The language key that should be used to generate a label indicating that this filter element is activated when the user enters a value.</description>
+			<name>selectedLabel</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The field value that should be selected by default. If none is provided, the selected value will default to the value of the request parameter value associated with key <![CDATA[<code>name</code>]]></description>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Object</type>
+		</attribute>
+		<attribute>
+			<description>Whether or not to allow a blank value for this field, which will leave the field unfiltered.</description>
+			<name>showEmptyOption</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<description>The type of filter element to create. Options are "boolean", "checkboxes", "select-model", "select-models", "text", and "textarea".</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Adds user filter preferences to URL as parameters.</description>
+		<name>filter-preference</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.TestrayFilterPreferenceTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays the header component which is used for containing <![CDATA[<code>testray:breadcrumb</code>]]>, <![CDATA[<code>testray:dropdown</code>]]>, or <![CDATA[<code>liferay-ui:tabs</code>]]>.</description>
+		<name>header</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.HeaderTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>A list of BreadcrumbComposites that will be passed into the <![CDATA[<code>testray:breadcrumb</code>]]> tag.</description>
+			<name>breadcrumbComposites</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The title of the current page that will be used in the breadcrumb or modal title.</description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Provides a text editor with preview for the entry of rich text.</description>
+		<name>rich-input</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.RichInputTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>The name that will display above the input field.</description>
+			<name>label</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The name of the input field, which will also name the request parameter generated from submitting a form containing this field.</description>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The type of rich text entry which should be selected by default.</description>
+			<name>selectedType</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The types of rich text entry to make available for this input. Options are "gherkin", "markdown", and "plain-text".</description>
+			<name>types</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The initial value of the input.</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays rich text formatted as the given type.</description>
+		<name>rich-output</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.RichOutputTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>The type of rich text to format the value as. Options are "gherkin", "markdown", and "plain-text".</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The content to format and display.</description>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>Displays the table title and other actions above a table.</description>
+		<name>table-toolbar</name>
+		<tag-class>com.liferay.osb.testray.taglib.servlet.taglib.TableToolbarTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>The amount of items that table is displaying.</description>
+			<name>count</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>The title of the table.</description>
+			<name>title</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<function>
+		<description>Escapes Java strings for injection into JavaScript strings.</description>
+		<name>escapeJS</name>
+		<function-class>com.liferay.portal.kernel.util.HtmlUtil</function-class>
+		<function-signature>java.lang.String escapeJS(java.lang.String)</function-signature>
+	</function>
+	<function>
+		<description>Tests whether or not a string is "null".</description>
+		<name>isNull</name>
+		<function-class>com.liferay.portal.kernel.util.Validator</function-class>
+		<function-signature>boolean isNull(java.lang.String)</function-signature>
+	</function>
+</taglib>

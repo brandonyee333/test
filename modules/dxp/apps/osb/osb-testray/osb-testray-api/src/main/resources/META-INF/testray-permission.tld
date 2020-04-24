@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<taglib
+	version="2.1"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+>
+	<tlib-version>1.0</tlib-version>
+	<short-name>testrayPermission</short-name>
+	<uri>http://liferay.com/tld/testray-permission</uri>
+	<function>
+		<name>containsActionId</name>
+		<function-class>com.liferay.alloy.mvc.AlloyPermission</function-class>
+		<function-signature>boolean contains(com.liferay.portal.kernel.security.permission.PermissionChecker, long, java.lang.String, long, java.lang.String)</function-signature>
+	</function>
+	<function>
+		<name>containsClassAction</name>
+		<function-class>com.liferay.osb.testray.util.TestrayPermission</function-class>
+		<function-signature>boolean contains(com.liferay.portal.kernel.theme.ThemeDisplay, java.lang.Class, java.lang.String)</function-signature>
+	</function>
+	<function>
+		<name>containsControllerAction</name>
+		<function-class>com.liferay.osb.testray.util.TestrayPermission</function-class>
+		<function-signature>boolean contains(com.liferay.portal.kernel.theme.ThemeDisplay, java.lang.String, java.lang.String)</function-signature>
+	</function>
+	<function>
+		<name>containsModelAction</name>
+		<function-class>com.liferay.osb.testray.util.TestrayPermission</function-class>
+		<function-signature>boolean contains(com.liferay.portal.kernel.theme.ThemeDisplay, com.liferay.portal.kernel.model.BaseModel, java.lang.String)</function-signature>
+	</function>
+</taglib>

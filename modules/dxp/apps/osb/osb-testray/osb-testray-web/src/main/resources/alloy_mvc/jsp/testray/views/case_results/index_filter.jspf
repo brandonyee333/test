@@ -1,0 +1,133 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<testray:filter>
+	<aui:input name="tabs1" type="hidden" value="${tabs1}" />
+	<aui:input name="testrayBuildId" type="hidden" value="${testrayBuildComposite.testrayBuildId}" />
+
+	<testray:filter-element
+		items="${testrayCaseTypes}"
+		label="case-type"
+		modelClassName="com.liferay.osb.testray.model.TestrayCaseType"
+		name="testrayCaseTypeId"
+		optionLabelProperty="name"
+		optionValueProperty="testrayCaseTypeId"
+		selectedLabel="case-type-x"
+		selectedValue="${testrayCaseTypeIds}"
+		type="select-models"
+	/>
+
+	<testray:filter-element
+		items="${TestrayCaseConstants.PRIORITIES}"
+		label="priority"
+		name="priorities"
+		selectedLabel="priority-x"
+		selectedValue="${testrayCasePriorities}"
+		type="checkboxes"
+	/>
+
+	<testray:filter-element
+		items="${testrayTeams}"
+		label="team"
+		modelClassName="com.liferay.osb.testray.model.TestrayTeam"
+		name="testrayTeamId"
+		selectedLabel="team-x"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		items="${testrayComponents}"
+		label="component"
+		modelClassName="com.liferay.osb.testray.model.TestrayComponent"
+		name="testrayComponentId"
+		selectedLabel="component-x"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		label="environment"
+		name="testrayFactorOptionName"
+		selectedLabel="environment-x"
+		type="text"
+	/>
+
+	<testray:filter-element
+		items="${testrayRuns}"
+		label="run"
+		modelClassName="com.liferay.osb.testray.model.TestrayRun"
+		name="testrayRunId"
+		optionLabelProperty="number"
+		selectedLabel="run-x"
+		showEmptyOption="${true}"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		label="case-name"
+		name="testrayCaseName"
+		selectedLabel="name-x"
+		type="text"
+	/>
+
+	<testray:filter-element
+		items="${users}"
+		label="assignee"
+		modelClassName="com.liferay.portal.kernel.model.User"
+		name="assignedUserId"
+		nullable="${true}"
+		nullableLabel="unassigned"
+		optionLabelProperty="fullName"
+		selectedLabel="assignee-x"
+		type="select-model"
+	/>
+
+	<testray:filter-element
+		items="${TestrayCaseResultConstants.STATUSES_ALL}"
+		label="status"
+		labelHelper="${TestrayCaseResultConstantsMethods}"
+		name="statuses"
+		selectedLabel="status-x"
+		selectedValue="${statuses}"
+		type="checkboxes"
+	/>
+
+	<testray:filter-element
+		label="issues"
+		name="issues"
+		nullable="${true}"
+		nullableLabel="no-issues"
+		selectedLabel="issues-x"
+		type="textarea"
+	/>
+
+	<testray:filter-element
+		label="errors"
+		name="errors"
+		nullable="${true}"
+		nullableLabel="no-errors"
+		selectedLabel="errors-x"
+		type="textarea"
+	/>
+
+	<testray:filter-element
+		label="comments"
+		name="comments"
+		nullable="${true}"
+		nullableLabel="no-comments"
+		selectedLabel="comments-x"
+		type="textarea"
+	/>
+</testray:filter>

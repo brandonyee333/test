@@ -1,0 +1,164 @@
+.graph-container {
+	height: 300px;
+
+	&.graph-container-block {
+		margin: 20px 0;
+	}
+
+	&.graph-container-sm {
+		height: 250px;
+	}
+
+	&.graph-container-hide-x {
+		.c3-axis-x {
+			.tick {
+				display: none;
+			}
+		}
+	}
+
+	text {
+		font-weight: $font-weight;
+	}
+
+	.c3-area {
+		fill-opacity: 0.7;
+	}
+
+	.c3-axis-x, .c3-axis-y {
+		&, .c3-legend-item {
+			font-size: $font-size-default;
+			font-weight: $font-weight;
+		}
+
+		line, path {
+			stroke: $label-color;
+		}
+
+		text {
+			fill: $label-color;
+
+			@include label-text();
+		}
+
+		.tick {
+			font-size: 0.8em;
+		}
+	}
+
+	.c3-legend-item {
+		fill: $label-color;
+
+		@include label-text();
+	}
+
+	.c3-line {
+		stroke-width: 2px;
+	}
+
+	.c3-tooltip {
+		box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.04), 0 4px 14px 0 rgba(0, 0, 0, 0.1);
+		padding: 15px 18px;
+		width: 280px;
+
+		.c3-tooltip-color {
+			display: inline-block;
+			height: 10px;
+			margin-right: 10px;
+			width: 10px;
+		}
+
+		.c3-tooltip-data {
+			margin: 0;
+		}
+
+		.c3-tooltip-item {
+			display: inline-block;
+			list-style: none;
+			width: 50%;
+
+			.item-status {
+				@include label-text();
+			}
+
+			.item-value {
+				font-size: 1.1em;
+			}
+		}
+
+		.c3-tooltip-title {
+			margin-top: 0;
+
+			.title-item {
+				margin-bottom: 5px;
+			}
+		}
+
+		&.legend-container {
+			width: 180px;
+		}
+	}
+
+	.c3-xgrid-focus {
+		stroke-width: 2px;
+	}
+
+	.c3-legend-background {
+		opacity: 1;
+		stroke-width: 0;
+	}
+
+	.placeholder {
+		background-color: $placeholder-color;
+		height: 100%;
+		width: 100%;
+	}
+}
+
+.testray-graph-tabs {
+	background-color: transparent;
+	border-width: 0;
+	margin: 0;
+	min-height: auto;
+
+	.container-fluid {
+		padding: 0;
+	}
+
+	.navbar-nav > .active > a {
+		background-color: transparent;
+		font-size: 18px;
+		font-weight: $font-header-weight;
+		padding: 0;
+	}
+}
+
+.testray-metrics-donut-chart {
+	.c3-chart-arcs-title {
+		font-size: 2.4em;
+	}
+}
+
+.testray-metrics-donut-chart-legend {
+	.legend-container {
+		list-style: none;
+
+		.legend-color-block {
+			height: 14px;
+			width: 14px;
+		}
+
+		.legend-item {
+			display: block;
+			margin-bottom: 10px;
+
+			.legend-item-numbers {
+				.primary {
+					font-size: 1.1em;
+					font-weight: $font-header-weight;
+					line-height: 1;
+				}
+			}
+		}
+	}
+}

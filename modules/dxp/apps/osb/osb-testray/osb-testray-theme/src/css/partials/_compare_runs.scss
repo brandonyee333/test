@@ -1,0 +1,199 @@
+.compare-run-data-section {
+	.compare-run-data-section-run-a {
+		margin-bottom: 40px;
+		margin-top: 10px;
+	}
+
+	.compare-run-data-section-run-b {
+		margin-top: 40px;
+	}
+}
+
+.compare-runs-popover {
+	.button-action {
+		float: left;
+		margin: 15px 5px 0 0;
+	}
+
+	.select-run-button {
+		margin: 0;
+		width: 175px;
+	}
+
+	.select-run-field {
+		display: inline-block;
+
+		&:not(:first-child) {
+			margin-left: 15px;
+		}
+	}
+
+	.compare-runs-popover-body {
+		background-color: #ECEBEB;
+		overflow: auto;
+		padding: 14px;
+	}
+
+	.form-auto-fill, .form-compare-runs {
+		margin: 0;
+	}
+}
+
+.comparison-results-container {
+	max-width: 1400px;
+}
+
+.table {
+	.compare-status {
+		&.blocked, &.dnr, &.failed, &.passed, &.test-fix {
+			padding: 0;
+
+			a {
+				display: block;
+				font-weight: 600;
+				padding: 8px;
+				text-align: right;
+			}
+		}
+
+		&.blocked {
+			background-color: $blocked-cell-color;
+
+			&:hover {
+				background-color: $blocked-hover-cell-color;
+			}
+
+			&.failed {
+				background-color: $failed-cell-color;
+
+				&:hover {
+					background-color: $failed-hover-cell-color;
+				}
+			}
+		}
+
+		&.failed {
+			background-color: $failed-cell-color;
+
+			&:hover {
+				background-color: $failed-hover-cell-color;
+			}
+		}
+
+		&.passed {
+			background-color: $passed-cell-color;
+
+			&:hover {
+				background-color: $passed-hover-cell-color;
+			}
+
+			&.blocked {
+				background-color: $blocked-cell-color;
+
+				&:hover {
+					background-color: $blocked-hover-cell-color;
+				}
+			}
+
+			&.failed {
+				background-color: $failed-cell-color;
+
+				&:hover {
+					background-color: $failed-hover-cell-color;
+				}
+			}
+
+			&.test-fix {
+				background-color: $test-fix-cell-color;
+
+				&:hover {
+					background-color: $test-fix-hover-cell-color;
+				}
+			}
+		}
+
+		&.test-fix {
+			background-color: $test-fix-cell-color;
+
+			&:hover {
+				background-color: $test-fix-hover-cell-color;
+			}
+
+			&.blocked {
+				background-color: $blocked-cell-color;
+
+				&:hover {
+					background-color: $blocked-hover-cell-color;
+				}
+			}
+
+			&.failed {
+				background-color: $failed-cell-color;
+
+				&:hover {
+					background-color: $failed-hover-cell-color;
+				}
+			}
+		}
+	}
+}
+
+table.comparison-results {
+	display: inline-table;
+	margin-bottom: 30px;
+	margin-right: 50px;
+	max-width: 400px;
+	table-layout: fixed;
+
+	tbody {
+		th {
+			text-align: right;
+		}
+
+		tr:last-child td {
+			border-bottom: 1px solid $table-row-border-color;
+		}
+	}
+
+	th {
+		border-top-width: 0;
+		padding: 0;
+		vertical-align: middle;
+
+		&:first-child {
+			padding-right: 5px;
+		}
+	}
+
+	thead {
+		th {
+			color: $content-color;
+			font-size: $font-size-large;
+			font-weight: $font-header-weight;
+			padding-left: 0;
+			text-transform: none;
+		}
+
+		tr th {
+			padding-bottom: 0;
+		}
+	}
+
+	td {
+		&:last-child {
+			border-right: 1px solid $table-row-border-color;
+		}
+
+		&:not(:first-child) {
+			border-left: 1px solid $table-row-border-color;
+		}
+	}
+
+	.compare-status {
+		.failed, .passed {
+			a {
+				text-align: right;
+			}
+		}
+	}
+}

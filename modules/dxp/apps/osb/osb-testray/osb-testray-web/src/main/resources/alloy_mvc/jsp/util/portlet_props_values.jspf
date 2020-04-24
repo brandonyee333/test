@@ -1,0 +1,62 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class PortletPropsValues {
+
+	public static final String[] IMAGE_EXTENSIONS = PortletPropsUtil.getArray(PortletPropsKeys.IMAGE_EXTENSIONS);
+
+	public static final int TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS = GetterUtil.getInteger(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS));
+
+	public static final String TESTRAY_AUTOMATION_ARCHIVES_PATH = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_ARCHIVES_PATH);
+
+	public static final int TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS = GetterUtil.getInteger(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS));
+
+	public static final int TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT = GetterUtil.getInteger(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT));
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_PATH = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_PATH);
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_SUBDIRECTORY = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_SUBDIRECTORY);
+
+	public static final String TESTRAY_AUTOMATION_ATTACHMENT_URL = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_ATTACHMENT_URL);
+
+	public static final String[] TESTRAY_AUTOMATION_COMPUTER_NAMES = PortletPropsUtil.getArray(PortletPropsKeys.TESTRAY_AUTOMATION_COMPUTER_NAMES);
+
+	public static final String TESTRAY_AUTOMATION_RESULTS_PATH = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_RESULTS_PATH);
+
+	public static final int TESTRAY_AUTOMATION_THREAD_COUNT = GetterUtil.getInteger(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_AUTOMATION_THREAD_COUNT));
+
+	public static final int TESTRAY_CASE_RESULT_ERRORS_TRUNCATED_CHAR_COUNT = GetterUtil.getInteger(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_CASE_RESULT_ERRORS_TRUNCATED_CHAR_COUNT));
+
+	public static final String TESTRAY_CRON_TRIGGER_BUILDS_CONTROLLER = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_CRON_TRIGGER_BUILDS_CONTROLLER);
+
+	public static final String TESTRAY_CRON_TRIGGER_CASES_CONTROLLER = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_CRON_TRIGGER_CASES_CONTROLLER);
+
+	public static final String TESTRAY_CRON_TRIGGER_CASE_RESULTS_CONTROLLER = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_CRON_TRIGGER_CASE_RESULTS_CONTROLLER);
+
+	public static final String TESTRAY_CRON_TRIGGER_REQUIREMENTS_CONTROLLER = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_CRON_TRIGGER_REQUIREMENTS_CONTROLLER);
+
+	public static final boolean TESTRAY_DELETE_TREE_ENABLED = GetterUtil.getBoolean(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_DELETE_TREE_ENABLED));
+
+	public static final boolean TESTRAY_GITHUB_COMPARE_URLS_ENABLED = GetterUtil.getBoolean(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_GITHUB_COMPARE_URLS_ENABLED));
+
+	public static final boolean TESTRAY_SIMPLIFIED_CASES = GetterUtil.getBoolean(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_SIMPLIFIED_CASES));
+
+	public static final String TESTRAY_SUBSCRIBER_EMAIL_ADDRESSES = PortletPropsUtil.get(PortletPropsKeys.TESTRAY_SUBSCRIBER_EMAIL_ADDRESSES);
+
+	public static final int TESTRAY_CASE_REINDEX_THRESHOLD_HOURS = GetterUtil.getInteger(PortletPropsUtil.get(PortletPropsKeys.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS));
+}
+%>

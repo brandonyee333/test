@@ -1,0 +1,143 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayTeamComposite {
+
+	public TestrayTeamComposite(TestrayTeam testrayTeam, ThemeDisplay themeDisplay) throws Exception {
+		this(testrayTeam, themeDisplay, Collections.emptyMap());
+	}
+
+	public TestrayTeamComposite(TestrayTeam testrayTeam, ThemeDisplay themeDisplay, Map<String, Serializable> testrayCaseResultProperties) throws Exception {
+		_testrayTeam = testrayTeam;
+		_themeDisplay = themeDisplay;
+
+		_testrayCaseResultProperties = new HashMap<>(testrayCaseResultProperties);
+	}
+
+	public TestrayTeamComposite(long testrayTeamId, ThemeDisplay themeDisplay, Map<String, Serializable> testrayCaseResultProperties) throws Exception {
+		this(TestrayTeamLocalServiceUtil.getTestrayTeam(testrayTeamId), themeDisplay, testrayCaseResultProperties);
+	}
+
+	public double getFailedRatio() throws Exception {
+		return BigDecimalUtil.divide(getTestrayCaseResultsFailedCount(), getTestrayCaseResultsCount(), 2, RoundingMode.HALF_UP);
+	}
+
+	public JSONObject getJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("name", getName());
+		jsonObject.put("testrayProjectId", getTestrayProjectId());
+		jsonObject.put("testrayTeamId", getTestrayTeamId());
+
+		return jsonObject;
+	}
+
+	public String getName() {
+		return _testrayTeam.getName();
+	}
+
+	public JSONObject getTeamMetricsJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		jsonObject.put("metrics", getTestrayCaseResultStatusCountsJSONObject());
+		jsonObject.put("name", getName());
+		jsonObject.put("testrayTeamId", getTestrayTeamId());
+
+		return jsonObject;
+	}
+
+	public TestrayCaseResultReporter getTestrayCaseResultReporter() throws Exception {
+		if (_testrayCaseResultReporter != null) {
+			return _testrayCaseResultReporter;
+		}
+
+		_testrayCaseResultProperties.put("testrayTeamId", getTestrayTeamId());
+
+		List<Long> testrayComponentIds = TestrayComponentUtil.getTestrayComponentIds(getTestrayTeamId());
+
+		_testrayCaseResultProperties.put("testrayComponentIds", (Serializable)testrayComponentIds);
+
+		_testrayCaseResultReporter = new TestrayCaseResultReporter(_themeDisplay, _testrayCaseResultProperties);
+
+		return _testrayCaseResultReporter;
+	}
+
+	public int getTestrayCaseResultsBlockedCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount(TestrayCaseResultConstants.LABEL_BLOCKED);
+	}
+
+	public int getTestrayCaseResultsCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount();
+	}
+
+	public int getTestrayCaseResultsFailedCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount(TestrayCaseResultConstants.LABEL_FAILED);
+	}
+
+	public int getTestrayCaseResultsInProgressCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount(TestrayCaseResultConstants.LABEL_IN_PROGRESS);
+	}
+
+	public int getTestrayCaseResultsPassedCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount(TestrayCaseResultConstants.LABEL_PASSED);
+	}
+
+	public int getTestrayCaseResultsTestFixCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount(TestrayCaseResultConstants.LABEL_TEST_FIX);
+	}
+
+	public int getTestrayCaseResultsUntestedCount() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		return testrayCaseResultReporter.getTestrayCaseResultsCount(TestrayCaseResultConstants.LABEL_UNTESTED);
+	}
+
+	public JSONObject getTestrayCaseResultStatusCountsJSONObject() throws Exception {
+		TestrayCaseResultReporter testrayCaseResultReporter = getTestrayCaseResultReporter();
+
+		String testrayCaseResultStatusCountsJSON = JSONFactoryUtil.looseSerialize(testrayCaseResultReporter.getTestrayCaseResultStatusCounts());
+
+		return JSONFactoryUtil.createJSONObject(testrayCaseResultStatusCountsJSON);
+	}
+
+	public long getTestrayProjectId() {
+		return _testrayTeam.getTestrayProjectId();
+	}
+
+	public long getTestrayTeamId() {
+		return _testrayTeam.getTestrayTeamId();
+	}
+
+	private final Map<String, Serializable> _testrayCaseResultProperties;
+	private TestrayCaseResultReporter _testrayCaseResultReporter;
+	private final TestrayTeam _testrayTeam;
+	private final ThemeDisplay _themeDisplay;
+
+}
+%>

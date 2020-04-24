@@ -1,0 +1,23 @@
+.tooltip {
+	font-size: 12px;
+
+	.tooltip-inner {
+		background-color: #505050;
+		border-radius: $border-radius;
+		border-width: 0;
+		box-shadow: none;
+		color: $color-white;
+		padding: 6px 10px;
+		word-wrap: break-word;
+	}
+
+	&.bottom, &.left, &.right, &.top {
+		.tooltip-arrow {
+			border-color: transparent;
+		}
+	}
+}
+
+.tooltip-help.top .tooltip-arrow {
+	border-top-color: transparent;
+}

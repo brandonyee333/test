@@ -1,0 +1,184 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<div class="testray-card">
+	<testray:table-toolbar
+		title="test-history"
+	>
+		<%@ include file="/alloy_mvc/jsp/testray/views/case_results/history_filter.jspf" %>
+
+		<testray:configure-columns
+			columnLabels="${TestrayCaseResultConstants.COLUMN_LABELS_HISTORY}"
+			columnLabelsDefault="${TestrayCaseResultConstants.COLUMN_LABELS_HISTORY_DEFAULT}"
+			sessionKey="testrayCaseResultsHistoryColumns"
+		/>
+	</testray:table-toolbar>
+
+	<liferay-ui:search-container
+		delta="${delta}"
+		emptyResultsMessage="there-are-no-matching-executions"
+		id="testHistorySearchContainer"
+		iteratorURL="${portletURL}"
+		orderByCol="${orderByCol}"
+		orderByType="${orderByType}"
+		total="${testrayCaseResultCompositesTotal}"
+	>
+		<liferay-ui:search-container-results
+			results="${testrayCaseResultComposites}"
+		/>
+
+		<liferay-ui:search-container-row
+			className="java.lang.Object"
+			escapedModel="${true}"
+			keyProperty="testrayCaseResultId"
+			modelVar="curTestrayCaseResultComposite"
+		>
+			<portlet:renderURL var="viewTestrayCaseResultURL">
+				<portlet:param name="controller" value="case_results" />
+				<portlet:param name="action" value="view" />
+				<portlet:param name="id" value="${curTestrayCaseResultComposite.testrayCaseResultId}" />
+				<portlet:param name="redirect" value="${redirect}" />
+			</portlet:renderURL>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_EXECUTION_DATE)}">
+				<liferay-ui:search-container-column-text
+					cssClass='${(testrayCaseResultComposite.testrayCaseResultId == curTestrayCaseResultComposite.testrayCaseResultId) ? "current" : StringPool.BLANK} valign-top'
+					href="${viewTestrayCaseResultURL}"
+					name="create-date"
+					orderable="${true}"
+					orderableProperty="createDate_sortable"
+				>
+					<testray:date
+						value="${curTestrayCaseResultComposite.createDate}"
+					/>
+				</liferay-ui:search-container-column-text>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_GIT_HASH)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					href="${viewTestrayCaseResultURL}"
+					name="git-hash"
+					value="${curTestrayCaseResultComposite.testrayBuildGitHashShortened}"
+				/>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_PRODUCT_VERSION)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					href="${viewTestrayCaseResultURL}"
+					name="product-version"
+					orderable="${true}"
+					orderableProperty="testrayProductVersionName_sortable"
+					property="testrayProductVersionName"
+				/>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_ENVIRONMENT)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					href="${viewTestrayCaseResultURL}"
+					name="environment"
+					value="${curTestrayCaseResultComposite.testrayFactorOptionNamesString}"
+				/>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_ROUTINE)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					href="${viewTestrayCaseResultURL}"
+					name="routine"
+					orderable="${true}"
+					orderableProperty="testrayRoutineName_sortable"
+					property="testrayRoutineName"
+				/>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_STATUS)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					name="status"
+					orderable="${true}"
+					orderableProperty="status_sortable"
+				>
+					<aui:a cssClass="status ${curTestrayCaseResultComposite.statusLabel}" href="${viewTestrayCaseResultURL}" label="${curTestrayCaseResultComposite.statusLabel}" />
+				</liferay-ui:search-container-column-text>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_WARNINGS)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					href="${viewTestrayCaseResultURL}"
+					name="warnings"
+					property="testrayCaseResultWarningsCount"
+				/>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_ISSUES)}">
+				<liferay-ui:search-container-column-text
+					cssClass="valign-top"
+					name="issues"
+				>
+					<c:set value="${curTestrayCaseResultComposite.issues}" var="issues" />
+					<c:set value="${false}" var="showViewAllLink" />
+
+					<%@ include file="/alloy_mvc/jsp/testray/views/issues.jspf" %>
+				</liferay-ui:search-container-column-text>
+			</c:if>
+
+			<c:if test="${testrayCaseResultsHistoryColumns.contains(TestrayCaseResultConstants.COLUMN_LABEL_ERRORS)}">
+				<liferay-ui:search-container-column-text
+					cssClass="table-column-errors"
+					name="errors"
+					orderable="${true}"
+					orderableProperty="errors_sortable"
+				>
+					<pre>${fn:escapeXml(curTestrayCaseResultComposite.errors)}</pre>
+				</liferay-ui:search-container-column-text>
+			</c:if>
+		</liferay-ui:search-container-row>
+
+		<liferay-ui:search-iterator />
+	</liferay-ui:search-container>
+</div>
+
+<aui:script use="testray-context-menu">
+	new Liferay.Testray.ContextMenu(
+		{
+			containerId: '${htmlNamespace}testHistorySearchContainer',
+			menu: [
+				{
+					action: 'view',
+					controller: 'case_results',
+					iconCssClass: 'icon-file',
+					label: '<liferay-ui:message key="view" />',
+					urlTemplate: '/{id}',
+					userFilterPreferences: ${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "case_results", "view", testrayCaseResultComposite.testrayProjectId)}
+				},
+				{
+					action: 'delete',
+					controller: 'case_results',
+					iconCssClass: 'icon-trash',
+					label: '<liferay-ui:message key="delete" />',
+					menuAction: 'delete',
+					method: 'POST',
+					visible: ${testrayPermission:containsModelAction(themeDisplay, curTestrayCaseResultComposite.testrayCaseResult, "delete")}
+				}
+			],
+			redirect: '${portletURL}'
+		}
+	).render();
+</aui:script>

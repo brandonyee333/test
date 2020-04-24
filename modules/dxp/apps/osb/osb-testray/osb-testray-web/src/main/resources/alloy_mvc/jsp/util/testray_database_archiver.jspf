@@ -1,0 +1,441 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayDatabaseArchiver {
+
+	@Transactional(isolation = Isolation.PORTAL, propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+	public void doArchiveTree(AlloyController alloyController, TestrayBuild testrayBuild) throws Exception {
+		StringBundler sb = new StringBundler(28);
+
+		sb.append(StringPool.OPEN_CURLY_BRACE);
+
+		sb.append("\"archivedTestrayFactors\":");
+		sb.append(_archiveTestrayFactors(testrayBuild.getTestrayBuildId()));
+		sb.append(StringPool.COMMA);
+
+		sb.append("\"archivedTestrayRuns\":");
+		sb.append(_archiveTestrayRuns(testrayBuild.getTestrayBuildId()));
+		sb.append(StringPool.COMMA);
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId()});
+
+		Projection testrayCaseResultIdProjection = ProjectionFactoryUtil.property("testrayCaseResultId");
+
+		testrayCaseResultDynamicQuery.setProjection(testrayCaseResultIdProjection);
+
+		List<Long> testrayCaseResultIds = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+
+		String archivedTestrayCaseResultWarnings = _archiveTestrayCaseResultWarnings(testrayCaseResultIds);
+
+		if (!archivedTestrayCaseResultWarnings.isEmpty()) {
+			sb.append("\"archivedTestrayCaseResultWarnings\":");
+			sb.append(archivedTestrayCaseResultWarnings);
+			sb.append(StringPool.COMMA);
+		}
+
+		String archivedTestrayIssueMappings = _archiveTestrayIssueMappings(testrayCaseResultIds);
+
+		if (!archivedTestrayIssueMappings.isEmpty()) {
+			sb.append("\"archivedTestrayIssueMappings\":");
+			sb.append(archivedTestrayIssueMappings);
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.append("\"archivedTestrayCaseResults\":");
+		sb.append(_archiveTestrayCaseResults(testrayBuild.getTestrayBuildId()));
+		sb.append(StringPool.COMMA);
+
+		AlloyServiceInvoker testraySubtaskAlloyServiceInvoker = new AlloyServiceInvoker(TestraySubtask.class.getName());
+
+		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(testrayBuild.getTestrayBuildId());
+
+		if (testrayTask != null) {
+			DynamicQuery testraySubtaskDynamicQuery = testraySubtaskAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayTaskId", testrayTask.getTestrayTaskId()});
+
+			Projection testraySubtaskIdProjection = ProjectionFactoryUtil.property("testraySubtaskId");
+
+			testraySubtaskDynamicQuery.setProjection(testraySubtaskIdProjection);
+
+			List<Long> testraySubtaskIds = testraySubtaskAlloyServiceInvoker.executeDynamicQuery(testraySubtaskDynamicQuery);
+
+			if (!testraySubtaskIds.isEmpty()) {
+				sb.append("\"archivedTestrayAssignments\":");
+				sb.append(_archiveTestrayAssignments(testraySubtaskIds));
+				sb.append(StringPool.COMMA);
+
+				sb.append("\"archivedTestraySubtasks\":");
+				sb.append(_archiveTestraySubtasks(testrayTask.getTestrayTaskId()));
+				sb.append(StringPool.COMMA);
+
+				String archivedTestraySubtaskTestrayCaseResultMappings = _archiveTestraySubtaskTestrayCaseResultMappings(testraySubtaskIds);
+
+				if (!archivedTestraySubtaskTestrayCaseResultMappings.isEmpty()) {
+					sb.append("\"archivedTestraySubtaskTestrayCaseResultMappings\":");
+					sb.append(archivedTestraySubtaskTestrayCaseResultMappings);
+					sb.append(StringPool.COMMA);
+				}
+
+				String archivedTestraySubtaskTestrayIssueMappings = _archiveTestraySubtaskTestrayIssueMappings(testraySubtaskIds);
+
+				if (!archivedTestraySubtaskTestrayIssueMappings.isEmpty()) {
+					sb.append("\"archivedTestraySubtaskTestrayIssueMappings\":");
+					sb.append(archivedTestraySubtaskTestrayIssueMappings);
+					sb.append(StringPool.COMMA);
+				}
+			}
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		sb.append(StringPool.CLOSE_CURLY_BRACE);
+
+		TestrayArchive testrayArchive = TestrayArchiveLocalServiceUtil.createTestrayArchive(alloyController.increment());
+
+		testrayArchive.setClassPK(testrayBuild.getTestrayBuildId());
+		testrayArchive.setClassName(TestrayBuild.class.getName());
+
+		byte[] bytes = TestrayUtil.compress(sb.toString());
+
+		UnsyncByteArrayInputStream unsyncByteArrayInputStream = new UnsyncByteArrayInputStream(bytes);
+
+		OutputBlob dataOutputBlob = new OutputBlob(unsyncByteArrayInputStream, bytes.length);
+
+		testrayArchive.setCompressedData(dataOutputBlob);
+
+		TestrayArchiveLocalServiceUtil.addTestrayArchive(testrayArchive);
+	}
+
+	@Transactional(isolation = Isolation.PORTAL, propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+	public void doRestoreTree(Blob dataBlob) throws Exception {
+		ByteArrayInputStream byteArrayInputStream = (ByteArrayInputStream)dataBlob.getBinaryStream();
+
+		byte[] bytes = new byte[byteArrayInputStream.available()];
+
+		byteArrayInputStream.read(bytes);
+
+		String jsonString = TestrayUtil.decompress(bytes);
+
+		jsonString = StringUtil.replace(jsonString, "java.util.Collections$UnmodifiableRandomAccessList", "java.util.ArrayList");
+
+		JSONObject archiveJSONObject = JSONFactoryUtil.createJSONObject(jsonString);
+
+		_restoreTestrayFactors(archiveJSONObject.getString("archivedTestrayFactors"));
+
+		_restoreTestrayRuns(archiveJSONObject.getString("archivedTestrayRuns"));
+
+		_restoreTestrayCaseResults(archiveJSONObject.getString("archivedTestrayCaseResults"));
+
+		_restoreTestrayCaseResultWarnings(archiveJSONObject.getString("archivedTestrayCaseResultWarnings"));
+
+		_restoreTestrayIssueMappings(archiveJSONObject.getString("archivedTestrayIssueMappings"));
+
+		_restoreTestrayAssignments(archiveJSONObject.getString("archivedTestrayAssignments"));
+		_restoreTestraySubtasks(archiveJSONObject.getString("archivedTestraySubtasks"));
+		_restoreTestraySubtaskTestrayCaseResultMappings(archiveJSONObject.getString("archivedTestraySubtaskTestrayCaseResultMappings"));
+		_restoreTestraySubtaskTestrayIssueMappings(archiveJSONObject.getString("archivedTestraySubtaskTestrayIssueMappings"));
+	}
+
+	private String _archiveTestrayAssignments(List<Long> testraySubtaskIds) throws Exception {
+		List<TestrayAssignment> testrayAssignments = TestrayArchiveUtil.retrieveTestrayAssignments(testraySubtaskIds);
+
+		for (TestrayAssignment testrayAssignment : testrayAssignments) {
+			TestrayAssignmentLocalServiceUtil.deleteTestrayAssignment(testrayAssignment);
+		}
+
+		return TestrayJSONUtil.serialize(testrayAssignments);
+	}
+
+	private String _archiveTestrayCaseResults(long testrayBuildId) throws Exception {
+		List<TestrayCaseResult> testrayCaseResults = TestrayArchiveUtil.retrieveTestrayCaseResults(testrayBuildId, true, QueryUtil.ALL_POS);
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			TestrayCaseResultLocalServiceUtil.deleteTestrayCaseResult(testrayCaseResult);
+
+			String errors = testrayCaseResult.getErrors();
+
+			testrayCaseResult.setErrors(StringUtil.shorten(errors, 500));
+		}
+
+		return TestrayJSONUtil.serialize(testrayCaseResults);
+	}
+
+	private String _archiveTestrayCaseResultWarnings(List<Long> testrayCaseResultIds) throws Exception {
+		if (ListUtil.isEmpty(testrayCaseResultIds)) {
+			return StringPool.BLANK;
+		}
+
+		List<TestrayCaseResultWarning> testrayCaseResultWarnings = TestrayArchiveUtil.retrieveTestrayCaseResultWarnings(testrayCaseResultIds, true);
+
+		for (TestrayCaseResultWarning testrayCaseResultWarning : testrayCaseResultWarnings) {
+			TestrayCaseResultWarningLocalServiceUtil.deleteTestrayCaseResultWarning(testrayCaseResultWarning);
+		}
+
+		return TestrayJSONUtil.serialize(testrayCaseResultWarnings);
+	}
+
+	private String _archiveTestrayFactors(long testrayBuildId) throws Exception {
+		List<TestrayFactor> testrayFactors = new ArrayList<TestrayFactor>();
+
+		for (TestrayRun testrayRun : TestrayArchiveUtil.retrieveTestrayRuns(testrayBuildId)) {
+			List<TestrayFactor> testrayRunTestrayFactors = TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+
+			testrayFactors.addAll(testrayRunTestrayFactors);
+
+			TestrayFactorUtil.deleteTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+		}
+
+		return TestrayJSONUtil.serialize(testrayFactors);
+	}
+
+	private String _archiveTestrayIssueMappings(List<Long> testrayCaseResultIds) throws Exception {
+		if (ListUtil.isEmpty(testrayCaseResultIds)) {
+			return StringPool.BLANK;
+		}
+
+		Map<Long, List<Long>> testrayIssueMappings = new HashMap<Long, List<Long>>();
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			List<Long> testrayIssueIds = TestrayArchiveUtil.retrieveTestrayCaseResultTestrayIssueIds(testrayCaseResultId);
+
+			if (!testrayIssueIds.isEmpty()) {
+				testrayIssueMappings.put(testrayCaseResultId, testrayIssueIds);
+			}
+
+			TestrayIssueLocalServiceUtil.clearTestrayCaseResultTestrayIssues(testrayCaseResultId);
+		}
+
+		return TestrayJSONUtil.serialize(testrayIssueMappings);
+	}
+
+	private String _archiveTestrayRuns(long testrayBuildId) throws Exception {
+		List<TestrayRun> testrayRuns = TestrayArchiveUtil.retrieveTestrayRuns(testrayBuildId);
+
+		for (TestrayRun testrayRun : testrayRuns) {
+			TestrayRunLocalServiceUtil.deleteTestrayRun(testrayRun);
+		}
+
+		return TestrayJSONUtil.serialize(testrayRuns);
+	}
+
+	private String _archiveTestraySubtasks(long testrayTaskId) throws Exception {
+		List<TestraySubtask> testraySubtasks = TestrayArchiveUtil.retrieveTestraySubtasks(testrayTaskId);
+
+		for (TestraySubtask testraySubtask : testraySubtasks) {
+			TestraySubtaskLocalServiceUtil.deleteTestraySubtask(testraySubtask);
+		}
+
+		return TestrayJSONUtil.serialize(testraySubtasks);
+	}
+
+	private String _archiveTestraySubtaskTestrayCaseResultMappings(List<Long> testraySubtaskIds) throws Exception {
+		if (ListUtil.isEmpty(testraySubtaskIds)) {
+			return StringPool.BLANK;
+		}
+
+		Map<Long, List<Long>> testraySubtaskTestrayCaseResultMappings = new HashMap<Long, List<Long>>();
+
+		for (long testraySubtaskId : testraySubtaskIds) {
+			List<Long> testrayCaseResultIds = TestrayArchiveUtil.retrieveTestraySubtaskTestrayCaseResultIds(testraySubtaskId);
+
+			if (!testrayCaseResultIds.isEmpty()) {
+				testraySubtaskTestrayCaseResultMappings.put(testraySubtaskId, testrayCaseResultIds);
+			}
+
+			TestrayCaseResultLocalServiceUtil.clearTestraySubtaskTestrayCaseResults(testraySubtaskId);
+		}
+
+		return TestrayJSONUtil.serialize(testraySubtaskTestrayCaseResultMappings);
+	}
+
+	private String _archiveTestraySubtaskTestrayIssueMappings(List<Long> testraySubtaskIds) throws Exception {
+		if (ListUtil.isEmpty(testraySubtaskIds)) {
+			return StringPool.BLANK;
+		}
+
+		Map<Long, List<Long>> testraySubtaskTestrayIssuesMappings = new HashMap<Long, List<Long>>();
+
+		for (long testraySubtaskId : testraySubtaskIds) {
+			List<Long> testrayIssueIds = TestrayArchiveUtil.retrieveTestraySubtaskTestrayIssueIds(testraySubtaskId);
+
+			if (!testrayIssueIds.isEmpty()) {
+				testraySubtaskTestrayIssuesMappings.put(testraySubtaskId, testrayIssueIds);
+			}
+
+			TestrayIssueLocalServiceUtil.clearTestraySubtaskTestrayIssues(testraySubtaskId);
+		}
+
+		return TestrayJSONUtil.serialize(testraySubtaskTestrayIssuesMappings);
+	}
+
+	private void _restoreTestrayAssignments(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		List<TestrayAssignment> testrayAssignments = (List<TestrayAssignment>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (TestrayAssignment testrayAssignment : testrayAssignments) {
+			TestrayAssignmentLocalServiceUtil.addTestrayAssignment(testrayAssignment);
+		}
+	}
+
+	private void _restoreTestrayCaseResults(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		List<TestrayCaseResult> testrayCaseResults = (List<TestrayCaseResult>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			TestrayCase testrayCase = TestrayCaseLocalServiceUtil.fetchTestrayCase(testrayCaseResult.getTestrayCaseId());
+
+			if (testrayCase == null) {
+				continue;
+			}
+
+			JSONObject attachmentsJSONObject = JSONFactoryUtil.createJSONObject(testrayCaseResult.getAttachments());
+
+			Iterator<String> keysIterator = attachmentsJSONObject.keys();
+
+			while (keysIterator.hasNext()) {
+				String key = keysIterator.next();
+
+				String attachmentAbsolutePath = PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+
+				if (!FileUtil.exists(attachmentAbsolutePath)) {
+					keysIterator.remove();
+				}
+			}
+
+			testrayCaseResult.setAttachments(attachmentsJSONObject.toString());
+
+			TestrayCaseResultLocalServiceUtil.addTestrayCaseResult(testrayCaseResult);
+		}
+	}
+
+	private void _restoreTestrayCaseResultWarnings(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		List<TestrayCaseResultWarning> testrayCaseResultWarnings = (List<TestrayCaseResultWarning>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (TestrayCaseResultWarning testrayCaseResultWarning : testrayCaseResultWarnings) {
+			TestrayCaseResultWarningLocalServiceUtil.addTestrayCaseResultWarning(testrayCaseResultWarning);
+		}
+	}
+
+	private void _restoreTestrayFactors(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		List<TestrayFactor> testrayFactors = (List<TestrayFactor>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			TestrayFactorLocalServiceUtil.addTestrayFactor(testrayFactor);
+		}
+	}
+
+	private void _restoreTestrayIssueMappings(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		Map<Object, List<Object>> testrayIssueMappings = (Map<Object, List<Object>>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (Map.Entry<Object, List<Object>> entry : testrayIssueMappings.entrySet()) {
+			List<Object> testrayIssueIdsList = entry.getValue();
+
+			long[] testrayIssueIds = new long[testrayIssueIdsList.size()];
+
+			for (int i = 0; i < testrayIssueIds.length; i++) {
+				testrayIssueIds[i] = GetterUtil.getLong(testrayIssueIdsList.get(i));
+			}
+
+			TestrayIssueLocalServiceUtil.addTestrayCaseResultTestrayIssues(GetterUtil.getLong(entry.getKey()), testrayIssueIds);
+		}
+	}
+
+	private void _restoreTestrayRuns(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		List<TestrayRun> testrayRuns = (List<TestrayRun>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (TestrayRun testrayRun : testrayRuns) {
+			TestrayRunLocalServiceUtil.addTestrayRun(testrayRun);
+		}
+	}
+
+	private void _restoreTestraySubtasks(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		List<TestraySubtask> testraySubtasks = (List<TestraySubtask>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (TestraySubtask testraySubtask : testraySubtasks) {
+			TestraySubtaskLocalServiceUtil.addTestraySubtask(testraySubtask);
+		}
+	}
+
+	private void _restoreTestraySubtaskTestrayCaseResultMappings(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		Map<Object, List<Object>> testraySubtaskTestrayCaseResultMappings = (Map<Object, List<Object>>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (Map.Entry<Object, List<Object>> entry : testraySubtaskTestrayCaseResultMappings.entrySet()) {
+			List<Object> testrayCaseResultIdsList = entry.getValue();
+
+			long[] testrayCaseResultIds = new long[testrayCaseResultIdsList.size()];
+
+			for (int i = 0; i < testrayCaseResultIds.length; i++) {
+				testrayCaseResultIds[i] = GetterUtil.getLong(testrayCaseResultIdsList.get(i));
+			}
+
+			TestrayCaseResultLocalServiceUtil.addTestraySubtaskTestrayCaseResults(GetterUtil.getLong(entry.getKey()), testrayCaseResultIds);
+		}
+	}
+
+	private void _restoreTestraySubtaskTestrayIssueMappings(String jsonArchive) throws Exception {
+		if (Validator.isNull(jsonArchive)) {
+			return;
+		}
+
+		Map<Object, List<Object>> testraySubtaskTestrayIssueMappings = (Map<Object, List<Object>>)TestrayJSONUtil.deserialize(jsonArchive);
+
+		for (Map.Entry<Object, List<Object>> entry : testraySubtaskTestrayIssueMappings.entrySet()) {
+			List<Object> testrayIssueIdsList = entry.getValue();
+
+			long[] testrayIssueIds = new long[testrayIssueIdsList.size()];
+
+			for (int i = 0; i < testrayIssueIds.length; i++) {
+				testrayIssueIds[i] = GetterUtil.getLong(testrayIssueIdsList.get(i));
+			}
+
+			TestrayIssueLocalServiceUtil.addTestraySubtaskTestrayIssues(GetterUtil.getLong(entry.getKey()), testrayIssueIds);
+		}
+	}
+
+}
+%>

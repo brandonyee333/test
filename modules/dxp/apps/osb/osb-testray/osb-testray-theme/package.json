@@ -1,0 +1,22 @@
+{
+	"devDependencies": {
+		"gulp": "^3.9.1",
+		"liferay-theme-deps-7.0": "~1.2.1",
+		"liferay-theme-tasks": "^1.4.2"
+	},
+	"keywords": [
+		"liferay-theme"
+	],
+	"liferayTheme": {
+		"baseTheme": "styled",
+		"rubySass": false,
+		"screenshot": "",
+		"version": "7.0"
+	},
+	"main": "package.json",
+	"name": "testray-theme",
+	"publishConfig": {
+		"tag": "7_0_x"
+	},
+	"version": "1.0.0"
+}

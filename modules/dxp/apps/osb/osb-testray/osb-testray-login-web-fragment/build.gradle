@@ -1,0 +1,7 @@
+compileJSP {
+	enabled = false
+}
+
+generateJSPJava {
+	enabled = false
+}

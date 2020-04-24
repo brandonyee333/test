@@ -1,0 +1,98 @@
+.server-container {
+	margin: 5px 0;
+
+	.centurion-id {
+		color: $labelColor;
+		font-size: 1vw;
+		line-height: $centurionBarHeight;
+	}
+
+	.in-queue {
+		font-size: 1.4vw;
+		line-height: $centurionBarHeight;
+		text-align: right;
+
+		&.empty {
+			color: $itemBackgroundColor;
+		}
+	}
+
+	.server {
+		background-color: $itemBackgroundColor;
+		height: $centurionBarHeight;
+		margin: 0 15px;
+		position: relative;
+
+		&:before {
+			content: "";
+		}
+
+		.free-space {
+			bottom: 0;
+			height: 100%;
+			left: 0;
+			position: absolute;
+			transition: width 0.2s;
+			width: 100%;
+		}
+
+		.percent {
+			color: #FFF;
+			height: 100%;
+			position: absolute;
+			text-align: center;
+			width: 100%;
+
+			&:after {
+				background: #777;
+				border-radius: 2px;
+				content: "";
+				display: block;
+				height: 30%;
+				position: absolute;
+				right: -4%;
+				top: 50%;
+				transform: translateY(-50%);
+				width: 4%;
+				z-index: 3;
+			}
+
+			.message {
+				display: block;
+				font-size: 1vw;
+				margin: 0;
+				position: relative;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+		}
+	}
+}
+
+.total-count {
+	display: inline-block;
+	font-size: 3vw;
+	line-height: 1;
+	margin-bottom: 15px;
+	padding-right: 25px;
+
+	#totalUtilizationPercent {
+		color: $primaryColorBright;
+
+		&:after {
+			content: '%';
+			font-size: 2vw;
+			line-height: 1;
+		}
+	}
+
+	.total-count-label {
+		color: $labelColor;
+		display: block;
+
+		@include font-small;
+
+		line-height: 1;
+		margin-top: 2px;
+	}
+}

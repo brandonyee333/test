@@ -1,0 +1,241 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayBuildUtil {
+
+	public static int autoFill(AlloyController alloyController, TestrayBuildComposite testrayBuildCompositeA, TestrayBuildComposite testrayBuildCompositeB) throws Exception {
+		int testrayCaseResultsCount = 0;
+
+		Map<Long, List<TestrayCaseResultComposite>> testrayCaseIdCompositeMapA = _getTestrayCaseIdCompositeMap(testrayBuildCompositeA);
+		Map<Long, List<TestrayCaseResultComposite>> testrayCaseIdCompositeMapB = _getTestrayCaseIdCompositeMap(testrayBuildCompositeB);
+
+		for (Map.Entry<Long, List<TestrayCaseResultComposite>> entry : testrayCaseIdCompositeMapA.entrySet()) {
+			List<TestrayCaseResultComposite> testrayCaseResultCompositesA = entry.getValue();
+
+			List<TestrayCaseResultComposite> testrayCaseResultCompositesB = testrayCaseIdCompositeMapB.get(entry.getKey());
+
+			if (testrayCaseResultCompositesB == null) {
+				continue;
+			}
+
+			for (TestrayCaseResultComposite testrayCaseResultCompositeA : testrayCaseResultCompositesA) {
+				if (Validator.isNull(testrayCaseResultCompositeA.getErrors())) {
+					continue;
+				}
+
+				for (TestrayCaseResultComposite testrayCaseResultCompositeB : testrayCaseResultCompositesB) {
+					if (Validator.isNull(testrayCaseResultCompositeB.getErrors())) {
+						continue;
+					}
+
+					String errorsA = testrayCaseResultCompositeA.getErrors();
+
+					if (!errorsA.equals(testrayCaseResultCompositeB.getErrors())) {
+						continue;
+					}
+
+					boolean autoFilled = TestrayCaseResultUtil.autoFill(alloyController, testrayCaseResultCompositeA, testrayCaseResultCompositeB);
+
+					if (autoFilled) {
+						testrayCaseResultsCount++;
+					}
+				}
+			}
+		}
+
+		return testrayCaseResultsCount;
+	}
+
+	public static void deleteTestrayBuild(TestrayBuild testrayBuild) throws Exception {
+		TestrayBuildLocalServiceUtil.deleteTestrayBuild(testrayBuild);
+
+		TestrayArchiveUtil.deleteTestrayArchives(TestrayBuild.class.getName(), testrayBuild.getTestrayBuildId());
+		TestrayRunUtil.deleteTestrayRuns(testrayBuild.getTestrayBuildId());
+
+		TestrayTask testrayTask = TestrayTaskUtil.fetchTestrayTask(testrayBuild.getTestrayBuildId());
+
+		if (testrayTask != null) {
+			TestrayTaskUtil.deleteTestrayTask(testrayTask);
+		}
+	}
+
+	public static void deleteTestrayBuilds(long testrayRoutineId) throws Exception {
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRoutineId", testrayRoutineId});
+
+		for (TestrayBuild testrayBuild : testrayBuilds) {
+			deleteTestrayBuild(testrayBuild);
+		}
+	}
+
+	public static TestrayBuild fetchTestrayBuild(HttpServletRequest request) throws Exception {
+		String testrayBuildIdentifier = request.getParameter("testrayBuildId");
+
+		return fetchTestrayBuild(request, testrayBuildIdentifier);
+	}
+
+	public static TestrayBuild fetchTestrayBuild(HttpServletRequest request, String testrayBuildIdentifier) throws Exception {
+		if (Validator.isNull(testrayBuildIdentifier)) {
+			return null;
+		}
+		else if (Validator.isNumber(testrayBuildIdentifier)) {
+			return TestrayBuildLocalServiceUtil.fetchTestrayBuild(GetterUtil.getLong(testrayBuildIdentifier));
+		}
+		else if (testrayBuildIdentifier.equals("latest")) {
+			long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
+
+			if (testrayRoutineId <= 0) {
+				return null;
+			}
+
+			return getLatestTestrayBuild(testrayRoutineId);
+		}
+		else if (testrayBuildIdentifier.indexOf(StringPool.UNDERLINE) == 0) {
+			long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
+
+			AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+			List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRoutineId", testrayRoutineId, "name", testrayBuildIdentifier.substring(1)});
+
+			if (!testrayBuilds.isEmpty()) {
+				return testrayBuilds.get(0);
+			}
+		}
+
+		return null;
+	}
+
+	public static TestrayBuild getLatestTestrayBuild(long testrayRoutineId) throws Exception {
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayBuildModelImpl.TABLE_NAME, "createDate", false);
+
+		List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRoutineId", testrayRoutineId, "status", TestrayBuildConstants.STATUS_DEFAULT, "template", false}, 0, 1, obc);
+
+		if (testrayBuilds.isEmpty()) {
+			throw new AlloyException("there-are-no-builds-for-this-routine", false);
+		}
+
+		return testrayBuilds.get(0);
+	}
+
+	public static TestrayBuild getTestrayBuild(HttpServletRequest request) throws Exception {
+		long testrayBuildId = ParamUtil.getLong(request, "testrayBuildId", -1);
+
+		if (testrayBuildId >= 0) {
+			TestrayBuild testrayBuild = TestrayBuildLocalServiceUtil.fetchTestrayBuild(testrayBuildId);
+
+			if (testrayBuild == null) {
+				throw new AlloyException("the-build-with-id-x-does-not-exist", new Object[] {testrayBuildId}, false);
+			}
+
+			return testrayBuild;
+		}
+
+		String name = ParamUtil.getString(request, "testrayBuildName");
+
+		if (Validator.isNull(name)) {
+			throw new AlloyException("the-build-id-or-name-provided-does-not-match-an-existing-build", false);
+		}
+
+		TestrayRoutine testrayRoutine = TestrayRoutineUtil.getTestrayRoutine(request);
+
+		if (name.equals("latest")) {
+			return getLatestTestrayBuild(testrayRoutine.getTestrayRoutineId());
+		}
+
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayRoutineId", testrayRoutine.getTestrayRoutineId(), "name", name});
+
+		if (testrayBuilds.isEmpty()) {
+			throw new AlloyException("the-build-with-name-x-does-not-exist-for-the-routine-with-id-x", new Object[] {name, testrayRoutine.getTestrayRoutineId()}, false);
+		}
+
+		return testrayBuilds.get(0);
+	}
+
+	public static List<Long> getTestrayBuildIds(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		DynamicQuery testrayBuildDynamicQuery = testrayBuildAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+
+		Projection testrayBuildIdProjection = ProjectionFactoryUtil.property("testrayBuildId");
+
+		testrayBuildDynamicQuery.setProjection(testrayBuildIdProjection);
+
+		return testrayBuildAlloyServiceInvoker.executeDynamicQuery(testrayBuildDynamicQuery);
+	}
+
+	public static TestrayCaseResultReporter getTestrayCaseResultReporter(ThemeDisplay themeDisplay, Map<String, Serializable> properties) throws Exception {
+		Long testrayTeamId = (Long)properties.get("testrayTeamId");
+
+		if (Validator.isNotNull(testrayTeamId)) {
+			List<Long> testrayComponentIds = TestrayComponentUtil.getTestrayComponentIds(testrayTeamId);
+
+			if (testrayComponentIds.isEmpty()) {
+				return null;
+			}
+
+			properties.put("testrayComponentIds", (Serializable)testrayComponentIds);
+		}
+
+		return new TestrayCaseResultReporter(themeDisplay, properties);
+	}
+
+	public static boolean isArchived(TestrayBuild testrayBuild) throws Exception {
+		if (testrayBuild.getStatus() == TestrayBuildConstants.STATUS_ARCHIVED) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static void setArchived(AlloyController alloyController, TestrayBuild testrayBuild, boolean archived, boolean toFile) throws Exception {
+		if (archived) {
+			TestrayArchiveUtil.archiveTestrayBuild(alloyController, testrayBuild, toFile);
+		}
+		else {
+			TestrayArchiveUtil.restoreTestrayBuild(alloyController, testrayBuild);
+		}
+	}
+
+	private static Map<Long, List<TestrayCaseResultComposite>> _getTestrayCaseIdCompositeMap(TestrayBuildComposite testrayBuildComposite) throws Exception {
+		Map<Long, List<TestrayCaseResultComposite>> testrayCaseIdCompositeMap = new HashMap<>();
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuildComposite.getTestrayBuildId()});
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			List<TestrayCaseResultComposite> testrayCaseResultComposites = testrayCaseIdCompositeMap.get(testrayCaseResult.getTestrayCaseId());
+
+			if (testrayCaseResultComposites == null) {
+				testrayCaseResultComposites = new ArrayList<>();
+
+				testrayCaseIdCompositeMap.put(testrayCaseResult.getTestrayCaseId(), testrayCaseResultComposites);
+			}
+
+			testrayCaseResultComposites.add(new TestrayCaseResultComposite(testrayCaseResult, testrayBuildComposite.getThemeDisplay()));
+		}
+
+		return testrayCaseIdCompositeMap;
+	}
+
+}
+%>

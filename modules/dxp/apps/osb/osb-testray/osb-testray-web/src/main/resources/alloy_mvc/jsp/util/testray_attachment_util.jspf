@@ -1,0 +1,59 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayAttachmentUtil {
+
+	public static File writeFile(File fromFile) throws Exception {
+		Date now = new Date();
+
+		Path parentDirectoryPath = Paths.get(PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_PATH, _ATTACHMENTS_UPLOAD_PARENT_DIRECTORY, _YEAR_MONTH_DATE_FORMAT.format(now), _DAY_DATE_FORMAT.format(now));
+
+		File parentDirectory = parentDirectoryPath.toFile();
+
+		FileUtil.mkdirs(parentDirectory);
+
+		long next = CounterLocalServiceUtil.increment(_YEAR_MONTH_DAY_DATE_FORMAT.format(now));
+
+		File attachmentFile = new File(parentDirectory, String.valueOf(next));
+
+		RandomAccessFile randomAccessFile = new RandomAccessFile(fromFile, "r");
+
+		byte[] bytes = new byte[(int)randomAccessFile.length()];
+
+		randomAccessFile.readFully(bytes);
+
+		if (!Arrays.equals(ArrayUtil.subset(bytes, 0, 2), _GZIP_MAGIC_BYTES)) {
+			bytes = TestrayUtil.compress(bytes);
+		}
+
+		FileUtil.write(attachmentFile, bytes);
+
+		return attachmentFile;
+	}
+
+	private static final String _ATTACHMENTS_UPLOAD_PARENT_DIRECTORY = "upload";
+
+	private static final DateFormat _DAY_DATE_FORMAT = DateFormatFactoryUtil.getSimpleDateFormat("dd");
+
+	private static final byte[] _GZIP_MAGIC_BYTES = {(byte)0x1f, (byte)0x8b};
+
+	private static final DateFormat _YEAR_MONTH_DATE_FORMAT = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM");
+
+	private static final DateFormat _YEAR_MONTH_DAY_DATE_FORMAT = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
+}
+%>

@@ -1,0 +1,588 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseResultComposite {
+
+	public TestrayCaseResultComposite(Long testrayCaseResultId, ThemeDisplay themeDisplay) throws Exception {
+		this(TestrayCaseResultLocalServiceUtil.getTestrayCaseResult(testrayCaseResultId), themeDisplay);
+	}
+
+	public TestrayCaseResultComposite(TestrayCaseResult testrayCaseResult, ThemeDisplay themeDisplay) throws Exception {
+		_testrayCaseResult = testrayCaseResult;
+		_themeDisplay = themeDisplay;
+	}
+
+	public User getAssignedUser() throws Exception {
+		if ((_assignedUser == null) && (getAssignedUserId() > 0)) {
+			_assignedUser = UserLocalServiceUtil.getUser(getAssignedUserId());
+		}
+
+		return _assignedUser;
+	}
+
+	public String getAssignedUserFullName() throws Exception {
+		User assignedUser = getAssignedUser();
+
+		if (assignedUser == null) {
+			return StringPool.BLANK;
+		}
+
+		return assignedUser.getFullName();
+	}
+
+	public long getAssignedUserId() {
+		return _testrayCaseResult.getAssignedUserId();
+	}
+
+	public String getAssignedUserPortraitURL() throws Exception {
+		User user = getAssignedUser();
+
+		if (user == null) {
+			return StringPool.BLANK;
+		}
+
+		return user.getPortraitURL(_themeDisplay);
+	}
+
+	public Map<String, String> getAttachmentsMap() throws Exception {
+		if (Validator.isNull(_testrayCaseResult.getAttachments())) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> attachmentsMap = JSONFactoryUtil.looseDeserialize(_testrayCaseResult.getAttachments(), HashMap.class);
+
+		for (Map.Entry<String, String> attachmentEntry : attachmentsMap.entrySet()) {
+			attachmentEntry.setValue(getTestrayAutomationAttachmentURL(attachmentEntry.getValue()));
+		}
+
+		return attachmentsMap;
+	}
+
+	public Date getClosedDate() {
+		return _testrayCaseResult.getClosedDate();
+	}
+
+	public String getComment() throws Exception {
+		MBMessage mbMessage = getMBMessage();
+
+		if (mbMessage == null) {
+			return StringPool.BLANK;
+		}
+
+		return HtmlUtil.unescape(mbMessage.getBody());
+	}
+
+	public User getCommentAuthor() throws Exception {
+		MBMessage mbMessage = getMBMessage();
+
+		if ((mbMessage != null) && (_commentAuthor == null)) {
+			_commentAuthor = UserLocalServiceUtil.getUser(mbMessage.getUserId());
+		}
+
+		return _commentAuthor;
+	}
+
+	public String getCommentAuthorFullName() throws Exception {
+		User user = getCommentAuthor();
+
+		if (user == null) {
+			return StringPool.BLANK;
+		}
+
+		return user.getFullName();
+	}
+
+	public Date getCommentDate() throws Exception {
+		MBMessage mbMessage = getMBMessage();
+
+		if (mbMessage == null) {
+			return null;
+		}
+
+		return mbMessage.getModifiedDate();
+	}
+
+	public long getCommentMBMessageId() {
+		return _testrayCaseResult.getCommentMBMessageId();
+	}
+
+	public Date getCreateDate() throws Exception {
+		return _testrayCaseResult.getCreateDate();
+	}
+
+	public String getErrors() {
+		return _testrayCaseResult.getErrors();
+	}
+
+	public String getErrorsTruncated() {
+		return TestrayUtil.shorten(_testrayCaseResult.getErrors(), PortletPropsValues.TESTRAY_CASE_RESULT_ERRORS_TRUNCATED_CHAR_COUNT, StringPool.TRIPLE_PERIOD);
+	}
+
+	public int getEstimatedDuration() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getEstimatedDuration();
+	}
+
+	public long getGroupId() throws Exception {
+		return _testrayCaseResult.getGroupId();
+	}
+
+	public String getHtmlURL() {
+		if (_htmlURL != null) {
+			return _htmlURL;
+		}
+
+		return StringPool.BLANK;
+	}
+
+	public String getIssues() throws Exception {
+		return ListUtil.toString(getTestrayIssues(), "name", StringPool.COMMA);
+	}
+
+	public JSONObject getJSONObject() throws Exception {
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		JSONObject assignedUserJSONObject = JSONFactoryUtil.createJSONObject();
+
+		assignedUserJSONObject.put("profileImageURL", getAssignedUserPortraitURL());
+		assignedUserJSONObject.put("userName", getAssignedUserFullName());
+
+		jsonObject.put("assignedUser", assignedUserJSONObject);
+
+		jsonObject.put("attachments", JSONFactoryUtil.createJSONObject(_testrayCaseResult.getAttachments()));
+		jsonObject.put("comment", getComment());
+		jsonObject.put("createDate", getCreateDate());
+		jsonObject.put("errors", getErrors());
+		jsonObject.put("htmlURL", getHtmlURL());
+
+		JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (TestrayIssue testrayIssue : getTestrayIssues()) {
+			jsonArray.put(testrayIssue.getName());
+		}
+
+		jsonObject.put("issues", jsonArray);
+
+		jsonObject.put("status", getStatus());
+		jsonObject.put("testrayCaseId", getTestrayCaseId());
+		jsonObject.put("testrayCaseName", getTestrayCaseName());
+		jsonObject.put("testrayCaseResultId", getTestrayCaseResultId());
+		jsonObject.put("testrayComponentId", getTestrayComponentId());
+		jsonObject.put("testrayComponentName", getTestrayComponentName());
+		jsonObject.put("testrayRunId", getTestrayRunId());
+		jsonObject.put("testrayRunNumber", getTestrayRunNumber());
+		jsonObject.put("testrayTeamId", getTestrayTeamId());
+		jsonObject.put("testrayTeamName", getTestrayTeamName());
+
+		jsonArray = JSONFactoryUtil.createJSONArray();
+
+		for (TestrayCaseResultWarning testrayCaseResultWarning : getTestrayCaseResultWarnings()) {
+			jsonArray.put(testrayCaseResultWarning.getContent());
+		}
+
+		jsonObject.put("warnings", jsonArray);
+
+		jsonObject.put("warningsCount", getTestrayCaseResultWarningsCount());
+
+		return jsonObject;
+	}
+
+	public MBMessage getMBMessage() throws Exception {
+		if (_mbMessage == null) {
+			_mbMessage = TestrayUtil.fetchMBMessage(getCommentMBMessageId());
+		}
+
+		return _mbMessage;
+	}
+
+	public Date getModifiedDate() {
+		return _testrayCaseResult.getModifiedDate();
+	}
+
+	public int getPriority() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getPriority();
+	}
+
+	public MBMessage getRootMBMessage() throws Exception {
+		if (_rootMBMessage == null) {
+			_rootMBMessage = TestrayUtil.getRootMBMessage(getUserId(), getGroupId(), TestrayCaseResult.class.getName(), getTestrayCaseResultId());
+		}
+
+		return _rootMBMessage;
+	}
+
+	public Date getStartDate() {
+		return _testrayCaseResult.getStartDate();
+	}
+
+	public int getStatus() {
+		return _testrayCaseResult.getStatus();
+	}
+
+	public String getStatusLabel() {
+		return TestrayCaseResultConstants.getStatusLabel(getStatus());
+	}
+
+	public String getSteps() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getSteps();
+	}
+
+	public String getStepsType() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getStepsType();
+	}
+
+	public TestrayBuild getTestrayBuild() throws Exception {
+		if (_testrayBuild == null) {
+			_testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(getTestrayBuildId());
+		}
+
+		return _testrayBuild;
+	}
+
+	public String getTestrayBuildGitHash() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getGitHash();
+	}
+
+	public String getTestrayBuildGitHashShortened() throws Exception {
+		return StringUtil.shorten(getTestrayBuildGitHash(), 8, StringPool.BLANK);
+	}
+
+	public String[] getTestrayBuildGithubCompareURLs() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		String githubCompareURLs = testrayBuild.getGithubCompareURLs();
+
+		return githubCompareURLs.split(StringPool.COMMA);
+	}
+
+	public long getTestrayBuildId() throws Exception {
+		TestrayRun testrayRun = getTestrayRun();
+
+		return testrayRun.getTestrayBuildId();
+	}
+
+	public String getTestrayBuildName() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getName();
+	}
+
+	public TestrayCase getTestrayCase() throws Exception {
+		if (_testrayCase == null) {
+			_testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(getTestrayCaseId());
+		}
+
+		return _testrayCase;
+	}
+
+	public String getTestrayCaseDescription() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getDescription();
+	}
+
+	public String getTestrayCaseDescriptionType() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getDescriptionType();
+	}
+
+	public long getTestrayCaseId() {
+		return _testrayCaseResult.getTestrayCaseId();
+	}
+
+	public String getTestrayCaseName() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getName();
+	}
+
+	public String getTestrayCaseNameTruncated() throws Exception {
+		return StringUtil.shorten(getTestrayCaseName(), 75);
+	}
+
+	public TestrayCaseResult getTestrayCaseResult() {
+		return _testrayCaseResult;
+	}
+
+	public long getTestrayCaseResultId() {
+		return _testrayCaseResult.getTestrayCaseResultId();
+	}
+
+	public List<TestrayCaseResultWarning> getTestrayCaseResultWarnings() throws Exception {
+		if (_testrayCaseResultWarnings == null) {
+			_testrayCaseResultWarnings = TestrayCaseResultWarningUtil.getTestrayCaseResultWarnings(getTestrayCaseResultId());
+		}
+
+		return _testrayCaseResultWarnings;
+	}
+
+	public int getTestrayCaseResultWarningsCount() throws Exception {
+		List<TestrayCaseResultWarning> testrayCaseResultWarnings = getTestrayCaseResultWarnings();
+
+		return testrayCaseResultWarnings.size();
+	}
+
+	public TestrayCaseType getTestrayCaseType() throws Exception {
+		if (_testrayCaseType == null) {
+			_testrayCaseType = TestrayCaseTypeLocalServiceUtil.getTestrayCaseType(getTestrayCaseTypeId());
+		}
+
+		return _testrayCaseType;
+	}
+
+	public long getTestrayCaseTypeId() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getTestrayCaseTypeId();
+	}
+
+	public String getTestrayCaseTypeName() throws Exception {
+		TestrayCaseType testrayCaseType = getTestrayCaseType();
+
+		return testrayCaseType.getName();
+	}
+
+	public TestrayComponent getTestrayComponent() throws Exception {
+		if (_testrayComponent == null) {
+			_testrayComponent = TestrayComponentLocalServiceUtil.getTestrayComponent(getTestrayComponentId());
+		}
+
+		return _testrayComponent;
+	}
+
+	public long getTestrayComponentId() throws Exception {
+		TestrayCase testrayCase = getTestrayCase();
+
+		return testrayCase.getTestrayComponentId();
+	}
+
+	public String getTestrayComponentName() throws Exception {
+		TestrayComponent testrayComponent = getTestrayComponent();
+
+		return testrayComponent.getName();
+	}
+
+	public String getTestrayComponentNames() throws Exception {
+		if (_testrayComponentNamesString != null) {
+			return _testrayComponentNamesString;
+		}
+
+		List<TestrayComponent> testrayComponents = getTestrayComponents();
+
+		String[] testrayComponentNames = new String[testrayComponents.size()];
+
+		for (int i = 0; i < testrayComponents.size(); i++) {
+			TestrayComponent testrayComponent = testrayComponents.get(i);
+
+			testrayComponentNames[i] = testrayComponent.getName();
+		}
+
+		_testrayComponentNamesString = StringUtil.merge(testrayComponentNames);
+
+		return _testrayComponentNamesString;
+	}
+
+	public List<TestrayComponent> getTestrayComponents() throws Exception {
+		if (_testrayComponents == null) {
+			_testrayComponents = TestrayComponentLocalServiceUtil.getTestrayCaseTestrayComponents(getTestrayCaseId());
+		}
+
+		return _testrayComponents;
+	}
+
+	public String getTestrayFactorOptionNamesString() throws Exception {
+		return TestrayFactorUtil.getTestrayFactorOptionNamesString(TestrayRun.class.getName(), getTestrayRunId());
+	}
+
+	public List<TestrayFactor> getTestrayFactors() throws Exception {
+		if (_testrayFactors != null) {
+			return _testrayFactors;
+		}
+
+		_testrayFactors = TestrayFactorUtil.getTestrayFactors(TestrayRun.class.getName(), getTestrayRunId());
+
+		return _testrayFactors;
+	}
+
+	public List<TestrayIssue> getTestrayIssues() throws Exception {
+		if (_testrayIssues == null) {
+			_testrayIssues = TestrayIssueLocalServiceUtil.getTestrayCaseResultTestrayIssues(getTestrayCaseResultId());
+		}
+
+		return _testrayIssues;
+	}
+
+	public TestrayProductVersion getTestrayProductVersion() throws Exception {
+		if (_testrayProductVersion == null) {
+			_testrayProductVersion = TestrayProductVersionLocalServiceUtil.getTestrayProductVersion(getTestrayProductVersionId());
+		}
+
+		return _testrayProductVersion;
+	}
+
+	public long getTestrayProductVersionId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayProductVersionId();
+	}
+
+	public String getTestrayProductVersionName() throws Exception {
+		TestrayProductVersion testrayProductVersion = getTestrayProductVersion();
+
+		return testrayProductVersion.getName();
+	}
+
+	public TestrayProject getTestrayProject() throws Exception {
+		if (_testrayProject == null) {
+			TestrayBuild testrayBuild = getTestrayBuild();
+
+			_testrayProject = TestrayProjectLocalServiceUtil.getTestrayProject(testrayBuild.getTestrayProjectId());
+		}
+
+		return _testrayProject;
+	}
+
+	public long getTestrayProjectId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayProjectId();
+	}
+
+	public String getTestrayProjectName() throws Exception {
+		TestrayProject testrayProject = getTestrayProject();
+
+		return testrayProject.getName();
+	}
+
+	public TestrayRoutine getTestrayRoutine() throws Exception {
+		if (_testrayRoutine == null) {
+			TestrayBuild testrayBuild = getTestrayBuild();
+
+			_testrayRoutine = TestrayRoutineLocalServiceUtil.getTestrayRoutine(testrayBuild.getTestrayRoutineId());
+		}
+
+		return _testrayRoutine;
+	}
+
+	public long getTestrayRoutineId() throws Exception {
+		TestrayBuild testrayBuild = getTestrayBuild();
+
+		return testrayBuild.getTestrayRoutineId();
+	}
+
+	public String getTestrayRoutineName() throws Exception {
+		TestrayRoutine testrayRoutine = getTestrayRoutine();
+
+		return testrayRoutine.getName();
+	}
+
+	public TestrayRun getTestrayRun() throws Exception {
+		if (_testrayRun == null) {
+			_testrayRun = TestrayRunLocalServiceUtil.getTestrayRun(getTestrayRunId());
+		}
+
+		return _testrayRun;
+	}
+
+	public long getTestrayRunId() throws Exception {
+		return _testrayCaseResult.getTestrayRunId();
+	}
+
+	public long getTestrayRunNumber() throws Exception {
+		TestrayRun testrayRun = getTestrayRun();
+
+		return testrayRun.getNumber();
+	}
+
+	public TestrayTeam getTestrayTeam() throws Exception {
+		if (_testrayTeam == null) {
+			_testrayTeam = TestrayTeamLocalServiceUtil.fetchTestrayTeam(getTestrayTeamId());
+		}
+
+		return _testrayTeam;
+	}
+
+	public long getTestrayTeamId() throws Exception {
+		TestrayComponent testrayComponent = getTestrayComponent();
+
+		return testrayComponent.getTestrayTeamId();
+	}
+
+	public String getTestrayTeamName() throws Exception {
+		TestrayTeam testrayTeam = getTestrayTeam();
+
+		if (testrayTeam == null) {
+			return StringPool.BLANK;
+		}
+
+		return testrayTeam.getName();
+	}
+
+	public long getThreadId() throws Exception {
+		MBMessage rootMBMessage = getRootMBMessage();
+
+		return rootMBMessage.getThreadId();
+	}
+
+	public long getUserId() throws Exception {
+		return _testrayCaseResult.getUserId();
+	}
+
+	public void setHtmlURL(String htmlURL) {
+		_htmlURL = htmlURL;
+	}
+
+	protected String getTestrayAutomationAttachmentURL(String testrayAttachmentRelativePath) {
+		String url = PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_URL + StringPool.FORWARD_SLASH + testrayAttachmentRelativePath;
+
+		return url.replaceAll(StringPool.POUND, "%23");
+	}
+
+	private User _assignedUser;
+	private User _commentAuthor;
+	private String _htmlURL;
+	private MBMessage _mbMessage;
+	private MBMessage _rootMBMessage;
+	private TestrayBuild _testrayBuild;
+	private TestrayCase _testrayCase;
+	private final TestrayCaseResult _testrayCaseResult;
+	private List<TestrayCaseResultWarning> _testrayCaseResultWarnings;
+	private TestrayCaseType _testrayCaseType;
+	private TestrayComponent _testrayComponent;
+	private String _testrayComponentNamesString;
+	private List<TestrayComponent> _testrayComponents;
+	private List<TestrayFactor> _testrayFactors;
+	private List<TestrayIssue> _testrayIssues;
+	private TestrayProductVersion _testrayProductVersion;
+	private TestrayProject _testrayProject;
+	private TestrayRoutine _testrayRoutine;
+	private TestrayRun _testrayRun;
+	private TestrayTeam _testrayTeam;
+	private final ThemeDisplay _themeDisplay;
+
+}
+%>

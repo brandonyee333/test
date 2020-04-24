@@ -1,0 +1,4 @@
+Bundle-Name: Liferay OSB Testray Issue Engine JIRA Web
+Bundle-SymbolicName: com.liferay.osb.testray.issue.engine.jira.web
+Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.testray.issue.engine.jira.web.util

@@ -1,0 +1,37 @@
+.testray-card {
+	background-color: $color-white;
+	border: 1px solid $color-gray-light;
+	box-shadow: $box-shadow-light;
+	margin-bottom: 15px;
+	padding: 26px 30px;
+
+	&.testray-card-medium {
+		margin: 0 auto;
+		max-width: 800px;
+	}
+
+	&.testray-card-metadata-panel {
+		padding: 10px;
+	}
+
+	.copy-icon-inline {
+		background-image: url('../images/copy.svg');
+		display: inline-block;
+		height: 15px;
+		width: 15px;
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	.panel-group {
+		margin-bottom: 0;
+	}
+
+	.metadata-panel.panel-group .panel {
+		&, .panel-body {
+			border-width: 0;
+		}
+	}
+}

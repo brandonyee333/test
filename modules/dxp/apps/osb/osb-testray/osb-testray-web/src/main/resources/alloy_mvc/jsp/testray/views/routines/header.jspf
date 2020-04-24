@@ -1,0 +1,129 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<testray:header
+	breadcrumbComposites="${testrayBreadcrumbComposites}"
+	title="${testrayRoutine.name}"
+>
+	<testray:dropdown
+		cssClass="manage-page-dropdown"
+		icon="ellipsis-vertical"
+		label="manage-routine"
+	>
+		<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayRoutine, "edit")}'>
+			<portlet:renderURL var="editTestrayRoutineURL">
+				<portlet:param name="controller" value="routines" />
+				<portlet:param name="action" value="edit" />
+				<portlet:param name="id" value="${testrayRoutine.testrayRoutineId}" />
+				<portlet:param name="redirect" value="${portletURL}" />
+			</portlet:renderURL>
+
+			<testray:dropdown-item
+				cssClass="testray-menu-item"
+				icon="edit"
+				label="edit-routine"
+				url="${editTestrayRoutineURL}"
+			/>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsClassAction(themeDisplay, testrayBuildClass, "create")}'>
+			<portlet:renderURL var="viewTemplateTestrayBuildsURL">
+				<portlet:param name="controller" value="builds" />
+				<portlet:param name="action" value="templates" />
+				<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
+
+				<testray:filter-preference
+					value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "builds", "templates", testrayProjectId)}'
+				/>
+			</portlet:renderURL>
+
+			<testray:dropdown-item
+				cssClass="testray-menu-item"
+				icon="cogs"
+				label="manage-templates"
+				url="${viewTemplateTestrayBuildsURL}"
+			/>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayRoutine, "edit")}'>
+			<portlet:renderURL var="selectTestrayFactorCategoriesURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="controller" value="factor_categories" />
+				<portlet:param name="action" value="select" />
+				<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
+			</portlet:renderURL>
+
+			<c:set value='${AlloyLanguageUtil.getUnicode("select-categories")}' var="selectTestrayFactorCategoriesURLTitle" />
+
+			<c:set value="Liferay.Testray.openWindow('${selectTestrayFactorCategoriesURL}', '${selectTestrayFactorCategoriesURLTitle}')" var="selectTestrayFactorCategoriesURL" />
+
+			<testray:dropdown-item
+				cssClass="testray-menu-item"
+				icon="desktop"
+				label="select-default-environment-factors"
+				onClick="${selectTestrayFactorCategoriesURL}"
+			/>
+		</c:if>
+
+		<c:if test='${testrayPermission:containsModelAction(themeDisplay, testrayRoutine, "delete")}'>
+			<portlet:renderURL var="deleteTestrayRoutineURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+				<portlet:param name="controller" value="routines" />
+				<portlet:param name="action" value="deleteConfirm" />
+				<portlet:param name="id" value="${testrayRoutine.testrayRoutineId}" />
+			</portlet:renderURL>
+
+			<c:set value='${AlloyLanguageUtil.getUnicode("delete-routine")}' var="deleteTestrayRoutineURLTitle" />
+
+			<c:set value="Liferay.Testray.openWindow('${deleteTestrayRoutineURL}', '${deleteTestrayRoutineURLTitle}', 600, 380)" var="deleteTestrayRoutineURL" />
+
+			<testray:dropdown-item
+				cssClass="testray-menu-item"
+				icon="trash"
+				label="delete-routine"
+				onClick="${deleteTestrayRoutineURL}"
+			/>
+		</c:if>
+	</testray:dropdown>
+
+	<portlet:renderURL var="viewCurrentTestrayBuildsURL">
+		<portlet:param name="controller" value="builds" />
+		<portlet:param name="action" value="index" />
+		<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
+
+		<testray:filter-preference
+			value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "builds", "index", testrayProjectId)}'
+		/>
+	</portlet:renderURL>
+
+	<portlet:renderURL var="viewArchivedTestrayBuildsURL">
+		<portlet:param name="controller" value="builds" />
+		<portlet:param name="action" value="index" />
+		<portlet:param name="archived" value="${true}" />
+		<portlet:param name="testrayRoutineId" value="${testrayRoutine.testrayRoutineId}" />
+
+		<testray:filter-preference
+			value='${TestrayFilterUtil.getUserFilterPreferences(pageContext.request, "builds", "index", testrayProjectId)}'
+		/>
+	</portlet:renderURL>
+
+	<c:set value="${viewCurrentTestrayBuildsURL},${viewArchivedTestrayBuildsURL}" var="tabUrls" />
+
+	<liferay-ui:tabs
+		cssClass="testray-nav-tabs"
+		names="current,archived"
+		urls="${fn:split(tabUrls, StringPool.COMMA)}"
+		value='${param.archived ? "archived" : "current"}'
+	/>
+</testray:header>

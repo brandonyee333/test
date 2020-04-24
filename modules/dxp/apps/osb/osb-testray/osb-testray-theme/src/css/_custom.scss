@@ -1,0 +1,32 @@
+@import "partials/variables";
+
+@import "partials/testray_mixins";
+
+@import "partials/alerts";
+@import "partials/buttons";
+@import "partials/inputs";
+@import "partials/layout";
+@import "partials/login";
+@import "partials/menu";
+@import "partials/modal";
+@import "partials/popover";
+@import "partials/portal";
+@import "partials/sidebar";
+@import "partials/tables";
+@import "partials/tabs";
+@import "partials/tooltip";
+
+.testray-portlet {
+	@import "partials/avatar";
+	@import "partials/breadcrumb";
+	@import "partials/bulk_operation";
+	@import "partials/card";
+	@import "partials/choices";
+	@import "partials/compare_runs";
+	@import "partials/filter";
+	@import "partials/form";
+	@import "partials/graph";
+	@import "partials/loading_bar";
+	@import "partials/metadata";
+	@import "partials/statuses";
+}

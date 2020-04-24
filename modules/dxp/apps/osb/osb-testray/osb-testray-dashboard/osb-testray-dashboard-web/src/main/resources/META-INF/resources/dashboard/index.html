@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8" content="initial-scale=1,width=device-width" name="viewport" />
+
+		<script src="https://cdn.lfrs.sl/alloyui.com/3.0.0/aui/aui-min.js"></script>
+
+		<link href="https://cdn.lfrs.sl/alloyui.com/3.0.1/aui-css/css/bootstrap.min.css" rel="stylesheet" />
+
+		<link href="/o/osb-testray-dashboard-web/dashboard/css/main.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<div class="dashboard-alert-wrapper" id="dashboardAlertWrapper"></div>
+
+		<nav class="navbar">
+			<div class="container-fluid">
+				<div class="navbar-collapse">
+					<a class="btn btn-default navbar-btn" href="/c/portal/login">Sign In</a>
+				</div>
+			</div>
+		</nav>
+
+		<div class="testray-dashboard-container container-fluid">
+			<div class="row" id="wrapper">
+				<div class="col-md-3 col-xs-4 testray-dashboard-column">
+					<div class="dashboard-panel">
+						<h1 class="dashboard-panel-header">PR Tester Queue</h1>
+
+						<div class="pull-request-test-wrapper" id="pullRequestTestWrapper"></div>
+					</div>
+
+					<div class="dashboard-panel">
+						<h1 class="dashboard-panel-header">Centurions</h1>
+
+						<div class="total-count-container">
+							<div class="total-count">
+								<span class="total-count-value" id="totalQueueCount"></span>
+
+								<span class="total-count-label">Total Jobs Queued</span>
+							</div>
+
+							<div class="total-count">
+								<span class="total-count-value" id="totalUtilizationPercent"></span>
+
+								<span class="total-count-label">Total Utilization</span>
+							</div>
+						</div>
+
+						<div class="server-wrapper" id="serverWrapper">
+							<div class="centurion data-row">
+								<div class="data-column data-column-label">Queue</div>
+
+								<div class="data-column data-column-label data-column-server-bar">% Utilization</div>
+
+								<div class="data-column data-column-label">ID</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-9 col-xs-8 testray-dashboard-column">
+					<div class="dashboard-panel">
+						<h1 class="dashboard-panel-header">Functional Tests</h1>
+
+						<div class="functional-wrapper" id="functionalCEWrapper"></div>
+
+						<div class="functional-wrapper" id="functionalEEWrapper"></div>
+					</div>
+
+					<div class="dashboard-panel">
+						<h1 class="dashboard-panel-header">
+							Environment Tests
+
+							<span class="subtitle">Environment Acceptance (7.1.x)</span>
+						</h1>
+
+						<div class="environment-wrapper" id="environmentWrapper"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="/o/osb-testray-dashboard-web/dashboard/js/moment.min.js" type="text/javascript"></script>
+
+		<script src="/o/osb-testray-dashboard-web/dashboard/js/dashboard.js" type="text/javascript"></script>
+	</body>
+</html>

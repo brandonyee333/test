@@ -1,0 +1,290 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseResultReporter {
+
+	public TestrayCaseResultReporter(ThemeDisplay themeDisplay, Map<String, Serializable> attributes) throws Exception {
+		_attributes = attributes;
+
+		_indexer = IndexerRegistryUtil.nullSafeGetIndexer(TestrayCaseResult.class);
+
+		_searchContext = new SearchContext();
+
+		_searchContext.setCompanyId(themeDisplay.getCompanyId());
+		_searchContext.setEnd(QueryUtil.ALL_POS);
+		_searchContext.setGroupIds(null);
+		_searchContext.setStart(QueryUtil.ALL_POS);
+		_searchContext.setUserId(themeDisplay.getUserId());
+
+		if (_attributes.isEmpty()) {
+			_testrayCaseResultsCount = 0;
+
+			_testrayCaseResultStatusCountsMap = Collections.emptyMap();
+		}
+
+		_themeDisplay = themeDisplay;
+	}
+
+	public String getIssues() throws Exception {
+		Set<String> testrayIssueNames = getTestrayIssueNames();
+
+		if (testrayIssueNames.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(testrayIssueNames.size() * 2);
+
+		for (String testrayIssueName : testrayIssueNames) {
+			sb.append(testrayIssueName);
+			sb.append(StringPool.COMMA);
+		}
+
+		sb.setIndex(sb.index() - 1);
+
+		return sb.toString();
+	}
+
+	public int getIssuesCount() throws Exception {
+		Set<String> testrayIssueNames = getTestrayIssueNames();
+
+		return testrayIssueNames.size();
+	}
+
+	public Map<String, Integer> getSimplifiedTestrayCaseResultStatusCounts() throws Exception {
+		Map<String, Integer> testrayCaseResultStatusCountsMap = new HashMap<>(getTestrayCaseResultStatusCounts());
+
+		if (testrayCaseResultStatusCountsMap.isEmpty()) {
+			return Collections.emptyMap();
+		}
+
+		int incompleteCount = 0;
+
+		incompleteCount += testrayCaseResultStatusCountsMap.remove(TestrayCaseResultConstants.LABEL_IN_PROGRESS);
+		incompleteCount += testrayCaseResultStatusCountsMap.remove(TestrayCaseResultConstants.LABEL_UNTESTED);
+
+		testrayCaseResultStatusCountsMap.put(TestrayCaseResultConstants.LABEL_INCOMPLETE, incompleteCount);
+
+		return testrayCaseResultStatusCountsMap;
+	}
+
+	public TestrayCaseResultReporter getSubsetTestrayCaseResultReporter(Map<String, Serializable> newAttributes) throws Exception {
+		Map<String, Serializable> attributes = new HashMap<>();
+
+		attributes.putAll(_attributes);
+		attributes.putAll(newAttributes);
+
+		return new TestrayCaseResultReporter(_themeDisplay, attributes);
+	}
+
+	public int getTestrayCaseEstimatedDuration(boolean excludeCompleteTests) throws Exception {
+		int totalEstimatedDuration = 0;
+
+		if (MapUtil.isEmpty(_attributes)) {
+			return totalEstimatedDuration;
+		}
+
+		Map<String, Serializable> attributes = new HashMap<>(_attributes);
+
+		if (excludeCompleteTests) {
+			attributes.put("status", StringUtil.merge(TestrayCaseResultConstants.STATUSES_INCOMPLETE));
+		}
+
+		_searchContext.setAttributes(attributes);
+
+		Hits hits = _indexer.search(_searchContext);
+
+		List<Document> documents = hits.toList();
+
+		for (Document document : documents) {
+			long testrayCaseId = GetterUtil.getLong(document.get("testrayCaseId"));
+
+			TestrayCase testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId);
+
+			totalEstimatedDuration += testrayCase.getEstimatedDuration();
+		}
+
+		return totalEstimatedDuration;
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites() throws Exception {
+		if (MapUtil.isEmpty(_attributes)) {
+			return Collections.emptyList();
+		}
+
+		List<TestrayCaseResultComposite> testrayCaseResultComposites = new ArrayList<>();
+
+		_searchContext.setAttributes(_attributes);
+
+		Hits hits = _indexer.search(_searchContext);
+
+		List<Document> documents = hits.toList();
+
+		for (Document document : documents) {
+			long testrayCaseResultId = GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK));
+
+			testrayCaseResultComposites.add(new TestrayCaseResultComposite(testrayCaseResultId, _themeDisplay));
+		}
+
+		return testrayCaseResultComposites;
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites(Comparator<? super TestrayCaseResultComposite> comparator) throws Exception {
+		List<TestrayCaseResultComposite> testrayCaseResultComposites = getTestrayCaseResultComposites();
+
+		return ListUtil.sort(testrayCaseResultComposites, comparator);
+	}
+
+	public List<TestrayCaseResultComposite> getTestrayCaseResultComposites(int start, int end, Comparator<? super TestrayCaseResultComposite> comparator) throws Exception {
+		List<TestrayCaseResultComposite> testrayCaseResultComposites = getTestrayCaseResultComposites(comparator);
+
+		return ListUtil.subList(testrayCaseResultComposites, start, end);
+	}
+
+	public int getTestrayCaseResultsCount() throws Exception {
+		if (_testrayCaseResultsCount == null) {
+			_searchContext.setAttributes(_attributes);
+
+			_testrayCaseResultsCount = (int)_indexer.searchCount(_searchContext);
+		}
+
+		return _testrayCaseResultsCount;
+	}
+
+	public int getTestrayCaseResultsCount(String statusLabel) throws Exception {
+		Map<String, Integer> testrayCaseResultStatusCountsMap = getTestrayCaseResultStatusCounts();
+
+		if (testrayCaseResultStatusCountsMap.isEmpty()) {
+			return 0;
+		}
+
+		return testrayCaseResultStatusCountsMap.get(statusLabel);
+	}
+
+	public Map<String, Integer> getTestrayCaseResultStatusCounts() throws Exception {
+		if (_testrayCaseResultStatusCountsMap != null) {
+			return new HashMap<String, Integer>(_testrayCaseResultStatusCountsMap);
+		}
+
+		Map<String, Integer> testrayCaseResultStatusCountsMap = new HashMap<>();
+
+		for (String label : TestrayCaseResultConstants.STATUS_LABELS) {
+			if (MapUtil.isEmpty(_attributes)) {
+				testrayCaseResultStatusCountsMap.put(label, 0);
+
+				continue;
+			}
+
+			Map<String, Serializable> attributes = new HashMap<>(_attributes);
+
+			attributes.put("status", TestrayCaseResultConstants.getLabelStatus(label));
+
+			_searchContext.setAttributes(attributes);
+
+			int testrayCaseResultStatusCount = (int)_indexer.searchCount(_searchContext);
+
+			testrayCaseResultStatusCountsMap.put(label, testrayCaseResultStatusCount);
+		}
+
+		_testrayCaseResultStatusCountsMap = testrayCaseResultStatusCountsMap;
+
+		return _testrayCaseResultStatusCountsMap;
+	}
+
+	public List<TestrayCaseType> getTestrayCaseTypes() throws Exception {
+		if (_testrayCaseTypes != null) {
+			return _testrayCaseTypes;
+		}
+
+		if (MapUtil.isEmpty(_attributes)) {
+			return Collections.emptyList();
+		}
+
+		Set<Long> testrayCaseTypeIds = new HashSet<>();
+
+		_searchContext.setAttributes(_attributes);
+
+		Hits hits = _indexer.search(_searchContext);
+
+		List<Document> documents = hits.toList();
+
+		for (Document document : documents) {
+			long testrayCaseTypeId = GetterUtil.getLong(document.get("testrayCaseTypeId"));
+
+			testrayCaseTypeIds.add(testrayCaseTypeId);
+		}
+
+		_testrayCaseTypes = new ArrayList<>();
+
+		for (long testrayCaseTypeId : testrayCaseTypeIds) {
+			TestrayCaseType testrayCaseType = TestrayCaseTypeLocalServiceUtil.getTestrayCaseType(testrayCaseTypeId);
+
+			_testrayCaseTypes.add(testrayCaseType);
+		}
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayCaseTypeModelImpl.TABLE_NAME, "name", true);
+
+		_testrayCaseTypes = ListUtil.sort(_testrayCaseTypes, obc);
+
+		return _testrayCaseTypes;
+	}
+
+	public Set<String> getTestrayIssueNames() throws Exception {
+		if (_testrayIssueNames != null) {
+			return _testrayIssueNames;
+		}
+
+		if (MapUtil.isEmpty(_attributes)) {
+			return Collections.emptySet();
+		}
+
+		_testrayIssueNames = new HashSet<>();
+
+		_searchContext.setAttributes(_attributes);
+
+		Hits hits = _indexer.search(_searchContext);
+
+		List<Document> documents = hits.toList();
+
+		for (Document document : documents) {
+			String testrayIssuesString = GetterUtil.getString(document.get("issues"));
+
+			for (String testrayIssueString : StringUtil.split(testrayIssuesString)) {
+				testrayIssueString = testrayIssueString.trim();
+
+				String[] testrayIssueStringArray = testrayIssueString.split("(?<=\\D)(?=\\d)");
+
+				if (testrayIssueStringArray.length == 2) {
+					testrayIssueString = testrayIssueStringArray[0] + StringPool.DASH + testrayIssueStringArray[1];
+				}
+
+				_testrayIssueNames.add(testrayIssueString);
+			}
+		}
+
+		return _testrayIssueNames;
+	}
+
+	private final SearchContext _searchContext;
+	private final Map<String, Serializable> _attributes;
+	private Integer _testrayCaseResultsCount;
+	private Map<String, Integer> _testrayCaseResultStatusCountsMap;
+	private List<TestrayCaseType> _testrayCaseTypes;
+	private Set<String> _testrayIssueNames;
+	private final ThemeDisplay _themeDisplay;
+	private final Indexer _indexer;
+}
+%>

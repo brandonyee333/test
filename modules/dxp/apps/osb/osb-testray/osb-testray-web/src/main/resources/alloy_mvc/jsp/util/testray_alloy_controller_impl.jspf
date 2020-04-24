@@ -1,0 +1,396 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayAlloyControllerImpl extends BaseAlloyControllerImpl {
+
+	@Override
+	public String translate(String pattern, Object... arguments) {
+		return LanguageUtil.format(request, pattern, arguments);
+	}
+
+	@Override
+	protected void addOpenerSuccessMessage() {
+		Map<String, String> data = (Map<String, String>)SessionMessages.get(request.getSession(), portlet.getPortletId() + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA);
+
+		if ((data == null) || !GetterUtil.getBoolean(data.get("addSuccessMessage"))) {
+			return;
+		}
+
+		addSuccessMessage();
+
+		data.put("addSuccessMessage", StringPool.FALSE);
+
+		SessionMessages.add(request.getSession(), portlet.getPortletId() + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA, data);
+	}
+
+	protected void addOpenerSuccessMessageRedirect(String redirect) {
+		addOpenerSuccessMessage();
+
+		SessionMessages.add(portletRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT, redirect);
+	}
+
+	@Override
+	protected String buildResponseContent(Object data, String message, int status) throws Exception {
+		if (isRespondingTo("json") && (data instanceof AlloyException)) {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("message", message);
+			jsonObject.put("status", status);
+
+			return jsonObject.toString();
+		}
+		else if (isRespondingTo("csv")) {
+			ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+
+			serviceContext.setAttribute("responseCode", status);
+
+			if (Validator.isNull(data) || (data instanceof AlloyException)) {
+				return LanguageUtil.get(request, message);
+			}
+
+			return data.toString();
+		}
+
+		String responseContent = super.buildResponseContent(data, message, status);
+
+		JSONObject responseContentJSONObject = JSONFactoryUtil.createJSONObject(responseContent);
+
+		return responseContentJSONObject.toString(2);
+	}
+
+	@Override
+	protected void executeRender(Method method) throws Exception {
+		renderRequest.setAttribute("ActionKeys", getConstantsBean(ActionKeys.class));
+		renderRequest.setAttribute("PortletKeys", getConstantsBean(PortletKeys.class));
+		renderRequest.setAttribute("PortletPropsValues", getConstantsBean(PortletPropsValues.class));
+		renderRequest.setAttribute("StringPool", getConstantsBean(StringPool.class));
+		renderRequest.setAttribute("StringUtil", new StringUtil());
+		renderRequest.setAttribute("TestrayAutomationConstants", getConstantsBean(TestrayAutomationConstants.class));
+		renderRequest.setAttribute("TestrayCaseResultConstants", getConstantsBean(TestrayCaseResultConstants.class));
+		renderRequest.setAttribute("TestrayCaseResultConstantsMethods", new TestrayCaseResultConstants());
+		renderRequest.setAttribute("TestrayFilterConstants", getConstantsBean(TestrayFilterConstants.class));
+		renderRequest.setAttribute("TestrayFilterUtil", new TestrayFilterUtil());
+		renderRequest.setAttribute("TestraySubtaskConstants", getConstantsBean(TestraySubtaskConstants.class));
+		renderRequest.setAttribute("TestrayTaskConstants", getConstantsBean(TestrayTaskConstants.class));
+		renderRequest.setAttribute("TestrayUtil", new TestrayUtil());
+
+		TestrayUtil.setPortletURL(request, portletURL, "archived", "assignedUserId", "comments", "commentsBlankOnly", "errors", "errorsBlankOnly", "issues", "issuesBlankOnly", "maxCreateDateString", "minCreateDateString", "name", "priorities", "statuses", "templateStatus", "testrayBuildName", "testrayCaseName", "testrayCaseResultWarning", "testrayCaseTypeId", "testrayComponentId", "testrayComponentName", "testrayProductVersionName", "testrayRoutineName", "testrayTaskStatuses", "testrayTeamId", "id", "redirect", "tabs1", "testrayBuildId", "testrayCaseId", "testrayCaseResultId", "testrayComponentId", "testrayProjectId", "testrayRoutineId", "testrayRunId", "testraySuiteId", "testrayTaskId", "testrayTeamId", "view");
+
+		renderRequest.setAttribute("portletURL", portletURL);
+
+		if (!isRespondingTo()) {
+			setAssignedAnalysis();
+			setBreadcrumb();
+			setTestrayProjects();
+		}
+
+		super.executeRender(method);
+	}
+
+	@Override
+	protected void executeResource(Method method) throws Exception {
+		updateTestrayProjectId();
+
+		Class<?> tempClass = clazz;
+
+		clazz = clazz.getSuperclass();
+
+		if ((method != null) && method.isAnnotationPresent(RequireIssueEngineAuthorization.class) && !TestrayIssueEngineUtil.isAuthorized(user)) {
+			try {
+				TestrayIssueEngineUtil.authorize(request, response);
+			}
+			catch (IOException ioe) {
+				renderError(HttpServletResponse.SC_BAD_REQUEST, new AlloyException(ioe.getMessage()), ioe.getMessage());
+
+				writeResponse(responseContent, response.getContentType());
+			}
+		}
+		else {
+			super.executeResource(method);
+
+			if (_pollIndexStateProperties != null) {
+				TestrayUtil.pollIndexState(themeDisplay, indexer, _pollIndexStateProperties);
+
+				_pollIndexStateProperties = null;
+			}
+		}
+
+		clazz = tempClass;
+	}
+
+	@Override
+	protected StorageType getSchedulerStorageType() {
+		return StorageType.MEMORY;
+	}
+
+	@Override
+	protected boolean hasPermission() {
+		if (!permissioned) {
+			return true;
+		}
+
+		if (alloyServiceInvoker != null) {
+			long id = ParamUtil.getLong(request, "id");
+
+			if (id > 0) {
+				try {
+					BaseModel<?> baseModel = alloyServiceInvoker.fetchModel(id);
+
+					if (!TestrayPermission.contains(themeDisplay, baseModel, actionPath)) {
+						return false;
+					}
+				}
+				catch (Exception e) {
+					return false;
+				}
+			}
+			else {
+				try {
+					if (!TestrayPermission.contains(themeDisplay, modelClass, actionPath)) {
+						return false;
+					}
+				}
+				catch (Exception e) {
+					return false;
+				}
+			}
+		}
+
+		try {
+			return super.hasPermission();
+		}
+		catch (IllegalArgumentException iae) {
+			log.error(iae.toString());
+
+			return true;
+		}
+	}
+
+	@Override
+	protected boolean respondWith(int status, String message, Object object) throws Exception {
+		if (isRespondingTo("csv")) {
+			responseContent = buildResponseContent(object, message, status);
+
+			return true;
+		}
+
+		return super.respondWith(status, message, object);
+	}
+
+	@Override
+	protected AlloySearchResult search(Indexer indexer, AlloyServiceInvoker alloyServiceInvoker, HttpServletRequest request, PortletRequest portletRequest, Map<String, Serializable> customAttributes, String keywords, Sort[] sorts, int start, int end) throws Exception {
+		Map<String, Serializable> attributes = new HashMap<>();
+
+		SearchContext searchContext = SearchContextFactory.getInstance(request);
+
+		attributes.putAll(searchContext.getAttributes());
+
+		if (customAttributes != null) {
+			attributes.putAll(customAttributes);
+		}
+
+		AlloySearchResult alloySearchResult = super.search(indexer, alloyServiceInvoker, request, portletRequest, attributes, keywords, sorts, start, end);
+
+		if (portletURL != null) {
+			portletURL.setParameter("queryString", (String)null);
+		}
+
+		return alloySearchResult;
+	}
+
+	@Override
+	protected void setAlloyServiceInvokerClass(Class<?> clazz) {
+		super.setAlloyServiceInvokerClass(clazz);
+
+		modelClass = clazz;
+	}
+
+	protected void setAssignedAnalysis() throws Exception {
+		TestrayCompositeComparator testrayCompositeComparator = new TestrayCompositeComparator("createDate", true, "name", true);
+
+		Map<TestrayTaskComposite, Set<TestraySubtask>> testrayTaskTestraySubtasksMap = new TreeMap<TestrayTaskComposite, Set<TestraySubtask>>(testrayCompositeComparator);
+
+		AlloyServiceInvoker testrayAssignmentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayAssignment.class.getName());
+
+		List<TestrayAssignment> taskTestrayAssignments = testrayAssignmentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"assignedUserId", user.getUserId(), "classNameId", PortalUtil.getClassNameId(TestrayTask.class)});
+
+		for (TestrayAssignment taskTestrayAssignment : taskTestrayAssignments) {
+			TestrayTask testrayTask = TestrayTaskLocalServiceUtil.getTestrayTask(taskTestrayAssignment.getClassPK());
+
+			if (testrayTask.getStatus() != TestrayTaskConstants.STATUS_IN_ANALYSIS) {
+				continue;
+			}
+
+			TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);
+
+			Set<TestraySubtask> testraySubtasks = new TreeSet<TestraySubtask>(testrayCompositeComparator);
+
+			testrayTaskTestraySubtasksMap.put(testrayTaskComposite, testraySubtasks);
+		}
+
+		List<TestrayAssignment> subtaskTestrayAssignments = testrayAssignmentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"assignedUserId", user.getUserId(), "classNameId", PortalUtil.getClassNameId(TestraySubtask.class)});
+
+		for (TestrayAssignment subtaskTestrayAssignment : subtaskTestrayAssignments) {
+			TestraySubtask testraySubtask = TestraySubtaskLocalServiceUtil.getTestraySubtask(subtaskTestrayAssignment.getClassPK());
+
+			TestrayTask testrayTask = TestrayTaskLocalServiceUtil.getTestrayTask(testraySubtask.getTestrayTaskId());
+
+			if ((testrayTask.getStatus() != TestrayTaskConstants.STATUS_IN_ANALYSIS) || (testraySubtask.getStatus() != TestraySubtaskConstants.STATUS_IN_ANALYSIS) || (testraySubtask.getMergedToTestraySubtaskId() != 0)) {
+				continue;
+			}
+
+			TestrayTaskComposite testrayTaskComposite = new TestrayTaskComposite(testrayTask, themeDisplay, user);
+
+			Set<TestraySubtask> testraySubtasks = testrayTaskTestraySubtasksMap.get(testrayTask);
+
+			if (testraySubtasks == null) {
+				testraySubtasks = new TreeSet<TestraySubtask>(testrayCompositeComparator);
+			}
+
+			testraySubtasks.add(testraySubtask);
+
+			testrayTaskTestraySubtasksMap.put(testrayTaskComposite, testraySubtasks);
+		}
+
+		renderRequest.setAttribute("testrayTaskTestraySubtasksMap", testrayTaskTestraySubtasksMap);
+	}
+
+	protected void setBreadcrumb() throws Exception {
+		List<TestrayBreadcrumbComposite> testrayBreadcrumbComposites = TestrayBreadcrumbUtil.getTestrayBreadcrumbComposites(this, actionPath, controllerPath);
+
+		renderRequest.setAttribute("testrayBreadcrumbComposites", testrayBreadcrumbComposites);
+	}
+
+	@Override
+	protected void setOpenerSuccessMessage() {
+		SessionMessages.add(portletRequest, portlet.getPortletId() + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET, portlet.getPortletId());
+
+		Map<String, String> data = new HashMap<>();
+
+		data.put("addSuccessMessage", StringPool.TRUE);
+
+		SessionMessages.add(request.getSession(), portlet.getPortletId() + SessionMessages.KEY_SUFFIX_REFRESH_PORTLET_DATA, data);
+	}
+
+	protected void setPollIndexStateProperties(Object... properties) {
+		_pollIndexStateProperties = properties;
+	}
+
+	protected void setTestrayProjects() throws Exception {
+		AlloyServiceInvoker testrayProjectAlloyServiceInvoker = new AlloyServiceInvoker(TestrayProject.class.getName());
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayProjectModelImpl.TABLE_NAME, "name", true);
+
+		List<TestrayProject> testrayProjects = testrayProjectAlloyServiceInvoker.executeDynamicQuery(new Object[] {"groupId", themeDisplay.getScopeGroupId()}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+
+		renderRequest.setAttribute("testrayProjects", testrayProjects);
+	}
+
+	protected void updateTestrayProjectId() throws Exception {
+		long testrayProjectId = ParamUtil.getLong(request, "testrayProjectId");
+
+		if (testrayProjectId != 0) {
+			updateTestrayProjectId(TestrayProject.class.getName(), testrayProjectId);
+
+			return;
+		}
+
+		String className = null;
+		long classPK = 0;
+
+		long testrayBuildId = ParamUtil.getLong(request, "testrayBuildId");
+		long testrayRoutineId = ParamUtil.getLong(request, "testrayRoutineId");
+		long testrayCaseId = ParamUtil.getLong(request, "testrayCaseId");
+		long testrayCaseResultId = ParamUtil.getLong(request, "testrayCaseResultId");
+		long testrayRequirementId = ParamUtil.getLong(request, "testrayRequirementId");
+		long testrayRunId = ParamUtil.getLong(request, "testrayRunId");
+		long testrayRunIdA = ParamUtil.getLong(request, "testrayRunIdA");
+		long testraySuiteId = ParamUtil.getLong(request, "testraySuiteId");
+		long testrayTaskId = ParamUtil.getLong(request, "testrayTaskId");
+		long testrayTeamId = ParamUtil.getLong(request, "testrayTeamId");
+
+		if (testrayBuildId > 0) {
+			className = TestrayBuild.class.getName();
+			classPK = testrayBuildId;
+		}
+		else if (testrayRoutineId > 0) {
+			className = TestrayRoutine.class.getName();
+			classPK = testrayRoutineId;
+		}
+		else if (testrayCaseId > 0) {
+			className = TestrayCase.class.getName();
+			classPK = testrayCaseId;
+		}
+		else if (testrayCaseResultId > 0) {
+			className = TestrayCaseResult.class.getName();
+			classPK = testrayCaseResultId;
+		}
+		else if (testrayRequirementId > 0) {
+			className = TestrayRequirement.class.getName();
+			classPK = testrayRequirementId;
+		}
+		else if (testrayRunId > 0) {
+			className = TestrayRun.class.getName();
+			classPK = testrayRunId;
+		}
+		else if (testrayRunIdA > 0) {
+			className = TestrayRun.class.getName();
+			classPK = testrayRunIdA;
+		}
+		else if (testraySuiteId > 0) {
+			className = TestraySuite.class.getName();
+			classPK = testraySuiteId;
+		}
+		else if (testrayTaskId > 0) {
+			className = TestrayTask.class.getName();
+			classPK = testrayTaskId;
+		}
+		else if (testrayTeamId > 0) {
+			className = TestrayTeam.class.getName();
+			classPK = testrayTeamId;
+		}
+		else {
+			classPK = ParamUtil.getLong(request, "id");
+
+			String controller = ParamUtil.getString(request, "controller");
+
+			if (Validator.isNull(controller)) {
+				return;
+			}
+
+			className = TestrayBreadcrumbConstants.getControllerClassName(controller);
+		}
+
+		if (className != null) {
+			updateTestrayProjectId(className, classPK);
+		}
+	}
+
+	protected void updateTestrayProjectId(String className, long classPK) throws Exception {
+		testrayProjectId = TestrayProjectUtil.getTestrayProjectId(className, classPK);
+
+		portletRequest.setAttribute("testrayProjectId", testrayProjectId);
+	}
+
+	protected final Log log = LogFactoryUtil.getLog("jsp.testray.util.TestrayAlloyControllerImpl");
+	protected Class<?> modelClass;
+	protected long testrayProjectId;
+
+	private Object[] _pollIndexStateProperties;
+
+}
+%>

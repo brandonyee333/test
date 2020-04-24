@@ -1,0 +1,114 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestraySuiteUtil {
+
+	public static void addCaseParameter(HttpServletRequest request, String fieldName, String fieldType, JSONArray caseParametersJSONArray) throws Exception {
+		JSONObject jsonObject = TestrayCaseUtil.fetchCaseParameterJSONObject(request, fieldName, fieldType);
+
+		if (jsonObject != null) {
+			caseParametersJSONArray.put(jsonObject);
+		}
+	}
+
+	public static void addTestrayCases(long testraySuiteId, long[] testrayCaseIds) throws Exception {
+		_addTestrayCases(testraySuiteId, testrayCaseIds);
+
+		Indexer testraySuiteIndexer = IndexerRegistryUtil.nullSafeGetIndexer(TestraySuite.class);
+
+		testraySuiteIndexer.reindex(TestraySuite.class.getName(), testraySuiteId);
+	}
+
+	public static void deleteTestraySuites(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testraySuiteAlloyServiceInvoker = new AlloyServiceInvoker(TestraySuite.class.getName());
+
+		List<TestraySuite> testraySuites = testraySuiteAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId});
+
+		for (TestraySuite testraySuite : testraySuites) {
+			TestraySuiteLocalServiceUtil.deleteTestraySuite(testraySuite);
+		}
+	}
+
+	public static void indexTestraySuites(AlloyController alloyController, long testrayCaseId) throws Exception {
+		List<TestraySuite> testraySuites = TestraySuiteLocalServiceUtil.getTestrayCaseTestraySuites(testrayCaseId);
+
+		for (TestraySuite testraySuite : testraySuites) {
+			alloyController.indexModel(testraySuite);
+		}
+	}
+
+	public static void refreshCases(TestraySuite testraySuite) throws Exception {
+		List<Long> previousTestrayCaseIds = ListUtil.toList(TestraySuiteLocalServiceUtil.getTestrayCasePrimaryKeys(testraySuite.getTestraySuiteId()));
+
+		List<Long> selectedTestrayCaseIds = TestrayCaseUtil.getTestrayCaseIds(testraySuite.getTestrayProjectId(), testraySuite.getCaseParameters());
+
+		_removeTestrayCases(testraySuite.getTestraySuiteId(), ListUtil.remove(previousTestrayCaseIds, selectedTestrayCaseIds));
+
+		List<Long> addableTestrayCaseIds = ListUtil.remove(selectedTestrayCaseIds, previousTestrayCaseIds);
+
+		if (!addableTestrayCaseIds.isEmpty()) {
+			_addTestrayCases(testraySuite.getTestraySuiteId(), ArrayUtil.toLongArray(addableTestrayCaseIds));
+		}
+
+		Indexer testraySuiteIndexer = IndexerRegistryUtil.nullSafeGetIndexer(TestraySuite.class);
+
+		testraySuiteIndexer.reindex(TestraySuite.class.getName(), testraySuite.getTestraySuiteId());
+	}
+
+	public static void removeTestrayCases(long testraySuiteId) throws Exception {
+		_removeTestrayCases(testraySuiteId, ListUtil.toList(TestraySuiteLocalServiceUtil.getTestrayCasePrimaryKeys(testraySuiteId)));
+
+		Indexer testraySuiteIndexer = IndexerRegistryUtil.nullSafeGetIndexer(TestraySuite.class);
+
+		testraySuiteIndexer.reindex(TestraySuite.class.getName(), testraySuiteId);
+	}
+
+	private static void _addTestrayCases(long testraySuiteId, long[] testrayCaseIds) throws Exception {
+		Indexer testrayCaseIndexer = IndexerRegistryUtil.nullSafeGetIndexer(TestrayCase.class);
+
+		for (long testrayCaseId : testrayCaseIds) {
+			_validateAddCase(testraySuiteId, testrayCaseId);
+
+			if (!TestraySuiteLocalServiceUtil.hasTestrayCaseTestraySuite(testrayCaseId, testraySuiteId)) {
+				TestraySuiteLocalServiceUtil.addTestrayCaseTestraySuite(testrayCaseId, testraySuiteId);
+			}
+
+			testrayCaseIndexer.reindex(TestrayCase.class.getName(), testrayCaseId);
+		}
+	}
+
+	private static void _removeTestrayCases(long testraySuiteId, List<Long> testrayCaseIds) throws Exception {
+		TestrayCaseLocalServiceUtil.deleteTestraySuiteTestrayCases(testraySuiteId, ArrayUtil.toLongArray(testrayCaseIds));
+
+		Indexer testrayCaseIndexer = IndexerRegistryUtil.nullSafeGetIndexer(TestrayCase.class);
+
+		for (long testrayCaseId : testrayCaseIds) {
+			testrayCaseIndexer.reindex(TestrayCase.class.getName(), testrayCaseId);
+		}
+	}
+
+	private static void _validateAddCase(long testraySuiteId, long testrayCaseId) throws Exception {
+		TestrayCase testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId);
+		TestraySuite testraySuite = TestraySuiteLocalServiceUtil.getTestraySuite(testraySuiteId);
+
+		if (testrayCase.getTestrayProjectId() != testraySuite.getTestrayProjectId()) {
+			throw new AlloyException("the-suite-and-case-must-come-from-the-same-project", false);
+		}
+	}
+
+}
+%>

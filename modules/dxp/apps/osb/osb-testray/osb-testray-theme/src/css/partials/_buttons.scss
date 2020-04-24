@@ -1,0 +1,234 @@
+.btn {
+	font-weight: $font-header-weight;
+
+	&:active {
+		&:focus, &:hover {
+			background-color: $button-default-background-hover-color;
+
+			&.btn-primary {
+				background-color: $button-primary-background-hover-color;
+				color: $button-primary-text-color;
+			}
+		}
+	}
+}
+
+.btn-default {
+	background-color: $button-default-background-color;
+	background-image: none;
+	border-radius: $border-radius;
+	border-width: 0;
+	box-shadow: none;
+	color: $button-default-text-color;
+	padding: 10px 18px;
+	text-shadow: none;
+
+	@include respond-to(phone) {
+		display: inline-block;
+		margin-top: 0;
+		width: auto;
+	}
+
+	&:active {
+		box-shadow: none;
+	}
+
+	&:active, &:hover {
+		background-color: $button-default-background-hover-color;
+	}
+
+	&, .btn-group > .btn-default {
+		&:first-child {
+			border-radius: $border-radius;
+		}
+	}
+
+	&, &.btn-danger, &.btn-primary {
+		&.disabled, &[disabled] {
+			&, &:active, &:focus, &:hover {
+				background-color: $button-disabled-background-color;
+				border-width: 0;
+				color: $button-disabled-text-color;
+				opacity: 1;
+			}
+		}
+	}
+
+	&.btn-danger {
+		background-color: $color-red-light;
+		color: $color-red;
+
+		&:active, &:focus, &:hover {
+			background-color: $color-red;
+			color: $color-red-light;
+		}
+	}
+
+	.caret {
+		margin-left: 4px;
+	}
+}
+
+.btn-group {
+	@include respond-to(phone, tablet) {
+		display: inline-block;
+		width: auto;
+	}
+
+	.btn-default {
+		margin-right: 3px;
+	}
+
+	&.open {
+		.btn-default.dropdown-toggle {
+			background-color: $button-default-background-hover-color;
+		}
+
+		.btn-primary.dropdown-toggle {
+			background-color: $button-primary-background-hover-color;
+			color: $button-primary-text-color;
+		}
+
+		.dropdown-toggle {
+			box-shadow: none;
+		}
+	}
+
+	&.tests-views {
+		float: right;
+	}
+}
+
+.btn-primary {
+	background-color: $button-primary-background-color;
+	border-width: 0;
+	color: $button-primary-text-color;
+
+	&:active, &:focus, &:hover {
+		background-color: $button-primary-background-hover-color;
+		color: $button-primary-text-color;
+	}
+
+	.caret {
+		border-bottom-color: $button-primary-text-color;
+		border-top-color: $button-primary-text-color;
+	}
+}
+
+.button-holder {
+	&.runs {
+		@include align-items(center);
+		@include display(flex);
+
+		> *:not(:first-child) {
+			margin-left: 10px;
+
+			&.task-btn-container {
+				margin-left: 50px;
+			}
+		}
+	}
+}
+
+.button-row-top {
+	margin-bottom: 30px;
+	margin-top: 0;
+}
+
+.form-group-inline + .btn {
+	margin-bottom: 15px;
+}
+
+.lfr-pagination .btn-default {
+	padding: 6px 14px;
+}
+
+.dropdown {
+	&.open {
+		> .btn-default {
+			&.dropdown-toggle {
+				&, &:active, &:focus, &:hover {
+					background-color: $button-default-background-color;
+					color: $button-default-text-color;
+				}
+			}
+		}
+
+		> .btn-primary {
+			&.dropdown-toggle {
+				&, &:active, &:focus, &:hover {
+					background-color: $button-primary-background-hover-color;
+					color: $button-primary-text-color;
+				}
+			}
+		}
+	}
+}
+
+.pager li {
+	> a {
+		background-color: $button-default-background-color;
+		border-radius: $border-radius;
+		border-width: 0;
+		color: $button-default-text-color;
+		padding: 6px 14px;
+
+		&:active, &:focus, &:hover {
+			background-color: $button-default-background-hover-color;
+		}
+	}
+
+	&.disabled > a {
+		&, &:hover {
+			&, &:active, &:focus, &:hover {
+				background-color: $button-disabled-background-color;
+				border-width: 0;
+				color: $button-disabled-text-color;
+			}
+		}
+	}
+}
+
+.taglib-page-iterator {
+	.lfr-pagination-buttons {
+		@include respond-to(phone, tablet) {
+			float: right;
+			margin: 0;
+
+			&, > li, > li > a {
+				width: auto;
+			}
+
+			> li {
+				float: none;
+			}
+		}
+	}
+
+	.lfr-pagination-config {
+		@include respond-to(phone) {
+			float: left;
+		}
+
+		.current-page-menu .btn-default {
+			display: inline-block;
+		}
+	}
+
+	.search-results {
+		color: $label-color;
+		font-size: $font-size-small;
+
+		@include respond-to(phone, tablet) {
+			display: block;
+		}
+	}
+}
+
+.task-btn-container {
+	.btn-default, .btn-group {
+		& + .status-container {
+			margin-left: 20px;
+		}
+	}
+}

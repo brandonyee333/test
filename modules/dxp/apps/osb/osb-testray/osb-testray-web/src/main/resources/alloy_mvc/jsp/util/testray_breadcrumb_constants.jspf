@@ -1,0 +1,285 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayBreadcrumbConstants {
+
+	public static final String CLASS_NAME_TESTRAY_BUILD = TestrayBuild.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_CASE = TestrayCase.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_CASE_RESULT = TestrayCaseResult.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_INDEXER = Indexer.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_PROJECT = TestrayProject.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_REQUIREMENT = TestrayRequirement.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_ROUTINE = TestrayRoutine.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_RUN = TestrayRun.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_SUBTASK = TestraySubtask.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_SUITE = TestraySuite.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_TASK = TestrayTask.class.getName();
+
+	public static final String CLASS_NAME_TESTRAY_TEAM = TestrayTeam.class.getName();
+
+	public static final String CLASS_NAME_USER = User.class.getName();
+
+	public static final String CONTROLLER_TESTRAY_BUILD = "builds";
+
+	public static final String CONTROLLER_TESTRAY_BULK = "bulk";
+
+	public static final String CONTROLLER_TESTRAY_CASE = "cases";
+
+	public static final String CONTROLLER_TESTRAY_CASE_RESULT = "case_results";
+
+	public static final String CONTROLLER_TESTRAY_INDEXERS = "indexers";
+
+	public static final String CONTROLLER_TESTRAY_PROJECT = "projects";
+
+	public static final String CONTROLLER_TESTRAY_REQUIREMENT = "requirements";
+
+	public static final String CONTROLLER_TESTRAY_ROUTINE = "routines";
+
+	public static final String CONTROLLER_TESTRAY_RUN = "runs";
+
+	public static final String CONTROLLER_TESTRAY_SUBTASK = "subtasks";
+
+	public static final String CONTROLLER_TESTRAY_SUITE = "suites";
+
+	public static final String CONTROLLER_TESTRAY_TASK = "tasks";
+
+	public static final String CONTROLLER_TESTRAY_TEAM = "teams";
+
+	public static final String CONTROLLER_USER = "users";
+
+	public static final String[] CONTROLLERS_ANALYZE = {CONTROLLER_TESTRAY_SUBTASK, CONTROLLER_TESTRAY_TASK};
+
+	public static final String[] CONTROLLERS_MANAGE = {CONTROLLER_USER};
+
+	public static final String[] CONTROLLERS_RESULTS = {CONTROLLER_TESTRAY_BUILD, CONTROLLER_TESTRAY_ROUTINE, CONTROLLER_TESTRAY_CASE, CONTROLLER_TESTRAY_CASE_RESULT, CONTROLLER_TESTRAY_PROJECT, CONTROLLER_TESTRAY_REQUIREMENT, CONTROLLER_TESTRAY_RUN, CONTROLLER_TESTRAY_SUITE};
+
+	public static final String CSS_CLASS_TESTRAY_BUILD = "breadcrumb-build";
+
+	public static final String CSS_CLASS_TESTRAY_CASE = "breadcrumb-case";
+
+	public static final String CSS_CLASS_TESTRAY_CASE_RESULT = "breadcrumb-case-result";
+
+	public static final String CSS_CLASS_TESTRAY_INDEXER = "breadcrumb-indexer";
+
+	public static final String CSS_CLASS_TESTRAY_PROJECT = "breadcrumb-project";
+
+	public static final String CSS_CLASS_TESTRAY_REQUIREMENT = "breadcrumb-requirement";
+
+	public static final String CSS_CLASS_TESTRAY_ROUTINE = "breadcrumb-routine";
+
+	public static final String CSS_CLASS_TESTRAY_RUN = "breadcrumb-run";
+
+	public static final String CSS_CLASS_TESTRAY_SUBTASK = "breadcrumb-subtask";
+
+	public static final String CSS_CLASS_TESTRAY_SUITE = "breadcrumb-suite";
+
+	public static final String CSS_CLASS_TESTRAY_TASK = "breadcrumb-task";
+
+	public static final String CSS_CLASS_USER = "breadcrumb-user";
+
+	public static final String FIELD_NAME_TESTRAY_BUILD = "testrayBuildId";
+
+	public static final String FIELD_NAME_TESTRAY_CASE_RESULT = "testrayCaseResultId";
+
+	public static final String FIELD_NAME_TESTRAY_PROJECT = "testrayProjectId";
+
+	public static final String FIELD_NAME_TESTRAY_ROUTINE = "testrayRoutineId";
+
+	public static final String FIELD_NAME_TESTRAY_RUN = "testrayRunId";
+
+	public static final String FIELD_NAME_TESTRAY_TASK = "testrayTaskId";
+
+	public static String getClassNameController(String className) {
+		if (className.equals(CLASS_NAME_TESTRAY_BUILD)) {
+			return CONTROLLER_TESTRAY_BUILD;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE)) {
+			return CONTROLLER_TESTRAY_CASE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE_RESULT)) {
+			return CONTROLLER_TESTRAY_CASE_RESULT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_PROJECT)) {
+			return CONTROLLER_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_REQUIREMENT)) {
+			return CONTROLLER_TESTRAY_REQUIREMENT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_ROUTINE)) {
+			return CONTROLLER_TESTRAY_ROUTINE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_RUN)) {
+			return CONTROLLER_TESTRAY_RUN;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_SUITE)) {
+			return CONTROLLER_TESTRAY_SUITE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_TASK)) {
+			return CONTROLLER_TESTRAY_TASK;
+		}
+		else {
+			return CONTROLLER_TESTRAY_TEAM;
+		}
+	}
+
+	public static String getClassNameFieldName(String className) {
+		if (className.equals(CLASS_NAME_TESTRAY_BUILD)) {
+			return FIELD_NAME_TESTRAY_BUILD;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE_RESULT)) {
+			return FIELD_NAME_TESTRAY_CASE_RESULT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_PROJECT)) {
+			return FIELD_NAME_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_ROUTINE)) {
+			return FIELD_NAME_TESTRAY_ROUTINE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_TASK)) {
+			return FIELD_NAME_TESTRAY_TASK;
+		}
+		else {
+			return FIELD_NAME_TESTRAY_RUN;
+		}
+	}
+
+	public static String getControllerClassName(String controller) {
+		if (controller.equals(CONTROLLER_TESTRAY_BUILD)) {
+			return CLASS_NAME_TESTRAY_BUILD;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_CASE)) {
+			return CLASS_NAME_TESTRAY_CASE;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_CASE_RESULT)) {
+			return CLASS_NAME_TESTRAY_CASE_RESULT;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_PROJECT)) {
+			return CLASS_NAME_TESTRAY_PROJECT;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_REQUIREMENT)) {
+			return CLASS_NAME_TESTRAY_REQUIREMENT;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_ROUTINE)) {
+			return CLASS_NAME_TESTRAY_ROUTINE;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_RUN)) {
+			return CLASS_NAME_TESTRAY_RUN;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_SUBTASK)) {
+			return CLASS_NAME_TESTRAY_SUBTASK;
+		}
+		else if (controller.equals(CONTROLLER_TESTRAY_TASK)) {
+			return CLASS_NAME_TESTRAY_TASK;
+		}
+		else if (controller.equals(CONTROLLER_USER)) {
+			return CLASS_NAME_USER;
+		}
+		else {
+			return CLASS_NAME_TESTRAY_SUITE;
+		}
+	}
+
+	public static String getCSSClassName(String className) {
+		if (className.equals(CLASS_NAME_TESTRAY_BUILD)) {
+			return CSS_CLASS_TESTRAY_BUILD;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE)) {
+			return CSS_CLASS_TESTRAY_CASE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE_RESULT)) {
+			return CSS_CLASS_TESTRAY_CASE_RESULT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_INDEXER)) {
+			return CSS_CLASS_TESTRAY_INDEXER;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_PROJECT)) {
+			return CSS_CLASS_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_REQUIREMENT)) {
+			return CSS_CLASS_TESTRAY_REQUIREMENT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_ROUTINE)) {
+			return CSS_CLASS_TESTRAY_ROUTINE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_RUN)) {
+			return CSS_CLASS_TESTRAY_RUN;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_SUBTASK)) {
+			return CSS_CLASS_TESTRAY_SUBTASK;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_TASK)) {
+			return CSS_CLASS_TESTRAY_TASK;
+		}
+		else if (className.equals(CLASS_NAME_USER)) {
+			return CSS_CLASS_USER;
+		}
+		else {
+			return CSS_CLASS_TESTRAY_SUITE;
+		}
+	}
+
+	public static String getParentClassName(String className) {
+		if (className.equals(CLASS_NAME_TESTRAY_BUILD)) {
+			return CLASS_NAME_TESTRAY_ROUTINE;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE)) {
+			return CLASS_NAME_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_CASE_RESULT)) {
+			return CLASS_NAME_TESTRAY_BUILD;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_PROJECT)) {
+			return StringPool.BLANK;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_REQUIREMENT)) {
+			return CLASS_NAME_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_ROUTINE)) {
+			return CLASS_NAME_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_RUN)) {
+			return CLASS_NAME_TESTRAY_BUILD;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_SUBTASK)) {
+			return CLASS_NAME_TESTRAY_TASK;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_SUITE)) {
+			return CLASS_NAME_TESTRAY_PROJECT;
+		}
+		else if (className.equals(CLASS_NAME_TESTRAY_TASK)) {
+			return StringPool.BLANK;
+		}
+		else if (className.equals(CLASS_NAME_USER)) {
+			return StringPool.BLANK;
+		}
+		else {
+			throw new IllegalArgumentException("Unknown class name " + className);
+		}
+	}
+
+}
+%>

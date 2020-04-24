@@ -1,0 +1,149 @@
+button, input, label, select, textarea {
+	font-weight: $font-weight;
+	letter-spacing: $letter-spacing;
+}
+
+input:not([type="checkbox"]):not([type="radio"]), select, textarea, .uneditable-input {
+	&, &.form-control {
+		border: 1px solid $input-border-color;
+		border-radius: $border-radius;
+		box-shadow: none;
+		font-weight: $font-weight;
+		margin: 0;
+		max-width: $input-max-width;
+
+		&:focus {
+			border: 1px solid $input-border-focus-color;
+			box-shadow: 0 0 0 1px $input-border-focus-color;
+			outline: none;
+		}
+	}
+}
+
+input[type="checkbox"], input[type="radio"] {
+	margin: 0 4px 0 0;
+}
+
+label {
+	font-weight: $font-header-weight;
+}
+
+pre {
+	background: $code-background-color;
+	border: 1px solid $code-border-color;
+	border-radius: $border-radius;
+	color: $code-text-color;
+	font-size: 0.85em;
+	line-height: 1.8;
+	margin: 0;
+	padding: 1em 1.5em;
+	white-space: pre-wrap;
+
+	&.warning {
+		margin-bottom: 10px;
+	}
+}
+
+.environment-options-size {
+	display: inline-block;
+	width: 250px;
+}
+
+.form-group {
+	&.error {
+		input, select {
+			border-color: $validation-error-border;
+			color: $validation-error-text;
+		}
+
+		.control-label, .help-inline {
+			color: $validation-error-text;
+		}
+	}
+
+	&.success {
+		input, select {
+			border-color: $validation-success-border;
+			color: $validation-success-text;
+		}
+
+		.control-label {
+			color: $validation-success-text;
+		}
+	}
+}
+
+.field-wrapper .control-label {
+	display: block;
+	font-size: 1em;
+	font-weight: $font-weight;
+}
+
+.input-icon-group {
+	@include align-items(flex-end);
+	@include display(flex);
+
+	margin-bottom: 15px;
+
+	.add-product-version {
+		font-size: 1.3em;
+		margin-bottom: 5px;
+		margin-left: 10px;
+	}
+
+	.form-group {
+		margin-bottom: 0;
+	}
+}
+
+.lfr-form-row {
+	&:hover {
+		background-color: $color-gray-lighter;
+		border-bottom: 1px solid $border-color;
+		border-top: 1px solid $color-gray-lighter;
+	}
+}
+
+.testray-checkbox-description {
+	color: $color-gray-dark;
+	font-size: $font-size-small;
+	font-weight: $font-weight;
+	margin-left: 20px;
+}
+
+.testray-checkbox-wrapper {
+	label {
+		margin-bottom: 0;
+		padding: 5px 8px;
+		width: 100%;
+
+		&:hover {
+			background-color: $color-primary-lightest;
+			cursor: pointer;
+		}
+	}
+
+	&.testray-checkbox-wrapper-inline {
+		display: inline-block;
+	}
+}
+
+.testray-input-date {
+	.input-checkbox-wrapper {
+		display: none;
+	}
+}
+
+.testray-user-icon-input {
+	margin-top: 10px;
+}
+
+.text-warning {
+	color: $validation-error-text;
+}
+
+@media (max-width: 992px) {
+	.environment-options-size {
+		width: 100%;
+	}
+}

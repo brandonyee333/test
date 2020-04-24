@@ -1,0 +1,199 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseResultConstants {
+
+	public static final String BULK_EDIT_LABEL_APPEND = "append";
+
+	public static final String BULK_EDIT_LABEL_REMOVE = "remove";
+
+	public static final String BULK_EDIT_LABEL_REPLACE = "replace";
+
+	public static final int BULK_EDIT_TYPE_APPEND = 1;
+
+	public static final int BULK_EDIT_TYPE_REMOVE = 3;
+
+	public static final int BULK_EDIT_TYPE_REPLACE = 2;
+
+	public static final String COLUMN_LABEL_ASSIGNEE = "assignee";
+
+	public static final String COLUMN_LABEL_CASE = "case";
+
+	public static final String COLUMN_LABEL_COMMENTS = "comments";
+
+	public static final String COLUMN_LABEL_ENVIRONMENT = "environment";
+
+	public static final String COLUMN_LABEL_ERRORS = "errors";
+
+	public static final String COLUMN_LABEL_EXECUTION_DATE = "execution-date";
+
+	public static final String COLUMN_LABEL_GIT_HASH = "git-hash";
+
+	public static final String COLUMN_LABEL_ISSUES = "issues";
+
+	public static final String COLUMN_LABEL_PRODUCT_VERSION = "product-version";
+
+	public static final String COLUMN_LABEL_ROUTINE = "routine";
+
+	public static final String COLUMN_LABEL_RUN = "run";
+
+	public static final String COLUMN_LABEL_STATUS = "status";
+
+	public static final String COLUMN_LABEL_WARNINGS = "warning";
+
+	public static final String[] COLUMN_LABELS = {TestrayCaseConstants.COLUMN_LABEL_CASE_TYPE, TestrayCaseConstants.COLUMN_LABEL_PRIORITY, TestrayCaseConstants.COLUMN_LABEL_TEAM, TestrayCaseConstants.COLUMN_LABEL_COMPONENT, COLUMN_LABEL_CASE, COLUMN_LABEL_RUN, COLUMN_LABEL_ASSIGNEE, COLUMN_LABEL_STATUS, COLUMN_LABEL_WARNINGS, COLUMN_LABEL_ISSUES, COLUMN_LABEL_ERRORS, COLUMN_LABEL_COMMENTS};
+
+	public static final String[] COLUMN_LABELS_DEFAULT = {TestrayCaseConstants.COLUMN_LABEL_PRIORITY, TestrayCaseConstants.COLUMN_LABEL_COMPONENT, COLUMN_LABEL_CASE, COLUMN_LABEL_RUN, COLUMN_LABEL_ASSIGNEE, COLUMN_LABEL_STATUS, COLUMN_LABEL_ISSUES, COLUMN_LABEL_ERRORS};
+
+	public static final String[] COLUMN_LABELS_HISTORY = {COLUMN_LABEL_EXECUTION_DATE, COLUMN_LABEL_GIT_HASH, COLUMN_LABEL_PRODUCT_VERSION, COLUMN_LABEL_ENVIRONMENT, COLUMN_LABEL_ROUTINE, COLUMN_LABEL_STATUS, COLUMN_LABEL_WARNINGS, COLUMN_LABEL_ISSUES, COLUMN_LABEL_ERRORS};
+
+	public static final String[] COLUMN_LABELS_HISTORY_DEFAULT = {COLUMN_LABEL_EXECUTION_DATE, COLUMN_LABEL_GIT_HASH, COLUMN_LABEL_PRODUCT_VERSION, COLUMN_LABEL_ENVIRONMENT, COLUMN_LABEL_ROUTINE, COLUMN_LABEL_STATUS, COLUMN_LABEL_WARNINGS, COLUMN_LABEL_ISSUES, COLUMN_LABEL_ERRORS};
+
+	public static final String[] COLUMN_LABELS_SUBTASK = {COLUMN_LABEL_RUN, TestrayCaseConstants.COLUMN_LABEL_PRIORITY, TestrayCaseConstants.COLUMN_LABEL_TEAM, TestrayCaseConstants.COLUMN_LABEL_COMPONENT, COLUMN_LABEL_ISSUES, COLUMN_LABEL_STATUS};
+
+	public static final String[] COLUMN_LABELS_SUBTASK_DEFAULT = {COLUMN_LABEL_RUN, TestrayCaseConstants.COLUMN_LABEL_PRIORITY, TestrayCaseConstants.COLUMN_LABEL_TEAM, TestrayCaseConstants.COLUMN_LABEL_COMPONENT, COLUMN_LABEL_ISSUES, COLUMN_LABEL_STATUS};
+
+	public static final String LABEL_BLOCKED = "blocked";
+
+	public static final String LABEL_DID_NOT_RUN = "dnr";
+
+	public static final String LABEL_FAILED = "failed";
+
+	public static final String LABEL_IN_PROGRESS = "in-progress";
+
+	public static final String LABEL_INCOMPLETE = "incomplete";
+
+	public static final String LABEL_PASSED = "passed";
+
+	public static final String LABEL_TABS_ALL_CASES = "all-cases";
+
+	public static final String LABEL_TABS_COMPLETE_CASES = "complete-cases";
+
+	public static final String LABEL_TABS_INCOMPLETE_CASES = "incomplete-cases";
+
+	public static final String LABEL_TEST_FIX = "test-fix";
+
+	public static final String LABEL_UNTESTED = "untested";
+
+	public static final int STATUS_BLOCKED = 4;
+
+	public static final int STATUS_DID_NOT_RUN = 6;
+
+	public static final int STATUS_FAILED = 3;
+
+	public static final int STATUS_IN_PROGRESS = 1;
+
+	public static final String[] STATUS_LABELS = {LABEL_UNTESTED, LABEL_IN_PROGRESS, LABEL_PASSED, LABEL_FAILED, LABEL_BLOCKED, LABEL_TEST_FIX};
+
+	public static final String[] STATUS_LABELS_INCOMPLETE = {LABEL_IN_PROGRESS, LABEL_UNTESTED};
+
+	public static final int STATUS_PASSED = 2;
+
+	public static final int STATUS_TEST_FIX = 7;
+
+	public static final int STATUS_UNTESTED = 0;
+
+	public static final int[] STATUSES_ALL = {STATUS_BLOCKED, STATUS_FAILED, STATUS_IN_PROGRESS, STATUS_PASSED, STATUS_TEST_FIX, STATUS_UNTESTED};
+
+	public static final int[] STATUSES_COMPARE = {STATUS_PASSED, STATUS_FAILED, STATUS_BLOCKED, STATUS_TEST_FIX, STATUS_DID_NOT_RUN};
+
+	public static final int[] STATUSES_COMPLETE = {STATUS_BLOCKED, STATUS_FAILED, STATUS_PASSED, STATUS_TEST_FIX};
+
+	public static final int[] STATUSES_INCOMPLETE = {STATUS_IN_PROGRESS, STATUS_UNTESTED};
+
+	public static final int[] STATUSES_NOT_PASSED = {STATUS_BLOCKED, STATUS_FAILED, STATUS_IN_PROGRESS, STATUS_TEST_FIX, STATUS_UNTESTED};
+
+	public static int getLabelStatus(String label) {
+		if (label.equals(LABEL_BLOCKED)) {
+			return STATUS_BLOCKED;
+		}
+		else if (label.equals(LABEL_DID_NOT_RUN)) {
+			return STATUS_DID_NOT_RUN;
+		}
+		else if (label.equals(LABEL_FAILED)) {
+			return STATUS_FAILED;
+		}
+		else if (label.equals(LABEL_IN_PROGRESS)) {
+			return STATUS_IN_PROGRESS;
+		}
+		else if (label.equals(LABEL_PASSED)) {
+			return STATUS_PASSED;
+		}
+		else if (label.equals(LABEL_TEST_FIX)) {
+			return STATUS_TEST_FIX;
+		}
+		else if (label.equals(LABEL_UNTESTED)) {
+			return STATUS_UNTESTED;
+		}
+		else {
+			return -1;
+		}
+	}
+
+	public static int[] getLabelStatuses(String label) {
+		if (label.equals(LABEL_TABS_COMPLETE_CASES)) {
+			return STATUSES_COMPLETE;
+		}
+		else if (label.equals(LABEL_TABS_INCOMPLETE_CASES)) {
+			return STATUSES_INCOMPLETE;
+		}
+		else {
+			return STATUSES_ALL;
+		}
+	}
+
+	public static String getStatusesLabel(int[] statuses) {
+		if (Validator.equalsSorted(statuses, STATUSES_ALL)) {
+			return LABEL_TABS_ALL_CASES;
+		}
+		else if (Validator.equalsSorted(statuses, STATUSES_COMPLETE)) {
+			return LABEL_TABS_COMPLETE_CASES;
+		}
+		else if (Validator.equalsSorted(statuses, STATUSES_INCOMPLETE)) {
+			return LABEL_TABS_INCOMPLETE_CASES;
+		}
+		else {
+			return null;
+		}
+	}
+
+	public static String getStatusLabel(int status) {
+		if (status == STATUS_BLOCKED) {
+			return LABEL_BLOCKED;
+		}
+		else if (status == STATUS_DID_NOT_RUN) {
+			return LABEL_DID_NOT_RUN;
+		}
+		else if (status == STATUS_IN_PROGRESS) {
+			return LABEL_IN_PROGRESS;
+		}
+		else if (status == STATUS_PASSED) {
+			return LABEL_PASSED;
+		}
+		else if (status == STATUS_TEST_FIX) {
+			return LABEL_TEST_FIX;
+		}
+		else if (status == STATUS_UNTESTED) {
+			return LABEL_UNTESTED;
+		}
+		else {
+			return LABEL_FAILED;
+		}
+	}
+
+}
+%>

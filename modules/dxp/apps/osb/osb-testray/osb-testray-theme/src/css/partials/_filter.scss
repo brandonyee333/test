@@ -1,0 +1,156 @@
+.filter-container {
+	@include align-items(center);
+	@include display(flex);
+
+	margin-right: 5px;
+}
+
+.filter-popover {
+	max-width: 300px;
+	padding: 0;
+	width: 100%;
+
+	.arrow {
+		left: auto;
+		right: 20px;
+
+		&:after {
+			border-bottom-color: #F7F7F7;
+		}
+	}
+
+	.filter-form {
+		margin: 0 0 5px;
+	}
+
+	.filter-form-buttons {
+		margin: 0;
+	}
+
+	.popover-title {
+		padding: 14px 18px 0;
+	}
+}
+
+.filter-filterPriorities-wrapper {
+	.testray-checkbox-wrapper {
+		display: inline-block;
+	}
+}
+
+.filter-pin {
+	background-color: $button-default-background-color;
+	border-width: 0;
+	color: $button-default-icon-color;
+	font-size: 1.3em;
+	line-height: 1;
+
+	&:active, &:focus, &:hover {
+		background-color: $button-default-background-hover-color;
+		color: $button-default-icon-color;
+	}
+
+	&.filter-pin-set {
+		background-color: $button-default-icon-color;
+		color: $button-default-background-color;
+
+		&:active, &:focus, &:hover {
+			background-color: $button-default-background-hover-color;
+			color: $button-default-icon-color;
+		}
+	}
+}
+
+.filter-selected {
+	background-color: $button-primary-background-color;
+	border-radius: $border-radius;
+	color: $color-white;
+	font-size: $font-size-small;
+}
+
+.filter-selected-container {
+	@include display(flex);
+
+	margin-right: 10px;
+
+	.filter-selected {
+		@include ellipsis;
+
+		max-width: 200px;
+		padding: 3px 9px;
+
+		&:not(:last-child) {
+			margin-right: 5px;
+		}
+	}
+}
+
+.filter-toggle {
+	background-color: $button-default-background-color;
+	border-width: 0;
+	color: $button-default-icon-color;
+	font-size: 1.3em;
+	line-height: 1;
+
+	&:active, &:focus, &:hover {
+		background-color: $button-default-background-hover-color;
+		color: $button-default-icon-color;
+	}
+
+	.icon-filter {
+		&:after {
+			font-size: 0.7em;
+			padding-left: 5px;
+			vertical-align: middle;
+		}
+	}
+}
+
+.testray-filter-clear {
+	background-color: transparent;
+	border-width: 0;
+	color: $label-color;
+	height: auto;
+	line-height: 1;
+	margin: 0;
+	padding: 10px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 35px;
+
+	&:focus {
+		background-color: $color-white;
+		border-width: 0;
+	}
+}
+
+.testray-filter-content, .testray-filter-footer, .testray-filter-header {
+	padding: 18px;
+}
+
+.testray-filter-content {
+	max-height: 600px;
+	overflow: auto;
+}
+
+.testray-filter-field {
+	padding-right: 35px;
+}
+
+.testray-filter-footer {
+	border-top: 1px solid $border-color;
+	padding: 14px 18px;
+}
+
+.testray-filter-form {
+	position: relative;
+}
+
+.testray-filter-header {
+	border-bottom: 1px solid $border-color;
+}
+
+.testray-filter-list {
+	list-style: none;
+}

@@ -1,0 +1,1121 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayAutomationUtil {
+
+	public static void archiveTestrayBuilds(AlloyController alloyController) throws Exception {
+		if (PortletPropsValues.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS < 0) {
+			return;
+		}
+
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		DynamicQuery testrayBuildDynamicQuery = testrayBuildAlloyServiceInvoker.buildDynamicQuery(new Object[] {"companyId", themeDisplay.getCompanyId(), "status", TestrayBuildConstants.STATUS_DEFAULT, "template", false});
+
+		Property promotedProperty = PropertyFactoryUtil.forName("promoted");
+
+		testrayBuildDynamicQuery.add(RestrictionsFactoryUtil.or(promotedProperty.eq(false), promotedProperty.isNull()));
+
+		Property modifiedDateProperty = PropertyFactoryUtil.forName("modifiedDate");
+
+		Calendar archiveThresholdCalendar = CalendarFactoryUtil.getCalendar();
+
+		archiveThresholdCalendar.add(Calendar.HOUR, -PortletPropsValues.TESTRAY_AUTOMATED_ARCHIVING_THRESHOLD_HOURS);
+
+		Date date = archiveThresholdCalendar.getTime();
+
+		testrayBuildDynamicQuery.add(modifiedDateProperty.le(date));
+
+		List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(testrayBuildDynamicQuery);
+
+		for (TestrayBuild testrayBuild : testrayBuilds) {
+			if (hasRecentTestrayRuns(testrayBuild, date) || hasRecentTestrayCaseResults(testrayBuild, date)) {
+				continue;
+			}
+
+			TestrayBuildUtil.setArchived(alloyController, testrayBuild, true, true);
+		}
+	}
+
+	public static void deleteExpiredTestrayCaseResultAttachments(AlloyController alloyController) throws Exception {
+		if (_log.isInfoEnabled()) {
+			_log.info("Deleting expired attachments");
+		}
+
+		List<String> messages = new ArrayList<String>();
+
+		ExecutorService executorService = Executors.newFixedThreadPool(PortletPropsValues.TESTRAY_AUTOMATION_THREAD_COUNT);
+
+		try {
+			List<Callable<String>> callables = new ArrayList<>();
+
+			AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+			DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery();
+
+			Property attachmentsProperty = PropertyFactoryUtil.forName("attachments");
+
+			testrayCaseResultDynamicQuery.add(attachmentsProperty.ne(JSONFactoryUtil.getNullJSON()));
+
+			Property createDateProperty = PropertyFactoryUtil.forName("createDate");
+
+			Calendar expirationCalendar = CalendarFactoryUtil.getCalendar();
+
+			expirationCalendar.add(Calendar.DATE, -PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_EXPIRATION_AGE_DAYS);
+
+			testrayCaseResultDynamicQuery.add(createDateProperty.le(expirationCalendar.getTime()));
+
+			DynamicQuery recentTestrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery();
+
+			Calendar recentImportCalendar = CalendarFactoryUtil.getCalendar();
+
+			recentImportCalendar.add(Calendar.DATE, -1);
+
+			recentTestrayCaseResultDynamicQuery.add(createDateProperty.gt(recentImportCalendar.getTime()));
+
+			int recentTestrayCaseResultsCount = (int)testrayCaseResultAlloyServiceInvoker.executeDynamicQueryCount(recentTestrayCaseResultDynamicQuery);
+
+			testrayCaseResultDynamicQuery.setLimit(0, recentTestrayCaseResultsCount + PortletPropsValues.TESTRAY_AUTOMATION_ATTACHMENT_MINIMUM_CASE_RESULTS_COUNT);
+
+			List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Deleting attachments for " + testrayCaseResults.size() + " case results");
+			}
+
+			for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+				callables.add(
+					new Callable<String>() {
+
+						@Override
+						public String call() {
+							return deleteExpiredTestrayCaseResultAttachments(alloyController, testrayCaseResult);
+						}
+
+					}
+				);
+			}
+
+			List<Future<String>> messageFutures = executorService.invokeAll(callables);
+
+			for (Future<String> messageFuture : messageFutures) {
+				String message = messageFuture.get();
+
+				if (Validator.isNotNull(message)) {
+					messages.add(message);
+				}
+			}
+
+			if (!messages.isEmpty()) {
+				DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
+				String subject = "[Testray Portlet] Automation Cleanup Errors " + dateFormat.format(new Date());
+
+				TestrayUtil.sendEmail(alloyController.getThemeDisplay(), subject, messages);
+			}
+		}
+		finally {
+			executorService.shutdown();
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished deleting expired attachments");
+		}
+	}
+
+	public static String deleteExpiredTestrayCaseResultAttachments(AlloyController alloyController, TestrayCaseResult testrayCaseResult) {
+		try {
+			JSONObject attachmentsJSONObject = JSONFactoryUtil.createJSONObject(testrayCaseResult.getAttachments());
+
+			if (attachmentsJSONObject.length() == 0) {
+				return null;
+			}
+
+			Iterator<String> keysIterator = attachmentsJSONObject.keys();
+
+			while (keysIterator.hasNext()) {
+				String key = keysIterator.next();
+
+				String attachmentAbsolutePath = PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH + "logs/" + attachmentsJSONObject.getString(key);
+
+				FileUtil.delete(attachmentAbsolutePath);
+
+				keysIterator.remove();
+			}
+
+			testrayCaseResult.setAttachments(attachmentsJSONObject.toString());
+
+			alloyController.updateModelIgnoreRequest(testrayCaseResult);
+
+			return null;
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+
+			return e.getMessage();
+		}
+	}
+
+	public static String processAutomationResult(AlloyController alloyController, File file, boolean retry) {
+		try {
+			if (!file.isFile() || !tryLock(file)) {
+				return null;
+			}
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Processing file: " + file.getName());
+			}
+
+			String contents = FileUtil.read(file);
+
+			try {
+				processAutomationResult(alloyController, contents, file.getAbsolutePath());
+			}
+			catch (ConstraintViolationException cve) {
+				if (!retry) {
+					throw cve;
+				}
+
+				if (_log.isWarnEnabled()) {
+					_log.warn("Moving file " + file.getName() + " to retry directory due to constraint violation");
+				}
+
+				boolean moved = move(file, _RETRY_DIRECTORY_NAME);
+
+				if (!moved) {
+					throw new Exception("Unable to move file " + file.getName() + " to retry directory");
+				}
+			}
+
+			return null;
+		}
+		catch (Exception e) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(e, e);
+			}
+
+			String message = e.getMessage();
+
+			if (Validator.isNull(message)) {
+				message = e.toString();
+			}
+
+			boolean moved = move(file, _ERROR_DIRECTORY_NAME);
+
+			if (!moved) {
+				String message2 = "Unable to move file " + file.getName() + " to error directory";
+
+				if (_log.isWarnEnabled()) {
+					_log.warn(message2);
+				}
+
+				message += StringPool.COMMA_AND_SPACE + message2;
+			}
+
+			return message;
+		}
+		finally {
+			unlock(file);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Finished processing file: " + file.getName());
+			}
+		}
+	}
+
+	public static List<TestrayCaseResult> processAutomationResult(AlloyController alloyController, String resultString, String filepath) throws Exception {
+		List<TestrayCaseResult> testrayCaseResults = new ArrayList<>();
+
+		Element rootElement = getRootElement(resultString);
+
+		Map<String, String> properties = getProperties(rootElement);
+
+		TestrayBuild testrayBuild = executeInTransaction("fetchOrAddTestrayBuild", new Class<?>[] {AlloyController.class, Map.class}, new Object[] {alloyController, properties}, TestrayBuild.class);
+
+		TestrayRun testrayRun = executeInTransaction("fetchOrAddTestrayRun", new Class<?>[] {AlloyController.class, TestrayBuild.class, Element.class, Map.class}, new Object[] {alloyController, testrayBuild, rootElement, properties}, TestrayRun.class);
+
+		List<Element> testcaseElements = rootElement.elements("testcase");
+
+		for (Element testcaseElement : testcaseElements) {
+			TestrayCaseResult testrayCaseResult = executeInTransaction("updateOrAddTestrayCaseResult", new Class<?>[] {AlloyController.class, TestrayBuild.class, TestrayRun.class, Element.class}, new Object[] {alloyController, testrayBuild, testrayRun, testcaseElement}, TestrayCaseResult.class);
+
+			testrayCaseResults.add(testrayCaseResult);
+		}
+
+		TestrayRoutine testrayRoutine = TestrayRoutineLocalServiceUtil.getTestrayRoutine(testrayBuild.getTestrayRoutineId());
+
+		if (testrayRoutine.isAutoanalyze()) {
+			TestrayRun latestMatchingTestrayRun = fetchLatestMatchingTestrayRun(testrayRun);
+
+			if (latestMatchingTestrayRun != null) {
+				TestrayRunUtil.autoFill(alloyController, new TestrayRunComposite(testrayRun, alloyController.getThemeDisplay()), new TestrayRunComposite(latestMatchingTestrayRun, alloyController.getThemeDisplay()));
+			}
+		}
+
+		if (Validator.isNotNull(filepath)) {
+			boolean deleted = FileUtil.delete(filepath);
+
+			if (!deleted) {
+				throw new Exception("Unable to delete file " + filepath);
+			}
+		}
+
+		return testrayCaseResults;
+	}
+
+	public static void processAutomationResults(AlloyController alloyController) throws Exception {
+		if (_log.isInfoEnabled()) {
+			_log.info("Processing automation results");
+		}
+
+		List<String> messages = new ArrayList<>();
+
+		ExecutorService executorService = Executors.newFixedThreadPool(PortletPropsValues.TESTRAY_AUTOMATION_THREAD_COUNT);
+
+		try {
+			List<Callable<String>> callables = new ArrayList<>();
+
+			File automationResultsDirectory = new File(PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH);
+
+			File[] automationResultFiles = automationResultsDirectory.listFiles();
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Retrieved file list (" + automationResultFiles.length + " total files)");
+			}
+
+			Map<File, Long> automationResultFilesLastModifiedMap = new HashMap<File, Long>();
+
+			for (File automationResultFile : automationResultFiles) {
+				automationResultFilesLastModifiedMap.put(automationResultFile, automationResultFile.lastModified());
+			}
+
+			Arrays.sort(
+				automationResultFiles,
+				new Comparator<File>() {
+
+					public int compare(File f1, File f2) {
+						Long modifiedTime1 = automationResultFilesLastModifiedMap.get(f1);
+
+						return modifiedTime1.compareTo(automationResultFilesLastModifiedMap.get(f2));
+					}
+
+				}
+			);
+
+			for (File automationResultFile : automationResultFiles) {
+				callables.add(
+					new Callable<String>() {
+
+						@Override
+						public String call() throws Exception {
+							return processAutomationResult(alloyController, automationResultFile, true);
+						}
+
+					}
+				);
+			}
+
+			File retryDirectory = new File(automationResultsDirectory, _RETRY_DIRECTORY_NAME);
+
+			File[] retryResultFiles = retryDirectory.listFiles();
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Retrieved retry file list (" + retryResultFiles.length + " total files)");
+			}
+
+			for (File retryResultFile : retryResultFiles) {
+				callables.add(
+					new Callable<String>() {
+
+						@Override
+						public String call() throws Exception {
+							return processAutomationResult(alloyController, retryResultFile, false);
+						}
+
+					}
+				);
+			}
+
+			List<Future<String>> messageFutures = executorService.invokeAll(callables);
+
+			for (Future<String> messageFuture : messageFutures) {
+				String message = messageFuture.get();
+
+				if (Validator.isNotNull(message)) {
+					messages.add(message);
+				}
+			}
+		}
+		catch (Exception e) {
+			if (_log.isErrorEnabled()) {
+				_log.error(e, e);
+			}
+		}
+		finally {
+			executorService.shutdown();
+		}
+
+		if (!messages.isEmpty()) {
+			DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd");
+
+			String subject = "[Testray Portlet] Automation Import Errors " + dateFormat.format(new Date());
+
+			TestrayUtil.sendEmail(alloyController.getThemeDisplay(), subject, messages);
+		}
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Finished processing automation results");
+		}
+	}
+
+	public static void reindexTestrayCases(AlloyController alloyController) throws Exception {
+		if (PortletPropsValues.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS < 0) {
+			return;
+		}
+
+		AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		DynamicQuery testrayCaseDynamicQuery = testrayCaseAlloyServiceInvoker.buildDynamicQuery();
+
+		Property modifiedDateProperty = PropertyFactoryUtil.forName("modifiedDate");
+
+		Calendar archiveThresholdCalendar = CalendarFactoryUtil.getCalendar();
+
+		archiveThresholdCalendar.add(Calendar.HOUR, -PortletPropsValues.TESTRAY_CASE_REINDEX_THRESHOLD_HOURS);
+
+		Date date = archiveThresholdCalendar.getTime();
+
+		testrayCaseDynamicQuery.add(modifiedDateProperty.ge(date));
+
+		List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(testrayCaseDynamicQuery);
+
+		for (TestrayCase testrayCase : testrayCases) {
+			Date modifiedDate = testrayCase.getModifiedDate();
+
+			if (!modifiedDate.equals(testrayCase.getCreateDate())) {
+				TestrayCaseResultUtil.reindexTestrayCaseResults(alloyController, "testrayCaseId", testrayCase.getTestrayCaseId());
+			}
+		}
+	}
+
+	protected static void addTestrayFactors(AlloyController alloyController, Element rootElement, TestrayRun testrayRun) throws Exception {
+		Set<Long> testrayFactorOptionIds = new HashSet<Long>();
+
+		Element environmentPropertiesElement = rootElement.element("environments");
+
+		List<Element> environmentPropertyElements = environmentPropertiesElement.elements();
+
+		for (Element environmentPropertyElement : environmentPropertyElements) {
+			String environmentPropertyType = environmentPropertyElement.attributeValue("type");
+
+			TestrayFactorCategory testrayFactorCategory = fetchOrAddTestrayFactorCategory(alloyController, environmentPropertyType);
+
+			String environmentPropertyOption = environmentPropertyElement.attributeValue("option");
+
+			TestrayFactorOption testrayFactorOption = fetchOrAddTestrayFactorOption(alloyController, testrayFactorCategory.getTestrayFactorCategoryId(), environmentPropertyOption);
+
+			TestrayFactorUtil.addTestrayFactor(alloyController, TestrayRun.class.getName(), testrayRun.getTestrayRunId(), testrayFactorCategory.getTestrayFactorCategoryId(), testrayFactorCategory.getName(), testrayFactorOption.getTestrayFactorOptionId(), testrayFactorOption.getName());
+
+			testrayFactorOptionIds.add(testrayFactorOption.getTestrayFactorOptionId());
+		}
+
+		long number = TestrayRunUtil.getNumber(testrayFactorOptionIds, testrayRun.getTestrayBuildId());
+
+		testrayRun.setNumber(number);
+	}
+
+	protected static String buildTestrayBuildDescription(Map<String, String> properties) {
+		StringBundler sb = new StringBundler(15);
+
+		sb.append("Portal hash: ");
+		sb.append(properties.get("liferay.portal.git.id"));
+		sb.append(StringPool.SEMICOLON);
+		sb.append(StringPool.NEW_LINE);
+		sb.append("Plugins hash: ");
+		sb.append(properties.get("liferay.plugins.git.id"));
+		sb.append(StringPool.SEMICOLON);
+		sb.append(StringPool.NEW_LINE);
+		sb.append("Portal branch: ");
+		sb.append(properties.get("liferay.portal.branch"));
+		sb.append(StringPool.SEMICOLON);
+		sb.append(StringPool.NEW_LINE);
+		sb.append("Bundle: ");
+		sb.append(properties.get("liferay.portal.bundle"));
+		sb.append(StringPool.SEMICOLON);
+
+		return sb.toString();
+	}
+
+	protected static TestrayBuild createTestrayBuild(AlloyController alloyController, Map<String, String> properties, String testrayBuildName, TestrayProject testrayProject) throws Exception {
+		TestrayBuild testrayBuild = TestrayBuildLocalServiceUtil.createTestrayBuild(0);
+
+		testrayBuild.setDescription(buildTestrayBuildDescription(properties));
+
+		DateFormat dateFormat = DateFormatFactoryUtil.getSimpleDateFormat("yyyy-MM-dd[HH:mm:ss]");
+
+		Date date = dateFormat.parse(properties.get("testray.build.time"));
+
+		testrayBuild.setDueDate(date);
+
+		testrayBuild.setGitHash(properties.get("git.id"));
+
+		testrayBuild.setGithubCompareURLs(properties.get("liferay.compare.urls"));
+
+		testrayBuild.setName(testrayBuildName);
+
+		TestrayRoutine testrayRoutine = getTestrayRoutine(alloyController, testrayProject.getTestrayProjectId(), properties);
+
+		testrayBuild.setTestrayRoutineId(testrayRoutine.getTestrayRoutineId());
+
+		TestrayProductVersion testrayProductVersion = fetchOrAddTestrayProductVersion(alloyController, testrayProject.getTestrayProjectId(), properties.get("testray.product.version"));
+
+		testrayBuild.setTestrayProductVersionId(testrayProductVersion.getTestrayProductVersionId());
+
+		testrayBuild.setTestrayProjectId(testrayProject.getTestrayProjectId());
+
+		return testrayBuild;
+	}
+
+	protected static TestrayCase createTestrayCase(long testrayProjectId, Map<String, Object> testrayCaseProperties) throws Exception {
+		TestrayCase testrayCase = TestrayCaseLocalServiceUtil.createTestrayCase(CounterLocalServiceUtil.increment());
+
+		String counterTestrayProjectName = TestrayProject.class.getName() + StringPool.POUND + testrayProjectId;
+
+		testrayCase.setCaseNumber(CounterLocalServiceUtil.increment(counterTestrayProjectName));
+
+		testrayCase.setName((String)testrayCaseProperties.get("testray.testcase.name"));
+
+		testrayCase.setOriginationKey(testrayCase.getTestrayCaseId());
+
+		testrayCase.setTestrayProjectId(testrayProjectId);
+
+		return testrayCase;
+	}
+
+	protected static TestrayRun createTestrayRun(AlloyController alloyController, TestrayBuild testrayBuild, String externalReferencePK, long jenkinsJobKey) throws Exception {
+		TestrayRun testrayRun = TestrayRunLocalServiceUtil.createTestrayRun(alloyController.increment());
+
+		testrayRun.setExternalReferencePK(externalReferencePK);
+		testrayRun.setExternalReferenceType(TestrayAutomationConstants.EXTERNAL_REFERENCE_TYPE_POSHI);
+		testrayRun.setJenkinsJobKey(jenkinsJobKey);
+		testrayRun.setName(String.valueOf(testrayRun.getTestrayRunId()));
+		testrayRun.setTestrayBuildId(testrayBuild.getTestrayBuildId());
+
+		return testrayRun;
+	}
+
+	protected static void executeInTransaction(String methodName, Class<?>[] paramTypes, Object[] params) throws Exception {
+		Method method = TestrayAutomationUtil.class.getDeclaredMethod(methodName, paramTypes);
+
+		ServiceBeanMethodInvocationFactoryUtil.proceed(_instance, TestrayAutomationUtil.class, method, params, new String[] {"transactionAdvice"});
+	}
+
+	@SuppressWarnings("unchecked")
+	protected static <T> T executeInTransaction(String methodName, Class<?>[] paramTypes, Object[] params, Class<T> returnType) throws Exception {
+		Method method = TestrayAutomationUtil.class.getDeclaredMethod(methodName, paramTypes);
+
+		return (T)ServiceBeanMethodInvocationFactoryUtil.proceed(_instance, TestrayAutomationUtil.class, method, params, new String[] {"transactionAdvice"});
+	}
+
+	protected static TestrayRun fetchLatestMatchingTestrayRun(TestrayRun testrayRun) throws Exception {
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		DynamicQuery testrayRunDynamicQuery = testrayRunAlloyServiceInvoker.buildDynamicQuery(new Object[] {"groupId", testrayRun.getGroupId(), "environmentHash", testrayRun.getEnvironmentHash()});
+
+		Property testrayBuildIdProperty = PropertyFactoryUtil.forName("testrayBuildId");
+
+		AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+		TestrayBuild testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(testrayRun.getTestrayBuildId());
+
+		DynamicQuery testrayBuildDynamicQuery = testrayBuildAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayRoutineId", testrayBuild.getTestrayRoutineId()});
+
+		Projection testrayBuildIdProjection = ProjectionFactoryUtil.property("testrayBuildId");
+
+		testrayBuildDynamicQuery.setProjection(testrayBuildIdProjection);
+
+		testrayRunDynamicQuery.add(testrayBuildIdProperty.in(testrayBuildDynamicQuery));
+
+		Property testrayRunIdProperty = PropertyFactoryUtil.forName("testrayRunId");
+
+		testrayRunDynamicQuery.add(testrayRunIdProperty.ne(testrayRun.getTestrayRunId()));
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayRunModelImpl.TABLE_NAME, "createDate", false);
+
+		List<TestrayRun> testrayRuns = testrayRunAlloyServiceInvoker.executeDynamicQuery(testrayRunDynamicQuery, 0, 1, obc);
+
+		if (testrayRuns.isEmpty()) {
+			return null;
+		}
+
+		return testrayRuns.get(0);
+	}
+
+	@Transactional(isolation = Isolation.PORTAL, propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+	protected static TestrayBuild fetchOrAddTestrayBuild(AlloyController alloyController, Map<String, String> properties) throws Exception {
+		TestrayBuild testrayBuild = null;
+
+		long testrayBuildId = GetterUtil.getLong(properties.get("testray.build.id"));
+
+		if (testrayBuildId > 0) {
+			testrayBuild = TestrayBuildLocalServiceUtil.getTestrayBuild(testrayBuildId);
+
+			if (_log.isDebugEnabled()) {
+				_log.debug("Using existing build with specified id: " + testrayBuildId);
+			}
+		}
+		else {
+			AlloyServiceInvoker testrayBuildAlloyServiceInvoker = new AlloyServiceInvoker(TestrayBuild.class.getName());
+
+			TestrayProject testrayProject = getTestrayProject(alloyController.getThemeDisplay(), properties);
+
+			List<TestrayBuild> testrayBuilds = testrayBuildAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProject.getTestrayProjectId(), "name", properties.get("testray.build.name")});
+
+			if (!testrayBuilds.isEmpty()) {
+				testrayBuild = testrayBuilds.get(0);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Using existing build with id: " + testrayBuild.getTestrayBuildId());
+				}
+			}
+			else {
+				testrayBuild = createTestrayBuild(alloyController, properties, properties.get("testray.build.name"), testrayProject);
+
+				alloyController.updateModelIgnoreRequest(testrayBuild);
+
+				if (_log.isDebugEnabled()) {
+					_log.debug("Created new build with id: " + testrayBuild.getTestrayBuildId());
+				}
+			}
+		}
+
+		return testrayBuild;
+	}
+
+	protected static TestrayFactorCategory fetchOrAddTestrayFactorCategory(AlloyController alloyController, String testrayFactorCategoryName) throws Exception {
+		AlloyServiceInvoker testrayFactorCategoryAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactorCategory.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		List<TestrayFactorCategory> testrayFactorCategories = testrayFactorCategoryAlloyServiceInvoker.executeDynamicQuery(new Object[] {"groupId", themeDisplay.getScopeGroupId(), "name", testrayFactorCategoryName});
+
+		if (!testrayFactorCategories.isEmpty()) {
+			return testrayFactorCategories.get(0);
+		}
+
+		TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryLocalServiceUtil.createTestrayFactorCategory(0);
+
+		testrayFactorCategory.setName(testrayFactorCategoryName);
+
+		alloyController.updateModelIgnoreRequest(testrayFactorCategory);
+
+		return testrayFactorCategory;
+	}
+
+	protected static TestrayFactorOption fetchOrAddTestrayFactorOption(AlloyController alloyController, long testrayFactorCategoryId, String testrayFactorOptionName) throws Exception {
+		AlloyServiceInvoker testrayFactorOptionAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactorOption.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		List<TestrayFactorOption> testrayFactorOptions = testrayFactorOptionAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayFactorCategoryId", testrayFactorCategoryId, "name", testrayFactorOptionName});
+
+		if (!testrayFactorOptions.isEmpty()) {
+			return testrayFactorOptions.get(0);
+		}
+
+		TestrayFactorOption testrayFactorOption = TestrayFactorOptionLocalServiceUtil.createTestrayFactorOption(0);
+
+		testrayFactorOption.setName(testrayFactorOptionName);
+		testrayFactorOption.setTestrayFactorCategoryId(testrayFactorCategoryId);
+
+		alloyController.updateModelIgnoreRequest(testrayFactorOption);
+
+		return testrayFactorOption;
+	}
+
+	protected static TestrayProductVersion fetchOrAddTestrayProductVersion(AlloyController alloyController, long testrayProjectId, String testrayProductVersionName) throws Exception {
+		AlloyServiceInvoker testrayProductVersionAlloyServiceInvoker = new AlloyServiceInvoker(TestrayProductVersion.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		List<TestrayProductVersion> testrayProductVersions = testrayProductVersionAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", testrayProductVersionName});
+
+		if (!testrayProductVersions.isEmpty()) {
+			return testrayProductVersions.get(0);
+		}
+
+		TestrayProductVersion testrayProductVersion = TestrayProductVersionLocalServiceUtil.createTestrayProductVersion(0);
+
+		testrayProductVersion.setName(testrayProductVersionName);
+		testrayProductVersion.setTestrayProjectId(testrayProjectId);
+
+		alloyController.updateModelIgnoreRequest(testrayProductVersion);
+
+		return testrayProductVersion;
+	}
+
+	@Transactional(isolation = Isolation.PORTAL, propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+	protected static TestrayRun fetchOrAddTestrayRun(AlloyController alloyController, TestrayBuild testrayBuild, Element rootElement, Map<String, String> properties) throws Exception {
+		String externalReferencePK = properties.get("testray.run.id");
+
+		TestrayRun testrayRun = TestrayRunUtil.fetchTestrayRun(testrayBuild, externalReferencePK);
+
+		if (testrayRun != null) {
+			return testrayRun;
+		}
+
+		long jenkinsJobKey = GetterUtil.getInteger(properties.get("jenkins.job.id"));
+
+		testrayRun = createTestrayRun(alloyController, testrayBuild, externalReferencePK, jenkinsJobKey);
+
+		addTestrayFactors(alloyController, rootElement, testrayRun);
+
+		String environmentHash = TestrayRunUtil.getEnvironmentHash(testrayRun.getTestrayRunId());
+
+		testrayRun.setEnvironmentHash(environmentHash);
+
+		alloyController.updateModelIgnoreRequest(testrayRun, "testrayRunId", testrayRun.getTestrayRunId());
+
+		return testrayRun;
+	}
+
+	protected static TestrayTeam fetchOrAddTestrayTeam(AlloyController alloyController, long testrayProjectId, String testrayTeamName) throws Exception {
+		if (Validator.isNull(testrayTeamName)) {
+			return null;
+		}
+
+		AlloyServiceInvoker testrayTeamAlloyServiceInvoker = new AlloyServiceInvoker(TestrayTeam.class.getName());
+
+		List<TestrayTeam> testrayTeams = testrayTeamAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", testrayTeamName});
+
+		if (!testrayTeams.isEmpty()) {
+			return testrayTeams.get(0);
+		}
+
+		TestrayTeam testrayTeam = TestrayTeamLocalServiceUtil.createTestrayTeam(0);
+
+		testrayTeam.setName(testrayTeamName);
+		testrayTeam.setTestrayProjectId(testrayProjectId);
+
+		alloyController.updateModelIgnoreRequest(testrayTeam);
+
+		return testrayTeam;
+	}
+
+	protected static Map<String, String> getAttachments(Element testcaseElement) {
+		Element testcaseAttachmentsElement = testcaseElement.element("attachments");
+
+		if (testcaseAttachmentsElement == null) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> testrayCaseAttachments = new HashMap<String, String>();
+
+		List<Element> testcaseAttachmentsElements = testcaseAttachmentsElement.elements();
+
+		for (Element testcaseAttachmentElement : testcaseAttachmentsElements) {
+			String testcaseAttachmentName = testcaseAttachmentElement.attributeValue("name");
+			String testcaseAttachmentValue = testcaseAttachmentElement.attributeValue("value");
+
+			testrayCaseAttachments.put(testcaseAttachmentName, testcaseAttachmentValue);
+		}
+
+		return testrayCaseAttachments;
+	}
+
+	protected static Map<String, String> getProperties(Element rootElement) {
+		Map<String, String> properties = new HashMap<String, String>();
+
+		Element testPropertiesElement = rootElement.element("properties");
+
+		List<Element> testPropertyElements = testPropertiesElement.elements();
+
+		for (Element testPropertyElement : testPropertyElements) {
+			String testPropertyName = testPropertyElement.attributeValue("name");
+			String testPropertyValue = testPropertyElement.attributeValue("value");
+
+			properties.put(testPropertyName, testPropertyValue);
+		}
+
+		return properties;
+	}
+
+	protected static Element getRootElement(String xmlString) throws Exception {
+		com.liferay.portal.kernel.xml.Document document = SAXReaderUtil.read(xmlString);
+
+		return document.getRootElement();
+	}
+
+	protected static Map<String, String> getSummaryProperties(Element rootElement) {
+		Map<String, String> summaryProperties = new HashMap<String, String>();
+
+		Element summaryPropertiesElement = rootElement.element("summary");
+
+		for (Element summaryPropertyElement : summaryPropertiesElement.elements()) {
+			String summaryPropertyName = summaryPropertyElement.attributeValue("name");
+			String summaryPropertyValue = summaryPropertyElement.attributeValue("value");
+
+			summaryProperties.put(summaryPropertyName, summaryPropertyValue);
+		}
+
+		return summaryProperties;
+	}
+
+	protected static Map<String, Object> getTestrayCaseProperties(Element testcaseElement) {
+		Map<String, Object> testrayCaseProperties = new HashMap<String, Object>();
+
+		Element testcasePropertiesElement = testcaseElement.element("properties");
+
+		List<Element> testcasePropertyElements = testcasePropertiesElement.elements();
+
+		for (Element testcasePropertyElement : testcasePropertyElements) {
+			String testcasePropertyName = testcasePropertyElement.attributeValue("name");
+
+			if (StringUtil.equalsIgnoreCase(testcasePropertyName, "testray.testcase.warnings")) {
+				List<String> values = new ArrayList<String>();
+
+				List<Element> valueElements = testcasePropertyElement.elements("value");
+
+				for (Element valueElement : valueElements) {
+					values.add(String.valueOf(valueElement.getData()));
+				}
+
+				testrayCaseProperties.put(testcasePropertyName, values);
+			}
+			else {
+				String testcasePropertyValue = testcasePropertyElement.attributeValue("value");
+
+				testrayCaseProperties.put(testcasePropertyName, testcasePropertyValue);
+			}
+		}
+
+		return testrayCaseProperties;
+	}
+
+	protected static TestrayCaseType getTestrayCaseType(AlloyController alloyController, Map<String, Object> testrayCaseProperties) throws Exception {
+		long testrayCaseTypeId = GetterUtil.getLong(testrayCaseProperties.get("testray.case.type.id"));
+
+		if (testrayCaseTypeId > 0) {
+			return TestrayCaseTypeLocalServiceUtil.getTestrayCaseType(testrayCaseTypeId);
+		}
+
+		AlloyServiceInvoker testrayCaseTypeAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseType.class.getName());
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		String name = GetterUtil.getString(testrayCaseProperties.get("testray.case.type.name"));
+
+		List<TestrayCaseType> testrayCaseTypes = testrayCaseTypeAlloyServiceInvoker.executeDynamicQuery(new Object[] {"groupId", themeDisplay.getScopeGroupId(), "name", name});
+
+		if (!testrayCaseTypes.isEmpty()) {
+			return testrayCaseTypes.get(0);
+		}
+
+		throw new Exception("The case type with name " + name + " does not exist");
+	}
+
+	protected static long[] getTestrayComponentIds(AlloyController alloyController, long testrayProjectId, String[] testrayComponentNames) throws Exception {
+		long[] testrayComponentIds = new long[testrayComponentNames.length];
+
+		for (int i = 0; i < testrayComponentNames.length; i++) {
+			TestrayComponent testrayComponent = updateOrAddTestrayComponent(alloyController, testrayProjectId, testrayComponentNames[i], null);
+
+			testrayComponentIds[i] = testrayComponent.getTestrayComponentId();
+		}
+
+		return testrayComponentIds;
+	}
+
+	protected static TestrayProject getTestrayProject(ThemeDisplay themeDisplay, Map<String, String> properties) throws Exception {
+		long testrayProjectId = GetterUtil.getLong(properties.get("testray.project.id"));
+
+		if (testrayProjectId > 0) {
+			return TestrayProjectLocalServiceUtil.getTestrayProject(testrayProjectId);
+		}
+
+		AlloyServiceInvoker testrayProjectAlloyServiceInvoker = new AlloyServiceInvoker(TestrayProject.class.getName());
+
+		List<TestrayProject> testrayProjects = testrayProjectAlloyServiceInvoker.executeDynamicQuery(new Object[] {"groupId", themeDisplay.getScopeGroupId(), "name", properties.get("testray.project.name")});
+
+		if (!testrayProjects.isEmpty()) {
+			return testrayProjects.get(0);
+		}
+
+		throw new Exception("The project with name " + properties.get("testray.project.name") + " does not exist");
+	}
+
+	protected static TestrayRoutine getTestrayRoutine(AlloyController alloyController, long testrayProjectId, Map<String, String> properties) throws Exception {
+		long testrayRoutineId = GetterUtil.getLong(properties.get("testray.build.type.id"));
+
+		if (testrayRoutineId > 0) {
+			return TestrayRoutineLocalServiceUtil.getTestrayRoutine(testrayRoutineId);
+		}
+
+		AlloyServiceInvoker testrayRoutineAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRoutine.class.getName());
+
+		List<TestrayRoutine> testrayRoutines = testrayRoutineAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", properties.get("testray.build.type")});
+
+		if (!testrayRoutines.isEmpty()) {
+			return testrayRoutines.get(0);
+		}
+
+		throw new Exception("The routine with name " + properties.get("testray.build.type") + " does not exist");
+	}
+
+	protected static boolean hasRecentTestrayCaseResults(TestrayBuild testrayBuild, Date date) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId()});
+
+		Property modifiedDateProperty = PropertyFactoryUtil.forName("modifiedDate");
+
+		testrayCaseResultDynamicQuery.add(modifiedDateProperty.gt(date));
+
+		long testrayCaseResultsCount = testrayCaseResultAlloyServiceInvoker.executeDynamicQueryCount(testrayCaseResultDynamicQuery);
+
+		if (testrayCaseResultsCount > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected static boolean hasRecentTestrayRuns(TestrayBuild testrayBuild, Date date) throws Exception {
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		DynamicQuery testrayRunDynamicQuery = testrayRunAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayBuildId", testrayBuild.getTestrayBuildId()});
+
+		Property modifiedDateProperty = PropertyFactoryUtil.forName("modifiedDate");
+
+		testrayRunDynamicQuery.add(modifiedDateProperty.gt(date));
+
+		long testrayRunsCount = testrayRunAlloyServiceInvoker.executeDynamicQueryCount(testrayRunDynamicQuery);
+
+		if (testrayRunsCount > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	protected static boolean move(File file, String directoryName) {
+		StringBundler sb = new StringBundler(5);
+
+		sb.append(PortletPropsValues.TESTRAY_AUTOMATION_RESULTS_PATH);
+		sb.append(File.separator);
+		sb.append(directoryName);
+		sb.append(File.separator);
+		sb.append(file.getName());
+
+		File destinationFile = new File(sb.toString());
+
+		return FileUtil.move(file, destinationFile);
+	}
+
+	protected static void persistTestrayCase(AlloyController alloyController, TestrayCase testrayCase, String description, int priority, long testrayCaseTypeId, long testrayComponentId, long[] testrayComponentIds) throws Exception {
+		if (_equals(description, testrayCase.getDescription()) && (priority == testrayCase.getPriority()) && (testrayCaseTypeId == testrayCase.getTestrayCaseTypeId()) && (testrayComponentId == testrayCase.getTestrayComponentId())) {
+			return;
+		}
+
+		testrayCase.setDescription(description);
+		testrayCase.setPriority(priority);
+		testrayCase.setTestrayCaseTypeId(testrayCaseTypeId);
+		testrayCase.setTestrayComponentId(testrayComponentId);
+
+		alloyController.updateModelIgnoreRequest(testrayCase, "testrayCaseId", testrayCase.getTestrayCaseId());
+
+		TestrayComponentLocalServiceUtil.setTestrayCaseTestrayComponents(testrayCase.getTestrayCaseId(), testrayComponentIds);
+	}
+
+	protected static boolean tryLock(File file) throws Exception {
+		Lock lock = LockLocalServiceUtil.lock(File.class.getName(), file.getName(), _getLockOwner());
+
+		if (lock.isNew()) {
+			LockLocalServiceUtil.refresh(lock.getUuid(), lock.getCompanyId(), Time.MINUTE * 5);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected static void unlock(File file) {
+		LockLocalServiceUtil.unlock(File.class.getName(), file.getName(), _getLockOwner());
+	}
+
+	protected static TestrayCase updateOrAddTestrayCase(AlloyController alloyController, long testrayProjectId, Map<String, Object> testrayCaseProperties) throws Exception {
+		TestrayCase testrayCase = null;
+
+		long testrayCaseId = GetterUtil.getLong(testrayCaseProperties.get("testray.testcase.id"));
+
+		if (testrayCaseId > 0) {
+			testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId);
+		}
+		else {
+			AlloyServiceInvoker testrayCaseAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCase.class.getName());
+
+			String testrayCaseName = (String)testrayCaseProperties.get("testray.testcase.name");
+
+			List<TestrayCase> testrayCases = testrayCaseAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", testrayCaseName});
+
+			if (!testrayCases.isEmpty()) {
+				testrayCase = testrayCases.get(0);
+			}
+			else {
+				testrayCase = createTestrayCase(testrayProjectId, testrayCaseProperties);
+			}
+		}
+
+		String description = (String)testrayCaseProperties.get("testray.testcase.description");
+		int priority = GetterUtil.getInteger(testrayCaseProperties.get("testray.testcase.priority"));
+		TestrayCaseType testrayCaseType = getTestrayCaseType(alloyController, testrayCaseProperties);
+		TestrayComponent mainTestrayComponent = updateOrAddTestrayComponent(alloyController, testrayProjectId, (String)testrayCaseProperties.get("testray.main.component.name"), (String)testrayCaseProperties.get("testray.team.name"));
+		long[] testrayComponentIds = getTestrayComponentIds(alloyController, testrayProjectId, StringUtil.split((String)testrayCaseProperties.get("testray.component.names")));
+
+		persistTestrayCase(alloyController, testrayCase, description, priority, testrayCaseType.getTestrayCaseTypeId(), mainTestrayComponent.getTestrayComponentId(), testrayComponentIds);
+
+		return testrayCase;
+	}
+
+	@Transactional(isolation = Isolation.PORTAL, propagation = Propagation.REQUIRES_NEW, rollbackFor = {Exception.class})
+	protected static TestrayCaseResult updateOrAddTestrayCaseResult(AlloyController alloyController, TestrayBuild testrayBuild, TestrayRun testrayRun, Element testcaseElement) throws Exception {
+		TestrayCaseResult testrayCaseResult = null;
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		Map<String, Object> testrayCaseProperties = getTestrayCaseProperties(testcaseElement);
+
+		TestrayCase testrayCase = updateOrAddTestrayCase(alloyController, testrayBuild.getTestrayProjectId(), testrayCaseProperties);
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayCaseId", testrayCase.getTestrayCaseId(), "testrayRunId", testrayRun.getTestrayRunId()});
+
+		if (!testrayCaseResults.isEmpty()) {
+			testrayCaseResult = testrayCaseResults.get(0);
+		}
+		else {
+			testrayCaseResult = TestrayCaseResultLocalServiceUtil.createTestrayCaseResult(0);
+		}
+
+		testrayCaseResult.setClosedDate(testrayBuild.getDueDate());
+
+		Element failureElement = testcaseElement.element("failure");
+
+		if (failureElement != null) {
+			String failureElementMessage = failureElement.attributeValue("message");
+
+			testrayCaseResult.setErrors(failureElementMessage);
+		}
+
+		testrayCaseResult.setStartDate(testrayBuild.getDueDate());
+
+		String statusLabel = (String)testrayCaseProperties.get("testray.testcase.status");
+
+		if (statusLabel == null) {
+			throw new Exception("The status label is null");
+		}
+
+		int status = TestrayCaseResultConstants.getLabelStatus(statusLabel);
+
+		if (status < 0) {
+			throw new Exception("The status label " + statusLabel + " is invalid");
+		}
+
+		testrayCaseResult.setStatus(status);
+
+		testrayCaseResult.setTestrayBuildId(testrayBuild.getTestrayBuildId());
+		testrayCaseResult.setTestrayComponentId(testrayCase.getTestrayComponentId());
+		testrayCaseResult.setTestrayCaseId(testrayCase.getTestrayCaseId());
+		testrayCaseResult.setTestrayRunId(testrayRun.getTestrayRunId());
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+
+		TestrayCaseResultUtil.setAttachments(alloyController, testrayCaseResult, getAttachments(testcaseElement));
+		TestrayCaseResultUtil.addTestrayCaseResultTestrayIssue(alloyController, testrayCaseResult.getTestrayCaseResultId(), (String)testrayCaseProperties.get("testray.case.defect"));
+		TestrayCaseResultUtil.addTestrayCaseResultTestrayIssue(alloyController, testrayCaseResult.getTestrayCaseResultId(), (String)testrayCaseProperties.get("testray.case.issue"));
+		TestrayCaseResultUtil.addTestrayCaseResultWarnings(alloyController, testrayCaseResult.getTestrayCaseResultId(), (List<String>)testrayCaseProperties.get("testray.testcase.warnings"));
+
+		return testrayCaseResult;
+	}
+
+	protected static TestrayComponent updateOrAddTestrayComponent(AlloyController alloyController, long testrayProjectId, String testrayComponentName, String testrayTeamName) throws Exception {
+		if (Validator.isNull(testrayComponentName)) {
+			throw new Exception("Component name is empty");
+		}
+
+		TestrayTeam testrayTeam = fetchOrAddTestrayTeam(alloyController, testrayProjectId, testrayTeamName);
+
+		AlloyServiceInvoker testrayComponentAlloyServiceInvoker = new AlloyServiceInvoker(TestrayComponent.class.getName());
+
+		List<TestrayComponent> testrayComponents = testrayComponentAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayProjectId", testrayProjectId, "name", testrayComponentName});
+
+		if (!testrayComponents.isEmpty()) {
+			TestrayComponent testrayComponent = testrayComponents.get(0);
+
+			if ((testrayTeam != null) && (testrayComponent.getTestrayTeamId() != testrayTeam.getTestrayTeamId())) {
+				testrayComponent.setTestrayTeamId(testrayTeam.getTestrayTeamId());
+
+				alloyController.updateModelIgnoreRequest(testrayComponent);
+
+				TestrayCaseUtil.indexTestrayCases(alloyController, testrayComponent.getTestrayComponentId());
+			}
+
+			return testrayComponent;
+		}
+
+		TestrayComponent testrayComponent = TestrayComponentLocalServiceUtil.createTestrayComponent(alloyController.increment());
+
+		testrayComponent.setName(testrayComponentName);
+		testrayComponent.setOriginationKey(testrayComponent.getTestrayComponentId());
+		testrayComponent.setTestrayProjectId(testrayProjectId);
+
+		if (testrayTeam != null) {
+			testrayComponent.setTestrayTeamId(testrayTeam.getTestrayTeamId());
+		}
+
+		alloyController.updateModelIgnoreRequest(testrayComponent, "testrayComponentId", testrayComponent.getTestrayComponentId());
+
+		return testrayComponent;
+	}
+
+	private static boolean _equals(String string1, String string2) {
+		if (Validator.isNull(string1) && Validator.isNull(string2)) {
+			return true;
+		}
+
+		return Objects.equals(string1, string2);
+	}
+
+	private static String _getLockOwner() {
+		return PortalUtil.getComputerName() + StringPool.POUND + Thread.currentThread();
+	}
+
+	private static final String _ERROR_DIRECTORY_NAME = "error";
+
+	private static final String _RETRY_DIRECTORY_NAME = "retry";
+
+	private static final Log _log = LogFactoryUtil.getLog("jsp.testray.util.TestrayAutomationUtil");
+
+	private static final TestrayAutomationUtil _instance = new TestrayAutomationUtil();
+
+}
+%>

@@ -1,0 +1,162 @@
+.alert {
+	border-radius: $border-radius;
+	padding: 15px 35px 15px 20px;
+	text-shadow: none;
+
+	&.alert-danger {
+		background-color: $validation-error-background;
+		border-color: $validation-error-border;
+		color: $validation-error-text;
+
+		.alert-link {
+			color: $validation-error-text;
+		}
+	}
+
+	&.alert-info {
+		background-color: $validation-info-background;
+		border-color: $validation-info-border;
+		color: $validation-info-text;
+
+		.alert-link {
+			color: $validation-info-text;
+		}
+	}
+
+	&.alert-success {
+		background-color: $validation-success-background;
+		border-color: $validation-success-border;
+		color: $validation-success-text;
+
+		.alert-link {
+			color: $validation-success-text;
+		}
+	}
+
+	&.alert-warn {
+		background-color: $validation-warning-background;
+		border-color: $validation-warning-border;
+		color: $validation-warning-text;
+
+		.alert-link {
+			color: $validation-warning-text;
+		}
+	}
+
+	.alert-link {
+		text-decoration: underline;
+	}
+}
+
+.lfr-alert-container {
+	left: auto;
+	position: fixed;
+	right: $layout-padding-horizontal;
+	top: 165px;
+	width: $alert-container-width;
+
+	.lead {
+		font-size: 1em;
+		line-height: 1;
+		padding-right: 5px;
+
+		.lexicon-icon {
+			height: 12px;
+			width: 12px;
+		}
+	}
+
+	&.inline-alert-container {
+		right: auto;
+		top: auto;
+		width: auto;
+	}
+}
+
+.portal-popup {
+	.lfr-alert-container {
+		right: 0;
+		top: 20px;
+	}
+}
+
+.testray-alert-container {
+	right: $layout-padding-horizontal;
+	z-index: 430;
+
+	.testray-alert {
+		@include experimental(animation, fade-in-down 0.5s ease);
+
+		margin-bottom: 10px;
+	}
+}
+
+.testray-banner {
+	@include align-items(flex-start);
+
+	background-color: $banner-in-analysis-bg-color;
+	color: $banner-in-analysis-color;
+
+	@include display(flex);
+
+	margin-bottom: 20px;
+	padding: 16px 20px;
+
+	.testray-banner-action {
+		border: 1px solid $banner-in-analysis-color;
+		color: $banner-in-analysis-color;
+		display: inline-block;
+		padding: 3px 9px;
+		white-space: nowrap;
+
+		&:hover {
+			border: 1px solid $in-analysis-color;
+			color: $in-analysis-color;
+			text-decoration: none;
+		}
+	}
+
+	.testray-banner-content {
+		flex: 1;
+		margin-top: 5px;
+	}
+
+	.testray-banner-icon {
+		margin-right: 10px;
+
+		.status {
+			display: inline-block;
+			padding: 4px 10px;
+		}
+	}
+
+	&.testray-banner-abandoned {
+		background-color: $banner-abandoned-bg-color;
+		color: $banner-abandoned-color;
+
+		.testray-banner-action {
+			border: 1px solid $banner-abandoned-color;
+			color: $banner-abandoned-color;
+
+			&:hover {
+				border: 1px solid $abandoned-color;
+				color: $abandoned-color;
+			}
+		}
+	}
+
+	&.testray-banner-complete {
+		background-color: $banner-complete-bg-color;
+		color: $banner-complete-color;
+
+		.testray-banner-action {
+			border: 1px solid $banner-complete-color;
+			color: $banner-complete-color;
+
+			&:hover {
+				border: 1px solid $completed-color;
+				color: $completed-color;
+			}
+		}
+	}
+}

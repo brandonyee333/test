@@ -1,0 +1,823 @@
+<?xml version="1.0"?>
+<!DOCTYPE service-builder PUBLIC "-//Liferay//DTD Service Builder 7.0.0//EN" "http://www.liferay.com/dtd/liferay-service-builder_7_0_0.dtd">
+
+<service-builder auto-namespace-tables="true" package-path="com.liferay.osb.testray">
+	<author>Ethan Bustad</author>
+	<namespace>OSB</namespace>
+	<entity local-service="true" name="TestrayArchive" remote-service="false">
+
+		<!-- PK Fields -->
+
+		<column name="testrayArchiveId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="compressedData" type="Blob" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="testrayArchiveId" />
+		</order>
+	</entity>
+	<entity local-service="true" name="TestrayAssignment" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayAssignmentId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="assignedUserId" type="long" />
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+	</entity>
+	<entity local-service="true" name="TestrayBuild" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayBuildId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="templateTestrayBuildId" type="long" />
+		<column name="testrayRoutineId" type="long" />
+		<column name="testrayProductVersionId" type="long" />
+		<column name="testrayProjectId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="descriptionType" type="String" />
+		<column name="template" type="boolean" />
+		<column name="dueDate" type="Date" />
+		<column name="gitHash" type="String" />
+		<column name="githubCompareURLs" type="String" />
+		<column name="promoted" type="boolean" />
+		<column name="status" type="int" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCase" mapping-table="TestrayBuilds_TestrayCases" name="testrayCases" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TRI_N" return-type="TestrayBuild" unique="true">
+			<finder-column name="testrayRoutineId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayCase" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayCaseId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayCaseTypeId" type="long" />
+		<column name="testrayComponentId" type="long" />
+		<column name="testrayProjectId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="descriptionType" type="String" />
+		<column name="originationKey" type="long" />
+		<column name="priority" type="int" />
+		<column name="estimatedDuration" type="int" />
+		<column name="steps" type="String" />
+		<column name="stepsType" type="String" />
+		<column name="caseNumber" type="long" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayBuild" mapping-table="TestrayBuilds_TestrayCases" name="testrayBuilds" type="Collection" />
+		<column entity="TestrayComponent" mapping-table="TestrayCases_TestrayComponents" name="testrayComponents" type="Collection" />
+		<column entity="TestrayRequirement" mapping-table="TestrayRequirements_TestrayCases" name="testrayRequirements" type="Collection" />
+		<column entity="TestraySuite" mapping-table="TestraySuites_TestrayCases" name="testraySuites" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TPI_N" return-type="TestrayCase" unique="true">
+			<finder-column name="testrayProjectId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayCaseResult" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayCaseResultId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="commentMBMessageId" type="long" />
+		<column name="testrayBuildId" type="long" />
+		<column name="testrayCaseId" type="long" />
+		<column name="testrayComponentId" type="long" />
+		<column name="testrayRunId" type="long" />
+		<column name="assignedUserId" type="long" />
+		<column name="startDate" type="Date" />
+		<column name="closedDate" type="Date" />
+		<column name="attachments" type="String" />
+		<column name="errors" type="String" />
+		<column name="status" type="int" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayIssue" mapping-table="TestrayCaseResults_TestrayIssues" name="testrayIssues" type="Collection" />
+		<column entity="TestraySubtask" mapping-table="TestraySubtasks_TestrayCaseResults" name="testraySubtasks" type="Collection" />
+
+		<!-- Finder methods -->
+
+		<finder name="CreateDate" return-type="Collection">
+			<finder-column name="createDate" />
+		</finder>
+		<finder name="TestrayBuildId" return-type="Collection">
+			<finder-column name="testrayBuildId" />
+		</finder>
+		<finder name="TestrayCaseId" return-type="Collection">
+			<finder-column name="testrayCaseId" />
+		</finder>
+		<finder name="TestrayComponentId" return-type="Collection">
+			<finder-column name="testrayComponentId" />
+		</finder>
+		<finder name="TestrayRunId" return-type="Collection">
+			<finder-column name="testrayRunId" />
+		</finder>
+		<finder name="TCaI_TRI" return-type="TestrayCaseResult" unique="true">
+			<finder-column name="testrayCaseId" />
+			<finder-column name="testrayRunId" />
+		</finder>
+		<finder name="TCI_TRI" return-type="Collection">
+			<finder-column name="testrayComponentId" />
+			<finder-column name="testrayRunId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayCaseResultWarning" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayCaseResultWarningId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayCaseResultId" type="long" />
+		<column name="content" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="TestrayCaseResultId" return-type="Collection">
+			<finder-column name="testrayCaseResultId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayCaseType" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayCaseTypeId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayTask" mapping-table="TestrayTasks_TestrayCaseTypes" name="testrayTasks" type="Collection" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GI_N" return-type="TestrayCaseType" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayComponent" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayComponentId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayProjectId" type="long" />
+		<column name="testrayTeamId" type="long" />
+		<column name="name" type="String" />
+		<column name="originationKey" type="long" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCase" mapping-table="TestrayCases_TestrayComponents" name="testrayCases" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TPI_N" return-type="TestrayComponent" unique="true">
+			<finder-column name="testrayProjectId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayFactor" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayFactorId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="classNameId" type="long" />
+		<column name="classPK" type="long" />
+		<column name="testrayFactorCategoryId" type="long" />
+		<column name="testrayFactorCategoryName" type="String" />
+		<column name="testrayFactorOptionId" type="long" />
+		<column name="testrayFactorOptionName" type="String" />
+
+		<!-- Finder methods -->
+
+		<finder name="CNI_CP" return-type="Collection">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+		</finder>
+		<finder name="C_C_T" return-type="TestrayFactor" unique="true">
+			<finder-column name="classNameId" />
+			<finder-column name="classPK" />
+			<finder-column name="testrayFactorOptionId" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayFactorCategory" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayFactorCategoryId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="G_N" return-type="TestrayFactorCategory" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayFactorOption" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayFactorOptionId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayFactorCategoryId" type="long" />
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="T_N" return-type="TestrayFactorOption" unique="true">
+			<finder-column name="testrayFactorCategoryId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayIssue" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayIssueId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCaseResult" mapping-table="TestrayCaseResults_TestrayIssues" name="testrayCaseResults" type="Collection" />
+		<column entity="TestraySubtask" mapping-table="TestraySubtasks_TestrayIssues" name="testraySubtasks" type="Collection" />
+
+		<!-- Finder methods -->
+
+		<finder name="Name" return-type="TestrayIssue" unique="true">
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayProductVersion" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayProductVersionId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayProjectId" type="long" />
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="T_N" return-type="TestrayProductVersion" unique="true">
+			<finder-column name="testrayProjectId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayProject" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayProjectId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="GI_N" return-type="TestrayProject" unique="true">
+			<finder-column name="groupId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayRequirement" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayRequirementId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayComponentId" type="long" />
+		<column name="testrayProjectId" type="long" />
+		<column name="key" type="String" />
+		<column name="summary" type="String" />
+		<column name="components" type="String" />
+		<column name="linkTitle" type="String" />
+		<column name="linkURL" type="String" />
+		<column name="description" type="String" />
+		<column name="descriptionType" type="String" />
+		<column name="goals" type="String" />
+		<column name="goalsType" type="String" />
+		<column name="variations" type="String" />
+		<column name="variationsType" type="String" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCase" mapping-table="TestrayRequirements_TestrayCases" name="testrayCases" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="key" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TPI_K" return-type="TestrayRequirement" unique="true">
+			<finder-column name="testrayProjectId" />
+			<finder-column name="key" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestrayRoutine" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayRoutineId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayProjectId" type="long" />
+		<column name="name" type="String" />
+		<column name="autoanalyze" type="boolean" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+	</entity>
+	<entity local-service="true" name="TestrayRun" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayRunId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayBuildId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="externalReferencePK" type="String" />
+		<column name="externalReferenceType" type="int" />
+		<column name="jenkinsJobKey" type="long" />
+		<column name="number" type="long" />
+		<column name="environmentHash" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="T_E_E" return-type="TestrayRun" unique="true">
+			<finder-column name="testrayBuildId" />
+			<finder-column name="externalReferencePK" />
+			<finder-column name="externalReferenceType" />
+		</finder>
+	</entity>
+	<entity local-service="true" name="TestraySubtask" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testraySubtaskId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="commentMBMessageId" type="long" />
+		<column name="mergedToTestraySubtaskId" type="long" />
+		<column name="splitFromTestraySubtaskId" type="long" />
+		<column name="testrayTaskId" type="long" />
+		<column name="name" type="String" />
+		<column name="score" type="int" />
+		<column name="statusUpdateDate" type="Date" />
+		<column name="status" type="int" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCaseResult" mapping-table="TestraySubtasks_TestrayCaseResults" name="testrayCaseResults" type="Collection" />
+		<column entity="TestrayIssue" mapping-table="TestraySubtasks_TestrayIssues" name="testrayIssues" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+	</entity>
+	<entity local-service="true" name="TestraySuite" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testraySuiteId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayProjectId" type="long" />
+		<column name="name" type="String" />
+		<column name="description" type="String" />
+		<column name="caseParameters" type="String" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCase" mapping-table="TestraySuites_TestrayCases" name="testrayCases" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+	</entity>
+	<entity local-service="true" name="TestrayTask" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayTaskId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayBuildId" type="long" />
+		<column name="name" type="String" />
+		<column name="statusUpdateDate" type="Date" />
+		<column name="status" type="int" />
+
+		<!-- Relationships -->
+
+		<column entity="TestrayCaseType" mapping-table="TestrayTasks_TestrayCaseTypes" name="testrayCaseTypes" type="Collection" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+	</entity>
+	<entity local-service="true" name="TestrayTeam" remote-service="false">
+
+		<!-- PK fields -->
+
+		<column name="testrayTeamId" primary="true" type="long" />
+
+		<!-- Group instance -->
+
+		<column name="groupId" type="long" />
+
+		<!-- Audit fields -->
+
+		<column name="companyId" type="long" />
+		<column name="userId" type="long" />
+		<column name="userName" type="String" />
+		<column name="createDate" type="Date" />
+		<column name="modifiedDate" type="Date" />
+
+		<!-- Other fields -->
+
+		<column name="testrayProjectId" type="long" />
+		<column name="name" type="String" />
+
+		<!-- Order -->
+
+		<order by="asc">
+			<order-column name="name" />
+		</order>
+
+		<!-- Finder methods -->
+
+		<finder name="TPI_N" return-type="TestrayTeam" unique="true">
+			<finder-column name="testrayProjectId" />
+			<finder-column name="name" />
+		</finder>
+	</entity>
+</service-builder>

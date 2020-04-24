@@ -1,0 +1,399 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayCaseResultUtil {
+
+	public static void addCriteriaInIfPropertyPresent(List<Criterion> criteria, Map<String, Object> properties, String propertyName, String pluralPropertyName) {
+		List<Long> propertyValues = (List<Long>)properties.get(pluralPropertyName);
+
+		if (ListUtil.isNotEmpty(propertyValues)) {
+			Property property = PropertyFactoryUtil.forName(propertyName);
+
+			criteria.add(property.in(propertyValues));
+		}
+	}
+
+	public static void addTestrayCaseResult(AlloyController alloyController, long testrayRunId, long testrayCaseId) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		long testrayCaseResultsCount = testrayCaseResultAlloyServiceInvoker.executeDynamicQueryCount(new Object[] {"testrayCaseId", testrayCaseId, "testrayRunId", testrayRunId});
+
+		if (testrayCaseResultsCount > 0) {
+			return;
+		}
+
+		String message = validateSave(testrayRunId, testrayCaseId);
+
+		if (Validator.isNotNull(message)) {
+			throw new Exception(message);
+		}
+
+		TestrayCaseResult testrayCaseResult = createTestrayCaseResult(testrayRunId, testrayCaseId);
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+	}
+
+	public static void addTestrayCaseResultTestrayIssue(AlloyController alloyController, long testrayCaseResultId, String issuesString) throws Exception {
+		String[] issues = _getIssues(issuesString);
+
+		if (ArrayUtil.isEmpty(issues)) {
+			return;
+		}
+
+		List<TestrayIssue> testrayIssues = TestrayIssueUtil.fetchOrAddTestrayIssues(alloyController, issues);
+
+		TestrayIssueLocalServiceUtil.addTestrayCaseResultTestrayIssues(testrayCaseResultId, testrayIssues);
+
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		TestrayIssueEngineUtil.updateIssues(testrayIssues, themeDisplay.getUser());
+	}
+
+	public static boolean autoFill(AlloyController alloyController, TestrayCaseResultComposite testrayCaseResultCompositeA, TestrayCaseResultComposite testrayCaseResultCompositeB) throws Exception {
+		TestrayCaseResultComposite recipientTestrayCaseResultComposite = null;
+		TestrayCaseResultComposite sourceTestrayCaseResultComposite = null;
+
+		if ((testrayCaseResultCompositeA.getAssignedUserId() > 0) && Validator.isNotNull(testrayCaseResultCompositeA.getIssues()) && (testrayCaseResultCompositeB.getAssignedUserId() <= 0) && Validator.isNull(testrayCaseResultCompositeB.getIssues())) {
+			recipientTestrayCaseResultComposite = testrayCaseResultCompositeB;
+			sourceTestrayCaseResultComposite = testrayCaseResultCompositeA;
+		}
+		else if ((testrayCaseResultCompositeB.getAssignedUserId() > 0) && Validator.isNotNull(testrayCaseResultCompositeB.getIssues()) && (testrayCaseResultCompositeA.getAssignedUserId() <= 0) && Validator.isNull(testrayCaseResultCompositeA.getIssues())) {
+			recipientTestrayCaseResultComposite = testrayCaseResultCompositeA;
+			sourceTestrayCaseResultComposite = testrayCaseResultCompositeB;
+		}
+
+		if ((recipientTestrayCaseResultComposite == null) || (sourceTestrayCaseResultComposite == null)) {
+			return false;
+		}
+
+		TestrayCaseResult recipientTestrayCaseResult = recipientTestrayCaseResultComposite.getTestrayCaseResult();
+
+		recipientTestrayCaseResult.setAssignedUserId(sourceTestrayCaseResultComposite.getAssignedUserId());
+
+		recipientTestrayCaseResult.setStatus(sourceTestrayCaseResultComposite.getStatus());
+
+		TestrayCaseResultLocalServiceUtil.updateTestrayCaseResult(recipientTestrayCaseResult);
+
+		TestrayUtil.updateTestrayIssuesRelationships(TestrayCaseResult.class.getName(), recipientTestrayCaseResult.getTestrayCaseResultId(), sourceTestrayCaseResultComposite.getTestrayIssues());
+
+		return true;
+	}
+
+	public static void bulkUpdateTestrayCaseResults(List<Long> testrayCaseResultIds, Object... setAttributes) throws Exception {
+		List<TestrayCaseResult> testrayCaseResults = new ArrayList<TestrayCaseResult>();
+
+		for (long testrayCaseResultId : testrayCaseResultIds) {
+			TestrayCaseResult testrayCaseResult = TestrayCaseResultLocalServiceUtil.getTestrayCaseResult(testrayCaseResultId);
+
+			if (testrayCaseResult.getStatus() == TestrayCaseResultConstants.STATUS_UNTESTED) {
+				testrayCaseResult.setStatus(TestrayCaseResultConstants.STATUS_IN_PROGRESS);
+			}
+
+			testrayCaseResults.add(testrayCaseResult);
+		}
+
+		updateTestrayCaseResults(testrayCaseResults, setAttributes);
+	}
+
+	public static TestrayCaseResult createTestrayCaseResult(long testrayRunId, long testrayCaseId) throws Exception {
+		TestrayCaseResult testrayCaseResult = TestrayCaseResultLocalServiceUtil.createTestrayCaseResult(0);
+
+		TestrayRun testrayRun = TestrayRunLocalServiceUtil.getTestrayRun(testrayRunId);
+
+		testrayCaseResult.setTestrayBuildId(testrayRun.getTestrayBuildId());
+
+		testrayCaseResult.setTestrayCaseId(testrayCaseId);
+
+		TestrayCase testrayCase = TestrayCaseLocalServiceUtil.getTestrayCase(testrayCaseId);
+
+		testrayCaseResult.setTestrayComponentId(testrayCase.getTestrayComponentId());
+
+		testrayCaseResult.setTestrayRunId(testrayRunId);
+
+		return testrayCaseResult;
+	}
+
+	public static TestrayCaseResult deleteTestrayCaseResult(TestrayCaseResult testrayCaseResult) throws Exception {
+		TestrayCaseResultLocalServiceUtil.deleteTestrayCaseResult(testrayCaseResult);
+
+		MBMessageLocalServiceUtil.deleteDiscussionMessages(TestrayCaseResult.class.getName(), testrayCaseResult.getTestrayCaseResultId());
+
+		TestrayCaseResultWarningUtil.deleteTestrayCaseResultWarnings(testrayCaseResult.getTestrayCaseResultId());
+
+		return testrayCaseResult;
+	}
+
+	public static void deleteTestrayCaseResults(long companyId, String fieldName, long fieldValue) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"companyId", companyId, fieldName, fieldValue});
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			deleteTestrayCaseResult(testrayCaseResult);
+		}
+	}
+
+	public static TestrayCaseResult fetchOrCreateTestrayCaseResult(long testrayRunId, long testrayCaseId) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayCaseId", testrayCaseId, "testrayRunId", testrayRunId});
+
+		if (!testrayCaseResults.isEmpty()) {
+			return testrayCaseResults.get(0);
+		}
+
+		return createTestrayCaseResult(testrayRunId, testrayCaseId);
+	}
+
+	public static List<String> getDistinctErrors(long testrayBuildId) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayBuildId", testrayBuildId});
+
+		Projection distinctErrorsProjection = ProjectionFactoryUtil.distinct(ProjectionFactoryUtil.property("errors"));
+
+		testrayCaseResultDynamicQuery.setProjection(distinctErrorsProjection);
+
+		return testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+	}
+
+	public static TestrayCaseResult getTestrayCaseResult(HttpServletRequest request) throws Exception {
+		long testrayCaseResultId = ParamUtil.getLong(request, "id", -1);
+
+		if (testrayCaseResultId >= 0) {
+			TestrayCaseResult testrayCaseResult = TestrayCaseResultLocalServiceUtil.fetchTestrayCaseResult(testrayCaseResultId);
+
+			if (testrayCaseResult == null) {
+				throw new AlloyException("the-case-result-with-id-x-does-not-exist", new Object[] {testrayCaseResultId}, false);
+			}
+
+			return testrayCaseResult;
+		}
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		TestrayCase testrayCase = TestrayCaseUtil.getTestrayCase(request);
+		TestrayRun testrayRun = TestrayRunUtil.getTestrayRun(request);
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayCaseId", testrayCase.getTestrayCaseId(), "testrayRunId", testrayRun.getTestrayRunId()});
+
+		if (testrayCaseResults.isEmpty()) {
+			throw new AlloyException("no-case-result-exists-for-case-x-and-run-x", new Object[] {testrayCase.getName(), testrayRun.getTestrayRunId()}, false);
+		}
+
+		return testrayCaseResults.get(0);
+	}
+
+	public static List<Long> getTestrayComponentIds(TestrayRun testrayRun, long testrayTeamId) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		DynamicQuery testrayCaseResultDynamicQuery = testrayCaseResultAlloyServiceInvoker.buildDynamicQuery(new Object[] {"testrayRunId", testrayRun.getTestrayRunId()});
+
+		if (testrayTeamId > 0) {
+			Property testrayComponentIdProperty = PropertyFactoryUtil.forName("testrayComponentId");
+
+			List<Long> testrayTeamTestrayComponentIds = TestrayComponentUtil.getTestrayComponentIds(testrayTeamId);
+
+			if (testrayTeamTestrayComponentIds.isEmpty()) {
+				testrayCaseResultDynamicQuery.add(testrayComponentIdProperty.eq(0L));
+			}
+			else {
+				testrayCaseResultDynamicQuery.add(testrayComponentIdProperty.in(testrayTeamTestrayComponentIds));
+			}
+		}
+
+		Projection testrayComponentIdProjection = ProjectionFactoryUtil.property("testrayComponentId");
+
+		testrayCaseResultDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(testrayComponentIdProjection));
+
+		return testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(testrayCaseResultDynamicQuery);
+	}
+
+	public static JSONObject putAttachment(AlloyController alloyController, TestrayCaseResult testrayCaseResult, String key, String value) throws Exception {
+		JSONObject attachmentsJSONObject = JSONFactoryUtil.createJSONObject(testrayCaseResult.getAttachments());
+
+		attachmentsJSONObject.put(key, value);
+
+		testrayCaseResult.setAttachments(attachmentsJSONObject.toString());
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+
+		return attachmentsJSONObject;
+	}
+
+	public static void removeAttachment(AlloyController alloyController, TestrayCaseResult testrayCaseResult, String key) throws Exception {
+		JSONObject attachmentsJSONObject = JSONFactoryUtil.createJSONObject(testrayCaseResult.getAttachments());
+
+		attachmentsJSONObject.remove(key);
+
+		testrayCaseResult.setAttachments(attachmentsJSONObject.toString());
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+	}
+
+	public static void removeAttachments(AlloyController alloyController, TestrayCaseResult testrayCaseResult) throws Exception {
+		testrayCaseResult.setAttachments(JSONFactoryUtil.getNullJSON());
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+	}
+
+	protected static void setAttachments(AlloyController alloyController, TestrayCaseResult testrayCaseResult, Map<String, String> attachments) throws Exception {
+		JSONObject attachmentsJSONObject = JSONFactoryUtil.createJSONObject();
+
+		for (Map.Entry<String, String> attachment : attachments.entrySet()) {
+			attachmentsJSONObject.put(attachment.getKey(), attachment.getValue());
+		}
+
+		testrayCaseResult.setAttachments(attachmentsJSONObject.toString());
+
+		alloyController.updateModelIgnoreRequest(testrayCaseResult);
+	}
+
+	public static void updateTestrayCaseResultsTestrayIssues(AlloyController alloyController, String[] testrayIssueNames, long testrayCaseResultId, User user) throws Exception {
+		List<TestrayIssue> oldTestrayIssues = TestrayIssueLocalServiceUtil.getTestrayCaseResultTestrayIssues(testrayCaseResultId);
+
+		List<TestrayIssue> newTestrayIssues = TestrayIssueUtil.fetchOrAddTestrayIssues(alloyController, testrayIssueNames);
+
+		TestrayUtil.updateTestrayIssuesRelationships(TestrayCaseResult.class.getName(), testrayCaseResultId, newTestrayIssues);
+
+		TestrayIssueEngineUtil.updateIssues(SetUtil.symmetricDifference(oldTestrayIssues, newTestrayIssues), user);
+	}
+
+	public static void updateTestrayCaseTestrayCaseResults(long testrayCaseId, Object... setAttributes) throws Exception {
+		if (testrayCaseId <= 0) {
+			return;
+		}
+
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayCaseId", testrayCaseId});
+
+		updateTestrayCaseResults(testrayCaseResults, setAttributes);
+	}
+
+	protected static void addTestrayCaseResultWarnings(AlloyController alloyController, long testrayCaseResultId, List<String> testrayCaseResultWarnings) throws Exception {
+		if (testrayCaseResultWarnings == null) {
+			return;
+		}
+
+		for (String testrayCaseResultWarningContent : testrayCaseResultWarnings) {
+			TestrayCaseResultWarning testrayCaseResultWarning = TestrayCaseResultWarningLocalServiceUtil.createTestrayCaseResultWarning(0);
+
+			testrayCaseResultWarning.setContent(testrayCaseResultWarningContent);
+			testrayCaseResultWarning.setTestrayCaseResultId(testrayCaseResultId);
+
+			alloyController.updateModelIgnoreRequest(testrayCaseResultWarning);
+		}
+	}
+
+	protected static Map<String, String> getTestrayCaseAttachments(String attachments) throws Exception {
+		if (Validator.isNull(attachments)) {
+			return Collections.emptyMap();
+		}
+
+		return getTestrayCaseAttachments(JSONFactoryUtil.createJSONObject(attachments));
+	}
+
+	protected static Map<String, String> getTestrayCaseAttachments(JSONObject attachmentsJSONObject) {
+		if ((attachmentsJSONObject == null) || (attachmentsJSONObject.length() == 0)) {
+			return Collections.emptyMap();
+		}
+
+		Map<String, String> testrayCaseAttachments = new HashMap<String, String>();
+
+		JSONArray namesJSONArray = attachmentsJSONObject.names();
+
+		for (int i = 0; i < namesJSONArray.length(); i++) {
+			String name = namesJSONArray.getString(i);
+
+			testrayCaseAttachments.put(name, attachmentsJSONObject.getString(name));
+		}
+
+		return testrayCaseAttachments;
+	}
+
+	protected static void putTestrayAttachments(AlloyController alloyController, TestrayCaseResult testrayCaseResult, Map<String, String> testrayCaseAttachments) throws Exception {
+		for (Map.Entry<String, String> testrayCaseAttachment : testrayCaseAttachments.entrySet()) {
+			putAttachment(alloyController, testrayCaseResult, testrayCaseAttachment.getKey(), testrayCaseAttachment.getValue());
+		}
+	}
+
+	protected static void reindexTestrayCaseResults(AlloyController alloyController, Object... properties) throws Exception {
+		AlloyServiceInvoker testrayCaseResultAlloyServiceInvoker = new AlloyServiceInvoker(TestrayCaseResult.class.getName());
+
+		List<TestrayCaseResult> testrayCaseResults = testrayCaseResultAlloyServiceInvoker.executeDynamicQuery(properties);
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			alloyController.indexModel(testrayCaseResult);
+		}
+	}
+
+	protected static void updateTestrayCaseResults(List<TestrayCaseResult> testrayCaseResults, Object... setAttributes) throws Exception {
+		if (testrayCaseResults.size() <= 0) {
+			return;
+		}
+
+		if ((setAttributes.length == 0) || ((setAttributes.length % 2) != 0)) {
+			throw new Exception("Columns length is not an even number");
+		}
+
+		for (TestrayCaseResult testrayCaseResult : testrayCaseResults) {
+			for (int i = 0; i < setAttributes.length; i += 2) {
+				String attributeName = String.valueOf(setAttributes[i]);
+				Object attributeValue = setAttributes[i + 1];
+
+				BeanPropertiesUtil.setProperty(testrayCaseResult, attributeName, attributeValue);
+			}
+
+			TestrayCaseResultLocalServiceUtil.updateTestrayCaseResult(testrayCaseResult);
+		}
+	}
+
+	protected static String validateSave(long testrayRunId, long testrayCaseId) throws Exception {
+		long testrayRunTestrayProjectId = TestrayProjectUtil.getTestrayProjectId(TestrayRun.class.getName(), testrayRunId);
+		long testrayCaseTestrayProjectId = TestrayProjectUtil.getTestrayProjectId(TestrayCase.class.getName(), testrayCaseId);
+
+		if (testrayRunTestrayProjectId != testrayCaseTestrayProjectId) {
+			return "the-run-and-case-must-come-from-the-same-project";
+		}
+
+		return StringPool.BLANK;
+	}
+
+	private static String[] _getIssues(String issuesString) {
+		try {
+			JSONArray issuesJSONArray = JSONFactoryUtil.createJSONArray(issuesString);
+
+			String[] issues = new String[issuesJSONArray.length()];
+
+			for (int i = 0; i < issuesJSONArray.length(); i++) {
+				issues[i] = issuesJSONArray.getString(i);
+			}
+
+			return issues;
+		}
+		catch (JSONException jsone) {
+			_log.debug(jsone, jsone);
+
+			return StringUtil.split(issuesString);
+		}
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog("jsp.testray.util.TestrayCaseResultUtil");
+
+}
+%>

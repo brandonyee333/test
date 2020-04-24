@@ -1,0 +1,370 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<%!
+public static class TestrayFactorUtil {
+
+	public static void addTestrayFactor(AlloyController alloyController, String className, long classPK, long testrayFactorCategoryId, String testrayFactorCategoryName, long testrayFactorOptionId, String testrayFactorOptionName) throws Exception {
+		TestrayFactor testrayFactor = createTestrayFactor(className, classPK, testrayFactorCategoryId, testrayFactorCategoryName, testrayFactorOptionId, testrayFactorOptionName);
+
+		alloyController.updateModelIgnoreRequest(testrayFactor, "classNameId", PortalUtil.getClassNameId(className), "classPK", classPK);
+
+		_testrayFactorsDisplayNamesMap.remove(getKey(className, classPK));
+	}
+
+	public static void addTestrayFactors(AlloyController alloyController, String className, long classPK, String testrayFactors) throws Exception {
+		ThemeDisplay themeDisplay = alloyController.getThemeDisplay();
+
+		JSONArray testrayFactorsJSONArray = JSONFactoryUtil.createJSONArray(testrayFactors);
+
+		for (int i = 0; i < testrayFactorsJSONArray.length(); i++) {
+			JSONObject testrayFactorJSONObject = testrayFactorsJSONArray.getJSONObject(i);
+
+			TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryUtil.fetchTestrayFactorCategory(themeDisplay.getCompanyId(), testrayFactorJSONObject);
+
+			TestrayFactorOption testrayFactorOption = getTestrayFactorOption(alloyController.getRequest(), testrayFactorJSONObject);
+
+			addTestrayFactor(alloyController, className, classPK, testrayFactorCategory.getTestrayFactorCategoryId(), testrayFactorCategory.getName(), testrayFactorOption.getTestrayFactorOptionId(), testrayFactorOption.getName());
+		}
+	}
+
+	public static TestrayFactor createTestrayFactor(String className, long classPK, long testrayFactorCategoryId, String testrayFactorCategoryName, long testrayFactorOptionId, String testrayFactorOptionName) throws Exception {
+		TestrayFactor testrayFactor = TestrayFactorLocalServiceUtil.createTestrayFactor(0);
+
+		testrayFactor.setClassName(className);
+		testrayFactor.setClassPK(classPK);
+		testrayFactor.setTestrayFactorCategoryId(testrayFactorCategoryId);
+
+		if (Validator.isNull(testrayFactorCategoryName)) {
+			TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryLocalServiceUtil.getTestrayFactorCategory(testrayFactorCategoryId);
+
+			testrayFactorCategoryName = testrayFactorCategory.getName();
+		}
+
+		testrayFactor.setTestrayFactorCategoryName(testrayFactorCategoryName);
+
+		testrayFactor.setTestrayFactorOptionId(testrayFactorOptionId);
+
+		if (Validator.isNull(testrayFactorOptionName)) {
+			TestrayFactorOption testrayFactorOption = TestrayFactorOptionLocalServiceUtil.getTestrayFactorOption(testrayFactorOptionId);
+
+			testrayFactorOptionName = testrayFactorOption.getName();
+		}
+
+		testrayFactor.setTestrayFactorOptionName(testrayFactorOptionName);
+
+		return testrayFactor;
+	}
+
+	public static void deleteTestrayFactors(long testrayProjectId) throws Exception {
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		DynamicQuery testrayFactorDynamicQuery = testrayFactorAlloyServiceInvoker.buildDynamicQuery();
+
+		Property classPKProperty = PropertyFactoryUtil.forName("classPK");
+
+		List<Long> classPKs = new ArrayList<Long>();
+
+		List<Long> testrayBuildIds = TestrayBuildUtil.getTestrayBuildIds(testrayProjectId);
+
+		classPKs.addAll(testrayBuildIds);
+
+		List<Long> testrayRoutineIds = TestrayRoutineUtil.getTestrayRoutineIds(testrayProjectId);
+
+		classPKs.addAll(testrayRoutineIds);
+
+		List<Long> testrayRunIds = TestrayRunUtil.getTestrayRunIds(testrayProjectId);
+
+		classPKs.addAll(testrayRunIds);
+
+		testrayFactorDynamicQuery.add(classPKProperty.in(classPKs));
+
+		List<TestrayFactor> testrayFactors = testrayFactorAlloyServiceInvoker.executeDynamicQuery(testrayFactorDynamicQuery);
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			TestrayFactorLocalServiceUtil.deleteTestrayFactor(testrayFactor);
+		}
+
+		for (long testrayBuildId : testrayBuildIds) {
+			_testrayFactorsDisplayNamesMap.remove(getKey(TestrayBuild.class.getName(), testrayBuildId));
+		}
+
+		for (long testrayRoutineId : testrayRoutineIds) {
+			_testrayFactorsDisplayNamesMap.remove(getKey(TestrayRoutine.class.getName(), testrayRoutineId));
+		}
+
+		for (long testrayRunId : testrayRunIds) {
+			_testrayFactorsDisplayNamesMap.remove(getKey(TestrayRun.class.getName(), testrayRunId));
+		}
+	}
+
+	public static void deleteTestrayFactors(String className, long classPK) throws Exception {
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		List<TestrayFactor> testrayFactors = testrayFactorAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(className), "classPK", classPK});
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			TestrayFactorLocalServiceUtil.deleteTestrayFactor(testrayFactor);
+		}
+
+		_testrayFactorsDisplayNamesMap.remove(getKey(className, classPK));
+	}
+
+	public static Map<Long, String> getDefaultTestrayFactorCategoriesMap(long testrayRoutineId) throws Exception {
+		Map<Long, String> defaultTestrayFactorCategoriesMap = new HashMap<>();
+
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		List<TestrayFactor> defaultTestrayFactors = testrayFactorAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(TestrayRoutine.class.getName()), "classPK", testrayRoutineId});
+
+		for (TestrayFactor defaultTestrayFactor : defaultTestrayFactors) {
+			defaultTestrayFactorCategoriesMap.put(defaultTestrayFactor.getTestrayFactorCategoryId(), defaultTestrayFactor.getTestrayFactorCategoryName());
+		}
+
+		return defaultTestrayFactorCategoriesMap;
+	}
+
+	public static List<List<TestrayFactor>> getTestrayFactorCombinations(AlloyController alloyController) throws Exception {
+		long testrayRoutineId = ParamUtil.getLong(alloyController.getRequest(), "testrayRoutineId");
+
+		Map<Long, Long> defaultTestrayFactorOptionsMap = getDefaultTestrayFactorOptionsMap(testrayRoutineId);
+
+		Map<Long, Long> selectedTestrayFactorOptionsMap = new HashMap<Long, Long>();
+
+		int testrayFactorCategoriesCount = ParamUtil.getInteger(alloyController.getRequest(), "testrayFactorCategoriesCount");
+
+		for (int i = 0; i <= testrayFactorCategoriesCount; i++) {
+			long testrayFactorCategoryId = ParamUtil.getLong(alloyController.getRequest(), "testrayFactorCategoryId" + i);
+
+			long[] testrayFactorOptionIds = ParamUtil.getLongValues(alloyController.getRequest(), "testrayFactorOptionId" + i);
+
+			for (long testrayFactorOptionId : testrayFactorOptionIds) {
+				if (testrayFactorOptionId == 0) {
+					continue;
+				}
+
+				selectedTestrayFactorOptionsMap.put(testrayFactorOptionId, testrayFactorCategoryId);
+			}
+		}
+
+		List<List<TestrayFactor>> testrayFactorCombinations = new ArrayList<List<TestrayFactor>>();
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayFactorModelImpl.TABLE_NAME, "testrayFactorCategoryName", true);
+
+		for (Map.Entry<Long, Long> selectedTestrayFactorOptionEntry : selectedTestrayFactorOptionsMap.entrySet()) {
+			if (defaultTestrayFactorOptionsMap.containsKey(selectedTestrayFactorOptionEntry.getKey())) {
+				continue;
+			}
+
+			List<TestrayFactor> testrayFactors = new ArrayList<TestrayFactor>();
+
+			testrayFactors.add(createTestrayFactor(TestrayRun.class.getName(), 0, selectedTestrayFactorOptionEntry.getValue(), null, selectedTestrayFactorOptionEntry.getKey(), null));
+
+			testrayFactors.addAll(getDefaultTestrayFactors(defaultTestrayFactorOptionsMap, selectedTestrayFactorOptionEntry.getValue()));
+
+			ListUtil.sort(testrayFactors, obc);
+
+			testrayFactorCombinations.add(testrayFactors);
+		}
+
+		List<TestrayFactor> defaultTestrayFactors = getDefaultTestrayFactors(defaultTestrayFactorOptionsMap, 0);
+
+		ListUtil.sort(defaultTestrayFactors, obc);
+
+		testrayFactorCombinations.add(defaultTestrayFactors);
+
+		return testrayFactorCombinations;
+	}
+
+	public static TestrayFactorOption getTestrayFactorOption(HttpServletRequest request, JSONObject testrayFactorJSONObject) throws Exception {
+		long testrayFactorOptionId = testrayFactorJSONObject.getLong("testrayFactorOptionId", 0);
+
+		if (testrayFactorOptionId > 0) {
+			return TestrayFactorOptionLocalServiceUtil.getTestrayFactorOption(testrayFactorOptionId);
+		}
+
+		String testrayFactorOptionName = testrayFactorJSONObject.getString("testrayFactorOptionName", StringPool.BLANK);
+
+		if (testrayFactorOptionName.isEmpty()) {
+			throw new AlloyException(TestrayValidator.translate(request, "an-option-id-or-name-is-required"), false);
+		}
+
+		AlloyServiceInvoker testrayFactorOptionAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactorOption.class.getName());
+
+		long companyId = PortalUtil.getCompanyId(request);
+
+		TestrayFactorCategory testrayFactorCategory = TestrayFactorCategoryUtil.fetchTestrayFactorCategory(companyId, testrayFactorJSONObject);
+
+		if (testrayFactorCategory != null) {
+			List<TestrayFactorOption> testrayFactorOptions = testrayFactorOptionAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayFactorCategoryId", testrayFactorCategory.getTestrayFactorCategoryId(), "name", testrayFactorOptionName});
+
+			if (!testrayFactorOptions.isEmpty()) {
+				return testrayFactorOptions.get(0);
+			}
+		}
+
+		throw new AlloyException(TestrayValidator.translate(request, "the-option-with-name-x-does-not-exist", testrayFactorOptionName), false);
+	}
+
+	public static List<Long> getTestrayFactorOptionIds(String className, long classPK) throws Exception {
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		DynamicQuery testrayFactoryDynamicQuery = testrayFactorAlloyServiceInvoker.buildDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(className), "classPK", classPK});
+
+		Projection testrayFactorOptionIdProjection = ProjectionFactoryUtil.property("testrayFactorOptionId");
+
+		testrayFactoryDynamicQuery.setProjection(ProjectionFactoryUtil.distinct(testrayFactorOptionIdProjection));
+
+		return testrayFactorAlloyServiceInvoker.executeDynamicQuery(testrayFactoryDynamicQuery);
+	}
+
+	public static String getTestrayFactorOptionNamesString(String className, long classPK) throws Exception {
+		String key = getKey(className, classPK);
+
+		if (_testrayFactorsDisplayNamesMap.containsKey(key)) {
+			return _testrayFactorsDisplayNamesMap.get(key);
+		}
+
+		List<TestrayFactor> testrayFactors = getTestrayFactors(className, classPK);
+
+		if (testrayFactors.isEmpty()) {
+			return StringPool.BLANK;
+		}
+
+		StringBundler sb = new StringBundler(testrayFactors.size() * 4);
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			sb.append(testrayFactor.getTestrayFactorOptionName());
+			sb.append(StringPool.SPACE);
+			sb.append(StringPool.PLUS);
+			sb.append(StringPool.SPACE);
+		}
+
+		sb.setIndex(sb.index() - 3);
+
+		String testrayFactorsDisplayName = sb.toString();
+
+		_testrayFactorsDisplayNamesMap.put(key, testrayFactorsDisplayName);
+
+		return testrayFactorsDisplayName;
+	}
+
+	public static List<TestrayFactor> getTestrayFactors(String className, long classPK) throws Exception {
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayFactorModelImpl.TABLE_NAME, "testrayFactorCategoryName", true);
+
+		return testrayFactorAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(className), "classPK", classPK}, QueryUtil.ALL_POS, QueryUtil.ALL_POS, obc);
+	}
+
+	public static List<TestrayFactor> getTestrayFactors(String className, long classPK, long testrayBuildId) throws Exception {
+		List<TestrayFactor> testrayFactors = ListUtil.copy(getTestrayFactors(className, classPK));
+
+		Set<Long> testrayFactorCategoryIds = new HashSet<Long>();
+
+		for (TestrayFactor testrayFactor : testrayFactors) {
+			testrayFactorCategoryIds.add(testrayFactor.getTestrayFactorCategoryId());
+		}
+
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		List<TestrayRun> testrayRuns = testrayRunAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuildId});
+
+		for (TestrayRun testrayRun : testrayRuns) {
+			List<TestrayFactor> testrayRunTestrayFactors = getTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+
+			for (TestrayFactor testrayRunTestrayFactor : testrayRunTestrayFactors) {
+				if (testrayFactorCategoryIds.contains(testrayRunTestrayFactor.getTestrayFactorCategoryId())) {
+					continue;
+				}
+
+				TestrayFactor testrayFactor = TestrayFactorLocalServiceUtil.createTestrayFactor(0);
+
+				testrayFactor.setTestrayFactorCategoryId(testrayRunTestrayFactor.getTestrayFactorCategoryId());
+				testrayFactor.setTestrayFactorCategoryName(testrayRunTestrayFactor.getTestrayFactorCategoryName());
+				testrayFactor.setTestrayFactorOptionName(StringPool.BLANK);
+
+				testrayFactors.add(testrayFactor);
+
+				testrayFactorCategoryIds.add(testrayRunTestrayFactor.getTestrayFactorCategoryId());
+			}
+		}
+
+		OrderByComparator obc = OrderByComparatorFactoryUtil.create(TestrayFactorModelImpl.TABLE_NAME, "testrayFactorCategoryName", true);
+
+		return ListUtil.sort(testrayFactors, obc);
+	}
+
+	protected static Map<Long, Long> getDefaultTestrayFactorOptionsMap(long testrayRoutineId) throws Exception {
+		Map<Long, Long> defaultTestrayFactorOptionsMap = new HashMap<Long, Long>();
+
+		AlloyServiceInvoker testrayFactorAlloyServiceInvoker = new AlloyServiceInvoker(TestrayFactor.class.getName());
+
+		List<TestrayFactor> defaultTestrayFactors = testrayFactorAlloyServiceInvoker.executeDynamicQuery(new Object[] {"classNameId", PortalUtil.getClassNameId(TestrayRoutine.class.getName()), "classPK", testrayRoutineId});
+
+		for (TestrayFactor defaultTestrayFactor : defaultTestrayFactors) {
+			defaultTestrayFactorOptionsMap.put(defaultTestrayFactor.getTestrayFactorOptionId(), defaultTestrayFactor.getTestrayFactorCategoryId());
+		}
+
+		return defaultTestrayFactorOptionsMap;
+	}
+
+	protected static List<TestrayFactor> getDefaultTestrayFactors(Map<Long, Long> defaultTestrayFactorOptionsMap, long selectedTestrayFactorCategoryId) throws Exception {
+		List<TestrayFactor> testrayFactors = new ArrayList<TestrayFactor>();
+
+		for (Map.Entry<Long, Long> defaultTestrayFactorOptionEntry : defaultTestrayFactorOptionsMap.entrySet()) {
+			long testrayFactorCategoryId = defaultTestrayFactorOptionEntry.getValue();
+
+			if (testrayFactorCategoryId == selectedTestrayFactorCategoryId) {
+				continue;
+			}
+
+			testrayFactors.add(createTestrayFactor(TestrayRun.class.getName(), 0, testrayFactorCategoryId, null, defaultTestrayFactorOptionEntry.getKey(), null));
+		}
+
+		return testrayFactors;
+	}
+
+	protected static Set<Set<Long>> getExistingTestrayFactorOptionIdSets(long testrayBuildId) throws Exception {
+		Set<Set<Long>> testrayFactorOptionIdSets = new HashSet<Set<Long>>();
+
+		AlloyServiceInvoker testrayRunAlloyServiceInvoker = new AlloyServiceInvoker(TestrayRun.class.getName());
+
+		List<TestrayRun> testrayRuns = testrayRunAlloyServiceInvoker.executeDynamicQuery(new Object[] {"testrayBuildId", testrayBuildId});
+
+		for (TestrayRun testrayRun : testrayRuns) {
+			Set<Long> testrayFactorOptionIds = new HashSet<Long>();
+
+			List<TestrayFactor> testrayFactors = getTestrayFactors(TestrayRun.class.getName(), testrayRun.getTestrayRunId());
+
+			for (TestrayFactor testrayFactor : testrayFactors) {
+				testrayFactorOptionIds.add(testrayFactor.getTestrayFactorOptionId());
+			}
+
+			testrayFactorOptionIdSets.add(testrayFactorOptionIds);
+		}
+
+		return testrayFactorOptionIdSets;
+	}
+
+	protected static String getKey(String className, long classPK) {
+		return className + StringPool.POUND + classPK;
+	}
+
+	private static final Map<String, String> _testrayFactorsDisplayNamesMap = Collections.synchronizedMap(new HashMap<String, String>());
+
+}
+%>

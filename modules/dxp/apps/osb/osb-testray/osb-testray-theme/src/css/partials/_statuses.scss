@@ -1,0 +1,319 @@
+/* ---------- Metrics bar legend ---------- */
+
+.legend-color-block {
+	height: $metrics-legend-block-size;
+	width: $metrics-legend-block-size;
+
+	&.blocked {
+		background: $blocked-color;
+	}
+
+	&.failed {
+		background: $failed-color;
+	}
+
+	&.incomplete {
+		background: $incomplete-color;
+	}
+
+	&.others-completed {
+		background: $others-completed-color;
+	}
+
+	&.passed {
+		background: $passed-color;
+	}
+
+	&.self-completed {
+		background: $self-completed-color;
+	}
+
+	&.test-fix {
+		background: $test-fix-color;
+	}
+}
+
+.legend-container, .legend-total-container {
+	margin: 0;
+	vertical-align: top;
+}
+
+.legend-container {
+	display: block;
+	padding: 0;
+}
+
+.legend-total-container {
+	display: inline-block;
+}
+
+.legend-total-container + .legend-container {
+	display: inline-block;
+	vertical-align: bottom;
+}
+
+.legend-item {
+	margin-right: 2em;
+
+	&:last-child {
+		margin-right: 0;
+	}
+
+	.legend-item-key {
+		padding-right: 10px;
+	}
+
+	.legend-item-label {
+		@include label-text();
+
+		line-height: 1em;
+		padding-top: 5px;
+	}
+
+	.legend-item-numbers {
+		.total {
+			font-size: 1.8em;
+			line-height: 1;
+
+			&.sub {
+				font-size: 1.3em;
+			}
+		}
+
+		.primary {
+			font-size: 1.3em;
+		}
+
+		.secondary {
+			font-size: 1em;
+			padding-left: 5px;
+		}
+	}
+
+	.legend-item-value {
+		line-height: $metrics-legend-block-size;
+	}
+}
+
+.metrics-legend {
+	&.small {
+		.legend-container {
+			margin-top: 5px;
+		}
+
+		.legend-color-block {
+			height: 10px;
+			width: 10px;
+		}
+
+		.legend-item {
+			.legend-item-value {
+				font-size: 0.9em;
+				line-height: 10px;
+			}
+		}
+	}
+}
+
+/* ---------- Metrics bars ---------- */
+
+.metrics {
+	height: 100%;
+	padding-bottom: 0;
+	padding-top: 0;
+	white-space: normal;
+	width: 25%;
+
+	&.metrics-compact {
+		width: 20%;
+	}
+}
+
+.metrics-bar, .testray-progress-bar {
+	@include display(flex);
+
+	height: $metrics-bar-height;
+	margin: 10px 0;
+	white-space: nowrap;
+
+	&.small {
+		height: 12px;
+
+		.metrics-bar-item {
+			box-shadow: none;
+		}
+	}
+
+	&.testray-progress-bar-full {
+		width: 100%;
+	}
+
+	.blocked {
+		background: $blocked-color;
+	}
+
+	.failed {
+		background: $failed-color;
+	}
+
+	.incomplete {
+		background: $incomplete-color;
+		box-shadow: none;
+	}
+
+	.others-completed {
+		background: $others-completed-color;
+	}
+
+	.passed {
+		background: $passed-color;
+	}
+
+	.self-completed {
+		background: $self-completed-color;
+	}
+
+	.test-fix {
+		background: $test-fix-color;
+	}
+}
+
+.metrics-bar-item, .progress-bar-item {
+	box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.13), 0 2px 15px 0 rgba(0, 0, 0, 0.04);
+
+	color: $color-white;
+	height: 100%;
+	position: relative;
+
+	span {
+		position: relative;
+		top: 15px;
+	}
+}
+
+/* ---------- Panel metrics ---------- */
+
+.metrics-panel {
+	.panel-group .panel-heading.toggler-header .panel-toggle:before {
+		@include order(9);
+	}
+
+	.panel-inner {
+		.lfr-search-container, .table {
+			margin: 0;
+		}
+	}
+
+	.panel-toggle {
+		@include align-items(center);
+		@include display(flex);
+		@include justify-content(space-between);
+
+		.metrics-bar, .metrics-legend {
+			margin: 0 20px;
+		}
+
+		.metrics-bar {
+			@include flex-grow(1);
+		}
+
+		.metrics-legend {
+			.legend-container {
+				height: $metrics-legend-block-size;
+				margin: 0;
+
+				.legend-item-numbers {
+					font-size: 0.8em;
+				}
+			}
+		}
+
+		.title-text {
+			margin-right: 20px;
+		}
+	}
+}
+
+/* ---------- Status labels ---------- */
+
+a.status {
+	&:hover {
+		opacity: 0.8;
+		text-decoration: none;
+	}
+}
+
+.status, .table .status {
+	border-radius: $border-radius;
+	color: $color-white;
+	font-size: 0.85em;
+	font-weight: $font-header-weight;
+	padding: 4px 8px;
+	text-transform: uppercase;
+	white-space: nowrap;
+
+	&.abandoned {
+		background-color: $abandoned-color;
+	}
+
+	&.blocked {
+		background-color: $blocked-color;
+		color: $color-black;
+	}
+
+	&.complete {
+		background-color: $completed-color;
+	}
+
+	&.dnr {
+		background-color: $dnr-color;
+	}
+
+	&.failed {
+		background-color: $failed-color;
+	}
+
+	&.in-analysis {
+		background-color: $in-analysis-color;
+	}
+
+	&.in-progress, &.open, &.retest, &.untested {
+		background-color: $incomplete-color;
+		color: $color-black;
+	}
+
+	&.passed {
+		background-color: $passed-color;
+	}
+
+	&.test-fix {
+		background-color: $test-fix-color;
+	}
+
+	i {
+		padding-right: 5px;
+	}
+}
+
+.status-icon {
+	&.abandoned {
+		color: $abandoned-color;
+	}
+
+	&.complete {
+		color: $completed-color;
+	}
+
+	&.in-analysis {
+		color: $in-analysis-color;
+	}
+
+	&.promoted {
+		color: $color-primary;
+		font-size: 1.1em;
+	}
+
+	&:hover {
+		text-decoration: none;
+	}
+}
