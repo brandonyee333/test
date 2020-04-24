@@ -69,6 +69,11 @@ public interface AccountEntryService extends BaseService {
 
 	@JSONWebService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public AccountEntry fetchKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws PortalException;
+
+	@JSONWebService
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<AccountEntry> getAccountEntries(
 			String userUuid, long[] productEntryIds)
 		throws PortalException;
@@ -96,6 +101,16 @@ public interface AccountEntryService extends BaseService {
 
 	public AccountEntry updateInstructions(
 			long accountEntryId, String instructions)
+		throws PortalException;
+
+	@JSONWebService
+	public AccountEntry updateInstructions(
+			String koroneikiAccountKey, String instructions)
+		throws PortalException;
+
+	@JSONWebService
+	public AccountEntry updateLanguageId(
+			String koroneikiAccountKey, String languageId)
 		throws PortalException;
 
 }

@@ -48,6 +48,15 @@ public class AccountEntryServiceWrapper
 	}
 
 	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry
+			fetchKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryService.fetchKoroneikiAccountEntry(
+			koroneikiAccountKey);
+	}
+
+	@Override
 	public java.util.List<com.liferay.osb.customer.admin.model.AccountEntry>
 			getAccountEntries(String userUuid, long[] productEntryIds)
 		throws com.liferay.portal.kernel.exception.PortalException {
@@ -97,6 +106,24 @@ public class AccountEntryServiceWrapper
 
 		return _accountEntryService.updateInstructions(
 			accountEntryId, instructions);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry updateInstructions(
+			String koroneikiAccountKey, String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryService.updateInstructions(
+			koroneikiAccountKey, instructions);
+	}
+
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry updateLanguageId(
+			String koroneikiAccountKey, String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _accountEntryService.updateLanguageId(
+			koroneikiAccountKey, languageId);
 	}
 
 	@Override

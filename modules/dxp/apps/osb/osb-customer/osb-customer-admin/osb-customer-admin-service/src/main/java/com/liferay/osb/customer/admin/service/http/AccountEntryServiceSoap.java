@@ -98,6 +98,25 @@ public class AccountEntryServiceSoap {
 		}
 	}
 
+	public static com.liferay.osb.customer.admin.model.AccountEntrySoap
+			fetchKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws RemoteException {
+
+		try {
+			com.liferay.osb.customer.admin.model.AccountEntry returnValue =
+				AccountEntryServiceUtil.fetchKoroneikiAccountEntry(
+					koroneikiAccountKey);
+
+			return com.liferay.osb.customer.admin.model.AccountEntrySoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.customer.admin.model.AccountEntrySoap[]
 			getAccountEntries(String userUuid, long[] productEntryIds)
 		throws RemoteException {
@@ -180,6 +199,44 @@ public class AccountEntryServiceSoap {
 			com.liferay.osb.customer.admin.model.AccountEntry returnValue =
 				AccountEntryServiceUtil.updateInstructions(
 					accountEntryId, instructions);
+
+			return com.liferay.osb.customer.admin.model.AccountEntrySoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntrySoap
+			updateInstructions(String koroneikiAccountKey, String instructions)
+		throws RemoteException {
+
+		try {
+			com.liferay.osb.customer.admin.model.AccountEntry returnValue =
+				AccountEntryServiceUtil.updateInstructions(
+					koroneikiAccountKey, instructions);
+
+			return com.liferay.osb.customer.admin.model.AccountEntrySoap.
+				toSoapModel(returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntrySoap
+			updateLanguageId(String koroneikiAccountKey, String languageId)
+		throws RemoteException {
+
+		try {
+			com.liferay.osb.customer.admin.model.AccountEntry returnValue =
+				AccountEntryServiceUtil.updateLanguageId(
+					koroneikiAccountKey, languageId);
 
 			return com.liferay.osb.customer.admin.model.AccountEntrySoap.
 				toSoapModel(returnValue);

@@ -106,20 +106,20 @@ public class SupportRegionPersistenceImpl
 		SupportRegion supportRegion = fetchByName(name);
 
 		if (supportRegion == null) {
-			StringBundler msg = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("name=");
-			msg.append(name);
+			sb.append("name=");
+			sb.append(name);
 
-			msg.append("}");
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchSupportRegionException(msg.toString());
+			throw new NoSuchSupportRegionException(sb.toString());
 		}
 
 		return supportRegion;
@@ -169,37 +169,37 @@ public class SupportRegionPersistenceImpl
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_SELECT_SUPPORTREGION_WHERE);
+			sb.append(_SQL_SELECT_SUPPORTREGION_WHERE);
 
 			boolean bindName = false;
 
 			if (name.isEmpty()) {
-				query.append(_FINDER_COLUMN_NAME_NAME_3);
+				sb.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_NAME_NAME_2);
+				sb.append(_FINDER_COLUMN_NAME_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				List<SupportRegion> list = q.list();
+				List<SupportRegion> list = query.list();
 
 				if (list.isEmpty()) {
 					if (useFinderCache) {
@@ -268,37 +268,37 @@ public class SupportRegionPersistenceImpl
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_SUPPORTREGION_WHERE);
+			sb.append(_SQL_COUNT_SUPPORTREGION_WHERE);
 
 			boolean bindName = false;
 
 			if (name.isEmpty()) {
-				query.append(_FINDER_COLUMN_NAME_NAME_3);
+				sb.append(_FINDER_COLUMN_NAME_NAME_3);
 			}
 			else {
 				bindName = true;
 
-				query.append(_FINDER_COLUMN_NAME_NAME_2);
+				sb.append(_FINDER_COLUMN_NAME_NAME_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindName) {
-					qPos.add(name);
+					queryPos.add(name);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
@@ -810,31 +810,33 @@ public class SupportRegionPersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler(
+		StringBundler sb = new StringBundler(
 			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_SUPPORTREGION_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_SUPPORTREGION_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (SupportRegion supportRegion : (List<SupportRegion>)q.list()) {
+			for (SupportRegion supportRegion :
+					(List<SupportRegion>)query.list()) {
+
 				map.put(supportRegion.getPrimaryKeyObj(), supportRegion);
 
 				cacheResult(supportRegion);
@@ -946,19 +948,19 @@ public class SupportRegionPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_SUPPORTREGION);
+				sb.append(_SQL_SELECT_SUPPORTREGION);
 
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_SUPPORTREGION;
@@ -971,10 +973,10 @@ public class SupportRegionPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
 				list = (List<SupportRegion>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1024,9 +1026,9 @@ public class SupportRegionPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_SUPPORTREGION);
+				Query query = session.createQuery(_SQL_COUNT_SUPPORTREGION);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);

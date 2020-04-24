@@ -132,6 +132,47 @@ public class AccountEntryServiceHttp {
 		}
 	}
 
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			fetchKoroneikiAccountEntry(
+				HttpPrincipal httpPrincipal, String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				AccountEntryServiceUtil.class, "fetchKoroneikiAccountEntry",
+				_fetchKoroneikiAccountEntryParameterTypes2);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, koroneikiAccountKey);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.customer.admin.model.AccountEntry)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static java.util.List
 		<com.liferay.osb.customer.admin.model.AccountEntry> getAccountEntries(
 				HttpPrincipal httpPrincipal, String userUuid,
@@ -141,7 +182,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "getAccountEntries",
-				_getAccountEntriesParameterTypes2);
+				_getAccountEntriesParameterTypes3);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, userUuid, productEntryIds);
@@ -182,7 +223,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "getAccountEntry",
-				_getAccountEntryParameterTypes3);
+				_getAccountEntryParameterTypes4);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountEntryId);
@@ -222,7 +263,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "getAccountEntryByCode",
-				_getAccountEntryByCodeParameterTypes4);
+				_getAccountEntryByCodeParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, code);
 
@@ -262,7 +303,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "getCorpProjectAccountEntry",
-				_getCorpProjectAccountEntryParameterTypes5);
+				_getCorpProjectAccountEntryParameterTypes6);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, corpProjectUuid);
@@ -304,10 +345,94 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "updateInstructions",
-				_updateInstructionsParameterTypes6);
+				_updateInstructionsParameterTypes7);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountEntryId, instructions);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.customer.admin.model.AccountEntry)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			updateInstructions(
+				HttpPrincipal httpPrincipal, String koroneikiAccountKey,
+				String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				AccountEntryServiceUtil.class, "updateInstructions",
+				_updateInstructionsParameterTypes8);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, koroneikiAccountKey, instructions);
+
+			Object returnObj = null;
+
+			try {
+				returnObj = TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+
+			return (com.liferay.osb.customer.admin.model.AccountEntry)returnObj;
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			updateLanguageId(
+				HttpPrincipal httpPrincipal, String koroneikiAccountKey,
+				String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				AccountEntryServiceUtil.class, "updateLanguageId",
+				_updateLanguageIdParameterTypes9);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, koroneikiAccountKey, languageId);
 
 			Object returnObj = null;
 
@@ -346,15 +471,21 @@ public class AccountEntryServiceHttp {
 		_fetchCorpProjectAccountEntryParameterTypes1 = new Class[] {
 			String.class
 		};
-	private static final Class<?>[] _getAccountEntriesParameterTypes2 =
+	private static final Class<?>[] _fetchKoroneikiAccountEntryParameterTypes2 =
+		new Class[] {String.class};
+	private static final Class<?>[] _getAccountEntriesParameterTypes3 =
 		new Class[] {String.class, long[].class};
-	private static final Class<?>[] _getAccountEntryParameterTypes3 =
+	private static final Class<?>[] _getAccountEntryParameterTypes4 =
 		new Class[] {long.class};
-	private static final Class<?>[] _getAccountEntryByCodeParameterTypes4 =
+	private static final Class<?>[] _getAccountEntryByCodeParameterTypes5 =
 		new Class[] {String.class};
-	private static final Class<?>[] _getCorpProjectAccountEntryParameterTypes5 =
+	private static final Class<?>[] _getCorpProjectAccountEntryParameterTypes6 =
 		new Class[] {String.class};
-	private static final Class<?>[] _updateInstructionsParameterTypes6 =
+	private static final Class<?>[] _updateInstructionsParameterTypes7 =
 		new Class[] {long.class, String.class};
+	private static final Class<?>[] _updateInstructionsParameterTypes8 =
+		new Class[] {String.class, String.class};
+	private static final Class<?>[] _updateLanguageIdParameterTypes9 =
+		new Class[] {String.class, String.class};
 
 }

@@ -58,6 +58,9 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 		};
 
+	@com.liferay.portal.kernel.json.JSON
+	public java.util.List<AccountAttachment> getAccountAttachments();
+
 	public java.util.List<AccountAttachment> getAccountAttachments(
 		long accountProjectId);
 
@@ -65,6 +68,7 @@ public interface AccountEntry extends AccountEntryModel, PersistedModel {
 
 	public String getDescription() throws Exception;
 
+	@com.liferay.portal.kernel.json.JSON
 	public String[] getLanguageIds();
 
 	public String getStatusLabel();

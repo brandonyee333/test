@@ -51,6 +51,13 @@ public class AccountEntryServiceUtil {
 		return getService().fetchCorpProjectAccountEntry(corpProjectUuid);
 	}
 
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			fetchKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().fetchKoroneikiAccountEntry(koroneikiAccountKey);
+	}
+
 	public static java.util.List
 		<com.liferay.osb.customer.admin.model.AccountEntry> getAccountEntries(
 				String userUuid, long[] productEntryIds)
@@ -94,6 +101,21 @@ public class AccountEntryServiceUtil {
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return getService().updateInstructions(accountEntryId, instructions);
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			updateInstructions(String koroneikiAccountKey, String instructions)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateInstructions(
+			koroneikiAccountKey, instructions);
+	}
+
+	public static com.liferay.osb.customer.admin.model.AccountEntry
+			updateLanguageId(String koroneikiAccountKey, String languageId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return getService().updateLanguageId(koroneikiAccountKey, languageId);
 	}
 
 	public static AccountEntryService getService() {

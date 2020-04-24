@@ -192,58 +192,58 @@ public class AuditEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					4 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(4);
+				sb = new StringBundler(4);
 			}
 
-			query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+			sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
 			boolean bindCreateDate = false;
 
 			if (createDate == null) {
-				query.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_1);
+				sb.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_1);
 			}
 			else {
 				bindCreateDate = true;
 
-				query.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_2);
+				sb.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_2);
 			}
 
-			query.append(_FINDER_COLUMN_GTCD_C_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_GTCD_C_CLASSNAMEID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
 			else {
-				query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindCreateDate) {
-					qPos.add(new Timestamp(createDate.getTime()));
+					queryPos.add(new Timestamp(createDate.getTime()));
 				}
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
 				list = (List<AuditEntry>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -288,19 +288,19 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("createDate>");
-		msg.append(createDate);
+		sb.append("createDate>");
+		sb.append(createDate);
 
-		msg.append(", classNameId=");
-		msg.append(classNameId);
+		sb.append(", classNameId=");
+		sb.append(classNameId);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -348,19 +348,19 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("createDate>");
-		msg.append(createDate);
+		sb.append("createDate>");
+		sb.append(createDate);
 
-		msg.append(", classNameId=");
-		msg.append(classNameId);
+		sb.append(", classNameId=");
+		sb.append(classNameId);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -442,116 +442,116 @@ public class AuditEntryPersistenceImpl
 		long classNameId, OrderByComparator<AuditEntry> orderByComparator,
 		boolean previous) {
 
-		StringBundler query = null;
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(
+			sb = new StringBundler(
 				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(4);
+			sb = new StringBundler(4);
 		}
 
-		query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+		sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
 		boolean bindCreateDate = false;
 
 		if (createDate == null) {
-			query.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_1);
+			sb.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_1);
 		}
 		else {
 			bindCreateDate = true;
 
-			query.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_2);
+			sb.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_2);
 		}
 
-		query.append(_FINDER_COLUMN_GTCD_C_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_GTCD_C_CLASSNAMEID_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
 				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+			sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
 		if (bindCreateDate) {
-			qPos.add(new Timestamp(createDate.getTime()));
+			queryPos.add(new Timestamp(createDate.getTime()));
 		}
 
-		qPos.add(classNameId);
+		queryPos.add(classNameId);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
 					orderByComparator.getOrderByConditionValues(auditEntry)) {
 
-				qPos.add(orderByConditionValue);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<AuditEntry> list = q.list();
+		List<AuditEntry> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -594,41 +594,41 @@ public class AuditEntryPersistenceImpl
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_AUDITENTRY_WHERE);
+			sb.append(_SQL_COUNT_AUDITENTRY_WHERE);
 
 			boolean bindCreateDate = false;
 
 			if (createDate == null) {
-				query.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_1);
+				sb.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_1);
 			}
 			else {
 				bindCreateDate = true;
 
-				query.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_2);
+				sb.append(_FINDER_COLUMN_GTCD_C_CREATEDATE_2);
 			}
 
-			query.append(_FINDER_COLUMN_GTCD_C_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_GTCD_C_CLASSNAMEID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
 				if (bindCreateDate) {
-					qPos.add(new Timestamp(createDate.getTime()));
+					queryPos.add(new Timestamp(createDate.getTime()));
 				}
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
@@ -783,51 +783,51 @@ public class AuditEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					5 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(5);
+				sb = new StringBundler(5);
 			}
 
-			query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+			sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
-			query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_2);
+			sb.append(_FINDER_COLUMN_C_C_V_VISIBILITY_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
 			else {
-				query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				qPos.add(visibility);
+				queryPos.add(visibility);
 
 				list = (List<AuditEntry>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -873,22 +873,22 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("classNameId=");
-		msg.append(classNameId);
+		sb.append("classNameId=");
+		sb.append(classNameId);
 
-		msg.append(", classPK=");
-		msg.append(classPK);
+		sb.append(", classPK=");
+		sb.append(classPK);
 
-		msg.append(", visibility=");
-		msg.append(visibility);
+		sb.append(", visibility=");
+		sb.append(visibility);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -938,22 +938,22 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("classNameId=");
-		msg.append(classNameId);
+		sb.append("classNameId=");
+		sb.append(classNameId);
 
-		msg.append(", classPK=");
-		msg.append(classPK);
+		sb.append(", classPK=");
+		sb.append(classPK);
 
-		msg.append(", visibility=");
-		msg.append(visibility);
+		sb.append(", visibility=");
+		sb.append(visibility);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -1038,109 +1038,109 @@ public class AuditEntryPersistenceImpl
 		int visibility, OrderByComparator<AuditEntry> orderByComparator,
 		boolean previous) {
 
-		StringBundler query = null;
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(
+			sb = new StringBundler(
 				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(5);
+			sb = new StringBundler(5);
 		}
 
-		query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+		sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-		query.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
 
-		query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
-		query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_2);
+		sb.append(_FINDER_COLUMN_C_C_V_VISIBILITY_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
 				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+			sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(classNameId);
+		queryPos.add(classNameId);
 
-		qPos.add(classPK);
+		queryPos.add(classPK);
 
-		qPos.add(visibility);
+		queryPos.add(visibility);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
 					orderByComparator.getOrderByConditionValues(auditEntry)) {
 
-				qPos.add(orderByConditionValue);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<AuditEntry> list = q.list();
+		List<AuditEntry> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1296,55 +1296,54 @@ public class AuditEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = new StringBundler();
+			StringBundler sb = new StringBundler();
 
-			query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+			sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
 			if (visibilities.length > 0) {
-				query.append("(");
+				sb.append("(");
 
-				query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_7);
+				sb.append(_FINDER_COLUMN_C_C_V_VISIBILITY_7);
 
-				query.append(StringUtil.merge(visibilities));
+				sb.append(StringUtil.merge(visibilities));
 
-				query.append(")");
+				sb.append(")");
 
-				query.append(")");
+				sb.append(")");
 			}
 
-			query.setStringAt(
-				removeConjunction(query.stringAt(query.index() - 1)),
-				query.index() - 1);
+			sb.setStringAt(
+				removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
 			else {
-				query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
 				list = (List<AuditEntry>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1404,34 +1403,34 @@ public class AuditEntryPersistenceImpl
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_COUNT_AUDITENTRY_WHERE);
+			sb.append(_SQL_COUNT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
-			query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_2);
+			sb.append(_FINDER_COLUMN_C_C_V_VISIBILITY_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				qPos.add(visibility);
+				queryPos.add(visibility);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
@@ -1477,46 +1476,45 @@ public class AuditEntryPersistenceImpl
 			_finderPathWithPaginationCountByC_C_V, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler();
+			StringBundler sb = new StringBundler();
 
-			query.append(_SQL_COUNT_AUDITENTRY_WHERE);
+			sb.append(_SQL_COUNT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_C_C_V_CLASSPK_2);
 
 			if (visibilities.length > 0) {
-				query.append("(");
+				sb.append("(");
 
-				query.append(_FINDER_COLUMN_C_C_V_VISIBILITY_7);
+				sb.append(_FINDER_COLUMN_C_C_V_VISIBILITY_7);
 
-				query.append(StringUtil.merge(visibilities));
+				sb.append(StringUtil.merge(visibilities));
 
-				query.append(")");
+				sb.append(")");
 
-				query.append(")");
+				sb.append(")");
 			}
 
-			query.setStringAt(
-				removeConjunction(query.stringAt(query.index() - 1)),
-				query.index() - 1);
+			sb.setStringAt(
+				removeConjunction(sb.stringAt(sb.index() - 1)), sb.index() - 1);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathWithPaginationCountByC_C_V, finderArgs, count);
@@ -1681,51 +1679,51 @@ public class AuditEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					5 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(5);
+				sb = new StringBundler(5);
 			}
 
-			query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+			sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSPK_2);
+			sb.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSPK_2);
 
-			query.append(_FINDER_COLUMN_FC_FC_F_FIELD_2);
+			sb.append(_FINDER_COLUMN_FC_FC_F_FIELD_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
 			else {
-				query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(fieldClassNameId);
+				queryPos.add(fieldClassNameId);
 
-				qPos.add(fieldClassPK);
+				queryPos.add(fieldClassPK);
 
-				qPos.add(field);
+				queryPos.add(field);
 
 				list = (List<AuditEntry>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -1771,22 +1769,22 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("fieldClassNameId=");
-		msg.append(fieldClassNameId);
+		sb.append("fieldClassNameId=");
+		sb.append(fieldClassNameId);
 
-		msg.append(", fieldClassPK=");
-		msg.append(fieldClassPK);
+		sb.append(", fieldClassPK=");
+		sb.append(fieldClassPK);
 
-		msg.append(", field=");
-		msg.append(field);
+		sb.append(", field=");
+		sb.append(field);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -1836,22 +1834,22 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("fieldClassNameId=");
-		msg.append(fieldClassNameId);
+		sb.append("fieldClassNameId=");
+		sb.append(fieldClassNameId);
 
-		msg.append(", fieldClassPK=");
-		msg.append(fieldClassPK);
+		sb.append(", fieldClassPK=");
+		sb.append(fieldClassPK);
 
-		msg.append(", field=");
-		msg.append(field);
+		sb.append(", field=");
+		sb.append(field);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -1936,109 +1934,109 @@ public class AuditEntryPersistenceImpl
 		long fieldClassPK, int field,
 		OrderByComparator<AuditEntry> orderByComparator, boolean previous) {
 
-		StringBundler query = null;
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(
+			sb = new StringBundler(
 				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(5);
+			sb = new StringBundler(5);
 		}
 
-		query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+		sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-		query.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSNAMEID_2);
 
-		query.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSPK_2);
+		sb.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSPK_2);
 
-		query.append(_FINDER_COLUMN_FC_FC_F_FIELD_2);
+		sb.append(_FINDER_COLUMN_FC_FC_F_FIELD_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
 				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+			sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(fieldClassNameId);
+		queryPos.add(fieldClassNameId);
 
-		qPos.add(fieldClassPK);
+		queryPos.add(fieldClassPK);
 
-		qPos.add(field);
+		queryPos.add(field);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
 					orderByComparator.getOrderByConditionValues(auditEntry)) {
 
-				qPos.add(orderByConditionValue);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<AuditEntry> list = q.list();
+		List<AuditEntry> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2089,34 +2087,34 @@ public class AuditEntryPersistenceImpl
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_COUNT_AUDITENTRY_WHERE);
+			sb.append(_SQL_COUNT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSPK_2);
+			sb.append(_FINDER_COLUMN_FC_FC_F_FIELDCLASSPK_2);
 
-			query.append(_FINDER_COLUMN_FC_FC_F_FIELD_2);
+			sb.append(_FINDER_COLUMN_FC_FC_F_FIELD_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(fieldClassNameId);
+				queryPos.add(fieldClassNameId);
 
-				qPos.add(fieldClassPK);
+				queryPos.add(fieldClassPK);
 
-				qPos.add(field);
+				queryPos.add(field);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
@@ -2278,55 +2276,55 @@ public class AuditEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					6 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(6);
+				sb = new StringBundler(6);
 			}
 
-			query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+			sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_CLASSPK_2);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_ACTION_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_ACTION_2);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_FIELD_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_FIELD_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
 			else {
-				query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+				sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				qPos.add(action);
+				queryPos.add(action);
 
-				qPos.add(field);
+				queryPos.add(field);
 
 				list = (List<AuditEntry>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -2373,25 +2371,25 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(10);
+		StringBundler sb = new StringBundler(10);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("classNameId=");
-		msg.append(classNameId);
+		sb.append("classNameId=");
+		sb.append(classNameId);
 
-		msg.append(", classPK=");
-		msg.append(classPK);
+		sb.append(", classPK=");
+		sb.append(classPK);
 
-		msg.append(", action=");
-		msg.append(action);
+		sb.append(", action=");
+		sb.append(action);
 
-		msg.append(", field=");
-		msg.append(field);
+		sb.append(", field=");
+		sb.append(field);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -2443,25 +2441,25 @@ public class AuditEntryPersistenceImpl
 			return auditEntry;
 		}
 
-		StringBundler msg = new StringBundler(10);
+		StringBundler sb = new StringBundler(10);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("classNameId=");
-		msg.append(classNameId);
+		sb.append("classNameId=");
+		sb.append(classNameId);
 
-		msg.append(", classPK=");
-		msg.append(classPK);
+		sb.append(", classPK=");
+		sb.append(classPK);
 
-		msg.append(", action=");
-		msg.append(action);
+		sb.append(", action=");
+		sb.append(action);
 
-		msg.append(", field=");
-		msg.append(field);
+		sb.append(", field=");
+		sb.append(field);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchAuditEntryException(msg.toString());
+		throw new NoSuchAuditEntryException(sb.toString());
 	}
 
 	/**
@@ -2548,113 +2546,113 @@ public class AuditEntryPersistenceImpl
 		int action, int field, OrderByComparator<AuditEntry> orderByComparator,
 		boolean previous) {
 
-		StringBundler query = null;
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(
+			sb = new StringBundler(
 				7 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(6);
+			sb = new StringBundler(6);
 		}
 
-		query.append(_SQL_SELECT_AUDITENTRY_WHERE);
+		sb.append(_SQL_SELECT_AUDITENTRY_WHERE);
 
-		query.append(_FINDER_COLUMN_C_C_A_F_CLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_C_C_A_F_CLASSNAMEID_2);
 
-		query.append(_FINDER_COLUMN_C_C_A_F_CLASSPK_2);
+		sb.append(_FINDER_COLUMN_C_C_A_F_CLASSPK_2);
 
-		query.append(_FINDER_COLUMN_C_C_A_F_ACTION_2);
+		sb.append(_FINDER_COLUMN_C_C_A_F_ACTION_2);
 
-		query.append(_FINDER_COLUMN_C_C_A_F_FIELD_2);
+		sb.append(_FINDER_COLUMN_C_C_A_F_FIELD_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
 				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(AuditEntryModelImpl.ORDER_BY_JPQL);
+			sb.append(AuditEntryModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(classNameId);
+		queryPos.add(classNameId);
 
-		qPos.add(classPK);
+		queryPos.add(classPK);
 
-		qPos.add(action);
+		queryPos.add(action);
 
-		qPos.add(field);
+		queryPos.add(field);
 
 		if (orderByComparator != null) {
 			for (Object orderByConditionValue :
 					orderByComparator.getOrderByConditionValues(auditEntry)) {
 
-				qPos.add(orderByConditionValue);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<AuditEntry> list = q.list();
+		List<AuditEntry> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -2707,38 +2705,38 @@ public class AuditEntryPersistenceImpl
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
-			query.append(_SQL_COUNT_AUDITENTRY_WHERE);
+			sb.append(_SQL_COUNT_AUDITENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_CLASSPK_2);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_ACTION_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_ACTION_2);
 
-			query.append(_FINDER_COLUMN_C_C_A_F_FIELD_2);
+			sb.append(_FINDER_COLUMN_C_C_A_F_FIELD_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				qPos.add(action);
+				queryPos.add(action);
 
-				qPos.add(field);
+				queryPos.add(field);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
@@ -3286,31 +3284,31 @@ public class AuditEntryPersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler(
+		StringBundler sb = new StringBundler(
 			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_AUDITENTRY_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_AUDITENTRY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (AuditEntry auditEntry : (List<AuditEntry>)q.list()) {
+			for (AuditEntry auditEntry : (List<AuditEntry>)query.list()) {
 				map.put(auditEntry.getPrimaryKeyObj(), auditEntry);
 
 				cacheResult(auditEntry);
@@ -3421,19 +3419,19 @@ public class AuditEntryPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_AUDITENTRY);
+				sb.append(_SQL_SELECT_AUDITENTRY);
 
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_AUDITENTRY;
@@ -3446,10 +3444,10 @@ public class AuditEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
 				list = (List<AuditEntry>)QueryUtil.list(
-					q, getDialect(), start, end);
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
@@ -3499,9 +3497,9 @@ public class AuditEntryPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_AUDITENTRY);
+				Query query = session.createQuery(_SQL_COUNT_AUDITENTRY);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);

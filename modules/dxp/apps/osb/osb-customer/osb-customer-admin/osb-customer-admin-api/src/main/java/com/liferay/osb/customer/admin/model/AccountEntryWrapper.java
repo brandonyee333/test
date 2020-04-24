@@ -196,6 +196,11 @@ public class AccountEntryWrapper
 	}
 
 	@Override
+	public java.util.List<AccountAttachment> getAccountAttachments() {
+		return _accountEntry.getAccountAttachments();
+	}
+
+	@Override
 	public java.util.List<AccountAttachment> getAccountAttachments(
 		long accountProjectId) {
 
