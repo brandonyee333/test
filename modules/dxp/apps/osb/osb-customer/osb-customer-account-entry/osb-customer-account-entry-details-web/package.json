@@ -71,7 +71,7 @@
 		"url": "git+https://github.com/liferay/com-liferay-osb-customer-private.git"
 	},
 	"scripts": {
-		"lint:fix": "prettier --write src/main/js/**/*.js",
+		"prettier:check": "prettier --write src/main/js/**/*.js",
 		"start": "webpack-dev-server --config webpack.dev.js",
 		"test": "jest",
 		"webpack": "webpack --config webpack.prod.js"
