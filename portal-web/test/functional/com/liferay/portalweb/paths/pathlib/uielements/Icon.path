@@ -45,7 +45,7 @@
 </tr>
 <tr>
 	<td>CARET_RIGHT</td>
-	<td>//span[contains(@class,'icon-caret-right')]</td>
+	<td>//span[@title='Next Page']//*[name()='svg'][contains(@class,'lexicon-icon-angle-right')]</td>
 	<td></td>
 </tr>
 <tr>
