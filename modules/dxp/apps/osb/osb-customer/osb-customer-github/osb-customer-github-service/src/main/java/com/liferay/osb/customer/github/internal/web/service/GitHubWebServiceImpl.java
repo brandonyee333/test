@@ -62,7 +62,9 @@ public class GitHubWebServiceImpl
 		catch (Exception e) {
 			String message = e.getMessage();
 
-			if (message.contains("API rate limit exceeded")) {
+			if (message.contains("RepositoryInvitation") &&
+				message.contains("rate_limit exceeded")) {
+
 				return null;
 			}
 
