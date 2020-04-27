@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_5_0.AccountsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.ChannelIdMappingFieldUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.CreateChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.DXPRawUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.DataSourcesUpgradeStep;
@@ -41,8 +40,7 @@ public class UpgradeProcessConfiguration {
 		// Order matters
 
 		upgradeProcess.addUpgradeSteps(
-			"2.4.0", "2.5.0", _accountsUpgradeStep,
-			_channelIdMappingFieldUpgradeStep, _createChannelsUpgradeStep,
+			"2.4.0", "2.5.0", _accountsUpgradeStep, _createChannelsUpgradeStep,
 			_individualActivityFieldsUpgradeStep, _dataSourcesUpgradeStep,
 			_dxpRawUpgradeStep, _emailAddressHashedMappingFieldUpgradeStep,
 			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep);
@@ -52,9 +50,6 @@ public class UpgradeProcessConfiguration {
 
 	@Autowired
 	private AccountsUpgradeStep _accountsUpgradeStep;
-
-	@Autowired
-	private ChannelIdMappingFieldUpgradeStep _channelIdMappingFieldUpgradeStep;
 
 	@Autowired
 	private CreateChannelsUpgradeStep _createChannelsUpgradeStep;

@@ -1,0 +1,17 @@
+if (ctx._source.channelIds == null) {
+	ctx._source.channelIds = new HashSet();
+}
+
+Map channelIds = params.channelIds;
+
+for (dataSourceIndividualPK in ctx._source.dataSourceIndividualPKs) {
+	if (!dataSourceIndividualPK.dataSourceType.equals("LIFERAY")) {
+		continue;
+	}
+
+	String channelId = channelIds.get(dataSourceIndividualPK.dataSourceId);
+
+	if (channelId != null) {
+		ctx._source.channelIds.add(channelId);
+	}
+}
