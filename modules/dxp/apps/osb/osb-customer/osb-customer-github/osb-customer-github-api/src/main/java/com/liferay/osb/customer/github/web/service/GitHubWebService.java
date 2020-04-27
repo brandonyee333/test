@@ -15,6 +15,7 @@
 package com.liferay.osb.customer.github.web.service;
 
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
 
 /**
@@ -26,5 +27,7 @@ public interface GitHubWebService {
 
 	public JSONObject deleteCollaborator(String userName)
 		throws PortalException;
+
+	public JSONArray getCollaborators() throws PortalException;
 
 }

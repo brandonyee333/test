@@ -101,6 +101,10 @@ public class CollaboratorLocalServiceImpl
 		return collaboratorPersistence.findByAccountEntryId(accountEntryId);
 	}
 
+	public List<Collaborator> getCollaborators(String gitHubUserName) {
+		return collaboratorPersistence.findByGitHubUserName(gitHubUserName);
+	}
+
 	protected void validate(
 			long accountEntryId, String emailAddress, String fullName,
 			String gitHubUserName)

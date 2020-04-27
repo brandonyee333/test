@@ -20,6 +20,7 @@ import com.liferay.petra.json.web.service.client.BaseJSONWebServiceClientImpl;
 import com.liferay.petra.json.web.service.client.JSONWebServiceInvocationException;
 import com.liferay.petra.json.web.service.client.JSONWebServiceTransportException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 
@@ -48,7 +49,8 @@ public class GitHubWebServiceImpl
 	public JSONObject addCollaborator(String gitHubUserName)
 		throws PortalException {
 
-		String url = _URL_GITHUB_REPOSITORY_COLLABORATORS + gitHubUserName;
+		String url =
+			_URL_GITHUB_REPOSITORY_COLLABORATORS + "/" + gitHubUserName;
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
@@ -84,7 +86,8 @@ public class GitHubWebServiceImpl
 		throws PortalException {
 
 		try {
-			String url = _URL_GITHUB_REPOSITORY_COLLABORATORS + gitHubUserName;
+			String url =
+				_URL_GITHUB_REPOSITORY_COLLABORATORS + "/" + gitHubUserName;
 
 			String response = doDelete(
 				url, Collections.<String, String>emptyMap(), _headers);
@@ -112,6 +115,21 @@ public class GitHubWebServiceImpl
 		httpPut.setEntity(stringEntity);
 
 		return execute(httpPut);
+	}
+
+	@Override
+	public JSONArray getCollaborators() throws PortalException {
+		try {
+			String url = _URL_GITHUB_REPOSITORY_COLLABORATORS;
+
+			String response = doGet(
+				url, Collections.<String, String>emptyMap(), _headers);
+
+			return JSONFactoryUtil.createJSONArray(response);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
 	}
 
 	protected void addHeaders(
@@ -151,7 +169,7 @@ public class GitHubWebServiceImpl
 				REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_OWNER + "/" +
 					GitHubConfigurationValues.
 						REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_NAME +
-							"/collaborators/";
+							"/collaborators";
 
 	private static final Map<String, String> _headers =
 		new HashMap<String, String>() {
