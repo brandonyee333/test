@@ -93,7 +93,7 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 		HttpResponse httpResponse = httpRequest.send();
 
-		httpResponse.charset("utf-8");
+		httpResponse.charset("UTF-8");
 
 		String responseBodyText = _removeUTFBOM(httpResponse.bodyText());
 
