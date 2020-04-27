@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.PostConstruct;
@@ -187,11 +188,9 @@ public class ReindexHelper {
 		}
 	}
 
-	public void reindex(String destination, String source) throws Exception {
-		reindex(destination, null, source);
-	}
-
-	public void reindex(String destination, String script, String source)
+	public void reindex(
+			String destination, Map<String, Object> params, String script,
+			String source)
 		throws Exception {
 
 		ReindexRequestBuilder reindexRequestBuilder = new ReindexRequestBuilder(
@@ -201,7 +200,10 @@ public class ReindexHelper {
 		reindexRequestBuilder.source(source);
 
 		if (script != null) {
-			reindexRequestBuilder.script(new Script(script));
+			reindexRequestBuilder.script(
+				new Script(
+					Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
+					script, params));
 		}
 
 		for (int i = _MAX_RETRIES; i >= 0; i--) {
@@ -244,6 +246,10 @@ public class ReindexHelper {
 				thread.interrupt();
 			}
 		}
+	}
+
+	public void reindex(String destination, String source) throws Exception {
+		reindex(destination, null, null, source);
 	}
 
 	private boolean _isSnapshotInProgress() {
