@@ -262,6 +262,13 @@ public class CollaboratorLocalServiceWrapper
 		return _collaboratorLocalService.getCollaborators(accountEntryId);
 	}
 
+	@Override
+	public java.util.List<com.liferay.osb.customer.github.model.Collaborator>
+		getCollaborators(String gitHubUserName) {
+
+		return _collaboratorLocalService.getCollaborators(gitHubUserName);
+	}
+
 	/**
 	 * Returns the number of collaborators.
 	 *
