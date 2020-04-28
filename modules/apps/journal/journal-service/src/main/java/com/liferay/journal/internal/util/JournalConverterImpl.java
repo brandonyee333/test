@@ -175,9 +175,14 @@ public class JournalConverterImpl implements JournalConverter {
 
 		DDMFieldsCounter ddmFieldsCounter = new DDMFieldsCounter();
 
+		Field fieldsDisplayField = ddmFields.get(DDM.FIELDS_DISPLAY_NAME);
+
+		String[] fieldsDisplayValues = getDDMFieldsDisplayValues(
+			fieldsDisplayField);
+
 		for (String fieldName : ddmStructure.getRootFieldNames()) {
 			int repetitions = countFieldRepetition(
-				ddmFields, fieldName, null, -1);
+				ddmFields, fieldName, null, -1, fieldsDisplayValues);
 
 			for (int i = 0; i < repetitions; i++) {
 				Element dynamicElementElement = rootElement.addElement(
@@ -400,6 +405,15 @@ public class JournalConverterImpl implements JournalConverter {
 
 		String[] fieldsDisplayValues = getDDMFieldsDisplayValues(
 			fieldsDisplayField);
+
+		return countFieldRepetition(ddmFields, fieldName, parentFieldName,
+				parentOffset, fieldsDisplayValues);
+	}
+
+	protected int countFieldRepetition(
+			Fields ddmFields, String fieldName, String parentFieldName,
+			int parentOffset, String[] fieldsDisplayValues)
+		throws Exception {
 
 		int offset = -1;
 
