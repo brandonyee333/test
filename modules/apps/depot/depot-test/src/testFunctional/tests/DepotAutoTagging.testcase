@@ -49,12 +49,12 @@ definition {
 
 		AssertChecked.assertCheckedNotVisible(locator1 = "Checkbox#ENABLE_AUTO_TAGGING");
 
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
-
-		DMDocument.addCP(
+		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
-			dmDocumentFile = "Document_4.jpg",
-			dmDocumentTitle = "DM Document JPG");
+			dmDocumentTitle = "DM Document JPG",
+			groupName = "Test Depot Name",
+			mimeType = "image/jpeg",
+			sourceFileName = "Document_4.jpg");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
 
@@ -74,12 +74,12 @@ definition {
 			assetType = "Document",
 			confidenceThreshold = "0.05");
 
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
-
-		DMDocument.addCP(
+		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
-			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
-			dmDocumentTitle = "DM Document PDF");
+			dmDocumentTitle = "DM Document PDF",
+			groupName = "Test Depot Name",
+			mimeType = "application/pdf",
+			sourceFileName = "Alice's Adventures in Wonderland.pdf");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
 
@@ -163,12 +163,12 @@ definition {
 
 		Depot.configureAutoTagging(autoTagging = "Disabled");
 
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
-
-		DMDocument.addCP(
+		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
-			dmDocumentFile = "Document_4.jpg",
-			dmDocumentTitle = "DM Document JPG");
+			dmDocumentTitle = "DM Document JPG",
+			groupName = "Test Depot Name",
+			mimeType = "image/jpeg",
+			sourceFileName = "Document_4.jpg");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
 
@@ -194,12 +194,12 @@ definition {
 
 		Depot.configureAutoTagging(autoTagging = "Disabled");
 
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
-
-		DMDocument.addCP(
+		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
-			dmDocumentFile = "Alice's Adventures in Wonderland.pdf",
-			dmDocumentTitle = "DM Document PDF");
+			dmDocumentTitle = "DM Document PDF",
+			groupName = "Test Depot Name",
+			mimeType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+			sourceFileName = "Alice's Adventures in Wonderland.pdf");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
 
@@ -253,12 +253,12 @@ definition {
 			depotDescription = "This is the description of a depot",
 			depotName = "Test Depot Name");
 
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-depot-name");
-
-		DMDocument.addCP(
+		JSONDocument.addFileWithUploadedFile(
 			dmDocumentDescription = "DM Document Description",
-			dmDocumentFile = "Alice's Adventures in Wonderland.docx",
-			dmDocumentTitle = "DM Document Title");
+			dmDocumentTitle = "DM Document Title",
+			groupName = "Test Depot Name",
+			mimeType = "application/pdf",
+			sourceFileName = "Alice's Adventures in Wonderland.docx");
 
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
 
