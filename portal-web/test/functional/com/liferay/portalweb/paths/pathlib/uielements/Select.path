@@ -119,6 +119,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>MINIMUM_AGE</td>
+	<td>//select[contains(@id,'maxAge')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MAXIMUM_ITEMS_TO_DISPLAY</td>
 	<td>//select[contains(@id,'pageDelta')]</td>
 	<td></td>
@@ -181,6 +186,11 @@
 <tr>
 	<td>VERSION</td>
 	<td>//div[label[contains(.,'Version')]]/select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>WARNING_TIME</td>
+	<td>//select[contains(@id,'warningTime')]</td>
 	<td></td>
 </tr>
 </tbody>

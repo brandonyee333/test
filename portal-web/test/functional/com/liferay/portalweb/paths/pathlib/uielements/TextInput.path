@@ -189,6 +189,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>GRACE_LIMIT</td>
+	<td>//div[label[contains(.,'Grace Limit')]]//input[@type='text']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>LAST_NAME</td>
 	<td>//div[label[contains(.,'Last Name')]]/input[@type='text']</td>
 	<td></td>

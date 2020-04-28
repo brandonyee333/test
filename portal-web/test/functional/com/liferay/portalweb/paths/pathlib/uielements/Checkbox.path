@@ -99,6 +99,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ENABLE_EXPIRATION</td>
+	<td>//label[contains(.,'Enable Expiration')]/input[@type='checkbox']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ENABLE_FLAGS</td>
 	<td>//label[contains(.,'Enable Flags')]/input[@type='checkbox']</td>
 	<td></td>
