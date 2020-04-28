@@ -61,7 +61,7 @@
 			{
 				"template_expando_keyword": {
 					"mapping": {
-						"analyzer" : "keyword_lowercase",
+						"analyzer": "keyword_lowercase",
 						"store": "true",
 						"type": "string"
 					},
@@ -544,7 +544,7 @@
 			},
 			"assetTagNames": {
 				"fields": {
-					"raw" : {
+					"raw": {
 						"index": "not_analyzed",
 						"type": "string"
 					}
