@@ -25,6 +25,9 @@ import com.liferay.portal.configuration.metatype.definitions.ExtendedAttributeDe
 import com.liferay.portal.configuration.metatype.definitions.ExtendedObjectClassDefinition;
 import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
+import com.liferay.portal.kernel.resource.manager.ClassLoaderResourceManager;
+import com.liferay.portal.kernel.settings.LocationVariableResolver;
+import com.liferay.portal.kernel.settings.SettingsLocatorHelper;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -269,8 +272,16 @@ public class ExportConfigurationMVCResourceCommand
 				continue;
 			}
 
-			Object value = AttributeDefinitionUtil.getPropertyObject(
-				attributeDefinition, configuration);
+			LocationVariableResolver locationVariableResolver =
+				new LocationVariableResolver(
+					new ClassLoaderResourceManager(
+						configurationModel.getClassLoader()),
+					_settingsLocatorHelper);
+
+			Object value = ConfigurationExporter.escapeProperties(
+				AttributeDefinitionUtil.getPropertyObject(
+					attributeDefinition, configuration),
+				locationVariableResolver);
 
 			if (value == null) {
 				continue;
@@ -284,5 +295,8 @@ public class ExportConfigurationMVCResourceCommand
 
 	@Reference
 	private ConfigurationModelRetriever _configurationModelRetriever;
+
+	@Reference
+	private SettingsLocatorHelper _settingsLocatorHelper;
 
 }
