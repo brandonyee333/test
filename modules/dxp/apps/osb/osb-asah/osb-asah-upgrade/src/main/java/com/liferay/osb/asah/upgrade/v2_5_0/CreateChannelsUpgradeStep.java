@@ -73,8 +73,18 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 		JSONArrayIterator.of(
 			"data-sources", _faroInfoElasticsearchInvoker,
 			dataSourceJSONObject -> {
-				JSONObject channelJSONObject = _createChannel(
-					dataSourceJSONObject);
+				String dataSourceId = dataSourceJSONObject.getString("id");
+
+				JSONObject channelJSONObject =
+					_faroInfoElasticsearchInvoker.fetch(
+						"channels",
+						BoolQueryBuilderUtil.filter(
+							QueryBuilders.termQuery(
+								"dataSources.id", dataSourceId)));
+
+				if (channelJSONObject == null) {
+					channelJSONObject = _createChannel(dataSourceJSONObject);
+				}
 
 				String channelId = channelJSONObject.getString("id");
 
@@ -83,7 +93,7 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 				_faroInfoElasticsearchInvoker.update(
 					"data-sources", dataSourceJSONObject);
 
-				channelIds.put(dataSourceJSONObject.getString("id"), channelId);
+				channelIds.put(dataSourceId, channelId);
 
 				return null;
 			}
