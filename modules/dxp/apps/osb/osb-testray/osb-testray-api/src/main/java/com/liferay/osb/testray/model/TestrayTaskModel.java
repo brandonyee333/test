@@ -220,20 +220,6 @@ public interface TestrayTaskModel
 	public void setName(String name);
 
 	/**
-	 * Returns the status of this testray task.
-	 *
-	 * @return the status of this testray task
-	 */
-	public int getStatus();
-
-	/**
-	 * Sets the status of this testray task.
-	 *
-	 * @param status the status of this testray task
-	 */
-	public void setStatus(int status);
-
-	/**
 	 * Returns the status update date of this testray task.
 	 *
 	 * @return the status update date of this testray task
@@ -246,6 +232,20 @@ public interface TestrayTaskModel
 	 * @param statusUpdateDate the status update date of this testray task
 	 */
 	public void setStatusUpdateDate(Date statusUpdateDate);
+
+	/**
+	 * Returns the status of this testray task.
+	 *
+	 * @return the status of this testray task
+	 */
+	public int getStatus();
+
+	/**
+	 * Sets the status of this testray task.
+	 *
+	 * @param status the status of this testray task
+	 */
+	public void setStatus(int status);
 
 	@Override
 	public boolean isNew();

@@ -1,36 +1,35 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 /**
  * Provides the SOAP utility for the
- * {@link com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil} service utility. The
- * static methods of this class calls the same methods of the service utility.
- * However, the signatures are different because it is difficult for SOAP to
- * support certain types.
+ * <code>com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil</code> service
+ * utility. The static methods of this class call the same methods of the
+ * service utility. However, the signatures are different because it is
+ * difficult for SOAP to support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetSoap}.
- * If the method in the service utility returns a
- * {@link com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet}, that is translated to a
- * {@link com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetSoap}. Methods that SOAP cannot
- * safely wire are skipped.
+ * if the method in the service utility returns a <code>java.util.List</code>,
+ * that is translated to an array of
+ * <code>com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetSoap</code>. If the method in the
+ * service utility returns a
+ * <code>com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet</code>, that is translated to a
+ * <code>com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetSoap</code>. Methods that SOAP
+ * cannot safely wire are skipped.
  * </p>
  *
  * <p>
@@ -52,10 +51,7 @@ import aQute.bnd.annotation.ProviderType;
  *
  * @author Brian Wing Shun Chan
  * @see AssetEntrySetServiceHttp
- * @see com.liferay.osb.loop.asset.entry.set.model.AssetEntrySetSoap
- * @see com.liferay.osb.loop.asset.entry.set.service.AssetEntrySetServiceUtil
  * @generated
  */
-@ProviderType
 public class AssetEntrySetServiceSoap {
 }

@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.service;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
@@ -25,95 +23,108 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see AssetEntrySetLocalService
  * @generated
  */
-@ProviderType
 public class AssetEntrySetLocalServiceWrapper
 	implements AssetEntrySetLocalService,
-		ServiceWrapper<AssetEntrySetLocalService> {
+			   ServiceWrapper<AssetEntrySetLocalService> {
+
 	public AssetEntrySetLocalServiceWrapper(
 		AssetEntrySetLocalService assetEntrySetLocalService) {
+
 		_assetEntrySetLocalService = assetEntrySetLocalService;
 	}
 
 	/**
-	* Adds the asset entry set to the database. Also notifies the appropriate model listeners.
-	*
-	* @param assetEntrySet the asset entry set
-	* @return the asset entry set that was added
-	*/
+	 * Adds the asset entry set to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param assetEntrySet the asset entry set
+	 * @return the asset entry set that was added
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet addAssetEntrySet(
-		com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet assetEntrySet) {
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+		addAssetEntrySet(
+			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+				assetEntrySet) {
+
 		return _assetEntrySetLocalService.addAssetEntrySet(assetEntrySet);
 	}
 
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet addAssetEntrySet(
-		long userId, long parentAssetEntrySetId, long classNameId,
-		long classPK, long creatorClassNameId, long creatorClassPK,
-		com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
-		boolean privateAssetEntrySet, long stickyTime, java.lang.String title,
-		int type, int status)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			addAssetEntrySet(
+				long userId, long parentAssetEntrySetId, long classNameId,
+				long classPK, long creatorClassNameId, long creatorClassPK,
+				com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
+				boolean privateAssetEntrySet, long stickyTime, String title,
+				int type, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _assetEntrySetLocalService.addAssetEntrySet(userId,
-			parentAssetEntrySetId, classNameId, classPK, creatorClassNameId,
-			creatorClassPK, payloadJSONObject, privateAssetEntrySet,
-			stickyTime, title, type, status);
+
+		return _assetEntrySetLocalService.addAssetEntrySet(
+			userId, parentAssetEntrySetId, classNameId, classPK,
+			creatorClassNameId, creatorClassPK, payloadJSONObject,
+			privateAssetEntrySet, stickyTime, title, type, status);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.json.JSONObject addFileAttachment(
-		long userId, java.io.File file)
+			long userId, java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _assetEntrySetLocalService.addFileAttachment(userId, file);
 	}
 
 	/**
-	* Creates a new asset entry set with the primary key. Does not add the asset entry set to the database.
-	*
-	* @param assetEntrySetId the primary key for the new asset entry set
-	* @return the new asset entry set
-	*/
+	 * Creates a new asset entry set with the primary key. Does not add the asset entry set to the database.
+	 *
+	 * @param assetEntrySetId the primary key for the new asset entry set
+	 * @return the new asset entry set
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet createAssetEntrySet(
-		long assetEntrySetId) {
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+		createAssetEntrySet(long assetEntrySetId) {
+
 		return _assetEntrySetLocalService.createAssetEntrySet(assetEntrySetId);
 	}
 
 	/**
-	* Deletes the asset entry set from the database. Also notifies the appropriate model listeners.
-	*
-	* @param assetEntrySet the asset entry set
-	* @return the asset entry set that was removed
-	* @throws PortalException
-	*/
+	 * Deletes the asset entry set from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param assetEntrySet the asset entry set
+	 * @return the asset entry set that was removed
+	 * @throws PortalException
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet deleteAssetEntrySet(
-		com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet assetEntrySet)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			deleteAssetEntrySet(
+				com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+					assetEntrySet)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _assetEntrySetLocalService.deleteAssetEntrySet(assetEntrySet);
 	}
 
 	/**
-	* Deletes the asset entry set with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param assetEntrySetId the primary key of the asset entry set
-	* @return the asset entry set that was removed
-	* @throws PortalException if a asset entry set with the primary key could not be found
-	*/
+	 * Deletes the asset entry set with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param assetEntrySetId the primary key of the asset entry set
+	 * @return the asset entry set that was removed
+	 * @throws PortalException if a asset entry set with the primary key could not be found
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet deleteAssetEntrySet(
-		long assetEntrySetId)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			deleteAssetEntrySet(long assetEntrySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _assetEntrySetLocalService.deleteAssetEntrySet(assetEntrySetId);
 	}
 
 	/**
-	* @throws PortalException
-	*/
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel deletePersistedModel(
-		com.liferay.portal.kernel.model.PersistedModel persistedModel)
+			com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _assetEntrySetLocalService.deletePersistedModel(persistedModel);
 	}
 
@@ -123,253 +134,298 @@ public class AssetEntrySetLocalServiceWrapper
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	@Override
 	public <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
 		return _assetEntrySetLocalService.dynamicQuery(dynamicQuery);
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	@Override
 	public <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
-		return _assetEntrySetLocalService.dynamicQuery(dynamicQuery, start, end);
+
+		return _assetEntrySetLocalService.dynamicQuery(
+			dynamicQuery, start, end);
 	}
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	@Override
 	public <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
-		return _assetEntrySetLocalService.dynamicQuery(dynamicQuery, start,
-			end, orderByComparator);
+
+		return _assetEntrySetLocalService.dynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
+
 		return _assetEntrySetLocalService.dynamicQueryCount(dynamicQuery);
 	}
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Override
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
-		return _assetEntrySetLocalService.dynamicQueryCount(dynamicQuery,
-			projection);
+
+		return _assetEntrySetLocalService.dynamicQueryCount(
+			dynamicQuery, projection);
 	}
 
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet fetchAssetEntrySet(
-		long assetEntrySetId) {
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+		fetchAssetEntrySet(long assetEntrySetId) {
+
 		return _assetEntrySetLocalService.fetchAssetEntrySet(assetEntrySetId);
 	}
 
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet fetchAssetEntrySet(
-		long classNameId, long classPK, java.lang.String title) {
-		return _assetEntrySetLocalService.fetchAssetEntrySet(classNameId,
-			classPK, title);
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+		fetchAssetEntrySet(long classNameId, long classPK, String title) {
+
+		return _assetEntrySetLocalService.fetchAssetEntrySet(
+			classNameId, classPK, title);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery getActionableDynamicQuery() {
+	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
+		getActionableDynamicQuery() {
+
 		return _assetEntrySetLocalService.getActionableDynamicQuery();
 	}
 
 	/**
-	* Returns the asset entry set with the primary key.
-	*
-	* @param assetEntrySetId the primary key of the asset entry set
-	* @return the asset entry set
-	* @throws PortalException if a asset entry set with the primary key could not be found
-	*/
+	 * Returns the asset entry set with the primary key.
+	 *
+	 * @param assetEntrySetId the primary key of the asset entry set
+	 * @return the asset entry set
+	 * @throws PortalException if a asset entry set with the primary key could not be found
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet getAssetEntrySet(
-		long assetEntrySetId)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			getAssetEntrySet(long assetEntrySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _assetEntrySetLocalService.getAssetEntrySet(assetEntrySetId);
 	}
 
 	/**
-	* Returns a range of all the asset entry sets.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of asset entry sets
-	* @param end the upper bound of the range of asset entry sets (not inclusive)
-	* @return the range of asset entry sets
-	*/
+	 * Returns a range of all the asset entry sets.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.loop.asset.entry.set.model.impl.AssetEntrySetModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of asset entry sets
+	 * @param end the upper bound of the range of asset entry sets (not inclusive)
+	 * @return the range of asset entry sets
+	 */
 	@Override
-	public java.util.List<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet> getAssetEntrySets(
-		int start, int end) {
+	public java.util.List
+		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
+			getAssetEntrySets(int start, int end) {
+
 		return _assetEntrySetLocalService.getAssetEntrySets(start, end);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet> getAssetEntrySets(
-		long classNameId, long classPK) {
-		return _assetEntrySetLocalService.getAssetEntrySets(classNameId, classPK);
+	public java.util.List
+		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
+			getAssetEntrySets(long classNameId, long classPK) {
+
+		return _assetEntrySetLocalService.getAssetEntrySets(
+			classNameId, classPK);
 	}
 
 	/**
-	* Returns the number of asset entry sets.
-	*
-	* @return the number of asset entry sets
-	*/
+	 * Returns the number of asset entry sets.
+	 *
+	 * @return the number of asset entry sets
+	 */
 	@Override
 	public int getAssetEntrySetsCount() {
 		return _assetEntrySetLocalService.getAssetEntrySetsCount();
 	}
 
 	@Override
-	public int getAssetEntrySetsCount(long classNameId, long classPK, int type) {
-		return _assetEntrySetLocalService.getAssetEntrySetsCount(classNameId,
-			classPK, type);
+	public int getAssetEntrySetsCount(
+		long classNameId, long classPK, int type) {
+
+		return _assetEntrySetLocalService.getAssetEntrySetsCount(
+			classNameId, classPK, type);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet> getChildAssetEntrySets(
-		long parentAssetEntrySetId) {
-		return _assetEntrySetLocalService.getChildAssetEntrySets(parentAssetEntrySetId);
+	public java.util.List
+		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
+			getChildAssetEntrySets(long parentAssetEntrySetId) {
+
+		return _assetEntrySetLocalService.getChildAssetEntrySets(
+			parentAssetEntrySetId);
 	}
 
 	@Override
 	public int getChildAssetEntrySetsCount(long parentAssetEntrySetId) {
-		return _assetEntrySetLocalService.getChildAssetEntrySetsCount(parentAssetEntrySetId);
+		return _assetEntrySetLocalService.getChildAssetEntrySetsCount(
+			parentAssetEntrySetId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery getIndexableActionableDynamicQuery() {
+	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
+		getIndexableActionableDynamicQuery() {
+
 		return _assetEntrySetLocalService.getIndexableActionableDynamicQuery();
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet> getNewChildAssetEntrySets(
-		long createTime, long parentAssetEntrySetId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _assetEntrySetLocalService.getNewChildAssetEntrySets(createTime,
-			parentAssetEntrySetId, start, end, orderByComparator);
+	public java.util.List
+		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
+				getNewChildAssetEntrySets(
+					long createTime, long parentAssetEntrySetId, int start,
+					int end,
+					com.liferay.portal.kernel.util.OrderByComparator
+						orderByComparator)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _assetEntrySetLocalService.getNewChildAssetEntrySets(
+			createTime, parentAssetEntrySetId, start, end, orderByComparator);
 	}
 
 	@Override
-	public java.util.List<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet> getOldChildAssetEntrySets(
-		long createTime, long parentAssetEntrySetId, int start, int end,
-		com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _assetEntrySetLocalService.getOldChildAssetEntrySets(createTime,
-			parentAssetEntrySetId, start, end, orderByComparator);
+	public java.util.List
+		<com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet>
+				getOldChildAssetEntrySets(
+					long createTime, long parentAssetEntrySetId, int start,
+					int end,
+					com.liferay.portal.kernel.util.OrderByComparator
+						orderByComparator)
+			throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _assetEntrySetLocalService.getOldChildAssetEntrySets(
+			createTime, parentAssetEntrySetId, start, end, orderByComparator);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
+	public String getOSGiServiceIdentifier() {
 		return _assetEntrySetLocalService.getOSGiServiceIdentifier();
 	}
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public com.liferay.portal.kernel.model.PersistedModel getPersistedModel(
-		java.io.Serializable primaryKeyObj)
+			java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _assetEntrySetLocalService.getPersistedModel(primaryKeyObj);
 	}
 
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet likeAssetEntrySet(
-		long userId, long assetEntrySetId)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			likeAssetEntrySet(long userId, long assetEntrySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _assetEntrySetLocalService.likeAssetEntrySet(userId,
-			assetEntrySetId);
+
+		return _assetEntrySetLocalService.likeAssetEntrySet(
+			userId, assetEntrySetId);
 	}
 
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet unlikeAssetEntrySet(
-		long userId, long assetEntrySetId)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			unlikeAssetEntrySet(long userId, long assetEntrySetId)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _assetEntrySetLocalService.unlikeAssetEntrySet(userId,
-			assetEntrySetId);
+
+		return _assetEntrySetLocalService.unlikeAssetEntrySet(
+			userId, assetEntrySetId);
 	}
 
 	@Override
-	public void updateAssetEntry(long assetEntrySetId,
-		java.lang.String[] assetTagNames)
+	public void updateAssetEntry(long assetEntrySetId, String[] assetTagNames)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		_assetEntrySetLocalService.updateAssetEntry(assetEntrySetId,
-			assetTagNames);
+
+		_assetEntrySetLocalService.updateAssetEntry(
+			assetEntrySetId, assetTagNames);
 	}
 
 	/**
-	* Updates the asset entry set in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param assetEntrySet the asset entry set
-	* @return the asset entry set that was updated
-	*/
+	 * Updates the asset entry set in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param assetEntrySet the asset entry set
+	 * @return the asset entry set that was updated
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet updateAssetEntrySet(
-		com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet assetEntrySet) {
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+		updateAssetEntrySet(
+			com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+				assetEntrySet) {
+
 		return _assetEntrySetLocalService.updateAssetEntrySet(assetEntrySet);
 	}
 
 	@Override
-	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet updateAssetEntrySet(
-		long assetEntrySetId,
-		com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
-		boolean privateAssetEntrySet, long stickyTime, java.lang.String title,
-		int type, int status)
+	public com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet
+			updateAssetEntrySet(
+				long assetEntrySetId,
+				com.liferay.portal.kernel.json.JSONObject payloadJSONObject,
+				boolean privateAssetEntrySet, long stickyTime, String title,
+				int type, int status)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _assetEntrySetLocalService.updateAssetEntrySet(assetEntrySetId,
-			payloadJSONObject, privateAssetEntrySet, stickyTime, title, type,
-			status);
+
+		return _assetEntrySetLocalService.updateAssetEntrySet(
+			assetEntrySetId, payloadJSONObject, privateAssetEntrySet,
+			stickyTime, title, type, status);
 	}
 
 	@Override
@@ -380,8 +436,10 @@ public class AssetEntrySetLocalServiceWrapper
 	@Override
 	public void setWrappedService(
 		AssetEntrySetLocalService assetEntrySetLocalService) {
+
 		_assetEntrySetLocalService = assetEntrySetLocalService;
 	}
 
 	private AssetEntrySetLocalService _assetEntrySetLocalService;
+
 }

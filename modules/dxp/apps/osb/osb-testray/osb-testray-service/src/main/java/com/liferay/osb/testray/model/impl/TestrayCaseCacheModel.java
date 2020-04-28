@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayCase;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -34,7 +32,6 @@ import java.util.Date;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayCaseCacheModel
 	implements CacheModel<TestrayCase>, Externalizable {
 
@@ -191,7 +188,9 @@ public class TestrayCaseCacheModel
 	}
 
 	@Override
-	public void readExternal(ObjectInput objectInput) throws IOException {
+	public void readExternal(ObjectInput objectInput)
+		throws ClassNotFoundException, IOException {
+
 		testrayCaseId = objectInput.readLong();
 
 		groupId = objectInput.readLong();
@@ -217,7 +216,7 @@ public class TestrayCaseCacheModel
 		priority = objectInput.readInt();
 
 		estimatedDuration = objectInput.readInt();
-		steps = objectInput.readUTF();
+		steps = (String)objectInput.readObject();
 		stepsType = objectInput.readUTF();
 
 		caseNumber = objectInput.readLong();
@@ -277,10 +276,10 @@ public class TestrayCaseCacheModel
 		objectOutput.writeInt(estimatedDuration);
 
 		if (steps == null) {
-			objectOutput.writeUTF("");
+			objectOutput.writeObject("");
 		}
 		else {
-			objectOutput.writeUTF(steps);
+			objectOutput.writeObject(steps);
 		}
 
 		if (stepsType == null) {

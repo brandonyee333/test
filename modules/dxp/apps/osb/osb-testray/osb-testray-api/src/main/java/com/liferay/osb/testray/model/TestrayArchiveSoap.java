@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.sql.Blob;
@@ -30,7 +28,6 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayArchiveSoap implements Serializable {
 
 	public static TestrayArchiveSoap toSoapModel(TestrayArchive model) {

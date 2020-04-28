@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayAssignment;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
@@ -34,7 +32,6 @@ import java.util.Date;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayAssignmentCacheModel
 	implements CacheModel<TestrayAssignment>, Externalizable {
 

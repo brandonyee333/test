@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.model.LoopPerson;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing LoopPerson in entity cache.
  *
  * @author Ethan Bustad
- * @see LoopPerson
  * @generated
  */
-@ProviderType
-public class LoopPersonCacheModel implements CacheModel<LoopPerson>,
-	Externalizable {
+public class LoopPersonCacheModel
+	implements CacheModel<LoopPerson>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -136,7 +132,8 @@ public class LoopPersonCacheModel implements CacheModel<LoopPerson>,
 			loopPersonImpl.setExtraData(extraData);
 		}
 
-		loopPersonImpl.setGroupedUserNotificationEventsCount(groupedUserNotificationEventsCount);
+		loopPersonImpl.setGroupedUserNotificationEventsCount(
+			groupedUserNotificationEventsCount);
 
 		if (imagePayload == null) {
 			loopPersonImpl.setImagePayload("");
@@ -173,8 +170,7 @@ public class LoopPersonCacheModel implements CacheModel<LoopPerson>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(loopPersonId);
 
 		objectOutput.writeLong(companyId);
@@ -226,4 +222,5 @@ public class LoopPersonCacheModel implements CacheModel<LoopPerson>,
 	public String extraData;
 	public int groupedUserNotificationEventsCount;
 	public String imagePayload;
+
 }

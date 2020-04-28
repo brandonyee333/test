@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -36,8 +34,7 @@ import java.util.Objects;
  * @see TestrayRun
  * @generated
  */
-@ProviderType
-public class TestrayRunWrapper implements TestrayRun, ModelWrapper<TestrayRun> {
+public class TestrayRunWrapper implements ModelWrapper<TestrayRun>, TestrayRun {
 
 	public TestrayRunWrapper(TestrayRun testrayRun) {
 		_testrayRun = testrayRun;

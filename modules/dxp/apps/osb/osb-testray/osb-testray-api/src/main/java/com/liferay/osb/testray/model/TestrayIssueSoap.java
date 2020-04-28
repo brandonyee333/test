@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayIssueSoap implements Serializable {
 
 	public static TestrayIssueSoap toSoapModel(TestrayIssue model) {

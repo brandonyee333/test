@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.token.auth.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TokenAuthEntry
  * @generated
  */
-@ProviderType
-public class TokenAuthEntryWrapper implements TokenAuthEntry,
-	ModelWrapper<TokenAuthEntry> {
+public class TokenAuthEntryWrapper
+	implements ModelWrapper<TokenAuthEntry>, TokenAuthEntry {
+
 	public TokenAuthEntryWrapper(TokenAuthEntry tokenAuthEntry) {
 		_tokenAuthEntry = tokenAuthEntry;
 	}
@@ -129,8 +126,9 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new TokenAuthEntryWrapper((TokenAuthEntry)_tokenAuthEntry.clone());
+	public Object clone() {
+		return new TokenAuthEntryWrapper(
+			(TokenAuthEntry)_tokenAuthEntry.clone());
 	}
 
 	@Override
@@ -139,32 +137,32 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Returns the company ID of this token auth entry.
-	*
-	* @return the company ID of this token auth entry
-	*/
+	 * Returns the company ID of this token auth entry.
+	 *
+	 * @return the company ID of this token auth entry
+	 */
 	@Override
 	public long getCompanyId() {
 		return _tokenAuthEntry.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this token auth entry.
-	*
-	* @return the create date of this token auth entry
-	*/
+	 * Returns the create date of this token auth entry.
+	 *
+	 * @return the create date of this token auth entry
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _tokenAuthEntry.getCreateDate();
 	}
 
 	/**
-	* Returns the device of this token auth entry.
-	*
-	* @return the device of this token auth entry
-	*/
+	 * Returns the device of this token auth entry.
+	 *
+	 * @return the device of this token auth entry
+	 */
 	@Override
-	public java.lang.String getDevice() {
+	public String getDevice() {
 		return _tokenAuthEntry.getDevice();
 	}
 
@@ -174,30 +172,30 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Returns the login date of this token auth entry.
-	*
-	* @return the login date of this token auth entry
-	*/
+	 * Returns the login date of this token auth entry.
+	 *
+	 * @return the login date of this token auth entry
+	 */
 	@Override
 	public Date getLoginDate() {
 		return _tokenAuthEntry.getLoginDate();
 	}
 
 	/**
-	* Returns the login ip of this token auth entry.
-	*
-	* @return the login ip of this token auth entry
-	*/
+	 * Returns the login ip of this token auth entry.
+	 *
+	 * @return the login ip of this token auth entry
+	 */
 	@Override
-	public java.lang.String getLoginIP() {
+	public String getLoginIP() {
 		return _tokenAuthEntry.getLoginIP();
 	}
 
 	/**
-	* Returns the primary key of this token auth entry.
-	*
-	* @return the primary key of this token auth entry
-	*/
+	 * Returns the primary key of this token auth entry.
+	 *
+	 * @return the primary key of this token auth entry
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _tokenAuthEntry.getPrimaryKey();
@@ -209,52 +207,52 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Returns the token of this token auth entry.
-	*
-	* @return the token of this token auth entry
-	*/
+	 * Returns the token of this token auth entry.
+	 *
+	 * @return the token of this token auth entry
+	 */
 	@Override
-	public java.lang.String getToken() {
+	public String getToken() {
 		return _tokenAuthEntry.getToken();
 	}
 
 	/**
-	* Returns the token auth entry ID of this token auth entry.
-	*
-	* @return the token auth entry ID of this token auth entry
-	*/
+	 * Returns the token auth entry ID of this token auth entry.
+	 *
+	 * @return the token auth entry ID of this token auth entry
+	 */
 	@Override
 	public long getTokenAuthEntryId() {
 		return _tokenAuthEntry.getTokenAuthEntryId();
 	}
 
 	/**
-	* Returns the user ID of this token auth entry.
-	*
-	* @return the user ID of this token auth entry
-	*/
+	 * Returns the user ID of this token auth entry.
+	 *
+	 * @return the user ID of this token auth entry
+	 */
 	@Override
 	public long getUserId() {
 		return _tokenAuthEntry.getUserId();
 	}
 
 	/**
-	* Returns the user name of this token auth entry.
-	*
-	* @return the user name of this token auth entry
-	*/
+	 * Returns the user name of this token auth entry.
+	 *
+	 * @return the user name of this token auth entry
+	 */
 	@Override
-	public java.lang.String getUserName() {
+	public String getUserName() {
 		return _tokenAuthEntry.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this token auth entry.
-	*
-	* @return the user uuid of this token auth entry
-	*/
+	 * Returns the user uuid of this token auth entry.
+	 *
+	 * @return the user uuid of this token auth entry
+	 */
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _tokenAuthEntry.getUserUuid();
 	}
 
@@ -289,38 +287,39 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Sets the company ID of this token auth entry.
-	*
-	* @param companyId the company ID of this token auth entry
-	*/
+	 * Sets the company ID of this token auth entry.
+	 *
+	 * @param companyId the company ID of this token auth entry
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_tokenAuthEntry.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this token auth entry.
-	*
-	* @param createDate the create date of this token auth entry
-	*/
+	 * Sets the create date of this token auth entry.
+	 *
+	 * @param createDate the create date of this token auth entry
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_tokenAuthEntry.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the device of this token auth entry.
-	*
-	* @param device the device of this token auth entry
-	*/
+	 * Sets the device of this token auth entry.
+	 *
+	 * @param device the device of this token auth entry
+	 */
 	@Override
-	public void setDevice(java.lang.String device) {
+	public void setDevice(String device) {
 		_tokenAuthEntry.setDevice(device);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_tokenAuthEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -335,22 +334,22 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Sets the login date of this token auth entry.
-	*
-	* @param loginDate the login date of this token auth entry
-	*/
+	 * Sets the login date of this token auth entry.
+	 *
+	 * @param loginDate the login date of this token auth entry
+	 */
 	@Override
 	public void setLoginDate(Date loginDate) {
 		_tokenAuthEntry.setLoginDate(loginDate);
 	}
 
 	/**
-	* Sets the login ip of this token auth entry.
-	*
-	* @param loginIP the login ip of this token auth entry
-	*/
+	 * Sets the login ip of this token auth entry.
+	 *
+	 * @param loginIP the login ip of this token auth entry
+	 */
 	@Override
-	public void setLoginIP(java.lang.String loginIP) {
+	public void setLoginIP(String loginIP) {
 		_tokenAuthEntry.setLoginIP(loginIP);
 	}
 
@@ -360,10 +359,10 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Sets the primary key of this token auth entry.
-	*
-	* @param primaryKey the primary key of this token auth entry
-	*/
+	 * Sets the primary key of this token auth entry.
+	 *
+	 * @param primaryKey the primary key of this token auth entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_tokenAuthEntry.setPrimaryKey(primaryKey);
@@ -375,57 +374,59 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	/**
-	* Sets the token of this token auth entry.
-	*
-	* @param token the token of this token auth entry
-	*/
+	 * Sets the token of this token auth entry.
+	 *
+	 * @param token the token of this token auth entry
+	 */
 	@Override
-	public void setToken(java.lang.String token) {
+	public void setToken(String token) {
 		_tokenAuthEntry.setToken(token);
 	}
 
 	/**
-	* Sets the token auth entry ID of this token auth entry.
-	*
-	* @param tokenAuthEntryId the token auth entry ID of this token auth entry
-	*/
+	 * Sets the token auth entry ID of this token auth entry.
+	 *
+	 * @param tokenAuthEntryId the token auth entry ID of this token auth entry
+	 */
 	@Override
 	public void setTokenAuthEntryId(long tokenAuthEntryId) {
 		_tokenAuthEntry.setTokenAuthEntryId(tokenAuthEntryId);
 	}
 
 	/**
-	* Sets the user ID of this token auth entry.
-	*
-	* @param userId the user ID of this token auth entry
-	*/
+	 * Sets the user ID of this token auth entry.
+	 *
+	 * @param userId the user ID of this token auth entry
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_tokenAuthEntry.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this token auth entry.
-	*
-	* @param userName the user name of this token auth entry
-	*/
+	 * Sets the user name of this token auth entry.
+	 *
+	 * @param userName the user name of this token auth entry
+	 */
 	@Override
-	public void setUserName(java.lang.String userName) {
+	public void setUserName(String userName) {
 		_tokenAuthEntry.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this token auth entry.
-	*
-	* @param userUuid the user uuid of this token auth entry
-	*/
+	 * Sets the user uuid of this token auth entry.
+	 *
+	 * @param userUuid the user uuid of this token auth entry
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_tokenAuthEntry.setUserUuid(userUuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TokenAuthEntry> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<TokenAuthEntry>
+		toCacheModel() {
+
 		return _tokenAuthEntry.toCacheModel();
 	}
 
@@ -435,7 +436,7 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _tokenAuthEntry.toString();
 	}
 
@@ -445,7 +446,7 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _tokenAuthEntry.toXmlString();
 	}
 
@@ -459,10 +460,12 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 			return false;
 		}
 
-		TokenAuthEntryWrapper tokenAuthEntryWrapper = (TokenAuthEntryWrapper)obj;
+		TokenAuthEntryWrapper tokenAuthEntryWrapper =
+			(TokenAuthEntryWrapper)obj;
 
-		if (Objects.equals(_tokenAuthEntry,
-					tokenAuthEntryWrapper._tokenAuthEntry)) {
+		if (Objects.equals(
+				_tokenAuthEntry, tokenAuthEntryWrapper._tokenAuthEntry)) {
+
 			return true;
 		}
 
@@ -490,4 +493,5 @@ public class TokenAuthEntryWrapper implements TokenAuthEntry,
 	}
 
 	private final TokenAuthEntry _tokenAuthEntry;
+
 }

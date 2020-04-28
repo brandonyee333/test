@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.exception.NoSuchTestraySuiteException;
 import com.liferay.osb.testray.model.TestraySuite;
 import com.liferay.osb.testray.model.impl.TestraySuiteImpl;
@@ -31,10 +29,9 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -69,7 +66,6 @@ import java.util.Set;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestraySuitePersistenceImpl
 	extends BasePersistenceImpl<TestraySuite>
 	implements TestraySuitePersistence {
@@ -176,6 +172,18 @@ public class TestraySuitePersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				TestraySuiteModelImpl.ENTITY_CACHE_ENABLED,
+				TestraySuiteImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new testray suite with the primary key. Does not add the testray suite to the database.
 	 *
@@ -189,7 +197,7 @@ public class TestraySuitePersistenceImpl
 		testraySuite.setNew(true);
 		testraySuite.setPrimaryKey(testraySuiteId);
 
-		testraySuite.setCompanyId(companyProvider.getCompanyId());
+		testraySuite.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return testraySuite;
 	}
@@ -238,11 +246,11 @@ public class TestraySuitePersistenceImpl
 
 			return remove(testraySuite);
 		}
-		catch (NoSuchTestraySuiteException nsee) {
-			throw nsee;
+		catch (NoSuchTestraySuiteException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -268,8 +276,8 @@ public class TestraySuitePersistenceImpl
 				session.delete(testraySuite);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -344,8 +352,8 @@ public class TestraySuitePersistenceImpl
 				testraySuite = (TestraySuite)session.merge(testraySuite);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -443,12 +451,12 @@ public class TestraySuitePersistenceImpl
 						TestraySuiteImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					TestraySuiteModelImpl.ENTITY_CACHE_ENABLED,
 					TestraySuiteImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -519,31 +527,31 @@ public class TestraySuitePersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler(
+		StringBundler sb = new StringBundler(
 			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_TESTRAYSUITE_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_TESTRAYSUITE_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (TestraySuite testraySuite : (List<TestraySuite>)q.list()) {
+			for (TestraySuite testraySuite : (List<TestraySuite>)query.list()) {
 				map.put(testraySuite.getPrimaryKeyObj(), testraySuite);
 
 				cacheResult(testraySuite);
@@ -557,8 +565,8 @@ public class TestraySuitePersistenceImpl
 					TestraySuiteImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -581,7 +589,7 @@ public class TestraySuitePersistenceImpl
 	 * Returns a range of all the testray suites.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray suites
@@ -597,7 +605,7 @@ public class TestraySuitePersistenceImpl
 	 * Returns an ordered range of all the testray suites.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray suites
@@ -616,64 +624,62 @@ public class TestraySuitePersistenceImpl
 	 * Returns an ordered range of all the testray suites.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray suites
 	 * @param end the upper bound of the range of testray suites (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of testray suites
 	 */
 	@Override
 	public List<TestraySuite> findAll(
 		int start, int end, OrderByComparator<TestraySuite> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<TestraySuite> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<TestraySuite>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_TESTRAYSUITE);
+				sb.append(_SQL_SELECT_TESTRAYSUITE);
 
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYSUITE;
 
-				if (pagination) {
-					sql = sql.concat(TestraySuiteModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(TestraySuiteModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -681,29 +687,23 @@ public class TestraySuitePersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<TestraySuite>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<TestraySuite>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<TestraySuite>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -740,18 +740,18 @@ public class TestraySuitePersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_TESTRAYSUITE);
+				Query query = session.createQuery(_SQL_COUNT_TESTRAYSUITE);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -792,7 +792,7 @@ public class TestraySuitePersistenceImpl
 	 * Returns a range of all the testray cases associated with the testray suite.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray suite
@@ -811,7 +811,7 @@ public class TestraySuitePersistenceImpl
 	 * Returns an ordered range of all the testray cases associated with the testray suite.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySuiteModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray suite
@@ -885,7 +885,7 @@ public class TestraySuitePersistenceImpl
 
 		if (testraySuite == null) {
 			testraySuiteToTestrayCaseTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk, testrayCasePK);
+				CompanyThreadLocal.getCompanyId(), pk, testrayCasePK);
 		}
 		else {
 			testraySuiteToTestrayCaseTableMapper.addTableMapping(
@@ -907,7 +907,7 @@ public class TestraySuitePersistenceImpl
 
 		if (testraySuite == null) {
 			testraySuiteToTestrayCaseTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk,
+				CompanyThreadLocal.getCompanyId(), pk,
 				testrayCase.getPrimaryKey());
 		}
 		else {
@@ -929,7 +929,7 @@ public class TestraySuitePersistenceImpl
 		TestraySuite testraySuite = fetchByPrimaryKey(pk);
 
 		if (testraySuite == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySuite.getCompanyId();
@@ -1051,7 +1051,7 @@ public class TestraySuitePersistenceImpl
 		TestraySuite testraySuite = fetchByPrimaryKey(pk);
 
 		if (testraySuite == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySuite.getCompanyId();
@@ -1083,8 +1083,8 @@ public class TestraySuitePersistenceImpl
 
 			setTestrayCases(pk, testrayCasePKs);
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 	}
 
@@ -1128,9 +1128,6 @@ public class TestraySuitePersistenceImpl
 
 		TableMapperFactory.removeTableMapper("OSB_TestraySuites_TestrayCases");
 	}
-
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;

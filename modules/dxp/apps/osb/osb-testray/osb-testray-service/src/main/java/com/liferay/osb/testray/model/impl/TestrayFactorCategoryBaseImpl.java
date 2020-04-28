@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayFactorCategory;
 import com.liferay.osb.testray.service.TestrayFactorCategoryLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.osb.testray.service.TestrayFactorCategoryLocalServiceUtil;
  * @see TestrayFactorCategory
  * @generated
  */
-@ProviderType
 public abstract class TestrayFactorCategoryBaseImpl
 	extends TestrayFactorCategoryModelImpl implements TestrayFactorCategory {
 

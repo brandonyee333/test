@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayCaseResultWarning;
 import com.liferay.osb.testray.service.TestrayCaseResultWarningLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.osb.testray.service.TestrayCaseResultWarningLocalServiceUtil;
  * @see TestrayCaseResultWarning
  * @generated
  */
-@ProviderType
 public abstract class TestrayCaseResultWarningBaseImpl
 	extends TestrayCaseResultWarningModelImpl
 	implements TestrayCaseResultWarning {

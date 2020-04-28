@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayComponent;
 import com.liferay.osb.testray.service.TestrayComponentLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.osb.testray.service.TestrayComponentLocalServiceUtil;
  * @see TestrayComponent
  * @generated
  */
-@ProviderType
 public abstract class TestrayComponentBaseImpl
 	extends TestrayComponentModelImpl implements TestrayComponent {
 

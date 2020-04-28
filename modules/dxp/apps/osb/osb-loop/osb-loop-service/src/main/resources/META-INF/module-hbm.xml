@@ -159,10 +159,10 @@
 		</id>
 		<property name="loopPersonId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="loopTopicId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
+		<property name="statusByDate" type="org.hibernate.type.TimestampType" />
 		<property name="statusByUserId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 		<property name="statusByUserName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="statusByDate" type="org.hibernate.type.TimestampType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
 	</class>
 	<class name="com.liferay.osb.loop.model.impl.LoopUserNotificationEventImpl" table="LoopUserNotificationEvent">
 		<id name="loopUserNotificationEventId" type="long">

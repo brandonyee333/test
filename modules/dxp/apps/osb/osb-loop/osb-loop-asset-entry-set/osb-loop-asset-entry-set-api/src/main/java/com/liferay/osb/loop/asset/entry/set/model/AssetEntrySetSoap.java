@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -25,11 +23,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.osb.loop.asset.entry.set.service.http.AssetEntrySetServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.osb.loop.asset.entry.set.service.http.AssetEntrySetServiceSoap
  * @generated
  */
-@ProviderType
 public class AssetEntrySetSoap implements Serializable {
+
 	public static AssetEntrySetSoap toSoapModel(AssetEntrySet model) {
 		AssetEntrySetSoap soapModel = new AssetEntrySetSoap();
 
@@ -45,11 +42,13 @@ public class AssetEntrySetSoap implements Serializable {
 		soapModel.setCreatorClassNameId(model.getCreatorClassNameId());
 		soapModel.setCreatorClassPK(model.getCreatorClassPK());
 		soapModel.setCreatorName(model.getCreatorName());
-		soapModel.setAssetEntrySetLikesCount(model.getAssetEntrySetLikesCount());
-		soapModel.setChildAssetEntrySetsCount(model.getChildAssetEntrySetsCount());
+		soapModel.setAssetEntrySetLikesCount(
+			model.getAssetEntrySetLikesCount());
+		soapModel.setChildAssetEntrySetsCount(
+			model.getChildAssetEntrySetsCount());
 		soapModel.setLevel(model.getLevel());
 		soapModel.setPayload(model.getPayload());
-		soapModel.setPrivateAssetEntrySet(model.getPrivateAssetEntrySet());
+		soapModel.setPrivateAssetEntrySet(model.isPrivateAssetEntrySet());
 		soapModel.setStickyTime(model.getStickyTime());
 		soapModel.setTitle(model.getTitle());
 		soapModel.setType(model.getType());
@@ -86,7 +85,8 @@ public class AssetEntrySetSoap implements Serializable {
 	}
 
 	public static AssetEntrySetSoap[] toSoapModels(List<AssetEntrySet> models) {
-		List<AssetEntrySetSoap> soapModels = new ArrayList<AssetEntrySetSoap>(models.size());
+		List<AssetEntrySetSoap> soapModels = new ArrayList<AssetEntrySetSoap>(
+			models.size());
 
 		for (AssetEntrySet model : models) {
 			soapModels.add(toSoapModel(model));
@@ -299,4 +299,5 @@ public class AssetEntrySetSoap implements Serializable {
 	private String _title;
 	private int _type;
 	private int _status;
+
 }

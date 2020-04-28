@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopStreamEntryException;
 import com.liferay.osb.loop.model.LoopStreamEntry;
 import com.liferay.osb.loop.model.impl.LoopStreamEntryImpl;
 import com.liferay.osb.loop.model.impl.LoopStreamEntryModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopStreamEntryPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -33,11 +30,14 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,55 +55,34 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
- * @see LoopStreamEntryPersistence
- * @see com.liferay.osb.loop.service.persistence.LoopStreamEntryUtil
  * @generated
  */
-@ProviderType
-public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStreamEntry>
+public class LoopStreamEntryPersistenceImpl
+	extends BasePersistenceImpl<LoopStreamEntry>
 	implements LoopStreamEntryPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link LoopStreamEntryUtil} to access the loop stream entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>LoopStreamEntryUtil</code> to access the loop stream entry persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = LoopStreamEntryImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
-			"findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStreamEntryImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_CPI_CSI_F = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByCPI_CSI_F",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Boolean.class.getName()
-			},
-			LoopStreamEntryModelImpl.LOOPPERSONID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.LOOPSTREAMID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.FOLLOWING_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_CPI_CSI_F = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPI_CSI_F",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Boolean.class.getName()
-			});
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		LoopStreamEntryImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByCPI_CSI_F;
+	private FinderPath _finderPathCountByCPI_CSI_F;
 
 	/**
-	 * Returns the loop stream entry where loopPersonId = &#63; and loopStreamId = &#63; and following = &#63; or throws a {@link NoSuchLoopStreamEntryException} if it could not be found.
+	 * Returns the loop stream entry where loopPersonId = &#63; and loopStreamId = &#63; and following = &#63; or throws a <code>NoSuchLoopStreamEntryException</code> if it could not be found.
 	 *
 	 * @param loopPersonId the loop person ID
 	 * @param loopStreamId the loop stream ID
@@ -112,33 +91,34 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @throws NoSuchLoopStreamEntryException if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry findByCPI_CSI_F(long loopPersonId,
-		long loopStreamId, boolean following)
+	public LoopStreamEntry findByCPI_CSI_F(
+			long loopPersonId, long loopStreamId, boolean following)
 		throws NoSuchLoopStreamEntryException {
-		LoopStreamEntry loopStreamEntry = fetchByCPI_CSI_F(loopPersonId,
-				loopStreamId, following);
+
+		LoopStreamEntry loopStreamEntry = fetchByCPI_CSI_F(
+			loopPersonId, loopStreamId, following);
 
 		if (loopStreamEntry == null) {
-			StringBundler msg = new StringBundler(8);
+			StringBundler sb = new StringBundler(8);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("loopPersonId=");
-			msg.append(loopPersonId);
+			sb.append("loopPersonId=");
+			sb.append(loopPersonId);
 
-			msg.append(", loopStreamId=");
-			msg.append(loopStreamId);
+			sb.append(", loopStreamId=");
+			sb.append(loopStreamId);
 
-			msg.append(", following=");
-			msg.append(following);
+			sb.append(", following=");
+			sb.append(following);
 
-			msg.append("}");
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchLoopStreamEntryException(msg.toString());
+			throw new NoSuchLoopStreamEntryException(sb.toString());
 		}
 
 		return loopStreamEntry;
@@ -153,8 +133,9 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the matching loop stream entry, or <code>null</code> if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry fetchByCPI_CSI_F(long loopPersonId,
-		long loopStreamId, boolean following) {
+	public LoopStreamEntry fetchByCPI_CSI_F(
+		long loopPersonId, long loopStreamId, boolean following) {
+
 		return fetchByCPI_CSI_F(loopPersonId, loopStreamId, following, true);
 	}
 
@@ -164,74 +145,89 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @param loopPersonId the loop person ID
 	 * @param loopStreamId the loop stream ID
 	 * @param following the following
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching loop stream entry, or <code>null</code> if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry fetchByCPI_CSI_F(long loopPersonId,
-		long loopStreamId, boolean following, boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { loopPersonId, loopStreamId, following };
+	public LoopStreamEntry fetchByCPI_CSI_F(
+		long loopPersonId, long loopStreamId, boolean following,
+		boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {loopPersonId, loopStreamId, following};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_CPI_CSI_F,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCPI_CSI_F, finderArgs, this);
 		}
 
 		if (result instanceof LoopStreamEntry) {
 			LoopStreamEntry loopStreamEntry = (LoopStreamEntry)result;
 
 			if ((loopPersonId != loopStreamEntry.getLoopPersonId()) ||
-					(loopStreamId != loopStreamEntry.getLoopStreamId()) ||
-					(following != loopStreamEntry.isFollowing())) {
+				(loopStreamId != loopStreamEntry.getLoopStreamId()) ||
+				(following != loopStreamEntry.isFollowing())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
-			query.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE);
+			sb.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_F_LOOPPERSONID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_F_LOOPPERSONID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_F_LOOPSTREAMID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_F_LOOPSTREAMID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_F_FOLLOWING_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_F_FOLLOWING_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(loopPersonId);
+				queryPos.add(loopPersonId);
 
-				qPos.add(loopStreamId);
+				queryPos.add(loopStreamId);
 
-				qPos.add(following);
+				queryPos.add(following);
 
-				List<LoopStreamEntry> list = q.list();
+				List<LoopStreamEntry> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_F,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCPI_CSI_F, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									loopPersonId, loopStreamId, following
+								};
+							}
+
 							_log.warn(
 								"LoopStreamEntryPersistenceImpl.fetchByCPI_CSI_F(long, long, boolean, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -240,20 +236,15 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 					result = loopStreamEntry;
 
 					cacheResult(loopStreamEntry);
-
-					if ((loopStreamEntry.getLoopPersonId() != loopPersonId) ||
-							(loopStreamEntry.getLoopStreamId() != loopStreamId) ||
-							(loopStreamEntry.isFollowing() != following)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_F,
-							finderArgs, loopStreamEntry);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CSI_F,
-					finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByCPI_CSI_F, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -277,11 +268,12 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the loop stream entry that was removed
 	 */
 	@Override
-	public LoopStreamEntry removeByCPI_CSI_F(long loopPersonId,
-		long loopStreamId, boolean following)
+	public LoopStreamEntry removeByCPI_CSI_F(
+			long loopPersonId, long loopStreamId, boolean following)
 		throws NoSuchLoopStreamEntryException {
-		LoopStreamEntry loopStreamEntry = findByCPI_CSI_F(loopPersonId,
-				loopStreamId, following);
+
+		LoopStreamEntry loopStreamEntry = findByCPI_CSI_F(
+			loopPersonId, loopStreamId, following);
 
 		return remove(loopStreamEntry);
 	}
@@ -295,50 +287,53 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the number of matching loop stream entries
 	 */
 	@Override
-	public int countByCPI_CSI_F(long loopPersonId, long loopStreamId,
-		boolean following) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_CPI_CSI_F;
+	public int countByCPI_CSI_F(
+		long loopPersonId, long loopStreamId, boolean following) {
 
-		Object[] finderArgs = new Object[] { loopPersonId, loopStreamId, following };
+		FinderPath finderPath = _finderPathCountByCPI_CSI_F;
+
+		Object[] finderArgs = new Object[] {
+			loopPersonId, loopStreamId, following
+		};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_COUNT_LOOPSTREAMENTRY_WHERE);
+			sb.append(_SQL_COUNT_LOOPSTREAMENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_F_LOOPPERSONID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_F_LOOPPERSONID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_F_LOOPSTREAMID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_F_LOOPSTREAMID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_F_FOLLOWING_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_F_FOLLOWING_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(loopPersonId);
+				queryPos.add(loopPersonId);
 
-				qPos.add(loopStreamId);
+				queryPos.add(loopStreamId);
 
-				qPos.add(following);
+				queryPos.add(following);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -348,28 +343,20 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_CPI_CSI_F_LOOPPERSONID_2 = "loopStreamEntry.loopPersonId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CSI_F_LOOPSTREAMID_2 = "loopStreamEntry.loopStreamId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CSI_F_FOLLOWING_2 = "loopStreamEntry.following = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_CPI_CNI_CP = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByCPI_CNI_CP",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			},
-			LoopStreamEntryModelImpl.LOOPPERSONID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.CLASSPK_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_CPI_CNI_CP = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPI_CNI_CP",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName()
-			});
+	private static final String _FINDER_COLUMN_CPI_CSI_F_LOOPPERSONID_2 =
+		"loopStreamEntry.loopPersonId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CSI_F_LOOPSTREAMID_2 =
+		"loopStreamEntry.loopStreamId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CSI_F_FOLLOWING_2 =
+		"loopStreamEntry.following = ?";
+
+	private FinderPath _finderPathFetchByCPI_CNI_CP;
+	private FinderPath _finderPathCountByCPI_CNI_CP;
 
 	/**
-	 * Returns the loop stream entry where loopPersonId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchLoopStreamEntryException} if it could not be found.
+	 * Returns the loop stream entry where loopPersonId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchLoopStreamEntryException</code> if it could not be found.
 	 *
 	 * @param loopPersonId the loop person ID
 	 * @param classNameId the class name ID
@@ -378,32 +365,34 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @throws NoSuchLoopStreamEntryException if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry findByCPI_CNI_CP(long loopPersonId,
-		long classNameId, long classPK) throws NoSuchLoopStreamEntryException {
-		LoopStreamEntry loopStreamEntry = fetchByCPI_CNI_CP(loopPersonId,
-				classNameId, classPK);
+	public LoopStreamEntry findByCPI_CNI_CP(
+			long loopPersonId, long classNameId, long classPK)
+		throws NoSuchLoopStreamEntryException {
+
+		LoopStreamEntry loopStreamEntry = fetchByCPI_CNI_CP(
+			loopPersonId, classNameId, classPK);
 
 		if (loopStreamEntry == null) {
-			StringBundler msg = new StringBundler(8);
+			StringBundler sb = new StringBundler(8);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("loopPersonId=");
-			msg.append(loopPersonId);
+			sb.append("loopPersonId=");
+			sb.append(loopPersonId);
 
-			msg.append(", classNameId=");
-			msg.append(classNameId);
+			sb.append(", classNameId=");
+			sb.append(classNameId);
 
-			msg.append(", classPK=");
-			msg.append(classPK);
+			sb.append(", classPK=");
+			sb.append(classPK);
 
-			msg.append("}");
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchLoopStreamEntryException(msg.toString());
+			throw new NoSuchLoopStreamEntryException(sb.toString());
 		}
 
 		return loopStreamEntry;
@@ -418,8 +407,9 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the matching loop stream entry, or <code>null</code> if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry fetchByCPI_CNI_CP(long loopPersonId,
-		long classNameId, long classPK) {
+	public LoopStreamEntry fetchByCPI_CNI_CP(
+		long loopPersonId, long classNameId, long classPK) {
+
 		return fetchByCPI_CNI_CP(loopPersonId, classNameId, classPK, true);
 	}
 
@@ -429,74 +419,89 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @param loopPersonId the loop person ID
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching loop stream entry, or <code>null</code> if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry fetchByCPI_CNI_CP(long loopPersonId,
-		long classNameId, long classPK, boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { loopPersonId, classNameId, classPK };
+	public LoopStreamEntry fetchByCPI_CNI_CP(
+		long loopPersonId, long classNameId, long classPK,
+		boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {loopPersonId, classNameId, classPK};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCPI_CNI_CP, finderArgs, this);
 		}
 
 		if (result instanceof LoopStreamEntry) {
 			LoopStreamEntry loopStreamEntry = (LoopStreamEntry)result;
 
 			if ((loopPersonId != loopStreamEntry.getLoopPersonId()) ||
-					(classNameId != loopStreamEntry.getClassNameId()) ||
-					(classPK != loopStreamEntry.getClassPK())) {
+				(classNameId != loopStreamEntry.getClassNameId()) ||
+				(classPK != loopStreamEntry.getClassPK())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
-			query.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE);
+			sb.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_CPI_CNI_CP_LOOPPERSONID_2);
+			sb.append(_FINDER_COLUMN_CPI_CNI_CP_LOOPPERSONID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSPK_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(loopPersonId);
+				queryPos.add(loopPersonId);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				List<LoopStreamEntry> list = q.list();
+				List<LoopStreamEntry> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCPI_CNI_CP, finderArgs, list);
+					}
 				}
 				else {
 					if (list.size() > 1) {
 						Collections.sort(list, Collections.reverseOrder());
 
 						if (_log.isWarnEnabled()) {
+							if (!useFinderCache) {
+								finderArgs = new Object[] {
+									loopPersonId, classNameId, classPK
+								};
+							}
+
 							_log.warn(
 								"LoopStreamEntryPersistenceImpl.fetchByCPI_CNI_CP(long, long, long, boolean) with parameters (" +
-								StringUtil.merge(finderArgs) +
-								") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
 					}
 
@@ -505,20 +510,15 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 					result = loopStreamEntry;
 
 					cacheResult(loopStreamEntry);
-
-					if ((loopStreamEntry.getLoopPersonId() != loopPersonId) ||
-							(loopStreamEntry.getClassNameId() != classNameId) ||
-							(loopStreamEntry.getClassPK() != classPK)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP,
-							finderArgs, loopStreamEntry);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP,
-					finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByCPI_CNI_CP, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -542,10 +542,12 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the loop stream entry that was removed
 	 */
 	@Override
-	public LoopStreamEntry removeByCPI_CNI_CP(long loopPersonId,
-		long classNameId, long classPK) throws NoSuchLoopStreamEntryException {
-		LoopStreamEntry loopStreamEntry = findByCPI_CNI_CP(loopPersonId,
-				classNameId, classPK);
+	public LoopStreamEntry removeByCPI_CNI_CP(
+			long loopPersonId, long classNameId, long classPK)
+		throws NoSuchLoopStreamEntryException {
+
+		LoopStreamEntry loopStreamEntry = findByCPI_CNI_CP(
+			loopPersonId, classNameId, classPK);
 
 		return remove(loopStreamEntry);
 	}
@@ -559,50 +561,51 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the number of matching loop stream entries
 	 */
 	@Override
-	public int countByCPI_CNI_CP(long loopPersonId, long classNameId,
-		long classPK) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_CPI_CNI_CP;
+	public int countByCPI_CNI_CP(
+		long loopPersonId, long classNameId, long classPK) {
 
-		Object[] finderArgs = new Object[] { loopPersonId, classNameId, classPK };
+		FinderPath finderPath = _finderPathCountByCPI_CNI_CP;
+
+		Object[] finderArgs = new Object[] {loopPersonId, classNameId, classPK};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_COUNT_LOOPSTREAMENTRY_WHERE);
+			sb.append(_SQL_COUNT_LOOPSTREAMENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_CPI_CNI_CP_LOOPPERSONID_2);
+			sb.append(_FINDER_COLUMN_CPI_CNI_CP_LOOPPERSONID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_CPI_CNI_CP_CLASSPK_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(loopPersonId);
+				queryPos.add(loopPersonId);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -612,31 +615,20 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_CPI_CNI_CP_LOOPPERSONID_2 = "loopStreamEntry.loopPersonId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CNI_CP_CLASSNAMEID_2 = "loopStreamEntry.classNameId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CNI_CP_CLASSPK_2 = "loopStreamEntry.classPK = ?";
-	public static final FinderPath FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
-			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
-			"fetchByCPI_CSI_CNI_CP",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName(),
-				Long.class.getName()
-			},
-			LoopStreamEntryModelImpl.LOOPPERSONID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.LOOPSTREAMID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
-			LoopStreamEntryModelImpl.CLASSPK_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_CPI_CSI_CNI_CP = new FinderPath(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPI_CSI_CNI_CP",
-			new String[] {
-				Long.class.getName(), Long.class.getName(), Long.class.getName(),
-				Long.class.getName()
-			});
+	private static final String _FINDER_COLUMN_CPI_CNI_CP_LOOPPERSONID_2 =
+		"loopStreamEntry.loopPersonId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CNI_CP_CLASSNAMEID_2 =
+		"loopStreamEntry.classNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CNI_CP_CLASSPK_2 =
+		"loopStreamEntry.classPK = ?";
+
+	private FinderPath _finderPathFetchByCPI_CSI_CNI_CP;
+	private FinderPath _finderPathCountByCPI_CSI_CNI_CP;
 
 	/**
-	 * Returns the loop stream entry where loopPersonId = &#63; and loopStreamId = &#63; and classNameId = &#63; and classPK = &#63; or throws a {@link NoSuchLoopStreamEntryException} if it could not be found.
+	 * Returns the loop stream entry where loopPersonId = &#63; and loopStreamId = &#63; and classNameId = &#63; and classPK = &#63; or throws a <code>NoSuchLoopStreamEntryException</code> if it could not be found.
 	 *
 	 * @param loopPersonId the loop person ID
 	 * @param loopStreamId the loop stream ID
@@ -646,36 +638,38 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @throws NoSuchLoopStreamEntryException if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry findByCPI_CSI_CNI_CP(long loopPersonId,
-		long loopStreamId, long classNameId, long classPK)
+	public LoopStreamEntry findByCPI_CSI_CNI_CP(
+			long loopPersonId, long loopStreamId, long classNameId,
+			long classPK)
 		throws NoSuchLoopStreamEntryException {
-		LoopStreamEntry loopStreamEntry = fetchByCPI_CSI_CNI_CP(loopPersonId,
-				loopStreamId, classNameId, classPK);
+
+		LoopStreamEntry loopStreamEntry = fetchByCPI_CSI_CNI_CP(
+			loopPersonId, loopStreamId, classNameId, classPK);
 
 		if (loopStreamEntry == null) {
-			StringBundler msg = new StringBundler(10);
+			StringBundler sb = new StringBundler(10);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("loopPersonId=");
-			msg.append(loopPersonId);
+			sb.append("loopPersonId=");
+			sb.append(loopPersonId);
 
-			msg.append(", loopStreamId=");
-			msg.append(loopStreamId);
+			sb.append(", loopStreamId=");
+			sb.append(loopStreamId);
 
-			msg.append(", classNameId=");
-			msg.append(classNameId);
+			sb.append(", classNameId=");
+			sb.append(classNameId);
 
-			msg.append(", classPK=");
-			msg.append(classPK);
+			sb.append(", classPK=");
+			sb.append(classPK);
 
-			msg.append("}");
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchLoopStreamEntryException(msg.toString());
+			throw new NoSuchLoopStreamEntryException(sb.toString());
 		}
 
 		return loopStreamEntry;
@@ -691,10 +685,11 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the matching loop stream entry, or <code>null</code> if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry fetchByCPI_CSI_CNI_CP(long loopPersonId,
-		long loopStreamId, long classNameId, long classPK) {
-		return fetchByCPI_CSI_CNI_CP(loopPersonId, loopStreamId, classNameId,
-			classPK, true);
+	public LoopStreamEntry fetchByCPI_CSI_CNI_CP(
+		long loopPersonId, long loopStreamId, long classNameId, long classPK) {
+
+		return fetchByCPI_CSI_CNI_CP(
+			loopPersonId, loopStreamId, classNameId, classPK, true);
 	}
 
 	/**
@@ -704,72 +699,80 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @param loopStreamId the loop stream ID
 	 * @param classNameId the class name ID
 	 * @param classPK the class pk
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching loop stream entry, or <code>null</code> if a matching loop stream entry could not be found
 	 */
 	@Override
-	public LoopStreamEntry fetchByCPI_CSI_CNI_CP(long loopPersonId,
-		long loopStreamId, long classNameId, long classPK,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] {
+	public LoopStreamEntry fetchByCPI_CSI_CNI_CP(
+		long loopPersonId, long loopStreamId, long classNameId, long classPK,
+		boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {
 				loopPersonId, loopStreamId, classNameId, classPK
 			};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByCPI_CSI_CNI_CP, finderArgs, this);
 		}
 
 		if (result instanceof LoopStreamEntry) {
 			LoopStreamEntry loopStreamEntry = (LoopStreamEntry)result;
 
 			if ((loopPersonId != loopStreamEntry.getLoopPersonId()) ||
-					(loopStreamId != loopStreamEntry.getLoopStreamId()) ||
-					(classNameId != loopStreamEntry.getClassNameId()) ||
-					(classPK != loopStreamEntry.getClassPK())) {
+				(loopStreamId != loopStreamEntry.getLoopStreamId()) ||
+				(classNameId != loopStreamEntry.getClassNameId()) ||
+				(classPK != loopStreamEntry.getClassPK())) {
+
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			query.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE);
+			sb.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPPERSONID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPPERSONID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPSTREAMID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPSTREAMID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSPK_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(loopPersonId);
+				queryPos.add(loopPersonId);
 
-				qPos.add(loopStreamId);
+				queryPos.add(loopStreamId);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				List<LoopStreamEntry> list = q.list();
+				List<LoopStreamEntry> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByCPI_CSI_CNI_CP, finderArgs, list);
+					}
 				}
 				else {
 					LoopStreamEntry loopStreamEntry = list.get(0);
@@ -777,21 +780,15 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 					result = loopStreamEntry;
 
 					cacheResult(loopStreamEntry);
-
-					if ((loopStreamEntry.getLoopPersonId() != loopPersonId) ||
-							(loopStreamEntry.getLoopStreamId() != loopStreamId) ||
-							(loopStreamEntry.getClassNameId() != classNameId) ||
-							(loopStreamEntry.getClassPK() != classPK)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP,
-							finderArgs, loopStreamEntry);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP,
-					finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByCPI_CSI_CNI_CP, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -816,11 +813,13 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the loop stream entry that was removed
 	 */
 	@Override
-	public LoopStreamEntry removeByCPI_CSI_CNI_CP(long loopPersonId,
-		long loopStreamId, long classNameId, long classPK)
+	public LoopStreamEntry removeByCPI_CSI_CNI_CP(
+			long loopPersonId, long loopStreamId, long classNameId,
+			long classPK)
 		throws NoSuchLoopStreamEntryException {
-		LoopStreamEntry loopStreamEntry = findByCPI_CSI_CNI_CP(loopPersonId,
-				loopStreamId, classNameId, classPK);
+
+		LoopStreamEntry loopStreamEntry = findByCPI_CSI_CNI_CP(
+			loopPersonId, loopStreamId, classNameId, classPK);
 
 		return remove(loopStreamEntry);
 	}
@@ -835,56 +834,57 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the number of matching loop stream entries
 	 */
 	@Override
-	public int countByCPI_CSI_CNI_CP(long loopPersonId, long loopStreamId,
-		long classNameId, long classPK) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_CPI_CSI_CNI_CP;
+	public int countByCPI_CSI_CNI_CP(
+		long loopPersonId, long loopStreamId, long classNameId, long classPK) {
+
+		FinderPath finderPath = _finderPathCountByCPI_CSI_CNI_CP;
 
 		Object[] finderArgs = new Object[] {
-				loopPersonId, loopStreamId, classNameId, classPK
-			};
+			loopPersonId, loopStreamId, classNameId, classPK
+		};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(5);
+			StringBundler sb = new StringBundler(5);
 
-			query.append(_SQL_COUNT_LOOPSTREAMENTRY_WHERE);
+			sb.append(_SQL_COUNT_LOOPSTREAMENTRY_WHERE);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPPERSONID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPPERSONID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPSTREAMID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPSTREAMID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSPK_2);
+			sb.append(_FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSPK_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(loopPersonId);
+				queryPos.add(loopPersonId);
 
-				qPos.add(loopStreamId);
+				queryPos.add(loopStreamId);
 
-				qPos.add(classNameId);
+				queryPos.add(classNameId);
 
-				qPos.add(classPK);
+				queryPos.add(classPK);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -894,10 +894,17 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPPERSONID_2 = "loopStreamEntry.loopPersonId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPSTREAMID_2 = "loopStreamEntry.loopStreamId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSNAMEID_2 = "loopStreamEntry.classNameId = ? AND ";
-	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSPK_2 = "loopStreamEntry.classPK = ?";
+	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPPERSONID_2 =
+		"loopStreamEntry.loopPersonId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_LOOPSTREAMID_2 =
+		"loopStreamEntry.loopStreamId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSNAMEID_2 =
+		"loopStreamEntry.classNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_CPI_CSI_CNI_CP_CLASSPK_2 =
+		"loopStreamEntry.classPK = ?";
 
 	public LoopStreamEntryPersistenceImpl() {
 		setModelClass(LoopStreamEntry.class);
@@ -910,28 +917,35 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 */
 	@Override
 	public void cacheResult(LoopStreamEntry loopStreamEntry) {
-		entityCache.putResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStreamEntryImpl.class, loopStreamEntry.getPrimaryKey(),
 			loopStreamEntry);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_F,
+		finderCache.putResult(
+			_finderPathFetchByCPI_CSI_F,
 			new Object[] {
 				loopStreamEntry.getLoopPersonId(),
 				loopStreamEntry.getLoopStreamId(), loopStreamEntry.isFollowing()
-			}, loopStreamEntry);
+			},
+			loopStreamEntry);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP,
+		finderCache.putResult(
+			_finderPathFetchByCPI_CNI_CP,
 			new Object[] {
 				loopStreamEntry.getLoopPersonId(),
 				loopStreamEntry.getClassNameId(), loopStreamEntry.getClassPK()
-			}, loopStreamEntry);
+			},
+			loopStreamEntry);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP,
+		finderCache.putResult(
+			_finderPathFetchByCPI_CSI_CNI_CP,
 			new Object[] {
 				loopStreamEntry.getLoopPersonId(),
 				loopStreamEntry.getLoopStreamId(),
 				loopStreamEntry.getClassNameId(), loopStreamEntry.getClassPK()
-			}, loopStreamEntry);
+			},
+			loopStreamEntry);
 
 		loopStreamEntry.resetOriginalValues();
 	}
@@ -945,9 +959,10 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	public void cacheResult(List<LoopStreamEntry> loopStreamEntries) {
 		for (LoopStreamEntry loopStreamEntry : loopStreamEntries) {
 			if (entityCache.getResult(
-						LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-						LoopStreamEntryImpl.class,
-						loopStreamEntry.getPrimaryKey()) == null) {
+					LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+					LoopStreamEntryImpl.class,
+					loopStreamEntry.getPrimaryKey()) == null) {
+
 				cacheResult(loopStreamEntry);
 			}
 			else {
@@ -960,7 +975,7 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * Clears the cache for all loop stream entries.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -976,18 +991,20 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * Clears the cache for the loop stream entry.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(LoopStreamEntry loopStreamEntry) {
-		entityCache.removeResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.removeResult(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStreamEntryImpl.class, loopStreamEntry.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		clearUniqueFindersCache((LoopStreamEntryModelImpl)loopStreamEntry, true);
+		clearUniqueFindersCache(
+			(LoopStreamEntryModelImpl)loopStreamEntry, true);
 	}
 
 	@Override
@@ -996,122 +1013,143 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (LoopStreamEntry loopStreamEntry : loopStreamEntries) {
-			entityCache.removeResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			entityCache.removeResult(
+				LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 				LoopStreamEntryImpl.class, loopStreamEntry.getPrimaryKey());
 
-			clearUniqueFindersCache((LoopStreamEntryModelImpl)loopStreamEntry,
-				true);
+			clearUniqueFindersCache(
+				(LoopStreamEntryModelImpl)loopStreamEntry, true);
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+				LoopStreamEntryImpl.class, primaryKey);
 		}
 	}
 
 	protected void cacheUniqueFindersCache(
 		LoopStreamEntryModelImpl loopStreamEntryModelImpl) {
+
 		Object[] args = new Object[] {
+			loopStreamEntryModelImpl.getLoopPersonId(),
+			loopStreamEntryModelImpl.getLoopStreamId(),
+			loopStreamEntryModelImpl.isFollowing()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByCPI_CSI_F, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByCPI_CSI_F, args, loopStreamEntryModelImpl, false);
+
+		args = new Object[] {
+			loopStreamEntryModelImpl.getLoopPersonId(),
+			loopStreamEntryModelImpl.getClassNameId(),
+			loopStreamEntryModelImpl.getClassPK()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByCPI_CNI_CP, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByCPI_CNI_CP, args, loopStreamEntryModelImpl,
+			false);
+
+		args = new Object[] {
+			loopStreamEntryModelImpl.getLoopPersonId(),
+			loopStreamEntryModelImpl.getLoopStreamId(),
+			loopStreamEntryModelImpl.getClassNameId(),
+			loopStreamEntryModelImpl.getClassPK()
+		};
+
+		finderCache.putResult(
+			_finderPathCountByCPI_CSI_CNI_CP, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByCPI_CSI_CNI_CP, args, loopStreamEntryModelImpl,
+			false);
+	}
+
+	protected void clearUniqueFindersCache(
+		LoopStreamEntryModelImpl loopStreamEntryModelImpl,
+		boolean clearCurrent) {
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
 				loopStreamEntryModelImpl.getLoopPersonId(),
 				loopStreamEntryModelImpl.getLoopStreamId(),
 				loopStreamEntryModelImpl.isFollowing()
 			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_CPI_CSI_F, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_F, args,
-			loopStreamEntryModelImpl, false);
+			finderCache.removeResult(_finderPathCountByCPI_CSI_F, args);
+			finderCache.removeResult(_finderPathFetchByCPI_CSI_F, args);
+		}
 
-		args = new Object[] {
+		if ((loopStreamEntryModelImpl.getColumnBitmask() &
+			 _finderPathFetchByCPI_CSI_F.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				loopStreamEntryModelImpl.getOriginalLoopPersonId(),
+				loopStreamEntryModelImpl.getOriginalLoopStreamId(),
+				loopStreamEntryModelImpl.getOriginalFollowing()
+			};
+
+			finderCache.removeResult(_finderPathCountByCPI_CSI_F, args);
+			finderCache.removeResult(_finderPathFetchByCPI_CSI_F, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
 				loopStreamEntryModelImpl.getLoopPersonId(),
 				loopStreamEntryModelImpl.getClassNameId(),
 				loopStreamEntryModelImpl.getClassPK()
 			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_CPI_CNI_CP, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP, args,
-			loopStreamEntryModelImpl, false);
+			finderCache.removeResult(_finderPathCountByCPI_CNI_CP, args);
+			finderCache.removeResult(_finderPathFetchByCPI_CNI_CP, args);
+		}
 
-		args = new Object[] {
+		if ((loopStreamEntryModelImpl.getColumnBitmask() &
+			 _finderPathFetchByCPI_CNI_CP.getColumnBitmask()) != 0) {
+
+			Object[] args = new Object[] {
+				loopStreamEntryModelImpl.getOriginalLoopPersonId(),
+				loopStreamEntryModelImpl.getOriginalClassNameId(),
+				loopStreamEntryModelImpl.getOriginalClassPK()
+			};
+
+			finderCache.removeResult(_finderPathCountByCPI_CNI_CP, args);
+			finderCache.removeResult(_finderPathFetchByCPI_CNI_CP, args);
+		}
+
+		if (clearCurrent) {
+			Object[] args = new Object[] {
 				loopStreamEntryModelImpl.getLoopPersonId(),
 				loopStreamEntryModelImpl.getLoopStreamId(),
 				loopStreamEntryModelImpl.getClassNameId(),
 				loopStreamEntryModelImpl.getClassPK()
 			};
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_CPI_CSI_CNI_CP, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP, args,
-			loopStreamEntryModelImpl, false);
-	}
-
-	protected void clearUniqueFindersCache(
-		LoopStreamEntryModelImpl loopStreamEntryModelImpl, boolean clearCurrent) {
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-					loopStreamEntryModelImpl.getLoopPersonId(),
-					loopStreamEntryModelImpl.getLoopStreamId(),
-					loopStreamEntryModelImpl.isFollowing()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_CPI_CSI_F, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CSI_F, args);
+			finderCache.removeResult(_finderPathCountByCPI_CSI_CNI_CP, args);
+			finderCache.removeResult(_finderPathFetchByCPI_CSI_CNI_CP, args);
 		}
 
 		if ((loopStreamEntryModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_CPI_CSI_F.getColumnBitmask()) != 0) {
+			 _finderPathFetchByCPI_CSI_CNI_CP.getColumnBitmask()) != 0) {
+
 			Object[] args = new Object[] {
-					loopStreamEntryModelImpl.getOriginalLoopPersonId(),
-					loopStreamEntryModelImpl.getOriginalLoopStreamId(),
-					loopStreamEntryModelImpl.getOriginalFollowing()
-				};
+				loopStreamEntryModelImpl.getOriginalLoopPersonId(),
+				loopStreamEntryModelImpl.getOriginalLoopStreamId(),
+				loopStreamEntryModelImpl.getOriginalClassNameId(),
+				loopStreamEntryModelImpl.getOriginalClassPK()
+			};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_CPI_CSI_F, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CSI_F, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-					loopStreamEntryModelImpl.getLoopPersonId(),
-					loopStreamEntryModelImpl.getClassNameId(),
-					loopStreamEntryModelImpl.getClassPK()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_CPI_CNI_CP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP, args);
-		}
-
-		if ((loopStreamEntryModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_CPI_CNI_CP.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					loopStreamEntryModelImpl.getOriginalLoopPersonId(),
-					loopStreamEntryModelImpl.getOriginalClassNameId(),
-					loopStreamEntryModelImpl.getOriginalClassPK()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_CPI_CNI_CP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CNI_CP, args);
-		}
-
-		if (clearCurrent) {
-			Object[] args = new Object[] {
-					loopStreamEntryModelImpl.getLoopPersonId(),
-					loopStreamEntryModelImpl.getLoopStreamId(),
-					loopStreamEntryModelImpl.getClassNameId(),
-					loopStreamEntryModelImpl.getClassPK()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_CPI_CSI_CNI_CP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP, args);
-		}
-
-		if ((loopStreamEntryModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					loopStreamEntryModelImpl.getOriginalLoopPersonId(),
-					loopStreamEntryModelImpl.getOriginalLoopStreamId(),
-					loopStreamEntryModelImpl.getOriginalClassNameId(),
-					loopStreamEntryModelImpl.getOriginalClassPK()
-				};
-
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_CPI_CSI_CNI_CP, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_CPI_CSI_CNI_CP, args);
+			finderCache.removeResult(_finderPathCountByCPI_CSI_CNI_CP, args);
+			finderCache.removeResult(_finderPathFetchByCPI_CSI_CNI_CP, args);
 		}
 	}
 
@@ -1141,6 +1179,7 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	@Override
 	public LoopStreamEntry remove(long loopStreamEntryId)
 		throws NoSuchLoopStreamEntryException {
+
 		return remove((Serializable)loopStreamEntryId);
 	}
 
@@ -1154,30 +1193,31 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	@Override
 	public LoopStreamEntry remove(Serializable primaryKey)
 		throws NoSuchLoopStreamEntryException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopStreamEntry loopStreamEntry = (LoopStreamEntry)session.get(LoopStreamEntryImpl.class,
-					primaryKey);
+			LoopStreamEntry loopStreamEntry = (LoopStreamEntry)session.get(
+				LoopStreamEntryImpl.class, primaryKey);
 
 			if (loopStreamEntry == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopStreamEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchLoopStreamEntryException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(loopStreamEntry);
 		}
-		catch (NoSuchLoopStreamEntryException nsee) {
-			throw nsee;
+		catch (NoSuchLoopStreamEntryException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1186,24 +1226,23 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 
 	@Override
 	protected LoopStreamEntry removeImpl(LoopStreamEntry loopStreamEntry) {
-		loopStreamEntry = toUnwrappedModel(loopStreamEntry);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(loopStreamEntry)) {
-				loopStreamEntry = (LoopStreamEntry)session.get(LoopStreamEntryImpl.class,
-						loopStreamEntry.getPrimaryKeyObj());
+				loopStreamEntry = (LoopStreamEntry)session.get(
+					LoopStreamEntryImpl.class,
+					loopStreamEntry.getPrimaryKeyObj());
 			}
 
 			if (loopStreamEntry != null) {
 				session.delete(loopStreamEntry);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1218,11 +1257,27 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 
 	@Override
 	public LoopStreamEntry updateImpl(LoopStreamEntry loopStreamEntry) {
-		loopStreamEntry = toUnwrappedModel(loopStreamEntry);
-
 		boolean isNew = loopStreamEntry.isNew();
 
-		LoopStreamEntryModelImpl loopStreamEntryModelImpl = (LoopStreamEntryModelImpl)loopStreamEntry;
+		if (!(loopStreamEntry instanceof LoopStreamEntryModelImpl)) {
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(loopStreamEntry.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					loopStreamEntry);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in loopStreamEntry proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom LoopStreamEntry implementation " +
+					loopStreamEntry.getClass());
+		}
+
+		LoopStreamEntryModelImpl loopStreamEntryModelImpl =
+			(LoopStreamEntryModelImpl)loopStreamEntry;
 
 		Session session = null;
 
@@ -1235,11 +1290,12 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 				loopStreamEntry.setNew(false);
 			}
 			else {
-				loopStreamEntry = (LoopStreamEntry)session.merge(loopStreamEntry);
+				loopStreamEntry = (LoopStreamEntry)session.merge(
+					loopStreamEntry);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1250,14 +1306,14 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		if (!LoopStreamEntryModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 			LoopStreamEntryImpl.class, loopStreamEntry.getPrimaryKey(),
 			loopStreamEntry, false);
 
@@ -1269,29 +1325,8 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		return loopStreamEntry;
 	}
 
-	protected LoopStreamEntry toUnwrappedModel(LoopStreamEntry loopStreamEntry) {
-		if (loopStreamEntry instanceof LoopStreamEntryImpl) {
-			return loopStreamEntry;
-		}
-
-		LoopStreamEntryImpl loopStreamEntryImpl = new LoopStreamEntryImpl();
-
-		loopStreamEntryImpl.setNew(loopStreamEntry.isNew());
-		loopStreamEntryImpl.setPrimaryKey(loopStreamEntry.getPrimaryKey());
-
-		loopStreamEntryImpl.setLoopStreamEntryId(loopStreamEntry.getLoopStreamEntryId());
-		loopStreamEntryImpl.setLoopPersonId(loopStreamEntry.getLoopPersonId());
-		loopStreamEntryImpl.setLoopStreamId(loopStreamEntry.getLoopStreamId());
-		loopStreamEntryImpl.setClassNameId(loopStreamEntry.getClassNameId());
-		loopStreamEntryImpl.setClassPK(loopStreamEntry.getClassPK());
-		loopStreamEntryImpl.setFollowing(loopStreamEntry.isFollowing());
-		loopStreamEntryImpl.setFollowingType(loopStreamEntry.getFollowingType());
-
-		return loopStreamEntryImpl;
-	}
-
 	/**
-	 * Returns the loop stream entry with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the loop stream entry with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop stream entry
 	 * @return the loop stream entry
@@ -1300,6 +1335,7 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	@Override
 	public LoopStreamEntry findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopStreamEntryException {
+
 		LoopStreamEntry loopStreamEntry = fetchByPrimaryKey(primaryKey);
 
 		if (loopStreamEntry == null) {
@@ -1307,15 +1343,15 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopStreamEntryException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchLoopStreamEntryException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return loopStreamEntry;
 	}
 
 	/**
-	 * Returns the loop stream entry with the primary key or throws a {@link NoSuchLoopStreamEntryException} if it could not be found.
+	 * Returns the loop stream entry with the primary key or throws a <code>NoSuchLoopStreamEntryException</code> if it could not be found.
 	 *
 	 * @param loopStreamEntryId the primary key of the loop stream entry
 	 * @return the loop stream entry
@@ -1324,6 +1360,7 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	@Override
 	public LoopStreamEntry findByPrimaryKey(long loopStreamEntryId)
 		throws NoSuchLoopStreamEntryException {
+
 		return findByPrimaryKey((Serializable)loopStreamEntryId);
 	}
 
@@ -1335,8 +1372,9 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 */
 	@Override
 	public LoopStreamEntry fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-				LoopStreamEntryImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -1350,22 +1388,24 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 			try {
 				session = openSession();
 
-				loopStreamEntry = (LoopStreamEntry)session.get(LoopStreamEntryImpl.class,
-						primaryKey);
+				loopStreamEntry = (LoopStreamEntry)session.get(
+					LoopStreamEntryImpl.class, primaryKey);
 
 				if (loopStreamEntry != null) {
 					cacheResult(loopStreamEntry);
 				}
 				else {
-					entityCache.putResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 						LoopStreamEntryImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 					LoopStreamEntryImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1389,11 +1429,13 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	@Override
 	public Map<Serializable, LoopStreamEntry> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopStreamEntry> map = new HashMap<Serializable, LoopStreamEntry>();
+		Map<Serializable, LoopStreamEntry> map =
+			new HashMap<Serializable, LoopStreamEntry>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -1412,8 +1454,9 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
-					LoopStreamEntryImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+				LoopStreamEntryImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -1433,31 +1476,33 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_LOOPSTREAMENTRY_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (LoopStreamEntry loopStreamEntry : (List<LoopStreamEntry>)q.list()) {
+			for (LoopStreamEntry loopStreamEntry :
+					(List<LoopStreamEntry>)query.list()) {
+
 				map.put(loopStreamEntry.getPrimaryKeyObj(), loopStreamEntry);
 
 				cacheResult(loopStreamEntry);
@@ -1466,12 +1511,13 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
 					LoopStreamEntryImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1494,7 +1540,7 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * Returns a range of all the loop stream entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStreamEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStreamEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop stream entries
@@ -1510,7 +1556,7 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * Returns an ordered range of all the loop stream entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStreamEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStreamEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop stream entries
@@ -1519,8 +1565,10 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * @return the ordered range of loop stream entries
 	 */
 	@Override
-	public List<LoopStreamEntry> findAll(int start, int end,
+	public List<LoopStreamEntry> findAll(
+		int start, int end,
 		OrderByComparator<LoopStreamEntry> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -1528,62 +1576,63 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * Returns an ordered range of all the loop stream entries.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStreamEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStreamEntryModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop stream entries
 	 * @param end the upper bound of the range of loop stream entries (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of loop stream entries
 	 */
 	@Override
-	public List<LoopStreamEntry> findAll(int start, int end,
+	public List<LoopStreamEntry> findAll(
+		int start, int end,
 		OrderByComparator<LoopStreamEntry> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<LoopStreamEntry> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<LoopStreamEntry>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<LoopStreamEntry>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_LOOPSTREAMENTRY);
+				sb.append(_SQL_SELECT_LOOPSTREAMENTRY);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPSTREAMENTRY;
 
-				if (pagination) {
-					sql = sql.concat(LoopStreamEntryModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(LoopStreamEntryModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1591,29 +1640,23 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<LoopStreamEntry>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LoopStreamEntry>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<LoopStreamEntry>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1641,8 +1684,8 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -1650,18 +1693,18 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_LOOPSTREAMENTRY);
+				Query query = session.createQuery(_SQL_COUNT_LOOPSTREAMENTRY);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1680,6 +1723,89 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 	 * Initializes the loop stream entry persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_LIST_WITH_PAGINATION,
+			"findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStreamEntryImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByCPI_CSI_F = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByCPI_CSI_F",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Boolean.class.getName()
+			},
+			LoopStreamEntryModelImpl.LOOPPERSONID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.LOOPSTREAMID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.FOLLOWING_COLUMN_BITMASK);
+
+		_finderPathCountByCPI_CSI_F = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPI_CSI_F",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Boolean.class.getName()
+			});
+
+		_finderPathFetchByCPI_CNI_CP = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByCPI_CNI_CP",
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			},
+			LoopStreamEntryModelImpl.LOOPPERSONID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+
+		_finderPathCountByCPI_CNI_CP = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPI_CNI_CP",
+			new String[] {
+				Long.class.getName(), Long.class.getName(), Long.class.getName()
+			});
+
+		_finderPathFetchByCPI_CSI_CNI_CP = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED,
+			LoopStreamEntryImpl.class, FINDER_CLASS_NAME_ENTITY,
+			"fetchByCPI_CSI_CNI_CP",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Long.class.getName(), Long.class.getName()
+			},
+			LoopStreamEntryModelImpl.LOOPPERSONID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.LOOPSTREAMID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.CLASSNAMEID_COLUMN_BITMASK |
+			LoopStreamEntryModelImpl.CLASSPK_COLUMN_BITMASK);
+
+		_finderPathCountByCPI_CSI_CNI_CP = new FinderPath(
+			LoopStreamEntryModelImpl.ENTITY_CACHE_ENABLED,
+			LoopStreamEntryModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByCPI_CSI_CNI_CP",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Long.class.getName(), Long.class.getName()
+			});
 	}
 
 	public void destroy() {
@@ -1691,15 +1817,34 @@ public class LoopStreamEntryPersistenceImpl extends BasePersistenceImpl<LoopStre
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_LOOPSTREAMENTRY = "SELECT loopStreamEntry FROM LoopStreamEntry loopStreamEntry";
-	private static final String _SQL_SELECT_LOOPSTREAMENTRY_WHERE_PKS_IN = "SELECT loopStreamEntry FROM LoopStreamEntry loopStreamEntry WHERE loopStreamEntryId IN (";
-	private static final String _SQL_SELECT_LOOPSTREAMENTRY_WHERE = "SELECT loopStreamEntry FROM LoopStreamEntry loopStreamEntry WHERE ";
-	private static final String _SQL_COUNT_LOOPSTREAMENTRY = "SELECT COUNT(loopStreamEntry) FROM LoopStreamEntry loopStreamEntry";
-	private static final String _SQL_COUNT_LOOPSTREAMENTRY_WHERE = "SELECT COUNT(loopStreamEntry) FROM LoopStreamEntry loopStreamEntry WHERE ";
+
+	private static final String _SQL_SELECT_LOOPSTREAMENTRY =
+		"SELECT loopStreamEntry FROM LoopStreamEntry loopStreamEntry";
+
+	private static final String _SQL_SELECT_LOOPSTREAMENTRY_WHERE_PKS_IN =
+		"SELECT loopStreamEntry FROM LoopStreamEntry loopStreamEntry WHERE loopStreamEntryId IN (";
+
+	private static final String _SQL_SELECT_LOOPSTREAMENTRY_WHERE =
+		"SELECT loopStreamEntry FROM LoopStreamEntry loopStreamEntry WHERE ";
+
+	private static final String _SQL_COUNT_LOOPSTREAMENTRY =
+		"SELECT COUNT(loopStreamEntry) FROM LoopStreamEntry loopStreamEntry";
+
+	private static final String _SQL_COUNT_LOOPSTREAMENTRY_WHERE =
+		"SELECT COUNT(loopStreamEntry) FROM LoopStreamEntry loopStreamEntry WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "loopStreamEntry.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopStreamEntry exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LoopStreamEntry exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(LoopStreamEntryPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No LoopStreamEntry exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No LoopStreamEntry exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LoopStreamEntryPersistenceImpl.class);
+
 }

@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see LoopTopicAssignment
  * @generated
  */
-@ProviderType
-public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
-	ModelWrapper<LoopTopicAssignment> {
+public class LoopTopicAssignmentWrapper
+	implements LoopTopicAssignment, ModelWrapper<LoopTopicAssignment> {
+
 	public LoopTopicAssignmentWrapper(LoopTopicAssignment loopTopicAssignment) {
 		_loopTopicAssignment = loopTopicAssignment;
 	}
@@ -61,10 +58,10 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 		attributes.put("loopTopicAssignmentId", getLoopTopicAssignmentId());
 		attributes.put("loopPersonId", getLoopPersonId());
 		attributes.put("loopTopicId", getLoopTopicId());
-		attributes.put("status", getStatus());
+		attributes.put("statusByDate", getStatusByDate());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
-		attributes.put("statusByDate", getStatusByDate());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -72,7 +69,7 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	@Override
 	public void setModelAttributes(Map<String, Object> attributes) {
 		Long loopTopicAssignmentId = (Long)attributes.get(
-				"loopTopicAssignmentId");
+			"loopTopicAssignmentId");
 
 		if (loopTopicAssignmentId != null) {
 			setLoopTopicAssignmentId(loopTopicAssignmentId);
@@ -90,10 +87,10 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 			setLoopTopicId(loopTopicId);
 		}
 
-		Integer status = (Integer)attributes.get("status");
+		Date statusByDate = (Date)attributes.get("statusByDate");
 
-		if (status != null) {
-			setStatus(status);
+		if (statusByDate != null) {
+			setStatusByDate(statusByDate);
 		}
 
 		Long statusByUserId = (Long)attributes.get("statusByUserId");
@@ -108,16 +105,17 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 			setStatusByUserName(statusByUserName);
 		}
 
-		Date statusByDate = (Date)attributes.get("statusByDate");
+		Integer status = (Integer)attributes.get("status");
 
-		if (statusByDate != null) {
-			setStatusByDate(statusByDate);
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
 	@Override
 	public Object clone() {
-		return new LoopTopicAssignmentWrapper((LoopTopicAssignment)_loopTopicAssignment.clone());
+		return new LoopTopicAssignmentWrapper(
+			(LoopTopicAssignment)_loopTopicAssignment.clone());
 	}
 
 	@Override
@@ -131,40 +129,40 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	}
 
 	/**
-	* Returns the loop person ID of this loop topic assignment.
-	*
-	* @return the loop person ID of this loop topic assignment
-	*/
+	 * Returns the loop person ID of this loop topic assignment.
+	 *
+	 * @return the loop person ID of this loop topic assignment
+	 */
 	@Override
 	public long getLoopPersonId() {
 		return _loopTopicAssignment.getLoopPersonId();
 	}
 
 	/**
-	* Returns the loop topic assignment ID of this loop topic assignment.
-	*
-	* @return the loop topic assignment ID of this loop topic assignment
-	*/
+	 * Returns the loop topic assignment ID of this loop topic assignment.
+	 *
+	 * @return the loop topic assignment ID of this loop topic assignment
+	 */
 	@Override
 	public long getLoopTopicAssignmentId() {
 		return _loopTopicAssignment.getLoopTopicAssignmentId();
 	}
 
 	/**
-	* Returns the loop topic ID of this loop topic assignment.
-	*
-	* @return the loop topic ID of this loop topic assignment
-	*/
+	 * Returns the loop topic ID of this loop topic assignment.
+	 *
+	 * @return the loop topic ID of this loop topic assignment
+	 */
 	@Override
 	public long getLoopTopicId() {
 		return _loopTopicAssignment.getLoopTopicId();
 	}
 
 	/**
-	* Returns the primary key of this loop topic assignment.
-	*
-	* @return the primary key of this loop topic assignment
-	*/
+	 * Returns the primary key of this loop topic assignment.
+	 *
+	 * @return the primary key of this loop topic assignment
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopTopicAssignment.getPrimaryKey();
@@ -176,50 +174,50 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	}
 
 	/**
-	* Returns the status of this loop topic assignment.
-	*
-	* @return the status of this loop topic assignment
-	*/
+	 * Returns the status of this loop topic assignment.
+	 *
+	 * @return the status of this loop topic assignment
+	 */
 	@Override
 	public int getStatus() {
 		return _loopTopicAssignment.getStatus();
 	}
 
 	/**
-	* Returns the status by date of this loop topic assignment.
-	*
-	* @return the status by date of this loop topic assignment
-	*/
+	 * Returns the status by date of this loop topic assignment.
+	 *
+	 * @return the status by date of this loop topic assignment
+	 */
 	@Override
 	public Date getStatusByDate() {
 		return _loopTopicAssignment.getStatusByDate();
 	}
 
 	/**
-	* Returns the status by user ID of this loop topic assignment.
-	*
-	* @return the status by user ID of this loop topic assignment
-	*/
+	 * Returns the status by user ID of this loop topic assignment.
+	 *
+	 * @return the status by user ID of this loop topic assignment
+	 */
 	@Override
 	public long getStatusByUserId() {
 		return _loopTopicAssignment.getStatusByUserId();
 	}
 
 	/**
-	* Returns the status by user name of this loop topic assignment.
-	*
-	* @return the status by user name of this loop topic assignment
-	*/
+	 * Returns the status by user name of this loop topic assignment.
+	 *
+	 * @return the status by user name of this loop topic assignment
+	 */
 	@Override
 	public String getStatusByUserName() {
 		return _loopTopicAssignment.getStatusByUserName();
 	}
 
 	/**
-	* Returns the status by user uuid of this loop topic assignment.
-	*
-	* @return the status by user uuid of this loop topic assignment
-	*/
+	 * Returns the status by user uuid of this loop topic assignment.
+	 *
+	 * @return the status by user uuid of this loop topic assignment
+	 */
 	@Override
 	public String getStatusByUserUuid() {
 		return _loopTopicAssignment.getStatusByUserUuid();
@@ -258,6 +256,7 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopTopicAssignment.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -272,30 +271,30 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	}
 
 	/**
-	* Sets the loop person ID of this loop topic assignment.
-	*
-	* @param loopPersonId the loop person ID of this loop topic assignment
-	*/
+	 * Sets the loop person ID of this loop topic assignment.
+	 *
+	 * @param loopPersonId the loop person ID of this loop topic assignment
+	 */
 	@Override
 	public void setLoopPersonId(long loopPersonId) {
 		_loopTopicAssignment.setLoopPersonId(loopPersonId);
 	}
 
 	/**
-	* Sets the loop topic assignment ID of this loop topic assignment.
-	*
-	* @param loopTopicAssignmentId the loop topic assignment ID of this loop topic assignment
-	*/
+	 * Sets the loop topic assignment ID of this loop topic assignment.
+	 *
+	 * @param loopTopicAssignmentId the loop topic assignment ID of this loop topic assignment
+	 */
 	@Override
 	public void setLoopTopicAssignmentId(long loopTopicAssignmentId) {
 		_loopTopicAssignment.setLoopTopicAssignmentId(loopTopicAssignmentId);
 	}
 
 	/**
-	* Sets the loop topic ID of this loop topic assignment.
-	*
-	* @param loopTopicId the loop topic ID of this loop topic assignment
-	*/
+	 * Sets the loop topic ID of this loop topic assignment.
+	 *
+	 * @param loopTopicId the loop topic ID of this loop topic assignment
+	 */
 	@Override
 	public void setLoopTopicId(long loopTopicId) {
 		_loopTopicAssignment.setLoopTopicId(loopTopicId);
@@ -307,10 +306,10 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	}
 
 	/**
-	* Sets the primary key of this loop topic assignment.
-	*
-	* @param primaryKey the primary key of this loop topic assignment
-	*/
+	 * Sets the primary key of this loop topic assignment.
+	 *
+	 * @param primaryKey the primary key of this loop topic assignment
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopTopicAssignment.setPrimaryKey(primaryKey);
@@ -322,63 +321,66 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	}
 
 	/**
-	* Sets the status of this loop topic assignment.
-	*
-	* @param status the status of this loop topic assignment
-	*/
+	 * Sets the status of this loop topic assignment.
+	 *
+	 * @param status the status of this loop topic assignment
+	 */
 	@Override
 	public void setStatus(int status) {
 		_loopTopicAssignment.setStatus(status);
 	}
 
 	/**
-	* Sets the status by date of this loop topic assignment.
-	*
-	* @param statusByDate the status by date of this loop topic assignment
-	*/
+	 * Sets the status by date of this loop topic assignment.
+	 *
+	 * @param statusByDate the status by date of this loop topic assignment
+	 */
 	@Override
 	public void setStatusByDate(Date statusByDate) {
 		_loopTopicAssignment.setStatusByDate(statusByDate);
 	}
 
 	/**
-	* Sets the status by user ID of this loop topic assignment.
-	*
-	* @param statusByUserId the status by user ID of this loop topic assignment
-	*/
+	 * Sets the status by user ID of this loop topic assignment.
+	 *
+	 * @param statusByUserId the status by user ID of this loop topic assignment
+	 */
 	@Override
 	public void setStatusByUserId(long statusByUserId) {
 		_loopTopicAssignment.setStatusByUserId(statusByUserId);
 	}
 
 	/**
-	* Sets the status by user name of this loop topic assignment.
-	*
-	* @param statusByUserName the status by user name of this loop topic assignment
-	*/
+	 * Sets the status by user name of this loop topic assignment.
+	 *
+	 * @param statusByUserName the status by user name of this loop topic assignment
+	 */
 	@Override
 	public void setStatusByUserName(String statusByUserName) {
 		_loopTopicAssignment.setStatusByUserName(statusByUserName);
 	}
 
 	/**
-	* Sets the status by user uuid of this loop topic assignment.
-	*
-	* @param statusByUserUuid the status by user uuid of this loop topic assignment
-	*/
+	 * Sets the status by user uuid of this loop topic assignment.
+	 *
+	 * @param statusByUserUuid the status by user uuid of this loop topic assignment
+	 */
 	@Override
 	public void setStatusByUserUuid(String statusByUserUuid) {
 		_loopTopicAssignment.setStatusByUserUuid(statusByUserUuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopTopicAssignment> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopTopicAssignment>
+		toCacheModel() {
+
 		return _loopTopicAssignment.toCacheModel();
 	}
 
 	@Override
 	public LoopTopicAssignment toEscapedModel() {
-		return new LoopTopicAssignmentWrapper(_loopTopicAssignment.toEscapedModel());
+		return new LoopTopicAssignmentWrapper(
+			_loopTopicAssignment.toEscapedModel());
 	}
 
 	@Override
@@ -388,7 +390,8 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 
 	@Override
 	public LoopTopicAssignment toUnescapedModel() {
-		return new LoopTopicAssignmentWrapper(_loopTopicAssignment.toUnescapedModel());
+		return new LoopTopicAssignmentWrapper(
+			_loopTopicAssignment.toUnescapedModel());
 	}
 
 	@Override
@@ -406,10 +409,13 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 			return false;
 		}
 
-		LoopTopicAssignmentWrapper loopTopicAssignmentWrapper = (LoopTopicAssignmentWrapper)obj;
+		LoopTopicAssignmentWrapper loopTopicAssignmentWrapper =
+			(LoopTopicAssignmentWrapper)obj;
 
-		if (Objects.equals(_loopTopicAssignment,
-					loopTopicAssignmentWrapper._loopTopicAssignment)) {
+		if (Objects.equals(
+				_loopTopicAssignment,
+				loopTopicAssignmentWrapper._loopTopicAssignment)) {
+
 			return true;
 		}
 
@@ -437,4 +443,5 @@ public class LoopTopicAssignmentWrapper implements LoopTopicAssignment,
 	}
 
 	private final LoopTopicAssignment _loopTopicAssignment;
+
 }

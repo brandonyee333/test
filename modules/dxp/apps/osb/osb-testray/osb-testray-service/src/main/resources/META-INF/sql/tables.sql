@@ -311,8 +311,8 @@ create table OSB_TestraySubtask (
 	testrayTaskId LONG,
 	name VARCHAR(75) null,
 	score INTEGER,
-	status INTEGER,
-	statusUpdateDate DATE null
+	statusUpdateDate DATE null,
+	status INTEGER
 );
 
 create table OSB_TestraySubtasks_TestrayCaseResults (
@@ -360,8 +360,8 @@ create table OSB_TestrayTask (
 	modifiedDate DATE null,
 	testrayBuildId LONG,
 	name VARCHAR(150) null,
-	status INTEGER,
-	statusUpdateDate DATE null
+	statusUpdateDate DATE null,
+	status INTEGER
 );
 
 create table OSB_TestrayTasks_TestrayCaseTypes (

@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see LoopStreamEntry
  * @generated
  */
-@ProviderType
-public class LoopStreamEntryWrapper implements LoopStreamEntry,
-	ModelWrapper<LoopStreamEntry> {
+public class LoopStreamEntryWrapper
+	implements LoopStreamEntry, ModelWrapper<LoopStreamEntry> {
+
 	public LoopStreamEntryWrapper(LoopStreamEntry loopStreamEntry) {
 		_loopStreamEntry = loopStreamEntry;
 	}
@@ -115,7 +112,8 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 
 	@Override
 	public Object clone() {
-		return new LoopStreamEntryWrapper((LoopStreamEntry)_loopStreamEntry.clone());
+		return new LoopStreamEntryWrapper(
+			(LoopStreamEntry)_loopStreamEntry.clone());
 	}
 
 	@Override
@@ -124,30 +122,30 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	/**
-	* Returns the fully qualified class name of this loop stream entry.
-	*
-	* @return the fully qualified class name of this loop stream entry
-	*/
+	 * Returns the fully qualified class name of this loop stream entry.
+	 *
+	 * @return the fully qualified class name of this loop stream entry
+	 */
 	@Override
 	public String getClassName() {
 		return _loopStreamEntry.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this loop stream entry.
-	*
-	* @return the class name ID of this loop stream entry
-	*/
+	 * Returns the class name ID of this loop stream entry.
+	 *
+	 * @return the class name ID of this loop stream entry
+	 */
 	@Override
 	public long getClassNameId() {
 		return _loopStreamEntry.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this loop stream entry.
-	*
-	* @return the class pk of this loop stream entry
-	*/
+	 * Returns the class pk of this loop stream entry.
+	 *
+	 * @return the class pk of this loop stream entry
+	 */
 	@Override
 	public long getClassPK() {
 		return _loopStreamEntry.getClassPK();
@@ -159,60 +157,60 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	/**
-	* Returns the following of this loop stream entry.
-	*
-	* @return the following of this loop stream entry
-	*/
+	 * Returns the following of this loop stream entry.
+	 *
+	 * @return the following of this loop stream entry
+	 */
 	@Override
 	public boolean getFollowing() {
 		return _loopStreamEntry.getFollowing();
 	}
 
 	/**
-	* Returns the following type of this loop stream entry.
-	*
-	* @return the following type of this loop stream entry
-	*/
+	 * Returns the following type of this loop stream entry.
+	 *
+	 * @return the following type of this loop stream entry
+	 */
 	@Override
 	public int getFollowingType() {
 		return _loopStreamEntry.getFollowingType();
 	}
 
 	/**
-	* Returns the loop person ID of this loop stream entry.
-	*
-	* @return the loop person ID of this loop stream entry
-	*/
+	 * Returns the loop person ID of this loop stream entry.
+	 *
+	 * @return the loop person ID of this loop stream entry
+	 */
 	@Override
 	public long getLoopPersonId() {
 		return _loopStreamEntry.getLoopPersonId();
 	}
 
 	/**
-	* Returns the loop stream entry ID of this loop stream entry.
-	*
-	* @return the loop stream entry ID of this loop stream entry
-	*/
+	 * Returns the loop stream entry ID of this loop stream entry.
+	 *
+	 * @return the loop stream entry ID of this loop stream entry
+	 */
 	@Override
 	public long getLoopStreamEntryId() {
 		return _loopStreamEntry.getLoopStreamEntryId();
 	}
 
 	/**
-	* Returns the loop stream ID of this loop stream entry.
-	*
-	* @return the loop stream ID of this loop stream entry
-	*/
+	 * Returns the loop stream ID of this loop stream entry.
+	 *
+	 * @return the loop stream ID of this loop stream entry
+	 */
 	@Override
 	public long getLoopStreamId() {
 		return _loopStreamEntry.getLoopStreamId();
 	}
 
 	/**
-	* Returns the primary key of this loop stream entry.
-	*
-	* @return the primary key of this loop stream entry
-	*/
+	 * Returns the primary key of this loop stream entry.
+	 *
+	 * @return the primary key of this loop stream entry
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopStreamEntry.getPrimaryKey();
@@ -239,10 +237,10 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	/**
-	* Returns <code>true</code> if this loop stream entry is following.
-	*
-	* @return <code>true</code> if this loop stream entry is following; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this loop stream entry is following.
+	 *
+	 * @return <code>true</code> if this loop stream entry is following; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isFollowing() {
 		return _loopStreamEntry.isFollowing();
@@ -269,20 +267,20 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	/**
-	* Sets the class name ID of this loop stream entry.
-	*
-	* @param classNameId the class name ID of this loop stream entry
-	*/
+	 * Sets the class name ID of this loop stream entry.
+	 *
+	 * @param classNameId the class name ID of this loop stream entry
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_loopStreamEntry.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this loop stream entry.
-	*
-	* @param classPK the class pk of this loop stream entry
-	*/
+	 * Sets the class pk of this loop stream entry.
+	 *
+	 * @param classPK the class pk of this loop stream entry
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_loopStreamEntry.setClassPK(classPK);
@@ -291,6 +289,7 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopStreamEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -305,50 +304,50 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	/**
-	* Sets whether this loop stream entry is following.
-	*
-	* @param following the following of this loop stream entry
-	*/
+	 * Sets whether this loop stream entry is following.
+	 *
+	 * @param following the following of this loop stream entry
+	 */
 	@Override
 	public void setFollowing(boolean following) {
 		_loopStreamEntry.setFollowing(following);
 	}
 
 	/**
-	* Sets the following type of this loop stream entry.
-	*
-	* @param followingType the following type of this loop stream entry
-	*/
+	 * Sets the following type of this loop stream entry.
+	 *
+	 * @param followingType the following type of this loop stream entry
+	 */
 	@Override
 	public void setFollowingType(int followingType) {
 		_loopStreamEntry.setFollowingType(followingType);
 	}
 
 	/**
-	* Sets the loop person ID of this loop stream entry.
-	*
-	* @param loopPersonId the loop person ID of this loop stream entry
-	*/
+	 * Sets the loop person ID of this loop stream entry.
+	 *
+	 * @param loopPersonId the loop person ID of this loop stream entry
+	 */
 	@Override
 	public void setLoopPersonId(long loopPersonId) {
 		_loopStreamEntry.setLoopPersonId(loopPersonId);
 	}
 
 	/**
-	* Sets the loop stream entry ID of this loop stream entry.
-	*
-	* @param loopStreamEntryId the loop stream entry ID of this loop stream entry
-	*/
+	 * Sets the loop stream entry ID of this loop stream entry.
+	 *
+	 * @param loopStreamEntryId the loop stream entry ID of this loop stream entry
+	 */
 	@Override
 	public void setLoopStreamEntryId(long loopStreamEntryId) {
 		_loopStreamEntry.setLoopStreamEntryId(loopStreamEntryId);
 	}
 
 	/**
-	* Sets the loop stream ID of this loop stream entry.
-	*
-	* @param loopStreamId the loop stream ID of this loop stream entry
-	*/
+	 * Sets the loop stream ID of this loop stream entry.
+	 *
+	 * @param loopStreamId the loop stream ID of this loop stream entry
+	 */
 	@Override
 	public void setLoopStreamId(long loopStreamId) {
 		_loopStreamEntry.setLoopStreamId(loopStreamId);
@@ -360,10 +359,10 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	/**
-	* Sets the primary key of this loop stream entry.
-	*
-	* @param primaryKey the primary key of this loop stream entry
-	*/
+	 * Sets the primary key of this loop stream entry.
+	 *
+	 * @param primaryKey the primary key of this loop stream entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopStreamEntry.setPrimaryKey(primaryKey);
@@ -375,7 +374,9 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopStreamEntry> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopStreamEntry>
+		toCacheModel() {
+
 		return _loopStreamEntry.toCacheModel();
 	}
 
@@ -409,10 +410,12 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 			return false;
 		}
 
-		LoopStreamEntryWrapper loopStreamEntryWrapper = (LoopStreamEntryWrapper)obj;
+		LoopStreamEntryWrapper loopStreamEntryWrapper =
+			(LoopStreamEntryWrapper)obj;
 
-		if (Objects.equals(_loopStreamEntry,
-					loopStreamEntryWrapper._loopStreamEntry)) {
+		if (Objects.equals(
+				_loopStreamEntry, loopStreamEntryWrapper._loopStreamEntry)) {
+
 			return true;
 		}
 
@@ -440,4 +443,5 @@ public class LoopStreamEntryWrapper implements LoopStreamEntry,
 	}
 
 	private final LoopStreamEntry _loopStreamEntry;
+
 }

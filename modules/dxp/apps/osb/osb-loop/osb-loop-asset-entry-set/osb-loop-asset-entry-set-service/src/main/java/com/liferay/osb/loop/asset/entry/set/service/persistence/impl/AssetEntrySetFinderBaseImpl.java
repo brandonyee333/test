@@ -1,22 +1,21 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.service.persistence.impl;
 
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
 import com.liferay.osb.loop.asset.entry.set.service.persistence.AssetEntrySetPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -32,25 +31,27 @@ import java.util.Set;
  * @author Brian Wing Shun Chan
  * @generated
  */
-public class AssetEntrySetFinderBaseImpl extends BasePersistenceImpl<AssetEntrySet> {
+public class AssetEntrySetFinderBaseImpl
+	extends BasePersistenceImpl<AssetEntrySet> {
+
 	public AssetEntrySetFinderBaseImpl() {
 		setModelClass(AssetEntrySet.class);
 
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("type", "type_");
+
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("type", "type_");
-
 			field.set(this, dbColumnNames);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -76,10 +77,14 @@ public class AssetEntrySetFinderBaseImpl extends BasePersistenceImpl<AssetEntryS
 	 */
 	public void setAssetEntrySetPersistence(
 		AssetEntrySetPersistence assetEntrySetPersistence) {
+
 		this.assetEntrySetPersistence = assetEntrySetPersistence;
 	}
 
 	@BeanReference(type = AssetEntrySetPersistence.class)
 	protected AssetEntrySetPersistence assetEntrySetPersistence;
-	private static final Log _log = LogFactoryUtil.getLog(AssetEntrySetFinderBaseImpl.class);
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AssetEntrySetFinderBaseImpl.class);
+
 }

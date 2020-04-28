@@ -312,8 +312,8 @@
 		<field name="testrayTaskId" type="long" />
 		<field name="name" type="String" />
 		<field name="score" type="int" />
-		<field name="status" type="int" />
 		<field name="statusUpdateDate" type="Date" />
+		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.osb.testray.model.TestraySuite">
 		<field name="testraySuiteId" type="long" />
@@ -347,8 +347,8 @@
 			<hint name="max-length">150</hint>
 			<validator name="required" />
 		</field>
-		<field name="status" type="int" />
 		<field name="statusUpdateDate" type="Date" />
+		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.osb.testray.model.TestrayTeam">
 		<field name="testrayTeamId" type="long" />

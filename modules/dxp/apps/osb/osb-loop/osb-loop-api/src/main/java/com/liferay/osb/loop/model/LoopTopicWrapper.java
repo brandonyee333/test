@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +34,8 @@ import java.util.Objects;
  * @see LoopTopic
  * @generated
  */
-@ProviderType
 public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
+
 	public LoopTopicWrapper(LoopTopic loopTopic) {
 		_loopTopic = loopTopic;
 	}
@@ -152,30 +149,30 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Returns the company ID of this loop topic.
-	*
-	* @return the company ID of this loop topic
-	*/
+	 * Returns the company ID of this loop topic.
+	 *
+	 * @return the company ID of this loop topic
+	 */
 	@Override
 	public long getCompanyId() {
 		return _loopTopic.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this loop topic.
-	*
-	* @return the create date of this loop topic
-	*/
+	 * Returns the create date of this loop topic.
+	 *
+	 * @return the create date of this loop topic
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _loopTopic.getCreateDate();
 	}
 
 	/**
-	* Returns the description of this loop topic.
-	*
-	* @return the description of this loop topic
-	*/
+	 * Returns the description of this loop topic.
+	 *
+	 * @return the description of this loop topic
+	 */
 	@Override
 	public String getDescription() {
 		return _loopTopic.getDescription();
@@ -187,70 +184,70 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Returns the image payload of this loop topic.
-	*
-	* @return the image payload of this loop topic
-	*/
+	 * Returns the image payload of this loop topic.
+	 *
+	 * @return the image payload of this loop topic
+	 */
 	@Override
 	public String getImagePayload() {
 		return _loopTopic.getImagePayload();
 	}
 
 	/**
-	* Returns the loop topic ID of this loop topic.
-	*
-	* @return the loop topic ID of this loop topic
-	*/
+	 * Returns the loop topic ID of this loop topic.
+	 *
+	 * @return the loop topic ID of this loop topic
+	 */
 	@Override
 	public long getLoopTopicId() {
 		return _loopTopic.getLoopTopicId();
 	}
 
 	/**
-	* Returns the merge time of this loop topic.
-	*
-	* @return the merge time of this loop topic
-	*/
+	 * Returns the merge time of this loop topic.
+	 *
+	 * @return the merge time of this loop topic
+	 */
 	@Override
 	public long getMergeTime() {
 		return _loopTopic.getMergeTime();
 	}
 
 	/**
-	* Returns the modified date of this loop topic.
-	*
-	* @return the modified date of this loop topic
-	*/
+	 * Returns the modified date of this loop topic.
+	 *
+	 * @return the modified date of this loop topic
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _loopTopic.getModifiedDate();
 	}
 
 	/**
-	* Returns the name of this loop topic.
-	*
-	* @return the name of this loop topic
-	*/
+	 * Returns the name of this loop topic.
+	 *
+	 * @return the name of this loop topic
+	 */
 	@Override
 	public String getName() {
 		return _loopTopic.getName();
 	}
 
 	/**
-	* Returns the parent loop topic ID of this loop topic.
-	*
-	* @return the parent loop topic ID of this loop topic
-	*/
+	 * Returns the parent loop topic ID of this loop topic.
+	 *
+	 * @return the parent loop topic ID of this loop topic
+	 */
 	@Override
 	public long getParentLoopTopicId() {
 		return _loopTopic.getParentLoopTopicId();
 	}
 
 	/**
-	* Returns the primary key of this loop topic.
-	*
-	* @return the primary key of this loop topic
-	*/
+	 * Returns the primary key of this loop topic.
+	 *
+	 * @return the primary key of this loop topic
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopTopic.getPrimaryKey();
@@ -262,30 +259,30 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Returns the user ID of this loop topic.
-	*
-	* @return the user ID of this loop topic
-	*/
+	 * Returns the user ID of this loop topic.
+	 *
+	 * @return the user ID of this loop topic
+	 */
 	@Override
 	public long getUserId() {
 		return _loopTopic.getUserId();
 	}
 
 	/**
-	* Returns the user name of this loop topic.
-	*
-	* @return the user name of this loop topic
-	*/
+	 * Returns the user name of this loop topic.
+	 *
+	 * @return the user name of this loop topic
+	 */
 	@Override
 	public String getUserName() {
 		return _loopTopic.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this loop topic.
-	*
-	* @return the user uuid of this loop topic
-	*/
+	 * Returns the user uuid of this loop topic.
+	 *
+	 * @return the user uuid of this loop topic
+	 */
 	@Override
 	public String getUserUuid() {
 		return _loopTopic.getUserUuid();
@@ -322,30 +319,30 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Sets the company ID of this loop topic.
-	*
-	* @param companyId the company ID of this loop topic
-	*/
+	 * Sets the company ID of this loop topic.
+	 *
+	 * @param companyId the company ID of this loop topic
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_loopTopic.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this loop topic.
-	*
-	* @param createDate the create date of this loop topic
-	*/
+	 * Sets the create date of this loop topic.
+	 *
+	 * @param createDate the create date of this loop topic
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_loopTopic.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this loop topic.
-	*
-	* @param description the description of this loop topic
-	*/
+	 * Sets the description of this loop topic.
+	 *
+	 * @param description the description of this loop topic
+	 */
 	@Override
 	public void setDescription(String description) {
 		_loopTopic.setDescription(description);
@@ -354,6 +351,7 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopTopic.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -368,50 +366,50 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Sets the image payload of this loop topic.
-	*
-	* @param imagePayload the image payload of this loop topic
-	*/
+	 * Sets the image payload of this loop topic.
+	 *
+	 * @param imagePayload the image payload of this loop topic
+	 */
 	@Override
 	public void setImagePayload(String imagePayload) {
 		_loopTopic.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the loop topic ID of this loop topic.
-	*
-	* @param loopTopicId the loop topic ID of this loop topic
-	*/
+	 * Sets the loop topic ID of this loop topic.
+	 *
+	 * @param loopTopicId the loop topic ID of this loop topic
+	 */
 	@Override
 	public void setLoopTopicId(long loopTopicId) {
 		_loopTopic.setLoopTopicId(loopTopicId);
 	}
 
 	/**
-	* Sets the merge time of this loop topic.
-	*
-	* @param mergeTime the merge time of this loop topic
-	*/
+	 * Sets the merge time of this loop topic.
+	 *
+	 * @param mergeTime the merge time of this loop topic
+	 */
 	@Override
 	public void setMergeTime(long mergeTime) {
 		_loopTopic.setMergeTime(mergeTime);
 	}
 
 	/**
-	* Sets the modified date of this loop topic.
-	*
-	* @param modifiedDate the modified date of this loop topic
-	*/
+	 * Sets the modified date of this loop topic.
+	 *
+	 * @param modifiedDate the modified date of this loop topic
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_loopTopic.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this loop topic.
-	*
-	* @param name the name of this loop topic
-	*/
+	 * Sets the name of this loop topic.
+	 *
+	 * @param name the name of this loop topic
+	 */
 	@Override
 	public void setName(String name) {
 		_loopTopic.setName(name);
@@ -423,20 +421,20 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Sets the parent loop topic ID of this loop topic.
-	*
-	* @param parentLoopTopicId the parent loop topic ID of this loop topic
-	*/
+	 * Sets the parent loop topic ID of this loop topic.
+	 *
+	 * @param parentLoopTopicId the parent loop topic ID of this loop topic
+	 */
 	@Override
 	public void setParentLoopTopicId(long parentLoopTopicId) {
 		_loopTopic.setParentLoopTopicId(parentLoopTopicId);
 	}
 
 	/**
-	* Sets the primary key of this loop topic.
-	*
-	* @param primaryKey the primary key of this loop topic
-	*/
+	 * Sets the primary key of this loop topic.
+	 *
+	 * @param primaryKey the primary key of this loop topic
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopTopic.setPrimaryKey(primaryKey);
@@ -448,37 +446,39 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	/**
-	* Sets the user ID of this loop topic.
-	*
-	* @param userId the user ID of this loop topic
-	*/
+	 * Sets the user ID of this loop topic.
+	 *
+	 * @param userId the user ID of this loop topic
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_loopTopic.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this loop topic.
-	*
-	* @param userName the user name of this loop topic
-	*/
+	 * Sets the user name of this loop topic.
+	 *
+	 * @param userName the user name of this loop topic
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_loopTopic.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this loop topic.
-	*
-	* @param userUuid the user uuid of this loop topic
-	*/
+	 * Sets the user uuid of this loop topic.
+	 *
+	 * @param userUuid the user uuid of this loop topic
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_loopTopic.setUserUuid(userUuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopTopic> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopTopic>
+		toCacheModel() {
+
 		return _loopTopic.toCacheModel();
 	}
 
@@ -542,4 +542,5 @@ public class LoopTopicWrapper implements LoopTopic, ModelWrapper<LoopTopic> {
 	}
 
 	private final LoopTopic _loopTopic;
+
 }

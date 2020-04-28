@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.asset.entry.set.model.AssetEntrySet;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing AssetEntrySet in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see AssetEntrySet
  * @generated
  */
-@ProviderType
-public class AssetEntrySetCacheModel implements CacheModel<AssetEntrySet>,
-	Externalizable {
+public class AssetEntrySetCacheModel
+	implements CacheModel<AssetEntrySet>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,7 +43,8 @@ public class AssetEntrySetCacheModel implements CacheModel<AssetEntrySet>,
 			return false;
 		}
 
-		AssetEntrySetCacheModel assetEntrySetCacheModel = (AssetEntrySetCacheModel)obj;
+		AssetEntrySetCacheModel assetEntrySetCacheModel =
+			(AssetEntrySetCacheModel)obj;
 
 		if (assetEntrySetId == assetEntrySetCacheModel.assetEntrySetId) {
 			return true;
@@ -207,8 +204,7 @@ public class AssetEntrySetCacheModel implements CacheModel<AssetEntrySet>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(assetEntrySetId);
 
 		objectOutput.writeLong(companyId);
@@ -288,4 +284,5 @@ public class AssetEntrySetCacheModel implements CacheModel<AssetEntrySet>,
 	public String title;
 	public int type;
 	public int status;
+
 }

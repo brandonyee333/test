@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -36,10 +34,9 @@ import java.util.Objects;
  * @see TestrayCaseResultWarning
  * @generated
  */
-@ProviderType
 public class TestrayCaseResultWarningWrapper
-	implements TestrayCaseResultWarning,
-			   ModelWrapper<TestrayCaseResultWarning> {
+	implements ModelWrapper<TestrayCaseResultWarning>,
+			   TestrayCaseResultWarning {
 
 	public TestrayCaseResultWarningWrapper(
 		TestrayCaseResultWarning testrayCaseResultWarning) {

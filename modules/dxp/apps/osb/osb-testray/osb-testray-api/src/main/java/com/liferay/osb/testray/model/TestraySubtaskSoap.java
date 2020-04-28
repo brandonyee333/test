@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestraySubtaskSoap implements Serializable {
 
 	public static TestraySubtaskSoap toSoapModel(TestraySubtask model) {
@@ -49,8 +46,8 @@ public class TestraySubtaskSoap implements Serializable {
 		soapModel.setTestrayTaskId(model.getTestrayTaskId());
 		soapModel.setName(model.getName());
 		soapModel.setScore(model.getScore());
-		soapModel.setStatus(model.getStatus());
 		soapModel.setStatusUpdateDate(model.getStatusUpdateDate());
+		soapModel.setStatus(model.getStatus());
 
 		return soapModel;
 	}
@@ -213,20 +210,20 @@ public class TestraySubtaskSoap implements Serializable {
 		_score = score;
 	}
 
-	public int getStatus() {
-		return _status;
-	}
-
-	public void setStatus(int status) {
-		_status = status;
-	}
-
 	public Date getStatusUpdateDate() {
 		return _statusUpdateDate;
 	}
 
 	public void setStatusUpdateDate(Date statusUpdateDate) {
 		_statusUpdateDate = statusUpdateDate;
+	}
+
+	public int getStatus() {
+		return _status;
+	}
+
+	public void setStatus(int status) {
+		_status = status;
 	}
 
 	private long _testraySubtaskId;
@@ -242,7 +239,7 @@ public class TestraySubtaskSoap implements Serializable {
 	private long _testrayTaskId;
 	private String _name;
 	private int _score;
-	private int _status;
 	private Date _statusUpdateDate;
+	private int _status;
 
 }

@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.model.LoopPersonRel;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing LoopPersonRel in entity cache.
  *
  * @author Ethan Bustad
- * @see LoopPersonRel
  * @generated
  */
-@ProviderType
-public class LoopPersonRelCacheModel implements CacheModel<LoopPersonRel>,
-	Externalizable {
+public class LoopPersonRelCacheModel
+	implements CacheModel<LoopPersonRel>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,7 +43,8 @@ public class LoopPersonRelCacheModel implements CacheModel<LoopPersonRel>,
 			return false;
 		}
 
-		LoopPersonRelCacheModel loopPersonRelCacheModel = (LoopPersonRelCacheModel)obj;
+		LoopPersonRelCacheModel loopPersonRelCacheModel =
+			(LoopPersonRelCacheModel)obj;
 
 		if (loopPersonRelId == loopPersonRelCacheModel.loopPersonRelId) {
 			return true;
@@ -104,8 +101,7 @@ public class LoopPersonRelCacheModel implements CacheModel<LoopPersonRel>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(loopPersonRelId);
 
 		objectOutput.writeLong(childLoopPersonId);
@@ -119,4 +115,5 @@ public class LoopPersonRelCacheModel implements CacheModel<LoopPersonRel>,
 	public long childLoopPersonId;
 	public long parentLoopPersonId;
 	public int type;
+
 }

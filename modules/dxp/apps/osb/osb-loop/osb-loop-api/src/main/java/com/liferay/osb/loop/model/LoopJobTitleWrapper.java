@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see LoopJobTitle
  * @generated
  */
-@ProviderType
-public class LoopJobTitleWrapper implements LoopJobTitle,
-	ModelWrapper<LoopJobTitle> {
+public class LoopJobTitleWrapper
+	implements LoopJobTitle, ModelWrapper<LoopJobTitle> {
+
 	public LoopJobTitleWrapper(LoopJobTitle loopJobTitle) {
 		_loopJobTitle = loopJobTitle;
 	}
@@ -139,30 +136,30 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Returns the company ID of this loop job title.
-	*
-	* @return the company ID of this loop job title
-	*/
+	 * Returns the company ID of this loop job title.
+	 *
+	 * @return the company ID of this loop job title
+	 */
 	@Override
 	public long getCompanyId() {
 		return _loopJobTitle.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this loop job title.
-	*
-	* @return the create date of this loop job title
-	*/
+	 * Returns the create date of this loop job title.
+	 *
+	 * @return the create date of this loop job title
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _loopJobTitle.getCreateDate();
 	}
 
 	/**
-	* Returns the description of this loop job title.
-	*
-	* @return the description of this loop job title
-	*/
+	 * Returns the description of this loop job title.
+	 *
+	 * @return the description of this loop job title
+	 */
 	@Override
 	public String getDescription() {
 		return _loopJobTitle.getDescription();
@@ -174,40 +171,40 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Returns the loop job title ID of this loop job title.
-	*
-	* @return the loop job title ID of this loop job title
-	*/
+	 * Returns the loop job title ID of this loop job title.
+	 *
+	 * @return the loop job title ID of this loop job title
+	 */
 	@Override
 	public long getLoopJobTitleId() {
 		return _loopJobTitle.getLoopJobTitleId();
 	}
 
 	/**
-	* Returns the modified date of this loop job title.
-	*
-	* @return the modified date of this loop job title
-	*/
+	 * Returns the modified date of this loop job title.
+	 *
+	 * @return the modified date of this loop job title
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _loopJobTitle.getModifiedDate();
 	}
 
 	/**
-	* Returns the name of this loop job title.
-	*
-	* @return the name of this loop job title
-	*/
+	 * Returns the name of this loop job title.
+	 *
+	 * @return the name of this loop job title
+	 */
 	@Override
 	public String getName() {
 		return _loopJobTitle.getName();
 	}
 
 	/**
-	* Returns the primary key of this loop job title.
-	*
-	* @return the primary key of this loop job title
-	*/
+	 * Returns the primary key of this loop job title.
+	 *
+	 * @return the primary key of this loop job title
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopJobTitle.getPrimaryKey();
@@ -219,40 +216,40 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Returns the status of this loop job title.
-	*
-	* @return the status of this loop job title
-	*/
+	 * Returns the status of this loop job title.
+	 *
+	 * @return the status of this loop job title
+	 */
 	@Override
 	public int getStatus() {
 		return _loopJobTitle.getStatus();
 	}
 
 	/**
-	* Returns the user ID of this loop job title.
-	*
-	* @return the user ID of this loop job title
-	*/
+	 * Returns the user ID of this loop job title.
+	 *
+	 * @return the user ID of this loop job title
+	 */
 	@Override
 	public long getUserId() {
 		return _loopJobTitle.getUserId();
 	}
 
 	/**
-	* Returns the user name of this loop job title.
-	*
-	* @return the user name of this loop job title
-	*/
+	 * Returns the user name of this loop job title.
+	 *
+	 * @return the user name of this loop job title
+	 */
 	@Override
 	public String getUserName() {
 		return _loopJobTitle.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this loop job title.
-	*
-	* @return the user uuid of this loop job title
-	*/
+	 * Returns the user uuid of this loop job title.
+	 *
+	 * @return the user uuid of this loop job title
+	 */
 	@Override
 	public String getUserUuid() {
 		return _loopJobTitle.getUserUuid();
@@ -289,30 +286,30 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Sets the company ID of this loop job title.
-	*
-	* @param companyId the company ID of this loop job title
-	*/
+	 * Sets the company ID of this loop job title.
+	 *
+	 * @param companyId the company ID of this loop job title
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_loopJobTitle.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this loop job title.
-	*
-	* @param createDate the create date of this loop job title
-	*/
+	 * Sets the create date of this loop job title.
+	 *
+	 * @param createDate the create date of this loop job title
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_loopJobTitle.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the description of this loop job title.
-	*
-	* @param description the description of this loop job title
-	*/
+	 * Sets the description of this loop job title.
+	 *
+	 * @param description the description of this loop job title
+	 */
 	@Override
 	public void setDescription(String description) {
 		_loopJobTitle.setDescription(description);
@@ -321,6 +318,7 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopJobTitle.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -335,30 +333,30 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Sets the loop job title ID of this loop job title.
-	*
-	* @param loopJobTitleId the loop job title ID of this loop job title
-	*/
+	 * Sets the loop job title ID of this loop job title.
+	 *
+	 * @param loopJobTitleId the loop job title ID of this loop job title
+	 */
 	@Override
 	public void setLoopJobTitleId(long loopJobTitleId) {
 		_loopJobTitle.setLoopJobTitleId(loopJobTitleId);
 	}
 
 	/**
-	* Sets the modified date of this loop job title.
-	*
-	* @param modifiedDate the modified date of this loop job title
-	*/
+	 * Sets the modified date of this loop job title.
+	 *
+	 * @param modifiedDate the modified date of this loop job title
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_loopJobTitle.setModifiedDate(modifiedDate);
 	}
 
 	/**
-	* Sets the name of this loop job title.
-	*
-	* @param name the name of this loop job title
-	*/
+	 * Sets the name of this loop job title.
+	 *
+	 * @param name the name of this loop job title
+	 */
 	@Override
 	public void setName(String name) {
 		_loopJobTitle.setName(name);
@@ -370,10 +368,10 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Sets the primary key of this loop job title.
-	*
-	* @param primaryKey the primary key of this loop job title
-	*/
+	 * Sets the primary key of this loop job title.
+	 *
+	 * @param primaryKey the primary key of this loop job title
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopJobTitle.setPrimaryKey(primaryKey);
@@ -385,47 +383,49 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	/**
-	* Sets the status of this loop job title.
-	*
-	* @param status the status of this loop job title
-	*/
+	 * Sets the status of this loop job title.
+	 *
+	 * @param status the status of this loop job title
+	 */
 	@Override
 	public void setStatus(int status) {
 		_loopJobTitle.setStatus(status);
 	}
 
 	/**
-	* Sets the user ID of this loop job title.
-	*
-	* @param userId the user ID of this loop job title
-	*/
+	 * Sets the user ID of this loop job title.
+	 *
+	 * @param userId the user ID of this loop job title
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_loopJobTitle.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this loop job title.
-	*
-	* @param userName the user name of this loop job title
-	*/
+	 * Sets the user name of this loop job title.
+	 *
+	 * @param userName the user name of this loop job title
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_loopJobTitle.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this loop job title.
-	*
-	* @param userUuid the user uuid of this loop job title
-	*/
+	 * Sets the user uuid of this loop job title.
+	 *
+	 * @param userUuid the user uuid of this loop job title
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_loopJobTitle.setUserUuid(userUuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopJobTitle> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopJobTitle>
+		toCacheModel() {
+
 		return _loopJobTitle.toCacheModel();
 	}
 
@@ -489,4 +489,5 @@ public class LoopJobTitleWrapper implements LoopJobTitle,
 	}
 
 	private final LoopJobTitle _loopJobTitle;
+
 }

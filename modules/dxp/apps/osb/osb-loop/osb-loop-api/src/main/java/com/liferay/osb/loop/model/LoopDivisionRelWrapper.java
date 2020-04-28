@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see LoopDivisionRel
  * @generated
  */
-@ProviderType
-public class LoopDivisionRelWrapper implements LoopDivisionRel,
-	ModelWrapper<LoopDivisionRel> {
+public class LoopDivisionRelWrapper
+	implements LoopDivisionRel, ModelWrapper<LoopDivisionRel> {
+
 	public LoopDivisionRelWrapper(LoopDivisionRel loopDivisionRel) {
 		_loopDivisionRel = loopDivisionRel;
 	}
@@ -85,7 +82,8 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 			setLoopPersonId(loopPersonId);
 		}
 
-		Long parentLoopDivisionId = (Long)attributes.get("parentLoopDivisionId");
+		Long parentLoopDivisionId = (Long)attributes.get(
+			"parentLoopDivisionId");
 
 		if (parentLoopDivisionId != null) {
 			setParentLoopDivisionId(parentLoopDivisionId);
@@ -94,7 +92,8 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 
 	@Override
 	public Object clone() {
-		return new LoopDivisionRelWrapper((LoopDivisionRel)_loopDivisionRel.clone());
+		return new LoopDivisionRelWrapper(
+			(LoopDivisionRel)_loopDivisionRel.clone());
 	}
 
 	@Override
@@ -103,10 +102,10 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	/**
-	* Returns the child loop division ID of this loop division rel.
-	*
-	* @return the child loop division ID of this loop division rel
-	*/
+	 * Returns the child loop division ID of this loop division rel.
+	 *
+	 * @return the child loop division ID of this loop division rel
+	 */
 	@Override
 	public long getChildLoopDivisionId() {
 		return _loopDivisionRel.getChildLoopDivisionId();
@@ -118,40 +117,40 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	/**
-	* Returns the loop division rel ID of this loop division rel.
-	*
-	* @return the loop division rel ID of this loop division rel
-	*/
+	 * Returns the loop division rel ID of this loop division rel.
+	 *
+	 * @return the loop division rel ID of this loop division rel
+	 */
 	@Override
 	public long getLoopDivisionRelId() {
 		return _loopDivisionRel.getLoopDivisionRelId();
 	}
 
 	/**
-	* Returns the loop person ID of this loop division rel.
-	*
-	* @return the loop person ID of this loop division rel
-	*/
+	 * Returns the loop person ID of this loop division rel.
+	 *
+	 * @return the loop person ID of this loop division rel
+	 */
 	@Override
 	public long getLoopPersonId() {
 		return _loopDivisionRel.getLoopPersonId();
 	}
 
 	/**
-	* Returns the parent loop division ID of this loop division rel.
-	*
-	* @return the parent loop division ID of this loop division rel
-	*/
+	 * Returns the parent loop division ID of this loop division rel.
+	 *
+	 * @return the parent loop division ID of this loop division rel
+	 */
 	@Override
 	public long getParentLoopDivisionId() {
 		return _loopDivisionRel.getParentLoopDivisionId();
 	}
 
 	/**
-	* Returns the primary key of this loop division rel.
-	*
-	* @return the primary key of this loop division rel
-	*/
+	 * Returns the primary key of this loop division rel.
+	 *
+	 * @return the primary key of this loop division rel
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopDivisionRel.getPrimaryKey();
@@ -193,10 +192,10 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	/**
-	* Sets the child loop division ID of this loop division rel.
-	*
-	* @param childLoopDivisionId the child loop division ID of this loop division rel
-	*/
+	 * Sets the child loop division ID of this loop division rel.
+	 *
+	 * @param childLoopDivisionId the child loop division ID of this loop division rel
+	 */
 	@Override
 	public void setChildLoopDivisionId(long childLoopDivisionId) {
 		_loopDivisionRel.setChildLoopDivisionId(childLoopDivisionId);
@@ -205,6 +204,7 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopDivisionRel.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -219,20 +219,20 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	/**
-	* Sets the loop division rel ID of this loop division rel.
-	*
-	* @param loopDivisionRelId the loop division rel ID of this loop division rel
-	*/
+	 * Sets the loop division rel ID of this loop division rel.
+	 *
+	 * @param loopDivisionRelId the loop division rel ID of this loop division rel
+	 */
 	@Override
 	public void setLoopDivisionRelId(long loopDivisionRelId) {
 		_loopDivisionRel.setLoopDivisionRelId(loopDivisionRelId);
 	}
 
 	/**
-	* Sets the loop person ID of this loop division rel.
-	*
-	* @param loopPersonId the loop person ID of this loop division rel
-	*/
+	 * Sets the loop person ID of this loop division rel.
+	 *
+	 * @param loopPersonId the loop person ID of this loop division rel
+	 */
 	@Override
 	public void setLoopPersonId(long loopPersonId) {
 		_loopDivisionRel.setLoopPersonId(loopPersonId);
@@ -244,20 +244,20 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	/**
-	* Sets the parent loop division ID of this loop division rel.
-	*
-	* @param parentLoopDivisionId the parent loop division ID of this loop division rel
-	*/
+	 * Sets the parent loop division ID of this loop division rel.
+	 *
+	 * @param parentLoopDivisionId the parent loop division ID of this loop division rel
+	 */
 	@Override
 	public void setParentLoopDivisionId(long parentLoopDivisionId) {
 		_loopDivisionRel.setParentLoopDivisionId(parentLoopDivisionId);
 	}
 
 	/**
-	* Sets the primary key of this loop division rel.
-	*
-	* @param primaryKey the primary key of this loop division rel
-	*/
+	 * Sets the primary key of this loop division rel.
+	 *
+	 * @param primaryKey the primary key of this loop division rel
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopDivisionRel.setPrimaryKey(primaryKey);
@@ -269,7 +269,9 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopDivisionRel> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopDivisionRel>
+		toCacheModel() {
+
 		return _loopDivisionRel.toCacheModel();
 	}
 
@@ -303,10 +305,12 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 			return false;
 		}
 
-		LoopDivisionRelWrapper loopDivisionRelWrapper = (LoopDivisionRelWrapper)obj;
+		LoopDivisionRelWrapper loopDivisionRelWrapper =
+			(LoopDivisionRelWrapper)obj;
 
-		if (Objects.equals(_loopDivisionRel,
-					loopDivisionRelWrapper._loopDivisionRel)) {
+		if (Objects.equals(
+				_loopDivisionRel, loopDivisionRelWrapper._loopDivisionRel)) {
+
 			return true;
 		}
 
@@ -334,4 +338,5 @@ public class LoopDivisionRelWrapper implements LoopDivisionRel,
 	}
 
 	private final LoopDivisionRel _loopDivisionRel;
+
 }

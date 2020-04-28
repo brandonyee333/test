@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.exception.NoSuchTestraySubtaskException;
 import com.liferay.osb.testray.model.TestraySubtask;
 import com.liferay.osb.testray.model.impl.TestraySubtaskImpl;
@@ -32,10 +30,9 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -70,7 +67,6 @@ import java.util.Set;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestraySubtaskPersistenceImpl
 	extends BasePersistenceImpl<TestraySubtask>
 	implements TestraySubtaskPersistence {
@@ -178,6 +174,18 @@ public class TestraySubtaskPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
+				TestraySubtaskImpl.class, primaryKey);
+		}
+	}
+
 	/**
 	 * Creates a new testray subtask with the primary key. Does not add the testray subtask to the database.
 	 *
@@ -191,7 +199,7 @@ public class TestraySubtaskPersistenceImpl
 		testraySubtask.setNew(true);
 		testraySubtask.setPrimaryKey(testraySubtaskId);
 
-		testraySubtask.setCompanyId(companyProvider.getCompanyId());
+		testraySubtask.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return testraySubtask;
 	}
@@ -240,11 +248,11 @@ public class TestraySubtaskPersistenceImpl
 
 			return remove(testraySubtask);
 		}
-		catch (NoSuchTestraySubtaskException nsee) {
-			throw nsee;
+		catch (NoSuchTestraySubtaskException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -274,8 +282,8 @@ public class TestraySubtaskPersistenceImpl
 				session.delete(testraySubtask);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -350,8 +358,8 @@ public class TestraySubtaskPersistenceImpl
 				testraySubtask = (TestraySubtask)session.merge(testraySubtask);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -450,12 +458,12 @@ public class TestraySubtaskPersistenceImpl
 						TestraySubtaskImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					TestraySubtaskModelImpl.ENTITY_CACHE_ENABLED,
 					TestraySubtaskImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -526,32 +534,32 @@ public class TestraySubtaskPersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler(
+		StringBundler sb = new StringBundler(
 			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_TESTRAYSUBTASK_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_TESTRAYSUBTASK_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
 			for (TestraySubtask testraySubtask :
-					(List<TestraySubtask>)q.list()) {
+					(List<TestraySubtask>)query.list()) {
 
 				map.put(testraySubtask.getPrimaryKeyObj(), testraySubtask);
 
@@ -566,8 +574,8 @@ public class TestraySubtaskPersistenceImpl
 					TestraySubtaskImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -590,7 +598,7 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns a range of all the testray subtasks.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray subtasks
@@ -606,7 +614,7 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns an ordered range of all the testray subtasks.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray subtasks
@@ -626,64 +634,62 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns an ordered range of all the testray subtasks.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray subtasks
 	 * @param end the upper bound of the range of testray subtasks (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of testray subtasks
 	 */
 	@Override
 	public List<TestraySubtask> findAll(
 		int start, int end, OrderByComparator<TestraySubtask> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<TestraySubtask> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<TestraySubtask>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_TESTRAYSUBTASK);
+				sb.append(_SQL_SELECT_TESTRAYSUBTASK);
 
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYSUBTASK;
 
-				if (pagination) {
-					sql = sql.concat(TestraySubtaskModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(TestraySubtaskModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -691,29 +697,23 @@ public class TestraySubtaskPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<TestraySubtask>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<TestraySubtask>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<TestraySubtask>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -750,18 +750,18 @@ public class TestraySubtaskPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_TESTRAYSUBTASK);
+				Query query = session.createQuery(_SQL_COUNT_TESTRAYSUBTASK);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -803,7 +803,7 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns a range of all the testray case results associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -822,7 +822,7 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns an ordered range of all the testray case results associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -900,7 +900,7 @@ public class TestraySubtaskPersistenceImpl
 
 		if (testraySubtask == null) {
 			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk, testrayCaseResultPK);
+				CompanyThreadLocal.getCompanyId(), pk, testrayCaseResultPK);
 		}
 		else {
 			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
@@ -923,7 +923,7 @@ public class TestraySubtaskPersistenceImpl
 
 		if (testraySubtask == null) {
 			testraySubtaskToTestrayCaseResultTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk,
+				CompanyThreadLocal.getCompanyId(), pk,
 				testrayCaseResult.getPrimaryKey());
 		}
 		else {
@@ -946,7 +946,7 @@ public class TestraySubtaskPersistenceImpl
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
@@ -1075,7 +1075,7 @@ public class TestraySubtaskPersistenceImpl
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
@@ -1109,8 +1109,8 @@ public class TestraySubtaskPersistenceImpl
 
 			setTestrayCaseResults(pk, testrayCaseResultPKs);
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 	}
 
@@ -1145,7 +1145,7 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns a range of all the testray issues associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -1164,7 +1164,7 @@ public class TestraySubtaskPersistenceImpl
 	 * Returns an ordered range of all the testray issues associated with the testray subtask.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestraySubtaskModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray subtask
@@ -1238,7 +1238,7 @@ public class TestraySubtaskPersistenceImpl
 
 		if (testraySubtask == null) {
 			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk, testrayIssuePK);
+				CompanyThreadLocal.getCompanyId(), pk, testrayIssuePK);
 		}
 		else {
 			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
@@ -1260,7 +1260,7 @@ public class TestraySubtaskPersistenceImpl
 
 		if (testraySubtask == null) {
 			testraySubtaskToTestrayIssueTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk,
+				CompanyThreadLocal.getCompanyId(), pk,
 				testrayIssue.getPrimaryKey());
 		}
 		else {
@@ -1283,7 +1283,7 @@ public class TestraySubtaskPersistenceImpl
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
@@ -1407,7 +1407,7 @@ public class TestraySubtaskPersistenceImpl
 		TestraySubtask testraySubtask = fetchByPrimaryKey(pk);
 
 		if (testraySubtask == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testraySubtask.getCompanyId();
@@ -1440,8 +1440,8 @@ public class TestraySubtaskPersistenceImpl
 
 			setTestrayIssues(pk, testrayIssuePKs);
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 	}
 
@@ -1496,9 +1496,6 @@ public class TestraySubtaskPersistenceImpl
 		TableMapperFactory.removeTableMapper(
 			"OSB_TestraySubtasks_TestrayIssues");
 	}
-
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;

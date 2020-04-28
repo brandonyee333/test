@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +34,8 @@ import java.util.Objects;
  * @see LoopPerson
  * @generated
  */
-@ProviderType
 public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
+
 	public LoopPersonWrapper(LoopPerson loopPerson) {
 		_loopPerson = loopPerson;
 	}
@@ -67,7 +64,8 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 		attributes.put("managerLoopPersonId", getManagerLoopPersonId());
 		attributes.put("personUserId", getPersonUserId());
 		attributes.put("extraData", getExtraData());
-		attributes.put("groupedUserNotificationEventsCount",
+		attributes.put(
+			"groupedUserNotificationEventsCount",
 			getGroupedUserNotificationEventsCount());
 		attributes.put("imagePayload", getImagePayload());
 
@@ -137,10 +135,11 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 		}
 
 		Integer groupedUserNotificationEventsCount = (Integer)attributes.get(
-				"groupedUserNotificationEventsCount");
+			"groupedUserNotificationEventsCount");
 
 		if (groupedUserNotificationEventsCount != null) {
-			setGroupedUserNotificationEventsCount(groupedUserNotificationEventsCount);
+			setGroupedUserNotificationEventsCount(
+				groupedUserNotificationEventsCount);
 		}
 
 		String imagePayload = (String)attributes.get("imagePayload");
@@ -161,20 +160,20 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Returns the company ID of this loop person.
-	*
-	* @return the company ID of this loop person
-	*/
+	 * Returns the company ID of this loop person.
+	 *
+	 * @return the company ID of this loop person
+	 */
 	@Override
 	public long getCompanyId() {
 		return _loopPerson.getCompanyId();
 	}
 
 	/**
-	* Returns the create date of this loop person.
-	*
-	* @return the create date of this loop person
-	*/
+	 * Returns the create date of this loop person.
+	 *
+	 * @return the create date of this loop person
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _loopPerson.getCreateDate();
@@ -186,100 +185,100 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Returns the extra data of this loop person.
-	*
-	* @return the extra data of this loop person
-	*/
+	 * Returns the extra data of this loop person.
+	 *
+	 * @return the extra data of this loop person
+	 */
 	@Override
 	public String getExtraData() {
 		return _loopPerson.getExtraData();
 	}
 
 	/**
-	* Returns the grouped user notification events count of this loop person.
-	*
-	* @return the grouped user notification events count of this loop person
-	*/
+	 * Returns the grouped user notification events count of this loop person.
+	 *
+	 * @return the grouped user notification events count of this loop person
+	 */
 	@Override
 	public int getGroupedUserNotificationEventsCount() {
 		return _loopPerson.getGroupedUserNotificationEventsCount();
 	}
 
 	/**
-	* Returns the image payload of this loop person.
-	*
-	* @return the image payload of this loop person
-	*/
+	 * Returns the image payload of this loop person.
+	 *
+	 * @return the image payload of this loop person
+	 */
 	@Override
 	public String getImagePayload() {
 		return _loopPerson.getImagePayload();
 	}
 
 	/**
-	* Returns the loop job title ID of this loop person.
-	*
-	* @return the loop job title ID of this loop person
-	*/
+	 * Returns the loop job title ID of this loop person.
+	 *
+	 * @return the loop job title ID of this loop person
+	 */
 	@Override
 	public long getLoopJobTitleId() {
 		return _loopPerson.getLoopJobTitleId();
 	}
 
 	/**
-	* Returns the loop person ID of this loop person.
-	*
-	* @return the loop person ID of this loop person
-	*/
+	 * Returns the loop person ID of this loop person.
+	 *
+	 * @return the loop person ID of this loop person
+	 */
 	@Override
 	public long getLoopPersonId() {
 		return _loopPerson.getLoopPersonId();
 	}
 
 	/**
-	* Returns the manager loop person ID of this loop person.
-	*
-	* @return the manager loop person ID of this loop person
-	*/
+	 * Returns the manager loop person ID of this loop person.
+	 *
+	 * @return the manager loop person ID of this loop person
+	 */
 	@Override
 	public long getManagerLoopPersonId() {
 		return _loopPerson.getManagerLoopPersonId();
 	}
 
 	/**
-	* Returns the modified date of this loop person.
-	*
-	* @return the modified date of this loop person
-	*/
+	 * Returns the modified date of this loop person.
+	 *
+	 * @return the modified date of this loop person
+	 */
 	@Override
 	public Date getModifiedDate() {
 		return _loopPerson.getModifiedDate();
 	}
 
 	/**
-	* Returns the person user ID of this loop person.
-	*
-	* @return the person user ID of this loop person
-	*/
+	 * Returns the person user ID of this loop person.
+	 *
+	 * @return the person user ID of this loop person
+	 */
 	@Override
 	public long getPersonUserId() {
 		return _loopPerson.getPersonUserId();
 	}
 
 	/**
-	* Returns the person user uuid of this loop person.
-	*
-	* @return the person user uuid of this loop person
-	*/
+	 * Returns the person user uuid of this loop person.
+	 *
+	 * @return the person user uuid of this loop person
+	 */
 	@Override
 	public String getPersonUserUuid() {
 		return _loopPerson.getPersonUserUuid();
 	}
 
 	/**
-	* Returns the primary key of this loop person.
-	*
-	* @return the primary key of this loop person
-	*/
+	 * Returns the primary key of this loop person.
+	 *
+	 * @return the primary key of this loop person
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopPerson.getPrimaryKey();
@@ -291,30 +290,30 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Returns the user ID of this loop person.
-	*
-	* @return the user ID of this loop person
-	*/
+	 * Returns the user ID of this loop person.
+	 *
+	 * @return the user ID of this loop person
+	 */
 	@Override
 	public long getUserId() {
 		return _loopPerson.getUserId();
 	}
 
 	/**
-	* Returns the user name of this loop person.
-	*
-	* @return the user name of this loop person
-	*/
+	 * Returns the user name of this loop person.
+	 *
+	 * @return the user name of this loop person
+	 */
 	@Override
 	public String getUserName() {
 		return _loopPerson.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this loop person.
-	*
-	* @return the user uuid of this loop person
-	*/
+	 * Returns the user uuid of this loop person.
+	 *
+	 * @return the user uuid of this loop person
+	 */
 	@Override
 	public String getUserUuid() {
 		return _loopPerson.getUserUuid();
@@ -351,20 +350,20 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Sets the company ID of this loop person.
-	*
-	* @param companyId the company ID of this loop person
-	*/
+	 * Sets the company ID of this loop person.
+	 *
+	 * @param companyId the company ID of this loop person
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_loopPerson.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create date of this loop person.
-	*
-	* @param createDate the create date of this loop person
-	*/
+	 * Sets the create date of this loop person.
+	 *
+	 * @param createDate the create date of this loop person
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_loopPerson.setCreateDate(createDate);
@@ -373,6 +372,7 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopPerson.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -387,71 +387,73 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Sets the extra data of this loop person.
-	*
-	* @param extraData the extra data of this loop person
-	*/
+	 * Sets the extra data of this loop person.
+	 *
+	 * @param extraData the extra data of this loop person
+	 */
 	@Override
 	public void setExtraData(String extraData) {
 		_loopPerson.setExtraData(extraData);
 	}
 
 	/**
-	* Sets the grouped user notification events count of this loop person.
-	*
-	* @param groupedUserNotificationEventsCount the grouped user notification events count of this loop person
-	*/
+	 * Sets the grouped user notification events count of this loop person.
+	 *
+	 * @param groupedUserNotificationEventsCount the grouped user notification events count of this loop person
+	 */
 	@Override
 	public void setGroupedUserNotificationEventsCount(
 		int groupedUserNotificationEventsCount) {
-		_loopPerson.setGroupedUserNotificationEventsCount(groupedUserNotificationEventsCount);
+
+		_loopPerson.setGroupedUserNotificationEventsCount(
+			groupedUserNotificationEventsCount);
 	}
 
 	/**
-	* Sets the image payload of this loop person.
-	*
-	* @param imagePayload the image payload of this loop person
-	*/
+	 * Sets the image payload of this loop person.
+	 *
+	 * @param imagePayload the image payload of this loop person
+	 */
 	@Override
 	public void setImagePayload(String imagePayload) {
 		_loopPerson.setImagePayload(imagePayload);
 	}
 
 	/**
-	* Sets the loop job title ID of this loop person.
-	*
-	* @param loopJobTitleId the loop job title ID of this loop person
-	*/
+	 * Sets the loop job title ID of this loop person.
+	 *
+	 * @param loopJobTitleId the loop job title ID of this loop person
+	 */
 	@Override
 	public void setLoopJobTitleId(long loopJobTitleId) {
 		_loopPerson.setLoopJobTitleId(loopJobTitleId);
 	}
 
 	/**
-	* Sets the loop person ID of this loop person.
-	*
-	* @param loopPersonId the loop person ID of this loop person
-	*/
+	 * Sets the loop person ID of this loop person.
+	 *
+	 * @param loopPersonId the loop person ID of this loop person
+	 */
 	@Override
 	public void setLoopPersonId(long loopPersonId) {
 		_loopPerson.setLoopPersonId(loopPersonId);
 	}
 
 	/**
-	* Sets the manager loop person ID of this loop person.
-	*
-	* @param managerLoopPersonId the manager loop person ID of this loop person
-	*/
+	 * Sets the manager loop person ID of this loop person.
+	 *
+	 * @param managerLoopPersonId the manager loop person ID of this loop person
+	 */
 	@Override
 	public void setManagerLoopPersonId(long managerLoopPersonId) {
 		_loopPerson.setManagerLoopPersonId(managerLoopPersonId);
 	}
 
 	/**
-	* Sets the modified date of this loop person.
-	*
-	* @param modifiedDate the modified date of this loop person
-	*/
+	 * Sets the modified date of this loop person.
+	 *
+	 * @param modifiedDate the modified date of this loop person
+	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
 		_loopPerson.setModifiedDate(modifiedDate);
@@ -463,30 +465,30 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Sets the person user ID of this loop person.
-	*
-	* @param personUserId the person user ID of this loop person
-	*/
+	 * Sets the person user ID of this loop person.
+	 *
+	 * @param personUserId the person user ID of this loop person
+	 */
 	@Override
 	public void setPersonUserId(long personUserId) {
 		_loopPerson.setPersonUserId(personUserId);
 	}
 
 	/**
-	* Sets the person user uuid of this loop person.
-	*
-	* @param personUserUuid the person user uuid of this loop person
-	*/
+	 * Sets the person user uuid of this loop person.
+	 *
+	 * @param personUserUuid the person user uuid of this loop person
+	 */
 	@Override
 	public void setPersonUserUuid(String personUserUuid) {
 		_loopPerson.setPersonUserUuid(personUserUuid);
 	}
 
 	/**
-	* Sets the primary key of this loop person.
-	*
-	* @param primaryKey the primary key of this loop person
-	*/
+	 * Sets the primary key of this loop person.
+	 *
+	 * @param primaryKey the primary key of this loop person
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopPerson.setPrimaryKey(primaryKey);
@@ -498,37 +500,39 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	/**
-	* Sets the user ID of this loop person.
-	*
-	* @param userId the user ID of this loop person
-	*/
+	 * Sets the user ID of this loop person.
+	 *
+	 * @param userId the user ID of this loop person
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_loopPerson.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this loop person.
-	*
-	* @param userName the user name of this loop person
-	*/
+	 * Sets the user name of this loop person.
+	 *
+	 * @param userName the user name of this loop person
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_loopPerson.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this loop person.
-	*
-	* @param userUuid the user uuid of this loop person
-	*/
+	 * Sets the user uuid of this loop person.
+	 *
+	 * @param userUuid the user uuid of this loop person
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_loopPerson.setUserUuid(userUuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopPerson> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopPerson>
+		toCacheModel() {
+
 		return _loopPerson.toCacheModel();
 	}
 
@@ -592,4 +596,5 @@ public class LoopPersonWrapper implements LoopPerson, ModelWrapper<LoopPerson> {
 	}
 
 	private final LoopPerson _loopPerson;
+
 }

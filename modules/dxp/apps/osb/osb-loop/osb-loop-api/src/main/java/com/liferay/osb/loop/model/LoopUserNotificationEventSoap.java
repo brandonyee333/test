@@ -1,20 +1,18 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
-
-import aQute.bnd.annotation.ProviderType;
 
 import java.io.Serializable;
 
@@ -27,13 +25,16 @@ import java.util.List;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class LoopUserNotificationEventSoap implements Serializable {
+
 	public static LoopUserNotificationEventSoap toSoapModel(
 		LoopUserNotificationEvent model) {
-		LoopUserNotificationEventSoap soapModel = new LoopUserNotificationEventSoap();
 
-		soapModel.setLoopUserNotificationEventId(model.getLoopUserNotificationEventId());
+		LoopUserNotificationEventSoap soapModel =
+			new LoopUserNotificationEventSoap();
+
+		soapModel.setLoopUserNotificationEventId(
+			model.getLoopUserNotificationEventId());
 		soapModel.setCreateTime(model.getCreateTime());
 		soapModel.setRecipientUserId(model.getRecipientUserId());
 		soapModel.setClassNameId(model.getClassNameId());
@@ -50,7 +51,9 @@ public class LoopUserNotificationEventSoap implements Serializable {
 
 	public static LoopUserNotificationEventSoap[] toSoapModels(
 		LoopUserNotificationEvent[] models) {
-		LoopUserNotificationEventSoap[] soapModels = new LoopUserNotificationEventSoap[models.length];
+
+		LoopUserNotificationEventSoap[] soapModels =
+			new LoopUserNotificationEventSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -61,10 +64,13 @@ public class LoopUserNotificationEventSoap implements Serializable {
 
 	public static LoopUserNotificationEventSoap[][] toSoapModels(
 		LoopUserNotificationEvent[][] models) {
+
 		LoopUserNotificationEventSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new LoopUserNotificationEventSoap[models.length][models[0].length];
+			soapModels =
+				new LoopUserNotificationEventSoap
+					[models.length][models[0].length];
 		}
 		else {
 			soapModels = new LoopUserNotificationEventSoap[0][0];
@@ -79,13 +85,16 @@ public class LoopUserNotificationEventSoap implements Serializable {
 
 	public static LoopUserNotificationEventSoap[] toSoapModels(
 		List<LoopUserNotificationEvent> models) {
-		List<LoopUserNotificationEventSoap> soapModels = new ArrayList<LoopUserNotificationEventSoap>(models.size());
+
+		List<LoopUserNotificationEventSoap> soapModels =
+			new ArrayList<LoopUserNotificationEventSoap>(models.size());
 
 		for (LoopUserNotificationEvent model : models) {
 			soapModels.add(toSoapModel(model));
 		}
 
-		return soapModels.toArray(new LoopUserNotificationEventSoap[soapModels.size()]);
+		return soapModels.toArray(
+			new LoopUserNotificationEventSoap[soapModels.size()]);
 	}
 
 	public LoopUserNotificationEventSoap() {
@@ -103,7 +112,9 @@ public class LoopUserNotificationEventSoap implements Serializable {
 		return _loopUserNotificationEventId;
 	}
 
-	public void setLoopUserNotificationEventId(long loopUserNotificationEventId) {
+	public void setLoopUserNotificationEventId(
+		long loopUserNotificationEventId) {
+
 		_loopUserNotificationEventId = loopUserNotificationEventId;
 	}
 
@@ -206,4 +217,5 @@ public class LoopUserNotificationEventSoap implements Serializable {
 	private int _type;
 	private boolean _received;
 	private boolean _opened;
+
 }

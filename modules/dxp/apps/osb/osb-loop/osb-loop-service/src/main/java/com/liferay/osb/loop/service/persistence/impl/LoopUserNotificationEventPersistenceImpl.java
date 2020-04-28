@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopUserNotificationEventException;
 import com.liferay.osb.loop.model.LoopUserNotificationEvent;
 import com.liferay.osb.loop.model.impl.LoopUserNotificationEventImpl;
 import com.liferay.osb.loop.model.impl.LoopUserNotificationEventModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopUserNotificationEventPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -33,6 +30,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -40,6 +38,7 @@ import com.liferay.portal.spring.extender.service.ServiceReference;
 import java.io.Serializable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,57 +56,32 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
- * @see LoopUserNotificationEventPersistence
- * @see com.liferay.osb.loop.service.persistence.LoopUserNotificationEventUtil
  * @generated
  */
-@ProviderType
 public class LoopUserNotificationEventPersistenceImpl
 	extends BasePersistenceImpl<LoopUserNotificationEvent>
 	implements LoopUserNotificationEventPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link LoopUserNotificationEventUtil} to access the loop user notification event persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>LoopUserNotificationEventUtil</code> to access the loop user notification event persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = LoopUserNotificationEventImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
-			new String[0]);
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPKEY = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupKey",
-			new String[] {
-				Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPKEY =
-		new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupKey",
-			new String[] { Long.class.getName() },
-			LoopUserNotificationEventModelImpl.GROUPKEY_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_GROUPKEY = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByGroupKey", new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		LoopUserNotificationEventImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathWithPaginationFindByGroupKey;
+	private FinderPath _finderPathWithoutPaginationFindByGroupKey;
+	private FinderPath _finderPathCountByGroupKey;
 
 	/**
 	 * Returns all the loop user notification events where groupKey = &#63;.
@@ -117,15 +91,15 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public List<LoopUserNotificationEvent> findByGroupKey(long groupKey) {
-		return findByGroupKey(groupKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
-			null);
+		return findByGroupKey(
+			groupKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the loop user notification events where groupKey = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupKey the group key
@@ -134,8 +108,9 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the range of matching loop user notification events
 	 */
 	@Override
-	public List<LoopUserNotificationEvent> findByGroupKey(long groupKey,
-		int start, int end) {
+	public List<LoopUserNotificationEvent> findByGroupKey(
+		long groupKey, int start, int end) {
+
 		return findByGroupKey(groupKey, start, end, null);
 	}
 
@@ -143,7 +118,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Returns an ordered range of all the loop user notification events where groupKey = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupKey the group key
@@ -153,9 +128,10 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the ordered range of matching loop user notification events
 	 */
 	@Override
-	public List<LoopUserNotificationEvent> findByGroupKey(long groupKey,
-		int start, int end,
+	public List<LoopUserNotificationEvent> findByGroupKey(
+		long groupKey, int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
+
 		return findByGroupKey(groupKey, start, end, orderByComparator, true);
 	}
 
@@ -163,45 +139,49 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Returns an ordered range of all the loop user notification events where groupKey = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupKey the group key
 	 * @param start the lower bound of the range of loop user notification events
 	 * @param end the upper bound of the range of loop user notification events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching loop user notification events
 	 */
 	@Override
-	public List<LoopUserNotificationEvent> findByGroupKey(long groupKey,
-		int start, int end,
+	public List<LoopUserNotificationEvent> findByGroupKey(
+		long groupKey, int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPKEY;
-			finderArgs = new Object[] { groupKey };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByGroupKey;
+				finderArgs = new Object[] {groupKey};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_GROUPKEY;
-			finderArgs = new Object[] { groupKey, start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByGroupKey;
+			finderArgs = new Object[] {groupKey, start, end, orderByComparator};
 		}
 
 		List<LoopUserNotificationEvent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<LoopUserNotificationEvent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<LoopUserNotificationEvent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (LoopUserNotificationEvent loopUserNotificationEvent : list) {
-					if ((groupKey != loopUserNotificationEvent.getGroupKey())) {
+				for (LoopUserNotificationEvent loopUserNotificationEvent :
+						list) {
+
+					if (groupKey != loopUserNotificationEvent.getGroupKey()) {
 						list = null;
 
 						break;
@@ -211,63 +191,56 @@ public class LoopUserNotificationEventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(3 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(3);
+				sb = new StringBundler(3);
 			}
 
-			query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+			sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-			query.append(_FINDER_COLUMN_GROUPKEY_GROUPKEY_2);
+			sb.append(_FINDER_COLUMN_GROUPKEY_GROUPKEY_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupKey);
+				queryPos.add(groupKey);
 
-				if (!pagination) {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<LoopUserNotificationEvent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -286,26 +259,28 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @throws NoSuchLoopUserNotificationEventException if a matching loop user notification event could not be found
 	 */
 	@Override
-	public LoopUserNotificationEvent findByGroupKey_First(long groupKey,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+	public LoopUserNotificationEvent findByGroupKey_First(
+			long groupKey,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByGroupKey_First(groupKey,
-				orderByComparator);
+
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			fetchByGroupKey_First(groupKey, orderByComparator);
 
 		if (loopUserNotificationEvent != null) {
 			return loopUserNotificationEvent;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("groupKey=");
-		msg.append(groupKey);
+		sb.append("groupKey=");
+		sb.append(groupKey);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchLoopUserNotificationEventException(msg.toString());
+		throw new NoSuchLoopUserNotificationEventException(sb.toString());
 	}
 
 	/**
@@ -316,10 +291,12 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the first matching loop user notification event, or <code>null</code> if a matching loop user notification event could not be found
 	 */
 	@Override
-	public LoopUserNotificationEvent fetchByGroupKey_First(long groupKey,
+	public LoopUserNotificationEvent fetchByGroupKey_First(
+		long groupKey,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
-		List<LoopUserNotificationEvent> list = findByGroupKey(groupKey, 0, 1,
-				orderByComparator);
+
+		List<LoopUserNotificationEvent> list = findByGroupKey(
+			groupKey, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -337,26 +314,28 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @throws NoSuchLoopUserNotificationEventException if a matching loop user notification event could not be found
 	 */
 	@Override
-	public LoopUserNotificationEvent findByGroupKey_Last(long groupKey,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+	public LoopUserNotificationEvent findByGroupKey_Last(
+			long groupKey,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByGroupKey_Last(groupKey,
-				orderByComparator);
+
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			fetchByGroupKey_Last(groupKey, orderByComparator);
 
 		if (loopUserNotificationEvent != null) {
 			return loopUserNotificationEvent;
 		}
 
-		StringBundler msg = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("groupKey=");
-		msg.append(groupKey);
+		sb.append("groupKey=");
+		sb.append(groupKey);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchLoopUserNotificationEventException(msg.toString());
+		throw new NoSuchLoopUserNotificationEventException(sb.toString());
 	}
 
 	/**
@@ -367,16 +346,18 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the last matching loop user notification event, or <code>null</code> if a matching loop user notification event could not be found
 	 */
 	@Override
-	public LoopUserNotificationEvent fetchByGroupKey_Last(long groupKey,
+	public LoopUserNotificationEvent fetchByGroupKey_Last(
+		long groupKey,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
+
 		int count = countByGroupKey(groupKey);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LoopUserNotificationEvent> list = findByGroupKey(groupKey,
-				count - 1, count, orderByComparator);
+		List<LoopUserNotificationEvent> list = findByGroupKey(
+			groupKey, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -396,31 +377,35 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent[] findByGroupKey_PrevAndNext(
-		long loopUserNotificationEventId, long groupKey,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long loopUserNotificationEventId, long groupKey,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = findByPrimaryKey(loopUserNotificationEventId);
+
+		LoopUserNotificationEvent loopUserNotificationEvent = findByPrimaryKey(
+			loopUserNotificationEventId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopUserNotificationEvent[] array = new LoopUserNotificationEventImpl[3];
+			LoopUserNotificationEvent[] array =
+				new LoopUserNotificationEventImpl[3];
 
-			array[0] = getByGroupKey_PrevAndNext(session,
-					loopUserNotificationEvent, groupKey, orderByComparator, true);
+			array[0] = getByGroupKey_PrevAndNext(
+				session, loopUserNotificationEvent, groupKey, orderByComparator,
+				true);
 
 			array[1] = loopUserNotificationEvent;
 
-			array[2] = getByGroupKey_PrevAndNext(session,
-					loopUserNotificationEvent, groupKey, orderByComparator,
-					false);
+			array[2] = getByGroupKey_PrevAndNext(
+				session, loopUserNotificationEvent, groupKey, orderByComparator,
+				false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -432,100 +417,103 @@ public class LoopUserNotificationEventPersistenceImpl
 		long groupKey,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
 		boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(4 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(3);
+			sb = new StringBundler(3);
 		}
 
-		query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+		sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-		query.append(_FINDER_COLUMN_GROUPKEY_GROUPKEY_2);
+		sb.append(_FINDER_COLUMN_GROUPKEY_GROUPKEY_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
+			sb.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(groupKey);
+		queryPos.add(groupKey);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(loopUserNotificationEvent);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						loopUserNotificationEvent)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<LoopUserNotificationEvent> list = q.list();
+		List<LoopUserNotificationEvent> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -542,8 +530,10 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public void removeByGroupKey(long groupKey) {
-		for (LoopUserNotificationEvent loopUserNotificationEvent : findByGroupKey(
-				groupKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+		for (LoopUserNotificationEvent loopUserNotificationEvent :
+				findByGroupKey(
+					groupKey, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
 			remove(loopUserNotificationEvent);
 		}
 	}
@@ -556,40 +546,40 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public int countByGroupKey(long groupKey) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_GROUPKEY;
+		FinderPath finderPath = _finderPathCountByGroupKey;
 
-		Object[] finderArgs = new Object[] { groupKey };
+		Object[] finderArgs = new Object[] {groupKey};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+			sb.append(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-			query.append(_FINDER_COLUMN_GROUPKEY_GROUPKEY_2);
+			sb.append(_FINDER_COLUMN_GROUPKEY_GROUPKEY_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupKey);
+				queryPos.add(groupKey);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -599,30 +589,12 @@ public class LoopUserNotificationEventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_GROUPKEY_GROUPKEY_2 = "loopUserNotificationEvent.groupKey = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GCNI_GCP = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGCNI_GCP",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP =
-		new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGCNI_GCP",
-			new String[] { Long.class.getName(), Long.class.getName() },
-			LoopUserNotificationEventModelImpl.GROUPCLASSNAMEID_COLUMN_BITMASK |
-			LoopUserNotificationEventModelImpl.GROUPCLASSPK_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_GCNI_GCP = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByGCNI_GCP",
-			new String[] { Long.class.getName(), Long.class.getName() });
+	private static final String _FINDER_COLUMN_GROUPKEY_GROUPKEY_2 =
+		"loopUserNotificationEvent.groupKey = ?";
+
+	private FinderPath _finderPathWithPaginationFindByGCNI_GCP;
+	private FinderPath _finderPathWithoutPaginationFindByGCNI_GCP;
+	private FinderPath _finderPathCountByGCNI_GCP;
 
 	/**
 	 * Returns all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63;.
@@ -634,15 +606,17 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public List<LoopUserNotificationEvent> findByGCNI_GCP(
 		long groupClassNameId, long groupClassPK) {
-		return findByGCNI_GCP(groupClassNameId, groupClassPK,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		return findByGCNI_GCP(
+			groupClassNameId, groupClassPK, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupClassNameId the group class name ID
@@ -654,6 +628,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public List<LoopUserNotificationEvent> findByGCNI_GCP(
 		long groupClassNameId, long groupClassPK, int start, int end) {
+
 		return findByGCNI_GCP(groupClassNameId, groupClassPK, start, end, null);
 	}
 
@@ -661,7 +636,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Returns an ordered range of all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupClassNameId the group class name ID
@@ -675,15 +650,17 @@ public class LoopUserNotificationEventPersistenceImpl
 	public List<LoopUserNotificationEvent> findByGCNI_GCP(
 		long groupClassNameId, long groupClassPK, int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
-		return findByGCNI_GCP(groupClassNameId, groupClassPK, start, end,
-			orderByComparator, true);
+
+		return findByGCNI_GCP(
+			groupClassNameId, groupClassPK, start, end, orderByComparator,
+			true);
 	}
 
 	/**
 	 * Returns an ordered range of all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupClassNameId the group class name ID
@@ -691,43 +668,48 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @param start the lower bound of the range of loop user notification events
 	 * @param end the upper bound of the range of loop user notification events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching loop user notification events
 	 */
 	@Override
 	public List<LoopUserNotificationEvent> findByGCNI_GCP(
 		long groupClassNameId, long groupClassPK, int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP;
-			finderArgs = new Object[] { groupClassNameId, groupClassPK };
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByGCNI_GCP;
+				finderArgs = new Object[] {groupClassNameId, groupClassPK};
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_GCNI_GCP;
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByGCNI_GCP;
 			finderArgs = new Object[] {
-					groupClassNameId, groupClassPK,
-					
-					start, end, orderByComparator
-				};
+				groupClassNameId, groupClassPK, start, end, orderByComparator
+			};
 		}
 
 		List<LoopUserNotificationEvent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<LoopUserNotificationEvent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<LoopUserNotificationEvent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (LoopUserNotificationEvent loopUserNotificationEvent : list) {
-					if ((groupClassNameId != loopUserNotificationEvent.getGroupClassNameId()) ||
-							(groupClassPK != loopUserNotificationEvent.getGroupClassPK())) {
+				for (LoopUserNotificationEvent loopUserNotificationEvent :
+						list) {
+
+					if ((groupClassNameId !=
+							loopUserNotificationEvent.getGroupClassNameId()) ||
+						(groupClassPK !=
+							loopUserNotificationEvent.getGroupClassPK())) {
+
 						list = null;
 
 						break;
@@ -737,67 +719,60 @@ public class LoopUserNotificationEventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(4 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(4);
+				sb = new StringBundler(4);
 			}
 
-			query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+			sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupClassNameId);
+				queryPos.add(groupClassNameId);
 
-				qPos.add(groupClassPK);
+				queryPos.add(groupClassPK);
 
-				if (!pagination) {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<LoopUserNotificationEvent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -818,29 +793,31 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent findByGCNI_GCP_First(
-		long groupClassNameId, long groupClassPK,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long groupClassNameId, long groupClassPK,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByGCNI_GCP_First(groupClassNameId,
-				groupClassPK, orderByComparator);
+
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			fetchByGCNI_GCP_First(
+				groupClassNameId, groupClassPK, orderByComparator);
 
 		if (loopUserNotificationEvent != null) {
 			return loopUserNotificationEvent;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("groupClassNameId=");
-		msg.append(groupClassNameId);
+		sb.append("groupClassNameId=");
+		sb.append(groupClassNameId);
 
-		msg.append(", groupClassPK=");
-		msg.append(groupClassPK);
+		sb.append(", groupClassPK=");
+		sb.append(groupClassPK);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchLoopUserNotificationEventException(msg.toString());
+		throw new NoSuchLoopUserNotificationEventException(sb.toString());
 	}
 
 	/**
@@ -855,8 +832,9 @@ public class LoopUserNotificationEventPersistenceImpl
 	public LoopUserNotificationEvent fetchByGCNI_GCP_First(
 		long groupClassNameId, long groupClassPK,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
-		List<LoopUserNotificationEvent> list = findByGCNI_GCP(groupClassNameId,
-				groupClassPK, 0, 1, orderByComparator);
+
+		List<LoopUserNotificationEvent> list = findByGCNI_GCP(
+			groupClassNameId, groupClassPK, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -876,29 +854,31 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent findByGCNI_GCP_Last(
-		long groupClassNameId, long groupClassPK,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long groupClassNameId, long groupClassPK,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByGCNI_GCP_Last(groupClassNameId,
-				groupClassPK, orderByComparator);
+
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			fetchByGCNI_GCP_Last(
+				groupClassNameId, groupClassPK, orderByComparator);
 
 		if (loopUserNotificationEvent != null) {
 			return loopUserNotificationEvent;
 		}
 
-		StringBundler msg = new StringBundler(6);
+		StringBundler sb = new StringBundler(6);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("groupClassNameId=");
-		msg.append(groupClassNameId);
+		sb.append("groupClassNameId=");
+		sb.append(groupClassNameId);
 
-		msg.append(", groupClassPK=");
-		msg.append(groupClassPK);
+		sb.append(", groupClassPK=");
+		sb.append(groupClassPK);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchLoopUserNotificationEventException(msg.toString());
+		throw new NoSuchLoopUserNotificationEventException(sb.toString());
 	}
 
 	/**
@@ -913,14 +893,16 @@ public class LoopUserNotificationEventPersistenceImpl
 	public LoopUserNotificationEvent fetchByGCNI_GCP_Last(
 		long groupClassNameId, long groupClassPK,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
+
 		int count = countByGCNI_GCP(groupClassNameId, groupClassPK);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LoopUserNotificationEvent> list = findByGCNI_GCP(groupClassNameId,
-				groupClassPK, count - 1, count, orderByComparator);
+		List<LoopUserNotificationEvent> list = findByGCNI_GCP(
+			groupClassNameId, groupClassPK, count - 1, count,
+			orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -941,33 +923,36 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent[] findByGCNI_GCP_PrevAndNext(
-		long loopUserNotificationEventId, long groupClassNameId,
-		long groupClassPK,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long loopUserNotificationEventId, long groupClassNameId,
+			long groupClassPK,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = findByPrimaryKey(loopUserNotificationEventId);
+
+		LoopUserNotificationEvent loopUserNotificationEvent = findByPrimaryKey(
+			loopUserNotificationEventId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopUserNotificationEvent[] array = new LoopUserNotificationEventImpl[3];
+			LoopUserNotificationEvent[] array =
+				new LoopUserNotificationEventImpl[3];
 
-			array[0] = getByGCNI_GCP_PrevAndNext(session,
-					loopUserNotificationEvent, groupClassNameId, groupClassPK,
-					orderByComparator, true);
+			array[0] = getByGCNI_GCP_PrevAndNext(
+				session, loopUserNotificationEvent, groupClassNameId,
+				groupClassPK, orderByComparator, true);
 
 			array[1] = loopUserNotificationEvent;
 
-			array[2] = getByGCNI_GCP_PrevAndNext(session,
-					loopUserNotificationEvent, groupClassNameId, groupClassPK,
-					orderByComparator, false);
+			array[2] = getByGCNI_GCP_PrevAndNext(
+				session, loopUserNotificationEvent, groupClassNameId,
+				groupClassPK, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -979,104 +964,107 @@ public class LoopUserNotificationEventPersistenceImpl
 		long groupClassNameId, long groupClassPK,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
 		boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(5 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(4);
+			sb = new StringBundler(4);
 		}
 
-		query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+		sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-		query.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2);
 
-		query.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2);
+		sb.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
+			sb.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(groupClassNameId);
+		queryPos.add(groupClassNameId);
 
-		qPos.add(groupClassPK);
+		queryPos.add(groupClassPK);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(loopUserNotificationEvent);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						loopUserNotificationEvent)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<LoopUserNotificationEvent> list = q.list();
+		List<LoopUserNotificationEvent> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1094,9 +1082,11 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public void removeByGCNI_GCP(long groupClassNameId, long groupClassPK) {
-		for (LoopUserNotificationEvent loopUserNotificationEvent : findByGCNI_GCP(
-				groupClassNameId, groupClassPK, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null)) {
+		for (LoopUserNotificationEvent loopUserNotificationEvent :
+				findByGCNI_GCP(
+					groupClassNameId, groupClassPK, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
 			remove(loopUserNotificationEvent);
 		}
 	}
@@ -1110,44 +1100,44 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public int countByGCNI_GCP(long groupClassNameId, long groupClassPK) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_GCNI_GCP;
+		FinderPath finderPath = _finderPathCountByGCNI_GCP;
 
-		Object[] finderArgs = new Object[] { groupClassNameId, groupClassPK };
+		Object[] finderArgs = new Object[] {groupClassNameId, groupClassPK};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+			sb.append(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupClassNameId);
+				queryPos.add(groupClassNameId);
 
-				qPos.add(groupClassPK);
+				queryPos.add(groupClassPK);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1157,40 +1147,15 @@ public class LoopUserNotificationEventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2 = "loopUserNotificationEvent.groupClassNameId = ? AND ";
-	private static final String _FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2 = "loopUserNotificationEvent.groupClassPK = ?";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_BY_GCNI_GCP_T =
-		new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGCNI_GCP_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName(),
-				
-			Integer.class.getName(), Integer.class.getName(),
-				OrderByComparator.class.getName()
-			});
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP_T =
-		new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			LoopUserNotificationEventImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGCNI_GCP_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName()
-			},
-			LoopUserNotificationEventModelImpl.GROUPCLASSNAMEID_COLUMN_BITMASK |
-			LoopUserNotificationEventModelImpl.GROUPCLASSPK_COLUMN_BITMASK |
-			LoopUserNotificationEventModelImpl.TYPE_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_GCNI_GCP_T = new FinderPath(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
-			Long.class, FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByGCNI_GCP_T",
-			new String[] {
-				Long.class.getName(), Long.class.getName(),
-				Integer.class.getName()
-			});
+	private static final String _FINDER_COLUMN_GCNI_GCP_GROUPCLASSNAMEID_2 =
+		"loopUserNotificationEvent.groupClassNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_GCNI_GCP_GROUPCLASSPK_2 =
+		"loopUserNotificationEvent.groupClassPK = ?";
+
+	private FinderPath _finderPathWithPaginationFindByGCNI_GCP_T;
+	private FinderPath _finderPathWithoutPaginationFindByGCNI_GCP_T;
+	private FinderPath _finderPathCountByGCNI_GCP_T;
 
 	/**
 	 * Returns all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63; and type = &#63;.
@@ -1203,15 +1168,17 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public List<LoopUserNotificationEvent> findByGCNI_GCP_T(
 		long groupClassNameId, long groupClassPK, int type) {
-		return findByGCNI_GCP_T(groupClassNameId, groupClassPK, type,
-			QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+
+		return findByGCNI_GCP_T(
+			groupClassNameId, groupClassPK, type, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
 	}
 
 	/**
 	 * Returns a range of all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupClassNameId the group class name ID
@@ -1223,16 +1190,18 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public List<LoopUserNotificationEvent> findByGCNI_GCP_T(
-		long groupClassNameId, long groupClassPK, int type, int start, int end) {
-		return findByGCNI_GCP_T(groupClassNameId, groupClassPK, type, start,
-			end, null);
+		long groupClassNameId, long groupClassPK, int type, int start,
+		int end) {
+
+		return findByGCNI_GCP_T(
+			groupClassNameId, groupClassPK, type, start, end, null);
 	}
 
 	/**
 	 * Returns an ordered range of all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupClassNameId the group class name ID
@@ -1247,15 +1216,17 @@ public class LoopUserNotificationEventPersistenceImpl
 	public List<LoopUserNotificationEvent> findByGCNI_GCP_T(
 		long groupClassNameId, long groupClassPK, int type, int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
-		return findByGCNI_GCP_T(groupClassNameId, groupClassPK, type, start,
-			end, orderByComparator, true);
+
+		return findByGCNI_GCP_T(
+			groupClassNameId, groupClassPK, type, start, end, orderByComparator,
+			true);
 	}
 
 	/**
 	 * Returns an ordered range of all the loop user notification events where groupClassNameId = &#63; and groupClassPK = &#63; and type = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param groupClassNameId the group class name ID
@@ -1264,44 +1235,52 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @param start the lower bound of the range of loop user notification events
 	 * @param end the upper bound of the range of loop user notification events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching loop user notification events
 	 */
 	@Override
 	public List<LoopUserNotificationEvent> findByGCNI_GCP_T(
 		long groupClassNameId, long groupClassPK, int type, int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP_T;
-			finderArgs = new Object[] { groupClassNameId, groupClassPK, type };
-		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_BY_GCNI_GCP_T;
-			finderArgs = new Object[] {
-					groupClassNameId, groupClassPK, type,
-					
-					start, end, orderByComparator
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByGCNI_GCP_T;
+				finderArgs = new Object[] {
+					groupClassNameId, groupClassPK, type
 				};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByGCNI_GCP_T;
+			finderArgs = new Object[] {
+				groupClassNameId, groupClassPK, type, start, end,
+				orderByComparator
+			};
 		}
 
 		List<LoopUserNotificationEvent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<LoopUserNotificationEvent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<LoopUserNotificationEvent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 
 			if ((list != null) && !list.isEmpty()) {
-				for (LoopUserNotificationEvent loopUserNotificationEvent : list) {
-					if ((groupClassNameId != loopUserNotificationEvent.getGroupClassNameId()) ||
-							(groupClassPK != loopUserNotificationEvent.getGroupClassPK()) ||
-							(type != loopUserNotificationEvent.getType())) {
+				for (LoopUserNotificationEvent loopUserNotificationEvent :
+						list) {
+
+					if ((groupClassNameId !=
+							loopUserNotificationEvent.getGroupClassNameId()) ||
+						(groupClassPK !=
+							loopUserNotificationEvent.getGroupClassPK()) ||
+						(type != loopUserNotificationEvent.getType())) {
+
 						list = null;
 
 						break;
@@ -1311,71 +1290,64 @@ public class LoopUserNotificationEventPersistenceImpl
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(5 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					5 + (orderByComparator.getOrderByFields().length * 2));
 			}
 			else {
-				query = new StringBundler(5);
+				sb = new StringBundler(5);
 			}
 
-			query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+			sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_T_TYPE_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_T_TYPE_2);
 
 			if (orderByComparator != null) {
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 			}
-			else
-			 if (pagination) {
-				query.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
+			else {
+				sb.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupClassNameId);
+				queryPos.add(groupClassNameId);
 
-				qPos.add(groupClassPK);
+				queryPos.add(groupClassPK);
 
-				qPos.add(type);
+				queryPos.add(type);
 
-				if (!pagination) {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<LoopUserNotificationEvent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1397,32 +1369,34 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent findByGCNI_GCP_T_First(
-		long groupClassNameId, long groupClassPK, int type,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long groupClassNameId, long groupClassPK, int type,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByGCNI_GCP_T_First(groupClassNameId,
-				groupClassPK, type, orderByComparator);
+
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			fetchByGCNI_GCP_T_First(
+				groupClassNameId, groupClassPK, type, orderByComparator);
 
 		if (loopUserNotificationEvent != null) {
 			return loopUserNotificationEvent;
 		}
 
-		StringBundler msg = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("groupClassNameId=");
-		msg.append(groupClassNameId);
+		sb.append("groupClassNameId=");
+		sb.append(groupClassNameId);
 
-		msg.append(", groupClassPK=");
-		msg.append(groupClassPK);
+		sb.append(", groupClassPK=");
+		sb.append(groupClassPK);
 
-		msg.append(", type=");
-		msg.append(type);
+		sb.append(", type=");
+		sb.append(type);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchLoopUserNotificationEventException(msg.toString());
+		throw new NoSuchLoopUserNotificationEventException(sb.toString());
 	}
 
 	/**
@@ -1438,8 +1412,9 @@ public class LoopUserNotificationEventPersistenceImpl
 	public LoopUserNotificationEvent fetchByGCNI_GCP_T_First(
 		long groupClassNameId, long groupClassPK, int type,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
-		List<LoopUserNotificationEvent> list = findByGCNI_GCP_T(groupClassNameId,
-				groupClassPK, type, 0, 1, orderByComparator);
+
+		List<LoopUserNotificationEvent> list = findByGCNI_GCP_T(
+			groupClassNameId, groupClassPK, type, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1460,32 +1435,34 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent findByGCNI_GCP_T_Last(
-		long groupClassNameId, long groupClassPK, int type,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long groupClassNameId, long groupClassPK, int type,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByGCNI_GCP_T_Last(groupClassNameId,
-				groupClassPK, type, orderByComparator);
+
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			fetchByGCNI_GCP_T_Last(
+				groupClassNameId, groupClassPK, type, orderByComparator);
 
 		if (loopUserNotificationEvent != null) {
 			return loopUserNotificationEvent;
 		}
 
-		StringBundler msg = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
-		msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-		msg.append("groupClassNameId=");
-		msg.append(groupClassNameId);
+		sb.append("groupClassNameId=");
+		sb.append(groupClassNameId);
 
-		msg.append(", groupClassPK=");
-		msg.append(groupClassPK);
+		sb.append(", groupClassPK=");
+		sb.append(groupClassPK);
 
-		msg.append(", type=");
-		msg.append(type);
+		sb.append(", type=");
+		sb.append(type);
 
-		msg.append("}");
+		sb.append("}");
 
-		throw new NoSuchLoopUserNotificationEventException(msg.toString());
+		throw new NoSuchLoopUserNotificationEventException(sb.toString());
 	}
 
 	/**
@@ -1501,14 +1478,16 @@ public class LoopUserNotificationEventPersistenceImpl
 	public LoopUserNotificationEvent fetchByGCNI_GCP_T_Last(
 		long groupClassNameId, long groupClassPK, int type,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
+
 		int count = countByGCNI_GCP_T(groupClassNameId, groupClassPK, type);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<LoopUserNotificationEvent> list = findByGCNI_GCP_T(groupClassNameId,
-				groupClassPK, type, count - 1, count, orderByComparator);
+		List<LoopUserNotificationEvent> list = findByGCNI_GCP_T(
+			groupClassNameId, groupClassPK, type, count - 1, count,
+			orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -1530,33 +1509,36 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent[] findByGCNI_GCP_T_PrevAndNext(
-		long loopUserNotificationEventId, long groupClassNameId,
-		long groupClassPK, int type,
-		OrderByComparator<LoopUserNotificationEvent> orderByComparator)
+			long loopUserNotificationEventId, long groupClassNameId,
+			long groupClassPK, int type,
+			OrderByComparator<LoopUserNotificationEvent> orderByComparator)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = findByPrimaryKey(loopUserNotificationEventId);
+
+		LoopUserNotificationEvent loopUserNotificationEvent = findByPrimaryKey(
+			loopUserNotificationEventId);
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopUserNotificationEvent[] array = new LoopUserNotificationEventImpl[3];
+			LoopUserNotificationEvent[] array =
+				new LoopUserNotificationEventImpl[3];
 
-			array[0] = getByGCNI_GCP_T_PrevAndNext(session,
-					loopUserNotificationEvent, groupClassNameId, groupClassPK,
-					type, orderByComparator, true);
+			array[0] = getByGCNI_GCP_T_PrevAndNext(
+				session, loopUserNotificationEvent, groupClassNameId,
+				groupClassPK, type, orderByComparator, true);
 
 			array[1] = loopUserNotificationEvent;
 
-			array[2] = getByGCNI_GCP_T_PrevAndNext(session,
-					loopUserNotificationEvent, groupClassNameId, groupClassPK,
-					type, orderByComparator, false);
+			array[2] = getByGCNI_GCP_T_PrevAndNext(
+				session, loopUserNotificationEvent, groupClassNameId,
+				groupClassPK, type, orderByComparator, false);
 
 			return array;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1568,108 +1550,111 @@ public class LoopUserNotificationEventPersistenceImpl
 		long groupClassNameId, long groupClassPK, int type,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
 		boolean previous) {
-		StringBundler query = null;
+
+		StringBundler sb = null;
 
 		if (orderByComparator != null) {
-			query = new StringBundler(6 +
-					(orderByComparator.getOrderByConditionFields().length * 3) +
+			sb = new StringBundler(
+				6 + (orderByComparator.getOrderByConditionFields().length * 3) +
 					(orderByComparator.getOrderByFields().length * 3));
 		}
 		else {
-			query = new StringBundler(5);
+			sb = new StringBundler(5);
 		}
 
-		query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+		sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-		query.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2);
+		sb.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2);
 
-		query.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2);
+		sb.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2);
 
-		query.append(_FINDER_COLUMN_GCNI_GCP_T_TYPE_2);
+		sb.append(_FINDER_COLUMN_GCNI_GCP_T_TYPE_2);
 
 		if (orderByComparator != null) {
-			String[] orderByConditionFields = orderByComparator.getOrderByConditionFields();
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
 
 			if (orderByConditionFields.length > 0) {
-				query.append(WHERE_AND);
+				sb.append(WHERE_AND);
 			}
 
 			for (int i = 0; i < orderByConditionFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByConditionFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
 
 				if ((i + 1) < orderByConditionFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN_HAS_NEXT);
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN_HAS_NEXT);
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(WHERE_GREATER_THAN);
+						sb.append(WHERE_GREATER_THAN);
 					}
 					else {
-						query.append(WHERE_LESSER_THAN);
+						sb.append(WHERE_LESSER_THAN);
 					}
 				}
 			}
 
-			query.append(ORDER_BY_CLAUSE);
+			sb.append(ORDER_BY_CLAUSE);
 
 			String[] orderByFields = orderByComparator.getOrderByFields();
 
 			for (int i = 0; i < orderByFields.length; i++) {
-				query.append(_ORDER_BY_ENTITY_ALIAS);
-				query.append(orderByFields[i]);
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
 
 				if ((i + 1) < orderByFields.length) {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC_HAS_NEXT);
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
 					}
 					else {
-						query.append(ORDER_BY_DESC_HAS_NEXT);
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
 					}
 				}
 				else {
 					if (orderByComparator.isAscending() ^ previous) {
-						query.append(ORDER_BY_ASC);
+						sb.append(ORDER_BY_ASC);
 					}
 					else {
-						query.append(ORDER_BY_DESC);
+						sb.append(ORDER_BY_DESC);
 					}
 				}
 			}
 		}
 		else {
-			query.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
+			sb.append(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 		}
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
-		Query q = session.createQuery(sql);
+		Query query = session.createQuery(sql);
 
-		q.setFirstResult(0);
-		q.setMaxResults(2);
+		query.setFirstResult(0);
+		query.setMaxResults(2);
 
-		QueryPos qPos = QueryPos.getInstance(q);
+		QueryPos queryPos = QueryPos.getInstance(query);
 
-		qPos.add(groupClassNameId);
+		queryPos.add(groupClassNameId);
 
-		qPos.add(groupClassPK);
+		queryPos.add(groupClassPK);
 
-		qPos.add(type);
+		queryPos.add(type);
 
 		if (orderByComparator != null) {
-			Object[] values = orderByComparator.getOrderByConditionValues(loopUserNotificationEvent);
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(
+						loopUserNotificationEvent)) {
 
-			for (Object value : values) {
-				qPos.add(value);
+				queryPos.add(orderByConditionValue);
 			}
 		}
 
-		List<LoopUserNotificationEvent> list = q.list();
+		List<LoopUserNotificationEvent> list = query.list();
 
 		if (list.size() == 2) {
 			return list.get(1);
@@ -1687,11 +1672,14 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @param type the type
 	 */
 	@Override
-	public void removeByGCNI_GCP_T(long groupClassNameId, long groupClassPK,
-		int type) {
-		for (LoopUserNotificationEvent loopUserNotificationEvent : findByGCNI_GCP_T(
-				groupClassNameId, groupClassPK, type, QueryUtil.ALL_POS,
-				QueryUtil.ALL_POS, null)) {
+	public void removeByGCNI_GCP_T(
+		long groupClassNameId, long groupClassPK, int type) {
+
+		for (LoopUserNotificationEvent loopUserNotificationEvent :
+				findByGCNI_GCP_T(
+					groupClassNameId, groupClassPK, type, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
 			remove(loopUserNotificationEvent);
 		}
 	}
@@ -1705,50 +1693,53 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the number of matching loop user notification events
 	 */
 	@Override
-	public int countByGCNI_GCP_T(long groupClassNameId, long groupClassPK,
-		int type) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_GCNI_GCP_T;
+	public int countByGCNI_GCP_T(
+		long groupClassNameId, long groupClassPK, int type) {
 
-		Object[] finderArgs = new Object[] { groupClassNameId, groupClassPK, type };
+		FinderPath finderPath = _finderPathCountByGCNI_GCP_T;
+
+		Object[] finderArgs = new Object[] {
+			groupClassNameId, groupClassPK, type
+		};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE);
+			sb.append(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2);
 
-			query.append(_FINDER_COLUMN_GCNI_GCP_T_TYPE_2);
+			sb.append(_FINDER_COLUMN_GCNI_GCP_T_TYPE_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(groupClassNameId);
+				queryPos.add(groupClassNameId);
 
-				qPos.add(groupClassPK);
+				queryPos.add(groupClassPK);
 
-				qPos.add(type);
+				queryPos.add(type);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1758,28 +1749,33 @@ public class LoopUserNotificationEventPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2 = "loopUserNotificationEvent.groupClassNameId = ? AND ";
-	private static final String _FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2 = "loopUserNotificationEvent.groupClassPK = ? AND ";
-	private static final String _FINDER_COLUMN_GCNI_GCP_T_TYPE_2 = "loopUserNotificationEvent.type = ?";
+	private static final String _FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSNAMEID_2 =
+		"loopUserNotificationEvent.groupClassNameId = ? AND ";
+
+	private static final String _FINDER_COLUMN_GCNI_GCP_T_GROUPCLASSPK_2 =
+		"loopUserNotificationEvent.groupClassPK = ? AND ";
+
+	private static final String _FINDER_COLUMN_GCNI_GCP_T_TYPE_2 =
+		"loopUserNotificationEvent.type = ?";
 
 	public LoopUserNotificationEventPersistenceImpl() {
 		setModelClass(LoopUserNotificationEvent.class);
 
+		Map<String, String> dbColumnNames = new HashMap<String, String>();
+
+		dbColumnNames.put("type", "type_");
+
 		try {
 			Field field = BasePersistenceImpl.class.getDeclaredField(
-					"_dbColumnNames");
+				"_dbColumnNames");
 
 			field.setAccessible(true);
 
-			Map<String, String> dbColumnNames = new HashMap<String, String>();
-
-			dbColumnNames.put("type", "type_");
-
 			field.set(this, dbColumnNames);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -1790,10 +1786,14 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @param loopUserNotificationEvent the loop user notification event
 	 */
 	@Override
-	public void cacheResult(LoopUserNotificationEvent loopUserNotificationEvent) {
-		entityCache.putResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+	public void cacheResult(
+		LoopUserNotificationEvent loopUserNotificationEvent) {
+
+		entityCache.putResult(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 			LoopUserNotificationEventImpl.class,
-			loopUserNotificationEvent.getPrimaryKey(), loopUserNotificationEvent);
+			loopUserNotificationEvent.getPrimaryKey(),
+			loopUserNotificationEvent);
 
 		loopUserNotificationEvent.resetOriginalValues();
 	}
@@ -1806,11 +1806,15 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public void cacheResult(
 		List<LoopUserNotificationEvent> loopUserNotificationEvents) {
-		for (LoopUserNotificationEvent loopUserNotificationEvent : loopUserNotificationEvents) {
+
+		for (LoopUserNotificationEvent loopUserNotificationEvent :
+				loopUserNotificationEvents) {
+
 			if (entityCache.getResult(
-						LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-						LoopUserNotificationEventImpl.class,
-						loopUserNotificationEvent.getPrimaryKey()) == null) {
+					LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+					LoopUserNotificationEventImpl.class,
+					loopUserNotificationEvent.getPrimaryKey()) == null) {
+
 				cacheResult(loopUserNotificationEvent);
 			}
 			else {
@@ -1823,7 +1827,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Clears the cache for all loop user notification events.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -1839,12 +1843,15 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Clears the cache for the loop user notification event.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
-	public void clearCache(LoopUserNotificationEvent loopUserNotificationEvent) {
-		entityCache.removeResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+	public void clearCache(
+		LoopUserNotificationEvent loopUserNotificationEvent) {
+
+		entityCache.removeResult(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 			LoopUserNotificationEventImpl.class,
 			loopUserNotificationEvent.getPrimaryKey());
 
@@ -1855,13 +1862,29 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public void clearCache(
 		List<LoopUserNotificationEvent> loopUserNotificationEvents) {
+
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
-		for (LoopUserNotificationEvent loopUserNotificationEvent : loopUserNotificationEvents) {
-			entityCache.removeResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+		for (LoopUserNotificationEvent loopUserNotificationEvent :
+				loopUserNotificationEvents) {
+
+			entityCache.removeResult(
+				LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 				LoopUserNotificationEventImpl.class,
 				loopUserNotificationEvent.getPrimaryKey());
+		}
+	}
+
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+				LoopUserNotificationEventImpl.class, primaryKey);
 		}
 	}
 
@@ -1873,7 +1896,8 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent create(long loopUserNotificationEventId) {
-		LoopUserNotificationEvent loopUserNotificationEvent = new LoopUserNotificationEventImpl();
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			new LoopUserNotificationEventImpl();
 
 		loopUserNotificationEvent.setNew(true);
 		loopUserNotificationEvent.setPrimaryKey(loopUserNotificationEventId);
@@ -1891,6 +1915,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public LoopUserNotificationEvent remove(long loopUserNotificationEventId)
 		throws NoSuchLoopUserNotificationEventException {
+
 		return remove((Serializable)loopUserNotificationEventId);
 	}
 
@@ -1904,30 +1929,32 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public LoopUserNotificationEvent remove(Serializable primaryKey)
 		throws NoSuchLoopUserNotificationEventException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopUserNotificationEvent loopUserNotificationEvent = (LoopUserNotificationEvent)session.get(LoopUserNotificationEventImpl.class,
-					primaryKey);
+			LoopUserNotificationEvent loopUserNotificationEvent =
+				(LoopUserNotificationEvent)session.get(
+					LoopUserNotificationEventImpl.class, primaryKey);
 
 			if (loopUserNotificationEvent == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchLoopUserNotificationEventException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(loopUserNotificationEvent);
 		}
-		catch (NoSuchLoopUserNotificationEventException nsee) {
-			throw nsee;
+		catch (NoSuchLoopUserNotificationEventException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1937,7 +1964,6 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	protected LoopUserNotificationEvent removeImpl(
 		LoopUserNotificationEvent loopUserNotificationEvent) {
-		loopUserNotificationEvent = toUnwrappedModel(loopUserNotificationEvent);
 
 		Session session = null;
 
@@ -1945,7 +1971,9 @@ public class LoopUserNotificationEventPersistenceImpl
 			session = openSession();
 
 			if (!session.contains(loopUserNotificationEvent)) {
-				loopUserNotificationEvent = (LoopUserNotificationEvent)session.get(LoopUserNotificationEventImpl.class,
+				loopUserNotificationEvent =
+					(LoopUserNotificationEvent)session.get(
+						LoopUserNotificationEventImpl.class,
 						loopUserNotificationEvent.getPrimaryKeyObj());
 			}
 
@@ -1953,8 +1981,8 @@ public class LoopUserNotificationEventPersistenceImpl
 				session.delete(loopUserNotificationEvent);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -1970,11 +1998,30 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public LoopUserNotificationEvent updateImpl(
 		LoopUserNotificationEvent loopUserNotificationEvent) {
-		loopUserNotificationEvent = toUnwrappedModel(loopUserNotificationEvent);
 
 		boolean isNew = loopUserNotificationEvent.isNew();
 
-		LoopUserNotificationEventModelImpl loopUserNotificationEventModelImpl = (LoopUserNotificationEventModelImpl)loopUserNotificationEvent;
+		if (!(loopUserNotificationEvent instanceof
+				LoopUserNotificationEventModelImpl)) {
+
+			InvocationHandler invocationHandler = null;
+
+			if (ProxyUtil.isProxyClass(loopUserNotificationEvent.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(
+					loopUserNotificationEvent);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in loopUserNotificationEvent proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom LoopUserNotificationEvent implementation " +
+					loopUserNotificationEvent.getClass());
+		}
+
+		LoopUserNotificationEventModelImpl loopUserNotificationEventModelImpl =
+			(LoopUserNotificationEventModelImpl)loopUserNotificationEvent;
 
 		Session session = null;
 
@@ -1987,11 +2034,13 @@ public class LoopUserNotificationEventPersistenceImpl
 				loopUserNotificationEvent.setNew(false);
 			}
 			else {
-				loopUserNotificationEvent = (LoopUserNotificationEvent)session.merge(loopUserNotificationEvent);
+				loopUserNotificationEvent =
+					(LoopUserNotificationEvent)session.merge(
+						loopUserNotificationEvent);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2002,106 +2051,114 @@ public class LoopUserNotificationEventPersistenceImpl
 		if (!LoopUserNotificationEventModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
+		else if (isNew) {
 			Object[] args = new Object[] {
+				loopUserNotificationEventModelImpl.getGroupKey()
+			};
+
+			finderCache.removeResult(_finderPathCountByGroupKey, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByGroupKey, args);
+
+			args = new Object[] {
+				loopUserNotificationEventModelImpl.getGroupClassNameId(),
+				loopUserNotificationEventModelImpl.getGroupClassPK()
+			};
+
+			finderCache.removeResult(_finderPathCountByGCNI_GCP, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByGCNI_GCP, args);
+
+			args = new Object[] {
+				loopUserNotificationEventModelImpl.getGroupClassNameId(),
+				loopUserNotificationEventModelImpl.getGroupClassPK(),
+				loopUserNotificationEventModelImpl.getType()
+			};
+
+			finderCache.removeResult(_finderPathCountByGCNI_GCP_T, args);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindByGCNI_GCP_T, args);
+
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
+		}
+		else {
+			if ((loopUserNotificationEventModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByGroupKey.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					loopUserNotificationEventModelImpl.getOriginalGroupKey()
+				};
+
+				finderCache.removeResult(_finderPathCountByGroupKey, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGroupKey, args);
+
+				args = new Object[] {
 					loopUserNotificationEventModelImpl.getGroupKey()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPKEY, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPKEY,
-				args);
+				finderCache.removeResult(_finderPathCountByGroupKey, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGroupKey, args);
+			}
 
-			args = new Object[] {
+			if ((loopUserNotificationEventModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByGCNI_GCP.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					loopUserNotificationEventModelImpl.
+						getOriginalGroupClassNameId(),
+					loopUserNotificationEventModelImpl.getOriginalGroupClassPK()
+				};
+
+				finderCache.removeResult(_finderPathCountByGCNI_GCP, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGCNI_GCP, args);
+
+				args = new Object[] {
 					loopUserNotificationEventModelImpl.getGroupClassNameId(),
 					loopUserNotificationEventModelImpl.getGroupClassPK()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_GCNI_GCP, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP,
-				args);
+				finderCache.removeResult(_finderPathCountByGCNI_GCP, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGCNI_GCP, args);
+			}
 
-			args = new Object[] {
+			if ((loopUserNotificationEventModelImpl.getColumnBitmask() &
+				 _finderPathWithoutPaginationFindByGCNI_GCP_T.
+					 getColumnBitmask()) != 0) {
+
+				Object[] args = new Object[] {
+					loopUserNotificationEventModelImpl.
+						getOriginalGroupClassNameId(),
+					loopUserNotificationEventModelImpl.
+						getOriginalGroupClassPK(),
+					loopUserNotificationEventModelImpl.getOriginalType()
+				};
+
+				finderCache.removeResult(_finderPathCountByGCNI_GCP_T, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGCNI_GCP_T, args);
+
+				args = new Object[] {
 					loopUserNotificationEventModelImpl.getGroupClassNameId(),
 					loopUserNotificationEventModelImpl.getGroupClassPK(),
 					loopUserNotificationEventModelImpl.getType()
 				};
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_GCNI_GCP_T, args);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP_T,
-				args);
-
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
-		}
-
-		else {
-			if ((loopUserNotificationEventModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPKEY.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						loopUserNotificationEventModelImpl.getOriginalGroupKey()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPKEY, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPKEY,
-					args);
-
-				args = new Object[] {
-						loopUserNotificationEventModelImpl.getGroupKey()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_GROUPKEY, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GROUPKEY,
-					args);
-			}
-
-			if ((loopUserNotificationEventModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						loopUserNotificationEventModelImpl.getOriginalGroupClassNameId(),
-						loopUserNotificationEventModelImpl.getOriginalGroupClassPK()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_GCNI_GCP, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP,
-					args);
-
-				args = new Object[] {
-						loopUserNotificationEventModelImpl.getGroupClassNameId(),
-						loopUserNotificationEventModelImpl.getGroupClassPK()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_GCNI_GCP, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP,
-					args);
-			}
-
-			if ((loopUserNotificationEventModelImpl.getColumnBitmask() &
-					FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP_T.getColumnBitmask()) != 0) {
-				Object[] args = new Object[] {
-						loopUserNotificationEventModelImpl.getOriginalGroupClassNameId(),
-						loopUserNotificationEventModelImpl.getOriginalGroupClassPK(),
-						loopUserNotificationEventModelImpl.getOriginalType()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_GCNI_GCP_T, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP_T,
-					args);
-
-				args = new Object[] {
-						loopUserNotificationEventModelImpl.getGroupClassNameId(),
-						loopUserNotificationEventModelImpl.getGroupClassPK(),
-						loopUserNotificationEventModelImpl.getType()
-					};
-
-				finderCache.removeResult(FINDER_PATH_COUNT_BY_GCNI_GCP_T, args);
-				finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_BY_GCNI_GCP_T,
-					args);
+				finderCache.removeResult(_finderPathCountByGCNI_GCP_T, args);
+				finderCache.removeResult(
+					_finderPathWithoutPaginationFindByGCNI_GCP_T, args);
 			}
 		}
 
-		entityCache.putResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+		entityCache.putResult(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 			LoopUserNotificationEventImpl.class,
 			loopUserNotificationEvent.getPrimaryKey(),
 			loopUserNotificationEvent, false);
@@ -2111,34 +2168,8 @@ public class LoopUserNotificationEventPersistenceImpl
 		return loopUserNotificationEvent;
 	}
 
-	protected LoopUserNotificationEvent toUnwrappedModel(
-		LoopUserNotificationEvent loopUserNotificationEvent) {
-		if (loopUserNotificationEvent instanceof LoopUserNotificationEventImpl) {
-			return loopUserNotificationEvent;
-		}
-
-		LoopUserNotificationEventImpl loopUserNotificationEventImpl = new LoopUserNotificationEventImpl();
-
-		loopUserNotificationEventImpl.setNew(loopUserNotificationEvent.isNew());
-		loopUserNotificationEventImpl.setPrimaryKey(loopUserNotificationEvent.getPrimaryKey());
-
-		loopUserNotificationEventImpl.setLoopUserNotificationEventId(loopUserNotificationEvent.getLoopUserNotificationEventId());
-		loopUserNotificationEventImpl.setCreateTime(loopUserNotificationEvent.getCreateTime());
-		loopUserNotificationEventImpl.setRecipientUserId(loopUserNotificationEvent.getRecipientUserId());
-		loopUserNotificationEventImpl.setClassNameId(loopUserNotificationEvent.getClassNameId());
-		loopUserNotificationEventImpl.setClassPK(loopUserNotificationEvent.getClassPK());
-		loopUserNotificationEventImpl.setGroupClassNameId(loopUserNotificationEvent.getGroupClassNameId());
-		loopUserNotificationEventImpl.setGroupClassPK(loopUserNotificationEvent.getGroupClassPK());
-		loopUserNotificationEventImpl.setGroupKey(loopUserNotificationEvent.getGroupKey());
-		loopUserNotificationEventImpl.setType(loopUserNotificationEvent.getType());
-		loopUserNotificationEventImpl.setReceived(loopUserNotificationEvent.isReceived());
-		loopUserNotificationEventImpl.setOpened(loopUserNotificationEvent.isOpened());
-
-		return loopUserNotificationEventImpl;
-	}
-
 	/**
-	 * Returns the loop user notification event with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the loop user notification event with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop user notification event
 	 * @return the loop user notification event
@@ -2147,22 +2178,24 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public LoopUserNotificationEvent findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopUserNotificationEventException {
-		LoopUserNotificationEvent loopUserNotificationEvent = fetchByPrimaryKey(primaryKey);
+
+		LoopUserNotificationEvent loopUserNotificationEvent = fetchByPrimaryKey(
+			primaryKey);
 
 		if (loopUserNotificationEvent == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopUserNotificationEventException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchLoopUserNotificationEventException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return loopUserNotificationEvent;
 	}
 
 	/**
-	 * Returns the loop user notification event with the primary key or throws a {@link NoSuchLoopUserNotificationEventException} if it could not be found.
+	 * Returns the loop user notification event with the primary key or throws a <code>NoSuchLoopUserNotificationEventException</code> if it could not be found.
 	 *
 	 * @param loopUserNotificationEventId the primary key of the loop user notification event
 	 * @return the loop user notification event
@@ -2170,8 +2203,9 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public LoopUserNotificationEvent findByPrimaryKey(
-		long loopUserNotificationEventId)
+			long loopUserNotificationEventId)
 		throws NoSuchLoopUserNotificationEventException {
+
 		return findByPrimaryKey((Serializable)loopUserNotificationEventId);
 	}
 
@@ -2182,15 +2216,19 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the loop user notification event, or <code>null</code> if a loop user notification event with the primary key could not be found
 	 */
 	@Override
-	public LoopUserNotificationEvent fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-				LoopUserNotificationEventImpl.class, primaryKey);
+	public LoopUserNotificationEvent fetchByPrimaryKey(
+		Serializable primaryKey) {
+
+		Serializable serializable = entityCache.getResult(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class, primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
 		}
 
-		LoopUserNotificationEvent loopUserNotificationEvent = (LoopUserNotificationEvent)serializable;
+		LoopUserNotificationEvent loopUserNotificationEvent =
+			(LoopUserNotificationEvent)serializable;
 
 		if (loopUserNotificationEvent == null) {
 			Session session = null;
@@ -2198,23 +2236,26 @@ public class LoopUserNotificationEventPersistenceImpl
 			try {
 				session = openSession();
 
-				loopUserNotificationEvent = (LoopUserNotificationEvent)session.get(LoopUserNotificationEventImpl.class,
-						primaryKey);
+				loopUserNotificationEvent =
+					(LoopUserNotificationEvent)session.get(
+						LoopUserNotificationEventImpl.class, primaryKey);
 
 				if (loopUserNotificationEvent != null) {
 					cacheResult(loopUserNotificationEvent);
 				}
 				else {
-					entityCache.putResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 						LoopUserNotificationEventImpl.class, primaryKey,
 						nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 					LoopUserNotificationEventImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2233,24 +2274,28 @@ public class LoopUserNotificationEventPersistenceImpl
 	@Override
 	public LoopUserNotificationEvent fetchByPrimaryKey(
 		long loopUserNotificationEventId) {
+
 		return fetchByPrimaryKey((Serializable)loopUserNotificationEventId);
 	}
 
 	@Override
 	public Map<Serializable, LoopUserNotificationEvent> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopUserNotificationEvent> map = new HashMap<Serializable, LoopUserNotificationEvent>();
+		Map<Serializable, LoopUserNotificationEvent> map =
+			new HashMap<Serializable, LoopUserNotificationEvent>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
 
 			Serializable primaryKey = iterator.next();
 
-			LoopUserNotificationEvent loopUserNotificationEvent = fetchByPrimaryKey(primaryKey);
+			LoopUserNotificationEvent loopUserNotificationEvent =
+				fetchByPrimaryKey(primaryKey);
 
 			if (loopUserNotificationEvent != null) {
 				map.put(primaryKey, loopUserNotificationEvent);
@@ -2262,8 +2307,9 @@ public class LoopUserNotificationEventPersistenceImpl
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
-					LoopUserNotificationEventImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+				LoopUserNotificationEventImpl.class, primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -2274,7 +2320,8 @@ public class LoopUserNotificationEventPersistenceImpl
 					uncachedPrimaryKeys.add(primaryKey);
 				}
 				else {
-					map.put(primaryKey, (LoopUserNotificationEvent)serializable);
+					map.put(
+						primaryKey, (LoopUserNotificationEvent)serializable);
 				}
 			}
 		}
@@ -2283,46 +2330,51 @@ public class LoopUserNotificationEventPersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (LoopUserNotificationEvent loopUserNotificationEvent : (List<LoopUserNotificationEvent>)q.list()) {
-				map.put(loopUserNotificationEvent.getPrimaryKeyObj(),
+			for (LoopUserNotificationEvent loopUserNotificationEvent :
+					(List<LoopUserNotificationEvent>)query.list()) {
+
+				map.put(
+					loopUserNotificationEvent.getPrimaryKeyObj(),
 					loopUserNotificationEvent);
 
 				cacheResult(loopUserNotificationEvent);
 
-				uncachedPrimaryKeys.remove(loopUserNotificationEvent.getPrimaryKeyObj());
+				uncachedPrimaryKeys.remove(
+					loopUserNotificationEvent.getPrimaryKeyObj());
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
 					LoopUserNotificationEventImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -2345,7 +2397,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Returns a range of all the loop user notification events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop user notification events
@@ -2361,7 +2413,7 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Returns an ordered range of all the loop user notification events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop user notification events
@@ -2370,8 +2422,10 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * @return the ordered range of loop user notification events
 	 */
 	@Override
-	public List<LoopUserNotificationEvent> findAll(int start, int end,
+	public List<LoopUserNotificationEvent> findAll(
+		int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -2379,62 +2433,64 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Returns an ordered range of all the loop user notification events.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopUserNotificationEventModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopUserNotificationEventModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop user notification events
 	 * @param end the upper bound of the range of loop user notification events (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of loop user notification events
 	 */
 	@Override
-	public List<LoopUserNotificationEvent> findAll(int start, int end,
+	public List<LoopUserNotificationEvent> findAll(
+		int start, int end,
 		OrderByComparator<LoopUserNotificationEvent> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<LoopUserNotificationEvent> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<LoopUserNotificationEvent>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<LoopUserNotificationEvent>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT);
+				sb.append(_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPUSERNOTIFICATIONEVENT;
 
-				if (pagination) {
-					sql = sql.concat(LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(
+					LoopUserNotificationEventModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -2442,29 +2498,23 @@ public class LoopUserNotificationEventPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LoopUserNotificationEvent>)QueryUtil.list(q,
-							getDialect(), start, end);
-				}
+				list = (List<LoopUserNotificationEvent>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2492,8 +2542,8 @@ public class LoopUserNotificationEventPersistenceImpl
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -2501,18 +2551,19 @@ public class LoopUserNotificationEventPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT);
+				Query query = session.createQuery(
+					_SQL_COUNT_LOOPUSERNOTIFICATIONEVENT);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -2536,6 +2587,107 @@ public class LoopUserNotificationEventPersistenceImpl
 	 * Initializes the loop user notification event persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathWithPaginationFindByGroupKey = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGroupKey",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByGroupKey = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGroupKey",
+			new String[] {Long.class.getName()},
+			LoopUserNotificationEventModelImpl.GROUPKEY_COLUMN_BITMASK);
+
+		_finderPathCountByGroupKey = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGroupKey",
+			new String[] {Long.class.getName()});
+
+		_finderPathWithPaginationFindByGCNI_GCP = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGCNI_GCP",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByGCNI_GCP = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGCNI_GCP",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			LoopUserNotificationEventModelImpl.GROUPCLASSNAMEID_COLUMN_BITMASK |
+			LoopUserNotificationEventModelImpl.GROUPCLASSPK_COLUMN_BITMASK);
+
+		_finderPathCountByGCNI_GCP = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGCNI_GCP",
+			new String[] {Long.class.getName(), Long.class.getName()});
+
+		_finderPathWithPaginationFindByGCNI_GCP_T = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGCNI_GCP_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			});
+
+		_finderPathWithoutPaginationFindByGCNI_GCP_T = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED,
+			LoopUserNotificationEventImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByGCNI_GCP_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			},
+			LoopUserNotificationEventModelImpl.GROUPCLASSNAMEID_COLUMN_BITMASK |
+			LoopUserNotificationEventModelImpl.GROUPCLASSPK_COLUMN_BITMASK |
+			LoopUserNotificationEventModelImpl.TYPE_COLUMN_BITMASK);
+
+		_finderPathCountByGCNI_GCP_T = new FinderPath(
+			LoopUserNotificationEventModelImpl.ENTITY_CACHE_ENABLED,
+			LoopUserNotificationEventModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByGCNI_GCP_T",
+			new String[] {
+				Long.class.getName(), Long.class.getName(),
+				Integer.class.getName()
+			});
 	}
 
 	public void destroy() {
@@ -2547,19 +2699,39 @@ public class LoopUserNotificationEventPersistenceImpl
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_LOOPUSERNOTIFICATIONEVENT = "SELECT loopUserNotificationEvent FROM LoopUserNotificationEvent loopUserNotificationEvent";
-	private static final String _SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE_PKS_IN =
-		"SELECT loopUserNotificationEvent FROM LoopUserNotificationEvent loopUserNotificationEvent WHERE loopUserNotificationEventId IN (";
-	private static final String _SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE = "SELECT loopUserNotificationEvent FROM LoopUserNotificationEvent loopUserNotificationEvent WHERE ";
-	private static final String _SQL_COUNT_LOOPUSERNOTIFICATIONEVENT = "SELECT COUNT(loopUserNotificationEvent) FROM LoopUserNotificationEvent loopUserNotificationEvent";
-	private static final String _SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE = "SELECT COUNT(loopUserNotificationEvent) FROM LoopUserNotificationEvent loopUserNotificationEvent WHERE ";
-	private static final String _ORDER_BY_ENTITY_ALIAS = "loopUserNotificationEvent.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopUserNotificationEvent exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LoopUserNotificationEvent exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(LoopUserNotificationEventPersistenceImpl.class);
-	private static final Set<String> _badColumnNames = SetUtil.fromArray(new String[] {
-				"type"
-			});
+
+	private static final String _SQL_SELECT_LOOPUSERNOTIFICATIONEVENT =
+		"SELECT loopUserNotificationEvent FROM LoopUserNotificationEvent loopUserNotificationEvent";
+
+	private static final String
+		_SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE_PKS_IN =
+			"SELECT loopUserNotificationEvent FROM LoopUserNotificationEvent loopUserNotificationEvent WHERE loopUserNotificationEventId IN (";
+
+	private static final String _SQL_SELECT_LOOPUSERNOTIFICATIONEVENT_WHERE =
+		"SELECT loopUserNotificationEvent FROM LoopUserNotificationEvent loopUserNotificationEvent WHERE ";
+
+	private static final String _SQL_COUNT_LOOPUSERNOTIFICATIONEVENT =
+		"SELECT COUNT(loopUserNotificationEvent) FROM LoopUserNotificationEvent loopUserNotificationEvent";
+
+	private static final String _SQL_COUNT_LOOPUSERNOTIFICATIONEVENT_WHERE =
+		"SELECT COUNT(loopUserNotificationEvent) FROM LoopUserNotificationEvent loopUserNotificationEvent WHERE ";
+
+	private static final String _ORDER_BY_ENTITY_ALIAS =
+		"loopUserNotificationEvent.";
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No LoopUserNotificationEvent exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No LoopUserNotificationEvent exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LoopUserNotificationEventPersistenceImpl.class);
+
+	private static final Set<String> _badColumnNames = SetUtil.fromArray(
+		new String[] {"type"});
+
 }

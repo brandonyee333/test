@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see LoopStatsEntry
  * @generated
  */
-@ProviderType
-public class LoopStatsEntryWrapper implements LoopStatsEntry,
-	ModelWrapper<LoopStatsEntry> {
+public class LoopStatsEntryWrapper
+	implements LoopStatsEntry, ModelWrapper<LoopStatsEntry> {
+
 	public LoopStatsEntryWrapper(LoopStatsEntry loopStatsEntry) {
 		_loopStatsEntry = loopStatsEntry;
 	}
@@ -101,7 +98,8 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 
 	@Override
 	public Object clone() {
-		return new LoopStatsEntryWrapper((LoopStatsEntry)_loopStatsEntry.clone());
+		return new LoopStatsEntryWrapper(
+			(LoopStatsEntry)_loopStatsEntry.clone());
 	}
 
 	@Override
@@ -110,30 +108,30 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Returns the fully qualified class name of this loop stats entry.
-	*
-	* @return the fully qualified class name of this loop stats entry
-	*/
+	 * Returns the fully qualified class name of this loop stats entry.
+	 *
+	 * @return the fully qualified class name of this loop stats entry
+	 */
 	@Override
 	public String getClassName() {
 		return _loopStatsEntry.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this loop stats entry.
-	*
-	* @return the class name ID of this loop stats entry
-	*/
+	 * Returns the class name ID of this loop stats entry.
+	 *
+	 * @return the class name ID of this loop stats entry
+	 */
 	@Override
 	public long getClassNameId() {
 		return _loopStatsEntry.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this loop stats entry.
-	*
-	* @return the class pk of this loop stats entry
-	*/
+	 * Returns the class pk of this loop stats entry.
+	 *
+	 * @return the class pk of this loop stats entry
+	 */
 	@Override
 	public long getClassPK() {
 		return _loopStatsEntry.getClassPK();
@@ -145,30 +143,30 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Returns the loop stats entry ID of this loop stats entry.
-	*
-	* @return the loop stats entry ID of this loop stats entry
-	*/
+	 * Returns the loop stats entry ID of this loop stats entry.
+	 *
+	 * @return the loop stats entry ID of this loop stats entry
+	 */
 	@Override
 	public long getLoopStatsEntryId() {
 		return _loopStatsEntry.getLoopStatsEntryId();
 	}
 
 	/**
-	* Returns the modified time of this loop stats entry.
-	*
-	* @return the modified time of this loop stats entry
-	*/
+	 * Returns the modified time of this loop stats entry.
+	 *
+	 * @return the modified time of this loop stats entry
+	 */
 	@Override
 	public long getModifiedTime() {
 		return _loopStatsEntry.getModifiedTime();
 	}
 
 	/**
-	* Returns the primary key of this loop stats entry.
-	*
-	* @return the primary key of this loop stats entry
-	*/
+	 * Returns the primary key of this loop stats entry.
+	 *
+	 * @return the primary key of this loop stats entry
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopStatsEntry.getPrimaryKey();
@@ -180,10 +178,10 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Returns the score of this loop stats entry.
-	*
-	* @return the score of this loop stats entry
-	*/
+	 * Returns the score of this loop stats entry.
+	 *
+	 * @return the score of this loop stats entry
+	 */
 	@Override
 	public double getScore() {
 		return _loopStatsEntry.getScore();
@@ -225,20 +223,20 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Sets the class name ID of this loop stats entry.
-	*
-	* @param classNameId the class name ID of this loop stats entry
-	*/
+	 * Sets the class name ID of this loop stats entry.
+	 *
+	 * @param classNameId the class name ID of this loop stats entry
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_loopStatsEntry.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this loop stats entry.
-	*
-	* @param classPK the class pk of this loop stats entry
-	*/
+	 * Sets the class pk of this loop stats entry.
+	 *
+	 * @param classPK the class pk of this loop stats entry
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_loopStatsEntry.setClassPK(classPK);
@@ -247,6 +245,7 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopStatsEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -261,20 +260,20 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Sets the loop stats entry ID of this loop stats entry.
-	*
-	* @param loopStatsEntryId the loop stats entry ID of this loop stats entry
-	*/
+	 * Sets the loop stats entry ID of this loop stats entry.
+	 *
+	 * @param loopStatsEntryId the loop stats entry ID of this loop stats entry
+	 */
 	@Override
 	public void setLoopStatsEntryId(long loopStatsEntryId) {
 		_loopStatsEntry.setLoopStatsEntryId(loopStatsEntryId);
 	}
 
 	/**
-	* Sets the modified time of this loop stats entry.
-	*
-	* @param modifiedTime the modified time of this loop stats entry
-	*/
+	 * Sets the modified time of this loop stats entry.
+	 *
+	 * @param modifiedTime the modified time of this loop stats entry
+	 */
 	@Override
 	public void setModifiedTime(long modifiedTime) {
 		_loopStatsEntry.setModifiedTime(modifiedTime);
@@ -286,10 +285,10 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Sets the primary key of this loop stats entry.
-	*
-	* @param primaryKey the primary key of this loop stats entry
-	*/
+	 * Sets the primary key of this loop stats entry.
+	 *
+	 * @param primaryKey the primary key of this loop stats entry
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopStatsEntry.setPrimaryKey(primaryKey);
@@ -301,17 +300,19 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	/**
-	* Sets the score of this loop stats entry.
-	*
-	* @param score the score of this loop stats entry
-	*/
+	 * Sets the score of this loop stats entry.
+	 *
+	 * @param score the score of this loop stats entry
+	 */
 	@Override
 	public void setScore(double score) {
 		_loopStatsEntry.setScore(score);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopStatsEntry> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopStatsEntry>
+		toCacheModel() {
+
 		return _loopStatsEntry.toCacheModel();
 	}
 
@@ -345,10 +346,12 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 			return false;
 		}
 
-		LoopStatsEntryWrapper loopStatsEntryWrapper = (LoopStatsEntryWrapper)obj;
+		LoopStatsEntryWrapper loopStatsEntryWrapper =
+			(LoopStatsEntryWrapper)obj;
 
-		if (Objects.equals(_loopStatsEntry,
-					loopStatsEntryWrapper._loopStatsEntry)) {
+		if (Objects.equals(
+				_loopStatsEntry, loopStatsEntryWrapper._loopStatsEntry)) {
+
 			return true;
 		}
 
@@ -376,4 +379,5 @@ public class LoopStatsEntryWrapper implements LoopStatsEntry,
 	}
 
 	private final LoopStatsEntry _loopStatsEntry;
+
 }

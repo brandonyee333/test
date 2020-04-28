@@ -125,10 +125,10 @@ create table LoopTopicAssignment (
 	loopTopicAssignmentId LONG not null primary key,
 	loopPersonId LONG,
 	loopTopicId LONG,
-	status INTEGER,
+	statusByDate DATE null,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,
-	statusByDate DATE null
+	status INTEGER
 );
 
 create table LoopUserNotificationEvent (

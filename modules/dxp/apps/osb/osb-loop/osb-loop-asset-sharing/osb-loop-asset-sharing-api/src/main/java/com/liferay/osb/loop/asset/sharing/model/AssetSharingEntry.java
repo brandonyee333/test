@@ -1,15 +1,15 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.sharing.model;
@@ -25,20 +25,23 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see AssetSharingEntryModel
- * @see com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryImpl
- * @see com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryImpl")
+@ImplementationClassName(
+	"com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryImpl"
+)
 @ProviderType
-public interface AssetSharingEntry extends AssetSharingEntryModel, PersistedModel {
+public interface AssetSharingEntry
+	extends AssetSharingEntryModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.loop.asset.sharing.model.impl.AssetSharingEntryImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<AssetSharingEntry, Long> CLASS_NAME_ID_ACCESSOR =
-		new Accessor<AssetSharingEntry, Long>() {
+	public static final Accessor<AssetSharingEntry, Long>
+		CLASS_NAME_ID_ACCESSOR = new Accessor<AssetSharingEntry, Long>() {
+
 			@Override
 			public Long get(AssetSharingEntry assetSharingEntry) {
 				return assetSharingEntry.getClassNameId();
@@ -53,9 +56,11 @@ public interface AssetSharingEntry extends AssetSharingEntryModel, PersistedMode
 			public Class<AssetSharingEntry> getTypeClass() {
 				return AssetSharingEntry.class;
 			}
-		};
 
-	public static final Accessor<AssetSharingEntry, Long> CLASS_PK_ACCESSOR = new Accessor<AssetSharingEntry, Long>() {
+		};
+	public static final Accessor<AssetSharingEntry, Long> CLASS_PK_ACCESSOR =
+		new Accessor<AssetSharingEntry, Long>() {
+
 			@Override
 			public Long get(AssetSharingEntry assetSharingEntry) {
 				return assetSharingEntry.getClassPK();
@@ -70,28 +75,31 @@ public interface AssetSharingEntry extends AssetSharingEntryModel, PersistedMode
 			public Class<AssetSharingEntry> getTypeClass() {
 				return AssetSharingEntry.class;
 			}
+
 		};
+	public static final Accessor<AssetSharingEntry, Long>
+		SHARED_TO_CLASS_NAME_ID_ACCESSOR =
+			new Accessor<AssetSharingEntry, Long>() {
 
-	public static final Accessor<AssetSharingEntry, Long> SHARED_TO_CLASS_NAME_ID_ACCESSOR =
-		new Accessor<AssetSharingEntry, Long>() {
-			@Override
-			public Long get(AssetSharingEntry assetSharingEntry) {
-				return assetSharingEntry.getSharedToClassNameId();
-			}
+				@Override
+				public Long get(AssetSharingEntry assetSharingEntry) {
+					return assetSharingEntry.getSharedToClassNameId();
+				}
 
-			@Override
-			public Class<Long> getAttributeClass() {
-				return Long.class;
-			}
+				@Override
+				public Class<Long> getAttributeClass() {
+					return Long.class;
+				}
 
-			@Override
-			public Class<AssetSharingEntry> getTypeClass() {
-				return AssetSharingEntry.class;
-			}
-		};
+				@Override
+				public Class<AssetSharingEntry> getTypeClass() {
+					return AssetSharingEntry.class;
+				}
 
-	public static final Accessor<AssetSharingEntry, Long> SHARED_TO_CLASS_PK_ACCESSOR =
-		new Accessor<AssetSharingEntry, Long>() {
+			};
+	public static final Accessor<AssetSharingEntry, Long>
+		SHARED_TO_CLASS_PK_ACCESSOR = new Accessor<AssetSharingEntry, Long>() {
+
 			@Override
 			public Long get(AssetSharingEntry assetSharingEntry) {
 				return assetSharingEntry.getSharedToClassPK();
@@ -106,5 +114,7 @@ public interface AssetSharingEntry extends AssetSharingEntryModel, PersistedMode
 			public Class<AssetSharingEntry> getTypeClass() {
 				return AssetSharingEntry.class;
 			}
+
 		};
+
 }

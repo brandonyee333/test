@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.entry.set.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see AssetEntrySet
  * @generated
  */
-@ProviderType
-public class AssetEntrySetWrapper implements AssetEntrySet,
-	ModelWrapper<AssetEntrySet> {
+public class AssetEntrySetWrapper
+	implements AssetEntrySet, ModelWrapper<AssetEntrySet> {
+
 	public AssetEntrySetWrapper(AssetEntrySet assetEntrySet) {
 		_assetEntrySet = assetEntrySet;
 	}
@@ -70,10 +67,11 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 		attributes.put("creatorClassPK", getCreatorClassPK());
 		attributes.put("creatorName", getCreatorName());
 		attributes.put("assetEntrySetLikesCount", getAssetEntrySetLikesCount());
-		attributes.put("childAssetEntrySetsCount", getChildAssetEntrySetsCount());
+		attributes.put(
+			"childAssetEntrySetsCount", getChildAssetEntrySetsCount());
 		attributes.put("level", getLevel());
 		attributes.put("payload", getPayload());
-		attributes.put("privateAssetEntrySet", getPrivateAssetEntrySet());
+		attributes.put("privateAssetEntrySet", isPrivateAssetEntrySet());
 		attributes.put("stickyTime", getStickyTime());
 		attributes.put("title", getTitle());
 		attributes.put("type", getType());
@@ -121,7 +119,7 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 		}
 
 		Long parentAssetEntrySetId = (Long)attributes.get(
-				"parentAssetEntrySetId");
+			"parentAssetEntrySetId");
 
 		if (parentAssetEntrySetId != null) {
 			setParentAssetEntrySetId(parentAssetEntrySetId);
@@ -158,14 +156,14 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 		}
 
 		Integer assetEntrySetLikesCount = (Integer)attributes.get(
-				"assetEntrySetLikesCount");
+			"assetEntrySetLikesCount");
 
 		if (assetEntrySetLikesCount != null) {
 			setAssetEntrySetLikesCount(assetEntrySetLikesCount);
 		}
 
 		Integer childAssetEntrySetsCount = (Integer)attributes.get(
-				"childAssetEntrySetsCount");
+			"childAssetEntrySetsCount");
 
 		if (childAssetEntrySetsCount != null) {
 			setChildAssetEntrySetsCount(childAssetEntrySetsCount);
@@ -184,7 +182,7 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 		}
 
 		Boolean privateAssetEntrySet = (Boolean)attributes.get(
-				"privateAssetEntrySet");
+			"privateAssetEntrySet");
 
 		if (privateAssetEntrySet != null) {
 			setPrivateAssetEntrySet(privateAssetEntrySet);
@@ -216,7 +214,7 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	@Override
-	public java.lang.Object clone() {
+	public Object clone() {
 		return new AssetEntrySetWrapper((AssetEntrySet)_assetEntrySet.clone());
 	}
 
@@ -226,30 +224,30 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Returns the asset entry ID of this asset entry set.
-	*
-	* @return the asset entry ID of this asset entry set
-	*/
+	 * Returns the asset entry ID of this asset entry set.
+	 *
+	 * @return the asset entry ID of this asset entry set
+	 */
 	@Override
 	public long getAssetEntryId() {
 		return _assetEntrySet.getAssetEntryId();
 	}
 
 	/**
-	* Returns the asset entry set ID of this asset entry set.
-	*
-	* @return the asset entry set ID of this asset entry set
-	*/
+	 * Returns the asset entry set ID of this asset entry set.
+	 *
+	 * @return the asset entry set ID of this asset entry set
+	 */
 	@Override
 	public long getAssetEntrySetId() {
 		return _assetEntrySet.getAssetEntrySetId();
 	}
 
 	/**
-	* Returns the asset entry set likes count of this asset entry set.
-	*
-	* @return the asset entry set likes count of this asset entry set
-	*/
+	 * Returns the asset entry set likes count of this asset entry set.
+	 *
+	 * @return the asset entry set likes count of this asset entry set
+	 */
 	@Override
 	public int getAssetEntrySetLikesCount() {
 		return _assetEntrySet.getAssetEntrySetLikesCount();
@@ -261,92 +259,92 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Returns the child asset entry sets count of this asset entry set.
-	*
-	* @return the child asset entry sets count of this asset entry set
-	*/
+	 * Returns the child asset entry sets count of this asset entry set.
+	 *
+	 * @return the child asset entry sets count of this asset entry set
+	 */
 	@Override
 	public int getChildAssetEntrySetsCount() {
 		return _assetEntrySet.getChildAssetEntrySetsCount();
 	}
 
 	/**
-	* Returns the fully qualified class name of this asset entry set.
-	*
-	* @return the fully qualified class name of this asset entry set
-	*/
+	 * Returns the fully qualified class name of this asset entry set.
+	 *
+	 * @return the fully qualified class name of this asset entry set
+	 */
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _assetEntrySet.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this asset entry set.
-	*
-	* @return the class name ID of this asset entry set
-	*/
+	 * Returns the class name ID of this asset entry set.
+	 *
+	 * @return the class name ID of this asset entry set
+	 */
 	@Override
 	public long getClassNameId() {
 		return _assetEntrySet.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this asset entry set.
-	*
-	* @return the class pk of this asset entry set
-	*/
+	 * Returns the class pk of this asset entry set.
+	 *
+	 * @return the class pk of this asset entry set
+	 */
 	@Override
 	public long getClassPK() {
 		return _assetEntrySet.getClassPK();
 	}
 
 	/**
-	* Returns the company ID of this asset entry set.
-	*
-	* @return the company ID of this asset entry set
-	*/
+	 * Returns the company ID of this asset entry set.
+	 *
+	 * @return the company ID of this asset entry set
+	 */
 	@Override
 	public long getCompanyId() {
 		return _assetEntrySet.getCompanyId();
 	}
 
 	/**
-	* Returns the create time of this asset entry set.
-	*
-	* @return the create time of this asset entry set
-	*/
+	 * Returns the create time of this asset entry set.
+	 *
+	 * @return the create time of this asset entry set
+	 */
 	@Override
 	public long getCreateTime() {
 		return _assetEntrySet.getCreateTime();
 	}
 
 	/**
-	* Returns the creator class name ID of this asset entry set.
-	*
-	* @return the creator class name ID of this asset entry set
-	*/
+	 * Returns the creator class name ID of this asset entry set.
+	 *
+	 * @return the creator class name ID of this asset entry set
+	 */
 	@Override
 	public long getCreatorClassNameId() {
 		return _assetEntrySet.getCreatorClassNameId();
 	}
 
 	/**
-	* Returns the creator class pk of this asset entry set.
-	*
-	* @return the creator class pk of this asset entry set
-	*/
+	 * Returns the creator class pk of this asset entry set.
+	 *
+	 * @return the creator class pk of this asset entry set
+	 */
 	@Override
 	public long getCreatorClassPK() {
 		return _assetEntrySet.getCreatorClassPK();
 	}
 
 	/**
-	* Returns the creator name of this asset entry set.
-	*
-	* @return the creator name of this asset entry set
-	*/
+	 * Returns the creator name of this asset entry set.
+	 *
+	 * @return the creator name of this asset entry set
+	 */
 	@Override
-	public java.lang.String getCreatorName() {
+	public String getCreatorName() {
 		return _assetEntrySet.getCreatorName();
 	}
 
@@ -356,50 +354,50 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Returns the level of this asset entry set.
-	*
-	* @return the level of this asset entry set
-	*/
+	 * Returns the level of this asset entry set.
+	 *
+	 * @return the level of this asset entry set
+	 */
 	@Override
 	public int getLevel() {
 		return _assetEntrySet.getLevel();
 	}
 
 	/**
-	* Returns the modified time of this asset entry set.
-	*
-	* @return the modified time of this asset entry set
-	*/
+	 * Returns the modified time of this asset entry set.
+	 *
+	 * @return the modified time of this asset entry set
+	 */
 	@Override
 	public long getModifiedTime() {
 		return _assetEntrySet.getModifiedTime();
 	}
 
 	/**
-	* Returns the parent asset entry set ID of this asset entry set.
-	*
-	* @return the parent asset entry set ID of this asset entry set
-	*/
+	 * Returns the parent asset entry set ID of this asset entry set.
+	 *
+	 * @return the parent asset entry set ID of this asset entry set
+	 */
 	@Override
 	public long getParentAssetEntrySetId() {
 		return _assetEntrySet.getParentAssetEntrySetId();
 	}
 
 	/**
-	* Returns the payload of this asset entry set.
-	*
-	* @return the payload of this asset entry set
-	*/
+	 * Returns the payload of this asset entry set.
+	 *
+	 * @return the payload of this asset entry set
+	 */
 	@Override
-	public java.lang.String getPayload() {
+	public String getPayload() {
 		return _assetEntrySet.getPayload();
 	}
 
 	/**
-	* Returns the primary key of this asset entry set.
-	*
-	* @return the primary key of this asset entry set
-	*/
+	 * Returns the primary key of this asset entry set.
+	 *
+	 * @return the primary key of this asset entry set
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _assetEntrySet.getPrimaryKey();
@@ -411,72 +409,72 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Returns the private asset entry set of this asset entry set.
-	*
-	* @return the private asset entry set of this asset entry set
-	*/
+	 * Returns the private asset entry set of this asset entry set.
+	 *
+	 * @return the private asset entry set of this asset entry set
+	 */
 	@Override
 	public boolean getPrivateAssetEntrySet() {
 		return _assetEntrySet.getPrivateAssetEntrySet();
 	}
 
 	/**
-	* Returns the status of this asset entry set.
-	*
-	* @return the status of this asset entry set
-	*/
+	 * Returns the status of this asset entry set.
+	 *
+	 * @return the status of this asset entry set
+	 */
 	@Override
 	public int getStatus() {
 		return _assetEntrySet.getStatus();
 	}
 
 	/**
-	* Returns the sticky time of this asset entry set.
-	*
-	* @return the sticky time of this asset entry set
-	*/
+	 * Returns the sticky time of this asset entry set.
+	 *
+	 * @return the sticky time of this asset entry set
+	 */
 	@Override
 	public long getStickyTime() {
 		return _assetEntrySet.getStickyTime();
 	}
 
 	/**
-	* Returns the title of this asset entry set.
-	*
-	* @return the title of this asset entry set
-	*/
+	 * Returns the title of this asset entry set.
+	 *
+	 * @return the title of this asset entry set
+	 */
 	@Override
-	public java.lang.String getTitle() {
+	public String getTitle() {
 		return _assetEntrySet.getTitle();
 	}
 
 	/**
-	* Returns the type of this asset entry set.
-	*
-	* @return the type of this asset entry set
-	*/
+	 * Returns the type of this asset entry set.
+	 *
+	 * @return the type of this asset entry set
+	 */
 	@Override
 	public int getType() {
 		return _assetEntrySet.getType();
 	}
 
 	/**
-	* Returns the user ID of this asset entry set.
-	*
-	* @return the user ID of this asset entry set
-	*/
+	 * Returns the user ID of this asset entry set.
+	 *
+	 * @return the user ID of this asset entry set
+	 */
 	@Override
 	public long getUserId() {
 		return _assetEntrySet.getUserId();
 	}
 
 	/**
-	* Returns the user uuid of this asset entry set.
-	*
-	* @return the user uuid of this asset entry set
-	*/
+	 * Returns the user uuid of this asset entry set.
+	 *
+	 * @return the user uuid of this asset entry set
+	 */
 	@Override
-	public java.lang.String getUserUuid() {
+	public String getUserUuid() {
 		return _assetEntrySet.getUserUuid();
 	}
 
@@ -501,10 +499,10 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Returns <code>true</code> if this asset entry set is private asset entry set.
-	*
-	* @return <code>true</code> if this asset entry set is private asset entry set; <code>false</code> otherwise
-	*/
+	 * Returns <code>true</code> if this asset entry set is private asset entry set.
+	 *
+	 * @return <code>true</code> if this asset entry set is private asset entry set; <code>false</code> otherwise
+	 */
 	@Override
 	public boolean isPrivateAssetEntrySet() {
 		return _assetEntrySet.isPrivateAssetEntrySet();
@@ -516,30 +514,30 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Sets the asset entry ID of this asset entry set.
-	*
-	* @param assetEntryId the asset entry ID of this asset entry set
-	*/
+	 * Sets the asset entry ID of this asset entry set.
+	 *
+	 * @param assetEntryId the asset entry ID of this asset entry set
+	 */
 	@Override
 	public void setAssetEntryId(long assetEntryId) {
 		_assetEntrySet.setAssetEntryId(assetEntryId);
 	}
 
 	/**
-	* Sets the asset entry set ID of this asset entry set.
-	*
-	* @param assetEntrySetId the asset entry set ID of this asset entry set
-	*/
+	 * Sets the asset entry set ID of this asset entry set.
+	 *
+	 * @param assetEntrySetId the asset entry set ID of this asset entry set
+	 */
 	@Override
 	public void setAssetEntrySetId(long assetEntrySetId) {
 		_assetEntrySet.setAssetEntrySetId(assetEntrySetId);
 	}
 
 	/**
-	* Sets the asset entry set likes count of this asset entry set.
-	*
-	* @param assetEntrySetLikesCount the asset entry set likes count of this asset entry set
-	*/
+	 * Sets the asset entry set likes count of this asset entry set.
+	 *
+	 * @param assetEntrySetLikesCount the asset entry set likes count of this asset entry set
+	 */
 	@Override
 	public void setAssetEntrySetLikesCount(int assetEntrySetLikesCount) {
 		_assetEntrySet.setAssetEntrySetLikesCount(assetEntrySetLikesCount);
@@ -552,99 +550,101 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 
 	@Override
 	public void setChildAssetEntrySets(
-		java.util.List<AssetEntrySet> childAssetEntrySets)
+			java.util.List<AssetEntrySet> childAssetEntrySets)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_assetEntrySet.setChildAssetEntrySets(childAssetEntrySets);
 	}
 
 	/**
-	* Sets the child asset entry sets count of this asset entry set.
-	*
-	* @param childAssetEntrySetsCount the child asset entry sets count of this asset entry set
-	*/
+	 * Sets the child asset entry sets count of this asset entry set.
+	 *
+	 * @param childAssetEntrySetsCount the child asset entry sets count of this asset entry set
+	 */
 	@Override
 	public void setChildAssetEntrySetsCount(int childAssetEntrySetsCount) {
 		_assetEntrySet.setChildAssetEntrySetsCount(childAssetEntrySetsCount);
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_assetEntrySet.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this asset entry set.
-	*
-	* @param classNameId the class name ID of this asset entry set
-	*/
+	 * Sets the class name ID of this asset entry set.
+	 *
+	 * @param classNameId the class name ID of this asset entry set
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_assetEntrySet.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this asset entry set.
-	*
-	* @param classPK the class pk of this asset entry set
-	*/
+	 * Sets the class pk of this asset entry set.
+	 *
+	 * @param classPK the class pk of this asset entry set
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_assetEntrySet.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the company ID of this asset entry set.
-	*
-	* @param companyId the company ID of this asset entry set
-	*/
+	 * Sets the company ID of this asset entry set.
+	 *
+	 * @param companyId the company ID of this asset entry set
+	 */
 	@Override
 	public void setCompanyId(long companyId) {
 		_assetEntrySet.setCompanyId(companyId);
 	}
 
 	/**
-	* Sets the create time of this asset entry set.
-	*
-	* @param createTime the create time of this asset entry set
-	*/
+	 * Sets the create time of this asset entry set.
+	 *
+	 * @param createTime the create time of this asset entry set
+	 */
 	@Override
 	public void setCreateTime(long createTime) {
 		_assetEntrySet.setCreateTime(createTime);
 	}
 
 	/**
-	* Sets the creator class name ID of this asset entry set.
-	*
-	* @param creatorClassNameId the creator class name ID of this asset entry set
-	*/
+	 * Sets the creator class name ID of this asset entry set.
+	 *
+	 * @param creatorClassNameId the creator class name ID of this asset entry set
+	 */
 	@Override
 	public void setCreatorClassNameId(long creatorClassNameId) {
 		_assetEntrySet.setCreatorClassNameId(creatorClassNameId);
 	}
 
 	/**
-	* Sets the creator class pk of this asset entry set.
-	*
-	* @param creatorClassPK the creator class pk of this asset entry set
-	*/
+	 * Sets the creator class pk of this asset entry set.
+	 *
+	 * @param creatorClassPK the creator class pk of this asset entry set
+	 */
 	@Override
 	public void setCreatorClassPK(long creatorClassPK) {
 		_assetEntrySet.setCreatorClassPK(creatorClassPK);
 	}
 
 	/**
-	* Sets the creator name of this asset entry set.
-	*
-	* @param creatorName the creator name of this asset entry set
-	*/
+	 * Sets the creator name of this asset entry set.
+	 *
+	 * @param creatorName the creator name of this asset entry set
+	 */
 	@Override
-	public void setCreatorName(java.lang.String creatorName) {
+	public void setCreatorName(String creatorName) {
 		_assetEntrySet.setCreatorName(creatorName);
 	}
 
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_assetEntrySet.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -659,20 +659,20 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Sets the level of this asset entry set.
-	*
-	* @param level the level of this asset entry set
-	*/
+	 * Sets the level of this asset entry set.
+	 *
+	 * @param level the level of this asset entry set
+	 */
 	@Override
 	public void setLevel(int level) {
 		_assetEntrySet.setLevel(level);
 	}
 
 	/**
-	* Sets the modified time of this asset entry set.
-	*
-	* @param modifiedTime the modified time of this asset entry set
-	*/
+	 * Sets the modified time of this asset entry set.
+	 *
+	 * @param modifiedTime the modified time of this asset entry set
+	 */
 	@Override
 	public void setModifiedTime(long modifiedTime) {
 		_assetEntrySet.setModifiedTime(modifiedTime);
@@ -684,30 +684,30 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Sets the parent asset entry set ID of this asset entry set.
-	*
-	* @param parentAssetEntrySetId the parent asset entry set ID of this asset entry set
-	*/
+	 * Sets the parent asset entry set ID of this asset entry set.
+	 *
+	 * @param parentAssetEntrySetId the parent asset entry set ID of this asset entry set
+	 */
 	@Override
 	public void setParentAssetEntrySetId(long parentAssetEntrySetId) {
 		_assetEntrySet.setParentAssetEntrySetId(parentAssetEntrySetId);
 	}
 
 	/**
-	* Sets the payload of this asset entry set.
-	*
-	* @param payload the payload of this asset entry set
-	*/
+	 * Sets the payload of this asset entry set.
+	 *
+	 * @param payload the payload of this asset entry set
+	 */
 	@Override
-	public void setPayload(java.lang.String payload) {
+	public void setPayload(String payload) {
 		_assetEntrySet.setPayload(payload);
 	}
 
 	/**
-	* Sets the primary key of this asset entry set.
-	*
-	* @param primaryKey the primary key of this asset entry set
-	*/
+	 * Sets the primary key of this asset entry set.
+	 *
+	 * @param primaryKey the primary key of this asset entry set
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_assetEntrySet.setPrimaryKey(primaryKey);
@@ -719,77 +719,79 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	/**
-	* Sets whether this asset entry set is private asset entry set.
-	*
-	* @param privateAssetEntrySet the private asset entry set of this asset entry set
-	*/
+	 * Sets whether this asset entry set is private asset entry set.
+	 *
+	 * @param privateAssetEntrySet the private asset entry set of this asset entry set
+	 */
 	@Override
 	public void setPrivateAssetEntrySet(boolean privateAssetEntrySet) {
 		_assetEntrySet.setPrivateAssetEntrySet(privateAssetEntrySet);
 	}
 
 	/**
-	* Sets the status of this asset entry set.
-	*
-	* @param status the status of this asset entry set
-	*/
+	 * Sets the status of this asset entry set.
+	 *
+	 * @param status the status of this asset entry set
+	 */
 	@Override
 	public void setStatus(int status) {
 		_assetEntrySet.setStatus(status);
 	}
 
 	/**
-	* Sets the sticky time of this asset entry set.
-	*
-	* @param stickyTime the sticky time of this asset entry set
-	*/
+	 * Sets the sticky time of this asset entry set.
+	 *
+	 * @param stickyTime the sticky time of this asset entry set
+	 */
 	@Override
 	public void setStickyTime(long stickyTime) {
 		_assetEntrySet.setStickyTime(stickyTime);
 	}
 
 	/**
-	* Sets the title of this asset entry set.
-	*
-	* @param title the title of this asset entry set
-	*/
+	 * Sets the title of this asset entry set.
+	 *
+	 * @param title the title of this asset entry set
+	 */
 	@Override
-	public void setTitle(java.lang.String title) {
+	public void setTitle(String title) {
 		_assetEntrySet.setTitle(title);
 	}
 
 	/**
-	* Sets the type of this asset entry set.
-	*
-	* @param type the type of this asset entry set
-	*/
+	 * Sets the type of this asset entry set.
+	 *
+	 * @param type the type of this asset entry set
+	 */
 	@Override
 	public void setType(int type) {
 		_assetEntrySet.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this asset entry set.
-	*
-	* @param userId the user ID of this asset entry set
-	*/
+	 * Sets the user ID of this asset entry set.
+	 *
+	 * @param userId the user ID of this asset entry set
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_assetEntrySet.setUserId(userId);
 	}
 
 	/**
-	* Sets the user uuid of this asset entry set.
-	*
-	* @param userUuid the user uuid of this asset entry set
-	*/
+	 * Sets the user uuid of this asset entry set.
+	 *
+	 * @param userUuid the user uuid of this asset entry set
+	 */
 	@Override
-	public void setUserUuid(java.lang.String userUuid) {
+	public void setUserUuid(String userUuid) {
 		_assetEntrySet.setUserUuid(userUuid);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AssetEntrySet> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<AssetEntrySet>
+		toCacheModel() {
+
 		return _assetEntrySet.toCacheModel();
 	}
 
@@ -799,7 +801,7 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _assetEntrySet.toString();
 	}
 
@@ -809,7 +811,7 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _assetEntrySet.toXmlString();
 	}
 
@@ -825,7 +827,9 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 
 		AssetEntrySetWrapper assetEntrySetWrapper = (AssetEntrySetWrapper)obj;
 
-		if (Objects.equals(_assetEntrySet, assetEntrySetWrapper._assetEntrySet)) {
+		if (Objects.equals(
+				_assetEntrySet, assetEntrySetWrapper._assetEntrySet)) {
+
 			return true;
 		}
 
@@ -853,4 +857,5 @@ public class AssetEntrySetWrapper implements AssetEntrySet,
 	}
 
 	private final AssetEntrySet _assetEntrySet;
+
 }

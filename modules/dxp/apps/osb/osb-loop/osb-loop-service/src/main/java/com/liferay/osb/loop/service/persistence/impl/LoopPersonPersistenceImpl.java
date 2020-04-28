@@ -1,27 +1,24 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.service.persistence.impl;
-
-import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.loop.exception.NoSuchLoopPersonException;
 import com.liferay.osb.loop.model.LoopPerson;
 import com.liferay.osb.loop.model.impl.LoopPersonImpl;
 import com.liferay.osb.loop.model.impl.LoopPersonModelImpl;
 import com.liferay.osb.loop.service.persistence.LoopPersonPersistence;
-
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -31,16 +28,18 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.io.Serializable;
+
+import java.lang.reflect.InvocationHandler;
 
 import java.util.Collections;
 import java.util.Date;
@@ -59,44 +58,33 @@ import java.util.Set;
  * </p>
  *
  * @author Ethan Bustad
- * @see LoopPersonPersistence
- * @see com.liferay.osb.loop.service.persistence.LoopPersonUtil
  * @generated
  */
-@ProviderType
-public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
-	implements LoopPersonPersistence {
+public class LoopPersonPersistenceImpl
+	extends BasePersistenceImpl<LoopPerson> implements LoopPersonPersistence {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link LoopPersonUtil} to access the loop person persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
+	 * Never modify or reference this class directly. Always use <code>LoopPersonUtil</code> to access the loop person persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this class.
 	 */
-	public static final String FINDER_CLASS_NAME_ENTITY = LoopPersonImpl.class.getName();
-	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List1";
-	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION = FINDER_CLASS_NAME_ENTITY +
-		".List2";
-	public static final FinderPath FINDER_PATH_WITH_PAGINATION_FIND_ALL = new FinderPath(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonModelImpl.FINDER_CACHE_ENABLED, LoopPersonImpl.class,
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL = new FinderPath(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonModelImpl.FINDER_CACHE_ENABLED, LoopPersonImpl.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll", new String[0]);
-	public static final FinderPath FINDER_PATH_COUNT_ALL = new FinderPath(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll", new String[0]);
-	public static final FinderPath FINDER_PATH_FETCH_BY_PERSONUSERID = new FinderPath(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonModelImpl.FINDER_CACHE_ENABLED, LoopPersonImpl.class,
-			FINDER_CLASS_NAME_ENTITY, "fetchByPersonUserId",
-			new String[] { Long.class.getName() },
-			LoopPersonModelImpl.PERSONUSERID_COLUMN_BITMASK);
-	public static final FinderPath FINDER_PATH_COUNT_BY_PERSONUSERID = new FinderPath(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonModelImpl.FINDER_CACHE_ENABLED, Long.class,
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPersonUserId",
-			new String[] { Long.class.getName() });
+	public static final String FINDER_CLASS_NAME_ENTITY =
+		LoopPersonImpl.class.getName();
+
+	public static final String FINDER_CLASS_NAME_LIST_WITH_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List1";
+
+	public static final String FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION =
+		FINDER_CLASS_NAME_ENTITY + ".List2";
+
+	private FinderPath _finderPathWithPaginationFindAll;
+	private FinderPath _finderPathWithoutPaginationFindAll;
+	private FinderPath _finderPathCountAll;
+	private FinderPath _finderPathFetchByPersonUserId;
+	private FinderPath _finderPathCountByPersonUserId;
 
 	/**
-	 * Returns the loop person where personUserId = &#63; or throws a {@link NoSuchLoopPersonException} if it could not be found.
+	 * Returns the loop person where personUserId = &#63; or throws a <code>NoSuchLoopPersonException</code> if it could not be found.
 	 *
 	 * @param personUserId the person user ID
 	 * @return the matching loop person
@@ -105,23 +93,24 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public LoopPerson findByPersonUserId(long personUserId)
 		throws NoSuchLoopPersonException {
+
 		LoopPerson loopPerson = fetchByPersonUserId(personUserId);
 
 		if (loopPerson == null) {
-			StringBundler msg = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("personUserId=");
-			msg.append(personUserId);
+			sb.append("personUserId=");
+			sb.append(personUserId);
 
-			msg.append("}");
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchLoopPersonException(msg.toString());
+			throw new NoSuchLoopPersonException(sb.toString());
 		}
 
 		return loopPerson;
@@ -142,54 +131,61 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Returns the loop person where personUserId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
 	 *
 	 * @param personUserId the person user ID
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching loop person, or <code>null</code> if a matching loop person could not be found
 	 */
 	@Override
-	public LoopPerson fetchByPersonUserId(long personUserId,
-		boolean retrieveFromCache) {
-		Object[] finderArgs = new Object[] { personUserId };
+	public LoopPerson fetchByPersonUserId(
+		long personUserId, boolean useFinderCache) {
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {personUserId};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
-			result = finderCache.getResult(FINDER_PATH_FETCH_BY_PERSONUSERID,
-					finderArgs, this);
+		if (useFinderCache) {
+			result = finderCache.getResult(
+				_finderPathFetchByPersonUserId, finderArgs, this);
 		}
 
 		if (result instanceof LoopPerson) {
 			LoopPerson loopPerson = (LoopPerson)result;
 
-			if ((personUserId != loopPerson.getPersonUserId())) {
+			if (personUserId != loopPerson.getPersonUserId()) {
 				result = null;
 			}
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_SELECT_LOOPPERSON_WHERE);
+			sb.append(_SQL_SELECT_LOOPPERSON_WHERE);
 
-			query.append(_FINDER_COLUMN_PERSONUSERID_PERSONUSERID_2);
+			sb.append(_FINDER_COLUMN_PERSONUSERID_PERSONUSERID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(personUserId);
+				queryPos.add(personUserId);
 
-				List<LoopPerson> list = q.list();
+				List<LoopPerson> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(FINDER_PATH_FETCH_BY_PERSONUSERID,
-						finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByPersonUserId, finderArgs, list);
+					}
 				}
 				else {
 					LoopPerson loopPerson = list.get(0);
@@ -197,18 +193,15 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 					result = loopPerson;
 
 					cacheResult(loopPerson);
-
-					if ((loopPerson.getPersonUserId() != personUserId)) {
-						finderCache.putResult(FINDER_PATH_FETCH_BY_PERSONUSERID,
-							finderArgs, loopPerson);
-					}
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_FETCH_BY_PERSONUSERID,
-					finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByPersonUserId, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -232,6 +225,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public LoopPerson removeByPersonUserId(long personUserId)
 		throws NoSuchLoopPersonException {
+
 		LoopPerson loopPerson = findByPersonUserId(personUserId);
 
 		return remove(loopPerson);
@@ -245,40 +239,40 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 */
 	@Override
 	public int countByPersonUserId(long personUserId) {
-		FinderPath finderPath = FINDER_PATH_COUNT_BY_PERSONUSERID;
+		FinderPath finderPath = _finderPathCountByPersonUserId;
 
-		Object[] finderArgs = new Object[] { personUserId };
+		Object[] finderArgs = new Object[] {personUserId};
 
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(2);
+			StringBundler sb = new StringBundler(2);
 
-			query.append(_SQL_COUNT_LOOPPERSON_WHERE);
+			sb.append(_SQL_COUNT_LOOPPERSON_WHERE);
 
-			query.append(_FINDER_COLUMN_PERSONUSERID_PERSONUSERID_2);
+			sb.append(_FINDER_COLUMN_PERSONUSERID_PERSONUSERID_2);
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(personUserId);
+				queryPos.add(personUserId);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -288,7 +282,8 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_PERSONUSERID_PERSONUSERID_2 = "loopPerson.personUserId = ?";
+	private static final String _FINDER_COLUMN_PERSONUSERID_PERSONUSERID_2 =
+		"loopPerson.personUserId = ?";
 
 	public LoopPersonPersistenceImpl() {
 		setModelClass(LoopPerson.class);
@@ -301,11 +296,13 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 */
 	@Override
 	public void cacheResult(LoopPerson loopPerson) {
-		entityCache.putResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonImpl.class, loopPerson.getPrimaryKey(), loopPerson);
+		entityCache.putResult(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+			loopPerson.getPrimaryKey(), loopPerson);
 
-		finderCache.putResult(FINDER_PATH_FETCH_BY_PERSONUSERID,
-			new Object[] { loopPerson.getPersonUserId() }, loopPerson);
+		finderCache.putResult(
+			_finderPathFetchByPersonUserId,
+			new Object[] {loopPerson.getPersonUserId()}, loopPerson);
 
 		loopPerson.resetOriginalValues();
 	}
@@ -319,8 +316,9 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	public void cacheResult(List<LoopPerson> loopPersons) {
 		for (LoopPerson loopPerson : loopPersons) {
 			if (entityCache.getResult(
-						LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-						LoopPersonImpl.class, loopPerson.getPrimaryKey()) == null) {
+					LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+					LoopPersonImpl.class, loopPerson.getPrimaryKey()) == null) {
+
 				cacheResult(loopPerson);
 			}
 			else {
@@ -333,7 +331,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Clears the cache for all loop persons.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
@@ -349,13 +347,14 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Clears the cache for the loop person.
 	 *
 	 * <p>
-	 * The {@link EntityCache} and {@link FinderCache} are both cleared by this method.
+	 * The <code>EntityCache</code> and <code>FinderCache</code> are both cleared by this method.
 	 * </p>
 	 */
 	@Override
 	public void clearCache(LoopPerson loopPerson) {
-		entityCache.removeResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonImpl.class, loopPerson.getPrimaryKey());
+		entityCache.removeResult(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+			loopPerson.getPrimaryKey());
 
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
@@ -369,40 +368,58 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 
 		for (LoopPerson loopPerson : loopPersons) {
-			entityCache.removeResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-				LoopPersonImpl.class, loopPerson.getPrimaryKey());
+			entityCache.removeResult(
+				LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+				loopPerson.getPrimaryKey());
 
 			clearUniqueFindersCache((LoopPersonModelImpl)loopPerson, true);
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+				primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(
 		LoopPersonModelImpl loopPersonModelImpl) {
-		Object[] args = new Object[] { loopPersonModelImpl.getPersonUserId() };
 
-		finderCache.putResult(FINDER_PATH_COUNT_BY_PERSONUSERID, args,
-			Long.valueOf(1), false);
-		finderCache.putResult(FINDER_PATH_FETCH_BY_PERSONUSERID, args,
-			loopPersonModelImpl, false);
+		Object[] args = new Object[] {loopPersonModelImpl.getPersonUserId()};
+
+		finderCache.putResult(
+			_finderPathCountByPersonUserId, args, Long.valueOf(1), false);
+		finderCache.putResult(
+			_finderPathFetchByPersonUserId, args, loopPersonModelImpl, false);
 	}
 
 	protected void clearUniqueFindersCache(
 		LoopPersonModelImpl loopPersonModelImpl, boolean clearCurrent) {
-		if (clearCurrent) {
-			Object[] args = new Object[] { loopPersonModelImpl.getPersonUserId() };
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_PERSONUSERID, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_PERSONUSERID, args);
+		if (clearCurrent) {
+			Object[] args = new Object[] {
+				loopPersonModelImpl.getPersonUserId()
+			};
+
+			finderCache.removeResult(_finderPathCountByPersonUserId, args);
+			finderCache.removeResult(_finderPathFetchByPersonUserId, args);
 		}
 
 		if ((loopPersonModelImpl.getColumnBitmask() &
-				FINDER_PATH_FETCH_BY_PERSONUSERID.getColumnBitmask()) != 0) {
-			Object[] args = new Object[] {
-					loopPersonModelImpl.getOriginalPersonUserId()
-				};
+			 _finderPathFetchByPersonUserId.getColumnBitmask()) != 0) {
 
-			finderCache.removeResult(FINDER_PATH_COUNT_BY_PERSONUSERID, args);
-			finderCache.removeResult(FINDER_PATH_FETCH_BY_PERSONUSERID, args);
+			Object[] args = new Object[] {
+				loopPersonModelImpl.getOriginalPersonUserId()
+			};
+
+			finderCache.removeResult(_finderPathCountByPersonUserId, args);
+			finderCache.removeResult(_finderPathFetchByPersonUserId, args);
 		}
 	}
 
@@ -419,7 +436,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		loopPerson.setNew(true);
 		loopPerson.setPrimaryKey(loopPersonId);
 
-		loopPerson.setCompanyId(companyProvider.getCompanyId());
+		loopPerson.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return loopPerson;
 	}
@@ -434,6 +451,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public LoopPerson remove(long loopPersonId)
 		throws NoSuchLoopPersonException {
+
 		return remove((Serializable)loopPersonId);
 	}
 
@@ -447,30 +465,31 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public LoopPerson remove(Serializable primaryKey)
 		throws NoSuchLoopPersonException {
+
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			LoopPerson loopPerson = (LoopPerson)session.get(LoopPersonImpl.class,
-					primaryKey);
+			LoopPerson loopPerson = (LoopPerson)session.get(
+				LoopPersonImpl.class, primaryKey);
 
 			if (loopPerson == null) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 				}
 
-				throw new NoSuchLoopPersonException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-					primaryKey);
+				throw new NoSuchLoopPersonException(
+					_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
 			return remove(loopPerson);
 		}
-		catch (NoSuchLoopPersonException nsee) {
-			throw nsee;
+		catch (NoSuchLoopPersonException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -479,24 +498,22 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 
 	@Override
 	protected LoopPerson removeImpl(LoopPerson loopPerson) {
-		loopPerson = toUnwrappedModel(loopPerson);
-
 		Session session = null;
 
 		try {
 			session = openSession();
 
 			if (!session.contains(loopPerson)) {
-				loopPerson = (LoopPerson)session.get(LoopPersonImpl.class,
-						loopPerson.getPrimaryKeyObj());
+				loopPerson = (LoopPerson)session.get(
+					LoopPersonImpl.class, loopPerson.getPrimaryKeyObj());
 			}
 
 			if (loopPerson != null) {
 				session.delete(loopPerson);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -511,13 +528,29 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 
 	@Override
 	public LoopPerson updateImpl(LoopPerson loopPerson) {
-		loopPerson = toUnwrappedModel(loopPerson);
-
 		boolean isNew = loopPerson.isNew();
 
-		LoopPersonModelImpl loopPersonModelImpl = (LoopPersonModelImpl)loopPerson;
+		if (!(loopPerson instanceof LoopPersonModelImpl)) {
+			InvocationHandler invocationHandler = null;
 
-		ServiceContext serviceContext = ServiceContextThreadLocal.getServiceContext();
+			if (ProxyUtil.isProxyClass(loopPerson.getClass())) {
+				invocationHandler = ProxyUtil.getInvocationHandler(loopPerson);
+
+				throw new IllegalArgumentException(
+					"Implement ModelWrapper in loopPerson proxy " +
+						invocationHandler.getClass());
+			}
+
+			throw new IllegalArgumentException(
+				"Implement ModelWrapper in custom LoopPerson implementation " +
+					loopPerson.getClass());
+		}
+
+		LoopPersonModelImpl loopPersonModelImpl =
+			(LoopPersonModelImpl)loopPerson;
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		Date now = new Date();
 
@@ -553,8 +586,8 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 				loopPerson = (LoopPerson)session.merge(loopPerson);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -565,15 +598,15 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		if (!LoopPersonModelImpl.COLUMN_BITMASK_ENABLED) {
 			finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 		}
-		else
-		 if (isNew) {
-			finderCache.removeResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY);
-			finderCache.removeResult(FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL,
-				FINDER_ARGS_EMPTY);
+		else if (isNew) {
+			finderCache.removeResult(_finderPathCountAll, FINDER_ARGS_EMPTY);
+			finderCache.removeResult(
+				_finderPathWithoutPaginationFindAll, FINDER_ARGS_EMPTY);
 		}
 
-		entityCache.putResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-			LoopPersonImpl.class, loopPerson.getPrimaryKey(), loopPerson, false);
+		entityCache.putResult(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+			loopPerson.getPrimaryKey(), loopPerson, false);
 
 		clearUniqueFindersCache(loopPersonModelImpl, false);
 		cacheUniqueFindersCache(loopPersonModelImpl);
@@ -583,34 +616,8 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		return loopPerson;
 	}
 
-	protected LoopPerson toUnwrappedModel(LoopPerson loopPerson) {
-		if (loopPerson instanceof LoopPersonImpl) {
-			return loopPerson;
-		}
-
-		LoopPersonImpl loopPersonImpl = new LoopPersonImpl();
-
-		loopPersonImpl.setNew(loopPerson.isNew());
-		loopPersonImpl.setPrimaryKey(loopPerson.getPrimaryKey());
-
-		loopPersonImpl.setLoopPersonId(loopPerson.getLoopPersonId());
-		loopPersonImpl.setCompanyId(loopPerson.getCompanyId());
-		loopPersonImpl.setUserId(loopPerson.getUserId());
-		loopPersonImpl.setUserName(loopPerson.getUserName());
-		loopPersonImpl.setCreateDate(loopPerson.getCreateDate());
-		loopPersonImpl.setModifiedDate(loopPerson.getModifiedDate());
-		loopPersonImpl.setLoopJobTitleId(loopPerson.getLoopJobTitleId());
-		loopPersonImpl.setManagerLoopPersonId(loopPerson.getManagerLoopPersonId());
-		loopPersonImpl.setPersonUserId(loopPerson.getPersonUserId());
-		loopPersonImpl.setExtraData(loopPerson.getExtraData());
-		loopPersonImpl.setGroupedUserNotificationEventsCount(loopPerson.getGroupedUserNotificationEventsCount());
-		loopPersonImpl.setImagePayload(loopPerson.getImagePayload());
-
-		return loopPersonImpl;
-	}
-
 	/**
-	 * Returns the loop person with the primary key or throws a {@link com.liferay.portal.kernel.exception.NoSuchModelException} if it could not be found.
+	 * Returns the loop person with the primary key or throws a <code>com.liferay.portal.kernel.exception.NoSuchModelException</code> if it could not be found.
 	 *
 	 * @param primaryKey the primary key of the loop person
 	 * @return the loop person
@@ -619,6 +626,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public LoopPerson findByPrimaryKey(Serializable primaryKey)
 		throws NoSuchLoopPersonException {
+
 		LoopPerson loopPerson = fetchByPrimaryKey(primaryKey);
 
 		if (loopPerson == null) {
@@ -626,15 +634,15 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 				_log.debug(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 			}
 
-			throw new NoSuchLoopPersonException(_NO_SUCH_ENTITY_WITH_PRIMARY_KEY +
-				primaryKey);
+			throw new NoSuchLoopPersonException(
+				_NO_SUCH_ENTITY_WITH_PRIMARY_KEY + primaryKey);
 		}
 
 		return loopPerson;
 	}
 
 	/**
-	 * Returns the loop person with the primary key or throws a {@link NoSuchLoopPersonException} if it could not be found.
+	 * Returns the loop person with the primary key or throws a <code>NoSuchLoopPersonException</code> if it could not be found.
 	 *
 	 * @param loopPersonId the primary key of the loop person
 	 * @return the loop person
@@ -643,6 +651,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public LoopPerson findByPrimaryKey(long loopPersonId)
 		throws NoSuchLoopPersonException {
+
 		return findByPrimaryKey((Serializable)loopPersonId);
 	}
 
@@ -654,8 +663,9 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 */
 	@Override
 	public LoopPerson fetchByPrimaryKey(Serializable primaryKey) {
-		Serializable serializable = entityCache.getResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-				LoopPersonImpl.class, primaryKey);
+		Serializable serializable = entityCache.getResult(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+			primaryKey);
 
 		if (serializable == nullModel) {
 			return null;
@@ -669,22 +679,24 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 			try {
 				session = openSession();
 
-				loopPerson = (LoopPerson)session.get(LoopPersonImpl.class,
-						primaryKey);
+				loopPerson = (LoopPerson)session.get(
+					LoopPersonImpl.class, primaryKey);
 
 				if (loopPerson != null) {
 					cacheResult(loopPerson);
 				}
 				else {
-					entityCache.putResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+					entityCache.putResult(
+						LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
 						LoopPersonImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
-				entityCache.removeResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+			catch (Exception exception) {
+				entityCache.removeResult(
+					LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
 					LoopPersonImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -708,11 +720,13 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	@Override
 	public Map<Serializable, LoopPerson> fetchByPrimaryKeys(
 		Set<Serializable> primaryKeys) {
+
 		if (primaryKeys.isEmpty()) {
 			return Collections.emptyMap();
 		}
 
-		Map<Serializable, LoopPerson> map = new HashMap<Serializable, LoopPerson>();
+		Map<Serializable, LoopPerson> map =
+			new HashMap<Serializable, LoopPerson>();
 
 		if (primaryKeys.size() == 1) {
 			Iterator<Serializable> iterator = primaryKeys.iterator();
@@ -731,8 +745,9 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		Set<Serializable> uncachedPrimaryKeys = null;
 
 		for (Serializable primaryKey : primaryKeys) {
-			Serializable serializable = entityCache.getResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
-					LoopPersonImpl.class, primaryKey);
+			Serializable serializable = entityCache.getResult(
+				LoopPersonModelImpl.ENTITY_CACHE_ENABLED, LoopPersonImpl.class,
+				primaryKey);
 
 			if (serializable != nullModel) {
 				if (serializable == null) {
@@ -752,31 +767,31 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 			return map;
 		}
 
-		StringBundler query = new StringBundler((uncachedPrimaryKeys.size() * 2) +
-				1);
+		StringBundler sb = new StringBundler(
+			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_LOOPPERSON_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_LOOPPERSON_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
-			for (LoopPerson loopPerson : (List<LoopPerson>)q.list()) {
+			for (LoopPerson loopPerson : (List<LoopPerson>)query.list()) {
 				map.put(loopPerson.getPrimaryKeyObj(), loopPerson);
 
 				cacheResult(loopPerson);
@@ -785,12 +800,13 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 			}
 
 			for (Serializable primaryKey : uncachedPrimaryKeys) {
-				entityCache.putResult(LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+				entityCache.putResult(
+					LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
 					LoopPersonImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -813,7 +829,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Returns a range of all the loop persons.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopPersonModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopPersonModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop persons
@@ -829,7 +845,7 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Returns an ordered range of all the loop persons.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopPersonModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopPersonModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop persons
@@ -838,8 +854,9 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * @return the ordered range of loop persons
 	 */
 	@Override
-	public List<LoopPerson> findAll(int start, int end,
-		OrderByComparator<LoopPerson> orderByComparator) {
+	public List<LoopPerson> findAll(
+		int start, int end, OrderByComparator<LoopPerson> orderByComparator) {
+
 		return findAll(start, end, orderByComparator, true);
 	}
 
@@ -847,62 +864,62 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Returns an ordered range of all the loop persons.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopPersonModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopPersonModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of loop persons
 	 * @param end the upper bound of the range of loop persons (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of loop persons
 	 */
 	@Override
-	public List<LoopPerson> findAll(int start, int end,
-		OrderByComparator<LoopPerson> orderByComparator,
-		boolean retrieveFromCache) {
-		boolean pagination = true;
+	public List<LoopPerson> findAll(
+		int start, int end, OrderByComparator<LoopPerson> orderByComparator,
+		boolean useFinderCache) {
+
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
-				(orderByComparator == null)) {
-			pagination = false;
-			finderPath = FINDER_PATH_WITHOUT_PAGINATION_FIND_ALL;
-			finderArgs = FINDER_ARGS_EMPTY;
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
-			finderPath = FINDER_PATH_WITH_PAGINATION_FIND_ALL;
-			finderArgs = new Object[] { start, end, orderByComparator };
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindAll;
+			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<LoopPerson> list = null;
 
-		if (retrieveFromCache) {
-			list = (List<LoopPerson>)finderCache.getResult(finderPath,
-					finderArgs, this);
+		if (useFinderCache) {
+			list = (List<LoopPerson>)finderCache.getResult(
+				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(2 +
-						(orderByComparator.getOrderByFields().length * 2));
+				sb = new StringBundler(
+					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_LOOPPERSON);
+				sb.append(_SQL_SELECT_LOOPPERSON);
 
-				appendOrderByComparator(query, _ORDER_BY_ENTITY_ALIAS,
-					orderByComparator);
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_LOOPPERSON;
 
-				if (pagination) {
-					sql = sql.concat(LoopPersonModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(LoopPersonModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -910,29 +927,23 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<LoopPerson>)QueryUtil.list(q, getDialect(),
-							start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<LoopPerson>)QueryUtil.list(q, getDialect(),
-							start, end);
-				}
+				list = (List<LoopPerson>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -960,8 +971,8 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 */
 	@Override
 	public int countAll() {
-		Long count = (Long)finderCache.getResult(FINDER_PATH_COUNT_ALL,
-				FINDER_ARGS_EMPTY, this);
+		Long count = (Long)finderCache.getResult(
+			_finderPathCountAll, FINDER_ARGS_EMPTY, this);
 
 		if (count == null) {
 			Session session = null;
@@ -969,18 +980,18 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_LOOPPERSON);
+				Query query = session.createQuery(_SQL_COUNT_LOOPPERSON);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
-				finderCache.putResult(FINDER_PATH_COUNT_ALL, FINDER_ARGS_EMPTY,
-					count);
+				finderCache.putResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
-				finderCache.removeResult(FINDER_PATH_COUNT_ALL,
-					FINDER_ARGS_EMPTY);
+			catch (Exception exception) {
+				finderCache.removeResult(
+					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -999,6 +1010,35 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 	 * Initializes the loop person persistence.
 	 */
 	public void afterPropertiesSet() {
+		_finderPathWithPaginationFindAll = new FinderPath(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+			LoopPersonModelImpl.FINDER_CACHE_ENABLED, LoopPersonImpl.class,
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0]);
+
+		_finderPathWithoutPaginationFindAll = new FinderPath(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+			LoopPersonModelImpl.FINDER_CACHE_ENABLED, LoopPersonImpl.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findAll",
+			new String[0]);
+
+		_finderPathCountAll = new FinderPath(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+			LoopPersonModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countAll",
+			new String[0]);
+
+		_finderPathFetchByPersonUserId = new FinderPath(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+			LoopPersonModelImpl.FINDER_CACHE_ENABLED, LoopPersonImpl.class,
+			FINDER_CLASS_NAME_ENTITY, "fetchByPersonUserId",
+			new String[] {Long.class.getName()},
+			LoopPersonModelImpl.PERSONUSERID_COLUMN_BITMASK);
+
+		_finderPathCountByPersonUserId = new FinderPath(
+			LoopPersonModelImpl.ENTITY_CACHE_ENABLED,
+			LoopPersonModelImpl.FINDER_CACHE_ENABLED, Long.class,
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByPersonUserId",
+			new String[] {Long.class.getName()});
 	}
 
 	public void destroy() {
@@ -1008,19 +1048,36 @@ public class LoopPersonPersistenceImpl extends BasePersistenceImpl<LoopPerson>
 		finderCache.removeCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
 	}
 
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
+
 	@ServiceReference(type = FinderCache.class)
 	protected FinderCache finderCache;
-	private static final String _SQL_SELECT_LOOPPERSON = "SELECT loopPerson FROM LoopPerson loopPerson";
-	private static final String _SQL_SELECT_LOOPPERSON_WHERE_PKS_IN = "SELECT loopPerson FROM LoopPerson loopPerson WHERE loopPersonId IN (";
-	private static final String _SQL_SELECT_LOOPPERSON_WHERE = "SELECT loopPerson FROM LoopPerson loopPerson WHERE ";
-	private static final String _SQL_COUNT_LOOPPERSON = "SELECT COUNT(loopPerson) FROM LoopPerson loopPerson";
-	private static final String _SQL_COUNT_LOOPPERSON_WHERE = "SELECT COUNT(loopPerson) FROM LoopPerson loopPerson WHERE ";
+
+	private static final String _SQL_SELECT_LOOPPERSON =
+		"SELECT loopPerson FROM LoopPerson loopPerson";
+
+	private static final String _SQL_SELECT_LOOPPERSON_WHERE_PKS_IN =
+		"SELECT loopPerson FROM LoopPerson loopPerson WHERE loopPersonId IN (";
+
+	private static final String _SQL_SELECT_LOOPPERSON_WHERE =
+		"SELECT loopPerson FROM LoopPerson loopPerson WHERE ";
+
+	private static final String _SQL_COUNT_LOOPPERSON =
+		"SELECT COUNT(loopPerson) FROM LoopPerson loopPerson";
+
+	private static final String _SQL_COUNT_LOOPPERSON_WHERE =
+		"SELECT COUNT(loopPerson) FROM LoopPerson loopPerson WHERE ";
+
 	private static final String _ORDER_BY_ENTITY_ALIAS = "loopPerson.";
-	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY = "No LoopPerson exists with the primary key ";
-	private static final String _NO_SUCH_ENTITY_WITH_KEY = "No LoopPerson exists with the key {";
-	private static final Log _log = LogFactoryUtil.getLog(LoopPersonPersistenceImpl.class);
+
+	private static final String _NO_SUCH_ENTITY_WITH_PRIMARY_KEY =
+		"No LoopPerson exists with the primary key ";
+
+	private static final String _NO_SUCH_ENTITY_WITH_KEY =
+		"No LoopPerson exists with the key {";
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		LoopPersonPersistenceImpl.class);
+
 }

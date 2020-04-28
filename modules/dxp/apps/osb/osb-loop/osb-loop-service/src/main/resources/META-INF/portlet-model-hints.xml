@@ -134,10 +134,10 @@
 		<field name="loopTopicAssignmentId" type="long" />
 		<field name="loopPersonId" type="long" />
 		<field name="loopTopicId" type="long" />
-		<field name="status" type="int" />
+		<field name="statusByDate" type="Date" />
 		<field name="statusByUserId" type="long" />
 		<field name="statusByUserName" type="String" />
-		<field name="statusByDate" type="Date" />
+		<field name="status" type="int" />
 	</model>
 	<model name="com.liferay.osb.loop.model.LoopUserNotificationEvent">
 		<field name="loopUserNotificationEventId" type="long" />

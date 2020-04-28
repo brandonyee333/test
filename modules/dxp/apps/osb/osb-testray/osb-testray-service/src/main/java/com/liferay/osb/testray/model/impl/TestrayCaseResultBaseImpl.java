@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayCaseResult;
 import com.liferay.osb.testray.service.TestrayCaseResultLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.osb.testray.service.TestrayCaseResultLocalServiceUtil;
  * @see TestrayCaseResult
  * @generated
  */
-@ProviderType
 public abstract class TestrayCaseResultBaseImpl
 	extends TestrayCaseResultModelImpl implements TestrayCaseResult {
 

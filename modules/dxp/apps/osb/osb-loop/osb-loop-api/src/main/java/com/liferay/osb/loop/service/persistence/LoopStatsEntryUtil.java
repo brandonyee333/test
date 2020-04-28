@@ -1,36 +1,36 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.service.persistence;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.model.LoopStatsEntry;
-
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
-
-import org.osgi.util.tracker.ServiceTracker;
+import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * The persistence utility for the loop stats entry service. This utility wraps {@link com.liferay.osb.loop.service.persistence.impl.LoopStatsEntryPersistenceImpl} and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the loop stats entry service. This utility wraps <code>com.liferay.osb.loop.service.persistence.impl.LoopStatsEntryPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -38,11 +38,10 @@ import java.util.List;
  *
  * @author Ethan Bustad
  * @see LoopStatsEntryPersistence
- * @see com.liferay.osb.loop.service.persistence.impl.LoopStatsEntryPersistenceImpl
  * @generated
  */
-@ProviderType
 public class LoopStatsEntryUtil {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
@@ -71,10 +70,20 @@ public class LoopStatsEntryUtil {
 	}
 
 	/**
+	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
+	 */
+	public static Map<Serializable, LoopStatsEntry> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
+
+		return getPersistence().fetchByPrimaryKeys(primaryKeys);
+	}
+
+	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
 	public static List<LoopStatsEntry> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
 	}
 
@@ -83,6 +92,7 @@ public class LoopStatsEntryUtil {
 	 */
 	public static List<LoopStatsEntry> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
+
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
 	}
 
@@ -92,9 +102,9 @@ public class LoopStatsEntryUtil {
 	public static List<LoopStatsEntry> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
 		OrderByComparator<LoopStatsEntry> orderByComparator) {
-		return getPersistence()
-				   .findWithDynamicQuery(dynamicQuery, start, end,
-			orderByComparator);
+
+		return getPersistence().findWithDynamicQuery(
+			dynamicQuery, start, end, orderByComparator);
 	}
 
 	/**
@@ -107,48 +117,50 @@ public class LoopStatsEntryUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static LoopStatsEntry update(LoopStatsEntry loopStatsEntry,
-		ServiceContext serviceContext) {
+	public static LoopStatsEntry update(
+		LoopStatsEntry loopStatsEntry, ServiceContext serviceContext) {
+
 		return getPersistence().update(loopStatsEntry, serviceContext);
 	}
 
 	/**
-	* Caches the loop stats entry in the entity cache if it is enabled.
-	*
-	* @param loopStatsEntry the loop stats entry
-	*/
+	 * Caches the loop stats entry in the entity cache if it is enabled.
+	 *
+	 * @param loopStatsEntry the loop stats entry
+	 */
 	public static void cacheResult(LoopStatsEntry loopStatsEntry) {
 		getPersistence().cacheResult(loopStatsEntry);
 	}
 
 	/**
-	* Caches the loop stats entries in the entity cache if it is enabled.
-	*
-	* @param loopStatsEntries the loop stats entries
-	*/
+	 * Caches the loop stats entries in the entity cache if it is enabled.
+	 *
+	 * @param loopStatsEntries the loop stats entries
+	 */
 	public static void cacheResult(List<LoopStatsEntry> loopStatsEntries) {
 		getPersistence().cacheResult(loopStatsEntries);
 	}
 
 	/**
-	* Creates a new loop stats entry with the primary key. Does not add the loop stats entry to the database.
-	*
-	* @param loopStatsEntryId the primary key for the new loop stats entry
-	* @return the new loop stats entry
-	*/
+	 * Creates a new loop stats entry with the primary key. Does not add the loop stats entry to the database.
+	 *
+	 * @param loopStatsEntryId the primary key for the new loop stats entry
+	 * @return the new loop stats entry
+	 */
 	public static LoopStatsEntry create(long loopStatsEntryId) {
 		return getPersistence().create(loopStatsEntryId);
 	}
 
 	/**
-	* Removes the loop stats entry with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param loopStatsEntryId the primary key of the loop stats entry
-	* @return the loop stats entry that was removed
-	* @throws NoSuchLoopStatsEntryException if a loop stats entry with the primary key could not be found
-	*/
+	 * Removes the loop stats entry with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param loopStatsEntryId the primary key of the loop stats entry
+	 * @return the loop stats entry that was removed
+	 * @throws NoSuchLoopStatsEntryException if a loop stats entry with the primary key could not be found
+	 */
 	public static LoopStatsEntry remove(long loopStatsEntryId)
 		throws com.liferay.osb.loop.exception.NoSuchLoopStatsEntryException {
+
 		return getPersistence().remove(loopStatsEntryId);
 	}
 
@@ -157,105 +169,104 @@ public class LoopStatsEntryUtil {
 	}
 
 	/**
-	* Returns the loop stats entry with the primary key or throws a {@link NoSuchLoopStatsEntryException} if it could not be found.
-	*
-	* @param loopStatsEntryId the primary key of the loop stats entry
-	* @return the loop stats entry
-	* @throws NoSuchLoopStatsEntryException if a loop stats entry with the primary key could not be found
-	*/
+	 * Returns the loop stats entry with the primary key or throws a <code>NoSuchLoopStatsEntryException</code> if it could not be found.
+	 *
+	 * @param loopStatsEntryId the primary key of the loop stats entry
+	 * @return the loop stats entry
+	 * @throws NoSuchLoopStatsEntryException if a loop stats entry with the primary key could not be found
+	 */
 	public static LoopStatsEntry findByPrimaryKey(long loopStatsEntryId)
 		throws com.liferay.osb.loop.exception.NoSuchLoopStatsEntryException {
+
 		return getPersistence().findByPrimaryKey(loopStatsEntryId);
 	}
 
 	/**
-	* Returns the loop stats entry with the primary key or returns <code>null</code> if it could not be found.
-	*
-	* @param loopStatsEntryId the primary key of the loop stats entry
-	* @return the loop stats entry, or <code>null</code> if a loop stats entry with the primary key could not be found
-	*/
+	 * Returns the loop stats entry with the primary key or returns <code>null</code> if it could not be found.
+	 *
+	 * @param loopStatsEntryId the primary key of the loop stats entry
+	 * @return the loop stats entry, or <code>null</code> if a loop stats entry with the primary key could not be found
+	 */
 	public static LoopStatsEntry fetchByPrimaryKey(long loopStatsEntryId) {
 		return getPersistence().fetchByPrimaryKey(loopStatsEntryId);
 	}
 
-	public static java.util.Map<java.io.Serializable, LoopStatsEntry> fetchByPrimaryKeys(
-		java.util.Set<java.io.Serializable> primaryKeys) {
-		return getPersistence().fetchByPrimaryKeys(primaryKeys);
-	}
-
 	/**
-	* Returns all the loop stats entries.
-	*
-	* @return the loop stats entries
-	*/
+	 * Returns all the loop stats entries.
+	 *
+	 * @return the loop stats entries
+	 */
 	public static List<LoopStatsEntry> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	* Returns a range of all the loop stats entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStatsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of loop stats entries
-	* @param end the upper bound of the range of loop stats entries (not inclusive)
-	* @return the range of loop stats entries
-	*/
+	 * Returns a range of all the loop stats entries.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStatsEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of loop stats entries
+	 * @param end the upper bound of the range of loop stats entries (not inclusive)
+	 * @return the range of loop stats entries
+	 */
 	public static List<LoopStatsEntry> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	* Returns an ordered range of all the loop stats entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStatsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of loop stats entries
-	* @param end the upper bound of the range of loop stats entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of loop stats entries
-	*/
-	public static List<LoopStatsEntry> findAll(int start, int end,
+	 * Returns an ordered range of all the loop stats entries.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStatsEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of loop stats entries
+	 * @param end the upper bound of the range of loop stats entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of loop stats entries
+	 */
+	public static List<LoopStatsEntry> findAll(
+		int start, int end,
 		OrderByComparator<LoopStatsEntry> orderByComparator) {
+
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
 
 	/**
-	* Returns an ordered range of all the loop stats entries.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link LoopStatsEntryModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of loop stats entries
-	* @param end the upper bound of the range of loop stats entries (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @param retrieveFromCache whether to retrieve from the finder cache
-	* @return the ordered range of loop stats entries
-	*/
-	public static List<LoopStatsEntry> findAll(int start, int end,
-		OrderByComparator<LoopStatsEntry> orderByComparator,
-		boolean retrieveFromCache) {
-		return getPersistence()
-				   .findAll(start, end, orderByComparator, retrieveFromCache);
+	 * Returns an ordered range of all the loop stats entries.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>LoopStatsEntryModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of loop stats entries
+	 * @param end the upper bound of the range of loop stats entries (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of loop stats entries
+	 */
+	public static List<LoopStatsEntry> findAll(
+		int start, int end, OrderByComparator<LoopStatsEntry> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findAll(
+			start, end, orderByComparator, useFinderCache);
 	}
 
 	/**
-	* Removes all the loop stats entries from the database.
-	*/
+	 * Removes all the loop stats entries from the database.
+	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	* Returns the number of loop stats entries.
-	*
-	* @return the number of loop stats entries
-	*/
+	 * Returns the number of loop stats entries.
+	 *
+	 * @return the number of loop stats entries
+	 */
 	public static int countAll() {
 		return getPersistence().countAll();
 	}
@@ -264,17 +275,23 @@ public class LoopStatsEntryUtil {
 		return _serviceTracker.getService();
 	}
 
-	private static ServiceTracker<LoopStatsEntryPersistence, LoopStatsEntryPersistence> _serviceTracker;
+	private static ServiceTracker
+		<LoopStatsEntryPersistence, LoopStatsEntryPersistence> _serviceTracker;
 
 	static {
-		Bundle bundle = FrameworkUtil.getBundle(LoopStatsEntryPersistence.class);
+		Bundle bundle = FrameworkUtil.getBundle(
+			LoopStatsEntryPersistence.class);
 
-		ServiceTracker<LoopStatsEntryPersistence, LoopStatsEntryPersistence> serviceTracker =
-			new ServiceTracker<LoopStatsEntryPersistence, LoopStatsEntryPersistence>(bundle.getBundleContext(),
-				LoopStatsEntryPersistence.class, null);
+		ServiceTracker<LoopStatsEntryPersistence, LoopStatsEntryPersistence>
+			serviceTracker =
+				new ServiceTracker
+					<LoopStatsEntryPersistence, LoopStatsEntryPersistence>(
+						bundle.getBundleContext(),
+						LoopStatsEntryPersistence.class, null);
 
 		serviceTracker.open();
 
 		_serviceTracker = serviceTracker;
 	}
+
 }

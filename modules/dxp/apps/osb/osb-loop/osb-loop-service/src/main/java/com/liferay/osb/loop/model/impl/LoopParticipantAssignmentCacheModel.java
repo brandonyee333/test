@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.loop.model.LoopParticipantAssignment;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing LoopParticipantAssignment in entity cache.
  *
  * @author Ethan Bustad
- * @see LoopParticipantAssignment
  * @generated
  */
-@ProviderType
-public class LoopParticipantAssignmentCacheModel implements CacheModel<LoopParticipantAssignment>,
-	Externalizable {
+public class LoopParticipantAssignmentCacheModel
+	implements CacheModel<LoopParticipantAssignment>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -47,9 +43,14 @@ public class LoopParticipantAssignmentCacheModel implements CacheModel<LoopParti
 			return false;
 		}
 
-		LoopParticipantAssignmentCacheModel loopParticipantAssignmentCacheModel = (LoopParticipantAssignmentCacheModel)obj;
+		LoopParticipantAssignmentCacheModel
+			loopParticipantAssignmentCacheModel =
+				(LoopParticipantAssignmentCacheModel)obj;
 
-		if (loopParticipantAssignmentId == loopParticipantAssignmentCacheModel.loopParticipantAssignmentId) {
+		if (loopParticipantAssignmentId ==
+				loopParticipantAssignmentCacheModel.
+					loopParticipantAssignmentId) {
+
 			return true;
 		}
 
@@ -82,9 +83,11 @@ public class LoopParticipantAssignmentCacheModel implements CacheModel<LoopParti
 
 	@Override
 	public LoopParticipantAssignment toEntityModel() {
-		LoopParticipantAssignmentImpl loopParticipantAssignmentImpl = new LoopParticipantAssignmentImpl();
+		LoopParticipantAssignmentImpl loopParticipantAssignmentImpl =
+			new LoopParticipantAssignmentImpl();
 
-		loopParticipantAssignmentImpl.setLoopParticipantAssignmentId(loopParticipantAssignmentId);
+		loopParticipantAssignmentImpl.setLoopParticipantAssignmentId(
+			loopParticipantAssignmentId);
 		loopParticipantAssignmentImpl.setLoopDivisionId(loopDivisionId);
 		loopParticipantAssignmentImpl.setLoopPersonId(loopPersonId);
 
@@ -115,8 +118,7 @@ public class LoopParticipantAssignmentCacheModel implements CacheModel<LoopParti
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(loopParticipantAssignmentId);
 
 		objectOutput.writeLong(loopDivisionId);
@@ -138,4 +140,5 @@ public class LoopParticipantAssignmentCacheModel implements CacheModel<LoopParti
 	public long loopPersonId;
 	public String description;
 	public int type;
+
 }

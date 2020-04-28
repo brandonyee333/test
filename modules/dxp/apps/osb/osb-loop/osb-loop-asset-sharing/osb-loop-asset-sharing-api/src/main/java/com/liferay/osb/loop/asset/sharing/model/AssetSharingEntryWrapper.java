@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.asset.sharing.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see AssetSharingEntry
  * @generated
  */
-@ProviderType
-public class AssetSharingEntryWrapper implements AssetSharingEntry,
-	ModelWrapper<AssetSharingEntry> {
+public class AssetSharingEntryWrapper
+	implements AssetSharingEntry, ModelWrapper<AssetSharingEntry> {
+
 	public AssetSharingEntryWrapper(AssetSharingEntry assetSharingEntry) {
 		_assetSharingEntry = assetSharingEntry;
 	}
@@ -93,8 +90,9 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	@Override
-	public java.lang.Object clone() {
-		return new AssetSharingEntryWrapper((AssetSharingEntry)_assetSharingEntry.clone());
+	public Object clone() {
+		return new AssetSharingEntryWrapper(
+			(AssetSharingEntry)_assetSharingEntry.clone());
 	}
 
 	@Override
@@ -103,30 +101,30 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	/**
-	* Returns the fully qualified class name of this asset sharing entry.
-	*
-	* @return the fully qualified class name of this asset sharing entry
-	*/
+	 * Returns the fully qualified class name of this asset sharing entry.
+	 *
+	 * @return the fully qualified class name of this asset sharing entry
+	 */
 	@Override
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return _assetSharingEntry.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this asset sharing entry.
-	*
-	* @return the class name ID of this asset sharing entry
-	*/
+	 * Returns the class name ID of this asset sharing entry.
+	 *
+	 * @return the class name ID of this asset sharing entry
+	 */
 	@Override
 	public long getClassNameId() {
 		return _assetSharingEntry.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this asset sharing entry.
-	*
-	* @return the class pk of this asset sharing entry
-	*/
+	 * Returns the class pk of this asset sharing entry.
+	 *
+	 * @return the class pk of this asset sharing entry
+	 */
 	@Override
 	public long getClassPK() {
 		return _assetSharingEntry.getClassPK();
@@ -138,12 +136,15 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	/**
-	* Returns the primary key of this asset sharing entry.
-	*
-	* @return the primary key of this asset sharing entry
-	*/
+	 * Returns the primary key of this asset sharing entry.
+	 *
+	 * @return the primary key of this asset sharing entry
+	 */
 	@Override
-	public com.liferay.osb.loop.asset.sharing.service.persistence.AssetSharingEntryPK getPrimaryKey() {
+	public
+		com.liferay.osb.loop.asset.sharing.service.persistence.
+			AssetSharingEntryPK getPrimaryKey() {
+
 		return _assetSharingEntry.getPrimaryKey();
 	}
 
@@ -153,20 +154,20 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	/**
-	* Returns the shared to class name ID of this asset sharing entry.
-	*
-	* @return the shared to class name ID of this asset sharing entry
-	*/
+	 * Returns the shared to class name ID of this asset sharing entry.
+	 *
+	 * @return the shared to class name ID of this asset sharing entry
+	 */
 	@Override
 	public long getSharedToClassNameId() {
 		return _assetSharingEntry.getSharedToClassNameId();
 	}
 
 	/**
-	* Returns the shared to class pk of this asset sharing entry.
-	*
-	* @return the shared to class pk of this asset sharing entry
-	*/
+	 * Returns the shared to class pk of this asset sharing entry.
+	 *
+	 * @return the shared to class pk of this asset sharing entry
+	 */
 	@Override
 	public long getSharedToClassPK() {
 		return _assetSharingEntry.getSharedToClassPK();
@@ -203,25 +204,25 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	@Override
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		_assetSharingEntry.setClassName(className);
 	}
 
 	/**
-	* Sets the class name ID of this asset sharing entry.
-	*
-	* @param classNameId the class name ID of this asset sharing entry
-	*/
+	 * Sets the class name ID of this asset sharing entry.
+	 *
+	 * @param classNameId the class name ID of this asset sharing entry
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_assetSharingEntry.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this asset sharing entry.
-	*
-	* @param classPK the class pk of this asset sharing entry
-	*/
+	 * Sets the class pk of this asset sharing entry.
+	 *
+	 * @param classPK the class pk of this asset sharing entry
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_assetSharingEntry.setClassPK(classPK);
@@ -230,6 +231,7 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_assetSharingEntry.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -249,13 +251,15 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	/**
-	* Sets the primary key of this asset sharing entry.
-	*
-	* @param primaryKey the primary key of this asset sharing entry
-	*/
+	 * Sets the primary key of this asset sharing entry.
+	 *
+	 * @param primaryKey the primary key of this asset sharing entry
+	 */
 	@Override
 	public void setPrimaryKey(
-		com.liferay.osb.loop.asset.sharing.service.persistence.AssetSharingEntryPK primaryKey) {
+		com.liferay.osb.loop.asset.sharing.service.persistence.
+			AssetSharingEntryPK primaryKey) {
+
 		_assetSharingEntry.setPrimaryKey(primaryKey);
 	}
 
@@ -265,47 +269,51 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	/**
-	* Sets the shared to class name ID of this asset sharing entry.
-	*
-	* @param sharedToClassNameId the shared to class name ID of this asset sharing entry
-	*/
+	 * Sets the shared to class name ID of this asset sharing entry.
+	 *
+	 * @param sharedToClassNameId the shared to class name ID of this asset sharing entry
+	 */
 	@Override
 	public void setSharedToClassNameId(long sharedToClassNameId) {
 		_assetSharingEntry.setSharedToClassNameId(sharedToClassNameId);
 	}
 
 	/**
-	* Sets the shared to class pk of this asset sharing entry.
-	*
-	* @param sharedToClassPK the shared to class pk of this asset sharing entry
-	*/
+	 * Sets the shared to class pk of this asset sharing entry.
+	 *
+	 * @param sharedToClassPK the shared to class pk of this asset sharing entry
+	 */
 	@Override
 	public void setSharedToClassPK(long sharedToClassPK) {
 		_assetSharingEntry.setSharedToClassPK(sharedToClassPK);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<AssetSharingEntry> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<AssetSharingEntry>
+		toCacheModel() {
+
 		return _assetSharingEntry.toCacheModel();
 	}
 
 	@Override
 	public AssetSharingEntry toEscapedModel() {
-		return new AssetSharingEntryWrapper(_assetSharingEntry.toEscapedModel());
+		return new AssetSharingEntryWrapper(
+			_assetSharingEntry.toEscapedModel());
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return _assetSharingEntry.toString();
 	}
 
 	@Override
 	public AssetSharingEntry toUnescapedModel() {
-		return new AssetSharingEntryWrapper(_assetSharingEntry.toUnescapedModel());
+		return new AssetSharingEntryWrapper(
+			_assetSharingEntry.toUnescapedModel());
 	}
 
 	@Override
-	public java.lang.String toXmlString() {
+	public String toXmlString() {
 		return _assetSharingEntry.toXmlString();
 	}
 
@@ -319,10 +327,13 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 			return false;
 		}
 
-		AssetSharingEntryWrapper assetSharingEntryWrapper = (AssetSharingEntryWrapper)obj;
+		AssetSharingEntryWrapper assetSharingEntryWrapper =
+			(AssetSharingEntryWrapper)obj;
 
-		if (Objects.equals(_assetSharingEntry,
-					assetSharingEntryWrapper._assetSharingEntry)) {
+		if (Objects.equals(
+				_assetSharingEntry,
+				assetSharingEntryWrapper._assetSharingEntry)) {
+
 			return true;
 		}
 
@@ -350,4 +361,5 @@ public class AssetSharingEntryWrapper implements AssetSharingEntry,
 	}
 
 	private final AssetSharingEntry _assetSharingEntry;
+
 }

@@ -1,23 +1,20 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.loop.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,9 +33,9 @@ import java.util.Objects;
  * @see LoopPersonRel
  * @generated
  */
-@ProviderType
-public class LoopPersonRelWrapper implements LoopPersonRel,
-	ModelWrapper<LoopPersonRel> {
+public class LoopPersonRelWrapper
+	implements LoopPersonRel, ModelWrapper<LoopPersonRel> {
+
 	public LoopPersonRelWrapper(LoopPersonRel loopPersonRel) {
 		_loopPersonRel = loopPersonRel;
 	}
@@ -103,10 +100,10 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Returns the child loop person ID of this loop person rel.
-	*
-	* @return the child loop person ID of this loop person rel
-	*/
+	 * Returns the child loop person ID of this loop person rel.
+	 *
+	 * @return the child loop person ID of this loop person rel
+	 */
 	@Override
 	public long getChildLoopPersonId() {
 		return _loopPersonRel.getChildLoopPersonId();
@@ -118,30 +115,30 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Returns the loop person rel ID of this loop person rel.
-	*
-	* @return the loop person rel ID of this loop person rel
-	*/
+	 * Returns the loop person rel ID of this loop person rel.
+	 *
+	 * @return the loop person rel ID of this loop person rel
+	 */
 	@Override
 	public long getLoopPersonRelId() {
 		return _loopPersonRel.getLoopPersonRelId();
 	}
 
 	/**
-	* Returns the parent loop person ID of this loop person rel.
-	*
-	* @return the parent loop person ID of this loop person rel
-	*/
+	 * Returns the parent loop person ID of this loop person rel.
+	 *
+	 * @return the parent loop person ID of this loop person rel
+	 */
 	@Override
 	public long getParentLoopPersonId() {
 		return _loopPersonRel.getParentLoopPersonId();
 	}
 
 	/**
-	* Returns the primary key of this loop person rel.
-	*
-	* @return the primary key of this loop person rel
-	*/
+	 * Returns the primary key of this loop person rel.
+	 *
+	 * @return the primary key of this loop person rel
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _loopPersonRel.getPrimaryKey();
@@ -153,10 +150,10 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Returns the type of this loop person rel.
-	*
-	* @return the type of this loop person rel
-	*/
+	 * Returns the type of this loop person rel.
+	 *
+	 * @return the type of this loop person rel
+	 */
 	@Override
 	public int getType() {
 		return _loopPersonRel.getType();
@@ -193,10 +190,10 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Sets the child loop person ID of this loop person rel.
-	*
-	* @param childLoopPersonId the child loop person ID of this loop person rel
-	*/
+	 * Sets the child loop person ID of this loop person rel.
+	 *
+	 * @param childLoopPersonId the child loop person ID of this loop person rel
+	 */
 	@Override
 	public void setChildLoopPersonId(long childLoopPersonId) {
 		_loopPersonRel.setChildLoopPersonId(childLoopPersonId);
@@ -205,6 +202,7 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_loopPersonRel.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -219,10 +217,10 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Sets the loop person rel ID of this loop person rel.
-	*
-	* @param loopPersonRelId the loop person rel ID of this loop person rel
-	*/
+	 * Sets the loop person rel ID of this loop person rel.
+	 *
+	 * @param loopPersonRelId the loop person rel ID of this loop person rel
+	 */
 	@Override
 	public void setLoopPersonRelId(long loopPersonRelId) {
 		_loopPersonRel.setLoopPersonRelId(loopPersonRelId);
@@ -234,20 +232,20 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Sets the parent loop person ID of this loop person rel.
-	*
-	* @param parentLoopPersonId the parent loop person ID of this loop person rel
-	*/
+	 * Sets the parent loop person ID of this loop person rel.
+	 *
+	 * @param parentLoopPersonId the parent loop person ID of this loop person rel
+	 */
 	@Override
 	public void setParentLoopPersonId(long parentLoopPersonId) {
 		_loopPersonRel.setParentLoopPersonId(parentLoopPersonId);
 	}
 
 	/**
-	* Sets the primary key of this loop person rel.
-	*
-	* @param primaryKey the primary key of this loop person rel
-	*/
+	 * Sets the primary key of this loop person rel.
+	 *
+	 * @param primaryKey the primary key of this loop person rel
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_loopPersonRel.setPrimaryKey(primaryKey);
@@ -259,17 +257,19 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	/**
-	* Sets the type of this loop person rel.
-	*
-	* @param type the type of this loop person rel
-	*/
+	 * Sets the type of this loop person rel.
+	 *
+	 * @param type the type of this loop person rel
+	 */
 	@Override
 	public void setType(int type) {
 		_loopPersonRel.setType(type);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<LoopPersonRel> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<LoopPersonRel>
+		toCacheModel() {
+
 		return _loopPersonRel.toCacheModel();
 	}
 
@@ -305,7 +305,9 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 
 		LoopPersonRelWrapper loopPersonRelWrapper = (LoopPersonRelWrapper)obj;
 
-		if (Objects.equals(_loopPersonRel, loopPersonRelWrapper._loopPersonRel)) {
+		if (Objects.equals(
+				_loopPersonRel, loopPersonRelWrapper._loopPersonRel)) {
+
 			return true;
 		}
 
@@ -333,4 +335,5 @@ public class LoopPersonRelWrapper implements LoopPersonRel,
 	}
 
 	private final LoopPersonRel _loopPersonRel;
+
 }

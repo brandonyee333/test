@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.service.base;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.model.TestrayArchive;
 import com.liferay.osb.testray.model.TestrayArchiveCompressedDataBlobModel;
 import com.liferay.osb.testray.service.TestrayArchiveLocalService;
@@ -40,9 +38,11 @@ import com.liferay.osb.testray.service.persistence.TestraySubtaskPersistence;
 import com.liferay.osb.testray.service.persistence.TestraySuitePersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTaskPersistence;
 import com.liferay.osb.testray.service.persistence.TestrayTeamPersistence;
+import com.liferay.petra.io.AutoDeleteFileInputStream;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
+import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdate;
 import com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -54,20 +54,26 @@ import com.liferay.portal.kernel.dao.orm.Projection;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
 import com.liferay.portal.kernel.model.PersistedModel;
 import com.liferay.portal.kernel.module.framework.service.IdentifiableOSGiService;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.BaseLocalServiceImpl;
 import com.liferay.portal.kernel.service.PersistedModelLocalServiceRegistry;
+import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.ClassNamePersistence;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portal.kernel.util.File;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
+import java.io.InputStream;
 import java.io.Serializable;
+
+import java.sql.Blob;
 
 import java.util.List;
 
@@ -84,10 +90,9 @@ import javax.sql.DataSource;
  * @see com.liferay.osb.testray.service.impl.TestrayArchiveLocalServiceImpl
  * @generated
  */
-@ProviderType
 public abstract class TestrayArchiveLocalServiceBaseImpl
 	extends BaseLocalServiceImpl
-	implements TestrayArchiveLocalService, IdentifiableOSGiService {
+	implements IdentifiableOSGiService, TestrayArchiveLocalService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -171,7 +176,7 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayArchiveModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayArchiveModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -191,7 +196,7 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayArchiveModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayArchiveModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -307,6 +312,13 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 			(TestrayArchive)persistedModel);
 	}
 
+	public BasePersistence<TestrayArchive> getBasePersistence() {
+		return testrayArchivePersistence;
+	}
+
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException {
@@ -318,7 +330,7 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 	 * Returns a range of all the testray archives.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayArchiveModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.testray.model.impl.TestrayArchiveModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray archives
@@ -350,26 +362,6 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 	@Override
 	public TestrayArchive updateTestrayArchive(TestrayArchive testrayArchive) {
 		return testrayArchivePersistence.update(testrayArchive);
-	}
-
-	@Override
-	public TestrayArchiveCompressedDataBlobModel getCompressedDataBlobModel(
-		Serializable primaryKey) {
-
-		Session session = null;
-
-		try {
-			session = testrayArchivePersistence.openSession();
-
-			return (TestrayArchiveCompressedDataBlobModel)session.get(
-				TestrayArchiveCompressedDataBlobModel.class, primaryKey);
-		}
-		catch (Exception e) {
-			throw testrayArchivePersistence.processException(e);
-		}
-		finally {
-			testrayArchivePersistence.closeSession(session);
-		}
 	}
 
 	/**
@@ -1414,10 +1406,69 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 		this.userPersistence = userPersistence;
 	}
 
+	@Override
+	public TestrayArchiveCompressedDataBlobModel getCompressedDataBlobModel(
+		Serializable primaryKey) {
+
+		Session session = null;
+
+		try {
+			session = testrayArchivePersistence.openSession();
+
+			return (TestrayArchiveCompressedDataBlobModel)session.get(
+				TestrayArchiveCompressedDataBlobModel.class, primaryKey);
+		}
+		catch (Exception exception) {
+			throw testrayArchivePersistence.processException(exception);
+		}
+		finally {
+			testrayArchivePersistence.closeSession(session);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public InputStream openCompressedDataInputStream(long testrayArchiveId) {
+		try {
+			TestrayArchiveCompressedDataBlobModel
+				TestrayArchiveCompressedDataBlobModel =
+					getCompressedDataBlobModel(testrayArchiveId);
+
+			Blob blob =
+				TestrayArchiveCompressedDataBlobModel.getCompressedDataBlob();
+
+			if (blob == null) {
+				return _EMPTY_INPUT_STREAM;
+			}
+
+			InputStream inputStream = blob.getBinaryStream();
+
+			if (_useTempFile) {
+				inputStream = new AutoDeleteFileInputStream(
+					_file.createTempFile(inputStream));
+			}
+
+			return inputStream;
+		}
+		catch (Exception exception) {
+			throw new SystemException(exception);
+		}
+	}
+
 	public void afterPropertiesSet() {
 		persistedModelLocalServiceRegistry.register(
 			"com.liferay.osb.testray.model.TestrayArchive",
 			testrayArchiveLocalService);
+
+		DB db = DBManagerUtil.getDB();
+
+		if ((db.getDBType() != DBType.DB2) &&
+			(db.getDBType() != DBType.MYSQL) &&
+			(db.getDBType() != DBType.MARIADB) &&
+			(db.getDBType() != DBType.SYBASE)) {
+
+			_useTempFile = true;
+		}
 	}
 
 	public void destroy() {
@@ -1462,8 +1513,8 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
@@ -1684,6 +1735,14 @@ public abstract class TestrayArchiveLocalServiceBaseImpl
 
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
+	@BeanReference(type = File.class)
+	protected File _file;
+
+	private static final InputStream _EMPTY_INPUT_STREAM =
+		new UnsyncByteArrayInputStream(new byte[0]);
+
+	private boolean _useTempFile;
 
 	@ServiceReference(type = PersistedModelLocalServiceRegistry.class)
 	protected PersistedModelLocalServiceRegistry

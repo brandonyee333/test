@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.service.persistence.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.testray.exception.NoSuchTestrayRequirementException;
 import com.liferay.osb.testray.model.TestrayRequirement;
 import com.liferay.osb.testray.model.impl.TestrayRequirementImpl;
@@ -32,10 +30,9 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
-import com.liferay.portal.kernel.service.persistence.CompanyProvider;
-import com.liferay.portal.kernel.service.persistence.CompanyProviderWrapper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapper;
 import com.liferay.portal.kernel.service.persistence.impl.TableMapperFactory;
@@ -72,7 +69,6 @@ import java.util.Set;
  * @author Ethan Bustad
  * @generated
  */
-@ProviderType
 public class TestrayRequirementPersistenceImpl
 	extends BasePersistenceImpl<TestrayRequirement>
 	implements TestrayRequirementPersistence {
@@ -113,23 +109,23 @@ public class TestrayRequirementPersistenceImpl
 			testrayProjectId, key);
 
 		if (testrayRequirement == null) {
-			StringBundler msg = new StringBundler(6);
+			StringBundler sb = new StringBundler(6);
 
-			msg.append(_NO_SUCH_ENTITY_WITH_KEY);
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
 
-			msg.append("testrayProjectId=");
-			msg.append(testrayProjectId);
+			sb.append("testrayProjectId=");
+			sb.append(testrayProjectId);
 
-			msg.append(", key=");
-			msg.append(key);
+			sb.append(", key=");
+			sb.append(key);
 
-			msg.append("}");
+			sb.append("}");
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(msg.toString());
+				_log.debug(sb.toString());
 			}
 
-			throw new NoSuchTestrayRequirementException(msg.toString());
+			throw new NoSuchTestrayRequirementException(sb.toString());
 		}
 
 		return testrayRequirement;
@@ -152,20 +148,24 @@ public class TestrayRequirementPersistenceImpl
 	 *
 	 * @param testrayProjectId the testray project ID
 	 * @param key the key
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the matching testray requirement, or <code>null</code> if a matching testray requirement could not be found
 	 */
 	@Override
 	public TestrayRequirement fetchByTPI_K(
-		long testrayProjectId, String key, boolean retrieveFromCache) {
+		long testrayProjectId, String key, boolean useFinderCache) {
 
 		key = Objects.toString(key, "");
 
-		Object[] finderArgs = new Object[] {testrayProjectId, key};
+		Object[] finderArgs = null;
+
+		if (useFinderCache) {
+			finderArgs = new Object[] {testrayProjectId, key};
+		}
 
 		Object result = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			result = finderCache.getResult(
 				_finderPathFetchByTPI_K, finderArgs, this);
 		}
@@ -182,45 +182,47 @@ public class TestrayRequirementPersistenceImpl
 		}
 
 		if (result == null) {
-			StringBundler query = new StringBundler(4);
+			StringBundler sb = new StringBundler(4);
 
-			query.append(_SQL_SELECT_TESTRAYREQUIREMENT_WHERE);
+			sb.append(_SQL_SELECT_TESTRAYREQUIREMENT_WHERE);
 
-			query.append(_FINDER_COLUMN_TPI_K_TESTRAYPROJECTID_2);
+			sb.append(_FINDER_COLUMN_TPI_K_TESTRAYPROJECTID_2);
 
 			boolean bindKey = false;
 
 			if (key.isEmpty()) {
-				query.append(_FINDER_COLUMN_TPI_K_KEY_3);
+				sb.append(_FINDER_COLUMN_TPI_K_KEY_3);
 			}
 			else {
 				bindKey = true;
 
-				query.append(_FINDER_COLUMN_TPI_K_KEY_2);
+				sb.append(_FINDER_COLUMN_TPI_K_KEY_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(testrayProjectId);
+				queryPos.add(testrayProjectId);
 
 				if (bindKey) {
-					qPos.add(key);
+					queryPos.add(key);
 				}
 
-				List<TestrayRequirement> list = q.list();
+				List<TestrayRequirement> list = query.list();
 
 				if (list.isEmpty()) {
-					finderCache.putResult(
-						_finderPathFetchByTPI_K, finderArgs, list);
+					if (useFinderCache) {
+						finderCache.putResult(
+							_finderPathFetchByTPI_K, finderArgs, list);
+					}
 				}
 				else {
 					TestrayRequirement testrayRequirement = list.get(0);
@@ -230,10 +232,13 @@ public class TestrayRequirementPersistenceImpl
 					cacheResult(testrayRequirement);
 				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(_finderPathFetchByTPI_K, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(
+						_finderPathFetchByTPI_K, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -283,48 +288,48 @@ public class TestrayRequirementPersistenceImpl
 		Long count = (Long)finderCache.getResult(finderPath, finderArgs, this);
 
 		if (count == null) {
-			StringBundler query = new StringBundler(3);
+			StringBundler sb = new StringBundler(3);
 
-			query.append(_SQL_COUNT_TESTRAYREQUIREMENT_WHERE);
+			sb.append(_SQL_COUNT_TESTRAYREQUIREMENT_WHERE);
 
-			query.append(_FINDER_COLUMN_TPI_K_TESTRAYPROJECTID_2);
+			sb.append(_FINDER_COLUMN_TPI_K_TESTRAYPROJECTID_2);
 
 			boolean bindKey = false;
 
 			if (key.isEmpty()) {
-				query.append(_FINDER_COLUMN_TPI_K_KEY_3);
+				sb.append(_FINDER_COLUMN_TPI_K_KEY_3);
 			}
 			else {
 				bindKey = true;
 
-				query.append(_FINDER_COLUMN_TPI_K_KEY_2);
+				sb.append(_FINDER_COLUMN_TPI_K_KEY_2);
 			}
 
-			String sql = query.toString();
+			String sql = sb.toString();
 
 			Session session = null;
 
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				QueryPos qPos = QueryPos.getInstance(q);
+				QueryPos queryPos = QueryPos.getInstance(query);
 
-				qPos.add(testrayProjectId);
+				queryPos.add(testrayProjectId);
 
 				if (bindKey) {
-					qPos.add(key);
+					queryPos.add(key);
 				}
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(finderPath, finderArgs, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(finderPath, finderArgs);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -358,9 +363,9 @@ public class TestrayRequirementPersistenceImpl
 
 			field.set(this, dbColumnNames);
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(e, e);
+				_log.debug(exception, exception);
 			}
 		}
 	}
@@ -461,6 +466,18 @@ public class TestrayRequirementPersistenceImpl
 		}
 	}
 
+	public void clearCache(Set<Serializable> primaryKeys) {
+		finderCache.clearCache(FINDER_CLASS_NAME_ENTITY);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITH_PAGINATION);
+		finderCache.clearCache(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION);
+
+		for (Serializable primaryKey : primaryKeys) {
+			entityCache.removeResult(
+				TestrayRequirementModelImpl.ENTITY_CACHE_ENABLED,
+				TestrayRequirementImpl.class, primaryKey);
+		}
+	}
+
 	protected void cacheUniqueFindersCache(
 		TestrayRequirementModelImpl testrayRequirementModelImpl) {
 
@@ -515,7 +532,7 @@ public class TestrayRequirementPersistenceImpl
 		testrayRequirement.setNew(true);
 		testrayRequirement.setPrimaryKey(testrayRequirementId);
 
-		testrayRequirement.setCompanyId(companyProvider.getCompanyId());
+		testrayRequirement.setCompanyId(CompanyThreadLocal.getCompanyId());
 
 		return testrayRequirement;
 	}
@@ -565,11 +582,11 @@ public class TestrayRequirementPersistenceImpl
 
 			return remove(testrayRequirement);
 		}
-		catch (NoSuchTestrayRequirementException nsee) {
-			throw nsee;
+		catch (NoSuchTestrayRequirementException noSuchEntityException) {
+			throw noSuchEntityException;
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -599,8 +616,8 @@ public class TestrayRequirementPersistenceImpl
 				session.delete(testrayRequirement);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -679,8 +696,8 @@ public class TestrayRequirementPersistenceImpl
 					testrayRequirement);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -786,12 +803,12 @@ public class TestrayRequirementPersistenceImpl
 						TestrayRequirementImpl.class, primaryKey, nullModel);
 				}
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				entityCache.removeResult(
 					TestrayRequirementModelImpl.ENTITY_CACHE_ENABLED,
 					TestrayRequirementImpl.class, primaryKey);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -863,32 +880,32 @@ public class TestrayRequirementPersistenceImpl
 			return map;
 		}
 
-		StringBundler query = new StringBundler(
+		StringBundler sb = new StringBundler(
 			uncachedPrimaryKeys.size() * 2 + 1);
 
-		query.append(_SQL_SELECT_TESTRAYREQUIREMENT_WHERE_PKS_IN);
+		sb.append(_SQL_SELECT_TESTRAYREQUIREMENT_WHERE_PKS_IN);
 
 		for (Serializable primaryKey : uncachedPrimaryKeys) {
-			query.append((long)primaryKey);
+			sb.append((long)primaryKey);
 
-			query.append(",");
+			sb.append(",");
 		}
 
-		query.setIndex(query.index() - 1);
+		sb.setIndex(sb.index() - 1);
 
-		query.append(")");
+		sb.append(")");
 
-		String sql = query.toString();
+		String sql = sb.toString();
 
 		Session session = null;
 
 		try {
 			session = openSession();
 
-			Query q = session.createQuery(sql);
+			Query query = session.createQuery(sql);
 
 			for (TestrayRequirement testrayRequirement :
-					(List<TestrayRequirement>)q.list()) {
+					(List<TestrayRequirement>)query.list()) {
 
 				map.put(
 					testrayRequirement.getPrimaryKeyObj(), testrayRequirement);
@@ -905,8 +922,8 @@ public class TestrayRequirementPersistenceImpl
 					TestrayRequirementImpl.class, primaryKey, nullModel);
 			}
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 		finally {
 			closeSession(session);
@@ -929,7 +946,7 @@ public class TestrayRequirementPersistenceImpl
 	 * Returns a range of all the testray requirements.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray requirements
@@ -945,7 +962,7 @@ public class TestrayRequirementPersistenceImpl
 	 * Returns an ordered range of all the testray requirements.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray requirements
@@ -965,65 +982,63 @@ public class TestrayRequirementPersistenceImpl
 	 * Returns an ordered range of all the testray requirements.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of testray requirements
 	 * @param end the upper bound of the range of testray requirements (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @param retrieveFromCache whether to retrieve from the finder cache
+	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of testray requirements
 	 */
 	@Override
 	public List<TestrayRequirement> findAll(
 		int start, int end,
 		OrderByComparator<TestrayRequirement> orderByComparator,
-		boolean retrieveFromCache) {
+		boolean useFinderCache) {
 
-		boolean pagination = true;
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
 		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
 			(orderByComparator == null)) {
 
-			pagination = false;
-			finderPath = _finderPathWithoutPaginationFindAll;
-			finderArgs = FINDER_ARGS_EMPTY;
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindAll;
+				finderArgs = FINDER_ARGS_EMPTY;
+			}
 		}
-		else {
+		else if (useFinderCache) {
 			finderPath = _finderPathWithPaginationFindAll;
 			finderArgs = new Object[] {start, end, orderByComparator};
 		}
 
 		List<TestrayRequirement> list = null;
 
-		if (retrieveFromCache) {
+		if (useFinderCache) {
 			list = (List<TestrayRequirement>)finderCache.getResult(
 				finderPath, finderArgs, this);
 		}
 
 		if (list == null) {
-			StringBundler query = null;
+			StringBundler sb = null;
 			String sql = null;
 
 			if (orderByComparator != null) {
-				query = new StringBundler(
+				sb = new StringBundler(
 					2 + (orderByComparator.getOrderByFields().length * 2));
 
-				query.append(_SQL_SELECT_TESTRAYREQUIREMENT);
+				sb.append(_SQL_SELECT_TESTRAYREQUIREMENT);
 
 				appendOrderByComparator(
-					query, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
 
-				sql = query.toString();
+				sql = sb.toString();
 			}
 			else {
 				sql = _SQL_SELECT_TESTRAYREQUIREMENT;
 
-				if (pagination) {
-					sql = sql.concat(TestrayRequirementModelImpl.ORDER_BY_JPQL);
-				}
+				sql = sql.concat(TestrayRequirementModelImpl.ORDER_BY_JPQL);
 			}
 
 			Session session = null;
@@ -1031,29 +1046,23 @@ public class TestrayRequirementPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(sql);
+				Query query = session.createQuery(sql);
 
-				if (!pagination) {
-					list = (List<TestrayRequirement>)QueryUtil.list(
-						q, getDialect(), start, end, false);
-
-					Collections.sort(list);
-
-					list = Collections.unmodifiableList(list);
-				}
-				else {
-					list = (List<TestrayRequirement>)QueryUtil.list(
-						q, getDialect(), start, end);
-				}
+				list = (List<TestrayRequirement>)QueryUtil.list(
+					query, getDialect(), start, end);
 
 				cacheResult(list);
 
-				finderCache.putResult(finderPath, finderArgs, list);
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
 			}
-			catch (Exception e) {
-				finderCache.removeResult(finderPath, finderArgs);
+			catch (Exception exception) {
+				if (useFinderCache) {
+					finderCache.removeResult(finderPath, finderArgs);
+				}
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1090,18 +1099,19 @@ public class TestrayRequirementPersistenceImpl
 			try {
 				session = openSession();
 
-				Query q = session.createQuery(_SQL_COUNT_TESTRAYREQUIREMENT);
+				Query query = session.createQuery(
+					_SQL_COUNT_TESTRAYREQUIREMENT);
 
-				count = (Long)q.uniqueResult();
+				count = (Long)query.uniqueResult();
 
 				finderCache.putResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY, count);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				finderCache.removeResult(
 					_finderPathCountAll, FINDER_ARGS_EMPTY);
 
-				throw processException(e);
+				throw processException(exception);
 			}
 			finally {
 				closeSession(session);
@@ -1142,7 +1152,7 @@ public class TestrayRequirementPersistenceImpl
 	 * Returns a range of all the testray cases associated with the testray requirement.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray requirement
@@ -1161,7 +1171,7 @@ public class TestrayRequirementPersistenceImpl
 	 * Returns an ordered range of all the testray cases associated with the testray requirement.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not <code>QueryUtil#ALL_POS</code>), then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>TestrayRequirementModelImpl</code>.
 	 * </p>
 	 *
 	 * @param pk the primary key of the testray requirement
@@ -1235,7 +1245,7 @@ public class TestrayRequirementPersistenceImpl
 
 		if (testrayRequirement == null) {
 			testrayRequirementToTestrayCaseTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk, testrayCasePK);
+				CompanyThreadLocal.getCompanyId(), pk, testrayCasePK);
 		}
 		else {
 			testrayRequirementToTestrayCaseTableMapper.addTableMapping(
@@ -1257,7 +1267,7 @@ public class TestrayRequirementPersistenceImpl
 
 		if (testrayRequirement == null) {
 			testrayRequirementToTestrayCaseTableMapper.addTableMapping(
-				companyProvider.getCompanyId(), pk,
+				CompanyThreadLocal.getCompanyId(), pk,
 				testrayCase.getPrimaryKey());
 		}
 		else {
@@ -1280,7 +1290,7 @@ public class TestrayRequirementPersistenceImpl
 		TestrayRequirement testrayRequirement = fetchByPrimaryKey(pk);
 
 		if (testrayRequirement == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testrayRequirement.getCompanyId();
@@ -1402,7 +1412,7 @@ public class TestrayRequirementPersistenceImpl
 		TestrayRequirement testrayRequirement = fetchByPrimaryKey(pk);
 
 		if (testrayRequirement == null) {
-			companyId = companyProvider.getCompanyId();
+			companyId = CompanyThreadLocal.getCompanyId();
 		}
 		else {
 			companyId = testrayRequirement.getCompanyId();
@@ -1434,8 +1444,8 @@ public class TestrayRequirementPersistenceImpl
 
 			setTestrayCases(pk, testrayCasePKs);
 		}
-		catch (Exception e) {
-			throw processException(e);
+		catch (Exception exception) {
+			throw processException(exception);
 		}
 	}
 
@@ -1503,9 +1513,6 @@ public class TestrayRequirementPersistenceImpl
 		TableMapperFactory.removeTableMapper(
 			"OSB_TestrayRequirements_TestrayCases");
 	}
-
-	@ServiceReference(type = CompanyProviderWrapper.class)
-	protected CompanyProvider companyProvider;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;

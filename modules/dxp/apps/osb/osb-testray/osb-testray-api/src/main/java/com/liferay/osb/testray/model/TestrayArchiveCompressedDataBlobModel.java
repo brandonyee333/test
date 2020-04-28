@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.sql.Blob;
 
 /**
@@ -25,7 +23,6 @@ import java.sql.Blob;
  * @see TestrayArchive
  * @generated
  */
-@ProviderType
 public class TestrayArchiveCompressedDataBlobModel {
 
 	public TestrayArchiveCompressedDataBlobModel() {

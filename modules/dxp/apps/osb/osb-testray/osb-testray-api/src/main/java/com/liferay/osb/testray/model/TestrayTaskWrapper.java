@@ -14,8 +14,6 @@
 
 package com.liferay.osb.testray.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -36,9 +34,8 @@ import java.util.Objects;
  * @see TestrayTask
  * @generated
  */
-@ProviderType
 public class TestrayTaskWrapper
-	implements TestrayTask, ModelWrapper<TestrayTask> {
+	implements ModelWrapper<TestrayTask>, TestrayTask {
 
 	public TestrayTaskWrapper(TestrayTask testrayTask) {
 		_testrayTask = testrayTask;
@@ -67,8 +64,8 @@ public class TestrayTaskWrapper
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("testrayBuildId", getTestrayBuildId());
 		attributes.put("name", getName());
-		attributes.put("status", getStatus());
 		attributes.put("statusUpdateDate", getStatusUpdateDate());
+		attributes.put("status", getStatus());
 
 		return attributes;
 	}
@@ -129,16 +126,16 @@ public class TestrayTaskWrapper
 			setName(name);
 		}
 
-		Integer status = (Integer)attributes.get("status");
-
-		if (status != null) {
-			setStatus(status);
-		}
-
 		Date statusUpdateDate = (Date)attributes.get("statusUpdateDate");
 
 		if (statusUpdateDate != null) {
 			setStatusUpdateDate(statusUpdateDate);
+		}
+
+		Integer status = (Integer)attributes.get("status");
+
+		if (status != null) {
+			setStatus(status);
 		}
 	}
 
