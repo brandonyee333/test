@@ -754,6 +754,7 @@ type QueryType {
 	): DXPEntityBag
 
 	users(
+		channelId: String,
 		keywords: String,
 		size: Int!,
 		sort: Sort!,
