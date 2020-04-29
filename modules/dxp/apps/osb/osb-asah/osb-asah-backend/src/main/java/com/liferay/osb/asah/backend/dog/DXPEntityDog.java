@@ -95,35 +95,13 @@ public class DXPEntityDog {
 					QueryUtil.buildSearchQueryBuilder("name", keywords));
 			}
 
-			JSONArray dataSourcesJSONArray = channelJSONObject.optJSONArray(
-				"dataSources");
-
-			if ((dataSourcesJSONArray != null) &&
-				(dataSourcesJSONArray.length() > 0)) {
-
-				for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-					JSONObject jsonObject = dataSourcesJSONArray.getJSONObject(
-						i);
-
-					boolQueryBuilder.should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termsQuery(
-								"groupId",
-								JSONUtil.toStringArray(
-									jsonObject.getJSONArray("groupIds")))
-						).filter(
-							QueryBuilders.termQuery(
-								"osbAsahDataSourceId",
-								jsonObject.getString("id"))
-						));
-				}
-			}
-
 			searchHits = _dataDog.querySearchHits(
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
 					_getFieldSortBuilders(collectionName, sort),
-					boolQueryBuilder, size, start));
+					_getBoolQueryBuilder(
+						boolQueryBuilder, channelJSONObject, "groupId"),
+					size, start));
 
 			return _createResultBag(this::_mapDXPEntity, searchHits);
 		}
@@ -137,6 +115,36 @@ public class DXPEntityDog {
 					).should(
 						QueryUtil.buildSearchQueryBuilder("lastName", keywords)
 					),
+					size, start));
+
+			if (StringUtils.isEmpty(channelId)) {
+				return _createResultBag(this::_mapDXPUser, searchHits);
+			}
+
+			JSONObject channelJSONObject = _faroInfoElasticsearchInvoker.fetch(
+				"channels", channelId);
+
+			if (channelJSONObject == null) {
+				return _createResultBag(this::_mapDXPUser, searchHits);
+			}
+
+			BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+			if (StringUtils.isNotBlank(keywords)) {
+				boolQueryBuilder = BoolQueryBuilderUtil.should(
+					QueryUtil.buildSearchQueryBuilder("firstName", keywords)
+				).should(
+					QueryUtil.buildSearchQueryBuilder("lastName", keywords)
+				);
+			}
+
+			searchHits = _dataDog.querySearchHits(
+				collectionName, _dxpRawElasticsearchInvoker,
+				DogUtil.buildSearchSourceBuilder(
+					_getFieldSortBuilders(collectionName, sort),
+					_getBoolQueryBuilder(
+						boolQueryBuilder, channelJSONObject,
+						"memberships.com.liferay.portal.kernel.model.Group"),
 					size, start));
 
 			return _createResultBag(this::_mapDXPUser, searchHits);
@@ -171,6 +179,37 @@ public class DXPEntityDog {
 		}
 
 		return new ResultBag<>(dxpEntities, searchHits.getTotalHits());
+	}
+
+	private BoolQueryBuilder _getBoolQueryBuilder(
+		BoolQueryBuilder boolQueryBuilder, JSONObject channelJSONObject,
+		String key) {
+
+		JSONArray dataSourcesJSONArray = channelJSONObject.optJSONArray(
+			"dataSources");
+
+		if ((dataSourcesJSONArray == null) ||
+			(dataSourcesJSONArray.length() == 0)) {
+
+			return boolQueryBuilder;
+		}
+
+		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
+			JSONObject jsonObject = dataSourcesJSONArray.getJSONObject(i);
+
+			boolQueryBuilder.should(
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termsQuery(
+						key,
+						JSONUtil.toStringArray(
+							jsonObject.getJSONArray("groupIds")))
+				).filter(
+					QueryBuilders.termQuery(
+						"osbAsahDataSourceId", jsonObject.getString("id"))
+				));
+		}
+
+		return boolQueryBuilder;
 	}
 
 	private List<FieldSortBuilder> _getFieldSortBuilders(
