@@ -243,7 +243,13 @@ public class GitWorkingDirectory {
 		}
 
 		if (!tempBranchNames.isEmpty()) {
-			_deleteLocalGitBranches(tempBranchNames.toArray(new String[0]));
+			for (List<String> branchNames :
+					Lists.partition(
+						new ArrayList<>(tempBranchNames),
+						_BRANCHES_DELETE_BATCH_SIZE)) {
+
+				_deleteLocalGitBranches(branchNames.toArray(new String[0]));
+			}
 		}
 	}
 
