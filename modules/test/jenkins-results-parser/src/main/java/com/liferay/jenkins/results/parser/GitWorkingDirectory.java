@@ -2290,8 +2290,11 @@ public class GitWorkingDirectory {
 			System.out.println(
 				JenkinsResultsParserUtil.combine(
 					"Unable to delete local branches:", "\n    ",
-					joinedBranchNames.replaceAll("\\s", "\n    "), "\n",
-					executionResult.getStandardError()));
+					joinedBranchNames.replaceAll("\\s", "\n    ")));
+
+			if (executionResult != null) {
+				System.out.println(executionResult.getStandardError());
+			}
 
 			return false;
 		}
