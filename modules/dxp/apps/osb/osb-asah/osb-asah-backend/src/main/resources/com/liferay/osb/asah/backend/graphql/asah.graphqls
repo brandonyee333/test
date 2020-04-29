@@ -594,6 +594,7 @@ type QueryType {
 	): AssetMetricBag
 
 	groups(
+		channelId: String,
 		keywords: String,
 		size: Int!,
 		sort: Sort!,
