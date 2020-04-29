@@ -29,6 +29,35 @@
 		background-color: $color-input-grey;
 		border-color: transparent;
 	}
+
+	.form-feedback-item {
+		color: $secondary-text-color;
+		font-size: $font-size-md;
+	}
+
+	.form-feedback-item-error {
+		color: $color-error;
+		font-size: $font-size-md;
+		font-weight: $font-weight-semi-bold;
+	}
+
+	.form-feedback-indicator {
+		&.inline-item-before {
+			margin-right: $alert-lead-spacer-x;
+		}
+
+		.lexicon-icon-exclamation-full {
+			height: $font-size-md;
+			margin-top: -3px;
+			width: $font-size-md;
+		}
+	}
+
+	&.has-error .form-control {
+		background-color: $color-error-background;
+		border: 1px solid $color-error-border;
+		box-sizing: border-box;
+	}
 }
 
 .upload-dropzone {
