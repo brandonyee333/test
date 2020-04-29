@@ -23,6 +23,7 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +56,12 @@ public class DXPEntityDogTest {
 	public void testGetGroupResultBag() {
 		_testGetResultBag(
 			null, "groups", Arrays.asList("Global", "Guest"), 2, null,
+			_getSort("name", "ASC"));
+		_testGetResultBag(
+			"414686271857066676", "groups", Arrays.asList("Guest"), 1, null,
+			_getSort("name", "ASC"));
+		_testGetResultBag(
+			"414686271857066677", "groups", Collections.emptyList(), 0, null,
 			_getSort("name", "ASC"));
 	}
 
