@@ -2264,6 +2264,14 @@ public class GitWorkingDirectory {
 	}
 
 	private boolean _deleteLocalGitBranches(String... branchNames) {
+		if (branchNames.length > _BRANCHES_DELETE_BATCH_SIZE) {
+			throw new IllegalArgumentException(
+				JenkinsResultsParserUtil.combine(
+					"Unable to delete more than ",
+					String.valueOf(_BRANCHES_DELETE_BATCH_SIZE),
+					" local Git branches at once."));
+		}
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("git branch -D -f ");
