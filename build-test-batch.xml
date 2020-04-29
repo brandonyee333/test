@@ -3484,6 +3484,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 		<run-functional-test app.server.type="tomcat" database.type="mysql" test.portal.log.assert="true" />
 	</target>
 
+	<target name="functional-smoke-tomcat80-mysql56-jdk8_stable">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" test.portal.log.assert="true" />
+	</target>
+
 	<target name="functional-smoke-tomcat80-mysql56-jdk8_zulu">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" test.portal.log.assert="true" />
 	</target>
@@ -3577,6 +3581,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 	</target>
 
 	<target name="functional-upgrade-tomcat80-mysql56-jdk8">
+		<run-functional-test app.server.type="tomcat" database.type="mysql" />
+	</target>
+
+	<target name="functional-upgrade-tomcat80-mysql56-jdk8_stable">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" />
 	</target>
 
@@ -4033,6 +4041,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 		<run-modules-integration-test database.type="mysql" />
 	</target>
 
+	<target name="modules-integration-mysql56-jdk8_stable">
+		<run-modules-integration-test database.type="mysql" />
+	</target>
+
 	<target name="modules-integration-oracle122-jdk8">
 		<run-modules-integration-test database.type="oracle" />
 	</target>
@@ -4204,6 +4216,10 @@ ${poshi.runner.testsuite.testcase.name}</echo>
 				</if>
 			</test-tear-down>
 		</run-batch-test>
+	</target>
+
+	<target name="modules-unit-jdk8_stable">
+		<antcall target="modules-unit-jdk8" />
 	</target>
 
 	<target name="oracle-service-start">
@@ -5342,6 +5358,10 @@ ${output.content}</echo>
 				<delete file="${app.server.lib.portal.dir}/util-taglib.jar" />
 			</test-set-up>
 		</run-batch-test>
+	</target>
+
+	<target name="unit-jdk8_stable">
+		<antcall target="unit-jdk8" />
 	</target>
 
 	<target name="wsdd-builder-jdk8">
