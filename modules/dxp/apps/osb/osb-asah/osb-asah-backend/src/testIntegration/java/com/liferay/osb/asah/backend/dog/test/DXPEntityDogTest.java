@@ -133,8 +133,12 @@ public class DXPEntityDogTest {
 		_testGetResultBag(
 			null, "users",
 			Arrays.asList(
-				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2"),
-			4, null, _getSort("name", "ASC"));
+				"Bruno Admin", "Bruno Badmin", "Test1 Test1", "Test2 Test2",
+				"Test3 Test3"),
+			5, null, _getSort("name", "ASC"));
+		_testGetResultBag(
+			"414686271857066676", "users", Arrays.asList("Test3 Test3"), 1,
+			null, _getSort("name", "ASC"));
 	}
 
 	@ElasticsearchIndex(
@@ -144,7 +148,8 @@ public class DXPEntityDogTest {
 	@Test
 	public void testGetUserResultBagCaseInsensitiveSearch() {
 		_testGetResultBag(
-			null, "users", Arrays.asList("Test1 Test1", "Test2 Test2"), 2,
+			null, "users",
+			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
 			"test", _getSort("name", "ASC"));
 	}
 
@@ -155,7 +160,8 @@ public class DXPEntityDogTest {
 	@Test
 	public void testGetUserResultBagSearch() {
 		_testGetResultBag(
-			null, "users", Arrays.asList("Test1 Test1", "Test2 Test2"), 2,
+			null, "users",
+			Arrays.asList("Test1 Test1", "Test2 Test2", "Test3 Test3"), 3,
 			"Test", _getSort("name", "ASC"));
 	}
 

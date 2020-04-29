@@ -26,5 +26,17 @@
 		"lastName": "Test2",
 		"osbAsahDataSourceId": "405057430327289648",
 		"screenName": "test2.test2"
+	},
+	{
+		"firstName": "Test3",
+		"id": "386700253541400290",
+		"lastName" : "Test3",
+		"memberships": {
+			"com.liferay.portal.kernel.model.Group": [
+				"20121"
+			]
+		},
+		"osbAsahDataSourceId": "405057430327289648",
+		"screenName": "test3.test3"
 	}
 ]
