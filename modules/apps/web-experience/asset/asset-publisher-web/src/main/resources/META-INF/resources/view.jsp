@@ -39,36 +39,6 @@ if (assetPublisherDisplayContext.isEnableTagBasedNavigation() && assetPublisherD
 %>
 
 <div class="subscribe-action">
-	<c:if test="<%= !portletName.equals(AssetPublisherPortletKeys.HIGHEST_RATED_ASSETS) && !portletName.equals(AssetPublisherPortletKeys.MOST_VIEWED_ASSETS) && !portletName.equals(AssetPublisherPortletKeys.RECENT_CONTENT) && !portletName.equals(AssetPublisherPortletKeys.RELATED_ASSETS) && PortletPermissionUtil.contains(permissionChecker, 0, layout, portletDisplay.getId(), ActionKeys.SUBSCRIBE, false, false) && AssetPublisherUtil.getEmailAssetEntryAddedEnabled(portletPreferences) %>">
-		<c:choose>
-			<c:when test="<%= AssetPublisherUtil.isSubscribed(themeDisplay.getCompanyId(), user.getUserId(), themeDisplay.getPlid(), portletDisplay.getId()) %>">
-				<portlet:actionURL name="unsubscribe" var="unsubscribeURL">
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-				</portlet:actionURL>
-
-				<liferay-ui:icon
-					icon="star"
-					label="<%= true %>"
-					markupView="lexicon"
-					message="unsubscribe"
-					url="<%= unsubscribeURL %>"
-				/>
-			</c:when>
-			<c:otherwise>
-				<portlet:actionURL name="subscribe" var="subscribeURL">
-					<portlet:param name="redirect" value="<%= currentURL %>" />
-				</portlet:actionURL>
-
-				<liferay-ui:icon
-					icon="star-o"
-					label="<%= true %>"
-					markupView="lexicon"
-					message="subscribe"
-					url="<%= subscribeURL %>"
-				/>
-			</c:otherwise>
-		</c:choose>
-	</c:if>
 
 	<%
 	boolean enableRSS = !PortalUtil.isRSSFeedsEnabled() ? false : assetPublisherDisplayContext.isEnableRSS();
@@ -80,6 +50,35 @@ if (assetPublisherDisplayContext.isEnableTagBasedNavigation() && assetPublisherD
 		<liferay-ui:rss
 			resourceURL="<%= rssURL %>"
 		/>
+	</c:if>
+
+	<c:if test="<%= !portletName.equals(AssetPublisherPortletKeys.HIGHEST_RATED_ASSETS) && !portletName.equals(AssetPublisherPortletKeys.MOST_VIEWED_ASSETS) && !portletName.equals(AssetPublisherPortletKeys.RECENT_CONTENT) && !portletName.equals(AssetPublisherPortletKeys.RELATED_ASSETS) && PortletPermissionUtil.contains(permissionChecker, 0, layout, portletDisplay.getId(), ActionKeys.SUBSCRIBE, false, false) && AssetPublisherUtil.getEmailAssetEntryAddedEnabled(portletPreferences) %>">
+		<c:choose>
+			<c:when test="<%= AssetPublisherUtil.isSubscribed(themeDisplay.getCompanyId(), user.getUserId(), themeDisplay.getPlid(), portletDisplay.getId()) %>">
+				<portlet:actionURL name="unsubscribe" var="unsubscribeURL">
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+				</portlet:actionURL>
+
+				<liferay-ui:icon
+					iconCssClass="icon-remove-sign"
+					label="<%= true %>"
+					message="unsubscribe"
+					url="<%= unsubscribeURL %>"
+				/>
+			</c:when>
+			<c:otherwise>
+				<portlet:actionURL name="subscribe" var="subscribeURL">
+					<portlet:param name="redirect" value="<%= currentURL %>" />
+				</portlet:actionURL>
+
+				<liferay-ui:icon
+					iconCssClass="icon-ok-sign"
+					label="<%= true %>"
+					message="subscribe"
+					url="<%= subscribeURL %>"
+				/>
+			</c:otherwise>
+		</c:choose>
 	</c:if>
 </div>
 
