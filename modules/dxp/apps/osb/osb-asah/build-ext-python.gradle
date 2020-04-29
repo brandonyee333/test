@@ -20,48 +20,55 @@ buildscript {
 configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	apply plugin: PythonEnvsPlugin
 
-	task configureVirtualEnv()
-	task formatSource()
+	task formatSourcePython()
+	task installBootstrapEnvDependencies()
+	task installProjectEnvDependencies()
 	task packagePython()
 
+	def bootstrapEnvName = "Miniconda3"
 	def pythonSource = "src/main/python"
 
 	envs {
 		bootstrapDirectory = new File(projectDir, '.bootstrap')
-		envsDirectory = new File(projectDir, '.envs')
+		envsDirectory = new File(buildDir, '.envs')
 
-		python "python36", "3.6.2", ["pytest"]
+		conda bootstrapEnvName, "Miniconda3-py38_4.8.2", "64"
+		condaenv project.name, "3.8", "Miniconda3"
 	}
 
-	configureVirtualEnv {
-		URI requirementsURI = new File(projectDir.path + "/$pythonSource/requirements.txt").toURI()
-
-		File requirementsFile = FileUtil.get(project, requirementsURI.toString())
-
-		project.envs {
-			virtualenv project.name, "python36", requirementsFile.readLines()
-		}
-	}
-
-	formatSource {
-		def pythonEnvDir = "$projectDir/.envs/$project.name"
+	formatSourcePython {
+		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
 
 		doLast {
 			exec {
-				commandLine _executablePath(pythonEnvDir, "pip"), "install", "yapf"
+				commandLine _executablePath(bootstrapEnvDir, "python"), "-m", "yapf", "-i", "--recursive", pythonSource
 			}
+		}
+	}
 
+	installBootstrapEnvDependencies {
+		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
+
+		doLast {
 			exec {
-				commandLine _executablePath(pythonEnvDir, "python"), "-m", "yapf", "-i", "--recursive", "src/main/python"
+				commandLine _executablePath(bootstrapEnvDir, "pip"), "install", "yapf"
+			}
+		}
+	}
+
+	installProjectEnvDependencies {
+		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
+
+		doLast {
+			exec {
+				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements.txt"
 			}
 		}
 	}
 
 	packagePython {
 		def buildLibs = new File("$buildDir/libs")
-
-		def pythonEnvDir = "$projectDir/.envs/$project.name"
-
+		def pythonEnvDir = "$buildDir/.envs/$project.name"
 		def pythonTempDir = "$buildDir/python-temp"
 
 		doLast {
@@ -88,29 +95,39 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 	}
 
 	project.afterEvaluate {
-		build_envs {
-			dependsOn configureVirtualEnv
+		assemble {
+			dependsOn packagePython
 		}
 
-		clean {
-			doFirst {
-				delete "$projectDir/.envs"
-			}
+		formatSourcePython {
+			dependsOn installProjectEnvDependencies
 		}
 
-		formatSource {
-			dependsOn build_envs
+		installBootstrapEnvDependencies {
+			dependsOn build_condas
+		}
+
+		installProjectEnvDependencies {
+			dependsOn build_conda_envs
 		}
 
 		packagePython {
-			dependsOn build_envs
+			dependsOn installBootstrapEnvDependencies
+			dependsOn installProjectEnvDependencies
+
+			installProjectEnvDependencies.mustRunAfter(installBootstrapEnvDependencies)
 		}
 	}
 }
 
 private String _executablePath(String pythonEnvDir, String executable) {
 	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-		return "$pythonEnvDir/Scripts/$executable"
+		if (Objects.equals(executable, "python")) {
+			return "$pythonEnvDir/$executable"
+		}
+		else {
+			return "$pythonEnvDir/Scripts/$executable"
+		}
 	}
 	else {
 		return "$pythonEnvDir/bin/$executable"
