@@ -59,17 +59,7 @@ public class DXPEntityDog {
 		String channelId, String collectionName, String keywords, int size,
 		Map<String, String> sort, int start) {
 
-		if (collectionName.equals("organizations")) {
-			SearchHits searchHits = _dataDog.querySearchHits(
-				collectionName, _faroInfoElasticsearchInvoker,
-				DogUtil.buildSearchSourceBuilder(
-					_getFieldSortBuilders(collectionName, sort),
-					QueryUtil.buildSearchQueryBuilder("name", keywords), size,
-					start));
-
-			return _createResultBag(this::_mapOrganization, searchHits);
-		}
-		else if (collectionName.equals("teams")) {
+		if (collectionName.equals("groups") || collectionName.equals("teams")) {
 			SearchHits searchHits = _dataDog.querySearchHits(
 				collectionName, _dxpRawElasticsearchInvoker,
 				DogUtil.buildSearchSourceBuilder(
@@ -104,6 +94,16 @@ public class DXPEntityDog {
 					size, start));
 
 			return _createResultBag(this::_mapDXPEntity, searchHits);
+		}
+		else if (collectionName.equals("organizations")) {
+			SearchHits searchHits = _dataDog.querySearchHits(
+				collectionName, _faroInfoElasticsearchInvoker,
+				DogUtil.buildSearchSourceBuilder(
+					_getFieldSortBuilders(collectionName, sort),
+					QueryUtil.buildSearchQueryBuilder("name", keywords), size,
+					start));
+
+			return _createResultBag(this::_mapOrganization, searchHits);
 		}
 		else if (collectionName.equals("users")) {
 			SearchHits searchHits = _dataDog.querySearchHits(
