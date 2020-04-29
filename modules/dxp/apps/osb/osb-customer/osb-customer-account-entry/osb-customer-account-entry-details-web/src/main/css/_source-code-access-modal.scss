@@ -1,0 +1,59 @@
+.modal-body-announcement {
+	margin: $margin-default auto;
+	text-align: center;
+	width: 60%;
+
+	.modal-body-icon {
+		border-radius: $lexicon-icon-background;
+		height: $lexicon-icon-background;
+		margin: auto;
+		width: $lexicon-icon-background;
+
+		.lexicon-icon {
+			height: $lexicon-icon-height;
+			margin: 19px 17.5px 19px 17.5px;
+			width: $lexicon-icon-width;
+		}
+
+		&.warning-full {
+			background-color: $color-warning-background;
+
+			.lexicon-icon-warning-full {
+				color: $color-warning;
+			}
+		}
+
+		&.check-circle-full {
+			background-color: $color-success-background;
+
+			.lexicon-icon-check-circle-full {
+				color: $color-success;
+			}
+		}
+	}
+
+	.modal-body-title {
+		font-size: $font-size-default;
+		font-weight: $font-weight-semi-bold;
+		padding-top: $padding-md;
+	}
+
+	.modal-body-text {
+		color: $secondary-text-color;
+		font-size: $font-size-md;
+		padding-top: $padding-xs;
+
+		.semi-bold {
+			font-weight: $font-weight-semi-bold;
+		}
+
+		&.last-text {
+			padding-bottom: $padding-default;
+		}
+	}
+
+	.link-primary {
+		color: $color-primary;
+		font-weight: $font-weight-semi-bold;
+	}
+}

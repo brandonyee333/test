@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Accordion from './Accordion';
+import AddSourceCodeAccessModal from './AddSourceCodeAccessModal';
+import Button from './Button';
 
 export default class SourceCodeAccess extends React.Component {
 	static propTypes = {
@@ -14,11 +16,28 @@ export default class SourceCodeAccess extends React.Component {
 				fullName: PropTypes.string.isRequired,
 				gitHubUserName: PropTypes.string.isRequired
 			})
-		).isRequired
+		).isRequired,
+		namespace: PropTypes.string.isRequired
 	};
 
+	state = {
+		showModal: false
+	};
+
+	handleCloseModal = () =>
+		this.setState({
+			showModal: false
+		});
+
+	handleDisplayModal = () =>
+		this.setState({
+			showModal: true
+		});
+
 	render() {
-		const {collaborators} = this.props;
+		const {addCollaboratorURL, collaborators, namespace} = this.props;
+
+		const {showModal} = this.state;
 
 		const accordionItems = collaborators.map(collaborator => ({
 			body: (
@@ -60,10 +79,32 @@ export default class SourceCodeAccess extends React.Component {
 
 		return (
 			<React.Fragment>
-				<div className="card-header small-title">
-					{Liferay.Language.get(
-						"team-members-who-have-access-to-liferay's-source-code"
-					)}
+				<div className="card-header">
+					<div>
+						<div className="small-title">
+							{Liferay.Language.get(
+								"team-members-who-have-access-to-liferay's-source-code"
+							)}
+						</div>
+						<div className="panel-subtitle">
+							{Liferay.Language.get(
+								"add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code"
+							)}
+						</div>
+					</div>
+
+					<Button icon onClick={this.handleDisplayModal} value="add">
+						<svg className="lexicon-icon lexicon-icon-plus">
+							<use xlinkHref="#plus" />
+						</svg>
+					</Button>
+
+					<AddSourceCodeAccessModal
+						addCollaboratorURL={addCollaboratorURL}
+						namespace={namespace}
+						onClose={this.handleCloseModal}
+						show={showModal}
+					/>
 				</div>
 
 				{!accordionItems.length ? (

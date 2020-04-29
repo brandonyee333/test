@@ -31,7 +31,8 @@
 		AccountDetails.SourceCodeAccess,
 		{
 			addCollaboratorURL: '<%= accountEntryViewDisplayContext.getCollaboratorAddURL() %>',
-			collaborators: <%= accountEntryViewDisplayContext.getCollaboratorsJSONArray() %>
+			collaborators: <%= accountEntryViewDisplayContext.getCollaboratorsJSONArray() %>,
+			namespace: '<portlet:namespace />'
 		},
 		document.getElementById('<portlet:namespace />sourceCodeAccess')
 	);

@@ -3,9 +3,34 @@
 exports[`SourceCodeAccess renders correctly 1`] = `
 <div>
   <div
-    class="card-header small-title"
+    class="card-header"
   >
-    team-members-who-have-access-to-liferay's-source-code
+    <div>
+      <div
+        class="small-title"
+      >
+        team-members-who-have-access-to-liferay's-source-code
+      </div>
+      <div
+        class="panel-subtitle"
+      >
+        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+      </div>
+    </div>
+    <button
+      aria-label="add"
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
   </div>
   <div
     aria-orientation="vertical"
@@ -121,9 +146,34 @@ exports[`SourceCodeAccess renders correctly 1`] = `
 exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
 <div>
   <div
-    class="card-header small-title"
+    class="card-header"
   >
-    team-members-who-have-access-to-liferay's-source-code
+    <div>
+      <div
+        class="small-title"
+      >
+        team-members-who-have-access-to-liferay's-source-code
+      </div>
+      <div
+        class="panel-subtitle"
+      >
+        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+      </div>
+    </div>
+    <button
+      aria-label="add"
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
   </div>
   <div
     aria-orientation="vertical"
@@ -291,9 +341,34 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
 exports[`SourceCodeAccess renders no results message when there are no collaborators 1`] = `
 <div>
   <div
-    class="card-header small-title"
+    class="card-header"
   >
-    team-members-who-have-access-to-liferay's-source-code
+    <div>
+      <div
+        class="small-title"
+      >
+        team-members-who-have-access-to-liferay's-source-code
+      </div>
+      <div
+        class="panel-subtitle"
+      >
+        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+      </div>
+    </div>
+    <button
+      aria-label="add"
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
   </div>
   <div
     class="no-results"
@@ -303,12 +378,180 @@ exports[`SourceCodeAccess renders no results message when there are no collabora
 </div>
 `;
 
+exports[`SourceCodeAccess renders the description for add collaborators button 1`] = `
+<div>
+  <div
+    class="card-header"
+  >
+    <div>
+      <div
+        class="small-title"
+      >
+        team-members-who-have-access-to-liferay's-source-code
+      </div>
+      <div
+        class="panel-subtitle"
+      >
+        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+      </div>
+    </div>
+    <button
+      aria-label="add"
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
+  </div>
+  <div
+    aria-orientation="vertical"
+    class="panel-group"
+    role="tablist"
+  >
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test1 Test1
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser1
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test1@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test2 Test2
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser2
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test2@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test3 Test3
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser3
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test3@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
 <div>
   <div
-    class="card-header small-title"
+    class="card-header"
   >
-    team-members-who-have-access-to-liferay's-source-code
+    <div>
+      <div
+        class="small-title"
+      >
+        team-members-who-have-access-to-liferay's-source-code
+      </div>
+      <div
+        class="panel-subtitle"
+      >
+        add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code
+      </div>
+    </div>
+    <button
+      aria-label="add"
+      class="btn btn-md btn-primary btn-monospaced"
+      type="button"
+      value="add"
+    >
+      <svg
+        class="lexicon-icon lexicon-icon-plus"
+      >
+        <use
+          xlink:href="#plus"
+        />
+      </svg>
+    </button>
   </div>
   <div
     aria-orientation="vertical"
