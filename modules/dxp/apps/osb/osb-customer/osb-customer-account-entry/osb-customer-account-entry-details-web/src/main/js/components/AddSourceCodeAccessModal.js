@@ -124,10 +124,10 @@ export default class AddSourceCodeAccessModal extends React.Component {
 				body: formData,
 				method: 'POST'
 			})
-				.then(response => response.json())
-				.then(data => {
+				.then(response => response.text())
+				.then(text => {
 					this.setState({
-						confirmation: data.success ? 'success' : 'wait'
+						confirmation: 'success'
 					});
 				})
 				.catch(error => {
