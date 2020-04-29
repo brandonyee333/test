@@ -50,6 +50,13 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		def bootstrapEnvDir = "$project.envs.bootstrapDirectory/$bootstrapEnvName"
 
 		doLast {
+			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+				copy {
+					from file("$bootstrapEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$bootstrapEnvDir/Library/bin/libssl-1_1-x64.dll")
+					into file("$bootstrapEnvDir/DLLs")
+				}
+			}
+
 			exec {
 				commandLine _executablePath(bootstrapEnvDir, "pip"), "install", "yapf"
 			}
@@ -60,6 +67,13 @@ configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
 		def projectEnvDir = "$project.envs.envsDirectory/$project.name"
 
 		doLast {
+			if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+				copy {
+					from file("$projectEnvDir/Library/bin/libcrypto-1_1-x64.dll"), file("$projectEnvDir/Library/bin/libssl-1_1-x64.dll")
+					into file("$projectEnvDir/DLLs")
+				}
+			}
+
 			exec {
 				commandLine _executablePath(projectEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements.txt"
 			}
