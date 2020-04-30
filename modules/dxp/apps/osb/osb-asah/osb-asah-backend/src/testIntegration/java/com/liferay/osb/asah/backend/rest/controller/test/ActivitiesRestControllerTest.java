@@ -142,6 +142,17 @@ public class ActivitiesRestControllerTest {
 			JSONUtil.getValue(
 				jsonObject, "JSONObject/_embedded",
 				"JSONArray/asset-transformations", "Object/0", "Object/count"));
+
+		jsonObject = new JSONObject(
+			_activitiesRestController.getAssetTransformations(
+				"(channelId eq '1') and contains(object.name, 'clicks')", 0, 10,
+				new String[] {"count", "desc"}));
+
+		Assert.assertEquals(
+			2,
+			JSONUtil.getValue(
+				jsonObject, "JSONObject/_embedded",
+				"JSONArray/asset-transformations", "Object/0", "Object/count"));
 	}
 
 	@ElasticsearchIndex(
