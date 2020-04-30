@@ -1,5 +1,6 @@
 Bundle-Name: Liferay OSB Customer GitHub Service
 Bundle-SymbolicName: com.liferay.osb.customer.github.service
 Bundle-Version: 1.0.0
+Export-Package: com.liferay.osb.customer.github.internal.configuration
 Liferay-Require-SchemaVersion: 1.0.0
 Liferay-Service: true

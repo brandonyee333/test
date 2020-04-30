@@ -21,6 +21,9 @@ import com.liferay.portal.kernel.util.GetterUtil;
  */
 public class GitHubConfigurationValues {
 
+	public static final boolean GITHUB_FEATURE_ENABLED = GetterUtil.getBoolean(
+		GitHubConfigurationUtil.get("github.feature.enabled"));
+
 	public static final String REMOTE_REST_SERVICE_API_GITHUB_HOST =
 		GetterUtil.getString(
 			GitHubConfigurationUtil.get("remote.rest.service.api.github.host"));

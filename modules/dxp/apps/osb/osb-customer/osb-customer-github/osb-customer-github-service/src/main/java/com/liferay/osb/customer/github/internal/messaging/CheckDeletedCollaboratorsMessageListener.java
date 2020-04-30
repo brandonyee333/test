@@ -73,6 +73,10 @@ public class CheckDeletedCollaboratorsMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		if (!GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
+			return;
+		}
+
 		JSONArray jsonArray = _gitHubWebService.getCollaborators();
 
 		for (int i = 0; i < jsonArray.length(); i++) {

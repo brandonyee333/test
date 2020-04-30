@@ -32,6 +32,7 @@ page import="com.liferay.osb.customer.github.exception.CollaboratorEmailAddressE
 page import="com.liferay.osb.customer.github.exception.CollaboratorFullNameException" %><%@
 page import="com.liferay.osb.customer.github.exception.CollaboratorGitHubUserNameException" %><%@
 page import="com.liferay.osb.customer.github.exception.DuplicateCollaboratorException" %><%@
+page import="com.liferay.osb.customer.github.internal.configuration.GitHubConfigurationValues" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@

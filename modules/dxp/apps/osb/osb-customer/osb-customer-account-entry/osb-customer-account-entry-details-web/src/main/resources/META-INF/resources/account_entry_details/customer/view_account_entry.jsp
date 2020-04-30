@@ -28,6 +28,12 @@ portletURL.setParameter("tabs1", tabs1);
 portletURL.setParameter("accountEntryId", String.valueOf(accountEntry.getAccountEntryId()));
 
 PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project-details"), portletURL.toString(), null, false);
+
+String tabNames = "overview,team-members,liferay-contacts,offerings";
+
+if (GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
+	tabNames += ",source-code-access";
+}
 %>
 
 <h1>
@@ -35,7 +41,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 </h1>
 
 <liferay-ui:tabs
-	names="overview,team-members,liferay-contacts,offerings,source-code-access"
+	names="<%= tabNames %>"
 	url="<%= portletURL.toString() %>"
 />
 
@@ -73,7 +79,7 @@ PortalUtil.addPortletBreadcrumbEntry(request, LanguageUtil.get(request, "project
 	<c:when test='<%= tabs1.equals("offerings") %>'>
 		<liferay-util:include page="/account_entry_details/offerings.jsp" servletContext="<%= application %>" />
 	</c:when>
-	<c:when test='<%= tabs1.equals("source-code-access") %>'>
+	<c:when test='<%= tabs1.equals("source-code-access") && GitHubConfigurationValues.GITHUB_FEATURE_ENABLED %>'>
 		<liferay-util:include page="/account_entry_details/source_code_access.jsp" servletContext="<%= application %>" />
 	</c:when>
 	<c:when test='<%= tabs1.equals("team-members") %>'>

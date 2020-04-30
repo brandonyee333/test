@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.github.internal.messaging;
 
+import com.liferay.osb.customer.github.internal.configuration.GitHubConfigurationValues;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
@@ -71,6 +72,10 @@ public class CheckPendingCollaboratorsMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		if (!GitHubConfigurationValues.GITHUB_FEATURE_ENABLED) {
+			return;
+		}
+
 		List<Collaborator> collaborators =
 			_collaboratorLocalService.getCollaborators(
 				WorkflowConstants.STATUS_PENDING, 0, 50);
