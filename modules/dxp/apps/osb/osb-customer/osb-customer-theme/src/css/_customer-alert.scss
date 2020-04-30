@@ -55,3 +55,22 @@
 		margin-top: -3px;
 	}
 }
+
+.site-wide-notification {
+	display: flex;
+	justify-content: space-between;
+	padding: $padding-md;
+
+	.close {
+		position: relative;
+	}
+
+	.lexicon-icon-exclamation-full {
+		vertical-align: top;
+	}
+
+	.notification-content {
+		display: inline-block;
+		padding-left: $padding-default;
+	}
+}
