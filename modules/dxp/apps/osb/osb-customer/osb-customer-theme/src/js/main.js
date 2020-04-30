@@ -44,7 +44,7 @@ if (siteWideNotification) {
 		sessionStorage.setItem('showSiteWideNotification', 'true');
 	}
 
-	if (siteWideNotification && sessionStorage.getItem('showSiteWideNotification') === 'true') {
+	if (sessionStorage.getItem('showSiteWideNotification') === 'true') {
 		siteWideNotification.classList.remove('hide');
 
 		// Layout Updates
