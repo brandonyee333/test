@@ -62,7 +62,7 @@ public class CollaboratorLocalServiceImpl
 		collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
 
 		AccountEntry accountEntry =
-			AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
+			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
 		if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
 			collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);

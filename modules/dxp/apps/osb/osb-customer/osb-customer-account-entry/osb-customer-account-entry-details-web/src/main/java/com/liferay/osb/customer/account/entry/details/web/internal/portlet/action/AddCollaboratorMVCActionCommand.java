@@ -67,13 +67,13 @@ public class AddCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getUserId(), accountEntryId, emailAddress,
 					fullName, gitHubUserName);
 
-			if (collaborator.getStatus() == WorkflowConstants.STATUS_PENDING) {
-				SessionMessages.add(actionRequest, "pendingInvitationLimit");
+			if (collaborator.getStatus() == WorkflowConstants.STATUS_CLOSED) {
+				SessionMessages.add(actionRequest, "pendingProjectStatus");
 			}
 			else if (collaborator.getStatus() ==
-						WorkflowConstants.STATUS_CLOSED) {
+						WorkflowConstants.STATUS_PENDING) {
 
-				SessionMessages.add(actionRequest, "pendingProjectStatus");
+				SessionMessages.add(actionRequest, "pendingInvitationLimit");
 			}
 		}
 		catch (Exception e) {
