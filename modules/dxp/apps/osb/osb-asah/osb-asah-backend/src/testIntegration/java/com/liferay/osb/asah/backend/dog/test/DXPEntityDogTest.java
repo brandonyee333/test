@@ -132,6 +132,10 @@ public class DXPEntityDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
 		name = "users", resourcePath = "users.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_DXP_RAW
 	)

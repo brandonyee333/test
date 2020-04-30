@@ -30,7 +30,7 @@
 	{
 		"firstName": "Test3",
 		"id": "386700253541400290",
-		"lastName" : "Test3",
+		"lastName": "Test3",
 		"memberships": {
 			"com.liferay.portal.kernel.model.Group": [
 				"20121"
