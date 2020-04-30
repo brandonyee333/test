@@ -27,6 +27,9 @@ public interface AccountWebService {
 
 	public Account getAccount(String accountKey) throws Exception;
 
+	public Account getAccountContactsContactRoles(String accountKey)
+		throws Exception;
+
 	public List<Account> getAccounts(
 			String domain, String entityName, String entityId, int page,
 			int pageSize)
@@ -34,9 +37,6 @@ public interface AccountWebService {
 
 	public List<Account> getContactAccountsByUuid(
 			String contactUuid, int page, int pageSize)
-		throws Exception;
-
-	public Account getAccountContactsContactRoles(String accountKey)
 		throws Exception;
 
 	public List<Account> search(

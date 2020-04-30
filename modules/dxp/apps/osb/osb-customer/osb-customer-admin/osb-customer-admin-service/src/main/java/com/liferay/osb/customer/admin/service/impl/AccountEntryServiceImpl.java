@@ -61,6 +61,16 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 	}
 
 	@JSONWebService
+	public AccountEntry fetchKoroneikiAccountEntry(String koroneikiAccountKey)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return accountEntryLocalService.fetchKoroneikiAccountEntry(
+			koroneikiAccountKey);
+	}
+
+	@JSONWebService
 	public List<AccountEntry> getAccountEntries(
 			String userUuid, long[] productEntryIds)
 		throws PortalException {
@@ -129,6 +139,38 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 
 		return accountEntryLocalService.updateInstructions(
 			getUserId(), accountEntryId, instructions);
+	}
+
+	@JSONWebService
+	public AccountEntry updateInstructions(
+			String koroneikiAccountKey, String instructions)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		AccountEntry accountEntry =
+			accountEntryLocalService.getKoroneikiAccountEntry(
+				koroneikiAccountKey);
+
+		return accountEntryLocalService.updateInstructions(
+			getUserId(), accountEntry.getAccountEntryId(), instructions);
+	}
+
+	@JSONWebService
+	public AccountEntry updateLanguageId(
+			String koroneikiAccountKey, String languageId)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		AccountEntry accountEntry =
+			accountEntryLocalService.getKoroneikiAccountEntry(
+				koroneikiAccountKey);
+
+		accountEntryLanguageLocalService.setAccountEntryLanguageIds(
+			accountEntry.getAccountEntryId(), new String[] {languageId});
+
+		return accountEntry;
 	}
 
 	protected void addAccountMembershipParams(

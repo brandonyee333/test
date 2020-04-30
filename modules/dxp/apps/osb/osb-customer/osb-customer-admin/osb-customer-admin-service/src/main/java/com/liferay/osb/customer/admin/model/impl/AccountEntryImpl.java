@@ -55,6 +55,12 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return accountEntry;
 	}
 
+	@JSON
+	public List<AccountAttachment> getAccountAttachments() {
+		return AccountAttachmentLocalServiceUtil.getAccountAttachments(
+			getAccountEntryId());
+	}
+
 	public List<AccountAttachment> getAccountAttachments(
 		long accountProjectId) {
 
@@ -73,6 +79,7 @@ public class AccountEntryImpl extends AccountEntryBaseImpl {
 		return null;
 	}
 
+	@JSON
 	public String[] getLanguageIds() {
 		if (_languageIds != null) {
 			return _languageIds;
