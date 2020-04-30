@@ -205,6 +205,7 @@ type DXPVariant {
 }
 
 type Experiment {
+	channelId: String
 	createDate: String
 	dataSourceId: String
 	description: String
