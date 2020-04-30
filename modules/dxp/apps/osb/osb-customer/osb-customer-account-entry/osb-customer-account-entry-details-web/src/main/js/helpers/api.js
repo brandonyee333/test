@@ -1,30 +1,31 @@
-const DEFAULT_INIT = {
-	credentials: 'include'
-};
+import axios from 'axios';
 
 /**
- * Fetches a resource. A thin wrapper around ES6 Fetch API, with standardized
- * default configuration.
- * @param {!string|!Request} resource The URL to the resource, or a Resource
- * object.
- * @param {Object=} init An optional object containing custom configuration.
- * @return {Promise} A Promise that resolves to a Response object.
+ * Returns a promise of the request data
+ * @param {string} endpoint The endpoint to post to
+ * @param {object} params The parameters object to post with
+ * @param {string} encoding The data encoding for the request
+ * @returns {Promise} A Promise of the object that results from the Request
  */
+export function postData(endpoint, namespace, params, encoding = 'json') {
+	let namespacedParams;
 
-export function defaultFetch(resource, init = {}) {
-	const headers = new Headers({'x-csrf-token': Liferay.authToken});
+	if (encoding === 'json') {
+		namespacedParams = Object.fromEntries(
+			Object.entries(params).map(([key, value]) => [
+				`${namespace}${key}`,
+				value
+			])
+		);
+	} else if (encoding === 'formData') {
+		namespacedParams = new FormData();
 
-	new Headers(init.headers || {}).forEach((value, key) => {
-		headers.set(key, value);
-	});
+		Object.entries(params).forEach(([key, value]) =>
+			namespacedParams.append(`${namespace}${key}`, value)
+		);
+	} else {
+		throw new TypeError(`Invalid data encoding: ${encoding}`);
+	}
 
-	const mergedInit = {
-		...DEFAULT_INIT,
-		...init
-	};
-
-	mergedInit.headers = headers;
-
-	// eslint-disable-next-line liferay-portal/no-global-fetch
-	return fetch(resource, mergedInit);
+	return axios.post(endpoint, namespacedParams);
 }

@@ -15,7 +15,7 @@ const SPLIT_REGEX = /({\d+})/g;
  * the array before it is returned. Use `false` if subbing in JSX.
  * @return {(string|Array)}
  */
-export function sub(langKey, args, join = true) {
+export function langSub(langKey, args, join = true) {
 	const keyArray = langKey.split(SPLIT_REGEX).filter(val => val.length !== 0);
 
 	for (let i = 0; i < args.length; i++) {

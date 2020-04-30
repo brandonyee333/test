@@ -5,8 +5,8 @@ import Alert from './Alert';
 import Button from './Button';
 import Modal from './Modal';
 
-import {defaultFetch} from '../helpers/api';
-import {sub} from '../helpers/language';
+import {postData} from '../helpers/api';
+import {langSub} from '../helpers/language';
 
 const ERROR_VALIDATION = {
 	emailAddress: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/i,
@@ -15,6 +15,10 @@ const ERROR_VALIDATION = {
 };
 
 const LENGTH_OF_DAYS = '3';
+
+const isValid = (value, field) => {
+	return value.match(ERROR_VALIDATION[field]);
+};
 
 export default class AddSourceCodeAccessModal extends React.Component {
 	static propTypes = {
@@ -44,47 +48,36 @@ export default class AddSourceCodeAccessModal extends React.Component {
 		this.props.onClose();
 	};
 
-	handleEmailChange = value => {
+	handleFieldChange = field => value => {
 		this.setState({
-			emailAddress: {value: value, error: false}
+			[`${field}`]: {value: value, error: false}
 		});
 	};
 
-	handleFullNameChange = value => {
-		this.setState({
-			fullName: {value: value, error: false}
-		});
-	};
-
-	handleGitHubChange = value => {
-		this.setState({
-			gitHubUserName: {value: value, error: false}
-		});
+	validateFields = () => {
+		return (
+			isValid(this.state.emailAddress.value, 'emailAddress') &&
+			isValid(this.state.fullName.value, 'fullName') &&
+			isValid(this.state.gitHubUserName.value, 'gitHubUserName')
+		);
 	};
 
 	handleUpdate = event => {
 		event.preventDefault();
 
-		if (
-			!(
-				this.state.emailAddress.value.match(
-					ERROR_VALIDATION.emailAddress
-				) &&
-				this.state.fullName.value.match(ERROR_VALIDATION.fullName) &&
-				this.state.gitHubUserName.value.match(
-					ERROR_VALIDATION.gitHubUserName
-				)
-			)
-		) {
+		if (!this.validateFields()) {
 			this.setState(state => {
-				const emailAddressError = !state.emailAddress.value.match(
-					ERROR_VALIDATION.emailAddress
+				const emailAddressError = !isValid(
+					state.emailAddress.value,
+					'emailAddress'
 				);
-				const fullNameError = !state.fullName.value.match(
-					ERROR_VALIDATION.fullName
+				const fullNameError = !isValid(
+					state.fullName.value,
+					'fullName'
 				);
-				const gitHubUserNameError = !state.gitHubUserName.value.match(
-					ERROR_VALIDATION.gitHubUserName
+				const gitHubUserNameError = !isValid(
+					state.gitHubUserName.value,
+					'gitHubUserName'
 				);
 
 				return {
@@ -111,23 +104,20 @@ export default class AddSourceCodeAccessModal extends React.Component {
 			const {addCollaboratorURL, namespace} = this.props;
 			const {emailAddress, fullName, gitHubUserName} = this.state;
 
-			const formData = new FormData();
-
-			formData.append([`${namespace}fullName`], fullName.value);
-			formData.append([`${namespace}emailAddress`], emailAddress.value);
-			formData.append(
-				[`${namespace}gitHubUserName`],
-				gitHubUserName.value
-			);
-
-			defaultFetch(addCollaboratorURL, {
-				body: formData,
-				method: 'POST'
-			})
-				.then(response => response.text())
-				.then(text => {
+			postData(
+				addCollaboratorURL,
+				namespace,
+				{
+					fullName: fullName.value,
+					emailAddress: emailAddress.value,
+					gitHubUserName: gitHubUserName.value
+				},
+				'formData'
+			)
+				.then(response => {
 					this.setState({
-						confirmation: 'success'
+						confirmation:
+							response.status === 200 ? 'success' : 'wait'
 					});
 				})
 				.catch(error => {
@@ -206,13 +196,13 @@ export default class AddSourceCodeAccessModal extends React.Component {
 				</div>
 
 				<div className="last-text modal-body-text">
-					{sub(
+					{langSub(
 						Liferay.Language.get(
 							'you-will-receive-an-email-invitation-from-x-to-collaborate-on-the-liferaydxp-repository-accept-the-invitation-to-gain-access'
 						),
 						[
 							<a
-								aria-label={Liferay.Language.get('github')}
+								aria-label={Liferay.Language.get('github-link')}
 								className="component-title link-primary"
 								href="https://github.com/"
 							>
@@ -240,7 +230,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 				</div>
 
 				<div className="modal-body-text">
-					{sub(
+					{langSub(
 						Liferay.Language.get('you-will-gain-access-within-x'),
 						[
 							<span className="semi-bold">
@@ -258,13 +248,13 @@ export default class AddSourceCodeAccessModal extends React.Component {
 				</div>
 
 				<div className="last-text modal-body-text">
-					{sub(
+					{langSub(
 						Liferay.Language.get(
 							'once-you-can-be-granted-access-you-will-receive-email-invitation-from-x-to-collaborate-on-the-liferaydxp-repository'
 						),
 						[
 							<a
-								aria-label={Liferay.Language.get('github')}
+								aria-label={Liferay.Language.get('github-link')}
 								className="component-title link-primary"
 								href="https://github.com/"
 							>
@@ -296,7 +286,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 					<>
 						{fieldsToUpdate.length > 0 && (
 							<Alert type="danger">
-								<span className="urgent">
+								<span className="semi-bold">
 									{Liferay.Language.get('error-colon')}
 								</span>{' '}
 								{Liferay.Language.get(
@@ -318,7 +308,9 @@ export default class AddSourceCodeAccessModal extends React.Component {
 								subtext={Liferay.Language.get(
 									'first-and-last-name'
 								)}
-								updateInputValue={this.handleFullNameChange}
+								updateInputValue={this.handleFieldChange(
+									'fullName'
+								)}
 							/>
 
 							<SourceCodeAccessField
@@ -330,7 +322,9 @@ export default class AddSourceCodeAccessModal extends React.Component {
 								inputValue={emailAddress.value}
 								label={fieldNames[1]}
 								required={true}
-								updateInputValue={this.handleEmailChange}
+								updateInputValue={this.handleFieldChange(
+									'emailAddress'
+								)}
 							/>
 
 							<SourceCodeAccessField
@@ -342,7 +336,9 @@ export default class AddSourceCodeAccessModal extends React.Component {
 								inputValue={gitHubUserName.value}
 								label={fieldNames[2]}
 								required={true}
-								updateInputValue={this.handleGitHubChange}
+								updateInputValue={this.handleFieldChange(
+									'gitHubUserName'
+								)}
 							/>
 						</form>
 					</>
