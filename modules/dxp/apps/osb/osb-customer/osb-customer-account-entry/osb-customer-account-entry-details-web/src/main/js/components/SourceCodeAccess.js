@@ -60,6 +60,16 @@ export default class SourceCodeAccess extends React.Component {
 							value={collaborator.gitHubUserName}
 						/>
 					</div>
+
+					<div className="col-md-12">
+						<Button
+							href={collaborator.deleteCollaboratorURL}
+							size="sm"
+							value="delete"
+						>
+							{Liferay.Language.get('delete')}
+						</Button>
+					</div>
 				</React.Fragment>
 			),
 			title: (

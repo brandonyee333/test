@@ -263,6 +263,17 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
               </div>
             </div>
           </div>
+          <div
+            class="col-md-12"
+          >
+            <a
+              class="btn btn-sm btn-link"
+              href="/url"
+              role="link"
+            >
+              delete
+            </a>
+          </div>
         </div>
       </div>
     </div>

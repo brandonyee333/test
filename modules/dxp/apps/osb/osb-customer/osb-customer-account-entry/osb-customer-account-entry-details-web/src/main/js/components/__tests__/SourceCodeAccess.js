@@ -102,7 +102,7 @@ describe('SourceCodeAccess', () => {
 		expect(container).toMatchSnapshot();
 	});
 
-	xit('shows delete button when a collaborator is clicked', () => {
+	it('shows delete button when a collaborator is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
 		fireEvent.click(queryByText(container, 'Test1 Test1'));
