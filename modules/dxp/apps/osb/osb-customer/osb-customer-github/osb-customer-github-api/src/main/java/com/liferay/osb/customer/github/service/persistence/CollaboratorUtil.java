@@ -721,6 +721,292 @@ public class CollaboratorUtil {
 	}
 
 	/**
+	 * Returns all the collaborators where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @return the matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int status) {
+
+		return getPersistence().findByGHUN_S(gitHubUserName, status);
+	}
+
+	/**
+	 * Returns a range of all the collaborators where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @return the range of matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int status, int start, int end) {
+
+		return getPersistence().findByGHUN_S(
+			gitHubUserName, status, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int status, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().findByGHUN_S(
+			gitHubUserName, status, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int status, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByGHUN_S(
+			gitHubUserName, status, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Returns the first collaborator in the ordered set where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collaborator
+	 * @throws NoSuchCollaboratorException if a matching collaborator could not be found
+	 */
+	public static Collaborator findByGHUN_S_First(
+			String gitHubUserName, int status,
+			OrderByComparator<Collaborator> orderByComparator)
+		throws com.liferay.osb.customer.github.exception.
+			NoSuchCollaboratorException {
+
+		return getPersistence().findByGHUN_S_First(
+			gitHubUserName, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the first collaborator in the ordered set where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching collaborator, or <code>null</code> if a matching collaborator could not be found
+	 */
+	public static Collaborator fetchByGHUN_S_First(
+		String gitHubUserName, int status,
+		OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().fetchByGHUN_S_First(
+			gitHubUserName, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collaborator in the ordered set where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collaborator
+	 * @throws NoSuchCollaboratorException if a matching collaborator could not be found
+	 */
+	public static Collaborator findByGHUN_S_Last(
+			String gitHubUserName, int status,
+			OrderByComparator<Collaborator> orderByComparator)
+		throws com.liferay.osb.customer.github.exception.
+			NoSuchCollaboratorException {
+
+		return getPersistence().findByGHUN_S_Last(
+			gitHubUserName, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the last collaborator in the ordered set where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching collaborator, or <code>null</code> if a matching collaborator could not be found
+	 */
+	public static Collaborator fetchByGHUN_S_Last(
+		String gitHubUserName, int status,
+		OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().fetchByGHUN_S_Last(
+			gitHubUserName, status, orderByComparator);
+	}
+
+	/**
+	 * Returns the collaborators before and after the current collaborator in the ordered set where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param collaboratorId the primary key of the current collaborator
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next collaborator
+	 * @throws NoSuchCollaboratorException if a collaborator with the primary key could not be found
+	 */
+	public static Collaborator[] findByGHUN_S_PrevAndNext(
+			long collaboratorId, String gitHubUserName, int status,
+			OrderByComparator<Collaborator> orderByComparator)
+		throws com.liferay.osb.customer.github.exception.
+			NoSuchCollaboratorException {
+
+		return getPersistence().findByGHUN_S_PrevAndNext(
+			collaboratorId, gitHubUserName, status, orderByComparator);
+	}
+
+	/**
+	 * Returns all the collaborators where gitHubUserName = &#63; and status = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param statuses the statuses
+	 * @return the matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int[] statuses) {
+
+		return getPersistence().findByGHUN_S(gitHubUserName, statuses);
+	}
+
+	/**
+	 * Returns a range of all the collaborators where gitHubUserName = &#63; and status = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param statuses the statuses
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @return the range of matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int[] statuses, int start, int end) {
+
+		return getPersistence().findByGHUN_S(
+			gitHubUserName, statuses, start, end);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where gitHubUserName = &#63; and status = any &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param statuses the statuses
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int[] statuses, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator) {
+
+		return getPersistence().findByGHUN_S(
+			gitHubUserName, statuses, start, end, orderByComparator);
+	}
+
+	/**
+	 * Returns an ordered range of all the collaborators where gitHubUserName = &#63; and status = &#63;, optionally using the finder cache.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>CollaboratorModelImpl</code>.
+	 * </p>
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @param start the lower bound of the range of collaborators
+	 * @param end the upper bound of the range of collaborators (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching collaborators
+	 */
+	public static List<Collaborator> findByGHUN_S(
+		String gitHubUserName, int[] statuses, int start, int end,
+		OrderByComparator<Collaborator> orderByComparator,
+		boolean useFinderCache) {
+
+		return getPersistence().findByGHUN_S(
+			gitHubUserName, statuses, start, end, orderByComparator,
+			useFinderCache);
+	}
+
+	/**
+	 * Removes all the collaborators where gitHubUserName = &#63; and status = &#63; from the database.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 */
+	public static void removeByGHUN_S(String gitHubUserName, int status) {
+		getPersistence().removeByGHUN_S(gitHubUserName, status);
+	}
+
+	/**
+	 * Returns the number of collaborators where gitHubUserName = &#63; and status = &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param status the status
+	 * @return the number of matching collaborators
+	 */
+	public static int countByGHUN_S(String gitHubUserName, int status) {
+		return getPersistence().countByGHUN_S(gitHubUserName, status);
+	}
+
+	/**
+	 * Returns the number of collaborators where gitHubUserName = &#63; and status = any &#63;.
+	 *
+	 * @param gitHubUserName the git hub user name
+	 * @param statuses the statuses
+	 * @return the number of matching collaborators
+	 */
+	public static int countByGHUN_S(String gitHubUserName, int[] statuses) {
+		return getPersistence().countByGHUN_S(gitHubUserName, statuses);
+	}
+
+	/**
 	 * Caches the collaborator in the entity cache if it is enabled.
 	 *
 	 * @param collaborator the collaborator

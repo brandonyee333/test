@@ -219,6 +219,10 @@ public interface CollaboratorLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<Collaborator> getCollaborators(String gitHubUserName);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<Collaborator> getCollaborators(
+		String gitHubUserName, int[] statuses);
+
 	/**
 	 * Returns the number of collaborators.
 	 *

@@ -263,6 +263,13 @@ public class CollaboratorLocalServiceUtil {
 		return getService().getCollaborators(gitHubUserName);
 	}
 
+	public static java.util.List
+		<com.liferay.osb.customer.github.model.Collaborator> getCollaborators(
+			String gitHubUserName, int[] statuses) {
+
+		return getService().getCollaborators(gitHubUserName, statuses);
+	}
+
 	/**
 	 * Returns the number of collaborators.
 	 *
