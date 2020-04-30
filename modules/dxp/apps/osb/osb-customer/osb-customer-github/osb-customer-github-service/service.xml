@@ -43,6 +43,10 @@
 			<finder-column name="accountEntryId" />
 			<finder-column name="gitHubUserName" />
 		</finder>
+		<finder name="GHUN_S" return-type="Collection">
+			<finder-column name="gitHubUserName" />
+			<finder-column arrayable-operator="OR" name="status" />
+		</finder>
 	</entity>
 	<exceptions>
 		<exception>CollaboratorEmailAddress</exception>

@@ -17,14 +17,15 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
+import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -66,8 +67,13 @@ public class AddCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getUserId(), accountEntryId, emailAddress,
 					fullName, gitHubUserName);
 
-			if (collaborator.getStatus() != WorkflowConstants.STATUS_APPROVED) {
-				SessionErrors.add(actionRequest, "Pending Invitation Limit");
+			if (collaborator.getStatus() == WorkflowConstants.STATUS_PENDING) {
+				SessionMessages.add(actionRequest, "pendingInvitationLimit");
+			}
+			else if (collaborator.getStatus() ==
+						WorkflowConstants.STATUS_CLOSED) {
+
+				SessionMessages.add(actionRequest, "pendingProjectStatus");
 			}
 		}
 		catch (Exception e) {
@@ -78,6 +84,12 @@ public class AddCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 				SessionErrors.add(actionRequest, e.getClass());
 			}
 		}
+
+		actionResponse.setRenderParameter(
+			"mvcRenderCommandName", "/view_account_entry");
+		actionResponse.setRenderParameter("tabs1", "source-code-access");
+		actionResponse.setRenderParameter(
+			"accountEntryId", String.valueOf(accountEntryId));
 	}
 
 	@Reference

@@ -14,13 +14,16 @@
 
 package com.liferay.osb.customer.github.internal.model.listener;
 
+import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
+import com.liferay.osb.customer.github.web.service.GitHubWebService;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.petra.lang.CentralizedThreadLocal;
 import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.BaseModelListener;
@@ -43,7 +46,13 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		throws ModelListenerException {
 
 		try {
-			removeCollaborators(accountEntry.getAccountEntryId());
+			List<Collaborator> collaborators =
+				_collaboratorLocalService.getCollaborators(
+					accountEntry.getAccountEntryId());
+
+			for (Collaborator collaborator : collaborators) {
+				_collaboratorLocalService.deleteCollaborator(collaborator);
+			}
 		}
 		catch (Exception e) {
 			_log.error(e, e);
@@ -59,10 +68,51 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		try {
 			AccountEntry oldAccountEntry = _oldAccountEntry.get();
 
-			if ((oldAccountEntry.getStatus() != accountEntry.getStatus()) &&
-				(accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED)) {
+			if (oldAccountEntry.getStatus() == accountEntry.getStatus()) {
+				return;
+			}
 
-				removeCollaborators(accountEntry.getAccountEntryId());
+			if (accountEntry.getStatus() == WorkflowConstants.STATUS_APPROVED) {
+				List<Collaborator> collaborators =
+					_collaboratorLocalService.getCollaborators(
+						accountEntry.getAccountEntryId());
+
+				for (Collaborator collaborator : collaborators) {
+					collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
+
+					JSONObject jsonObject = _gitHubWebService.addCollaborator(
+						collaborator.getGitHubUserName());
+
+					if (jsonObject != null) {
+						collaborator.setStatus(
+							WorkflowConstants.STATUS_APPROVED);
+					}
+
+					_collaboratorLocalService.updateCollaborator(collaborator);
+				}
+			}
+			else if (accountEntry.getStatus() ==
+						WorkflowConstants.STATUS_CLOSED) {
+
+				List<Collaborator> collaborators =
+					_collaboratorLocalService.getCollaborators(
+						accountEntry.getAccountEntryId());
+
+				for (Collaborator collaborator : collaborators) {
+					List<Collaborator> userCollaborators =
+						_collaboratorLocalService.getCollaborators(
+							collaborator.getGitHubUserName(),
+							GitHubCollaboratorConstants.STATUSES_ACTIVE);
+
+					if (userCollaborators.size() == 1) {
+						_gitHubWebService.deleteCollaborator(
+							collaborator.getGitHubUserName());
+					}
+
+					collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
+
+					_collaboratorLocalService.updateCollaborator(collaborator);
+				}
 			}
 		}
 		catch (Exception e) {
@@ -90,15 +140,6 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 		}
 	}
 
-	protected void removeCollaborators(long accountEntryId) throws Exception {
-		List<Collaborator> collaborators =
-			_collaboratorLocalService.getCollaborators(accountEntryId);
-
-		for (Collaborator collaborator : collaborators) {
-			_collaboratorLocalService.deleteCollaborator(collaborator);
-		}
-	}
-
 	@Reference(
 		target = "(module.service.lifecycle=osb.portlet.initialized)",
 		unbind = "-"
@@ -116,5 +157,8 @@ public class AccountEntryModelListener extends BaseModelListener<AccountEntry> {
 
 	@Reference
 	private CollaboratorLocalService _collaboratorLocalService;
+
+	@Reference
+	private GitHubWebService _gitHubWebService;
 
 }

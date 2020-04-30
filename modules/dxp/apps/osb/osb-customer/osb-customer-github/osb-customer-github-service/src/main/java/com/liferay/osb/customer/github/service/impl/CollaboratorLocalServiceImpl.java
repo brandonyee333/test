@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.github.service.impl;
 
+import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
 import com.liferay.osb.customer.github.exception.CollaboratorEmailAddressException;
 import com.liferay.osb.customer.github.exception.CollaboratorFullNameException;
 import com.liferay.osb.customer.github.exception.CollaboratorGitHubUserNameException;
@@ -22,10 +23,12 @@ import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.base.CollaboratorLocalServiceBaseImpl;
 import com.liferay.osb.customer.github.web.service.GitHubWebService;
 import com.liferay.osb.exception.RequiredAccountEntryException;
+import com.liferay.osb.model.AccountEntry;
+import com.liferay.osb.service.AccountEntryLocalServiceUtil;
+import com.liferay.osb.util.WorkflowConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Date;
@@ -58,11 +61,19 @@ public class CollaboratorLocalServiceImpl
 		collaborator.setGitHubUserName(gitHubUserName);
 		collaborator.setStatus(WorkflowConstants.STATUS_PENDING);
 
-		JSONObject jsonObject = _gitHubWebService.addCollaborator(
-			gitHubUserName);
+		AccountEntry accountEntry =
+			AccountEntryLocalServiceUtil.fetchAccountEntry(accountEntryId);
 
-		if (jsonObject != null) {
-			collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
+		if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
+			collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
+		}
+		else {
+			JSONObject jsonObject = _gitHubWebService.addCollaborator(
+				gitHubUserName);
+
+			if (jsonObject != null) {
+				collaborator.setStatus(WorkflowConstants.STATUS_APPROVED);
+			}
 		}
 
 		return collaboratorPersistence.update(collaborator);
@@ -72,9 +83,9 @@ public class CollaboratorLocalServiceImpl
 	public Collaborator deleteCollaborator(Collaborator collaborator)
 		throws PortalException {
 
-		List<Collaborator> collaborators =
-			collaboratorPersistence.findByGitHubUserName(
-				collaborator.getGitHubUserName());
+		List<Collaborator> collaborators = getCollaborators(
+			collaborator.getGitHubUserName(),
+			GitHubCollaboratorConstants.STATUSES_ACTIVE);
 
 		if (collaborators.size() == 1) {
 			_gitHubWebService.deleteCollaborator(
@@ -103,6 +114,12 @@ public class CollaboratorLocalServiceImpl
 
 	public List<Collaborator> getCollaborators(String gitHubUserName) {
 		return collaboratorPersistence.findByGitHubUserName(gitHubUserName);
+	}
+
+	public List<Collaborator> getCollaborators(
+		String gitHubUserName, int[] statuses) {
+
+		return collaboratorPersistence.findByGHUN_S(gitHubUserName, statuses);
 	}
 
 	protected void validate(

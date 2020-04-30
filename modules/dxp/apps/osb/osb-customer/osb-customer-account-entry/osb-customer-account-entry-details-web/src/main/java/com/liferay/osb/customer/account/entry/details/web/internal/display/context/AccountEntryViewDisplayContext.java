@@ -162,8 +162,6 @@ public class AccountEntryViewDisplayContext {
 
 		portletURL.setParameter(ActionRequest.ACTION_NAME, "addCollaborator");
 		portletURL.setParameter(
-			"redirect", _accountEntryDetailsRequestHelper.getCurrentURL());
-		portletURL.setParameter(
 			"accountEntryId",
 			String.valueOf(_accountEntry.getAccountEntryId()));
 

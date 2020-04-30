@@ -16,6 +16,14 @@
 
 <%@ include file="/account_entry_details/init.jsp" %>
 
+<liferay-ui:error exception="<%= CollaboratorEmailAddressException.class %>" message="please-provide-an-email-address" />
+<liferay-ui:error exception="<%= CollaboratorFullNameException.class %>" message="please-provide-a-full-name" />
+<liferay-ui:error exception="<%= CollaboratorGitHubUserNameException.class %>" message="please-provide-a-github-username" />
+<liferay-ui:error exception="<%= DuplicateCollaboratorException.class %>" message="please-provide-a-unique-github-username" />
+
+<liferay-ui:success key="pendingInvitationLimit" message="oh-no-you-can't-be-granted-access-yet" />
+<liferay-ui:success key="pendingProjectStatus" message="this-request-is-pending-project-status" />
+
 <div class="card source-code-access" id="<portlet:namespace />sourceCodeAccess"></div>
 
 <aui:script>

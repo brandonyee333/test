@@ -28,6 +28,10 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 <%@ page import="com.liferay.osb.customer.account.entry.details.web.internal.configuration.AccountEntryDetailsConfiguration" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsWebKeys" %><%@
 page import="com.liferay.osb.customer.account.entry.details.web.internal.display.context.AccountEntryViewDisplayContext" %><%@
+page import="com.liferay.osb.customer.github.exception.CollaboratorEmailAddressException" %><%@
+page import="com.liferay.osb.customer.github.exception.CollaboratorFullNameException" %><%@
+page import="com.liferay.osb.customer.github.exception.CollaboratorGitHubUserNameException" %><%@
+page import="com.liferay.osb.customer.github.exception.DuplicateCollaboratorException" %><%@
 page import="com.liferay.osb.customer.ticket.exception.NoSuchTicketAttachmentException" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepository" %><%@
 page import="com.liferay.osb.customer.ticket.repository.FileRepositoryManager" %><%@

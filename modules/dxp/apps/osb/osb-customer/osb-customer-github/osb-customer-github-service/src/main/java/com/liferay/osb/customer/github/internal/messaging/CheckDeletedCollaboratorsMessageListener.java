@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.github.internal.messaging;
 
+import com.liferay.osb.customer.github.constants.GitHubCollaboratorConstants;
 import com.liferay.osb.customer.github.internal.configuration.GitHubConfigurationValues;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
@@ -87,7 +88,8 @@ public class CheckDeletedCollaboratorsMessageListener
 			}
 
 			List<Collaborator> collaborators =
-				_collaboratorLocalService.getCollaborators(userName);
+				_collaboratorLocalService.getCollaborators(
+					userName, GitHubCollaboratorConstants.STATUSES_ACTIVE);
 
 			if (collaborators.isEmpty()) {
 				_gitHubWebService.deleteCollaborator(userName);
