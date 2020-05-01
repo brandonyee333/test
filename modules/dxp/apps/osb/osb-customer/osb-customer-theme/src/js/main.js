@@ -40,6 +40,19 @@ Liferay.Loader.require(
 var siteWideNotification = document.getElementById('siteWideNotification');
 
 if (siteWideNotification) {
+	var header = document.querySelector('header.header');
+	var initialHeaderHeight = 56;
+
+	if (header) {
+		initialHeaderHeight = header.offsetHeight;
+	}
+
+	var controlMenu = document.getElementById('ControlMenu');
+
+	if (controlMenu) {
+		initialHeaderHeight += controlMenu.offsetHeight; 
+	}
+
 	if (sessionStorage.getItem('showSiteWideNotification') === null) {
 		sessionStorage.setItem('showSiteWideNotification', 'true');
 	}
@@ -49,13 +62,21 @@ if (siteWideNotification) {
 
 		// Layout Updates
 
-		var mainContent = document.querySelector('main');
-		var mainContentWithControlMenu = document.querySelector('.has-control-menu main');
+		var currentHeaderHeight = 168;
 
-		if (mainContentWithControlMenu) {
-			mainContentWithControlMenu.setAttribute("style", "margin-top: 208px;")
-		} else if (mainContent) {
-			mainContent.setAttribute("style", "margin-top: 145px;")
+		if (header) {
+			currentHeaderHeight = header.offsetHeight;
+		}
+
+		if (controlMenu) {
+			currentHeaderHeight += controlMenu.offsetHeight; 
+		}
+
+		var mainContent = document.querySelector('main');
+		var mainContentOffset = 'margin-top: ' + currentHeaderHeight + 'px;';
+
+		if (mainContent) {
+			mainContent.setAttribute("style", mainContentOffset);
 		}
 
 		// Closing Notification
@@ -66,6 +87,14 @@ if (siteWideNotification) {
 			closeNotification.addEventListener('click',
 				function (event) {
 					siteWideNotification.classList.add('hide');
+
+					// Layout Updates
+
+					var initialContentOffset = 'margin-top: ' + initialHeaderHeight + 'px;';
+
+					if (mainContent) {
+						mainContent.setAttribute("style", initialContentOffset);
+					}
 
 					sessionStorage.setItem('showSiteWideNotification', 'false');
 			})
