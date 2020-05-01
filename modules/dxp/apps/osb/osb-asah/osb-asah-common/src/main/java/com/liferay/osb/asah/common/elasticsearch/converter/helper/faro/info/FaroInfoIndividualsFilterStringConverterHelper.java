@@ -830,7 +830,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 		throws Exception {
 
 		QueryBuilder queryBuilder = FilterStringToQueryBuilderConverter.convert(
-			filterString, _dxpRawOrganizationsFilterStringConverterHelper);
+			filterString, _faroInfoOrganizationsFilterStringConverterHelper);
 
 		if (queryBuilder == null) {
 			queryBuilder = QueryBuilders.matchAllQuery();
@@ -949,7 +949,7 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 
 	@Autowired
 	private FaroInfoOrganizationsFilterStringConverterHelper
-		_dxpRawOrganizationsFilterStringConverterHelper;
+		_faroInfoOrganizationsFilterStringConverterHelper;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
