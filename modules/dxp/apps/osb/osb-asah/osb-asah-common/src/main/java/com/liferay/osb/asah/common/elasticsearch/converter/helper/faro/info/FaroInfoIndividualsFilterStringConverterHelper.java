@@ -948,10 +948,6 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
 	@Autowired
-	private FaroInfoOrganizationsFilterStringConverterHelper
-		_faroInfoOrganizationsFilterStringConverterHelper;
-
-	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
 	@Autowired
@@ -963,6 +959,10 @@ public class FaroInfoIndividualsFilterStringConverterHelper
 	@Autowired
 	private FaroInfoInterestsFilterStringConverterHelper
 		_faroInfoInterestsFilterStringConverterHelper;
+
+	@Autowired
+	private FaroInfoOrganizationsFilterStringConverterHelper
+		_faroInfoOrganizationsFilterStringConverterHelper;
 
 	@Autowired
 	private FaroInfoSessionsFilterStringConverterHelper
