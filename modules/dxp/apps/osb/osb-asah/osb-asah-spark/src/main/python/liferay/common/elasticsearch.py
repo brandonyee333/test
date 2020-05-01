@@ -10,7 +10,6 @@
 #
 
 from elasticsearch import Elasticsearch
-from pyspark.sql import SparkSession
 
 class ElasticsearchBridge:
 	def __init__(self, spark_application):

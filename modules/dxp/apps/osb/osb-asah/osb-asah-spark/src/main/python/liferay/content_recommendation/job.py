@@ -9,10 +9,10 @@
 # distribution rights of the Software.
 #
 
-from liferay.common.spark import BaseSparkJob
+from ..common.spark import BaseSparkJob
 
 from pyspark.sql import Window
-from pyspark.sql.functions import col, count, expr, sha1, unix_timestamp
+from pyspark.sql.functions import col, count, sha1, unix_timestamp
 
 import datetime
 

@@ -9,10 +9,10 @@
 # distribution rights of the Software.
 #
 
-from .job import *
+from ..common.elasticsearch import ElasticsearchBridge
+from ..common.spark import BaseSparkApplication, SparkJobPipeline
 
-from liferay.common.elasticsearch import ElasticsearchBridge
-from liferay.common.spark import BaseSparkApplication, SparkJobPipeline
+from .job import *
 
 from pyspark import SparkConf
 

@@ -9,9 +9,9 @@
 # distribution rights of the Software.
 #
 
-from abc import ABCMeta, abstractmethod
+from ..common.configuration import Configuration
 
-from liferay.common.configuration import Configuration
+from abc import ABCMeta, abstractmethod
 
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
