@@ -5,7 +5,6 @@ import Alert from './Alert';
 import Button from './Button';
 import Modal from './Modal';
 
-import {postData} from '../helpers/api';
 import {langSub} from '../helpers/language';
 
 const ERROR_VALIDATION = {
@@ -63,9 +62,9 @@ export default class AddSourceCodeAccessModal extends React.Component {
 	};
 
 	handleUpdate = event => {
-		event.preventDefault();
-
 		if (!this.validateFields()) {
+			event.preventDefault();
+
 			this.setState(state => {
 				const emailAddressError = !isValid(
 					state.emailAddress.value,
@@ -100,36 +99,11 @@ export default class AddSourceCodeAccessModal extends React.Component {
 					]
 				};
 			});
-		} else {
-			const {addCollaboratorURL, namespace} = this.props;
-			const {emailAddress, fullName, gitHubUserName} = this.state;
-
-			postData(
-				addCollaboratorURL,
-				namespace,
-				{
-					fullName: fullName.value,
-					emailAddress: emailAddress.value,
-					gitHubUserName: gitHubUserName.value
-				},
-				'formData'
-			)
-				.then(response => {
-					this.setState({
-						confirmation:
-							response.status === 200 ? 'success' : 'wait'
-					});
-				})
-				.catch(error => {
-					this.setState({
-						confirmation: 'wait'
-					});
-				});
 		}
 	};
 
 	render() {
-		const {show} = this.props;
+		const {addCollaboratorURL, namespace, show} = this.props;
 
 		const {
 			emailAddress,
@@ -150,7 +124,27 @@ export default class AddSourceCodeAccessModal extends React.Component {
 			.filter(item => item);
 
 		const modalFooter = (
-			<form onSubmit={this.handleUpdate}>
+			<form
+				action={addCollaboratorURL}
+				onSubmit={this.handleUpdate}
+				method="post"
+			>
+				<input
+					name={`${namespace}fullName`}
+					type="hidden"
+					value={fullName.value}
+				/>
+				<input
+					name={`${namespace}emailAddress`}
+					type="hidden"
+					value={emailAddress.value}
+				/>
+				<input
+					name={`${namespace}gitHubUserName`}
+					type="hidden"
+					value={gitHubUserName.value}
+				/>
+
 				<div className="btn-row">
 					<Button
 						display="default"
@@ -161,7 +155,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 						{Liferay.Language.get('cancel')}
 					</Button>
 
-					<Button type="submit" value="save">
+					<Button type="submit" value="submit">
 						{Liferay.Language.get('submit')}
 					</Button>
 				</div>
