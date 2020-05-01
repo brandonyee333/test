@@ -29,8 +29,8 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		argument_parser = argparse.ArgumentParser(
 		    usage='{} liferay.hello_world.ContentRecommendationApplication '
 		    '--configuration <Configuration Path> '
-		    '--job-execution-id <Job Execution ID>'
-		    '--job-execution-step <Job Execution Step>'
+		    '--job-execution-id <Job Execution ID> '
+		    '--job-execution-step <Job Execution Step> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
