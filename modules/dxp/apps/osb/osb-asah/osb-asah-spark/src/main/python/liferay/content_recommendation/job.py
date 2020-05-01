@@ -171,5 +171,5 @@ class WriteRecommendedItemsSparkJob(BaseSparkJob):
 
 		elasticsearch_bridge.write(
 		    'recommended-items', spark_session.table('recommended_items'),
-		    'osbasahfaroinfo'
+		    'overwrite', 'osbasahfaroinfo'
 		)
