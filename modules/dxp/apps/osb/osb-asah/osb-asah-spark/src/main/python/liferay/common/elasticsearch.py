@@ -46,7 +46,9 @@ class ElasticsearchBridge:
 	def write(self, collection_name, data_frame, mode, namespace):
 		data_frame_writer = data_frame.write
 
-		data_frame_writer.format('es').mode(mode).save(
+		data_frame_writer.format('es').mode(mode).option(
+		    'es.mapping.id', 'id'
+		).save(
 		    '{}/{}'.format(
 		        self._get_index_path(collection_name, namespace),
 		        collection_name
