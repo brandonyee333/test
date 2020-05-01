@@ -12,7 +12,7 @@
 from liferay.common.spark import BaseSparkJob
 
 from pyspark.sql import Window
-from pyspark.sql.functions import col, count, expr, unix_timestamp
+from pyspark.sql.functions import col, count, expr, sha1, unix_timestamp
 
 import datetime
 
@@ -102,7 +102,10 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		    '{}/{}/inference_result/*'.format(
 		        configuration.get('storage.path'), args.lcp_project_id
 		    )
-		).filter('error is null').select(
+		).filter('error is null').withColumn("id", sha1(
+		    col('input.itemId')
+		)).select(
+		    col('id'),
 		    col('input.itemId').alias('item'),
 		    col('output.recommendedItems').alias('recommendedItems')
 		)
