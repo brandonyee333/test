@@ -102,12 +102,25 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 		    '{}/{}/inference_result/*'.format(
 		        configuration.get('storage.path'), args.lcp_project_id
 		    )
-		).filter('error is null').withColumn("id", sha1(
-		    col('input.itemId')
-		)).select(
+		).filter(
+			'error is null'
+		).withColumn(
+			"id",
+			sha1(
+				col('input.itemId')
+			)
+		).select(
 		    col('id'),
-		    col('input.itemId').alias('item'),
-		    col('output.recommendedItems').alias('recommendedItems')
+		    col(
+				'input.itemId'
+			).alias(
+				'item'
+			),
+		    col(
+				'output.recommendedItems'
+			).alias(
+				'recommendedItems'
+			)
 		)
 
 		recommended_items_data_frame.createOrReplaceTempView(
