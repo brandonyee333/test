@@ -49,12 +49,8 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
-		_updateChannelIdScriptSource = ScriptUtil.loadScriptSource(
-			getClass(), "update-channel-id-script.painless");
 
 		_addMappingField(
 			"assets", "channelIds", WeDeployDataService.OSB_ASAH_FARO_INFO);
@@ -110,13 +106,16 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 		Map<String, Object> params = Collections.singletonMap(
 			"channelIds", channelIds);
 
+		String updateChannelIdScriptSource = ScriptUtil.loadScriptSource(
+			getClass(), "update-channel-id-script.painless");
+
 		_reindex(
-			params, _updateChannelIdScriptSource,
+			params, updateChannelIdScriptSource,
 			WeDeployDataService.OSB_ASAH_CEREBRO_INFO, version,
 			_CEREBRO_INFO_COLLECTION_NAMES);
 
 		_reindex(
-			params, _updateChannelIdScriptSource,
+			params, updateChannelIdScriptSource,
 			WeDeployDataService.OSB_ASAH_FARO_INFO, version,
 			_FARO_INFO_COLLECTION_NAMES);
 
@@ -261,8 +260,6 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 	private static final Log _log = LogFactory.getLog(
 		CreateChannelsUpgradeStep.class);
 
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
-
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
@@ -276,7 +273,5 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 
 	@Autowired
 	private ReindexHelper _reindexHelper;
-
-	private String _updateChannelIdScriptSource;
 
 }
