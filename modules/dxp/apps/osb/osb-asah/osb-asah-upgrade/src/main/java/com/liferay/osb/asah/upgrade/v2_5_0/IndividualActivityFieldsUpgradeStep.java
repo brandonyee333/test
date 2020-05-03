@@ -231,6 +231,10 @@ public class IndividualActivityFieldsUpgradeStep implements UpgradeStep {
 					lastActivityDate = channelActivityInfo.getKey();
 				}
 
+				if (activityCount == 0) {
+					return;
+				}
+
 				activitiesCount.add(
 					JSONUtil.put(
 						"activitiesCount", activityCount
