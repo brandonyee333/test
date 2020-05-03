@@ -33,6 +33,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -117,6 +118,7 @@ public class HistogramDogTest {
 		resourcePath = "histogram-journal-last-90-days-info.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
 	)
+	@Ignore
 	@Test
 	public void testHistogramMetricsLast90Days() {
 		double[] expectedValues = DogTestUtil.create90DaysHistogramBuckets();
