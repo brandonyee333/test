@@ -31,13 +31,12 @@ public class ExperimentMappingFieldUpgradeStep implements UpgradeStep {
 	@Override
 	public void upgrade(String version) {
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				"experiments", WeDeployDataService.OSB_ASAH_FARO_INFO),
+			"experiments",
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put("dxpGroupId", JSONUtil.put("type", "keyword"))
 			).toString(),
-			"experiments");
+			"experiments", WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
 	@Autowired

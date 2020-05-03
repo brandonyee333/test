@@ -375,7 +375,18 @@ public class ElasticsearchIndexManagerImpl
 
 	@Override
 	public boolean updateMapping(
-		String indexName, String mappingSource, String mappingType) {
+		String collectionName, String mappingSource, String mappingType,
+		WeDeployDataService weDeployDataService) {
+
+		String indexName = ElasticsearchIndexUtil.getIndexName(
+			collectionName, getIndexNamespace(weDeployDataService));
+
+		String indexAlias = ElasticsearchIndexUtil.getIndexAlias(
+			collectionName, getIndexNamespace(weDeployDataService));
+
+		if (aliasExists(indexAlias)) {
+			indexName = getIndexName(indexAlias);
+		}
 
 		if (!exists(indexName)) {
 			if (_log.isWarnEnabled()) {

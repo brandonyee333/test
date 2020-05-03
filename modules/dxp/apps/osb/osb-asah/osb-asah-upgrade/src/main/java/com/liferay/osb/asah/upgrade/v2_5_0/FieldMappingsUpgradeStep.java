@@ -45,8 +45,7 @@ public class FieldMappingsUpgradeStep implements UpgradeStep {
 		}
 
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				"field-mappings", WeDeployDataService.OSB_ASAH_FARO_INFO),
+			"field-mappings",
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
@@ -55,7 +54,7 @@ public class FieldMappingsUpgradeStep implements UpgradeStep {
 					"displayType", JSONUtil.put("type", "keyword")
 				)
 			).toString(),
-			"field-mappings");
+			"field-mappings", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		ElasticsearchInvoker faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();

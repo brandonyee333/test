@@ -133,23 +133,22 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 	}
 
 	private void _addMappingField(
-		String indexName, String propertyName,
+		String collectionName, String propertyName,
 		WeDeployDataService weDeployDataService) {
 
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				indexName, weDeployDataService),
+			collectionName,
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(propertyName, JSONUtil.put("type", "keyword"))
 			).toString(),
-			indexName);
+			collectionName, weDeployDataService);
 	}
 
 	private void _addMappingField(
-		String indexName, WeDeployDataService weDeployDataService) {
+		String collectionName, WeDeployDataService weDeployDataService) {
 
-		_addMappingField(indexName, "channelId", weDeployDataService);
+		_addMappingField(collectionName, "channelId", weDeployDataService);
 	}
 
 	private JSONObject _createChannel(JSONObject dataSourceJSONObject) {

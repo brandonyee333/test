@@ -62,6 +62,7 @@ public interface ElasticsearchIndexManager {
 		String collectionName, WeDeployDataService weDeployDataService);
 
 	public boolean updateMapping(
-		String indexName, String mappingSource, String mappingType);
+		String collectionName, String mappingSource, String mappingType,
+		WeDeployDataService weDeployDataService);
 
 }

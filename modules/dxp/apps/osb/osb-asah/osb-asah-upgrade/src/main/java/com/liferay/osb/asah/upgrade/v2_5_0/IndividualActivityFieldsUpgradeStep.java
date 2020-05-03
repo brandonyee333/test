@@ -64,8 +64,7 @@ public class IndividualActivityFieldsUpgradeStep implements UpgradeStep {
 			_elasticsearchInvokerFactory.forFaroInfo();
 
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO),
+			"individuals",
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
@@ -94,7 +93,7 @@ public class IndividualActivityFieldsUpgradeStep implements UpgradeStep {
 					)
 				)
 			).toString(),
-			"individuals");
+			"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		Map<Pair<String, String>, Pair<String, Long>> channelActivityInfo =
 			_getChannelActivityInfo();

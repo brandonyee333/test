@@ -258,14 +258,13 @@ public class EmailAddressHashedMappingFieldUpgradeStep implements UpgradeStep {
 		throws Exception {
 
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO),
+			"individuals",
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
 					"emailAddressHashed", JSONUtil.put("type", "keyword"))
 			).toString(),
-			"individuals");
+			"individuals", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
@@ -487,14 +486,13 @@ public class EmailAddressHashedMappingFieldUpgradeStep implements UpgradeStep {
 		throws Exception {
 
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				"suppressions", WeDeployDataService.OSB_ASAH_FARO_INFO),
+			"suppressions",
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
 					"emailAddressHashed", JSONUtil.put("type", "keyword"))
 			).toString(),
-			"suppressions");
+			"suppressions", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			elasticsearchInvoker.createElasticsearchBulkRequestBuilder();

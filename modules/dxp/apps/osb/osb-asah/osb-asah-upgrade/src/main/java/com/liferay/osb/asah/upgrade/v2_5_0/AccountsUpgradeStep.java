@@ -31,8 +31,7 @@ public class AccountsUpgradeStep implements UpgradeStep {
 	@Override
 	public void upgrade(String version) {
 		_elasticsearchIndexManager.updateMapping(
-			_elasticsearchIndexManager.getIndexName(
-				"accounts", WeDeployDataService.OSB_ASAH_FARO_INFO),
+			"accounts",
 			JSONUtil.put(
 				"properties",
 				JSONUtil.put(
@@ -61,7 +60,7 @@ public class AccountsUpgradeStep implements UpgradeStep {
 					)
 				)
 			).toString(),
-			"accounts");
+			"accounts", WeDeployDataService.OSB_ASAH_FARO_INFO);
 	}
 
 	@Autowired
