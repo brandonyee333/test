@@ -478,7 +478,11 @@ public class EmailAddressHashedMappingFieldUpgradeStep implements UpgradeStep {
 						"ctx._source.remove('individualEmail')",
 						Collections.emptyMap()))
 		).setQueryBuilder(
-			QueryBuilders.termQuery("individualId", individualId)
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.existsQuery("individualEmail")
+			).filter(
+				QueryBuilders.termQuery("individualId", individualId)
+			)
 		).iterate();
 	}
 
