@@ -41,9 +41,10 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps(
 			"2.4.0", "2.5.0", _accountsUpgradeStep, _createChannelsUpgradeStep,
-			_individualActivityFieldsUpgradeStep, _dataSourcesUpgradeStep,
-			_dxpRawUpgradeStep, _emailAddressHashedMappingFieldUpgradeStep,
-			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep);
+			_dataSourcesUpgradeStep, _dxpRawUpgradeStep,
+			_emailAddressHashedMappingFieldUpgradeStep,
+			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep,
+			_individualActivityFieldsUpgradeStep);
 
 		return upgradeProcess;
 	}
