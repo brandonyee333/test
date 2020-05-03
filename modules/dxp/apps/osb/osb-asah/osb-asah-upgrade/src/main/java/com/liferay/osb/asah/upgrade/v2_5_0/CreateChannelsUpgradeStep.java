@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade.v2_5_0;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
@@ -49,6 +50,8 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
@@ -60,6 +63,8 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 			"data-sources", WeDeployDataService.OSB_ASAH_FARO_INFO);
 		_addMappingField(
 			"individual-segments", WeDeployDataService.OSB_ASAH_FARO_INFO);
+		_addMappingField(
+			"user-sessions", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 		_addMappingField(
 			"individuals", "channelIds",
 			WeDeployDataService.OSB_ASAH_FARO_INFO);
@@ -130,6 +135,8 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 			ScriptUtil.loadScriptSource(
 				getClass(), "update-individual-channel-ids-script.painless"),
 			WeDeployDataService.OSB_ASAH_FARO_INFO, version, "individuals");
+
+		_updateUserSessions(channelIds);
 	}
 
 	private void _addMappingField(
@@ -245,11 +252,42 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 		}
 	}
 
+	private void _updateUserSessions(Map<String, String> channelIds)
+		throws Exception {
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_cerebroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
+
+		JSONArrayIterator.of(
+			"user-sessions", _cerebroInfoElasticsearchInvoker,
+			userSessionJSONObject -> {
+				String channelId = channelIds.get(
+					userSessionJSONObject.getString("dataSourceId"));
+
+				if (channelId == null) {
+					return null;
+				}
+
+				return elasticsearchBulkRequestBuilder.update(
+					"user-sessions",
+					JSONUtil.put(
+						"channelId", channelId
+					).put(
+						"id", userSessionJSONObject.getString("id")
+					));
+			}
+		).setQueryBuilder(
+			BoolQueryBuilderUtil.mustNot(QueryBuilders.existsQuery("channelId"))
+		).setSourceIncludes(
+			new String[] {"id", "dataSourceId"}
+		).iterate();
+	}
+
 	private static final String[] _CEREBRO_INFO_COLLECTION_NAMES = {
 		"blog-clicks", "blog-social-shares", "blog-traffic-sources", "blogs",
 		"custom-assets", "custom-asset-dashboards", "document-libraries",
-		"forms", "journal-clicks", "journals", "page-referrers", "pages",
-		"user-sessions"
+		"forms", "journal-clicks", "journals", "page-referrers", "pages"
 	};
 
 	private static final String[] _FARO_INFO_COLLECTION_NAMES = {
@@ -258,6 +296,8 @@ public class CreateChannelsUpgradeStep implements UpgradeStep {
 
 	private static final Log _log = LogFactory.getLog(
 		CreateChannelsUpgradeStep.class);
+
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchIndexManager _elasticsearchIndexManager;
