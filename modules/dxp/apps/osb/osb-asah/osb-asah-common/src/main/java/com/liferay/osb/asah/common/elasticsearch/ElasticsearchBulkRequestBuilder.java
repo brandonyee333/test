@@ -169,7 +169,7 @@ public class ElasticsearchBulkRequestBuilder {
 		UpdateRequestBuilder updateRequestBuilder = _client.prepareUpdate(
 			getIndexAlias(collectionName), collectionName, id);
 
-		updateRequestBuilder.setFetchSource(true);
+		updateRequestBuilder.setFetchSource(false);
 		updateRequestBuilder.setRetryOnConflict(5);
 		updateRequestBuilder.setScript(script);
 
@@ -185,7 +185,7 @@ public class ElasticsearchBulkRequestBuilder {
 			indexName, collectionName, jsonObject.getString("id"));
 
 		updateRequestBuilder.setDoc(jsonObject.toString(), XContentType.JSON);
-		updateRequestBuilder.setFetchSource(true);
+		updateRequestBuilder.setFetchSource(false);
 
 		_bulkRequestBuilder.add(updateRequestBuilder);
 
