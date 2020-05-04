@@ -165,7 +165,7 @@
 			"templated": true
 		},
 		"individual": {
-			"href": "{url}/individuals/{id}{?expand}",
+			"href": "{url}/individuals/{id}{?channelId,expand}",
 			"templated": true
 		},
 		"individual-individual-segments": {

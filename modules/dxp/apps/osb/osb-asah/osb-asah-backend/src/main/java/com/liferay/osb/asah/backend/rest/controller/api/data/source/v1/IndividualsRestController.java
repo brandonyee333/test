@@ -59,18 +59,31 @@ public class IndividualsRestController extends BaseRestController {
 	@GetMapping("/{id}")
 	public String getIndividual(
 			@PathVariable String id,
+			@RequestParam(required = false) String channelId,
 			@RequestParam(required = false) String expand)
 		throws Exception {
 
+		String responseJSON = null;
+
 		if (StringUtils.isEmpty(expand)) {
-			return toItemGetResponse("individuals", id);
+			responseJSON = toItemGetResponse("individuals", id);
+		}
+		else {
+			responseJSON = toItemGetResponse(
+				"individuals",
+				new IndividualsEmbeddedJSONObjectCreator(
+					faroInfoElasticsearchInvoker, expand),
+				id);
 		}
 
-		return toItemGetResponse(
-			"individuals",
-			new IndividualsEmbeddedJSONObjectCreator(
-				faroInfoElasticsearchInvoker, expand),
-			id);
+		if (channelId == null) {
+			return responseJSON;
+		}
+
+		JSONObject individualJSONObject = _doFilterByChannelId(
+			channelId, new JSONObject(responseJSON));
+
+		return individualJSONObject.toString();
 	}
 
 	@GetMapping(params = "!apply")
@@ -244,6 +257,50 @@ public class IndividualsRestController extends BaseRestController {
 			"individual-transformations");
 	}
 
+	private JSONObject _doFilterByChannelId(
+		String channelId, JSONObject individualJSONObject) {
+
+		JSONArray activitiesCountsJSONArray = individualJSONObject.optJSONArray(
+			"activitiesCounts");
+
+		if (activitiesCountsJSONArray != null) {
+			Map<String, JSONObject> activitiesCounts = JSONUtil.toJSONObjectMap(
+				individualJSONObject.getJSONArray("activitiesCounts"),
+				"channelId");
+
+			JSONObject activitiesCountJSONObject =
+				activitiesCounts.getOrDefault(
+					channelId, JSONUtil.put("activitiesCount", 0));
+
+			individualJSONObject.put(
+				"activitiesCount",
+				activitiesCountJSONObject.getInt("activitiesCount"));
+
+			individualJSONObject.remove("activitiesCounts");
+		}
+
+		JSONArray lastActivityDatesJSONArray =
+			individualJSONObject.optJSONArray("lastActivityDates");
+
+		if (lastActivityDatesJSONArray != null) {
+			Map<String, JSONObject> individualCounts = JSONUtil.toJSONObjectMap(
+				individualJSONObject.getJSONArray("lastActivityDates"),
+				"channelId");
+
+			JSONObject individualCountJSONObject =
+				individualCounts.getOrDefault(
+					channelId, JSONUtil.put("lastActivityDate", ""));
+
+			individualJSONObject.put(
+				"lastActivityDate",
+				individualCountJSONObject.getString("lastActivityDate"));
+
+			individualJSONObject.remove("lastActivityDates");
+		}
+
+		return individualJSONObject;
+	}
+
 	private JSONObject _filterByChannelId(
 		String channelId, JSONObject responseJSONObject) {
 
@@ -254,48 +311,8 @@ public class IndividualsRestController extends BaseRestController {
 			"individuals");
 
 		for (int i = 0; i < individualsJSONArray.length(); i++) {
-			JSONObject individualJSONObject =
-				individualsJSONArray.getJSONObject(i);
-
-			JSONArray activitiesCountsJSONArray =
-				individualJSONObject.optJSONArray("activitiesCounts");
-
-			if (activitiesCountsJSONArray != null) {
-				Map<String, JSONObject> activitiesCounts =
-					JSONUtil.toJSONObjectMap(
-						individualJSONObject.getJSONArray("activitiesCounts"),
-						"channelId");
-
-				JSONObject activitiesCountJSONObject =
-					activitiesCounts.getOrDefault(
-						channelId, JSONUtil.put("activitiesCount", 0));
-
-				individualJSONObject.put(
-					"activitiesCount",
-					activitiesCountJSONObject.getInt("activitiesCount"));
-
-				individualJSONObject.remove("activitiesCounts");
-			}
-
-			JSONArray lastActivityDatesJSONArray =
-				individualJSONObject.optJSONArray("lastActivityDates");
-
-			if (lastActivityDatesJSONArray != null) {
-				Map<String, JSONObject> individualCounts =
-					JSONUtil.toJSONObjectMap(
-						individualJSONObject.getJSONArray("lastActivityDates"),
-						"channelId");
-
-				JSONObject individualCountJSONObject =
-					individualCounts.getOrDefault(
-						channelId, JSONUtil.put("lastActivityDate", ""));
-
-				individualJSONObject.put(
-					"lastActivityDate",
-					individualCountJSONObject.getString("lastActivityDate"));
-
-				individualJSONObject.remove("lastActivityDates");
-			}
+			_doFilterByChannelId(
+				channelId, individualsJSONArray.getJSONObject(i));
 		}
 
 		return responseJSONObject;
