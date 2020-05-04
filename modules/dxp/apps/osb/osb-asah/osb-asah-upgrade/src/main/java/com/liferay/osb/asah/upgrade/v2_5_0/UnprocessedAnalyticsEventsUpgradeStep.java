@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.upgrade.v2_5_0;
 
-import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.ScriptUtil;
@@ -23,7 +22,8 @@ import com.liferay.osb.asah.upgrade.UpgradeStep;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +31,6 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
-import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -39,80 +38,59 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 /**
  * @author Leslie Wong
  */
 @Component
 public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 
-	@PostConstruct
-	public void init() {
-		_cerebroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroInfo();
-		_cerebroRawElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forCerebroRaw();
-		_faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-	}
-
 	@Override
 	public void upgrade(String version) {
-		JSONArray osbAsahMarkersJSONArray =
-			_cerebroInfoElasticsearchInvoker.get("OSBAsahMarkers");
+		JSONObject sessionNaniteOSBAsahMarkersJSONObject =
+			_cerebroInfoElasticsearchInvoker.fetch(
+				"OSBAsahMarkers", "SessionNanite");
 
-		JSONObject activitiesMarkerJSONObject =
+		String oldestUnprocessedAnalyticsEventId = null;
+
+		if (sessionNaniteOSBAsahMarkersJSONObject != null) {
+			String lastSuccessfulAnalyticsEventId =
+				sessionNaniteOSBAsahMarkersJSONObject.optString(
+					"lastSuccessfulAnalyticsEventId", null);
+
+			if (lastSuccessfulAnalyticsEventId != null) {
+				oldestUnprocessedAnalyticsEventId =
+					lastSuccessfulAnalyticsEventId;
+			}
+		}
+
+		JSONObject activitiesNaniteOSBAsahMarkerJSONObject =
 			_faroInfoElasticsearchInvoker.fetch(
 				"OSBAsahMarkers", "ActivitiesNanite");
 
-		if (activitiesMarkerJSONObject != null) {
-			osbAsahMarkersJSONArray.put(activitiesMarkerJSONObject);
-		}
-
-		String oldestAnalyticsEventId = null;
-
-		Set<String> validOSBAsahMarkerIds = _curatorNanites.keySet();
-
-		for (int i = 0; i < osbAsahMarkersJSONArray.length(); i++) {
-			JSONObject osbAsahMarkersJSONObject =
-				osbAsahMarkersJSONArray.getJSONObject(i);
-
-			String id = osbAsahMarkersJSONObject.getString("id");
-
-			if (!validOSBAsahMarkerIds.contains(id)) {
-				continue;
-			}
-
+		if (activitiesNaniteOSBAsahMarkerJSONObject != null) {
 			String lastSuccessfulAnalyticsEventId =
-				osbAsahMarkersJSONObject.optString(
+				activitiesNaniteOSBAsahMarkerJSONObject.optString(
 					"lastSuccessfulAnalyticsEventId", null);
 
-			if (lastSuccessfulAnalyticsEventId == null) {
-				continue;
-			}
+			if (lastSuccessfulAnalyticsEventId != null) {
+				if (oldestUnprocessedAnalyticsEventId == null) {
+					oldestUnprocessedAnalyticsEventId =
+						lastSuccessfulAnalyticsEventId;
+				}
+				else if (oldestUnprocessedAnalyticsEventId.compareTo(
+							lastSuccessfulAnalyticsEventId) > 0) {
 
-			String nextAnalyticsEventId = _getNextAnalyticsEventId(
-				lastSuccessfulAnalyticsEventId, _curatorNanites.get(id));
-
-			if (nextAnalyticsEventId == null) {
-				continue;
-			}
-
-			if (oldestAnalyticsEventId == null) {
-				oldestAnalyticsEventId = nextAnalyticsEventId;
-
-				continue;
-			}
-
-			if (oldestAnalyticsEventId.compareTo(nextAnalyticsEventId) > 0) {
-				oldestAnalyticsEventId = nextAnalyticsEventId;
+					oldestUnprocessedAnalyticsEventId =
+						lastSuccessfulAnalyticsEventId;
+				}
 			}
 		}
 
-		if (oldestAnalyticsEventId == null) {
+		if (oldestUnprocessedAnalyticsEventId == null) {
 			if (_log.isInfoEnabled()) {
-				_log.info("Unable to find lastSuccessfulAnalyticsEventIds");
+				_log.info(
+					"Skipping upgrade because there are no " +
+						"lastSuccessfulAnalyticsEventIds");
 			}
 
 			return;
@@ -120,8 +98,8 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 		QueryBuilder queryBuilder = QueryBuilders.rangeQuery(
 			"id"
-		).gte(
-			oldestAnalyticsEventId
+		).gt(
+			oldestUnprocessedAnalyticsEventId
 		);
 
 		if (_log.isInfoEnabled()) {
@@ -130,28 +108,23 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 			_log.info(
 				String.format(
-					"Oldest unprocess analytics event ID: %s. Found %d " +
+					"Oldest unprocessed analytics event ID: %s. Found %d " +
 						"events to process.",
-					oldestAnalyticsEventId, count));
+					oldestUnprocessedAnalyticsEventId, count));
 		}
 
-		JSONArray dataSourcesJSONArray = _faroInfoElasticsearchInvoker.get(
-			"data-sources",
-			QueryBuilders.termQuery("provider.type", "LIFERAY"));
+		Map<String, String> channelIds = _getChannelIds();
 
-		Map<String, String> channelIds = new HashMap<>();
+		if (channelIds.isEmpty()) {
+			if (_log.isInfoEnabled()) {
+				_log.info("Skipping upgrade because there are no channels");
+			}
 
-		for (int i = 0; i < dataSourcesJSONArray.length(); i++) {
-			JSONObject dataSourceJSONObject =
-				dataSourcesJSONArray.getJSONObject(i);
-
-			channelIds.put(
-				dataSourceJSONObject.getString("id"),
-				dataSourceJSONObject.getString("channelId"));
+			return;
 		}
 
 		_cerebroRawElasticsearchInvoker.updateByQueryWithRetry(
-			queryBuilder, true,
+			queryBuilder, false,
 			new Script(
 				Script.DEFAULT_SCRIPT_TYPE, Script.DEFAULT_SCRIPT_LANG,
 				ScriptUtil.loadScriptSource(
@@ -160,241 +133,34 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 			"analytics-events");
 	}
 
-	private String _getNextAnalyticsEventId(
-		String lastSuccessfulAnalyticsEventId, QueryBuilder queryBuilder) {
+	private Map<String, String> _getChannelIds() {
+		Map<String, String> channelIds = new HashMap<>();
 
-		if (queryBuilder == null) {
-			return lastSuccessfulAnalyticsEventId;
+		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
+			"data-sources", QueryBuilders.existsQuery("channelId"));
+
+		for (int i = 0; i < jsonArray.length(); i++) {
+			JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+			channelIds.put(
+				jsonObject.getString("id"), jsonObject.getString("channelId"));
 		}
 
-		JSONArray analyticsEventsJSONArray = new JSONArray(
-			_cerebroRawElasticsearchInvoker.get(
-				"analytics-events",
-				searchSourceBuilder -> {
-					searchSourceBuilder.query(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.rangeQuery(
-								"id"
-							).gt(
-								lastSuccessfulAnalyticsEventId
-							)
-						).filter(
-							queryBuilder
-						));
-					searchSourceBuilder.size(1);
-					searchSourceBuilder.sort("id", SortOrder.ASC);
-				}));
+		return channelIds;
+	}
 
-		if (analyticsEventsJSONArray.length() == 0) {
-			return null;
-		}
-
-		JSONObject analyticsEventJSONObject =
-			analyticsEventsJSONArray.getJSONObject(0);
-
-		return analyticsEventJSONObject.getString("id");
+	@PostConstruct
+	private void _init() {
+		_cerebroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroInfo();
+		_cerebroRawElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forCerebroRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
 	}
 
 	private static final Log _log = LogFactory.getLog(
 		UnprocessedAnalyticsEventsUpgradeStep.class);
-
-	private static final Map<String, QueryBuilder> _curatorNanites =
-		new HashMap<String, QueryBuilder>() {
-			{
-				put("ActivitiesNanite", null);
-				put(
-					"BlogClickNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "Blog")
-					).filter(
-						QueryBuilders.termQuery("eventId", "blogClicked")
-					));
-				put(
-					"BlogNanite",
-					BoolQueryBuilderUtil.should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Blog"))
-					).should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Comment")
-						).filter(
-							QueryBuilders.termQuery("eventId", "posted")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventProperties.className",
-								"com.liferay.blogs.model.BlogsEntry")
-						)
-					).should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Ratings")
-						).filter(
-							QueryBuilders.termQuery("eventId", "VOTE")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventProperties.className",
-								"com.liferay.blogs.model.BlogsEntry")
-						).should(
-							BoolQueryBuilderUtil.mustNot(
-								QueryBuilders.existsQuery(
-									"eventProperties.ratingType"))
-						).should(
-							QueryBuilders.termQuery(
-								"eventProperties.ratingType", "stars")
-						)
-					));
-				put(
-					"BlogSocialShareNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "shared")
-					).filter(
-						QueryBuilders.termQuery("eventId", "SocialBookmarks")
-					).filter(
-						QueryBuilders.termQuery(
-							"eventProperties.className",
-							"com.liferay.blogs.model.BlogsEntry")
-					));
-				put(
-					"BlogTrafficSourceNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "Blog")
-					).filter(
-						QueryBuilders.termQuery("eventId", "blogViewed")
-					).mustNot(
-						QueryBuilders.termQuery("context.referrer", "")
-					));
-				put("CustomAssetDashboardNanite", null);
-				put(
-					"CustomAssetNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "Custom")
-					).filter(
-						QueryBuilders.regexpQuery(
-							"eventProperties.assetId", ".+")
-					));
-				put(
-					"DocumentLibraryNanite",
-					BoolQueryBuilderUtil.should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Comment")
-						).filter(
-							QueryBuilders.termQuery("eventId", "posted")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventProperties.className",
-								"com.liferay.document.library.kernel.model." +
-									"DLFileEntry")
-						)
-					).should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Document")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventId", "documentDownloaded")
-						)
-					).should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Document")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventId", "documentPreviewed")
-						)
-					).should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Ratings")
-						).filter(
-							QueryBuilders.termQuery("eventId", "VOTE")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventProperties.className",
-								"com.liferay.document.library.kernel.model." +
-									"DLFileEntry")
-						).should(
-							BoolQueryBuilderUtil.mustNot(
-								QueryBuilders.existsQuery(
-									"eventProperties.ratingType"))
-						).should(
-							QueryBuilders.termQuery(
-								"eventProperties.ratingType", "stars")
-						)
-					));
-				put(
-					"FormNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "Form")
-					).filter(
-						BoolQueryBuilderUtil.should(
-							QueryBuilders.termQuery("eventId", "fieldBlurred")
-						).should(
-							QueryBuilders.termQuery("eventId", "fieldFocused")
-						).should(
-							QueryBuilders.termQuery("eventId", "formSubmitted")
-						).should(
-							QueryBuilders.termQuery("eventId", "formViewed")
-						).should(
-							QueryBuilders.termQuery("eventId", "pageViewed")
-						)
-					));
-				put(
-					"JournalClickNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "WebContent")
-					).filter(
-						QueryBuilders.termQuery("eventId", "webContentClicked")
-					));
-				put(
-					"JournalNanite",
-					BoolQueryBuilderUtil.should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Ratings")
-						).filter(
-							QueryBuilders.termQuery("eventId", "VOTE")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventProperties.className",
-								"com.liferay.journal.model.JournalArticle")
-						).should(
-							BoolQueryBuilderUtil.mustNot(
-								QueryBuilders.existsQuery(
-									"eventProperties.ratingType"))
-						).should(
-							QueryBuilders.termQuery(
-								"eventProperties.ratingType", "stars")
-						)
-					).should(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery(
-								"applicationId", "WebContent")
-						).filter(
-							QueryBuilders.termQuery(
-								"eventId", "webContentViewed")
-						)
-					));
-				put(
-					"PageNanite",
-					BoolQueryBuilderUtil.mustNot(
-						QueryBuilders.termsQuery(
-							"eventId", "blogViewed", "formViewed", "pageLoaded",
-							"pageUnloaded", "webContentViewed")
-					).mustNot(
-						BoolQueryBuilderUtil.filter(
-							QueryBuilders.termQuery("applicationId", "Form")
-						).filter(
-							QueryBuilders.termQuery("eventId", "pageViewed")
-						).filter(
-							QueryBuilders.termQuery("eventProperties.page", 0)
-						)
-					));
-				put(
-					"PageReferrerNanite",
-					BoolQueryBuilderUtil.filter(
-						QueryBuilders.termQuery("applicationId", "Page")
-					).filter(
-						QueryBuilders.termQuery("eventId", "pageViewed")
-					));
-				put("SessionFinalizerNanite", null);
-				put("SessionNanite", null);
-			}
-		};
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
