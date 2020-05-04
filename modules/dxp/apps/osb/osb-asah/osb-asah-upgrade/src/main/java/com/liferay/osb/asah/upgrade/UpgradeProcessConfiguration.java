@@ -22,6 +22,7 @@ import com.liferay.osb.asah.upgrade.v2_5_0.EmailAddressHashedMappingFieldUpgrade
 import com.liferay.osb.asah.upgrade.v2_5_0.ExperimentMappingFieldUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.FieldMappingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.IndividualActivityFieldsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAnalyticsEventsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -44,7 +45,8 @@ public class UpgradeProcessConfiguration {
 			_dataSourcesUpgradeStep, _dxpRawUpgradeStep,
 			_emailAddressHashedMappingFieldUpgradeStep,
 			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep,
-			_individualActivityFieldsUpgradeStep);
+			_individualActivityFieldsUpgradeStep,
+			_unprocessedAnalyticsEventsUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -75,5 +77,9 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private IndividualActivityFieldsUpgradeStep
 		_individualActivityFieldsUpgradeStep;
+
+	@Autowired
+	private UnprocessedAnalyticsEventsUpgradeStep
+		_unprocessedAnalyticsEventsUpgradeStep;
 
 }
