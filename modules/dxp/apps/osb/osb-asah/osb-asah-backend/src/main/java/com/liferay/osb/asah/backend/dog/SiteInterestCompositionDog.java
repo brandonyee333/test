@@ -133,7 +133,7 @@ public class SiteInterestCompositionDog {
 				);
 
 				BoolQueryBuilderUtil.filterTerm(
-					boolQueryBuilder, "channelId", channelId);
+					boolQueryBuilder, "channelIds", channelId);
 				BoolQueryBuilderUtil.filterTerm(
 					boolQueryBuilder, "dataSourceId", dataSourceId);
 
