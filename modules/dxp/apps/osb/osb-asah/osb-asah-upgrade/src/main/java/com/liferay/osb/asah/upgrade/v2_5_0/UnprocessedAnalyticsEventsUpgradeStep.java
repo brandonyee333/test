@@ -39,26 +39,40 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 /**
  * @author Leslie Wong
  */
 @Component
 public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 
-	@Override
-	public void upgrade(String version) {
-		ElasticsearchInvoker cerebroInfoElasticsearchInvoker =
+	@PostConstruct
+	public void init() {
+		_cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
-
 		_cerebroRawElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroRaw();
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
 
-		JSONArray osbAsahMarkersJSONArray = cerebroInfoElasticsearchInvoker.get(
-			"OSBAsahMarkers");
+	@Override
+	public void upgrade(String version) {
+		JSONArray osbAsahMarkersJSONArray =
+			_cerebroInfoElasticsearchInvoker.get("OSBAsahMarkers");
+
+		JSONObject activitiesMarkerJSONObject =
+			_faroInfoElasticsearchInvoker.fetch(
+				"OSBAsahMarkers", "ActivitiesNanite");
+
+		if (activitiesMarkerJSONObject != null) {
+			osbAsahMarkersJSONArray.put(activitiesMarkerJSONObject);
+		}
 
 		String oldestAnalyticsEventId = null;
 
-		Set<String> validOSBAsahMarkerIds = _streamCuratorNanites.keySet();
+		Set<String> validOSBAsahMarkerIds = _curatorNanites.keySet();
 
 		for (int i = 0; i < osbAsahMarkersJSONArray.length(); i++) {
 			JSONObject osbAsahMarkersJSONObject =
@@ -79,7 +93,7 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 			}
 
 			String nextAnalyticsEventId = _getNextAnalyticsEventId(
-				lastSuccessfulAnalyticsEventId, _streamCuratorNanites.get(id));
+				lastSuccessfulAnalyticsEventId, _curatorNanites.get(id));
 
 			if (nextAnalyticsEventId == null) {
 				continue;
@@ -121,10 +135,7 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 					oldestAnalyticsEventId, count));
 		}
 
-		ElasticsearchInvoker faroInfoElasticsearchInvoker =
-			_elasticsearchInvokerFactory.forFaroInfo();
-
-		JSONArray dataSourcesJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray dataSourcesJSONArray = _faroInfoElasticsearchInvoker.get(
 			"data-sources",
 			QueryBuilders.termQuery("provider.type", "LIFERAY"));
 
@@ -187,9 +198,10 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 	private static final Log _log = LogFactory.getLog(
 		UnprocessedAnalyticsEventsUpgradeStep.class);
 
-	private static final Map<String, QueryBuilder> _streamCuratorNanites =
+	private static final Map<String, QueryBuilder> _curatorNanites =
 		new HashMap<String, QueryBuilder>() {
 			{
+				put("ActivitiesNanite", null);
 				put(
 					"BlogClickNanite",
 					BoolQueryBuilderUtil.filter(
@@ -384,9 +396,12 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 			}
 		};
 
+	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
