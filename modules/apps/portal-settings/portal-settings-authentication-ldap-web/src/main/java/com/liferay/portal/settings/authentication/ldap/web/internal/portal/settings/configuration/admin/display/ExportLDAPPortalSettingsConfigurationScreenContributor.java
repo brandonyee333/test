@@ -14,7 +14,6 @@
 
 package com.liferay.portal.settings.authentication.ldap.web.internal.portal.settings.configuration.admin.display;
 
-import com.liferay.portal.security.ldap.exportimport.configuration.LDAPExportConfiguration;
 import com.liferay.portal.settings.configuration.admin.display.PortalSettingsConfigurationScreenContributor;
 
 import java.util.Locale;
@@ -44,7 +43,7 @@ public class ExportLDAPPortalSettingsConfigurationScreenContributor
 
 	@Override
 	public String getKey() {
-		return LDAPExportConfiguration.class.getName();
+		return "ldap-export";
 	}
 
 	@Override
