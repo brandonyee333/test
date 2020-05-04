@@ -2,7 +2,13 @@
 	"babel": {
 		"plugins": [
 			"@babel/plugin-proposal-class-properties",
-			"@babel/plugin-proposal-object-rest-spread"
+			"@babel/plugin-proposal-object-rest-spread",
+			[
+				"@babel/plugin-transform-runtime",
+				{
+					"regenerator": true
+				}
+			]
 		],
 		"presets": [
 			"@babel/preset-env",
@@ -29,6 +35,7 @@
 		"@babel/core": "^7.2.2",
 		"@babel/plugin-proposal-class-properties": "^7.3.0",
 		"@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+		"@babel/plugin-transform-runtime": "^7.9.6",
 		"@babel/preset-env": "^7.3.1",
 		"@babel/preset-react": "^7.0.0",
 		"autoprefixer": "^9.0.1",

@@ -121,4 +121,18 @@ describe('SourceCodeAccess', () => {
 
 		expect(modal).toBeDefined();
 	});
+
+	it('closes the modal when cancel button is clicked', () => {
+		const {container} = renderSourceCodeAccess();
+
+		fireEvent.click(getByValue(container, 'add'));
+
+		const {getByText} = within(queryByRole(container, 'dialog'));
+
+		fireEvent.click(getByText('cancel'));
+
+		const modal = queryByRole(container, 'dialog');
+
+		expect(modal).toBeNull();
+	});
 });
