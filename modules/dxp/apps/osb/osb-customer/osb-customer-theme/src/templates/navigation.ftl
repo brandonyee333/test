@@ -1,5 +1,3 @@
-<#include "${full_templates_path}/site_wide_notification.ftl" />
-
 <div class="container-fluid container-fluid-max-xl">
 	<div class="header-inner row">
 		<div class="col-sm-3 header-content">

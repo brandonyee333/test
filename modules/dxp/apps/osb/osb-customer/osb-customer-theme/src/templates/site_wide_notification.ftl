@@ -5,25 +5,9 @@
 		</svg>
 
 		<div class="notification-content">
-			<div class="semi-bold">
-				<@liferay.language key="security-alerts" />
-			</div>
 
-			<div>
-				LSV-412:
-				<@liferay.language key="registered-user-rce-using-json-deserialization" />
+			<#-- Notification content goes here -->
 
-				<a class="semi-bold" href="https://help.liferay.com/hc/articles/360020526952">
-					<@liferay.language key="view-details" /></a>
-			</div>
-
-			<div>
-				LSV-545:
-				<@liferay.language key="unauthenticated-remote-code-execution-via-jsonws" />
-
-				<a class="semi-bold" href="https://help.liferay.com/hc/articles/360035141111">
-					<@liferay.language key="view-details" /></a>
-			</div>
 		</div>
 	</div>
 
