@@ -1,0 +1,44 @@
+[
+	{
+		"dateRecorded": "${today-9dT00:00:00.000Z}",
+		"ownerId": "234",
+		"ownerType": "individual-segment",
+		"score": 0.1
+	},
+	{
+		"dateRecorded": "${today-10dT00:00:00.000Z}",
+		"ownerId": "123",
+		"ownerType": "individual-segment",
+		"score": 0.3
+	},
+	{
+		"dateRecorded": "${today-11dT00:00:00.000Z}",
+		"ownerId": "123",
+		"ownerType": "individual-segment",
+		"score": 0.4
+	},
+	{
+		"dateRecorded": "${today-12dT00:00:00.000Z}",
+		"ownerId": "123",
+		"ownerType": "individual-segment",
+		"score": 0.5
+	},
+	{
+		"dateRecorded": "${today-13dT00:00:00.000Z}",
+		"ownerId": "123",
+		"ownerType": "individual-segment",
+		"score": 0.2
+	},
+	{
+		"dateRecorded": "${today-14dT00:00:00.000Z}",
+		"ownerId": "123",
+		"ownerType": "individual-segment",
+		"score": 0.6
+	},
+	{
+		"dateRecorded": "${today-29dT00:00:00.000Z}",
+		"ownerId": "123",
+		"ownerType": "individual-segment",
+		"score": 0.5
+	}
+]

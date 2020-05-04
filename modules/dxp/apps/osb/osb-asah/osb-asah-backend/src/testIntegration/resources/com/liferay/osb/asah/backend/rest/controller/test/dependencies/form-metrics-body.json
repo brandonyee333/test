@@ -1,0 +1,13 @@
+{
+	"operationName": "FormMetrics",
+	"variables": {
+		"channelId": "1",
+		"rangeKey": 30,
+		"size": 10,
+		"sort": {
+			"column": "viewsMetric",
+			"type": "DESC"
+		},
+		"start": 0
+	}
+}

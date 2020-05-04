@@ -1,0 +1,107 @@
+[
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"331238757269547423": "emailAddress"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "email",
+		"fieldType": "http://schema.org/email",
+		"id": "331238757947565158",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "108615",
+			"name": "pHyEExu nioElid"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"331238757269547423": "lastName"
+		},
+		"dateCreated": "2019-01-02T17:09:08.180Z",
+		"dateModified": "2019-01-02T17:09:08.180Z",
+		"fieldName": "familyName",
+		"fieldType": "Text",
+		"id": "331238758282780968",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "643015",
+			"name": "LBcYsTx miVctLF"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"331238757269547423": "firstName"
+		},
+		"dateCreated": "2019-01-02T17:09:08.180Z",
+		"dateModified": "2019-01-02T17:09:08.180Z",
+		"fieldName": "givenName",
+		"fieldType": "Text",
+		"id": "331238758282780969",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "30906",
+			"name": "Dlnbeax weu"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"331238757269547423": "jobTitle"
+		},
+		"dateCreated": "2019-01-02T17:09:08.180Z",
+		"dateModified": "2019-01-02T17:09:08.180Z",
+		"fieldName": "jobTitle",
+		"fieldType": "Text",
+		"id": "331238758282780970",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "03520",
+			"name": "txeBFx VFesQ"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"331238757269547423": "age"
+		},
+		"dateCreated": "2019-01-02T17:09:09.985Z",
+		"dateModified": "2019-01-02T17:09:09.985Z",
+		"fieldName": "age",
+		"fieldType": "Number",
+		"id": "331238762059664836",
+		"ownerType": "individual",
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]

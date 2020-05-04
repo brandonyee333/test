@@ -1,0 +1,7 @@
+for (int i = 0; i < ctx._source.individualSegmentIds.size(); i++) {
+	String individualSegmentId = ctx._source.individualSegmentIds.get(i);
+
+	if (individualSegmentId.equals(params.individualSegmentId)) {
+		ctx._source.individualSegmentIds.remove(i);
+	}
+}

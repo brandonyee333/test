@@ -1,0 +1,94 @@
+[
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"id": "1",
+		"platformName": "Linux",
+		"primaryKey": "da8b5bd8c05a28fdaaacf56efc98cf130cdd112715d066fc4152fac6927cd89d",
+		"ratings": 1,
+		"ratingsScore": 1,
+		"region": "Pernambuco",
+		"title": "",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "2",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb7",
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"id": "2",
+		"platformName": "Linux",
+		"primaryKey": "da8b5bd8c05a28fdaaacf56efc98cf130cdd112715d066fc4152fac6927cd89c",
+		"ratings": 1,
+		"ratingsScore": 1,
+		"region": "Pernambuco",
+		"title": "",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb6",
+		"browserName": "Chrome",
+		"channelId": "3",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"id": "3",
+		"platformName": "Linux",
+		"primaryKey": "da8b5bd8c05a28fdaaacf56efc98cf130cdd112715d066fc4152fac6927cd89b",
+		"ratings": 1,
+		"ratingsScore": 1,
+		"region": "Pernambuco",
+		"title": "",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "2",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb5",
+		"browserName": "Chrome",
+		"channelId": "4",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"id": "4",
+		"platformName": "Linux",
+		"primaryKey": "da8b5bd8c05a28fdaaacf56efc98cf130cdd112715d066fc4152fac6927cd89a",
+		"ratings": 1,
+		"ratingsScore": 1,
+		"region": "Pernambuco",
+		"title": "",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1",
+		"views": 1
+	}
+]

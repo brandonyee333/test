@@ -1,0 +1,32 @@
+[
+	{
+		"accountPKs": [
+			"1e3c7cf2-fde6-465f-8bb6-fa8ca86d80ce"
+		],
+		"birthDate": -1310335698713,
+		"city": "East Thereseside",
+		"company": "Lesch, Walsh and Stracke",
+		"contactId": 97805624,
+		"country": "United Kingdom",
+		"department": "Games",
+		"description": "focus group",
+		"doNotCall": false,
+		"email": "john.doe@liferay.com",
+		"fax": "322-676-1308 x82265",
+		"firstName": "John",
+		"fullName": "John Doe",
+		"id": "210668ac-1eff-4c2f-996e-c1f532d46489",
+		"industry": "Semiconductors",
+		"lastName": "Doe",
+		"middleName": "Jorge",
+		"mobilePhone": "228-062-7730",
+		"modifiedDate": "2019-11-14T19:17:36.512Z",
+		"osbAsahDataSourceId": "386700260856693123",
+		"phone": "119-057-6191",
+		"postalCode": "49159",
+		"state": "Idaho",
+		"street": "8861 Wes Expressway",
+		"suffix": "IV",
+		"title": "Chief Response Orchestrator"
+	}
+]

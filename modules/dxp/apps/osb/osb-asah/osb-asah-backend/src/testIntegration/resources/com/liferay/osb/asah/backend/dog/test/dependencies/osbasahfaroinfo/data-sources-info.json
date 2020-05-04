@@ -1,0 +1,83 @@
+[
+	{
+		"author": {
+			"id": "20000",
+			"name": ""
+		},
+		"dateCreated": "2019-12-16T15:00:00.000Z",
+		"dateModified": "2019-12-16T16:00:00.000Z",
+		"faroBackendSecuritySignature": "984657894",
+		"id": "100",
+		"name": "csv",
+		"provider": {
+			"type": "CSV"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "http://portal:8080",
+		"workspaceURL": "http://localhost:8080/workspace/10000"
+	},
+	{
+		"author": {
+			"id": "20000",
+			"name": ""
+		},
+		"credentials": {
+			"type": "Token Authentication"
+		},
+		"dateCreated": "2019-12-17T15:00:00.000Z",
+		"dateModified": "2019-12-17T16:00:00.000Z",
+		"faroBackendSecuritySignature": "123456789",
+		"id": "200",
+		"name": "Liferay 1",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "http://portal:8081",
+		"workspaceURL": "http://localhost:8080/workspace/20000"
+	},
+	{
+		"author": {
+			"id": "30000",
+			"name": ""
+		},
+		"credentials": {
+			"type": "OAuth 2 Authentication"
+		},
+		"dateCreated": "2019-12-18T15:00:00.000Z",
+		"dateModified": "2019-12-18T16:00:00.000Z",
+		"faroBackendSecuritySignature": "987654321",
+		"id": "300",
+		"name": "Liferay 2",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "http://portal:8082",
+		"workspaceURL": "http://localhost:8080/workspace/30000"
+	},
+	{
+		"author": {
+			"id": "20000",
+			"name": ""
+		},
+		"credentials": {
+			"type": "Token Authentication"
+		},
+		"dateCreated": "2019-12-19T15:00:00.000Z",
+		"dateModified": "2019-12-19T16:00:00.000Z",
+		"faroBackendSecuritySignature": "654987321",
+		"id": "400",
+		"name": "Liferay 3",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "http://portal:8083",
+		"workspaceURL": "http://localhost:8080/workspace/40000"
+	}
+]

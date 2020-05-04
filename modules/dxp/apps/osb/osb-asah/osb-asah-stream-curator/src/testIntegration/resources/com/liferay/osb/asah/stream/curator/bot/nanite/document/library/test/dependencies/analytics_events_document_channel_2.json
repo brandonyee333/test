@@ -1,0 +1,160 @@
+[
+	{
+		"applicationId": "Comment",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "posted",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"text": "test"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Comment",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:15:00.000Z",
+		"eventId": "posted",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"text": "test2"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Comment",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T11:04:00.000Z",
+		"eventId": "posted",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"text": "test3"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Document",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "documentDownloaded",
+		"eventProperties": {
+			"fileEntryId": 1,
+			"title": "Title 1"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Document",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "documentDownloaded",
+		"eventProperties": {
+			"fileEntryId": 1,
+			"title": "Title 1"
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "Document",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"city": "Recife",
+			"contentLanguageId": "pt-BR",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "macOS",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T10:10:00.000Z",
+		"eventId": "documentPreviewed",
+		"eventProperties": {
+			"fileEntryId": 2,
+			"title": "Title 2"
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"score": 1
+		},
+		"userId": "1"
+	}
+]

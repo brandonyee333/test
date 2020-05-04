@@ -1,0 +1,30 @@
+[
+	{
+		"firstName": "Bruno",
+		"id": "386700253541400286",
+		"lastName": "Admin",
+		"osbAsahDataSourceId": "405057430327289648",
+		"screenName": "bruno.admin"
+	},
+	{
+		"firstName": "Bruno",
+		"id": "386700253541400287",
+		"lastName": "Badmin",
+		"osbAsahDataSourceId": "405057430327289648",
+		"screenName": "bruno.badmin"
+	},
+	{
+		"firstName": "Test1",
+		"id": "386700253541400288",
+		"lastName": "Test1",
+		"osbAsahDataSourceId": "405057430327289648",
+		"screenName": "test1.test1"
+	},
+	{
+		"firstName": "Test2",
+		"id": "386700253541400289",
+		"lastName": "Test2",
+		"osbAsahDataSourceId": "405057430327289648",
+		"screenName": "test2.test2"
+	}
+]

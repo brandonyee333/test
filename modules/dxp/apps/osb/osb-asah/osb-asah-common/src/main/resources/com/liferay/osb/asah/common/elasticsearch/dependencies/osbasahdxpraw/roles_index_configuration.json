@@ -1,0 +1,34 @@
+{
+	"mappings": {
+		"roles": {
+			"date_detection": false,
+			"properties": {
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"roleId": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

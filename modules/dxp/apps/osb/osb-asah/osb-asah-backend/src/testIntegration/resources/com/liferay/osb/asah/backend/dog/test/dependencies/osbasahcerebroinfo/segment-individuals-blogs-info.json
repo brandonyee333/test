@@ -1,0 +1,197 @@
+[
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"id": "1",
+		"individualId": "4",
+		"knownIndividual": true,
+		"primaryKey": "1",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-2d}",
+		"id": "2",
+		"individualId": "2",
+		"knownIndividual": true,
+		"primaryKey": "2",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-3d}",
+		"id": "3",
+		"individualId": "3",
+		"knownIndividual": false,
+		"primaryKey": "3",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "3",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-4d}",
+		"id": "4",
+		"individualId": "4",
+		"knownIndividual": true,
+		"primaryKey": "4",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "4",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-5d}",
+		"id": "5",
+		"individualId": "4",
+		"knownIndividual": true,
+		"primaryKey": "5",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-6d}",
+		"id": "6",
+		"individualId": "1",
+		"knownIndividual": true,
+		"primaryKey": "6",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "6",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-7d}",
+		"id": "7",
+		"individualId": "1",
+		"knownIndividual": true,
+		"primaryKey": "7",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "7",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-8d}",
+		"id": "8",
+		"individualId": "4",
+		"knownIndividual": true,
+		"primaryKey": "8",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "8",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-9d}",
+		"id": "9",
+		"individualId": "1",
+		"knownIndividual": true,
+		"primaryKey": "9",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "9",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-10d}",
+		"id": "10",
+		"individualId": "4",
+		"knownIndividual": true,
+		"primaryKey": "10",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "10",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-11d}",
+		"id": "11",
+		"individualId": "3",
+		"knownIndividual": false,
+		"primaryKey": "11",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "11",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-12d}",
+		"id": "12",
+		"individualId": "2",
+		"knownIndividual": true,
+		"primaryKey": "12",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "12",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-13d}",
+		"id": "13",
+		"individualId": "1",
+		"knownIndividual": true,
+		"primaryKey": "13",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "13",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-14d}",
+		"id": "14",
+		"individualId": "3",
+		"knownIndividual": false,
+		"primaryKey": "14",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "14",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-15d}",
+		"id": "15",
+		"individualId": "4",
+		"knownIndividual": true,
+		"primaryKey": "15",
+		"segmentNames": [
+			"Developer"
+		],
+		"userId": "15",
+		"views": 1
+	}
+]

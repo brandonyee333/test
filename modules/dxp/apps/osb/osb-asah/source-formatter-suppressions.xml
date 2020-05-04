@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<suppressions>
+	<checkstyle>
+		<suppress checks="JSONUtilCheck" files="osb-asah-common/src/test/java/com/liferay/osb/asah/common/json/JSONUtilTest\.java" />
+	</checkstyle>
+	<source-check>
+		<suppress checks="GradleDependencyArtifactsCheck" files=".*" />
+		<suppress checks="GradleDependencyConfigurationCheck" files="osb-asah-common/build\.gradle" />
+		<suppress checks="JavaXMLSecurityCheck" files="osb-asah-salesforce-extractor/src/main/java/com/liferay/osb/asah/salesforce/extractor/xml/XMLUtil\.java" />
+		<suppress checks="JSONValidationCheck" files="osb-asah-publisher/src/testIntegration/resources/com/liferay/osb/asah/publisher/rest/controller/test/dependencies/analytics_events_message_invalid_syntax\.json" />
+		<suppress checks="MethodCallsOrderCheck" files="osb-asah-backend/src/test/java/com/liferay/osb/asah/backend/test/util/BaseBeanTestCase\.java" />
+		<suppress checks="MethodCallsOrderCheck" files="osb-asah-common/src/test/java/com/liferay/osb/asah/common/json/JSONUtilTest\.java" />
+	</source-check>
+</suppressions>

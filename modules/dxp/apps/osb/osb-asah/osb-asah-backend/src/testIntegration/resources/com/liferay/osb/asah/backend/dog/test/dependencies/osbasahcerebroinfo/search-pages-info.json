@@ -1,0 +1,52 @@
+[
+	{
+		"dataSourceId": "333962835564819755",
+		"eventDate": "${now-1d}",
+		"id": "1",
+		"individualId": "1",
+		"sessionId": "1",
+		"title": "Page 1",
+		"url": "http://192.168.108.90:8080/page1",
+		"userId": "1"
+	},
+	{
+		"dataSourceId": "333962835564819755",
+		"eventDate": "${now-2d}",
+		"id": "2",
+		"individualId": "2",
+		"sessionId": "2",
+		"title": "Página 2",
+		"url": "http://192.168.108.90:8080/pagina2",
+		"userId": "2"
+	},
+	{
+		"dataSourceId": "333962835564819755",
+		"eventDate": "${now-3d}",
+		"id": "3",
+		"individualId": "2",
+		"sessionId": "2",
+		"title": "Página 2",
+		"url": "http://192.168.108.90:8080/pagina2",
+		"userId": "2"
+	},
+	{
+		"dataSourceId": "333962835564819755",
+		"eventDate": "${now-4d}",
+		"id": "4",
+		"individualId": "3",
+		"sessionId": "3",
+		"title": "Page 3",
+		"url": "http://192.168.108.90:8080/page3",
+		"userId": "3"
+	},
+	{
+		"dataSourceId": "333962835564819755",
+		"eventDate": "${now-5d}",
+		"id": "5",
+		"individualId": "4",
+		"sessionId": "4",
+		"title": "Something else",
+		"url": "http://192.168.108.90:8080/something-else",
+		"userId": "4"
+	}
+]

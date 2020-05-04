@@ -1,0 +1,57 @@
+{
+	"mappings": {
+		"membership-changes": {
+			"properties": {
+				"dateChanged": {
+					"type": "date"
+				},
+				"dateFirst": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualDeleted": {
+					"type": "boolean"
+				},
+				"individualEmail": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"individualName": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"individualSegmentId": {
+					"type": "keyword"
+				},
+				"individualsCount": {
+					"type": "long"
+				},
+				"knownIndividualsCount": {
+					"type": "long"
+				},
+				"operation": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

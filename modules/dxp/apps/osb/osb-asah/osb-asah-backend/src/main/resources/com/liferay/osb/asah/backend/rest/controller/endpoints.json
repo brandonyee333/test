@@ -1,0 +1,261 @@
+{
+	"_links": {
+		"account": {
+			"href": "{url}/accounts/{id}{?channelId}",
+			"templated": true
+		},
+		"accounts": {
+			"href": "{url}/accounts{?apply,channelId,filter,page,size,sort*}",
+			"templated": true
+		},
+		"accounts-distribution": {
+			"href": "{url}/accounts/distribution{?channelId,fieldMappingId,filter,individualSegmentId,numberOfBins,size,sort*}",
+			"templated": true
+		},
+		"accounts-individual-segments": {
+			"href": "{url}/accounts/{id}/individual-segments{?apply,filter,page,size,sort*}",
+			"templated": true
+		},
+		"activities": {
+			"href": "{url}/activities{?apply,filter,includeToday,page,size,sort*}",
+			"templated": true
+		},
+		"activity": {
+			"href": "{url}/activities/{id}",
+			"templated": true
+		},
+		"activity-assets": {
+			"href": "{url}/activities/assets{?filter,page,size,sort*}",
+			"templated": true
+		},
+		"activity-group": {
+			"href": "{url}/activity-groups/{id}",
+			"templated": true
+		},
+		"activity-groups": {
+			"href": "{url}/activity-groups{?apply,expand,expandFilter,filter,page,size,sort*}",
+			"templated": true
+		},
+		"admin-data": {
+			"href": "{url}/admin/data/{weDeployDataServiceName}/{collectionName}",
+			"templated": true
+		},
+		"admin-nanite": {
+			"href": "{url}/admin/nanites/{className}",
+			"templated": true
+		},
+		"admin-nanites": {
+			"href": "{url}/admin/nanites",
+			"templated": true
+		},
+		"analytics-event-values": {
+			"href": "{url}/analytics-events/values{?fieldName,filter,page,size,value}",
+			"templated": true
+		},
+		"asset": {
+			"href": "{url}/assets/{id}",
+			"templated": true
+		},
+		"assets": {
+			"href": "{url}/assets{?apply,filter,page,size,sort*}",
+			"templated": true
+		},
+		"blocked-keyword": {
+			"href": "{url}/blocked-keywords/{id}",
+			"templated": true
+		},
+		"blocked-keywords": {
+			"href": "{url}/blocked-keywords/{?filter,page,size,sort*}",
+			"templated": true
+		},
+		"bulk": {
+			"href": "{url}/bulk",
+			"templated": true
+		},
+		"channel": {
+			"href": "{url}/channels/{id}{?expand}",
+			"templated": true
+		},
+		"channel-clear": {
+			"href": "{url}/channels/{id}/clear",
+			"templated": true
+		},
+		"channels": {
+			"href": "{url}/channels{?filter,page,size,sort*}",
+			"templated": true
+		},
+		"csv-individuals": {
+			"href": "{url}/csv-individuals",
+			"templated": true
+		},
+		"data-source": {
+			"href": "{url}/data-sources/{id}",
+			"templated": true
+		},
+		"data-source-disconnect": {
+			"href": "{url}/data-sources/{id}/disconnect",
+			"templated": true
+		},
+		"data-source-dxp-groups": {
+			"href": "{url}/data-sources/{id}/dxp-groups/{?end,name,parentGroupId,site,start}",
+			"templated": true
+		},
+		"data-source-dxp-organizations": {
+			"href": "{url}/data-sources/{id}/dxp-organizations/{?end,name,parentOrganizationId,start}",
+			"templated": true
+		},
+		"data-source-dxp-user-groups": {
+			"href": "{url}/data-sources/{id}/dxp-user-groups{?end,name,start}",
+			"templated": true
+		},
+		"data-source-dxp-users-fields": {
+			"href": "{url}/data-sources/{id}/dxp-users/fields{?end,start}",
+			"templated": true
+		},
+		"data-source-dxp-users-total": {
+			"href": "{url}/data-sources/{id}/dxp-users/total",
+			"templated": true
+		},
+		"data-source-progress": {
+			"href": "{url}/data-sources/{id}/progress",
+			"templated": true
+		},
+		"data-source-refresh-liferay": {
+			"href": "{url}/data-sources/refresh-liferay",
+			"templated": true
+		},
+		"data-source-salesforce-accounts-fields": {
+			"href": "{url}/data-sources/{id}/salesforce-accounts/fields{?end,start}",
+			"templated": true
+		},
+		"data-source-salesforce-users-fields": {
+			"href": "{url}/data-sources/{id}/salesforce-users/fields{?end,start}",
+			"templated": true
+		},
+		"data-sources": {
+			"href": "{url}/data-sources{?apply,filter,page,size,sort*}",
+			"templated": true
+		},
+		"engagement": {
+			"href": "{url}/engagements/{id}{?expand}",
+			"templated": true
+		},
+		"engagements": {
+			"href": "{url}/engagements{?accountId,apply,expand,filter,individualSegmentId,page,size,sort*}",
+			"templated": true
+		},
+		"field": {
+			"href": "{url}/fields/{id}",
+			"templated": true
+		},
+		"field-mapping": {
+			"href": "{url}/field-mappings/{id}",
+			"templated": true
+		},
+		"field-mappings": {
+			"href": "{url}/field-mappings{?apply,context,dataSourceId,filter,ownerType,page,size,sort*}",
+			"templated": true
+		},
+		"field-names": {
+			"href": "{url}/field-names{?label,ownerType,values}",
+			"templated": true
+		},
+		"fields": {
+			"href": "{url}/fields{?apply,filter,page,size,sort*}",
+			"templated": true
+		},
+		"individual": {
+			"href": "{url}/individuals/{id}{?expand}",
+			"templated": true
+		},
+		"individual-individual-segments": {
+			"href": "{url}/individuals/{id}/individual-segments{?expand,filter,page,size,sort*}",
+			"templated": true
+		},
+		"individual-segment": {
+			"href": "{url}/individual-segments/{id}{?expand}",
+			"templated": true
+		},
+		"individual-segment-accounts": {
+			"href": "{url}/individual-segments/{id}/accounts{?filter,page,size,sort*}",
+			"templated": true
+		},
+		"individual-segment-assign-channel": {
+			"href": "{url}/individual-segments/{id}/channel/{channelId}",
+			"templated": true
+		},
+		"individual-segment-individuals": {
+			"href": "{url}/individual-segments/{id}/individuals{?apply,filter,includeAnonymousUsers,page,size,sort*}",
+			"templated": true
+		},
+		"individual-segment-membership": {
+			"href": "{url}/individual-segments/{id}/memberships/{individualId}",
+			"templated": true
+		},
+		"individual-segment-membership-changes": {
+			"href": "{url}/individual-segments/{id}/membership-changes{?apply,expand,filter,includeToday,page,size,sort*}",
+			"templated": true
+		},
+		"individual-segment-memberships": {
+			"href": "{url}/individual-segments/{id}/memberships{?filter,page,size,sort*}",
+			"templated": true
+		},
+		"individual-segments": {
+			"href": "{url}/individual-segments{?apply,filter,includeAnonymousUsers,page,size,sort*}",
+			"templated": true
+		},
+		"individuals": {
+			"href": "{url}/individuals{?apply,channelId,expand,filter,includeAnonymousUsers,page,size,sort*}",
+			"templated": true
+		},
+		"individuals-distribution": {
+			"href": "{url}/individuals/distribution{?fieldMappingId,filter,numberOfBins,size,sort*}",
+			"templated": true
+		},
+		"interest": {
+			"href": "{url}/interests/{id}{?expand}",
+			"templated": true
+		},
+		"interest-keywords": {
+			"href": "{url}/interests/keywords{?name,page,size}",
+			"templated": true
+		},
+		"interest-terms": {
+			"href": "{url}/interests/terms/{userId}{?termsPerTopic,termWeightThreshold,topicsLength}",
+			"templated": true
+		},
+		"interest-terms-related": {
+			"href": "{url}/interests/terms/related{?page,size,terms}",
+			"templated": true
+		},
+		"interests": {
+			"href": "{url}/interests{?apply,expand,filter,page,size,sort*}",
+			"templated": true
+		},
+		"organizations": {
+			"href": "{url}/organizations{?apply,filter,page,size*}",
+			"templated": true
+		},
+		"page-visited": {
+			"href": "{url}/pages-visited/{id}",
+			"templated": true
+		},
+		"pages-visited": {
+			"href": "{url}/pages-visited{?filter,ownerId,ownerType,page,size,sort*,visitedPages}",
+			"templated": true
+		},
+		"preview-disabled-segments": {
+			"href": "{url}/individual-segments/preview-disabled-segments{?dataSourceId,filter,page,size,sort*}",
+			"templated": true
+		},
+		"self": {
+			"href": "{url}"
+		},
+		"suppression-logs": {
+			"href": "{url}/suppressions/logs{?filter}",
+			"templated": true
+		}
+	},
+	"description": "API for consuming PULPO Services",
+	"name": "pulpo-api"
+}

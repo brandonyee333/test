@@ -1,0 +1,26 @@
+[
+	{
+		"id": "10",
+		"name": "Developer",
+		"scope": "PROJECT",
+		"segmentType": "STATIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"id": "11",
+		"name": "Support",
+		"scope": "PROJECT",
+		"segmentType": "STATIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"id": "20",
+		"name": "CEO",
+		"scope": "PROJECT",
+		"segmentType": "STATIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

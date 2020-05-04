@@ -1,0 +1,192 @@
+[
+	{
+		"createDate": "2019-06-14T16:58:24.000Z",
+		"dataSourceId": "333962835564819755",
+		"description": "An amazing experiment that will solve all of our problems",
+		"dxpExperienceId": "1",
+		"dxpExperienceName": "Amazing Experience",
+		"dxpExperimentId": "1",
+		"dxpSegmentId": "1",
+		"dxpSegmentName": "Amazed People Segment",
+		"dxpVariants": [
+			{
+				"control": true,
+				"dxpVariantId": "1",
+				"dxpVariantName": "DXP Variant 1"
+			},
+			{
+				"control": false,
+				"dxpVariantId": "2",
+				"dxpVariantName": "DXP Variant 2"
+			}
+		],
+		"goal": {
+			"metric": "CLICK_RATE",
+			"target": "button-123"
+		},
+		"id": "1",
+		"modifiedDate": "2019-07-17T11:02:08.000Z",
+		"name": "Awesome test",
+		"pageTitle": "Awesome Page",
+		"pageURL": "https://www.example.com/awesome",
+		"startedDate": "${now-2d}",
+		"status": "RUNNING",
+		"type": "AB"
+	},
+	{
+		"createDate": "2019-07-02T08:11:32.000Z",
+		"dataSourceId": "333962835564819755",
+		"description": "A regular test that we hope will be useful",
+		"dxpExperienceId": "2",
+		"dxpExperienceName": "Regular Experience",
+		"dxpExperimentId": "2",
+		"dxpSegmentId": "2",
+		"dxpSegmentName": "Regular Users",
+		"goal": {
+			"metric": "TIME_ON_PAGE"
+		},
+		"id": "2",
+		"modifiedDate": "2019-07-02T08:30:42.000Z",
+		"name": "Regular test",
+		"pageTitle": "Enroll to Example",
+		"pageURL": "https://www.example.com/enroll",
+		"status": "DRAFT",
+		"type": "AB"
+	},
+	{
+		"createDate": "2019-06-14T16:58:24.000Z",
+		"dataSourceId": "333962835564819755",
+		"description": "Another amazing experiment that will solve all of our problems",
+		"dxpExperienceId": "1",
+		"dxpExperienceName": "Amazing Experience",
+		"dxpExperimentId": "1",
+		"dxpSegmentId": "1",
+		"dxpSegmentName": "Amazed People Segment",
+		"dxpVariants": [
+			{
+				"control": true,
+				"dxpVariantId": "1",
+				"dxpVariantName": "DXP Variant 1"
+			},
+			{
+				"control": false,
+				"dxpVariantId": "2",
+				"dxpVariantName": "DXP Variant 2"
+			}
+		],
+		"goal": {
+			"metric": "CLICK_RATE",
+			"target": "button-123"
+		},
+		"id": "3",
+		"metrics": [
+			{
+				"confidenceLevel": 0.95,
+				"elapsedDays": 1,
+				"estimatedDaysLeft": 13,
+				"processedDate": "${now-2d}",
+				"variantMetrics": [
+					{
+						"confidenceInterval": [
+							0.5,
+							2.5
+						],
+						"control": true,
+						"dxpVariantId": "1",
+						"improvement": 0.3,
+						"median": 0.4,
+						"probabilityToWin": 0.2
+					},
+					{
+						"confidenceInterval": [
+							0.6,
+							3.2
+						],
+						"control": false,
+						"dxpVariantId": "2",
+						"improvement": 0.4,
+						"median": 0.5,
+						"probabilityToWin": 0.3
+					}
+				]
+			},
+			{
+				"confidenceLevel": 0.95,
+				"elapsedDays": 2,
+				"estimatedDaysLeft": 12,
+				"processedDate": "${now-1d}",
+				"variantMetrics": [
+					{
+						"confidenceInterval": [
+							0.6,
+							2.6
+						],
+						"control": true,
+						"dxpVariantId": "1",
+						"improvement": 0.4,
+						"median": 0.5,
+						"probabilityToWin": 0.25
+					},
+					{
+						"confidenceInterval": [
+							0.7,
+							3.5
+						],
+						"control": false,
+						"dxpVariantId": "2",
+						"improvement": 0.6,
+						"median": 0.6,
+						"probabilityToWin": 0.5
+					}
+				]
+			}
+		],
+		"modifiedDate": "2019-07-17T11:02:08.000Z",
+		"name": "Awesome test",
+		"pageTitle": "Awesome Page",
+		"pageURL": "https://www.example.com/awesome",
+		"startedDate": "${now-3d}",
+		"status": "RUNNING",
+		"type": "AB"
+	},
+	{
+		"confidenceLevel": 95,
+		"createDate": "${now-15d}",
+		"dataSourceId": "1",
+		"description": "",
+		"dxpExperienceId": "DEFAULT",
+		"dxpExperienceName": "Default",
+		"dxpLayoutId": "a9f755e8-05fe-9785-84d5-cc9d0a9bd6ac",
+		"dxpSegmentId": "DEFAULT",
+		"dxpSegmentName": "Anyone",
+		"dxpVariants": [
+			{
+				"changes": 0,
+				"control": true,
+				"dxpVariantId": "DEFAULT",
+				"dxpVariantName": "Control",
+				"trafficSplit": 50
+			},
+			{
+				"changes": 0,
+				"control": false,
+				"dxpVariantId": "37729",
+				"dxpVariantName": "Variant A",
+				"trafficSplit": 50
+			}
+		],
+		"goal": {
+			"metric": "BOUNCE_RATE",
+			"target": ""
+		},
+		"id": "4",
+		"modifiedDate": "${now-4d}",
+		"name": "Some experiment",
+		"pageRelativePath": "/example-page",
+		"pageTitle": "",
+		"pageURL": "http://example.com/example-page",
+		"startedDate": "${now-4d}",
+		"status": "RUNNING",
+		"type": "AB"
+	}
+]

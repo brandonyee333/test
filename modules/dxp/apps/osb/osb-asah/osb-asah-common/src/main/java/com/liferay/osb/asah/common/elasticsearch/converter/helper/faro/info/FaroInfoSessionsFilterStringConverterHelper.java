@@ -1,0 +1,183 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info;
+
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
+import com.liferay.osb.asah.common.elasticsearch.converter.helper.DefaultFilterStringConverterHelper;
+import com.liferay.osb.asah.common.util.StringUtil;
+
+import java.util.List;
+
+import org.apache.lucene.search.join.ScoreMode;
+
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.RangeQueryBuilder;
+
+import org.springframework.stereotype.Component;
+
+/**
+ * @author Rachael Koestartyo
+ */
+@Component
+public class FaroInfoSessionsFilterStringConverterHelper
+	extends DefaultFilterStringConverterHelper {
+
+	@Override
+	public QueryBuilder getCustomFunctionQueryBuilder(
+		List<String> arguments, String customFunctionName, boolean negated) {
+
+		String fieldName = arguments.get(0);
+
+		if (!fieldName.startsWith("context/")) {
+			return null;
+		}
+
+		QueryBuilder queryBuilder = null;
+
+		fieldName = "interactions." + fieldName.replace('/', '.');
+
+		String fieldValue = arguments.get(1);
+
+		String value = StringUtil.unquoteAndDecodeInnerQuotes(fieldValue);
+
+		if (customFunctionName.equalsIgnoreCase("between")) {
+			queryBuilder = QueryBuilders.rangeQuery(
+				fieldName
+			).gte(
+				value
+			).lte(
+				StringUtil.unquote(arguments.get(2))
+			);
+		}
+		else if (customFunctionName.equalsIgnoreCase("contains")) {
+			queryBuilder = QueryBuilders.regexpQuery(
+				fieldName,
+				FilterStringToQueryBuilderConverter.buildIgnoreCaseRegExp(
+					value));
+		}
+		else if (customFunctionName.equalsIgnoreCase("endsWith")) {
+			queryBuilder = QueryBuilders.wildcardQuery(fieldName, "*" + value);
+		}
+		else if (customFunctionName.equalsIgnoreCase("startsWith")) {
+			queryBuilder = QueryBuilders.wildcardQuery(fieldName, value + "*");
+		}
+
+		if (negated) {
+			queryBuilder = BoolQueryBuilderUtil.mustNot(queryBuilder);
+		}
+
+		return QueryBuilders.nestedQuery(
+			"interactions", queryBuilder, ScoreMode.None);
+	}
+
+	@Override
+	public QueryBuilder getLogicFunctionQueryBuilder(
+			String fieldName, String operator, String valueString)
+		throws Exception {
+
+		QueryBuilder timeFrameQueryBuilder = getTimeFrameQueryBuilder(
+			fieldName, operator, "sessions", valueString);
+
+		if (timeFrameQueryBuilder != null) {
+			return timeFrameQueryBuilder;
+		}
+
+		if (!fieldName.startsWith("context/")) {
+			return null;
+		}
+
+		return _getInteractionsQueryBuilder(fieldName, operator, valueString);
+	}
+
+	private QueryBuilder _getInteractionsQueryBuilder(
+		String fieldName, String operator, String valueString) {
+
+		fieldName = "interactions." + fieldName.replace('/', '.');
+
+		Object value = StringUtil.toObject(valueString);
+
+		if (operator.equalsIgnoreCase("eq")) {
+			if (value != null) {
+				return QueryBuilders.nestedQuery(
+					"interactions",
+					BoolQueryBuilderUtil.filter(
+						QueryBuilders.termQuery(fieldName, value)),
+					ScoreMode.None);
+			}
+
+			return QueryBuilders.nestedQuery(
+				"interactions",
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.existsQuery(fieldName)),
+				ScoreMode.None);
+		}
+		else if (operator.equalsIgnoreCase("gt")) {
+			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+				fieldName);
+
+			rangeQueryBuilder.gt(value);
+
+			return QueryBuilders.nestedQuery(
+				"interactions", rangeQueryBuilder, ScoreMode.None);
+		}
+		else if (operator.equalsIgnoreCase("ge")) {
+			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+				fieldName);
+
+			rangeQueryBuilder.gte(value);
+
+			return QueryBuilders.nestedQuery(
+				"interactions", rangeQueryBuilder, ScoreMode.None);
+		}
+		else if (operator.equalsIgnoreCase("lt")) {
+			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+				fieldName);
+
+			rangeQueryBuilder.lt(value);
+
+			return QueryBuilders.nestedQuery(
+				"interactions", rangeQueryBuilder, ScoreMode.None);
+		}
+		else if (operator.equalsIgnoreCase("le")) {
+			RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(
+				fieldName);
+
+			rangeQueryBuilder.lte(value);
+
+			return QueryBuilders.nestedQuery(
+				"interactions", rangeQueryBuilder, ScoreMode.None);
+		}
+		else if (operator.equalsIgnoreCase("ne")) {
+			if (value != null) {
+				return QueryBuilders.nestedQuery(
+					"interactions",
+					BoolQueryBuilderUtil.mustNot(
+						QueryBuilders.termQuery(fieldName, value)),
+					ScoreMode.None);
+			}
+
+			return QueryBuilders.nestedQuery(
+				"interactions",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.existsQuery(fieldName)),
+				ScoreMode.None);
+		}
+
+		return null;
+	}
+
+}

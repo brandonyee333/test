@@ -1,0 +1,16 @@
+apply plugin: "com.liferay.dependency.local.copy"
+apply plugin: "com.liferay.spring.boot.defaults"
+
+bootRepackage {
+	enabled = false
+}
+
+configurations.all {
+	exclude group: "com.vaadin.external.google", module: "android-json"
+}
+
+dependencies {
+	compile group: "it.ozimov", name: "embedded-redis", version: "0.7.2"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
+	compile group: "org.springframework.boot", name: "spring-boot-starter-test"
+}

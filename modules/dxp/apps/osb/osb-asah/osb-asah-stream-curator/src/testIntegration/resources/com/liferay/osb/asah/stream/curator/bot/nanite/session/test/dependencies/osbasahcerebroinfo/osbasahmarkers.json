@@ -1,0 +1,6 @@
+[
+	{
+		"id": "SessionNanite",
+		"lastSuccessfulSessionFinalizerDate": "${now-30m}"
+	}
+]

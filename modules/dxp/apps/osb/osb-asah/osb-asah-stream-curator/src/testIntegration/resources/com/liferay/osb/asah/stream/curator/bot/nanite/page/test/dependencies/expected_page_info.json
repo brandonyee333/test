@@ -1,0 +1,298 @@
+[
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:01:00.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "cc8dfff59b8742e89de9ad350b2b4778410309a7dc5359d0381bb3c71961db46",
+		"region": "Sergipe",
+		"title": "Liferay Support",
+		"url": "http://liferay.com/support",
+		"userId": "6",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:30:09.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "84f73e745e1c526220e7f86e8de1a56035313fdb169931234bfd9bc2c955cb96",
+		"region": "Pernambuco",
+		"title": "Liferay Blogs",
+		"url": "http://liferay.com/blogs",
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:38:07.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "7008b7936a744777fe34ae3676594dcd4728aa7acd0004864b90049f508ae0b5",
+		"region": "Sergipe",
+		"title": "Liferay Blogs",
+		"url": "http://liferay.com/blogs",
+		"userId": "6",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:40:01.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "59ab3217d1f5b6331dea26d55a2967f9ac70995753759814e4558f6c02aa1489",
+		"region": "Amazonas",
+		"title": "Liferay DXP Trial",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "7",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:42:03.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "68bd34fe9355d21d17b95204c319d024591289aa7fd951a43da62ab4f4df0a65",
+		"region": "Pernambuco",
+		"title": "Liferay DXP Trial",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T11:05:08.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "c057590964ac7862cbe73ca2bcc38d9daaccbe5e5587e82dd8075388b30f642c",
+		"region": "Amazonas",
+		"title": "Liferay Blogs",
+		"url": "http://liferay.com/blogs",
+		"userId": "7",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 3,
+		"directAccessDates": [
+			"2018-01-04T10:40:01.000Z",
+			"2018-01-04T10:41:01.000Z",
+			"2018-01-04T10:50:02.000Z"
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "2e4a709626896a523f3e8450f5b64a426b3143142483f6de9336856190e64d51",
+		"region": "Amazonas",
+		"title": "Liferay DXP Trial",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "8",
+		"views": 3
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:10:04.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "c06399dd5ada760dbd16741b2b91d977bd224b55d16be031d3e5b70e5ceaa825",
+		"region": "Colorado",
+		"title": "Liferay DXP Trial",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "3",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:22:05.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "4d1edbcc014b40bcca80c0ce29fff970947bccc32a154bf4d0d798c1b98e360f",
+		"region": "California",
+		"title": "Liferay DXP Trial",
+		"url": "http://liferay.com/dxp_trial",
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:36:11.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "fe24fc8b1c551951d729d76227c84ee65a10894d90a9d5fb652b26129b848d81",
+		"region": "California",
+		"title": "Liferay Blogs",
+		"url": "http://liferay.com/blogs",
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"browserName": "IE",
+		"channelId": "1",
+		"country": "USA",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"eventDate": "2018-01-04T10:00:00.000Z",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2018-01-04T10:47:10.000Z"
+		],
+		"interactionDates": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "43c21a5023d925803ce16fb23130a43161afb26d4dcde880a8fd49b2830b5873",
+		"region": "Colorado",
+		"title": "Liferay Blogs",
+		"url": "http://liferay.com/blogs",
+		"userId": "4",
+		"views": 1
+	},
+	{
+		"browserName": "Firefox",
+		"channelId": "1",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"engagementScore": 0.3,
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"firstEventDate": "2018-01-04T11:10:04.000Z",
+		"indirectAccess": 2,
+		"indirectAccessDates": [
+			"2018-01-04T11:05:22.000Z",
+			"2018-01-04T11:10:04.000Z"
+		],
+		"pageScrolls": [
+			{
+				"depth": 25,
+				"eventDate": "2018-01-04T11:43:00.000Z"
+			}
+		],
+		"platformName": "Linux",
+		"primaryKey": "2e385088a27f0fc4ca9b2d07892939d1d6a7cc2330e0f253a921e8fc7be13b5d",
+		"region": "Pernambuco",
+		"timeOnPage": 0,
+		"title": "About Us",
+		"url": "http://liferay.com/our-story",
+		"userId": "4",
+		"views": 2
+	}
+]

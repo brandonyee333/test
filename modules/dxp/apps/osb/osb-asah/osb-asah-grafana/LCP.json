@@ -1,0 +1,17 @@
+{
+	"cpu": 2,
+	"id": "osbasahgrafana",
+	"loadBalancer": {
+		"cdn": false,
+		"targetPort": 3000
+	},
+	"memory": 2048,
+	"ports": [
+		{
+			"external": false,
+			"port": 3000,
+			"protocol": "TCP",
+			"targetPort": 3000
+		}
+	]
+}

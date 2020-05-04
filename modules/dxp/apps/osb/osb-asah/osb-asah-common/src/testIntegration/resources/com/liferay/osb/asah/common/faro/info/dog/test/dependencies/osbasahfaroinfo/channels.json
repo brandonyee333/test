@@ -1,0 +1,47 @@
+[
+	{
+		"dataSources": [
+			{
+				"groupIds": [
+					"123"
+				],
+				"id": "405201047787757795"
+			},
+			{
+				"groupIds": [
+					"000"
+				],
+				"id": "402135416847684684"
+			}
+		],
+		"dateCreated": "${now-1h}",
+		"id": "1",
+		"name": "channel1"
+	},
+	{
+		"dataSources": [
+			{
+				"groupIds": [
+					"456"
+				],
+				"id": "405201047787757795"
+			}
+		],
+		"dateCreated": "${now-1h}",
+		"id": "2",
+		"name": "channel2"
+	},
+	{
+		"dataSources": [
+			{
+				"groupIds": [
+					"123"
+				],
+				"id": "321354651654654651"
+			}
+		],
+		"dateCreated": "${now-1h}",
+		"id": "3",
+		"name": "channel3"
+	}
+]

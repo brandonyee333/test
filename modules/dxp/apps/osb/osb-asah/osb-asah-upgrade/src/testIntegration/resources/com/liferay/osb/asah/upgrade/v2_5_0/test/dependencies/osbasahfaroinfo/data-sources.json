@@ -1,0 +1,22 @@
+[
+	{
+		"channelId": "1",
+		"id": "1",
+		"name": "Data Source 1",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"channelId": "2",
+		"id": "2",
+		"name": "Data Source 2",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

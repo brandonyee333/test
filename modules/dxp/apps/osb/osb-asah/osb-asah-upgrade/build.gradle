@@ -1,0 +1,15 @@
+apply plugin: "com.liferay.dependency.local.copy"
+apply plugin: "com.liferay.spring.boot.defaults"
+
+dependencies {
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
+
+	testCompile group: "junit", name: "junit", version: "4.12"
+	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
+}
+
+testIntegration {
+	doFirst {
+		environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
+	}
+}

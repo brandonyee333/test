@@ -1,0 +1,72 @@
+{
+	"osbasahcerebroinfo": [
+		"blog-clicks",
+		"blog-social-shares",
+		"blog-traffic-sources",
+		"blogs",
+		"custom-assets",
+		"custom-asset-dashboards",
+		"document-libraries",
+		"forms",
+		"journal-clicks",
+		"journals",
+		"osbasahmarkers",
+		"page-referrers",
+		"pages",
+		"user-sessions"
+	],
+	"osbasahcerebroraw": [
+		"analytics-events"
+	],
+	"osbasahdxpraw": [
+		"audit-events",
+		"faro-audit-events",
+		"groups",
+		"organizations",
+		"osbasahmarkers",
+		"roles",
+		"run-logs",
+		"teams",
+		"user-groups",
+		"users"
+	],
+	"osbasahfaroinfo": [
+		"accounts",
+		"activities",
+		"activity-groups",
+		"assets",
+		"blocked-keywords",
+		"channels",
+		"csv-individuals",
+		"data-control-tasks",
+		"data-export-tasks",
+		"data-sources",
+		"engagements",
+		"experiments",
+		"field-mappings",
+		"field-names",
+		"fields",
+		"individual-segments",
+		"individuals",
+		"interest-topics",
+		"interests",
+		"membership-changes",
+		"memberships",
+		"organizations",
+		"osbasahmarkers",
+		"osbasahtasks",
+		"preferences",
+		"run-logs",
+		"suppressions",
+		"visited-pages"
+	],
+	"osbasahsalesforceraw": [
+		"account",
+		"audit-events",
+		"contact",
+		"individuals",
+		"lead",
+		"osbasahmarkers",
+		"run-logs"
+	]
+}

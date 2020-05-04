@@ -1,0 +1,18 @@
+{
+	"cpu": 2,
+	"env": {
+		"ES_URI": "http://osbasahelasticsearch:9200"
+	},
+	"id": "osbasahelasticsearchexporter",
+	"image": "justwatch/elasticsearch_exporter:1.1.0",
+	"kind": "Deployment",
+	"memory": 256,
+	"ports": [
+		{
+			"external": false,
+			"port": 9114,
+			"protocol": "TCP",
+			"targetPort": 9114
+		}
+	]
+}

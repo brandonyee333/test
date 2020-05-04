@@ -1,0 +1,19 @@
+{
+	"_embedded": {
+		"accounts-distribution-transformations": [
+			{
+				"count": 1,
+				"values": [
+					20000,
+					20000
+				]
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 10,
+		"totalElements": 1,
+		"totalPages": 1
+	}
+}

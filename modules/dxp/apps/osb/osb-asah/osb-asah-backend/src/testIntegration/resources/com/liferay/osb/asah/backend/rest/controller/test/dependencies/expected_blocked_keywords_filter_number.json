@@ -1,0 +1,35 @@
+{
+	"_embedded": {
+		"blocked-keywords": [
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						},
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:07.666Z",
+				"dataSourceIds": [
+					"351238757269547424",
+					"351238757269547425"
+				],
+				"id": "351238757269547437",
+				"keyword": "1500s"
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 1,
+		"totalElements": 1,
+		"totalPages": 1
+	}
+}

@@ -1,0 +1,50 @@
+[
+	{
+		"applicationId": "Custom",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "www.liferay.com",
+		"eventDate": "2018-04-04T09:30:00.000Z",
+		"eventId": "assetViewed",
+		"eventProperties": {
+			"assetId": "1",
+			"title": "Asset Title"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Custom",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Windows",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "www.liferay.com",
+		"eventDate": "2018-04-04T09:30:00.000Z",
+		"eventId": "assetViewed",
+		"eventProperties": {
+			"assetId": "1",
+			"title": "Asset Title"
+		},
+		"id": "2",
+		"userId": "1"
+	}
+]

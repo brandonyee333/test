@@ -1,0 +1,62 @@
+[
+	{
+		"assetId": "1",
+		"eventDate": "${now-1d}",
+		"id": "323477041478355932",
+		"individualId": "1",
+		"primaryKey": "6d75e3485b77df20a903aa7910fefd4eaddb2e0787740ab443d6b51616376e9a",
+		"segmentNames": [
+			"Manager"
+		],
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/home/-/blogs/36587"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-2d}",
+		"id": "323477385822227433",
+		"individualId": "2",
+		"primaryKey": "2c8c358b0f341ec29dd7f2f1f8323e2d898afa7598c7ebd63156be243612bcd3",
+		"segmentNames": [
+			"Manager"
+		],
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/home/-/blogs/36587"
+		],
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-2d}",
+		"id": "323477389185970949",
+		"individualId": "3",
+		"primaryKey": "fce3b92c8da4f3d718728e5737bff02856d2e7c0fbd2d4d4f6bbf5441c09fe44",
+		"segmentNames": [
+			"Marketeer"
+		],
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/home/-/blogs/36587"
+		],
+		"userId": "3",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"eventDate": "${now-2d}",
+		"id": "323477041514478355",
+		"individualId": "4",
+		"primaryKey": "6d75e3485b77df20a903aa7910fefd4eaddb2e0787740ab443d6b51616376e9a",
+		"segmentNames": [
+			"Developer"
+		],
+		"urls": [
+			"http://192.168.109.41:8181/web/guest/home/-/blogs/36587"
+		],
+		"userId": "4",
+		"views": 3
+	}
+]

@@ -1,0 +1,10 @@
+apply plugin: "com.liferay.dependency.local.copy"
+apply plugin: "com.liferay.spring.boot.defaults"
+
+bootRepackage {
+	enabled = false
+}
+
+dependencies {
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
+}

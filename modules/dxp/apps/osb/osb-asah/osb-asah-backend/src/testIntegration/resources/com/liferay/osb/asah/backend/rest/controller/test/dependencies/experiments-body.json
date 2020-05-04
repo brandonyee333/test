@@ -1,0 +1,13 @@
+{
+	"operationName": "Experiments",
+	"variables": {
+		"channelId": "1",
+		"keywords": "",
+		"size": 20,
+		"sort": {
+			"column": "modifiedDate",
+			"type": "DESC"
+		},
+		"start": 0
+	}
+}

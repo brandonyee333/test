@@ -1,0 +1,157 @@
+[
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": null,
+		"ctaclicks": 0,
+		"dataSourceId": "372049829876793298",
+		"deviceType": "Desktop",
+		"directAccess": 2,
+		"directAccessDates": [
+			"2019-08-16T17:15:19.211Z",
+			"2019-08-16T17:22:34.714Z"
+		],
+		"engagementScore": 0.09677844444444444,
+		"entrances": 0,
+		"eventDate": "2019-08-16T17:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-08-16T17:15:19.211Z",
+		"formSubmissions": 0,
+		"id": "372189498023251289",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": "372049916046453108",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-08-16T17:22:34.714Z",
+		"modifiedDate": "2019-08-16T17:23:22.682Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "c4dc7254d7d4552da8a14c78e8532b668d6831dbaebcf17ac327e4db2999c114",
+		"region": null,
+		"searchTerm": null,
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": null,
+		"timeOnPage": 435503,
+		"title": "Welcome - Liferay",
+		"url": "http://172.16.22.54:8089/",
+		"userId": "f65a3f60-a72c-11e9-91db-cf7c057c158a",
+		"variantId": "",
+		"views": 2
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": null,
+		"ctaclicks": 0,
+		"dataSourceId": "372049829876793298",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"2019-08-16T19:18:39.991Z"
+		],
+		"engagementScore": 0.014542444444444445,
+		"entrances": 1,
+		"eventDate": "2019-08-16T19:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-08-16T19:18:39.991Z",
+		"formSubmissions": 0,
+		"id": "372204976938114863",
+		"indirectAccess": 2,
+		"indirectAccessDates": [
+			"2019-08-16T19:19:45.415Z",
+			"2019-08-16T19:19:45.432Z"
+		],
+		"individualId": "372049916046453108",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-08-16T19:19:45.432Z",
+		"modifiedDate": "2019-08-16T19:20:23.547Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "a46abf78b9ba1433af0b83a13cbce17a1bc6a04927483ae2f8e388c45d242f61",
+		"region": null,
+		"searchTerm": null,
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": null,
+		"timeOnPage": 65441,
+		"title": "Welcome - Liferay",
+		"url": "http://172.16.22.54:8089/",
+		"userId": "f65a3f60-a72c-11e9-91db-cf7c057c158a",
+		"variantId": "",
+		"views": 3
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": null,
+		"ctaclicks": 0,
+		"dataSourceId": "372049829876793298",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"engagementScore": 0.0050606666666666664,
+		"entrances": 1,
+		"eventDate": "2019-08-16T19:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-08-16T19:19:48.854Z",
+		"formSubmissions": 0,
+		"id": "372205102992094795",
+		"indirectAccess": 4,
+		"indirectAccessDates": [
+			"2019-08-16T19:19:48.854Z",
+			"2019-08-16T19:20:01.578Z",
+			"2019-08-16T19:20:07.806Z",
+			"2019-08-16T19:20:11.627Z"
+		],
+		"individualId": "372205035577059823",
+		"interactionDates": [
+		],
+		"knownIndividual": false,
+		"lastEventDate": "2019-08-16T19:20:11.627Z",
+		"modifiedDate": "2019-08-16T19:20:23.549Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "6e8aeb3e706e53c728d3490cfa9ab672ade4967b06a2e0ec0384ade3a939c07f",
+		"region": null,
+		"searchTerm": null,
+		"segmentNames": [
+		],
+		"sessionId": null,
+		"timeOnPage": 22773,
+		"title": "Welcome - Liferay",
+		"url": "http://172.16.22.54:8089/web/guest/home",
+		"userId": "d1a5e290-c05a-11e9-b991-cbeb81247a3a",
+		"variantId": "",
+		"views": 4
+	}
+]

@@ -1,0 +1,24 @@
+[
+	{
+		"birthday": 392026033072,
+		"contact": {
+			"emailAddress": "john.doe@liferay.com",
+			"firstName": "John",
+			"gender": "male",
+			"jobTitle": "electrician",
+			"lastName": "Doe",
+			"modifiedDate": 1573759049837,
+			"userId": 37202748
+		},
+		"emailAddress": "john.doe@liferay.com",
+		"firstName": "John",
+		"id": "386700253547552294",
+		"jobTitle": "electrician",
+		"lastName": "Doe",
+		"modifiedDate": 1573759049837,
+		"osbAsahDataSourceId": "386700245519579270",
+		"screenName": "john.doe",
+		"userId": 37202748,
+		"uuid": "44bea587-c288-4257-bd8a-596f73570d7c"
+	}
+]

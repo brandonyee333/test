@@ -1,0 +1,20 @@
+{
+	"cpu": 4,
+	"env": {
+		"JAVA_OPTS_EXT": "-Xmx7168m -XX:MaxMetaspaceSize=512m",
+		"LOGGING_PATTERN_CONSOLE": "${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}",
+		"OSB_ASAH_MONOLITH_ENABLED": "true"
+	},
+	"id": "osbasahmonolith",
+	"image": "wedeploy/com-liferay-osb-asah-private:osb-asah-monolith-20200120-dab72da",
+	"kind": "Deployment",
+	"loadBalancer": {
+		"cdn": false,
+		"targetPort": 8080
+	},
+	"memory": 8192,
+	"volumes": {
+		"export": "/export",
+		"temp": "/temp"
+	}
+}

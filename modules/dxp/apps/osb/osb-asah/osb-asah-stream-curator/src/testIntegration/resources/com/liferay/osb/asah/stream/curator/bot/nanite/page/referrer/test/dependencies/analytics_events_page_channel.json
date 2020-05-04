@@ -1,0 +1,296 @@
+[
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "",
+			"region": "Amazonas",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:40:01.000Z",
+		"eventId": "pageViewed",
+		"userId": "8"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "",
+			"region": "Amazonas",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:41:01.000Z",
+		"eventId": "pageViewed",
+		"userId": "8"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "",
+			"region": "Amazonas",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:50:02.000Z",
+		"eventId": "pageViewed",
+		"userId": "8"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com",
+			"region": "Sergipe",
+			"title": "Liferay Support",
+			"url": "http://liferay.com/support"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:01:00.000Z",
+		"eventId": "pageViewed",
+		"userId": "6"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/dxp_trial",
+			"region": "Amazonas",
+			"title": "Liferay Blogs",
+			"url": "http://liferay.com/blogs"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:05:08.000Z",
+		"eventId": "pageViewed",
+		"userId": "7"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/dxp_trial",
+			"region": "Pernambuco",
+			"title": "Liferay Blogs",
+			"url": "http://liferay.com/blogs"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:30:09.000Z",
+		"eventId": "pageViewed",
+		"userId": "5"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/headless_cms",
+			"region": "Amazonas",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:40:01.000Z",
+		"eventId": "pageViewed",
+		"userId": "7"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/increasing_web_traffic",
+			"region": "Pernambuco",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:42:03.000Z",
+		"eventId": "pageViewed",
+		"userId": "5"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/support",
+			"region": "Sergipe",
+			"title": "Liferay Blogs",
+			"url": "http://liferay.com/blogs"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:38:07.000Z",
+		"eventId": "pageViewed",
+		"userId": "6"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "USA",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/dxp_trial",
+			"region": "California",
+			"title": "Liferay Blogs",
+			"url": "http://liferay.com/blogs"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:36:11.000Z",
+		"eventId": "pageViewed",
+		"userId": "2"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "USA",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/dxp_trial",
+			"region": "Colorado",
+			"title": "Liferay Blogs",
+			"url": "http://liferay.com/blogs"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:47:10.000Z",
+		"eventId": "pageViewed",
+		"userId": "4"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "USA",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/increasing_web_traffic",
+			"region": "California",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:22:05.000Z",
+		"eventId": "pageViewed",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "IE",
+			"contentLanguageId": "en-US",
+			"country": "USA",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Windows",
+			"referrer": "http://liferay.com/increasing_web_traffic",
+			"region": "Colorado",
+			"title": "Liferay DXP Trial",
+			"url": "http://liferay.com/dxp_trial"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T10:10:04.000Z",
+		"eventId": "pageViewed",
+		"userId": "3"
+	},
+	{
+		"applicationId": "Page",
+		"channelId": "1",
+		"context": {
+			"browserName": "Firefox",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"languageId": "en-US",
+			"platformName": "Linux",
+			"referrer": "http://google.com",
+			"region": "Pernambuco",
+			"title": "About Us",
+			"url": "http://liferay.com/our-story"
+		},
+		"createDate": "2018-01-04T18:58:51.000Z",
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-01-04T11:31:04.000Z",
+		"eventId": "pageViewed",
+		"userId": "4"
+	}
+]

@@ -1,0 +1,816 @@
+enum AcquisitionType {
+	CHANNEL
+	REFERRER
+	SOURCE_MEDIUM
+}
+
+enum AssetType {
+	BLOG
+	DOCUMENT
+	FORM
+	JOURNAL
+	PAGE
+}
+
+enum DataControlTaskStatus {
+	COMPLETED
+	ERROR
+	EXPIRED
+	PENDING
+	RUNNING
+}
+
+enum DataControlTaskType {
+	ACCESS
+	DELETE
+	SUPPRESS
+	UNSUPPRESS
+}
+
+enum SortType {
+	ASC
+	DESC
+}
+
+input DXPVariantSettings {
+	control: Boolean!
+	dxpVariantId: String!
+	trafficSplit: Float!
+}
+
+input ExperimentSettings {
+	confidenceLevel: Float!
+	dxpVariantsSettings: [DXPVariantSettings]!
+}
+
+input JobParameterInput {
+	name: String!
+	value: String!
+}
+
+input Sort {
+	column: String!
+	type: SortType!
+}
+
+interface AssetMetric {
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	dataSourceId: String
+	defaultMetric: Metric
+	urls: [String]
+}
+
+schema {
+	query: QueryType
+	mutation: MutationType
+}
+
+type AssetMetricBag {
+	assetMetrics: [AssetMetric]
+	total: Int
+}
+
+type BaseDXPEntity implements DXPEntity {
+	dataSourceName: String
+	id: String
+	name: String
+}
+
+type BlogMetric implements AssetMetric {
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	commentsMetric: Metric
+	dataSourceId: String
+	defaultMetric: Metric
+	ratingsMetric: Metric
+	readingTimeMetric: Metric
+	urls: [String]
+	viewsMetric: Metric
+}
+
+type CohortHeatMapMetric {
+	colDimension: String
+	retention: Float
+	rowDimension: String
+	rowKey: String
+	value: Float
+}
+
+type Composition {
+	name: String
+	count: Int
+}
+
+type CompositionBag {
+	compositions: [Composition]
+	maxCount: Int
+	total: Int
+	totalCount: Int
+}
+
+type CustomAssetMetric implements AssetMetric {
+	abandonmentsMetric: Metric
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	clicksMetric: Metric
+	completionTimeMetric: Metric
+	dataSourceId: String
+	defaultMetric: Metric
+	downloadsMetric: Metric
+	readingTimeMetric: Metric
+	submissionsMetric: Metric
+	urls: [String]
+	viewsMetric: Metric
+}
+
+type Dashboard {
+	assetId: String
+	assetTitle: String
+	category: String
+	createDate: String
+	definition: String
+	id: String
+	modifiedByUserName: String
+	modifiedDate: String
+}
+
+type DashboardBag {
+	dashboards: [Dashboard]
+	total: Int
+}
+
+type DataControlTask {
+	batchId: String
+	completeDate: String
+	createDate: String
+	emailAddress: String
+	id: String
+	ownerId: String
+	startDate: String
+	status: String
+	type: String
+}
+
+type DataControlTaskBag {
+	dataControlTasks: [DataControlTask]
+	total: Int
+}
+
+type DataSource {
+	id: String
+	name: String
+	url: String
+}
+
+type DocumentMetric implements AssetMetric {
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	commentsMetric: Metric
+	dataSourceId: String
+	defaultMetric: Metric
+	downloadsMetric: Metric
+	previewsMetric: Metric
+	ratingsMetric: Metric
+	urls: [String]
+}
+
+interface DXPEntity {
+	dataSourceName: String
+	id: String
+	name: String
+}
+
+type DXPEntityBag {
+	dxpEntities: [DXPEntity]
+	total: Int
+}
+
+type DXPVariant {
+	changes: Int
+	control: Boolean
+	dxpVariantId: String
+	dxpVariantName: String
+	sessionsHistogram: [HistogramMetric]
+	trafficSplit: Float
+	uniqueVisitors: Int
+}
+
+type Experiment {
+	createDate: String
+	dataSourceId: String
+	description: String
+	dxpExperienceName: String
+	dxpSegmentName: String
+	dxpVariants: [DXPVariant]
+	finishedDate: String
+	goal: Goal
+	id: String
+	metrics: ExperimentMetrics
+	metricsHistogram: [ExperimentMetrics]
+	modifiedDate: String
+	name: String
+	pageURL: String
+	publishedDXPVariantId: String
+	sessions: Int
+	sessionsHistogram: [HistogramMetric]
+	startedDate: String
+	status: String
+	type: String
+	winnerDXPVariantId: String
+}
+
+type ExperimentBag {
+	experiments: [Experiment]
+	total: Int
+}
+
+type ExperimentMetrics {
+	completion: Float
+	confidenceLevel: Float
+	elapsedDays: Int
+	estimatedDaysLeft: Int
+	processedDate: String
+	variantMetrics: [VariantMetrics]
+}
+
+type FormFieldMetric {
+	fieldAbandonmentsMetric: Metric
+	fieldEmptyMetric: Metric
+	fieldInteractionDurationMetric: Metric
+	fieldInteractionsMetric: Metric
+	fieldName: String
+	fieldRefilledMetric: Metric
+}
+
+type FormMetric implements AssetMetric {
+	abandonmentsMetric: Metric
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	completionTimeMetric: Metric
+	dataSourceId: String
+	defaultMetric: Metric
+	formPageMetrics: [FormPageMetric]
+	submissionsMetric: Metric
+	urls: [String]
+	viewsMetric: Metric
+}
+
+type FormPageMetric {
+	formFieldMetrics: [FormFieldMetric]
+	pageAbandonmentsMetric: Metric
+	pageIndex: String
+	pageName: String
+	pageViewsMetric: Metric
+}
+
+type Goal {
+	metric: String
+	target: String
+}
+
+type HeatMapMetric {
+	colDimension: String
+	rowDimension: String
+	value: Float
+}
+
+type HistogramMetric {
+	key: String
+	previousValue: Float
+	previousValueKey: String
+	trend: Trend
+	value: Float
+	valueKey: String
+}
+
+type Individual {
+	email: String
+	id: String
+	name: String
+}
+
+type IndividualBag {
+	individuals: [Individual],
+	total: Int
+}
+
+type IndividualMetric {
+	anonymousIndividualsMetric: Metric
+	knownIndividualsMetric: Metric
+	totalIndividualsMetric: Metric
+}
+
+type Job {
+	active: Boolean
+	cronExpression: String
+	id: String
+	name: String
+	parameters: [JobParameter]
+}
+
+type JobParameter {
+	name: String
+	value: String
+}
+
+type JournalMetric implements AssetMetric {
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	dataSourceId: String
+	defaultMetric: Metric
+	urls: [String]
+	viewsMetric: Metric
+}
+
+type Metric {
+	anonymousUsersCount: Int
+	browser : [Metric]
+	cohortHeatMap: [CohortHeatMapMetric]
+	device : [Metric]
+	geolocation : [Metric]
+	histogram: [HistogramMetric]
+	individuals(keywords: String, size: Int!, start: Int!): IndividualBag
+	knownUsersCount: Int
+	metrics : [Metric]
+	nonsegmentedKnownUsersCount: Int
+	previousValue: Float
+	previousValueKey: String
+	segment : MetricBag
+	segmentedKnownUsersCount: Int
+	trend: Trend
+	value: Float
+	valueKey: String
+}
+
+type MetricBag {
+	metrics: [Metric]
+	total: Int
+}
+
+type MutationType {
+	createJob(
+		active: Boolean!
+		cronExpresison: String!
+		name: String!
+		parameters: [JobParameterInput]
+	): Job
+
+	dashboard(
+		dashboardId: String!
+		definition: String!
+		modifiedByUserId: String!
+		modifiedByUserName: String!
+	): Dashboard
+
+	dataControlTasks(
+		emailAddresses: [String]
+		fileName: String
+		ownerId: String!
+		types: [DataControlTaskType]!
+	): Boolean
+
+	deleteExperiment(
+		experimentId: String!
+	): Boolean
+
+	experiment(
+		experimentId: String!
+		experimentSettings: ExperimentSettings
+		publishedDXPVariantId: String
+		status: String
+	): Experiment
+
+	preference(
+		key: String!
+		value: String!
+	): Preference
+}
+
+type Organization implements DXPEntity{
+	dataSourceName: String
+	id: String
+	name: String
+	parentName: String
+	type: String
+}
+
+type PageMetric implements AssetMetric {
+	assetId: String
+	assetMetrics: [AssetMetric]
+	assetTitle: String
+	assetType: String
+	avgTimeOnPageMetric: Metric
+	bounceRateMetric: Metric
+	defaultMetric: Metric
+	directAccessMetric: Metric
+	dataSourceId: String
+	engagementMetric: Metric
+	entrancesMetric: Metric
+	exitRateMetric: Metric
+	indirectAccessMetric: Metric
+	pageReferrerMetrics: [PageReferrerMetric]
+	urls: [String]
+	visitorsMetric: Metric
+	viewsMetric: Metric
+}
+
+type PageReferrerMetric {
+	accessMetric: Metric
+	assetTitle: String
+	external: Boolean
+	referrer: String
+}
+
+type Preference {
+	key: String
+	value: String
+}
+
+type QueryType {
+	accountInterests(
+		accountId: String!,
+		active: Boolean,
+		keywords: String,
+		size: Int!,
+		sort: Sort!
+		start: Int!
+	): CompositionBag
+
+	acquisitions(
+		acquisitionType: AcquisitionType!,
+		channelId: String,
+		dataSourceId: String,
+		rangeKey: Int!,
+		size: Int!,
+		start: Int!
+	): CompositionBag
+
+	assetPages(
+		assetId: String!,
+		assetType: AssetType!,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		rangeKey: Int!
+	): [PageMetric]
+
+	assets(
+		channelId: String,
+		country: String,
+		deviceType: String,
+		rangeKey: Int!,
+		url: String!
+	): [AssetMetric]
+
+	blog(
+		assetId: String!,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		rangeKey: Int!,
+		title: String,
+		url: String!
+	): BlogMetric
+
+	blogs(
+		channelId: String,
+		keywords: String,
+		rangeKey: Int!,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): AssetMetricBag
+
+	custom(
+		assetId: String!,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		rangeKey: Int!,
+		title: String,
+		url: String!
+	): CustomAssetMetric
+
+	dashboard(
+		dashboardId: String!
+	): Dashboard
+
+	dashboards(
+		channelId: String,
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DashboardBag
+
+	dataControlTasks(
+		batchId: String,
+		keywords: String,
+		rangeKey: Int,
+		size: Int!,
+		sort: Sort!,
+		start: Int!,
+		statuses: [DataControlTaskStatus],
+		types: [DataControlTaskType]
+	): DataControlTaskBag
+
+	dataSources(
+		credentialsType: String,
+		size: Int,
+		sort: Sort,
+		type: String
+	): [DataSource]
+
+	document(
+		assetId: String!,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		rangeKey: Int!,
+		title: String,
+		url: String!
+	): DocumentMetric
+
+	documents(
+		channelId: String,
+		keywords: String,
+		rangeKey: Int!,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): AssetMetricBag
+
+	experiment(
+		experimentId: String!
+	): Experiment
+
+	experimentEstimatedDaysDuration(
+		experimentId: String!
+		experimentSettings: ExperimentSettings!
+	): Int
+
+	experiments(
+		channelId: String,
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): ExperimentBag
+
+	form(
+		assetId: String!,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		rangeKey: Int!,
+		title: String,
+		url: String!
+	): FormMetric
+
+	forms(
+		channelId: String,
+		keywords: String,
+		rangeKey: Int!,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): AssetMetricBag
+
+	groups(
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DXPEntityBag
+
+	individualInterests(
+		channelId: String,
+		keywords: String,
+		size: Int!,
+		sort: Sort!
+		start: Int!
+	): CompositionBag
+
+	individualMetric(
+		active: Boolean,
+		channelId: String,
+		interval: String,
+		rangeKey: Int
+	): IndividualMetric
+
+	individualSegmentInterests(
+		active: Boolean,
+		channelId: String,
+		individualSegmentId: String!,
+		keywords: String,
+		size: Int!,
+		sort: Sort!
+		start: Int!
+	): CompositionBag
+
+	job(
+		jobId: String!
+	): Job
+
+	journal(
+		assetId: String!,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		rangeKey: Int!,
+		title: String,
+		url: String!
+	): JournalMetric
+
+	journals(
+		channelId: String,
+		keywords: String,
+		rangeKey: Int!,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): AssetMetricBag
+
+	organizations(
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DXPEntityBag
+
+	page(
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		rangeKey: Int!,
+		title: String,
+		url: String!
+	): PageMetric
+
+	pages(
+		channelId: String,
+		dataSourceId: String,
+		experimentId: String,
+		keywords: String,
+		rangeKey: Int!,
+		size: Int!,
+		sort: Sort!,
+		start: Int!,
+		terms: String,
+		variantId: String
+	): AssetMetricBag
+
+	pagesCount(
+		fromDate: String,
+		toDate: String
+	): Int
+
+	preference(
+		key: String!
+	): Preference
+
+	roles(
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DXPEntityBag
+
+	searchTerms(
+		channelId: String,
+		dataSourceId: String,
+		rangeKey: Int!,
+		size: Int!,
+		start: Int!
+	): CompositionBag
+
+	site(
+		assetId: String,
+		channelId: String,
+		country: String,
+		deviceType: String,
+		includePrevious: Boolean,
+		interval: String,
+		rangeKey: Int,
+		timeZoneId: String
+	): SiteMetric
+
+	siteInterests(
+		channelId: String,
+		dataSourceId: String,
+		rangeKey: Int!,
+		size: Int!,
+		start: Int!
+	): CompositionBag
+
+	siteVisitorHeatMap(
+		assetId: String,
+		channelId: String,
+		rangeKey: Int,
+		timeZoneId: String
+	): [HeatMapMetric]
+
+	suppressions(
+		keywords: String,
+		size: Int!,
+		sort: Sort!
+		start: Int!
+	): SuppressionBag
+
+	teams(
+		channelId: String,
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DXPEntityBag
+
+	timeRange: [TimeRange]
+
+	userGroups(
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DXPEntityBag
+
+	users(
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): DXPEntityBag
+}
+
+type SiteMetric {
+	anonymousVisitorsMetric: Metric
+	assetMetrics: [AssetMetric]
+	bounceRateMetric: Metric
+	engagementMetric: Metric
+	knownVisitorsMetric: Metric
+	sessionDurationMetric: Metric
+	sessionsMetric: Metric
+	sessionsPerVisitorMetric: Metric
+	visitorsMetric: Metric
+}
+
+type Suppression {
+	createDate: String
+	dataControlTaskBatchId: String
+	dataControlTaskCreateDate: String
+	dataControlTaskStatus: String
+	emailAddress: String
+	id: String
+}
+
+type SuppressionBag {
+	suppressions: [Suppression]
+	total: Int
+}
+
+type TimeRange {
+	default: Boolean
+	endLocalDateTime: String
+	key: String
+	rangeKey: Int
+	startLocalDateTime: String
+}
+
+type Trend {
+	percentage: Float
+	trendClassification: String
+}
+
+type User implements DXPEntity {
+	dataSourceName: String
+	id: String
+	name: String
+	screenName: String
+}
+
+type VariantMetrics {
+	confidenceInterval: [Float]
+	dxpVariantId: String
+	improvement: Float
+	median: Float
+	probabilityToWin: Float
+}

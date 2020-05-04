@@ -1,0 +1,92 @@
+{
+	"mappings": {
+		"field-mappings": {
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"index": "true",
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"author": {
+					"properties": {
+						"id": {
+							"type": "keyword"
+						},
+						"name": {
+							"type": "keyword"
+						}
+					}
+				},
+				"context": {
+					"type": "keyword"
+				},
+				"dataSourceFieldNames": {
+					"type": "object"
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"displayName": {
+					"type": "keyword"
+				},
+				"displayType": {
+					"type": "keyword"
+				},
+				"fieldName": {
+					"type": "keyword"
+				},
+				"fieldType": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"ownerType": {
+					"type": "keyword"
+				},
+				"restricted": {
+					"type": "boolean"
+				},
+				"strategy": {
+					"properties": {
+						"configuration": {
+							"type": "object"
+						},
+						"key": {
+							"type": "keyword"
+						}
+					}
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			},
+			"mapping": {
+				"total_fields": {
+					"limit": 5000
+				}
+			}
+		}
+	}
+}

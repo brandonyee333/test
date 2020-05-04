@@ -1,0 +1,41 @@
+{
+	"mappings": {
+		"default-base": {
+			"properties": {
+				"browserName": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"deviceType": {
+					"type": "keyword"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"primaryKey": {
+					"type": "keyword"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"url": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

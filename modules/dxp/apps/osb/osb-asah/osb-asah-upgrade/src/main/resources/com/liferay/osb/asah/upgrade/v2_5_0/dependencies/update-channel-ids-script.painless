@@ -1,0 +1,5 @@
+if (ctx._source.channelIds == null) {
+	ctx._source.channelIds = new HashSet();
+}
+
+ctx._source.channelIds.add(params.channelId);

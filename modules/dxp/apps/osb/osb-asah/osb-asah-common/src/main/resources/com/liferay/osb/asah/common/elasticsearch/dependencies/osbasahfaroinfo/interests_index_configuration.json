@@ -1,0 +1,44 @@
+{
+	"mappings": {
+		"interests": {
+			"properties": {
+				"dateRecorded": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"ownerId": {
+					"type": "keyword"
+				},
+				"ownerType": {
+					"type": "keyword"
+				},
+				"score": {
+					"type": "double"
+				},
+				"views": {
+					"type": "long"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

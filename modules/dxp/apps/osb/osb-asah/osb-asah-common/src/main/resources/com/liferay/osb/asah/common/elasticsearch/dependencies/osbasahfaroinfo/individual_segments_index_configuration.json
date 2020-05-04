@@ -1,0 +1,115 @@
+{
+	"mappings": {
+		"individual-segments": {
+			"properties": {
+				"activeIndividualCount": {
+					"type": "long"
+				},
+				"activitiesCount": {
+					"type": "long"
+				},
+				"anonymousIndividualCount": {
+					"type": "long"
+				},
+				"author": {
+					"properties": {
+						"id": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						}
+					}
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"engagementScore": {
+					"type": "double"
+				},
+				"filter": {
+					"type": "keyword"
+				},
+				"filterMetadata": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"includeAnonymousUsers": {
+					"type": "boolean"
+				},
+				"individualCount": {
+					"type": "long"
+				},
+				"knownIndividualCount": {
+					"type": "long"
+				},
+				"lastActivityDate": {
+					"type": "date"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"referencedAssetDataSourceIds": {
+					"type": "keyword"
+				},
+				"referencedAssetIds": {
+					"type": "keyword"
+				},
+				"referencedFieldMappingIds": {
+					"type": "keyword"
+				},
+				"referencedGroupIds": {
+					"type": "keyword"
+				},
+				"referencedOrganizationIds": {
+					"type": "keyword"
+				},
+				"referencedTeamIds": {
+					"type": "keyword"
+				},
+				"referencedUserGroupIds": {
+					"type": "keyword"
+				},
+				"referencedUserIds": {
+					"type": "keyword"
+				},
+				"scope": {
+					"type": "keyword"
+				},
+				"segmentType": {
+					"type": "keyword"
+				},
+				"state": {
+					"type": "keyword"
+				},
+				"status": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

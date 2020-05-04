@@ -1,0 +1,59 @@
+[
+	{
+		"dateCreated": "${now-2d}",
+		"demographics": {
+			"email": [
+				{
+					"value": "test1@liferay.com"
+				}
+			]
+		},
+		"engagementScore": 0.5,
+		"firstEnrichmentDate": "${now-2d}",
+		"id": "1"
+	},
+	{
+		"dateCreated": "${now-25d}",
+		"demographics": {
+			"email": [
+				{
+					"value": "test2@liferay.com"
+				}
+			]
+		},
+		"engagementScore": 0.5,
+		"firstEnrichmentDate": "${now-4d}",
+		"id": "2"
+	},
+	{
+		"dateCreated": "${now-20d}",
+		"demographics": {
+			"email": [
+				{
+					"value": "test3@liferay.com"
+				}
+			]
+		},
+		"firstEnrichmentDate": "${now-10d}",
+		"id": "3"
+	},
+	{
+		"dateCreated": "${now-35d}",
+		"demographics": {
+			"email": [
+				{
+					"value": "test4@liferay.com"
+				}
+			]
+		},
+		"engagementScore": 0,
+		"firstEnrichmentDate": "${now-35d}",
+		"id": "4"
+	},
+	{
+		"dateCreated": "${now-10d}",
+		"demographics": {
+		},
+		"id": "5"
+	}
+]

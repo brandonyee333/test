@@ -1,0 +1,158 @@
+[
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"score": "0.8"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.6"
+		},
+		"id": "2",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"ratingType": "like",
+			"score": "0"
+		},
+		"id": "3",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"ratingType": "thumbs",
+			"score": "-1"
+		},
+		"id": "4",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.2"
+		},
+		"id": "5",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"score": "0.2"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.8"
+		},
+		"id": "2",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "like",
+			"score": "0"
+		},
+		"id": "3",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "thumbs",
+			"score": "-1"
+		},
+		"id": "4",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"context": {
+			"crawler": "False"
+		},
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.document.library.kernel.model.DLFileEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.6"
+		},
+		"id": "5",
+		"userId": "1"
+	}
+]

@@ -1,0 +1,82 @@
+{
+	"_embedded": {
+		"accounts-distribution-transformations": [
+			{
+				"count": 1,
+				"values": [
+					2000,
+					3800
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					3800,
+					5600
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					5600,
+					7400
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					7400,
+					9200
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					9200,
+					11000
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					11000,
+					12800
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					12800,
+					14600
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					14600,
+					16400
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					16400,
+					18200
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					18200,
+					20000
+				]
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 10,
+		"totalElements": 10,
+		"totalPages": 1
+	}
+}

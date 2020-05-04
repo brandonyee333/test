@@ -1,0 +1,27 @@
+{
+	"mappings": {
+		"_default_": {
+			"date_detection": false,
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			]
+		}
+	},
+	"settings": {
+		"index": {
+			"mapping": {
+				"total_fields": {
+					"limit": 5000
+				}
+			}
+		}
+	}
+}

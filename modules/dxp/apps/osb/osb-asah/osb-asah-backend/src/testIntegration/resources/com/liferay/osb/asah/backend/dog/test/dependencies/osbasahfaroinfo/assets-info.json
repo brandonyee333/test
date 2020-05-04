@@ -1,0 +1,58 @@
+[
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.terrance-lueilwitz.biz",
+		"channelId": "1",
+		"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
+		"dataSourceId": "355524992631037473",
+		"id": "355525458918155906",
+		"keywords": [
+			{
+				"keyword": "holistic ROI",
+				"type": "title"
+			}
+		],
+		"name": "empower holistic ROI",
+		"url": "https://www.terrance-lueilwitz.biz"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.jamey-shields.info",
+		"channelId": "1",
+		"dataSourceAssetPK": "https://www.jamey-shields.info",
+		"dataSourceId": "355524992631037473",
+		"id": "355525460725123362",
+		"keywords": [
+			{
+				"keyword": "engineer",
+				"type": "title"
+			},
+			{
+				"keyword": "intuitive",
+				"type": "title"
+			},
+			{
+				"keyword": "models",
+				"type": "title"
+			}
+		],
+		"name": "engineer intuitive models",
+		"url": "https://www.jamey-shields.info"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.iva-tillman.com",
+		"channelId": "1",
+		"dataSourceAssetPK": "https://www.iva-tillman.com",
+		"dataSourceId": "355524992631037473",
+		"id": "355525462778184556",
+		"keywords": [
+			{
+				"keyword": "compelling action-items",
+				"type": "title"
+			}
+		],
+		"name": "seize compelling action-items",
+		"url": "https://www.iva-tillman.com"
+	}
+]

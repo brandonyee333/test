@@ -1,0 +1,40 @@
+{
+	"_embedded": {
+		"blocked-keywords": [
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-03-11T17:10:00.666Z",
+				"dataSourceIds": [
+					"351238757269547425"
+				],
+				"id": "351238757269547431",
+				"keyword": "website"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+					]
+				},
+				"createDate": "2019-03-12T16:11:07.666Z",
+				"dataSourceIds": [
+				],
+				"id": "351238757269547430",
+				"keyword": "web platform"
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 2,
+		"totalElements": 2,
+		"totalPages": 1
+	}
+}

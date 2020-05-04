@@ -1,0 +1,68 @@
+[
+	{
+		"credentials": {
+			"oAuthAuthorizationURL": null,
+			"oAuthClientId": null,
+			"oAuthClientSecret": null,
+			"oAuthOwner": null,
+			"oAuthRefreshToken": null,
+			"type": "OAuth 2 Authentication"
+		},
+		"dateCreated": 1553051793294,
+		"dateModified": 1553051793294,
+		"id": "345085929068798696",
+		"name": "Test Data Source 1",
+		"provider": {
+			"analyticsConfiguration": {
+				"analyticsKey": null,
+				"enableAllSites": true,
+				"lastSyncTime": null,
+				"sites": null
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"lastSuccessfulAuditEventTime": null,
+				"lastSyncTime": null,
+				"organizations": null,
+				"userGroups": null
+			},
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE",
+		"url": "liferay.example.faro.com"
+	},
+	{
+		"credentials": {
+			"oAuthAuthorizationURL": null,
+			"oAuthClientId": null,
+			"oAuthClientSecret": null,
+			"oAuthOwner": null,
+			"oAuthRefreshToken": null,
+			"type": "OAuth 2 Authentication"
+		},
+		"dateCreated": 1553051793295,
+		"dateModified": 1553051793295,
+		"id": "345085929068798697",
+		"name": "Test Data Source 2",
+		"provider": {
+			"analyticsConfiguration": {
+				"analyticsKey": null,
+				"enableAllSites": true,
+				"lastSyncTime": null,
+				"sites": null
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"lastSuccessfulAuditEventTime": null,
+				"lastSyncTime": null,
+				"organizations": null,
+				"userGroups": null
+			},
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE",
+		"url": "liferay.example.faro2.com"
+	}
+]

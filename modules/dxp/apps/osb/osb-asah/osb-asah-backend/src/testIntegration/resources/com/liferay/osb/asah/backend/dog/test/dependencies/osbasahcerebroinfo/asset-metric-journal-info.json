@@ -1,0 +1,151 @@
+[
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"platformName": "Linux",
+		"primaryKey": "397e4a9412ad8c6339fedd5e5e75430fe8a5e77dac526d49be84b3d609f0e610",
+		"ratings": 4,
+		"ratingsScore": 0.5,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "2",
+		"browserName": "Chrome",
+		"country": "Germany",
+		"deviceType": "Desktop",
+		"eventDate": "${now-3d}",
+		"platformName": "Linux",
+		"primaryKey": "4711877df53eaa9ca5f7707458acd8ef9d4dadc52ef7794c6cfc4722b8dedecc",
+		"ratings": 2,
+		"ratingsScore": 0.75,
+		"region": "Bayern",
+		"title": "Title 2",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "3",
+		"views": 1
+	},
+	{
+		"assetId": "2",
+		"browserName": "Chrome",
+		"city": "Munich",
+		"country": "Germany",
+		"deviceType": "Desktop",
+		"eventDate": "${now-3d}",
+		"platformName": "Linux",
+		"primaryKey": "4711877df53eaa9ca5f7707458acd8ef9d4dadc52ef7794c6cfc4722b8dedecc",
+		"ratings": 2,
+		"ratingsScore": 0.75,
+		"region": "Bayern",
+		"title": "Title 2",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "4",
+		"views": 1
+	},
+	{
+		"assetId": "2",
+		"browserName": "Chrome",
+		"city": "Recife",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"platformName": "Linux",
+		"primaryKey": "5a6dae9cf9cca12624b9f64c571b74989c394db93327b4c62df210b2843107e0",
+		"ratings": 2,
+		"ratingsScore": 0.57,
+		"region": "Pernambuco",
+		"title": "Title 2",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"assetId": "3",
+		"browserName": "Chrome",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-10d}",
+		"platformName": "Linux",
+		"primaryKey": "bf14807d5d82836b5ae2416194eecfc67bc40620980a399f41197be47a8fe843",
+		"ratings": 2,
+		"ratingsScore": 0.8,
+		"region": "Rio de Janeiro",
+		"title": "Title 3",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "4",
+		"views": 1
+	},
+	{
+		"assetId": "3",
+		"browserName": "Chrome",
+		"city": "Olinda",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"platformName": "Linux",
+		"primaryKey": "da16b7ad6b671ad88c31fe96dc17cb5a4d45d5078b2cbfc9b1c27f3f462a238c",
+		"ratings": 2,
+		"ratingsScore": 0.5,
+		"region": "Pernambuco",
+		"title": "Title 3",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "6",
+		"views": 1
+	},
+	{
+		"assetId": "4",
+		"browserName": "Chrome",
+		"city": "Recife",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"platformName": "Linux",
+		"primaryKey": "3c7bd20806f50e0ee42ccf0d87ae1286c531b23c6ca7737ef7f0420153709e9b",
+		"ratings": 1,
+		"ratingsScore": 1,
+		"region": "Pernambuco",
+		"title": "Title 4",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "7",
+		"views": 1
+	}
+]

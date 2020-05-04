@@ -1,0 +1,27 @@
+{
+	"data": {
+		"siteInterests": {
+			"compositions": [
+				{
+					"count": 1,
+					"name": "engineer"
+				},
+				{
+					"count": 1,
+					"name": "holistic roi"
+				},
+				{
+					"count": 1,
+					"name": "intuitive"
+				},
+				{
+					"count": 1,
+					"name": "models"
+				}
+			],
+			"maxCount": 1,
+			"total": 4,
+			"totalCount": 2
+		}
+	}
+}

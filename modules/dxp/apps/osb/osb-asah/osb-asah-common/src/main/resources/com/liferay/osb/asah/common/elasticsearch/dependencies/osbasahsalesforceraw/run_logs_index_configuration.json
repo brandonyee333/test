@@ -1,0 +1,26 @@
+{
+	"mappings": {
+		"run-logs": {
+			"properties": {
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"dateLogged": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"naniteClassName": {
+					"type": "keyword"
+				},
+				"status": {
+					"type": "keyword"
+				},
+				"totalOperations": {
+					"type": "long"
+				}
+			}
+		}
+	}
+}

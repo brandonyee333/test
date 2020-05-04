@@ -1,0 +1,27 @@
+{
+	"mappings": {
+		"faro-audit-events": {
+			"date_detection": false,
+			"properties": {
+				"additionalInfo": {
+					"type": "keyword"
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"eventType": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,120 @@
+{
+	"data": {
+		"form": {
+			"abandonmentsMetric": {
+				"previousValue": 0.0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 0.5
+			},
+			"assetId": "1",
+			"assetTitle": null,
+			"completionTimeMetric": {
+				"previousValue": 0.0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 1199000.0
+			},
+			"formPageMetrics": [
+				{
+					"formFieldMetrics": [
+					],
+					"pageAbandonmentsMetric": {
+						"value": 0.0
+					},
+					"pageIndex": "0",
+					"pageViewsMetric": {
+						"value": 2.0
+					}
+				},
+				{
+					"formFieldMetrics": [
+						{
+							"fieldAbandonmentsMetric": {
+								"value": 0.0
+							},
+							"fieldEmptyMetric": null,
+							"fieldInteractionDurationMetric": {
+								"value": 7000.0
+							},
+							"fieldInteractionsMetric": {
+								"value": 2.0
+							},
+							"fieldName": "Field2",
+							"fieldRefilledMetric": {
+								"value": 1.0
+							}
+						}
+					],
+					"pageAbandonmentsMetric": {
+						"value": 1.0
+					},
+					"pageIndex": "1",
+					"pageViewsMetric": {
+						"value": 2.0
+					}
+				}
+			],
+			"submissionsMetric": {
+				"browser": [
+					{
+						"metrics": [
+						],
+						"value": 1.0,
+						"valueKey": "Chrome"
+					}
+				],
+				"device": [
+					{
+						"metrics": [
+							{
+								"value": 1.0,
+								"valueKey": "macOS"
+							}
+						],
+						"value": 1.0,
+						"valueKey": "Desktop"
+					}
+				],
+				"geolocation": [
+					{
+						"metrics": [
+						],
+						"value": 1.0,
+						"valueKey": "Brazil"
+					}
+				],
+				"previousValue": 0.0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 1.0
+			},
+			"urls": [
+				"http://liferay.com/web/forms/shared/-/form/1"
+			],
+			"viewsMetric": {
+				"anonymousUsersCount": 0,
+				"knownUsersCount": 0,
+				"nonsegmentedKnownUsersCount": 0,
+				"previousValue": 0.0,
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"segmentedKnownUsersCount": 0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 2.0
+			}
+		}
+	}
+}

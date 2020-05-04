@@ -1,0 +1,12 @@
+{
+	"operationName": "Dashboard",
+	"variables": {
+		"channelId": "1",
+		"size": 10,
+		"sort": {
+			"column": "assetTitle",
+			"type": "DESC"
+		},
+		"start": 0
+	}
+}

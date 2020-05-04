@@ -1,0 +1,188 @@
+{
+	"mappings": {
+		"experiments": {
+			"properties": {
+				"channelId": {
+					"type": "keyword"
+				},
+				"confidenceLevel": {
+					"type": "double"
+				},
+				"createDate": {
+					"type": "date"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"description": {
+					"analyzer": "folding_analyzer",
+					"fields": {
+						"raw": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "text"
+				},
+				"dxpExperienceId": {
+					"type": "keyword"
+				},
+				"dxpExperienceName": {
+					"type": "keyword"
+				},
+				"dxpGroupId": {
+					"type": "keyword"
+				},
+				"dxpLayoutId": {
+					"type": "keyword"
+				},
+				"dxpSegmentId": {
+					"type": "keyword"
+				},
+				"dxpSegmentName": {
+					"type": "keyword"
+				},
+				"dxpVariants": {
+					"properties": {
+						"changes": {
+							"type": "integer"
+						},
+						"control": {
+							"type": "boolean"
+						},
+						"dxpVariantId": {
+							"type": "keyword"
+						},
+						"dxpVariantName": {
+							"type": "keyword"
+						},
+						"trafficSplit": {
+							"type": "double"
+						}
+					},
+					"type": "nested"
+				},
+				"finishedDate": {
+					"type": "date"
+				},
+				"goal": {
+					"properties": {
+						"metric": {
+							"type": "keyword"
+						},
+						"target": {
+							"type": "keyword"
+						}
+					},
+					"type": "nested"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"metrics": {
+					"properties": {
+						"completion": {
+							"type": "double"
+						},
+						"elapsedDays": {
+							"type": "integer"
+						},
+						"estimatedDaysLeft": {
+							"type": "integer"
+						},
+						"processedDate": {
+							"type": "date"
+						},
+						"variantMetrics": {
+							"properties": {
+								"confidenceInterval": {
+									"type": "double"
+								},
+								"dxpVariantId": {
+									"type": "keyword"
+								},
+								"improvement": {
+									"type": "double"
+								},
+								"median": {
+									"type": "double"
+								},
+								"probabilityToWin": {
+									"type": "double"
+								}
+							},
+							"type": "nested"
+						}
+					},
+					"type": "nested"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"name": {
+					"analyzer": "folding_analyzer",
+					"fields": {
+						"raw": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "text"
+				},
+				"pageRelativePath": {
+					"type": "keyword"
+				},
+				"pageTitle": {
+					"type": "keyword"
+				},
+				"pageURL": {
+					"fields": {
+						"search": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				},
+				"publishedDXPVariantId": {
+					"type": "keyword"
+				},
+				"startedDate": {
+					"type": "date"
+				},
+				"status": {
+					"type": "keyword"
+				},
+				"type": {
+					"type": "keyword"
+				},
+				"winnerDXPVariantId": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			},
+			"normalizer": {
+				"folding_normalizer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

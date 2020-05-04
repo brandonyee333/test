@@ -1,0 +1,50 @@
+{
+	"clientIP": "localhost",
+	"context": {
+		"instanceId": 1234,
+		"languageId": "en_US",
+		"url": "http://www.liferay.com"
+	},
+	"dataSourceId": "WXYZ",
+	"events": [
+		{
+			"additionalInfo": null,
+			"event": "view",
+			"eventDate": "2017-10-23T14:50:05.489Z",
+			"properties": {
+				"elementId": "banner1"
+			},
+			"referrers": [
+				{
+					"referrerEntityIds": [
+						"geeno"
+					],
+					"referrerEntityType": "some-entity"
+				}
+			],
+			"timestamp": 1508770205489
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": "2017-10-23T14:50:05.489Z",
+			"eventId": "pageViewed"
+		},
+		{
+			"applicationId": "",
+			"eventDate": "2017-10-23T14:50:05.489Z",
+			"eventId": "pageViewed"
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": "",
+			"eventId": "pageViewed"
+		},
+		{
+			"applicationId": "Page",
+			"eventDate": null,
+			"eventId": "pageViewed"
+		}
+	],
+	"protocolVersion": "1.x",
+	"userId": "1234"
+}

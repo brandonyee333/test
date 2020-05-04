@@ -1,0 +1,162 @@
+[
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-19dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-18dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-17dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-16dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-15dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-14dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-13dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-12dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-11dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 0,
+		"intervalInitDate": "${today-10dT00:00:00.000Z}",
+		"knownIndividualsCount": 0,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 5,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 5,
+		"intervalInitDate": "${today-9dT00:00:00.000Z}",
+		"knownIndividualsCount": 5,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 4,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 9,
+		"intervalInitDate": "${today-8dT00:00:00.000Z}",
+		"knownIndividualsCount": 9,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 1,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 10,
+		"intervalInitDate": "${today-7dT00:00:00.000Z}",
+		"knownIndividualsCount": 10,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 1,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 11,
+		"intervalInitDate": "${today-6dT00:00:00.000Z}",
+		"knownIndividualsCount": 11,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 1,
+		"anonymousIndividualsCount": 1,
+		"individualsCount": 12,
+		"intervalInitDate": "${today-5dT00:00:00.000Z}",
+		"knownIndividualsCount": 11,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 1,
+		"anonymousIndividualsCount": 2,
+		"individualsCount": 13,
+		"intervalInitDate": "${today-4dT00:00:00.000Z}",
+		"knownIndividualsCount": 11,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 1,
+		"anonymousIndividualsCount": 2,
+		"individualsCount": 14,
+		"intervalInitDate": "${today-3dT00:00:00.000Z}",
+		"knownIndividualsCount": 12,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 12,
+		"intervalInitDate": "${today-2dT00:00:00.000Z}",
+		"knownIndividualsCount": 12,
+		"removedIndividualsCount": 2
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 12,
+		"intervalInitDate": "${today-1dT00:00:00.000Z}",
+		"knownIndividualsCount": 12,
+		"removedIndividualsCount": 0
+	},
+	{
+		"addedIndividualsCount": 0,
+		"anonymousIndividualsCount": 0,
+		"individualsCount": 12,
+		"intervalInitDate": "${today-0dT00:00:00.000Z}",
+		"knownIndividualsCount": 12,
+		"removedIndividualsCount": 0
+	}
+]

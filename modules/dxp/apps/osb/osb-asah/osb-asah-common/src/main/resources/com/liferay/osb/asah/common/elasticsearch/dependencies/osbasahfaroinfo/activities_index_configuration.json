@@ -1,0 +1,99 @@
+{
+	"mappings": {
+		"activities": {
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"activityKey": {
+					"type": "keyword"
+				},
+				"activityType": {
+					"type": "keyword"
+				},
+				"applicationId": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"day": {
+					"type": "date"
+				},
+				"endTime": {
+					"type": "date"
+				},
+				"eventId": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"eventProperties": {
+					"type": "object"
+				},
+				"groupId": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"object": {
+					"properties": {
+						"dataSourceAssetPK": {
+							"type": "keyword"
+						},
+						"id": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"objectType": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"url": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						}
+					}
+				},
+				"ownerId": {
+					"type": "keyword"
+				},
+				"startTime": {
+					"type": "date"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

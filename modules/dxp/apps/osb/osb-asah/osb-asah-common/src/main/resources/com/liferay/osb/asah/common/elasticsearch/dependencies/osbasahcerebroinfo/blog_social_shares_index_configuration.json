@@ -1,0 +1,92 @@
+{
+	"mappings": {
+		"blog-social-shares": {
+			"properties": {
+				"assetId": {
+					"type": "keyword"
+				},
+				"assetPrimaryKey": {
+					"type": "keyword"
+				},
+				"browserName": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"contentLanguageId": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"deviceType": {
+					"type": "keyword"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"experienceId": {
+					"type": "keyword"
+				},
+				"experimentId": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"knownIndividual": {
+					"type": "boolean"
+				},
+				"lastEventDate": {
+					"type": "date"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"primaryKey": {
+					"type": "keyword"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"segmentNames": {
+					"type": "keyword"
+				},
+				"sessionId": {
+					"type": "keyword"
+				},
+				"socialShares": {
+					"type": "long"
+				},
+				"socialSharesDomain": {
+					"type": "keyword"
+				},
+				"title": {
+					"type": "keyword"
+				},
+				"urls": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"variantId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,1743 @@
+[
+	{
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"234",
+					"345"
+				],
+				"dataSourceId": "567"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "567"
+			},
+			{
+				"dataSourceId": "678"
+			}
+		],
+		"id": "123"
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"bef7a4a0-7128-4e37-b58d-a3fdff2e4213",
+					"7dc0bc87-2d53-40d5-8137-2db03470adda",
+					"e15f3b2f-7cad-4772-b844-0d96d2f27528"
+				],
+				"dataSourceId": "346306699042460013"
+			},
+			{
+				"accountPKs": [
+					"5b04444d-99aa-4bf6-bdfd-00f91b5b3037"
+				],
+				"dataSourceId": "346308771486495553"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "346306699042460013",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"f863fffd-6f32-4c40-af35-930b8f20381c"
+				]
+			},
+			{
+				"dataSourceId": "346308771486495553",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"ecf333aa-d3e9-440c-8c09-31f1d5a7e6cc"
+				]
+			},
+			{
+				"dataSourceId": "346308771486495553",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"7217c1d8-4f86-44f7-861f-4b715efe4a79"
+				]
+			},
+			{
+				"dataSourceId": "346308771486495553",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"44e9bbe1-9fac-4a05-84bb-8bdb75b4c5d6"
+				]
+			}
+		],
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"demographics": {
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": 30
+				}
+			],
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "birthDate",
+					"value": "1988-05-16T00:00:00.000Z"
+				}
+			],
+			"city": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "city",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "city",
+					"value": "Coyah"
+				}
+			],
+			"country": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "country",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "country",
+					"value": "Guinea"
+				}
+			],
+			"department": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "department",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "department",
+					"value": "Accounting"
+				}
+			],
+			"description": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "description",
+					"value": "Multi-tiered incremental leverage"
+				}
+			],
+			"doNotCall": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Boolean",
+					"name": "doNotCall",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "doNotCall",
+					"value": true
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar18@sfgate.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "familyName",
+					"value": "Keymar"
+				}
+			],
+			"fullName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fullName",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "fullName",
+					"value": "Lucila Keymar"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "givenName",
+					"value": "Lucila"
+				}
+			],
+			"industry": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "industry",
+					"value": "n/a"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "jobTitle",
+					"value": "Occupational Therapist"
+				}
+			],
+			"mobilePhone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "mobilePhone",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "mobilePhone",
+					"value": "(418) 8539098"
+				}
+			],
+			"salutation": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "salutation",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "salutation",
+					"value": "Miss"
+				}
+			],
+			"score": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "score",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "score",
+					"value": 0.25
+				}
+			],
+			"street": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "street",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "street",
+					"value": "66492 Farragut Park"
+				}
+			],
+			"worksFor": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "worksFor",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "company",
+					"value": "Wisoky and Sons"
+				}
+			]
+		},
+		"id": "346468649722790279",
+		"individualSegmentIds": [
+			"346307392143338002",
+			"346308250473619552",
+			"386700292613426084"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"af1aaf45-1f55-46a2-a60a-58e691139a01"
+				],
+				"dataSourceId": "366573382114568984"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "366573359897059747",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"abfa61de-9dfe-4d68-b63b-e809efdba10e"
+				]
+			},
+			{
+				"dataSourceId": "366573382114568984",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"ce281f3b-ddfd-419f-b918-6584e9d9edfe"
+				]
+			}
+		],
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "additionalName",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "middleName",
+					"value": "Hortense"
+				}
+			],
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": 46
+				}
+			],
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "birthDate",
+					"value": "1973-06-26T17:27:13.383Z"
+				}
+			],
+			"city": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "city",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "city",
+					"value": "Robertschester"
+				}
+			],
+			"country": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "country",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "country",
+					"value": "Turkmenistan"
+				}
+			],
+			"department": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "department",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "department",
+					"value": "Computers"
+				}
+			],
+			"description": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "description",
+					"value": "Customer-focused"
+				}
+			],
+			"doNotCall": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Boolean",
+					"name": "doNotCall",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "doNotCall",
+					"value": true
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "Martine.Littel@hotmail.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "Runte"
+				}
+			],
+			"fax": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "fax",
+					"value": "1-205-416-3638"
+				}
+			],
+			"fullName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fullName",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "fullName",
+					"value": "Martine Runte"
+				}
+			],
+			"gender": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573359897059747",
+					"dataSourceName": "LIFERAY-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "gender",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "gender",
+					"value": "male"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "Martine"
+				}
+			],
+			"industry": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "industry",
+					"value": "Construction"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "title",
+					"value": "Dynamic Integration Strategist"
+				}
+			],
+			"mobilePhone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "mobilePhone",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "mobilePhone",
+					"value": "875-989-7799"
+				}
+			],
+			"postalCode": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "postalCode",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "postalCode",
+					"value": "88989-4002"
+				}
+			],
+			"score": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "score",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "score",
+					"value": 0.75
+				}
+			],
+			"state": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "state",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "state",
+					"value": "South Dakota"
+				}
+			],
+			"street": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "street",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "street",
+					"value": "213 Lucio Green"
+				}
+			],
+			"suffix": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "suffix",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "suffix",
+					"value": "MD"
+				}
+			],
+			"telephone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "telephone",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "phone",
+					"value": "1-408-530-8415"
+				}
+			],
+			"worksFor": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "worksFor",
+					"ownerId": "366573450997380745",
+					"ownerType": "individual",
+					"sourceName": "company",
+					"value": "Yundt Group"
+				}
+			]
+		},
+		"id": "366573450997380745",
+		"individualSegmentIds": [
+			"366573408282089191",
+			"366573424193160261",
+			"386700289195644932"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "366573382114568984",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"ed783229-d3f3-4da8-b59b-4a34cba14669"
+				]
+			}
+		],
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "additionalName",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "middleName",
+					"value": "Nathaniel"
+				}
+			],
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": 54
+				}
+			],
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "birthDate",
+					"value": "1966-11-23T20:35:03.505Z"
+				}
+			],
+			"city": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "city",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "city",
+					"value": "O'Connellport"
+				}
+			],
+			"country": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "country",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "country",
+					"value": "Italy"
+				}
+			],
+			"department": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "department",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "department",
+					"value": "Toys"
+				}
+			],
+			"description": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "description",
+					"value": "real-time"
+				}
+			],
+			"doNotCall": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Boolean",
+					"name": "doNotCall",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "doNotCall",
+					"value": true
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "Serenity.Jacobson@hotmail.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "Jacobson"
+				}
+			],
+			"fax": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "fax",
+					"value": "(314) 859-8699 x8952"
+				}
+			],
+			"fullName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fullName",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "fullName",
+					"value": "Serenity Jacobson"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "Serenity"
+				}
+			],
+			"industry": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "industry",
+					"value": "Nonprofit Organization Management"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "title",
+					"value": "Principal Accountability Producer"
+				}
+			],
+			"mobilePhone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "mobilePhone",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "mobilePhone",
+					"value": "1-468-803-8132"
+				}
+			],
+			"postalCode": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "postalCode",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "postalCode",
+					"value": "63538"
+				}
+			],
+			"score": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "score",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "score",
+					"value": 0.49
+				}
+			],
+			"state": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "state",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "state",
+					"value": "Illinois"
+				}
+			],
+			"street": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "street",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "street",
+					"value": "2918 Ibrahim Gardens"
+				}
+			],
+			"suffix": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "suffix",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "suffix",
+					"value": "PhD"
+				}
+			],
+			"telephone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "telephone",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "phone",
+					"value": "1-936-951-4618 x576"
+				}
+			],
+			"worksFor": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "worksFor",
+					"ownerId": "366573727136046135",
+					"ownerType": "individual",
+					"sourceName": "company",
+					"value": "Zulauf-Zulauf"
+				}
+			]
+		},
+		"id": "366573727136046135",
+		"individualSegmentIds": [
+			"366573408282089191"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "366573382114568984",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"4ca2bb02-5c62-42a9-9197-78d85ea0c397"
+				]
+			}
+		],
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "additionalName",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "middleName",
+					"value": "Beaulah"
+				}
+			],
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": 35
+				}
+			],
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "birthDate",
+					"value": "1984-01-31T04:05:09.200Z"
+				}
+			],
+			"city": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "city",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "city",
+					"value": "Port Macport"
+				}
+			],
+			"country": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "country",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "country",
+					"value": "Marshall Islands"
+				}
+			],
+			"department": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "department",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "department",
+					"value": "Baby, Grocery & Jewelry"
+				}
+			],
+			"description": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "description",
+					"value": "Operative"
+				}
+			],
+			"doNotCall": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Boolean",
+					"name": "doNotCall",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "doNotCall",
+					"value": false
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "Velva.Kovacek@hotmail.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "Kovacek"
+				}
+			],
+			"fax": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "fax",
+					"value": "815-236-9275"
+				}
+			],
+			"fullName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fullName",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "fullName",
+					"value": "Velva Kovacek"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "Velva"
+				}
+			],
+			"industry": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "industry",
+					"value": "Construction"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "title",
+					"value": "National Infrastructure Manager"
+				}
+			],
+			"mobilePhone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "mobilePhone",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "mobilePhone",
+					"value": "390.983.3834"
+				}
+			],
+			"postalCode": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "postalCode",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "postalCode",
+					"value": "36635"
+				}
+			],
+			"score": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "score",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "score",
+					"value": 0.7
+				}
+			],
+			"state": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "state",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "state",
+					"value": "Tennessee"
+				}
+			],
+			"street": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "street",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "street",
+					"value": "0492 Jamey Summit"
+				}
+			],
+			"suffix": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "suffix",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "suffix",
+					"value": "I"
+				}
+			],
+			"telephone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "telephone",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "phone",
+					"value": "1-112-428-8112 x1559"
+				}
+			],
+			"worksFor": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "worksFor",
+					"ownerId": "366573724040215754",
+					"ownerType": "individual",
+					"sourceName": "company",
+					"value": "Bernhard-Bernhard"
+				}
+			]
+		},
+		"id": "366573724040215754",
+		"individualSegmentIds": [
+			"366573408282089191"
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "366573382114568984",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"6cb0dcb1-4390-4a2f-a84d-03ccb0f95bf3"
+				]
+			}
+		],
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"demographics": {
+			"additionalName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "additionalName",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "middleName",
+					"value": "Tony"
+				}
+			],
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": 54
+				}
+			],
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "birthDate",
+					"value": "1964-08-05T04:17:39.092Z"
+				}
+			],
+			"city": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "city",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "city",
+					"value": "Creminbury"
+				}
+			],
+			"country": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "country",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "country",
+					"value": "Luxembourg"
+				}
+			],
+			"department": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "department",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "department",
+					"value": "Shoes & Toys"
+				}
+			],
+			"description": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "description",
+					"value": "intermediate"
+				}
+			],
+			"doNotCall": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Boolean",
+					"name": "doNotCall",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "doNotCall",
+					"value": true
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "Jack.Donnelly@gmail.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "Donnelly"
+				}
+			],
+			"fax": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "fax",
+					"value": "661.015.6425 x9916"
+				}
+			],
+			"fullName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fullName",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "fullName",
+					"value": "Jack Donnelly"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "Jack"
+				}
+			],
+			"industry": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "industry",
+					"value": "Semiconductors"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "title",
+					"value": "Dynamic Implementation Consultant"
+				}
+			],
+			"mobilePhone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "mobilePhone",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "mobilePhone",
+					"value": "112.964.6857"
+				}
+			],
+			"postalCode": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "postalCode",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "postalCode",
+					"value": "06057"
+				}
+			],
+			"score": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "score",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "score",
+					"value": 0.37
+				}
+			],
+			"state": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "state",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "state",
+					"value": "Utah"
+				}
+			],
+			"street": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "street",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "street",
+					"value": "96275 Micah Keys"
+				}
+			],
+			"suffix": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "suffix",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "suffix",
+					"value": "PhD"
+				}
+			],
+			"telephone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "telephone",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "phone",
+					"value": "554-678-8617 x02431"
+				}
+			],
+			"worksFor": [
+				{
+					"context": "demographics",
+					"dataSourceId": "366573382114568984",
+					"dataSourceName": "SALESFORCE-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "worksFor",
+					"ownerId": "366573737900199689",
+					"ownerType": "individual",
+					"sourceName": "company",
+					"value": "Bernhard-Bernhard"
+				}
+			]
+		},
+		"id": "366573737900199689",
+		"individualSegmentIds": [
+			"366573408282089191"
+		]
+	}
+]

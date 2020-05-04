@@ -1,0 +1,32 @@
+[
+	{
+		"bounce": 0,
+		"browserName": "Firefox",
+		"channelId": "1",
+		"country": null,
+		"dataSourceId": "362055312804551713",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-1dT23:59:59.000Z}"
+		],
+		"entrances": 0,
+		"eventDate": "${now-1dT23:00:00.000Z}",
+		"exits": 0,
+		"firstEventDate": "${now-1dT23:59:59.000Z}",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+		],
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-1dT23:59:59.000Z}",
+		"modifiedDate": "${now-1dT23:59:59.000Z}",
+		"platformName": "Linux",
+		"primaryKey": "6c404cda803b9b66c733d4ae33152f2549c87186992d41f296d0b15dc667a61b",
+		"region": null,
+		"sessionId": null,
+		"title": "Welcome - Liferay",
+		"url": "http://192.168.108.90:8089/",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+	}
+]

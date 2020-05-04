@@ -1,0 +1,5 @@
+if ((params.valueSumFieldName == 0) || (params.weightSumFieldName == 0)) {
+	return 0;
+}
+
+return params.valueSumFieldName / params.weightSumFieldName;

@@ -1,0 +1,60 @@
+{
+	"mappings": {
+		"audit-events": {
+			"date_detection": false,
+			"properties": {
+				"additionalInfo": {
+					"type": "keyword"
+				},
+				"auditEventId": {
+					"type": "long"
+				},
+				"className": {
+					"type": "keyword"
+				},
+				"classPK": {
+					"type": "keyword"
+				},
+				"clientHost": {
+					"type": "keyword"
+				},
+				"clientIP": {
+					"type": "keyword"
+				},
+				"companyId": {
+					"type": "keyword"
+				},
+				"createDate": {
+					"type": "date"
+				},
+				"eventType": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"message": {
+					"type": "keyword"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"serverName": {
+					"type": "keyword"
+				},
+				"serverPort": {
+					"type": "long"
+				},
+				"sessionID": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"userName": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"_embedded": {
+		"account-transformations": [
+			{
+				"terms": {
+					"accountPK": "0016C00000BKWWJQA5"
+				},
+				"totalElements": 1
+			},
+			{
+				"terms": {
+					"accountPK": "0016C00000BKWWKQA5"
+				},
+				"totalElements": 1
+			},
+			{
+				"terms": {
+					"accountPK": "0016C00000BKWWKQA6"
+				},
+				"totalElements": 1
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 20,
+		"totalElements": 3,
+		"totalPages": 1
+	}
+}

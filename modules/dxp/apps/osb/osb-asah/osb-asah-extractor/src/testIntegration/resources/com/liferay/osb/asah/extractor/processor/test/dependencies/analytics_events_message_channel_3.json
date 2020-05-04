@@ -1,0 +1,23 @@
+[
+	{
+		"context": {
+			"languageId": "en-US",
+			"title": "Liferay",
+			"url": "http://www.liferay.com",
+			"userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:74.0) Gecko/20100101 Firefox/74.0"
+		},
+		"dataSourceId": "349978106408647035",
+		"events": [
+			{
+				"applicationId": "Page",
+				"eventDate": "2020-03-16T09:34:45.345Z",
+				"eventId": "pageViewed",
+				"properties": {
+					"referrer": "http://www.google.com"
+				}
+			}
+		],
+		"protocolVersion": "1.0",
+		"userId": "aedfa915-c7a1-4309-abcf-024e247d414c"
+	}
+]

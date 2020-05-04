@@ -1,0 +1,118 @@
+import com.jetbrains.python.envs.PythonEnvsPlugin
+
+import com.liferay.gradle.util.FileUtil
+
+import org.apache.tools.ant.taskdefs.condition.Os
+
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.defaults", version: "latest.release"
+		classpath group: "gradle.plugin.com.jetbrains.python", name: "gradle-python-envs", version: "0.0.30"
+	}
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+configure(subprojects.findAll { FileUtil.exists(it, "src/main/python")}) {
+	apply plugin: PythonEnvsPlugin
+
+	task configureVirtualEnv()
+	task formatSource()
+	task packagePython()
+
+	def pythonSource = "src/main/python"
+
+	envs {
+		bootstrapDirectory = new File(projectDir, '.bootstrap')
+		envsDirectory = new File(projectDir, '.envs')
+
+		python "python36", "3.6.2", ["pytest"]
+	}
+
+	configureVirtualEnv {
+		URI requirementsURI = new File(projectDir.path + "/$pythonSource/requirements.txt").toURI()
+
+		File requirementsFile = FileUtil.get(project, requirementsURI.toString())
+
+		project.envs {
+			virtualenv project.name, "python36", requirementsFile.readLines()
+		}
+	}
+
+	formatSource {
+		def pythonEnvDir = "$projectDir/.envs/$project.name"
+
+		doLast {
+			exec {
+				commandLine _executablePath(pythonEnvDir, "pip"), "install", "yapf"
+			}
+
+			exec {
+				commandLine _executablePath(pythonEnvDir, "python"), "-m", "yapf", "-i", "--recursive", "src/main/python"
+			}
+		}
+	}
+
+	packagePython {
+		def buildLibs = new File("$buildDir/libs")
+
+		def pythonEnvDir = "$projectDir/.envs/$project.name"
+
+		def pythonTempDir = "$buildDir/python-temp"
+
+		doLast {
+			copy {
+				from pythonSource
+				into pythonTempDir
+				exclude "requirements-package.txt"
+			}
+
+			if (!buildLibs.exists()) {
+				buildLibs.mkdirs()
+			}
+
+			exec {
+				commandLine _executablePath(pythonEnvDir, "pip"), "install", "-r", "$projectDir/$pythonSource/requirements-package.txt", "--target", pythonTempDir
+			}
+
+			exec {
+				commandLine _executablePath(pythonEnvDir, "python"), "-m", "zipapp", pythonTempDir, "-o", "$buildDir/libs/${project.name}.py"
+			}
+
+			delete pythonTempDir
+		}
+	}
+
+	project.afterEvaluate {
+		build_envs {
+			dependsOn configureVirtualEnv
+		}
+
+		clean {
+			doFirst {
+				delete "$projectDir/.envs"
+			}
+		}
+
+		formatSource {
+			dependsOn build_envs
+		}
+
+		packagePython {
+			dependsOn build_envs
+		}
+	}
+}
+
+private String _executablePath(String pythonEnvDir, String executable) {
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		return "$pythonEnvDir/Scripts/$executable"
+	}
+	else {
+		return "$pythonEnvDir/bin/$executable"
+	}
+}

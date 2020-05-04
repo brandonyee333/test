@@ -1,0 +1,163 @@
+[
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((demographics/favoritePokemon/value ne null)))",
+		"filterMetadata": "32906",
+		"id": "327968823603500655",
+		"individualCount": 434,
+		"name": "Account: 342313459339515838",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688156"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"channelId": "1",
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((demographics/jobTitle/value ne null)))",
+		"filterMetadata": "32907",
+		"id": "327968823603500656",
+		"individualCount": 434,
+		"name": "Test Segment 2",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688157"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"channelId": "1",
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((demographics/favoritePokemon/value ne null) and (demographics/jobTitle/value ne null)))",
+		"filterMetadata": "32908",
+		"id": "327968823603500657",
+		"individualCount": 434,
+		"name": "Test Segment 3",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"340477857996688156",
+			"340477857996688157"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"channelId": "1",
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((activities/last30Days eq 'page#pageViewed#340477857996688443')))",
+		"filterMetadata": "32909",
+		"id": "327968823603500658",
+		"individualCount": 434,
+		"name": "Test Segment 4",
+		"referencedAssetDataSourceIds": [
+			"351238757269547424"
+		],
+		"referencedAssetIds": [
+			"340477857996688443"
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"activitiesCount": 0,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": null,
+		"dateModified": "2019-02-11T20:27:47.622Z",
+		"engagementScore": 0,
+		"filter": null,
+		"filterMetadata": "0",
+		"id": "338511451975440187",
+		"individualCount": 1,
+		"lastActivityDate": null,
+		"name": "Test Segment 5",
+		"scope": "PROJECT",
+		"segmentType": "STATIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"channelId": "1",
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((activities/ever eq 'Page#pageViewed#352610350661254489')))",
+		"filterMetadata": "32906",
+		"id": "327968823603500666",
+		"includeAnonymousUsers": true,
+		"individualCount": 2,
+		"knownIndividualCount": 1,
+		"name": "includeAnonymous",
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"channelId": "1",
+		"dateCreated": "2018-12-15T16:02:01.824Z",
+		"dateModified": "2018-12-15T16:02:01.824Z",
+		"filter": "(((activities/ever eq 'Page#pageViewed#352610350661254490')))",
+		"filterMetadata": "32906",
+		"id": "327968823603500677",
+		"includeAnonymousUsers": false,
+		"individualCount": 2,
+		"knownIndividualCount": 1,
+		"name": "notIncludeAnonymous",
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

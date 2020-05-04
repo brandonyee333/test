@@ -1,0 +1,47 @@
+[
+	{
+		"assetPrimaryKey": "1",
+		"dataSourceId": "1",
+		"id": "1",
+		"individualId": "100",
+		"primaryKey": "1",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"assetPrimaryKey": "2",
+		"dataSourceId": "1",
+		"id": "2",
+		"individualId": "100",
+		"primaryKey": "2",
+		"segmentNames": [
+			"Developer",
+			"Support"
+		],
+		"userId": "1"
+	},
+	{
+		"assetPrimaryKey": "3",
+		"dataSourceId": "1",
+		"id": "3",
+		"individualId": null,
+		"primaryKey": "3",
+		"segmentNames": [
+		],
+		"userId": "2"
+	},
+	{
+		"assetPrimaryKey": "4",
+		"dataSourceId": "2",
+		"id": "4",
+		"individualId": "200",
+		"primaryKey": "4",
+		"segmentNames": [
+			"CEO"
+		],
+		"userId": "1"
+	}
+]

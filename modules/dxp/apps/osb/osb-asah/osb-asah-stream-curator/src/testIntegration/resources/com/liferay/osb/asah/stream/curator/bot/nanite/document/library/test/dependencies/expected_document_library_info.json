@@ -1,0 +1,92 @@
+[
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"comments": 3,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"downloads": 2,
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"platformName": "Linux",
+		"previews": 0,
+		"primaryKey": "da8b5bd8c05a28fdaaacf56efc98cf130cdd112715d066fc4152fac6927cd89d",
+		"ratings": 1,
+		"ratingsScore": 1,
+		"region": "Pernambuco",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	},
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"comments": 1,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"downloads": 0,
+		"eventDate": "2018-04-04T11:00:00.000Z",
+		"platformName": "Linux",
+		"previews": 0,
+		"primaryKey": "6f444dd3a537d92dd0b805e9950a35572c9c893d0e4a34f36bd95b4614593e14",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"region": "Pernambuco",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	},
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"comments": 0,
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"downloads": 1,
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"platformName": "Linux",
+		"previews": 0,
+		"primaryKey": "b10211dbdd724dce9cd36bd0bf9f69fc0faa2ee0c0eff585f02ce71020f652dc",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"region": "Pernambuco",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "2"
+	},
+	{
+		"assetId": "2",
+		"assetPrimaryKey": "6f4b6612125fb3a0daecd2799dfd6c9c299424fd920f9b308110a2c1fbd8f443",
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": "Recife",
+		"comments": 0,
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"downloads": 0,
+		"eventDate": "2018-04-04T10:00:00.000Z",
+		"platformName": "macOS",
+		"previews": 1,
+		"primaryKey": "485e8f50ab569f9858f0afc7d7bc32c577c5a4eecf83d0478538849052798d56",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"region": "Pernambuco",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "2"
+	}
+]

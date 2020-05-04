@@ -1,0 +1,15 @@
+{
+	"context": {
+		"description": "This is the Liferay Analytics JS client test page.",
+		"keywords": "Liferay, Analytics, Test, Javascript",
+		"languageId": "en-US",
+		"title": "Liferay Analytics JS Client Test Page",
+		"url": "http://www.liferay.com",
+		"userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36"
+	},
+	"dataSourceId": "MyAnalyticsKey",
+	"events": [
+		"protocolVersion": "1.0",
+	],
+	"userId": "id-i4xbdldy1af"
+}

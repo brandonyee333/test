@@ -1,0 +1,151 @@
+[
+	{
+		"channelIds": [
+			"1"
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "joe@liferay.com"
+				}
+			],
+			"favoritePokemon": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "favoritePokemon",
+					"ownerType": "individual",
+					"value": "Bulbasaur"
+				}
+			]
+		},
+		"engagementScore": 0.5232594891969709,
+		"id": "374790569167317525",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	},
+	{
+		"channelIds": [
+			"1"
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "nina@liferay.com"
+				}
+			],
+			"favoritePokemon": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "favoritePokemon",
+					"ownerType": "individual",
+					"value": "Ivysaur"
+				}
+			]
+		},
+		"engagementScore": 0.4591914089860228,
+		"id": "374790572309620075",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	},
+	{
+		"channelIds": [
+			"1"
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "simone@liferay.com"
+				}
+			],
+			"favoritePokemon": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "favoritePokemon",
+					"ownerType": "individual",
+					"value": "Venusaur"
+				}
+			]
+		},
+		"engagementScore": 0.3885240478621732,
+		"id": "374790572703144534",
+		"individualSegmentIds": [
+		]
+	},
+	{
+		"channelIds": [
+			"1"
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "marcus@liferay.com"
+				}
+			],
+			"favoritePokemon": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "favoritePokemon",
+					"ownerType": "individual",
+					"value": "Charmander"
+				}
+			]
+		},
+		"engagementScore": 0,
+		"id": "374790575409131096",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	},
+	{
+		"channelIds": [
+			"2"
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerType": "individual",
+					"value": "jane@liferay.com"
+				}
+			],
+			"favoritePokemon": [
+				{
+					"context": "demographics",
+					"fieldType": "Text",
+					"name": "favoritePokemon",
+					"ownerType": "individual",
+					"value": "Mew"
+				}
+			]
+		},
+		"engagementScore": 0,
+		"id": "386190546467211094",
+		"individualSegmentIds": [
+			"366637689379787789"
+		]
+	}
+]

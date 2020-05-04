@@ -1,0 +1,43 @@
+{
+	"mappings": {
+		"jobs": {
+			"properties": {
+				"active": {
+					"type": "boolean"
+				},
+				"cronExpression": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"fields": {
+						"search": {
+							"analyzer": "folding_analyzer",
+							"type": "text"
+						}
+					},
+					"type": "keyword"
+				},
+				"parameters": {
+					"type": "object"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

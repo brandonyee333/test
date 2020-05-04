@@ -1,0 +1,47 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "www.liferay.com",
+				"individualPKs": [
+					"1"
+				]
+			}
+		],
+		"demographics": {
+			"email": [
+				{
+					"value": "john@liferay.com"
+				}
+			]
+		},
+		"emailAddressHashed": "3bb3aa73a3e59526dcc7975c1516997e8a604083e661aa01f348ebc7b18a81dd",
+		"id": "100",
+		"individualSegmentIds": [
+			"10",
+			"11"
+		]
+	},
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "www.liferay.com",
+				"individualPKs": [
+					"2"
+				]
+			}
+		],
+		"demographics": {
+			"email": [
+				{
+					"value": "jane@liferay.com"
+				}
+			]
+		},
+		"emailAddressHashed": "d35fe6a6d0d6043c61ca7b2b4694b6b5228c626321b0b103f35d346662e88227",
+		"id": "200",
+		"individualSegmentIds": [
+			"20"
+		]
+	}
+]

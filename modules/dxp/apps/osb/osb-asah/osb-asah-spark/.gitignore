@@ -1,0 +1,3 @@
+*.py[cod]
+.bootstrap/
+.envs/

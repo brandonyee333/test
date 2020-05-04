@@ -1,0 +1,47 @@
+{
+	"_embedded": {
+		"individuals-distribution-transformations": [
+			{
+				"count": 1,
+				"values": [
+					20,
+					36
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					36,
+					52
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					52,
+					68
+				]
+			},
+			{
+				"count": 0,
+				"values": [
+					68,
+					84
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					84,
+					100
+				]
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 5,
+		"totalElements": 5,
+		"totalPages": 1
+	}
+}

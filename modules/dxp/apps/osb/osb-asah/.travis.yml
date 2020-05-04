@@ -1,0 +1,39 @@
+env:
+    global:
+        - _JAVA_OPTIONS=-Xmx3g
+        - COVERALLS_REPO_TOKEN=K6H7NNheywdSaWWIV7zofu4poOAC29NnF
+        - DOCKER_PASSWORD=EJp28mGMQ9eQGfs
+        - DOCKER_USERNAME=liferayci
+jdk: openjdk8
+jobs:
+    include:
+        - stage: "Analysis"
+          script: ./gradlew checkSourceFormatting pmdMain pmdTest pmdTestIntegration spotbugsMain spotbugsTest spotbugsTestIntegration --configure-on-demand --parallel
+        - stage: "Tests"
+          before_script: docker-compose -f docker-compose.integration-test.yml up -d
+          script: ./gradlew test --configure-on-demand --parallel && ./gradlew testIntegration --configure-on-demand
+          after_script: docker-compose -f docker-compose.integration-test.yml down
+          after_success:
+              - test $TRAVIS_BRANCH = "7.0.x-private" &&
+                test $TRAVIS_EVENT_TYPE = "push" &&
+                test $TRAVIS_REPO_SLUG = "liferay/com-liferay-osb-asah-private" &&
+                ./gradlew coveralls &&
+                cd osb-asah-monolith &&
+                ../gradlew assemble &&
+                docker build -t liferay/com-liferay-osb-asah:latest . &&
+                docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" &&
+                docker push liferay/com-liferay-osb-asah:latest &&
+                docker logout &&
+                cd ..
+language: java
+services:
+    - docker
+sudo: required
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+    directories:
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+    timeout: 600

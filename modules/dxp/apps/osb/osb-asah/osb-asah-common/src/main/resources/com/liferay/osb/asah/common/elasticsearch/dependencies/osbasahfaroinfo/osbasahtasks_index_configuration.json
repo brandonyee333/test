@@ -1,0 +1,30 @@
+{
+	"mappings": {
+		"OSBAsahTasks": {
+			"properties": {
+				"body": {
+					"type": "keyword"
+				},
+				"className": {
+					"type": "keyword"
+				},
+				"context": {
+					"properties": {
+						"dateCreated": {
+							"type": "date"
+						},
+						"dateModified": {
+							"type": "date"
+						}
+					}
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"lastSuccessfulIndividualId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,42 @@
+[
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-04-04T10:00:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "969c352a9f75f730d57df8ae6902aa98724f05b1be6931d23362b55da218c922",
+		"region": "Pernambuco",
+		"socialShares": 1,
+		"socialSharesDomain": "facebook",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	},
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-04-04T11:00:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "612390c6ac893b1d68c1bd67d69ad9c8b2b2a7b53d23e9ea786132b4124fe4bb",
+		"region": "Pernambuco",
+		"socialShares": 1,
+		"socialSharesDomain": "plusone",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	}
+]

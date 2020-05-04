@@ -1,0 +1,59 @@
+{
+	"mappings": {
+		"fields": {
+			"properties": {
+				"context": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"dataSourceName": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"fieldType": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"ownerId": {
+					"type": "keyword"
+				},
+				"ownerType": {
+					"type": "keyword"
+				},
+				"sourceName": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"value": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

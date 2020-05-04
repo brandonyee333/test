@@ -1,0 +1,42 @@
+{
+	"_embedded": {
+		"field-transformations": [
+			{
+				"terms": {
+					"name": "jobtitle"
+				},
+				"totalElements": 6
+			},
+			{
+				"terms": {
+					"name": "email"
+				},
+				"totalElements": 4
+			},
+			{
+				"terms": {
+					"name": "givenname"
+				},
+				"totalElements": 4
+			},
+			{
+				"terms": {
+					"name": "familyname"
+				},
+				"totalElements": 3
+			},
+			{
+				"terms": {
+					"name": "gender"
+				},
+				"totalElements": 3
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 20,
+		"totalElements": 5,
+		"totalPages": 1
+	}
+}

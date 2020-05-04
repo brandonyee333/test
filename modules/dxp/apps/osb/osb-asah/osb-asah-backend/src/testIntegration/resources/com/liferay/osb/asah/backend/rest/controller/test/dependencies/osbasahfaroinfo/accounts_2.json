@@ -1,0 +1,747 @@
+[
+	{
+		"accountPK": "0016C00000BKWWJQA5",
+		"activitiesCount": 0,
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "a"
+			}
+		],
+		"dataSourceId": "337984445922213329",
+		"dateCreated": "2019-03-04T20:02:57.165Z",
+		"dateModified": "2019-03-04T20:02:57.165Z",
+		"engagementScore": 0,
+		"id": "342313459339515838",
+		"individualCount": 10,
+		"individualCounts": [
+			{
+				"channelId": "a",
+				"individualCount": 10
+			}
+		],
+		"organization": {
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "Manning & Napier Information Services, LLC"
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 329992000
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "United States"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "New York"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "USD"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Professional Services (Technical/Web/IT)"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 20000
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "(585) 752-2297"
+				}
+			],
+			"photoUrl": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "photoUrl",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "PhotoUrl",
+					"value": "/services/images/photo/0016C00000BKWWJQA5"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Test Data Source",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "342313459339515838",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "91789"
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "0016C00000BKWWKQA5",
+		"activitiesCount": 0,
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "a"
+			}
+		],
+		"dataSourceId": "342312716287315687",
+		"dateCreated": "2019-03-04T20:02:56.711Z",
+		"dateModified": "2019-03-04T20:02:56.711Z",
+		"engagementScore": 0,
+		"id": "342313458385210529",
+		"individualCount": 8,
+		"individualCounts": [
+			{
+				"channelId": "a",
+				"individualCount": 6
+			},
+			{
+				"channelId": "b",
+				"individualCount": 2
+			}
+		],
+		"organization": {
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "DemandTec, Inc."
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 75000000
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "United States"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "California"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "USD"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Technology"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 2000
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "404-803-5603"
+				}
+			],
+			"photoUrl": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "photoUrl",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "PhotoUrl",
+					"value": "/services/images/photo/0016C00000BKWWKQA5"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315687",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "91765"
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "0016C00000BKWWKQA6",
+		"activitiesCount": 0,
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "a"
+			}
+		],
+		"dataSourceId": "342312716287315688",
+		"dateCreated": "2019-03-04T20:02:56.711Z",
+		"dateModified": "2019-03-04T20:02:56.711Z",
+		"engagementScore": 0,
+		"id": "342313458385210530",
+		"individualCount": 9,
+		"individualCounts": [
+			{
+				"channelId": "a",
+				"individualCount": 9
+			}
+		],
+		"organization": {
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "Liferay Inc."
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 75000000
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "United States"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "California"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "USD"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Technology"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "404-803-5603"
+				}
+			],
+			"photoUrl": [
+				{
+					"context": "organization",
+					"dataSourceId": "342312716287315688",
+					"dataSourceName": "Test Data Source 3",
+					"dateModified": "2018-11-13T17:37:06.000Z",
+					"fieldType": "Text",
+					"name": "photoUrl",
+					"ownerId": "342313458385210529",
+					"ownerType": "account",
+					"sourceName": "PhotoUrl",
+					"value": "/services/images/photo/0016C00000BKWWKQA6"
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "0016g000005azRsAAI",
+		"activeIndividualCount": 0,
+		"activitiesCount": 0,
+		"activitiesCounts": [
+			{
+				"activitiesCount": 0,
+				"channelId": "2"
+			}
+		],
+		"dataSourceId": "414985450066315739",
+		"dateCreated": "2020-04-08T21:48:58.687Z",
+		"dateModified": "2020-04-08T21:48:58.687Z",
+		"engagementScore": 0,
+		"id": "414985567469324943",
+		"individualCount": 1,
+		"individualCounts": [
+			{
+				"channelId": "2",
+				"individualCount": 10
+			}
+		],
+		"organization": {
+			"accountId": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "accountId",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "id",
+					"value": "0016g000005azRsAAI"
+				}
+			],
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "University of Arizona"
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer - Direct"
+				}
+			],
+			"billingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "billingCity",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "BillingCity",
+					"value": "Tucson"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "AZ"
+				}
+			],
+			"billingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "billingStreet",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "BillingStreet",
+					"value": "888 N Euclid Hallis Center, Room 501 Tucson, AZ 85721 United States"
+				}
+			],
+			"description": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Description",
+					"value": "Leading university in AZ offering undergraduate and graduate programs in arts and humanities, pure sciences, engineering, business, and medicine."
+				}
+			],
+			"fax": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Fax",
+					"value": "(520) 773-9060"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Education"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 39000
+				}
+			],
+			"ownership": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "ownership",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Ownership",
+					"value": "Other"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "(520) 773-9050"
+				}
+			],
+			"rating": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "rating",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Rating",
+					"value": "Warm"
+				}
+			],
+			"shippingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "shippingStreet",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "ShippingStreet",
+					"value": "888 N Euclid Hallis Center, Room 501 Tucson, AZ 85721 United States"
+				}
+			],
+			"website": [
+				{
+					"context": "organization",
+					"dataSourceId": "414985450066315739",
+					"dataSourceName": "Salesforce data source",
+					"dateModified": "2019-12-04T18:43:06.000Z",
+					"fieldType": "Text",
+					"name": "website",
+					"ownerId": "414985567469324943",
+					"ownerType": "account",
+					"sourceName": "Website",
+					"value": "www.universityofarizona.com"
+				}
+			]
+		}
+	}
+]

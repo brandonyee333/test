@@ -1,0 +1,176 @@
+{
+	"mappings": {
+		"analytics-events": {
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"applicationId": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"clientIP": {
+					"type": "keyword"
+				},
+				"context": {
+					"properties": {
+						"browserName": {
+							"type": "keyword"
+						},
+						"canonicalUrl": {
+							"type": "keyword"
+						},
+						"city": {
+							"type": "keyword"
+						},
+						"contentLanguageId": {
+							"type": "keyword"
+						},
+						"country": {
+							"type": "keyword"
+						},
+						"crawler": {
+							"type": "keyword"
+						},
+						"description": {
+							"type": "keyword"
+						},
+						"devicePixelRatio": {
+							"type": "keyword"
+						},
+						"deviceType": {
+							"type": "keyword"
+						},
+						"keywords": {
+							"type": "keyword"
+						},
+						"languageId": {
+							"type": "keyword"
+						},
+						"platformName": {
+							"type": "keyword"
+						},
+						"referrer": {
+							"type": "keyword"
+						},
+						"region": {
+							"type": "keyword"
+						},
+						"screenHeight": {
+							"type": "keyword"
+						},
+						"screenHeightSize": {
+							"type": "long"
+						},
+						"screenWidth": {
+							"type": "keyword"
+						},
+						"screenWidthSize": {
+							"type": "long"
+						},
+						"title": {
+							"type": "keyword"
+						},
+						"url": {
+							"type": "keyword"
+						},
+						"userAgent": {
+							"type": "keyword"
+						}
+					}
+				},
+				"createDate": {
+					"type": "date"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"eventId": {
+					"type": "keyword"
+				},
+				"eventProperties": {
+					"properties": {
+						"articleId": {
+							"type": "keyword"
+						},
+						"className": {
+							"type": "keyword"
+						},
+						"classPK": {
+							"type": "keyword"
+						},
+						"commentId": {
+							"type": "keyword"
+						},
+						"depth": {
+							"type": "keyword"
+						},
+						"entryId": {
+							"type": "keyword"
+						},
+						"href": {
+							"type": "keyword"
+						},
+						"numberOfWords": {
+							"type": "keyword"
+						},
+						"page": {
+							"type": "keyword"
+						},
+						"pageLoadTime": {
+							"type": "keyword"
+						},
+						"sessionId": {
+							"type": "date"
+						},
+						"tagName": {
+							"type": "keyword"
+						},
+						"text": {
+							"type": "keyword"
+						},
+						"title": {
+							"type": "keyword"
+						},
+						"viewDuration": {
+							"type": "keyword"
+						}
+					}
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"limit": {
+					"type": "long"
+				},
+				"normalizedEventDate": {
+					"type": "long"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"mapping": {
+				"total_fields": {
+					"limit": 5000
+				}
+			}
+		}
+	}
+}

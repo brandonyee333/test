@@ -1,0 +1,130 @@
+{
+	"mappings": {
+		"blogs": {
+			"properties": {
+				"assetId": {
+					"type": "keyword"
+				},
+				"assetPrimaryKey": {
+					"type": "keyword"
+				},
+				"browserName": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"clicks": {
+					"type": "long"
+				},
+				"comments": {
+					"type": "long"
+				},
+				"contentLanguageId": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"deviceType": {
+					"type": "keyword"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"experienceId": {
+					"type": "keyword"
+				},
+				"experimentId": {
+					"type": "keyword"
+				},
+				"firstEventDate": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"knownIndividual": {
+					"type": "boolean"
+				},
+				"lastEventDate": {
+					"type": "date"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"primaryKey": {
+					"type": "keyword"
+				},
+				"ratings": {
+					"type": "long"
+				},
+				"ratingsScore": {
+					"type": "float"
+				},
+				"readPercentile": {
+					"type": "integer"
+				},
+				"readTime": {
+					"type": "long"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"segmentNames": {
+					"type": "keyword"
+				},
+				"sessionId": {
+					"type": "keyword"
+				},
+				"title": {
+					"fields": {
+						"search": {
+							"analyzer": "folding_analyzer",
+							"type": "text"
+						}
+					},
+					"type": "keyword"
+				},
+				"urls": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"variantId": {
+					"type": "keyword"
+				},
+				"views": {
+					"type": "long"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

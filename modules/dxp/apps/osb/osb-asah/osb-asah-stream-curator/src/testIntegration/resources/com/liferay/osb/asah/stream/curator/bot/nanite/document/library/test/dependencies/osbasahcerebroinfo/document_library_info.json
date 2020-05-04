@@ -1,0 +1,25 @@
+[
+	{
+		"assetId": "1",
+		"assetPrimaryKey": "4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8",
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": "Recife",
+		"comments": 1,
+		"country": "Brazil",
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"downloads": 1,
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"platformName": "Linux",
+		"previews": 0,
+		"primaryKey": "da8b5bd8c05a28fdaaacf56efc98cf130cdd112715d066fc4152fac6927cd89d",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"region": "Pernambuco",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	}
+]

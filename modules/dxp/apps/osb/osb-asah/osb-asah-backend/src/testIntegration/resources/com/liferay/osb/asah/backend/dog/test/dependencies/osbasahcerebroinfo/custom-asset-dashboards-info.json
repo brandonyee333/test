@@ -1,0 +1,35 @@
+[
+	{
+		"assetId": "1",
+		"assetTitle": "Asset Title 1",
+		"category": "default",
+		"channelId": "1",
+		"createDate": "2019-02-21T09:30:11.000Z",
+		"id": "e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9",
+		"modifiedByUserId": "42",
+		"modifiedByUserName": "André Miranda",
+		"modifiedDate": "2019-02-21T10:11:25.000Z"
+	},
+	{
+		"assetId": "2",
+		"assetTitle": "Asset Title 2",
+		"category": "default",
+		"channelId": "1",
+		"createDate": "2019-02-21T14:08:42.000Z",
+		"id": "93af70bd1db4a150359925508a5efac9fd452a97984fe61789861d5276379b97",
+		"modifiedByUserId": "1",
+		"modifiedByUserName": "Marcellus Tavares",
+		"modifiedDate": "2019-02-21T15:44:33.000Z"
+	},
+	{
+		"assetId": "3",
+		"assetTitle": "Asset Title 3",
+		"category": "test",
+		"channelId": "1",
+		"createDate": "2019-02-21T16:22:11.000Z",
+		"id": "aea2e1dc358f372eaa233677962de08214dd2784c976a19cee7e2f9c4dc6203e",
+		"modifiedByUserId": "42",
+		"modifiedByUserName": "André Miranda",
+		"modifiedDate": "2019-02-21T16:22:11.000Z"
+	}
+]

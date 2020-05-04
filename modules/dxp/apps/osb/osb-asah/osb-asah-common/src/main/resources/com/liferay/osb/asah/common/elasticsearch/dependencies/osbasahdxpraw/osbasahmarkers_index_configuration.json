@@ -1,0 +1,72 @@
+{
+	"mappings": {
+		"OSBAsahMarkers": {
+			"properties": {
+				"id": {
+					"type": "keyword"
+				},
+				"lastSuccessfulAuditEvent": {
+					"properties": {
+						"additionalInfo": {
+							"type": "keyword"
+						},
+						"auditEventId": {
+							"type": "keyword"
+						},
+						"className": {
+							"type": "keyword"
+						},
+						"classPK": {
+							"type": "keyword"
+						},
+						"clientHost": {
+							"type": "keyword"
+						},
+						"clientIP": {
+							"type": "keyword"
+						},
+						"companyId": {
+							"type": "keyword"
+						},
+						"createDate": {
+							"type": "long"
+						},
+						"eventType": {
+							"type": "keyword"
+						},
+						"id": {
+							"type": "keyword"
+						},
+						"message": {
+							"type": "keyword"
+						},
+						"osbAsahDataSourceId": {
+							"type": "keyword"
+						},
+						"serverName": {
+							"type": "keyword"
+						},
+						"serverPort": {
+							"type": "long"
+						},
+						"sessionID": {
+							"type": "keyword"
+						},
+						"userId": {
+							"type": "keyword"
+						},
+						"userName": {
+							"type": "keyword"
+						}
+					}
+				},
+				"lastSyncTime": {
+					"type": "long"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

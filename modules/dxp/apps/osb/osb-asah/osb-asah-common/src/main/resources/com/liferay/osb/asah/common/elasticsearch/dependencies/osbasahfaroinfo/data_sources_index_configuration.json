@@ -1,0 +1,191 @@
+{
+	"mappings": {
+		"data-sources": {
+			"properties": {
+				"author": {
+					"properties": {
+						"id": {
+							"type": "keyword"
+						},
+						"name": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						}
+					}
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"credentials": {
+					"properties": {
+						"login": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"oAuthAccessSecret": {
+							"type": "keyword"
+						},
+						"oAuthAccessToken": {
+							"type": "keyword"
+						},
+						"oAuthClientId": {
+							"type": "keyword"
+						},
+						"oAuthClientSecret": {
+							"type": "keyword"
+						},
+						"oAuthConsumerKey": {
+							"type": "keyword"
+						},
+						"oAuthConsumerSecret": {
+							"type": "keyword"
+						},
+						"oAuthOwner": {
+							"properties": {
+								"emailAddress": {
+									"normalizer": "case_insensitive_sort",
+									"type": "keyword"
+								},
+								"name": {
+									"normalizer": "case_insensitive_sort",
+									"type": "keyword"
+								}
+							}
+						},
+						"oAuthRefreshToken": {
+							"type": "keyword"
+						},
+						"password": {
+							"type": "keyword"
+						},
+						"privateKey": {
+							"type": "keyword"
+						},
+						"publicKey": {
+							"type": "keyword"
+						},
+						"type": {
+							"type": "keyword"
+						}
+					}
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"deletionDate": {
+					"type": "date"
+				},
+				"faroBackendSecuritySignature": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"provider": {
+					"properties": {
+						"accountsConfiguration": {
+							"properties": {
+								"enableAllAccounts": {
+									"type": "boolean"
+								}
+							}
+						},
+						"analyticsConfiguration": {
+							"properties": {
+								"enableAllSites": {
+									"type": "boolean"
+								},
+								"lastSyncTime": {
+									"type": "date"
+								},
+								"sites": {
+									"properties": {
+										"enableAllChildren": {
+											"type": "boolean"
+										},
+										"id": {
+											"type": "keyword"
+										}
+									}
+								}
+							}
+						},
+						"contactsConfiguration": {
+							"properties": {
+								"enableAllContacts": {
+									"type": "boolean"
+								},
+								"enableAllLeads": {
+									"type": "boolean"
+								},
+								"lastSuccessfulAuditEventTime": {
+									"type": "date"
+								},
+								"lastSyncTime": {
+									"type": "date"
+								},
+								"organizations": {
+									"properties": {
+										"enableAllChildren": {
+											"type": "boolean"
+										},
+										"organizationIds": {
+											"type": "long"
+										}
+									}
+								},
+								"userGroups": {
+									"properties": {
+										"enableAllChildren": {
+											"type": "boolean"
+										},
+										"userGroupIds": {
+											"type": "long"
+										}
+									}
+								}
+							}
+						},
+						"type": {
+							"type": "keyword"
+						}
+					}
+				},
+				"state": {
+					"type": "keyword"
+				},
+				"status": {
+					"type": "keyword"
+				},
+				"url": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"workspaceURL": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

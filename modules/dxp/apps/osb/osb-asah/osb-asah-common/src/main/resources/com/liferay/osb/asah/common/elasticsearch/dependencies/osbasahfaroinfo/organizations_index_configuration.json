@@ -1,0 +1,96 @@
+{
+	"mappings": {
+		"organizations": {
+			"dynamic_templates": [
+				{
+					"template_custom_searchable_properties": {
+						"mapping": {
+							"fields": {
+								"searchable": {
+									"analyzer": "ngram_analyzer",
+									"type": "text"
+								}
+							},
+							"index": "true",
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"match_mapping_type": "string",
+						"path_match": "custom.*.value"
+					}
+				},
+				{
+					"template_string_properties": {
+						"mapping": {
+							"index": "true",
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"type": "keyword"
+				},
+				"nameTreePath": {
+					"type": "keyword"
+				},
+				"organizationPK": {
+					"type": "long"
+				},
+				"parentName": {
+					"type": "keyword"
+				},
+				"parentOrganizationPK": {
+					"type": "long"
+				},
+				"type": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"ngram_analyzer": {
+					"filter": [
+						"lowercase",
+						"ngram_filter"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			},
+			"filter": {
+				"ngram_filter": {
+					"max_gram": 5,
+					"min_gram": 3,
+					"type": "ngram"
+				}
+			},
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

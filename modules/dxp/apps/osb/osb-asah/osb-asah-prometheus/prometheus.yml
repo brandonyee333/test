@@ -1,0 +1,38 @@
+scrape_configs:
+    - job_name: 'osbasahbackend'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahbackend:8080']
+    - job_name: 'osbasahbatchcurator'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahbatchcurator:8080']
+    - job_name: 'osbasahdxpextractor'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahdxpextractor:8080']
+    - job_name: 'osbasahelasticsearchexporter'
+      metrics_path: /metrics
+      scrape_interval: 10s
+      static_configs:
+          - targets: ['osbasahelasticsearchexporter:9114']
+    - job_name: 'osbasahextractor'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahextractor:8080']
+    - job_name: 'osbasahmonolith'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahmonolith:8080']
+    - job_name: 'osbasahpublisher'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahpublisher:8080']
+    - job_name: 'osbasahsalesforceextractor'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahsalesforceextractor:8080']
+    - job_name: 'osbasahstreamcurator'
+      metrics_path: /prometheus
+      static_configs:
+          - targets: ['osbasahstreamcurator:8080']

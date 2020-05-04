@@ -1,0 +1,53 @@
+[
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Internet Explorer",
+		"channelId": "1",
+		"city": "Boardman",
+		"contentLanguageId": "en-US",
+		"country": "United States",
+		"ctaClicks": 0,
+		"dataSourceId": "386700245519579270",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"engagementScore": 0.4,
+		"entrances": 1,
+		"eventDate": "2019-12-20T10:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-12-20T10:48:00.000Z",
+		"formSubmissions": 1,
+		"id": "386700639659158390",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-12-20T10:48:00.000Z"
+		],
+		"individualId": "386700272756317079",
+		"interactionDates": [
+			"2019-12-20T10:50:00.000Z"
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-12-20T10:50:00.000Z",
+		"modifiedDate": "2020-01-16T19:20:29.797Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "82c106086f373b1815fa9b328083d783ac70a80fbdb094809e1803ae956dab20",
+		"region": "Oregon",
+		"searchTerm": "Pharmaceuticals",
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "386700589317068668",
+		"timeOnPage": 0,
+		"title": "innovate dot-com methodologies",
+		"url": "https://www.debra-huel.name?q=Pharmaceuticals",
+		"userId": "4d383e9b-2435-4fd9-bc7d-866c3134a09c",
+		"variantId": "",
+		"views": 1
+	}
+]

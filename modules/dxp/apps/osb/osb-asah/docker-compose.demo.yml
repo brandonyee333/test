@@ -1,0 +1,54 @@
+services:
+    analytics-backend:
+        container_name: analytics-backend
+        depends_on:
+            - analytics-elasticsearch
+        environment:
+            - JAVA_OPTS=-Xms2048m -Xmx2048m -XX:MaxMetaspaceSize=512m # increase Xmx in case of out of memory
+            - LCP_ENGINE_ELASTICSEARCH_SERVER_IP=analytics-elasticsearch
+            - LCP_PROJECT_ID=local
+            - OSB_ASAH_BACKEND_ADMIN_REST_CONTROLLER_ENABLED=true
+            - OSB_ASAH_BACKEND_URL=http://localhost:8082 # replace 'localhost' with your ip
+            - OSB_ASAH_PUBLISHER_URL=http://localhost:8082 # replace 'localhost' with your ip
+            - OSB_FARO_FRONTEND_URL=http://localhost:8081 # replace 'localhost' with your ip
+        image: liferay/com-liferay-osb-asah:monolith-20200224
+        ports:
+            - "8082:8080"
+        volumes:
+            - export:/export
+            - temp:/temp
+    analytics-elasticsearch:
+        container_name: analytics-elasticsearch
+        environment:
+            - ES_JAVA_OPTS=-Xms512m -Xmx512m
+            - http.cors.allow-origin=*
+            - http.cors.enabled=true
+        healthcheck:
+            interval: 10s
+            retries: 3
+            start_period: 5s
+            test: ["CMD", "curl", "-f", "http://localhost:9200"]
+            timeout: 10s
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
+        ports:
+            - "9200:9200"
+        volumes:
+            - analytics-data:/usr/share/elasticsearch/data
+    analytics-frontend:
+        container_name: analytics-frontend
+        environment:
+            - OSB_ASAH_BACKEND_URL=http://analytics-backend:8080
+            - OSB_ASAH_PUBLISHER_URL=http://analytics-backend:8080
+        image: liferay/com-liferay-osb-faro:20200225
+        ports:
+            - "8081:8080"
+version: "2.4"
+volumes:
+    analytics-data:
+        driver: local
+    backup:
+        driver: local
+    export:
+        driver: local
+    temp:
+        driver: local

@@ -1,0 +1,14 @@
+{
+	"mappings": {
+		"recommended-items": {
+			"properties": {
+				"item": {
+					"type": "keyword"
+				},
+				"recommendedItems": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

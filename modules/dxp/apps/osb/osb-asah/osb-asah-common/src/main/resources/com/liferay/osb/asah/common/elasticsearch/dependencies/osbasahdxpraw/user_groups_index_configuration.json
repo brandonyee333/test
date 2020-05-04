@@ -1,0 +1,67 @@
+{
+	"mappings": {
+		"_default_": {
+			"date_detection": false,
+			"properties": {
+				"addedByLDAPImport": {
+					"type": "boolean"
+				},
+				"companyId": {
+					"type": "keyword"
+				},
+				"createDate": {
+					"type": "long"
+				},
+				"description": {
+					"type": "keyword"
+				},
+				"externalReferenceCode": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"modifiedDate": {
+					"type": "long"
+				},
+				"mvccVersion": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"parentUserGroupId": {
+					"type": "keyword"
+				},
+				"userGroupId": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"userName": {
+					"type": "keyword"
+				},
+				"uuid": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

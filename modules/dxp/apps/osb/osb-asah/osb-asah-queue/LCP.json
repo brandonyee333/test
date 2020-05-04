@@ -1,0 +1,15 @@
+{
+	"cpu": 4,
+	"id": "osbasahqueue",
+	"image": "wedeploy/message-queue:0.0.15",
+	"kind": "Deployment",
+	"memory": 256,
+	"ports": [
+		{
+			"external": false,
+			"port": 3000,
+			"protocol": "TCP",
+			"targetPort": 3000
+		}
+	]
+}

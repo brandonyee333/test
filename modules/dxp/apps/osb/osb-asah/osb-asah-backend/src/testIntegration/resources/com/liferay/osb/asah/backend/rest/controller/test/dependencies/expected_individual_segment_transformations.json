@@ -1,0 +1,24 @@
+{
+	"_embedded": {
+		"individual-segment-transformations": [
+			{
+				"terms": {
+					"filter": "(((activities/ever eq 'Page#pageViewed#352610350661254489')))"
+				},
+				"totalElements": 1
+			},
+			{
+				"terms": {
+					"filter": "(((demographics/favoritePokemon/value ne null)))"
+				},
+				"totalElements": 1
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 20,
+		"totalElements": 2,
+		"totalPages": 1
+	}
+}

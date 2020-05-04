@@ -1,0 +1,5 @@
+spark:
+    jars:
+        packages: "org.apache.hadoop:hadoop-aws:2.7.3,org.elasticsearch:elasticsearch-spark-20_2.11:6.8.2"
+storage:
+    path: s3a://analytics-cloud-aws-personalize

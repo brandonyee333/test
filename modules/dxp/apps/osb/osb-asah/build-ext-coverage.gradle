@@ -1,0 +1,161 @@
+import com.github.spotbugs.snom.SpotBugsPlugin
+import com.github.spotbugs.snom.SpotBugsTask
+
+import com.liferay.gradle.util.FileUtil
+
+import org.gradle.testing.jacoco.tasks.JacocoReport
+
+import org.kt3k.gradle.plugin.CoverallsPlugin
+
+buildscript {
+	dependencies {
+		classpath group: "com.liferay", name: "com.liferay.gradle.plugins.defaults", version: "latest.release"
+		classpath group: "gradle.plugin.org.kt3k.gradle.plugin", name: "coveralls-gradle-plugin", version: "2.10.0"
+	}
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+apply plugin: CoverallsPlugin
+
+task jacocoRootReport(type: JacocoReport)
+
+Set<Project> javaSubprojects = subprojects.findAll {
+	FileUtil.exists(it, "src/main/java") &&
+	it.name != "osb-asah-backend-ext-alfa" &&
+	it.name != "osb-asah-demo" &&
+	it.name != "osb-asah-test-util"
+}
+
+allprojects {
+	apply plugin: JacocoPlugin
+	apply plugin: SpotBugsPlugin
+	apply plugin: "pmd"
+
+	jacoco {
+		toolVersion = "0.8.2"
+	}
+
+	pmd {
+		toolVersion = "5.8.1"
+	}
+
+	spotbugs {
+		showProgress = true
+	}
+
+	tasks.withType(SpotBugsTask) {
+		File reportFile = null
+
+		reports {
+			html {
+				enabled = true
+				stylesheet = "fancy-hist.xsl"
+			}
+
+			reportFile = html.destination
+		}
+
+		doFirst {
+			logger.lifecycle "Creating report: {}", reportFile
+		}
+	}
+}
+
+configure(javaSubprojects) {
+	apply plugin: "com.liferay.spring.boot.defaults"
+	apply plugin: "java"
+
+	configurations {
+		testIntegrationCompile.extendsFrom testCompile
+		testIntegrationRuntime.extendsFrom testRuntime
+	}
+
+	test {
+		ignoreFailures = false
+
+		jacoco {
+			append = true
+			destinationFile = new File(buildDir, "jacoco/jacocoTest.exec")
+			excludes = ["**/joestelmach/natty/**", "**/maxmind/geoip/**"]
+		}
+
+		testLogging {
+			events = ["failed", "passed", "skipped", "standardError", "started"]
+			exceptionFormat = "full"
+			showCauses = true
+			showExceptions = true
+			showStackTraces = true
+		}
+	}
+
+	testIntegration {
+		ignoreFailures = false
+
+		jacoco {
+			append = true
+			destinationFile = new File(buildDir, "jacoco/jacocoTest.exec")
+			excludes = ["**/joestelmach/natty/**"]
+		}
+
+		testLogging {
+			events = ["failed", "passed", "skipped", "standardError", "started"]
+			exceptionFormat = "full"
+			showCauses = true
+			showExceptions = true
+			showStackTraces = true
+		}
+	}
+}
+
+coveralls {
+	jacocoReportPath = "${rootDir}/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+
+	sourceDirs = files(javaSubprojects.sourceSets.main.allSource.srcDirs).collect {
+		file -> file.absolutePath
+	}
+}
+
+jacocoRootReport {
+	additionalSourceDirs = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
+	classDirectories = files(javaSubprojects.sourceSets.main.output)
+	executionData = files(javaSubprojects.jacocoTestReport.executionData, javaSubprojects.test.jacoco.destinationFile)
+	sourceDirectories = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
+
+	afterEvaluate {
+		classDirectories = files(
+			classDirectories.files.collect {
+				fileTree(
+					dir: it,
+					exclude: [
+						"**/*Mock*",
+						"**/asah/demo/**",
+						"**/constants/*",
+						"**/exception/*Exception*",
+						"**/test/util/*"
+					])
+			})
+	}
+
+	doFirst {
+		executionData = files(executionData.findAll { it.exists() })
+	}
+
+	onlyIf {
+		true
+	}
+
+	reports {
+		csv.enabled = false
+		html.enabled = true
+		xml.enabled = true
+	}
+}
+
+tasks.coveralls {
+	dependsOn jacocoRootReport
+}

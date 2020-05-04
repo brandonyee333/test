@@ -1,0 +1,17 @@
+{
+	"cpu": 2,
+	"id": "osbasahredis",
+	"image": "wedeploy/com-liferay-osb-asah-private:osb-asah-redis-20200120-dab72da",
+	"memory": 2048,
+	"ports": [
+		{
+			"external": false,
+			"port": 6379,
+			"protocol": "TCP",
+			"targetPort": 6379
+		}
+	],
+	"volumes": {
+		"osbasahredisdata": "/data"
+	}
+}

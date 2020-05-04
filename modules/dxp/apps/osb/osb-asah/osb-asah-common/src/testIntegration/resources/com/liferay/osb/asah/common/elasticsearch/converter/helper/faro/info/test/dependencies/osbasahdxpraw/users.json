@@ -1,0 +1,24 @@
+[
+	{
+		"birthday": 720117320295,
+		"contact": {
+			"emailAddress": "rgentry2@nbcnews.com",
+			"firstName": "Lorin",
+			"gender": "female",
+			"jobTitle": "Information Systems Manager",
+			"lastName": "Gentry",
+			"modifiedDate": 1582226249833,
+			"userId": 56432663
+		},
+		"emailAddress": "rgentry2@nbcnews.com",
+		"firstName": "Lorin",
+		"id": "386700253520720569",
+		"jobTitle": "Information Systems Manager",
+		"lastName": "Gentry",
+		"modifiedDate": 1582226249833,
+		"osbAsahDataSourceId": "331238757269547423",
+		"screenName": "Lorin.Gentry",
+		"userId": 56432663,
+		"uuid": "347780e0-7a66-11e8-a0fc-8356dd2944fd"
+	}
+]

@@ -1,0 +1,52 @@
+{
+	"_embedded": {
+		"blocked-keywords": [
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						},
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:07.666Z",
+				"dataSourceIds": [
+					"351238757269547424",
+					"351238757269547425"
+				],
+				"id": "351238757269547424",
+				"keyword": "liferay"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:10.666Z",
+				"dataSourceIds": [
+					"351238757269547424"
+				],
+				"id": "351238757269547425",
+				"keyword": "dxp"
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 2,
+		"totalElements": 12,
+		"totalPages": 6
+	}
+}

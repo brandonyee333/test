@@ -1,0 +1,5 @@
+def segmentNames = new ArrayList(doc.segmentNames.values);
+
+segmentNames.removeAll(params.segmentNames);
+
+return !segmentNames.isEmpty();

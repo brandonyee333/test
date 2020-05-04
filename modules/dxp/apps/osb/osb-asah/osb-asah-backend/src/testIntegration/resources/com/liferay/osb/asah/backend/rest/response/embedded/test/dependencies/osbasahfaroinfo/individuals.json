@@ -1,0 +1,305 @@
+[
+	{
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"234",
+					"345"
+				],
+				"dataSourceId": "567"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "567"
+			},
+			{
+				"dataSourceId": "678"
+			}
+		],
+		"id": "123"
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"bef7a4a0-7128-4e37-b58d-a3fdff2e4213",
+					"7dc0bc87-2d53-40d5-8137-2db03470adda",
+					"e15f3b2f-7cad-4772-b844-0d96d2f27528"
+				],
+				"dataSourceId": "346306699042460013"
+			},
+			{
+				"accountPKs": [
+					"5b04444d-99aa-4bf6-bdfd-00f91b5b3037"
+				],
+				"dataSourceId": "346308771486495553"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "346306699042460013",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"f863fffd-6f32-4c40-af35-930b8f20381c"
+				]
+			},
+			{
+				"dataSourceId": "346308771486495553",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"ecf333aa-d3e9-440c-8c09-31f1d5a7e6cc"
+				]
+			},
+			{
+				"dataSourceId": "346308771486495553",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"7217c1d8-4f86-44f7-861f-4b715efe4a79"
+				]
+			},
+			{
+				"dataSourceId": "346308771486495553",
+				"dataSourceType": "SALESFORCE",
+				"individualPKs": [
+					"44e9bbe1-9fac-4a05-84bb-8bdb75b4c5d6"
+				]
+			}
+		],
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"demographics": {
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "birthDate",
+					"value": "1988-05-16T00:00:00.000Z"
+				}
+			],
+			"city": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "city",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "city",
+					"value": "Coyah"
+				}
+			],
+			"country": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "country",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "country",
+					"value": "Guinea"
+				}
+			],
+			"department": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "department",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "department",
+					"value": "Accounting"
+				}
+			],
+			"description": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "description",
+					"value": "Multi-tiered incremental leverage"
+				}
+			],
+			"doNotCall": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Boolean",
+					"name": "doNotCall",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "doNotCall",
+					"value": true
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "lkeymar18@sfgate.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "familyName",
+					"value": "Keymar"
+				}
+			],
+			"fullName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fullName",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "fullName",
+					"value": "Lucila Keymar"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "givenName",
+					"value": "Lucila"
+				}
+			],
+			"industry": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "industry",
+					"value": "n/a"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "jobTitle",
+					"value": "Occupational Therapist"
+				}
+			],
+			"mobilePhone": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "mobilePhone",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "mobilePhone",
+					"value": "(418) 8539098"
+				}
+			],
+			"salutation": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "salutation",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "salutation",
+					"value": "Miss"
+				}
+			],
+			"street": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "street",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "street",
+					"value": "66492 Farragut Park"
+				}
+			],
+			"worksFor": [
+				{
+					"context": "demographics",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "worksFor",
+					"ownerId": "346468649722790279",
+					"ownerType": "individual",
+					"sourceName": "company",
+					"value": "Wisoky and Sons"
+				}
+			]
+		},
+		"id": "346468649722790279",
+		"individualSegmentIds": [
+			"346307392143338002",
+			"346308250473619552"
+		]
+	}
+]

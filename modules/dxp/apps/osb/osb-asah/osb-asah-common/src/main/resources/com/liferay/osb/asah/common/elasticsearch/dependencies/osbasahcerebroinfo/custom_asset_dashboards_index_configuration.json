@@ -1,0 +1,61 @@
+{
+	"mappings": {
+		"custom-asset-dashboards": {
+			"properties": {
+				"assetId": {
+					"type": "keyword"
+				},
+				"assetTitle": {
+					"fields": {
+						"search": {
+							"analyzer": "folding_analyzer",
+							"type": "text"
+						}
+					},
+					"type": "keyword"
+				},
+				"category": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"createDate": {
+					"type": "date"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"definition": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"modifiedByUserId": {
+					"type": "keyword"
+				},
+				"modifiedByUserName": {
+					"type": "keyword"
+				},
+				"modifiedDate": {
+					"type": "date"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

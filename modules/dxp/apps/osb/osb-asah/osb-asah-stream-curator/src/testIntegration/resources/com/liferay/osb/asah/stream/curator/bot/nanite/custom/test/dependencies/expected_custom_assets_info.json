@@ -1,0 +1,45 @@
+[
+	{
+		"abandonments": 0,
+		"assetId": "1",
+		"assetPrimaryKey": "79d7baf8f55d894e8fa54a21fb0f53f4e61d02a1b61fbb0cd6fcd5a583dc8991",
+		"browserName": "Firefox",
+		"category": "default",
+		"channelId": "1",
+		"city": "Recife",
+		"clicks": 0,
+		"contentLanguageId": "en-US",
+		"country": "Brazil",
+		"dataSourceId": "www.liferay.com",
+		"deviceType": "Desktop",
+		"elementText": null,
+		"elementType": null,
+		"elementURL": null,
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"firstEventDate": "2018-04-04T09:30:00.000Z",
+		"individualId": "100",
+		"lastEventDate": "2018-04-04T09:30:00.000Z",
+		"platformName": "Linux",
+		"primaryKey": "8e281ac5ef6e8d9b20acdd01570e14dccf0106c34eac9abe719d746799621517",
+		"readPercentile": 0,
+		"readTime": 0,
+		"region": "Pernambuco",
+		"segmentNames": [
+			"Support",
+			"Developer"
+		],
+		"submissionDates": [
+		],
+		"submissions": 0,
+		"submissionsTime": 0,
+		"title": "Asset Title",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1",
+		"viewDates": [
+			"2018-04-04T09:30:00.000Z"
+		],
+		"views": 1
+	}
+]

@@ -1,0 +1,249 @@
+{
+	"mappings": {
+		"individuals": {
+			"dynamic_templates": [
+				{
+					"template_custom_searchable_properties": {
+						"mapping": {
+							"fields": {
+								"searchable": {
+									"analyzer": "ngram_analyzer",
+									"type": "text"
+								}
+							},
+							"index": "true",
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"match_mapping_type": "string",
+						"path_match": "custom.*.value"
+					}
+				},
+				{
+					"template_demographics_searchable_properties": {
+						"mapping": {
+							"fields": {
+								"searchable": {
+									"analyzer": "ngram_analyzer",
+									"type": "text"
+								}
+							},
+							"index": "true",
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"match_mapping_type": "string",
+						"path_match": "demographics.*.value"
+					}
+				},
+				{
+					"template_string_properties": {
+						"mapping": {
+							"index": "true",
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"activitiesCounts": {
+					"properties": {
+						"activitiesCount": {
+							"type": "long"
+						},
+						"channelId": {
+							"type": "keyword"
+						}
+					},
+					"type": "nested"
+				},
+				"analyticsData": {
+					"properties": {
+						"browserName": {
+							"type": "keyword"
+						},
+						"browserPluginDetails": {
+							"type": "keyword"
+						},
+						"canvasFingerPrint": {
+							"type": "keyword"
+						},
+						"clientIP": {
+							"type": "keyword"
+						},
+						"cookiesEnabled": {
+							"type": "boolean"
+						},
+						"crawler": {
+							"type": "keyword"
+						},
+						"devicePixelRatio": {
+							"type": "keyword"
+						},
+						"deviceType": {
+							"type": "keyword"
+						},
+						"language": {
+							"type": "keyword"
+						},
+						"languageId": {
+							"type": "keyword"
+						},
+						"platform": {
+							"type": "keyword"
+						},
+						"platformName": {
+							"type": "keyword"
+						},
+						"protocolVersion": {
+							"type": "keyword"
+						},
+						"screenHeight": {
+							"type": "long"
+						},
+						"screenSizeAndColorDepth": {
+							"type": "keyword"
+						},
+						"screenWidth": {
+							"type": "long"
+						},
+						"systemFonts": {
+							"type": "keyword"
+						},
+						"timezone": {
+							"type": "keyword"
+						},
+						"touchSupport": {
+							"type": "boolean"
+						},
+						"userAgent": {
+							"type": "keyword"
+						},
+						"webGLFingerPrint": {
+							"type": "keyword"
+						}
+					}
+				},
+				"channelIds": {
+					"type": "keyword"
+				},
+				"dataSourceAccountPKs": {
+					"properties": {
+						"accountPKs": {
+							"type": "keyword"
+						},
+						"dataSourceId": {
+							"type": "keyword"
+						}
+					},
+					"type": "nested"
+				},
+				"dataSourceIndividualPKs": {
+					"properties": {
+						"dataSourceId": {
+							"type": "keyword"
+						},
+						"dataSourceType": {
+							"type": "keyword"
+						},
+						"individualPKs": {
+							"type": "keyword"
+						}
+					},
+					"type": "nested"
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"demographics": {
+					"type": "object"
+				},
+				"emailAddressHashed": {
+					"type": "keyword"
+				},
+				"engagementScore": {
+					"type": "double"
+				},
+				"firstEnrichmentDate": {
+					"type": "date"
+				},
+				"groupIds": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualSegmentIds": {
+					"type": "keyword"
+				},
+				"lastActivityDates": {
+					"properties": {
+						"channelId": {
+							"type": "keyword"
+						},
+						"lastActivityDate": {
+							"type": "date"
+						}
+					},
+					"type": "nested"
+				},
+				"lastEnrichmentDate": {
+					"type": "date"
+				},
+				"organizationIds": {
+					"type": "keyword"
+				},
+				"roleIds": {
+					"type": "keyword"
+				},
+				"teamIds": {
+					"type": "keyword"
+				},
+				"userGroupIds": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"ngram_analyzer": {
+					"filter": [
+						"lowercase",
+						"ngram_filter"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			},
+			"filter": {
+				"ngram_filter": {
+					"max_gram": 5,
+					"min_gram": 3,
+					"type": "ngram"
+				}
+			},
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		},
+		"index": {
+			"mapping": {
+				"total_fields": {
+					"limit": 5000
+				}
+			}
+		}
+	}
+}
