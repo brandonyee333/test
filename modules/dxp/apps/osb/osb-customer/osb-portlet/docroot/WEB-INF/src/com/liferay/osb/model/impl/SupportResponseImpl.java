@@ -16,6 +16,8 @@ package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.SupportResponseConstants;
 
+import java.util.Locale;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Amos Fong
@@ -57,6 +59,11 @@ public class SupportResponseImpl extends SupportResponseBaseImpl {
 
 	public String getSupportLevelLabel() {
 		return SupportResponseConstants.getSupportLevelLabel(getSupportLevel());
+	}
+
+	public String getSupportLevelLabel(Locale locale) {
+		return SupportResponseConstants.getSupportLevelLabel(
+			getSupportLevel(), locale);
 	}
 
 	public boolean isPlatinumLevel() {

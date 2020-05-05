@@ -62,7 +62,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 
 		<liferay-ui:search-container-column-text
 			name="sla"
-			value="<%= supportResponse.getName() %>"
+			value="<%= LanguageUtil.get(request, supportResponse.getSupportLevelLabel(themeDisplay.getLocale())) %>"
 		/>
 
 		<liferay-ui:search-container-column-text

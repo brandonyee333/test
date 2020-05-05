@@ -14,7 +14,10 @@
 
 package com.liferay.osb.model;
 
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringPool;
+
+import java.util.Locale;
 
 /**
  * @author Kyle Bischof
@@ -51,10 +54,18 @@ public class SupportResponseConstants {
 	};
 
 	public static String getSupportLevelLabel(int supportLevel) {
+		return getSupportLevelLabel(supportLevel, LocaleUtil.US);
+	}
+
+	public static String getSupportLevelLabel(int supportLevel, Locale locale) {
 		if (supportLevel == SUPPORT_LEVEL_FLOATING) {
 			return "floating";
 		}
 		else if (supportLevel == SUPPORT_LEVEL_GOLD) {
+			if (locale.equals(LocaleUtil.JAPAN)) {
+				return "light";
+			}
+
 			return "gold";
 		}
 		else if (supportLevel == SUPPORT_LEVEL_LIMITED) {
@@ -64,6 +75,10 @@ public class SupportResponseConstants {
 			return StringPool.BLANK;
 		}
 		else if (supportLevel == SUPPORT_LEVEL_PLATINUM) {
+			if (locale.equals(LocaleUtil.JAPAN)) {
+				return "standard";
+			}
+
 			return "platinum";
 		}
 		else if (supportLevel == SUPPORT_LEVEL_SILVER) {
