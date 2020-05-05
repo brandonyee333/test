@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.extractor.rest.controller;
+package com.liferay.osb.asah.upgrade.v2_5_0;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -20,7 +20,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.messaging.Channel;
 import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.model.AnalyticsEvent;
-import com.liferay.osb.asah.extractor.processor.AnalyticsEventsChannels;
+import com.liferay.osb.asah.upgrade.UpgradeStep;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,19 +38,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Marcellus Tavares
  */
-@RequestMapping(produces = "application/json")
-@RestController
-public class UpgradeRestController {
+@Component
+public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 
-	@PostMapping("/upgrade")
-	public void upgrade() {
+	@Override
+	public void upgrade(String version) throws Exception {
 		_upgradeAnalyticsEvents(Channel.ANALYTICS_EVENTS_BLOG, "BlogNanite");
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
@@ -222,7 +219,7 @@ public class UpgradeRestController {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		UpgradeRestController.class);
+		AssetAnalyticsEventsUpgradeStep.class);
 
 	@Autowired
 	private AnalyticsEventsChannels _analyticsEventsChannels;

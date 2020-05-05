@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_5_0.AccountsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_5_0.AssetAnalyticsEventsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.CreateChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.DXPRawUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.DataSourcesUpgradeStep;
@@ -46,13 +47,17 @@ public class UpgradeProcessConfiguration {
 			_emailAddressHashedMappingFieldUpgradeStep,
 			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep,
 			_individualActivityFieldsUpgradeStep,
-			_unprocessedAnalyticsEventsUpgradeStep);
+			_unprocessedAnalyticsEventsUpgradeStep,
+			_assetAnalyticsEventsUpgradeStep);
 
 		return upgradeProcess;
 	}
 
 	@Autowired
 	private AccountsUpgradeStep _accountsUpgradeStep;
+
+	@Autowired
+	private AssetAnalyticsEventsUpgradeStep _assetAnalyticsEventsUpgradeStep;
 
 	@Autowired
 	private CreateChannelsUpgradeStep _createChannelsUpgradeStep;
