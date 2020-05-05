@@ -123,7 +123,7 @@ coveralls {
 jacocoRootReport {
 	additionalSourceDirs = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 	classDirectories = files(javaSubprojects.sourceSets.main.output)
-	executionData = files(javaSubprojects.jacocoTestReport.executionData, javaSubprojects.test.jacoco.destinationFile)
+	executionData = files(javaSubprojects.test.jacoco.findAll{ it.enabled }.destinationFile, javaSubprojects.testIntegration.jacoco.findAll{ it.enabled }.destinationFile)
 	sourceDirectories = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 
 	afterEvaluate {
@@ -139,14 +139,6 @@ jacocoRootReport {
 						"**/test/util/*"
 					])
 			})
-	}
-
-	doFirst {
-		executionData = files(executionData.findAll { it.exists() })
-	}
-
-	onlyIf {
-		true
 	}
 
 	reports {
