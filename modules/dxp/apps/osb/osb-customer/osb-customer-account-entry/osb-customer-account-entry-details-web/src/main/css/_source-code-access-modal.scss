@@ -3,6 +3,10 @@
 	text-align: center;
 	width: 60%;
 
+	.btn-link {
+		color: $color-primary;
+	}
+
 	.modal-body-icon {
 		border-radius: $lexicon-icon-background;
 		height: $lexicon-icon-background;
@@ -46,9 +50,5 @@
 		&.last-text {
 			padding-bottom: $padding-default;
 		}
-	}
-
-	.btn-link {
-		color: $color-primary;
 	}
 }

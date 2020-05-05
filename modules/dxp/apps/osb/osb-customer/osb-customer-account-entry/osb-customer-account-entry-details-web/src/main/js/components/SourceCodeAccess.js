@@ -106,6 +106,7 @@ export default class SourceCodeAccess extends React.Component {
 								"team-members-who-have-access-to-liferay's-source-code"
 							)}
 						</div>
+
 						<div className="panel-subtitle">
 							{Liferay.Language.get(
 								"add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code"
