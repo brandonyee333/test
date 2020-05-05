@@ -62,7 +62,8 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			Channel.ANALYTICS_EVENTS_FORM, "FormNanite",
 			_buildFormsQueryBuilder());
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite", null);
+			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite",
+			_buildJournalQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_PAGE, "PageNanite", null);
 	}
@@ -112,6 +113,14 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			).should(
 				QueryBuilders.termQuery("eventId", "pageViewed")
 			)
+		);
+	}
+
+	private QueryBuilder _buildJournalQueryBuilder() {
+		return BoolQueryBuilderUtil.should(
+			_getJournalRatingsQueryBuilder()
+		).should(
+			_getJournalViewsQueryBuilder()
 		);
 	}
 
@@ -206,6 +215,31 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 				QueryBuilders.existsQuery("eventProperties.ratingType"))
 		).should(
 			QueryBuilders.termQuery("eventProperties.ratingType", "stars")
+		);
+	}
+
+	private QueryBuilder _getJournalRatingsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Ratings")
+		).filter(
+			QueryBuilders.termQuery("eventId", "VOTE")
+		).filter(
+			QueryBuilders.termQuery(
+				"eventProperties.className",
+				"com.liferay.journal.model.JournalArticle")
+		).should(
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery("eventProperties.ratingType"))
+		).should(
+			QueryBuilders.termQuery("eventProperties.ratingType", "stars")
+		);
+	}
+
+	private QueryBuilder _getJournalViewsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "WebContent")
+		).filter(
+			QueryBuilders.termQuery("eventId", "webContentViewed")
 		);
 	}
 
