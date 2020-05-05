@@ -16,6 +16,7 @@ package com.liferay.osb.asah.batch.curator.bot;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.BaseActivitiesNanite;
 import com.liferay.osb.asah.batch.curator.bot.nanite.Nanite;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
@@ -233,6 +234,9 @@ public class OSBAsahBatchCuratorBot {
 
 					return null;
 				}
+			).setQueryBuilder(
+				BoolQueryBuilderUtil.mustNot(
+					QueryBuilders.existsQuery("cronExpression"))
 			).iterate();
 		}
 		catch (Exception e) {
