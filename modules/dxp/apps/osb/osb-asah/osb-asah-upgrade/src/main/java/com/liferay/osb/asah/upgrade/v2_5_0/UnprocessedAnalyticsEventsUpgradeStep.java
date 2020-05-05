@@ -86,7 +86,7 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					"Skipping upgrade because there are no " +
-						"lastSuccessfulAnalyticsEventIds");
+						"last successful analytics event IDs");
 			}
 
 			return;
