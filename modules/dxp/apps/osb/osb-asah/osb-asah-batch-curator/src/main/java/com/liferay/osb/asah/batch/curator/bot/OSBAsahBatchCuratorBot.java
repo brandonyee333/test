@@ -37,6 +37,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -195,6 +196,15 @@ public class OSBAsahBatchCuratorBot {
 	}
 
 	public void scheduleOSBAsahTask(JSONObject osbAsahTaskJSONObject) {
+		Nanite nanite = _nanitesMap.get(
+			osbAsahTaskJSONObject.getString("className"));
+
+		if (nanite == null) {
+			throw new IllegalArgumentException(
+				"Unable to schedule nanite with class name " +
+					osbAsahTaskJSONObject.getString("className"));
+		}
+
 		String cronExpression = osbAsahTaskJSONObject.getString(
 			"cronExpression");
 
@@ -206,7 +216,7 @@ public class OSBAsahBatchCuratorBot {
 		}
 
 		_threadPoolTaskScheduler.schedule(
-			new OSBAsahTaskRunnable(false, osbAsahTaskJSONObject),
+			new OSBAsahScheduledTaskRunnable(nanite, osbAsahTaskJSONObject),
 			new CronTrigger(cronExpression));
 	}
 
