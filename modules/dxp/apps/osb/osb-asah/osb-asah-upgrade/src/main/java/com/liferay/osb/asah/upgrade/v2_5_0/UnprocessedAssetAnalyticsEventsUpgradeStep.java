@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
  * @author Marcellus Tavares
  */
 @Component
-public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
+public class UnprocessedAssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
@@ -401,7 +401,7 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 	}
 
 	private static final Log _log = LogFactory.getLog(
-		AssetAnalyticsEventsUpgradeStep.class);
+		UnprocessedAssetAnalyticsEventsUpgradeStep.class);
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;

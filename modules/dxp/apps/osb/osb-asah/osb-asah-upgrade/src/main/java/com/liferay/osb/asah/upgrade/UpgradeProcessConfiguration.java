@@ -15,7 +15,6 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_5_0.AccountsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.AssetAnalyticsEventsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.CreateChannelsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.DXPRawUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.DataSourcesUpgradeStep;
@@ -24,6 +23,7 @@ import com.liferay.osb.asah.upgrade.v2_5_0.ExperimentMappingFieldUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.FieldMappingsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.IndividualActivityFieldsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAnalyticsEventsUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAssetAnalyticsEventsUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,16 +48,13 @@ public class UpgradeProcessConfiguration {
 			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep,
 			_individualActivityFieldsUpgradeStep,
 			_unprocessedAnalyticsEventsUpgradeStep,
-			_assetAnalyticsEventsUpgradeStep);
+			_unprocessedAssetAnalyticsEventsUpgradeStep);
 
 		return upgradeProcess;
 	}
 
 	@Autowired
 	private AccountsUpgradeStep _accountsUpgradeStep;
-
-	@Autowired
-	private AssetAnalyticsEventsUpgradeStep _assetAnalyticsEventsUpgradeStep;
 
 	@Autowired
 	private CreateChannelsUpgradeStep _createChannelsUpgradeStep;
@@ -86,5 +83,9 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private UnprocessedAnalyticsEventsUpgradeStep
 		_unprocessedAnalyticsEventsUpgradeStep;
+
+	@Autowired
+	private UnprocessedAssetAnalyticsEventsUpgradeStep
+		_unprocessedAssetAnalyticsEventsUpgradeStep;
 
 }
