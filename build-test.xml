@@ -8634,6 +8634,8 @@ session.cookie.use.full.hostname=true
 			</else>
 		</if>
 
+		<get-testcase-property property.name="test.skip.tear.down" />
+
 		<if>
 			<equals arg1="${test.batch.run.type}" arg2="sequential" />
 			<then>
