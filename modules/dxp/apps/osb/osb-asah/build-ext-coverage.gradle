@@ -79,7 +79,6 @@ configure(javaSubprojects) {
 		ignoreFailures = false
 
 		jacoco {
-			append = true
 			destinationFile = new File(buildDir, "jacoco/jacocoTest.exec")
 			excludes = ["**/joestelmach/natty/**", "**/maxmind/geoip/**"]
 		}
@@ -97,8 +96,7 @@ configure(javaSubprojects) {
 		ignoreFailures = false
 
 		jacoco {
-			append = true
-			destinationFile = new File(buildDir, "jacoco/jacocoTest.exec")
+			destinationFile = new File(buildDir, "jacoco/jacocoIntegrationTest.exec")
 			excludes = ["**/joestelmach/natty/**"]
 		}
 
