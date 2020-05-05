@@ -41,7 +41,6 @@ describe('SourceCodeAccess', () => {
 			<SourceCodeAccess
 				addCollaboratorURL="/url"
 				collaborators={collaboratorsJSON}
-				namespace="AccountEntryDetailsPortlet"
 				{...props}
 			/>
 		);

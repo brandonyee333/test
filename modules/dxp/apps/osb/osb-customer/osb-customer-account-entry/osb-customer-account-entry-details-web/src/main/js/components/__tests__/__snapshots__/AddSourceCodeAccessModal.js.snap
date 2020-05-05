@@ -38,7 +38,25 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
         <div
           class="modal-body"
         >
-          <form>
+          <form
+            action="/url"
+            method="post"
+          >
+            <input
+              name="namespacefullName"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="namespaceemailAddress"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="namespacegitHubUserName"
+              type="hidden"
+              value=""
+            />
             <div
               class="form-group"
             >
@@ -113,30 +131,6 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
                 value=""
               />
             </div>
-          </form>
-        </div>
-        <div
-          class="modal-footer"
-        >
-          <form
-            action="/url"
-            method="post"
-          >
-            <input
-              name="AccountEntryDetailsPortletfullName"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="AccountEntryDetailsPortletemailAddress"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="AccountEntryDetailsPortletgitHubUserName"
-              type="hidden"
-              value=""
-            />
             <div
               class="btn-row"
             >
@@ -201,7 +195,25 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
         <div
           class="modal-body"
         >
-          <form>
+          <form
+            action="/url"
+            method="post"
+          >
+            <input
+              name="namespacefullName"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="namespaceemailAddress"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="namespacegitHubUserName"
+              type="hidden"
+              value=""
+            />
             <div
               class="form-group"
             >
@@ -276,30 +288,6 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
                 value=""
               />
             </div>
-          </form>
-        </div>
-        <div
-          class="modal-footer"
-        >
-          <form
-            action="/url"
-            method="post"
-          >
-            <input
-              name="AccountEntryDetailsPortletfullName"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="AccountEntryDetailsPortletemailAddress"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="AccountEntryDetailsPortletgitHubUserName"
-              type="hidden"
-              value=""
-            />
             <div
               class="btn-row"
             >
@@ -364,7 +352,25 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
         <div
           class="modal-body"
         >
-          <form>
+          <form
+            action="/url"
+            method="post"
+          >
+            <input
+              name="namespacefullName"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="namespaceemailAddress"
+              type="hidden"
+              value=""
+            />
+            <input
+              name="namespacegitHubUserName"
+              type="hidden"
+              value=""
+            />
             <div
               class="form-group"
             >
@@ -439,30 +445,6 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
                 value=""
               />
             </div>
-          </form>
-        </div>
-        <div
-          class="modal-footer"
-        >
-          <form
-            action="/url"
-            method="post"
-          >
-            <input
-              name="AccountEntryDetailsPortletfullName"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="AccountEntryDetailsPortletemailAddress"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="AccountEntryDetailsPortletgitHubUserName"
-              type="hidden"
-              value=""
-            />
             <div
               class="btn-row"
             >

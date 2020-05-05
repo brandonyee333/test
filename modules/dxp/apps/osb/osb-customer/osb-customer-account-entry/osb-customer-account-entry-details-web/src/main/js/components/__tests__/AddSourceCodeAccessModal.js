@@ -15,7 +15,6 @@ describe('AddSourceCodeAccessModal', () => {
 		return render(
 			<AddSourceCodeAccessModal
 				addCollaboratorURL="/url"
-				namespace="AccountEntryDetailsPortlet"
 				onClose={jest.fn()}
 				show={true}
 				{...props}
@@ -64,14 +63,63 @@ describe('AddSourceCodeAccessModal', () => {
 		);
 	});
 
-	it('renders error message upon submission when fields are invalid', async () => {
+	it('renders error message upon submission when last name is missing', async () => {
 		const {container} = renderAddSourceCodeAccessModal();
 
 		fireEvent.change(getByLabelText(container, 'name'), {
 			target: {value: 'Test'}
 		});
 		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
+		});
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText(container, 'submit'));
+
+		waitForElement(() =>
+			getByText(container, 'please-correct-the-following-fields name')
+		);
+
+		waitForElement(() =>
+			getByText(container, 'first-and-last-name-are-both-required')
+		);
+	});
+
+	it('renders error message upon submission when email is invalid', async () => {
+		const {container} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'Test Test'}
+		});
+		fireEvent.change(getByLabelText(container, 'email-address'), {
 			target: {value: 'test@liferay'}
+		});
+		fireEvent.change(getByLabelText(container, 'github-username'), {
+			target: {value: 'test'}
+		});
+
+		fireEvent.click(getByText(container, 'submit'));
+
+		waitForElement(() =>
+			getByText(
+				container,
+				'please-correct-the-following-fields email-address'
+			)
+		);
+
+		waitForElement(() => getByText(container, 'invalid-format'));
+	});
+
+	it('renders error message upon submission when github username is incorrect', async () => {
+		const {container} = renderAddSourceCodeAccessModal();
+
+		fireEvent.change(getByLabelText(container, 'name'), {
+			target: {value: 'Test Test'}
+		});
+		fireEvent.change(getByLabelText(container, 'email-address'), {
+			target: {value: 'test@liferay.com'}
 		});
 		fireEvent.change(getByLabelText(container, 'github-username'), {
 			target: {value: 'test$'}
@@ -80,9 +128,12 @@ describe('AddSourceCodeAccessModal', () => {
 		fireEvent.click(getByText(container, 'submit'));
 
 		waitForElement(() =>
-			getByText(container, 'first-and-last-name-are-both-required')
+			getByText(
+				container,
+				'please-correct-the-following-fields github-username'
+			)
 		);
-		waitForElement(() => getByText(container, 'invalid-format'));
+
 		waitForElement(() => getByText(container, 'incorrect-username'));
 	});
 });

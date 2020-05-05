@@ -22,7 +22,6 @@ const isValid = (value, field) => {
 export default class AddSourceCodeAccessModal extends React.Component {
 	static propTypes = {
 		addCollaboratorURL: PropTypes.string.isRequired,
-		namespace: PropTypes.string.isRequired,
 		onClose: PropTypes.func.isRequired,
 		show: PropTypes.bool.isRequired
 	};
@@ -103,7 +102,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 	};
 
 	render() {
-		const {addCollaboratorURL, namespace, show} = this.props;
+		const {addCollaboratorURL, show} = this.props;
 
 		const {
 			emailAddress,
@@ -123,57 +122,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 			.map((item, index) => (item ? fieldNames[index] : ''))
 			.filter(item => item);
 
-		const modalFooter = (
-			<form
-				action={addCollaboratorURL}
-				onSubmit={this.handleUpdate}
-				method="post"
-			>
-				<input
-					name={`${namespace}fullName`}
-					type="hidden"
-					value={fullName.value}
-				/>
-				<input
-					name={`${namespace}emailAddress`}
-					type="hidden"
-					value={emailAddress.value}
-				/>
-				<input
-					name={`${namespace}gitHubUserName`}
-					type="hidden"
-					value={gitHubUserName.value}
-				/>
-
-				<div className="btn-row">
-					<Button
-						display="default"
-						onClick={this.handleClose}
-						type="reset"
-						value="cancel"
-					>
-						{Liferay.Language.get('cancel')}
-					</Button>
-
-					<Button type="submit" value="submit">
-						{Liferay.Language.get('submit')}
-					</Button>
-				</div>
-			</form>
-		);
-
-		const modalFooterConfirmation = (
-			<div className="btn-row">
-				<Button
-					display="default"
-					onClick={this.handleClose}
-					type="reset"
-					value="cancel"
-				>
-					{Liferay.Language.get('close')}
-				</Button>
-			</div>
-		);
+		const namespace = window.AccountDetailsConstants.namespace;
 
 		const successConfirmation = (
 			<div className="modal-body-announcement">
@@ -197,7 +146,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 						[
 							<a
 								aria-label={Liferay.Language.get('github-link')}
-								className="component-title link-primary"
+								className="btn-link component-title"
 								href="https://github.com/"
 							>
 								{Liferay.Language.get('github')}
@@ -249,7 +198,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 						[
 							<a
 								aria-label={Liferay.Language.get('github-link')}
-								className="component-title link-primary"
+								className="btn-link component-title"
 								href="https://github.com/"
 							>
 								{Liferay.Language.get('github')}
@@ -263,7 +212,6 @@ export default class AddSourceCodeAccessModal extends React.Component {
 
 		return (
 			<Modal
-				footer={confirmation ? modalFooterConfirmation : modalFooter}
 				header={Liferay.Language.get(
 					"give-a-team-member-access-to-liferay's-source-code"
 				)}
@@ -289,7 +237,28 @@ export default class AddSourceCodeAccessModal extends React.Component {
 								{fieldsToUpdate.join(', ')}
 							</Alert>
 						)}
-						<form>
+
+						<form
+							action={addCollaboratorURL}
+							onSubmit={this.handleUpdate}
+							method="post"
+						>
+							<input
+								name={`${namespace}fullName`}
+								type="hidden"
+								value={fullName.value}
+							/>
+							<input
+								name={`${namespace}emailAddress`}
+								type="hidden"
+								value={emailAddress.value}
+							/>
+							<input
+								name={`${namespace}gitHubUserName`}
+								type="hidden"
+								value={gitHubUserName.value}
+							/>
+
 							<SourceCodeAccessField
 								errorMessage={Liferay.Language.get(
 									'first-and-last-name-are-both-required'
@@ -334,6 +303,23 @@ export default class AddSourceCodeAccessModal extends React.Component {
 									'gitHubUserName'
 								)}
 							/>
+
+							<div className="btn-row">
+								<Button
+									display="default"
+									onClick={this.handleClose}
+									type="reset"
+									value="cancel"
+								>
+									{Liferay.Language.get('cancel')}
+								</Button>
+
+								{!confirmation && (
+									<Button type="submit" value="submit">
+										{Liferay.Language.get('submit')}
+									</Button>
+								)}
+							</div>
 						</form>
 					</>
 				)}

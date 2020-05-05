@@ -16,8 +16,7 @@ export default class SourceCodeAccess extends React.Component {
 				fullName: PropTypes.string.isRequired,
 				gitHubUserName: PropTypes.string.isRequired
 			})
-		).isRequired,
-		namespace: PropTypes.string.isRequired
+		).isRequired
 	};
 
 	state = {
@@ -28,6 +27,16 @@ export default class SourceCodeAccess extends React.Component {
 		this.setState({
 			showModal: false
 		});
+
+	handleDeleteCollaborator = event => {
+		if (
+			!confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			event.preventDefault();
+		}
+	};
 
 	handleDisplayModal = () =>
 		this.setState({
@@ -64,6 +73,7 @@ export default class SourceCodeAccess extends React.Component {
 					<div className="col-md-12">
 						<Button
 							href={collaborator.deleteCollaboratorURL}
+							onClick={this.handleDeleteCollaborator}
 							size="sm"
 							value="delete"
 						>
@@ -111,7 +121,6 @@ export default class SourceCodeAccess extends React.Component {
 
 					<AddSourceCodeAccessModal
 						addCollaboratorURL={addCollaboratorURL}
-						namespace={namespace}
 						onClose={this.handleCloseModal}
 						show={showModal}
 					/>
