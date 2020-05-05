@@ -65,7 +65,8 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite",
 			_buildJournalQueryBuilder());
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_PAGE, "PageNanite", null);
+			Channel.ANALYTICS_EVENTS_PAGE, "PageNanite",
+			_buildPageQueryBuilder());
 	}
 
 	private QueryBuilder _buildBlogsQueryBuilder() {
@@ -121,6 +122,22 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			_getJournalRatingsQueryBuilder()
 		).should(
 			_getJournalViewsQueryBuilder()
+		);
+	}
+
+	private QueryBuilder _buildPageQueryBuilder() {
+		return BoolQueryBuilderUtil.mustNot(
+			QueryBuilders.termsQuery(
+				"eventId", "blogViewed", "formViewed", "pageLoaded",
+				"pageUnloaded", "webContentViewed")
+		).mustNot(
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termQuery("applicationId", "Form")
+			).filter(
+				QueryBuilders.termQuery("eventId", "pageViewed")
+			).filter(
+				QueryBuilders.termQuery("eventProperties.page", 0)
+			)
 		);
 	}
 
