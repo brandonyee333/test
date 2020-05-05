@@ -51,7 +51,7 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 	public void upgrade(String version) throws Exception {
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_BLOG, "BlogNanite",
-			_buildBlogsQueryBuilder());
+			_buildBlogQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET, "CustomAssetDashboardNanite",
 			_buildCustomAssetQueryBuilder());
@@ -60,7 +60,7 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			_buildDocumentLibraryQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_FORM, "FormNanite",
-			_buildFormsQueryBuilder());
+			_buildFormQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite",
 			_buildJournalQueryBuilder());
@@ -69,13 +69,13 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			_buildPageQueryBuilder());
 	}
 
-	private QueryBuilder _buildBlogsQueryBuilder() {
+	private QueryBuilder _buildBlogQueryBuilder() {
 		return BoolQueryBuilderUtil.should(
-			_getBlogsQueryBuilder()
+			_getBlogQueryBuilder()
 		).should(
-			_getBlogsCommentsQueryBuilder()
+			_getBlogCommentsQueryBuilder()
 		).should(
-			_getBlogsRatingsQueryBuilder()
+			_getBlogRatingsQueryBuilder()
 		);
 	}
 
@@ -99,7 +99,7 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 		);
 	}
 
-	private QueryBuilder _buildFormsQueryBuilder() {
+	private QueryBuilder _buildFormQueryBuilder() {
 		return BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("applicationId", "Form")
 		).filter(
@@ -156,7 +156,7 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 		}
 	}
 
-	private QueryBuilder _getBlogsCommentsQueryBuilder() {
+	private QueryBuilder _getBlogCommentsQueryBuilder() {
 		return BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("applicationId", "Comment")
 		).filter(
@@ -168,12 +168,12 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 		);
 	}
 
-	private QueryBuilder _getBlogsQueryBuilder() {
+	private QueryBuilder _getBlogQueryBuilder() {
 		return BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("applicationId", "Blog"));
 	}
 
-	private QueryBuilder _getBlogsRatingsQueryBuilder() {
+	private QueryBuilder _getBlogRatingsQueryBuilder() {
 		return BoolQueryBuilderUtil.filter(
 			QueryBuilders.termQuery("applicationId", "Ratings")
 		).filter(
