@@ -122,8 +122,6 @@ export default class AddSourceCodeAccessModal extends React.Component {
 			.map((item, index) => (item ? fieldNames[index] : ''))
 			.filter(item => item);
 
-		const namespace = window.AccountDetailsConstants.namespace;
-
 		const successConfirmation = (
 			<div className="modal-body-announcement">
 				<div className="modal-body-icon check-circle-full">
@@ -243,30 +241,14 @@ export default class AddSourceCodeAccessModal extends React.Component {
 							onSubmit={this.handleUpdate}
 							method="post"
 						>
-							<input
-								name={`${namespace}fullName`}
-								type="hidden"
-								value={fullName.value}
-							/>
-							<input
-								name={`${namespace}emailAddress`}
-								type="hidden"
-								value={emailAddress.value}
-							/>
-							<input
-								name={`${namespace}gitHubUserName`}
-								type="hidden"
-								value={gitHubUserName.value}
-							/>
-
 							<SourceCodeAccessField
 								errorMessage={Liferay.Language.get(
 									'first-and-last-name-are-both-required'
 								)}
 								hasError={fullName.error}
-								id="fullNameInput"
 								inputValue={fullName.value}
 								label={fieldNames[0]}
+								name="fullName"
 								required={true}
 								subtext={Liferay.Language.get(
 									'first-and-last-name'
@@ -281,9 +263,9 @@ export default class AddSourceCodeAccessModal extends React.Component {
 									'invalid-format'
 								)}
 								hasError={emailAddress.error}
-								id="emailAddressInput"
 								inputValue={emailAddress.value}
 								label={fieldNames[1]}
+								name="emailAddress"
 								required={true}
 								updateInputValue={this.handleFieldChange(
 									'emailAddress'
@@ -295,9 +277,9 @@ export default class AddSourceCodeAccessModal extends React.Component {
 									'incorrect-username'
 								)}
 								hasError={gitHubUserName.error}
-								id="gitHubUserNameInput"
 								inputValue={gitHubUserName.value}
 								label={fieldNames[2]}
+								name="gitHubUserName"
 								required={true}
 								updateInputValue={this.handleFieldChange(
 									'gitHubUserName'
@@ -331,8 +313,8 @@ export default class AddSourceCodeAccessModal extends React.Component {
 SourceCodeAccessField.propTypes = {
 	hasError: PropTypes.bool.isRequired,
 	errorMessage: PropTypes.string.isRequired,
-	id: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
 	required: PropTypes.bool,
 	inputValue: PropTypes.string.isRequired,
 	updateInputValue: PropTypes.func.isRequired,
@@ -342,20 +324,22 @@ SourceCodeAccessField.propTypes = {
 function SourceCodeAccessField({
 	hasError,
 	errorMessage,
-	id,
 	label,
+	name,
 	required,
 	inputValue,
 	updateInputValue,
 	subtext
 }) {
+	const NAMESPACE = window.AccountDetailsConstants.namespace;
+
 	const handleChange = event => {
 		updateInputValue(event.target.value);
 	};
 
 	return (
 		<div className={`${hasError ? 'form-group has-error' : 'form-group'}`}>
-			<label className="control-label" htmlFor={id}>
+			<label className="control-label" htmlFor={`${name}Input`}>
 				{label}
 
 				{required && (
@@ -367,7 +351,8 @@ function SourceCodeAccessField({
 
 			<input
 				className="form-control"
-				id={id}
+				id={`${name}Input`}
+				name={`${NAMESPACE}${name}`}
 				onChange={handleChange}
 				type="text"
 				value={inputValue}

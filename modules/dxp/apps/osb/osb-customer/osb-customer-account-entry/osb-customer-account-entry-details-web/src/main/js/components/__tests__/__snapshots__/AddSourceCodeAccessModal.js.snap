@@ -42,21 +42,6 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
             action="/url"
             method="post"
           >
-            <input
-              name="namespacefullName"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="namespaceemailAddress"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="namespacegitHubUserName"
-              type="hidden"
-              value=""
-            />
             <div
               class="form-group"
             >
@@ -76,6 +61,7 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
               <input
                 class="form-control"
                 id="fullNameInput"
+                name="namespacefullName"
                 type="text"
                 value=""
               />
@@ -104,6 +90,7 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
               <input
                 class="form-control"
                 id="emailAddressInput"
+                name="namespaceemailAddress"
                 type="text"
                 value=""
               />
@@ -127,6 +114,7 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
               <input
                 class="form-control"
                 id="gitHubUserNameInput"
+                name="namespacegitHubUserName"
                 type="text"
                 value=""
               />
@@ -199,21 +187,6 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
             action="/url"
             method="post"
           >
-            <input
-              name="namespacefullName"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="namespaceemailAddress"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="namespacegitHubUserName"
-              type="hidden"
-              value=""
-            />
             <div
               class="form-group"
             >
@@ -233,6 +206,7 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
               <input
                 class="form-control"
                 id="fullNameInput"
+                name="namespacefullName"
                 type="text"
                 value=""
               />
@@ -261,6 +235,7 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
               <input
                 class="form-control"
                 id="emailAddressInput"
+                name="namespaceemailAddress"
                 type="text"
                 value=""
               />
@@ -284,6 +259,7 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
               <input
                 class="form-control"
                 id="gitHubUserNameInput"
+                name="namespacegitHubUserName"
                 type="text"
                 value=""
               />
@@ -356,21 +332,6 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
             action="/url"
             method="post"
           >
-            <input
-              name="namespacefullName"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="namespaceemailAddress"
-              type="hidden"
-              value=""
-            />
-            <input
-              name="namespacegitHubUserName"
-              type="hidden"
-              value=""
-            />
             <div
               class="form-group"
             >
@@ -390,6 +351,7 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
               <input
                 class="form-control"
                 id="fullNameInput"
+                name="namespacefullName"
                 type="text"
                 value=""
               />
@@ -418,6 +380,7 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
               <input
                 class="form-control"
                 id="emailAddressInput"
+                name="namespaceemailAddress"
                 type="text"
                 value=""
               />
@@ -441,6 +404,7 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
               <input
                 class="form-control"
                 id="gitHubUserNameInput"
+                name="namespacegitHubUserName"
                 type="text"
                 value=""
               />
