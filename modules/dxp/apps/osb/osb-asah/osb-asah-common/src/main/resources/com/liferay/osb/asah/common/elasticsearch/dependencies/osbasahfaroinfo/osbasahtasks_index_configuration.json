@@ -18,6 +18,9 @@
 						}
 					}
 				},
+				"cronExpression": {
+					"type": "keyword"
+				},
 				"id": {
 					"type": "keyword"
 				},
