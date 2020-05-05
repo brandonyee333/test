@@ -620,6 +620,7 @@ definition {
 	@description = "LRQA-53660 Automate LPS-87571 [Reports] Filter the list of items for a certain process"
 	@priority = "5"
 	test FilterAllItemsList {
+		property portal.upstream = "quarantine";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -878,6 +879,13 @@ definition {
 			isPresent = "Blogs Entry Title 7",
 			taskName = "Review");
 
+		WorkflowMetrics.viewItemFilterByOnAllItemsPage(
+			allItemsFilterName = "Assignee",
+			assigneeName = "Unassigned",
+			isNotPresent = "1user user1,2user user2,3user user3",
+			isPresent = "Blogs Entry Title 8",
+			taskName = "Review");
+
 		WorkflowMetrics.allItemPageFilterCheck(
 			allItemsFilterName = "Process Status",
 			assigneeName = "Pending");
@@ -886,7 +894,7 @@ definition {
 			allItemsFilterName = "Process Status",
 			assigneeName = "N/A",
 			filterValueName = "Completed",
-			isNotPresent = "1user user1,2user user2,3user user3",
+			isNotPresent = "1user user1,2user user2,3user user3,Unassigned",
 			isPresent = "Blogs Entry Title 1,Blogs Entry Title 2,Blogs Entry Title 3,Blogs Entry Title 4",
 			taskName = "Completed");
 	}
@@ -988,7 +996,7 @@ definition {
 
 	@description = "LRQA-55450 [Performance] Search assignees in the performance of all assignees screen"
 	test SearchPerformanceOfAllAssignees {
-		property portal.upstream = "true";
+		property portal.upstream = "quarantine";
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
@@ -1724,6 +1732,7 @@ definition {
 
 	@description = "LRQA-53631 Automate LPS-97666: [Performance] View top assignee performance"
 	test ViewTopAsigneePerformance {
+		property portal.upstream = "quarantine";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "WorkflowMetrics#ViewTopAsigneePerformance";
 
@@ -1822,7 +1831,7 @@ definition {
 	@description = "LRQA-53641 Automate LPS-97669 [Dashboard] View overloaded assignees"
 	@priority = "5"
 	test ViewWorkloadByAssigneeCard {
-		property portal.upstream = "true";
+		property portal.upstream = "quarantine";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "WorkflowMetrics#ViewWorkloadByAssigneeCard";
 
