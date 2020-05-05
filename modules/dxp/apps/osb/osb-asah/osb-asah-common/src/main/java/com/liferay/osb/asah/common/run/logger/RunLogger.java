@@ -77,8 +77,8 @@ public class RunLogger {
 	}
 
 	public JSONObject log(
-		String dataSourceId, Object nanite, String status,
-		ElasticsearchInvoker elasticsearchInvoker,
+		String dataSourceId, Object nanite, boolean overwritePreviousRunLog,
+		String status, ElasticsearchInvoker elasticsearchInvoker,
 		Object... jsonObjectKeyValuePairs) {
 
 		Class<?> clazz = nanite.getClass();
@@ -100,8 +100,12 @@ public class RunLogger {
 		}
 
 		try {
-			JSONObject existingRunLogJSONObject = _fetchRunLogJSONObject(
-				dataSourceId, elasticsearchInvoker, className, status);
+			JSONObject existingRunLogJSONObject = null;
+
+			if (overwritePreviousRunLog) {
+				existingRunLogJSONObject = _fetchRunLogJSONObject(
+					dataSourceId, elasticsearchInvoker, className, status);
+			}
 
 			JSONObject runLogJSONObject = JSONUtil.put(
 				"dataSourceId", dataSourceId
@@ -133,6 +137,16 @@ public class RunLogger {
 		}
 
 		return null;
+	}
+
+	public JSONObject log(
+		String dataSourceId, Object nanite, String status,
+		ElasticsearchInvoker elasticsearchInvoker,
+		Object... jsonObjectKeyValuePairs) {
+
+		return log(
+			dataSourceId, nanite, true, status, elasticsearchInvoker,
+			jsonObjectKeyValuePairs);
 	}
 
 	private JSONObject _fetchRunLogJSONObject(
