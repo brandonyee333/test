@@ -354,13 +354,6 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			}
 
 			for (AnalyticsEvent analyticsEvent : analyticsEvents) {
-				List<Channel> channels = _analyticsEventsChannels.getChannels(
-					analyticsEvent);
-
-				if (!channels.contains(destinationChannel)) {
-					continue;
-				}
-
 				analyticsEvent.setChannelId(
 					_channelIds.get(analyticsEvent.getDataSourceId()));
 
@@ -409,9 +402,6 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 	private static final Log _log = LogFactory.getLog(
 		AssetAnalyticsEventsUpgradeStep.class);
-
-	@Autowired
-	private AnalyticsEventsChannels _analyticsEventsChannels;
 
 	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 	private ElasticsearchInvoker _cerebroRawElasticsearchInvoker;
