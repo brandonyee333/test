@@ -48,7 +48,7 @@ import org.springframework.stereotype.Component;
 public class UnprocessedAssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 	@Override
-	public void upgrade(String version) throws Exception {
+	public void upgrade(String version) {
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_BLOG, "BlogNanite",
 			_buildBlogQueryBuilder());
