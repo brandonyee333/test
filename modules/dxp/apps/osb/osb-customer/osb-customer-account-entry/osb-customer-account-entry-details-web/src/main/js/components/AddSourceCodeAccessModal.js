@@ -52,7 +52,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 		});
 	};
 
-	validateFields = () => {
+	validateAllFields = () => {
 		return (
 			isValid(this.state.emailAddress.value, 'emailAddress') &&
 			isValid(this.state.fullName.value, 'fullName') &&
@@ -61,7 +61,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 	};
 
 	handleUpdate = event => {
-		if (!this.validateFields()) {
+		if (!this.validateAllFields()) {
 			event.preventDefault();
 
 			this.setState(state => {
@@ -156,7 +156,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 			</div>
 		);
 
-		const waitConfirmation = (
+		const delayedConfirmation = (
 			<div className="modal-body-announcement">
 				<div className="modal-body-icon warning-full">
 					<svg className="lexicon-icon lexicon-icon-warning-full">
@@ -220,7 +220,7 @@ export default class AddSourceCodeAccessModal extends React.Component {
 					confirmation === 'success' ? (
 						successConfirmation
 					) : (
-						waitConfirmation
+						delayedConfirmation
 					)
 				) : (
 					<>
