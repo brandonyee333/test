@@ -74,9 +74,9 @@ export default class AccountEnvironments extends React.Component {
 
 		const {environment, showModal} = this.state;
 
-		const accordionItems = environments.map((environment, index) => ({
+		const accordionItems = environments.map(environment => ({
 			body: (
-				<React.Fragment key={index}>
+				<React.Fragment>
 					<div className="col-sm-6">
 						{environment.envCommerceLabel !== 'N/A' && (
 							<EnvironmentDetail
@@ -182,7 +182,7 @@ export default class AccountEnvironments extends React.Component {
 				</React.Fragment>
 			),
 			title: (
-				<React.Fragment key={index}>
+				<React.Fragment>
 					<h4>{environment.name}</h4>
 
 					<div className="panel-subtitle">
