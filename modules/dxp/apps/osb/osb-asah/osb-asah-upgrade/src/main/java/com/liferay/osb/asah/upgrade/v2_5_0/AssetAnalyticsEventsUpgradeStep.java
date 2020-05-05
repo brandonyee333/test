@@ -32,6 +32,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import org.json.JSONArray;
@@ -48,16 +49,30 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) throws Exception {
-		_upgradeAnalyticsEvents(Channel.ANALYTICS_EVENTS_BLOG, "BlogNanite");
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET,
-			"CustomAssetDashboardNanite");
+			Channel.ANALYTICS_EVENTS_BLOG, "BlogNanite",
+			_buildBlogsQueryBuilder());
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_DOCUMENT, "DocumentLibraryNanite");
-		_upgradeAnalyticsEvents(Channel.ANALYTICS_EVENTS_FORM, "FormNanite");
+			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET, "CustomAssetDashboardNanite",
+			null);
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite");
-		_upgradeAnalyticsEvents(Channel.ANALYTICS_EVENTS_PAGE, "PageNanite");
+			Channel.ANALYTICS_EVENTS_DOCUMENT, "DocumentLibraryNanite", null);
+		_upgradeAnalyticsEvents(
+			Channel.ANALYTICS_EVENTS_FORM, "FormNanite", null);
+		_upgradeAnalyticsEvents(
+			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite", null);
+		_upgradeAnalyticsEvents(
+			Channel.ANALYTICS_EVENTS_PAGE, "PageNanite", null);
+	}
+
+	private QueryBuilder _buildBlogsQueryBuilder() {
+		return BoolQueryBuilderUtil.should(
+			_getBlogsQueryBuilder()
+		).should(
+			_getBlogsCommentsQueryBuilder()
+		).should(
+			_getBlogsRatingsQueryBuilder()
+		);
 	}
 
 	private void _cacheChannelIds() {
@@ -75,6 +90,40 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 		}
 	}
 
+	private QueryBuilder _getBlogsCommentsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Comment")
+		).filter(
+			QueryBuilders.termQuery("eventId", "posted")
+		).filter(
+			QueryBuilders.termQuery(
+				"eventProperties.className",
+				"com.liferay.blogs.model.BlogsEntry")
+		);
+	}
+
+	private QueryBuilder _getBlogsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Blog"));
+	}
+
+	private QueryBuilder _getBlogsRatingsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Ratings")
+		).filter(
+			QueryBuilders.termQuery("eventId", "VOTE")
+		).filter(
+			QueryBuilders.termQuery(
+				"eventProperties.className",
+				"com.liferay.blogs.model.BlogsEntry")
+		).should(
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery("eventProperties.ratingType"))
+		).should(
+			QueryBuilders.termQuery("eventProperties.ratingType", "stars")
+		);
+	}
+
 	@PostConstruct
 	private void _init() {
 		_cerebroInfoElasticsearchInvoker =
@@ -88,7 +137,8 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 	}
 
 	private void _upgradeAnalyticsEvents(
-		Channel destinationChannel, String osbAsahMakerId) {
+		Channel destinationChannel, String osbAsahMakerId,
+		QueryBuilder queryBuilder) {
 
 		JSONObject osbAsahMarkerJSONObject =
 			_cerebroInfoElasticsearchInvoker.fetch(
@@ -129,7 +179,10 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 					"id"
 				).gt(
 					lastSuccessfulAnalyticsEventId
-				));
+				)
+			).filter(
+				queryBuilder
+			);
 
 			String analyticsEventsJSON = _cerebroRawElasticsearchInvoker.get(
 				"analytics-events",
