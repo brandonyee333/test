@@ -38,7 +38,7 @@ public class ExperimentHttpImpl implements ExperimentHttp {
 			"/api/1.0/experiments/%s/calculate-metrics", id);
 
 		String response = _http.exchange(
-			ServiceConstants.URL_BACKEND, path, HttpMethod.GET, null);
+			ServiceConstants.URL_BACKEND_INTERNAL, path, HttpMethod.GET, null);
 
 		return new JSONObject(response);
 	}
