@@ -164,19 +164,7 @@ public class OSBAsahBatchCuratorBot {
 
 		run("ExperimentNanite");
 
-		try {
-			JSONArrayIterator.of(
-				"OSBAsahTasks", _elasticsearchInvoker,
-				osbAsahTaskJSONObject -> {
-					executeOSBAsahTask(true, osbAsahTaskJSONObject);
-
-					return null;
-				}
-			).iterate();
-		}
-		catch (Exception e) {
-			_log.error("Unable to run existing OSBAsahTasks on startup", e);
-		}
+		_executeOSBAsahTasks();
 	}
 
 	public void run(String... naniteClassNames) {
@@ -234,6 +222,22 @@ public class OSBAsahBatchCuratorBot {
 		}
 
 		return false;
+	}
+
+	private void _executeOSBAsahTasks() {
+		try {
+			JSONArrayIterator.of(
+				"OSBAsahTasks", _elasticsearchInvoker,
+				osbAsahTaskJSONObject -> {
+					executeOSBAsahTask(true, osbAsahTaskJSONObject);
+
+					return null;
+				}
+			).iterate();
+		}
+		catch (Exception e) {
+			_log.error("Unable to run existing OSBAsahTasks on startup", e);
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
