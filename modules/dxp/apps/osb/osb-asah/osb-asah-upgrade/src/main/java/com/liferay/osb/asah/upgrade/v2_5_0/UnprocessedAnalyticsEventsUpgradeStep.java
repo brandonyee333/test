@@ -46,11 +46,11 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 
 	@Override
 	public void upgrade(String version) {
+		String oldestUnprocessedAnalyticsEventId = null;
+
 		JSONObject sessionNaniteOSBAsahMarkersJSONObject =
 			_cerebroInfoElasticsearchInvoker.fetch(
 				"OSBAsahMarkers", "SessionNanite");
-
-		String oldestUnprocessedAnalyticsEventId = null;
 
 		if (sessionNaniteOSBAsahMarkersJSONObject != null) {
 			String lastSuccessfulAnalyticsEventId =
@@ -72,17 +72,13 @@ public class UnprocessedAnalyticsEventsUpgradeStep implements UpgradeStep {
 				activitiesNaniteOSBAsahMarkerJSONObject.optString(
 					"lastSuccessfulAnalyticsEventId", null);
 
-			if (lastSuccessfulAnalyticsEventId != null) {
-				if (oldestUnprocessedAnalyticsEventId == null) {
-					oldestUnprocessedAnalyticsEventId =
-						lastSuccessfulAnalyticsEventId;
-				}
-				else if (oldestUnprocessedAnalyticsEventId.compareTo(
-							lastSuccessfulAnalyticsEventId) > 0) {
+			if ((lastSuccessfulAnalyticsEventId != null) &&
+				((oldestUnprocessedAnalyticsEventId == null) ||
+				 (oldestUnprocessedAnalyticsEventId.compareTo(
+					 lastSuccessfulAnalyticsEventId) > 0))) {
 
-					oldestUnprocessedAnalyticsEventId =
-						lastSuccessfulAnalyticsEventId;
-				}
+				oldestUnprocessedAnalyticsEventId =
+					lastSuccessfulAnalyticsEventId;
 			}
 		}
 
