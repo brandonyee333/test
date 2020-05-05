@@ -54,7 +54,7 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			_buildBlogsQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET, "CustomAssetDashboardNanite",
-			null);
+			_buildCustomAssetQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_DOCUMENT, "DocumentLibraryNanite", null);
 		_upgradeAnalyticsEvents(
@@ -72,6 +72,14 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			_getBlogsCommentsQueryBuilder()
 		).should(
 			_getBlogsRatingsQueryBuilder()
+		);
+	}
+
+	private QueryBuilder _buildCustomAssetQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Custom")
+		).filter(
+			QueryBuilders.regexpQuery("eventProperties.assetId", ".+")
 		);
 	}
 
