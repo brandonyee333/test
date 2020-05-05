@@ -59,7 +59,8 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			Channel.ANALYTICS_EVENTS_DOCUMENT, "DocumentLibraryNanite",
 			_buildDocumentLibraryQueryBuilder());
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_FORM, "FormNanite", null);
+			Channel.ANALYTICS_EVENTS_FORM, "FormNanite",
+			_buildFormsQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_JOURNAL, "JournalNanite", null);
 		_upgradeAnalyticsEvents(
@@ -93,6 +94,24 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			_getDocumentLibraryPreviewsQueryBuilder()
 		).should(
 			_getDocumentLibraryRatingsQueryBuilder()
+		);
+	}
+
+	private QueryBuilder _buildFormsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Form")
+		).filter(
+			BoolQueryBuilderUtil.should(
+				QueryBuilders.termQuery("eventId", "fieldBlurred")
+			).should(
+				QueryBuilders.termQuery("eventId", "fieldFocused")
+			).should(
+				QueryBuilders.termQuery("eventId", "formSubmitted")
+			).should(
+				QueryBuilders.termQuery("eventId", "formViewed")
+			).should(
+				QueryBuilders.termQuery("eventId", "pageViewed")
+			)
 		);
 	}
 
