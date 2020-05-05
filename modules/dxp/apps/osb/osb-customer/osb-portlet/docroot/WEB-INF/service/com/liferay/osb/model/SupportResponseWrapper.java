@@ -314,6 +314,11 @@ public class SupportResponseWrapper implements SupportResponse,
 		return _supportResponse.getSupportLevelLabel();
 	}
 
+	@Override
+	public java.lang.String getSupportLevelLabel(java.util.Locale locale) {
+		return _supportResponse.getSupportLevelLabel(locale);
+	}
+
 	/**
 	* Returns the user name of this support response.
 	*

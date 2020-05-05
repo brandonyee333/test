@@ -36,6 +36,7 @@ import java.lang.reflect.Method;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -556,6 +557,25 @@ public class SupportResponseClp extends BaseModelImpl<SupportResponse>
 			Class<?>[] parameterTypes = new Class<?>[] {  };
 
 			Object[] parameterValues = new Object[] {  };
+
+			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
+					parameterTypes, parameterValues);
+
+			return returnObj;
+		}
+		catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
+	}
+
+	@Override
+	public java.lang.String getSupportLevelLabel(Locale locale) {
+		try {
+			String methodName = "getSupportLevelLabel";
+
+			Class<?>[] parameterTypes = new Class<?>[] { Locale.class };
+
+			Object[] parameterValues = new Object[] { locale };
 
 			java.lang.String returnObj = (java.lang.String)invokeOnRemoteModel(methodName,
 					parameterTypes, parameterValues);

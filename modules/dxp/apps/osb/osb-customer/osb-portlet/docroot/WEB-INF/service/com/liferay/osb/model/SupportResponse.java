@@ -61,5 +61,7 @@ public interface SupportResponse extends SupportResponseModel, PersistedModel {
 
 	public java.lang.String getSupportLevelLabel();
 
+	public java.lang.String getSupportLevelLabel(java.util.Locale locale);
+
 	public boolean isPlatinumLevel();
 }
