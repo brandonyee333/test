@@ -569,7 +569,7 @@ public class JournalDisplayContext {
 	}
 
 	public String getManagementBarStatusFilterValue() {
-		return WorkflowConstants.getStatusLabel(getStatus());
+		return _getStatusLabel(getStatus());
 	}
 
 	public String getNavigation() {
@@ -1333,8 +1333,17 @@ public class JournalDisplayContext {
 		portletURL.setParameter("status", String.valueOf(status));
 
 		return new ManagementBarFilterItem(
-			active, WorkflowConstants.getStatusLabel(status),
-			portletURL.toString());
+			active, _getStatusLabel(status), portletURL.toString());
+	}
+
+	private String _getStatusLabel(int status) {
+		String label = WorkflowConstants.getStatusLabel(status);
+
+		if (status == WorkflowConstants.STATUS_EXPIRED) {
+			label = "with-expired-versions";
+		}
+
+		return LanguageUtil.get(_request, label);
 	}
 
 	private JournalArticle _article;
