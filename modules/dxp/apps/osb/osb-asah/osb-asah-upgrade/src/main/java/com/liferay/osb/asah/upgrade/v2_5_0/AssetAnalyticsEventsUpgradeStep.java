@@ -56,7 +56,8 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			Channel.ANALYTICS_EVENTS_CUSTOM_ASSET, "CustomAssetDashboardNanite",
 			_buildCustomAssetQueryBuilder());
 		_upgradeAnalyticsEvents(
-			Channel.ANALYTICS_EVENTS_DOCUMENT, "DocumentLibraryNanite", null);
+			Channel.ANALYTICS_EVENTS_DOCUMENT, "DocumentLibraryNanite",
+			_buildDocumentLibraryQueryBuilder());
 		_upgradeAnalyticsEvents(
 			Channel.ANALYTICS_EVENTS_FORM, "FormNanite", null);
 		_upgradeAnalyticsEvents(
@@ -80,6 +81,18 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			QueryBuilders.termQuery("applicationId", "Custom")
 		).filter(
 			QueryBuilders.regexpQuery("eventProperties.assetId", ".+")
+		);
+	}
+
+	private QueryBuilder _buildDocumentLibraryQueryBuilder() {
+		return BoolQueryBuilderUtil.should(
+			_getDocumentLibraryCommentsQueryBuilder()
+		).should(
+			_getDocumentLibraryDownloadsQueryBuilder()
+		).should(
+			_getDocumentLibraryPreviewsQueryBuilder()
+		).should(
+			_getDocumentLibraryRatingsQueryBuilder()
 		);
 	}
 
@@ -124,6 +137,51 @@ public class AssetAnalyticsEventsUpgradeStep implements UpgradeStep {
 			QueryBuilders.termQuery(
 				"eventProperties.className",
 				"com.liferay.blogs.model.BlogsEntry")
+		).should(
+			BoolQueryBuilderUtil.mustNot(
+				QueryBuilders.existsQuery("eventProperties.ratingType"))
+		).should(
+			QueryBuilders.termQuery("eventProperties.ratingType", "stars")
+		);
+	}
+
+	private QueryBuilder _getDocumentLibraryCommentsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Comment")
+		).filter(
+			QueryBuilders.termQuery("eventId", "posted")
+		).filter(
+			QueryBuilders.termQuery(
+				"eventProperties.className",
+				"com.liferay.document.library.kernel.model.DLFileEntry")
+		);
+	}
+
+	private QueryBuilder _getDocumentLibraryDownloadsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Document")
+		).filter(
+			QueryBuilders.termQuery("eventId", "documentDownloaded")
+		);
+	}
+
+	private QueryBuilder _getDocumentLibraryPreviewsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Document")
+		).filter(
+			QueryBuilders.termQuery("eventId", "documentPreviewed")
+		);
+	}
+
+	private QueryBuilder _getDocumentLibraryRatingsQueryBuilder() {
+		return BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", "Ratings")
+		).filter(
+			QueryBuilders.termQuery("eventId", "VOTE")
+		).filter(
+			QueryBuilders.termQuery(
+				"eventProperties.className",
+				"com.liferay.document.library.kernel.model.DLFileEntry")
 		).should(
 			BoolQueryBuilderUtil.mustNot(
 				QueryBuilders.existsQuery("eventProperties.ratingType"))
