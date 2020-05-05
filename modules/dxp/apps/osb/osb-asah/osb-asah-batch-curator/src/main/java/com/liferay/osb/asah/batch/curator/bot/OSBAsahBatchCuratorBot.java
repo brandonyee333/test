@@ -166,6 +166,8 @@ public class OSBAsahBatchCuratorBot {
 		run("ExperimentNanite");
 
 		_executeOSBAsahTasks();
+
+		_scheduleOSBAsahTasks();
 	}
 
 	public void run(String... naniteClassNames) {
@@ -241,6 +243,26 @@ public class OSBAsahBatchCuratorBot {
 		}
 		catch (Exception e) {
 			_log.error("Unable to run existing OSBAsahTasks on startup", e);
+		}
+	}
+
+	private void _scheduleOSBAsahTasks() {
+		try {
+			JSONArrayIterator.of(
+				"OSBAsahTasks", _elasticsearchInvoker,
+				osbAsahTaskJSONObject -> {
+					scheduleOSBAsahTask(osbAsahTaskJSONObject);
+
+					return null;
+				}
+			).setQueryBuilder(
+				BoolQueryBuilderUtil.must(
+					QueryBuilders.existsQuery("cronExpression"))
+			).iterate();
+		}
+		catch (Exception e) {
+			_log.error(
+				"Unable to schedule existing OSBAsahTasks on startup", e);
 		}
 	}
 
