@@ -365,6 +365,47 @@ public class OSBAsahBatchCuratorBot {
 
 	}
 
+	private class OSBAsahScheduledTaskRunnable implements Runnable {
+
+		public OSBAsahScheduledTaskRunnable(
+			Nanite nanite, JSONObject osbAsahTaskJSONObject) {
+
+			_nanite = nanite;
+			_osbAsahTaskJSONObject = osbAsahTaskJSONObject;
+		}
+
+		@Override
+		public void run() {
+			try {
+				_nanite.run(_osbAsahTaskJSONObject.optJSONObject("context"));
+
+				_logCompleted();
+			}
+			catch (Exception e) {
+				_log.error(e, e);
+
+				_logFailed(e);
+			}
+		}
+
+		private void _logCompleted() {
+			_runLogger.log(
+				null, _nanite, false, "COMPLETED", _elasticsearchInvoker,
+				"OSBAsahTaskId", _osbAsahTaskJSONObject.getString("id"));
+		}
+
+		private void _logFailed(Throwable throwable) {
+			_runLogger.log(
+				null, _nanite, false, "FAILED", _elasticsearchInvoker,
+				"OSBAsahTaskId", _osbAsahTaskJSONObject.getString("id"),
+				"failureReason", ExceptionUtils.getStackTrace(throwable));
+		}
+
+		private final Nanite _nanite;
+		private final JSONObject _osbAsahTaskJSONObject;
+
+	}
+
 	private class OSBAsahTaskRunnable implements Runnable {
 
 		public OSBAsahTaskRunnable(
