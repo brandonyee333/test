@@ -82,6 +82,57 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 	}
 
 	@Test
+	public void testDeleteInterestScores() throws Exception {
+		String dayDateString = DateUtil.newDayDateString();
+
+		faroInfoElasticsearchInvoker.add(
+			"interests",
+			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
+				_assetJSONObject1, DateUtil.addDays(dayDateString, -2),
+				_individualJSONObject.getString("id"), 1, 10));
+		faroInfoElasticsearchInvoker.add(
+			"interests",
+			FaroInfoTestUtil.buildIndividualInterestsJSONArray(
+				_assetJSONObject1, DateUtil.addDays(dayDateString, -3),
+				_individualJSONObject.getString("id"), 1, 10));
+		faroInfoElasticsearchInvoker.add(
+			"visited-pages",
+			FaroInfoTestUtil.buildIndividualVisitedPagesJSONArray(
+				_assetJSONObject1, DateUtil.addDays(dayDateString, -30),
+				_individualJSONObject.getString("id"), 1));
+		faroInfoElasticsearchInvoker.add(
+			"visited-pages",
+			FaroInfoTestUtil.buildIndividualVisitedPagesJSONArray(
+				_assetJSONObject1, DateUtil.addDays(dayDateString, -31),
+				_individualJSONObject.getString("id"), 1));
+
+		_individualInterestScoresNanite.run(dayDateString);
+
+		JSONArray interestsJSONArray = faroInfoElasticsearchInvoker.get(
+			"interests");
+
+		for (int i = 0; i < interestsJSONArray.length(); i++) {
+			JSONObject interestJSONObject = interestsJSONArray.getJSONObject(i);
+
+			Assert.assertEquals(
+				DateUtil.addDays(dayDateString, -2),
+				interestJSONObject.getString("dateRecorded))"));
+		}
+
+		JSONArray visitedPagesJSONArray = faroInfoElasticsearchInvoker.get(
+			"visited-pages");
+
+		for (int i = 0; i < visitedPagesJSONArray.length(); i++) {
+			JSONObject visitedPageJSONObject =
+				visitedPagesJSONArray.getJSONObject(i);
+
+			Assert.assertEquals(
+				DateUtil.addDays(dayDateString, -30),
+				visitedPageJSONObject.getString("day"));
+		}
+	}
+
+	@Test
 	public void testInterestScoresDecayOverTime() throws Exception {
 		String dayDateString = DateUtil.newDayDateString();
 
