@@ -124,9 +124,9 @@ jacocoRootReport {
 	additionalSourceDirs = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 	classDirectories = files(javaSubprojects.sourceSets.main.output)
 
-	Set<JacocoTaskExtension> enabledTestSubprojects = javaSubprojects.test.jacoco.findAll{ it.enabled }
-	Set<JacocoTaskExtension> enabledTestIntegrationSubprojects = javaSubprojects.testIntegration.jacoco.findAll{ it.enabled }
-	executionData = files(enabledTestSubprojects.destinationFile, enabledTestIntegrationSubprojects.destinationFile)
+	Set<JacocoTaskExtension> testJacocoTaskExtensions = javaSubprojects.test.jacoco.findAll{ it.enabled }
+	Set<JacocoTaskExtension> testIntegrationJacocoTaskExtensions = javaSubprojects.testIntegration.jacoco.findAll{ it.enabled }
+	executionData = files(testJacocoTaskExtensions.destinationFile, testIntegrationJacocoTaskExtensions.destinationFile)
 
 	sourceDirectories = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 
