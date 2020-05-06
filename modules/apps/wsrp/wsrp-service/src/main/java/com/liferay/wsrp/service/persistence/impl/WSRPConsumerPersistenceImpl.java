@@ -1710,8 +1710,6 @@ public class WSRPConsumerPersistenceImpl
 		"wsrpConsumer.companyId = ?";
 
 	public WSRPConsumerPersistenceImpl() {
-		setModelClass(WSRPConsumer.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -1729,6 +1727,8 @@ public class WSRPConsumerPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WSRPConsumer.class);
 	}
 
 	/**

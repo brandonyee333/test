@@ -902,8 +902,6 @@ public class TicketPersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_T_TYPE_2 = "ticket.type = ?";
 
 	public TicketPersistenceImpl() {
-		setModelClass(Ticket.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("key", "key_");
@@ -922,6 +920,8 @@ public class TicketPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(Ticket.class);
 	}
 
 	/**

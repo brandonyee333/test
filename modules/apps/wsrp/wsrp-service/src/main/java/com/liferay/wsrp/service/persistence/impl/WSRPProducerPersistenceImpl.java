@@ -1965,8 +1965,6 @@ public class WSRPProducerPersistenceImpl
 		"wsrpProducer.companyId = ?";
 
 	public WSRPProducerPersistenceImpl() {
-		setModelClass(WSRPProducer.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -1984,6 +1982,8 @@ public class WSRPProducerPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WSRPProducer.class);
 	}
 
 	/**

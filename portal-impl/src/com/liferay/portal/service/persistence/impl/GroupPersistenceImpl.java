@@ -11773,8 +11773,6 @@ public class GroupPersistenceImpl
 		"group_.inheritContent = ?";
 
 	public GroupPersistenceImpl() {
-		setModelClass(Group.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -11794,6 +11792,8 @@ public class GroupPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(Group.class);
 	}
 
 	/**

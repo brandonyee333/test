@@ -2018,8 +2018,6 @@ public class WSRPConsumerPortletPersistenceImpl
 		"(wsrpConsumerPortlet.portletHandle IS NULL OR wsrpConsumerPortlet.portletHandle = '')";
 
 	public WSRPConsumerPortletPersistenceImpl() {
-		setModelClass(WSRPConsumerPortlet.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -2037,6 +2035,8 @@ public class WSRPConsumerPortletPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WSRPConsumerPortlet.class);
 	}
 
 	/**

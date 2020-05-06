@@ -8817,8 +8817,6 @@ public class OrganizationPersistenceImpl
 		"(organization.name IS NULL OR organization.name LIKE '')";
 
 	public OrganizationPersistenceImpl() {
-		setModelClass(Organization.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -8837,6 +8835,8 @@ public class OrganizationPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(Organization.class);
 	}
 
 	/**

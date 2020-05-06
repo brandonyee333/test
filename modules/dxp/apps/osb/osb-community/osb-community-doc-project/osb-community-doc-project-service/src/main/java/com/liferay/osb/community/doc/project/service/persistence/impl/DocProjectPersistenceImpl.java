@@ -2466,8 +2466,6 @@ public class DocProjectPersistenceImpl
 		"docProject.status = ?";
 
 	public DocProjectPersistenceImpl() {
-		setModelClass(DocProject.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -2486,6 +2484,8 @@ public class DocProjectPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(DocProject.class);
 	}
 
 	/**

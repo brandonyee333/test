@@ -2542,8 +2542,6 @@ public class ShoppingOrderPersistenceImpl
 		"(shoppingOrder.ppPaymentStatus IS NULL OR shoppingOrder.ppPaymentStatus = '')";
 
 	public ShoppingOrderPersistenceImpl() {
-		setModelClass(ShoppingOrder.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("number", "number_");
@@ -2561,6 +2559,8 @@ public class ShoppingOrderPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(ShoppingOrder.class);
 	}
 
 	/**

@@ -851,8 +851,6 @@ public class WatsonTokenAuthEntryPersistenceImpl
 		"watsonTokenAuthEntry.userId = ?";
 
 	public WatsonTokenAuthEntryPersistenceImpl() {
-		setModelClass(WatsonTokenAuthEntry.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("active", "active_");
@@ -870,6 +868,8 @@ public class WatsonTokenAuthEntryPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WatsonTokenAuthEntry.class);
 	}
 
 	/**

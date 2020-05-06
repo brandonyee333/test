@@ -84,8 +84,6 @@ public class WatsonHistoryAuditPersistenceImpl
 	private FinderPath _finderPathCountAll;
 
 	public WatsonHistoryAuditPersistenceImpl() {
-		setModelClass(WatsonHistoryAudit.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -103,6 +101,8 @@ public class WatsonHistoryAuditPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WatsonHistoryAudit.class);
 	}
 
 	/**

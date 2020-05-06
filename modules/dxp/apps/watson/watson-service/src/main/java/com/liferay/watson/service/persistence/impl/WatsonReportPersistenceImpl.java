@@ -84,8 +84,6 @@ public class WatsonReportPersistenceImpl
 	private FinderPath _finderPathCountAll;
 
 	public WatsonReportPersistenceImpl() {
-		setModelClass(WatsonReport.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("key", "key_");
@@ -103,6 +101,8 @@ public class WatsonReportPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WatsonReport.class);
 	}
 
 	/**

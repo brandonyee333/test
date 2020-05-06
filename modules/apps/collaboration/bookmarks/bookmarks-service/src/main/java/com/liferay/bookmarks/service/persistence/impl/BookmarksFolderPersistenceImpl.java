@@ -7036,8 +7036,6 @@ public class BookmarksFolderPersistenceImpl
 		"bookmarksFolder.status != ?";
 
 	public BookmarksFolderPersistenceImpl() {
-		setModelClass(BookmarksFolder.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -7055,6 +7053,8 @@ public class BookmarksFolderPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(BookmarksFolder.class);
 	}
 
 	/**

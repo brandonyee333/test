@@ -2470,8 +2470,6 @@ public class DLFileRankPersistenceImpl
 		"dlFileRank.fileEntryId = ?";
 
 	public DLFileRankPersistenceImpl() {
-		setModelClass(DLFileRank.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("active", "active_");
@@ -2489,6 +2487,8 @@ public class DLFileRankPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(DLFileRank.class);
 	}
 
 	/**

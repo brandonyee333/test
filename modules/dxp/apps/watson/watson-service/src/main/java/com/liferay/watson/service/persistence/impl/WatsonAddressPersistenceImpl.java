@@ -84,8 +84,6 @@ public class WatsonAddressPersistenceImpl
 	private FinderPath _finderPathCountAll;
 
 	public WatsonAddressPersistenceImpl() {
-		setModelClass(WatsonAddress.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("number", "number_");
@@ -103,6 +101,8 @@ public class WatsonAddressPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WatsonAddress.class);
 	}
 
 	/**

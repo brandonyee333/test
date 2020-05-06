@@ -12398,8 +12398,6 @@ public class BookmarksEntryPersistenceImpl
 		"bookmarksEntry.status = ?";
 
 	public BookmarksEntryPersistenceImpl() {
-		setModelClass(BookmarksEntry.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -12417,6 +12415,8 @@ public class BookmarksEntryPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(BookmarksEntry.class);
 	}
 
 	/**

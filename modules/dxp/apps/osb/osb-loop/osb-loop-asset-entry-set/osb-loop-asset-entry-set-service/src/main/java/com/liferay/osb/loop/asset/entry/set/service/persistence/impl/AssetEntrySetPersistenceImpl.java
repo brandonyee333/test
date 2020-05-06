@@ -6418,8 +6418,6 @@ public class AssetEntrySetPersistenceImpl
 		"assetEntrySet.type_ = ?";
 
 	public AssetEntrySetPersistenceImpl() {
-		setModelClass(AssetEntrySet.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -6437,6 +6435,8 @@ public class AssetEntrySetPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(AssetEntrySet.class);
 	}
 
 	/**

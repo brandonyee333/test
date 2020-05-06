@@ -816,8 +816,6 @@ public class ShoppingCouponPersistenceImpl
 		"(shoppingCoupon.code IS NULL OR shoppingCoupon.code = '')";
 
 	public ShoppingCouponPersistenceImpl() {
-		setModelClass(ShoppingCoupon.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("code", "code_");
@@ -836,6 +834,8 @@ public class ShoppingCouponPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(ShoppingCoupon.class);
 	}
 
 	/**

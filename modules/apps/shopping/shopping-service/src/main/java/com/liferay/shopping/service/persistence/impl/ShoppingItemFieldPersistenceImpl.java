@@ -582,8 +582,6 @@ public class ShoppingItemFieldPersistenceImpl
 		"shoppingItemField.itemId = ?";
 
 	public ShoppingItemFieldPersistenceImpl() {
-		setModelClass(ShoppingItemField.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("values", "values_");
@@ -601,6 +599,8 @@ public class ShoppingItemFieldPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(ShoppingItemField.class);
 	}
 
 	/**

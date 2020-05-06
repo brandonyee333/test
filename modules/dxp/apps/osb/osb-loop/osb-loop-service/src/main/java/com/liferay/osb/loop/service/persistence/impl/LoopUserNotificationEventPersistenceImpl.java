@@ -1759,8 +1759,6 @@ public class LoopUserNotificationEventPersistenceImpl
 		"loopUserNotificationEvent.type = ?";
 
 	public LoopUserNotificationEventPersistenceImpl() {
-		setModelClass(LoopUserNotificationEvent.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -1778,6 +1776,8 @@ public class LoopUserNotificationEventPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(LoopUserNotificationEvent.class);
 	}
 
 	/**

@@ -315,8 +315,6 @@ public class LoopParticipantAssignmentPersistenceImpl
 		"loopParticipantAssignment.loopPersonId = ?";
 
 	public LoopParticipantAssignmentPersistenceImpl() {
-		setModelClass(LoopParticipantAssignment.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -334,6 +332,8 @@ public class LoopParticipantAssignmentPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(LoopParticipantAssignment.class);
 	}
 
 	/**

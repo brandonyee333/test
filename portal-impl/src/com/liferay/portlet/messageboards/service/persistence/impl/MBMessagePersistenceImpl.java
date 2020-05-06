@@ -19556,8 +19556,6 @@ public class MBMessagePersistenceImpl
 		"mbMessage.status = ?";
 
 	public MBMessagePersistenceImpl() {
-		setModelClass(MBMessage.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -19575,6 +19573,8 @@ public class MBMessagePersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(MBMessage.class);
 	}
 
 	/**

@@ -2442,8 +2442,6 @@ public class UserThreadPersistenceImpl
 		"userThread.deleted = ?";
 
 	public UserThreadPersistenceImpl() {
-		setModelClass(UserThread.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("read", "read_");
@@ -2461,6 +2459,8 @@ public class UserThreadPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(UserThread.class);
 	}
 
 	/**

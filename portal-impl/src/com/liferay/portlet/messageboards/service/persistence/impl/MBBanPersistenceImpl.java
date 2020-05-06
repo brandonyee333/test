@@ -3168,8 +3168,6 @@ public class MBBanPersistenceImpl
 		"mbBan.banUserId = ?";
 
 	public MBBanPersistenceImpl() {
-		setModelClass(MBBan.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -3187,6 +3185,8 @@ public class MBBanPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(MBBan.class);
 	}
 
 	/**

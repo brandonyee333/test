@@ -13101,8 +13101,6 @@ public class MBThreadPersistenceImpl
 		"mbThread.status != ?";
 
 	public MBThreadPersistenceImpl() {
-		setModelClass(MBThread.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -13120,6 +13118,8 @@ public class MBThreadPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(MBThread.class);
 	}
 
 	/**

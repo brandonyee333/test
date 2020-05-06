@@ -379,8 +379,6 @@ public class TestrayRunPersistenceImpl
 		"testrayRun.externalReferenceType = ?";
 
 	public TestrayRunPersistenceImpl() {
-		setModelClass(TestrayRun.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("number", "number_");
@@ -398,6 +396,8 @@ public class TestrayRunPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(TestrayRun.class);
 	}
 
 	/**

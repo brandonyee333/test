@@ -3007,8 +3007,6 @@ public class DDLRecordPersistenceImpl
 		"ddlRecord.userId = ?";
 
 	public DDLRecordPersistenceImpl() {
-		setModelClass(DDLRecord.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -3026,6 +3024,8 @@ public class DDLRecordPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(DDLRecord.class);
 	}
 
 	/**

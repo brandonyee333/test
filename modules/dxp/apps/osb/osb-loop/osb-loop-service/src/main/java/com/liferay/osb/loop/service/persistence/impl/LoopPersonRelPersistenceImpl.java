@@ -78,8 +78,6 @@ public class LoopPersonRelPersistenceImpl
 	private FinderPath _finderPathCountAll;
 
 	public LoopPersonRelPersistenceImpl() {
-		setModelClass(LoopPersonRel.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -97,6 +95,8 @@ public class LoopPersonRelPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(LoopPersonRel.class);
 	}
 
 	/**

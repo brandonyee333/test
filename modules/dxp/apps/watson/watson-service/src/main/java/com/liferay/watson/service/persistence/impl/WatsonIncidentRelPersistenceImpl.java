@@ -84,8 +84,6 @@ public class WatsonIncidentRelPersistenceImpl
 	private FinderPath _finderPathCountAll;
 
 	public WatsonIncidentRelPersistenceImpl() {
-		setModelClass(WatsonIncidentRel.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -103,6 +101,8 @@ public class WatsonIncidentRelPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WatsonIncidentRel.class);
 	}
 
 	/**

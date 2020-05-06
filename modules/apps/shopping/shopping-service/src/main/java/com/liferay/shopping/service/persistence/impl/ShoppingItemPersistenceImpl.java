@@ -1946,8 +1946,6 @@ public class ShoppingItemPersistenceImpl
 		"(shoppingItem.sku IS NULL OR shoppingItem.sku = '')";
 
 	public ShoppingItemPersistenceImpl() {
-		setModelClass(ShoppingItem.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("fields", "fields_");
@@ -1967,6 +1965,8 @@ public class ShoppingItemPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(ShoppingItem.class);
 	}
 
 	/**

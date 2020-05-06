@@ -349,8 +349,6 @@ public class TestrayRequirementPersistenceImpl
 		"(testrayRequirement.key IS NULL OR testrayRequirement.key = '')";
 
 	public TestrayRequirementPersistenceImpl() {
-		setModelClass(TestrayRequirement.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("key", "key_");
@@ -368,6 +366,8 @@ public class TestrayRequirementPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(TestrayRequirement.class);
 	}
 
 	/**

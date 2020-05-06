@@ -1960,8 +1960,6 @@ public class AssetCategoryPropertyPersistenceImpl
 		"(assetCategoryProperty.key IS NULL OR assetCategoryProperty.key = '')";
 
 	public AssetCategoryPropertyPersistenceImpl() {
-		setModelClass(AssetCategoryProperty.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("key", "key_");
@@ -1979,6 +1977,8 @@ public class AssetCategoryPropertyPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(AssetCategoryProperty.class);
 	}
 
 	/**

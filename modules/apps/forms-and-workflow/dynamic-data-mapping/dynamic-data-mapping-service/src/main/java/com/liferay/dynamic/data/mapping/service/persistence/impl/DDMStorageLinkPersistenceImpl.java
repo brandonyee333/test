@@ -1919,8 +1919,6 @@ public class DDMStorageLinkPersistenceImpl
 		"ddmStorageLink.structureId = ?";
 
 	public DDMStorageLinkPersistenceImpl() {
-		setModelClass(DDMStorageLink.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -1938,6 +1936,8 @@ public class DDMStorageLinkPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(DDMStorageLink.class);
 	}
 
 	/**

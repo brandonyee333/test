@@ -832,8 +832,6 @@ public class LoopDivisionPersistenceImpl
 		"loopDivision.type = ?";
 
 	public LoopDivisionPersistenceImpl() {
-		setModelClass(LoopDivision.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -851,6 +849,8 @@ public class LoopDivisionPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(LoopDivision.class);
 	}
 
 	/**

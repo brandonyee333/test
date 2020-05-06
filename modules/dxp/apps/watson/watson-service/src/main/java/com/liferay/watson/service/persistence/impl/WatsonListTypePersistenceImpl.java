@@ -84,8 +84,6 @@ public class WatsonListTypePersistenceImpl
 	private FinderPath _finderPathCountAll;
 
 	public WatsonListTypePersistenceImpl() {
-		setModelClass(WatsonListType.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -103,6 +101,8 @@ public class WatsonListTypePersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(WatsonListType.class);
 	}
 
 	/**

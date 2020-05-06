@@ -4611,8 +4611,6 @@ public class AssetVocabularyPersistenceImpl
 		"(assetVocabulary.name IS NULL OR assetVocabulary.name LIKE '')";
 
 	public AssetVocabularyPersistenceImpl() {
-		setModelClass(AssetVocabulary.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -4631,6 +4629,8 @@ public class AssetVocabularyPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(AssetVocabulary.class);
 	}
 
 	/**

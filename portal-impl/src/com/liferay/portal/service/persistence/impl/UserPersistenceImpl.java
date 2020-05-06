@@ -7754,8 +7754,6 @@ public class UserPersistenceImpl
 		"user.status = ?";
 
 	public UserPersistenceImpl() {
-		setModelClass(User.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("uuid", "uuid_");
@@ -7774,6 +7772,8 @@ public class UserPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(User.class);
 	}
 
 	/**
