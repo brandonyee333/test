@@ -123,7 +123,11 @@ coveralls {
 jacocoRootReport {
 	additionalSourceDirs = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 	classDirectories = files(javaSubprojects.sourceSets.main.output)
-	executionData = files(javaSubprojects.test.jacoco.findAll{ it.enabled }.destinationFile, javaSubprojects.testIntegration.jacoco.findAll{ it.enabled }.destinationFile)
+
+	def enabledTestSubprojects = javaSubprojects.test.jacoco.findAll{ it.enabled }
+	def enabledTestIntegrationSubprojects = javaSubprojects.testIntegration.jacoco.findAll{ it.enabled }
+	executionData = files(enabledTestSubprojects.destinationFile, enabledTestIntegrationSubprojects.destinationFile)
+
 	sourceDirectories = files(javaSubprojects.sourceSets.main.allSource.srcDirs)
 
 	afterEvaluate {
