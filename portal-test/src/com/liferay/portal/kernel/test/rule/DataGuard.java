@@ -12,28 +12,28 @@
  * details.
  */
 
-package com.liferay.configuration.admin.web.internal.exporter;
+package com.liferay.portal.kernel.test.rule;
 
-import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
-
-import java.util.Dictionary;
-
-import org.apache.felix.cm.file.ConfigurationHandler;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @author Pei-Jung Lan
+ * @author Shuyang Zhou
  */
-public class ConfigurationExporter {
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface DataGuard {
 
-	public static byte[] getPropertiesAsBytes(Dictionary<?, ?> properties)
-		throws Exception {
+	public Scope scope() default Scope.CLASS;
 
-		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-			new UnsyncByteArrayOutputStream();
+	public enum Scope {
 
-		ConfigurationHandler.write(unsyncByteArrayOutputStream, properties);
+		CLASS, METHOD, NONE
 
-		return unsyncByteArrayOutputStream.toByteArray();
 	}
 
 }
