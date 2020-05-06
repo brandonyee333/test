@@ -62,7 +62,7 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 
 	@Override
 	public void run(String dayDateString) throws Exception {
-		_deleteInterestScores(DateUtil.addDays(dayDateString, -2));
+		_deleteInterestScores(dayDateString);
 
 		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
 			faroInfoElasticsearchInvoker.
@@ -215,13 +215,13 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 		}
 	}
 
-	private void _deleteInterestScores(String dayDateString) {
+	private void _deleteInterestScores(String dayDateString) throws Exception {
 		faroInfoElasticsearchInvoker.deleteByQuery(
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					"dateRecorded"
 				).lte(
-					dayDateString
+					DateUtil.addDays(dayDateString, -2)
 				)
 			).filter(
 				QueryBuilders.termQuery("ownerType", "individual")
@@ -231,8 +231,8 @@ public class IndividualInterestScoresNanite extends BaseScoresNanite {
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.rangeQuery(
 					"day"
-				).lte(
-					dayDateString
+				).lt(
+					DateUtil.addDays(dayDateString, -30)
 				)
 			).filter(
 				QueryBuilders.termQuery("ownerType", "individual")
