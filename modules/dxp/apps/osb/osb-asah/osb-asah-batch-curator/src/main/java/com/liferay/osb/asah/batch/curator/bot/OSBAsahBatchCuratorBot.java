@@ -252,7 +252,7 @@ public class OSBAsahBatchCuratorBot {
 			).iterate();
 		}
 		catch (Exception e) {
-			_log.error("Unable to run existing OSBAsahTasks on startup", e);
+			_log.error("Unable to run existing tasks on startup", e);
 		}
 	}
 
@@ -271,8 +271,7 @@ public class OSBAsahBatchCuratorBot {
 			).iterate();
 		}
 		catch (Exception e) {
-			_log.error(
-				"Unable to schedule existing OSBAsahTasks on startup", e);
+			_log.error("Unable to schedule existing tasks on startup", e);
 		}
 	}
 
