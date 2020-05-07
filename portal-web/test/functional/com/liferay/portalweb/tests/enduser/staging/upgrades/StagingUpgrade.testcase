@@ -43,4 +43,16 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "PortletDataException");
 	}
 
+	@description = "This is a use case for LPS-87237."
+	@priority = "5"
+	test ViewStagingDefaultSettingAfterUpgrade621021 {
+		property data.archive.type = "data-archive-staging-with-default-setting";
+		property database.types = "db2,mysql,oracle,postgresql,sybase";
+		property portal.version = "6.2.10.21";
+
+		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
+
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Dynamic Data Lists,Message Boards,Polls,Widget Templates,Wiki");
+	}
+
 }
