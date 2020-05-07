@@ -44,6 +44,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-87237."
+	@ignore = "true"
 	@priority = "5"
 	test ViewStagingDefaultSettingAfterUpgrade621021 {
 		property data.archive.type = "data-archive-staging-with-default-setting";
