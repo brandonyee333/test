@@ -53,7 +53,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Dynamic Data Lists,Message Boards,Polls,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Application Display Templates,Blogs,Dynamic Data Lists,Message Boards,Polls,Wiki");
 	}
 
 }
