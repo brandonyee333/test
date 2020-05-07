@@ -408,6 +408,8 @@ public class JCRStore extends BaseStore {
 			if (!versionHistory.hasVersionLabel(versionLabel)) {
 				logFailedDeletion(
 					companyId, repositoryId, fileName, versionLabel);
+
+				return;
 			}
 
 			Version version = versionHistory.getVersionByLabel(versionLabel);
