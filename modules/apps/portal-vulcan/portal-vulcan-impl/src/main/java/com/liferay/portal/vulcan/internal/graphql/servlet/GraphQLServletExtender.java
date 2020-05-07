@@ -17,6 +17,7 @@ package com.liferay.portal.vulcan.internal.graphql.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
@@ -1725,12 +1726,9 @@ public class GraphQLServletExtender {
 			Stream<GraphQLError> stream = graphQLErrors.stream();
 
 			return stream.filter(
-				graphQLError -> {
-					String message = graphQLError.getMessage();
-
-					return !message.contains("NoSuchEntryException") ||
-						   _isRequiredFieldError(graphQLError);
-				}
+				graphQLError ->
+					!_isNoSuchModelException(graphQLError) ||
+					_isRequiredField(graphQLError)
 			).map(
 				graphQLError -> {
 					String message = graphQLError.getMessage();
@@ -1739,11 +1737,12 @@ public class GraphQLServletExtender {
 						return _getExtendedGraphQLError(
 							graphQLError, Response.Status.UNAUTHORIZED);
 					}
-					else if (message.contains("NoSuchEntryException")) {
+					else if (_isNoSuchModelException(graphQLError)) {
 						return _getExtendedGraphQLError(
 							graphQLError, Response.Status.NOT_FOUND);
 					}
-					else if (!_isClientError(graphQLError)) {
+
+					if (!_isClientErrorException(graphQLError)) {
 						return _getExtendedGraphQLError(
 							graphQLError,
 							Response.Status.INTERNAL_SERVER_ERROR);
@@ -1777,7 +1776,7 @@ public class GraphQLServletExtender {
 			).build();
 		}
 
-		private boolean _isClientError(GraphQLError graphQLError) {
+		private boolean _isClientErrorException(GraphQLError graphQLError) {
 			if (graphQLError instanceof ExceptionWhileDataFetching) {
 				ExceptionWhileDataFetching exceptionWhileDataFetching =
 					(ExceptionWhileDataFetching)graphQLError;
@@ -1797,7 +1796,26 @@ public class GraphQLServletExtender {
 			return false;
 		}
 
-		private boolean _isRequiredFieldError(GraphQLError graphQLError) {
+		private boolean _isNoSuchModelException(GraphQLError graphQLError) {
+			if (!(graphQLError instanceof ExceptionWhileDataFetching)) {
+				return false;
+			}
+
+			ExceptionWhileDataFetching exceptionWhileDataFetching =
+				(ExceptionWhileDataFetching)graphQLError;
+
+			Throwable exception = exceptionWhileDataFetching.getException();
+
+			if ((exception != null) &&
+				(exception.getCause() instanceof NoSuchModelException)) {
+
+				return true;
+			}
+
+			return false;
+		}
+
+		private boolean _isRequiredField(GraphQLError graphQLError) {
 			List<Object> path = Optional.ofNullable(
 				graphQLError.getPath()
 			).orElse(
@@ -1808,9 +1826,8 @@ public class GraphQLServletExtender {
 				return true;
 			}
 
-			String missingField = (String)path.get(path.size() - 1);
-
-			return StringUtil.containsIgnoreCase(missingField, "parent");
+			return StringUtil.containsIgnoreCase(
+				(String)path.get(path.size() - 1), "parent");
 		}
 
 	}

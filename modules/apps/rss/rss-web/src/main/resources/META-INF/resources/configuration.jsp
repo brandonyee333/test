@@ -23,6 +23,7 @@
 	action="<%= configurationActionURL %>"
 	method="post"
 	name="fm"
+	novalidate=""
 >
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= Constants.UPDATE %>" />
 	<aui:input name="redirect" type="hidden" value="<%= configurationRenderURL %>" />
@@ -101,13 +102,13 @@
 				</div>
 
 				<aui:input label="num-of-entries-per-feed" name="preferences--entriesPerFeed--" type="number" value="<%= rssPortletInstanceConfiguration.entriesPerFeed() %>">
-					<aui:validator name="digits" />
-					<aui:validator name="min">1</aui:validator>
+					<aui:validator errorMessage='<%= LanguageUtil.get(request, "only-integers-are-allowed") %>' name="digits" />
+					<aui:validator errorMessage='<%= LanguageUtil.format(request, "only-integers-greater-than-or-equal-to-x-are-allowed", 1) %>' name="min">1</aui:validator>
 				</aui:input>
 
 				<aui:input label="num-of-expanded-entries-per-feed" name="preferences--expandedEntriesPerFeed--" type="number" value="<%= rssPortletInstanceConfiguration.expandedEntriesPerFeed() %>">
-					<aui:validator name="digits" />
-					<aui:validator name="min">1</aui:validator>
+					<aui:validator errorMessage='<%= LanguageUtil.get(request, "only-integers-are-allowed") %>' name="digits" />
+					<aui:validator errorMessage='<%= LanguageUtil.format(request, "only-integers-greater-than-or-equal-to-x-are-allowed", 1) %>' name="min">1</aui:validator>
 				</aui:input>
 
 				<aui:select disabled="<%= !rssPortletInstanceConfiguration.showFeedImage() %>" name="preferences--feedImageAlignment--">
