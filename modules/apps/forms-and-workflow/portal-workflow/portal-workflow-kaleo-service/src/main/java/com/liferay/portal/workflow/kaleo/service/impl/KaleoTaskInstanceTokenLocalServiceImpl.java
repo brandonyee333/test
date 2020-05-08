@@ -25,8 +25,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.search.Indexable;
-import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -145,33 +143,6 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public KaleoTaskInstanceToken assignKaleoTaskInstanceToken(
-			long kaleoTaskInstanceTokenId, String assigneeClassName,
-			long assigneeClassPK, Map<String, Serializable> workflowContext,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		KaleoTaskInstanceToken kaleoTaskInstanceToken =
-			kaleoTaskInstanceTokenPersistence.findByPrimaryKey(
-				kaleoTaskInstanceTokenId);
-
-		kaleoTaskInstanceToken.setModifiedDate(new Date());
-		kaleoTaskInstanceToken.setWorkflowContext(
-			WorkflowContextUtil.convert(workflowContext));
-
-		kaleoTaskInstanceToken = kaleoTaskInstanceTokenPersistence.update(
-			kaleoTaskInstanceToken);
-
-		kaleoTaskAssignmentInstanceLocalService.
-			assignKaleoTaskAssignmentInstance(
-				kaleoTaskInstanceToken, assigneeClassName, assigneeClassPK,
-				serviceContext);
-
-		return kaleoTaskInstanceToken;
-	}
-
-	@Indexable(type = IndexableType.REINDEX)
-	@Override
-	public KaleoTaskInstanceToken assignKaleoTaskInstanceToken(
 			long kaleoTaskInstanceTokenId,
 			Collection<KaleoTaskAssignment> kaleoTaskAssignments,
 			Map<String, Serializable> workflowContext,
@@ -192,6 +163,33 @@ public class KaleoTaskInstanceTokenLocalServiceImpl
 		kaleoTaskAssignmentInstanceLocalService.
 			assignKaleoTaskAssignmentInstances(
 				kaleoTaskInstanceToken, kaleoTaskAssignments, workflowContext,
+				serviceContext);
+
+		return kaleoTaskInstanceToken;
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public KaleoTaskInstanceToken assignKaleoTaskInstanceToken(
+			long kaleoTaskInstanceTokenId, String assigneeClassName,
+			long assigneeClassPK, Map<String, Serializable> workflowContext,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		KaleoTaskInstanceToken kaleoTaskInstanceToken =
+			kaleoTaskInstanceTokenPersistence.findByPrimaryKey(
+				kaleoTaskInstanceTokenId);
+
+		kaleoTaskInstanceToken.setModifiedDate(new Date());
+		kaleoTaskInstanceToken.setWorkflowContext(
+			WorkflowContextUtil.convert(workflowContext));
+
+		kaleoTaskInstanceToken = kaleoTaskInstanceTokenPersistence.update(
+			kaleoTaskInstanceToken);
+
+		kaleoTaskAssignmentInstanceLocalService.
+			assignKaleoTaskAssignmentInstance(
+				kaleoTaskInstanceToken, assigneeClassName, assigneeClassPK,
 				serviceContext);
 
 		return kaleoTaskInstanceToken;
