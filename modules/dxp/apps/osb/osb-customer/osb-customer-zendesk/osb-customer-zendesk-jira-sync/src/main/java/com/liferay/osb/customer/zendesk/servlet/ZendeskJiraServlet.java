@@ -240,12 +240,9 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 	protected JSONObject updateZendeskFLSTicketTags(long zendeskTicketId)
 		throws PortalException {
 
-		String url = "/api/v2/tickets/" + zendeskTicketId + "/tags.json";
-
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
-		SimpleDateFormat updateStampFormat = new SimpleDateFormat(
-			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+		jsonObject.put("safe_update", true);
 
 		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
 
@@ -253,10 +250,14 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 
 		jsonObject.put("tags", tagsJSONArray);
 
-		jsonObject.put("safe_update", true);
+		SimpleDateFormat updateStampFormat = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
 		jsonObject.put("updated_stamp", updateStampFormat.format(new Date()));
 
-		return _zendeskBaseWebService.put(url, jsonObject.toString());
+		return _zendeskBaseWebService.put(
+			"/api/v2/tickets/" + zendeskTicketId + "/tags.json",
+			jsonObject.toString());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
