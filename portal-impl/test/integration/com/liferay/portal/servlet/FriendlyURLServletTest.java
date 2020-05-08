@@ -18,6 +18,8 @@ import com.liferay.portal.kernel.exception.NoSuchGroupException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
+import com.liferay.portal.kernel.model.LayoutConstants;
+import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -31,8 +33,10 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.test.LayoutTestUtil;
@@ -42,6 +46,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
@@ -52,6 +57,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author László Csontos
@@ -129,6 +135,46 @@ public class FriendlyURLServletTest {
 		testGetRedirect(
 			mockHttpServletRequest, "/nonexistent-site/home", Portal.PATH_MAIN,
 			null);
+	}
+
+	@Test
+	public void testServiceLinkToURLRedirectWithQueryParams() throws Throwable {
+		MockHttpServletRequest mockHttpServletRequest =
+			new MockHttpServletRequest();
+
+		Layout redirectLayout = LayoutTestUtil.addLayout(_group);
+
+		redirectLayout.setType(LayoutConstants.TYPE_URL);
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			_group.getTypeSettingsProperties();
+
+		typeSettingsUnicodeProperties.put("url", _layout.getFriendlyURL());
+
+		redirectLayout.setTypeSettingsProperties(typeSettingsUnicodeProperties);
+
+		_layoutLocalService.updateLayout(redirectLayout);
+
+		mockHttpServletRequest.setPathInfo(StringPool.SLASH);
+
+		String requestURI =
+			PropsValues.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING +
+				getPath(_group, redirectLayout);
+
+		mockHttpServletRequest.setRequestURI(requestURI);
+
+		mockHttpServletRequest.setParameter("param", "true");
+
+		MockHttpServletResponse mockHttpServletResponse =
+			new MockHttpServletResponse();
+
+		_servlet.service(mockHttpServletRequest, mockHttpServletResponse);
+
+		String redirectedURL = mockHttpServletResponse.getRedirectedUrl();
+
+		Assert.assertTrue(
+			"Redirect URL must include queryString ?param=true",
+			redirectedURL.contains("?param=true"));
 	}
 
 	protected String getI18nLanguageId(HttpServletRequest request) {
@@ -228,6 +274,9 @@ public class FriendlyURLServletTest {
 		Assert.assertEquals(expectedRedirect, actualRedirect);
 	}
 
+	@Inject
+	private static LayoutLocalService _layoutLocalService;
+
 	private final FriendlyURLServlet _friendlyURLServlet =
 		new FriendlyURLServlet();
 
@@ -235,5 +284,6 @@ public class FriendlyURLServletTest {
 	private Group _group;
 
 	private Layout _layout;
+	private Servlet _servlet;
 
 }
