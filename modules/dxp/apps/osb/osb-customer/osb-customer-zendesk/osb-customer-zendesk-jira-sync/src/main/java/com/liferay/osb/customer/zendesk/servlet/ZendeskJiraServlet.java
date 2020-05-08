@@ -36,6 +36,9 @@ import com.liferay.portal.kernel.util.Validator;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+import java.text.SimpleDateFormat;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -138,6 +141,10 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 			labels, customFields, StringPool.BLANK);
 
 		createZendeskJiraLink(zendeskTicketId, jiraResponse);
+
+		if (projectKey.contains("FLS")) {
+			updateZendeskFLSTicketTags(zendeskTicketId);
+		}
 	}
 
 	protected JSONObject createZendeskJiraLink(
@@ -228,6 +235,28 @@ public class ZendeskJiraServlet extends SimpleRestfulServlet {
 		}
 
 		return true;
+	}
+
+	protected JSONObject updateZendeskFLSTicketTags(long zendeskTicketId)
+		throws PortalException {
+
+		String url = "/api/v2/tickets/" + zendeskTicketId + "/tags.json";
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
+
+		SimpleDateFormat updateStampFormat = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+		JSONArray tagsJSONArray = JSONFactoryUtil.createJSONArray();
+
+		tagsJSONArray.put("jira_escalated");
+
+		jsonObject.put("tags", tagsJSONArray);
+
+		jsonObject.put("safe_update", true);
+		jsonObject.put("updated_stamp", updateStampFormat.format(new Date()));
+
+		return _zendeskBaseWebService.put(url, jsonObject.toString());
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
