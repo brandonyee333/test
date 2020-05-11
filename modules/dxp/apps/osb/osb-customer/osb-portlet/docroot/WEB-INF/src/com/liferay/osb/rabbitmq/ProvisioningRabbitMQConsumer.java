@@ -371,6 +371,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			soldBy.equals("Liferay Hungary") ||
 			soldBy.equals("Liferay India") ||
 			soldBy.equals("Liferay International") ||
+			soldBy.equals("Liferay Italy") ||
 			soldBy.equals("Liferay Middle East") ||
 			soldBy.equals("Liferay Netherlands") ||
 			soldBy.equals("Liferay Nordic") ||
@@ -701,6 +702,7 @@ public abstract class ProvisioningRabbitMQConsumer implements RabbitMQConsumer {
 			soldBy.equals("Liferay Germany") ||
 			soldBy.equals("Liferay Hungary") ||
 			soldBy.equals("Liferay International") ||
+			soldBy.equals("Liferay Italy") ||
 			soldBy.equals("Liferay Middle East") ||
 			soldBy.equals("Liferay Netherlands") ||
 			soldBy.equals("Liferay Nordic") || soldBy.equals("Liferay UK")) {
