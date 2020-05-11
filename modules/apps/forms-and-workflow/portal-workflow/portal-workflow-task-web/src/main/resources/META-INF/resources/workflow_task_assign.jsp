@@ -74,7 +74,7 @@ String redirect = ParamUtil.getString(request, "redirect");
 					form: {id: '<portlet:namespace/>assignFm'},
 					on: {
 						success: function() {
-							Liferay.Util.getOpener().<portlet:namespace />refreshPortlet('<%= redirect.toString() %>');
+							Liferay.Util.getOpener().<portlet:namespace />refreshPortlet('<%= PortalUtil.escapeRedirect(redirect.toString()) %>');
 							Liferay.Util.getWindow('<portlet:namespace />assignToDialog').destroy();
 						}
 					}
