@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.service.UserNotificationEventLocalService;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -400,6 +401,8 @@ public class NotificationsPortlet extends MVCPortlet {
 
 		String redirect = ParamUtil.getString(actionRequest, "redirect");
 
+		redirect = _portal.escapeRedirect(redirect);
+
 		if (Validator.isNotNull(redirect)) {
 			actionResponse.sendRedirect(redirect);
 		}
@@ -424,6 +427,9 @@ public class NotificationsPortlet extends MVCPortlet {
 		_userNotificationDeliveryLocalService.updateUserNotificationDelivery(
 			userNotificationDeliveryId, deliver);
 	}
+
+	@Reference
+	private Portal _portal;
 
 	@Reference(target = "(bundle.symbolic.name=com.liferay.notifications.web)")
 	private ResourceBundleLoader _resourceBundleLoader;
