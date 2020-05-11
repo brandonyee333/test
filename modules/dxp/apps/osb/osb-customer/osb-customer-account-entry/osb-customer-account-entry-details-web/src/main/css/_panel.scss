@@ -11,7 +11,10 @@
 			border-top: 1px solid $color-divider;
 			padding: $padding-default $padding-md;
 
-			.btn-link {
+			.btn-link,
+			.btn-secondary {
+				background-color: transparent;
+				font-weight: $font-weight-semi-bold;
 				margin-right: $margin-md;
 
 				&,

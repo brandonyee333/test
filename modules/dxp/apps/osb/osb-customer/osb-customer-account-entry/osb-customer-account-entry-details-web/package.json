@@ -21,6 +21,7 @@
 		"clay-css": "^2.2.0",
 		"es6-promise": "^4.2.5",
 		"formik": "^1.0.3",
+		"immutable": "^4.0.0-rc.12",
 		"react": "^16.8.6",
 		"react-ckeditor-component": "^1.1.0",
 		"react-dom": "^16.8.6",
@@ -33,6 +34,7 @@
 		"@babel/plugin-transform-runtime": "^7.9.6",
 		"@babel/preset-env": "^7.3.1",
 		"@babel/preset-react": "^7.0.0",
+		"@testing-library/react": "^10.0.4",
 		"autoprefixer": "^9.0.1",
 		"babel-core": "^7.0.0-bridge.0",
 		"babel-eslint": "^8.2.6",
@@ -41,6 +43,7 @@
 		"eslint": "^5.13.0",
 		"eslint-plugin-react": "^7.10.0",
 		"jest": "^24.1.0",
+		"jest-environment-jsdom-sixteen": "^1.0.3",
 		"liferay-lang-key-dev-loader": "^1.0.3",
 		"mini-css-extract-plugin": "^0.4.1",
 		"node-sass": "^4.12.0",
@@ -71,7 +74,7 @@
 	"scripts": {
 		"prettier:check": "prettier --write src/main/js/**/*.js",
 		"start": "webpack-dev-server --config webpack.dev.js",
-		"test": "jest",
+		"test": "jest --env=jest-environment-jsdom-sixteen",
 		"webpack": "webpack --config webpack.prod.js"
 	},
 	"version": "1.0.0"

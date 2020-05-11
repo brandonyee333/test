@@ -4,9 +4,8 @@ import {
 	getByLabelText,
 	getByText,
 	queryAllByText,
-	render,
-	waitForElement
-} from 'react-testing-library';
+	render
+} from '@testing-library/react';
 
 import AddSourceCodeAccessModal from '../AddSourceCodeAccessModal';
 
@@ -14,6 +13,7 @@ describe('AddSourceCodeAccessModal', () => {
 	function renderAddSourceCodeAccessModal(props) {
 		return render(
 			<AddSourceCodeAccessModal
+				addCollaboratorToMap={jest.fn()}
 				addCollaboratorURL="/url"
 				onClose={jest.fn()}
 				show={true}
@@ -63,7 +63,7 @@ describe('AddSourceCodeAccessModal', () => {
 		);
 	});
 
-	it('renders error message upon submission when last name is missing', async () => {
+	it('renders error message upon submission when last name is missing', () => {
 		const {container} = renderAddSourceCodeAccessModal();
 
 		fireEvent.change(getByLabelText(container, 'name'), {
@@ -78,16 +78,11 @@ describe('AddSourceCodeAccessModal', () => {
 
 		fireEvent.click(getByText(container, 'submit'));
 
-		waitForElement(() =>
-			getByText(container, 'please-correct-the-following-fields name')
-		);
-
-		waitForElement(() =>
-			getByText(container, 'first-and-last-name-are-both-required')
-		);
+		getByText(container, 'please-correct-the-following-fields name');
+		getByText(container, 'first-and-last-name-are-both-required');
 	});
 
-	it('renders error message upon submission when email is invalid', async () => {
+	it('renders error message upon submission when email is invalid', () => {
 		const {container} = renderAddSourceCodeAccessModal();
 
 		fireEvent.change(getByLabelText(container, 'name'), {
@@ -102,17 +97,14 @@ describe('AddSourceCodeAccessModal', () => {
 
 		fireEvent.click(getByText(container, 'submit'));
 
-		waitForElement(() =>
-			getByText(
-				container,
-				'please-correct-the-following-fields email-address'
-			)
+		getByText(
+			container,
+			'please-correct-the-following-fields email-address'
 		);
-
-		waitForElement(() => getByText(container, 'invalid-format'));
+		getByText(container, 'invalid-format');
 	});
 
-	it('renders error message upon submission when github username is incorrect', async () => {
+	it('renders error message upon submission when github username is incorrect', () => {
 		const {container} = renderAddSourceCodeAccessModal();
 
 		fireEvent.change(getByLabelText(container, 'name'), {
@@ -127,13 +119,10 @@ describe('AddSourceCodeAccessModal', () => {
 
 		fireEvent.click(getByText(container, 'submit'));
 
-		waitForElement(() =>
-			getByText(
-				container,
-				'please-correct-the-following-fields github-username'
-			)
+		getByText(
+			container,
+			'please-correct-the-following-fields github-username'
 		);
-
-		waitForElement(() => getByText(container, 'incorrect-username'));
+		getByText(container, 'incorrect-username');
 	});
 });

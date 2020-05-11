@@ -15,10 +15,17 @@ export default class Button extends React.Component {
 	static propTypes = {
 		children: PropTypes.node.isRequired,
 		disabled: PropTypes.bool,
-		display: PropTypes.oneOf(['default', 'link', 'outline', 'primary']),
+		display: PropTypes.oneOf([
+			'default',
+			'link',
+			'outline',
+			'primary',
+			'secondary'
+		]),
 		href: PropTypes.string,
 		icon: PropTypes.bool,
 		onClick: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
+		role: PropTypes.string,
 		size: PropTypes.oneOf(['lg', 'md', 'sm']),
 		type: PropTypes.oneOf(['button', 'reset', 'submit']),
 		value: PropTypes.string
@@ -32,6 +39,7 @@ export default class Button extends React.Component {
 			href,
 			icon,
 			onClick,
+			role,
 			size,
 			type,
 			value
@@ -57,6 +65,7 @@ export default class Button extends React.Component {
 				className={className}
 				disabled={disabled}
 				onClick={onClick}
+				role={role}
 				type={type}
 				value={value}
 			>

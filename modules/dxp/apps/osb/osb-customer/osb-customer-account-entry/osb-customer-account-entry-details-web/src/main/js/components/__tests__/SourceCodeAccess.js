@@ -1,13 +1,15 @@
 import React from 'react';
 import {
+	findByText,
 	fireEvent,
 	getByText,
-	getByValue,
+	getByRole,
 	queryByRole,
 	queryByText,
 	render,
+	waitFor,
 	within
-} from 'react-testing-library';
+} from '@testing-library/react';
 
 import SourceCodeAccess from '../SourceCodeAccess';
 
@@ -15,23 +17,29 @@ describe('SourceCodeAccess', () => {
 	const collaboratorsJSON = [
 		{
 			collaboratorId: 101,
-			deleteCollaboratorURL: '/url',
+			createDate: '01/01/2020',
+			deleteCollaboratorURL:
+				'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
 			emailAddress: 'test1@liferay.com',
-			fullName: 'Test1 Test1',
+			fullName: 'Test One',
 			gitHubUserName: 'testuser1'
 		},
 		{
 			collaboratorId: 102,
-			deleteCollaboratorURL: '/url',
+			createDate: '02/02/2020',
+			deleteCollaboratorURL:
+				'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
 			emailAddress: 'test2@liferay.com',
-			fullName: 'Test2 Test2',
+			fullName: 'Test Two',
 			gitHubUserName: 'testuser2'
 		},
 		{
 			collaboratorId: 103,
-			deleteCollaboratorURL: '/url',
+			createDate: '03/03/2020',
+			deleteCollaboratorURL:
+				'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
 			emailAddress: 'test3@liferay.com',
-			fullName: 'Test3 Test3',
+			fullName: 'Test Three',
 			gitHubUserName: 'testuser3'
 		}
 	];
@@ -74,13 +82,13 @@ describe('SourceCodeAccess', () => {
 	it('renders details when a collaborator is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
-		fireEvent.click(queryByText(container, 'Test1 Test1'));
+		fireEvent.click(queryByText(container, 'Test One'));
 
 		const {getByText} = within(queryByRole(container, 'tabpanel'));
 
 		getByText('test1@liferay.com');
 		getByText('testuser1');
-		getByText('Test1 Test1');
+		getByText('Test One');
 
 		expect(container).toMatchSnapshot();
 	});
@@ -88,7 +96,7 @@ describe('SourceCodeAccess', () => {
 	it('shows an add collaborator button', () => {
 		const {container} = renderSourceCodeAccess();
 
-		getByValue(container, 'add');
+		getByRole(container, 'add');
 	});
 
 	it('renders the description for add collaborators button', () => {
@@ -104,7 +112,7 @@ describe('SourceCodeAccess', () => {
 	it('shows delete button when a collaborator is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
-		fireEvent.click(queryByText(container, 'Test1 Test1'));
+		fireEvent.click(queryByText(container, 'Test One'));
 
 		const {getByText} = within(queryByRole(container, 'tabpanel'));
 
@@ -114,7 +122,7 @@ describe('SourceCodeAccess', () => {
 	it('opens a modal when add button is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
-		fireEvent.click(getByValue(container, 'add'));
+		fireEvent.click(getByRole(container, 'add'));
 
 		const modal = queryByRole(container, 'dialog');
 
@@ -124,7 +132,7 @@ describe('SourceCodeAccess', () => {
 	it('closes the modal when cancel button is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
-		fireEvent.click(getByValue(container, 'add'));
+		fireEvent.click(getByRole(container, 'add'));
 
 		const {getByText} = within(queryByRole(container, 'dialog'));
 
@@ -133,5 +141,63 @@ describe('SourceCodeAccess', () => {
 		const modal = queryByRole(container, 'dialog');
 
 		expect(modal).toBeNull();
+	});
+
+	it('adds the collaborator after using the modal', async () => {
+		const {container} = renderSourceCodeAccess({
+			addCollaboratorURL:
+				'http://www.mocky.io/v2/5eb497460e0000f359081cd9'
+		});
+
+		fireEvent.click(getByRole(container, 'add'));
+
+		const modal = queryByRole(container, 'dialog');
+
+		const {getByText, getByLabelText} = within(modal);
+
+		fireEvent.change(getByLabelText('name'), {
+			target: {value: 'Test Four'}
+		});
+		fireEvent.change(getByLabelText('email-address'), {
+			target: {value: 'test4@liferay.com'}
+		});
+		fireEvent.change(getByLabelText('github-username'), {
+			target: {value: 'testuser4'}
+		});
+
+		fireEvent.click(getByText('submit'));
+
+		await findByText(
+			container,
+			'success-your-request-submitted-successfully'
+		);
+
+		await findByText(container, 'Test Four');
+		await findByText(container, 'test4@liferay.com');
+		await findByText(container, 'testuser4');
+	});
+
+	it('deletes the collaborator after delete button is clicked', async () => {
+		window.confirm = jest.fn(() => true);
+
+		const {container} = renderSourceCodeAccess();
+
+		fireEvent.click(queryByText(container, 'Test One'));
+
+		const {getByText} = within(queryByRole(container, 'tabpanel'));
+
+		fireEvent.click(getByText('delete'));
+
+		await waitFor(() => expect(window.confirm).toBeCalled());
+
+		await waitFor(() =>
+			expect(queryByText(container, 'Test One')).toBeNull()
+		);
+		await waitFor(() =>
+			expect(queryByText(container, 'test1@liferay.com')).toBeNull()
+		);
+		await waitFor(() =>
+			expect(queryByText(container, 'testuser1')).toBeNull()
+		);
 	});
 });

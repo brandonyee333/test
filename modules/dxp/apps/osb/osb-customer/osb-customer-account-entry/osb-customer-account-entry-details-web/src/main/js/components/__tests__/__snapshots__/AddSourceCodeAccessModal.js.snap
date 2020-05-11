@@ -38,6 +38,7 @@ exports[`AddSourceCodeAccessModal renders correctly 1`] = `
         <div
           class="modal-body"
         >
+          
           <form
             action="/url"
             method="post"
@@ -183,6 +184,7 @@ exports[`AddSourceCodeAccessModal renders fields for name, email, and github 1`]
         <div
           class="modal-body"
         >
+          
           <form
             action="/url"
             method="post"
@@ -328,6 +330,7 @@ exports[`AddSourceCodeAccessModal renders the header of the modal 1`] = `
         <div
           class="modal-body"
         >
+          
           <form
             action="/url"
             method="post"

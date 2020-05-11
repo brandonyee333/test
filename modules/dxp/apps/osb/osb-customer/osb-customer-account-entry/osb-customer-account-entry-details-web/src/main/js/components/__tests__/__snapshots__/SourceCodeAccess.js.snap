@@ -20,6 +20,7 @@ exports[`SourceCodeAccess renders correctly 1`] = `
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
+      role="add"
       type="button"
       value="add"
     >
@@ -49,17 +50,17 @@ exports[`SourceCodeAccess renders correctly 1`] = `
           class="panel-title"
         >
           <h4>
-            Test1 Test1
+            Test Three
           </h4>
           <div
             class="panel-subtitle"
           >
-            testuser1
+            testuser3
           </div>
           <div
             class="panel-subtitle"
           >
-            test1@liferay.com
+            test3@liferay.com
           </div>
         </div>
         <svg
@@ -83,7 +84,7 @@ exports[`SourceCodeAccess renders correctly 1`] = `
           class="panel-title"
         >
           <h4>
-            Test2 Test2
+            Test Two
           </h4>
           <div
             class="panel-subtitle"
@@ -117,17 +118,17 @@ exports[`SourceCodeAccess renders correctly 1`] = `
           class="panel-title"
         >
           <h4>
-            Test3 Test3
+            Test One
           </h4>
           <div
             class="panel-subtitle"
           >
-            testuser3
+            testuser1
           </div>
           <div
             class="panel-subtitle"
           >
-            test3@liferay.com
+            test1@liferay.com
           </div>
         </div>
         <svg
@@ -163,6 +164,7 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
+      role="add"
       type="button"
       value="add"
     >
@@ -184,6 +186,74 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
       class="panel"
     >
       <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test Three
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser3
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test3@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
+        class="btn-link panel-header"
+        role="tab"
+        type="button"
+      >
+        <div
+          class="panel-title"
+        >
+          <h4>
+            Test Two
+          </h4>
+          <div
+            class="panel-subtitle"
+          >
+            testuser2
+          </div>
+          <div
+            class="panel-subtitle"
+          >
+            test2@liferay.com
+          </div>
+        </div>
+        <svg
+          class="lexicon-icon lexicon-icon-angle-right"
+        >
+          <use
+            xlink:href="#angle-right"
+          />
+        </svg>
+      </button>
+    </div>
+    <div
+      class="panel"
+    >
+      <button
         class="btn-link panel-header expanded"
         role="tab"
         type="button"
@@ -192,7 +262,7 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
           class="panel-title"
         >
           <h4>
-            Test1 Test1
+            Test One
           </h4>
           <div
             class="panel-subtitle"
@@ -231,7 +301,7 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
                 name
               </div>
               <div>
-                Test1 Test1
+                Test One
               </div>
             </div>
             <div
@@ -266,84 +336,16 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
           <div
             class="col-md-12"
           >
-            <a
-              class="btn btn-sm btn-link"
-              href="/url"
-              role="link"
+            <button
+              class="btn btn-sm btn-secondary"
+              type="button"
+              value="delete"
             >
               delete
-            </a>
+            </button>
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="panel"
-    >
-      <button
-        class="btn-link panel-header"
-        role="tab"
-        type="button"
-      >
-        <div
-          class="panel-title"
-        >
-          <h4>
-            Test2 Test2
-          </h4>
-          <div
-            class="panel-subtitle"
-          >
-            testuser2
-          </div>
-          <div
-            class="panel-subtitle"
-          >
-            test2@liferay.com
-          </div>
-        </div>
-        <svg
-          class="lexicon-icon lexicon-icon-angle-right"
-        >
-          <use
-            xlink:href="#angle-right"
-          />
-        </svg>
-      </button>
-    </div>
-    <div
-      class="panel"
-    >
-      <button
-        class="btn-link panel-header"
-        role="tab"
-        type="button"
-      >
-        <div
-          class="panel-title"
-        >
-          <h4>
-            Test3 Test3
-          </h4>
-          <div
-            class="panel-subtitle"
-          >
-            testuser3
-          </div>
-          <div
-            class="panel-subtitle"
-          >
-            test3@liferay.com
-          </div>
-        </div>
-        <svg
-          class="lexicon-icon lexicon-icon-angle-right"
-        >
-          <use
-            xlink:href="#angle-right"
-          />
-        </svg>
-      </button>
     </div>
   </div>
 </div>
@@ -369,6 +371,7 @@ exports[`SourceCodeAccess renders no results message when there are no collabora
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
+      role="add"
       type="button"
       value="add"
     >
@@ -409,6 +412,7 @@ exports[`SourceCodeAccess renders the description for add collaborators button 1
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
+      role="add"
       type="button"
       value="add"
     >
@@ -438,17 +442,17 @@ exports[`SourceCodeAccess renders the description for add collaborators button 1
           class="panel-title"
         >
           <h4>
-            Test1 Test1
+            Test Three
           </h4>
           <div
             class="panel-subtitle"
           >
-            testuser1
+            testuser3
           </div>
           <div
             class="panel-subtitle"
           >
-            test1@liferay.com
+            test3@liferay.com
           </div>
         </div>
         <svg
@@ -472,7 +476,7 @@ exports[`SourceCodeAccess renders the description for add collaborators button 1
           class="panel-title"
         >
           <h4>
-            Test2 Test2
+            Test Two
           </h4>
           <div
             class="panel-subtitle"
@@ -506,17 +510,17 @@ exports[`SourceCodeAccess renders the description for add collaborators button 1
           class="panel-title"
         >
           <h4>
-            Test3 Test3
+            Test One
           </h4>
           <div
             class="panel-subtitle"
           >
-            testuser3
+            testuser1
           </div>
           <div
             class="panel-subtitle"
           >
-            test3@liferay.com
+            test1@liferay.com
           </div>
         </div>
         <svg
@@ -552,6 +556,7 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
+      role="add"
       type="button"
       value="add"
     >
@@ -581,17 +586,17 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
           class="panel-title"
         >
           <h4>
-            Test1 Test1
+            Test Three
           </h4>
           <div
             class="panel-subtitle"
           >
-            testuser1
+            testuser3
           </div>
           <div
             class="panel-subtitle"
           >
-            test1@liferay.com
+            test3@liferay.com
           </div>
         </div>
         <svg
@@ -615,7 +620,7 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
           class="panel-title"
         >
           <h4>
-            Test2 Test2
+            Test Two
           </h4>
           <div
             class="panel-subtitle"
@@ -649,17 +654,17 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
           class="panel-title"
         >
           <h4>
-            Test3 Test3
+            Test One
           </h4>
           <div
             class="panel-subtitle"
           >
-            testuser3
+            testuser1
           </div>
           <div
             class="panel-subtitle"
           >
-            test3@liferay.com
+            test1@liferay.com
           </div>
         </div>
         <svg

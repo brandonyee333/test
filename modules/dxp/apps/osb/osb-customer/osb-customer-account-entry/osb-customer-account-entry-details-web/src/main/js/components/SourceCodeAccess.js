@@ -1,142 +1,193 @@
-import React from 'react';
+import axios from 'axios';
+import {Map, Record} from 'immutable';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 
 import Accordion from './Accordion';
 import AddSourceCodeAccessModal from './AddSourceCodeAccessModal';
 import Button from './Button';
 
-export default class SourceCodeAccess extends React.Component {
-	static propTypes = {
-		addCollaboratorURL: PropTypes.string.isRequired,
-		collaborators: PropTypes.arrayOf(
-			PropTypes.shape({
-				collaboratorId: PropTypes.number.isRequired,
-				deleteCollaboratorURL: PropTypes.string.isRequired,
-				emailAddress: PropTypes.string.isRequired,
-				fullName: PropTypes.string.isRequired,
-				gitHubUserName: PropTypes.string.isRequired
-			})
-		).isRequired
-	};
+const sortDateByRecency = (a, b) =>
+	new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
 
-	state = {
-		showModal: false
-	};
+export const CollabRecord = Record({
+	collaboratorId: null,
+	createDate: null,
+	deleteCollaboratorURL: '',
+	emailAddress: '',
+	fullName: '',
+	gitHubUserName: ''
+});
 
-	handleCloseModal = () =>
-		this.setState({
-			showModal: false
-		});
+SourceCodeAccess.propTypes = {
+	addCollaboratorURL: PropTypes.string.isRequired,
+	collaborators: PropTypes.arrayOf(
+		PropTypes.shape({
+			collaboratorId: PropTypes.number.isRequired,
+			createDate: PropTypes.string.isRequired,
+			deleteCollaboratorURL: PropTypes.string.isRequired,
+			emailAddress: PropTypes.string.isRequired,
+			fullName: PropTypes.string.isRequired,
+			gitHubUserName: PropTypes.string.isRequired
+		})
+	).isRequired
+};
 
-	handleDeleteCollaborator = event => {
+export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
+	const processedCollaborators = collaborators.map(collaborator => [
+		collaborator.collaboratorId,
+		CollabRecord({
+			collaboratorId: collaborator.collaboratorId,
+			createDate: collaborator.createDate,
+			deleteCollaboratorURL: collaborator.deleteCollaboratorURL,
+			emailAddress: collaborator.emailAddress,
+			fullName: collaborator.fullName,
+			gitHubUserName: collaborator.gitHubUserName
+		})
+	]);
+
+	const [showModal, setShowModal] = useState(false);
+	const [collaboratorsMap, setCollaboratorsMap] = useState(
+		Map(processedCollaborators)
+	);
+
+	function addCollaboratorToMap(collaborator) {
+		setCollaboratorsMap(
+			collaboratorsMap.set(collaborator.collaboratorId, collaborator)
+		);
+	}
+
+	function deleteCollaboratorFromMap(collaborator) {
+		axios
+			.post(collaborator.deleteCollaboratorURL)
+			.then(response => response.data)
+			.then(data => {
+				if (data.message === 'success') {
+					setCollaboratorsMap(
+						collaboratorsMap.delete(collaborator.collaboratorId)
+					);
+				}
+			});
+	}
+
+	function handleCloseModal() {
+		setShowModal(false);
+	}
+
+	function handleDeleteCollaborator(collaborator) {
 		if (
-			!confirm(
+			confirm(
 				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
 			)
 		) {
-			event.preventDefault();
+			deleteCollaboratorFromMap(collaborator);
 		}
-	};
+	}
 
-	handleDisplayModal = () =>
-		this.setState({
-			showModal: true
-		});
+	function handleDisplayModal() {
+		setShowModal(true);
+	}
 
-	render() {
-		const {addCollaboratorURL, collaborators, namespace} = this.props;
+	const collaboratorsArray = [...collaboratorsMap.values()].sort(
+		sortDateByRecency
+	);
 
-		const {showModal} = this.state;
-
-		const accordionItems = collaborators.map(collaborator => ({
-			body: (
-				<React.Fragment>
-					<div className="col-sm-6">
-						<CollaboratorDetail
-							label={Liferay.Language.get('name')}
-							value={collaborator.fullName}
-						/>
-
-						<CollaboratorDetail
-							label={Liferay.Language.get('email')}
-							value={collaborator.emailAddress}
-						/>
-					</div>
-
-					<div className="col-sm-6">
-						<CollaboratorDetail
-							label={Liferay.Language.get('github-username')}
-							value={collaborator.gitHubUserName}
-						/>
-					</div>
-
-					<div className="col-md-12">
-						<Button
-							href={collaborator.deleteCollaboratorURL}
-							onClick={this.handleDeleteCollaborator}
-							size="sm"
-							value="delete"
-						>
-							{Liferay.Language.get('delete')}
-						</Button>
-					</div>
-				</React.Fragment>
-			),
-			title: (
-				<React.Fragment>
-					<h4>{collaborator.fullName}</h4>
-
-					<div className="panel-subtitle">
-						{collaborator.gitHubUserName}
-					</div>
-
-					<div className="panel-subtitle">
-						{collaborator.emailAddress}
-					</div>
-				</React.Fragment>
-			)
-		}));
-
-		return (
+	const accordionItems = collaboratorsArray.map(collaborator => ({
+		body: (
 			<React.Fragment>
-				<div className="card-header">
-					<div>
-						<div className="small-title">
-							{Liferay.Language.get(
-								"team-members-who-have-access-to-liferay's-source-code"
-							)}
-						</div>
+				<div className="col-sm-6">
+					<CollaboratorDetail
+						label={Liferay.Language.get('name')}
+						value={collaborator.fullName}
+					/>
 
-						<div className="panel-subtitle">
-							{Liferay.Language.get(
-								"add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code"
-							)}
-						</div>
-					</div>
-
-					<Button icon onClick={this.handleDisplayModal} value="add">
-						<svg className="lexicon-icon lexicon-icon-plus">
-							<use xlinkHref="#plus" />
-						</svg>
-					</Button>
-
-					<AddSourceCodeAccessModal
-						addCollaboratorURL={addCollaboratorURL}
-						onClose={this.handleCloseModal}
-						show={showModal}
+					<CollaboratorDetail
+						label={Liferay.Language.get('email')}
+						value={collaborator.emailAddress}
 					/>
 				</div>
 
-				{!accordionItems.length ? (
-					<div className="no-results">
-						{Liferay.Language.get('no-collaborator-details')}
-					</div>
-				) : (
-					<Accordion items={accordionItems} />
-				)}
+				<div className="col-sm-6">
+					<CollaboratorDetail
+						label={Liferay.Language.get('github-username')}
+						value={collaborator.gitHubUserName}
+					/>
+				</div>
+
+				<div className="col-md-12">
+					<Button
+						display="secondary"
+						onClick={event =>
+							handleDeleteCollaborator(collaborator)
+						}
+						size="sm"
+						value="delete"
+					>
+						{Liferay.Language.get('delete')}
+					</Button>
+				</div>
 			</React.Fragment>
-		);
-	}
+		),
+		title: (
+			<React.Fragment>
+				<h4>{collaborator.fullName}</h4>
+
+				<div className="panel-subtitle">
+					{collaborator.gitHubUserName}
+				</div>
+
+				<div className="panel-subtitle">
+					{collaborator.emailAddress}
+				</div>
+			</React.Fragment>
+		)
+	}));
+
+	return (
+		<React.Fragment>
+			<div className="card-header">
+				<div>
+					<div className="small-title">
+						{Liferay.Language.get(
+							"team-members-who-have-access-to-liferay's-source-code"
+						)}
+					</div>
+
+					<div className="panel-subtitle">
+						{Liferay.Language.get(
+							"add-your-email-address-and-github-username-to-get-access-to-liferay's-source-code"
+						)}
+					</div>
+				</div>
+
+				<Button
+					icon
+					onClick={handleDisplayModal}
+					role="add"
+					value="add"
+				>
+					<svg className="lexicon-icon lexicon-icon-plus">
+						<use xlinkHref="#plus" />
+					</svg>
+				</Button>
+
+				<AddSourceCodeAccessModal
+					addCollaboratorToMap={addCollaboratorToMap}
+					addCollaboratorURL={addCollaboratorURL}
+					onClose={handleCloseModal}
+					show={showModal}
+				/>
+			</div>
+
+			{!accordionItems.length ? (
+				<div className="no-results">
+					{Liferay.Language.get('no-collaborator-details')}
+				</div>
+			) : (
+				<Accordion items={accordionItems} />
+			)}
+		</React.Fragment>
+	);
 }
 
 CollaboratorDetail.propTypes = {
