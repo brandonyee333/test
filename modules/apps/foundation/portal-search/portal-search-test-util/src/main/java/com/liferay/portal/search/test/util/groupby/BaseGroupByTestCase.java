@@ -17,7 +17,6 @@ package com.liferay.portal.search.test.util.groupby;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.DocumentImpl;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.GroupBy;
 import com.liferay.portal.kernel.search.Hits;
@@ -612,7 +611,7 @@ public abstract class BaseGroupByTestCase extends BaseIndexingTestCase {
 	protected static final String GROUP_FIELD = Field.USER_NAME;
 
 	protected static final String SORT_FIELD =
-		DocumentImpl.getSortableFieldName(Field.USER_ID);
+		Field.USER_ID + StringPool.UNDERLINE + "sortable";
 
 	protected final GroupByRequestFactory groupByRequestFactory =
 		new GroupByRequestFactoryImpl();
