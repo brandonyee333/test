@@ -116,7 +116,6 @@ public class IndexerPostProcessorRegistryTest {
 		}
 
 		Assert.assertNotNull(testMbThreadIndexerPostProcessor);
-
 		Assert.assertEquals(
 			testMbMessageIndexerPostProcessor,
 			testMbThreadIndexerPostProcessor);
@@ -176,7 +175,6 @@ public class IndexerPostProcessorRegistryTest {
 		}
 
 		Assert.assertNotNull(testUserGroupIndexerPostProcessor);
-
 		Assert.assertEquals(
 			testUserIndexerPostProcessor, testUserGroupIndexerPostProcessor);
 	}
