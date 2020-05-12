@@ -3813,7 +3813,7 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 			String defaultLanguageId = typeSettingsProperties.getProperty(
 				"languageId", LocaleUtil.toLanguageId(LocaleUtil.getDefault()));
 
-			validateLanguageIds(defaultLanguageId, newLanguageIds);
+			validateLanguageIds(groupId, defaultLanguageId, newLanguageIds);
 
 			if (!Objects.equals(oldLanguageIds, newLanguageIds)) {
 				LanguageUtil.resetAvailableGroupLocales(groupId);
@@ -4913,14 +4913,14 @@ public class GroupLocalServiceImpl extends GroupLocalServiceBaseImpl {
 		}
 	}
 
-	protected void validateLanguageIds(
+	protected void validateLanguageIds( long groupId,
 			String defaultLanguageId, String languageIds)
 		throws PortalException {
 
 		String[] languageIdsArray = StringUtil.split(languageIds);
 
 		for (String languageId : languageIdsArray) {
-			if (!LanguageUtil.isAvailableLocale(
+			if (!LanguageUtil.isAvailableLocale( groupId,
 					LocaleUtil.fromLanguageId(languageId))) {
 
 				LocaleException le = new LocaleException(
