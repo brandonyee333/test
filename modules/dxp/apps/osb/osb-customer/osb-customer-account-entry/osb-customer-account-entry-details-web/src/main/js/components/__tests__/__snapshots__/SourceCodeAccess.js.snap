@@ -20,7 +20,6 @@ exports[`SourceCodeAccess renders correctly 1`] = `
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
-      role="add"
       type="button"
       value="add"
     >
@@ -164,7 +163,6 @@ exports[`SourceCodeAccess renders details when a collaborator is clicked 1`] = `
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
-      role="add"
       type="button"
       value="add"
     >
@@ -371,7 +369,6 @@ exports[`SourceCodeAccess renders no results message when there are no collabora
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
-      role="add"
       type="button"
       value="add"
     >
@@ -412,7 +409,6 @@ exports[`SourceCodeAccess renders the description for add collaborators button 1
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
-      role="add"
       type="button"
       value="add"
     >
@@ -556,7 +552,6 @@ exports[`SourceCodeAccess renders the header for collaborators list 1`] = `
     <button
       aria-label="add"
       class="btn btn-md btn-primary btn-monospaced"
-      role="add"
       type="button"
       value="add"
     >

@@ -160,12 +160,7 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 					</div>
 				</div>
 
-				<Button
-					icon
-					onClick={handleDisplayModal}
-					role="add"
-					value="add"
-				>
+				<Button icon onClick={handleDisplayModal} value="add">
 					<svg className="lexicon-icon lexicon-icon-plus">
 						<use xlinkHref="#plus" />
 					</svg>

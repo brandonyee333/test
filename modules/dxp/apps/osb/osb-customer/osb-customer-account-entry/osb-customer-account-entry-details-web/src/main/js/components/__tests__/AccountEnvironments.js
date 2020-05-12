@@ -2,11 +2,11 @@ import React from 'react';
 import {
 	fireEvent,
 	queryAllByRole,
+	queryByLabelText,
 	queryByRole,
 	queryByText,
-	queryByValue,
 	render
-} from 'react-testing-library';
+} from '@testing-library/react';
 
 import AccountEnvironments from '../AccountEnvironments';
 
@@ -29,7 +29,8 @@ describe('AccountEnvironments', () => {
 			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
 			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
 			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
+			portalExtAccountEnvironmentAttachmentURL:
+				'/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '111'
 		},
@@ -50,7 +51,8 @@ describe('AccountEnvironments', () => {
 			patchLevelAccountEnvironmentAttachmentFileName: 'Patch File',
 			patchLevelAccountEnvironmentAttachmentURL: '/patch/attachment/url',
 			portalExtAccountEnvironmentAttachmentFileName: 'Portal Ext File',
-			portalExtAccountEnvironmentAttachmentURL: '/portal-ext/attachment/url',
+			portalExtAccountEnvironmentAttachmentURL:
+				'/portal-ext/attachment/url',
 			productEntryDisplayName: 'Liferay DXP Production',
 			productEntryId: '222'
 		}
@@ -120,7 +122,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		fireEvent.click(queryAllByRole(container, 'tab')[0]);
 
 		expect(container).toMatchSnapshot();
 	});
@@ -134,7 +136,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		expect(addButton).toBeNull();
 	});
@@ -149,7 +151,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		expect(addButton).toBeTruthy();
 	});
@@ -163,9 +165,9 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		fireEvent.click(queryAllByRole(container, 'tab')[0]);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		expect(editButton).toBeNull();
 	});
@@ -180,9 +182,9 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		fireEvent.click(queryAllByRole(container, 'tab')[0]);
 
-		const editButton = queryByValue(container, 'edit');
+		const editButton = queryByText(container, 'edit');
 
 		expect(editButton).toBeTruthy();
 	});
@@ -196,7 +198,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		fireEvent.click(queryAllByRole(container, 'tab')[0]);
 
 		const deleteLink = queryByText(container, 'delete');
 
@@ -213,7 +215,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		fireEvent.click(queryByRole(container, 'tab'));
+		fireEvent.click(queryAllByRole(container, 'tab')[0]);
 
 		const deleteLink = queryByText(container, 'delete');
 
@@ -234,13 +236,11 @@ describe('AccountEnvironments', () => {
 
 		let allSelectionTab;
 
-		tabs.forEach(
-			tab => {
-				if (tab.contains(heading)) {
-					allSelectionTab = tab;
-				}
+		tabs.forEach(tab => {
+			if (tab.contains(heading)) {
+				allSelectionTab = tab;
 			}
-		);
+		});
 
 		fireEvent.click(allSelectionTab);
 
@@ -270,13 +270,11 @@ describe('AccountEnvironments', () => {
 
 		let noSelectionTab;
 
-		tabs.forEach(
-			tab => {
-				if (tab.contains(heading)) {
-					noSelectionTab = tab;
-				}
+		tabs.forEach(tab => {
+			if (tab.contains(heading)) {
+				noSelectionTab = tab;
 			}
-		);
+		});
 
 		fireEvent.click(noSelectionTab);
 
@@ -299,7 +297,7 @@ describe('AccountEnvironments', () => {
 			/>
 		);
 
-		const addButton = queryByValue(container, 'add');
+		const addButton = queryByLabelText(container, 'add');
 
 		fireEvent.click(addButton);
 

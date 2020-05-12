@@ -2,8 +2,8 @@ import React from 'react';
 import {
 	findByText,
 	fireEvent,
+	getByLabelText,
 	getByText,
-	getByRole,
 	queryByRole,
 	queryByText,
 	render,
@@ -96,7 +96,7 @@ describe('SourceCodeAccess', () => {
 	it('shows an add collaborator button', () => {
 		const {container} = renderSourceCodeAccess();
 
-		getByRole(container, 'add');
+		getByLabelText(container, 'add');
 	});
 
 	it('renders the description for add collaborators button', () => {
@@ -122,7 +122,7 @@ describe('SourceCodeAccess', () => {
 	it('opens a modal when add button is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
-		fireEvent.click(getByRole(container, 'add'));
+		fireEvent.click(getByLabelText(container, 'add'));
 
 		const modal = queryByRole(container, 'dialog');
 
@@ -132,7 +132,7 @@ describe('SourceCodeAccess', () => {
 	it('closes the modal when cancel button is clicked', () => {
 		const {container} = renderSourceCodeAccess();
 
-		fireEvent.click(getByRole(container, 'add'));
+		fireEvent.click(getByLabelText(container, 'add'));
 
 		const {getByText} = within(queryByRole(container, 'dialog'));
 
@@ -149,23 +149,21 @@ describe('SourceCodeAccess', () => {
 				'http://www.mocky.io/v2/5eb497460e0000f359081cd9'
 		});
 
-		fireEvent.click(getByRole(container, 'add'));
+		fireEvent.click(getByLabelText(container, 'add'));
 
 		const modal = queryByRole(container, 'dialog');
 
-		const {getByText, getByLabelText} = within(modal);
-
-		fireEvent.change(getByLabelText('name'), {
+		fireEvent.change(within(modal).getByLabelText('name'), {
 			target: {value: 'Test Four'}
 		});
-		fireEvent.change(getByLabelText('email-address'), {
+		fireEvent.change(within(modal).getByLabelText('email-address'), {
 			target: {value: 'test4@liferay.com'}
 		});
-		fireEvent.change(getByLabelText('github-username'), {
+		fireEvent.change(within(modal).getByLabelText('github-username'), {
 			target: {value: 'testuser4'}
 		});
 
-		fireEvent.click(getByText('submit'));
+		fireEvent.click(within(modal).getByText('submit'));
 
 		await findByText(
 			container,
