@@ -11,38 +11,38 @@ const sortDateByRecency = (a, b) =>
 	new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
 
 export const CollabRecord = Record({
-	collaboratorId: null,
 	createDate: null,
-	deleteCollaboratorURL: '',
+	deleteURL: '',
 	emailAddress: '',
 	fullName: '',
-	gitHubUserName: ''
+	gitHubUserName: '',
+	id: null
 });
 
 SourceCodeAccess.propTypes = {
 	addCollaboratorURL: PropTypes.string.isRequired,
 	collaborators: PropTypes.arrayOf(
 		PropTypes.shape({
-			collaboratorId: PropTypes.number.isRequired,
 			createDate: PropTypes.string.isRequired,
-			deleteCollaboratorURL: PropTypes.string.isRequired,
+			deleteURL: PropTypes.string.isRequired,
 			emailAddress: PropTypes.string.isRequired,
 			fullName: PropTypes.string.isRequired,
-			gitHubUserName: PropTypes.string.isRequired
+			gitHubUserName: PropTypes.string.isRequired,
+			id: PropTypes.number.isRequired
 		})
 	).isRequired
 };
 
 export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 	const processedCollaborators = collaborators.map(collaborator => [
-		collaborator.collaboratorId,
+		collaborator.id,
 		CollabRecord({
-			collaboratorId: collaborator.collaboratorId,
 			createDate: collaborator.createDate,
-			deleteCollaboratorURL: collaborator.deleteCollaboratorURL,
+			deleteURL: collaborator.deleteURL,
 			emailAddress: collaborator.emailAddress,
 			fullName: collaborator.fullName,
-			gitHubUserName: collaborator.gitHubUserName
+			gitHubUserName: collaborator.gitHubUserName,
+			id: collaborator.id
 		})
 	]);
 
@@ -53,20 +53,22 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 
 	function addCollaboratorToMap(collaborator) {
 		setCollaboratorsMap(
-			collaboratorsMap.set(collaborator.collaboratorId, collaborator)
+			collaboratorsMap.set(collaborator.id, collaborator)
 		);
 	}
 
 	function deleteCollaboratorFromMap(collaborator) {
 		axios
-			.post(collaborator.deleteCollaboratorURL)
-			.then(response => response.data)
-			.then(data => {
+			.post(collaborator.deleteURL)
+			.then(({data}) => {
 				if (data.message === 'success') {
 					setCollaboratorsMap(
-						collaboratorsMap.delete(collaborator.collaboratorId)
+						collaboratorsMap.delete(collaborator.id)
 					);
 				}
+			})
+			.catch(error => {
+				console.log(error);
 			});
 	}
 
@@ -88,11 +90,11 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 		setShowModal(true);
 	}
 
-	const collaboratorsArray = [...collaboratorsMap.values()].sort(
+	const sortedCollaborators = [...collaboratorsMap.values()].sort(
 		sortDateByRecency
 	);
 
-	const accordionItems = collaboratorsArray.map(collaborator => ({
+	const accordionItems = sortedCollaborators.map(collaborator => ({
 		body: (
 			<React.Fragment>
 				<div className="col-sm-6">

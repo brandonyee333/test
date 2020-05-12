@@ -16,31 +16,28 @@ import SourceCodeAccess from '../SourceCodeAccess';
 describe('SourceCodeAccess', () => {
 	const collaboratorsJSON = [
 		{
-			collaboratorId: 101,
 			createDate: '01/01/2020',
-			deleteCollaboratorURL:
-				'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
+			deleteURL: 'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
 			emailAddress: 'test1@liferay.com',
 			fullName: 'Test One',
-			gitHubUserName: 'testuser1'
+			gitHubUserName: 'testuser1',
+			id: 101
 		},
 		{
-			collaboratorId: 102,
 			createDate: '02/02/2020',
-			deleteCollaboratorURL:
-				'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
+			deleteURL: 'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
 			emailAddress: 'test2@liferay.com',
 			fullName: 'Test Two',
-			gitHubUserName: 'testuser2'
+			gitHubUserName: 'testuser2',
+			id: 102
 		},
 		{
-			collaboratorId: 103,
 			createDate: '03/03/2020',
-			deleteCollaboratorURL:
-				'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
+			deleteURL: 'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
 			emailAddress: 'test3@liferay.com',
 			fullName: 'Test Three',
-			gitHubUserName: 'testuser3'
+			gitHubUserName: 'testuser3',
+			id: 103
 		}
 	];
 

@@ -17,8 +17,8 @@ const ERROR_VALIDATION = {
 
 const LENGTH_OF_DAYS = '3';
 
-const isValid = (value, field) => {
-	return value.match(ERROR_VALIDATION[field]);
+const isValid = field => {
+	return field.value.match(ERROR_VALIDATION[field.name]);
 };
 
 AddSourceCodeAccessModal.propTypes = {
@@ -37,31 +37,53 @@ export default function AddSourceCodeAccessModal({
 	const [confirmation, setConfirmation] = useState('');
 	const [customError, setCustomError] = useState('');
 	const [dataLoading, setDataLoading] = useState(false);
-	const [emailAddress, setEmailAddress] = useState({value: '', error: false});
 	const [fieldErrors, setFieldErrors] = useState([]);
-	const [fullName, setFullName] = useState({value: '', error: false});
-	const [gitHubUserName, setGitHubUserName] = useState({
-		value: '',
-		error: false
+	const [fields, setFields] = useState({
+		emailAddress: {
+			error: false,
+			errorMessage: Liferay.Language.get('invalid-format'),
+			label: Liferay.Language.get('email-address'),
+			name: 'emailAddress',
+			value: ''
+		},
+		fullName: {
+			error: false,
+			errorMessage: Liferay.Language.get(
+				'first-and-last-name-are-both-required'
+			),
+			label: Liferay.Language.get('name'),
+			name: 'fullName',
+			subtext: Liferay.Language.get('first-and-last-name'),
+			value: ''
+		},
+		gitHubUserName: {
+			error: false,
+			errorMessage: Liferay.Language.get('incorrect-username'),
+			label: Liferay.Language.get('github-username'),
+			name: 'gitHubUserName',
+			value: ''
+		}
 	});
 
 	function handleClose() {
 		setConfirmation('');
 		setCustomError('');
 		setDataLoading(false);
-		setEmailAddress({value: '', error: false});
 		setFieldErrors([]);
-		setFullName({value: '', error: false});
-		setGitHubUserName({value: '', error: false});
+		setFields({
+			emailAddress: {...fields.emailAddress, value: '', error: false},
+			fullName: {...fields.fullName, value: '', error: false},
+			gitHubUserName: {...fields.gitHubUserName, value: '', error: false}
+		});
 
 		onClose();
 	}
 
 	function validateAllFields() {
 		return (
-			isValid(emailAddress.value, 'emailAddress') &&
-			isValid(fullName.value, 'fullName') &&
-			isValid(gitHubUserName.value, 'gitHubUserName')
+			isValid(fields.emailAddress) &&
+			isValid(fields.fullName) &&
+			isValid(fields.gitHubUserName)
 		);
 	}
 
@@ -71,91 +93,102 @@ export default function AddSourceCodeAccessModal({
 		setDataLoading(true);
 
 		if (!validateAllFields()) {
-			const emailAddressError = !isValid(
-				emailAddress.value,
-				'emailAddress'
-			);
-			const fullNameError = !isValid(fullName.value, 'fullName');
-			const gitHubUserNameError = !isValid(
-				gitHubUserName.value,
-				'gitHubUserName'
-			);
+			const emailAddressError = !isValid(fields.emailAddress);
+			const fullNameError = !isValid(fields.fullName);
+			const gitHubUserNameError = !isValid(fields.gitHubUserName);
 
 			setCustomError('');
 			setDataLoading(false);
-			setEmailAddress({
-				value: emailAddress.value,
-				error: emailAddressError
+
+			setFields({
+				emailAddress: {
+					...fields.emailAddress,
+					error: emailAddressError
+				},
+				fullName: {
+					...fields.fullName,
+					error: fullNameError
+				},
+				gitHubUserName: {
+					...fields.gitHubUserName,
+					error: gitHubUserNameError
+				}
 			});
-			setFullName({value: fullName.value, error: fullNameError});
-			setGitHubUserName({
-				value: gitHubUserName.value,
-				error: gitHubUserNameError
-			});
+
 			setFieldErrors([
-				fullNameError,
-				emailAddressError,
-				gitHubUserNameError
+				fullNameError ? fields.fullName.label : '',
+				emailAddressError ? fields.emailAddress.label : '',
+				gitHubUserNameError ? fields.gitHubUserName.label : ''
 			]);
 		} else {
 			postData(
 				addCollaboratorURL,
 				window.AccountDetailsConstants.namespace,
 				{
-					fullName: fullName.value,
-					emailAddress: emailAddress.value,
-					gitHubUserName: gitHubUserName.value
+					fullName: fields.fullName.value,
+					emailAddress: fields.emailAddress.value,
+					gitHubUserName: fields.gitHubUserName.value
 				},
 				'formData'
 			)
-				.then(response => response.data)
-				.then(data => {
-					if (data.message === 'success') {
-						addCollaboratorToMap(
-							CollabRecord({
-								collaboratorId: data.collaboratorId,
-								createDate: data.createDate,
-								deleteCollaboratorURL:
-									data.deleteCollaboratorURL,
-								emailAddress: emailAddress.value,
-								fullName: fullName.value,
-								gitHubUserName: gitHubUserName.value
-							})
-						);
+				.then(({data}) => {
+					switch (data.message) {
+						case 'success':
+							addCollaboratorToMap(
+								CollabRecord({
+									createDate: data.createDate,
+									deleteURL: data.deleteCollaboratorURL,
+									emailAddress: fields.emailAddress.value,
+									fullName: fields.fullName.value,
+									gitHubUserName: fields.gitHubUserName.value,
+									id: data.collaboratorId
+								})
+							);
 
-						setConfirmation('success');
-					} else if (data.message === 'pending-invitation-limit') {
-						setConfirmation('delayed');
-					} else if (data.message === 'pending-project-status') {
-						setCustomError(
-							Liferay.Language.get(
-								'this-request-is-pending-project-status'
-							)
-						);
-					} else if (data.message === 'duplicate-collaborator') {
-						setCustomError(
-							Liferay.Language.get(
-								'please-provide-a-unique-github-username'
-							)
-						);
-					} else {
-						setCustomError(
-							Liferay.Language.get(
-								'could-not-submit-please-try-again'
-							)
-						);
+							setConfirmation('success');
+							break;
+						case 'pending-invitation-limit':
+							setConfirmation('delayed');
+							break;
+						case 'pending-project-status':
+							setCustomError(
+								Liferay.Language.get(
+									'this-request-is-pending-project-status'
+								)
+							);
+							break;
+						case 'duplicate-collaborator':
+							setCustomError(
+								Liferay.Language.get(
+									'please-provide-a-unique-github-username'
+								)
+							);
+							break;
+						default:
+							setCustomError(
+								Liferay.Language.get(
+									'could-not-submit-please-try-again'
+								)
+							);
 					}
 
 					setDataLoading(false);
-					setEmailAddress({
-						value: emailAddress.value,
-						error: false
+
+					setFields({
+						emailAddress: {
+							...fields.emailAddress,
+							error: false
+						},
+						fullName: {
+							...fields.fullName,
+							error: false
+						},
+						gitHubUserName: {
+							...fields.gitHubUserName,
+							error: false
+						}
 					});
-					setFullName({value: fullName.value, error: false});
-					setGitHubUserName({
-						value: gitHubUserName.value,
-						error: false
-					});
+
 					setFieldErrors([]);
 				})
 				.catch(error => {
@@ -165,35 +198,28 @@ export default function AddSourceCodeAccessModal({
 						)
 					);
 					setDataLoading(false);
-					setEmailAddress({
-						value: emailAddress.value,
-						error: false
+
+					setFields({
+						emailAddress: {
+							...fields.emailAddress,
+							error: false
+						},
+						fullName: {
+							...fields.fullName,
+							error: false
+						},
+						gitHubUserName: {
+							...fields.gitHubUserName,
+							error: false
+						}
 					});
-					setFullName({value: fullName.value, error: false});
-					setGitHubUserName({
-						value: gitHubUserName.value,
-						error: false
-					});
+
 					setFieldErrors([]);
 				});
 		}
 	}
 
-	const fieldNames = [
-		Liferay.Language.get('name'),
-		Liferay.Language.get('email-address'),
-		Liferay.Language.get('github-username')
-	];
-
-	const errorMessages = [
-		Liferay.Language.get('first-and-last-name-are-both-required'),
-		Liferay.Language.get('invalid-format'),
-		Liferay.Language.get('incorrect-username')
-	];
-
-	const fieldsToUpdate = fieldErrors
-		.map((item, index) => (item ? fieldNames[index] : ''))
-		.filter(item => item);
+	const fieldsToUpdate = fieldErrors.filter(item => item);
 
 	const successConfirmation = (
 		<div className="modal-body-announcement">
@@ -333,41 +359,24 @@ export default function AddSourceCodeAccessModal({
 						onSubmit={handleUpdate}
 						method="post"
 					>
-						<SourceCodeAccessField
-							errorMessage={errorMessages[0]}
-							field={fullName}
-							label={fieldNames[0]}
-							name="fullName"
-							required={true}
-							subtext={Liferay.Language.get(
-								'first-and-last-name'
-							)}
-							updateInputValue={value =>
-								setFullName({value: value, error: false})
-							}
-						/>
-
-						<SourceCodeAccessField
-							errorMessage={errorMessages[1]}
-							field={emailAddress}
-							label={fieldNames[1]}
-							name="emailAddress"
-							required={true}
-							updateInputValue={value =>
-								setEmailAddress({value: value, error: false})
-							}
-						/>
-
-						<SourceCodeAccessField
-							errorMessage={errorMessages[2]}
-							field={gitHubUserName}
-							label={fieldNames[2]}
-							name="gitHubUserName"
-							required={true}
-							updateInputValue={value =>
-								setGitHubUserName({value: value, error: false})
-							}
-						/>
+						{['fullName', 'emailAddress', 'gitHubUserName'].map(
+							item => (
+								<SourceCodeAccessField
+									field={fields[`${item}`]}
+									key={item}
+									updateInputValue={value =>
+										setFields({
+											...fields,
+											[`${item}`]: {
+												...fields[`${item}`],
+												error: false,
+												value: value
+											}
+										})
+									}
+								/>
+							)
+						)}
 
 						<div className="btn-row">
 							<Button
@@ -391,27 +400,19 @@ export default function AddSourceCodeAccessModal({
 }
 
 SourceCodeAccessField.propTypes = {
-	errorMessage: PropTypes.string.isRequired,
 	field: PropTypes.shape({
-		value: PropTypes.string.isRequired,
-		error: PropTypes.bool.isRequired
+		error: PropTypes.bool.isRequired,
+		errorMessage: PropTypes.string.isRequired,
+		label: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
+		notRequired: PropTypes.bool,
+		subtext: PropTypes.string,
+		value: PropTypes.string.isRequired
 	}),
-	label: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	required: PropTypes.bool,
-	updateInputValue: PropTypes.func.isRequired,
-	subtext: PropTypes.string
+	updateInputValue: PropTypes.func.isRequired
 };
 
-function SourceCodeAccessField({
-	errorMessage,
-	field,
-	label,
-	name,
-	required,
-	updateInputValue,
-	subtext
-}) {
+function SourceCodeAccessField({field, updateInputValue}) {
 	const NAMESPACE = window.AccountDetailsConstants.namespace;
 
 	const handleChange = event => {
@@ -422,10 +423,10 @@ function SourceCodeAccessField({
 		<div
 			className={`${field.error ? 'form-group has-error' : 'form-group'}`}
 		>
-			<label className="control-label" htmlFor={`${name}Input`}>
-				{label}
+			<label className="control-label" htmlFor={`${field.name}Input`}>
+				{field.label}
 
-				{required && (
+				{!field.notRequired && (
 					<svg className="lexicon-icon lexicon-icon-asterisk">
 						<use xlinkHref="#asterisk" />
 					</svg>
@@ -434,14 +435,16 @@ function SourceCodeAccessField({
 
 			<input
 				className="form-control"
-				id={`${name}Input`}
-				name={`${NAMESPACE}${name}`}
+				id={`${field.name}Input`}
+				name={`${NAMESPACE}${field.name}`}
 				onChange={handleChange}
 				type="text"
 				value={field.value}
 			/>
 
-			{subtext && <div className="form-feedback-item">{subtext}</div>}
+			{field.subtext && (
+				<div className="form-feedback-item">{field.subtext}</div>
+			)}
 
 			{field.error && (
 				<div className="form-feedback-item-error">
@@ -452,7 +455,7 @@ function SourceCodeAccessField({
 					</span>
 
 					{field.value
-						? errorMessage
+						? field.errorMessage
 						: Liferay.Language.get('this-field-is-required')}
 				</div>
 			)}
