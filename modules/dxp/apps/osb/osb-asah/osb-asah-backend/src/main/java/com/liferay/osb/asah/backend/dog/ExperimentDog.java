@@ -425,7 +425,7 @@ public class ExperimentDog {
 
 		cardinalityAggregationBuilder.field("sessionId");
 
-		cardinalityAggregationBuilder.precisionThreshold(1000);
+		cardinalityAggregationBuilder.precisionThreshold(2000);
 
 		searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
 
@@ -447,7 +447,7 @@ public class ExperimentDog {
 
 		cardinalityAggregationBuilder.field("individualId");
 
-		cardinalityAggregationBuilder.precisionThreshold(1000);
+		cardinalityAggregationBuilder.precisionThreshold(2000);
 
 		searchSourceBuilder.aggregation(cardinalityAggregationBuilder);
 

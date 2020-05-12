@@ -40,6 +40,7 @@ import org.elasticsearch.search.aggregations.bucket.nested.InternalNested;
 import org.elasticsearch.search.aggregations.bucket.nested.NestedAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.avg.AvgAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.cardinality.Cardinality;
+import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.sum.InternalSum;
 import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
 import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
@@ -165,6 +166,20 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 	public QueryBuilder getQueryBuilder() {
 		return QueryBuilders.existsQuery(
 			PageMetricType.SESSIONS.getFieldName());
+	}
+
+	@Override
+	protected AggregationBuilder createCardinalityAggregationBuilder(
+		String cardinalityName, String fieldName) {
+
+		CardinalityAggregationBuilder cardinalityAggregationBuilder =
+			(CardinalityAggregationBuilder)
+				super.createCardinalityAggregationBuilder(
+					cardinalityName, fieldName);
+
+		cardinalityAggregationBuilder.precisionThreshold(2000);
+
+		return cardinalityAggregationBuilder;
 	}
 
 	private MetricResolver _buildAvgTimeOnPageMetricResolver() {
