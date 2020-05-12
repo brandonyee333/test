@@ -74,7 +74,7 @@ public class IndexerPostProcessorRegistryTest {
 			Arrays.toString(mbMessageIndexerPostProcessors),
 			mbMessageIndexerPostProcessors.length > 0);
 
-		IndexerPostProcessor testMbMessageIndexerPostProcessor = null;
+		IndexerPostProcessor testMBMessageIndexerPostProcessor = null;
 
 		for (IndexerPostProcessor mbMessageIndexerPostProcessor :
 				mbMessageIndexerPostProcessors) {
@@ -82,14 +82,14 @@ public class IndexerPostProcessorRegistryTest {
 			if (mbMessageIndexerPostProcessor instanceof
 					TestMultipleIndexerPostProcessor) {
 
-				testMbMessageIndexerPostProcessor =
+				testMBMessageIndexerPostProcessor =
 					mbMessageIndexerPostProcessor;
 
 				break;
 			}
 		}
 
-		Assert.assertNotNull(testMbMessageIndexerPostProcessor);
+		Assert.assertNotNull(testMBMessageIndexerPostProcessor);
 
 		Indexer<MBThread> mbThreadIndexer = IndexerRegistryUtil.getIndexer(
 			MBThread.class.getName());
@@ -101,7 +101,7 @@ public class IndexerPostProcessorRegistryTest {
 			Arrays.toString(mbThreadIndexerPostProcessors),
 			mbThreadIndexerPostProcessors.length > 0);
 
-		IndexerPostProcessor testMbThreadIndexerPostProcessor = null;
+		IndexerPostProcessor testMBThreadIndexerPostProcessor = null;
 
 		for (IndexerPostProcessor mbThreadIndexerPostProcessor :
 				mbThreadIndexerPostProcessors) {
@@ -109,16 +109,16 @@ public class IndexerPostProcessorRegistryTest {
 			if (mbThreadIndexerPostProcessor instanceof
 					TestMultipleIndexerPostProcessor) {
 
-				testMbThreadIndexerPostProcessor = mbThreadIndexerPostProcessor;
+				testMBThreadIndexerPostProcessor = mbThreadIndexerPostProcessor;
 
 				break;
 			}
 		}
 
-		Assert.assertNotNull(testMbThreadIndexerPostProcessor);
+		Assert.assertNotNull(testMBThreadIndexerPostProcessor);
 		Assert.assertEquals(
-			testMbMessageIndexerPostProcessor,
-			testMbThreadIndexerPostProcessor);
+			testMBMessageIndexerPostProcessor,
+			testMBThreadIndexerPostProcessor);
 	}
 
 	@Test
