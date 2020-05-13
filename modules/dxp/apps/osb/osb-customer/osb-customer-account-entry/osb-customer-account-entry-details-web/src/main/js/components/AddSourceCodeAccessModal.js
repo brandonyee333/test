@@ -14,8 +14,8 @@ const ERROR_VALIDATION = {
 	fullName: /^[a-z,.'-]+\s[a-z\s,.'-]+$/i,
 	gitHubUserName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 };
-
 const LENGTH_OF_DAYS = '3';
+const NAMESPACE = window.AccountDetailsConstants.namespace;
 
 const isValid = field => {
 	return field.value.match(ERROR_VALIDATION[field.name]);
@@ -119,7 +119,6 @@ export default function AddSourceCodeAccessModal({
 		} else {
 			postData(
 				addCollaboratorURL,
-				window.AccountDetailsConstants.namespace,
 				{
 					fullName: fields.fullName.value,
 					emailAddress: fields.emailAddress.value,
@@ -409,8 +408,6 @@ SourceCodeAccessField.propTypes = {
 };
 
 function SourceCodeAccessField({field, updateInputValue}) {
-	const NAMESPACE = window.AccountDetailsConstants.namespace;
-
 	const handleChange = event => {
 		updateInputValue(event.target.value);
 	};

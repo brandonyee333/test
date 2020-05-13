@@ -7,7 +7,9 @@ import axios from 'axios';
  * @param {string} encoding The data encoding for the request
  * @returns {Promise} A Promise of the object that results from the Request
  */
-export function postData(endpoint, namespace, params, encoding = 'json') {
+export function postData(endpoint, params, encoding = 'json') {
+	const namespace = window.AccountDetailsConstants.namespace;
+
 	let namespacedParams;
 
 	if (encoding === 'json') {
