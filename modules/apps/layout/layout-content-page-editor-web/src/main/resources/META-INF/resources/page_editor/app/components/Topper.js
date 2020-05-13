@@ -29,6 +29,7 @@ import selectCanUpdate from '../selectors/selectCanUpdate';
 import {useDispatch, useSelector} from '../store/index';
 import deleteItem from '../thunks/deleteItem';
 import moveItem from '../thunks/moveItem';
+import getLayoutDataItemLabel from '../utils/getLayoutDataItemLabel';
 import {
 	TARGET_POSITION,
 	useDragItem,
@@ -42,7 +43,6 @@ import {
 	useIsHovered,
 	useSelectItem,
 } from './Controls';
-import getLabelName from './layout-data-items/getLabelName';
 import hasDropZoneChild from './layout-data-items/hasDropZoneChild';
 
 const TOPPER_BAR_HEIGHT = 24;
@@ -181,8 +181,8 @@ function Topper({children, item, itemRef, layoutData}) {
 			? Liferay.Util.sub(
 					Liferay.Language.get('a-x-cannot-be-dropped-inside-a-x'),
 					[
-						getLabelName(sourceItem, fragmentEntryLinks),
-						getLabelName(item, fragmentEntryLinks),
+						getLayoutDataItemLabel(sourceItem, fragmentEntryLinks),
+						getLayoutDataItemLabel(item, fragmentEntryLinks),
 					]
 			  )
 			: null;
@@ -252,7 +252,7 @@ function Topper({children, item, itemRef, layoutData}) {
 						className="page-editor__topper__title"
 						expand
 					>
-						{getLabelName(item, fragmentEntryLinks) ||
+						{getLayoutDataItemLabel(item, fragmentEntryLinks) ||
 							Liferay.Language.get('element')}
 					</TopperListItem>
 					{item.type === LAYOUT_DATA_ITEM_TYPES.fragment && (
