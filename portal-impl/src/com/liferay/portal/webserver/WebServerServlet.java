@@ -80,7 +80,6 @@ import com.liferay.portal.kernel.template.URLTemplateResource;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.DigesterUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
@@ -112,8 +111,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.net.URL;
-
-import java.text.Format;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -1208,7 +1205,6 @@ public class WebServerServlet extends HttpServlet {
 		Template template = TemplateManagerUtil.getTemplate(
 			TemplateConstants.LANG_TYPE_FTL, _templateResource, true);
 
-		template.put("dateFormat", _dateFormat);
 		template.put("entries", webServerEntries);
 		template.put("path", HttpUtil.encodePath(path));
 
@@ -1538,8 +1534,6 @@ public class WebServerServlet extends HttpServlet {
 	private static final Set<String> _acceptRangesMimeTypes = SetUtil.fromArray(
 		PropsValues.WEB_SERVER_SERVLET_ACCEPT_RANGES_MIME_TYPES);
 
-	private final Format _dateFormat =
-		FastDateFormatFactoryUtil.getSimpleDateFormat("d MMM yyyy HH:mm z");
 	private boolean _lastModified = true;
 	private TemplateResource _templateResource;
 
