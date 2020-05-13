@@ -20,8 +20,8 @@ export default class ErrorBoundary extends React.Component {
 		});
 
 		if (process.env.NODE_ENV === 'development') {
-			console.log(`Error: ${error}`);
-			console.log(`Error Info: ${JSON.stringify(info)}`);
+			console.error(`Error: ${error}`);
+			console.error(`Error Info: ${JSON.stringify(info)}`);
 		}
 	}
 

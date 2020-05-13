@@ -68,7 +68,7 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 				}
 			})
 			.catch(error => {
-				console.log(error);
+				console.error(error);
 			});
 	}
 
