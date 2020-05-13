@@ -144,6 +144,8 @@ definition {
 
 	@priority = "4"
 	test CheckinDocument {
+		property test.name.skip.portal.instance = "SharepointREST#CheckinDocument";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -197,6 +199,8 @@ definition {
 
 	@priority = "4"
 	test DeleteDocumentInSubfolder {
+		property test.name.skip.portal.instance = "SharepointREST#DeleteDocumentInSubfolder";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMFolder.addCP(dmFolderName = "DM Folder3 Name");
@@ -255,6 +259,8 @@ definition {
 
 	@priority = "4"
 	test DeleteSubfolder {
+		property test.name.skip.portal.instance = "SharepointREST#DeleteSubfolder";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMFolder.addCP(dmFolderName = "DM Folder Name");
@@ -277,6 +283,8 @@ definition {
 
 	@priority = "4"
 	test EditDocumentFile {
+		property test.name.skip.portal.instance = "SharepointREST#EditDocumentFile";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -326,6 +334,8 @@ definition {
 
 	@priority = "4"
 	test MoveCheckedoutDocumentToFolder {
+		property test.name.skip.portal.instance = "SharepointREST#MoveCheckedoutDocumentToFolder";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMFolder.addCP(dmFolderName = "Sharepoint Subfolder");
@@ -393,6 +403,8 @@ definition {
 
 	@priority = "4"
 	test MoveDocumentToHome {
+		property test.name.skip.portal.instance = "SharepointREST#MoveDocumentToHome";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -428,6 +440,8 @@ definition {
 
 	@priority = "4"
 	test SearchDocumentViaHome {
+		property test.name.skip.portal.instance = "SharepointREST#SearchDocumentViaHome";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -450,6 +464,8 @@ definition {
 
 	@priority = "4"
 	test ViewDocumentAsGuest {
+		property test.name.skip.portal.instance = "SharepointREST#ViewDocumentAsGuest";
+
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
 			panel = "Site Administration",
@@ -499,6 +515,8 @@ definition {
 
 	@priority = "4"
 	test ViewEditedCheckedoutDocument {
+		property test.name.skip.portal.instance = "SharepointREST#ViewEditedCheckedoutDocument";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -548,6 +566,8 @@ definition {
 
 	@priority = "4"
 	test ViewOriginalFileExtensionAfterUnsuccessfulExtensionChange {
+		property test.name.skip.portal.instance = "SharepointREST#ViewOriginalFileExtensionAfterUnsuccessfulExtensionChange";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -584,6 +604,8 @@ definition {
 
 	@priority = "4"
 	test ViewOriginalFileExtensionAfterUnsuccessfulExtensionRemoval {
+		property test.name.skip.portal.instance = "SharepointREST#ViewOriginalFileExtensionAfterUnsuccessfulExtensionRemoval";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMDocument.addCP(
@@ -620,6 +642,8 @@ definition {
 
 	@priority = "4"
 	test ViewRepository {
+		property test.name.skip.portal.instance = "SharepointREST#ViewRepository";
+
 		DMRepository.gotoCP(dmRepositoryName = "Collaboration Test Application");
 
 		DMRepository.viewBreadcrumb(dmRepositoryName = "Collaboration Test Application");
