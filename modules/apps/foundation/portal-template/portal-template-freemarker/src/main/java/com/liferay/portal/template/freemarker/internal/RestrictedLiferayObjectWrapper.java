@@ -169,13 +169,15 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 		String className = clazz.getName();
 
 		if (!_allowAllClasses && _isRestricted(clazz)) {
-			return _LIFERAY_FREEMARKER_BEAN_MODEL_FACTORY.create(object, this);
+			return _LIFERAY_FREEMARKER_STRING_MODEL_FACTORY.create(
+				object, this);
 		}
 
 		if (_restrictedMethodNamesMap.containsKey(className)) {
-			LiferayFreeMarkerBeanModel templateModel =
-				(LiferayFreeMarkerBeanModel)_LIFERAY_MODEL_FACTORY.create(
-					object, this);
+			LiferayFreeMarkerStringModel templateModel =
+				(LiferayFreeMarkerStringModel)
+					_LIFERAY_FREEMARKER_STRING_MODEL_FACTORY.create(
+						object, this);
 
 			templateModel.setRestrictedMethodNames(
 				_restrictedMethodNamesMap.get(className));
@@ -224,14 +226,14 @@ public class RestrictedLiferayObjectWrapper extends LiferayObjectWrapper {
 			});
 	}
 
-	private static final ModelFactory _LIFERAY_MODEL_FACTORY =
+	private static final ModelFactory _LIFERAY_FREEMARKER_STRING_MODEL_FACTORY =
 		new ModelFactory() {
 
 			@Override
 			public TemplateModel create(
 				Object object, ObjectWrapper objectWrapper) {
 
-				return new LiferayFreeMarkerBeanModel(
+				return new LiferayFreeMarkerStringModel(
 					object, (BeansWrapper)objectWrapper);
 			}
 
