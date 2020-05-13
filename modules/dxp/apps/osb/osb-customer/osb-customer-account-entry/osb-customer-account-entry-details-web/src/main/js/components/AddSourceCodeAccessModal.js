@@ -80,11 +80,7 @@ export default function AddSourceCodeAccessModal({
 	}
 
 	function validateAllFields() {
-		return (
-			isValid(fields.emailAddress) &&
-			isValid(fields.fullName) &&
-			isValid(fields.gitHubUserName)
-		);
+		return Object.values(fields).every(field => isValid(field));
 	}
 
 	function handleUpdate(event) {
