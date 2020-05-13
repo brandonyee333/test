@@ -63,11 +63,14 @@ import com.amazonaws.services.personalize.model.S3DataConfig;
 import com.amazonaws.services.personalize.model.Solution;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
+import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
 import com.liferay.osb.asah.common.constants.ServiceConstants;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -84,6 +87,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -386,8 +390,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobExecutionJSONObject.put(
 				"context", jobExecutionContextJSONObject);
 
-			_faroInfoElasticsearchInvoker.update(
-				"job-executions", jobExecutionJSONObject);
+			_updateJobExecution(jobExecutionJSONObject);
 		}
 
 		DescribeBatchInferenceJobRequest describeBatchInferenceJobRequest =
@@ -439,8 +442,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobExecutionJSONObject.put(
 				"context", jobExecutionContextJSONObject);
 
-			_faroInfoElasticsearchInvoker.update(
-				"job-executions", jobExecutionJSONObject);
+			_updateJobExecution(jobExecutionJSONObject);
 		}
 
 		DescribeSolutionRequest describeSolutionRequest =
@@ -472,8 +474,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobExecutionJSONObject.put(
 				"context", jobExecutionContextJSONObject);
 
-			_faroInfoElasticsearchInvoker.update(
-				"job-executions", jobExecutionJSONObject);
+			_updateJobExecution(jobExecutionJSONObject);
 		}
 
 		DescribeSolutionVersionRequest describeSolutionVersionRequest =
@@ -534,8 +535,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobExecutionJSONObject.put(
 				"context", jobExecutionContextJSONObject);
 
-			_faroInfoElasticsearchInvoker.update(
-				"job-executions", jobExecutionJSONObject);
+			_updateJobExecution(jobExecutionJSONObject);
 		}
 
 		DescribeDatasetImportJobRequest describeDatasetImportJobRequest =
@@ -649,6 +649,22 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		jobExecutionJSONObject.put("step", "DATA_OUTPUT");
 
+		_updateJobExecution(jobExecutionJSONObject);
+
+		_sparkManager.submitJob(
+			Arrays.asList(
+				"--job-execution-id", jobExecutionJSONObject.getString("id"),
+				"--job-execution-step",
+				jobExecutionJSONObject.getString("step"), "--lcp-project-id",
+				ServiceConstants.LCP_PROJECT_ID),
+			"content_recommendation.yaml",
+			"liferay.content_recommendation.ContentRecommendationApplication");
+	}
+
+	private void _updateJobExecution(JSONObject jobExecutionJSONObject) {
+		jobExecutionJSONObject.put(
+			"lastUpdatedDate", DateUtil.newUTCDateString());
+
 		_faroInfoElasticsearchInvoker.update(
 			"job-executions", jobExecutionJSONObject);
 	}
@@ -678,5 +694,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	private String _awsPersonalizeRoleArn;
 
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
+
+	@Autowired
+	private SparkManager _sparkManager;
 
 }

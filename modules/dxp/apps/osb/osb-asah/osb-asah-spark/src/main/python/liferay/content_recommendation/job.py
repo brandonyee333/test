@@ -23,9 +23,12 @@ class CompleteJobExecutionStepSparkJob(BaseSparkJob):
 		args = self.spark_application.args
 		elasticsearch_bridge = spark_application.elasticsearch_bridge
 
+		now = datetime.datetime.utcnow()
+
 		elasticsearch_bridge.update_document(
 		    'job-executions', {
-		        'completedDate': datetime.datetime.utcnow(),
+		        'completedDate': now,
+		        'lastUpdatedDate': now,
 		        'status': 'COMPLETED'
 		    }, args.job_execution_id, 'osbasahfaroinfo'
 		)

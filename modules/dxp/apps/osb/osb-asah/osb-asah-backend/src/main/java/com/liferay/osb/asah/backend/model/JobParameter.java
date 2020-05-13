@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model.ml;
+package com.liferay.osb.asah.backend.model;
 
 import java.util.Objects;
 

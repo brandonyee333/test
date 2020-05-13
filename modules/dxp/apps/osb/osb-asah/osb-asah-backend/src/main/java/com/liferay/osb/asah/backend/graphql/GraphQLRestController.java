@@ -230,6 +230,7 @@ public class GraphQLRestController {
 			builder, "type", "dataExportTaskType", "DataExportTask");
 		_defineCustomPropertyName(
 			builder, "type", "experimentType", "Experiment");
+		_defineCustomPropertyName(builder, "type", "jobType", "Job");
 		_defineCustomPropertyName(
 			builder, "variantMetrics", "variantMetricsList",
 			"ExperimentMetrics");

@@ -80,6 +80,38 @@ public class IndividualSegmentsRestControllerTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "channels", resourcePath = "channels_2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individual-segments", resourcePath = "individual-segments.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "individuals", resourcePath = "individuals.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "memberships", resourcePath = "memberships_1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testAssignChannelModifiesIndividualCount() throws Exception {
+		_individualSegmentsRestController.assignChannel(
+			"1", "366637689379787789");
+
+		_elasticsearchInvoker.refresh();
+
+		JSONObject individualSegmentJSONObject = _elasticsearchInvoker.fetch(
+			"individual-segments", "366637689379787789");
+
+		Assert.assertEquals(
+			"1", individualSegmentJSONObject.getString("channelId"));
+		Assert.assertEquals(
+			1, individualSegmentJSONObject.getInt("individualCount"));
+	}
+
+	@ElasticsearchIndex(
 		name = "accounts", resourcePath = "accounts_1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)

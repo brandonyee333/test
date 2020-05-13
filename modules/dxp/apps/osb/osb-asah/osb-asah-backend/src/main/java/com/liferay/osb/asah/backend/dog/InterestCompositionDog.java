@@ -23,6 +23,7 @@ import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -88,6 +89,10 @@ public class InterestCompositionDog {
 
 		List<String> individualIds = _getIndividualIds(
 			active, channelId, individualSegmentId);
+
+		if (individualIds.isEmpty()) {
+			return new CompositionResultBag(Collections.emptyList(), 0, 0);
+		}
 
 		return _getCompositionResultBag(
 			_getInterestQueryBuilder(individualIds, keywords), size, sort,

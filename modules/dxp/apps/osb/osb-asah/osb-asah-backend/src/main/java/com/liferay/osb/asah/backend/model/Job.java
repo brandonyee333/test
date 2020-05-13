@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.model.ml;
+package com.liferay.osb.asah.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -41,6 +41,7 @@ public class Job {
 			Objects.equals(_cronExpression, job._cronExpression) &&
 			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
+			Objects.equals(_jobType, job._jobType) &&
 			Objects.equals(_name, job._name)) {
 
 			return true;
@@ -62,6 +63,11 @@ public class Job {
 		return _jobParameters;
 	}
 
+	@JsonProperty("type")
+	public JobType getJobType() {
+		return _jobType;
+	}
+
 	public String getName() {
 		return _name;
 	}
@@ -69,7 +75,7 @@ public class Job {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_active, _cronExpression, _id, _jobParameters, _name);
+			_active, _cronExpression, _id, _jobParameters, _jobType, _name);
 	}
 
 	public boolean isActive() {
@@ -92,6 +98,10 @@ public class Job {
 		_jobParameters = jobParameters;
 	}
 
+	public void setJobType(JobType jobType) {
+		_jobType = jobType;
+	}
+
 	public void setName(String name) {
 		_name = name;
 	}
@@ -100,6 +110,7 @@ public class Job {
 	private String _cronExpression;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
+	private JobType _jobType;
 	private String _name;
 
 }

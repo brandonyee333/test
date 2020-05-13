@@ -14,9 +14,9 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.ml.JobDog;
+import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.backend.model.ml.Job;
+import com.liferay.osb.asah.backend.model.Job;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;

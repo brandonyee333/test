@@ -14,10 +14,11 @@
 
 package com.liferay.osb.asah.backend.graphql.schema;
 
-import com.liferay.osb.asah.backend.dog.ml.JobDog;
+import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
-import com.liferay.osb.asah.backend.model.ml.Job;
-import com.liferay.osb.asah.backend.model.ml.JobParameter;
+import com.liferay.osb.asah.backend.model.Job;
+import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobType;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
@@ -43,6 +44,7 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 			dataFetchingEnvironment.getArgument("active"),
 			dataFetchingEnvironment.getArgument("cronExpression"),
 			_createJobParameters(dataFetchingEnvironment),
+			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
 			dataFetchingEnvironment.getArgument("name"));
 	}
 

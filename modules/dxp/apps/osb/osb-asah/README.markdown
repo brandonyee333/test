@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.com/liferay/com-liferay-osb-asah-private.svg?token=qheGTkbg7SYfhBrP7xPX&branch=7.0.x-private)](https://travis-ci.com/liferay/com-liferay-osb-asah-private)
-[![Coverage Status](https://coveralls.io/repos/github/liferay/com-liferay-osb-asah-private/badge.svg?branch=7.0.x-private&t=NFTa2k)](https://coveralls.io/github/liferay/com-liferay-osb-asah-private?branch=7.0.x-private)
+[![Build Status](https://travis-ci.com/liferay/com-liferay-osb-asah-private.svg?token=qheGTkbg7SYfhBrP7xPX&branch=7.0.x)](https://travis-ci.com/liferay/com-liferay-osb-asah-private)
+[![Coverage Status](https://coveralls.io/repos/github/liferay/com-liferay-osb-asah-private/badge.svg?branch=7.0.x&t=NFTa2k)](https://coveralls.io/github/liferay/com-liferay-osb-asah-private?branch=7.0.x)
 
 # Asah
 

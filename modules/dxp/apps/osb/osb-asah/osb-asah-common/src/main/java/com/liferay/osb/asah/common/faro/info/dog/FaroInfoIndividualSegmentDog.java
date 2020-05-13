@@ -93,11 +93,11 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 					individualSegmentJSONObject.optString("channelId"));
 		}
 
-		_updateMemberships(channelId, individualSegmentJSONObject);
+		individualSegmentJSONObject = elasticsearchInvoker.update(
+			"individual-segments", individualSegmentJSONObject.getString("id"),
+			JSONUtil.put("channelId", channelId));
 
-		elasticsearchInvoker.save(
-			"individual-segments",
-			individualSegmentJSONObject.put("channelId", channelId));
+		_updateMemberships(channelId, individualSegmentJSONObject);
 	}
 
 	@CacheEvict(allEntries = true, value = "getReferencedAssetIds")

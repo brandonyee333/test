@@ -14,9 +14,10 @@
 
 package com.liferay.osb.asah.backend.dog.ml.test;
 
-import com.liferay.osb.asah.backend.dog.ml.JobDog;
-import com.liferay.osb.asah.backend.model.ml.Job;
-import com.liferay.osb.asah.backend.model.ml.JobParameter;
+import com.liferay.osb.asah.backend.dog.JobDog;
+import com.liferay.osb.asah.backend.model.Job;
+import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -52,6 +53,7 @@ public class JobDogTest {
 					add(new JobParameter("parameter1", "1.2"));
 				}
 			},
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 			"Product Recommendation Job");
 
 		Assert.assertNotNull(job);
@@ -65,6 +67,8 @@ public class JobDogTest {
 		Assert.assertEquals("parameter1", jobParameter.getName());
 		Assert.assertEquals("1.2", jobParameter.getValue());
 
+		Assert.assertEquals(
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, job.getJobType());
 		Assert.assertEquals("Product Recommendation Job", job.getName());
 	}
 

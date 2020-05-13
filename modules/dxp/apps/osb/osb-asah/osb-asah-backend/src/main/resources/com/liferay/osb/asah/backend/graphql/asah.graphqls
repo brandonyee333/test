@@ -27,6 +27,10 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum JobType {
+	CONTENT_RECOMMENDATION_ITEM_SIMILARITY
+}
+
 enum SortType {
 	ASC
 	DESC
@@ -318,6 +322,7 @@ type Job {
 	id: String
 	name: String
 	parameters: [JobParameter]
+	type: JobType
 }
 
 type JobParameter {
@@ -367,6 +372,7 @@ type MutationType {
 		cronExpresison: String!
 		name: String!
 		parameters: [JobParameterInput]
+		type: JobType!
 	): Job
 
 	dashboard(

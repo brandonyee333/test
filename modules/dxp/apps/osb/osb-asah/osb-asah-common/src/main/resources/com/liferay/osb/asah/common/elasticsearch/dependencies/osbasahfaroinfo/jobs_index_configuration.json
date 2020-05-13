@@ -22,6 +22,9 @@
 				},
 				"parameters": {
 					"type": "object"
+				},
+				"type": {
+					"type": "keyword"
 				}
 			}
 		}

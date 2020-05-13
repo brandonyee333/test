@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.ml;
+package com.liferay.osb.asah.backend.dog;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,16 +21,18 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import com.liferay.osb.asah.backend.dog.DataDog;
-import com.liferay.osb.asah.backend.model.ml.Job;
-import com.liferay.osb.asah.backend.model.ml.JobParameter;
+import com.liferay.osb.asah.backend.model.Job;
+import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 
 import java.io.IOException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -56,7 +58,7 @@ public class JobDog {
 
 	public Job addJob(
 		boolean active, String cronExpression, List<JobParameter> jobParameters,
-		String name) {
+		JobType jobType, String name) {
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -66,11 +68,12 @@ public class JobDog {
 		jsonObject.put(
 			"parameters",
 			_objectMapper.convertValue(jobParameters, JSONArray.class));
+		jsonObject.put("type", jobType.toString());
 
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
 
 		_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-			"JobExecutorNanite", jsonObject, cronExpression);
+			_jobTypeNaniteMap.get(jobType), jsonObject, cronExpression);
 
 		try {
 			return _objectMapper.readValue(jsonObject.toString(), Job.class);
@@ -141,6 +144,15 @@ public class JobDog {
 
 	@Autowired
 	private FaroInfoOSBAsahTaskDog _faroInfoOSBAsahTaskDog;
+
+	private final Map<JobType, String> _jobTypeNaniteMap =
+		new HashMap<JobType, String>() {
+			{
+				put(
+					JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
+					"ContentRecommendationDataPreparationNanite");
+			}
+		};
 
 	private final ObjectMapper _objectMapper = new ObjectMapper() {
 		{
