@@ -46,7 +46,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-import javax.servlet.Servlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.junit.After;
@@ -57,7 +56,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author László Csontos
@@ -151,10 +149,11 @@ public class FriendlyURLServletTest {
 
 		typeSettingsUnicodeProperties.put("url", _layout.getFriendlyURL());
 
-		redirectLayout.setTypeSettingsProperties(typeSettingsUnicodeProperties);
-
 		_layoutLocalService.updateLayout(redirectLayout);
 
+		redirectLayout.setTypeSettingsProperties(typeSettingsUnicodeProperties);
+
+		mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, redirectLayout);
 		mockHttpServletRequest.setParameter("param", "true");
 		mockHttpServletRequest.setPathInfo(StringPool.SLASH);
 
@@ -164,14 +163,13 @@ public class FriendlyURLServletTest {
 
 		mockHttpServletRequest.setRequestURI(requestURI);
 
-		MockHttpServletResponse mockHttpServletResponse =
-			new MockHttpServletResponse();
+		FriendlyURLServlet.Redirect actualRedirect =
+			_friendlyURLServlet.getRedirect(
+				mockHttpServletRequest, getPath(_group, redirectLayout));
 
-		_servlet.service(mockHttpServletRequest, mockHttpServletResponse);
+		String actualRedirectPath = actualRedirect.getPath();
 
-		String redirectedURL = mockHttpServletResponse.getRedirectedUrl();
-
-		Assert.assertTrue(redirectedURL.contains("?param=true"));
+		Assert.assertTrue(actualRedirectPath.contains("?param=true"));
 	}
 
 	protected String getI18nLanguageId(HttpServletRequest request) {
@@ -281,6 +279,5 @@ public class FriendlyURLServletTest {
 	private Group _group;
 
 	private Layout _layout;
-	private Servlet _servlet;
 
 }
