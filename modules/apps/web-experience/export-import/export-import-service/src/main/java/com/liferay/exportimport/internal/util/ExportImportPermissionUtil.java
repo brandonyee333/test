@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
+import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.portal.kernel.service.ResourceBlockLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceBlockPermissionLocalServiceUtil;
@@ -134,23 +135,28 @@ public class ExportImportPermissionUtil {
 			String resourcePK, Map<Long, String[]> roleIdsToActionIds)
 		throws PortalException {
 
-		ResourcePermissionLocalServiceUtil.deleteResourcePermissions(
-			companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
-			resourcePK);
+		List<ResourcePermission> resourcePermissions =
+			ResourcePermissionLocalServiceUtil.getResourcePermissions(
+				companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
+				resourcePK);
 
-		if (roleIdsToActionIds.isEmpty()) {
-			return;
+		Map<Long, String[]> mergedRoleIdsToActionIds = new HashMap<>(
+			roleIdsToActionIds);
+
+		for (ResourcePermission resourcePermission : resourcePermissions) {
+			mergedRoleIdsToActionIds.putIfAbsent(
+				resourcePermission.getRoleId(), new String[0]);
 		}
 
 		if (ResourceBlockLocalServiceUtil.isSupported(resourceName)) {
 			ResourceBlockLocalServiceUtil.setIndividualScopePermissions(
 				companyId, groupId, resourceName,
-				GetterUtil.getLong(resourcePK), roleIdsToActionIds);
+				GetterUtil.getLong(resourcePK), mergedRoleIdsToActionIds);
 		}
 		else {
 			ResourcePermissionLocalServiceUtil.setResourcePermissions(
 				companyId, resourceName, ResourceConstants.SCOPE_INDIVIDUAL,
-				resourcePK, roleIdsToActionIds);
+				resourcePK, mergedRoleIdsToActionIds);
 		}
 	}
 
