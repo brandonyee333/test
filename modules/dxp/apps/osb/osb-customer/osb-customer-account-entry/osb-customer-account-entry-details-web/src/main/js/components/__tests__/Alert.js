@@ -1,5 +1,5 @@
-import React from 'react';
 import {fireEvent, getByLabelText, render} from '@testing-library/react';
+import React from 'react';
 
 import Alert from '../Alert';
 
