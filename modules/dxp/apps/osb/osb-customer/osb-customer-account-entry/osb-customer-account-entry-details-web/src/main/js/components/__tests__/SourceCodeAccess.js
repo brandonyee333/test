@@ -11,13 +11,37 @@ import {
 	within
 } from '@testing-library/react';
 
+import axios from 'axios';
 import SourceCodeAccess from '../SourceCodeAccess';
+
+jest.mock('axios');
+
+const ADD_COLLABORATOR_URL = '/add';
+const DELETE_COLLABORATOR_URL = '/delete';
+
+const JSON_RESPONSES = {
+	[`${ADD_COLLABORATOR_URL}`]: {
+		message: 'success',
+		collaboratorId: 104,
+		createDate: '05/05/2020',
+		deleteCollaboratorURL: '/url'
+	},
+	[`${DELETE_COLLABORATOR_URL}`]: {
+		message: 'success'
+	}
+};
+
+axios.post.mockImplementation(endpoint =>
+	Promise.resolve({
+		data: JSON_RESPONSES[endpoint]
+	})
+);
 
 describe('SourceCodeAccess', () => {
 	const collaboratorsJSON = [
 		{
 			createDate: '01/01/2020',
-			deleteURL: 'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
+			deleteURL: DELETE_COLLABORATOR_URL,
 			emailAddress: 'test1@liferay.com',
 			fullName: 'Test One',
 			gitHubUserName: 'testuser1',
@@ -25,7 +49,7 @@ describe('SourceCodeAccess', () => {
 		},
 		{
 			createDate: '02/02/2020',
-			deleteURL: 'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
+			deleteURL: DELETE_COLLABORATOR_URL,
 			emailAddress: 'test2@liferay.com',
 			fullName: 'Test Two',
 			gitHubUserName: 'testuser2',
@@ -33,7 +57,7 @@ describe('SourceCodeAccess', () => {
 		},
 		{
 			createDate: '03/03/2020',
-			deleteURL: 'http://www.mocky.io/v2/5eb5a4f83100005e0069977b',
+			deleteURL: DELETE_COLLABORATOR_URL,
 			emailAddress: 'test3@liferay.com',
 			fullName: 'Test Three',
 			gitHubUserName: 'testuser3',
@@ -44,7 +68,7 @@ describe('SourceCodeAccess', () => {
 	function renderSourceCodeAccess(props) {
 		return render(
 			<SourceCodeAccess
-				addCollaboratorURL="/url"
+				addCollaboratorURL={ADD_COLLABORATOR_URL}
 				collaborators={collaboratorsJSON}
 				{...props}
 			/>
@@ -141,10 +165,7 @@ describe('SourceCodeAccess', () => {
 	});
 
 	it('adds the collaborator after using the modal', async () => {
-		const {container} = renderSourceCodeAccess({
-			addCollaboratorURL:
-				'http://www.mocky.io/v2/5eb497460e0000f359081cd9'
-		});
+		const {container} = renderSourceCodeAccess();
 
 		fireEvent.click(getByLabelText(container, 'add'));
 
