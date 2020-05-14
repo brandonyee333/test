@@ -1,4 +1,3 @@
-import React from 'react';
 import {
 	findByText,
 	fireEvent,
@@ -10,11 +9,10 @@ import {
 	waitFor,
 	within
 } from '@testing-library/react';
-
 import axios from 'axios';
-import SourceCodeAccess from '../SourceCodeAccess';
+import React from 'react';
 
-jest.mock('axios');
+import SourceCodeAccess from '../SourceCodeAccess';
 
 const ADD_COLLABORATOR_URL = '/add';
 const DELETE_COLLABORATOR_URL = '/delete';
@@ -30,6 +28,8 @@ const JSON_RESPONSES = {
 		message: 'success'
 	}
 };
+
+jest.mock('axios');
 
 axios.post.mockImplementation(endpoint =>
 	Promise.resolve({

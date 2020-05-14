@@ -15,7 +15,6 @@ const ERROR_VALIDATION = {
 	gitHubUserName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 };
 const LENGTH_OF_DAYS = '3';
-const NAMESPACE = window.AccountDetailsConstants.namespace;
 
 const isValid = field => {
 	return field.value.match(ERROR_VALIDATION[field.name]);
@@ -411,6 +410,8 @@ function SourceCodeAccessField({field, updateInputValue}) {
 	const handleChange = event => {
 		updateInputValue(event.target.value);
 	};
+
+	const NAMESPACE = window.AccountDetailsConstants.namespace;
 
 	return (
 		<div
