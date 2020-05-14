@@ -1092,6 +1092,9 @@ public class SitesImpl implements Sites {
 		long lastMergeTime = GetterUtil.getLong(
 			settingsProperties.getProperty(LAST_MERGE_TIME));
 
+		long lastMergeVersion = GetterUtil.getLong(
+			settingsProperties.getProperty(LAST_MERGE_VERSION));
+
 		LayoutSetPrototype layoutSetPrototype =
 			LayoutSetPrototypeLocalServiceUtil.
 				getLayoutSetPrototypeByUuidAndCompanyId(
@@ -1100,7 +1103,10 @@ public class SitesImpl implements Sites {
 
 		Date modifiedDate = layoutSetPrototype.getModifiedDate();
 
-		if (lastMergeTime >= modifiedDate.getTime()) {
+		if ((lastMergeTime >= modifiedDate.getTime()) &&
+			((lastMergeVersion == 0) ||
+			 (lastMergeVersion == layoutSetPrototype.getMvccVersion()))) {
+
 			return false;
 		}
 
@@ -2025,6 +2031,12 @@ public class SitesImpl implements Sites {
 		User user = UserLocalServiceUtil.getDefaultUser(
 			layoutSetPrototype.getCompanyId());
 
+		long lastMergeVersion = layoutSetPrototype.getMvccVersion();
+
+		parameterMap.put(
+			"lastMergeVersion",
+			new String[] {String.valueOf(lastMergeVersion)});
+
 		if (importData) {
 			file = exportLayoutSetPrototype(
 				user, layoutSetPrototype, parameterMap, null);
@@ -2032,7 +2044,7 @@ public class SitesImpl implements Sites {
 		else {
 			String cacheFileName = StringBundler.concat(
 				_TEMP_DIR, layoutSetPrototype.getUuid(), ".v",
-				String.valueOf(layoutSetPrototype.getMvccVersion()), ".lar");
+				String.valueOf(lastMergeVersion), ".lar");
 
 			file = _exportInProgressMap.computeIfAbsent(
 				cacheFileName,
