@@ -167,23 +167,6 @@ export default function AddSourceCodeAccessModal({
 					}
 
 					setDataLoading(false);
-
-					setFields({
-						emailAddress: {
-							...fields.emailAddress,
-							error: false
-						},
-						fullName: {
-							...fields.fullName,
-							error: false
-						},
-						gitHubUserName: {
-							...fields.gitHubUserName,
-							error: false
-						}
-					});
-
-					setFieldErrors([]);
 				})
 				.catch(error => {
 					setCustomError(
@@ -191,25 +174,26 @@ export default function AddSourceCodeAccessModal({
 							'could-not-submit-please-try-again'
 						)
 					);
+
 					setDataLoading(false);
-
-					setFields({
-						emailAddress: {
-							...fields.emailAddress,
-							error: false
-						},
-						fullName: {
-							...fields.fullName,
-							error: false
-						},
-						gitHubUserName: {
-							...fields.gitHubUserName,
-							error: false
-						}
-					});
-
-					setFieldErrors([]);
 				});
+
+			setFields({
+				emailAddress: {
+					...fields.emailAddress,
+					error: false
+				},
+				fullName: {
+					...fields.fullName,
+					error: false
+				},
+				gitHubUserName: {
+					...fields.gitHubUserName,
+					error: false
+				}
+			});
+
+			setFieldErrors([]);
 		}
 	}
 
