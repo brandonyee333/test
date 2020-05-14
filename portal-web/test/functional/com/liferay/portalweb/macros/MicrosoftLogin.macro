@@ -74,17 +74,6 @@ definition {
 				locator1 = "MicrosoftLogin#SHAREPOINT_TRUST_IT_BUTTON",
 				value1 = "Trust It");
 		}
-
-		if (IsElementPresent(locator1 = "Portlet#HEADER")) {
-			AssertTextEquals(
-				locator1 = "Portlet#HEADER",
-				value1 = "${dmRepositoryName}");
-		}
-		else {
-			AssertTextEquals(
-				locator1 = "MicrosoftLogin#SHAREPOINT_SITE_TITLE",
-				value1 = "Sitio de grupo de Liferay");
-		}
 	}
 
 }
