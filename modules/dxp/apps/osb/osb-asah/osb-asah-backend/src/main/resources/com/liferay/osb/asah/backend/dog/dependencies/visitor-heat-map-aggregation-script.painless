@@ -1,5 +1,0 @@
-WeekFields weekFields = WeekFields.SUNDAY_START;
-
-ZonedDateTime zonedDateTime = doc["firstEventDate"].value.withZoneSameInstant(ZoneId.of(params.timeZoneId));
-
-return (zonedDateTime.get(weekFields.dayOfWeek()) - 1) + " " + zonedDateTime.hour;

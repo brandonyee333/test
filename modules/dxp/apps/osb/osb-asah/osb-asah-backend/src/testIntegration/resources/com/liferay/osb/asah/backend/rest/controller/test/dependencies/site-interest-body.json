@@ -1,9 +1,0 @@
-{
-	"operationName": "Interests",
-	"variables": {
-		"channelId": "1",
-		"rangeKey": 30,
-		"size": 5,
-		"start": 0
-	}
-}
