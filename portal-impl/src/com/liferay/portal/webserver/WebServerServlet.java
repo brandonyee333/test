@@ -1484,7 +1484,7 @@ public class WebServerServlet extends HttpServlet {
 								WEB_SERVER_SERVLET_CHECK_IMAGE_GALLERY &&
 							isLegacyImageGalleryImageId(request, response)) {
 
-							return;
+							return null;
 						}
 
 						Image image = getImage(request, true);
@@ -1501,6 +1501,8 @@ public class WebServerServlet extends HttpServlet {
 						}
 					}
 				}
+
+				return null;
 			}
 
 		};
