@@ -167,7 +167,8 @@
 				"folding_normalizer": {
 					"filter": [
 						"lowercase",
-						"asciifolding"
+						"asciifolding",
+						"trim"
 					],
 					"type": "custom"
 				}

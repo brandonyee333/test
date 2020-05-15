@@ -34,6 +34,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.CardinalityAggregationBuilder;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
@@ -62,6 +63,8 @@ public class SearchTermCompositionDog {
 						"searchTerms"
 					).field(
 						"searchTerm.search"
+					).includeExclude(
+						new IncludeExclude(null, new String[] {""})
 					).order(
 						BucketOrder.compound(
 							BucketOrder.count(false), BucketOrder.key(true))

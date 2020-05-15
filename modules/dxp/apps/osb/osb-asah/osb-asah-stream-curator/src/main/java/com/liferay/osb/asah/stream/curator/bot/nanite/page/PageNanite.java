@@ -354,13 +354,7 @@ public class PageNanite extends BaseStreamNanite<Page> {
 				String name = nameValuePair.getName();
 
 				if (name.equals("q")) {
-					String value = nameValuePair.getValue();
-
-					value = value.trim();
-
-					if (StringUtils.isNotBlank(value)) {
-						page.setSearchTerm(StringUtils.lowerCase(value));
-					}
+					page.setSearchTerm(nameValuePair.getValue());
 				}
 			}
 		}

@@ -50,7 +50,7 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 					put("liferay dxp", 1L);
 				}
 			},
-			3, 2, 4);
+			3, 3, 5);
 	}
 
 	@Autowired
