@@ -336,6 +336,42 @@ public class AccountEntryServiceHttp {
 		}
 	}
 
+	public static void syncToZendesk(
+			HttpPrincipal httpPrincipal, String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		try {
+			MethodKey methodKey = new MethodKey(
+				AccountEntryServiceUtil.class, "syncToZendesk",
+				_syncToZendeskParameterTypes7);
+
+			MethodHandler methodHandler = new MethodHandler(
+				methodKey, koroneikiAccountKey);
+
+			try {
+				TunnelUtil.invoke(httpPrincipal, methodHandler);
+			}
+			catch (Exception exception) {
+				if (exception instanceof
+						com.liferay.portal.kernel.exception.PortalException) {
+
+					throw (com.liferay.portal.kernel.exception.PortalException)
+						exception;
+				}
+
+				throw new com.liferay.portal.kernel.exception.SystemException(
+					exception);
+			}
+		}
+		catch (com.liferay.portal.kernel.exception.SystemException
+					systemException) {
+
+			_log.error(systemException, systemException);
+
+			throw systemException;
+		}
+	}
+
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			updateInstructions(
 				HttpPrincipal httpPrincipal, long accountEntryId,
@@ -345,7 +381,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "updateInstructions",
-				_updateInstructionsParameterTypes7);
+				_updateInstructionsParameterTypes8);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, accountEntryId, instructions);
@@ -387,7 +423,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "updateInstructions",
-				_updateInstructionsParameterTypes8);
+				_updateInstructionsParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, koroneikiAccountKey, instructions);
@@ -429,7 +465,7 @@ public class AccountEntryServiceHttp {
 		try {
 			MethodKey methodKey = new MethodKey(
 				AccountEntryServiceUtil.class, "updateLanguageId",
-				_updateLanguageIdParameterTypes9);
+				_updateLanguageIdParameterTypes10);
 
 			MethodHandler methodHandler = new MethodHandler(
 				methodKey, koroneikiAccountKey, languageId);
@@ -481,11 +517,13 @@ public class AccountEntryServiceHttp {
 		new Class[] {String.class};
 	private static final Class<?>[] _getCorpProjectAccountEntryParameterTypes6 =
 		new Class[] {String.class};
-	private static final Class<?>[] _updateInstructionsParameterTypes7 =
-		new Class[] {long.class, String.class};
+	private static final Class<?>[] _syncToZendeskParameterTypes7 =
+		new Class[] {String.class};
 	private static final Class<?>[] _updateInstructionsParameterTypes8 =
+		new Class[] {long.class, String.class};
+	private static final Class<?>[] _updateInstructionsParameterTypes9 =
 		new Class[] {String.class, String.class};
-	private static final Class<?>[] _updateLanguageIdParameterTypes9 =
+	private static final Class<?>[] _updateLanguageIdParameterTypes10 =
 		new Class[] {String.class, String.class};
 
 }

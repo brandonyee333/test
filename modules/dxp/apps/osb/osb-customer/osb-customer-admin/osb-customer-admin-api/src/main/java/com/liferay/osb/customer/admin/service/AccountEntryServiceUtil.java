@@ -96,6 +96,12 @@ public class AccountEntryServiceUtil {
 		return getService().getOSGiServiceIdentifier();
 	}
 
+	public static void syncToZendesk(String koroneikiAccountKey)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		getService().syncToZendesk(koroneikiAccountKey);
+	}
+
 	public static com.liferay.osb.customer.admin.model.AccountEntry
 			updateInstructions(long accountEntryId, String instructions)
 		throws com.liferay.portal.kernel.exception.PortalException {

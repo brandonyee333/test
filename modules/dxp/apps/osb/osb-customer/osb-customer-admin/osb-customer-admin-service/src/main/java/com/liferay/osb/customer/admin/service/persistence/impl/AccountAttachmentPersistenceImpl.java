@@ -2084,8 +2084,6 @@ public class AccountAttachmentPersistenceImpl
 		"accountAttachment.type = ?";
 
 	public AccountAttachmentPersistenceImpl() {
-		setModelClass(AccountAttachment.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -2103,6 +2101,8 @@ public class AccountAttachmentPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(AccountAttachment.class);
 	}
 
 	/**

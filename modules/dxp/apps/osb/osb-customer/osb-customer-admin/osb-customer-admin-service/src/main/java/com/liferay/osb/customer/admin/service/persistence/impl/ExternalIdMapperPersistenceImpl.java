@@ -1842,8 +1842,6 @@ public class ExternalIdMapperPersistenceImpl
 		"(externalIdMapper.externalId IS NULL OR externalIdMapper.externalId = '')";
 
 	public ExternalIdMapperPersistenceImpl() {
-		setModelClass(ExternalIdMapper.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -1861,6 +1859,8 @@ public class ExternalIdMapperPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(ExternalIdMapper.class);
 	}
 
 	/**

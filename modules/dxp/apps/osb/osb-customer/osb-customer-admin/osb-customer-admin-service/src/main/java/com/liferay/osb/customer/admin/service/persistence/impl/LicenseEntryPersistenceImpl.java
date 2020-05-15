@@ -1388,8 +1388,6 @@ public class LicenseEntryPersistenceImpl
 		"licenseEntry.portalVersionMin <= ?";
 
 	public LicenseEntryPersistenceImpl() {
-		setModelClass(LicenseEntry.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("type", "type_");
@@ -1407,6 +1405,8 @@ public class LicenseEntryPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(LicenseEntry.class);
 	}
 
 	/**

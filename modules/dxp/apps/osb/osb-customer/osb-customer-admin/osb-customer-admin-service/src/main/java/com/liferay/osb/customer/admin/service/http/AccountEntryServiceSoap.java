@@ -191,6 +191,19 @@ public class AccountEntryServiceSoap {
 		}
 	}
 
+	public static void syncToZendesk(String koroneikiAccountKey)
+		throws RemoteException {
+
+		try {
+			AccountEntryServiceUtil.syncToZendesk(koroneikiAccountKey);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static com.liferay.osb.customer.admin.model.AccountEntrySoap
 			updateInstructions(long accountEntryId, String instructions)
 		throws RemoteException {

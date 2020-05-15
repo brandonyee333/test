@@ -916,8 +916,6 @@ public class AccountEntryPersistenceImpl
 			"(accountEntry.dossieraAccountKey IS NULL OR accountEntry.dossieraAccountKey = '')";
 
 	public AccountEntryPersistenceImpl() {
-		setModelClass(AccountEntry.class);
-
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
 		dbColumnNames.put("code", "code_");
@@ -935,6 +933,8 @@ public class AccountEntryPersistenceImpl
 				_log.debug(exception, exception);
 			}
 		}
+
+		setModelClass(AccountEntry.class);
 	}
 
 	/**
