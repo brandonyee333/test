@@ -14,16 +14,6 @@
 
 package com.liferay.osb.asah.upgrade;
 
-import com.liferay.osb.asah.upgrade.v2_5_0.AccountsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.CreateChannelsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.DXPRawUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.DataSourcesUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.EmailAddressHashedMappingFieldUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.ExperimentMappingFieldUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.FieldMappingsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.IndividualActivityFieldsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAnalyticsEventsUpgradeStep;
-import com.liferay.osb.asah.upgrade.v2_5_0.UnprocessedAssetAnalyticsEventsUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +30,6 @@ public class UpgradeProcessConfiguration {
 	public UpgradeProcess upgradeProcess() {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
-		// Order matters
-
-		upgradeProcess.addUpgradeSteps(
-			"2.4.0", "2.5.0", _accountsUpgradeStep, _createChannelsUpgradeStep,
-			_dataSourcesUpgradeStep, _dxpRawUpgradeStep,
-			_emailAddressHashedMappingFieldUpgradeStep,
-			_experimentMappingFieldUpgradeStep, _fieldMappingsUpgradeStep,
-			_individualActivityFieldsUpgradeStep,
-			_unprocessedAnalyticsEventsUpgradeStep,
-			_unprocessedAssetAnalyticsEventsUpgradeStep);
-
 		upgradeProcess.addUpgradeSteps(
 			"2.5.0", "2.6.0", _osbAsahTasksIndexMappingUpgradeStep);
 
@@ -58,42 +37,7 @@ public class UpgradeProcessConfiguration {
 	}
 
 	@Autowired
-	private AccountsUpgradeStep _accountsUpgradeStep;
-
-	@Autowired
-	private CreateChannelsUpgradeStep _createChannelsUpgradeStep;
-
-	@Autowired
-	private DataSourcesUpgradeStep _dataSourcesUpgradeStep;
-
-	@Autowired
-	private DXPRawUpgradeStep _dxpRawUpgradeStep;
-
-	@Autowired
-	private EmailAddressHashedMappingFieldUpgradeStep
-		_emailAddressHashedMappingFieldUpgradeStep;
-
-	@Autowired
-	private ExperimentMappingFieldUpgradeStep
-		_experimentMappingFieldUpgradeStep;
-
-	@Autowired
-	private FieldMappingsUpgradeStep _fieldMappingsUpgradeStep;
-
-	@Autowired
-	private IndividualActivityFieldsUpgradeStep
-		_individualActivityFieldsUpgradeStep;
-
-	@Autowired
 	private OSBAsahTasksIndexMappingUpgradeStep
 		_osbAsahTasksIndexMappingUpgradeStep;
-
-	@Autowired
-	private UnprocessedAnalyticsEventsUpgradeStep
-		_unprocessedAnalyticsEventsUpgradeStep;
-
-	@Autowired
-	private UnprocessedAssetAnalyticsEventsUpgradeStep
-		_unprocessedAssetAnalyticsEventsUpgradeStep;
 
 }
