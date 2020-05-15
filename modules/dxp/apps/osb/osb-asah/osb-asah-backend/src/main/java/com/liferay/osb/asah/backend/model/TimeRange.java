@@ -64,6 +64,12 @@ public class TimeRange {
 	public static final TimeRange LAST_90_DAYS = new TimeRange(
 		false, "last-90-days", 90);
 
+	public static final TimeRange LAST_180_DAYS = new TimeRange(
+		false, "last-180-days", 180);
+
+	public static final TimeRange LAST_YEAR = new TimeRange(
+		false, "last-year", 365);
+
 	public static final TimeRange YESTERDAY = new TimeRange(
 		false, "yesterday", 1) {
 
@@ -247,6 +253,8 @@ public class TimeRange {
 				put(28, LAST_28_DAYS);
 				put(30, LAST_30_DAYS);
 				put(90, LAST_90_DAYS);
+				put(180, LAST_180_DAYS);
+				put(365, LAST_YEAR);
 			}
 		};
 
