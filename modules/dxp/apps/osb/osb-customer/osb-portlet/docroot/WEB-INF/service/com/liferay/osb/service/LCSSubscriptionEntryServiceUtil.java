@@ -47,6 +47,12 @@ public class LCSSubscriptionEntryServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	public static java.lang.String getLCSSubscriptionEntries(
+		java.lang.String corpProjectUuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return getService().getLCSSubscriptionEntries(corpProjectUuid);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -54,12 +60,6 @@ public class LCSSubscriptionEntryServiceUtil {
 	*/
 	public static java.lang.String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
-	}
-
-	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		java.lang.String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return getService().getLCSSubscriptionEntries(corpProjectUuid);
 	}
 
 	public static void clearService() {

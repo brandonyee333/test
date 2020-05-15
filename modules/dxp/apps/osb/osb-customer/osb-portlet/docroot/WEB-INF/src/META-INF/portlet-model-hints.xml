@@ -5,26 +5,6 @@
 		<hint name="editor">true</hint>
 		<hint name="max-length">2000000</hint>
 	</hint-collection>
-	<model name="com.liferay.osb.model.LCSSubscriptionEntry">
-		<field name="lcsSubscriptionEntryId" type="long" />
-		<field name="lcsProjectId" type="long" />
-		<field name="product" type="String" />
-		<field name="productVersion" type="int" />
-		<field name="type" type="String" />
-		<field name="platform" type="String" />
-		<field name="platformVersion" type="String" />
-		<field name="serversAllowed" type="int" />
-		<field name="serversUsed" type="int" />
-		<field name="quantity" type="int" />
-		<field name="instanceSize" type="int" />
-		<field name="startDate" type="Date" />
-		<field name="endDate" type="Date" />
-		<field name="supportStartDate" type="Date" />
-		<field name="supportEndDate" type="Date" />
-		<field name="actualPrice" type="double" />
-		<field name="currencyCode" type="String" />
-		<field name="active" type="boolean" />
-	</model>
 	<model name="com.liferay.osb.model.LicenseEntry">
 		<field name="licenseEntryId" type="long" />
 		<field name="userId" type="long" />

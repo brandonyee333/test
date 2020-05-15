@@ -28,13 +28,13 @@ public class LCSSubscriptionEntryServiceClp
 	public LCSSubscriptionEntryServiceClp(InvokableService invokableService) {
 		_invokableService = invokableService;
 
-		_methodName1 = "getOSGiServiceIdentifier";
+		_methodName1 = "getLCSSubscriptionEntries";
 
-		_methodParameterTypes1 = new String[] {  };
+		_methodParameterTypes1 = new String[] { "java.lang.String" };
 
-		_methodName2 = "getLCSSubscriptionEntries";
+		_methodName2 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes2 = new String[] { "java.lang.String" };
+		_methodParameterTypes2 = new String[] {  };
 	}
 
 	@Override
@@ -45,37 +45,14 @@ public class LCSSubscriptionEntryServiceClp
 	}
 
 	@Override
-	public java.lang.String getOSGiServiceIdentifier() {
-		Object returnObj = null;
-
-		try {
-			returnObj = _invokableService.invokeMethod(_methodName1,
-					_methodParameterTypes1, new Object[] {  });
-		}
-		catch (Throwable t) {
-			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof RuntimeException) {
-				throw (RuntimeException)t;
-			}
-			else {
-				throw new RuntimeException(t.getClass().getName() +
-					" is not a valid exception");
-			}
-		}
-
-		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
+	public java.lang.String getLCSSubscriptionEntries(
 		java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		Object returnObj = null;
 
 		try {
-			returnObj = _invokableService.invokeMethod(_methodName2,
-					_methodParameterTypes2,
+			returnObj = _invokableService.invokeMethod(_methodName1,
+					_methodParameterTypes1,
 					new Object[] { ClpSerializer.translateInput(corpProjectUuid) });
 		}
 		catch (Throwable t) {
@@ -94,7 +71,30 @@ public class LCSSubscriptionEntryServiceClp
 			}
 		}
 
-		return (java.util.List<com.liferay.osb.model.LCSSubscriptionEntry>)ClpSerializer.translateOutput(returnObj);
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
+	}
+
+	@Override
+	public java.lang.String getOSGiServiceIdentifier() {
+		Object returnObj = null;
+
+		try {
+			returnObj = _invokableService.invokeMethod(_methodName2,
+					_methodParameterTypes2, new Object[] {  });
+		}
+		catch (Throwable t) {
+			t = ClpSerializer.translateThrowable(t);
+
+			if (t instanceof RuntimeException) {
+				throw (RuntimeException)t;
+			}
+			else {
+				throw new RuntimeException(t.getClass().getName() +
+					" is not a valid exception");
+			}
+		}
+
+		return (java.lang.String)ClpSerializer.translateOutput(returnObj);
 	}
 
 	private InvokableService _invokableService;

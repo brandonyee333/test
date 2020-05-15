@@ -55,7 +55,7 @@ import com.liferay.portal.kernel.util.MethodKey;
  */
 @ProviderType
 public class LCSSubscriptionEntryServiceHttp {
-	public static java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
+	public static java.lang.String getLCSSubscriptionEntries(
 		HttpPrincipal httpPrincipal, java.lang.String corpProjectUuid)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -79,7 +79,7 @@ public class LCSSubscriptionEntryServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (java.util.List<com.liferay.osb.model.LCSSubscriptionEntry>)returnObj;
+			return (java.lang.String)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);

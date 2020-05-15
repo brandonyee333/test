@@ -42,6 +42,13 @@ public class LCSSubscriptionEntryServiceWrapper
 			arguments);
 	}
 
+	@Override
+	public java.lang.String getLCSSubscriptionEntries(
+		java.lang.String corpProjectUuid)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _lcsSubscriptionEntryService.getLCSSubscriptionEntries(corpProjectUuid);
+	}
+
 	/**
 	* Returns the OSGi service identifier.
 	*
@@ -50,13 +57,6 @@ public class LCSSubscriptionEntryServiceWrapper
 	@Override
 	public java.lang.String getOSGiServiceIdentifier() {
 		return _lcsSubscriptionEntryService.getOSGiServiceIdentifier();
-	}
-
-	@Override
-	public java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> getLCSSubscriptionEntries(
-		java.lang.String corpProjectUuid)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _lcsSubscriptionEntryService.getLCSSubscriptionEntries(corpProjectUuid);
 	}
 
 	@Override

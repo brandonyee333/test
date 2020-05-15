@@ -16,7 +16,6 @@ package com.liferay.osb.service;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.osb.model.LCSSubscriptionEntryClp;
 import com.liferay.osb.model.LicenseEntryClp;
 import com.liferay.osb.model.LicenseKeyClp;
 import com.liferay.osb.model.LicenseKeySetClp;
@@ -107,10 +106,6 @@ public class ClpSerializer {
 
 		String oldModelClassName = oldModelClass.getName();
 
-		if (oldModelClassName.equals(LCSSubscriptionEntryClp.class.getName())) {
-			return translateInputLCSSubscriptionEntry(oldModel);
-		}
-
 		if (oldModelClassName.equals(LicenseEntryClp.class.getName())) {
 			return translateInputLicenseEntry(oldModel);
 		}
@@ -136,17 +131,6 @@ public class ClpSerializer {
 		}
 
 		return newList;
-	}
-
-	public static Object translateInputLCSSubscriptionEntry(
-		BaseModel<?> oldModel) {
-		LCSSubscriptionEntryClp oldClpModel = (LCSSubscriptionEntryClp)oldModel;
-
-		BaseModel<?> newModel = oldClpModel.getLCSSubscriptionEntryRemoteModel();
-
-		newModel.setModelAttributes(oldClpModel.getModelAttributes());
-
-		return newModel;
 	}
 
 	public static Object translateInputLicenseEntry(BaseModel<?> oldModel) {
@@ -195,43 +179,6 @@ public class ClpSerializer {
 		Class<?> oldModelClass = oldModel.getClass();
 
 		String oldModelClassName = oldModelClass.getName();
-
-		if (oldModelClassName.equals(
-					"com.liferay.osb.model.impl.LCSSubscriptionEntryImpl")) {
-			return translateOutputLCSSubscriptionEntry(oldModel);
-		}
-		else if (oldModelClassName.endsWith("Clp")) {
-			try {
-				ClassLoader classLoader = ClpSerializer.class.getClassLoader();
-
-				Method getClpSerializerClassMethod = oldModelClass.getMethod(
-						"getClpSerializerClass");
-
-				Class<?> oldClpSerializerClass = (Class<?>)getClpSerializerClassMethod.invoke(oldModel);
-
-				Class<?> newClpSerializerClass = classLoader.loadClass(oldClpSerializerClass.getName());
-
-				Method translateOutputMethod = newClpSerializerClass.getMethod("translateOutput",
-						BaseModel.class);
-
-				Class<?> oldModelModelClass = oldModel.getModelClass();
-
-				Method getRemoteModelMethod = oldModelClass.getMethod("get" +
-						oldModelModelClass.getSimpleName() + "RemoteModel");
-
-				Object oldRemoteModel = getRemoteModelMethod.invoke(oldModel);
-
-				BaseModel<?> newModel = (BaseModel<?>)translateOutputMethod.invoke(null,
-						oldRemoteModel);
-
-				return newModel;
-			}
-			catch (Throwable t) {
-				if (_log.isInfoEnabled()) {
-					_log.info("Unable to translate " + oldModelClassName, t);
-				}
-			}
-		}
 
 		if (oldModelClassName.equals(
 					"com.liferay.osb.model.impl.LicenseEntryImpl")) {
@@ -602,12 +549,6 @@ public class ClpSerializer {
 		}
 
 		if (className.equals(
-					"com.liferay.osb.exception.NoSuchLCSSubscriptionEntryException")) {
-			return new com.liferay.osb.exception.NoSuchLCSSubscriptionEntryException(throwable.getMessage(),
-				throwable.getCause());
-		}
-
-		if (className.equals(
 					"com.liferay.osb.exception.NoSuchLicenseEntryException")) {
 			return new com.liferay.osb.exception.NoSuchLicenseEntryException(throwable.getMessage(),
 				throwable.getCause());
@@ -626,17 +567,6 @@ public class ClpSerializer {
 		}
 
 		return throwable;
-	}
-
-	public static Object translateOutputLCSSubscriptionEntry(
-		BaseModel<?> oldModel) {
-		LCSSubscriptionEntryClp newModel = new LCSSubscriptionEntryClp();
-
-		newModel.setModelAttributes(oldModel.getModelAttributes());
-
-		newModel.setLCSSubscriptionEntryRemoteModel(oldModel);
-
-		return newModel;
 	}
 
 	public static Object translateOutputLicenseEntry(BaseModel<?> oldModel) {

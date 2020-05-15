@@ -1,24 +1,3 @@
-create table OSB_LCSSubscriptionEntry (
-	lcsSubscriptionEntryId LONG not null primary key,
-	lcsProjectId LONG,
-	product VARCHAR(75) null,
-	productVersion INTEGER,
-	type_ VARCHAR(75) null,
-	platform VARCHAR(75) null,
-	platformVersion VARCHAR(75) null,
-	serversAllowed INTEGER,
-	serversUsed INTEGER,
-	quantity INTEGER,
-	instanceSize INTEGER,
-	startDate DATE null,
-	endDate DATE null,
-	supportStartDate DATE null,
-	supportEndDate DATE null,
-	actualPrice DOUBLE,
-	currencyCode VARCHAR(75) null,
-	active_ BOOLEAN
-);
-
 create table OSB_LicenseEntry (
 	licenseEntryId LONG not null primary key,
 	userId LONG,

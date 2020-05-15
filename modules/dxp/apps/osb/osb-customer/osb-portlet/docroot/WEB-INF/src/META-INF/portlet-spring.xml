@@ -2,9 +2,7 @@
 
 <!-- @generated -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
-	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryLocalServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.LCSSubscriptionEntryServiceImpl" id="com.liferay.osb.service.LCSSubscriptionEntryService" />
-	<bean class="com.liferay.osb.service.persistence.impl.LCSSubscriptionEntryPersistenceImpl" id="com.liferay.osb.service.persistence.LCSSubscriptionEntryPersistence" parent="basePersistence" />
 	<bean class="com.liferay.osb.service.impl.LicenseEntryLocalServiceImpl" id="com.liferay.osb.service.LicenseEntryLocalService" />
 	<bean class="com.liferay.osb.service.impl.LicenseEntryServiceImpl" id="com.liferay.osb.service.LicenseEntryService" />
 	<bean class="com.liferay.osb.service.persistence.impl.LicenseEntryPersistenceImpl" id="com.liferay.osb.service.persistence.LicenseEntryPersistence" parent="basePersistence" />

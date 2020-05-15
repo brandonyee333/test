@@ -16,7 +16,6 @@ package com.liferay.osb.service.base;
 
 import com.liferay.osb.model.LicenseKeySet;
 import com.liferay.osb.service.LicenseKeySetService;
-import com.liferay.osb.service.persistence.LCSSubscriptionEntryPersistence;
 import com.liferay.osb.service.persistence.LicenseEntryPersistence;
 import com.liferay.osb.service.persistence.LicenseKeyFinder;
 import com.liferay.osb.service.persistence.LicenseKeyPersistence;
@@ -58,25 +57,6 @@ public abstract class LicenseKeySetServiceBaseImpl extends BaseServiceImpl
 	 */
 
 	/**
-	 * Returns the lcs subscription entry local service.
-	 *
-	 * @return the lcs subscription entry local service
-	 */
-	public com.liferay.osb.service.LCSSubscriptionEntryLocalService getLCSSubscriptionEntryLocalService() {
-		return lcsSubscriptionEntryLocalService;
-	}
-
-	/**
-	 * Sets the lcs subscription entry local service.
-	 *
-	 * @param lcsSubscriptionEntryLocalService the lcs subscription entry local service
-	 */
-	public void setLCSSubscriptionEntryLocalService(
-		com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService) {
-		this.lcsSubscriptionEntryLocalService = lcsSubscriptionEntryLocalService;
-	}
-
-	/**
 	 * Returns the lcs subscription entry remote service.
 	 *
 	 * @return the lcs subscription entry remote service
@@ -93,25 +73,6 @@ public abstract class LicenseKeySetServiceBaseImpl extends BaseServiceImpl
 	public void setLCSSubscriptionEntryService(
 		com.liferay.osb.service.LCSSubscriptionEntryService lcsSubscriptionEntryService) {
 		this.lcsSubscriptionEntryService = lcsSubscriptionEntryService;
-	}
-
-	/**
-	 * Returns the lcs subscription entry persistence.
-	 *
-	 * @return the lcs subscription entry persistence
-	 */
-	public LCSSubscriptionEntryPersistence getLCSSubscriptionEntryPersistence() {
-		return lcsSubscriptionEntryPersistence;
-	}
-
-	/**
-	 * Sets the lcs subscription entry persistence.
-	 *
-	 * @param lcsSubscriptionEntryPersistence the lcs subscription entry persistence
-	 */
-	public void setLCSSubscriptionEntryPersistence(
-		LCSSubscriptionEntryPersistence lcsSubscriptionEntryPersistence) {
-		this.lcsSubscriptionEntryPersistence = lcsSubscriptionEntryPersistence;
 	}
 
 	/**
@@ -639,12 +600,8 @@ public abstract class LicenseKeySetServiceBaseImpl extends BaseServiceImpl
 		}
 	}
 
-	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryLocalService.class)
-	protected com.liferay.osb.service.LCSSubscriptionEntryLocalService lcsSubscriptionEntryLocalService;
 	@BeanReference(type = com.liferay.osb.service.LCSSubscriptionEntryService.class)
 	protected com.liferay.osb.service.LCSSubscriptionEntryService lcsSubscriptionEntryService;
-	@BeanReference(type = LCSSubscriptionEntryPersistence.class)
-	protected LCSSubscriptionEntryPersistence lcsSubscriptionEntryPersistence;
 	@BeanReference(type = com.liferay.osb.service.LicenseEntryLocalService.class)
 	protected com.liferay.osb.service.LicenseEntryLocalService licenseEntryLocalService;
 	@BeanReference(type = com.liferay.osb.service.LicenseEntryService.class)

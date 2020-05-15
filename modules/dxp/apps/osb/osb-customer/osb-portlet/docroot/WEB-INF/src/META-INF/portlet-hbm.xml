@@ -2,32 +2,9 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping auto-import="false" default-lazy="false">
-	<import class="com.liferay.osb.model.LCSSubscriptionEntry" />
 	<import class="com.liferay.osb.model.LicenseEntry" />
 	<import class="com.liferay.osb.model.LicenseKey" />
 	<import class="com.liferay.osb.model.LicenseKeySet" />
-	<class name="com.liferay.osb.model.impl.LCSSubscriptionEntryImpl" table="OSB_LCSSubscriptionEntry">
-		<id name="lcsSubscriptionEntryId" type="long">
-			<generator class="assigned" />
-		</id>
-		<property name="lcsProjectId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="product" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="productVersion" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property column="type_" name="type" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="platform" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="platformVersion" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="serversAllowed" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="serversUsed" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="quantity" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="instanceSize" type="com.liferay.portal.dao.orm.hibernate.IntegerType" />
-		<property name="startDate" type="org.hibernate.type.TimestampType" />
-		<property name="endDate" type="org.hibernate.type.TimestampType" />
-		<property name="supportStartDate" type="org.hibernate.type.TimestampType" />
-		<property name="supportEndDate" type="org.hibernate.type.TimestampType" />
-		<property name="actualPrice" type="com.liferay.portal.dao.orm.hibernate.DoubleType" />
-		<property name="currencyCode" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property column="active_" name="active" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
-	</class>
 	<class name="com.liferay.osb.model.impl.LicenseEntryImpl" table="OSB_LicenseEntry">
 		<id name="licenseEntryId" type="long">
 			<generator class="assigned" />

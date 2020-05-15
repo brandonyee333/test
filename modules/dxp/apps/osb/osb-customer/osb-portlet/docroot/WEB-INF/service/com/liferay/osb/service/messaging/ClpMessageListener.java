@@ -17,7 +17,6 @@ package com.liferay.osb.service.messaging;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.service.ClpSerializer;
-import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryServiceUtil;
@@ -49,8 +48,6 @@ public class ClpMessageListener extends BaseMessageListener {
 
 		if (command.equals("undeploy") &&
 				servletContextName.equals(getServletContextName())) {
-			LCSSubscriptionEntryLocalServiceUtil.clearService();
-
 			LCSSubscriptionEntryServiceUtil.clearService();
 			LicenseEntryLocalServiceUtil.clearService();
 

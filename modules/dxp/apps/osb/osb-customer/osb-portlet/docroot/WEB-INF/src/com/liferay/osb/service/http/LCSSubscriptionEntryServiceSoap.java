@@ -31,16 +31,6 @@ import java.rmi.RemoteException;
  * support certain types.
  *
  * <p>
- * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.osb.model.LCSSubscriptionEntrySoap}.
- * If the method in the service utility returns a
- * {@link com.liferay.osb.model.LCSSubscriptionEntry}, that is translated to a
- * {@link com.liferay.osb.model.LCSSubscriptionEntrySoap}. Methods that SOAP cannot
- * safely wire are skipped.
- * </p>
- *
- * <p>
  * The benefits of using the SOAP utility is that it is cross platform
  * compatible. SOAP allows different languages like Java, .NET, C++, PHP, and
  * even Perl, to call the generated services. One drawback of SOAP is that it is
@@ -59,19 +49,17 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see LCSSubscriptionEntryServiceHttp
- * @see com.liferay.osb.model.LCSSubscriptionEntrySoap
  * @see LCSSubscriptionEntryServiceUtil
  * @generated
  */
 @ProviderType
 public class LCSSubscriptionEntryServiceSoap {
-	public static com.liferay.osb.model.LCSSubscriptionEntrySoap[] getLCSSubscriptionEntries(
+	public static java.lang.String getLCSSubscriptionEntries(
 		java.lang.String corpProjectUuid) throws RemoteException {
 		try {
-			java.util.List<com.liferay.osb.model.LCSSubscriptionEntry> returnValue =
-				LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries(corpProjectUuid);
+			java.lang.String returnValue = LCSSubscriptionEntryServiceUtil.getLCSSubscriptionEntries(corpProjectUuid);
 
-			return com.liferay.osb.model.LCSSubscriptionEntrySoap.toSoapModels(returnValue);
+			return returnValue;
 		}
 		catch (Exception e) {
 			_log.error(e, e);
