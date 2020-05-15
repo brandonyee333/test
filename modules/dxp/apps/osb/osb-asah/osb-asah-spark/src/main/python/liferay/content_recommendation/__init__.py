@@ -29,6 +29,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		argument_parser = argparse.ArgumentParser(
 		    usage='{} liferay.hello_world.ContentRecommendationApplication '
 		    '--configuration <Configuration Path> '
+		    '--elasticsearch-hostname <Elasticsearch Hostname> '
 		    '--job-execution-id <Job Execution ID> '
 		    '--job-execution-step <Job Execution Step> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
@@ -36,6 +37,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('--configuration', required=True)
+		argument_parser.add_argument('--elasticsearch-hostname', required=True)
 		argument_parser.add_argument('--job-execution-id', required=True)
 		argument_parser.add_argument('--job-execution-step', required=True)
 		argument_parser.add_argument('--lcp-project-id', required=True)
@@ -46,6 +48,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		spark_conf = SparkConf()
 
 		spark_conf.setAppName('Content Recommendation')
+		spark_conf.set('es.nodes', self.args.elasticsearch_hostname)
 		spark_conf.set(
 		    'spark.jars.packages',
 		    self.configuration.get('spark.jars.packages')
