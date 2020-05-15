@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.upgrade;
 
+import com.liferay.osb.asah.upgrade.v2_5_1.PagesUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,9 @@ public class UpgradeProcessConfiguration {
 	public UpgradeProcess upgradeProcess() {
 		UpgradeProcess upgradeProcess = new UpgradeProcess();
 
+		upgradeProcess.addUpgradeSteps("2.5.0", "2.5.1", _pagesUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"2.5.0", "2.6.0", _osbAsahTasksIndexMappingUpgradeStep);
+			"2.5.1", "2.6.0", _osbAsahTasksIndexMappingUpgradeStep);
 
 		return upgradeProcess;
 	}
@@ -39,5 +41,8 @@ public class UpgradeProcessConfiguration {
 	@Autowired
 	private OSBAsahTasksIndexMappingUpgradeStep
 		_osbAsahTasksIndexMappingUpgradeStep;
+
+	@Autowired
+	private PagesUpgradeStep _pagesUpgradeStep;
 
 }
