@@ -27,19 +27,6 @@ public class PortletPropsValues {
 	public static final String DOSSIERA_ACCOUNT_LINK = PortletProps.get(
 		PortletPropsKeys.DOSSIERA_ACCOUNT_LINK);
 
-	public static final String LCS_SUPPORT_ADMIN_LINK = PortletProps.get(
-		PortletPropsKeys.LCS_SUPPORT_ADMIN_LINK);
-
-	public static final boolean REMOTE_JSON_SERVICE_API_LCS_ENABLED =
-		GetterUtil.getBoolean(
-			PortletProps.get(
-				PortletPropsKeys.REMOTE_JSON_SERVICE_API_LCS_ENABLED));
-
-	public static final String REMOTE_JSON_SERVICE_API_LCS_TOKEN =
-		GetterUtil.getString(
-			PortletProps.get(
-				PortletPropsKeys.REMOTE_JSON_SERVICE_API_LCS_TOKEN));
-
 	public static final boolean REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED =
 		GetterUtil.getBoolean(
 			PortletProps.get(

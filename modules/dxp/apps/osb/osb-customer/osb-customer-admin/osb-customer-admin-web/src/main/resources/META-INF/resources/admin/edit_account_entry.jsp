@@ -67,12 +67,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 	<liferay-ui:error exception="<%= AccountEntryLanguageIdException.class %>" message="please-select-valid-support-languages" />
 	<liferay-ui:error exception="<%= AccountEntrySupportRegionException.class %>" message="please-select-valid-support-regions" />
 
-	<c:if test='<%= SessionMessages.contains(renderRequest, "lcsSyncFailed") %>'>
-		<div class="portlet-msg-alert">
-			<liferay-ui:message key="there-was-an-error-syncing-with-lcs" />
-		</div>
-	</c:if>
-
 	<aui:model-context bean="<%= accountEntry %>" model="<%= AccountEntry.class %>" />
 
 	<table class="lfr-table">
@@ -94,18 +88,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		</tr>
 
 		<c:if test="<%= accountEntry != null %>">
-			<tr>
-				<td>
-					<strong><liferay-ui:message key="lcs-support-admin" /></strong>
-				</td>
-				<td>
-					<span id="<portlet:namespace />lcsSupportAdmin">
-						<c:if test="<%= accountEntry.getCorpProjectId() > 0 %>">
-							<aui:a href="<%= CustomerAdminWebConfigurationValues.LCS_SUPPORT_ADMIN_LINK + accountEntry.getCorpProjectId() %>" label="lcs-support-admin" target="_blank" />
-						</c:if>
-					</span>
-				</td>
-			</tr>
 			<tr>
 				<td>
 					<strong><liferay-ui:message key="project-name" /></strong>
@@ -310,15 +292,6 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 		<aui:button onClick='<%= "submitForm(document." + renderResponse.getNamespace() + "fm);" %>' value="save" />
 
 		<c:if test="<%= accountEntry != null %>">
-			<c:if test="<%= accountEntry.getCorpProjectId() > 0 %>">
-				<portlet:actionURL name="syncToLCS" var="syncToLCSURL">
-					<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
-					<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />
-				</portlet:actionURL>
-
-				<aui:a cssClass="btn btn-default" href="<%= syncToLCSURL %>" label="sync-to-lcs" />
-			</c:if>
-
 			<portlet:actionURL name="syncToZendesk" var="syncToZendeskURL">
 				<portlet:param name="redirect" value="<%= portletURL.toString() %>" />
 				<portlet:param name="accountEntryId" value="<%= String.valueOf(accountEntry.getAccountEntryId()) %>" />

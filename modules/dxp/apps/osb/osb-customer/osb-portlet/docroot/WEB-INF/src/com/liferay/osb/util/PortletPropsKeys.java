@@ -23,15 +23,6 @@ public interface PortletPropsKeys {
 
 	public static final String DOSSIERA_ACCOUNT_LINK = "dossiera.account.link";
 
-	public static final String LCS_SUPPORT_ADMIN_LINK =
-		"lcs.support.admin.link";
-
-	public static final String REMOTE_JSON_SERVICE_API_LCS_ENABLED =
-		"remote.json.service.api.lcs.enabled";
-
-	public static final String REMOTE_JSON_SERVICE_API_LCS_TOKEN =
-		"remote.json.service.api.lcs.token";
-
 	public static final String REMOTE_REST_SERVICE_API_DOSSIERA_ENABLED =
 		"remote.rest.service.api.dossiera.enabled";
 

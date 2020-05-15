@@ -14,14 +14,12 @@
 
 package com.liferay.osb.service.impl;
 
-import com.liferay.osb.model.LCSSubscriptionEntry;
 import com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-
-import java.util.List;
+import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Amos Fong
@@ -30,23 +28,12 @@ public class LCSSubscriptionEntryServiceImpl
 	extends LCSSubscriptionEntryServiceBaseImpl {
 
 	@JSONWebService
-	public List<LCSSubscriptionEntry> getLCSSubscriptionEntries(
-			String corpProjectUuid)
+	public String getLCSSubscriptionEntries(String corpProjectUuid)
 		throws PortalException {
 
 		validateJSONWebServicePermissions();
 
-		/*
-		TODO
-		AccountEntry accountEntry =
-			accountEntryLocalService.getCorpProjectAccountEntry(
-				corpProjectUuid);
-
-		return lcsSubscriptionEntryLocalService.getLCSSubscriptionEntries(
-			accountEntry.getAccountEntryId());
-		*/
-
-		return null;
+		return StringPool.BLANK;
 	}
 
 	protected void validateJSONWebServicePermissions() throws PortalException {

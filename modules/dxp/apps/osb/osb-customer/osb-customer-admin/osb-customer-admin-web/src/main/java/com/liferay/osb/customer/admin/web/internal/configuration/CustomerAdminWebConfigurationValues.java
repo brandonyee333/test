@@ -24,7 +24,4 @@ public class CustomerAdminWebConfigurationValues {
 	public static final String DOSSIERA_ACCOUNT_LINK = GetterUtil.getString(
 		CustomerAdminWebConfigurationUtil.get("dossiera.account.link"));
 
-	public static final String LCS_SUPPORT_ADMIN_LINK = GetterUtil.getString(
-		CustomerAdminWebConfigurationUtil.get("lcs.support.admin.link"));
-
 }

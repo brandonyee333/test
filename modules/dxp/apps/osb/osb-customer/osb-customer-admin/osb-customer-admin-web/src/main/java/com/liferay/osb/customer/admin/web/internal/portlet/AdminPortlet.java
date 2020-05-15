@@ -308,16 +308,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 	}
 
-	public void syncToLCS(
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
-
-		long accountEntryId = ParamUtil.getLong(
-			actionRequest, "accountEntryId");
-
-		syncToLCS(actionRequest, actionResponse, accountEntryId);
-	}
-
 	public void syncToZendesk(
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
@@ -663,27 +653,6 @@ public class AdminPortlet extends MVCPortlet {
 		}
 
 		writeJSON(resourceRequest, resourceResponse, accountEntriesArray);
-	}
-
-	protected void syncToLCS(
-			ActionRequest actionRequest, ActionResponse actionResponse,
-			long accountEntryId)
-		throws IOException {
-
-		try {
-			//LCSSubscriptionEntryLocalServiceUtil.syncToLCS(accountEntryId);
-		}
-		catch (Exception e) {
-			_log.error(
-				"Unable to sync account entry " + accountEntryId + " to LCS",
-				e);
-
-			SessionMessages.add(actionRequest, "lcsSyncFailed");
-
-			addSuccessMessage(actionRequest, actionResponse);
-
-			sendRedirect(actionRequest, actionResponse);
-		}
 	}
 
 	protected void updateAccountAttachment(ActionRequest actionRequest)

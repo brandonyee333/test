@@ -37,8 +37,6 @@ import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
-import com.liferay.osb.util.mvc.OSBPortlet;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -55,6 +53,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.util.bridges.mvc.MVCPortlet;
 
 import java.io.IOException;
 
@@ -80,7 +79,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author Brian Wing Shun Chan
  * @author Amos Fong
  */
-public class LicensePortlet extends OSBPortlet {
+public class LicensePortlet extends MVCPortlet {
 
 	public void buyLicenseKey(
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -167,15 +166,6 @@ public class LicensePortlet extends OSBPortlet {
 					curLicenseKey.getLicenseKeyId(), cal.getTime(), renewTime);
 			}
 		}
-
-		/*
-		TODO
-
-		if (SupportUtil.hasSyncToLCS(licenseKey.getAccountEntry())) {
-			syncToLCS(
-				actionRequest, actionResponse, licenseKey.getAccountEntryId());
-		}
-		*/
 	}
 
 	public void resendLicenseKey(
@@ -340,15 +330,6 @@ public class LicensePortlet extends OSBPortlet {
 				themeDisplay.getUserId(), licenseKeyId, licenseKeySetId,
 				offeringEntryId, name, active);
 		}
-
-		/*
-		TODO
-
-		if (SupportUtil.hasSyncToLCS(licenseKey.getAccountEntry())) {
-			syncToLCS(
-				actionRequest, actionResponse, licenseKey.getAccountEntryId());
-		}
-		*/
 	}
 
 	public void updateLicenseKeySet(

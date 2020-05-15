@@ -25,22 +25,6 @@ import java.util.TreeSet;
  */
 public class SupportUtil {
 
-	/*
-	TODO
-	public static boolean hasSyncToLCS(AccountEntry accountEntry)
-		throws Exception {
-
-		Date createDate = accountEntry.getCreateDate();
-
-		if (createDate.getTime() <= _SYNC_TO_LCS_TIME) {
-			return true;
-		}
-
-		return false;
-	}
-
-	*/
-
 	public static Set<String> getSelfProvisioningProducts(long accountEntryId)
 		throws PortalException {
 
