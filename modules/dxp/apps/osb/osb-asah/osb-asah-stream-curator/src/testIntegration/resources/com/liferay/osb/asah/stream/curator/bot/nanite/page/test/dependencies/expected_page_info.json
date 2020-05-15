@@ -294,5 +294,103 @@
 		"url": "http://liferay.com/our-story",
 		"userId": "4",
 		"views": 2
+	},
+	{
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": "Brazil",
+		"ctaClicks": 0,
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"engagementScore": 0.03333333333333333,
+		"entrances": 0,
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2018-01-04T11:43:00.000Z",
+		"formSubmissions": 0,
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+			"2018-01-04T11:43:00.000Z"
+		],
+		"knownIndividual": false,
+		"lastEventDate": "2018-01-04T11:43:00.000Z",
+		"pageScrolls": [
+			{
+				"depth": 25,
+				"eventDate": "2018-01-04T11:43:00.000Z"
+			}
+		],
+		"platformName": "Linux",
+		"region": "Pernambuco",
+		"searchTerm": "test",
+		"segmentNames": [
+		],
+		"sessionId": null,
+		"timeOnPage": 0,
+		"title": "About Us",
+		"url": "http://liferay.com?q=%20Test%20",
+		"userId": "4",
+		"variantId": "",
+		"views": 0
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Firefox",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": "Brazil",
+		"ctaClicks": 0,
+		"dataSourceId": "liferay.com",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"engagementScore": 0.03333333333333333,
+		"entrances": 0,
+		"eventDate": "2018-01-04T11:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2018-01-04T11:43:00.000Z",
+		"formSubmissions": 0,
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+			"2018-01-04T11:43:00.000Z"
+		],
+		"knownIndividual": false,
+		"lastEventDate": "2018-01-04T11:43:00.000Z",
+		"pageScrolls": [
+			{
+				"depth": 25,
+				"eventDate": "2018-01-04T11:43:00.000Z"
+			}
+		],
+		"platformName": "Linux",
+		"region": "Pernambuco",
+		"searchTerm": null,
+		"segmentNames": [
+		],
+		"sessionId": null,
+		"timeOnPage": 0,
+		"title": "About Us",
+		"url": "http://liferay.com?q=%20",
+		"userId": "4",
+		"variantId": "",
+		"views": 0
 	}
 ]
