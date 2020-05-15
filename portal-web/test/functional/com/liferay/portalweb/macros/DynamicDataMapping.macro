@@ -390,12 +390,14 @@ definition {
 
 		var j = "0";
 
-		for (var fieldOptionsValue : list "${fieldOptionsValues}") {
-			var j = ${j} + 1;
+		if (isSet(fieldOptionsValues)) {
+			for (var fieldOptionsValue : list "${fieldOptionsValues}") {
+				var j = ${j} + 1;
 
-			Type(
-				locator1 = "DDMEditStructure#SETTINGS_CELL_EDITOR_OPTIONS_VALUE_${j}",
-				value1 = "${fieldOptionsValue}");
+				Type(
+					locator1 = "DDMEditStructure#SETTINGS_CELL_EDITOR_OPTIONS_VALUE_${j}",
+					value1 = "${fieldOptionsValue}");
+			}
 		}
 
 		AssertClick(
@@ -759,12 +761,14 @@ definition {
 
 			var j = "0";
 
-			for (var fieldOptionsValue : list "${fieldOptionsValues}") {
-				var j = ${j} + 1;
+			if (isSet(fieldOptionsValues)) {
+				for (var fieldOptionsValue : list "${fieldOptionsValues}") {
+					var j = ${j} + 1;
 
-				AssertTextEquals(
-					locator1 = "DDMEditStructure#SETTINGS_CELL_EDITOR_OPTIONS_VALUE_${j}",
-					value1 = "${fieldOptionsValue}");
+					AssertTextEquals(
+						locator1 = "DDMEditStructure#SETTINGS_CELL_EDITOR_OPTIONS_VALUE_${j}",
+						value1 = "${fieldOptionsValue}");
+				}
 			}
 		}
 
