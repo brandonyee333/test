@@ -167,8 +167,8 @@
 			"analyzer": {
 				"folding_analyzer": {
 					"filter": [
-						"lowercase",
-						"asciifolding"
+						"asciifolding",
+						"lowercase"
 					],
 					"tokenizer": "standard",
 					"type": "custom"
@@ -177,8 +177,8 @@
 			"normalizer": {
 				"folding_normalizer": {
 					"filter": [
-						"lowercase",
-						"asciifolding"
+						"asciifolding",
+						"lowercase"
 					],
 					"type": "custom"
 				}
