@@ -1,0 +1,16 @@
+{
+	"cpu": 2,
+	"id": "osbasahredis",
+	"memory": 2048,
+	"ports": [
+		{
+			"external": false,
+			"port": 6379,
+			"protocol": "TCP",
+			"targetPort": 6379
+		}
+	],
+	"volumes": {
+		"osbasahredisdata": "/data"
+	}
+}

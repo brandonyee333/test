@@ -1,0 +1,22 @@
+[
+	{
+		"id": "1",
+		"name": "test1-datasource",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE",
+		"url": "example.com"
+	},
+	{
+		"id": "2",
+		"name": "test2-datasource",
+		"provider": {
+			"type": "LIFERAY"
+		},
+		"state": "READY",
+		"status": "ACTIVE",
+		"url": "example2.com"
+	}
+]

@@ -1,0 +1,80 @@
+{
+	"data": {
+		"document": {
+			"assetId": "1",
+			"assetTitle": null,
+			"commentsMetric": {
+				"previousValue": 0.0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 3.0
+			},
+			"downloadsMetric": {
+				"anonymousUsersCount": 0,
+				"browser": [
+					{
+						"metrics": [
+						],
+						"value": 2.0,
+						"valueKey": "Chrome"
+					}
+				],
+				"device": [
+					{
+						"metrics": [
+							{
+								"value": 2.0,
+								"valueKey": "Linux"
+							}
+						],
+						"value": 2.0,
+						"valueKey": "Desktop"
+					}
+				],
+				"geolocation": [
+					{
+						"metrics": [
+						],
+						"value": 2.0,
+						"valueKey": "Brazil"
+					}
+				],
+				"knownUsersCount": 0,
+				"nonsegmentedKnownUsersCount": 0,
+				"previousValue": 0.0,
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"segmentedKnownUsersCount": 0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 2.0
+			},
+			"previewsMetric": {
+				"previousValue": 0.0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 0.0
+			},
+			"ratingsMetric": {
+				"previousValue": 0.0,
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 1.0
+			},
+			"urls": [
+				"http://liferay.com"
+			]
+		}
+	}
+}

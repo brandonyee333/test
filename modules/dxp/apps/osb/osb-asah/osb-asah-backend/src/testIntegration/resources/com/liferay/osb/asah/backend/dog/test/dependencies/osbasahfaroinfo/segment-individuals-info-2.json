@@ -1,0 +1,22 @@
+[
+	{
+		"demographics": {
+			"email": [
+				{
+					"value": "john@acme.com"
+				}
+			],
+			"familyName": [
+				{
+					"value": "Doe"
+				}
+			],
+			"givenName": [
+				{
+					"value": "John"
+				}
+			]
+		},
+		"id": "1"
+	}
+]

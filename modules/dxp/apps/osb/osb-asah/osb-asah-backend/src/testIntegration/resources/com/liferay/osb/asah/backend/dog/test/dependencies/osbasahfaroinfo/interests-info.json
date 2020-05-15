@@ -1,0 +1,74 @@
+[
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "javascript",
+		"ownerId": "374790569167317525",
+		"ownerType": "individual",
+		"score": 2.614959778036198,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "clicks-and-mortar e-tailers",
+		"ownerId": "374790569167317525",
+		"ownerType": "individual",
+		"score": 1.7676619176489945,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "compelling metrics",
+		"ownerId": "374790569167317525",
+		"ownerType": "individual",
+		"score": 1.7676619176489945,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "clicks-and-mortar e-tailers",
+		"ownerId": "374790572309620075",
+		"ownerType": "individual",
+		"score": 1.7676619176489945,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "compelling metrics",
+		"ownerId": "374790572309620075",
+		"ownerType": "individual",
+		"score": 2.1041341542702074,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "compelling metrics",
+		"ownerId": "374790572703144534",
+		"ownerType": "individual",
+		"score": 2.1041341542702074,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "javascript",
+		"ownerId": "374790575409131096",
+		"ownerType": "individual",
+		"score": 0.7702225204735745,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "compelling metrics",
+		"ownerId": "374790575409131096",
+		"ownerType": "individual",
+		"score": 2.1041341542702074,
+		"views": 1
+	},
+	{
+		"dateRecorded": "2019-05-15T00:00:00.000Z",
+		"name": "sales",
+		"ownerId": "386190546467211094",
+		"ownerType": "individual",
+		"score": 1.4546849849874945,
+		"views": 1
+	}
+]

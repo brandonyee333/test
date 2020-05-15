@@ -1,0 +1,18 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+subprojects {
+	tasks.withType(Test) {
+		maxHeapSize = "4096m"
+	}
+}
+
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+	subprojects {
+		afterEvaluate {
+			project.tasks.withType(Test) {
+				environment "DOCKER_COMPOSE_LOCATION", "C:/Program Files/Docker/Docker/resources/bin/docker-compose.exe"
+				environment "DOCKER_LOCATION", "C:/Program Files/Docker/Docker/resources/bin/docker.exe"
+			}
+		}
+	}
+}

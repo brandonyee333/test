@@ -1,0 +1,11 @@
+{
+	"operationName": "DocumentLibraryMetric",
+	"variables": {
+		"assetId": "1",
+		"channelId": "1",
+		"country": "Any",
+		"deviceType": "Any",
+		"rangeKey": 30,
+		"url": "Any"
+	}
+}

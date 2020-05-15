@@ -1,0 +1,50 @@
+[
+	{
+		"bounced": true,
+		"completeReason": "expired",
+		"completed": true,
+		"dataSourceId": "1",
+		"date": "${now-1h}",
+		"duration": 0,
+		"entryPage": "http://192.168.108.90:8089/",
+		"exitPage": "http://192.168.108.90:8089/",
+		"firstEventDate": "${now-31m}",
+		"id": "366909399944215919",
+		"individualId": "200",
+		"interactions": [
+			{
+				"applicationId": "Page",
+				"clientIP": "0:0:0:0:0:0:0:1",
+				"context": {
+					"browserName": "Firefox",
+					"canonicalUrl": "http://192.168.108.90:8089",
+					"contentLanguageId": "en-US",
+					"crawler": "False",
+					"description": "",
+					"devicePixelRatio": 1,
+					"deviceType": "Desktop",
+					"keywords": "",
+					"languageId": "en-US",
+					"platformName": "Linux",
+					"referrer": "http://192.168.108.90/",
+					"screenHeight": 975,
+					"screenHeightSize": "975",
+					"screenWidth": 1920,
+					"screenWidthSize": "1920",
+					"title": "Welcome - Liferay",
+					"url": "http://192.168.108.90:8089/",
+					"userAgent": "Mozilla/5.0 (X11; Linux x86_64; rv:67.0) Gecko/20100101 Firefox/67.0"
+				},
+				"createDate": "${now-31m}",
+				"dataSourceId": "362055312804551713",
+				"eventDate": "${now-31m}",
+				"eventId": "pageViewed",
+				"id": "366909392570778426",
+				"normalizedEventDate": 1562965200000,
+				"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957"
+			}
+		],
+		"lastEventDate": "${now-31m}",
+		"userId": "2"
+	}
+]

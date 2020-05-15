@@ -1,0 +1,43 @@
+{
+	"data": {
+		"forms": {
+			"assetMetrics": [
+				{
+					"abandonmentsMetric": {
+						"value": 0.5
+					},
+					"assetId": "1",
+					"assetTitle": "Form 1",
+					"completionTimeMetric": {
+						"value": 1199000.0
+					},
+					"submissionsMetric": {
+						"value": 1.0
+					},
+					"urls": null,
+					"viewsMetric": {
+						"value": 2.0
+					}
+				},
+				{
+					"abandonmentsMetric": {
+						"value": 1.0
+					},
+					"assetId": "3",
+					"assetTitle": "Form 3",
+					"completionTimeMetric": {
+						"value": 0.0
+					},
+					"submissionsMetric": {
+						"value": 0.0
+					},
+					"urls": null,
+					"viewsMetric": {
+						"value": 1.0
+					}
+				}
+			],
+			"total": 2
+		}
+	}
+}

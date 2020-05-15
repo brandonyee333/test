@@ -1,0 +1,37 @@
+{
+	"mappings": {
+		"teams": {
+			"date_detection": false,
+			"properties": {
+				"groupId": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"teamId": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

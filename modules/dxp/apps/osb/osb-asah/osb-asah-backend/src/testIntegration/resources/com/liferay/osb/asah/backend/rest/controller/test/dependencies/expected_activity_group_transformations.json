@@ -1,0 +1,18 @@
+{
+	"_embedded": {
+		"activity-group-transformations": [
+			{
+				"terms": {
+					"activityType": "BROWSE"
+				},
+				"totalElements": 2
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 20,
+		"totalElements": 1,
+		"totalPages": 1
+	}
+}

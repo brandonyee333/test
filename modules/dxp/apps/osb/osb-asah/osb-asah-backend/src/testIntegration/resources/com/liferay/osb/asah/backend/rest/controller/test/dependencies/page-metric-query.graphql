@@ -1,0 +1,47 @@
+fragment browserFragment on Metric {
+	browser {
+		metrics {
+			value
+			valueKey
+		}
+		value
+		valueKey
+	}
+}
+
+fragment deviceFragment on Metric {
+	device {
+		metrics {
+			value
+			valueKey
+		}
+		value
+		valueKey
+	}
+}
+
+fragment metricFragment on Metric {
+	value
+}
+
+query PageMetric($channelId: String, $url: String!, $rangeKey: Int!, $location: String, $devices: String, $title: String) {
+	page(channelId: $channelId, url: $url, rangeKey: $rangeKey, country: $location, deviceType: $devices, title: $title) {
+		bounceRateMetric {
+			...metricFragment
+		}
+		directAccessMetric {
+			...metricFragment
+		}
+		engagementMetric {
+			...metricFragment
+		}
+		indirectAccessMetric {
+			...metricFragment
+		}
+		viewsMetric {
+			...browserFragment
+			...deviceFragment
+			...metricFragment
+		}
+	}
+}

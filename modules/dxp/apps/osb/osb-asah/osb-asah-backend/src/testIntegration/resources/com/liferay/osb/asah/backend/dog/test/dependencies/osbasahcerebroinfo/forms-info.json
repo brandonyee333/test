@@ -1,0 +1,34 @@
+[
+	{
+		"abandonments": 1,
+		"assetId": "2",
+		"browserName": "Chrome",
+		"city": null,
+		"country": null,
+		"dataSourceId": "local-recife-office",
+		"deviceType": "Desktop",
+		"eventDate": "${today-1dT13:00:00.000Z}",
+		"formPages": [
+		],
+		"id": "323450963527032730",
+		"modifiedDate": "${today-1dT17:37:17.413Z}",
+		"platformName": "macOS",
+		"primaryKey": "d23ba4ef87c0aa7d79d3161606d1f59ef51a8fca0ebc60fdff3584d642570592",
+		"region": null,
+		"segmentNames": [
+		],
+		"submissionDates": [
+			"${today-1dT13:52:17.558Z}"
+		],
+		"submissions": 1,
+		"submissionsTime": 525910,
+		"title": "Completion time testing",
+		"url": "http://192.168.109.41:8181/web/forms/shared/-/form/37615",
+		"userId": "3a7201e0-d791-11e8-84cc-9d9f0994eb72",
+		"viewDates": [
+			"${today-1dT13:43:12.906Z}",
+			"${today-1dT13:43:31.648Z}"
+		],
+		"views": 1
+	}
+]

@@ -1,0 +1,107 @@
+{
+	"mappings": {
+		"individuals": {
+			"properties": {
+				"accountPKs": {
+					"type": "keyword"
+				},
+				"annualRevenue": {
+					"type": "keyword"
+				},
+				"birthDate": {
+					"type": "date"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"company": {
+					"type": "keyword"
+				},
+				"contactId": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"currencyIsoCode": {
+					"type": "keyword"
+				},
+				"description": {
+					"type": "keyword"
+				},
+				"doNotCall": {
+					"type": "keyword"
+				},
+				"email": {
+					"type": "keyword"
+				},
+				"fax": {
+					"type": "keyword"
+				},
+				"firstName": {
+					"type": "keyword"
+				},
+				"fullName": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"industry": {
+					"type": "keyword"
+				},
+				"lastName": {
+					"type": "keyword"
+				},
+				"leadId": {
+					"type": "keyword"
+				},
+				"leadSource": {
+					"type": "keyword"
+				},
+				"leadStatus": {
+					"type": "keyword"
+				},
+				"middleName": {
+					"type": "keyword"
+				},
+				"mobilePhone": {
+					"type": "keyword"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"phone": {
+					"type": "keyword"
+				},
+				"photoURL": {
+					"type": "keyword"
+				},
+				"postalCode": {
+					"type": "keyword"
+				},
+				"salutation": {
+					"type": "keyword"
+				},
+				"state": {
+					"type": "keyword"
+				},
+				"street": {
+					"type": "keyword"
+				},
+				"suffix": {
+					"type": "keyword"
+				},
+				"title": {
+					"type": "keyword"
+				},
+				"website": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

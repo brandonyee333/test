@@ -1,0 +1,280 @@
+{
+	"mappings": {
+		"user-sessions": {
+			"properties": {
+				"acquisition": {
+					"properties": {
+						"campaign": {
+							"type": "keyword"
+						},
+						"channel": {
+							"type": "keyword"
+						},
+						"content": {
+							"type": "keyword"
+						},
+						"medium": {
+							"type": "keyword"
+						},
+						"source": {
+							"type": "keyword"
+						},
+						"term": {
+							"type": "keyword"
+						}
+					}
+				},
+				"bounced": {
+					"type": "boolean"
+				},
+				"browserName": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"completeDate": {
+					"type": "date"
+				},
+				"completeReason": {
+					"type": "keyword"
+				},
+				"completed": {
+					"type": "boolean"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"date": {
+					"type": "date"
+				},
+				"duration": {
+					"type": "long"
+				},
+				"entryPage": {
+					"type": "keyword"
+				},
+				"exitPage": {
+					"type": "keyword"
+				},
+				"firstEventDate": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"interactions": {
+					"properties": {
+						"applicationId": {
+							"type": "keyword"
+						},
+						"clientIP": {
+							"type": "keyword"
+						},
+						"context": {
+							"properties": {
+								"browserName": {
+									"type": "keyword"
+								},
+								"canonicalUrl": {
+									"type": "keyword"
+								},
+								"city": {
+									"type": "keyword"
+								},
+								"contentLanguageId": {
+									"type": "keyword"
+								},
+								"country": {
+									"type": "keyword"
+								},
+								"crawler": {
+									"type": "keyword"
+								},
+								"description": {
+									"type": "keyword"
+								},
+								"devicePixelRatio": {
+									"type": "keyword"
+								},
+								"deviceType": {
+									"type": "keyword"
+								},
+								"experienceId": {
+									"type": "keyword"
+								},
+								"experimentId": {
+									"type": "keyword"
+								},
+								"groupId": {
+									"type": "keyword"
+								},
+								"keywords": {
+									"type": "keyword"
+								},
+								"languageId": {
+									"type": "keyword"
+								},
+								"og:description": {
+									"type": "keyword"
+								},
+								"og:image": {
+									"type": "keyword"
+								},
+								"og:locale": {
+									"type": "keyword"
+								},
+								"og:site_name": {
+									"type": "keyword"
+								},
+								"og:title": {
+									"type": "keyword"
+								},
+								"og:type": {
+									"type": "keyword"
+								},
+								"og:url": {
+									"type": "keyword"
+								},
+								"platformName": {
+									"type": "keyword"
+								},
+								"referrer": {
+									"type": "keyword"
+								},
+								"region": {
+									"type": "keyword"
+								},
+								"screenHeight": {
+									"type": "keyword"
+								},
+								"screenHeightSize": {
+									"type": "long"
+								},
+								"screenWidth": {
+									"type": "keyword"
+								},
+								"screenWidthSize": {
+									"type": "long"
+								},
+								"title": {
+									"type": "keyword"
+								},
+								"url": {
+									"type": "keyword"
+								},
+								"userAgent": {
+									"type": "keyword"
+								},
+								"variantId": {
+									"type": "keyword"
+								}
+							}
+						},
+						"createDate": {
+							"type": "date"
+						},
+						"dataSourceId": {
+							"type": "keyword"
+						},
+						"eventDate": {
+							"type": "date"
+						},
+						"eventId": {
+							"type": "keyword"
+						},
+						"eventProperties": {
+							"properties": {
+								"articleId": {
+									"type": "keyword"
+								},
+								"className": {
+									"type": "keyword"
+								},
+								"classPK": {
+									"type": "keyword"
+								},
+								"commentId": {
+									"type": "keyword"
+								},
+								"depth": {
+									"type": "keyword"
+								},
+								"entryId": {
+									"type": "keyword"
+								},
+								"href": {
+									"type": "keyword"
+								},
+								"numberOfWords": {
+									"type": "keyword"
+								},
+								"page": {
+									"type": "keyword"
+								},
+								"pageLoadTime": {
+									"type": "keyword"
+								},
+								"sessionId": {
+									"type": "date"
+								},
+								"tagName": {
+									"type": "keyword"
+								},
+								"text": {
+									"type": "keyword"
+								},
+								"title": {
+									"type": "keyword"
+								},
+								"viewDuration": {
+									"type": "keyword"
+								}
+							}
+						},
+						"id": {
+							"type": "keyword"
+						},
+						"limit": {
+							"type": "long"
+						},
+						"normalizedEventDate": {
+							"type": "long"
+						},
+						"userId": {
+							"type": "keyword"
+						}
+					},
+					"type": "nested"
+				},
+				"interactionsCount": {
+					"type": "long"
+				},
+				"lastEventDate": {
+					"type": "date"
+				},
+				"pageViewsCount": {
+					"type": "long"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

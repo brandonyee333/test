@@ -1,0 +1,77 @@
+[
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.terrance-lueilwitz.biz",
+		"dataSourceAssetPK": "https://www.terrance-lueilwitz.biz",
+		"dataSourceId": "355524992631037473",
+		"id": "355525458918155906",
+		"keywords": [
+			{
+				"keyword": "holistic ROI",
+				"type": "title"
+			}
+		],
+		"name": "empower holistic ROI",
+		"url": "https://www.terrance-lueilwitz.biz/"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.iva-tillman.com",
+		"dataSourceAssetPK": "https://www.iva-tillman.com",
+		"dataSourceId": "355524992631037473",
+		"id": "355525462778184556",
+		"keywords": [
+			{
+				"keyword": "compelling action-items",
+				"type": "title"
+			}
+		],
+		"name": "seize compelling action-items",
+		"url": "https://www.iva-tillman.com/"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.ansel-farrell.io",
+		"dataSourceAssetPK": "https://www.ansel-farrell.io",
+		"dataSourceId": "355524992631037473",
+		"id": "355525457185371626",
+		"keywords": [
+			{
+				"keyword": "productize best-of-breed web services",
+				"type": "title"
+			}
+		],
+		"name": "productize best-of-breed web services",
+		"url": "https://www.ansel-farrell.io/"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.ansel-farrell.io",
+		"dataSourceAssetPK": "https://www.ansel-farrell.io",
+		"dataSourceId": "355524992631037473",
+		"id": "355525457185371627",
+		"keywords": [
+			{
+				"keyword": "productize best-of-breed web services",
+				"type": "title"
+			}
+		],
+		"name": "productize best-of-breed web services",
+		"url": "https://www.ansel-farrell.io/web/guest/home/"
+	},
+	{
+		"assetType": "Page",
+		"canonicalUrl": "https://www.joaquin-dibbert.biz",
+		"dataSourceAssetPK": "https://www.joaquin-dibbert.biz",
+		"dataSourceId": "355524992631037473",
+		"id": "355525465840533643",
+		"keywords": [
+			{
+				"keyword": "clicks-and-mortar e-tailers",
+				"type": "title"
+			}
+		],
+		"name": "extend clicks-and-mortar e-tailers",
+		"url": "https://www.joaquin-dibbert.biz/"
+	}
+]

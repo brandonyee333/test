@@ -1,0 +1,20 @@
+apply plugin: "com.liferay.dependency.local.copy"
+apply plugin: "com.liferay.spring.boot.defaults"
+
+dependencies {
+	compile group: "com.force.api", name: "force-wsc", version: "39.0.0"
+	compile group: "com.github.fge", name: "uri-template", version: "0.9"
+	compile group: "com.liferay", name: "com.liferay.petra.salesforce.client", version: "4.0.3"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
+	compile group: "xerces", name: "xercesImpl", version: "2.8.1"
+
+	testIntegrationCompile group: "junit", name: "junit", version: "4.12"
+	testIntegrationCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
+}
+
+testIntegration {
+	doFirst {
+		environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
+		environment "OSB_ASAH_SALESFORCE_EXTRACTOR_URL", "http://localhost:8080"
+	}
+}

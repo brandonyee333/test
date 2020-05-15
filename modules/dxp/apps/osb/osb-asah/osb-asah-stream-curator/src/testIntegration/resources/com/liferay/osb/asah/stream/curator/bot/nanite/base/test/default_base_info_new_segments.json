@@ -1,0 +1,43 @@
+[
+	{
+		"browserName": "Firefox",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "www.liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"id": "1",
+		"individualId": "100",
+		"platformName": "Linux",
+		"primaryKey": "1",
+		"region": "Pernambuco",
+		"segmentNames": [
+			"Support",
+			"Developer"
+		],
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	},
+	{
+		"browserName": "Chrome",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "www.liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"id": "2",
+		"individualId": "200",
+		"platformName": "Windows",
+		"primaryKey": "2",
+		"region": "Pernambuco",
+		"segmentNames": [
+			"CEO"
+		],
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "2"
+	}
+]

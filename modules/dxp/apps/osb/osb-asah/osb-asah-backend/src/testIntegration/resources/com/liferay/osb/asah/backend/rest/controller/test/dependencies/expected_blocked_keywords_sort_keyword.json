@@ -1,0 +1,166 @@
+{
+	"_embedded": {
+		"blocked-keywords": [
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						},
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:07.666Z",
+				"dataSourceIds": [
+					"351238757269547424",
+					"351238757269547425"
+				],
+				"id": "351238757269547437",
+				"keyword": "1500s"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						},
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:07.666Z",
+				"dataSourceIds": [
+					"351238757269547424",
+					"351238757269547425"
+				],
+				"id": "351238757269547433",
+				"keyword": "ajax"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						},
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:07.666Z",
+				"dataSourceIds": [
+					"351238757269547424",
+					"351238757269547425"
+				],
+				"id": "351238757269547435",
+				"keyword": "commerce"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-10T15:10:07.666Z",
+				"dataSourceIds": [
+					"351238757269547425"
+				],
+				"id": "351238757269547426",
+				"keyword": "community"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-02T17:09:10.666Z",
+				"dataSourceIds": [
+					"351238757269547424"
+				],
+				"id": "351238757269547425",
+				"keyword": "dxp"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-08T10:00:00.666Z",
+				"dataSourceIds": [
+					"351238757269547425"
+				],
+				"id": "351238757269547432",
+				"keyword": "enterprise"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-03-04T17:00:07.666Z",
+				"dataSourceIds": [
+					"351238757269547425"
+				],
+				"id": "351238757269547428",
+				"keyword": "gartner report"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547424",
+							"name": "Test Data Source 1",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-02-02T08:09:07.666Z",
+				"dataSourceIds": [
+					"351238757269547424"
+				],
+				"id": "351238757269547429",
+				"keyword": "intranet"
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 8,
+		"totalElements": 12,
+		"totalPages": 2
+	}
+}

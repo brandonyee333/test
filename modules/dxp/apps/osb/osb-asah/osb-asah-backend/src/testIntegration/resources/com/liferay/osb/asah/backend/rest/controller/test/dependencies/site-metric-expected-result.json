@@ -1,0 +1,30 @@
+{
+	"data": {
+		"site": {
+			"anonymousVisitorsMetric": {
+				"value": 0.0
+			},
+			"bounceRateMetric": {
+				"value": 0.0
+			},
+			"engagementMetric": {
+				"value": 0.0
+			},
+			"knownVisitorsMetric": {
+				"value": 1.0
+			},
+			"sessionDurationMetric": {
+				"value": 5.94E7
+			},
+			"sessionsMetric": {
+				"value": 1.0
+			},
+			"sessionsPerVisitorMetric": {
+				"value": 1.0
+			},
+			"visitorsMetric": {
+				"value": 1.0
+			}
+		}
+	}
+}

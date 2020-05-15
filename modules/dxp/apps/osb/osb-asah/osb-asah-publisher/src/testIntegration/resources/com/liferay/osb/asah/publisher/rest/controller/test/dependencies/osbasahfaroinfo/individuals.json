@@ -1,0 +1,37 @@
+[
+	{
+		"activitiesCount": 0,
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "345085929068798696",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"267351d1-6689-4204-9d7f-228bfdaf7a7f"
+				]
+			}
+		],
+		"dateCreated": "2019-03-20T03:16:47.713Z",
+		"dateModified": "2019-03-20T03:16:47.713Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "345085929068798696",
+					"dataSourceName": "LIFERAY-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "2019-03-20T03:16:41.495Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "345085958344987904",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "nina.simone@liferay.com"
+				}
+			]
+		},
+		"id": "345085958344987904",
+		"individualSegmentIds": [
+		]
+	}
+]

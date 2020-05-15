@@ -1,0 +1,55 @@
+[
+	{
+		"createDate": "2020-01-29T08:30:00.000Z",
+		"dataSources": [
+			{
+				"groupIds": [
+					"123456"
+				],
+				"id": "123456789"
+			}
+		],
+		"id": "123456789",
+		"name": "Site 1"
+	},
+	{
+		"createDate": "2020-01-29T08:30:00.000Z",
+		"dataSources": [
+			{
+				"groupIds": [
+					"123456",
+					"654321"
+				],
+				"id": "123456789"
+			},
+			{
+				"groupIds": [
+					"123456"
+				],
+				"id": "987654321"
+			}
+		],
+		"id": "4324324324",
+		"name": "DXP Combinated Property"
+	},
+	{
+		"createDate": "2020-01-29T08:30:00.000Z",
+		"dataSources": [
+			{
+				"groupIds": [
+					"432423",
+					"543645"
+				],
+				"id": "123456789"
+			},
+			{
+				"groupIds": [
+					"767566"
+				],
+				"id": "987654321"
+			}
+		],
+		"id": "321321321",
+		"name": "Portal Combinated Property"
+	}
+]

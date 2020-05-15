@@ -1,0 +1,57 @@
+[
+	{
+		"batchId": "100",
+		"completeDate": null,
+		"createDate": "${now}",
+		"emailAddress": "john.doe@liferay.com",
+		"id": "1",
+		"ownerId": "1000",
+		"startDate": null,
+		"status": "PENDING",
+		"type": "ACCESS"
+	},
+	{
+		"batchId": "100",
+		"completeDate": null,
+		"createDate": "${now}",
+		"emailAddress": "test@liferay.com",
+		"id": "2",
+		"ownerId": "1000",
+		"startDate": null,
+		"status": "PENDING",
+		"type": "SUPPRESS"
+	},
+	{
+		"batchId": "100",
+		"completeDate": null,
+		"createDate": "${now}",
+		"emailAddress": "john.doe@liferay.com",
+		"id": "3",
+		"ownerId": "1000",
+		"startDate": null,
+		"status": "PENDING",
+		"type": "DELETE"
+	},
+	{
+		"batchId": "100",
+		"completeDate": null,
+		"createDate": "${now}",
+		"emailAddress": "test@liferay.com",
+		"id": "4",
+		"ownerId": "1000",
+		"startDate": null,
+		"status": "PENDING",
+		"type": "UNSUPPRESS"
+	},
+	{
+		"batchId": "100",
+		"completeDate": null,
+		"createDate": "${now}",
+		"emailAddress": "jane.doe@liferay.com",
+		"id": "5",
+		"ownerId": "1000",
+		"startDate": null,
+		"status": "PENDING",
+		"type": "SUPPRESS"
+	}
+]

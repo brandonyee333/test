@@ -1,0 +1,55 @@
+[
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"score": "0.8"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.6"
+		},
+		"id": "2",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"crawler": "False"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2019-04-23T16:00:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.2"
+		},
+		"id": "5",
+		"userId": "1"
+	}
+]

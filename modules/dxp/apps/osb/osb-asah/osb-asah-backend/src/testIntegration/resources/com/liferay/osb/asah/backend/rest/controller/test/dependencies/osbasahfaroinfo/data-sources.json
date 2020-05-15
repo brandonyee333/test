@@ -1,0 +1,72 @@
+[
+	{
+		"about": "TRGD2voH!Q-+%mOAwe7[aj#Y",
+		"author": {
+			"id": "017113",
+			"name": "giXFdJP xMXmEu"
+		},
+		"credentials": {
+			"login": "132g57@zsN.com",
+			"password": "0CvLY8",
+			"type": "Basic Authentication"
+		},
+		"dateCreated": "2019-01-02T17:09:07.666Z",
+		"dateModified": "2019-01-02T17:09:07.666Z",
+		"description": ":?vs\"|%\\,%iRTR[#8kt4N)0J FKQHD)^xw n39Zx/+dx*nQ=P",
+		"id": "351238757269547424",
+		"name": "Test Data Source 1",
+		"provider": {
+			"analyticsConfiguration": {
+				"enableAllSites": true,
+				"sites": [
+				]
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"organizations": [
+				],
+				"userGroups": [
+				]
+			},
+			"type": "LIFERAY"
+		},
+		"status": "ACTIVE",
+		"subjectOf": "j-;qI[}GMU_M\\=X*{c|x1]X-}b%e(nY#wnC",
+		"url": "http://2hEmZlYAWcnJ26tg.com"
+	},
+	{
+		"about": "TRGD2voH!Q-+%mOAwe7[aj#Y",
+		"author": {
+			"id": "017113",
+			"name": "giXFdJP xMXmEu"
+		},
+		"credentials": {
+			"login": "132g57@zsN.com",
+			"password": "0CvLY8",
+			"type": "Basic Authentication"
+		},
+		"dateCreated": "2019-01-02T17:09:07.666Z",
+		"dateModified": "2019-01-02T17:09:07.666Z",
+		"description": ":?vs\"|%\\,%iRTR[#8kt4N)0J FKQHD)^xw n39Zx/+dx*nQ=P",
+		"id": "351238757269547425",
+		"name": "Test Data Source 2",
+		"provider": {
+			"analyticsConfiguration": {
+				"enableAllSites": true,
+				"sites": [
+				]
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"organizations": [
+				],
+				"userGroups": [
+				]
+			},
+			"type": "LIFERAY"
+		},
+		"status": "ACTIVE",
+		"subjectOf": "j-;qI[}GMU_M\\=X*{c|x1]X-}b%e(nY#wnC",
+		"url": "http://2hEmZlYAWcnJ26tg.com"
+	}
+]

@@ -1,0 +1,7 @@
+Map channelIds = params.channelIds;
+
+String channelId = channelIds.get(ctx._source.dataSourceId);
+
+if (channelId != null) {
+	ctx._source.channelId = channelId;
+}

@@ -1,0 +1,42 @@
+[
+	{
+		"assetPrimaryKey": "1",
+		"dataSourceId": "1",
+		"id": "1",
+		"individualId": null,
+		"primaryKey": "1",
+		"segmentNames": [
+		],
+		"userId": "1"
+	},
+	{
+		"assetPrimaryKey": "2",
+		"dataSourceId": "1",
+		"id": "2",
+		"individualId": null,
+		"primaryKey": "2",
+		"segmentNames": [
+		],
+		"userId": "1"
+	},
+	{
+		"assetPrimaryKey": "3",
+		"dataSourceId": "1",
+		"id": "3",
+		"individualId": null,
+		"primaryKey": "3",
+		"segmentNames": [
+		],
+		"userId": "2"
+	},
+	{
+		"assetPrimaryKey": "4",
+		"dataSourceId": "2",
+		"id": "4",
+		"individualId": null,
+		"primaryKey": "4",
+		"segmentNames": [
+		],
+		"userId": "1"
+	}
+]

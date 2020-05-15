@@ -1,0 +1,20 @@
+[
+	{
+		"activitiesCount": 100,
+		"channelIds": [
+			"1",
+			"2"
+		],
+		"id": "1",
+		"lastActivityDate": "2020-04-06T14:00:00Z"
+	},
+	{
+		"activitiesCount": 100,
+		"channelIds": [
+			"1",
+			"2"
+		],
+		"id": "2",
+		"lastActivityDate": "2020-04-07T16:00:00Z"
+	}
+]

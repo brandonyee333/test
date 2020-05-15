@@ -1,0 +1,77 @@
+[
+	{
+		"demographics": {
+			"email": [
+				{
+					"value": "john@acme.com"
+				}
+			],
+			"familyName": [
+				{
+					"value": "Doe"
+				}
+			],
+			"givenName": [
+				{
+					"value": "John"
+				}
+			]
+		},
+		"id": "1"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"value": "test1@liferay.com"
+				}
+			],
+			"familyName": [
+				{
+					"value": "Test1"
+				}
+			],
+			"givenName": [
+				{
+					"value": "Test1"
+				}
+			]
+		},
+		"id": "2"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"value": "jane@acme.com"
+				}
+			],
+			"name": [
+				{
+					"value": "Jane Doe"
+				}
+			]
+		},
+		"id": "3"
+	},
+	{
+		"demographics": {
+			"email": [
+				{
+					"value": "test2@liferay.com"
+				}
+			],
+			"familyName": [
+				{
+					"value": "Test2"
+				}
+			],
+			"givenName": [
+				{
+					"value": "Test2"
+				}
+			]
+		},
+		"id": "4"
+	}
+]

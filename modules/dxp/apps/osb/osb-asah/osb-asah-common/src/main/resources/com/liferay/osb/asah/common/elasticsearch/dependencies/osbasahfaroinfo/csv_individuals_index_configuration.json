@@ -1,0 +1,32 @@
+{
+	"mappings": {
+		"csv-individuals": {
+			"date_detection": false,
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"dataSourceIndividualPK": {
+					"type": "keyword"
+				},
+				"fields": {
+					"type": "object"
+				},
+				"id": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

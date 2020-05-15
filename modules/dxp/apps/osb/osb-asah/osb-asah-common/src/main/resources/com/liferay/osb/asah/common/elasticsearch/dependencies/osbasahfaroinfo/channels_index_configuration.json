@@ -1,0 +1,59 @@
+{
+	"mappings": {
+		"channels": {
+			"properties": {
+				"createDate": {
+					"type": "date"
+				},
+				"dataSources": {
+					"properties": {
+						"groupIds": {
+							"type": "keyword"
+						},
+						"id": {
+							"type": "keyword"
+						}
+					}
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"name": {
+					"fields": {
+						"search": {
+							"analyzer": "folding_analyzer",
+							"type": "text"
+						},
+						"sort": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			},
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

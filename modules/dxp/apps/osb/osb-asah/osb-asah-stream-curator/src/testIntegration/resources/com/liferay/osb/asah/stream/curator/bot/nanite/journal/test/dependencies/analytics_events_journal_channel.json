@@ -1,0 +1,103 @@
+[
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://facebook.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:10:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.journal.model.JournalArticle",
+			"classPK": "1",
+			"score": "0.8"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://facebook.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.journal.model.JournalArticle",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.6"
+		},
+		"id": "2",
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://facebook.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:12:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.journal.model.JournalArticle",
+			"classPK": "1",
+			"ratingType": "stars",
+			"score": "0.2"
+		},
+		"id": "5",
+		"userId": "1"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://facebook.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:10:00.000Z",
+		"eventId": "webContentViewed",
+		"eventProperties": {
+			"articleId": "1",
+			"title": "Title 1"
+		},
+		"id": "1",
+		"userId": "1"
+	}
+]

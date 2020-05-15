@@ -1,0 +1,69 @@
+import groovy.xml.StreamingMarkupBuilder
+import groovy.xml.XmlUtil
+
+import org.yaml.snakeyaml.Yaml
+
+buildscript {
+	dependencies {
+		classpath group: "org.yaml", name: "snakeyaml", version: "1.8"
+	}
+
+	repositories {
+		maven {
+			url "https://repository-cdn.liferay.com/nexus/content/groups/public"
+		}
+	}
+}
+
+task ideaRunConfigurations
+
+ideaRunConfigurations {
+	File runConfigurationsDir = file('.idea/runConfigurations')
+
+	doFirst {
+		runConfigurationsDir.mkdirs()
+	}
+
+	doLast {
+		Yaml yaml = new Yaml()
+
+		Object dockerCompose = yaml.load(file("docker-compose.yml").text)
+
+		for (Object service in dockerCompose.services) {
+			for (Object port in dockerCompose.services."${service.key}".ports) {
+				String[] portArray = port.split(":")
+
+				if ((portArray[1] == "5005") || (portArray[1] == "8000")) {
+					File file = new File(runConfigurationsDir, "${service.key}.xml")
+
+					file.text = _getIdeaRunConfiguration(service.key, portArray[0])
+				}
+			}
+		}
+	}
+}
+
+private String _getIdeaRunConfiguration(String name, String port) {
+	StreamingMarkupBuilder streamingMarkupBuilder = new StreamingMarkupBuilder()
+
+	Writable writable = streamingMarkupBuilder.bind {
+		component(name: "ProjectRunConfigurationManager") {
+			configuration(default: "false", factoryName: "Remote", name: name, type: "Remote") {
+				method(v: "2")
+				option(name: "HOST", value: "localhost")
+				option(name: "PORT", value: port)
+				option(name: "SERVER_MODE", value: "false")
+				option(name: "SHMEM_ADDRESS")
+				option(name: "USE_SOCKET_TRANSPORT", value: "true")
+				RunnerSettings(RunnerId: "Debug") {
+					option(name: "DEBUG_PORT", value: port)
+					option(name: "LOCAL", value:"false")
+				}
+			}
+		}
+	}
+
+	String xml = XmlUtil.serialize(writable)
+
+	return xml.substring(38)
+}

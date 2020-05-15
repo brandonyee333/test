@@ -1,0 +1,19 @@
+{
+	"data": {
+		"searchTerms": {
+			"compositions": [
+				{
+					"count": 1,
+					"name": "automotive"
+				},
+				{
+					"count": 1,
+					"name": "international trade and development"
+				}
+			],
+			"maxCount": 1,
+			"total": 2,
+			"totalCount": 2
+		}
+	}
+}

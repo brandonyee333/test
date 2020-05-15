@@ -1,0 +1,14 @@
+[
+	{
+		"terms": {
+			"demographics/worksFor/value": "bernhard-bernhard"
+		},
+		"totalElements": 2
+	},
+	{
+		"terms": {
+			"demographics/worksFor/value": "zulauf-zulauf"
+		},
+		"totalElements": 1
+	}
+]

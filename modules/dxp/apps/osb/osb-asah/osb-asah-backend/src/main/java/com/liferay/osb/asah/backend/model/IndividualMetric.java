@@ -1,0 +1,157 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.model;
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * @author Matthew Kong
+ */
+public class IndividualMetric implements AssetMetric {
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof IndividualMetric)) {
+			return false;
+		}
+
+		IndividualMetric individualMetric = (IndividualMetric)obj;
+
+		if (Objects.equals(
+				_anonymousIndividualsMetric,
+				individualMetric._anonymousIndividualsMetric) &&
+			Objects.equals(
+				_knownIndividualsMetric,
+				individualMetric._knownIndividualsMetric) &&
+			Objects.equals(
+				_totalIndividualsMetric,
+				individualMetric._totalIndividualsMetric)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public Metric getAnonymousIndividualsMetric() {
+		return _anonymousIndividualsMetric;
+	}
+
+	@Override
+	public String getAssetId() {
+		return _assetId;
+	}
+
+	@Override
+	public List<AssetMetric> getAssetMetrics() {
+		return _assetMetrics;
+	}
+
+	@Override
+	public String getAssetTitle() {
+		return _assetTitle;
+	}
+
+	@Override
+	public String getAssetType() {
+		return AssetType.INDIVIDUAL_METRIC.getValue();
+	}
+
+	@Override
+	public String getDataSourceId() {
+		return _dataSourceId;
+	}
+
+	@Override
+	public Metric getDefaultMetric() {
+		return _knownIndividualsMetric;
+	}
+
+	public Metric getKnownIndividualsMetric() {
+		return _knownIndividualsMetric;
+	}
+
+	public Metric getTotalIndividualsMetric() {
+		return _totalIndividualsMetric;
+	}
+
+	@Override
+	public List<String> getURLs() {
+		return _urls;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(
+			_anonymousIndividualsMetric, _knownIndividualsMetric);
+	}
+
+	public void setAnonymousIndividualsMetric(
+		Metric anonymousIndividualsMetric) {
+
+		_anonymousIndividualsMetric = anonymousIndividualsMetric;
+	}
+
+	@Override
+	public void setAssetId(String assetId) {
+		_assetId = assetId;
+	}
+
+	@Override
+	public void setAssetMetrics(List<AssetMetric> assetMetrics) {
+		_assetMetrics = assetMetrics;
+	}
+
+	@Override
+	public void setAssetTitle(String assetTitle) {
+		_assetTitle = assetTitle;
+	}
+
+	@Override
+	public void setDataSourceId(String dataSourceId) {
+		_dataSourceId = dataSourceId;
+	}
+
+	public void setKnownIndividualsMetric(Metric knownIndividualsMetric) {
+		_knownIndividualsMetric = knownIndividualsMetric;
+	}
+
+	public void setTotalIndividualsMetric(Metric totalIndividualsMetric) {
+		_totalIndividualsMetric = totalIndividualsMetric;
+	}
+
+	@Override
+	public void setURLs(List<String> urls) {
+		_urls = urls;
+	}
+
+	private Metric _anonymousIndividualsMetric = new Metric(
+		IndividualMetricType.ANONYMOUS_INDIVIDUALS);
+	private String _assetId;
+	private List<AssetMetric> _assetMetrics;
+	private String _assetTitle;
+	private String _dataSourceId;
+	private Metric _knownIndividualsMetric = new Metric(
+		IndividualMetricType.KNOWN_INDIVIDUALS);
+	private Metric _totalIndividualsMetric = new Metric(
+		IndividualMetricType.TOTAL_INDIVIDUALS);
+	private List<String> _urls;
+
+}

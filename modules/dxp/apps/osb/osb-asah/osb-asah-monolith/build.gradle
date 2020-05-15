@@ -1,0 +1,22 @@
+apply plugin: "com.liferay.dependency.local.copy"
+apply plugin: "com.liferay.spring.boot.defaults"
+
+configurations.all {
+	exclude group: "com.google.cloud", module: "google-cloud-pubsub"
+	exclude group: "org.springframework.data", module: "spring-data-redis"
+	exclude group: "redis.clients", module: "jedis"
+}
+
+dependencies {
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-backend"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-batch-curator"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-dxp-extractor"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-extractor"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-publisher"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-salesforce-extractor"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-stream-curator"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-upgrade"
+
+	testCompile group: "junit", name: "junit", version: "4.12"
+	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
+}

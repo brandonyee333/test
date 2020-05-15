@@ -1,0 +1,48 @@
+{
+	"mappings": {
+		"engagements": {
+			"properties": {
+				"dateRecorded": {
+					"type": "date"
+				},
+				"emailAddress": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualSegmentIds": {
+					"type": "keyword"
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"ownerId": {
+					"type": "keyword"
+				},
+				"ownerType": {
+					"type": "keyword"
+				},
+				"score": {
+					"type": "double"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

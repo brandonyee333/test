@@ -1,0 +1,19 @@
+{
+	"data": {
+		"acquisitions": {
+			"compositions": [
+				{
+					"count": 1,
+					"name": "direct"
+				},
+				{
+					"count": 1,
+					"name": "referral"
+				}
+			],
+			"maxCount": 1,
+			"total": 2,
+			"totalCount": 2
+		}
+	}
+}

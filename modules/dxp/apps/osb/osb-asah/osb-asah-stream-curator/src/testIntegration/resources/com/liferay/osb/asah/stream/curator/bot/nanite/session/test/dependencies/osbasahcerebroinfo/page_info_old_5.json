@@ -1,0 +1,102 @@
+[
+	{
+		"asset": false,
+		"bounce": 1,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": null,
+		"ctaclicks": 0,
+		"dataSourceId": "362055312804551713",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"2019-09-09T07:55:21.364Z"
+		],
+		"engagementScore": 0,
+		"entrances": 1,
+		"eventDate": "2019-09-09T07:00:00.000Z",
+		"exits": 1,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-09T07:55:21.364Z",
+		"formSubmissions": 0,
+		"id": "372250348521977621",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": "372248816488851698",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-09T07:55:21.364Z",
+		"modifiedDate": "2019-09-09T07:55:21.364Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "55c666134c628619981d555166258a7f93bdc2b0fd25dbd91ae38c145c81eae1",
+		"region": null,
+		"searchTerm": null,
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": "366909399944215919",
+		"timeOnPage": 0,
+		"title": "Welcome - Liferay",
+		"url": "http://192.168.108.90:8089/",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957",
+		"variantId": "",
+		"views": 1
+	},
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": null,
+		"ctaclicks": 0,
+		"dataSourceId": "362055312804551713",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"engagementScore": 0,
+		"entrances": 0,
+		"eventDate": "2019-09-09T07:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-09T07:57:21.365Z",
+		"formSubmissions": 0,
+		"id": "372250474612765471",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-09T07:57:21.365Z"
+		],
+		"individualId": "372248816488851698",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-09T07:57:21.365Z",
+		"modifiedDate": "2019-09-09T07:57:21.365Z",
+		"pageScrolls": [
+		],
+		"platformName": "Windows",
+		"primaryKey": "27cf20103ad8ad56478cab73a938dccccd050612fb9777d3c12dc59f3d90eea8",
+		"region": null,
+		"searchTerm": null,
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": null,
+		"timeOnPage": 0,
+		"title": "Welcome - Liferay",
+		"url": "http://192.168.108.90:8089/page1",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957",
+		"variantId": "",
+		"views": 1
+	}
+]

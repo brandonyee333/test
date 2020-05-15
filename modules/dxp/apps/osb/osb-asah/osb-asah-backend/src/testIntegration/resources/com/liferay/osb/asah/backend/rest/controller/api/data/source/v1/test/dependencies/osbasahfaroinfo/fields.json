@@ -1,0 +1,150 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "331238757269547423",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"0e7e36c1-dfaf-cf80-3e8a-57a449dc0a3d"
+				]
+			}
+		],
+		"dateCreated": "2019-01-02T17:09:09.186Z",
+		"dateModified": "2019-01-02T17:09:09.186Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.236Z",
+					"fieldType": "http://schema.org/email",
+					"name": "email",
+					"ownerId": "331238760415953371",
+					"ownerType": "individual",
+					"sourceName": "emailAddress",
+					"value": "wXp@MSL.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.236Z",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "331238760415953371",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "IYYjkoUJ"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.236Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "331238760415953371",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "q69adVIY"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.236Z",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "331238760415953371",
+					"ownerType": "individual",
+					"sourceName": "jobTitle",
+					"value": "gDXGjJRo"
+				}
+			]
+		},
+		"id": "331238760415953371",
+		"individualSegmentIds": [
+		]
+	},
+	{
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "331238757269547423",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"6caf0540-1ca9-2c6a-133d-dd4447440dcd"
+				]
+			}
+		],
+		"dateCreated": "2019-01-02T17:09:09.721Z",
+		"dateModified": "2019-01-02T17:09:09.721Z",
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.235Z",
+					"fieldType": "http://schema.org/email",
+					"name": "email",
+					"ownerId": "331238761528665246",
+					"ownerType": "individual",
+					"sourceName": "emailAddress",
+					"value": "46qEIh@VQ5.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.235Z",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "331238761528665246",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "GrFfIqWw"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.235Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "331238761528665246",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "bT6wHOUz"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "331238757269547423",
+					"dataSourceName": "zj*>ki+>d,;:r]eq",
+					"dateModified": "2019-01-02T17:09:08.235Z",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "331238761528665246",
+					"ownerType": "individual",
+					"sourceName": "jobTitle",
+					"value": "e7jXKlMs"
+				}
+			]
+		},
+		"id": "331238761528665246",
+		"individualSegmentIds": [
+		]
+	}
+]

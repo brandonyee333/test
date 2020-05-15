@@ -1,0 +1,36 @@
+{
+	"mappings": {
+		"_default_": {
+			"date_detection": true,
+			"dynamic_templates": [
+				{
+					"string": {
+						"mapping": {
+							"fields": {
+								"index": "true",
+								"normalizer": "case_insensitive_sort",
+								"type": "keyword"
+							}
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			]
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,101 @@
+services:
+    osbasahelasticsearchexporter:
+        command:
+            - "--es.uri=http://wedeploy-elasticsearch:9200"
+        container_name: osbasahelasticsearchexporter
+        image: justwatch/elasticsearch_exporter:1.1.0
+        ports:
+            - "9114:9114"
+        restart: always
+    osbasahgrafana:
+        build: ./osb-asah-grafana
+        container_name: osbasahgrafana
+        depends_on:
+            - osbasahprometheus
+        ports:
+            - "3001:3000"
+        volumes:
+            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards"
+            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources"
+            - "./osb-asah-grafana/docker-resources/var/lib/grafana/dashboards:/var/lib/grafana/dashboards"
+    osbasahmonolith:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-monolith
+        container_name: osbasahmonolith
+        depends_on:
+            - wedeploy-elasticsearch
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xms8192m -Xmx8192m -XX:MaxMetaspaceSize=512m
+            - OSB_ASAH_MONOLITH_ENABLED=true
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5005:5005"
+            - "8081:8080"
+        volumes:
+            - export:/export
+            - temp:/temp
+    osbasahprometheus:
+        build: ./osb-asah-prometheus
+        container_name: osbasahprometheus
+        ports:
+            - "9090:9090"
+    osbfarofrontend:
+        container_name: com-liferay-osb-faro-private
+        environment:
+            - OSB_ASAH_BACKEND_URL=http://osbasahmonolith:8080
+            - OSB_ASAH_PUBLISHER_URL=http://osbasahmonolith:8080
+        image: liferay/com-liferay-osb-faro:asah-local-latest
+        ports:
+            - "11311:11311"
+            - "8000:8000"
+            - "8080:8080"
+    wedeploy-elasticsearch:
+        container_name: wedeploy-elasticsearch
+        env_file:
+            - common.env
+            - local.env
+        healthcheck:
+            interval: 10s
+            retries: 3
+            start_period: 5s
+            test: ["CMD", "curl", "-f", "http://localhost:9200"]
+            timeout: 10s
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        volumes:
+            - esdata1:/usr/share/elasticsearch/data
+    wedeploy-kibana:
+        container_name: wedeploy-kibana
+        depends_on:
+            - wedeploy-elasticsearch
+        environment:
+            - ELASTICSEARCH_URL=http://wedeploy-elasticsearch:9200
+        image: docker.elastic.co/kibana/kibana-oss:6.8.1
+        ports:
+            - "5601:5601"
+        volumes:
+            - kibanadata:/usr/share/kibana/data
+version: "2.4"
+volumes:
+    backup:
+        driver: local
+    esdata1:
+        driver: local
+    export:
+        driver: local
+    kibanadata:
+        driver: local
+    temp:
+        driver: local

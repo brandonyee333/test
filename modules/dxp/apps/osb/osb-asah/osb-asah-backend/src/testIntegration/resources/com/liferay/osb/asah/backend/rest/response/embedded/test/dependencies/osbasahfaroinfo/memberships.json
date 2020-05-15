@@ -1,0 +1,17 @@
+[
+	{
+		"individualId": "123",
+		"individualSegmentId": "910",
+		"status": "ACTIVE"
+	},
+	{
+		"individualId": "123",
+		"individualSegmentId": "101",
+		"status": "ACTIVE"
+	},
+	{
+		"individualId": "456",
+		"individualSegmentId": "910",
+		"status": "INACTIVE"
+	}
+]

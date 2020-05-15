@@ -1,0 +1,40 @@
+{
+	"_embedded": {
+		"blocked-keywords": [
+			{
+				"_embedded": {
+					"data-sources": [
+						{
+							"id": "351238757269547425",
+							"name": "Test Data Source 2",
+							"status": "ACTIVE"
+						}
+					]
+				},
+				"createDate": "2019-01-10T15:10:07.666Z",
+				"dataSourceIds": [
+					"351238757269547425"
+				],
+				"id": "351238757269547426",
+				"keyword": "community"
+			},
+			{
+				"_embedded": {
+					"data-sources": [
+					]
+				},
+				"createDate": "2019-02-25T16:09:07.666Z",
+				"dataSourceIds": [
+				],
+				"id": "351238757269547427",
+				"keyword": "portal"
+			}
+		]
+	},
+	"page": {
+		"number": 1,
+		"size": 2,
+		"totalElements": 12,
+		"totalPages": 6
+	}
+}

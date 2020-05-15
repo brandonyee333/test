@@ -1,0 +1,26 @@
+{
+	"mappings": {
+		"data-export-tasks": {
+			"properties": {
+				"completedDate": {
+					"type": "date"
+				},
+				"createdDate": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"startedDate": {
+					"type": "date"
+				},
+				"status": {
+					"type": "keyword"
+				},
+				"type": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

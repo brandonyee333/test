@@ -1,0 +1,56 @@
+[
+	{
+		"activeIndividualCount": 11,
+		"activitiesCount": 345,
+		"anonymousIndividualCount": 0,
+		"dateCreated": "2020-01-17T19:17:48.160Z",
+		"dateModified": "2020-01-17T19:17:48.160Z",
+		"engagementScore": 0.435410870483869,
+		"filter": "((dataSourceAccountPKs/accountPKs eq '5b04444d-99aa-4bf6-bdfd-00f91b5b3037'))",
+		"id": "386700292613426084",
+		"individualCount": 12,
+		"knownIndividualCount": 12,
+		"lastActivityDate": "2020-01-17T16:33:57.512Z",
+		"name": "Account: 386700291682772906",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "INACTIVE"
+	},
+	{
+		"activeIndividualCount": 3,
+		"activitiesCount": 83,
+		"anonymousIndividualCount": 0,
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"dateCreated": "2020-01-17T19:17:46.971Z",
+		"dateModified": "2020-01-17T19:17:46.971Z",
+		"engagementScore": 0.27883664455719304,
+		"filter": "contains(demographics/jobTitle/value, 'engineer')",
+		"id": "386700289195644932",
+		"includeAnonymousUsers": false,
+		"individualCount": 5,
+		"knownIndividualCount": 5,
+		"lastActivityDate": "2020-01-17T19:00:25.318Z",
+		"name": "engineers",
+		"referencedAssetDataSourceIds": [
+		],
+		"referencedAssetIds": [
+		],
+		"referencedFieldMappingIds": [
+			"386700258482326346"
+		],
+		"scope": "PROJECT",
+		"segmentType": "DYNAMIC",
+		"state": "READY",
+		"status": "ACTIVE"
+	}
+]

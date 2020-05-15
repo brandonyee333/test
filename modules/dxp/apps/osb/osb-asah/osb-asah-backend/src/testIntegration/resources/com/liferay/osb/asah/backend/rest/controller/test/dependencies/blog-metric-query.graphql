@@ -1,0 +1,83 @@
+query BlogMetric($channelId: String, $assetId: String!, $country: String, $deviceType: String, $rangeKey: Int!, $url: String!) {
+	blog(channelId: $channelId, assetId: $assetId, country: $country, deviceType: $deviceType, rangeKey: $rangeKey, url: $url) {
+		assetId
+		assetTitle
+		commentsMetric {
+			segment {
+				metrics {
+					value
+					valueKey
+				}
+				total
+			}
+			trend {
+				percentage
+				trendClassification
+			}
+			value
+		}
+		ratingsMetric {
+			segment {
+				total
+				metrics {
+					value
+					valueKey
+				}
+			}
+			trend {
+				percentage
+				trendClassification
+			}
+			value
+		}
+		readingTimeMetric {
+			segment {
+				metrics {
+					value
+					valueKey
+				}
+				total
+			}
+			trend {
+				percentage
+				trendClassification
+			}
+			value
+		}
+		urls
+		viewsMetric {
+			browser {
+				value
+				valueKey
+			}
+			device {
+				metrics {
+					value
+					valueKey
+				}
+				value
+				valueKey
+			}
+			geolocation {
+				metrics {
+					value
+					valueKey
+				}
+				value
+				valueKey
+			}
+			segment {
+				metrics {
+					value
+					valueKey
+				}
+				total
+			}
+			trend {
+				percentage
+				trendClassification
+			}
+			value
+		}
+	}
+}

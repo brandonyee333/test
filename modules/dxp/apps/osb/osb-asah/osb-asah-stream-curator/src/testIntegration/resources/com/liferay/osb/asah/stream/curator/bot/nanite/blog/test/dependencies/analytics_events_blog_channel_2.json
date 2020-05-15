@@ -1,0 +1,190 @@
+[
+	{
+		"applicationId": "Blogs",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://facebook.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:10:00.000Z",
+		"eventId": "blogViewed",
+		"eventProperties": {
+			"entryId": "1",
+			"title": "Title 1"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Blogs",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://twitter.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:10:00.000Z",
+		"eventId": "blogViewed",
+		"eventProperties": {
+			"entryId": "1",
+			"title": "Title 1"
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "Blogs",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://facebook.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "blogClicked",
+		"eventProperties": {
+			"entryId": "1",
+			"tagName": "p"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Blogs",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://twitter.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:11:00.000Z",
+		"eventId": "blogClicked",
+		"eventProperties": {
+			"entryId": "1",
+			"href": "http://www.google.com",
+			"tagName": "a",
+			"text": "google"
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "Blogs",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://twitter.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:12:00.000Z",
+		"eventId": "blogClicked",
+		"eventProperties": {
+			"entryId": "1",
+			"src": "http://www.foo.com/icon.png",
+			"tagName": "img",
+			"text": "some image"
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "Blogs",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"referrer": "http://twitter.com",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:13:00.000Z",
+		"eventId": "blogClicked",
+		"eventProperties": {
+			"entryId": "1",
+			"tagName": "p",
+			"text": "some text in a par."
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "Comment",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:12:00.000Z",
+		"eventId": "posted",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "Ratings",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:12:00.000Z",
+		"eventId": "VOTE",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": "1",
+			"score": "0.95"
+		},
+		"userId": "2"
+	}
+]

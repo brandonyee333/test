@@ -1,0 +1,36 @@
+{
+	"_embedded": {
+		"individuals-distribution-transformations": [
+			{
+				"count": 1,
+				"values": [
+					"test.test@liferay.com"
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					"test.test2@liferay.com"
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					"test.test1@liferay.com"
+				]
+			},
+			{
+				"count": 1,
+				"values": [
+					"dummy@liferay.com"
+				]
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 100,
+		"totalElements": 4,
+		"totalPages": 1
+	}
+}

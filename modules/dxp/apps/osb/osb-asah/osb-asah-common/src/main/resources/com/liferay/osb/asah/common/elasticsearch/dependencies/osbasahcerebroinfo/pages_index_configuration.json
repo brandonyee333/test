@@ -1,0 +1,177 @@
+{
+	"mappings": {
+		"pages": {
+			"properties": {
+				"bounce": {
+					"type": "long"
+				},
+				"browserName": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"contentLanguageId": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"ctaClicks": {
+					"type": "long"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"deviceType": {
+					"type": "keyword"
+				},
+				"directAccess": {
+					"type": "long"
+				},
+				"directAccessDates": {
+					"type": "date"
+				},
+				"engagementScore": {
+					"type": "double"
+				},
+				"entrances": {
+					"type": "long"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"exits": {
+					"type": "long"
+				},
+				"experienceId": {
+					"type": "keyword"
+				},
+				"experimentId": {
+					"type": "keyword"
+				},
+				"firstEventDate": {
+					"type": "date"
+				},
+				"formSubmissions": {
+					"type": "long"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"indirectAccess": {
+					"type": "long"
+				},
+				"indirectAccessDates": {
+					"type": "date"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"interactionDates": {
+					"type": "date"
+				},
+				"knownIndividual": {
+					"type": "boolean"
+				},
+				"lastEventDate": {
+					"type": "date"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"pageScrolls": {
+					"properties": {
+						"depth": {
+							"type": "integer"
+						},
+						"eventDate": {
+							"type": "date"
+						}
+					},
+					"type": "nested"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"primaryKey": {
+					"type": "keyword"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"searchTerm": {
+					"fields": {
+						"search": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				},
+				"segmentNames": {
+					"type": "keyword"
+				},
+				"sessionId": {
+					"type": "keyword"
+				},
+				"timeOnPage": {
+					"type": "long"
+				},
+				"title": {
+					"fields": {
+						"search": {
+							"analyzer": "folding_analyzer",
+							"type": "text"
+						}
+					},
+					"type": "keyword"
+				},
+				"url": {
+					"fields": {
+						"search": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"variantId": {
+					"type": "keyword"
+				},
+				"views": {
+					"type": "long"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			},
+			"normalizer": {
+				"folding_normalizer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"cpu": 2,
+	"env": {
+		"LIFERAY_REDIRECT_PERIOD_URL_PERIOD_DOMAINS_PERIOD_ALLOWED": "",
+		"LIFERAY_REDIRECT_PERIOD_URL_PERIOD_SECURITY_PERIOD_MODE": "domain",
+		"LIFERAY_WEB_PERIOD_SERVER_PERIOD_FORWARDED_PERIOD_PROTOCOL_PERIOD_ENABLED": "true"
+	},
+	"id": "osbasahdxpserver",
+	"kind": "Deployment",
+	"loadBalancer": {
+		"cdn": false,
+		"targetPort": 8080
+	},
+	"memory": 4096
+}

@@ -1,0 +1,53 @@
+[
+	{
+		"dateRecorded": "${today-9dT00:00:00.000Z}",
+		"id": "345",
+		"name": "abc",
+		"ownerId": "789",
+		"ownerType": "visit",
+		"score": 0.1,
+		"views": 1
+	},
+	{
+		"dateRecorded": "${today-10dT00:00:00.000Z}",
+		"name": "abc",
+		"ownerId": "789",
+		"ownerType": "visit",
+		"score": 0.3,
+		"views": 1
+	},
+	{
+		"dateRecorded": "${today-11dT00:00:00.000Z}",
+		"id": "234",
+		"name": "bcd",
+		"ownerId": "789",
+		"ownerType": "visit",
+		"score": 0.4,
+		"views": 1
+	},
+	{
+		"dateRecorded": "${today-12dT00:00:00.000Z}",
+		"name": "bcd",
+		"ownerId": "789",
+		"ownerType": "visit",
+		"score": 0.5,
+		"views": 1
+	},
+	{
+		"dateRecorded": "${today-13dT00:00:00.000Z}",
+		"name": "cde",
+		"ownerId": "789",
+		"ownerType": "visit",
+		"score": 0.2,
+		"views": 1
+	},
+	{
+		"dateRecorded": "${today-14dT00:00:00.000Z}",
+		"id": "123",
+		"name": "cde",
+		"ownerId": "789",
+		"ownerType": "visit",
+		"score": 0.6,
+		"views": 1
+	}
+]

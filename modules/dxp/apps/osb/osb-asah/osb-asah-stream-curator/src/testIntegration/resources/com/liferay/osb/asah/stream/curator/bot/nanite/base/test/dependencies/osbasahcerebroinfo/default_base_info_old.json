@@ -1,0 +1,18 @@
+[
+	{
+		"browserName": "Firefox",
+		"city": "Recife",
+		"country": "Brazil",
+		"dataSourceId": "www.liferay.com",
+		"deviceType": "Desktop",
+		"eventDate": "2018-04-04T09:00:00.000Z",
+		"id": "1",
+		"platformName": "Linux",
+		"primaryKey": "1",
+		"region": "Pernambuco",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "1"
+	}
+]

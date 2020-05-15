@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"additionalProperties": false,
+	"definitions": {
+		"panel": {
+			"additionalProperties": false,
+			"properties": {
+				"chartType": {
+					"enum": [
+						"line"
+					],
+					"type": "string"
+				},
+				"metric": {
+					"type": "string"
+				},
+				"title": {
+					"type": "string"
+				},
+				"width": {
+					"maximum": 100,
+					"minimum": 0,
+					"type": "number"
+				}
+			},
+			"required": [
+				"chartType",
+				"title",
+				"metric"
+			],
+			"type": "object"
+		},
+		"row": {
+			"additionalProperties": false,
+			"properties": {
+				"panels": {
+					"items": {
+						"$ref": "#/definitions/panel"
+					},
+					"minItems": 1,
+					"type": "array"
+				}
+			},
+			"required": [
+				"panels"
+			],
+			"type": "object"
+		}
+	},
+	"properties": {
+		"rows": {
+			"items": {
+				"$ref": "#/definitions/row"
+			},
+			"minItems": 1,
+			"type": "array"
+		}
+	},
+	"required": [
+		"rows"
+	],
+	"title": "A JSON Schema for Analytics Cloud Custom Dashboard Definition.",
+	"type": "object"
+}

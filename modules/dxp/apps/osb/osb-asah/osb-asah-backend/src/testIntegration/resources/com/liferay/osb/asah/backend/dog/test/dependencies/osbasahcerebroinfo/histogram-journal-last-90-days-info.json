@@ -1,0 +1,1902 @@
+[
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-1d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-2d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-3d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-4d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-5d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-6d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-7d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-8d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-9d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-10d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-11d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-12d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-13d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-14d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-15d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-16d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-17d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-18d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-19d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-20d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-21d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-22d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-23d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-24d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-25d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-26d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-27d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-28d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-29d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-30d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-31d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-32d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-33d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-34d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-35d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-36d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-37d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-38d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-39d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-40d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-41d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-42d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-43d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-44d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-45d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-46d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-47d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-48d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-49d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-50d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-51d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-52d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-53d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-54d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-55d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-56d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-57d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-58d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-59d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-60d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-61d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-62d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-63d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-64d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-65d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-66d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-67d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-68d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-69d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-70d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-71d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-72d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-73d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-74d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-75d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-76d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-77d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-78d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-79d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-80d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-81d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-82d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-83d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-84d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-85d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-86d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-87d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-88d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-89d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-90d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-91d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-92d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-93d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-94d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-95d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-96d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-97d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-98d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Sydney",
+		"country": "Australia",
+		"deviceType": "Desktop",
+		"eventDate": "${now-99d}",
+		"platformName": "Linux",
+		"primaryKey": "2b4ba4a6844ea35a06eac82eec822d6bb6cdaa95574fbd34b92a6df3e84c4903",
+		"ratings": 2,
+		"ratingsScore": 0.33,
+		"region": "New South Wales",
+		"title": "Title 1",
+		"urls": [
+			"http://liferay.com"
+		],
+		"userId": "5",
+		"views": 1
+	}
+]

@@ -1,0 +1,37 @@
+{
+	"mappings": {
+		"audit-events": {
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"additionalInfo": {
+					"type": "object"
+				},
+				"dateCreated": {
+					"type": "keyword"
+				},
+				"eventType": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"osbAsahDataSourceId": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

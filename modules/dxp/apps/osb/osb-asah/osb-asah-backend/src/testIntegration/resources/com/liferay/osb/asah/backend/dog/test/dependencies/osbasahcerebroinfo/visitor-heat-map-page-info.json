@@ -1,0 +1,122 @@
+[
+	{
+		"channelId": "1",
+		"eventDate": "${now-1d}",
+		"firstEventDate": "${now-1dT20:59:59.000Z}",
+		"individualId": "1",
+		"primaryKey": "1",
+		"sessionId": "1",
+		"url": "http://liferay.com",
+		"userId": "1"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-1d}",
+		"firstEventDate": "${now-1dT20:20:00.000Z}",
+		"individualId": "2",
+		"primaryKey": "1",
+		"sessionId": "2",
+		"url": "http://liferay.com",
+		"userId": "2"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-2d}",
+		"firstEventDate": "${now-2dT10:00:00.234Z}",
+		"individualId": "3",
+		"primaryKey": "1",
+		"sessionId": "3",
+		"url": "http://liferay.com",
+		"userId": "3"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-5d}",
+		"firstEventDate": "${now-5dT10:00:00.234Z}",
+		"individualId": "4",
+		"primaryKey": "1",
+		"sessionId": "4",
+		"url": "http://liferay.com",
+		"userId": "4"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-10d}",
+		"firstEventDate": "${now-10dT01:00:00.000Z}",
+		"individualId": "5",
+		"primaryKey": "1",
+		"sessionId": "5",
+		"url": "http://liferay.com",
+		"userId": "5"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-15d}",
+		"firstEventDate": "${now-15dT01:35:00.000Z}",
+		"individualId": "6",
+		"primaryKey": "1",
+		"sessionId": "6",
+		"url": "http://liferay.com",
+		"userId": "6"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-15d}",
+		"firstEventDate": "${now-15dT01:27:00.000Z}",
+		"individualId": "6",
+		"primaryKey": "1",
+		"sessionId": "6",
+		"url": "http://liferay.com",
+		"userId": "6"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-29d}",
+		"firstEventDate": "${now-29dT20:19:00.000Z}",
+		"individualId": "7",
+		"primaryKey": "1",
+		"sessionId": "7",
+		"url": "http://liferay.com",
+		"userId": "7"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-36d}",
+		"firstEventDate": "${now-36dT13:03:00.000Z}",
+		"individualId": "8",
+		"primaryKey": "1",
+		"sessionId": "8",
+		"url": "http://liferay.com",
+		"userId": "8"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-70d}",
+		"firstEventDate": "${now-70dT23:10:00.000Z}",
+		"individualId": "9",
+		"primaryKey": "1",
+		"sessionId": "9",
+		"url": "http://liferay.com",
+		"userId": "9"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-89d}",
+		"firstEventDate": "${now-89dT00:02:00.000Z}",
+		"individualId": "10",
+		"primaryKey": "1",
+		"sessionId": "10",
+		"url": "http://liferay.com",
+		"userId": "10"
+	},
+	{
+		"channelId": "1",
+		"eventDate": "${now-91d}",
+		"firstEventDate": "${now-91dT15:27:00.000Z}",
+		"individualId": "11",
+		"primaryKey": "1",
+		"sessionId": "11",
+		"url": "http://liferay.com",
+		"userId": "11"
+	}
+]

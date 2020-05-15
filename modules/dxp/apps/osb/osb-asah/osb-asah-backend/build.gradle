@@ -1,0 +1,39 @@
+apply plugin: "com.liferay.dependency.local.copy"
+apply plugin: "com.liferay.spring.boot.defaults"
+
+configurations.all {
+	exclude group: "org.apache.geronimo.bundles", module: "json"
+	exclude group: "org.nd4j", module: "nd4j-native-platform"
+	exclude group: "org.slf4j", module: "slf4j-log4j12"
+}
+
+dependencies {
+	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jdk8", version: "2.8.4"
+	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-json-org", version: "2.8.4"
+	compile group: "com.fasterxml.jackson.datatype", name: "jackson-datatype-jsr310", version: "2.8.4"
+	compile group: "com.graphql-java", name: "graphql-java", version: "6.0"
+	compile group: "com.liferay", name: "com.liferay.petra.lang", version: "1.0.0"
+	compile group: "com.liferay", name: "com.liferay.petra.string", version: "1.0.0"
+	compile group: "io.improbable", name: "keanu", version: "0.0.26"
+	compile group: "io.prometheus", name: "simpleclient_servlet", version: "0.1.0"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-backend-ext-alfa"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-backend-ext-seo"
+	compile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-common"
+	compile group: "org.everit.json", name: "org.everit.json.schema", version: "1.5.1"
+	compile group: "org.springframework.boot", name: "spring-boot-starter-hateoas", version: "1.5.7.RELEASE"
+
+	testCompile group: "junit", name: "junit", version: "4.12"
+	testCompile group: "local.copy", name: ":dxp:apps:osb:osb-asah:osb-asah-test-util"
+	testCompile group: "nl.jqno.equalsverifier", name: "equalsverifier", version: "2.5.1"
+
+	testIntegrationCompile group: "com.esotericsoftware.yamlbeans", name: "yamlbeans", version: "1.12"
+	testIntegrationCompile group: "io.rest-assured", name: "json-schema-validator", version: "3.2.0"
+	testIntegrationCompile group: "io.rest-assured", name: "rest-assured", version: "3.2.0"
+	testIntegrationCompile project(":dxp:apps:osb:osb-asah:osb-asah-batch-curator")
+}
+
+testIntegration {
+	doFirst {
+		environment "OSB_ASAH_PUBSUB_EMULATOR_URL", "http://127.0.0.1:8095"
+	}
+}

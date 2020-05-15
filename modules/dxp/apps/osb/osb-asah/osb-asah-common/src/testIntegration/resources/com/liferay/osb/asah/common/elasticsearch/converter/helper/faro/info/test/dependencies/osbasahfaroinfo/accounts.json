@@ -1,0 +1,1616 @@
+[
+	{
+		"accountPK": "bef7a4a0-7128-4e37-b58d-a3fdff2e4213",
+		"activitiesCount": 0,
+		"dataSourceId": "346306699042460013",
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"id": "346306741766310654",
+		"individualCount": 16,
+		"organization": {
+			"accountId": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountId",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "id",
+					"value": "bef7a4a0-7128-4e37-b58d-a3fdff2e4213"
+				}
+			],
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "Liferay, Inc."
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Other"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 50000000
+				}
+			],
+			"billingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCity",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "BillingCity",
+					"value": "Diamond Bar"
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "United States"
+				}
+			],
+			"billingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingPostalCode",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "BillingPostalCode",
+					"value": "91765-5501"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "California"
+				}
+			],
+			"billingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingStreet",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "BillingStreet",
+					"value": "1400 Montefino Avenue"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "USD"
+				}
+			],
+			"description": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Description",
+					"value": "Digital Experience Software Tailored to Your Needs"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Technology"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 896
+				}
+			],
+			"ownership": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "ownership",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Ownership",
+					"value": "Private"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "1-877-543-3729"
+				}
+			],
+			"shippingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCity",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "ShippingCity",
+					"value": "Diamond Bar"
+				}
+			],
+			"shippingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCountry",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "ShippingCountry",
+					"value": "United States"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "91765-5501"
+				}
+			],
+			"shippingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingState",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "ShippingState",
+					"value": "California"
+				}
+			],
+			"shippingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingStreet",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "ShippingStreet",
+					"value": "1400 Montefino Avenue"
+				}
+			],
+			"website": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "website",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "Website",
+					"value": "https://www.liferay.com/"
+				}
+			],
+			"yearStarted": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "yearStarted",
+					"ownerId": "346306769708391202",
+					"ownerType": "account",
+					"sourceName": "YearStarted",
+					"value": 2000
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "7dc0bc87-2d53-40d5-8137-2db03470adda",
+		"activitiesCount": 0,
+		"dataSourceId": "346306699042460013",
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"id": "346306745597466890",
+		"individualCount": 16,
+		"organization": {
+			"accountId": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountId",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "id",
+					"value": "7dc0bc87-2d53-40d5-8137-2db03470adda"
+				}
+			],
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "The Space Program"
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 500000
+				}
+			],
+			"billingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCity",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "BillingCity",
+					"value": "Houston"
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "United States"
+				}
+			],
+			"billingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingPostalCode",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "BillingPostalCode",
+					"value": "77012"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "Texas"
+				}
+			],
+			"billingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingStreet",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "BillingStreet",
+					"value": "123 Lesa Street"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "USD"
+				}
+			],
+			"description": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Description",
+					"value": "Test Account for LESA Training Video/Training/Screen shots"
+				}
+			],
+			"fax": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Fax",
+					"value": "(861) 755-6817 x609"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Technology"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 5
+				}
+			],
+			"ownership": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "ownership",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Ownership",
+					"value": "Public"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "896-259-6183 x4512"
+				}
+			],
+			"shippingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCity",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingCity",
+					"value": "Merritt Island"
+				}
+			],
+			"shippingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCountry",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingCountry",
+					"value": "United States"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "32952"
+				}
+			],
+			"shippingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingState",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingState",
+					"value": "Florida"
+				}
+			],
+			"shippingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingStreet",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingStreet",
+					"value": "456 Orbit Boulevard"
+				}
+			],
+			"website": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "website",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Website",
+					"value": "https://www.thespaceprogram.org/"
+				}
+			],
+			"yearStarted": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "yearStarted",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "YearStarted",
+					"value": 1955
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "e15f3b2f-7cad-4772-b844-0d96d2f27528",
+		"activitiesCount": 0,
+		"dataSourceId": "346306699042460013",
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"id": "346306769708391202",
+		"individualCount": 16,
+		"organization": {
+			"accountId": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountId",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "id",
+					"value": "e15f3b2f-7cad-4772-b844-0d96d2f27528"
+				}
+			],
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "The World's Foremost Chess Club"
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 30000000
+				}
+			],
+			"billingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCity",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingCity",
+					"value": "Athens"
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "Greece"
+				}
+			],
+			"billingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingPostalCode",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingPostalCode",
+					"value": "11743"
+				}
+			],
+			"billingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingStreet",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingStreet",
+					"value": "9 Bishop Avenue"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "EUR"
+				}
+			],
+			"description": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Description",
+					"value": "For chess players of all skill levels!"
+				}
+			],
+			"fax": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Fax",
+					"value": "240-163-2363 x0423"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Entertainment"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 486000
+				}
+			],
+			"ownership": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "ownership",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Ownership",
+					"value": "Private"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "496.072.9262"
+				}
+			],
+			"shippingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCity",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "ShippingCity",
+					"value": "Athens"
+				}
+			],
+			"shippingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCountry",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "ShippingCountry",
+					"value": "Greece"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "11743"
+				}
+			],
+			"shippingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingStreet",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "ShippingStreet",
+					"value": "64 Knight Street"
+				}
+			],
+			"website": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "website",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "Website",
+					"value": "https://www.thechessclub.org/"
+				}
+			],
+			"yearStarted": [
+				{
+					"context": "organization",
+					"dataSourceId": "346306699042460013",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "yearStarted",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "YearStarted",
+					"value": 1924
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "5b04444d-99aa-4bf6-bdfd-00f91b5b3037",
+		"activitiesCount": 0,
+		"dataSourceId": "346308771486495553",
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"id": "346308947223203070",
+		"individualCount": 16,
+		"organization": {
+			"accountId": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountId",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "id",
+					"value": "5b04444d-99aa-4bf6-bdfd-00f91b5b3037"
+				}
+			],
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "Nozomi Project"
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Prospect"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 400000
+				}
+			],
+			"billingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCity",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingCity",
+					"value": "Watanoha, Ishinomaki"
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "Japan"
+				}
+			],
+			"billingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingPostalCode",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingPostalCode",
+					"value": "986-2135"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "Miyagi"
+				}
+			],
+			"billingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingStreet",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingStreet",
+					"value": "Shimo Enokidan 142-10"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "JPY"
+				}
+			],
+			"description": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Description",
+					"value": "Beauty In Brokenness"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Accessories"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 10
+				}
+			],
+			"ownership": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "ownership",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Ownership",
+					"value": "Private"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "011-81-225-90-4024"
+				}
+			],
+			"shippingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCity",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingCity",
+					"value": "Watanoha, Ishinomaki"
+				}
+			],
+			"shippingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCountry",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingCountry",
+					"value": "Japan"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "986-2135"
+				}
+			],
+			"shippingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingState",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingState",
+					"value": "Miyagi"
+				}
+			],
+			"shippingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingStreet",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingStreet",
+					"value": "Shimo Enokidan 142-10"
+				}
+			],
+			"website": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "website",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Website",
+					"value": "https://nozomiproject.com/"
+				}
+			],
+			"yearStarted": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "yearStarted",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "YearStarted",
+					"value": 2012
+				}
+			]
+		}
+	},
+	{
+		"accountPK": "dcfc34f0-fe1c-4a30-8ed6-326e742d5108",
+		"activitiesCount": 0,
+		"dataSourceId": "346308771486495553",
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"engagementScore": 0,
+		"id": "346308948940818080",
+		"individualCount": 16,
+		"organization": {
+			"accountId": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountId",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "id",
+					"value": "dcfc34f0-fe1c-4a30-8ed6-326e742d5108"
+				}
+			],
+			"accountName": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountName",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Name",
+					"value": "Wright Anything Agency"
+				}
+			],
+			"accountType": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "accountType",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Type",
+					"value": "Customer"
+				}
+			],
+			"annualRevenue": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "annualRevenue",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "AnnualRevenue",
+					"value": 100
+				}
+			],
+			"billingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCity",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingCity",
+					"value": "Los Angeles"
+				}
+			],
+			"billingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingCountry",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "BillingCountry",
+					"value": "United States"
+				}
+			],
+			"billingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingPostalCode",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingPostalCode",
+					"value": "90050"
+				}
+			],
+			"billingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingState",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "BillingState",
+					"value": "California"
+				}
+			],
+			"billingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "billingStreet",
+					"ownerId": "346306741766310654",
+					"ownerType": "account",
+					"sourceName": "BillingStreet",
+					"value": "789 Objection Way"
+				}
+			],
+			"currencyIsoCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "currencyIsoCode",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "CurrencyIsoCode",
+					"value": "USD"
+				}
+			],
+			"description": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 1",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "description",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Description",
+					"value": "Courtroom Magic"
+				}
+			],
+			"fax": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "fax",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Fax",
+					"value": "323-235-6994"
+				}
+			],
+			"industry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "industry",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Industry",
+					"value": "Law Practice"
+				}
+			],
+			"numberOfEmployees": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "numberOfEmployees",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "NumberOfEmployees",
+					"value": 3
+				}
+			],
+			"ownership": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "ownership",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Ownership",
+					"value": "Private"
+				}
+			],
+			"phone": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "phone",
+					"ownerId": "346308947223203070",
+					"ownerType": "account",
+					"sourceName": "Phone",
+					"value": "323-737-8802"
+				}
+			],
+			"shippingCity": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCity",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingCity",
+					"value": "Los Angeles"
+				}
+			],
+			"shippingCountry": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingCountry",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingCountry",
+					"value": "United States"
+				}
+			],
+			"shippingPostalCode": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingPostalCode",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingPostalCode",
+					"value": "90050"
+				}
+			],
+			"shippingState": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingState",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingState",
+					"value": "California"
+				}
+			],
+			"shippingStreet": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "shippingStreet",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "ShippingStreet",
+					"value": "789 Objection Way"
+				}
+			],
+			"website": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Text",
+					"name": "website",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "Website",
+					"value": "https://wrightanythingagency.org/"
+				}
+			],
+			"yearStarted": [
+				{
+					"context": "organization",
+					"dataSourceId": "346308771486495553",
+					"dataSourceName": "Test Data Source 2",
+					"dateModified": "${today-1dT00:00:00.000Z}",
+					"fieldType": "Number",
+					"name": "yearStarted",
+					"ownerId": "346306745597466890",
+					"ownerType": "account",
+					"sourceName": "YearStarted",
+					"value": 2026
+				}
+			]
+		}
+	}
+]

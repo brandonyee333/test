@@ -1,0 +1,11 @@
+query Dashboard($dashboardId: String!) {
+	dashboard(dashboardId: $dashboardId) {
+		assetId
+		assetTitle
+		category
+		createDate
+		id
+		modifiedDate
+		modifiedByUserName
+	}
+}

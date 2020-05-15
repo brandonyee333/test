@@ -1,0 +1,42 @@
+{
+	"mappings": {
+		"suppressions": {
+			"properties": {
+				"createDate": {
+					"type": "date"
+				},
+				"dataControlTaskBatchId": {
+					"type": "keyword"
+				},
+				"dataControlTaskCreateDate": {
+					"type": "keyword"
+				},
+				"dataControlTaskStatus": {
+					"type": "keyword"
+				},
+				"emailAddress": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"emailAddressHashed": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

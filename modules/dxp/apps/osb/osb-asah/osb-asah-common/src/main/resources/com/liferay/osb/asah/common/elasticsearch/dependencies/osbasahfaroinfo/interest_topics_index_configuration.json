@@ -1,0 +1,32 @@
+{
+	"mappings": {
+		"interest-topics": {
+			"properties": {
+				"id": {
+					"type": "keyword"
+				},
+				"term": {
+					"analyzer": "standard",
+					"fields": {
+						"raw": {
+							"type": "keyword"
+						}
+					},
+					"type": "text"
+				},
+				"termType": {
+					"type": "keyword"
+				},
+				"termWeight": {
+					"type": "double"
+				},
+				"topic": {
+					"type": "integer"
+				},
+				"topicWeight": {
+					"type": "double"
+				}
+			}
+		}
+	}
+}

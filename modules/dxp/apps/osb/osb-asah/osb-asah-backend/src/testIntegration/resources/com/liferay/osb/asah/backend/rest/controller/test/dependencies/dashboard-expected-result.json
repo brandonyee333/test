@@ -1,0 +1,13 @@
+{
+	"data": {
+		"dashboard": {
+			"assetId": "1",
+			"assetTitle": "Asset Title 1",
+			"category": "default",
+			"createDate": "2019-02-21T09:30:11",
+			"id": "1",
+			"modifiedByUserName": "André Miranda",
+			"modifiedDate": "2019-02-21T10:11:25"
+		}
+	}
+}

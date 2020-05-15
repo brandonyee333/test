@@ -1,0 +1,35 @@
+{
+	"mappings": {
+		"activity-groups": {
+			"properties": {
+				"activityType": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"day": {
+					"type": "date"
+				},
+				"endTime": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"ownerId": {
+					"type": "keyword"
+				},
+				"startTime": {
+					"type": "date"
+				},
+				"userId": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

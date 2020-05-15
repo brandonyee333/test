@@ -1,0 +1,152 @@
+[
+	{
+		"applicationId": "SocialBookmarks",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T10:10:00.000Z",
+		"eventId": "shared",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": 1,
+			"type": "facebook",
+			"url": "http://liferay.com/blog"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "SocialBookmarks",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T10:30:00.000Z",
+		"eventId": "shared",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": 1,
+			"type": "linkedin",
+			"url": "http://liferay.com"
+		},
+		"userId": "2"
+	},
+	{
+		"applicationId": "SocialBookmarks",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T11:00:00.000Z",
+		"eventId": "shared",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": 1,
+			"type": "plusone",
+			"url": "http://liferay.com"
+		},
+		"userId": "1"
+	},
+	{
+		"applicationId": "SocialBookmarks",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T11:00:00.000Z",
+		"eventId": "shared",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": 1,
+			"type": "plusone",
+			"url": "http://liferay.com"
+		},
+		"userId": "3"
+	},
+	{
+		"applicationId": "SocialBookmarks",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T11:00:00.000Z",
+		"eventId": "shared",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": 1,
+			"type": "twitter",
+			"url": "http://liferay.com"
+		},
+		"userId": "4"
+	},
+	{
+		"applicationId": "SocialBookmarks",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T11:20:00.000Z",
+		"eventId": "shared",
+		"eventProperties": {
+			"className": "com.liferay.blogs.model.BlogsEntry",
+			"classPK": 1,
+			"type": "twitter",
+			"url": "http://liferay.com"
+		},
+		"userId": "4"
+	}
+]

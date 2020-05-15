@@ -1,0 +1,48 @@
+[
+	{
+		"dataSourceId": "402139209179557944",
+		"id": "402139267512234420",
+		"modifiedDate": 1580256710058,
+		"name": "parentOrg",
+		"nameTreePath": "parentOrg",
+		"organizationPK": 33120,
+		"parentName": null,
+		"parentOrganizationPK": 0,
+		"type": "organization"
+	},
+	{
+		"dataSourceId": "402139209179557944",
+		"id": "402139268847589063",
+		"modifiedDate": 1580256740751,
+		"name": "childOrg1",
+		"nameTreePath": "parentOrg > childOrg1",
+		"organizationPK": 33127,
+		"parentName": "parentOrg",
+		"parentOrganizationPK": 33120,
+		"type": "organization"
+	},
+	{
+		"dataSourceId": "402139209179557944",
+		"id": "402139268847589064",
+		"modifiedDate": 1580256760334,
+		"name": "childOrg2",
+		"nameTreePath": "parentOrg > childOrg2",
+		"organizationPK": 33134,
+		"parentName": "parentOrg",
+		"parentOrganizationPK": 33120,
+		"treePath": "/33120/33134/",
+		"type": "organization"
+	},
+	{
+		"dataSourceId": "402139209179557944",
+		"id": "402139268847589065",
+		"modifiedDate": 1580256760338,
+		"name": "grandchild",
+		"nameTreePath": "parentOrg > childOrg1 > grandchild",
+		"organizationPK": 33148,
+		"parentName": "childOrg1",
+		"parentOrganizationPK": 33127,
+		"treePath": "/33120/33127/33148/",
+		"type": "organization"
+	}
+]

@@ -1,0 +1,65 @@
+{
+	"mappings": {
+		"assets": {
+			"properties": {
+				"assetType": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"canonicalUrl": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"channelIds": {
+					"type": "keyword"
+				},
+				"dataSourceAssetPK": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"description": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"keywords": {
+					"properties": {
+						"keyword": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						},
+						"type": {
+							"type": "keyword"
+						}
+					}
+				},
+				"name": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"url": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"index": {
+			"analysis": {
+				"normalizer": {
+					"case_insensitive_sort": {
+						"char_filter": [
+						],
+						"filter": "lowercase",
+						"type": "custom"
+					}
+				}
+			}
+		}
+	}
+}

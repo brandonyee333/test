@@ -1,0 +1,33 @@
+{
+	"activeIndividualsCount": 0,
+	"dateCreated": "2019-11-12T20:42:34.537Z",
+	"dateModified": "2019-11-12T20:42:34.537Z",
+	"engagementScore": 0,
+	"id": "388160510048870753",
+	"individualsCount": 0,
+	"properties": {
+		"accountId": "0853800a-a6ad-4d44-a2f5-28f9b877353a",
+		"accountName": "Zulauf-Davis",
+		"accountType": "Customer",
+		"annualRevenue": 85100000,
+		"billingCity": "North Julianhaven",
+		"billingCountry": "Bolivia",
+		"billingPostalCode": "31311-0701",
+		"billingState": "Nebraska",
+		"billingStreet": "9434 Mei Mission",
+		"currencyIsoCode": "GBP",
+		"description": "Configurable background focus group",
+		"fax": "(504) 599-2725 x986",
+		"industry": "Fund-Raising",
+		"numberOfEmployees": 52962,
+		"ownership": "Private",
+		"phone": "461-963-0403 x121",
+		"shippingCity": "Murphyfort",
+		"shippingCountry": "Greenland",
+		"shippingPostalCode": "21624-2820",
+		"shippingState": "Florida",
+		"shippingStreet": "2110 Hintz Isle",
+		"website": "https://www.matha-hilpert.org",
+		"yearStarted": 1913
+	}
+}

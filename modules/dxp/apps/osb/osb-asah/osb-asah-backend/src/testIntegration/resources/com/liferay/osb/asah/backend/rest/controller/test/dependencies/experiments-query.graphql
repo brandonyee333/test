@@ -1,0 +1,15 @@
+query Experiments($channelId: String, $keywords: String, $size: Int!, $sort: Sort!, $start: Int!) {
+	experiments(channelId: $channelId, keywords: $keywords, size: $size, sort: $sort, start: $start) {
+		experiments {
+			createDate
+			description
+			id
+			modifiedDate
+			name
+			pageURL
+			status
+			type
+		}
+		total
+	}
+}

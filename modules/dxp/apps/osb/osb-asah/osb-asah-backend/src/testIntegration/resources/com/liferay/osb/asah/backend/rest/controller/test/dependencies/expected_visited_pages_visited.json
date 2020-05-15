@@ -1,0 +1,47 @@
+{
+	"_embedded": {
+		"visited-pages-transformation": [
+			{
+				"title": "empower holistic ROI",
+				"uniqueVisitsCount": 5,
+				"url": "https://www.terrance-lueilwitz.biz"
+			},
+			{
+				"title": "engineer intuitive models",
+				"uniqueVisitsCount": 1,
+				"url": "https://www.jamey-shields.info"
+			},
+			{
+				"title": "enhance world-class e-tailers",
+				"uniqueVisitsCount": 1,
+				"url": "https://www.dedric-wunsch.net"
+			},
+			{
+				"title": "exploit ubiquitous architectures",
+				"uniqueVisitsCount": 1,
+				"url": "https://www.destini-weissnat.org"
+			},
+			{
+				"title": "extend compelling metrics",
+				"uniqueVisitsCount": 1,
+				"url": "https://www.glennie-douglas.com"
+			},
+			{
+				"title": "incentivize revolutionary ROI",
+				"uniqueVisitsCount": 1,
+				"url": "https://www.elizabeth-willms.io"
+			},
+			{
+				"title": "scale cross-platform e-commerce",
+				"uniqueVisitsCount": 1,
+				"url": "https://www.robyn-williamson.co"
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 20,
+		"totalElements": 7,
+		"totalPages": 1
+	}
+}

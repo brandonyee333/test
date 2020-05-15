@@ -1,0 +1,20 @@
+{
+	"mappings": {
+		"OSBAsahMarkers": {
+			"properties": {
+				"id": {
+					"type": "keyword"
+				},
+				"lastSuccessfulAnalyticsEventId": {
+					"type": "keyword"
+				},
+				"lastSuccessfulRunDate": {
+					"type": "date"
+				},
+				"lastSuccessfulSessionFinalizerDate": {
+					"type": "date"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,74 @@
+[
+	{
+		"dateCreated": "2019-02-11T20:26:53.215Z",
+		"dateModified": "2019-02-11T20:26:53.215Z",
+		"dateRemoved": null,
+		"id": "338511398389279307",
+		"individualId": "337984659206412898",
+		"individualSegmentId": "327968823603500666",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279308",
+		"individualId": "337984612356412845",
+		"individualSegmentId": "327968823603500666",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.215Z",
+		"dateModified": "2019-02-11T20:26:53.215Z",
+		"dateRemoved": null,
+		"id": "338511398389279309",
+		"individualId": "337984659206412343",
+		"individualSegmentId": "327968823603500677",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279310",
+		"individualId": "337984612356412876",
+		"individualSegmentId": "327968823603500677",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279311",
+		"individualId": "337984659206412898",
+		"individualSegmentId": "327968823603500655",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2019-02-11T20:26:53.218Z",
+		"dateModified": "2019-02-11T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279312",
+		"individualId": "337984659206412898",
+		"individualSegmentId": "327968823603500657",
+		"status": "INACTIVE"
+	},
+	{
+		"dateCreated": "2020-04-14T20:26:53.218Z",
+		"dateModified": "2020-04-14T20:26:53.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279313",
+		"individualId": "337984612356412876",
+		"individualSegmentId": "338511451975440187",
+		"status": "ACTIVE"
+	},
+	{
+		"dateCreated": "2020-04-14T20:26:54.218Z",
+		"dateModified": "2020-04-14T20:26:54.218Z",
+		"dateRemoved": null,
+		"id": "338511398389279314",
+		"individualId": "337984612356654154",
+		"individualSegmentId": "338511451975440187",
+		"status": "ACTIVE"
+	}
+]

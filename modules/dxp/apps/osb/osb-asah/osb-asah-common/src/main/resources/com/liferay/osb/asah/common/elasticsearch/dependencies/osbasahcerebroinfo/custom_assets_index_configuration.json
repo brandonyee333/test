@@ -1,0 +1,128 @@
+{
+	"mappings": {
+		"custom-assets": {
+			"properties": {
+				"abandonments": {
+					"type": "long"
+				},
+				"assetId": {
+					"type": "keyword"
+				},
+				"assetPrimaryKey": {
+					"type": "keyword"
+				},
+				"browserName": {
+					"type": "keyword"
+				},
+				"category": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"clicks": {
+					"type": "long"
+				},
+				"contentLanguageId": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"deviceType": {
+					"type": "keyword"
+				},
+				"downloads": {
+					"type": "long"
+				},
+				"elementText": {
+					"type": "keyword"
+				},
+				"elementType": {
+					"type": "keyword"
+				},
+				"elementURL": {
+					"type": "keyword"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"experienceId": {
+					"type": "keyword"
+				},
+				"experimentId": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"knownIndividual": {
+					"type": "boolean"
+				},
+				"lastEventDate": {
+					"type": "date"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"primaryKey": {
+					"type": "keyword"
+				},
+				"readPercentile": {
+					"type": "integer"
+				},
+				"readTime": {
+					"type": "long"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"segmentNames": {
+					"type": "keyword"
+				},
+				"sessionId": {
+					"type": "keyword"
+				},
+				"submissionDates": {
+					"type": "date"
+				},
+				"submissions": {
+					"type": "long"
+				},
+				"submissionsTime": {
+					"type": "long"
+				},
+				"title": {
+					"type": "keyword"
+				},
+				"urls": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"variantId": {
+					"type": "keyword"
+				},
+				"viewDates": {
+					"type": "date"
+				},
+				"views": {
+					"type": "long"
+				}
+			}
+		}
+	}
+}

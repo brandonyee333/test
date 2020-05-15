@@ -1,0 +1,280 @@
+services:
+    osbasahbackend:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-backend
+        container_name: osbasahbackend
+        depends_on:
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xmx256m
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5010:5005"
+            - "8086:8080"
+        volumes:
+            - export:/export
+            - temp:/temp
+    osbasahbatchcurator:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-batch-curator
+        container_name: osbasahbatchcurator
+        depends_on:
+            - osbasahqueue
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xmx4g
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5011:5005"
+            - "8087:8080"
+        volumes:
+            - export:/export
+            - temp:/temp
+    osbasahdxpextractor:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-dxp-extractor
+        container_name: osbasahdxpextractor
+        depends_on:
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xmx256m
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5009:5005"
+            - "8085:8080"
+    osbasahelasticsearchexporter:
+        command:
+            - "--es.uri=http://wedeploy-elasticsearch:9200"
+        container_name: osbasahelasticsearchexporter
+        depends_on:
+            - wedeploy-elasticsearch
+        image: justwatch/elasticsearch_exporter:1.1.0
+        ports:
+            - "9114:9114"
+        restart: always
+    osbasahextractor:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-extractor
+        container_name: osbasahextractor
+        depends_on:
+            - osbasahpublisher
+            - osbasahpubsubemulator
+            - osbasahqueue
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xms1536m -Xmx1536m -XX:MaxMetaspaceSize=96m
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5007:5005"
+            - "8083:8080"
+    osbasahgrafana:
+        build: ./osb-asah-grafana
+        container_name: osbasahgrafana
+        depends_on:
+            - osbasahprometheus
+        ports:
+            - "3001:3000"
+        volumes:
+            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards"
+            - "./osb-asah-grafana/docker-resources/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources"
+            - "./osb-asah-grafana/docker-resources/var/lib/grafana/dashboards:/var/lib/grafana/dashboards"
+    osbasahprometheus:
+        build: ./osb-asah-prometheus
+        container_name: osbasahprometheus
+        ports:
+            - "9090:9090"
+    osbasahpublisher:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-publisher
+        container_name: osbasahpublisher
+        depends_on:
+            - osbasahpubsubemulator
+            - osbasahqueue
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xms96m -Xmx96m
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5008:5005"
+            - "8084:8080"
+    osbasahpubsubemulator:
+        build: ./osb-asah-pubsub-emulator
+        container_name: osbasahpubsubemulator
+        ports:
+            - "8095:8095"
+    osbasahqueue:
+        container_name: osbasahqueue
+        env_file:
+            - common.env
+            - local.env
+        image: wedeploy/message-queue:0.0.15
+        ports:
+            - "3000:3000"
+    osbasahredis:
+        build: ./osb-asah-redis
+        container_name: osbasahredis
+        ports:
+            - "6379:6379"
+    osbasahsalesforceextractor:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-salesforce-extractor
+        container_name: osbasahsalesforceextractor
+        depends_on:
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xmx256m
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5012:5005"
+            - "8088:8080"
+    osbasahspark:
+        build: ./osb-asah-spark
+        container_name: osbasahspark
+        ports:
+            - "8998:8998"
+    osbasahstreamcurator:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-stream-curator
+        container_name: osbasahstreamcurator
+        depends_on:
+            - osbasahpubsubemulator
+            - osbasahqueue
+            - osbasahupgrade
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xms96m -Xmx96m -XX:MaxMetaspaceSize=96m
+        healthcheck:
+            interval: 10s
+            retries: 30
+            start_period: 120s
+            test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8080/context"]
+        ports:
+            - "5006:5005"
+            - "8082:8080"
+    osbasahupgrade:
+        build:
+            args:
+                LABEL_BUILD_DATE: ${LABEL_BUILD_DATE}
+                LABEL_VCS_REF: ${LABEL_VCS_REF}
+            context: ./osb-asah-upgrade
+        container_name: osbasahupgrade
+        depends_on:
+             - osbasahredis
+             - wedeploy-elasticsearch
+        env_file:
+            - common.env
+            - local.env
+        environment:
+            - JAVA_OPTS=-Xmx256m
+    osbfarofrontend:
+        container_name: com-liferay-osb-faro-private
+        image: liferay/com-liferay-osb-faro:asah-local-latest
+        ports:
+            - "11311:11311"
+            - "8000:8000"
+            - "8080:8080"
+    wedeploy-elasticsearch:
+        container_name: wedeploy-elasticsearch
+        env_file:
+            - common.env
+            - local.env
+        healthcheck:
+            interval: 10s
+            retries: 3
+            start_period: 5s
+            test: ["CMD", "curl", "-f", "http://localhost:9200"]
+            timeout: 10s
+        image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.1
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+        volumes:
+            - esdata1:/usr/share/elasticsearch/data
+    wedeploy-kibana:
+        container_name: wedeploy-kibana
+        depends_on:
+            - wedeploy-elasticsearch
+        environment:
+            - ELASTICSEARCH_URL=http://wedeploy-elasticsearch:9200
+        image: docker.elastic.co/kibana/kibana-oss:6.8.1
+        ports:
+            - "5601:5601"
+        volumes:
+            - kibanadata:/usr/share/kibana/data
+version: "2.4"
+volumes:
+    backup:
+        driver: local
+    esdata1:
+        driver: local
+    export:
+        driver: local
+    kibanadata:
+        driver: local
+    temp:
+        driver: local

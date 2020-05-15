@@ -1,0 +1,92 @@
+[
+	{
+		"acquisition": {
+			"channel": "referral",
+			"medium": "referral",
+			"source": "www.debra-huel.name"
+		},
+		"bounced": false,
+		"browserName": "Internet Explorer",
+		"channelId": "1",
+		"city": "Boardman",
+		"completeDate": "2020-01-16T19:20:10.061Z",
+		"completeReason": null,
+		"completed": false,
+		"country": "United States",
+		"dataSourceId": "386700245519579270",
+		"date": "${now-10m}",
+		"duration": 0,
+		"entryPage": "https://www.debra-huel.name?q=Pharmaceuticals",
+		"exitPage": "https://www.debra-huel.name?q=Pharmaceuticals",
+		"firstEventDate": "2019-12-20T10:48:00.000Z",
+		"id": "386700589317068668",
+		"individualId": "386700272756317079",
+		"interactions": [
+			{
+				"applicationId": "Form",
+				"clientIP": "52.61.247.75",
+				"context": {
+					"browserName": "Internet Explorer",
+					"canonicalUrl": "https://www.debra-huel.name",
+					"city": "Boardman",
+					"contentLanguageId": "en-US",
+					"country": "United States",
+					"crawler": "False",
+					"deviceType": "Desktop",
+					"languageId": "en-US",
+					"platformName": "Windows",
+					"referrer": "https://www.debra-huel.name",
+					"region": "Oregon",
+					"title": "innovate dot-com methodologies",
+					"url": "https://www.debra-huel.name?q=Pharmaceuticals",
+					"userAgent": "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
+				},
+				"createDate": "2020-01-16T19:19:54.965Z",
+				"dataSourceId": "386700245519579270",
+				"eventDate": "2019-12-20T10:50:00.000Z",
+				"eventId": "formSubmitted",
+				"eventProperties": {
+					"formId": "87976719",
+					"title": "syndicate proactive interfaces"
+				},
+				"id": "386700557721511666",
+				"normalizedEventDate": 1576836000000,
+				"userId": "4d383e9b-2435-4fd9-bc7d-866c3134a09c"
+			},
+			{
+				"applicationId": "Page",
+				"clientIP": "52.61.247.75",
+				"context": {
+					"browserName": "Internet Explorer",
+					"canonicalUrl": "https://www.debra-huel.name",
+					"city": "Boardman",
+					"contentLanguageId": "en-US",
+					"country": "United States",
+					"crawler": "False",
+					"deviceType": "Desktop",
+					"languageId": "en-US",
+					"platformName": "Windows",
+					"referrer": "https://www.debra-huel.name",
+					"region": "Oregon",
+					"title": "innovate dot-com methodologies",
+					"url": "https://www.debra-huel.name?q=Pharmaceuticals",
+					"userAgent": "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)"
+				},
+				"createDate": "2020-01-16T19:19:54.965Z",
+				"dataSourceId": "386700245519579270",
+				"eventDate": "2019-12-20T10:48:00.000Z",
+				"eventId": "pageViewed",
+				"eventProperties": {
+					"page": "/web/guest/home"
+				},
+				"id": "386700557721511667",
+				"normalizedEventDate": 1576836000000,
+				"userId": "4d383e9b-2435-4fd9-bc7d-866c3134a09c"
+			}
+		],
+		"lastEventDate": "2019-12-20T10:50:00.000Z",
+		"platformName": "Windows",
+		"region": "Oregon",
+		"userId": "4d383e9b-2435-4fd9-bc7d-866c3134a09c"
+	}
+]

@@ -1,0 +1,8 @@
+{
+	"client": {
+		"transport": {
+			"ignore_cluster_name": true,
+			"sniff": false
+		}
+	}
+}

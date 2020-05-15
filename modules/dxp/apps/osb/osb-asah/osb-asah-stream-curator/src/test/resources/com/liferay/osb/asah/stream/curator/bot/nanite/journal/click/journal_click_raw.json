@@ -1,0 +1,191 @@
+[
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:30:00.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "",
+			"src": "",
+			"tagName": "p",
+			"text": "foo"
+		},
+		"id": "1",
+		"userId": "1"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:36:00.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "",
+			"src": "",
+			"tagName": "p",
+			"text": "foo"
+		},
+		"id": "2",
+		"userId": "2"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:37:00.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "http://liferay.com",
+			"src": "",
+			"tagName": "a",
+			"text": "bar"
+		},
+		"id": "3",
+		"userId": "3"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:38:01.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "http://liferay.com",
+			"src": "",
+			"tagName": "a",
+			"text": "bar"
+		},
+		"id": "4",
+		"userId": "4"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:39:02.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "http://liferay.com",
+			"src": "",
+			"tagName": "a",
+			"text": ""
+		},
+		"id": "5",
+		"userId": "5"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:40:03.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "",
+			"src": "http://liferay.com/img.png",
+			"tagName": "img",
+			"text": "baz"
+		},
+		"id": "6",
+		"userId": "6"
+	},
+	{
+		"applicationId": "WebContent",
+		"channelId": "1",
+		"context": {
+			"browserName": "Chrome",
+			"city": "Recife",
+			"contentLanguageId": "en-US",
+			"country": "Brazil",
+			"crawler": "False",
+			"deviceType": "Desktop",
+			"platformName": "Linux",
+			"region": "Pernambuco",
+			"url": "http://liferay.com"
+		},
+		"dataSourceId": "liferay.com",
+		"eventDate": "2018-04-04T09:50:00.000Z",
+		"eventId": "webContentClicked",
+		"eventProperties": {
+			"articleId": "1",
+			"href": "",
+			"src": "http://liferay.com/img.png",
+			"tagName": "img",
+			"text": ""
+		},
+		"id": "7",
+		"userId": "1"
+	}
+]

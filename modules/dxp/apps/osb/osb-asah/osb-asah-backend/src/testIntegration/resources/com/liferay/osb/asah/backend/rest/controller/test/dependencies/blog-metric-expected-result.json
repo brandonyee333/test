@@ -1,0 +1,66 @@
+{
+	"data": {
+		"blog": {
+			"assetId": "1",
+			"assetTitle": null,
+			"commentsMetric": {
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 0.0
+			},
+			"ratingsMetric": {
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 0.0
+			},
+			"readingTimeMetric": {
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 0.0
+			},
+			"urls": [
+				"http://liferay.com",
+				"http://loop.liferay.com"
+			],
+			"viewsMetric": {
+				"browser": [
+				],
+				"device": [
+				],
+				"geolocation": [
+				],
+				"segment": {
+					"metrics": [
+					],
+					"total": 0
+				},
+				"trend": {
+					"percentage": null,
+					"trendClassification": "NEUTRAL"
+				},
+				"value": 0.0
+			}
+		}
+	}
+}

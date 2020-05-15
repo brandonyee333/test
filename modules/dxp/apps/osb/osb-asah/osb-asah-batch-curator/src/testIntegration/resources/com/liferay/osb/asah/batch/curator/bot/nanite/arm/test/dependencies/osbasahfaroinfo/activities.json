@@ -1,0 +1,70 @@
+[
+	{
+		"applicationId": "Page",
+		"day": "${today-0h}",
+		"eventId": "pageViewed",
+		"object": {
+			"dataSourceAssetPK": [
+				"url1"
+			]
+		},
+		"ownerId": "456",
+		"userId": [
+			"abc123"
+		]
+	},
+	{
+		"applicationId": "Page",
+		"day": "${today-0h}",
+		"eventId": "pageViewed",
+		"object": {
+			"dataSourceAssetPK": [
+				"url1"
+			]
+		},
+		"ownerId": "456",
+		"userId": [
+			"abc123"
+		]
+	},
+	{
+		"applicationId": "Page",
+		"day": "${today-0h}",
+		"eventId": "pageViewed",
+		"object": {
+			"dataSourceAssetPK": [
+				"url1"
+			]
+		},
+		"ownerId": "456",
+		"userId": [
+			"abc123"
+		]
+	},
+	{
+		"applicationId": "Page",
+		"day": "${today-0h}",
+		"eventId": "pageViewed",
+		"object": {
+			"dataSourceAssetPK": [
+				"url1"
+			]
+		},
+		"userId": [
+			"abc234"
+		]
+	},
+	{
+		"applicationId": "Page",
+		"day": "${today-0h}",
+		"eventId": "pageViewed",
+		"object": {
+			"dataSourceAssetPK": [
+				"url2"
+			]
+		},
+		"userId": [
+			"abc234"
+		]
+	}
+]

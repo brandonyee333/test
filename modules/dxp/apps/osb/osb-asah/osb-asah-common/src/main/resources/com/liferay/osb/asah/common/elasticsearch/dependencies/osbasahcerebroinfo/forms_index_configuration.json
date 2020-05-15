@@ -1,0 +1,167 @@
+{
+	"mappings": {
+		"forms": {
+			"properties": {
+				"abandonments": {
+					"type": "long"
+				},
+				"assetId": {
+					"type": "keyword"
+				},
+				"assetPrimaryKey": {
+					"type": "keyword"
+				},
+				"browserName": {
+					"type": "keyword"
+				},
+				"channelId": {
+					"type": "keyword"
+				},
+				"city": {
+					"type": "keyword"
+				},
+				"contentLanguageId": {
+					"type": "keyword"
+				},
+				"country": {
+					"type": "keyword"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"deviceType": {
+					"type": "keyword"
+				},
+				"eventDate": {
+					"type": "date"
+				},
+				"experienceId": {
+					"type": "keyword"
+				},
+				"experimentId": {
+					"type": "keyword"
+				},
+				"formPages": {
+					"properties": {
+						"abandonments": {
+							"type": "long"
+						},
+						"formFields": {
+							"properties": {
+								"abandonments": {
+									"type": "long"
+								},
+								"interactions": {
+									"type": "long"
+								},
+								"interactionsDuration": {
+									"type": "long"
+								},
+								"name": {
+									"type": "keyword"
+								},
+								"refilled": {
+									"type": "long"
+								},
+								"viewDates": {
+									"type": "date"
+								}
+							},
+							"type": "nested"
+						},
+						"name": {
+							"type": "keyword"
+						},
+						"pageIndex": {
+							"type": "integer"
+						},
+						"viewDates": {
+							"type": "date"
+						},
+						"views": {
+							"type": "long"
+						}
+					},
+					"type": "nested"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"knownIndividual": {
+					"type": "boolean"
+				},
+				"lastEventDate": {
+					"type": "date"
+				},
+				"modifiedDate": {
+					"type": "date"
+				},
+				"platformName": {
+					"type": "keyword"
+				},
+				"primaryKey": {
+					"type": "keyword"
+				},
+				"region": {
+					"type": "keyword"
+				},
+				"segmentNames": {
+					"type": "keyword"
+				},
+				"sessionId": {
+					"type": "keyword"
+				},
+				"submissionDates": {
+					"type": "date"
+				},
+				"submissions": {
+					"type": "long"
+				},
+				"submissionsTime": {
+					"type": "long"
+				},
+				"title": {
+					"fields": {
+						"search": {
+							"analyzer": "folding_analyzer",
+							"type": "text"
+						}
+					},
+					"type": "keyword"
+				},
+				"urls": {
+					"type": "keyword"
+				},
+				"userId": {
+					"type": "keyword"
+				},
+				"variantId": {
+					"type": "keyword"
+				},
+				"viewDates": {
+					"type": "date"
+				},
+				"views": {
+					"type": "long"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"folding_analyzer": {
+					"filter": [
+						"lowercase",
+						"asciifolding"
+					],
+					"tokenizer": "standard",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

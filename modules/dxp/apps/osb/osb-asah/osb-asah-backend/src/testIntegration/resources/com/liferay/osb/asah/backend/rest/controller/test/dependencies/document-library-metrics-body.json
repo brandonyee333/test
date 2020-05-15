@@ -1,0 +1,13 @@
+{
+	"operationName": "DocumentLibraryMetrics",
+	"variables": {
+		"channelId": "1",
+		"rangeKey": 30,
+		"size": 10,
+		"sort": {
+			"column": "downloadsMetric",
+			"type": "DESC"
+		},
+		"start": 0
+	}
+}

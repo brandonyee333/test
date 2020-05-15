@@ -1,0 +1,23 @@
+[
+	{
+		"dataSourceIndividualPKs": [
+		],
+		"demographics": {
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "345085929068798696",
+					"dataSourceName": "LIFERAY-DATASOURCE-FARO-EXAMPLE",
+					"dateModified": "2019-03-20T03:16:41.495Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "345085958344987904",
+					"ownerType": "individual",
+					"sourceName": "email",
+					"value": "john.doe@liferay.com"
+				}
+			]
+		},
+		"id": "345085958344987904"
+	}
+]

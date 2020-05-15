@@ -1,0 +1,11 @@
+query Acquisitions($activeTabId: AcquisitionType!, $channelId: String, $rangeKey: Int!, $size: Int!, $start: Int!) {
+	acquisitions(acquisitionType: $activeTabId, channelId: $channelId, rangeKey: $rangeKey, size: $size, start: $start) {
+		compositions {
+			name
+			count
+		}
+		maxCount
+		total
+		totalCount
+	}
+}

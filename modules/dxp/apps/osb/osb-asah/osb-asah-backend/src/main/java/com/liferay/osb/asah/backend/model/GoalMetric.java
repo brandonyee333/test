@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.asah.backend.model;
+
+/**
+ * @author Marcellus Tavares
+ */
+public enum GoalMetric {
+
+	BOUNCE_RATE(false, true, PageMetricType.BOUNCE_RATE),
+	CLICK_RATE(false, false, PageMetricType.CLICK_THROUGH_RATE),
+	MAX_SCROLL_DEPTH(true, false, PageMetricType.MAX_SCROLL_DEPTH),
+	TIME_ON_PAGE(true, false, PageMetricType.TIME_ON_PAGE);
+
+	public PageMetricType getPageMetricType() {
+		return _pageMetricType;
+	}
+
+	public boolean isContinuous() {
+		return _continuous;
+	}
+
+	public boolean isInverseMetric() {
+		return _inverseMetric;
+	}
+
+	private GoalMetric(
+		boolean continuous, boolean inverseMetric,
+		PageMetricType pageMetricType) {
+
+		_continuous = continuous;
+		_inverseMetric = inverseMetric;
+		_pageMetricType = pageMetricType;
+	}
+
+	private final boolean _continuous;
+	private final boolean _inverseMetric;
+	private final PageMetricType _pageMetricType;
+
+}

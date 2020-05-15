@@ -1,0 +1,70 @@
+[
+	{
+		"assetId": "1",
+		"browserName": "Firefox",
+		"city": "Recife",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now}",
+		"primaryKey": "cf209d23f6e538f76b55a4633f6788cc5f99eb4b7be40dc811a69690859132ea",
+		"ratings": 0,
+		"ratingsScore": 0,
+		"title": "Blog Title",
+		"urls": [
+			"http://liferay.com/blog-title"
+		],
+		"userId": "1",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Recife",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now}",
+		"primaryKey": "cf209d23f6e538f76b55a4633sfassfa123213fdfa120dc811a69690859132ea",
+		"ratings": 2,
+		"ratingsScore": 0.9,
+		"title": "Blog Title",
+		"urls": [
+			"http://liferay.com/blog-title"
+		],
+		"userId": "2",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Recife",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now}",
+		"primaryKey": "cf209d23f6e538f76b55a4633sfassfa123213fdfa120dc811a69690859132ea",
+		"ratings": 0,
+		"ratingsScore": -1,
+		"title": "Blog Title",
+		"urls": [
+			"http://liferay.com/blog-title"
+		],
+		"userId": "3",
+		"views": 1
+	},
+	{
+		"assetId": "1",
+		"browserName": "Chrome",
+		"city": "Recife",
+		"country": "Brazil",
+		"deviceType": "Desktop",
+		"eventDate": "${now}",
+		"primaryKey": "cf209d23f6e538f76b55a4633sfassfa123213fdfa120dc811a69690859132ea",
+		"ratings": 1,
+		"ratingsScore": 0.6,
+		"title": "Blog Title",
+		"urls": [
+			"http://liferay.com/blog-title"
+		],
+		"userId": "4",
+		"views": 1
+	}
+]

@@ -1,0 +1,29 @@
+{
+	"mappings": {
+		"memberships": {
+			"properties": {
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"dateRemoved": {
+					"type": "date"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualId": {
+					"type": "keyword"
+				},
+				"individualSegmentId": {
+					"type": "keyword"
+				},
+				"status": {
+					"type": "keyword"
+				}
+			}
+		}
+	}
+}

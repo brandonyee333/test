@@ -1,0 +1,192 @@
+[
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "337984445922213329",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"953be104-5540-abf8-59b8-55f895200acc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"additionalName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "additionalName",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "middleName"
+				}
+			],
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": 20
+				}
+			],
+			"birthDate": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Date",
+					"name": "birthDate",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "birthday",
+					"value": "1970-01-01T00:00:00.000Z"
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "emailAddress",
+					"value": "test.test@liferay.com"
+				}
+			],
+			"familyName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "familyName",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "lastName",
+					"value": "Test"
+				}
+			],
+			"gender": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "gender",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "gender",
+					"value": "male"
+				}
+			],
+			"givenName": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "givenName",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "firstName",
+					"value": "Test"
+				}
+			],
+			"jobTitle": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "jobTitle",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "jobTitle",
+					"value": "Employee"
+				}
+			]
+		},
+		"id": "337984659206412898",
+		"individualSegmentIds": [
+		]
+	},
+	{
+		"activitiesCounts": [
+		],
+		"dataSourceAccountPKs": [
+			{
+				"accountPKs": [
+					"0016C00000BKWWJQA5"
+				],
+				"dataSourceId": "337984445922213329"
+			}
+		],
+		"dataSourceIndividualPKs": [
+			{
+				"dataSourceId": "337984445922213329",
+				"dataSourceType": "LIFERAY",
+				"individualPKs": [
+					"953be104-5540-abf8-59b8-5wer32200acc"
+				]
+			}
+		],
+		"dateCreated": "2019-02-08T22:40:44.412Z",
+		"dateModified": "2019-02-08T22:40:44.412Z",
+		"demographics": {
+			"age": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Number",
+					"name": "age",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "age",
+					"value": "100"
+				}
+			],
+			"email": [
+				{
+					"context": "demographics",
+					"dataSourceId": "337984445922213329",
+					"dataSourceName": "Liferay",
+					"dateModified": "2019-02-01T16:04:17.535Z",
+					"fieldType": "Text",
+					"name": "email",
+					"ownerId": "337984659206412898",
+					"ownerType": "individual",
+					"sourceName": "emailAddress",
+					"value": "dummy@liferay.com"
+				}
+			]
+		},
+		"id": "337984612356412845",
+		"individualSegmentIds": [
+			"327968823603500655"
+		]
+	}
+]

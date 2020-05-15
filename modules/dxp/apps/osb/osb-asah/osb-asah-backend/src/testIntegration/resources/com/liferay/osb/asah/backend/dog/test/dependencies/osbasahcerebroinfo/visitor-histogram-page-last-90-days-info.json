@@ -1,0 +1,719 @@
+[
+	{
+		"eventDate": "${now-1d}",
+		"individualId": "1",
+		"primaryKey": "1",
+		"sessionId": "1",
+		"url": "http://liferay.com",
+		"userId": "1"
+	},
+	{
+		"eventDate": "${now-1d}",
+		"individualId": "101",
+		"primaryKey": "1",
+		"sessionId": "101",
+		"url": "http://liferay.com",
+		"userId": "101"
+	},
+	{
+		"eventDate": "${now-2d}",
+		"primaryKey": "1",
+		"sessionId": "2",
+		"url": "http://liferay.com",
+		"userId": "2"
+	},
+	{
+		"eventDate": "${now-3d}",
+		"primaryKey": "1",
+		"sessionId": "3",
+		"url": "http://liferay.com",
+		"userId": "3"
+	},
+	{
+		"eventDate": "${now-4d}",
+		"primaryKey": "1",
+		"sessionId": "4",
+		"url": "http://liferay.com",
+		"userId": "4"
+	},
+	{
+		"eventDate": "${now-5d}",
+		"primaryKey": "1",
+		"sessionId": "5",
+		"url": "http://liferay.com",
+		"userId": "5"
+	},
+	{
+		"eventDate": "${now-6d}",
+		"primaryKey": "1",
+		"sessionId": "6",
+		"url": "http://liferay.com",
+		"userId": "6"
+	},
+	{
+		"eventDate": "${now-7d}",
+		"primaryKey": "1",
+		"sessionId": "7",
+		"url": "http://liferay.com",
+		"userId": "7"
+	},
+	{
+		"eventDate": "${now-8d}",
+		"primaryKey": "1",
+		"sessionId": "8",
+		"url": "http://liferay.com",
+		"userId": "8"
+	},
+	{
+		"eventDate": "${now-9d}",
+		"primaryKey": "1",
+		"sessionId": "9",
+		"url": "http://liferay.com",
+		"userId": "9"
+	},
+	{
+		"eventDate": "${now-10d}",
+		"primaryKey": "1",
+		"sessionId": "10",
+		"url": "http://liferay.com",
+		"userId": "10"
+	},
+	{
+		"eventDate": "${now-11d}",
+		"primaryKey": "1",
+		"sessionId": "11",
+		"url": "http://liferay.com",
+		"userId": "11"
+	},
+	{
+		"eventDate": "${now-12d}",
+		"primaryKey": "1",
+		"sessionId": "12",
+		"url": "http://liferay.com",
+		"userId": "12"
+	},
+	{
+		"eventDate": "${now-13d}",
+		"primaryKey": "1",
+		"sessionId": "13",
+		"url": "http://liferay.com",
+		"userId": "13"
+	},
+	{
+		"eventDate": "${now-14d}",
+		"primaryKey": "1",
+		"sessionId": "14",
+		"url": "http://liferay.com",
+		"userId": "14"
+	},
+	{
+		"eventDate": "${now-15d}",
+		"primaryKey": "1",
+		"sessionId": "15",
+		"url": "http://liferay.com",
+		"userId": "15"
+	},
+	{
+		"eventDate": "${now-16d}",
+		"primaryKey": "1",
+		"sessionId": "16",
+		"url": "http://liferay.com",
+		"userId": "16"
+	},
+	{
+		"eventDate": "${now-17d}",
+		"primaryKey": "1",
+		"sessionId": "17",
+		"url": "http://liferay.com",
+		"userId": "17"
+	},
+	{
+		"eventDate": "${now-18d}",
+		"primaryKey": "1",
+		"sessionId": "18",
+		"url": "http://liferay.com",
+		"userId": "18"
+	},
+	{
+		"eventDate": "${now-19d}",
+		"primaryKey": "1",
+		"sessionId": "19",
+		"url": "http://liferay.com",
+		"userId": "19"
+	},
+	{
+		"eventDate": "${now-20d}",
+		"primaryKey": "1",
+		"sessionId": "20",
+		"url": "http://liferay.com",
+		"userId": "20"
+	},
+	{
+		"eventDate": "${now-21d}",
+		"primaryKey": "1",
+		"sessionId": "21",
+		"url": "http://liferay.com",
+		"userId": "21"
+	},
+	{
+		"eventDate": "${now-22d}",
+		"primaryKey": "1",
+		"sessionId": "22",
+		"url": "http://liferay.com",
+		"userId": "22"
+	},
+	{
+		"eventDate": "${now-23d}",
+		"primaryKey": "1",
+		"sessionId": "23",
+		"url": "http://liferay.com",
+		"userId": "23"
+	},
+	{
+		"eventDate": "${now-24d}",
+		"primaryKey": "1",
+		"sessionId": "24",
+		"url": "http://liferay.com",
+		"userId": "24"
+	},
+	{
+		"eventDate": "${now-25d}",
+		"primaryKey": "1",
+		"sessionId": "25",
+		"url": "http://liferay.com",
+		"userId": "25"
+	},
+	{
+		"eventDate": "${now-26d}",
+		"primaryKey": "1",
+		"sessionId": "26",
+		"url": "http://liferay.com",
+		"userId": "26"
+	},
+	{
+		"eventDate": "${now-27d}",
+		"primaryKey": "1",
+		"sessionId": "27",
+		"url": "http://liferay.com",
+		"userId": "27"
+	},
+	{
+		"eventDate": "${now-28d}",
+		"primaryKey": "1",
+		"sessionId": "28",
+		"url": "http://liferay.com",
+		"userId": "28"
+	},
+	{
+		"eventDate": "${now-29d}",
+		"primaryKey": "1",
+		"sessionId": "29",
+		"url": "http://liferay.com",
+		"userId": "29"
+	},
+	{
+		"eventDate": "${now-30d}",
+		"primaryKey": "1",
+		"sessionId": "30",
+		"url": "http://liferay.com",
+		"userId": "30"
+	},
+	{
+		"eventDate": "${now-31d}",
+		"primaryKey": "1",
+		"sessionId": "31",
+		"url": "http://liferay.com",
+		"userId": "31"
+	},
+	{
+		"eventDate": "${now-32d}",
+		"primaryKey": "1",
+		"sessionId": "32",
+		"url": "http://liferay.com",
+		"userId": "32"
+	},
+	{
+		"eventDate": "${now-33d}",
+		"primaryKey": "1",
+		"sessionId": "33",
+		"url": "http://liferay.com",
+		"userId": "33"
+	},
+	{
+		"eventDate": "${now-34d}",
+		"primaryKey": "1",
+		"sessionId": "34",
+		"url": "http://liferay.com",
+		"userId": "34"
+	},
+	{
+		"eventDate": "${now-35d}",
+		"primaryKey": "1",
+		"sessionId": "35",
+		"url": "http://liferay.com",
+		"userId": "35"
+	},
+	{
+		"eventDate": "${now-36d}",
+		"primaryKey": "1",
+		"sessionId": "36",
+		"url": "http://liferay.com",
+		"userId": "36"
+	},
+	{
+		"eventDate": "${now-37d}",
+		"primaryKey": "1",
+		"sessionId": "37",
+		"url": "http://liferay.com",
+		"userId": "37"
+	},
+	{
+		"eventDate": "${now-38d}",
+		"primaryKey": "1",
+		"sessionId": "38",
+		"url": "http://liferay.com",
+		"userId": "38"
+	},
+	{
+		"eventDate": "${now-39d}",
+		"primaryKey": "1",
+		"sessionId": "39",
+		"url": "http://liferay.com",
+		"userId": "39"
+	},
+	{
+		"eventDate": "${now-40d}",
+		"primaryKey": "1",
+		"sessionId": "40",
+		"url": "http://liferay.com",
+		"userId": "40"
+	},
+	{
+		"eventDate": "${now-41d}",
+		"primaryKey": "1",
+		"sessionId": "41",
+		"url": "http://liferay.com",
+		"userId": "41"
+	},
+	{
+		"eventDate": "${now-42d}",
+		"primaryKey": "1",
+		"sessionId": "42",
+		"url": "http://liferay.com",
+		"userId": "42"
+	},
+	{
+		"eventDate": "${now-43d}",
+		"primaryKey": "1",
+		"sessionId": "43",
+		"url": "http://liferay.com",
+		"userId": "43"
+	},
+	{
+		"eventDate": "${now-44d}",
+		"primaryKey": "1",
+		"sessionId": "44",
+		"url": "http://liferay.com",
+		"userId": "44"
+	},
+	{
+		"eventDate": "${now-45d}",
+		"primaryKey": "1",
+		"sessionId": "45",
+		"url": "http://liferay.com",
+		"userId": "45"
+	},
+	{
+		"eventDate": "${now-46d}",
+		"primaryKey": "1",
+		"sessionId": "46",
+		"url": "http://liferay.com",
+		"userId": "46"
+	},
+	{
+		"eventDate": "${now-47d}",
+		"primaryKey": "1",
+		"sessionId": "47",
+		"url": "http://liferay.com",
+		"userId": "47"
+	},
+	{
+		"eventDate": "${now-48d}",
+		"primaryKey": "1",
+		"sessionId": "48",
+		"url": "http://liferay.com",
+		"userId": "48"
+	},
+	{
+		"eventDate": "${now-49d}",
+		"primaryKey": "1",
+		"sessionId": "49",
+		"url": "http://liferay.com",
+		"userId": "49"
+	},
+	{
+		"eventDate": "${now-50d}",
+		"primaryKey": "1",
+		"sessionId": "50",
+		"url": "http://liferay.com",
+		"userId": "50"
+	},
+	{
+		"eventDate": "${now-51d}",
+		"primaryKey": "1",
+		"sessionId": "51",
+		"url": "http://liferay.com",
+		"userId": "51"
+	},
+	{
+		"eventDate": "${now-52d}",
+		"primaryKey": "1",
+		"sessionId": "52",
+		"url": "http://liferay.com",
+		"userId": "52"
+	},
+	{
+		"eventDate": "${now-53d}",
+		"primaryKey": "1",
+		"sessionId": "53",
+		"url": "http://liferay.com",
+		"userId": "53"
+	},
+	{
+		"eventDate": "${now-54d}",
+		"primaryKey": "1",
+		"sessionId": "54",
+		"url": "http://liferay.com",
+		"userId": "54"
+	},
+	{
+		"eventDate": "${now-55d}",
+		"primaryKey": "1",
+		"sessionId": "55",
+		"url": "http://liferay.com",
+		"userId": "55"
+	},
+	{
+		"eventDate": "${now-56d}",
+		"primaryKey": "1",
+		"sessionId": "56",
+		"url": "http://liferay.com",
+		"userId": "56"
+	},
+	{
+		"eventDate": "${now-57d}",
+		"primaryKey": "1",
+		"sessionId": "57",
+		"url": "http://liferay.com",
+		"userId": "57"
+	},
+	{
+		"eventDate": "${now-58d}",
+		"primaryKey": "1",
+		"sessionId": "58",
+		"url": "http://liferay.com",
+		"userId": "58"
+	},
+	{
+		"eventDate": "${now-59d}",
+		"primaryKey": "1",
+		"sessionId": "59",
+		"url": "http://liferay.com",
+		"userId": "59"
+	},
+	{
+		"eventDate": "${now-60d}",
+		"primaryKey": "1",
+		"sessionId": "60",
+		"url": "http://liferay.com",
+		"userId": "60"
+	},
+	{
+		"eventDate": "${now-61d}",
+		"primaryKey": "1",
+		"sessionId": "61",
+		"url": "http://liferay.com",
+		"userId": "61"
+	},
+	{
+		"eventDate": "${now-62d}",
+		"primaryKey": "1",
+		"sessionId": "62",
+		"url": "http://liferay.com",
+		"userId": "62"
+	},
+	{
+		"eventDate": "${now-63d}",
+		"primaryKey": "1",
+		"sessionId": "63",
+		"url": "http://liferay.com",
+		"userId": "63"
+	},
+	{
+		"eventDate": "${now-64d}",
+		"primaryKey": "1",
+		"sessionId": "64",
+		"url": "http://liferay.com",
+		"userId": "64"
+	},
+	{
+		"eventDate": "${now-65d}",
+		"primaryKey": "1",
+		"sessionId": "65",
+		"url": "http://liferay.com",
+		"userId": "65"
+	},
+	{
+		"eventDate": "${now-66d}",
+		"primaryKey": "1",
+		"sessionId": "66",
+		"url": "http://liferay.com",
+		"userId": "66"
+	},
+	{
+		"eventDate": "${now-67d}",
+		"primaryKey": "1",
+		"sessionId": "67",
+		"url": "http://liferay.com",
+		"userId": "67"
+	},
+	{
+		"eventDate": "${now-68d}",
+		"primaryKey": "1",
+		"sessionId": "68",
+		"url": "http://liferay.com",
+		"userId": "68"
+	},
+	{
+		"eventDate": "${now-69d}",
+		"primaryKey": "1",
+		"sessionId": "69",
+		"url": "http://liferay.com",
+		"userId": "69"
+	},
+	{
+		"eventDate": "${now-70d}",
+		"primaryKey": "1",
+		"sessionId": "70",
+		"url": "http://liferay.com",
+		"userId": "70"
+	},
+	{
+		"eventDate": "${now-71d}",
+		"primaryKey": "1",
+		"sessionId": "71",
+		"url": "http://liferay.com",
+		"userId": "71"
+	},
+	{
+		"eventDate": "${now-72d}",
+		"primaryKey": "1",
+		"sessionId": "72",
+		"url": "http://liferay.com",
+		"userId": "72"
+	},
+	{
+		"eventDate": "${now-73d}",
+		"primaryKey": "1",
+		"sessionId": "73",
+		"url": "http://liferay.com",
+		"userId": "73"
+	},
+	{
+		"eventDate": "${now-74d}",
+		"primaryKey": "1",
+		"sessionId": "74",
+		"url": "http://liferay.com",
+		"userId": "74"
+	},
+	{
+		"eventDate": "${now-75d}",
+		"primaryKey": "1",
+		"sessionId": "75",
+		"url": "http://liferay.com",
+		"userId": "75"
+	},
+	{
+		"eventDate": "${now-76d}",
+		"primaryKey": "1",
+		"sessionId": "76",
+		"url": "http://liferay.com",
+		"userId": "76"
+	},
+	{
+		"eventDate": "${now-77d}",
+		"primaryKey": "1",
+		"sessionId": "77",
+		"url": "http://liferay.com",
+		"userId": "77"
+	},
+	{
+		"eventDate": "${now-78d}",
+		"primaryKey": "1",
+		"sessionId": "78",
+		"url": "http://liferay.com",
+		"userId": "78"
+	},
+	{
+		"eventDate": "${now-79d}",
+		"primaryKey": "1",
+		"sessionId": "79",
+		"url": "http://liferay.com",
+		"userId": "79"
+	},
+	{
+		"eventDate": "${now-80d}",
+		"primaryKey": "1",
+		"sessionId": "80",
+		"url": "http://liferay.com",
+		"userId": "80"
+	},
+	{
+		"eventDate": "${now-81d}",
+		"primaryKey": "1",
+		"sessionId": "81",
+		"url": "http://liferay.com",
+		"userId": "81"
+	},
+	{
+		"eventDate": "${now-82d}",
+		"primaryKey": "1",
+		"sessionId": "82",
+		"url": "http://liferay.com",
+		"userId": "82"
+	},
+	{
+		"eventDate": "${now-83d}",
+		"primaryKey": "1",
+		"sessionId": "83",
+		"url": "http://liferay.com",
+		"userId": "83"
+	},
+	{
+		"eventDate": "${now-84d}",
+		"primaryKey": "1",
+		"sessionId": "84",
+		"url": "http://liferay.com",
+		"userId": "84"
+	},
+	{
+		"eventDate": "${now-85d}",
+		"primaryKey": "1",
+		"sessionId": "85",
+		"url": "http://liferay.com",
+		"userId": "85"
+	},
+	{
+		"eventDate": "${now-86d}",
+		"primaryKey": "1",
+		"sessionId": "86",
+		"url": "http://liferay.com",
+		"userId": "86"
+	},
+	{
+		"eventDate": "${now-87d}",
+		"primaryKey": "1",
+		"sessionId": "87",
+		"url": "http://liferay.com",
+		"userId": "87"
+	},
+	{
+		"eventDate": "${now-88d}",
+		"primaryKey": "1",
+		"sessionId": "88",
+		"url": "http://liferay.com",
+		"userId": "88"
+	},
+	{
+		"eventDate": "${now-89d}",
+		"primaryKey": "1",
+		"sessionId": "89",
+		"url": "http://liferay.com",
+		"userId": "89"
+	},
+	{
+		"eventDate": "${now-90d}",
+		"primaryKey": "1",
+		"sessionId": "90",
+		"url": "http://liferay.com",
+		"userId": "90"
+	},
+	{
+		"eventDate": "${now-91d}",
+		"primaryKey": "1",
+		"sessionId": "91",
+		"url": "http://liferay.com",
+		"userId": "91"
+	},
+	{
+		"eventDate": "${now-92d}",
+		"primaryKey": "1",
+		"sessionId": "92",
+		"url": "http://liferay.com",
+		"userId": "92"
+	},
+	{
+		"eventDate": "${now-93d}",
+		"primaryKey": "1",
+		"sessionId": "93",
+		"url": "http://liferay.com",
+		"userId": "93"
+	},
+	{
+		"eventDate": "${now-94d}",
+		"primaryKey": "1",
+		"sessionId": "94",
+		"url": "http://liferay.com",
+		"userId": "94"
+	},
+	{
+		"eventDate": "${now-95d}",
+		"primaryKey": "1",
+		"sessionId": "95",
+		"url": "http://liferay.com",
+		"userId": "95"
+	},
+	{
+		"eventDate": "${now-96d}",
+		"primaryKey": "1",
+		"sessionId": "96",
+		"url": "http://liferay.com",
+		"userId": "96"
+	},
+	{
+		"eventDate": "${now-97d}",
+		"primaryKey": "1",
+		"sessionId": "97",
+		"url": "http://liferay.com",
+		"userId": "97"
+	},
+	{
+		"eventDate": "${now-98d}",
+		"primaryKey": "1",
+		"sessionId": "98",
+		"url": "http://liferay.com",
+		"userId": "98"
+	},
+	{
+		"eventDate": "${now-99d}",
+		"primaryKey": "1",
+		"sessionId": "99",
+		"url": "http://liferay.com",
+		"userId": "99"
+	},
+	{
+		"eventDate": "${now-100d}",
+		"primaryKey": "1",
+		"sessionId": "100",
+		"url": "http://liferay.com",
+		"userId": "100"
+	},
+	{
+		"eventDate": "${now-179d}",
+		"individualId": "2",
+		"primaryKey": "1",
+		"sessionId": "200",
+		"url": "http://liferay.com",
+		"userId": "200"
+	}
+]

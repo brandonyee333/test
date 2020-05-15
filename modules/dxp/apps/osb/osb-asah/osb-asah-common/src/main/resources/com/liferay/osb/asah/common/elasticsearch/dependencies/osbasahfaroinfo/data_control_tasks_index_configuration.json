@@ -1,0 +1,48 @@
+{
+	"mappings": {
+		"data-control-tasks": {
+			"properties": {
+				"batchId": {
+					"type": "keyword"
+				},
+				"completeDate": {
+					"type": "date"
+				},
+				"createDate": {
+					"type": "date"
+				},
+				"emailAddress": {
+					"normalizer": "case_insensitive_sort",
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"ownerId": {
+					"type": "keyword"
+				},
+				"startDate": {
+					"type": "date"
+				},
+				"status": {
+					"type": "keyword"
+				},
+				"type": {
+					"type": "keyword"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

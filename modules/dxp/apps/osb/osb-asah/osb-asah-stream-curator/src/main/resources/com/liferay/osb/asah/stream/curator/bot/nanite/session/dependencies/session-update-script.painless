@@ -1,0 +1,11 @@
+ctx._source.bounced = params.bounced;
+ctx._source.interactions.addAll(params.interactions);
+ctx._source.interactionsCount = params.interactionsCount;
+ctx._source.pageViewsCount = params.pageViewsCount;
+
+def oldLastEventDate = ZonedDateTime.parse(ctx._source.lastEventDate);
+def newLastEventDate = ZonedDateTime.parse(params.lastEventDate);
+
+if (oldLastEventDate.isBefore(newLastEventDate)) {
+	ctx._source.lastEventDate = params.lastEventDate;
+}

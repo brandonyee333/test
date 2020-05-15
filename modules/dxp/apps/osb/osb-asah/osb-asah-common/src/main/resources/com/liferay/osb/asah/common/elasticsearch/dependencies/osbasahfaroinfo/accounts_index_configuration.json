@@ -1,0 +1,71 @@
+{
+	"mappings": {
+		"accounts": {
+			"dynamic_templates": [
+				{
+					"template_string_properties": {
+						"mapping": {
+							"type": "keyword"
+						},
+						"match": "*",
+						"match_mapping_type": "string"
+					}
+				}
+			],
+			"properties": {
+				"accountPK": {
+					"type": "keyword"
+				},
+				"activeIndividualCount": {
+					"type": "long"
+				},
+				"activitiesCount": {
+					"type": "long"
+				},
+				"activitiesCounts": {
+					"properties": {
+						"activitiesCount": {
+							"type": "long"
+						},
+						"channelId": {
+							"type": "keyword"
+						}
+					},
+					"type": "nested"
+				},
+				"dataSourceId": {
+					"type": "keyword"
+				},
+				"dateCreated": {
+					"type": "date"
+				},
+				"dateModified": {
+					"type": "date"
+				},
+				"engagementScore": {
+					"type": "double"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"individualCount": {
+					"type": "long"
+				},
+				"individualCounts": {
+					"properties": {
+						"channelId": {
+							"type": "keyword"
+						},
+						"individualCount": {
+							"type": "long"
+						}
+					},
+					"type": "nested"
+				},
+				"organization": {
+					"type": "object"
+				}
+			}
+		}
+	}
+}

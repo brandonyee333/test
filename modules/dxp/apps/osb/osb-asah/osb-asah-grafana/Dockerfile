@@ -1,0 +1,10 @@
+FROM grafana/grafana:5.3.0
+
+COPY docker-resources/ /
+
+ENV GF_AUTH_ANONYMOUS_ENABLED=false
+ENV GF_DEFAULT_INSTANCE_NAME=grafana
+ENV GF_SECURITY_ADMIN_USER=liferay
+ENV GF_SECURITY_ADMIN_PASSWORD=r3m3mb3r
+
+USER root

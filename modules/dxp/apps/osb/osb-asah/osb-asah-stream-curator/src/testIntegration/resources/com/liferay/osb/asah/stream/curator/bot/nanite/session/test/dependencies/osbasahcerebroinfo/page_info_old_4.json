@@ -1,0 +1,58 @@
+[
+	{
+		"asset": false,
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"contentLanguageId": "en-US",
+		"country": null,
+		"ctaclicks": 0,
+		"dataSourceId": "362055312804551713",
+		"deviceType": "Desktop",
+		"directAccess": 0,
+		"directAccessDates": [
+		],
+		"engagementScore": 0,
+		"entrances": 0,
+		"eventDate": "2019-09-09T07:00:00.000Z",
+		"exits": 0,
+		"experienceId": "",
+		"experimentId": "",
+		"firstEventDate": "2019-09-09T07:50:21.364Z",
+		"formSubmissions": 0,
+		"id": "372250348521977621",
+		"indirectAccess": 1,
+		"indirectAccessDates": [
+			"2019-09-09T07:50:21.364Z"
+		],
+		"individualId": "372248816488851698",
+		"interactionDates": [
+			"2019-09-09T07:52:21.364Z",
+			"2019-09-09T07:55:21.364Z"
+		],
+		"knownIndividual": true,
+		"lastEventDate": "2019-09-09T07:55:21.364Z",
+		"modifiedDate": "2019-09-09T07:55:21.364Z",
+		"pageScrolls": [
+			{
+				"depth": 75,
+				"eventDate": "2019-09-09T07:55:21.364Z"
+			}
+		],
+		"platformName": "Windows",
+		"primaryKey": "55c666134c628619981d555166258a7f93bdc2b0fd25dbd91ae38c145c81eae1",
+		"region": null,
+		"searchTerm": null,
+		"segmentNames": [
+			"everybody"
+		],
+		"sessionId": null,
+		"timeOnPage": 0,
+		"title": "Welcome - Liferay",
+		"url": "http://192.168.108.90:8089/about",
+		"userId": "0cbc8e60-99cd-11e9-9129-a75b6df1b957",
+		"variantId": "",
+		"views": 1
+	}
+]

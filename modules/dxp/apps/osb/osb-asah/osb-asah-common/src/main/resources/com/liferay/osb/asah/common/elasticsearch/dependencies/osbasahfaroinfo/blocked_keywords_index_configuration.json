@@ -1,0 +1,39 @@
+{
+	"mappings": {
+		"blocked-keywords": {
+			"properties": {
+				"createDate": {
+					"type": "date"
+				},
+				"dataSourceIds": {
+					"type": "keyword"
+				},
+				"id": {
+					"type": "keyword"
+				},
+				"keyword": {
+					"analyzer": "english",
+					"fields": {
+						"raw": {
+							"normalizer": "case_insensitive_sort",
+							"type": "keyword"
+						}
+					},
+					"type": "text"
+				}
+			}
+		}
+	},
+	"settings": {
+		"analysis": {
+			"normalizer": {
+				"case_insensitive_sort": {
+					"char_filter": [
+					],
+					"filter": "lowercase",
+					"type": "custom"
+				}
+			}
+		}
+	}
+}

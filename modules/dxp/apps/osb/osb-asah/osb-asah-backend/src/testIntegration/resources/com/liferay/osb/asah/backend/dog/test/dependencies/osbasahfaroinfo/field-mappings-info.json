@@ -1,0 +1,134 @@
+[
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"331238757269547423": "emailAddress"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "email",
+		"fieldType": "http://schema.org/email",
+		"id": "331238757947565158",
+		"ownerType": "individual",
+		"restricted": true,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "83330",
+			"name": "Hsed kgjCkmo"
+		},
+		"context": "demographics",
+		"dataSourceFieldNames": {
+			"351238757269547424": "favoritePokemon"
+		},
+		"dateCreated": "2019-01-02T17:09:08.023Z",
+		"dateModified": "2019-01-02T17:09:08.023Z",
+		"fieldName": "favoritePokemon",
+		"fieldType": "Text",
+		"id": "340477857996688156",
+		"ownerType": "individual",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"379649758131895520": "BillingCountry"
+		},
+		"dateCreated": "2019-10-16T21:25:15.802Z",
+		"dateModified": "2019-10-16T21:25:18.835Z",
+		"fieldName": "billingCountry",
+		"fieldType": "Text",
+		"id": "379649766567289722",
+		"ownerType": "account",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"379649758131895520": "BillingState"
+		},
+		"dateCreated": "2019-10-16T21:25:16.123Z",
+		"dateModified": "2019-10-16T21:25:18.497Z",
+		"fieldName": "billingState",
+		"fieldType": "Text",
+		"id": "379649767240351068",
+		"ownerType": "account",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"379649758131895520": "Industry"
+		},
+		"dateCreated": "2019-10-16T21:25:16.785Z",
+		"dateModified": "2019-10-16T21:25:18.469Z",
+		"fieldName": "industry",
+		"fieldType": "Text",
+		"id": "379649768628250505",
+		"ownerType": "account",
+		"restricted": false,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	},
+	{
+		"author": {
+			"id": "FARO_SYSTEM",
+			"name": "FARO_SYSTEM"
+		},
+		"context": "organization",
+		"dataSourceFieldNames": {
+			"379649758131895520": "Type"
+		},
+		"dateCreated": "2019-10-16T21:25:17.993Z",
+		"dateModified": "2019-10-16T21:25:18.387Z",
+		"fieldName": "accountType",
+		"fieldType": "Text",
+		"id": "379649771161360295",
+		"ownerType": "account",
+		"restricted": true,
+		"strategy": {
+			"configuration": {
+			},
+			"key": "MOST_RECENT"
+		}
+	}
+]
