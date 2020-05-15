@@ -26,6 +26,8 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.messaging.Message;
+import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.spring.extender.service.ServiceReference;
@@ -127,6 +129,23 @@ public class AccountEntryServiceImpl extends AccountEntryServiceBaseImpl {
 		// TODO
 
 		return null;
+	}
+
+	public void syncToZendesk(String koroneikiAccountKey)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		AccountEntry accountEntry =
+			accountEntryLocalService.getKoroneikiAccountEntry(
+				koroneikiAccountKey);
+
+		Message message = new Message();
+
+		message.put("accountEntryId", accountEntry.getAccountEntryId());
+
+		MessageBusUtil.sendMessage(
+			"liferay/zendesk_account_entry_sync", message);
 	}
 
 	public AccountEntry updateInstructions(
