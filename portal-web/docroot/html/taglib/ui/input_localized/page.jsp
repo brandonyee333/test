@@ -22,10 +22,10 @@
 			<liferay-ui:input-editor
 				contents="<%= mainLanguageValue %>"
 				contentsLanguageId="<%= languageId %>"
-				cssClass='<%= \"language-value \" + cssClass %>'
+				cssClass='<%= "language-value " + cssClass %>'
 				editorName="<%= editorName %>"
-				name='<%= inputEditorName %>'
-				onChangeMethod='<%= randomNamespace + \"onChangeEditor\" %>'
+				name="<%= inputEditorName %>"
+				onChangeMethod='<%= randomNamespace + "onChangeEditor" %>'
 				placeholder="<%= placeholder %>"
 				toolbarSet="<%= toolbarSet %>"
 			/>
