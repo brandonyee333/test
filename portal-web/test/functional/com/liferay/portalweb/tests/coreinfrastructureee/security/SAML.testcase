@@ -818,8 +818,6 @@ definition {
 
 		AssertConsoleTextNotPresent(value1 = "The portal instance needs to be restarted");
 
-		AssertConsoleTextPresent(value1 = "STARTED com.liferay.saml.");
-
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
