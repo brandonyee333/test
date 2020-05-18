@@ -30,14 +30,10 @@ import java.math.RoundingMode;
 
 import java.nio.charset.StandardCharsets;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -50,6 +46,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -69,33 +66,24 @@ public class RootRestController {
 			throw new IllegalArgumentException("URL is null");
 		}
 
-		List<TrafficSource> trafficSources = new ArrayList<>();
-
-		Optional<Integer> organicSearchKeywordsTotalTrafficAmountOptional =
+		int organicSearchKeywordsTotalTrafficAmount =
 			_getSearchKeywordsTotalTrafficAmount("url_organic", url);
-		Optional<Integer> paidSearchKeywordsTotalTrafficAmountOptional =
+		int paidSearchKeywordsTotalTrafficAmount =
 			_getSearchKeywordsTotalTrafficAmount("url_adwords", url);
 
-		int totalTrafficAmount = Math.addExact(
-			organicSearchKeywordsTotalTrafficAmountOptional.orElse(0),
-			paidSearchKeywordsTotalTrafficAmountOptional.orElse(0));
-
-		organicSearchKeywordsTotalTrafficAmountOptional.ifPresent(
-			organicSearchKeywordsTotalTrafficAmount -> trafficSources.add(
-				new TrafficSource(
-					"organic", organicSearchKeywordsTotalTrafficAmount,
-					_calculatePercentage(
-						organicSearchKeywordsTotalTrafficAmount,
-						totalTrafficAmount))));
-		paidSearchKeywordsTotalTrafficAmountOptional.ifPresent(
-			paidSearchKeywordsTotalTrafficAmount -> trafficSources.add(
-				new TrafficSource(
-					"paid", paidSearchKeywordsTotalTrafficAmount,
-					_calculatePercentage(
-						paidSearchKeywordsTotalTrafficAmount,
-						totalTrafficAmount))));
-
-		return trafficSources;
+		return Arrays.asList(
+			new TrafficSource(
+				"organic", organicSearchKeywordsTotalTrafficAmount,
+				_calculatePercentage(
+					organicSearchKeywordsTotalTrafficAmount,
+					organicSearchKeywordsTotalTrafficAmount +
+						paidSearchKeywordsTotalTrafficAmount)),
+			new TrafficSource(
+				"paid", paidSearchKeywordsTotalTrafficAmount,
+				_calculatePercentage(
+					paidSearchKeywordsTotalTrafficAmount,
+					organicSearchKeywordsTotalTrafficAmount +
+						paidSearchKeywordsTotalTrafficAmount)));
 	}
 
 	private double _calculatePercentage(int value, int total) {
@@ -134,68 +122,40 @@ public class RootRestController {
 		return beanListProcessor.getBeans();
 	}
 
-	private Optional<Integer> _getSearchKeywordsTotalTrafficAmount(
-		String type, String url) {
+	private int _getSearchKeywordsTotalTrafficAmount(String type, String url) {
+		UriComponentsBuilder uriComponentsBuilder =
+			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
 
-		try {
-			UriComponentsBuilder uriComponentsBuilder =
-				UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
+		// TODO Use country codes to set database (LPS-111042)
 
-			// TODO Use country codes to set database (LPS-111042)
+		uriComponentsBuilder.queryParam("database", "us");
+		uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
+		uriComponentsBuilder.queryParam("display_limit", 100);
+		uriComponentsBuilder.queryParam("display_sort", "tg_desc");
+		uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
+		uriComponentsBuilder.queryParam(
+			"key", _environment.getProperty("SEMRUSH_API_KEY"));
+		uriComponentsBuilder.queryParam("type", type);
+		uriComponentsBuilder.queryParam("url", url);
 
-			uriComponentsBuilder.queryParam("database", "us");
-			uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
-			uriComponentsBuilder.queryParam("display_limit", 100);
-			uriComponentsBuilder.queryParam("display_sort", "tg_desc");
-			uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
-			uriComponentsBuilder.queryParam(
-				"key", _environment.getProperty("SEMRUSH_API_KEY"));
-			uriComponentsBuilder.queryParam("type", type);
-			uriComponentsBuilder.queryParam("url", url);
+		UriComponents uriComponents = uriComponentsBuilder.build();
 
-			UriComponents uriComponents = uriComponentsBuilder.build();
+		ResponseEntity<String> responseEntity = _http.exchangeResponseEntity(
+			uriComponents.toUriString(), null, HttpMethod.GET, null);
 
-			ResponseEntity<String> responseEntity =
-				_http.exchangeResponseEntity(
-					uriComponents.toUriString(), null, HttpMethod.GET, null);
-
-			if (!Objects.equals(
-					responseEntity.getStatusCode(), HttpStatus.OK)) {
-
-				if (_logger.isDebugEnabled()) {
-					_logger.debug(
-						String.format(
-							"Unexpected response status code %s",
-							responseEntity.getStatusCode()));
-				}
-
-				return Optional.empty();
-			}
-
-			List<SearchKeyword> searchKeywords = _getSearchKeywords(
-				responseEntity.getBody());
-
-			Stream<SearchKeyword> stream = searchKeywords.stream();
-
-			return Optional.of(
-				stream.mapToInt(
-					SearchKeyword::getTraffic
-				).sum());
+		if (!Objects.equals(responseEntity.getStatusCode(), HttpStatus.OK)) {
+			throw new HttpClientErrorException(responseEntity.getStatusCode());
 		}
-		catch (Exception exception) {
-			_logger.error(
-				String.format(
-					"Unable to get search keywords total traffic amount of " +
-						"type %s",
-					type),
-				exception);
 
-			return Optional.empty();
-		}
+		List<SearchKeyword> searchKeywords = _getSearchKeywords(
+			responseEntity.getBody());
+
+		Stream<SearchKeyword> stream = searchKeywords.stream();
+
+		return stream.mapToInt(
+			SearchKeyword::getTraffic
+		).sum();
 	}
-
-	private static final Logger _logger = LoggerFactory.getLogger(
-		RootRestController.class);
 
 	@Autowired
 	private Environment _environment;
