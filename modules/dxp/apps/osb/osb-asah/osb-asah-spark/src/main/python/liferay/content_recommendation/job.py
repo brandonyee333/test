@@ -155,7 +155,7 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		data_frame_writer.csv(
 		    '{}/{}/{}'.format(
-		        configuration.get('storage.path'), args.lcp_project_id,
+		        configuration.get('aws.storage.path'), args.lcp_project_id,
 		        self._data_frame_name
 		    ),
 		    header=True,
