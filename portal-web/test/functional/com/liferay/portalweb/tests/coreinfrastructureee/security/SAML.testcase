@@ -813,18 +813,17 @@ definition {
 	}
 
 	@priority = "5"
-	test HotDeploySAML{
+	test HotDeploySAML {
 		property hot.deploy.osgi.app.includes = "saml";
 
 		AssertConsoleTextNotPresent(value1 = "The portal instance needs to be restarted");
 
-        AssertConsoleTextPresent(value1 = "STARTED com.liferay.saml.");
+		AssertConsoleTextPresent(value1 = "STARTED com.liferay.saml.");
 
 		ProductMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
 			portlet = "SAML Admin");
-
 	}
 
 	@priority = "4"
