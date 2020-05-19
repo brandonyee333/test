@@ -1,0 +1,7 @@
+services:
+    osbasahspark:
+        build: ./osb-asah-spark
+        container_name: osbasahspark
+        ports:
+            - "8998:8998"
+version: "2.4"
