@@ -121,6 +121,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				QueryBuilders.termsQuery("step", "DATA_SOLUTION")
 			));
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"There are %s running job executions", jsonArray.length()));
+		}
+
 		for (int i = 0; i < jsonArray.length(); i++) {
 			_run(jsonArray.getJSONObject(i));
 		}
@@ -138,6 +144,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	private String _createBatchInferenceJobArn(
 		String jobId, String solutionVersionArn) {
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Creating batch inference job with solution version arn " +
+					solutionVersionArn);
+		}
+
 		BatchInferenceJobInput batchInferenceJobInput =
 			new BatchInferenceJobInput();
 
@@ -150,6 +162,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 							ServiceConstants.LCP_PROJECT_ID, jobId));
 				}
 			});
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Using batch inference job input S3 datasource " +
+					batchInferenceJobInput.getS3DataSource());
+		}
 
 		BatchInferenceJobOutput batchInferenceJobOutput =
 			new BatchInferenceJobOutput();
@@ -164,6 +182,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 							ServiceConstants.LCP_PROJECT_ID, jobId));
 				}
 			});
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Using batch inference job output S3 destination " +
+					batchInferenceJobOutput.getS3DataDestination());
+		}
 
 		CreateBatchInferenceJobResult createBatchInferenceJobResult =
 			_amazonPersonalize.createBatchInferenceJob(
@@ -185,6 +209,10 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createDatasetGroupArn(String jobId) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Creating dataset group with job ID " + jobId);
+		}
+
 		CreateDatasetGroupResult createDatasetGroupResult =
 			_amazonPersonalize.createDatasetGroup(
 				new CreateDatasetGroupRequest() {
@@ -205,6 +233,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createSolutionArn(String datasetGroupArn) {
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Creating item similarity solution with dataset group arn " +
+					datasetGroupArn);
+		}
+
 		CreateSolutionResult createSolutionResult =
 			_amazonPersonalize.createSolution(
 				new CreateSolutionRequest() {
@@ -219,6 +253,11 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createSolutionVersionArn(String solutionArn) {
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Creating solution version with solution arn " + solutionArn);
+		}
+
 		CreateSolutionVersionResult createSolutionVersionResult =
 			_amazonPersonalize.createSolutionVersion(
 				new CreateSolutionVersionRequest() {
@@ -232,6 +271,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 	private String _createUserItemInteractionsDatasetArn(
 		String datasetGroupArn) {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Creating user item interactions dataset with dataset group " +
+					"arn " + datasetGroupArn);
+		}
 
 		CreateDatasetResult createDatasetResult =
 			_amazonPersonalize.createDataset(
@@ -251,6 +296,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	private String _createUserItemInteractionsDatasetImportJobArn(
 		String jobId, String userItemInteractionsDatasetArn) {
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Creating user item interactions dataset import job with " +
+					"dataset arn " + userItemInteractionsDatasetArn);
+		}
+
 		String jobName = String.format(
 			"user_item_interactions_dataset_import_job_%s",
 			RandomStringUtils.randomAlphanumeric(4, 5));
@@ -261,6 +312,11 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			String.format(
 				"%s/%s/%s/user_item_interactions/", _awsPersonalizeDataLocation,
 				ServiceConstants.LCP_PROJECT_ID, jobId));
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Using data source location " + dataSource.getDataLocation());
+		}
 
 		CreateDatasetImportJobResult createDatasetImportJobResult =
 			_amazonPersonalize.createDatasetImportJob(
@@ -277,6 +333,10 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createUserItemInteractionsDatasetSchemaArn() {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Creating user item interactions dataset schema");
+		}
+
 		JSONObject schemaJSONObject = JSONUtil.put(
 			"fields",
 			JSONUtil.putAll(
@@ -409,6 +469,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			_amazonPersonalize.describeBatchInferenceJob(
 				describeBatchInferenceJobRequest);
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Fetched batch inference job " +
+					describeBatchInferenceJobResult.getBatchInferenceJob());
+		}
+
 		return describeBatchInferenceJobResult.getBatchInferenceJob();
 	}
 
@@ -427,6 +493,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		DescribeDatasetGroupResult describeDatasetGroupResult =
 			_amazonPersonalize.describeDatasetGroup(
 				describeDatasetGroupRequest);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Fetched dataset group " +
+					describeDatasetGroupResult.getDatasetGroup());
+		}
 
 		return describeDatasetGroupResult.getDatasetGroup();
 	}
@@ -458,6 +530,11 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		DescribeSolutionResult describeSolutionResult =
 			_amazonPersonalize.describeSolution(describeSolutionRequest);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Fetched solution " + describeSolutionResult.getSolution());
+		}
 
 		return describeSolutionResult.getSolution();
 	}
@@ -493,6 +570,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			_amazonPersonalize.describeSolutionVersion(
 				describeSolutionVersionRequest);
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Fetched solution version " +
+					describeSolutionVersionResult.getSolutionVersion());
+		}
+
 		return describeSolutionVersionResult.getSolutionVersion();
 	}
 
@@ -514,6 +597,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		DescribeDatasetResult describeDatasetResult =
 			_amazonPersonalize.describeDataset(describeDatasetRequest);
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Fetched user item interactions dataset " +
+					describeDatasetResult.getDataset());
+		}
 
 		return describeDatasetResult.getDataset();
 	}
@@ -558,6 +647,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			_amazonPersonalize.describeDatasetImportJob(
 				describeDatasetImportJobRequest);
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				"Fetched user item interactions dataset import job " +
+					describeDatasetImportJobResult.getDatasetImportJob());
+		}
+
 		return describeDatasetImportJobResult.getDatasetImportJob();
 	}
 
@@ -585,6 +680,10 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private void _run(JSONObject jobExecutionJSONObject) {
+		if (_log.isDebugEnabled()) {
+			_log.debug("Processing " + jobExecutionJSONObject.toString());
+		}
+
 		JSONObject jobJSONObject = jobExecutionJSONObject.getJSONObject("job");
 
 		DatasetGroup datasetGroup = _getOrCreateDatasetGroup(
