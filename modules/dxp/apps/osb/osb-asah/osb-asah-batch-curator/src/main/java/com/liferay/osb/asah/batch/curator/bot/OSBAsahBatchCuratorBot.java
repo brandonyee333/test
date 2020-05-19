@@ -175,6 +175,11 @@ public class OSBAsahBatchCuratorBot {
 		_threadPoolTaskExecutor.execute(new NanitesRunnable(naniteClassNames));
 	}
 
+	@Scheduled(cron = "0 */1 * * * ?")
+	public void runContentRecommendationDataSolutionNanite() {
+		run("ContentRecommendationDataSolutionNanite");
+	}
+
 	@Scheduled(cron = "0 */5 * * * ?")
 	public void runDataControlTasks() {
 		run("DataControlNanite");
