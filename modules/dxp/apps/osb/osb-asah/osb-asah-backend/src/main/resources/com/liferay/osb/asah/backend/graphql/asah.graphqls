@@ -463,6 +463,8 @@ type QueryType {
 		rangeKey: Int!,
 		size: Int!,
 		start: Int!
+		timePeriodEnd: String,
+		timePeriodStart: String,
 	): CompositionBag
 
 	assetPages(
@@ -670,6 +672,8 @@ type QueryType {
 		deviceType: String,
 		includePrevious: Boolean,
 		rangeKey: Int!,
+		timePeriodEnd: String,
+		timePeriodStart: String,
 		title: String,
 		url: String!
 	): PageMetric
@@ -684,6 +688,8 @@ type QueryType {
 		sort: Sort!,
 		start: Int!,
 		terms: String,
+		timePeriodEnd: String,
+		timePeriodStart: String,
 		variantId: String
 	): AssetMetricBag
 
@@ -709,6 +715,8 @@ type QueryType {
 		rangeKey: Int!,
 		size: Int!,
 		start: Int!
+		timePeriodEnd: String,
+		timePeriodStart: String,
 	): CompositionBag
 
 	site(
@@ -719,6 +727,8 @@ type QueryType {
 		includePrevious: Boolean,
 		interval: String,
 		rangeKey: Int,
+		timePeriodEnd: String,
+		timePeriodStart: String,
 		timeZoneId: String
 	): SiteMetric
 
@@ -728,6 +738,8 @@ type QueryType {
 		rangeKey: Int!,
 		size: Int!,
 		start: Int!
+		timePeriodEnd: String,
+		timePeriodStart: String,
 	): CompositionBag
 
 	siteVisitorHeatMap(
@@ -735,6 +747,8 @@ type QueryType {
 		channelId: String,
 		rangeKey: Int,
 		timeZoneId: String
+		timePeriodEnd: String,
+		timePeriodStart: String,
 	): [HeatMapMetric]
 
 	suppressions(
