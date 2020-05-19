@@ -49,7 +49,8 @@ public class DataprocSparkManager implements SparkManager {
 			JobControllerClient jobControllerClient =
 				_buildJobControllerClient();
 
-			jobControllerClient.submitJob(_buildSubmitJobRequest());
+			jobControllerClient.submitJob(
+				_buildSubmitJobRequest(arguments, configuration, name));
 
 			jobControllerClient.close();
 		}
@@ -58,11 +59,13 @@ public class DataprocSparkManager implements SparkManager {
 		}
 	}
 
-	private Job _buildJob() {
+	private Job _buildJob(
+		List<String> arguments, String configuration, String name) {
+
 		Job.Builder builder = Job.newBuilder();
 
 		builder.setPlacement(_buildJobPlacement());
-		builder.setPysparkJob(_buildPySparkJob());
+		builder.setPysparkJob(_buildPySparkJob(arguments, configuration, name));
 
 		return builder.build();
 	}
@@ -85,8 +88,21 @@ public class DataprocSparkManager implements SparkManager {
 		return builder.build();
 	}
 
-	private PySparkJob _buildPySparkJob() {
+	private PySparkJob _buildPySparkJob(
+		List<String> arguments, String configuration, String name) {
+
 		PySparkJob.Builder builder = PySparkJob.newBuilder();
+
+		builder.addArgs(name);
+
+		builder.addArgs("--configuration");
+
+		builder.addArgs(configuration);
+
+		builder.addAllArgs(arguments);
+
+		builder.addFileUris(
+			String.format("gs://%s/%s", _bucket, configuration));
 
 		builder.setMainPythonFileUri(
 			String.format("gs://%s/osb-asah-spark.py", _bucket));
@@ -94,10 +110,12 @@ public class DataprocSparkManager implements SparkManager {
 		return builder.build();
 	}
 
-	private SubmitJobRequest _buildSubmitJobRequest() {
+	private SubmitJobRequest _buildSubmitJobRequest(
+		List<String> arguments, String configuration, String name) {
+
 		SubmitJobRequest.Builder builder = SubmitJobRequest.newBuilder();
 
-		builder.setJob(_buildJob());
+		builder.setJob(_buildJob(arguments, configuration, name));
 		builder.setProjectId(_projectId);
 		builder.setRegion(_region);
 
