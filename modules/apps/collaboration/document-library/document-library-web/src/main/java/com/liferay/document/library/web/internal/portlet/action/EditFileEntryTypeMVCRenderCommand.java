@@ -67,11 +67,11 @@ public class EditFileEntryTypeMVCRenderCommand implements MVCRenderCommand {
 				return "/document_library/edit_file_entry_type.jsp";
 			}
 
-			DLFileEntryType dlFileEntryType =
-				_dlFileEntryTypeService.getFileEntryType(fileEntryTypeId);
-
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			DLFileEntryType dlFileEntryType =
+				_dlFileEntryTypeService.getFileEntryType(fileEntryTypeId);
 
 			DLFileEntryTypePermission.check(
 				themeDisplay.getPermissionChecker(), dlFileEntryType,

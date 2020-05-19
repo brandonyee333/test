@@ -52,11 +52,11 @@ public class EditFileShortcutMVCRenderCommand implements MVCRenderCommand {
 		throws PortletException {
 
 		try {
-			FileShortcut fileShortcut = ActionUtil.getFileShortcut(
-				renderRequest);
-
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+			FileShortcut fileShortcut = ActionUtil.getFileShortcut(
+				renderRequest);
 
 			DLFileShortcutPermission.check(
 				themeDisplay.getPermissionChecker(), fileShortcut,
