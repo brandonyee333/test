@@ -31,7 +31,6 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		    '--configuration <Configuration Path> '
 		    '--elasticsearch-hostname <Elasticsearch Hostname> '
 		    '--job-execution-id <Job Execution ID> '
-		    '--job-execution-step <Job Execution Step> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
@@ -39,7 +38,6 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		argument_parser.add_argument('--configuration', required=True)
 		argument_parser.add_argument('--elasticsearch-hostname', required=True)
 		argument_parser.add_argument('--job-execution-id', required=True)
-		argument_parser.add_argument('--job-execution-step', required=True)
 		argument_parser.add_argument('--lcp-project-id', required=True)
 
 		return argument_parser
@@ -63,10 +61,10 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		return spark_conf
 
-	def _create_spark_job_pipeline(self):
+	def _create_spark_job_pipeline(self, job_execution):
 		jobs = []
 
-		if self.args.job_execution_step == 'DATA_PREPARATION':
+		if job_execution.get('step') == 'DATA_PREPARATION':
 			jobs.append(ReadAnalyticsEventsSparkJob(self))
 
 			jobs.append(GenerateUserItemInteractionsSparkJob(self))
@@ -87,6 +85,10 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		return SparkJobPipeline(jobs)
 
 	def start(self):
-		spark_job_pipeline = self._create_spark_job_pipeline()
+		self.job_execution = self.elasticsearch_bridge.get_document(
+		    'job-executions', self.args.job_execution_id, 'osbasahfaroinfo'
+		)
+
+		spark_job_pipeline = self._create_spark_job_pipeline(self.job_execution)
 
 		spark_job_pipeline.run()
