@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1.test;
 
+import com.liferay.osb.asah.backend.ext.seo.model.SearchKeyword;
 import com.liferay.osb.asah.backend.ext.seo.model.TrafficSource;
 import com.liferay.osb.asah.backend.ext.seo.rest.controller.api.data.source.v1.RootRestController;
 import com.liferay.osb.asah.backend.ext.seo.spring.OSBAsahBackendExtSEOSpringBootApplication;
@@ -22,6 +23,8 @@ import com.liferay.osb.asah.common.spring.resource.ResourceUtil;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -45,10 +48,7 @@ import org.springframework.web.client.HttpClientErrorException;
  * @author David Arques
  */
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-@SpringBootTest(
-	classes = OSBAsahBackendExtSEOSpringBootApplication.class,
-	webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
-)
+@SpringBootTest(classes = OSBAsahBackendExtSEOSpringBootApplication.class)
 public class RootRestControllerTest {
 
 	@Before
@@ -91,9 +91,24 @@ public class RootRestControllerTest {
 			trafficSources.toString(), 2, trafficSources.size());
 
 		Assert.assertEquals(
-			new TrafficSource("organic", 3849, 94.25D), trafficSources.get(0));
+			new TrafficSource(
+				"organic",
+				Arrays.asList(
+					new SearchKeyword("liferay", 1, 3600, 2880),
+					new SearchKeyword("liferay portal", 1, 390, 312),
+					new SearchKeyword("liferay inc", 1, 260, 208)),
+				3400, 85.41D),
+			trafficSources.get(0));
+
 		Assert.assertEquals(
-			new TrafficSource("paid", 235, 5.75D), trafficSources.get(1));
+			new TrafficSource(
+				"paid",
+				Arrays.asList(
+					new SearchKeyword("dxp enterprises", 1, 4400, 206),
+					new SearchKeyword("intranet definition", 1, 4400, 206),
+					new SearchKeyword("dxp", 1, 3600, 169)),
+				581, 14.59D),
+			trafficSources.get(1));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -119,9 +134,11 @@ public class RootRestControllerTest {
 			trafficSources.toString(), 2, trafficSources.size());
 
 		Assert.assertEquals(
-			new TrafficSource("organic", 0, 0D), trafficSources.get(0));
+			new TrafficSource("organic", new ArrayList<>(), 0, 0D),
+			trafficSources.get(0));
 		Assert.assertEquals(
-			new TrafficSource("paid", 0, 0D), trafficSources.get(1));
+			new TrafficSource("paid", new ArrayList<>(), 0, 0D),
+			trafficSources.get(1));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
