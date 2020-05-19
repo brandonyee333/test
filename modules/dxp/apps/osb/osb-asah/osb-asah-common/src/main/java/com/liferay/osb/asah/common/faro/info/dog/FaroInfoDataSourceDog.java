@@ -254,6 +254,12 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 		return elasticsearchInvoker.get("data-sources", dataSourceId);
 	}
 
+	public String getDataSourceName(String id) {
+		JSONObject jsonObject = elasticsearchInvoker.get("data-sources", id);
+
+		return jsonObject.getString("name");
+	}
+
 	public String getDataSourceType(JSONObject dataSourceJSONObject) {
 		JSONObject providerJSONObject = dataSourceJSONObject.getJSONObject(
 			"provider");
