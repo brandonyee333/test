@@ -70,6 +70,7 @@
 		},
 		"context": "demographics",
 		"dataSourceFieldNames": {
+			"331238757269547423": "age",
 			"366588399828298918": "age",
 			"366588441118531472": "age",
 			"366588489711802687": "age"
@@ -122,27 +123,6 @@
 		"fieldType": "Text",
 		"id": "366573390725218943",
 		"ownerType": "account",
-		"strategy": {
-			"configuration": {
-			},
-			"key": "MOST_RECENT"
-		}
-	},
-	{
-		"author": {
-			"id": "03520",
-			"name": "txeBFx VFesQ"
-		},
-		"context": "demographics",
-		"dataSourceFieldNames": {
-			"331238757269547423": "age"
-		},
-		"dateCreated": "2019-01-02T17:09:09.985Z",
-		"dateModified": "2019-01-02T17:09:09.985Z",
-		"fieldName": "age",
-		"fieldType": "Number",
-		"id": "331238762059664836",
-		"ownerType": "individual",
 		"strategy": {
 			"configuration": {
 			},
