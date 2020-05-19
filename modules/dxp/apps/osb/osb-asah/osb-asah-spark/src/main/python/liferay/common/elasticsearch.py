@@ -13,7 +13,9 @@ from elasticsearch import Elasticsearch
 
 class ElasticsearchBridge:
 	def __init__(self, spark_application):
-		self.elasticsearch = Elasticsearch()
+		self.elasticsearch = Elasticsearch(
+		    spark_application.args.elasticsearch_hostname
+		)
 		self.spark_application = spark_application
 
 	def _get_index_path(self, collection_name, namespace):
