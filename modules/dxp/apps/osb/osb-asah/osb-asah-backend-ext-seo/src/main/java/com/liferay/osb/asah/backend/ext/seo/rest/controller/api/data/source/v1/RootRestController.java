@@ -36,6 +36,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
@@ -67,9 +68,11 @@ public class RootRestController {
 		}
 
 		int organicSearchKeywordsTotalTrafficAmount =
-			_getSearchKeywordsTotalTrafficAmount("url_organic", url);
+			_getSearchKeywordsTotalTrafficAmount(
+				_urlOrganicDisplayLimit, "url_organic", url);
 		int paidSearchKeywordsTotalTrafficAmount =
-			_getSearchKeywordsTotalTrafficAmount("url_adwords", url);
+			_getSearchKeywordsTotalTrafficAmount(
+				_urlAdwordsDisplayLimit, "url_adwords", url);
 
 		return Arrays.asList(
 			new TrafficSource(
@@ -122,7 +125,9 @@ public class RootRestController {
 		return beanListProcessor.getBeans();
 	}
 
-	private int _getSearchKeywordsTotalTrafficAmount(String type, String url) {
+	private int _getSearchKeywordsTotalTrafficAmount(
+		int displayLimit, String type, String url) {
+
 		UriComponentsBuilder uriComponentsBuilder =
 			UriComponentsBuilder.fromHttpUrl("https://api.semrush.com/");
 
@@ -130,7 +135,7 @@ public class RootRestController {
 
 		uriComponentsBuilder.queryParam("database", "us");
 		uriComponentsBuilder.queryParam("display_filter", "+|Tg|Gt|0");
-		uriComponentsBuilder.queryParam("display_limit", 100);
+		uriComponentsBuilder.queryParam("display_limit", displayLimit);
 		uriComponentsBuilder.queryParam("display_sort", "tg_desc");
 		uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
 		uriComponentsBuilder.queryParam(
@@ -162,5 +167,11 @@ public class RootRestController {
 
 	@Autowired
 	private Http _http;
+
+	@Value("${osb.asah.seo.semrush.url.adwords.display.limit:10}")
+	private int _urlAdwordsDisplayLimit;
+
+	@Value("${osb.asah.seo.semrush.url.organic.display.limit:25}")
+	private int _urlOrganicDisplayLimit;
 
 }
