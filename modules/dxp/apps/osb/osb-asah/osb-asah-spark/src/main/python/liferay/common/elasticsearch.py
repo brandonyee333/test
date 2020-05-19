@@ -25,6 +25,15 @@ class ElasticsearchBridge:
 
 		return index_path.lower()
 
+	def get_document(self, collection_name, id, namespace):
+		document = self.elasticsearch.get(
+		    doc_type=collection_name,
+		    id=id,
+		    index=self._get_index_path(collection_name, namespace)
+		)
+
+		return document.get('_source')
+
 	def read(self, collection_name, namespace):
 		spark_session = self.spark_application.spark_session
 
