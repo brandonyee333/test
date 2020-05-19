@@ -134,7 +134,9 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return amazonPersonalizeClientBuilder.build();
 	}
 
-	private String _createBatchInferenceJobArn(String solutionVersionArn) {
+	private String _createBatchInferenceJobArn(
+		String jobId, String solutionVersionArn) {
+
 		BatchInferenceJobInput batchInferenceJobInput =
 			new BatchInferenceJobInput();
 
@@ -143,8 +145,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				{
 					withPath(
 						String.format(
-							"%s/%s/items/", _awsPersonalizeDataLocation,
-							ServiceConstants.LCP_PROJECT_ID));
+							"%s/%s/%s/items/", _awsPersonalizeDataLocation,
+							ServiceConstants.LCP_PROJECT_ID, jobId));
 				}
 			});
 
@@ -156,9 +158,9 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				{
 					withPath(
 						String.format(
-							"%s/%s/inference_result/",
+							"%s/%s/%s/inference_result/",
 							_awsPersonalizeDataLocation,
-							ServiceConstants.LCP_PROJECT_ID));
+							ServiceConstants.LCP_PROJECT_ID, jobId));
 				}
 			});
 
@@ -246,7 +248,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private String _createUserItemInteractionsDatasetImportJobArn(
-		String userItemInteractionsDatasetArn) {
+		String jobId, String userItemInteractionsDatasetArn) {
 
 		String jobName = String.format(
 			"user_item_interactions_dataset_import_job_%s",
@@ -256,8 +258,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		dataSource.withDataLocation(
 			String.format(
-				"%s/%s/user_item_interactions/", _awsPersonalizeDataLocation,
-				ServiceConstants.LCP_PROJECT_ID));
+				"%s/%s/%s/user_item_interactions/", _awsPersonalizeDataLocation,
+				ServiceConstants.LCP_PROJECT_ID, jobId));
 
 		CreateDatasetImportJobResult createDatasetImportJobResult =
 			_amazonPersonalize.createDatasetImportJob(
@@ -381,8 +383,11 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			"batchInferenceJobArn", null);
 
 		if (batchInferenceJobArn == null) {
+			JSONObject jobJSONObject = jobExecutionJSONObject.getJSONObject(
+				"job");
+
 			batchInferenceJobArn = _createBatchInferenceJobArn(
-				solutionVersionArn);
+				jobJSONObject.getString("id"), solutionVersionArn);
 
 			jobExecutionContextJSONObject.put(
 				"batchInferenceJobArn", batchInferenceJobArn);
@@ -524,8 +529,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				"userItemInteractionsDatasetImportJobArn", null);
 
 		if (userItemInteractionsDatasetImportJobArn == null) {
+			JSONObject jobJSONObject = jobExecutionJSONObject.getJSONObject(
+				"job");
+
 			userItemInteractionsDatasetImportJobArn =
 				_createUserItemInteractionsDatasetImportJobArn(
+					jobJSONObject.getString("id"),
 					userItemInteractionsDatasetArn);
 
 			jobExecutionContextJSONObject.put(
