@@ -654,9 +654,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		_sparkManager.submitJob(
 			Arrays.asList(
 				"--job-execution-id", jobExecutionJSONObject.getString("id"),
-				"--job-execution-step",
-				jobExecutionJSONObject.getString("step"), "--lcp-project-id",
-				ServiceConstants.LCP_PROJECT_ID),
+				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml",
 			"liferay.content_recommendation.ContentRecommendationApplication");
 	}
