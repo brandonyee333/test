@@ -136,6 +136,10 @@
 			"href": "{url}/data-sources{?apply,filter,page,size,sort*}",
 			"templated": true
 		},
+		"definitions-individual-attributes": {
+			"href": "{url}/definitions/individual-attributes{?name}",
+			"templated": true
+		},
 		"engagement": {
 			"href": "{url}/engagements/{id}{?expand}",
 			"templated": true
