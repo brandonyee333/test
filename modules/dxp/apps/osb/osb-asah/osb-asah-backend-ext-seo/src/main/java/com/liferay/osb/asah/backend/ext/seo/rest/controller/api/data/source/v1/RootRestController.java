@@ -88,26 +88,32 @@ public class RootRestController {
 			throw new IllegalArgumentException("URL is null");
 		}
 
-		int organicSearchKeywordsTotalTrafficAmount =
-			_getSearchKeywordsTotalTrafficAmount(
-				_urlOrganicDisplayLimit, "url_organic", url);
-		int paidSearchKeywordsTotalTrafficAmount =
-			_getSearchKeywordsTotalTrafficAmount(
-				_urlAdwordsDisplayLimit, "url_adwords", url);
+		List<SearchKeyword> organicSearchKeywords = _getSearchKeywords(
+			_urlOrganicDisplayLimit, "url_organic", url);
+
+		int organicSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
+			organicSearchKeywords);
+
+		List<SearchKeyword> paidSearchKeywords = _getSearchKeywords(
+			_urlAdwordsDisplayLimit, "url_adwords", url);
+
+		int paidSearchKeywordsTotalTraffic = _getSearchKeywordsTotalTraffic(
+			paidSearchKeywords);
 
 		return Arrays.asList(
 			new TrafficSource(
-				"organic", organicSearchKeywordsTotalTrafficAmount,
+				"organic", organicSearchKeywords,
+				organicSearchKeywordsTotalTraffic,
 				_calculatePercentage(
-					organicSearchKeywordsTotalTrafficAmount,
-					organicSearchKeywordsTotalTrafficAmount +
-						paidSearchKeywordsTotalTrafficAmount)),
+					organicSearchKeywordsTotalTraffic,
+					organicSearchKeywordsTotalTraffic +
+						paidSearchKeywordsTotalTraffic)),
 			new TrafficSource(
-				"paid", paidSearchKeywordsTotalTrafficAmount,
+				"paid", paidSearchKeywords, paidSearchKeywordsTotalTraffic,
 				_calculatePercentage(
-					paidSearchKeywordsTotalTrafficAmount,
-					organicSearchKeywordsTotalTrafficAmount +
-						paidSearchKeywordsTotalTrafficAmount)));
+					paidSearchKeywordsTotalTraffic,
+					organicSearchKeywordsTotalTraffic +
+						paidSearchKeywordsTotalTraffic)));
 	}
 
 	private double _calculatePercentage(int value, int total) {
@@ -124,29 +130,7 @@ public class RootRestController {
 		return bigDecimal.doubleValue();
 	}
 
-	private List<SearchKeyword> _getSearchKeywords(String body) {
-		CsvParserSettings csvParserSettings = new CsvParserSettings();
-
-		CsvFormat csvFormat = csvParserSettings.getFormat();
-
-		csvFormat.setDelimiter(';');
-
-		csvParserSettings.setHeaderExtractionEnabled(true);
-
-		BeanListProcessor<SearchKeyword> beanListProcessor =
-			new BeanListProcessor<>(SearchKeyword.class);
-
-		csvParserSettings.setProcessor(beanListProcessor);
-
-		CsvParser csvParser = new CsvParser(csvParserSettings);
-
-		csvParser.parse(
-			new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
-
-		return beanListProcessor.getBeans();
-	}
-
-	private int _getSearchKeywordsTotalTrafficAmount(
+	private List<SearchKeyword> _getSearchKeywords(
 		int displayLimit, String type, String url) {
 
 		UriComponentsBuilder uriComponentsBuilder =
@@ -173,14 +157,39 @@ public class RootRestController {
 			throw new HttpClientErrorException(responseEntity.getStatusCode());
 		}
 
-		List<SearchKeyword> searchKeywords = _getSearchKeywords(
-			responseEntity.getBody());
+		return _toSearchKeywords(responseEntity.getBody());
+	}
+
+	private int _getSearchKeywordsTotalTraffic(
+		List<SearchKeyword> searchKeywords) {
 
 		Stream<SearchKeyword> stream = searchKeywords.stream();
 
 		return stream.mapToInt(
 			SearchKeyword::getTraffic
 		).sum();
+	}
+
+	private List<SearchKeyword> _toSearchKeywords(String body) {
+		CsvParserSettings csvParserSettings = new CsvParserSettings();
+
+		CsvFormat csvFormat = csvParserSettings.getFormat();
+
+		csvFormat.setDelimiter(';');
+
+		csvParserSettings.setHeaderExtractionEnabled(true);
+
+		BeanListProcessor<SearchKeyword> beanListProcessor =
+			new BeanListProcessor<>(SearchKeyword.class);
+
+		csvParserSettings.setProcessor(beanListProcessor);
+
+		CsvParser csvParser = new CsvParser(csvParserSettings);
+
+		csvParser.parse(
+			new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8)));
+
+		return beanListProcessor.getBeans();
 	}
 
 	private static final Log _log = LogFactory.getLog(RootRestController.class);
