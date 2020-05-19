@@ -39,6 +39,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author David Arques
@@ -128,7 +129,7 @@ public class RootRestControllerTest {
 		_rootRestController.getTrafficSources(null);
 	}
 
-	@Test
+	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.status(
@@ -141,13 +142,10 @@ public class RootRestControllerTest {
 			Mockito.any(HttpMethod.class), Mockito.anyObject()
 		);
 
-		List<TrafficSource> trafficSources =
-			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
-
-		Assert.assertTrue(trafficSources.isEmpty());
+		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 	}
 
-	@Test
+	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithURLAdwordsSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.ok(
@@ -171,17 +169,10 @@ public class RootRestControllerTest {
 			Mockito.any(HttpMethod.class), Mockito.anyObject()
 		);
 
-		List<TrafficSource> trafficSources =
-			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
-
-		Assert.assertEquals(
-			trafficSources.toString(), 1, trafficSources.size());
-
-		Assert.assertEquals(
-			new TrafficSource("organic", 3849, 100.D), trafficSources.get(0));
+		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 	}
 
-	@Test
+	@Test(expected = HttpClientErrorException.class)
 	public void testGetTrafficSourcesWithURLOrganicSEMrushAPIError() {
 		Mockito.doAnswer(
 			invocationOnMock -> ResponseEntity.status(
@@ -205,14 +196,7 @@ public class RootRestControllerTest {
 			Mockito.any(HttpMethod.class), Mockito.anyObject()
 		);
 
-		List<TrafficSource> trafficSources =
-			_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
-
-		Assert.assertEquals(
-			trafficSources.toString(), 1, trafficSources.size());
-
-		Assert.assertEquals(
-			new TrafficSource("paid", 235, 100.0D), trafficSources.get(0));
+		_rootRestController.getTrafficSources(RandomTestUtil.randomURL());
 	}
 
 	@Mock
