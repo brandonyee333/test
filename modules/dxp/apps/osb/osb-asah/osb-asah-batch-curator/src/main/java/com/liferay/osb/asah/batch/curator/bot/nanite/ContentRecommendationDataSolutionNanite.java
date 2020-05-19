@@ -113,11 +113,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
 			"job-executions",
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termQuery("job.type", "CONTENT_RECOMMENDATION")
+				QueryBuilders.termQuery(
+					"job.type", "CONTENT_RECOMMENDATION_ITEM_SIMILARITY")
 			).filter(
-				QueryBuilders.termQuery("status.keyword", "RUNNING")
+				QueryBuilders.termQuery("status", "RUNNING")
 			).filter(
-				QueryBuilders.termsQuery("step.keyword", "DATA_SOLUTION")
+				QueryBuilders.termsQuery("step", "DATA_SOLUTION")
 			));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
