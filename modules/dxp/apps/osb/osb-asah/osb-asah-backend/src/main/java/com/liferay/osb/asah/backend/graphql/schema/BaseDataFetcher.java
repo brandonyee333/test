@@ -16,6 +16,7 @@ package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.model.AssetType;
+import com.liferay.osb.asah.backend.model.TimeRange;
 
 import graphql.execution.ExecutionTypeInfo;
 
@@ -27,6 +28,8 @@ import graphql.language.SelectionSet;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
+
+import java.time.LocalDateTime;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -104,6 +107,19 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
 			searchQueryContext.setRangeKey(
 				dataFetchingEnvironment.getArgument("rangeKey"));
+		}
+		else if ((dataFetchingEnvironment.getArgument("timePeriodEnd") !=
+					null) &&
+				 (dataFetchingEnvironment.getArgument("timePeriodStart") !=
+					 null)) {
+
+			searchQueryContext.setTimeRange(
+				TimeRange.of(
+					LocalDateTime.parse(
+						dataFetchingEnvironment.getArgument("timePeriodEnd")),
+					LocalDateTime.parse(
+						dataFetchingEnvironment.getArgument(
+							"timePeriodStart"))));
 		}
 
 		searchQueryContext.setTerms(
