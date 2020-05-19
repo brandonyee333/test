@@ -50,10 +50,11 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		spark_conf.setAppName('Content Recommendation')
 		spark_conf.set('es.nodes', self.args.elasticsearch_hostname)
 		spark_conf.set(
-		    'fs.s3a.access.key', self.configuration.get('fs.s3a.access.key')
+		    'fs.s3a.access.key', self.configuration.get('aws.access.key.id')
 		)
 		spark_conf.set(
-		    'fs.s3a.secret.key', self.configuration.get('fs.s3a.secret.key')
+		    'fs.s3a.secret.key',
+		    self.configuration.get('aws.secret.access.key')
 		)
 		spark_conf.set(
 		    'spark.jars.packages',

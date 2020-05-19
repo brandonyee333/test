@@ -1,12 +1,12 @@
 aws:
+    access:
+        key:
+            id: $AWS_ACCESS_KEY_ID
+    secret:
+        access:
+            key: $AWS_SECRET_ACCESS_KEY
     storage:
         path: s3a://analytics-cloud-aws-personalize
-fs:
-    s3a:
-        access:
-            key: $AWS_ACCESS_KEY_ID
-        secret:
-            key: $AWS_SECRET_ACCESS_KEY
 google:
     storage:
         path: gs://analytics-cloud-uat-analytic-events
