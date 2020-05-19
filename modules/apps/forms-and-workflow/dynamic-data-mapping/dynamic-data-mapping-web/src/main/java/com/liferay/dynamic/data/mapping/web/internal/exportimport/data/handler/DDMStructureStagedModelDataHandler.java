@@ -329,10 +329,9 @@ public class DDMStructureStagedModelDataHandler
 
 		long groupId = portletDataContext.getScopeGroupId();
 
-		boolean stagingSite = MapUtil.getBoolean(
-			portletDataContext.getParameterMap(), "stagingSite");
+		if (MapUtil.getBoolean(
+				portletDataContext.getParameterMap(), "stagingSite")) {
 
-		if (stagingSite) {
 			Group group = _groupLocalService.fetchGroup(groupId);
 
 			if (group.isStaged() && !group.isStagingGroup()) {
