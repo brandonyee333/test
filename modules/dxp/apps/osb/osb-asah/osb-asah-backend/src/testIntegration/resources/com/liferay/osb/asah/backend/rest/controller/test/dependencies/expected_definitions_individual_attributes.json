@@ -1,0 +1,140 @@
+{
+	"_embedded": {
+		"field-mappings": [
+			{
+				"author": {
+					"id": "20139",
+					"name": "Test Test"
+				},
+				"context": "demographics",
+				"dataSourceFieldNames": {
+					"331238757269547423": "age",
+					"366588399828298918": "age",
+					"366588441118531472": "age",
+					"366588489711802687": "age"
+				},
+				"dataSources": [
+					{
+						"dataSourceFieldName": "age",
+						"dataSourceName": "Test Data Source 3"
+					},
+					{
+						"dataSourceFieldName": "age",
+						"dataSourceName": "Test Data Source 4"
+					},
+					{
+						"dataSourceFieldName": "age",
+						"dataSourceName": "Test Data Source 5"
+					},
+					{
+						"dataSourceFieldName": "age",
+						"dataSourceName": "Test Data Source 6"
+					}
+				],
+				"dateCreated": "2019-07-16T19:22:48.366Z",
+				"dateModified": "2019-07-16T19:23:33.867Z",
+				"fieldName": "age",
+				"fieldType": "Number",
+				"id": "366588394714972833",
+				"ownerType": "individual",
+				"strategy": {
+					"configuration": {
+					},
+					"key": "MOST_RECENT"
+				}
+			},
+			{
+				"author": {
+					"id": "83330",
+					"name": "Hsed kgjCkmo"
+				},
+				"context": "demographics",
+				"dataSourceFieldNames": {
+					"331238757269547423": "emailAddress"
+				},
+				"dataSources": [
+					{
+						"dataSourceFieldName": "emailAddress",
+						"dataSourceName": "Test Data Source 3"
+					}
+				],
+				"dateCreated": "2019-01-02T17:09:08.023Z",
+				"dateModified": "2019-01-02T17:09:08.023Z",
+				"fieldName": "email",
+				"fieldType": "http://schema.org/email",
+				"id": "331238757947565158",
+				"ownerType": "individual",
+				"strategy": {
+					"configuration": {
+					},
+					"key": "MOST_RECENT"
+				}
+			},
+			{
+				"author": {
+					"id": "83330",
+					"name": "Hsed kgjCkmo"
+				},
+				"context": "demographics",
+				"dataSourceFieldNames": {
+					"351238757269547424": "favoritePokemon"
+				},
+				"dataSources": [
+					{
+						"dataSourceFieldName": "favoritePokemon",
+						"dataSourceName": "Test Data Source 1"
+					}
+				],
+				"dateCreated": "2019-01-02T17:09:08.023Z",
+				"dateModified": "2019-01-02T17:09:08.023Z",
+				"fieldName": "favoritePokemon",
+				"fieldType": "Text",
+				"id": "340477857996688156",
+				"ownerType": "individual",
+				"strategy": {
+					"configuration": {
+					},
+					"key": "MOST_RECENT"
+				}
+			},
+			{
+				"author": {
+					"id": "83330",
+					"name": "Hsed kgjCkmo"
+				},
+				"context": "demographics",
+				"dataSourceFieldNames": {
+					"351238757269547424": "jobTitle",
+					"351238757269547425": "jobTitle"
+				},
+				"dataSources": [
+					{
+						"dataSourceFieldName": "jobTitle",
+						"dataSourceName": "Test Data Source 1"
+					},
+					{
+						"dataSourceFieldName": "jobTitle",
+						"dataSourceName": "Test Data Source 2"
+					}
+				],
+				"dateCreated": "2019-01-03T17:09:08.023Z",
+				"dateModified": "2019-01-03T17:09:08.023Z",
+				"fieldName": "jobTitle",
+				"fieldType": "Text",
+				"id": "340477857996688157",
+				"ownerType": "individual",
+				"strategy": {
+					"configuration": {
+					},
+					"key": "MOST_RECENT"
+				}
+			}
+		]
+	},
+	"page": {
+		"number": 0,
+		"size": 4,
+		"totalElements": 4,
+		"totalPages": 1
+	}
+}
