@@ -30,6 +30,15 @@ const layoutElements = [
 				<div className="border-left-0 border-right-0 col col-12 mx-0"></div>
 			</div>
 		),
+		label: LAYOUT_DATA_ITEM_TYPE_LABELS.section,
+		type: LAYOUT_DATA_ITEM_TYPES.section,
+	},
+	{
+		Preview: () => (
+			<div className="row">
+				<div className="border-0 col col-12"></div>
+			</div>
+		),
 		label: LAYOUT_DATA_ITEM_TYPE_LABELS.container,
 		type: LAYOUT_DATA_ITEM_TYPES.container,
 	},
