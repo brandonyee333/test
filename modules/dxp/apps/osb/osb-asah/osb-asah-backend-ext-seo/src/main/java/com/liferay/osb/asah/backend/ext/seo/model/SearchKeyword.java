@@ -16,12 +16,46 @@ package com.liferay.osb.asah.backend.ext.seo.model;
 
 import com.univocity.parsers.annotations.Parsed;
 
+import java.util.Objects;
+
 /**
  * @author David Arques
  */
 public class SearchKeyword {
 
 	public SearchKeyword() {
+	}
+
+	public SearchKeyword(
+		String keyword, int position, int searchVolume, int traffic) {
+
+		_keyword = keyword;
+		_position = position;
+		_searchVolume = searchVolume;
+		_traffic = traffic;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+
+		if (!(obj instanceof SearchKeyword)) {
+			return false;
+		}
+
+		SearchKeyword searchKeyword = (SearchKeyword)obj;
+
+		if (Objects.equals(_keyword, searchKeyword._keyword) &&
+			Objects.equals(_position, searchKeyword._position) &&
+			Objects.equals(_searchVolume, searchKeyword._searchVolume) &&
+			Objects.equals(_traffic, searchKeyword._traffic)) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	public String getKeyword() {
@@ -38,6 +72,11 @@ public class SearchKeyword {
 
 	public int getTraffic() {
 		return _traffic;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(_keyword, _position, _searchVolume, _traffic);
 	}
 
 	public void setKeyword(String keyword) {
