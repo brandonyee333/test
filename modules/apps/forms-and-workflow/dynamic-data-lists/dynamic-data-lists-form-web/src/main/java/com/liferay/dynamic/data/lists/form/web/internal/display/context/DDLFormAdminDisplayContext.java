@@ -56,6 +56,8 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil;
+import com.liferay.portal.kernel.portlet.PortletProvider;
+import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
@@ -410,9 +412,12 @@ public class DDLFormAdminDisplayContext {
 	}
 
 	public boolean isShowAddRecordSetButton() {
+		String portletId = PortletProviderUtil.getPortletId(
+			DDLFormRecord.class.getName(), PortletProvider.Action.EDIT);
+
 		return DDLPermission.contains(
 			_ddlFormAdminRequestHelper.getPermissionChecker(),
-			_ddlFormAdminRequestHelper.getScopeGroupId(),
+			_ddlFormAdminRequestHelper.getScopeGroupId(), portletId,
 			DDLActionKeys.ADD_RECORD_SET);
 	}
 
