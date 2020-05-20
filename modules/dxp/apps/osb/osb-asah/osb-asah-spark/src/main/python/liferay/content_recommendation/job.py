@@ -169,7 +169,7 @@ class WriteDataframeSparkJob(BaseSparkJob):
 class WriteItemsSparkJob(WriteDataframeSparkJob):
 	def __init__(self, spark_application):
 		super(WriteItemsSparkJob,
-		      self).__init__('items', 'csv', spark_application)
+		      self).__init__('items', 'json', spark_application)
 
 class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
 	def __init__(self, spark_application):
