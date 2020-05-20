@@ -267,6 +267,10 @@ public class PortalCORSServletFilter implements Filter, ManagedServiceFactory {
 
 		Long companyId = (Long)httpServletRequest.getAttribute("COMPANY_ID");
 
+		if (companyId == null || companyId < 1) {
+			return;
+		}
+
 		String uri = getURI(httpServletRequest);
 
 		URLPathPatternMap<Map<String, String>> urlPathPatternMap =
