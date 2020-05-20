@@ -705,7 +705,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (!Objects.equals(datasetGroup.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				datasetGroup::getDatasetGroupArn, datasetGroup::getStatus);
+				jobExecutionJSONObject, datasetGroup::getDatasetGroupArn,
+				datasetGroup::getStatus);
 
 			return;
 		}
@@ -718,6 +719,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				userItemInteractionsDataset.getStatus(), "ACTIVE")) {
 
 			_verifyResourceStatus(
+				jobExecutionJSONObject,
 				userItemInteractionsDataset::getDatasetArn,
 				userItemInteractionsDataset::getStatus);
 
@@ -733,6 +735,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				userItemInteractionsDatasetImportJob.getStatus(), "ACTIVE")) {
 
 			_verifyResourceStatus(
+				jobExecutionJSONObject,
 				userItemInteractionsDatasetImportJob::getDatasetImportJobArn,
 				userItemInteractionsDatasetImportJob::getStatus);
 
@@ -744,7 +747,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (!Objects.equals(solution.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				solution::getSolutionArn, solution::getStatus);
+				jobExecutionJSONObject, solution::getSolutionArn,
+				solution::getStatus);
 
 			return;
 		}
@@ -754,7 +758,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (!Objects.equals(solutionVersion.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
-				solutionVersion::getSolutionVersionArn,
+				jobExecutionJSONObject, solutionVersion::getSolutionVersionArn,
 				solutionVersion::getStatus);
 
 			return;
@@ -765,6 +769,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (!Objects.equals(batchInferenceJob.getStatus(), "ACTIVE")) {
 			_verifyResourceStatus(
+				jobExecutionJSONObject,
 				batchInferenceJob::getBatchInferenceJobArn,
 				batchInferenceJob::getStatus);
 
@@ -792,7 +797,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	}
 
 	private void _verifyResourceStatus(
-		Supplier<String> resourceIdSupplier,
+		JSONObject jobExecutionJSONObject, Supplier<String> resourceIdSupplier,
 		Supplier<String> resourceStatusSupplier) {
 
 		if (_log.isDebugEnabled()) {
@@ -800,6 +805,12 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 				String.format(
 					"Resource {%s} has status %s", resourceIdSupplier.get(),
 					resourceStatusSupplier.get()));
+		}
+
+		if (Objects.equals(resourceStatusSupplier.get(), "CREATE FAILED")) {
+			jobExecutionJSONObject.put("status", "FAILED");
+
+			_updateJobExecution(jobExecutionJSONObject);
 		}
 	}
 
