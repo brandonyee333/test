@@ -59,8 +59,11 @@ import com.amazonaws.services.personalize.model.ListDatasetsRequest;
 import com.amazonaws.services.personalize.model.ListDatasetsResult;
 import com.amazonaws.services.personalize.model.ListSchemasRequest;
 import com.amazonaws.services.personalize.model.ListSchemasResult;
+import com.amazonaws.services.personalize.model.ListSolutionsRequest;
+import com.amazonaws.services.personalize.model.ListSolutionsResult;
 import com.amazonaws.services.personalize.model.S3DataConfig;
 import com.amazonaws.services.personalize.model.Solution;
+import com.amazonaws.services.personalize.model.SolutionSummary;
 import com.amazonaws.services.personalize.model.SolutionVersion;
 
 import com.liferay.osb.asah.batch.curator.bot.nanite.ml.SparkManager;
@@ -389,6 +392,30 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		);
 	}
 
+	private String _fetchSolutionArn(String datasetGroupArn) {
+		ListSolutionsResult listSolutionsResult =
+			_amazonPersonalize.listSolutions(
+				new ListSolutionsRequest() {
+					{
+						withDatasetGroupArn(datasetGroupArn);
+					}
+				});
+
+		List<SolutionSummary> solutions = listSolutionsResult.getSolutions();
+
+		Stream<SolutionSummary> stream = solutions.stream();
+
+		return stream.filter(
+			solutionSummary -> Objects.equals(
+				solutionSummary.getName(), "item_similarity_solution")
+		).findFirst(
+		).map(
+			SolutionSummary::getSolutionArn
+		).orElse(
+			null
+		);
+	}
+
 	private String _fetchUserItemInteractionsDatasetArn(
 		String datasetGroupArn) {
 
@@ -504,24 +531,11 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return describeDatasetGroupResult.getDatasetGroup();
 	}
 
-	private Solution _getOrCreateSolution(
-		String datasetGroupArn, JSONObject jobExecutionJSONObject) {
-
-		JSONObject jobExecutionContextJSONObject =
-			jobExecutionJSONObject.getJSONObject("context");
-
-		String solutionArn = jobExecutionContextJSONObject.optString(
-			"solutionArn", null);
+	private Solution _getOrCreateSolution(String datasetGroupArn) {
+		String solutionArn = _fetchSolutionArn(datasetGroupArn);
 
 		if (solutionArn == null) {
 			solutionArn = _createSolutionArn(datasetGroupArn);
-
-			jobExecutionContextJSONObject.put("solutionArn", solutionArn);
-
-			jobExecutionJSONObject.put(
-				"context", jobExecutionContextJSONObject);
-
-			_updateJobExecution(jobExecutionJSONObject);
 		}
 
 		DescribeSolutionRequest describeSolutionRequest =
@@ -727,7 +741,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		}
 
 		Solution solution = _getOrCreateSolution(
-			datasetGroup.getDatasetGroupArn(), jobExecutionJSONObject);
+			datasetGroup.getDatasetGroupArn());
 
 		if (!Objects.equals(solution.getStatus(), "ACTIVE")) {
 			_logResourceStatus(solution::getSolutionArn, solution::getStatus);
