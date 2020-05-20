@@ -161,6 +161,14 @@ public class SearchQueryHelper {
 			rangeQueryBuilder.gte("now-90d/d");
 			rangeQueryBuilder.lt("now/d");
 		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-180d/d");
+			rangeQueryBuilder.lt("now/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-1y/d");
+			rangeQueryBuilder.lt("now/d");
+		}
 		else {
 			LocalDate startLocalDate = timeRange.getStartLocalDate();
 
@@ -457,6 +465,14 @@ public class SearchQueryHelper {
 			rangeQueryBuilder.gte("now-180d/d");
 			rangeQueryBuilder.lt("now/d");
 		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-360d/d");
+			rangeQueryBuilder.lt("now/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			rangeQueryBuilder.gte("now-2y/d");
+			rangeQueryBuilder.lt("now/d");
+		}
 		else {
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
 			LocalDate startLocalDate = timeRange.getStartLocalDate();
@@ -594,6 +610,14 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder.addRange(
 				"current", "now-90d/d", "now/d");
 		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-180d/d", "now/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-1y/d", "now/d");
+		}
 		else {
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
 			LocalDate startLocalDate = timeRange.getStartLocalDate();
@@ -651,6 +675,18 @@ public class SearchQueryHelper {
 				"current", "now-90d/d", "now/d");
 			dateRangeAggregationBuilder.addRange(
 				"previous", "now-180d/d", "now-90d/d");
+		}
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-180d/d", "now/d");
+			dateRangeAggregationBuilder.addRange(
+				"previous", "now-360d/d", "now-180d/d");
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			dateRangeAggregationBuilder.addRange(
+				"current", "now-1y/d", "now/d");
+			dateRangeAggregationBuilder.addRange(
+				"previous", "now-2y/d", "now-1y/d");
 		}
 		else {
 			LocalDate endLocalDate = timeRange.getEndLocalDate();
