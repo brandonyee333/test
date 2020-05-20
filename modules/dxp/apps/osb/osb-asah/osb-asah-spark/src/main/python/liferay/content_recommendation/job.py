@@ -138,10 +138,11 @@ class UpdateJobExecutionStepSparkJob(BaseSparkJob):
 		)
 
 class WriteDataframeSparkJob(BaseSparkJob):
-	def __init__(self, data_frame_name, spark_application):
+	def __init__(self, data_frame_name, output_format, spark_application):
 		super(WriteDataframeSparkJob, self).__init__(spark_application)
 
 		self._data_frame_name = data_frame_name
+		self._output_format = output_format
 
 	def run(self):
 		spark_session = self.spark_session()
@@ -156,9 +157,9 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		job = job_execution.get('job')
 
-		data_frame_writer.format('csv').mode('overwrite').option(
-		    "header", "True"
-		).save(
+		data_frame_writer.format(
+		    self._output_format
+		).mode('overwrite').option("header", "True").save(
 		    '{}/{}/{}/{}'.format(
 		        configuration.get('aws.storage.path'), args.lcp_project_id,
 		        job.get('id'), self._data_frame_name
@@ -167,12 +168,14 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 class WriteItemsSparkJob(WriteDataframeSparkJob):
 	def __init__(self, spark_application):
-		super(WriteItemsSparkJob, self).__init__('items', spark_application)
+		super(WriteItemsSparkJob,
+		      self).__init__('items', 'csv', spark_application)
 
 class WriteUserItemInteractionsSparkJob(WriteDataframeSparkJob):
 	def __init__(self, spark_application):
-		super(WriteUserItemInteractionsSparkJob,
-		      self).__init__('user_item_interactions', spark_application)
+		super(WriteUserItemInteractionsSparkJob, self).__init__(
+		    'user_item_interactions', 'csv', spark_application
+		)
 
 class WriteRecommendedItemsSparkJob(BaseSparkJob):
 	def run(self):
