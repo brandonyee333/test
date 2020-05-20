@@ -201,6 +201,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 						withJobOutput(batchInferenceJobOutput);
 						withNumResults(
 							_awsPersonalizeItemSimilarityInferenceResults);
+						withRoleArn(_awsPersonalizeRoleArn);
 						withSolutionVersionArn(solutionVersionArn);
 					}
 				});
