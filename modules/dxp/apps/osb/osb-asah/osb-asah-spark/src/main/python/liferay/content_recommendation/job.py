@@ -38,7 +38,7 @@ class GenerateItemsSparkJob(BaseSparkJob):
 		spark_session = self.spark_session()
 
 		items_data_frame = spark_session.table('user_item_interactions').select(
-		    col('ITEM_ID')
+		    col('ITEM_ID').alias("itemId")
 		).distinct()
 
 		items_data_frame.createOrReplaceTempView('items')
