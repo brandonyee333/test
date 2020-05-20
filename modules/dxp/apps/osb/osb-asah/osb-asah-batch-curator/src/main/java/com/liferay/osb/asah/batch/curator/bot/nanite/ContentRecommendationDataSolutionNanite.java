@@ -131,7 +131,18 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		}
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			_run(jsonArray.getJSONObject(i));
+			JSONObject jobExecutionJSONObject = jsonArray.getJSONObject(i);
+
+			try {
+				_run(jobExecutionJSONObject);
+			}
+			catch (Exception e) {
+				jobExecutionJSONObject.put("status", "FAILED");
+
+				_updateJobExecution(jobExecutionJSONObject);
+
+				throw e;
+			}
 		}
 	}
 
