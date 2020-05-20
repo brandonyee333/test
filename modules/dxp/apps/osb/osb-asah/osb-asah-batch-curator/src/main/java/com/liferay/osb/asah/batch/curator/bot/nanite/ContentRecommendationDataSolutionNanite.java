@@ -693,18 +693,6 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		return _createUserItemInteractionsDatasetSchemaArn();
 	}
 
-	private void _logResourceStatus(
-		Supplier<String> resourceIdSupplier,
-		Supplier<String> resourceStatusSupplier) {
-
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				String.format(
-					"Resource {%s} has status %s", resourceIdSupplier.get(),
-					resourceStatusSupplier.get()));
-		}
-	}
-
 	private void _run(JSONObject jobExecutionJSONObject) {
 		if (_log.isDebugEnabled()) {
 			_log.debug("Processing " + jobExecutionJSONObject.toString());
@@ -716,7 +704,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobJSONObject.getString("id"));
 
 		if (!Objects.equals(datasetGroup.getStatus(), "ACTIVE")) {
-			_logResourceStatus(
+			_verifyResourceStatus(
 				datasetGroup::getDatasetGroupArn, datasetGroup::getStatus);
 
 			return;
@@ -729,7 +717,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		if (!Objects.equals(
 				userItemInteractionsDataset.getStatus(), "ACTIVE")) {
 
-			_logResourceStatus(
+			_verifyResourceStatus(
 				userItemInteractionsDataset::getDatasetArn,
 				userItemInteractionsDataset::getStatus);
 
@@ -744,7 +732,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		if (!Objects.equals(
 				userItemInteractionsDatasetImportJob.getStatus(), "ACTIVE")) {
 
-			_logResourceStatus(
+			_verifyResourceStatus(
 				userItemInteractionsDatasetImportJob::getDatasetImportJobArn,
 				userItemInteractionsDatasetImportJob::getStatus);
 
@@ -755,7 +743,8 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			datasetGroup.getDatasetGroupArn());
 
 		if (!Objects.equals(solution.getStatus(), "ACTIVE")) {
-			_logResourceStatus(solution::getSolutionArn, solution::getStatus);
+			_verifyResourceStatus(
+				solution::getSolutionArn, solution::getStatus);
 
 			return;
 		}
@@ -764,7 +753,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobExecutionJSONObject, solution.getSolutionArn());
 
 		if (!Objects.equals(solutionVersion.getStatus(), "ACTIVE")) {
-			_logResourceStatus(
+			_verifyResourceStatus(
 				solutionVersion::getSolutionVersionArn,
 				solutionVersion::getStatus);
 
@@ -775,7 +764,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 			jobExecutionJSONObject, solutionVersion.getSolutionVersionArn());
 
 		if (!Objects.equals(batchInferenceJob.getStatus(), "ACTIVE")) {
-			_logResourceStatus(
+			_verifyResourceStatus(
 				batchInferenceJob::getBatchInferenceJobArn,
 				batchInferenceJob::getStatus);
 
@@ -800,6 +789,18 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		_faroInfoElasticsearchInvoker.update(
 			"job-executions", jobExecutionJSONObject);
+	}
+
+	private void _verifyResourceStatus(
+		Supplier<String> resourceIdSupplier,
+		Supplier<String> resourceStatusSupplier) {
+
+		if (_log.isDebugEnabled()) {
+			_log.debug(
+				String.format(
+					"Resource {%s} has status %s", resourceIdSupplier.get(),
+					resourceStatusSupplier.get()));
+		}
 	}
 
 	private static final Log _log = LogFactory.getLog(
