@@ -127,7 +127,7 @@ public class AccountProjectLocalServiceImpl
 		accountProject.setAccountEntryId(accountEntryId);
 		accountProject.setName(name);
 
-		accountProjectPersistence.update(accountProject);
+		accountProject = accountProjectPersistence.update(accountProject);
 
 		// Account information
 

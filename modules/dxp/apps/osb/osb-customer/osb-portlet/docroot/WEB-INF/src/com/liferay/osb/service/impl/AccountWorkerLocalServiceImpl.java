@@ -74,7 +74,7 @@ public class AccountWorkerLocalServiceImpl
 		accountWorker.setAccountEntryId(accountEntryId);
 		accountWorker.setRole(role);
 
-		accountWorkerPersistence.update(accountWorker);
+		accountWorker = accountWorkerPersistence.update(accountWorker);
 
 		auditEntryLocalService.addAuditEntry(
 			userId, user.getFullName(), now, classNameId, accountEntryId,
@@ -254,7 +254,7 @@ public class AccountWorkerLocalServiceImpl
 
 		accountWorker.setRole(role);
 
-		accountWorkerPersistence.update(accountWorker);
+		accountWorker = accountWorkerPersistence.update(accountWorker);
 
 		if (oldRole != role) {
 			User user = userLocalService.getUser(userId);

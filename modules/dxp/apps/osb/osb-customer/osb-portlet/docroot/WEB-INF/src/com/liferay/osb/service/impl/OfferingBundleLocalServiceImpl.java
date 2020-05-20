@@ -48,7 +48,7 @@ public class OfferingBundleLocalServiceImpl
 		offeringBundle.setCreateDate(new Date());
 		offeringBundle.setName(name);
 
-		offeringBundlePersistence.update(offeringBundle);
+		offeringBundle = offeringBundlePersistence.update(offeringBundle);
 
 		offeringBundlePersistence.setOfferingDefinitions(
 			offeringBundleId, offeringDefinitionIds);
@@ -67,7 +67,7 @@ public class OfferingBundleLocalServiceImpl
 
 		offeringBundle.setName(name);
 
-		offeringBundlePersistence.update(offeringBundle);
+		offeringBundle = offeringBundlePersistence.update(offeringBundle);
 
 		offeringBundlePersistence.setOfferingDefinitions(
 			offeringBundleId, offeringDefinitionIds);

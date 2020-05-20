@@ -27,10 +27,8 @@ OfferingDefinition offeringDefinition = OfferingDefinitionLocalServiceUtil.fetch
 
 long productEntryId = BeanParamUtil.getLong(offeringDefinition, request, "productEntryId");
 long supportResponseId = BeanParamUtil.getLong(offeringDefinition, request, "supportResponseId");
-String productDescription = BeanParamUtil.getString(offeringDefinition, request, "productDescription");
 boolean licenses = BeanParamUtil.getBoolean(offeringDefinition, request, "licenses");
 boolean unlimitedLicenses = BeanParamUtil.getBoolean(offeringDefinition, request, "unlimitedLicenses");
-boolean supportTickets = BeanParamUtil.getBoolean(offeringDefinition, request, "supportTickets");
 %>
 
 <script type="text/javascript">

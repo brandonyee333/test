@@ -96,7 +96,8 @@ public class AccountInformationLocalServiceImpl
 			accountInformation.setFieldId(entry.getKey());
 			accountInformation.setData(entry.getValue());
 
-			accountInformationPersistence.update(accountInformation);
+			accountInformation = accountInformationPersistence.update(
+				accountInformation);
 
 			accountInformationList.add(accountInformation);
 		}

@@ -65,7 +65,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
 
-		productEntryPersistence.update(productEntry);
+		productEntry = productEntryPersistence.update(productEntry);
 
 		long classNameId = classNameLocalService.getClassNameId(
 			ProductEntry.class);
@@ -156,7 +156,7 @@ public class ProductEntryLocalServiceImpl
 		productEntry.setEnvironment(environment);
 		productEntry.setVersionsListType(versionsListType);
 
-		productEntryPersistence.update(productEntry);
+		productEntry = productEntryPersistence.update(productEntry);
 
 		long classNameId = classNameLocalService.getClassNameId(
 			ProductEntry.class);

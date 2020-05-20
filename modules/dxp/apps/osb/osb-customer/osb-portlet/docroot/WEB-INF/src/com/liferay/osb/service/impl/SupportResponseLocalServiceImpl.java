@@ -64,7 +64,7 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
 
-		supportResponsePersistence.update(supportResponse);
+		supportResponse = supportResponsePersistence.update(supportResponse);
 
 		recalculateHighestSupportResponses(supportResponseId);
 
@@ -121,7 +121,7 @@ public class SupportResponseLocalServiceImpl
 		supportResponse.setSeverity3Response(severity3Response);
 		supportResponse.setSeverity3Resolution(severity3Resolution);
 
-		supportResponsePersistence.update(supportResponse);
+		supportResponse = supportResponsePersistence.update(supportResponse);
 
 		recalculateHighestSupportResponses(supportResponseId);
 

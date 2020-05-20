@@ -115,14 +115,10 @@ portletURL.setParameter("clusterId", String.valueOf(clusterId));
 						model="<%= LicenseKeySet.class %>"
 					/>
 
-					<%
-					String saveOnClick = "javascript:" + renderResponse.getNamespace() + "quickSave();";
-					%>
-
 					<liferay-ui:icon
 						image="reply"
 						message="save"
-						url="<%= saveOnClick %>"
+						url='<%= "javascript:" + renderResponse.getNamespace() + "quickSave();" %>'
 					/>
 				</div>
 			</h1>

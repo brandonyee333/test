@@ -79,12 +79,10 @@ portletURL.setParameter("callback", callback);
 			}
 
 			sb.append("]); window.close();");
-
-			String rowHREF = sb.toString();
 			%>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowHREF %>"
+				href="<%= sb.toString() %>"
 				property="name"
 			/>
 		</liferay-ui:search-container-row>

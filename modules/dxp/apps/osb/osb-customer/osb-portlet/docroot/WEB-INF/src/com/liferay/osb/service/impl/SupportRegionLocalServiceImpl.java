@@ -103,9 +103,7 @@ public class SupportRegionLocalServiceImpl
 		supportRegion.setDescription(description);
 		supportRegion.setTimeZoneId(timeZoneId);
 
-		supportRegionPersistence.update(supportRegion);
-
-		return supportRegion;
+		return supportRegionPersistence.update(supportRegion);
 	}
 
 	protected void validate(long supportRegionId, String name)

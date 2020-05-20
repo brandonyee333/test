@@ -91,7 +91,8 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvCS(envCS);
 		accountEnvironment.setEnvSearch(envSearch);
 
-		accountEnvironmentPersistence.update(accountEnvironment);
+		accountEnvironment = accountEnvironmentPersistence.update(
+			accountEnvironment);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.
@@ -210,7 +211,8 @@ public class AccountEnvironmentLocalServiceImpl
 		accountEnvironment.setEnvCS(envCS);
 		accountEnvironment.setEnvSearch(envSearch);
 
-		accountEnvironmentPersistence.update(accountEnvironment);
+		accountEnvironment = accountEnvironmentPersistence.update(
+			accountEnvironment);
 
 		if (!files.isEmpty()) {
 			accountEnvironmentAttachmentLocalService.

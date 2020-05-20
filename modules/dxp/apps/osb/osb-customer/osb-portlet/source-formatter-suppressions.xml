@@ -6,7 +6,6 @@
 		<suppress checks="ListUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/UpgradeProcess_5_1_1\.java" />
 	</checkstyle>
 	<source-check>
-		<suppress checks="JavaLongLinesCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/upgrade/v3_4_7/Upgrade_20160419113858448_OfferingBundle\.java" />
 		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/admin/servlet/AdminServletContextListener\.java" />
 		<suppress checks="JavaModuleIllegalImportsCheck" files="docroot/WEB-INF/src/com/liferay/osb/service/impl/AccountCustomerLocalServiceImpl\.java" />
 		<suppress checks="JavaServiceUtilCheck" files="docroot/WEB-INF/src/com/liferay/osb/hook/service/impl/OSBUserServiceImpl\.java" />

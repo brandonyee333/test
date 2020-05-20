@@ -14,14 +14,6 @@
  */
 --%>
 
-<%
-String firstName = ParamUtil.getString(request, "firstName");
-String middleName = ParamUtil.getString(request, "middleName");
-String lastName = ParamUtil.getString(request, "lastName");
-String screenName = ParamUtil.getString(request, "screenName");
-String emailAddress = ParamUtil.getString(request, "emailAddress");
-%>
-
 <liferay-ui:search-toggle
 	buttonLabel="search"
 	displayTerms="<%= new UserDisplayTerms(renderRequest) %>"

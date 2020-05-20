@@ -897,11 +897,9 @@ public class AccountEntryFinderImpl
 
 		long classNameId = PortalUtil.getClassNameId(AccountEntry.class);
 
-		sql = StringUtil.replace(
+		return StringUtil.replace(
 			sql, "[$CLASS_NAME_ID_COM.LIFERAY.OSB.MODEL.ACCOUNTENTRY$]",
 			String.valueOf(classNameId));
-
-		return sql;
 	}
 
 	protected void setJoin(

@@ -58,12 +58,10 @@ portletURL.setParameter("mvcPath", "/admin/select_partner_entry.jsp");
 			sb.append("', '");
 			sb.append(UnicodeFormatter.toString(partnerEntry.getCode()));
 			sb.append("'); window.close();");
-
-			String rowHREF = sb.toString();
 			%>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowHREF %>"
+				href="<%= sb.toString() %>"
 				name="code"
 				value="<%= HtmlUtil.escape(partnerEntry.getCode()) %>"
 			/>

@@ -72,7 +72,7 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(WorkflowConstants.STATUS_APPROVED);
 
-		partnerEntryPersistence.update(partnerEntry);
+		partnerEntry = partnerEntryPersistence.update(partnerEntry);
 
 		if (ArrayUtil.isNotEmpty(supportRegionIds)) {
 			partnerEntryPersistence.addSupportRegions(
@@ -210,7 +210,7 @@ public class PartnerEntryLocalServiceImpl
 		partnerEntry.setNotes(notes);
 		partnerEntry.setStatus(status);
 
-		partnerEntryPersistence.update(partnerEntry);
+		partnerEntry = partnerEntryPersistence.update(partnerEntry);
 
 		if (Validator.isNotNull(dossieraAccountKey) &&
 			!oldDossieraAccountKey.equals(dossieraAccountKey)) {

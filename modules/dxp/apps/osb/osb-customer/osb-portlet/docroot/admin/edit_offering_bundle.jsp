@@ -25,8 +25,6 @@ long offeringBundleId = ParamUtil.getLong(request, "offeringBundleId");
 
 OfferingBundle offeringBundle = OfferingBundleLocalServiceUtil.fetchOfferingBundle(offeringBundleId);
 
-String name = BeanParamUtil.getString(offeringBundle, request, "name");
-
 String offeringDefinitionIds = StringPool.BLANK;
 
 List<OfferingDefinition> offeringDefinitions = new ArrayList<OfferingDefinition>();

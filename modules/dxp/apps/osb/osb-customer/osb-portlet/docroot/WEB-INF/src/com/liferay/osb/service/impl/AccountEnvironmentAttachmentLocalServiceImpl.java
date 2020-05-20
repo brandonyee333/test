@@ -66,8 +66,9 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
 
-		accountEnvironmentAttachmentPersistence.update(
-			accountEnvironmentAttachment);
+		accountEnvironmentAttachment =
+			accountEnvironmentAttachmentPersistence.update(
+				accountEnvironmentAttachment);
 
 		deleteFile(accountEnvironmentAttachment.getFileDir(), fileName);
 
@@ -162,8 +163,9 @@ public class AccountEnvironmentAttachmentLocalServiceImpl
 		accountEnvironmentAttachment.setFileSize(file.length());
 		accountEnvironmentAttachment.setType(type);
 
-		accountEnvironmentAttachmentPersistence.update(
-			accountEnvironmentAttachment);
+		accountEnvironmentAttachment =
+			accountEnvironmentAttachmentPersistence.update(
+				accountEnvironmentAttachment);
 
 		deleteFile(accountEnvironmentAttachment.getFileDir(), oldFileName);
 

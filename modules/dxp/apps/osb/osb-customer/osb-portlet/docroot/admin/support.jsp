@@ -17,8 +17,6 @@
 <%@ include file="/init.jsp" %>
 
 <%
-String tabs2 = ParamUtil.getString(request, "tabs2");
-
 PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 %>
 

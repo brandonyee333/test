@@ -69,12 +69,10 @@ portletURL.setParameter("callback", callback);
 			sb.append("', '");
 			sb.append(UnicodeFormatter.toString(corpProject.getName()));
 			sb.append("'); window.close();");
-
-			String rowHREF = sb.toString();
 			%>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowHREF %>"
+				href="<%= sb.toString() %>"
 				name="name"
 				value="<%= corpProject.getName() %>"
 			/>

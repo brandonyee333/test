@@ -71,7 +71,8 @@ public class AccountAttachmentLocalServiceImpl
 		accountAttachment.setFileSize(file.length());
 		accountAttachment.setType(type);
 
-		accountAttachmentPersistence.update(accountAttachment);
+		accountAttachment = accountAttachmentPersistence.update(
+			accountAttachment);
 
 		// File
 

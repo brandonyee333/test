@@ -59,12 +59,10 @@ String selectAll = "javascript:";
 			sb.append("']);");
 
 			selectAll += sb.toString();
-
-			String rowHREF = "javascript:" + sb.toString() + "window.close();";
 			%>
 
 			<liferay-ui:search-container-column-text
-				href="<%= rowHREF %>"
+				href='<%= "javascript:" + sb.toString() + "window.close();" %>'
 				name="project-tier"
 			>
 				<%= LanguageUtil.get(request, AccountEntryConstants.getTierLabel(accountTier)) %>
