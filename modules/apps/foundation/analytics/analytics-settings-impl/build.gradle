@@ -13,5 +13,6 @@ dependencies {
 	compileOnly project(":apps:foundation:portal-security:portal-security-service-access-policy-api")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype")
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-persistence")
+	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":core:petra:petra-string")
 }
