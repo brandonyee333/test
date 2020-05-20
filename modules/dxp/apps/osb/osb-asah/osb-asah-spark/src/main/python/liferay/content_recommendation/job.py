@@ -156,13 +156,13 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		job = job_execution.get('job')
 
-		data_frame_writer.csv(
+		data_frame_writer.format('csv').mode('overwrite').option(
+		    "header", "True"
+		).save(
 		    '{}/{}/{}/{}'.format(
 		        configuration.get('aws.storage.path'), args.lcp_project_id,
 		        job.get('id'), self._data_frame_name
-		    ),
-		    header=True,
-		    mode="overwrite"
+		    )
 		)
 
 class WriteItemsSparkJob(WriteDataframeSparkJob):
