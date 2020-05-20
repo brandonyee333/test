@@ -146,7 +146,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Creating batch inference job with solution version arn " +
+				"Creating batch inference job with solution version ARN " +
 					solutionVersionArn);
 		}
 
@@ -235,7 +235,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	private String _createSolutionArn(String datasetGroupArn) {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Creating item similarity solution with dataset group arn " +
+				"Creating item similarity solution with dataset group ARN " +
 					datasetGroupArn);
 		}
 
@@ -255,7 +255,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 	private String _createSolutionVersionArn(String solutionArn) {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Creating solution version with solution arn " + solutionArn);
+				"Creating solution version with solution ARN " + solutionArn);
 		}
 
 		CreateSolutionVersionResult createSolutionVersionResult =
@@ -275,7 +275,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				"Creating user item interactions dataset with dataset group " +
-					"arn " + datasetGroupArn);
+					"ARN " + datasetGroupArn);
 		}
 
 		CreateDatasetResult createDatasetResult =
@@ -299,7 +299,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				"Creating user item interactions dataset import job with " +
-					"dataset arn " + userItemInteractionsDatasetArn);
+					"dataset ARN " + userItemInteractionsDatasetArn);
 		}
 
 		String jobName = String.format(
