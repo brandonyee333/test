@@ -68,7 +68,39 @@ public class TimeRange {
 		false, "last-180-days", 180);
 
 	public static final TimeRange LAST_YEAR = new TimeRange(
-		false, "last-year", 365);
+		false, "last-year", 365) {
+
+		@Override
+		public LocalDateTime getEndLocalDateTime() {
+			LocalDateTime localDateTime = LocalDateTime.of(
+				LocalDate.now(getClock()), LocalTime.MIDNIGHT);
+
+			return localDateTime.minusHours(1);
+		}
+
+		@Override
+		public int getRangeKey() {
+			LocalDate currentLocalDate = LocalDate.now(getClock());
+
+			LocalDate previousLocalDate = currentLocalDate.minusYears(1);
+
+			if (currentLocalDate.isLeapYear() ||
+				previousLocalDate.isLeapYear()) {
+
+				return 366;
+			}
+
+			return 365;
+		}
+
+		@Override
+		public LocalDateTime getStartLocalDateTime() {
+			LocalDateTime localDateTime = getEndLocalDateTime();
+
+			return localDateTime.minusYears(1);
+		}
+
+	};
 
 	public static final TimeRange YESTERDAY = new TimeRange(
 		false, "yesterday", 1) {
