@@ -165,7 +165,7 @@ public class ContentRecommendationDataSolutionNanite extends BaseNanite {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				"Using batch inference job input S3 datasource " +
+				"Using batch inference job input S3 data source " +
 					batchInferenceJobInput.getS3DataSource());
 		}
 
