@@ -65,6 +65,7 @@ public class PageMetric implements AssetMetric {
 				_indirectAccessMetric, pageMetric._indirectAccessMetric) &&
 			Objects.equals(
 				_maxScrollDepthMetric, pageMetric._maxScrollDepthMetric) &&
+			Objects.equals(_readsMetric, pageMetric._readsMetric) &&
 			Objects.equals(_sessionsMetric, pageMetric._sessionsMetric) &&
 			Objects.equals(_timeOnPageMetric, pageMetric._timeOnPageMetric) &&
 			Objects.equals(_urls, pageMetric._urls) &&
@@ -180,6 +181,10 @@ public class PageMetric implements AssetMetric {
 		return _maxScrollDepthMetric;
 	}
 
+	public Metric getReadsMetric() {
+		return _readsMetric;
+	}
+
 	public Metric getSessionsMetric() {
 		return _sessionsMetric;
 	}
@@ -208,8 +213,8 @@ public class PageMetric implements AssetMetric {
 			_bounceRateMetric, _ctpMetric, _ctrMetric, _dataSourceId,
 			_directAccessMetric, _engagementMetric, _entrancesMetric,
 			_exitRateMetric, _indirectAccessMetric, _maxScrollDepthMetric,
-			_sessionsMetric, _timeOnPageMetric, _urls, _viewsMetric,
-			_visitorsMetric);
+			_readsMetric, _sessionsMetric, _timeOnPageMetric, _urls,
+			_viewsMetric, _visitorsMetric);
 	}
 
 	@Override
@@ -315,6 +320,10 @@ public class PageMetric implements AssetMetric {
 		_maxScrollDepthMetric = maxScrollDepthMetric;
 	}
 
+	public void setReadsMetric(Metric readsMetric) {
+		_readsMetric = readsMetric;
+	}
+
 	public void setSessionsMetric(Metric sessionsMetric) {
 		_sessionsMetric = sessionsMetric;
 	}
@@ -381,6 +390,7 @@ public class PageMetric implements AssetMetric {
 		PageMetricType.INDIRECT_ACCESS);
 	private Metric _maxScrollDepthMetric = new Metric(
 		PageMetricType.MAX_SCROLL_DEPTH);
+	private Metric _readsMetric = new Metric(PageMetricType.READS);
 	private Metric _sessionsMetric = new Metric(PageMetricType.SESSIONS);
 	private Metric _timeOnPageMetric = new Metric(PageMetricType.TIME_ON_PAGE);
 	private List<String> _urls;

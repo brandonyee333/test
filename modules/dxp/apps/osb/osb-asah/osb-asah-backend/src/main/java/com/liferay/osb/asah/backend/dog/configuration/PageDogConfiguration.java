@@ -132,6 +132,10 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 			metricResolvers.add(_buildMaxScrollDepthMetricResolver());
 		}
 
+		if (selectedMetrics.contains(PageMetricType.READS.getName())) {
+			metricResolvers.add(_buildReadsMetricResolver());
+		}
+
 		if (selectedMetrics.contains(PageMetricType.SESSIONS.getName())) {
 			metricResolvers.add(_buildSessionsMetricResolver());
 		}
@@ -329,6 +333,18 @@ public class PageDogConfiguration extends BaseDogConfiguration {
 		builder.aggregate(_createMaxScrollDepthAggregationBuilder());
 		builder.mapperFunction(this::_getMaxScrollDepthAggregationValue);
 		builder.setterBiConsumer(PageMetric::setMaxScrollDepthMetric);
+
+		return builder.build();
+	}
+
+	private MetricResolver _buildReadsMetricResolver() {
+		MetricResolver.Builder builder = MetricResolver.builder(
+			PageMetricType.READS);
+
+		builder.bucketOrderTermsAggregationBuilderConsumer(
+			createBucketOrderTermsAggregationBuilderConsumer(
+				PageMetricType.READS));
+		builder.setterBiConsumer(PageMetric::setReadsMetric);
 
 		return builder.build();
 	}
