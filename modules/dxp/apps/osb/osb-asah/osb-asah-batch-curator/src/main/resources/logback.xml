@@ -2,4 +2,5 @@
 
 <configuration>
 	<include resource="org/springframework/boot/logging/logback/base.xml" />
+	<logger level="debug" name="com.liferay.osb.asah.batch.curator.bot.nanite.ContentRecommendationDataSolutionNanite" />
 </configuration>
