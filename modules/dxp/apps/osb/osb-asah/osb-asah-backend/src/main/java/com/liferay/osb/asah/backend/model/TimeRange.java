@@ -79,21 +79,6 @@ public class TimeRange {
 		}
 
 		@Override
-		public int getRangeKey() {
-			LocalDate currentLocalDate = LocalDate.now(getClock());
-
-			LocalDate previousLocalDate = currentLocalDate.minusYears(1);
-
-			if (currentLocalDate.isLeapYear() ||
-				previousLocalDate.isLeapYear()) {
-
-				return 366;
-			}
-
-			return 365;
-		}
-
-		@Override
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
@@ -233,7 +218,7 @@ public class TimeRange {
 	public LocalDate getStartLocalDate() {
 		LocalDate localDate = getEndLocalDate();
 
-		return localDate.minusDays(getRangeKey() - 1);
+		return localDate.minusDays(getDeltaDays() - 1);
 	}
 
 	public LocalDateTime getStartLocalDateTime() {
@@ -244,7 +229,7 @@ public class TimeRange {
 		localDateTime = localDateTime.withNano(0);
 		localDateTime = localDateTime.withSecond(0);
 
-		return localDateTime.minusDays(getRangeKey() - 1);
+		return localDateTime.minusDays(getDeltaDays() - 1);
 	}
 
 	@Override

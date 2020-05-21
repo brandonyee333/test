@@ -149,7 +149,7 @@ public class IndividualMetricDog {
 
 		LocalDate previousLocalDate = LocalDate.from(localDate);
 
-		return previousLocalDate.minusDays(timeRange.getRangeKey());
+		return previousLocalDate.minusDays(timeRange.getDeltaDays());
 	}
 
 	@PostConstruct

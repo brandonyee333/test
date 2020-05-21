@@ -479,7 +479,7 @@ public class SearchQueryHelper {
 
 			endLocalDate = endLocalDate.plusDays(1);
 
-			startLocalDate = startLocalDate.minusDays(timeRange.getRangeKey());
+			startLocalDate = startLocalDate.minusDays(timeRange.getDeltaDays());
 
 			rangeQueryBuilder.gte(startLocalDate.toString());
 
@@ -697,9 +697,9 @@ public class SearchQueryHelper {
 			dateRangeAggregationBuilder.addRange(
 				"current", startLocalDate.toString(), endLocalDate.toString());
 
-			endLocalDate = endLocalDate.minusDays(timeRange.getRangeKey());
+			endLocalDate = endLocalDate.minusDays(timeRange.getDeltaDays());
 
-			startLocalDate = startLocalDate.minusDays(timeRange.getRangeKey());
+			startLocalDate = startLocalDate.minusDays(timeRange.getDeltaDays());
 
 			dateRangeAggregationBuilder.addRange(
 				"previous", startLocalDate.toString(), endLocalDate.toString());

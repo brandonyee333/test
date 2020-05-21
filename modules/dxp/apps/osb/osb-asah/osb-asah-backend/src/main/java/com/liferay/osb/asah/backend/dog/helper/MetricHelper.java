@@ -101,7 +101,7 @@ public class MetricHelper {
 		}
 		else {
 			_addMetric(
-				timeRange.getRangeKey(), interval, localDateTime, metricType,
+				timeRange.getDeltaDays(), interval, localDateTime, metricType,
 				metrics, timeRange);
 		}
 
@@ -184,7 +184,7 @@ public class MetricHelper {
 		}
 		else if (Interval.DAY.equals(interval)) {
 			return previousPeriodLocalDateTime.minusDays(
-				timeRange.getRangeKey());
+				timeRange.getDeltaDays());
 		}
 		else if (Interval.WEEK.equals(interval)) {
 			if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
@@ -201,7 +201,7 @@ public class MetricHelper {
 		}
 		else if (Interval.MONTH.equals(interval)) {
 			previousPeriodLocalDateTime = previousPeriodLocalDateTime.minusDays(
-				timeRange.getRangeKey() - 1);
+				timeRange.getDeltaDays() - 1);
 
 			return previousPeriodLocalDateTime.withDayOfMonth(1);
 		}
@@ -210,7 +210,7 @@ public class MetricHelper {
 	}
 
 	private void _addMetric(
-		int days, Interval interval, LocalDateTime localDateTime,
+		long days, Interval interval, LocalDateTime localDateTime,
 		MetricType metricType, Map<String, Metric> metrics,
 		TimeRange timeRange) {
 
@@ -278,13 +278,13 @@ public class MetricHelper {
 		}
 	}
 
-	private int _countMonths(int days, LocalDate localDate) {
+	private int _countMonths(long days, LocalDate localDate) {
 		LocalDate startLocalDate = localDate.minusDays(days - 1);
 
 		return DateUtil.getDeltaMonths(startLocalDate, localDate);
 	}
 
-	private int _countWeeks(int days, LocalDate localDate) {
+	private int _countWeeks(long days, LocalDate localDate) {
 		LocalDate startLocalDate = localDate.minusDays(days - 1);
 
 		return DateUtil.getDeltaWeeks(startLocalDate, localDate);
@@ -311,7 +311,7 @@ public class MetricHelper {
 	}
 
 	private String _getMonthPreviousValueKey(
-		int days, LocalDate currentLocalDate) {
+		long days, LocalDate currentLocalDate) {
 
 		currentLocalDate = currentLocalDate.minusMonths(1);
 
@@ -341,7 +341,7 @@ public class MetricHelper {
 	}
 
 	private String _getWeekPreviousValueKey(
-		LocalDate currentLocalDate, int days) {
+		LocalDate currentLocalDate, long days) {
 
 		currentLocalDate = currentLocalDate.minusWeeks(1);
 
