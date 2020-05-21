@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageDog;
-import com.liferay.osb.asah.backend.model.HistogramMetric;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
@@ -27,7 +26,6 @@ import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.time.LocalDate;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONArray;
@@ -60,13 +58,10 @@ public class PagesRestController extends BaseRestController {
 
 	@GetMapping("/read-count")
 	public String getReadCount(@RequestParam String url) {
-
-		// TODO LRAC-5157
-
-		long viewsMetricValue = _pageDog.getViewsMetricValue(
-			Optional.empty(), Optional.empty(), Optional.of(url));
-
-		return String.valueOf(viewsMetricValue / 2);
+		return String.valueOf(
+			_pageDog.getMetricValue(
+				Optional.empty(), PageMetricType.READS, Optional.empty(),
+				Optional.of(url)));
 	}
 
 	@GetMapping("/read-counts")
@@ -110,9 +105,10 @@ public class PagesRestController extends BaseRestController {
 		LocalDate endLocalDate, String interval, MetricType metricType,
 		LocalDate startLocalDate, String url) {
 
-		List<HistogramMetric> histogramMetrics =
+		return JSONUtil.put(
+			"histogram",
 			_histogramDog.getHistogramMetrics(
-				true, PageMetricType.VIEWS,
+				true, metricType,
 				new SearchQueryContext() {
 					{
 						setInterval(interval);
@@ -120,29 +116,12 @@ public class PagesRestController extends BaseRestController {
 							TimeRange.of(endLocalDate, startLocalDate));
 						setURL(url);
 					}
-				});
-
-		long viewsMetricValue = _pageDog.getViewsMetricValue(
-			Optional.of(startLocalDate.toString()),
-			Optional.of(endLocalDate.toString()), Optional.of(url));
-
-		// TODO LRAC-5157
-
-		if (metricType == PageMetricType.READS) {
-			for (HistogramMetric histogramMetric : histogramMetrics) {
-				histogramMetric.setPreviousValue(
-					Math.ceil(histogramMetric.getPreviousValue() / 2));
-				histogramMetric.setValue(
-					Math.ceil(histogramMetric.getValue() / 2));
-			}
-
-			viewsMetricValue = (long)Math.ceil(viewsMetricValue / 2.0);
-		}
-
-		return JSONUtil.put(
-			"histogram", histogramMetrics
+				})
 		).put(
-			"value", viewsMetricValue
+			"value",
+			_pageDog.getMetricValue(
+				Optional.of(startLocalDate.toString()), metricType,
+				Optional.of(endLocalDate.toString()), Optional.of(url))
 		).toString();
 	}
 
