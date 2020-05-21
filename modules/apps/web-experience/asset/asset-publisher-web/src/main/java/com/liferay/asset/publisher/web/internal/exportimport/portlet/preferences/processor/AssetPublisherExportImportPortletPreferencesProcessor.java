@@ -865,7 +865,9 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 						anyClassTypeDLFileEntryAssetRendererFactory) &&
 					anyClassTypeDLFileEntryAssetRendererFactory.equals(
 						"false") &&
-					(classTypeIdsDLFileEntryAssetRendererFactory.length == 1)) {
+					(classTypeIdsDLFileEntryAssetRendererFactory.length == 1) &&
+					!classTypeIdsDLFileEntryAssetRendererFactory[0].contains(
+						StringPool.COMMA)) {
 
 					portletPreferences.setValue(
 						"anyClassTypeDLFileEntryAssetRendererFactory",
@@ -919,7 +921,9 @@ public class AssetPublisherExportImportPortletPreferencesProcessor
 					anyClassTypeJournalArticleAssetRendererFactory.equals(
 						"false") &&
 					(classTypeIdsJournalArticleAssetRendererFactory.length ==
-						1)) {
+						1) &&
+					!classTypeIdsJournalArticleAssetRendererFactory[0].contains(
+						StringPool.COMMA)) {
 
 					portletPreferences.setValue(
 						"anyClassTypeJournalArticleAssetRendererFactory",
