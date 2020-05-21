@@ -85,6 +85,7 @@ public class PageNanite extends BaseStreamNanite<Page> {
 
 			oldPage.addInteractionDates(newPage.getInteractionDates());
 			oldPage.addPageScrolls(newPage.getPageScrolls());
+			oldPage.addReads(newPage.getReads());
 			oldPage.setDirectAccess(directAccessDates.size());
 			oldPage.setIndirectAccess(indirectAccessDates.size());
 
@@ -159,6 +160,11 @@ public class PageNanite extends BaseStreamNanite<Page> {
 				new PageScroll(depth, analyticsEvent.getEventDate()));
 
 			page.addInteractionDate(analyticsEvent.getEventDate());
+		}
+		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				 Objects.equals(analyticsEvent.getEventId(), "pageRead")) {
+
+			page.addReads(1);
 		}
 		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
 				 Objects.equals(analyticsEvent.getEventId(), "ctaClicked")) {
