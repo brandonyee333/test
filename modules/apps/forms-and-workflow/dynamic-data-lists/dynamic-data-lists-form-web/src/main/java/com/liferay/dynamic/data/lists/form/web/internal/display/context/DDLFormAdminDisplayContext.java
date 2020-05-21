@@ -412,12 +412,11 @@ public class DDLFormAdminDisplayContext {
 	}
 
 	public boolean isShowAddRecordSetButton() {
-		String portletId = PortletProviderUtil.getPortletId(
-			DDLFormRecord.class.getName(), PortletProvider.Action.EDIT);
-
 		return DDLPermission.contains(
 			_ddlFormAdminRequestHelper.getPermissionChecker(),
-			_ddlFormAdminRequestHelper.getScopeGroupId(), portletId,
+			_ddlFormAdminRequestHelper.getScopeGroupId(),
+			PortletProviderUtil.getPortletId(
+				DDLFormRecord.class.getName(), PortletProvider.Action.EDIT),
 			DDLActionKeys.ADD_RECORD_SET);
 	}
 
