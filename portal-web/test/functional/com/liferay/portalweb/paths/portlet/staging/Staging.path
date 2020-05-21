@@ -127,6 +127,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SITE_PAGES_VARIATION_SCOPE_NAME</td>
+	<td>//span[contains(@class,'scope-name') and contains(.,'${key_sitePagesVariationName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PAGE_VARIATION_DROPDOWN</td>
 	<td>//a[contains(@class,'staging-variation-selector') and contains(.,'${key_pageVariationName}')]/span</td>
 	<td></td>

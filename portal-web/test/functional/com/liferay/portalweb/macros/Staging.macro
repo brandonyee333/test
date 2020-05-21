@@ -1353,6 +1353,14 @@ definition {
 		}
 	}
 
+	macro viewSitePagesVariationCP {
+		var key_sitePagesVariationName = "${sitePagesVariationName}";
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Staging#SITE_PAGES_VARIATION_SCOPE_NAME",
+			value1 = "${sitePagesVariationName}");
+	}
+
 	macro viewSitePagesVariationPG {
 		var key_sitePagesVariationName = "${sitePagesVariationName}";
 
