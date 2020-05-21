@@ -18,7 +18,6 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONUtil;
 import com.liferay.osb.asah.common.messaging.Channel;
-import com.liferay.osb.asah.common.messaging.MessageBus;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.extractor.processor.AnalyticsEventsMessageProcessor;
 import com.liferay.osb.asah.extractor.spring.OSBAsahExtractorSpringBootApplication;
@@ -133,8 +132,7 @@ public class AnalyticsEventsMessageProcessorTest {
 		ReflectionTestUtils.invokeMethod(
 			_analyticsEventsMessageProcessor, "_cacheChannelIds");
 
-		_messageBus.sendMessage(
-			Channel.DATA_SOURCES,
+		_analyticsEventsMessageProcessor.onMessage(
 			JSONUtil.put(
 				"channelId", "999"
 			).put(
@@ -187,8 +185,5 @@ public class AnalyticsEventsMessageProcessorTest {
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
-
-	@Autowired
-	private MessageBus _messageBus;
 
 }
