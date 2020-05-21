@@ -29,7 +29,7 @@ import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLFieldDefinition;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -109,9 +109,9 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 
 			searchQueryContext.setTimeRange(
 				TimeRange.of(
-					LocalDateTime.parse(
+					LocalDate.parse(
 						dataFetchingEnvironment.getArgument("rangeEnd")),
-					LocalDateTime.parse(
+					LocalDate.parse(
 						dataFetchingEnvironment.getArgument("rangeStart"))));
 		}
 		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
