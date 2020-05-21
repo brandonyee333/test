@@ -166,8 +166,6 @@ public class AnalyticsEventsMessageProcessor implements MessageListener {
 	private void _cacheChannelIds() {
 		_channelIds = new HashMap<>();
 
-		// Only data sources created before 2.5.0 contain channel ID
-
 		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
 			"data-sources", QueryBuilders.existsQuery("channelId"));
 
