@@ -20,7 +20,7 @@ Here are some of the types of changes documented in this file:
   replaces an old API, in spite of the old API being kept in Liferay Portal for
   backwards compatibility.
 
-*This document has been reviewed through commit `07cba9d23d9f`.*
+*This document has been reviewed through commit `b629119d7786`.*
 
 ## Breaking Changes Contribution Guidelines
 
@@ -4477,14 +4477,13 @@ automatically.
 
 #### Who is affected?
 
-This affects anyone who relied on the portlet description's value already being
-escaped and used it to generate HTML. In that case, a small UI change might be
-observed as some characters could become unescaped.
+This affects anyone who used the portlet description's escaped value to generate
+HTML. A small UI change could occur, as some characters may be unescaped.
 
 #### How should I update my code?
 
 If you were using the `portletDescription` value to generate HTML, you
-should escape it using the proper escape sequence using `HtmlUtil.escape`.
+should escape it using the proper escape sequence: `HtmlUtil.escape`.
 
 #### Why was this change made?
 
@@ -4492,26 +4491,27 @@ This change corrects a best practice violation regarding content escaping.
 
 ---------------------------------------
 
-### Removed cache bootstrap feature
+### Removed Cache Bootstrap Feature
 - **Date:** 2020-Jan-8
-- **JIRA Ticket:** [LPS-96563](https://issues.liferay.com/browse/LPS-96563)
+- **JIRA Ticket:** LPS-96563
 
 #### What changed?
 
-The cache bootstrap feature has been removed, which means you can not use the
-following properties to enable/configure cache bootstrap:
+The cache bootstrap feature has been removed. These properties can no longer
+be used to enable/configure cache bootstrap:
+
 `ehcache.bootstrap.cache.loader.enabled`,
 `ehcache.bootstrap.cache.loader.properties.default`,
 `ehcache.bootstrap.cache.loader.properties.${specific.cache.name}`.
 
 #### Who is affected?
 
-This affects who is using the properties listed above.
+This affects anyone using the properties listed above.
 
 #### How should I update my code?
 
 There's no direct replacement for the removed feature. If you have code that
-depends on it, you would need to implement it by yourself.
+depends on it, you must implement it yourself.
 
 #### Why was this change made?
 
