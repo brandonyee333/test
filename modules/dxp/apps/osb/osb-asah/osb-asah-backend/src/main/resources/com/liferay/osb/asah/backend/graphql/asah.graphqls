@@ -746,9 +746,9 @@ type QueryType {
 		assetId: String,
 		channelId: String,
 		rangeKey: Int,
-		timeZoneId: String,
 		timePeriodEnd: String,
 		timePeriodStart: String,
+		timeZoneId: String
 	): [HeatMapMetric]
 
 	suppressions(
