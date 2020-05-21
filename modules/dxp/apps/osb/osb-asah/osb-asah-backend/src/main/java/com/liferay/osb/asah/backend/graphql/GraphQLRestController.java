@@ -52,6 +52,8 @@ import java.io.InputStreamReader;
 
 import java.nio.charset.Charset;
 
+import java.time.LocalDate;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -351,11 +353,21 @@ public class GraphQLRestController {
 	private boolean _skipCache(String query, Map<String, Object> variables) {
 		JSONObject variablesJSONObject = new JSONObject(variables);
 
-		if ((variablesJSONObject.optInt("rangeKey") > 0) &&
-			!query.startsWith("{pagesCount") &&
+		if (!query.startsWith("{pagesCount") &&
 			!query.startsWith("query IndividualMetrics")) {
 
-			return false;
+			if (variablesJSONObject.has("rangeEnd")) {
+				String rangeEnd = variablesJSONObject.getString("rangeEnd");
+
+				LocalDate currentLocalDate = LocalDate.now();
+
+				if (currentLocalDate.equals(LocalDate.parse(rangeEnd))) {
+					return true;
+				}
+			}
+			else if (variablesJSONObject.optInt("rangeKey") > 0) {
+				return false;
+			}
 		}
 
 		return true;
