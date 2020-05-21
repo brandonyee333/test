@@ -53,15 +53,15 @@ public class PageDog {
 			_createQueryBuilder(searchQueryContext));
 	}
 
-	public long getViewsMetricValue(
-		Optional<String> fromDateStringOptional,
+	public long getMetricValue(
+		Optional<String> fromDateStringOptional, MetricType metricType,
 		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
 
 		searchSourceBuilder.aggregation(
-			_createSumAggregationBuilder(PageMetricType.VIEWS));
+			_createSumAggregationBuilder(metricType));
 
 		QueryBuilder queryBuilder = _createRangeQueryBuilder(
 			fromDateStringOptional, toDateStringOptional);
@@ -85,9 +85,18 @@ public class PageDog {
 			return 0;
 		}
 
-		Sum sum = aggregations.get(PageMetricType.VIEWS.getAggregationName());
+		Sum sum = aggregations.get(metricType.getAggregationName());
 
 		return (long)sum.getValue();
+	}
+
+	public long getViewsMetricValue(
+		Optional<String> fromDateStringOptional,
+		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
+
+		return getMetricValue(
+			fromDateStringOptional, PageMetricType.VIEWS, toDateStringOptional,
+			urlOptional);
 	}
 
 	private QueryBuilder _createQueryBuilder(
