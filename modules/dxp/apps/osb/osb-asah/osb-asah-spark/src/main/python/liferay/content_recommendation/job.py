@@ -111,13 +111,11 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 
 		job = job_execution.get('job')
 
-		inference_result_storage_path = '{}/{}/{}/inference_result/*.json.out'.format(
-		    spark_application.configuration.get('aws.storage.path'),
-		    spark_application.args.lcp_project_id, job.get('id')
-		)
-
 		recommended_items_data_frame = data_frame_reader.json(
-		    inference_result_storage_path
+		    '{}/{}/{}/inference_result/*.json.out'.format(
+		        spark_application.configuration.get('aws.storage.path'),
+		        spark_application.args.lcp_project_id, job.get('id')
+		    )
 		).filter('error is null').selectExpr(
 		    'sha1(input.itemId) as id', 'input.itemId as item',
 		    'output.recommendedItems as recommendedItems'
