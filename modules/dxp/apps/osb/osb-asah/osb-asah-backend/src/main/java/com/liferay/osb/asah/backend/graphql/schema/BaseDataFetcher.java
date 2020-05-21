@@ -104,22 +104,19 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		searchQueryContext.setKeywords(
 			dataFetchingEnvironment.getArgument("keywords"));
 
-		if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
-			searchQueryContext.setRangeKey(
-				dataFetchingEnvironment.getArgument("rangeKey"));
-		}
-		else if ((dataFetchingEnvironment.getArgument("timePeriodEnd") !=
-					null) &&
-				 (dataFetchingEnvironment.getArgument("timePeriodStart") !=
-					 null)) {
+		if ((dataFetchingEnvironment.getArgument("rangeEnd") != null) &&
+			(dataFetchingEnvironment.getArgument("rangeStart") != null)) {
 
 			searchQueryContext.setTimeRange(
 				TimeRange.of(
 					LocalDateTime.parse(
-						dataFetchingEnvironment.getArgument("timePeriodEnd")),
+						dataFetchingEnvironment.getArgument("rangeEnd")),
 					LocalDateTime.parse(
-						dataFetchingEnvironment.getArgument(
-							"timePeriodStart"))));
+						dataFetchingEnvironment.getArgument("rangeStart"))));
+		}
+		else if (dataFetchingEnvironment.getArgument("rangeKey") != null) {
+			searchQueryContext.setRangeKey(
+				dataFetchingEnvironment.getArgument("rangeKey"));
 		}
 
 		searchQueryContext.setTerms(
