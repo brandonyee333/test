@@ -17,6 +17,7 @@ from .job import *
 from pyspark import SparkConf
 
 import argparse
+import datetime
 import sys
 
 class ContentRecommendationApplication(BaseSparkApplication):
@@ -84,6 +85,19 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		return SparkJobPipeline(jobs)
 
+	def _update_job_execution_status(self, status):
+		elasticsearch_bridge = self.elasticsearch_bridge
+		job_execution = self.job_execution
+
+		now = datetime.datetime.utcnow()
+
+		elasticsearch_bridge.update_document(
+		    'job-executions', {
+		        'lastUpdatedDate': now,
+		        'status': status
+		    }, job_execution.get('id'), 'osbasahfaroinfo'
+		)
+
 	def start(self):
 		self.job_execution = self.elasticsearch_bridge.get_document(
 		    'job-executions', self.args.job_execution_id, 'osbasahfaroinfo'
@@ -91,4 +105,9 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		spark_job_pipeline = self._create_spark_job_pipeline(self.job_execution)
 
-		spark_job_pipeline.run()
+		try:
+			spark_job_pipeline.run()
+		except Exception as e:
+			self._update_job_execution_status('FAILED')
+
+			raise e
