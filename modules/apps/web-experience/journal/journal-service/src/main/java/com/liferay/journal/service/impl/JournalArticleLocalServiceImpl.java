@@ -79,6 +79,7 @@ import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DefaultActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryDefinition;
@@ -3415,10 +3416,10 @@ public class JournalArticleLocalServiceImpl
 			0, Math.min(maxLength, normalizedUrlTitle.length()));
 
 		for (int i = 1;; i++) {
-			JournalArticle article = fetchArticleByUrlTitle(
+			String curArticleId = _fetchArticleIdByURLTitle(
 				groupId, curUrlTitle);
 
-			if ((article == null) || articleId.equals(article.getArticleId())) {
+			if ((curArticleId == null) || articleId.equals(curArticleId)) {
 				break;
 			}
 
@@ -8664,6 +8665,30 @@ public class JournalArticleLocalServiceImpl
 
 	@ServiceReference(type = JournalConverter.class)
 	protected JournalConverter journalConverter;
+
+	private String _fetchArticleIdByURLTitle(long groupId, String urlTitle) {
+		DynamicQuery dynamicQuery = dynamicQuery();
+
+		Property articleIdProperty = PropertyFactoryUtil.forName("articleId");
+
+		Property groupIdProperty = PropertyFactoryUtil.forName("groupId");
+
+		Property urlTitleProperty = PropertyFactoryUtil.forName("urlTitle");
+
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.distinct(articleIdProperty));
+
+		dynamicQuery.add(groupIdProperty.eq(groupId));
+		dynamicQuery.add(urlTitleProperty.eq(urlTitle));
+
+		List<String> articleIds = dynamicQuery(dynamicQuery);
+
+		if (articleIds.isEmpty()) {
+			return null;
+		}
+
+		return articleIds.get(0);
+	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		JournalArticleLocalServiceImpl.class);
