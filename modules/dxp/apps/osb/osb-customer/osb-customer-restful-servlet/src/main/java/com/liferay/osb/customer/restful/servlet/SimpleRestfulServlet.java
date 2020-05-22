@@ -12,10 +12,10 @@
  *
  */
 
-package com.liferay.osb.common.restful.servlet;
+package com.liferay.osb.customer.restful.servlet;
 
-import com.liferay.osb.common.restful.servlet.exception.NoResourceException;
-import com.liferay.osb.common.restful.servlet.http.UploadServletRequest;
+import com.liferay.osb.customer.restful.servlet.exception.NoResourceException;
+import com.liferay.osb.customer.restful.servlet.http.UploadServletRequest;
 import com.liferay.portal.kernel.exception.NoSuchModelException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;

@@ -1,0 +1,11 @@
+Bundle-Name: Liferay OSB Customer Restful Servlet
+Bundle-SymbolicName: com.liferay.osb.customer.restful.servlet
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.liferay.osb.customer.restful.servlet,\
+	com.liferay.osb.customer.restful.servlet.exception,\
+	com.liferay.osb.customer.restful.servlet.http
+Import-Package:\
+	!org.apache.commons.io.*,\
+	\
+	*

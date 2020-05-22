@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.common.restful.servlet.exception;
+package com.liferay.osb.customer.restful.servlet.exception;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
