@@ -148,7 +148,7 @@ public abstract class BaseConfigurationDog {
 						dataSourceJSONObject.getString("id"));
 
 				JSONObject oldCredentialsJSONObject =
-					dataSourceJSONObject.getJSONObject("credentials");
+					oldDataSourceJSONObject.getJSONObject("credentials");
 
 				String privateKey = oldCredentialsJSONObject.optString(
 					"privateKey");
@@ -172,6 +172,14 @@ public abstract class BaseConfigurationDog {
 					dataSourceJSONObject.put(
 						"faroBackendSecuritySignature",
 						String.valueOf(UUID.randomUUID()));
+				}
+
+				if (Objects.equals(
+						oldCredentialsJSONObject.getString("type"),
+						"OAuth 2 Authentication")) {
+
+					_updateCredentials(
+						credentialsJSONObject, oldDataSourceJSONObject);
 				}
 			}
 			catch (Exception e) {
@@ -259,6 +267,14 @@ public abstract class BaseConfigurationDog {
 
 		configurationHttp.updateConfiguration(
 			configurationsJSONObject, getProviderType());
+	}
+
+	private void _updateCredentials(
+		JSONObject credentialsJSONObject, JSONObject oldDataSourceJSONObject) {
+
+		oldDataSourceJSONObject.put("credentials", credentialsJSONObject);
+
+		_elasticsearchInvoker.replace("data-sources", oldDataSourceJSONObject);
 	}
 
 	private static final Log _log = LogFactory.getLog(
