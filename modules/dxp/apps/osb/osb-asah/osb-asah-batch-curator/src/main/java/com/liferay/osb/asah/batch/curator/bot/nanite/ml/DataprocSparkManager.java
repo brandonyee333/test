@@ -102,7 +102,7 @@ public class DataprocSparkManager implements SparkManager {
 		builder.addAllArgs(arguments);
 
 		builder.addFileUris(
-			String.format("gs://%s/%s", _bucket, configuration));
+			String.format("gs://%s/resources/%s", _bucket, configuration));
 
 		builder.setMainPythonFileUri(
 			String.format("gs://%s/osb-asah-spark.py", _bucket));
@@ -125,7 +125,7 @@ public class DataprocSparkManager implements SparkManager {
 	private static final Log _log = LogFactory.getLog(
 		DataprocSparkManager.class);
 
-	@Value("${osb.asah.spark.manager.bucket:ac-dataproc-pyspark}")
+	@Value("${osb.asah.spark.manager.bucket:analytics-cloud-osbasahspark}")
 	private String _bucket;
 
 	@Value("${osb.asah.spark.manager.dataproc.cluster.name:cluster-d9ec}")
