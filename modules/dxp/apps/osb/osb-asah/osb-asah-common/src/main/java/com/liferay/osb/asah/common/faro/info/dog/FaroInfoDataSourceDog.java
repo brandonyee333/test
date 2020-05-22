@@ -335,9 +335,6 @@ public class FaroInfoDataSourceDog extends BaseFaroInfoDog {
 			throw new Exception("Duplicate data source name " + name);
 		}
 
-		dataSourceJSONObject = elasticsearchInvoker.update(
-			"data-sources", dataSourceId, dataSourceJSONObject);
-
 		String type = getDataSourceType(dataSourceJSONObject);
 
 		if (type.equals("LIFERAY")) {
