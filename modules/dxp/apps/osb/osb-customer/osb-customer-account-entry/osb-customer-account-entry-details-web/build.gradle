@@ -9,15 +9,15 @@ dependencies {
 	compileOnly group: "com.liferay.portal", name: "com.liferay.util.taglib", version: "2.4.0"
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "2.0"
 	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
-	compileOnly project(":private:apps:osb-customer:osb-customer-account-entry:osb-customer-account-entry-details-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-github:osb-customer-github-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-github:osb-customer-github-service")
-	compileOnly project(":private:apps:osb-customer:osb-customer-ticket:osb-customer-ticket-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-ticket:osb-customer-ticket-service")
-	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk-util")
-	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-zendesk:osb-customer-zendesk-web-service-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-account-entry:osb-customer-account-entry-details-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-github:osb-customer-github-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-github:osb-customer-github-service")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-ticket:osb-customer-ticket-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-ticket:osb-customer-ticket-service")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk-util")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-zendesk:osb-customer-zendesk-web-service-api")
 }
 
 processResources {

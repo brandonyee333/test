@@ -13,6 +13,3 @@ buildscript {
 }
 
 apply plugin: "com.liferay.settings.plugin"
-
-include ":private:apps:osb-common:osb-common-restful-servlet"
-project(":private:apps:osb-common:osb-common-restful-servlet").projectDir = file("../../../private/apps/osb-common/osb-common-restful-servlet")

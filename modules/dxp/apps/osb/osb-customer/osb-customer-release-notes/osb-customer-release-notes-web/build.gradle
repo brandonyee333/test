@@ -8,7 +8,7 @@ dependencies {
 	compileOnly group: "javax.servlet", name: "javax.servlet-api", version: "3.0.1"
 	compileOnly group: "org.osgi", name: "org.osgi.core", version: "6.0.0"
 	compileOnly group: "org.osgi", name: "org.osgi.service.component.annotations", version: "1.3.0"
-	compileOnly project(":private:apps:osb-customer:osb-customer-release-notes:osb-customer-release-notes-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-release-notes:osb-customer-release-notes-jira-api")
-	compileOnly project(":private:apps:osb-customer:osb-customer-release-notes:osb-customer-release-notes-service")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-notes:osb-customer-release-notes-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-notes:osb-customer-release-notes-jira-api")
+	compileOnly project(":dxp:apps:osb:osb-customer:osb-customer-release-notes:osb-customer-release-notes-service")
 }
