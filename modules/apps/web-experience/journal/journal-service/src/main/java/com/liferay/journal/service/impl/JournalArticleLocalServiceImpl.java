@@ -3415,7 +3415,7 @@ public class JournalArticleLocalServiceImpl
 		String curUrlTitle = normalizedUrlTitle.substring(
 			0, Math.min(maxLength, normalizedUrlTitle.length()));
 
-		for (int i = 1;; i++) {
+		for (long i = _countSimilarURLTitles(groupId, curUrlTitle);; i++) {
 			String curArticleId = _fetchArticleIdByURLTitle(
 				groupId, curUrlTitle);
 
@@ -8665,6 +8665,28 @@ public class JournalArticleLocalServiceImpl
 
 	@ServiceReference(type = JournalConverter.class)
 	protected JournalConverter journalConverter;
+
+	private long _countSimilarURLTitles(long groupId, String urlTitle) {
+		DynamicQuery dynamicQuery = dynamicQuery();
+
+		Property groupIdProperty = PropertyFactoryUtil.forName("groupId");
+
+		Property urlTitleProperty = PropertyFactoryUtil.forName("urlTitle");
+
+		dynamicQuery.setProjection(
+			ProjectionFactoryUtil.countDistinct("resourcePrimKey"));
+
+		dynamicQuery.add(groupIdProperty.eq(groupId));
+		dynamicQuery.add(urlTitleProperty.like(urlTitle + StringPool.PERCENT));
+
+		List<Long> results = dynamicQuery(dynamicQuery);
+
+		if (results.isEmpty()) {
+			return 0;
+		}
+
+		return results.get(0);
+	}
 
 	private String _fetchArticleIdByURLTitle(long groupId, String urlTitle) {
 		DynamicQuery dynamicQuery = dynamicQuery();
