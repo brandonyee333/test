@@ -39,6 +39,7 @@
 			}
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"segmentNames": [
 		],
@@ -80,6 +81,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"segmentNames": [
 		],
@@ -121,6 +123,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 1,
 		"region": null,
 		"segmentNames": [
 		],
@@ -162,6 +165,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 2,
 		"region": null,
 		"segmentNames": [
 		],
@@ -202,6 +206,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": null,
 		"region": null,
 		"segmentNames": [
 		],
@@ -241,6 +246,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "Liferay DXP",
 		"segmentNames": [
@@ -280,6 +286,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "Liferay",
 		"segmentNames": [
@@ -324,6 +331,7 @@
 			}
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "Liferay",
 		"segmentNames": [
@@ -363,6 +371,7 @@
 		"pageScrolls": [
 		],
 		"platformName": "Unknown",
+		"reads": 0,
 		"region": null,
 		"searchTerm": "liferay",
 		"segmentNames": [
