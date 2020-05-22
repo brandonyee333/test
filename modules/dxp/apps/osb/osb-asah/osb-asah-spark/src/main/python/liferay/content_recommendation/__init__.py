@@ -62,10 +62,10 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		return spark_conf
 
-	def _create_spark_job_pipeline(self, job_execution):
+	def _create_spark_job_pipeline(self):
 		jobs = []
 
-		if job_execution.get('step') == 'DATA_PREPARATION':
+		if self.job_execution.get('step') == 'DATA_PREPARATION':
 			jobs.append(ReadAnalyticsEventsSparkJob(self))
 
 			jobs.append(GenerateUserItemInteractionsSparkJob(self))
@@ -85,6 +85,13 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		return SparkJobPipeline(jobs)
 
+	def _get_job_execution(self):
+		elasticsearch_bridge = self.elasticsearch_bridge
+
+		return elasticsearch_bridge.get_document(
+		    'job-executions', self.args.job_execution_id, 'osbasahfaroinfo'
+		)
+
 	def _update_job_execution_status(self, status):
 		elasticsearch_bridge = self.elasticsearch_bridge
 		job_execution = self.job_execution
@@ -99,11 +106,9 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		)
 
 	def start(self):
-		self.job_execution = self.elasticsearch_bridge.get_document(
-		    'job-executions', self.args.job_execution_id, 'osbasahfaroinfo'
-		)
+		self.job_execution = self._get_job_execution()
 
-		spark_job_pipeline = self._create_spark_job_pipeline(self.job_execution)
+		spark_job_pipeline = self._create_spark_job_pipeline()
 
 		try:
 			spark_job_pipeline.run()
