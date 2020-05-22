@@ -265,24 +265,36 @@ public class HistogramDog {
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(
 			instant, ZoneOffset.UTC);
 
-		if (TimeRange.LAST_24_HOURS.equals(timeRange) ||
-			TimeRange.YESTERDAY.equals(timeRange)) {
+		if (timeRange != null) {
+			if (TimeRange.LAST_24_HOURS.equals(timeRange) ||
+				TimeRange.YESTERDAY.equals(timeRange)) {
 
-			localDateTime = localDateTime.plusDays(1);
-		}
-		else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(7);
-		}
-		else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(28);
-		}
-		else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(30);
-		}
-		else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
-			localDateTime = localDateTime.plusDays(90);
+				localDateTime = localDateTime.plusDays(1);
+			}
+			else if (TimeRange.LAST_7_DAYS.equals(timeRange)) {
+				localDateTime = localDateTime.plusDays(7);
+			}
+			else if (TimeRange.LAST_28_DAYS.equals(timeRange)) {
+				localDateTime = localDateTime.plusDays(28);
+			}
+			else if (TimeRange.LAST_30_DAYS.equals(timeRange)) {
+				localDateTime = localDateTime.plusDays(30);
+			}
+			else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
+				localDateTime = localDateTime.plusDays(90);
 
-			localDateTime = localDateTime.withDayOfMonth(1);
+				localDateTime = localDateTime.withDayOfMonth(1);
+			}
+			else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+				localDateTime = localDateTime.plusDays(180);
+			}
+			else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+				localDateTime = localDateTime.plusYears(1);
+			}
+			else {
+				localDateTime = localDateTime.plusDays(
+					timeRange.getDeltaDays());
+			}
 		}
 
 		return localDateTime.toString();
