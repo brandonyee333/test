@@ -14,7 +14,6 @@
 
 package com.liferay.osb.asah.backend.model;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -152,19 +151,7 @@ public class TimeRangeTest {
 	public void testGetRangeKey8() {
 		TimeRange timeRange = TimeRange.LAST_YEAR;
 
-		int expectedRangeKey = 365;
-
-		LocalDate currentLocalDate = LocalDate.now(Clock.systemUTC());
-
-		LocalDate previousYearLocalDate = currentLocalDate.minusYears(1);
-
-		if (currentLocalDate.isLeapYear() ||
-			previousYearLocalDate.isLeapYear()) {
-
-			expectedRangeKey = 366;
-		}
-
-		Assert.assertEquals(expectedRangeKey, timeRange.getRangeKey());
+		Assert.assertEquals(365, timeRange.getRangeKey());
 	}
 
 	@Test

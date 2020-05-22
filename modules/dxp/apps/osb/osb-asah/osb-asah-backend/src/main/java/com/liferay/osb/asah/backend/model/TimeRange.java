@@ -71,6 +71,29 @@ public class TimeRange {
 		false, "last-year", 365) {
 
 		@Override
+		public long getDeltaDays() {
+			LocalDate currentLocalDate = LocalDate.now(getClock());
+
+			int currentMonthValue = currentLocalDate.getMonthValue();
+			int dayOfMonth = currentLocalDate.getDayOfMonth();
+
+			if (currentLocalDate.isLeapYear() &&
+				(((currentMonthValue == 2) && (dayOfMonth == 29)) ||
+				 (currentMonthValue > 2))) {
+
+				return 366;
+			}
+
+			LocalDate previousLocalDate = currentLocalDate.minusYears(1);
+
+			if (previousLocalDate.isLeapYear()) {
+				return 366;
+			}
+
+			return 365;
+		}
+
+		@Override
 		public LocalDateTime getEndLocalDateTime() {
 			LocalDateTime localDateTime = LocalDateTime.of(
 				LocalDate.now(getClock()), LocalTime.MIDNIGHT);
@@ -170,8 +193,7 @@ public class TimeRange {
 	}
 
 	public long getDeltaDays() {
-		return ChronoUnit.DAYS.between(getStartLocalDate(), getEndLocalDate()) +
-			1;
+		return _deltaDays;
 	}
 
 	public LocalDate getEndLocalDate() {
@@ -247,6 +269,7 @@ public class TimeRange {
 
 	private TimeRange(boolean includeToday, String key, int rangeKey) {
 		_clock = Clock.systemUTC();
+		_deltaDays = rangeKey;
 		_includeToday = includeToday;
 		_key = key;
 		_rangeKey = rangeKey;
@@ -256,6 +279,7 @@ public class TimeRange {
 		Clock clock, boolean includeToday, String key, int rangeKey) {
 
 		_clock = clock;
+		_deltaDays = rangeKey;
 		_includeToday = includeToday;
 		_key = key;
 		_rangeKey = rangeKey;
@@ -276,6 +300,7 @@ public class TimeRange {
 		};
 
 	private final Clock _clock;
+	private final int _deltaDays;
 	private final boolean _includeToday;
 	private final String _key;
 	private final int _rangeKey;
