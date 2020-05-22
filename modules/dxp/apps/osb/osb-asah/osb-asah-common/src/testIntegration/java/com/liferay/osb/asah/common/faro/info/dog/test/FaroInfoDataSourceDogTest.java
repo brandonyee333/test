@@ -103,6 +103,34 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 			"INACTIVE", dataSourceJSONObject.optString("status"));
 	}
 
+	@ElasticsearchIndex(
+		name = "data-sources", resourcePath = "data-sources.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testSwitchFromOAuthtoToken() throws Exception {
+		JSONObject dataSourceJSONObject =
+			_faroInfoDataSourceDog.patchDataSource(
+				"405201047787757796",
+				FaroInfoTestUtil.buildLiferayDataSourceJSONObject(
+					"Token Authentication", "Liferay",
+					"http://localhost:8080"));
+
+		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
+		Assert.assertEquals(
+			"Token Authentication", credentialsJSONObject.getString("type"));
+		Assert.assertNotNull(credentialsJSONObject.getString("privateKey"));
+		Assert.assertNotNull(credentialsJSONObject.getString("publicKey"));
+
+		Assert.assertNull(credentialsJSONObject.opt("oAuthAuthorizationURL"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthClientId"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthClientSecret"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthOwner"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthRefreshToken"));
+	}
+
 	@MockBean
 	private ChannelHttp _channelHttp;
 

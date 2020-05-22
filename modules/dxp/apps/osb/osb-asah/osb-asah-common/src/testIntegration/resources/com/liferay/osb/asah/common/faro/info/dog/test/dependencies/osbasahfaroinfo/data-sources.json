@@ -29,5 +29,44 @@
 		"state": "CREDENTIALS_VALID",
 		"status": "ACTIVE",
 		"url": "https://liferay.com"
+	},
+	{
+		"author": {
+			"id": "20139",
+			"name": "Test Test"
+		},
+		"credentials": {
+			"oAuthAuthorizationURL": null,
+			"oAuthClientId": "id-27dcae4a-7c16-b7ec-25b8-280ad28366d",
+			"oAuthClientSecret": "secret-68e5a2af-6aee-b531-dd43-527d6a5cbd75",
+			"oAuthOwner": {
+				"emailAddress": "test@liferay.com",
+				"name": "Test Test"
+			},
+			"oAuthRefreshToken": "84bd73b5542ea524c316e351fa0ab61c9e1f436a645c0883d929d713856b6a1",
+			"type": "OAuth 2 Authentication"
+		},
+		"dateCreated": "${today-1dT00:00:00.000Z}",
+		"dateModified": "${today-1dT00:00:00.000Z}",
+		"id": "405201047787757796",
+		"name": "Test Data Source",
+		"provider": {
+			"analyticsConfiguration": {
+				"enableAllSites": true,
+				"sites": [
+				]
+			},
+			"contactsConfiguration": {
+				"enableAllContacts": true,
+				"organizations": [
+				],
+				"userGroups": [
+				]
+			},
+			"type": "LIFERAY"
+		},
+		"state": "CREDENTIALS_VALID",
+		"status": "ACTIVE",
+		"url": "https://liferay.com"
 	}
 ]
