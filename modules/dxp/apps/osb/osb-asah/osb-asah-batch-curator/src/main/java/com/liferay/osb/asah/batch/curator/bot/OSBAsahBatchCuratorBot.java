@@ -271,7 +271,7 @@ public class OSBAsahBatchCuratorBot {
 					return null;
 				}
 			).setQueryBuilder(
-				BoolQueryBuilderUtil.must(
+				BoolQueryBuilderUtil.filter(
 					QueryBuilders.existsQuery("cronExpression"))
 			).iterate();
 		}
