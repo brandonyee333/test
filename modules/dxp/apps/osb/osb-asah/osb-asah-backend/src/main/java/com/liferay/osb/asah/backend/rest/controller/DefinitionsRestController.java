@@ -112,9 +112,9 @@ public class DefinitionsRestController extends BaseRestController {
 
 	private QueryBuilder _getQueryBuilder(String name) {
 		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
-			QueryBuilders.termQuery("ownerType", "individual")
-		).filter(
 			QueryBuilders.existsQuery("dataSourceFieldNames")
+		).filter(
+			QueryBuilders.termQuery("ownerType", "individual")
 		);
 
 		if (StringUtils.isNotBlank(name)) {
