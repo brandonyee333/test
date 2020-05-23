@@ -263,8 +263,15 @@ public class VisitorHistogramDog {
 
 			return localDateTime.plusWeeks(13);
 		}
-
-		return localDateTime;
+		else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
+			return localDateTime.plusWeeks(180);
+		}
+		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
+			return localDateTime.plusYears(1);
+		}
+		else {
+			return localDateTime.plusDays(timeRange.getDeltaDays());
+		}
 	}
 
 	private String _getTimeKey(
