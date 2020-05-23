@@ -80,8 +80,8 @@ function push_to_gcp {
 }
 
 function replace_yaml_files_env_variables {
-	local resources_src='src/main/resources'
 	local resources_build='build/resources/main'
+	local resources_src='src/main/resources'
 
 	for file_name in `ls ${resources_src}/*.yaml | xargs -n 1 basename`
 	do
