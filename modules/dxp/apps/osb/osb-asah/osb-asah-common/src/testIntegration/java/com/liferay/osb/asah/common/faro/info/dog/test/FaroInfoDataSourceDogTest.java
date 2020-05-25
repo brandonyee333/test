@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog.test;
 
+import com.liferay.osb.asah.common.dxp.extractor.dog.DXPExtractorConfigurationDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoDataSourceDog;
 import com.liferay.osb.asah.common.http.ChannelHttp;
@@ -31,6 +32,9 @@ import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -123,8 +127,22 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 			"Token Authentication", credentialsJSONObject.getString("type"));
 		Assert.assertNotNull(credentialsJSONObject.getString("privateKey"));
 		Assert.assertNotNull(credentialsJSONObject.getString("publicKey"));
-
 		Assert.assertNull(credentialsJSONObject.opt("oAuthAuthorizationURL"));
+
+		ArgumentCaptor<JSONObject> argumentCaptor = ArgumentCaptor.forClass(
+			JSONObject.class);
+
+		Mockito.verify(
+			_dxpExtractorConfigurationDog, Mockito.times(1)
+		).updateConfiguration(
+			argumentCaptor.capture()
+		);
+
+		dataSourceJSONObject = argumentCaptor.getValue();
+
+		credentialsJSONObject = dataSourceJSONObject.getJSONObject(
+			"credentials");
+
 		Assert.assertNull(credentialsJSONObject.opt("oAuthClientId"));
 		Assert.assertNull(credentialsJSONObject.opt("oAuthClientSecret"));
 		Assert.assertNull(credentialsJSONObject.opt("oAuthOwner"));
@@ -133,6 +151,9 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@Autowired
+	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	@Autowired
 	private FaroInfoDataSourceDog _faroInfoDataSourceDog;
