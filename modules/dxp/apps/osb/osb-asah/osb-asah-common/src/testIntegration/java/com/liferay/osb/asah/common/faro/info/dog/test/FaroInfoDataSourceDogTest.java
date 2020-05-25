@@ -112,7 +112,7 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
-	public void testSwitchFromOAuthtoToken() throws Exception {
+	public void testUpgradeFromOAuthToToken() throws Exception {
 		JSONObject dataSourceJSONObject =
 			_faroInfoDataSourceDog.patchDataSource(
 				"405201047787757796",
