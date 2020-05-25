@@ -123,11 +123,11 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 		JSONObject credentialsJSONObject = dataSourceJSONObject.getJSONObject(
 			"credentials");
 
-		Assert.assertEquals(
-			"Token Authentication", credentialsJSONObject.getString("type"));
+		Assert.assertNull(credentialsJSONObject.opt("oAuthAuthorizationURL"));
 		Assert.assertNotNull(credentialsJSONObject.getString("privateKey"));
 		Assert.assertNotNull(credentialsJSONObject.getString("publicKey"));
-		Assert.assertNull(credentialsJSONObject.opt("oAuthAuthorizationURL"));
+		Assert.assertEquals(
+			"Token Authentication", credentialsJSONObject.getString("type"));
 
 		ArgumentCaptor<JSONObject> argumentCaptor = ArgumentCaptor.forClass(
 			JSONObject.class);
