@@ -94,14 +94,6 @@ public class TimeRange {
 		}
 
 		@Override
-		public LocalDateTime getEndLocalDateTime() {
-			LocalDateTime localDateTime = LocalDateTime.of(
-				LocalDate.now(getClock()), LocalTime.MIDNIGHT);
-
-			return localDateTime.minusHours(1);
-		}
-
-		@Override
 		public LocalDateTime getStartLocalDateTime() {
 			LocalDateTime localDateTime = getEndLocalDateTime();
 
