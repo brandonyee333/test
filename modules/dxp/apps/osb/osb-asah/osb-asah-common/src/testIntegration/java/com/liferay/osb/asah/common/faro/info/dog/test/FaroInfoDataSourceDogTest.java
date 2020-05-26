@@ -152,7 +152,7 @@ public class FaroInfoDataSourceDogTest extends BaseFaroInfoDogTestCase {
 	@MockBean
 	private ChannelHttp _channelHttp;
 
-	@Autowired
+	@MockBean
 	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	@Autowired

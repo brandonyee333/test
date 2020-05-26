@@ -39,14 +39,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
@@ -909,17 +904,6 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 			new String[0], updateFilterSB.toString());
 	}
 
-	@TestConfiguration
-	public static class FaroInfoIndividualSegmentDogTestConfiguration {
-
-		@Bean
-		@Primary
-		public DXPExtractorConfigurationDog dxpExtractorConfigurationDog() {
-			return Mockito.mock(DXPExtractorConfigurationDog.class);
-		}
-
-	}
-
 	private void _assertAddSetsReferencedObjectIds(
 			String[] expectedReferencedAssetDataSourceIds,
 			String[] expectedReferencedIds, String filterString, String key)
@@ -1075,6 +1059,9 @@ public class FaroInfoIndividualSegmentDogTest extends BaseFaroInfoDogTestCase {
 
 	@MockBean
 	private ChannelHttp _channelHttp;
+
+	@MockBean
+	private DXPExtractorConfigurationDog _dxpExtractorConfigurationDog;
 
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 
