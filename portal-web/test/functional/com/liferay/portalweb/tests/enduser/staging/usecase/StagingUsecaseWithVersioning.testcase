@@ -64,6 +64,8 @@ definition {
 			pageName = "Staging Test Page",
 			siteName = "Site Name");
 
+		ProductMenuHelper.expandCategory(category = "Navigation");
+
 		Staging.viewSitePagesVariationCP(sitePagesVariationName = "Summer");
 
 		Page.add(
