@@ -88,7 +88,7 @@ for (int i = 0; i < controls.length; i++) {
 				}
 				%>
 
-				<aui:input checked="<%= MapUtil.getBoolean(parameterMap, controlName, showPortletDataInput) || MapUtil.getBoolean(parameterMap, PortletDataHandlerKeys.PORTLET_DATA_ALL) %>" data="<%= data %>" disabled="<%= disabled %>" helpMessage="<%= control.getHelpMessage(locale, action) %>" ignoreRequestValue="<%= disabled %>" label="<%= controlLabel %>" name="<%= controlInputName %>" type="checkbox" />
+				<aui:input checked="<%= MapUtil.getBoolean(parameterMap, controlName, showPortletDataInput) || MapUtil.getBoolean(parameterMap, PortletDataHandlerKeys.PORTLET_DATA_ALL) %>" data="<%= data %>" disabled="<%= disabled && !control.getDefaultState() %>" helpMessage="<%= control.getHelpMessage(locale, action) %>" ignoreRequestValue="<%= disabled %>" label="<%= controlLabel %>" name="<%= controlInputName %>" type="checkbox" />
 
 				<c:if test="<%= children != null %>">
 					<ul class="list-unstyled" id="<portlet:namespace /><%= controlName %>Controls">
