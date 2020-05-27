@@ -90,6 +90,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GraphQLRestController {
 
+	public static boolean skipCache(
+		String query, Map<String, Object> variables) {
+
+		JSONObject variablesJSONObject = new JSONObject(variables);
+
+		if (!query.startsWith("{pagesCount") &&
+			!query.startsWith("query IndividualMetrics")) {
+
+			if (variablesJSONObject.has("rangeEnd")) {
+				LocalDate currentLocalDate = LocalDate.now();
+				LocalDate rangeEndLocalDate = LocalDate.parse(
+					variablesJSONObject.getString("rangeEnd"));
+
+				return currentLocalDate.isEqual(rangeEndLocalDate);
+			}
+			else if (variablesJSONObject.optInt("rangeKey") > 0) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/schema")
 	public String get() throws Exception {
 		ExecutionResult executionResult = _graphQL.execute(
@@ -293,7 +316,7 @@ public class GraphQLRestController {
 
 		String cacheKey = query + "#" + variables;
 
-		boolean skipCache = _skipCache(query, variables);
+		boolean skipCache = skipCache(query, variables);
 
 		if ((_cacheManager != null) && !skipCache) {
 			if (_cache == null) {
@@ -348,29 +371,6 @@ public class GraphQLRestController {
 
 			child.observe(simpleTimer.elapsedSeconds());
 		}
-	}
-
-	private boolean _skipCache(String query, Map<String, Object> variables) {
-		JSONObject variablesJSONObject = new JSONObject(variables);
-
-		if (!query.startsWith("{pagesCount") &&
-			!query.startsWith("query IndividualMetrics")) {
-
-			if (variablesJSONObject.has("rangeEnd")) {
-				String rangeEnd = variablesJSONObject.getString("rangeEnd");
-
-				LocalDate currentLocalDate = LocalDate.now();
-
-				if (currentLocalDate.equals(LocalDate.parse(rangeEnd))) {
-					return true;
-				}
-			}
-			else if (variablesJSONObject.optInt("rangeKey") > 0) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	private String _toString(ExecutionResult executionResult)

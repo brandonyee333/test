@@ -1,0 +1,57 @@
+query SiteMetrics($channelId: String, $interval: String!, $rangeEnd: String, $rangeStart: String) {
+    site(channelId: $channelId, interval: $interval, rangeEnd: $rangeEnd, rangeStart: $rangeStart) {
+        anonymousVisitorsMetric {
+            ...metricFragment
+            __typename
+        }
+        bounceRateMetric {
+            ...metricFragment
+            __typename
+        }
+        engagementMetric {
+            ...metricFragment
+            __typename
+        }
+        knownVisitorsMetric {
+            ...metricFragment
+            __typename
+        }
+        sessionDurationMetric {
+            ...metricFragment
+            __typename
+        }
+        sessionsPerVisitorMetric {
+            ...metricFragment
+            __typename
+        }
+        visitorsMetric {
+            ...metricFragment
+            __typename
+        }
+        __typename
+    }
+}
+
+fragment metricFragment on Metric {
+    histogram {
+        key
+        previousValue
+        previousValueKey
+        value
+        valueKey
+        trend {
+            percentage
+            trendClassification
+            __typename
+        }
+        __typename
+    }
+    previousValue
+    trend {
+        percentage
+        trendClassification
+        __typename
+    }
+    value
+    __typename
+}
