@@ -199,7 +199,7 @@ page import="javax.portlet.WindowState" %>
 <%
 JournalWebConfiguration journalWebConfiguration = (JournalWebConfiguration)request.getAttribute(JournalWebConfiguration.class.getName());
 
-JournalDisplayContext journalDisplayContext = new JournalDisplayContext(request, liferayPortletRequest, liferayPortletResponse, portletPreferences);
+JournalDisplayContext journalDisplayContext = JournalDisplayContext.create(request, liferayPortletRequest, liferayPortletResponse, portletPreferences);
 
 JournalWebRequestHelper journalWebRequestHelper = new JournalWebRequestHelper(request);
 
