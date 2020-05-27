@@ -130,25 +130,19 @@ public class PageNanite extends BaseStreamNanite<Page> {
 	protected void setModelCustomProperties(
 		AnalyticsEvent analyticsEvent, Page page) {
 
-		if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-			Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
+		if (Objects.equals(analyticsEvent.getApplicationId(), "Form") &&
+			Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
 
-			String referrer = MapUtil.getString(
-				analyticsEvent.getContext(), "referrer", "");
+			page.addFormSubmission(1);
 
-			if (Objects.equals(referrer, "")) {
-				page.addDirectAccessDate(analyticsEvent.getEventDate());
-				page.setDirectAccess(1);
-			}
-			else {
-				page.addIndirectAccessDate(analyticsEvent.getEventDate());
-				page.setIndirectAccess(1);
-			}
+			page.addInteractionDate(analyticsEvent.getEventDate());
+		}
+		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
+				 Objects.equals(analyticsEvent.getEventId(), "ctaClicked")) {
 
-			page.setBounce(0);
-			page.setEntrances(0);
-			page.setExits(0);
-			page.setViews(1);
+			page.addCTAClicks(1);
+
+			page.addInteractionDate(analyticsEvent.getEventDate());
 		}
 		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
 				 Objects.equals(
@@ -167,18 +161,24 @@ public class PageNanite extends BaseStreamNanite<Page> {
 			page.addReads(1);
 		}
 		else if (Objects.equals(analyticsEvent.getApplicationId(), "Page") &&
-				 Objects.equals(analyticsEvent.getEventId(), "ctaClicked")) {
+				 Objects.equals(analyticsEvent.getEventId(), "pageViewed")) {
 
-			page.addCTAClicks(1);
+			String referrer = MapUtil.getString(
+				analyticsEvent.getContext(), "referrer", "");
 
-			page.addInteractionDate(analyticsEvent.getEventDate());
-		}
-		else if (Objects.equals(analyticsEvent.getApplicationId(), "Form") &&
-				 Objects.equals(analyticsEvent.getEventId(), "formSubmitted")) {
+			if (Objects.equals(referrer, "")) {
+				page.addDirectAccessDate(analyticsEvent.getEventDate());
+				page.setDirectAccess(1);
+			}
+			else {
+				page.addIndirectAccessDate(analyticsEvent.getEventDate());
+				page.setIndirectAccess(1);
+			}
 
-			page.addFormSubmission(1);
-
-			page.addInteractionDate(analyticsEvent.getEventDate());
+			page.setBounce(0);
+			page.setEntrances(0);
+			page.setExits(0);
+			page.setViews(1);
 		}
 		else {
 			page.addInteractionDate(analyticsEvent.getEventDate());
