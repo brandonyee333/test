@@ -740,6 +740,10 @@ public class JournalDisplayContext {
 	public SearchContainer getSearchContainer(boolean showVersions)
 		throws PortalException {
 
+		if (_articleSearchContainer != null) {
+			return _articleSearchContainer;
+		}
+
 		ThemeDisplay themeDisplay = (ThemeDisplay)_request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
@@ -1008,7 +1012,9 @@ public class JournalDisplayContext {
 			articleSearchContainer.setResults(results);
 		}
 
-		return articleSearchContainer;
+		_articleSearchContainer = articleSearchContainer;
+
+		return _articleSearchContainer;
 	}
 
 	public int getStatus() {
@@ -1372,6 +1378,7 @@ public class JournalDisplayContext {
 
 	private JournalArticle _article;
 	private JournalArticleDisplay _articleDisplay;
+	private SearchContainer _articleSearchContainer;
 	private String _backURL;
 	private DDMFormValues _ddmFormValues;
 	private String _ddmStructureKey;
