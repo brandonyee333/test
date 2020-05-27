@@ -52,8 +52,6 @@ volumes:
         driver: local
     analytics-data2:
         driver: local
-    backup:
-        driver: local
     export:
         driver: local
     temp:
