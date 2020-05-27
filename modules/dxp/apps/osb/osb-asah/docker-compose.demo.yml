@@ -8,9 +8,9 @@ services:
             - LCP_ENGINE_ELASTICSEARCH_SERVER_IP=analytics-elasticsearch
             - LCP_PROJECT_ID=local
             - OSB_ASAH_BACKEND_ADMIN_REST_CONTROLLER_ENABLED=true
-            - OSB_ASAH_BACKEND_URL=http://localhost:8082 # replace 'localhost' with your ip
-            - OSB_ASAH_PUBLISHER_URL=http://localhost:8082 # replace 'localhost' with your ip
-            - OSB_FARO_FRONTEND_URL=http://localhost:8081 # replace 'localhost' with your ip
+            - OSB_ASAH_BACKEND_URL=http://localhost:8082
+            - OSB_ASAH_PUBLISHER_URL=http://localhost:8082
+            - OSB_FARO_FRONTEND_URL=http://analytics-frontend:8080
         image: liferay/com-liferay-osb-asah:monolith-20200508
         ports:
             - "8082:8080"
@@ -38,6 +38,7 @@ services:
         container_name: analytics-frontend
         environment:
             - FARO_DEFAULT_WE_DEPLOY_KEY=local.lfr.cloud
+            - FARO_URL=http://localhost:8081
             - OSB_ASAH_BACKEND_URL=http://analytics-backend:8080
             - OSB_ASAH_PUBLISHER_URL=http://analytics-backend:8080
         image: liferay/com-liferay-osb-faro:20200508
