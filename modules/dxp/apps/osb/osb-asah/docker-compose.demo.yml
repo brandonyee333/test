@@ -33,7 +33,7 @@ services:
         ports:
             - "9200:9200"
         volumes:
-            - analytics-data:/usr/share/elasticsearch/data
+            - analytics-data1:/usr/share/elasticsearch/data
     analytics-frontend:
         container_name: analytics-frontend
         environment:
@@ -44,9 +44,13 @@ services:
         image: liferay/com-liferay-osb-faro:20200508
         ports:
             - "8081:8080"
+        volumes:
+            - analytics-data2:/opt/liferay/data
 version: "2.4"
 volumes:
-    analytics-data:
+    analytics-data1:
+        driver: local
+    analytics-data2:
         driver: local
     backup:
         driver: local
