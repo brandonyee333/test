@@ -898,14 +898,25 @@ public class AssetUtil {
 		if (sortField.startsWith(
 				DDMStructureManager.STRUCTURE_INDEXER_FIELD_PREFIX)) {
 
-			StringBundler sb = new StringBundler(5);
+			StringBundler sb = new StringBundler(3);
 
-			sb.append(sortField);
-			sb.append(StringPool.UNDERLINE);
+			try {
+				String indexType = sortField.split(
+					DDMStructureManager.STRUCTURE_INDEXER_FIELD_SEPARATOR)[1];
 
-			if (fieldLocalizable) {
-				sb.append(LocaleUtil.toLanguageId(locale));
-				sb.append(StringPool.UNDERLINE);
+				if (fieldLocalizable) {
+					sb.append(_ddmIndexer.getValueFieldName(indexType, locale));
+					sb.append(StringPool.UNDERLINE);
+				}
+				else {
+					sb.append(_ddmIndexer.getValueFieldName(indexType));
+					sb.append(StringPool.UNDERLINE);
+				}
+			}
+			catch (Exception exception) {
+				_log.error("Unable to sort assets", exception);
+
+				throw exception;
 			}
 
 			String suffix = "String";
