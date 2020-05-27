@@ -108,21 +108,25 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class JournalDisplayContext {
 
-	public JournalDisplayContext(
+	public static JournalDisplayContext create(
 		HttpServletRequest request, LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		PortletPreferences portletPreferences) {
 
-		_request = request;
-		_liferayPortletRequest = liferayPortletRequest;
-		_liferayPortletResponse = liferayPortletResponse;
-		_portletPreferences = portletPreferences;
+		JournalDisplayContext journalDisplayContext =
+			(JournalDisplayContext)liferayPortletRequest.getAttribute(
+				_JOURNAL_DISPLAY_CONTEXT);
 
-		_journalWebConfiguration =
-			(JournalWebConfiguration)_request.getAttribute(
-				JournalWebConfiguration.class.getName());
-		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
-			_request);
+		if (journalDisplayContext == null) {
+			journalDisplayContext = new JournalDisplayContext(
+				request, liferayPortletRequest, liferayPortletResponse,
+				portletPreferences);
+
+			liferayPortletRequest.setAttribute(
+				_JOURNAL_DISPLAY_CONTEXT, journalDisplayContext);
+		}
+
+		return journalDisplayContext;
 	}
 
 	public JournalArticle getArticle() throws PortalException {
@@ -1336,6 +1340,23 @@ public class JournalDisplayContext {
 			active, _getStatusLabel(status), portletURL.toString());
 	}
 
+	private JournalDisplayContext(
+		HttpServletRequest request, LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletResponse liferayPortletResponse,
+		PortletPreferences portletPreferences) {
+
+		_request = request;
+		_liferayPortletRequest = liferayPortletRequest;
+		_liferayPortletResponse = liferayPortletResponse;
+		_portletPreferences = portletPreferences;
+
+		_journalWebConfiguration =
+			(JournalWebConfiguration)_request.getAttribute(
+				JournalWebConfiguration.class.getName());
+		_portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(
+			_request);
+	}
+
 	private String _getStatusLabel(int status) {
 		String label = WorkflowConstants.getStatusLabel(status);
 
@@ -1345,6 +1366,9 @@ public class JournalDisplayContext {
 
 		return LanguageUtil.get(_request, label);
 	}
+
+	private static final String _JOURNAL_DISPLAY_CONTEXT =
+		"JOURNAL_DISPLAY_CONTEXT";
 
 	private JournalArticle _article;
 	private JournalArticleDisplay _articleDisplay;
