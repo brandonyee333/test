@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.time.LocalDate;
+
 import java.util.LinkedHashMap;
 
 import org.junit.Test;
@@ -43,6 +45,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
+
+	@Test
+	public void testGetCompositionResultBagCustomRange() {
+		LocalDate localDate = LocalDate.now();
+
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				"1", "355524992631037473", 10, 0,
+				TimeRange.of(localDate.minusDays(9), localDate.minusDays(90))),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 1L);
+				}
+			},
+			1, 1, 1);
+	}
 
 	@Test
 	public void testGetCompositionResultBagLast7Days() {
@@ -112,6 +130,34 @@ public class SiteInterestCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			1, 2, 2);
+	}
+
+	@Test
+	public void testGetCompositionResultBagLast180Days() {
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				"1", "355524992631037473", 10, 0, TimeRange.of(180)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 2L);
+					put("holistic roi", 1L);
+				}
+			},
+			2, 2, 3);
+	}
+
+	@Test
+	public void testGetCompositionResultBagLastYear() {
+		checkResults(
+			_siteInterestCompositionDog.getCompositionResultBag(
+				"1", "355524992631037473", 10, 0, TimeRange.of(365)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("compelling action-items", 3L);
+					put("holistic roi", 1L);
+				}
+			},
+			3, 2, 4);
 	}
 
 	@Test

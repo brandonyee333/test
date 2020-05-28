@@ -21,6 +21,9 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.time.LocalDate;
+
+import java.util.Collections;
 import java.util.LinkedHashMap;
 
 import org.junit.Test;
@@ -32,14 +35,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 /**
  * @author Rachael Koestartyo
  */
+@ElasticsearchIndex(
+	name = "pages", resourcePath = "pages-info.json",
+	weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
+)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 
-	@ElasticsearchIndex(
-		name = "pages", resourcePath = "pages-info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_CEREBRO_INFO
-	)
 	@Test
 	public void testGetCompositionResultBag() {
 		checkResults(
@@ -52,6 +55,60 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			3, 2, 4);
+	}
+
+	@Test
+	public void testTimeRangeCompositionResultBag() {
+		checkResults(
+			_searchTermCompositionDog.getCompositionResultBag(
+				"2", "333962835564819979", 10, 0, TimeRange.of(0)),
+			Collections.emptyMap(), 0, 0, 0);
+
+		checkResults(
+			_searchTermCompositionDog.getCompositionResultBag(
+				"2", "333962835564819979", 10, 0, TimeRange.of(30)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("liferay", 3L);
+					put("liferay dxp", 1L);
+				}
+			},
+			3, 2, 4);
+
+		checkResults(
+			_searchTermCompositionDog.getCompositionResultBag(
+				"2", "333962835564819979", 10, 0, TimeRange.of(180)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("liferay", 3L);
+					put("liferay dxp", 2L);
+				}
+			},
+			3, 2, 5);
+
+		checkResults(
+			_searchTermCompositionDog.getCompositionResultBag(
+				"2", "333962835564819979", 10, 0, TimeRange.of(365)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("liferay", 4L);
+					put("liferay dxp", 2L);
+				}
+			},
+			4, 2, 6);
+
+		LocalDate localDate = LocalDate.now();
+
+		checkResults(
+			_searchTermCompositionDog.getCompositionResultBag(
+				"2", "333962835564819979", 10, 0,
+				TimeRange.of(localDate.minusDays(3), localDate.minusDays(180))),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("liferay dxp", 1L);
+				}
+			},
+			1, 1, 1);
 	}
 
 	@Autowired

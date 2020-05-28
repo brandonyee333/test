@@ -21,6 +21,8 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.time.LocalDate;
+
 import java.util.LinkedHashMap;
 
 import org.junit.Test;
@@ -93,6 +95,39 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			2, 1, 2);
+
+		checkResults(
+			_acquisitionCompositionDog.getCompositionResultBag(
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(180)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("referral", 3L);
+				}
+			},
+			3, 1, 3);
+
+		checkResults(
+			_acquisitionCompositionDog.getCompositionResultBag(
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(365)),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("referral", 4L);
+				}
+			},
+			4, 1, 4);
+
+		LocalDate localDate = LocalDate.now();
+
+		checkResults(
+			_acquisitionCompositionDog.getCompositionResultBag(
+				"CHANNEL", "1", "355524992631037473", 10, 0,
+				TimeRange.of(localDate.minusDays(4), localDate.minusDays(80))),
+			new LinkedHashMap<String, Long>() {
+				{
+					put("referral", 1L);
+				}
+			},
+			1, 1, 1);
 	}
 
 	@Autowired

@@ -422,5 +422,85 @@
 		"url": "http://192.168.108.90:8080/search?q=%20",
 		"userId": "11",
 		"views": 0
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": null,
+		"country": null,
+		"ctaClicks": 3,
+		"dataSourceId": "333962835564819979",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-160d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-160d}",
+		"firstEventDate": "${now-160d}",
+		"formSubmissions": 0,
+		"id": "11",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-160d}",
+		"modifiedDate": "${now-160d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"searchTerm": "Liferay DXP",
+		"segmentNames": [
+		],
+		"sessionId": "12",
+		"timeOnPage": 445229,
+		"title": "Search",
+		"url": "http://192.168.108.90:8080/search?q=Liferay%20DXP",
+		"userId": "11",
+		"views": 0
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "2",
+		"city": null,
+		"country": null,
+		"ctaClicks": 3,
+		"dataSourceId": "333962835564819979",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-361d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-361d}",
+		"firstEventDate": "${now-361d}",
+		"formSubmissions": 0,
+		"id": "12",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": null,
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-361d}",
+		"modifiedDate": "${now-361d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"region": null,
+		"searchTerm": "liferay",
+		"segmentNames": [
+		],
+		"sessionId": "12",
+		"timeOnPage": 445229,
+		"title": "Search",
+		"url": "http://192.168.108.90:8080/search?q=liferay",
+		"userId": "11",
+		"views": 0
 	}
 ]
