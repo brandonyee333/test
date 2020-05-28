@@ -27,6 +27,7 @@ import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 
 import java.time.Clock;
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -173,7 +174,7 @@ public class HistogramDog {
 					previousHistogram.getBuckets()) {
 
 				String timeKey = _getTimeKey(
-					timeRange, histogramBucket.getKeyAsString());
+					interval, timeRange, histogramBucket.getKeyAsString());
 
 				Metric metric = metrics.get(timeKey);
 
@@ -200,7 +201,7 @@ public class HistogramDog {
 
 		for (Histogram.Bucket histogramBucket : currentHistogram.getBuckets()) {
 			String timeKey = _getTimeKey(
-				null, histogramBucket.getKeyAsString());
+				interval, null, histogramBucket.getKeyAsString());
 
 			Metric metric = metrics.get(timeKey);
 
@@ -259,7 +260,9 @@ public class HistogramDog {
 		return dateHistogramAggregationBuilder;
 	}
 
-	private String _getTimeKey(TimeRange timeRange, String timestamp) {
+	private String _getTimeKey(
+		Interval interval, TimeRange timeRange, String timestamp) {
+
 		Instant instant = Instant.parse(timestamp);
 
 		LocalDateTime localDateTime = LocalDateTime.ofInstant(
@@ -282,8 +285,6 @@ public class HistogramDog {
 			}
 			else if (TimeRange.LAST_90_DAYS.equals(timeRange)) {
 				localDateTime = localDateTime.plusDays(90);
-
-				localDateTime = localDateTime.withDayOfMonth(1);
 			}
 			else if (TimeRange.LAST_180_DAYS.equals(timeRange)) {
 				localDateTime = localDateTime.plusDays(180);
@@ -295,6 +296,13 @@ public class HistogramDog {
 				localDateTime = localDateTime.plusDays(
 					timeRange.getDeltaDays());
 			}
+		}
+
+		if (Interval.WEEK.equals(interval)) {
+			localDateTime.with(DayOfWeek.SUNDAY);
+		}
+		else if (Interval.MONTH.equals(interval)) {
+			localDateTime.withDayOfMonth(1);
 		}
 
 		return localDateTime.toString();
