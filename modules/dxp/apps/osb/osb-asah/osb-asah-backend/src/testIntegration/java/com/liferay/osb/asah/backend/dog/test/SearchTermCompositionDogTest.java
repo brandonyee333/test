@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.SearchTermCompositionDog;
+import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -43,7 +44,7 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetCompositionResultBag() {
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
-				"2", "333962835564819979", 90, 10, 0),
+				"2", "333962835564819979", 10, 0, TimeRange.of(90)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("liferay", 3L);

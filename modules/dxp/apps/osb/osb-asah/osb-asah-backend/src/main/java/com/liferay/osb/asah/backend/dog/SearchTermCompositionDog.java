@@ -49,8 +49,8 @@ import org.springframework.stereotype.Component;
 public class SearchTermCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
-		String channelId, String dataSourceId, int rangeKey, int size,
-		int start) {
+		String channelId, String dataSourceId, int size, int start,
+		TimeRange timeRange) {
 
 		List<Composition> compositions = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class SearchTermCompositionDog {
 
 				BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
 					_searchQueryHelper.createRangeQueryBuilder(
-						"eventDate", TimeRange.of(rangeKey))
+						"eventDate", timeRange)
 				).filter(
 					QueryBuilders.existsQuery("searchTerm")
 				).mustNot(

@@ -54,13 +54,13 @@ import org.springframework.stereotype.Component;
 public class SiteInterestCompositionDog {
 
 	public CompositionResultBag getCompositionResultBag(
-		String channelId, String dataSourceId, int rangeKey, int size,
-		int start) {
+		String channelId, String dataSourceId, int size, int start,
+		TimeRange timeRange) {
 
 		List<Composition> compositions = new ArrayList<>();
 
 		Map<String, Set<String>> keywords = _getKeywords(
-			channelId, dataSourceId, rangeKey);
+			channelId, dataSourceId, timeRange);
 
 		for (Map.Entry<String, Set<String>> keyword : keywords.entrySet()) {
 			Set<String> sessionIds = keyword.getValue();
@@ -84,7 +84,7 @@ public class SiteInterestCompositionDog {
 
 		return new CompositionResultBag(
 			compositions.subList(start, end), compositions.size(),
-			_getTotalSessions(channelId, dataSourceId, rangeKey));
+			_getTotalSessions(channelId, dataSourceId, timeRange));
 	}
 
 	private void _addTimeRangeFilter(
@@ -99,7 +99,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	private Map<String, Set<String>> _getKeywords(
-		String channelId, String dataSourceId, int rangeKey) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		Map<String, Set<String>> keywords = new HashMap<>();
 
@@ -151,7 +151,7 @@ public class SiteInterestCompositionDog {
 		Terms terms = aggregations.get("canonicalUrls");
 
 		Map<String, Set<String>> sessionIds = _getSessionIds(
-			channelId, dataSourceId, rangeKey);
+			channelId, dataSourceId, timeRange);
 
 		for (Map.Entry<String, Set<String>> entry : sessionIds.entrySet()) {
 			String canonicalUrl = entry.getKey();
@@ -188,7 +188,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	private Map<String, Set<String>> _getSessionIds(
-		String channelId, String dataSourceId, int rangeKey) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		Map<String, Set<String>> sessionIds = new HashMap<>();
 
@@ -199,7 +199,7 @@ public class SiteInterestCompositionDog {
 		BoolQueryBuilderUtil.filterTerm(
 			boolQueryBuilder, "dataSourceId", dataSourceId);
 
-		_addTimeRangeFilter(boolQueryBuilder, TimeRange.of(rangeKey));
+		_addTimeRangeFilter(boolQueryBuilder, timeRange);
 
 		SearchResponse searchResponse = _cerebroInfoElasticsearchInvoker.search(
 			"user-sessions",
@@ -268,7 +268,7 @@ public class SiteInterestCompositionDog {
 	}
 
 	private long _getTotalSessions(
-		String channelId, String dataSourceId, int rangeKey) {
+		String channelId, String dataSourceId, TimeRange timeRange) {
 
 		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
 
@@ -277,7 +277,7 @@ public class SiteInterestCompositionDog {
 		BoolQueryBuilderUtil.filterTerm(
 			boolQueryBuilder, "dataSourceId", dataSourceId);
 
-		_addTimeRangeFilter(boolQueryBuilder, TimeRange.of(rangeKey));
+		_addTimeRangeFilter(boolQueryBuilder, timeRange);
 
 		return _cerebroInfoElasticsearchInvoker.count(
 			"user-sessions", boolQueryBuilder);

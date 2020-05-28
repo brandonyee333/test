@@ -316,7 +316,7 @@ public class GraphQLRestController {
 
 		String cacheKey = query + "#" + variables;
 
-		boolean skipCache = skipCache(query, variables);
+		boolean skipCache = true;
 
 		if ((_cacheManager != null) && !skipCache) {
 			if (_cache == null) {

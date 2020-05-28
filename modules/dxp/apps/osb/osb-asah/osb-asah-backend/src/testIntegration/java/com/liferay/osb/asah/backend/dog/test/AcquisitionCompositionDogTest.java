@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.AcquisitionCompositionDog;
+import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -43,7 +44,7 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testGetChannelCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"CHANNEL", "1", "355524992631037473", 90, 10, 0),
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(90)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 2L);
@@ -56,7 +57,7 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testReferrerCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"REFERRER", "1", "355524992631037473", 90, 10, 0),
+				"REFERRER", "1", "355524992631037473", 10, 0, TimeRange.of(90)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("www.liferay.com", 1L);
@@ -70,7 +71,8 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testSourceMediumCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"SOURCE_MEDIUM", "1", "355524992631037473", 90, 10, 0),
+				"SOURCE_MEDIUM", "1", "355524992631037473", 10, 0,
+				TimeRange.of(90)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("www.liferay.com / referral", 1L);
@@ -84,7 +86,7 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 	public void testTimeRangeCompositionResultBag() {
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
-				"CHANNEL", "1", "355524992631037473", 30, 10, 0),
+				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(30)),
 			new LinkedHashMap<String, Long>() {
 				{
 					put("referral", 2L);
