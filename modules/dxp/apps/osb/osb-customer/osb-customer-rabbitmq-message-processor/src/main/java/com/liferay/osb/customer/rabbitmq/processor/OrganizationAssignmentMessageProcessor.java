@@ -14,6 +14,7 @@
 
 package com.liferay.osb.customer.rabbitmq.processor;
 
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.User;
@@ -44,7 +45,17 @@ public class OrganizationAssignmentMessageProcessor
 
 		User user = fetchUser(userJSONObject);
 
-		if (user == null) {
+		if ((user == null) &&
+			(organization.getOrganizationId() ==
+				OSBCustomerConstants.ORGANIZATION_LIFERAY_INC_ID)) {
+
+			if (userJSONObject == null) {
+				return;
+			}
+
+			user = addUser(userJSONObject);
+		}
+		else if (user == null) {
 			return;
 		}
 
