@@ -82,7 +82,13 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 			dataFetchingEnvironment.getArgument("active"));
 		searchQueryContext.setAssetId(
 			dataFetchingEnvironment.getArgument("assetId"));
-		searchQueryContext.setAssetType(getAssetType(dataFetchingEnvironment));
+
+		AssetType assetType = getAssetType(dataFetchingEnvironment);
+
+		if (assetType != null) {
+			searchQueryContext.setAssetType(assetType);
+		}
+
 		searchQueryContext.setChannelId(
 			dataFetchingEnvironment.getArgument("channelId"));
 		searchQueryContext.setCountry(
@@ -148,7 +154,15 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		GraphQLFieldDefinition graphQLFieldDefinition =
 			executionTypeInfo.getFieldDefinition();
 
-		return AssetType.of(graphQLFieldDefinition.getName());
+		String name = graphQLFieldDefinition.getName();
+
+		for (AssetType assetType : AssetType.values()) {
+			if (name.equals(assetType.getValue())) {
+				return assetType;
+			}
+		}
+
+		return null;
 	}
 
 	private Set<String> _getSelectedMetrics(
