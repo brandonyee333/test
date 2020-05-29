@@ -24,8 +24,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
+import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 
 import java.io.IOException;
@@ -36,9 +40,13 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -116,6 +124,18 @@ public class JobDog {
 		}
 	}
 
+	public ResultBag<Job> getJobResultBag(
+		String keywords, int size, Map<String, String> sort, int start) {
+
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"jobs", _faroInfoElasticsearchInvoker,
+			DogUtil.buildSearchSourceBuilder(
+				SortBuilderUtil.fieldSort(sort),
+				_buildKeywordsQueryBuilder(keywords), size, start));
+
+		return DogUtil.createResultBag(Job.class, searchHits);
+	}
+
 	private SearchSourceBuilder _buildJobSearchSourceBuilder(String jobId) {
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
@@ -124,6 +144,30 @@ public class JobDog {
 		searchSourceBuilder.size(1);
 
 		return searchSourceBuilder;
+	}
+
+	private QueryBuilder _buildKeywordsQueryBuilder(String keywords) {
+		if (StringUtils.isBlank(keywords)) {
+			return QueryBuilders.matchAllQuery();
+		}
+
+		BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+
+		boolQueryBuilder.filter(
+			BoolQueryBuilderUtil.should(
+				QueryBuilders.queryStringQuery(
+					String.format(
+						"name.search:*%1$s*",
+						QueryUtil.escapeKeywords(keywords)))
+			).should(
+				QueryBuilders.matchQuery(
+					"name.search", keywords
+				).fuzziness(
+					Fuzziness.AUTO
+				)
+			));
+
+		return boolQueryBuilder;
 	}
 
 	@PostConstruct
