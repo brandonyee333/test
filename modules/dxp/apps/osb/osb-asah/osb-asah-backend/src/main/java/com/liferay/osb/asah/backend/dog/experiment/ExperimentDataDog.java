@@ -93,7 +93,7 @@ public class ExperimentDataDog {
 		};
 
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptyMap(), searchQueryContext,
+			Collections.emptySet(), searchQueryContext,
 			new HashSet<String>() {
 				{
 					add(PageMetricType.BOUNCE.getName());

@@ -76,21 +76,20 @@ public class MetricDog {
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
-		Map<String, List<Field>> fields,
-		SearchQueryContext searchQueryContext) {
+		Set<String> fieldNames, SearchQueryContext searchQueryContext) {
 
 		return getAssetMetric(
-			fields, searchQueryContext, Collections.emptySet());
+			fieldNames, searchQueryContext, Collections.emptySet());
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
-		Map<String, List<Field>> fields, SearchQueryContext searchQueryContext,
+		Set<String> fieldNames, SearchQueryContext searchQueryContext,
 		Set<String> selectedMetrics) {
 
 		boolean includePrevious = false;
 
-		if (fields.containsKey("previousValue") ||
-			fields.containsKey("trend")) {
+		if (fieldNames.contains("previousValue") ||
+			fieldNames.contains("trend")) {
 
 			includePrevious = true;
 		}
