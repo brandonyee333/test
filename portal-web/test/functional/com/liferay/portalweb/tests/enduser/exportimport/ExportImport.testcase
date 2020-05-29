@@ -1212,7 +1212,7 @@ definition {
 			webContentTitle = "WC WebContent Title 1",
 			webContentTitleEdit = "WC WebContent Title 1");
 
-		Navigator.openSiteURL(siteName = "Site Name");
+		Navigator.openSiteLanding(siteURLKey = "Site Name");
 
 		LAR.exportSiteCP();
 
