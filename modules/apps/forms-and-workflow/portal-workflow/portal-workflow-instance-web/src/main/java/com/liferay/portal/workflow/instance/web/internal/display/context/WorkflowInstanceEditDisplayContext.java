@@ -128,7 +128,7 @@ public class WorkflowInstanceEditDisplayContext
 	public String getHeaderTitle() {
 		return LanguageUtil.get(
 			workflowInstanceRequestHelper.getRequest(),
-			getWorkflowDefinitionName());
+			getWorkflowDefinitionName()) + ": " + getTaskContentTitleMessage();
 	}
 
 	public String getIconCssClass() {
