@@ -21,12 +21,15 @@ import com.liferay.osb.asah.backend.model.TimeRange;
 import graphql.execution.ExecutionTypeInfo;
 
 import graphql.language.Field;
+import graphql.language.FragmentDefinition;
+import graphql.language.FragmentSpread;
 import graphql.language.InlineFragment;
 import graphql.language.Selection;
 import graphql.language.SelectionSet;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.DataFetchingFieldSelectionSet;
 import graphql.schema.GraphQLFieldDefinition;
 
 import java.time.LocalDate;
@@ -104,6 +107,18 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 			searchQueryContext.setIncludePrevious(
 				dataFetchingEnvironment.getArgument("includePrevious"));
 		}
+		else {
+			Set<String> fieldNames = _getFieldNames(dataFetchingEnvironment);
+
+			if (fieldNames.contains("previousValue") ||
+				fieldNames.contains("trend")) {
+
+				searchQueryContext.setIncludePrevious(true);
+			}
+			else {
+				searchQueryContext.setIncludePrevious(false);
+			}
+		}
 
 		searchQueryContext.setInterval(
 			dataFetchingEnvironment.getArgument("interval"));
@@ -163,6 +178,93 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		}
 
 		return null;
+	}
+
+	private Set<String> _getFieldNames(
+		DataFetchingEnvironment dataFetchingEnvironment) {
+
+		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
+			dataFetchingEnvironment.getSelectionSet();
+
+		Map<String, List<Field>> selectionSetFields =
+			dataFetchingFieldSelectionSet.get();
+
+		Set<String> fieldNames = new HashSet<>();
+
+		for (Map.Entry<String, List<Field>> entry :
+				selectionSetFields.entrySet()) {
+
+			for (Field field : entry.getValue()) {
+				SelectionSet selectionSet = field.getSelectionSet();
+
+				if (selectionSet != null) {
+					fieldNames.addAll(
+						_getFieldNamesFromSelectionSet(
+							dataFetchingEnvironment, selectionSet));
+				}
+				else {
+					fieldNames.add(field.getName());
+				}
+			}
+		}
+
+		return fieldNames;
+	}
+
+	private Set<String> _getFieldNamesFromFragment(
+		DataFetchingEnvironment dataFetchingEnvironment, String fragmentName) {
+
+		Map<String, FragmentDefinition> fragments =
+			dataFetchingEnvironment.getFragmentsByName();
+
+		FragmentDefinition fragment = fragments.get(fragmentName);
+
+		return _getFieldNamesFromSelectionSet(
+			dataFetchingEnvironment, fragment.getSelectionSet());
+	}
+
+	private Set<String> _getFieldNamesFromSelectionSet(
+		DataFetchingEnvironment dataFetchingEnvironment,
+		SelectionSet selectionSet) {
+
+		Set<String> fieldNames = new HashSet<>();
+
+		List<Selection> selections = selectionSet.getSelections();
+
+		for (Selection selection : selections) {
+			if (selection instanceof FragmentSpread) {
+				FragmentSpread fragmentSpread = (FragmentSpread)selection;
+
+				fieldNames.addAll(
+					_getFieldNamesFromFragment(
+						dataFetchingEnvironment, fragmentSpread.getName()));
+			}
+			else if (selection instanceof Field) {
+				Field field = (Field)selection;
+
+				SelectionSet fieldSelectionSet = field.getSelectionSet();
+
+				if (fieldSelectionSet != null) {
+					fieldNames.addAll(
+						_getFieldNamesFromSelectionSet(
+							dataFetchingEnvironment, fieldSelectionSet));
+
+					continue;
+				}
+
+				fieldNames.add(field.getName());
+			}
+			else if (selection instanceof InlineFragment) {
+				InlineFragment inlineFragment = (InlineFragment)selection;
+
+				fieldNames.addAll(
+					_getFieldNamesFromSelectionSet(
+						dataFetchingEnvironment,
+						inlineFragment.getSelectionSet()));
+			}
+		}
+
+		return fieldNames;
 	}
 
 	private Set<String> _getSelectedMetrics(

@@ -19,16 +19,8 @@ import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 
-import graphql.language.Field;
-import graphql.language.FragmentDefinition;
-import graphql.language.FragmentSpread;
-import graphql.language.Selection;
-import graphql.language.SelectionSet;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.DataFetchingFieldSelectionSet;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,74 +48,7 @@ public class AssetMetricDataFetcher extends BaseDataFetcher<AssetMetric> {
 		Map<String, Object> context = dataFetchingEnvironment.getContext();
 
 		return _metricDog.getAssetMetric(
-			_getFieldNames(dataFetchingEnvironment), searchQueryContext,
-			(Set<String>)context.get("selectedMetrics"));
-	}
-
-	private Set<String> _getFieldNames(
-		DataFetchingEnvironment dataFetchingEnvironment) {
-
-		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
-			dataFetchingEnvironment.getSelectionSet();
-
-		Map<String, List<Field>> selectionSetFields =
-			dataFetchingFieldSelectionSet.get();
-
-		Set<String> fieldNames = new HashSet<>();
-
-		for (Map.Entry<String, List<Field>> entry :
-			selectionSetFields.entrySet()) {
-
-			for (Field field : entry.getValue()) {
-				SelectionSet selectionSet = field.getSelectionSet();
-
-				if (selectionSet != null) {
-					List<Selection> selections = selectionSet.getSelections();
-
-					for (Selection selection : selections) {
-						if (selection instanceof FragmentSpread) {
-							FragmentSpread fragmentSpread =
-								(FragmentSpread)selection;
-
-							fieldNames.addAll(
-								_getFieldNamesFromFragment(
-									dataFetchingEnvironment,
-									fragmentSpread.getName()));
-						}
-						else if (selection instanceof Field) {
-							Field selectionField = (Field)selection;
-
-							fieldNames.add(selectionField.getName());
-						}
-					}
-				}
-			}
-		}
-
-		return fieldNames;
-	}
-
-	private Set<String> _getFieldNamesFromFragment(
-		DataFetchingEnvironment dataFetchingEnvironment, String fragmentName) {
-
-		Set<String> fieldNames = new HashSet<>();
-
-		Map<String, FragmentDefinition> fragments =
-			dataFetchingEnvironment.getFragmentsByName();
-
-		FragmentDefinition fragment = fragments.get(fragmentName);
-
-		SelectionSet selectionSet = fragment.getSelectionSet();
-
-		for (Selection selection : selectionSet.getSelections()) {
-			if (selection instanceof Field) {
-				Field field = (Field)selection;
-
-				fieldNames.add(field.getName());
-			}
-		}
-
-		return fieldNames;
+			searchQueryContext, (Set<String>)context.get("selectedMetrics"));
 	}
 
 	@Autowired

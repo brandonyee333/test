@@ -58,7 +58,6 @@ public class MetricDogTest {
 	@Test
 	public void testBlogMetricShouldContainURL() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_7_DAYS, null));
 
@@ -77,7 +76,6 @@ public class MetricDogTest {
 	@Test
 	public void testBlogMetricShouldReturnEmptyListIfNoURLsAreFetched() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null));
 
@@ -96,7 +94,6 @@ public class MetricDogTest {
 	@Test
 	public void testBlogRatingAverage() {
 		BlogMetric blogMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null),
 			new HashSet<String>() {
@@ -119,7 +116,6 @@ public class MetricDogTest {
 	@Test
 	public void testBlogRatingMetricShouldNotBeNegative() {
 		BlogMetric blogMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"2", AssetType.BLOG, null, TimeRange.LAST_24_HOURS, null),
 			new HashSet<String>() {
@@ -142,7 +138,6 @@ public class MetricDogTest {
 	@Test
 	public void testCTAClicksMetrics() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -173,7 +168,6 @@ public class MetricDogTest {
 			"e131fabc648f00a7ccb6601acf6bfa831ee195d84126ca2f90eae1d4e9d863a9";
 
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				assetId, AssetType.CUSTOM, null, TimeRange.LAST_24_HOURS,
 				null));
@@ -194,7 +188,6 @@ public class MetricDogTest {
 	@Test
 	public void testJournalDefaultMetric() {
 		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.JOURNAL, null, TimeRange.LAST_7_DAYS, null));
 
@@ -284,7 +277,6 @@ public class MetricDogTest {
 	@Test
 	public void testPagesExperimentFilter() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				null, AssetType.PAGE, "10", TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -307,7 +299,6 @@ public class MetricDogTest {
 	@Test
 	public void testPagesMaxScrollDepthMetric() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -330,7 +321,6 @@ public class MetricDogTest {
 	@Test
 	public void testPagesVariantFilter() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, "2"),
 			new HashSet<String>() {
@@ -353,7 +343,6 @@ public class MetricDogTest {
 	@Test
 	public void testPagesVisitorMetrics() {
 		PageMetric pageMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				null, AssetType.PAGE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -376,7 +365,6 @@ public class MetricDogTest {
 	@Test
 	public void testSessionsMetrics() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -411,7 +399,6 @@ public class MetricDogTest {
 	@Test
 	public void testSiteBounceRateMetric() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -435,7 +422,6 @@ public class MetricDogTest {
 	@Test
 	public void testSiteEngagementMetric() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {
@@ -459,7 +445,6 @@ public class MetricDogTest {
 	@Test
 	public void testSiteVisitorsMetrics() {
 		SiteMetric siteMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(),
 			_createSearchQuery(
 				"1", AssetType.SITE, null, TimeRange.LAST_7_DAYS, null),
 			new HashSet<String>() {

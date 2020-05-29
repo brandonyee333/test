@@ -327,8 +327,7 @@ public class ReportRestController extends BaseRestController {
 			_toPageReport(
 				expands,
 				_metricDog.getAssetMetric(
-					Collections.emptySet(), searchQueryContext,
-					_getPageMetricTypeNames()),
+					searchQueryContext, _getPageMetricTypeNames()),
 				searchQueryContext),
 			rangeKey);
 	}

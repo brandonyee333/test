@@ -20,13 +20,7 @@ import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.AssetMetric;
 import com.liferay.osb.asah.backend.model.AssetType;
 
-import graphql.language.Field;
-import graphql.language.FragmentDefinition;
-import graphql.language.FragmentSpread;
-import graphql.language.Selection;
-import graphql.language.SelectionSet;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.schema.DataFetchingFieldSelectionSet;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,11 +43,7 @@ public class PageDataFetcher extends BaseDataFetcher<List<AssetMetric>> {
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SearchQueryContext searchQueryContext) {
 
-		DataFetchingFieldSelectionSet dataFetchingFieldSelectionSet =
-			dataFetchingEnvironment.getSelectionSet();
-
-		AssetMetric assetMetric = _metricDog.getAssetMetric(
-			Collections.emptySet(), searchQueryContext);
+		AssetMetric assetMetric = _metricDog.getAssetMetric(searchQueryContext);
 
 		List<String> urls = assetMetric.getURLs();
 

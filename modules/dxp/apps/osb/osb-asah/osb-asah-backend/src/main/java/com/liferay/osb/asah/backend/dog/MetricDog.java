@@ -27,13 +27,10 @@ import com.liferay.osb.asah.backend.model.URL;
 import com.liferay.osb.asah.common.elasticsearch.SortBuilderUtil;
 import com.liferay.petra.string.CharPool;
 
-import graphql.language.Field;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -76,23 +73,15 @@ public class MetricDog {
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
-		Set<String> fieldNames, SearchQueryContext searchQueryContext) {
+		SearchQueryContext searchQueryContext) {
 
-		return getAssetMetric(
-			fieldNames, searchQueryContext, Collections.emptySet());
+		return getAssetMetric(searchQueryContext, Collections.emptySet());
 	}
 
 	public <T extends AssetMetric> T getAssetMetric(
-		Set<String> fieldNames, SearchQueryContext searchQueryContext,
-		Set<String> selectedMetrics) {
+		SearchQueryContext searchQueryContext, Set<String> selectedMetrics) {
 
-		boolean includePrevious = false;
-
-		if (fieldNames.contains("previousValue") ||
-			fieldNames.contains("trend")) {
-
-			includePrevious = true;
-		}
+		boolean includePrevious = searchQueryContext.isIncludePrevious();
 
 		DogConfiguration dogConfiguration =
 			_dogConfigurationBag.getDogConfiguration(
