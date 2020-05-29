@@ -398,6 +398,10 @@ type MutationType {
 		experimentId: String!
 	): Boolean
 
+	deleteJobs(
+		jobIds: [String]!
+	): [Boolean]
+
 	experiment(
 		experimentId: String!
 		experimentSettings: ExperimentSettings
