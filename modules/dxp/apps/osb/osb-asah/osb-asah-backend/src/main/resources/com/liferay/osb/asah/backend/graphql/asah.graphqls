@@ -27,6 +27,13 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum JobTrainingFrequency {
+	EVERY_7_DAYS
+	EVERY_14_DAYS
+	EVERY_30_DAYS
+	MANUAL
+}
+
 enum JobType {
 	CONTENT_RECOMMENDATION_ITEM_SIMILARITY
 }
@@ -318,10 +325,10 @@ type IndividualMetric {
 
 type Job {
 	active: Boolean
-	cronExpression: String
 	id: String
 	name: String
 	parameters: [JobParameter]
+	trainingFrequency: JobTrainingFrequency
 	type: JobType
 }
 
@@ -374,9 +381,9 @@ type MetricBag {
 type MutationType {
 	createJob(
 		active: Boolean!
-		cronExpresison: String!
 		name: String!
 		parameters: [JobParameterInput]
+		trainingFrequency: JobTrainingFrequency
 		type: JobType!
 	): Job
 
