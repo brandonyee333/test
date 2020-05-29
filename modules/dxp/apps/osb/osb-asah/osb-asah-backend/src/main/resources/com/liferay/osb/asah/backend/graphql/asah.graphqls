@@ -325,6 +325,11 @@ type Job {
 	type: JobType
 }
 
+type JobBag {
+	jobs: [Job]
+	total: Int
+}
+
 type JobParameter {
 	name: String
 	value: String
@@ -638,6 +643,13 @@ type QueryType {
 	job(
 		jobId: String!
 	): Job
+
+	jobs(
+		keywords: String,
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): JobBag
 
 	journal(
 		assetId: String!,
