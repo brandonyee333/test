@@ -26,6 +26,7 @@ import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.elasticsearch.QueryUtil;
@@ -34,6 +35,7 @@ import com.liferay.osb.asah.common.faro.info.dog.FaroInfoOSBAsahTaskDog;
 
 import java.io.IOException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -91,8 +94,23 @@ public class JobDog {
 		}
 	}
 
-	public boolean deleteJob(String id) {
-		return _faroInfoElasticsearchInvoker.delete("jobs", id);
+	public List<Boolean> deleteJobs(List<String> ids) {
+		List<Boolean> statuses = new ArrayList<>();
+
+		ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
+			_faroInfoElasticsearchInvoker.
+				createElasticsearchBulkRequestBuilder();
+
+		for (String id : ids) {
+			elasticsearchBulkRequestBuilder.delete("jobs", id);
+		}
+
+		BulkResponse bulkResponse = elasticsearchBulkRequestBuilder.get();
+
+		bulkResponse.forEach(
+			bulkItemResponse -> statuses.add(!bulkItemResponse.isFailed()));
+
+		return statuses;
 	}
 
 	public Job getJob(String id) {
