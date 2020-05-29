@@ -42,7 +42,7 @@ PortletURL portletURL = renderResponse.createRenderURL();
 		<liferay-ui:search-container-results>
 
 			<%
-			LinkedHashMap params = new LinkedHashMap<>();
+			LinkedHashMap<String, Object> params = new LinkedHashMap<>();
 
 			params.put("type", new int[] {AccountEntryConstants.TYPE_ANALYTICS_CLOUD_BASIC, AccountEntryConstants.TYPE_GROUP, AccountEntryConstants.TYPE_INDIVIDUAL, AccountEntryConstants.TYPE_INTERNAL_TEST});
 

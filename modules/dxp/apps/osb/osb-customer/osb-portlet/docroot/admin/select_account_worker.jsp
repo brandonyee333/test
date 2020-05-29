@@ -42,7 +42,7 @@
 				<%
 				long role = GetterUtil.getLong(tabs1, AccountWorkerConstants.ROLE_ADVOCACY_SPECIALIST);
 
-				LinkedHashMap userParams = new LinkedHashMap();
+				LinkedHashMap<String, Object> userParams = new LinkedHashMap();
 
 				userParams.put("usersAccountWorkers", new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountWorkerRole"), role));
 				%>

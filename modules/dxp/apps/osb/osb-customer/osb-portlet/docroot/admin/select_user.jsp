@@ -38,7 +38,7 @@ portletURL.setParameter("callback", callback);
 			<%@ include file="/common/user_search_inputs.jspf" %>
 
 			<%
-			LinkedHashMap userParams = new LinkedHashMap();
+			LinkedHashMap<String, Object> userParams = new LinkedHashMap();
 
 			if (userParam.equals("accountEntryCreateUsers")) {
 				userParams.put(userParam, new CustomSQLParam(CustomSQLUtil.get("com.liferay.portal.kernel.service.persistence.UserFinder.joinByAccountEntryCreateUser"), StringPool.BLANK));

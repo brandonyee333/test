@@ -273,7 +273,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 
 							<%
 							if (accountEntry != null) {
-								LinkedHashMap params = new LinkedHashMap();
+								LinkedHashMap<String, Object> params = new LinkedHashMap();
 
 								params.put("licenseOfferingEntries", Long.valueOf(accountEntry.getAccountEntryId()));
 
@@ -373,7 +373,7 @@ portletURL.setParameter("licenseEntryId", String.valueOf(licenseEntryId));
 						List<OfferingEntryGroup> offeringEntryGroups = new ArrayList<OfferingEntryGroup>();
 
 						if ((accountEntry != null) && (productVersion >= 0) && (productEntry != null) && (licenseEntry != null)) {
-							LinkedHashMap params = new LinkedHashMap();
+							LinkedHashMap<String, Object> params = new LinkedHashMap();
 
 							params.put("validLicense", new Long[] {productEntryId, productEntryId});
 

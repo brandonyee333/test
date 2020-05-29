@@ -83,7 +83,7 @@ PortletURL portletURL = (PortletURL)request.getAttribute("view.jsp-portletURL");
 			>
 
 				<%
-				LinkedHashMap params = new LinkedHashMap();
+				LinkedHashMap<String, Object> params = new LinkedHashMap();
 
 				params.put("productEntry", ProductEntryConstants.TYPE_PRIMARY);
 

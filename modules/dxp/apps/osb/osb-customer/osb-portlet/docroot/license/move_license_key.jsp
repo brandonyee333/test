@@ -70,7 +70,7 @@ portletURL.setParameter("licenseKeyId", String.valueOf(licenseKeyId));
 			</h1>
 
 			<%
-			LinkedHashMap params = new LinkedHashMap();
+			LinkedHashMap<String, Object> params = new LinkedHashMap();
 
 			params.put("validLicense", new Long[] {0L, 0L});
 
