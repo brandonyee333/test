@@ -2,10 +2,10 @@
 ; Do not manually edit this file.
 ;
 [subrepo]
-	autopull = true
+	autopull = false
 	cmdver = liferay
-	commit = a4b4e876e2f9309597f06e5104c327dd857f9031
+	commit = 0000000000000000000000000000000000000000
 	mergebuttonmergecommits = false
-	mode = pull
-	parent = 6b7ce5a2bbf8b1aa73baa14c8e310d236c44c384
+	mode = push
+	parent = 0000000000000000000000000000000000000000
 	remote = git@github.com:liferay/com-liferay-osb-customer-private.git
