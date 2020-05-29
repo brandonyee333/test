@@ -1145,6 +1145,7 @@ definition {
 	@description = "This is a use case for LPS-88743."
 	@priority = "3"
 	test ExportImportWebContentCircularReference {
+		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "ExportImport#ExportImportWebContentCircularReference";
 
 		JSONGroup.addGroup(groupName = "Site Name");
