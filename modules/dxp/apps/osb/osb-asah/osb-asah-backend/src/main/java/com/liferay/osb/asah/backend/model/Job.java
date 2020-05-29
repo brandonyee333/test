@@ -38,9 +38,9 @@ public class Job {
 		Job job = (Job)obj;
 
 		if (Objects.equals(_active, job._active) &&
-			Objects.equals(_cronExpression, job._cronExpression) &&
 			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
+			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
 			Objects.equals(_jobType, job._jobType) &&
 			Objects.equals(_name, job._name)) {
 
@@ -50,10 +50,6 @@ public class Job {
 		return false;
 	}
 
-	public String getCronExpression() {
-		return _cronExpression;
-	}
-
 	public String getId() {
 		return _id;
 	}
@@ -61,6 +57,11 @@ public class Job {
 	@JsonProperty("parameters")
 	public List<JobParameter> getJobParameters() {
 		return _jobParameters;
+	}
+
+	@JsonProperty("trainingFrequency")
+	public JobTrainingFrequency getJobTrainingFrequency() {
+		return _jobTrainingFrequency;
 	}
 
 	@JsonProperty("type")
@@ -75,7 +76,8 @@ public class Job {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_active, _cronExpression, _id, _jobParameters, _jobType, _name);
+			_active, _id, _jobParameters, _jobTrainingFrequency, _jobType,
+			_name);
 	}
 
 	public boolean isActive() {
@@ -86,16 +88,18 @@ public class Job {
 		_active = active;
 	}
 
-	public void setCronExpression(String cronExpression) {
-		_cronExpression = cronExpression;
-	}
-
 	public void setId(String id) {
 		_id = id;
 	}
 
 	public void setJobParameters(List<JobParameter> jobParameters) {
 		_jobParameters = jobParameters;
+	}
+
+	public void setJobTrainingFrequency(
+		JobTrainingFrequency jobTrainingFrequency) {
+
+		_jobTrainingFrequency = jobTrainingFrequency;
 	}
 
 	public void setJobType(JobType jobType) {
@@ -107,9 +111,9 @@ public class Job {
 	}
 
 	private boolean _active;
-	private String _cronExpression;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
+	private JobTrainingFrequency _jobTrainingFrequency;
 	private JobType _jobType;
 	private String _name;
 
