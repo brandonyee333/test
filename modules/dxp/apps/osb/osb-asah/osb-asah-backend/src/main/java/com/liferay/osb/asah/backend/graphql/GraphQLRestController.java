@@ -314,9 +314,9 @@ public class GraphQLRestController {
 		String query = graphQLRequest.getQuery();
 		Map<String, Object> variables = graphQLRequest.getVariables();
 
-		String cacheKey = query + "#" + variables;
+		boolean skipCache = skipCache(query, variables);
 
-		boolean skipCache = true;
+		String cacheKey = query + "#" + variables;
 
 		if ((_cacheManager != null) && !skipCache) {
 			if (_cache == null) {
