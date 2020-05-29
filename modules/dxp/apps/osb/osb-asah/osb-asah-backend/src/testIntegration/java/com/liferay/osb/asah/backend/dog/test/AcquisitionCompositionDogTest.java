@@ -95,7 +95,6 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			2, 1, 2);
-
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
 				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(180)),
@@ -105,7 +104,6 @@ public class AcquisitionCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			3, 1, 3);
-
 		checkResults(
 			_acquisitionCompositionDog.getCompositionResultBag(
 				"CHANNEL", "1", "355524992631037473", 10, 0, TimeRange.of(365)),

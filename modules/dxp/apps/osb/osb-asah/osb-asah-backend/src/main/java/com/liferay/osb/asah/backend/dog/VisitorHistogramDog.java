@@ -269,9 +269,8 @@ public class VisitorHistogramDog {
 		else if (TimeRange.LAST_YEAR.equals(timeRange)) {
 			return localDateTime.plusYears(1);
 		}
-		else {
-			return localDateTime.plusDays(timeRange.getDeltaDays());
-		}
+
+		return localDateTime.plusDays(timeRange.getDeltaDays());
 	}
 
 	private String _getTimeKey(

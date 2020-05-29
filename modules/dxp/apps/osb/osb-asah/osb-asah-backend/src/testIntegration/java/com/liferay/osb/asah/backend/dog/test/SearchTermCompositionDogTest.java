@@ -63,7 +63,6 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 			_searchTermCompositionDog.getCompositionResultBag(
 				"2", "333962835564819979", 10, 0, TimeRange.of(0)),
 			Collections.emptyMap(), 0, 0, 0);
-
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
 				"2", "333962835564819979", 10, 0, TimeRange.of(30)),
@@ -74,7 +73,6 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			3, 2, 4);
-
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
 				"2", "333962835564819979", 10, 0, TimeRange.of(180)),
@@ -85,7 +83,6 @@ public class SearchTermCompositionDogTest extends BaseCompositionDogTestCase {
 				}
 			},
 			3, 2, 5);
-
 		checkResults(
 			_searchTermCompositionDog.getCompositionResultBag(
 				"2", "333962835564819979", 10, 0, TimeRange.of(365)),

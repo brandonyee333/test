@@ -86,31 +86,24 @@ public class GraphQLRestControllerTest {
 		Assert.assertTrue(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 0)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 1)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 7)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 28)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 30)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 90)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 180)));
-
 		Assert.assertFalse(
 			GraphQLRestController.skipCache(
 				query, Collections.singletonMap("rangeKey", 365)));

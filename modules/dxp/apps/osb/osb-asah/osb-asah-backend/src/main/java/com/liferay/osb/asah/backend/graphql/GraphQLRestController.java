@@ -93,10 +93,10 @@ public class GraphQLRestController {
 	public static boolean skipCache(
 		String query, Map<String, Object> variables) {
 
-		JSONObject variablesJSONObject = new JSONObject(variables);
-
 		if (!query.startsWith("{pagesCount") &&
 			!query.startsWith("query IndividualMetrics")) {
+
+			JSONObject variablesJSONObject = new JSONObject(variables);
 
 			if (variablesJSONObject.has("rangeEnd")) {
 				LocalDate currentLocalDate = LocalDate.now();
