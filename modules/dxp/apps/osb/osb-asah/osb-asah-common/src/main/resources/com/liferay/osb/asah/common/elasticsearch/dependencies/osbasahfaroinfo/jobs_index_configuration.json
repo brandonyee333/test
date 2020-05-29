@@ -5,9 +5,6 @@
 				"active": {
 					"type": "boolean"
 				},
-				"cronExpression": {
-					"type": "keyword"
-				},
 				"id": {
 					"type": "keyword"
 				},
@@ -22,6 +19,9 @@
 				},
 				"parameters": {
 					"type": "object"
+				},
+				"trainingFrequency": {
+					"type": "keyword"
 				},
 				"type": {
 					"type": "keyword"

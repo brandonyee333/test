@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -68,17 +69,18 @@ import org.springframework.stereotype.Component;
 public class JobDog {
 
 	public Job addJob(
-		boolean active, String cronExpression, List<JobParameter> jobParameters,
-		JobType jobType, String name) {
+		boolean active, List<JobParameter> jobParameters,
+		JobTrainingFrequency jobTrainingFrequency, JobType jobType,
+		String name) {
 
 		JSONObject jsonObject = new JSONObject();
 
 		jsonObject.put("active", active);
-		jsonObject.put("cronExpression", cronExpression);
 		jsonObject.put("name", name);
 		jsonObject.put(
 			"parameters",
 			_objectMapper.convertValue(jobParameters, JSONArray.class));
+		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
 		jsonObject.put("type", jobType.toString());
 
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
