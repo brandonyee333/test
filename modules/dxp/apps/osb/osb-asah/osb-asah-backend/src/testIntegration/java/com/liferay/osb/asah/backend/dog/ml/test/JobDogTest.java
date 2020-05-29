@@ -24,6 +24,7 @@ import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -78,9 +79,9 @@ public class JobDogTest {
 	)
 	@Test
 	public void testDeleteJob() {
-		boolean deleted = _jobDog.deleteJob("1");
+		List<Boolean> statuses = _jobDog.deleteJobs(Arrays.asList("1"));
 
-		Assert.assertTrue(deleted);
+		Assert.assertTrue(statuses.get(0));
 	}
 
 	@ElasticsearchIndex(
