@@ -59,7 +59,7 @@ Date releaseDate = dateFormat.parse(DDMFieldsUtil.getString(ddmFields, "releaseD
 	for (DDMFormFieldValue linkFieldValue : linkFieldValues) {
 	%>
 
-		<a class="link" href="<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>"><%= _getStringValue(linkFieldValue, locale) %></a>
+		<a class="link" href='<%= _getStringValue(linkFieldValue.getNestedDDMFormFieldValuesMap(), "linkUrl", locale) %>'><%= _getStringValue(linkFieldValue, locale) %></a>
 
 	<%
 	}

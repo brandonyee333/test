@@ -378,7 +378,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				</table>
 			</td>
 		</tr>
-		<tr id="<portlet:namespace />actualStartDate" style="display: <%= prorated ? "" : "none" %>;">
+		<tr id="<portlet:namespace />actualStartDate" style='display: <%= prorated ? "" : "none" %>;'>
 			<td>
 				<liferay-ui:message key="actual-start-date" />
 			</td>

@@ -187,7 +187,7 @@ portletURL.setParameter("accountEntryId", String.valueOf(accountEntryId));
 			}
 			%>
 
-			<span class="<%= (workflowTask == null) ? "last" : "" %> segment">
+			<span class='<%= (workflowTask == null) ? "last" : "" %> segment'>
 				<liferay-ui:message key="status" />:
 
 				<c:choose>

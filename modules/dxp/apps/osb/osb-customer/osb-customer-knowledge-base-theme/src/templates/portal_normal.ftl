@@ -2,7 +2,7 @@
 
 <#include init />
 
-<html class="aui ${root_css_class}" dir="<@liferay.language key="lang.dir" />" lang="${w3c_language_id}">
+<html class="aui ${root_css_class}" dir='<@liferay.language key="lang.dir" />' lang="${w3c_language_id}">
 
 <head>
 	<meta charset="utf-8" />
@@ -139,7 +139,7 @@
 
 				<#assign keywords = paramUtil.getString(request, "_1_WAR_osbknowledgebaseportlet_keywords") />
 
-				<input class="keyword-search-input" id="_1_WAR_osbknowledgebaseportlet_keywords" name="_1_WAR_osbknowledgebaseportlet_keywords" placeholder="<@liferay.language key="search-documentation-by-keyword" />" type="search" value="${htmlUtil.escapeAttribute(keywords)}" />
+				<input class="keyword-search-input" id="_1_WAR_osbknowledgebaseportlet_keywords" name="_1_WAR_osbknowledgebaseportlet_keywords" placeholder='<@liferay.language key="search-documentation-by-keyword" />' type="search" value="${htmlUtil.escapeAttribute(keywords)}" />
 
 				<svg class="doc-search-icon lexicon-icon lexicon-icon-search" viewBox="0 0 512 512">
 					<path class="lexicon-icon-outline" d="M503.254 467.861l-133.645-133.645c27.671-35.13 44.344-79.327 44.344-127.415 0-113.784-92.578-206.362-206.362-206.362s-206.362 92.578-206.362 206.362 92.578 206.362 206.362 206.362c47.268 0 90.735-16.146 125.572-42.969l133.851 133.851c5.002 5.002 11.554 7.488 18.106 7.488s13.104-2.486 18.106-7.488c10.004-10.003 10.004-26.209 0.029-36.183zM52.446 206.801c0-85.558 69.616-155.173 155.173-155.173s155.174 69.616 155.174 155.173-69.616 155.173-155.173 155.173-155.173-69.616-155.173-155.173z"></path>

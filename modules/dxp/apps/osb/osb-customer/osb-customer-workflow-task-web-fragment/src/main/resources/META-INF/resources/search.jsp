@@ -57,11 +57,11 @@ String tabs1 = ParamUtil.getString(renderRequest, "tabs1");
 					<aui:option label="user" selected="<%= assigneeClassName.equals(User.class.getName()) %>" value="<%= User.class.getName() %>" />
 				</aui:select>
 
-				<div class="<%= assigneeClassName.equals(Role.class.getName()) ? "" : "hide" %>" id="<portlet:namespace />assigneeClassNameRole">
+				<div class='<%= assigneeClassName.equals(Role.class.getName()) ? "" : "hide" %>' id="<portlet:namespace />assigneeClassNameRole">
 					<aui:input inlineField="<%= true %>" name="roleName" size="20" value="<%= roleName %>" />
 				</div>
 
-				<div class="<%= assigneeClassName.equals(User.class.getName()) ? "" : "hide" %>" id="<portlet:namespace />assigneeClassNameUser">
+				<div class='<%= assigneeClassName.equals(User.class.getName()) ? "" : "hide" %>' id="<portlet:namespace />assigneeClassNameUser">
 					<aui:input inlineField="<%= true %>" name="userEmailAddress" size="20" value="<%= userEmailAddress %>" />
 				</div>
 

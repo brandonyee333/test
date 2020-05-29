@@ -255,7 +255,7 @@ Date lastEnabledDate = calendar.getTime();
 				/>
 			</td>
 		</tr>
-		<tr id="<portlet:namespace />actualStartDate" style="<%= displayTerms.isProrated() ? "" : "display: none;" %>">
+		<tr id="<portlet:namespace />actualStartDate" style='<%= displayTerms.isProrated() ? "" : "display: none;" %>'>
 			<td>
 				<label><liferay-ui:message key="actual-started-after" /></label>
 
