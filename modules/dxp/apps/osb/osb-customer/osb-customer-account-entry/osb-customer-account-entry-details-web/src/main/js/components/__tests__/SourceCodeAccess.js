@@ -1,14 +1,12 @@
 import {
-	findByText,
 	fireEvent,
 	getByLabelText,
 	getByText,
 	queryByRole,
 	queryByText,
 	render,
-	waitFor,
 	within
-} from '@testing-library/react';
+} from 'react-testing-library';
 import axios from 'axios';
 import React from 'react';
 
@@ -162,58 +160,5 @@ describe('SourceCodeAccess', () => {
 		const modal = queryByRole(container, 'dialog');
 
 		expect(modal).toBeNull();
-	});
-
-	it('adds the collaborator after using the modal', async () => {
-		const {container} = renderSourceCodeAccess();
-
-		fireEvent.click(getByLabelText(container, 'add'));
-
-		const modal = queryByRole(container, 'dialog');
-
-		fireEvent.change(within(modal).getByLabelText('name'), {
-			target: {value: 'Test Four'}
-		});
-		fireEvent.change(within(modal).getByLabelText('email-address'), {
-			target: {value: 'test4@liferay.com'}
-		});
-		fireEvent.change(within(modal).getByLabelText('github-username'), {
-			target: {value: 'testuser4'}
-		});
-
-		fireEvent.click(within(modal).getByText('submit'));
-
-		await findByText(
-			container,
-			'success-your-request-submitted-successfully'
-		);
-
-		await findByText(container, 'Test Four');
-		await findByText(container, 'test4@liferay.com');
-		await findByText(container, 'testuser4');
-	});
-
-	it('deletes the collaborator after delete button is clicked', async () => {
-		window.confirm = jest.fn(() => true);
-
-		const {container} = renderSourceCodeAccess();
-
-		fireEvent.click(queryByText(container, 'Test One'));
-
-		const {getByText} = within(queryByRole(container, 'tabpanel'));
-
-		fireEvent.click(getByText('delete'));
-
-		await waitFor(() => expect(window.confirm).toBeCalled());
-
-		await waitFor(() =>
-			expect(queryByText(container, 'Test One')).toBeNull()
-		);
-		await waitFor(() =>
-			expect(queryByText(container, 'test1@liferay.com')).toBeNull()
-		);
-		await waitFor(() =>
-			expect(queryByText(container, 'testuser1')).toBeNull()
-		);
 	});
 });

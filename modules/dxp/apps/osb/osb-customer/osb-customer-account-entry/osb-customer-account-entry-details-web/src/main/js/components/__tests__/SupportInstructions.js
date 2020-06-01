@@ -4,7 +4,7 @@ import {
 	queryByRole,
 	queryByText,
 	render
-} from '@testing-library/react';
+} from 'react-testing-library';
 import React from 'react';
 
 import SupportInstructions from '../SupportInstructions';

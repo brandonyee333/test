@@ -4,7 +4,7 @@ import {
 	getByText,
 	queryAllByText,
 	render
-} from '@testing-library/react';
+} from 'react-testing-library';
 import React from 'react';
 
 import AddSourceCodeAccessModal from '../AddSourceCodeAccessModal';

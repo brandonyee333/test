@@ -1,4 +1,4 @@
-import {fireEvent, getByLabelText, render} from '@testing-library/react';
+import {fireEvent, getByLabelText, render} from 'react-testing-library';
 import React from 'react';
 
 import Modal from '../Modal';

@@ -1,4 +1,4 @@
-import {cleanup, fireEvent, render} from '@testing-library/react';
+import {cleanup, fireEvent, render} from 'react-testing-library';
 import React from 'react';
 
 import Accordion from '../Accordion';

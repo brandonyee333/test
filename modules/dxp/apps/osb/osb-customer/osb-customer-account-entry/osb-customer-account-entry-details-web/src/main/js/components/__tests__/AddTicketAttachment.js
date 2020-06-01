@@ -1,4 +1,4 @@
-import {render} from '@testing-library/react';
+import {render} from 'react-testing-library';
 import React from 'react';
 
 import AddTicketAttachment from '../AddTicketAttachment';
