@@ -164,12 +164,7 @@ public class JobDog {
 	}
 
 	public JobStatus getJobStatus(String id) {
-		if (_faroInfoElasticsearchInvoker.exists(
-				"job-executions",
-				BoolQueryBuilderUtil.filter(
-					QueryBuilders.termsQuery("job.id", id)).filter(
-						QueryBuilders.termsQuery("status", "COMPLETED")))) {
-
+		if (_hasJobCompleted(id)) {
 			return JobStatus.READY;
 		}
 
@@ -228,6 +223,16 @@ public class JobDog {
 			));
 
 		return boolQueryBuilder;
+	}
+
+	private boolean _hasJobCompleted(String id) {
+		return _faroInfoElasticsearchInvoker.exists(
+			"job-executions",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery("job.id", id)
+			).filter(
+				QueryBuilders.termsQuery("status", "COMPLETED")
+			));
 	}
 
 	@PostConstruct
