@@ -73,6 +73,7 @@ import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -331,16 +332,21 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 
 	@Override
 	public JSONObject fetch(String collectionName, QueryBuilder queryBuilder) {
-		return fetch(collectionName, queryBuilder, null, null);
+		return fetch(collectionName, queryBuilder, null, null, null);
 	}
 
 	@Override
 	public JSONObject fetch(
-		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
+		String collectionName, QueryBuilder queryBuilder,
+		SortBuilder<?> sortBuilder, String sourceExclude,
 		String sourceInclude) {
 
 		SearchRequestBuilder searchRequestBuilder = _prepareSearch(
 			getIndexAlias(collectionName));
+
+		if (sortBuilder != null) {
+			searchRequestBuilder.addSort(sortBuilder);
+		}
 
 		searchRequestBuilder.setFetchSource(sourceInclude, sourceExclude);
 		searchRequestBuilder.setQuery(queryBuilder);
@@ -359,6 +365,15 @@ public class ElasticsearchInvokerImpl implements ElasticsearchInvoker {
 		SearchHit searchHit = searchHits.getAt(0);
 
 		return new JSONObject(searchHit.getSourceAsString());
+	}
+
+	@Override
+	public JSONObject fetch(
+		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
+		String sourceInclude) {
+
+		return fetch(
+			collectionName, queryBuilder, null, sourceExclude, sourceInclude);
 	}
 
 	@Override

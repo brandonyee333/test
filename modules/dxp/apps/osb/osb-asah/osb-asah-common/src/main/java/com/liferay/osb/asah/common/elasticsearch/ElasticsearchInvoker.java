@@ -23,6 +23,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -61,6 +62,10 @@ public interface ElasticsearchInvoker {
 	public boolean exists(String collectionName, String id);
 
 	public JSONObject fetch(String collectionName, QueryBuilder queryBuilder);
+
+	public JSONObject fetch(
+		String collectionName, QueryBuilder queryBuilder,
+		SortBuilder<?> sortBuilder, String sourceExclude, String sourceInclude);
 
 	public JSONObject fetch(
 		String collectionName, QueryBuilder queryBuilder, String sourceExclude,
