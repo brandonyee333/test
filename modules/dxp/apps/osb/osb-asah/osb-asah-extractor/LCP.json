@@ -3,7 +3,7 @@
 	"env": {
 		"JAVA_OPTS_EXT": "-Xmx2765m",
 		"LOGGING_PATTERN_CONSOLE": "${CONSOLE_LOG_PATTERN:%clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}",
-		"OSB.ASAH.ANALYTICS.EVENTS.STORAGE.PATH": "/storage/analytics_events.json"
+		"OSB_ASAH_ANALYTICS_EVENTS_STORAGE_PATH": "/storage/analytics_events.json"
 	},
 	"id": "osbasahextractor",
 	"kind": "Deployment",
