@@ -32,6 +32,7 @@ import com.liferay.exportimport.kernel.lar.StagedModelDataHandlerRegistryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.exportimport.kernel.lar.UserIdStrategy;
 import com.liferay.exportimport.portlet.data.handler.provider.PortletDataHandlerProvider;
+import com.liferay.exportimport.portlet.data.handler.util.ExportImportGroupedModelUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -895,36 +896,9 @@ public class ExportImportHelperImpl implements ExportImportHelper {
 			return true;
 		}
 
-		Group group = null;
-
-		try {
-			group = _groupLocalService.getGroup(
-				stagedGroupedModel.getGroupId());
-		}
-		catch (Exception e) {
-			return false;
-		}
-
-		String className = group.getClassName();
-
-		if (className.equals(Layout.class.getName())) {
-			Layout scopeLayout = null;
-
-			try {
-				scopeLayout = _layoutLocalService.getLayout(group.getClassPK());
-			}
-			catch (Exception e) {
-				return false;
-			}
-
-			if (scopeLayout.getGroupId() ==
-					portletDataContext.getSourceGroupId()) {
-
-				return true;
-			}
-		}
-
-		return false;
+		return ExportImportGroupedModelUtil.
+			isReferenceInLayoutGroupWithinExportScope(
+				portletDataContext, stagedGroupedModel);
 	}
 
 	/**
