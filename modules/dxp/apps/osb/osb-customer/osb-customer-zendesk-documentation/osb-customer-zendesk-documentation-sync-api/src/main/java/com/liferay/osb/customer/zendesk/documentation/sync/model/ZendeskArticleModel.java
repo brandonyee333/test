@@ -45,7 +45,7 @@ import java.util.Map;
 public interface ZendeskArticleModel
 	extends BaseModel<ZendeskArticle>, LocalizedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a zendesk article model instance should use the {@link ZendeskArticle} interface instead.

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.account.entry.details.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -28,8 +26,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class EventSoap implements Serializable {
+
 	public static EventSoap toSoapModel(Event model) {
 		EventSoap soapModel = new EventSoap();
 
@@ -225,4 +223,5 @@ public class EventSoap implements Serializable {
 	private String _title;
 	private String _summary;
 	private String _additionalInfo;
+
 }

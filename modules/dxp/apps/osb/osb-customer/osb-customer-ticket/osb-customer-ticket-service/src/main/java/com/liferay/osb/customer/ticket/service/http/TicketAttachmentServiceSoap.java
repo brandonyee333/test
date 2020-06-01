@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.ticket.service.http;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.ticket.service.TicketAttachmentServiceUtil;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
@@ -25,19 +22,20 @@ import java.rmi.RemoteException;
 
 /**
  * Provides the SOAP utility for the
- * {@link TicketAttachmentServiceUtil} service utility. The
- * static methods of this class calls the same methods of the service utility.
- * However, the signatures are different because it is difficult for SOAP to
- * support certain types.
+ * <code>TicketAttachmentServiceUtil</code> service
+ * utility. The static methods of this class call the same methods of the
+ * service utility. However, the signatures are different because it is
+ * difficult for SOAP to support certain types.
  *
  * <p>
  * ServiceBuilder follows certain rules in translating the methods. For example,
- * if the method in the service utility returns a {@link java.util.List}, that
- * is translated to an array of {@link com.liferay.osb.customer.ticket.model.TicketAttachmentSoap}.
- * If the method in the service utility returns a
- * {@link com.liferay.osb.customer.ticket.model.TicketAttachment}, that is translated to a
- * {@link com.liferay.osb.customer.ticket.model.TicketAttachmentSoap}. Methods that SOAP cannot
- * safely wire are skipped.
+ * if the method in the service utility returns a <code>java.util.List</code>,
+ * that is translated to an array of
+ * <code>com.liferay.osb.customer.ticket.model.TicketAttachmentSoap</code>. If the method in the
+ * service utility returns a
+ * <code>com.liferay.osb.customer.ticket.model.TicketAttachment</code>, that is translated to a
+ * <code>com.liferay.osb.customer.ticket.model.TicketAttachmentSoap</code>. Methods that SOAP
+ * cannot safely wire are skipped.
  * </p>
  *
  * <p>
@@ -59,44 +57,54 @@ import java.rmi.RemoteException;
  *
  * @author Brian Wing Shun Chan
  * @see TicketAttachmentServiceHttp
- * @see com.liferay.osb.customer.ticket.model.TicketAttachmentSoap
- * @see TicketAttachmentServiceUtil
  * @generated
  */
-@ProviderType
 public class TicketAttachmentServiceSoap {
-	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap addTicketAttachment(
-		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-		String fileName, long fileSize, int type,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+
+	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap
+			addTicketAttachment(
+				long accountEntryId, long zendeskTicketId,
+				String fileRepositoryId, String fileName, long fileSize,
+				int type,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws RemoteException {
+
 		try {
-			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.addTicketAttachment(accountEntryId,
-					zendeskTicketId, fileRepositoryId, fileName, fileSize,
-					type, serviceContext);
+			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue =
+				TicketAttachmentServiceUtil.addTicketAttachment(
+					accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
+					fileSize, type, serviceContext);
 
-			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.toSoapModel(returnValue);
+			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.
+				toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
-	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap getTicketAttachment(
-		long ticketAttachmentId) throws RemoteException {
+	public static com.liferay.osb.customer.ticket.model.TicketAttachmentSoap
+			getTicketAttachment(long ticketAttachmentId)
+		throws RemoteException {
+
 		try {
-			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue = TicketAttachmentServiceUtil.getTicketAttachment(ticketAttachmentId);
+			com.liferay.osb.customer.ticket.model.TicketAttachment returnValue =
+				TicketAttachmentServiceUtil.getTicketAttachment(
+					ticketAttachmentId);
 
-			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.toSoapModel(returnValue);
+			return com.liferay.osb.customer.ticket.model.TicketAttachmentSoap.
+				toSoapModel(returnValue);
 		}
-		catch (Exception e) {
-			_log.error(e, e);
+		catch (Exception exception) {
+			_log.error(exception, exception);
 
-			throw new RemoteException(e.getMessage());
+			throw new RemoteException(exception.getMessage());
 		}
 	}
 
-	private static Log _log = LogFactoryUtil.getLog(TicketAttachmentServiceSoap.class);
+	private static Log _log = LogFactoryUtil.getLog(
+		TicketAttachmentServiceSoap.class);
+
 }

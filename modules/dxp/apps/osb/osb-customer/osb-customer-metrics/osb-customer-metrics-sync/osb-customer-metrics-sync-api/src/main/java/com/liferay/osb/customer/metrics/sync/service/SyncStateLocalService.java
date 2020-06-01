@@ -17,7 +17,6 @@ package com.liferay.osb.customer.metrics.sync.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
-
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery;
@@ -46,64 +45,64 @@ import java.util.List;
  *
  * @author Brian Wing Shun Chan
  * @see SyncStateLocalServiceUtil
- * @see com.liferay.osb.customer.metrics.sync.service.base.SyncStateLocalServiceBaseImpl
- * @see com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl
  * @generated
  */
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
-public interface SyncStateLocalService extends BaseLocalService,
-	PersistedModelLocalService {
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
+public interface SyncStateLocalService
+	extends BaseLocalService, PersistedModelLocalService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link SyncStateLocalServiceUtil} to access the sync state local service. Add custom service methods to {@link com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link SyncStateLocalServiceUtil} to access the sync state local service. Add custom service methods to <code>com.liferay.osb.customer.metrics.sync.service.impl.SyncStateLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public SyncState addSyncState(String modelName);
 
 	/**
-	* Adds the sync state to the database. Also notifies the appropriate model listeners.
-	*
-	* @param syncState the sync state
-	* @return the sync state that was added
-	*/
+	 * Adds the sync state to the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param syncState the sync state
+	 * @return the sync state that was added
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public SyncState addSyncState(SyncState syncState);
 
 	/**
-	* Creates a new sync state with the primary key. Does not add the sync state to the database.
-	*
-	* @param syncStateId the primary key for the new sync state
-	* @return the new sync state
-	*/
+	 * Creates a new sync state with the primary key. Does not add the sync state to the database.
+	 *
+	 * @param syncStateId the primary key for the new sync state
+	 * @return the new sync state
+	 */
 	@Transactional(enabled = false)
 	public SyncState createSyncState(long syncStateId);
 
 	/**
-	* @throws PortalException
-	*/
+	 * @throws PortalException
+	 */
 	@Override
 	public PersistedModel deletePersistedModel(PersistedModel persistedModel)
 		throws PortalException;
 
 	/**
-	* Deletes the sync state with the primary key from the database. Also notifies the appropriate model listeners.
-	*
-	* @param syncStateId the primary key of the sync state
-	* @return the sync state that was removed
-	* @throws PortalException if a sync state with the primary key could not be found
-	*/
+	 * Deletes the sync state with the primary key from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param syncStateId the primary key of the sync state
+	 * @return the sync state that was removed
+	 * @throws PortalException if a sync state with the primary key could not be found
+	 */
 	@Indexable(type = IndexableType.DELETE)
-	public SyncState deleteSyncState(long syncStateId)
-		throws PortalException;
+	public SyncState deleteSyncState(long syncStateId) throws PortalException;
 
 	/**
-	* Deletes the sync state from the database. Also notifies the appropriate model listeners.
-	*
-	* @param syncState the sync state
-	* @return the sync state that was removed
-	*/
+	 * Deletes the sync state from the database. Also notifies the appropriate model listeners.
+	 *
+	 * @param syncState the sync state
+	 * @return the sync state that was removed
+	 */
 	@Indexable(type = IndexableType.DELETE)
 	public SyncState deleteSyncState(SyncState syncState);
 
@@ -111,66 +110,67 @@ public interface SyncStateLocalService extends BaseLocalService,
 	public DynamicQuery dynamicQuery();
 
 	/**
-	* Performs a dynamic query on the database and returns the matching rows.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the matching rows
-	*/
+	 * Performs a dynamic query on the database and returns the matching rows.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery);
 
 	/**
-	* Performs a dynamic query on the database and returns a range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @return the range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns a range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @return the range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end);
 
 	/**
-	* Performs a dynamic query on the database and returns an ordered range of the matching rows.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param dynamicQuery the dynamic query
-	* @param start the lower bound of the range of model instances
-	* @param end the upper bound of the range of model instances (not inclusive)
-	* @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	* @return the ordered range of matching rows
-	*/
+	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param start the lower bound of the range of model instances
+	 * @param end the upper bound of the range of model instances (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching rows
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public <T> List<T> dynamicQuery(DynamicQuery dynamicQuery, int start,
-		int end, OrderByComparator<T> orderByComparator);
+	public <T> List<T> dynamicQuery(
+		DynamicQuery dynamicQuery, int start, int end,
+		OrderByComparator<T> orderByComparator);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public long dynamicQueryCount(DynamicQuery dynamicQuery);
 
 	/**
-	* Returns the number of rows matching the dynamic query.
-	*
-	* @param dynamicQuery the dynamic query
-	* @param projection the projection to apply to the query
-	* @return the number of rows matching the dynamic query
-	*/
+	 * Returns the number of rows matching the dynamic query.
+	 *
+	 * @param dynamicQuery the dynamic query
+	 * @param projection the projection to apply to the query
+	 * @return the number of rows matching the dynamic query
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public long dynamicQueryCount(DynamicQuery dynamicQuery,
-		Projection projection);
+	public long dynamicQueryCount(
+		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SyncState fetchSyncState(long syncStateId);
@@ -185,46 +185,49 @@ public interface SyncStateLocalService extends BaseLocalService,
 	public IndexableActionableDynamicQuery getIndexableActionableDynamicQuery();
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public String getOSGiServiceIdentifier();
 
+	/**
+	 * @throws PortalException
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
 	/**
-	* Returns the sync state with the primary key.
-	*
-	* @param syncStateId the primary key of the sync state
-	* @return the sync state
-	* @throws PortalException if a sync state with the primary key could not be found
-	*/
+	 * Returns the sync state with the primary key.
+	 *
+	 * @param syncStateId the primary key of the sync state
+	 * @return the sync state
+	 * @throws PortalException if a sync state with the primary key could not be found
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public SyncState getSyncState(long syncStateId) throws PortalException;
 
 	/**
-	* Returns a range of all the sync states.
-	*
-	* <p>
-	* Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent and pagination is required (<code>start</code> and <code>end</code> are not {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS}), then the query will include the default ORDER BY logic from {@link com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl}. If both <code>orderByComparator</code> and pagination are absent, for performance reasons, the query will not have an ORDER BY clause and the returned result set will be sorted on by the primary key in an ascending order.
-	* </p>
-	*
-	* @param start the lower bound of the range of sync states
-	* @param end the upper bound of the range of sync states (not inclusive)
-	* @return the range of sync states
-	*/
+	 * Returns a range of all the sync states.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl</code>.
+	 * </p>
+	 *
+	 * @param start the lower bound of the range of sync states
+	 * @param end the upper bound of the range of sync states (not inclusive)
+	 * @return the range of sync states
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<SyncState> getSyncStates(int start, int end);
 
 	/**
-	* Returns the number of sync states.
-	*
-	* @return the number of sync states
-	*/
+	 * Returns the number of sync states.
+	 *
+	 * @return the number of sync states
+	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getSyncStatesCount();
 
@@ -232,11 +235,12 @@ public interface SyncStateLocalService extends BaseLocalService,
 		throws PortalException;
 
 	/**
-	* Updates the sync state in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
-	*
-	* @param syncState the sync state
-	* @return the sync state that was updated
-	*/
+	 * Updates the sync state in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 *
+	 * @param syncState the sync state
+	 * @return the sync state that was updated
+	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public SyncState updateSyncState(SyncState syncState);
+
 }

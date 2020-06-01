@@ -39,7 +39,7 @@ import java.io.Serializable;
 public interface ZendeskArticleAttachmentModel
 	extends BaseModel<ZendeskArticleAttachment> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a zendesk article attachment model instance should use the {@link ZendeskArticleAttachment} interface instead.

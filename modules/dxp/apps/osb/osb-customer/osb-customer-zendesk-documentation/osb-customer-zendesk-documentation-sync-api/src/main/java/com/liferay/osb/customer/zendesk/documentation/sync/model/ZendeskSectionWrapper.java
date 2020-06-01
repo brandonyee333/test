@@ -308,11 +308,6 @@ public class ZendeskSectionWrapper
 		return _zendeskSection.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a zendesk section model instance should use the <code>ZendeskSection</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_zendeskSection.persist();

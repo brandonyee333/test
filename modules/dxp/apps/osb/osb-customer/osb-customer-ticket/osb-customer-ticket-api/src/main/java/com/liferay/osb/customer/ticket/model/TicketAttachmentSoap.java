@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.ticket.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -26,11 +24,10 @@ import java.util.List;
  * This class is used by SOAP remote services, specifically {@link com.liferay.osb.customer.ticket.service.http.TicketAttachmentServiceSoap}.
  *
  * @author Brian Wing Shun Chan
- * @see com.liferay.osb.customer.ticket.service.http.TicketAttachmentServiceSoap
  * @generated
  */
-@ProviderType
 public class TicketAttachmentSoap implements Serializable {
+
 	public static TicketAttachmentSoap toSoapModel(TicketAttachment model) {
 		TicketAttachmentSoap soapModel = new TicketAttachmentSoap();
 
@@ -48,8 +45,11 @@ public class TicketAttachmentSoap implements Serializable {
 		return soapModel;
 	}
 
-	public static TicketAttachmentSoap[] toSoapModels(TicketAttachment[] models) {
-		TicketAttachmentSoap[] soapModels = new TicketAttachmentSoap[models.length];
+	public static TicketAttachmentSoap[] toSoapModels(
+		TicketAttachment[] models) {
+
+		TicketAttachmentSoap[] soapModels =
+			new TicketAttachmentSoap[models.length];
 
 		for (int i = 0; i < models.length; i++) {
 			soapModels[i] = toSoapModel(models[i]);
@@ -60,10 +60,12 @@ public class TicketAttachmentSoap implements Serializable {
 
 	public static TicketAttachmentSoap[][] toSoapModels(
 		TicketAttachment[][] models) {
+
 		TicketAttachmentSoap[][] soapModels = null;
 
 		if (models.length > 0) {
-			soapModels = new TicketAttachmentSoap[models.length][models[0].length];
+			soapModels =
+				new TicketAttachmentSoap[models.length][models[0].length];
 		}
 		else {
 			soapModels = new TicketAttachmentSoap[0][0];
@@ -78,7 +80,9 @@ public class TicketAttachmentSoap implements Serializable {
 
 	public static TicketAttachmentSoap[] toSoapModels(
 		List<TicketAttachment> models) {
-		List<TicketAttachmentSoap> soapModels = new ArrayList<TicketAttachmentSoap>(models.size());
+
+		List<TicketAttachmentSoap> soapModels =
+			new ArrayList<TicketAttachmentSoap>(models.size());
 
 		for (TicketAttachment model : models) {
 			soapModels.add(toSoapModel(model));
@@ -188,4 +192,5 @@ public class TicketAttachmentSoap implements Serializable {
 	private String _fileName;
 	private long _fileSize;
 	private int _type;
+
 }

@@ -32,7 +32,7 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskCatego
 public abstract class ZendeskCategoryBaseImpl
 	extends ZendeskCategoryModelImpl implements ZendeskCategory {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk category model instance should use the <code>ZendeskCategory</code> interface instead.

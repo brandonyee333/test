@@ -17,7 +17,6 @@ package com.liferay.osb.customer.ticket.service;
 import aQute.bnd.annotation.ProviderType;
 
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
@@ -36,36 +35,44 @@ import com.liferay.portal.kernel.transaction.Transactional;
  *
  * @author Brian Wing Shun Chan
  * @see TicketAttachmentServiceUtil
- * @see com.liferay.osb.customer.ticket.service.base.TicketAttachmentServiceBaseImpl
- * @see com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl
  * @generated
  */
 @AccessControlled
 @JSONWebService
-@OSGiBeanProperties(property =  {
-	"json.web.service.context.name=osbcustomer", "json.web.service.context.path=TicketAttachment"}, service = TicketAttachmentService.class)
+@OSGiBeanProperties(
+	property = {
+		"json.web.service.context.name=osbcustomer",
+		"json.web.service.context.path=TicketAttachment"
+	},
+	service = TicketAttachmentService.class
+)
 @ProviderType
-@Transactional(isolation = Isolation.PORTAL, rollbackFor =  {
-	PortalException.class, SystemException.class})
+@Transactional(
+	isolation = Isolation.PORTAL,
+	rollbackFor = {PortalException.class, SystemException.class}
+)
 public interface TicketAttachmentService extends BaseService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentServiceUtil} to access the ticket attachment remote service. Add custom service methods to {@link com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify or reference this interface directly. Always use {@link TicketAttachmentServiceUtil} to access the ticket attachment remote service. Add custom service methods to <code>com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public TicketAttachment addTicketAttachment(long accountEntryId,
-		long zendeskTicketId, String fileRepositoryId, String fileName,
-		long fileSize, int type, ServiceContext serviceContext)
+	public TicketAttachment addTicketAttachment(
+			long accountEntryId, long zendeskTicketId, String fileRepositoryId,
+			String fileName, long fileSize, int type,
+			ServiceContext serviceContext)
 		throws PortalException;
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	public String getOSGiServiceIdentifier();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public TicketAttachment getTicketAttachment(long ticketAttachmentId)
 		throws PortalException;
+
 }

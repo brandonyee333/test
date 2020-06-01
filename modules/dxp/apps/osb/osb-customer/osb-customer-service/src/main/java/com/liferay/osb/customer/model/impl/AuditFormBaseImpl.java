@@ -32,7 +32,7 @@ import com.liferay.osb.customer.service.AuditFormLocalServiceUtil;
 public abstract class AuditFormBaseImpl
 	extends AuditFormModelImpl implements AuditForm {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a audit form model instance should use the <code>AuditForm</code> interface instead.

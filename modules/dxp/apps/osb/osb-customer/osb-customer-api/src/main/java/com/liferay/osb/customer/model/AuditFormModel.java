@@ -40,7 +40,7 @@ import java.util.Date;
 @ProviderType
 public interface AuditFormModel extends BaseModel<AuditForm> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a audit form model instance should use the {@link AuditForm} interface instead.

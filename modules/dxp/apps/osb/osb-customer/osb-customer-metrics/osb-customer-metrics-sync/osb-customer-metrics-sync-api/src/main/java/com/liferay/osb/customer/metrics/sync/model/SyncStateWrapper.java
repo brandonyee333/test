@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.metrics.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -36,8 +33,8 @@ import java.util.Objects;
  * @see SyncState
  * @generated
  */
-@ProviderType
-public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
+public class SyncStateWrapper implements ModelWrapper<SyncState>, SyncState {
+
 	public SyncStateWrapper(SyncState syncState) {
 		_syncState = syncState;
 	}
@@ -100,30 +97,30 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Returns the last run time of this sync state.
-	*
-	* @return the last run time of this sync state
-	*/
+	 * Returns the last run time of this sync state.
+	 *
+	 * @return the last run time of this sync state
+	 */
 	@Override
 	public long getLastRunTime() {
 		return _syncState.getLastRunTime();
 	}
 
 	/**
-	* Returns the model name of this sync state.
-	*
-	* @return the model name of this sync state
-	*/
+	 * Returns the model name of this sync state.
+	 *
+	 * @return the model name of this sync state
+	 */
 	@Override
 	public String getModelName() {
 		return _syncState.getModelName();
 	}
 
 	/**
-	* Returns the primary key of this sync state.
-	*
-	* @return the primary key of this sync state
-	*/
+	 * Returns the primary key of this sync state.
+	 *
+	 * @return the primary key of this sync state
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _syncState.getPrimaryKey();
@@ -135,10 +132,10 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Returns the sync state ID of this sync state.
-	*
-	* @return the sync state ID of this sync state
-	*/
+	 * Returns the sync state ID of this sync state.
+	 *
+	 * @return the sync state ID of this sync state
+	 */
 	@Override
 	public long getSyncStateId() {
 		return _syncState.getSyncStateId();
@@ -177,6 +174,7 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_syncState.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -191,20 +189,20 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the last run time of this sync state.
-	*
-	* @param lastRunTime the last run time of this sync state
-	*/
+	 * Sets the last run time of this sync state.
+	 *
+	 * @param lastRunTime the last run time of this sync state
+	 */
 	@Override
 	public void setLastRunTime(long lastRunTime) {
 		_syncState.setLastRunTime(lastRunTime);
 	}
 
 	/**
-	* Sets the model name of this sync state.
-	*
-	* @param modelName the model name of this sync state
-	*/
+	 * Sets the model name of this sync state.
+	 *
+	 * @param modelName the model name of this sync state
+	 */
 	@Override
 	public void setModelName(String modelName) {
 		_syncState.setModelName(modelName);
@@ -216,10 +214,10 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the primary key of this sync state.
-	*
-	* @param primaryKey the primary key of this sync state
-	*/
+	 * Sets the primary key of this sync state.
+	 *
+	 * @param primaryKey the primary key of this sync state
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_syncState.setPrimaryKey(primaryKey);
@@ -231,17 +229,19 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	/**
-	* Sets the sync state ID of this sync state.
-	*
-	* @param syncStateId the sync state ID of this sync state
-	*/
+	 * Sets the sync state ID of this sync state.
+	 *
+	 * @param syncStateId the sync state ID of this sync state
+	 */
 	@Override
 	public void setSyncStateId(long syncStateId) {
 		_syncState.setSyncStateId(syncStateId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<SyncState> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<SyncState>
+		toCacheModel() {
+
 		return _syncState.toCacheModel();
 	}
 
@@ -305,4 +305,5 @@ public class SyncStateWrapper implements SyncState, ModelWrapper<SyncState> {
 	}
 
 	private final SyncState _syncState;
+
 }

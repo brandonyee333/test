@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.metrics.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
 import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.osb.customer.metrics.sync.service.SyncStateLocalServiceUtil;
  * @see SyncState
  * @generated
  */
-@ProviderType
-public abstract class SyncStateBaseImpl extends SyncStateModelImpl
-	implements SyncState {
+public abstract class SyncStateBaseImpl
+	extends SyncStateModelImpl implements SyncState {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a sync state model instance should use the {@link SyncState} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a sync state model instance should use the <code>SyncState</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class SyncStateBaseImpl extends SyncStateModelImpl
 			SyncStateLocalServiceUtil.updateSyncState(this);
 		}
 	}
+
 }

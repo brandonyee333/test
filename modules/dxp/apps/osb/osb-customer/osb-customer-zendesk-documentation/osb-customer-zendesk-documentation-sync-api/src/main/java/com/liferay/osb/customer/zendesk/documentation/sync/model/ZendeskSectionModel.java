@@ -45,7 +45,7 @@ import java.util.Map;
 public interface ZendeskSectionModel
 	extends BaseModel<ZendeskSection>, LocalizedModel {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. All methods that expect a zendesk section model instance should use the {@link ZendeskSection} interface instead.

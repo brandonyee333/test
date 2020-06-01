@@ -39,7 +39,7 @@ import java.util.Set;
 @ProviderType
 public interface AuditFormPersistence extends BasePersistence<AuditForm> {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this interface directly. Always use {@link AuditFormUtil} to access the audit form persistence. Modify <code>service.xml</code> and rerun ServiceBuilder to regenerate this interface.

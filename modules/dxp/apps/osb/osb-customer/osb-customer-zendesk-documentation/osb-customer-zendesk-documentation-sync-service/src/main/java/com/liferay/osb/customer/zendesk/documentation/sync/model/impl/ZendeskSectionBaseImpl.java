@@ -32,7 +32,7 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskSectio
 public abstract class ZendeskSectionBaseImpl
 	extends ZendeskSectionModelImpl implements ZendeskSection {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk section model instance should use the <code>ZendeskSection</code> interface instead.

@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.ticket.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalServiceUtil;
 
@@ -31,13 +29,13 @@ import com.liferay.osb.customer.ticket.service.TicketAttachmentLocalServiceUtil;
  * @see TicketAttachment
  * @generated
  */
-@ProviderType
-public abstract class TicketAttachmentBaseImpl extends TicketAttachmentModelImpl
-	implements TicketAttachment {
+public abstract class TicketAttachmentBaseImpl
+	extends TicketAttachmentModelImpl implements TicketAttachment {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a ticket attachment model instance should use the {@link TicketAttachment} interface instead.
+	 * Never modify or reference this class directly. All methods that expect a ticket attachment model instance should use the <code>TicketAttachment</code> interface instead.
 	 */
 	@Override
 	public void persist() {
@@ -48,4 +46,5 @@ public abstract class TicketAttachmentBaseImpl extends TicketAttachmentModelImpl
 			TicketAttachmentLocalServiceUtil.updateTicketAttachment(this);
 		}
 	}
+
 }

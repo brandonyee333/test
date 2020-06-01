@@ -268,11 +268,6 @@ public class AuditFormWrapper implements AuditForm, ModelWrapper<AuditForm> {
 		return _auditForm.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a audit form model instance should use the <code>AuditForm</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_auditForm.persist();

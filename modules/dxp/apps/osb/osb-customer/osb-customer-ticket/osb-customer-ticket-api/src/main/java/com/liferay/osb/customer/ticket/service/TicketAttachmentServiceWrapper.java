@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.ticket.service;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
@@ -25,39 +23,45 @@ import com.liferay.portal.kernel.service.ServiceWrapper;
  * @see TicketAttachmentService
  * @generated
  */
-@ProviderType
-public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
-	ServiceWrapper<TicketAttachmentService> {
+public class TicketAttachmentServiceWrapper
+	implements ServiceWrapper<TicketAttachmentService>,
+			   TicketAttachmentService {
+
 	public TicketAttachmentServiceWrapper(
 		TicketAttachmentService ticketAttachmentService) {
+
 		_ticketAttachmentService = ticketAttachmentService;
 	}
 
 	@Override
-	public com.liferay.osb.customer.ticket.model.TicketAttachment addTicketAttachment(
-		long accountEntryId, long zendeskTicketId, String fileRepositoryId,
-		String fileName, long fileSize, int type,
-		com.liferay.portal.kernel.service.ServiceContext serviceContext)
+	public com.liferay.osb.customer.ticket.model.TicketAttachment
+			addTicketAttachment(
+				long accountEntryId, long zendeskTicketId,
+				String fileRepositoryId, String fileName, long fileSize,
+				int type,
+				com.liferay.portal.kernel.service.ServiceContext serviceContext)
 		throws com.liferay.portal.kernel.exception.PortalException {
-		return _ticketAttachmentService.addTicketAttachment(accountEntryId,
-			zendeskTicketId, fileRepositoryId, fileName, fileSize, type,
-			serviceContext);
+
+		return _ticketAttachmentService.addTicketAttachment(
+			accountEntryId, zendeskTicketId, fileRepositoryId, fileName,
+			fileSize, type, serviceContext);
 	}
 
 	/**
-	* Returns the OSGi service identifier.
-	*
-	* @return the OSGi service identifier
-	*/
+	 * Returns the OSGi service identifier.
+	 *
+	 * @return the OSGi service identifier
+	 */
 	@Override
 	public String getOSGiServiceIdentifier() {
 		return _ticketAttachmentService.getOSGiServiceIdentifier();
 	}
 
 	@Override
-	public com.liferay.osb.customer.ticket.model.TicketAttachment getTicketAttachment(
-		long ticketAttachmentId)
+	public com.liferay.osb.customer.ticket.model.TicketAttachment
+			getTicketAttachment(long ticketAttachmentId)
 		throws com.liferay.portal.kernel.exception.PortalException {
+
 		return _ticketAttachmentService.getTicketAttachment(ticketAttachmentId);
 	}
 
@@ -69,8 +73,10 @@ public class TicketAttachmentServiceWrapper implements TicketAttachmentService,
 	@Override
 	public void setWrappedService(
 		TicketAttachmentService ticketAttachmentService) {
+
 		_ticketAttachmentService = ticketAttachmentService;
 	}
 
 	private TicketAttachmentService _ticketAttachmentService;
+
 }

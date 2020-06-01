@@ -1,27 +1,23 @@
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
- * This library is free software; you can redistribute it and/or modify it under
- * the terms of the GNU Lesser General Public License as published by the Free
- * Software Foundation; either version 2.1 of the License, or (at your option)
- * any later version.
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
  *
- * This library is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
- * details.
+ *
+ *
  */
 
 package com.liferay.osb.customer.release.notes.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.release.notes.model.ReleaseNotes;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -34,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing ReleaseNotes in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see ReleaseNotes
  * @generated
  */
-@ProviderType
-public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
-	Externalizable {
+public class ReleaseNotesCacheModel
+	implements CacheModel<ReleaseNotes>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -50,7 +45,8 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 			return false;
 		}
 
-		ReleaseNotesCacheModel releaseNotesCacheModel = (ReleaseNotesCacheModel)obj;
+		ReleaseNotesCacheModel releaseNotesCacheModel =
+			(ReleaseNotesCacheModel)obj;
 
 		if (releaseNotesId == releaseNotesCacheModel.releaseNotesId) {
 			return true;
@@ -94,7 +90,7 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 		ReleaseNotesImpl releaseNotesImpl = new ReleaseNotesImpl();
 
 		if (uuid == null) {
-			releaseNotesImpl.setUuid(StringPool.BLANK);
+			releaseNotesImpl.setUuid("");
 		}
 		else {
 			releaseNotesImpl.setUuid(uuid);
@@ -104,7 +100,7 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 		releaseNotesImpl.setUserId(userId);
 
 		if (userName == null) {
-			releaseNotesImpl.setUserName(StringPool.BLANK);
+			releaseNotesImpl.setUserName("");
 		}
 		else {
 			releaseNotesImpl.setUserName(userName);
@@ -125,14 +121,14 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 		}
 
 		if (name == null) {
-			releaseNotesImpl.setName(StringPool.BLANK);
+			releaseNotesImpl.setName("");
 		}
 		else {
 			releaseNotesImpl.setName(name);
 		}
 
 		if (jiraIssueKeys == null) {
-			releaseNotesImpl.setJiraIssueKeys(StringPool.BLANK);
+			releaseNotesImpl.setJiraIssueKeys("");
 		}
 		else {
 			releaseNotesImpl.setJiraIssueKeys(jiraIssueKeys);
@@ -158,10 +154,9 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		if (uuid == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(uuid);
@@ -172,7 +167,7 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 		objectOutput.writeLong(userId);
 
 		if (userName == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(userName);
@@ -182,14 +177,14 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 		objectOutput.writeLong(modifiedDate);
 
 		if (name == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(name);
 		}
 
 		if (jiraIssueKeys == null) {
-			objectOutput.writeUTF(StringPool.BLANK);
+			objectOutput.writeUTF("");
 		}
 		else {
 			objectOutput.writeUTF(jiraIssueKeys);
@@ -204,4 +199,5 @@ public class ReleaseNotesCacheModel implements CacheModel<ReleaseNotes>,
 	public long modifiedDate;
 	public String name;
 	public String jiraIssueKeys;
+
 }

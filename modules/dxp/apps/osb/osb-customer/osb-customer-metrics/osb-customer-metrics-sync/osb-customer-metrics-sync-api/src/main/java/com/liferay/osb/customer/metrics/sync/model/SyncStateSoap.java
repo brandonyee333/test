@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.metrics.sync.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,8 +25,8 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class SyncStateSoap implements Serializable {
+
 	public static SyncStateSoap toSoapModel(SyncState model) {
 		SyncStateSoap soapModel = new SyncStateSoap();
 
@@ -67,7 +65,8 @@ public class SyncStateSoap implements Serializable {
 	}
 
 	public static SyncStateSoap[] toSoapModels(List<SyncState> models) {
-		List<SyncStateSoap> soapModels = new ArrayList<SyncStateSoap>(models.size());
+		List<SyncStateSoap> soapModels = new ArrayList<SyncStateSoap>(
+			models.size());
 
 		for (SyncState model : models) {
 			soapModels.add(toSoapModel(model));
@@ -114,4 +113,5 @@ public class SyncStateSoap implements Serializable {
 	private long _syncStateId;
 	private String _modelName;
 	private long _lastRunTime;
+
 }

@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.ticket.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,12 +30,11 @@ import java.util.Date;
  * The cache model class for representing TicketAttachment in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see TicketAttachment
  * @generated
  */
-@ProviderType
-public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
-	Externalizable {
+public class TicketAttachmentCacheModel
+	implements CacheModel<TicketAttachment>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -49,9 +45,12 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 			return false;
 		}
 
-		TicketAttachmentCacheModel ticketAttachmentCacheModel = (TicketAttachmentCacheModel)obj;
+		TicketAttachmentCacheModel ticketAttachmentCacheModel =
+			(TicketAttachmentCacheModel)obj;
 
-		if (ticketAttachmentId == ticketAttachmentCacheModel.ticketAttachmentId) {
+		if (ticketAttachmentId ==
+				ticketAttachmentCacheModel.ticketAttachmentId) {
+
 			return true;
 		}
 
@@ -158,8 +157,7 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(ticketAttachmentId);
 
 		objectOutput.writeLong(userId);
@@ -206,4 +204,5 @@ public class TicketAttachmentCacheModel implements CacheModel<TicketAttachment>,
 	public String fileName;
 	public long fileSize;
 	public int type;
+
 }

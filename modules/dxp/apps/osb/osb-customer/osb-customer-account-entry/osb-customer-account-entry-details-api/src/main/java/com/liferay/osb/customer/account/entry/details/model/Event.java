@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see EventModel
- * @see com.liferay.osb.customer.account.entry.details.model.impl.EventImpl
- * @see com.liferay.osb.customer.account.entry.details.model.impl.EventModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.account.entry.details.model.impl.EventImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.account.entry.details.model.impl.EventImpl"
+)
 @ProviderType
 public interface Event extends EventModel, PersistedModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.account.entry.details.model.impl.EventImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.account.entry.details.model.impl.EventImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<Event, Long> EVENT_ID_ACCESSOR = new Accessor<Event, Long>() {
+	public static final Accessor<Event, Long> EVENT_ID_ACCESSOR =
+		new Accessor<Event, Long>() {
+
 			@Override
 			public Long get(Event event) {
 				return event.getEventId();
@@ -52,5 +55,7 @@ public interface Event extends EventModel, PersistedModel {
 			public Class<Event> getTypeClass() {
 				return Event.class;
 			}
+
 		};
+
 }

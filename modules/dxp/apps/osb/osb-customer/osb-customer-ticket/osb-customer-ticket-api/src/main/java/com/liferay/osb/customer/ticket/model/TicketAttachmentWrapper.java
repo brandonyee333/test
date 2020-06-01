@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.ticket.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,9 +34,9 @@ import java.util.Objects;
  * @see TicketAttachment
  * @generated
  */
-@ProviderType
-public class TicketAttachmentWrapper implements TicketAttachment,
-	ModelWrapper<TicketAttachment> {
+public class TicketAttachmentWrapper
+	implements ModelWrapper<TicketAttachment>, TicketAttachment {
+
 	public TicketAttachmentWrapper(TicketAttachment ticketAttachment) {
 		_ticketAttachment = ticketAttachment;
 	}
@@ -137,7 +134,8 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 
 	@Override
 	public Object clone() {
-		return new TicketAttachmentWrapper((TicketAttachment)_ticketAttachment.clone());
+		return new TicketAttachmentWrapper(
+			(TicketAttachment)_ticketAttachment.clone());
 	}
 
 	@Override
@@ -146,20 +144,20 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Returns the account entry ID of this ticket attachment.
-	*
-	* @return the account entry ID of this ticket attachment
-	*/
+	 * Returns the account entry ID of this ticket attachment.
+	 *
+	 * @return the account entry ID of this ticket attachment
+	 */
 	@Override
 	public long getAccountEntryId() {
 		return _ticketAttachment.getAccountEntryId();
 	}
 
 	/**
-	* Returns the create date of this ticket attachment.
-	*
-	* @return the create date of this ticket attachment
-	*/
+	 * Returns the create date of this ticket attachment.
+	 *
+	 * @return the create date of this ticket attachment
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _ticketAttachment.getCreateDate();
@@ -171,10 +169,10 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Returns the file name of this ticket attachment.
-	*
-	* @return the file name of this ticket attachment
-	*/
+	 * Returns the file name of this ticket attachment.
+	 *
+	 * @return the file name of this ticket attachment
+	 */
 	@Override
 	public String getFileName() {
 		return _ticketAttachment.getFileName();
@@ -186,30 +184,30 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Returns the file repository ID of this ticket attachment.
-	*
-	* @return the file repository ID of this ticket attachment
-	*/
+	 * Returns the file repository ID of this ticket attachment.
+	 *
+	 * @return the file repository ID of this ticket attachment
+	 */
 	@Override
 	public String getFileRepositoryId() {
 		return _ticketAttachment.getFileRepositoryId();
 	}
 
 	/**
-	* Returns the file size of this ticket attachment.
-	*
-	* @return the file size of this ticket attachment
-	*/
+	 * Returns the file size of this ticket attachment.
+	 *
+	 * @return the file size of this ticket attachment
+	 */
 	@Override
 	public long getFileSize() {
 		return _ticketAttachment.getFileSize();
 	}
 
 	/**
-	* Returns the primary key of this ticket attachment.
-	*
-	* @return the primary key of this ticket attachment
-	*/
+	 * Returns the primary key of this ticket attachment.
+	 *
+	 * @return the primary key of this ticket attachment
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _ticketAttachment.getPrimaryKey();
@@ -221,60 +219,60 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Returns the ticket attachment ID of this ticket attachment.
-	*
-	* @return the ticket attachment ID of this ticket attachment
-	*/
+	 * Returns the ticket attachment ID of this ticket attachment.
+	 *
+	 * @return the ticket attachment ID of this ticket attachment
+	 */
 	@Override
 	public long getTicketAttachmentId() {
 		return _ticketAttachment.getTicketAttachmentId();
 	}
 
 	/**
-	* Returns the type of this ticket attachment.
-	*
-	* @return the type of this ticket attachment
-	*/
+	 * Returns the type of this ticket attachment.
+	 *
+	 * @return the type of this ticket attachment
+	 */
 	@Override
 	public int getType() {
 		return _ticketAttachment.getType();
 	}
 
 	/**
-	* Returns the user ID of this ticket attachment.
-	*
-	* @return the user ID of this ticket attachment
-	*/
+	 * Returns the user ID of this ticket attachment.
+	 *
+	 * @return the user ID of this ticket attachment
+	 */
 	@Override
 	public long getUserId() {
 		return _ticketAttachment.getUserId();
 	}
 
 	/**
-	* Returns the user name of this ticket attachment.
-	*
-	* @return the user name of this ticket attachment
-	*/
+	 * Returns the user name of this ticket attachment.
+	 *
+	 * @return the user name of this ticket attachment
+	 */
 	@Override
 	public String getUserName() {
 		return _ticketAttachment.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this ticket attachment.
-	*
-	* @return the user uuid of this ticket attachment
-	*/
+	 * Returns the user uuid of this ticket attachment.
+	 *
+	 * @return the user uuid of this ticket attachment
+	 */
 	@Override
 	public String getUserUuid() {
 		return _ticketAttachment.getUserUuid();
 	}
 
 	/**
-	* Returns the zendesk ticket ID of this ticket attachment.
-	*
-	* @return the zendesk ticket ID of this ticket attachment
-	*/
+	 * Returns the zendesk ticket ID of this ticket attachment.
+	 *
+	 * @return the zendesk ticket ID of this ticket attachment
+	 */
 	@Override
 	public long getZendeskTicketId() {
 		return _ticketAttachment.getZendeskTicketId();
@@ -306,10 +304,10 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Sets the account entry ID of this ticket attachment.
-	*
-	* @param accountEntryId the account entry ID of this ticket attachment
-	*/
+	 * Sets the account entry ID of this ticket attachment.
+	 *
+	 * @param accountEntryId the account entry ID of this ticket attachment
+	 */
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
 		_ticketAttachment.setAccountEntryId(accountEntryId);
@@ -321,10 +319,10 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Sets the create date of this ticket attachment.
-	*
-	* @param createDate the create date of this ticket attachment
-	*/
+	 * Sets the create date of this ticket attachment.
+	 *
+	 * @param createDate the create date of this ticket attachment
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_ticketAttachment.setCreateDate(createDate);
@@ -333,6 +331,7 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_ticketAttachment.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -347,30 +346,30 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Sets the file name of this ticket attachment.
-	*
-	* @param fileName the file name of this ticket attachment
-	*/
+	 * Sets the file name of this ticket attachment.
+	 *
+	 * @param fileName the file name of this ticket attachment
+	 */
 	@Override
 	public void setFileName(String fileName) {
 		_ticketAttachment.setFileName(fileName);
 	}
 
 	/**
-	* Sets the file repository ID of this ticket attachment.
-	*
-	* @param fileRepositoryId the file repository ID of this ticket attachment
-	*/
+	 * Sets the file repository ID of this ticket attachment.
+	 *
+	 * @param fileRepositoryId the file repository ID of this ticket attachment
+	 */
 	@Override
 	public void setFileRepositoryId(String fileRepositoryId) {
 		_ticketAttachment.setFileRepositoryId(fileRepositoryId);
 	}
 
 	/**
-	* Sets the file size of this ticket attachment.
-	*
-	* @param fileSize the file size of this ticket attachment
-	*/
+	 * Sets the file size of this ticket attachment.
+	 *
+	 * @param fileSize the file size of this ticket attachment
+	 */
 	@Override
 	public void setFileSize(long fileSize) {
 		_ticketAttachment.setFileSize(fileSize);
@@ -382,10 +381,10 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Sets the primary key of this ticket attachment.
-	*
-	* @param primaryKey the primary key of this ticket attachment
-	*/
+	 * Sets the primary key of this ticket attachment.
+	 *
+	 * @param primaryKey the primary key of this ticket attachment
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_ticketAttachment.setPrimaryKey(primaryKey);
@@ -397,67 +396,69 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	/**
-	* Sets the ticket attachment ID of this ticket attachment.
-	*
-	* @param ticketAttachmentId the ticket attachment ID of this ticket attachment
-	*/
+	 * Sets the ticket attachment ID of this ticket attachment.
+	 *
+	 * @param ticketAttachmentId the ticket attachment ID of this ticket attachment
+	 */
 	@Override
 	public void setTicketAttachmentId(long ticketAttachmentId) {
 		_ticketAttachment.setTicketAttachmentId(ticketAttachmentId);
 	}
 
 	/**
-	* Sets the type of this ticket attachment.
-	*
-	* @param type the type of this ticket attachment
-	*/
+	 * Sets the type of this ticket attachment.
+	 *
+	 * @param type the type of this ticket attachment
+	 */
 	@Override
 	public void setType(int type) {
 		_ticketAttachment.setType(type);
 	}
 
 	/**
-	* Sets the user ID of this ticket attachment.
-	*
-	* @param userId the user ID of this ticket attachment
-	*/
+	 * Sets the user ID of this ticket attachment.
+	 *
+	 * @param userId the user ID of this ticket attachment
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_ticketAttachment.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this ticket attachment.
-	*
-	* @param userName the user name of this ticket attachment
-	*/
+	 * Sets the user name of this ticket attachment.
+	 *
+	 * @param userName the user name of this ticket attachment
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_ticketAttachment.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this ticket attachment.
-	*
-	* @param userUuid the user uuid of this ticket attachment
-	*/
+	 * Sets the user uuid of this ticket attachment.
+	 *
+	 * @param userUuid the user uuid of this ticket attachment
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_ticketAttachment.setUserUuid(userUuid);
 	}
 
 	/**
-	* Sets the zendesk ticket ID of this ticket attachment.
-	*
-	* @param zendeskTicketId the zendesk ticket ID of this ticket attachment
-	*/
+	 * Sets the zendesk ticket ID of this ticket attachment.
+	 *
+	 * @param zendeskTicketId the zendesk ticket ID of this ticket attachment
+	 */
 	@Override
 	public void setZendeskTicketId(long zendeskTicketId) {
 		_ticketAttachment.setZendeskTicketId(zendeskTicketId);
 	}
 
 	@Override
-	public com.liferay.portal.kernel.model.CacheModel<TicketAttachment> toCacheModel() {
+	public com.liferay.portal.kernel.model.CacheModel<TicketAttachment>
+		toCacheModel() {
+
 		return _ticketAttachment.toCacheModel();
 	}
 
@@ -473,7 +474,8 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 
 	@Override
 	public TicketAttachment toUnescapedModel() {
-		return new TicketAttachmentWrapper(_ticketAttachment.toUnescapedModel());
+		return new TicketAttachmentWrapper(
+			_ticketAttachment.toUnescapedModel());
 	}
 
 	@Override
@@ -491,10 +493,12 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 			return false;
 		}
 
-		TicketAttachmentWrapper ticketAttachmentWrapper = (TicketAttachmentWrapper)obj;
+		TicketAttachmentWrapper ticketAttachmentWrapper =
+			(TicketAttachmentWrapper)obj;
 
-		if (Objects.equals(_ticketAttachment,
-					ticketAttachmentWrapper._ticketAttachment)) {
+		if (Objects.equals(
+				_ticketAttachment, ticketAttachmentWrapper._ticketAttachment)) {
+
 			return true;
 		}
 
@@ -522,4 +526,5 @@ public class TicketAttachmentWrapper implements TicketAttachment,
 	}
 
 	private final TicketAttachment _ticketAttachment;
+
 }

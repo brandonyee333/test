@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.metrics.sync.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.metrics.sync.model.SyncState;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -31,12 +28,11 @@ import java.io.ObjectOutput;
  * The cache model class for representing SyncState in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see SyncState
  * @generated
  */
-@ProviderType
-public class SyncStateCacheModel implements CacheModel<SyncState>,
-	Externalizable {
+public class SyncStateCacheModel
+	implements CacheModel<SyncState>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -105,8 +101,7 @@ public class SyncStateCacheModel implements CacheModel<SyncState>,
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(syncStateId);
 
 		if (modelName == null) {
@@ -122,4 +117,5 @@ public class SyncStateCacheModel implements CacheModel<SyncState>,
 	public long syncStateId;
 	public String modelName;
 	public long lastRunTime;
+
 }

@@ -17,7 +17,6 @@ package com.liferay.osb.customer.ticket.service.base;
 import com.liferay.osb.customer.ticket.model.TicketAttachment;
 import com.liferay.osb.customer.ticket.service.TicketAttachmentService;
 import com.liferay.osb.customer.ticket.service.persistence.TicketAttachmentPersistence;
-
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -42,15 +41,16 @@ import javax.sql.DataSource;
  *
  * @author Brian Wing Shun Chan
  * @see com.liferay.osb.customer.ticket.service.impl.TicketAttachmentServiceImpl
- * @see com.liferay.osb.customer.ticket.service.TicketAttachmentServiceUtil
  * @generated
  */
-public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
-	implements TicketAttachmentService, IdentifiableOSGiService {
+public abstract class TicketAttachmentServiceBaseImpl
+	extends BaseServiceImpl
+	implements IdentifiableOSGiService, TicketAttachmentService {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. Always use {@link com.liferay.osb.customer.ticket.service.TicketAttachmentServiceUtil} to access the ticket attachment remote service.
+	 * Never modify or reference this class directly. Use <code>TicketAttachmentService</code> via injection or a <code>org.osgi.util.tracker.ServiceTracker</code> or use <code>com.liferay.osb.customer.ticket.service.TicketAttachmentServiceUtil</code>.
 	 */
 
 	/**
@@ -58,7 +58,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the ticket attachment local service
 	 */
-	public com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService getTicketAttachmentLocalService() {
+	public com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService
+		getTicketAttachmentLocalService() {
+
 		return ticketAttachmentLocalService;
 	}
 
@@ -68,7 +70,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 * @param ticketAttachmentLocalService the ticket attachment local service
 	 */
 	public void setTicketAttachmentLocalService(
-		com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService ticketAttachmentLocalService) {
+		com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService
+			ticketAttachmentLocalService) {
+
 		this.ticketAttachmentLocalService = ticketAttachmentLocalService;
 	}
 
@@ -88,6 +92,7 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setTicketAttachmentService(
 		TicketAttachmentService ticketAttachmentService) {
+
 		this.ticketAttachmentService = ticketAttachmentService;
 	}
 
@@ -107,6 +112,7 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setTicketAttachmentPersistence(
 		TicketAttachmentPersistence ticketAttachmentPersistence) {
+
 		this.ticketAttachmentPersistence = ticketAttachmentPersistence;
 	}
 
@@ -115,7 +121,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the counter local service
 	 */
-	public com.liferay.counter.kernel.service.CounterLocalService getCounterLocalService() {
+	public com.liferay.counter.kernel.service.CounterLocalService
+		getCounterLocalService() {
+
 		return counterLocalService;
 	}
 
@@ -125,7 +133,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 * @param counterLocalService the counter local service
 	 */
 	public void setCounterLocalService(
-		com.liferay.counter.kernel.service.CounterLocalService counterLocalService) {
+		com.liferay.counter.kernel.service.CounterLocalService
+			counterLocalService) {
+
 		this.counterLocalService = counterLocalService;
 	}
 
@@ -134,7 +144,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the class name local service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameLocalService getClassNameLocalService() {
+	public com.liferay.portal.kernel.service.ClassNameLocalService
+		getClassNameLocalService() {
+
 		return classNameLocalService;
 	}
 
@@ -144,7 +156,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 * @param classNameLocalService the class name local service
 	 */
 	public void setClassNameLocalService(
-		com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService) {
+		com.liferay.portal.kernel.service.ClassNameLocalService
+			classNameLocalService) {
+
 		this.classNameLocalService = classNameLocalService;
 	}
 
@@ -153,7 +167,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the class name remote service
 	 */
-	public com.liferay.portal.kernel.service.ClassNameService getClassNameService() {
+	public com.liferay.portal.kernel.service.ClassNameService
+		getClassNameService() {
+
 		return classNameService;
 	}
 
@@ -164,6 +180,7 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setClassNameService(
 		com.liferay.portal.kernel.service.ClassNameService classNameService) {
+
 		this.classNameService = classNameService;
 	}
 
@@ -183,6 +200,7 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setClassNamePersistence(
 		ClassNamePersistence classNamePersistence) {
+
 		this.classNamePersistence = classNamePersistence;
 	}
 
@@ -191,7 +209,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the resource local service
 	 */
-	public com.liferay.portal.kernel.service.ResourceLocalService getResourceLocalService() {
+	public com.liferay.portal.kernel.service.ResourceLocalService
+		getResourceLocalService() {
+
 		return resourceLocalService;
 	}
 
@@ -201,7 +221,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 * @param resourceLocalService the resource local service
 	 */
 	public void setResourceLocalService(
-		com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService) {
+		com.liferay.portal.kernel.service.ResourceLocalService
+			resourceLocalService) {
+
 		this.resourceLocalService = resourceLocalService;
 	}
 
@@ -210,7 +232,9 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 *
 	 * @return the user local service
 	 */
-	public com.liferay.portal.kernel.service.UserLocalService getUserLocalService() {
+	public com.liferay.portal.kernel.service.UserLocalService
+		getUserLocalService() {
+
 		return userLocalService;
 	}
 
@@ -221,6 +245,7 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setUserLocalService(
 		com.liferay.portal.kernel.service.UserLocalService userLocalService) {
+
 		this.userLocalService = userLocalService;
 	}
 
@@ -240,6 +265,7 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 	 */
 	public void setUserService(
 		com.liferay.portal.kernel.service.UserService userService) {
+
 		this.userService = userService;
 	}
 
@@ -299,36 +325,68 @@ public abstract class TicketAttachmentServiceBaseImpl extends BaseServiceImpl
 			sql = db.buildSQL(sql);
 			sql = PortalUtil.transformSQL(sql);
 
-			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(dataSource,
-					sql);
+			SqlUpdate sqlUpdate = SqlUpdateFactoryUtil.getSqlUpdate(
+				dataSource, sql);
 
 			sqlUpdate.update();
 		}
-		catch (Exception e) {
-			throw new SystemException(e);
+		catch (Exception exception) {
+			throw new SystemException(exception);
 		}
 	}
 
-	@BeanReference(type = com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService.class)
-	protected com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService ticketAttachmentLocalService;
+	@BeanReference(
+		type = com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService.class
+	)
+	protected
+		com.liferay.osb.customer.ticket.service.TicketAttachmentLocalService
+			ticketAttachmentLocalService;
+
 	@BeanReference(type = TicketAttachmentService.class)
 	protected TicketAttachmentService ticketAttachmentService;
+
 	@BeanReference(type = TicketAttachmentPersistence.class)
 	protected TicketAttachmentPersistence ticketAttachmentPersistence;
-	@ServiceReference(type = com.liferay.counter.kernel.service.CounterLocalService.class)
-	protected com.liferay.counter.kernel.service.CounterLocalService counterLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameLocalService.class)
-	protected com.liferay.portal.kernel.service.ClassNameLocalService classNameLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ClassNameService.class)
-	protected com.liferay.portal.kernel.service.ClassNameService classNameService;
+
+	@ServiceReference(
+		type = com.liferay.counter.kernel.service.CounterLocalService.class
+	)
+	protected com.liferay.counter.kernel.service.CounterLocalService
+		counterLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameLocalService
+		classNameLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ClassNameService.class
+	)
+	protected com.liferay.portal.kernel.service.ClassNameService
+		classNameService;
+
 	@ServiceReference(type = ClassNamePersistence.class)
 	protected ClassNamePersistence classNamePersistence;
-	@ServiceReference(type = com.liferay.portal.kernel.service.ResourceLocalService.class)
-	protected com.liferay.portal.kernel.service.ResourceLocalService resourceLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserLocalService.class)
-	protected com.liferay.portal.kernel.service.UserLocalService userLocalService;
-	@ServiceReference(type = com.liferay.portal.kernel.service.UserService.class)
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.ResourceLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.ResourceLocalService
+		resourceLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserLocalService.class
+	)
+	protected com.liferay.portal.kernel.service.UserLocalService
+		userLocalService;
+
+	@ServiceReference(
+		type = com.liferay.portal.kernel.service.UserService.class
+	)
 	protected com.liferay.portal.kernel.service.UserService userService;
+
 	@ServiceReference(type = UserPersistence.class)
 	protected UserPersistence userPersistence;
+
 }

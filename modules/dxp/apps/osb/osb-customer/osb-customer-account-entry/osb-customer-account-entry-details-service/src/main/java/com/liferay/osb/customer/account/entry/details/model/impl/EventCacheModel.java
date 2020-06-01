@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.account.entry.details.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.account.entry.details.model.Event;
-
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.util.HashUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -33,11 +30,10 @@ import java.util.Date;
  * The cache model class for representing Event in entity cache.
  *
  * @author Brian Wing Shun Chan
- * @see Event
  * @generated
  */
-@ProviderType
 public class EventCacheModel implements CacheModel<Event>, Externalizable {
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -186,8 +182,7 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	}
 
 	@Override
-	public void writeExternal(ObjectOutput objectOutput)
-		throws IOException {
+	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(eventId);
 
 		objectOutput.writeLong(userId);
@@ -250,4 +245,5 @@ public class EventCacheModel implements CacheModel<Event>, Externalizable {
 	public String title;
 	public String summary;
 	public String additionalInfo;
+
 }

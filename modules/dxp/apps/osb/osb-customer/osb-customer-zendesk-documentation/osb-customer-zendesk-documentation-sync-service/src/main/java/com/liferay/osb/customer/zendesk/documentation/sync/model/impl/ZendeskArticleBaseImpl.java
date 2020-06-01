@@ -32,7 +32,7 @@ import com.liferay.osb.customer.zendesk.documentation.sync.service.ZendeskArticl
 public abstract class ZendeskArticleBaseImpl
 	extends ZendeskArticleModelImpl implements ZendeskArticle {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the <code>ZendeskArticle</code> interface instead.

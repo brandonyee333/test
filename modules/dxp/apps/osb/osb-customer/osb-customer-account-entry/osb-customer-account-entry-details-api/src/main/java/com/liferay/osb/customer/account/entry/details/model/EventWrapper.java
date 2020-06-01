@@ -14,10 +14,7 @@
 
 package com.liferay.osb.customer.account.entry.details.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.expando.kernel.model.ExpandoBridge;
-
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.service.ServiceContext;
 
@@ -37,8 +34,8 @@ import java.util.Objects;
  * @see Event
  * @generated
  */
-@ProviderType
 public class EventWrapper implements Event, ModelWrapper<Event> {
+
 	public EventWrapper(Event event) {
 		_event = event;
 	}
@@ -173,70 +170,70 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Returns the account entry ID of this event.
-	*
-	* @return the account entry ID of this event
-	*/
+	 * Returns the account entry ID of this event.
+	 *
+	 * @return the account entry ID of this event
+	 */
 	@Override
 	public long getAccountEntryId() {
 		return _event.getAccountEntryId();
 	}
 
 	/**
-	* Returns the additional info of this event.
-	*
-	* @return the additional info of this event
-	*/
+	 * Returns the additional info of this event.
+	 *
+	 * @return the additional info of this event
+	 */
 	@Override
 	public String getAdditionalInfo() {
 		return _event.getAdditionalInfo();
 	}
 
 	/**
-	* Returns the fully qualified class name of this event.
-	*
-	* @return the fully qualified class name of this event
-	*/
+	 * Returns the fully qualified class name of this event.
+	 *
+	 * @return the fully qualified class name of this event
+	 */
 	@Override
 	public String getClassName() {
 		return _event.getClassName();
 	}
 
 	/**
-	* Returns the class name ID of this event.
-	*
-	* @return the class name ID of this event
-	*/
+	 * Returns the class name ID of this event.
+	 *
+	 * @return the class name ID of this event
+	 */
 	@Override
 	public long getClassNameId() {
 		return _event.getClassNameId();
 	}
 
 	/**
-	* Returns the class pk of this event.
-	*
-	* @return the class pk of this event
-	*/
+	 * Returns the class pk of this event.
+	 *
+	 * @return the class pk of this event
+	 */
 	@Override
 	public long getClassPK() {
 		return _event.getClassPK();
 	}
 
 	/**
-	* Returns the create date of this event.
-	*
-	* @return the create date of this event
-	*/
+	 * Returns the create date of this event.
+	 *
+	 * @return the create date of this event
+	 */
 	@Override
 	public Date getCreateDate() {
 		return _event.getCreateDate();
 	}
 
 	/**
-	* Returns the event ID of this event.
-	*
-	* @return the event ID of this event
-	*/
+	 * Returns the event ID of this event.
+	 *
+	 * @return the event ID of this event
+	 */
 	@Override
 	public long getEventId() {
 		return _event.getEventId();
@@ -248,20 +245,20 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Returns the occur date of this event.
-	*
-	* @return the occur date of this event
-	*/
+	 * Returns the occur date of this event.
+	 *
+	 * @return the occur date of this event
+	 */
 	@Override
 	public Date getOccurDate() {
 		return _event.getOccurDate();
 	}
 
 	/**
-	* Returns the primary key of this event.
-	*
-	* @return the primary key of this event
-	*/
+	 * Returns the primary key of this event.
+	 *
+	 * @return the primary key of this event
+	 */
 	@Override
 	public long getPrimaryKey() {
 		return _event.getPrimaryKey();
@@ -273,80 +270,80 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Returns the summary of this event.
-	*
-	* @return the summary of this event
-	*/
+	 * Returns the summary of this event.
+	 *
+	 * @return the summary of this event
+	 */
 	@Override
 	public String getSummary() {
 		return _event.getSummary();
 	}
 
 	/**
-	* Returns the title of this event.
-	*
-	* @return the title of this event
-	*/
+	 * Returns the title of this event.
+	 *
+	 * @return the title of this event
+	 */
 	@Override
 	public String getTitle() {
 		return _event.getTitle();
 	}
 
 	/**
-	* Returns the type of this event.
-	*
-	* @return the type of this event
-	*/
+	 * Returns the type of this event.
+	 *
+	 * @return the type of this event
+	 */
 	@Override
 	public int getType() {
 		return _event.getType();
 	}
 
 	/**
-	* Returns the type class name ID of this event.
-	*
-	* @return the type class name ID of this event
-	*/
+	 * Returns the type class name ID of this event.
+	 *
+	 * @return the type class name ID of this event
+	 */
 	@Override
 	public long getTypeClassNameId() {
 		return _event.getTypeClassNameId();
 	}
 
 	/**
-	* Returns the type class pk of this event.
-	*
-	* @return the type class pk of this event
-	*/
+	 * Returns the type class pk of this event.
+	 *
+	 * @return the type class pk of this event
+	 */
 	@Override
 	public long getTypeClassPK() {
 		return _event.getTypeClassPK();
 	}
 
 	/**
-	* Returns the user ID of this event.
-	*
-	* @return the user ID of this event
-	*/
+	 * Returns the user ID of this event.
+	 *
+	 * @return the user ID of this event
+	 */
 	@Override
 	public long getUserId() {
 		return _event.getUserId();
 	}
 
 	/**
-	* Returns the user name of this event.
-	*
-	* @return the user name of this event
-	*/
+	 * Returns the user name of this event.
+	 *
+	 * @return the user name of this event
+	 */
 	@Override
 	public String getUserName() {
 		return _event.getUserName();
 	}
 
 	/**
-	* Returns the user uuid of this event.
-	*
-	* @return the user uuid of this event
-	*/
+	 * Returns the user uuid of this event.
+	 *
+	 * @return the user uuid of this event
+	 */
 	@Override
 	public String getUserUuid() {
 		return _event.getUserUuid();
@@ -378,20 +375,20 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Sets the account entry ID of this event.
-	*
-	* @param accountEntryId the account entry ID of this event
-	*/
+	 * Sets the account entry ID of this event.
+	 *
+	 * @param accountEntryId the account entry ID of this event
+	 */
 	@Override
 	public void setAccountEntryId(long accountEntryId) {
 		_event.setAccountEntryId(accountEntryId);
 	}
 
 	/**
-	* Sets the additional info of this event.
-	*
-	* @param additionalInfo the additional info of this event
-	*/
+	 * Sets the additional info of this event.
+	 *
+	 * @param additionalInfo the additional info of this event
+	 */
 	@Override
 	public void setAdditionalInfo(String additionalInfo) {
 		_event.setAdditionalInfo(additionalInfo);
@@ -408,40 +405,40 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Sets the class name ID of this event.
-	*
-	* @param classNameId the class name ID of this event
-	*/
+	 * Sets the class name ID of this event.
+	 *
+	 * @param classNameId the class name ID of this event
+	 */
 	@Override
 	public void setClassNameId(long classNameId) {
 		_event.setClassNameId(classNameId);
 	}
 
 	/**
-	* Sets the class pk of this event.
-	*
-	* @param classPK the class pk of this event
-	*/
+	 * Sets the class pk of this event.
+	 *
+	 * @param classPK the class pk of this event
+	 */
 	@Override
 	public void setClassPK(long classPK) {
 		_event.setClassPK(classPK);
 	}
 
 	/**
-	* Sets the create date of this event.
-	*
-	* @param createDate the create date of this event
-	*/
+	 * Sets the create date of this event.
+	 *
+	 * @param createDate the create date of this event
+	 */
 	@Override
 	public void setCreateDate(Date createDate) {
 		_event.setCreateDate(createDate);
 	}
 
 	/**
-	* Sets the event ID of this event.
-	*
-	* @param eventId the event ID of this event
-	*/
+	 * Sets the event ID of this event.
+	 *
+	 * @param eventId the event ID of this event
+	 */
 	@Override
 	public void setEventId(long eventId) {
 		_event.setEventId(eventId);
@@ -450,6 +447,7 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	@Override
 	public void setExpandoBridgeAttributes(
 		com.liferay.portal.kernel.model.BaseModel<?> baseModel) {
+
 		_event.setExpandoBridgeAttributes(baseModel);
 	}
 
@@ -469,20 +467,20 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Sets the occur date of this event.
-	*
-	* @param occurDate the occur date of this event
-	*/
+	 * Sets the occur date of this event.
+	 *
+	 * @param occurDate the occur date of this event
+	 */
 	@Override
 	public void setOccurDate(Date occurDate) {
 		_event.setOccurDate(occurDate);
 	}
 
 	/**
-	* Sets the primary key of this event.
-	*
-	* @param primaryKey the primary key of this event
-	*/
+	 * Sets the primary key of this event.
+	 *
+	 * @param primaryKey the primary key of this event
+	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
 		_event.setPrimaryKey(primaryKey);
@@ -494,80 +492,80 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	/**
-	* Sets the summary of this event.
-	*
-	* @param summary the summary of this event
-	*/
+	 * Sets the summary of this event.
+	 *
+	 * @param summary the summary of this event
+	 */
 	@Override
 	public void setSummary(String summary) {
 		_event.setSummary(summary);
 	}
 
 	/**
-	* Sets the title of this event.
-	*
-	* @param title the title of this event
-	*/
+	 * Sets the title of this event.
+	 *
+	 * @param title the title of this event
+	 */
 	@Override
 	public void setTitle(String title) {
 		_event.setTitle(title);
 	}
 
 	/**
-	* Sets the type of this event.
-	*
-	* @param type the type of this event
-	*/
+	 * Sets the type of this event.
+	 *
+	 * @param type the type of this event
+	 */
 	@Override
 	public void setType(int type) {
 		_event.setType(type);
 	}
 
 	/**
-	* Sets the type class name ID of this event.
-	*
-	* @param typeClassNameId the type class name ID of this event
-	*/
+	 * Sets the type class name ID of this event.
+	 *
+	 * @param typeClassNameId the type class name ID of this event
+	 */
 	@Override
 	public void setTypeClassNameId(long typeClassNameId) {
 		_event.setTypeClassNameId(typeClassNameId);
 	}
 
 	/**
-	* Sets the type class pk of this event.
-	*
-	* @param typeClassPK the type class pk of this event
-	*/
+	 * Sets the type class pk of this event.
+	 *
+	 * @param typeClassPK the type class pk of this event
+	 */
 	@Override
 	public void setTypeClassPK(long typeClassPK) {
 		_event.setTypeClassPK(typeClassPK);
 	}
 
 	/**
-	* Sets the user ID of this event.
-	*
-	* @param userId the user ID of this event
-	*/
+	 * Sets the user ID of this event.
+	 *
+	 * @param userId the user ID of this event
+	 */
 	@Override
 	public void setUserId(long userId) {
 		_event.setUserId(userId);
 	}
 
 	/**
-	* Sets the user name of this event.
-	*
-	* @param userName the user name of this event
-	*/
+	 * Sets the user name of this event.
+	 *
+	 * @param userName the user name of this event
+	 */
 	@Override
 	public void setUserName(String userName) {
 		_event.setUserName(userName);
 	}
 
 	/**
-	* Sets the user uuid of this event.
-	*
-	* @param userUuid the user uuid of this event
-	*/
+	 * Sets the user uuid of this event.
+	 *
+	 * @param userUuid the user uuid of this event
+	 */
 	@Override
 	public void setUserUuid(String userUuid) {
 		_event.setUserUuid(userUuid);
@@ -638,4 +636,5 @@ public class EventWrapper implements Event, ModelWrapper<Event> {
 	}
 
 	private final Event _event;
+
 }

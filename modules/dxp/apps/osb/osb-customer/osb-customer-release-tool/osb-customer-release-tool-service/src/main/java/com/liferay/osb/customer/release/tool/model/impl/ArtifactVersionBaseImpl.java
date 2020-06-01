@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.release.tool.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.release.tool.model.ArtifactVersion;
 import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.osb.customer.release.tool.service.ArtifactVersionLocalService
  * @see ArtifactVersion
  * @generated
  */
-@ProviderType
 public abstract class ArtifactVersionBaseImpl
 	extends ArtifactVersionModelImpl implements ArtifactVersion {
 

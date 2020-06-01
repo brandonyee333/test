@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.release.tool.model.impl;
 
-import aQute.bnd.annotation.ProviderType;
-
 import com.liferay.osb.customer.release.tool.model.JIRAComponent;
 import com.liferay.osb.customer.release.tool.service.JIRAComponentLocalServiceUtil;
 
@@ -31,7 +29,6 @@ import com.liferay.osb.customer.release.tool.service.JIRAComponentLocalServiceUt
  * @see JIRAComponent
  * @generated
  */
-@ProviderType
 public abstract class JIRAComponentBaseImpl
 	extends JIRAComponentModelImpl implements JIRAComponent {
 

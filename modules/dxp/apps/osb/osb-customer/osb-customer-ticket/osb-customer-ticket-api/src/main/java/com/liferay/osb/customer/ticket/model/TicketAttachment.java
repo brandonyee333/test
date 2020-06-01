@@ -25,20 +25,23 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see TicketAttachmentModel
- * @see com.liferay.osb.customer.ticket.model.impl.TicketAttachmentImpl
- * @see com.liferay.osb.customer.ticket.model.impl.TicketAttachmentModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.ticket.model.impl.TicketAttachmentImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.ticket.model.impl.TicketAttachmentImpl"
+)
 @ProviderType
-public interface TicketAttachment extends TicketAttachmentModel, PersistedModel {
+public interface TicketAttachment
+	extends PersistedModel, TicketAttachmentModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.ticket.model.impl.TicketAttachmentImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.ticket.model.impl.TicketAttachmentImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<TicketAttachment, Long> TICKET_ATTACHMENT_ID_ACCESSOR =
-		new Accessor<TicketAttachment, Long>() {
+	public static final Accessor<TicketAttachment, Long>
+		TICKET_ATTACHMENT_ID_ACCESSOR = new Accessor<TicketAttachment, Long>() {
+
 			@Override
 			public Long get(TicketAttachment ticketAttachment) {
 				return ticketAttachment.getTicketAttachmentId();
@@ -53,7 +56,9 @@ public interface TicketAttachment extends TicketAttachmentModel, PersistedModel 
 			public Class<TicketAttachment> getTypeClass() {
 				return TicketAttachment.class;
 			}
+
 		};
 
 	public String getFilePath();
+
 }

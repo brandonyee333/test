@@ -221,11 +221,6 @@ public class ZendeskCategoryWrapper
 		return _zendeskCategory.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a zendesk category model instance should use the <code>ZendeskCategory</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_zendeskCategory.persist();

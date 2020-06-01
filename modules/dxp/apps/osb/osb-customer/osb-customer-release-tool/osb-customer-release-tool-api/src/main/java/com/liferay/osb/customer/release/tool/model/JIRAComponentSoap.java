@@ -14,8 +14,6 @@
 
 package com.liferay.osb.customer.release.tool.model;
 
-import aQute.bnd.annotation.ProviderType;
-
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -27,7 +25,6 @@ import java.util.List;
  * @author Brian Wing Shun Chan
  * @generated
  */
-@ProviderType
 public class JIRAComponentSoap implements Serializable {
 
 	public static JIRAComponentSoap toSoapModel(JIRAComponent model) {

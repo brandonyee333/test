@@ -388,11 +388,6 @@ public class ZendeskArticleWrapper
 		return _zendeskArticle.isNew();
 	}
 
-	/**
-	 * NOTE FOR DEVELOPERS:
-	 *
-	 * Never modify or reference this class directly. All methods that expect a zendesk article model instance should use the <code>ZendeskArticle</code> interface instead.
-	 */
 	@Override
 	public void persist() {
 		_zendeskArticle.persist();

@@ -6,5 +6,5 @@ create table RN_ReleaseNotes (
 	createDate DATE null,
 	modifiedDate DATE null,
 	name VARCHAR(75) null,
-	jiraIssueKeys VARCHAR(75) null
+	jiraIssueKeys TEXT null
 );

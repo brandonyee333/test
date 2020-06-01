@@ -25,19 +25,22 @@ import com.liferay.portal.kernel.util.Accessor;
  *
  * @author Brian Wing Shun Chan
  * @see SyncStateModel
- * @see com.liferay.osb.customer.metrics.sync.model.impl.SyncStateImpl
- * @see com.liferay.osb.customer.metrics.sync.model.impl.SyncStateModelImpl
  * @generated
  */
-@ImplementationClassName("com.liferay.osb.customer.metrics.sync.model.impl.SyncStateImpl")
+@ImplementationClassName(
+	"com.liferay.osb.customer.metrics.sync.model.impl.SyncStateImpl"
+)
 @ProviderType
-public interface SyncState extends SyncStateModel, PersistedModel {
+public interface SyncState extends PersistedModel, SyncStateModel {
+
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to {@link com.liferay.osb.customer.metrics.sync.model.impl.SyncStateImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.osb.customer.metrics.sync.model.impl.SyncStateImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<SyncState, Long> SYNC_STATE_ID_ACCESSOR = new Accessor<SyncState, Long>() {
+	public static final Accessor<SyncState, Long> SYNC_STATE_ID_ACCESSOR =
+		new Accessor<SyncState, Long>() {
+
 			@Override
 			public Long get(SyncState syncState) {
 				return syncState.getSyncStateId();
@@ -52,5 +55,7 @@ public interface SyncState extends SyncStateModel, PersistedModel {
 			public Class<SyncState> getTypeClass() {
 				return SyncState.class;
 			}
+
 		};
+
 }

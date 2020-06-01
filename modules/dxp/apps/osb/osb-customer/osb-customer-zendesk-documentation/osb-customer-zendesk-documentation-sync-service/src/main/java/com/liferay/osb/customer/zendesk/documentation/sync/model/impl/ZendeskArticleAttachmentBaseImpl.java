@@ -33,7 +33,7 @@ public abstract class ZendeskArticleAttachmentBaseImpl
 	extends ZendeskArticleAttachmentModelImpl
 	implements ZendeskArticleAttachment {
 
-	/**
+	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
 	 * Never modify or reference this class directly. All methods that expect a zendesk article attachment model instance should use the <code>ZendeskArticleAttachment</code> interface instead.
