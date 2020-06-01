@@ -41,6 +41,7 @@ public class Job {
 			Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
 			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
+			Objects.equals(_jobTrainingPeriod, job._jobTrainingPeriod) &&
 			Objects.equals(_jobType, job._jobType) &&
 			Objects.equals(_name, job._name)) {
 
@@ -64,6 +65,11 @@ public class Job {
 		return _jobTrainingFrequency;
 	}
 
+	@JsonProperty("trainingPeriod")
+	public JobTrainingPeriod getJobTrainingPeriod() {
+		return _jobTrainingPeriod;
+	}
+
 	@JsonProperty("type")
 	public JobType getJobType() {
 		return _jobType;
@@ -76,8 +82,8 @@ public class Job {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_active, _id, _jobParameters, _jobTrainingFrequency, _jobType,
-			_name);
+			_active, _id, _jobParameters, _jobTrainingFrequency,
+			_jobTrainingPeriod, _jobType, _name);
 	}
 
 	public boolean isActive() {
@@ -102,6 +108,10 @@ public class Job {
 		_jobTrainingFrequency = jobTrainingFrequency;
 	}
 
+	public void setJobTrainingPeriod(JobTrainingPeriod jobTrainingPeriod) {
+		_jobTrainingPeriod = jobTrainingPeriod;
+	}
+
 	public void setJobType(JobType jobType) {
 		_jobType = jobType;
 	}
@@ -114,6 +124,7 @@ public class Job {
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
 	private JobTrainingFrequency _jobTrainingFrequency;
+	private JobTrainingPeriod _jobTrainingPeriod;
 	private JobType _jobType;
 	private String _name;
 
