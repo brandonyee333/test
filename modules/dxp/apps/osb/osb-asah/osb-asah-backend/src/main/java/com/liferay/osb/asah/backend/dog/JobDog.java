@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
@@ -56,6 +58,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -159,6 +162,39 @@ public class JobDog {
 				_buildKeywordsQueryBuilder(keywords), size, start));
 
 		return DogUtil.createResultBag(Job.class, searchHits);
+	}
+
+	public JobStatus getJobStatus(String id) {
+		if (_faroInfoElasticsearchInvoker.exists(
+				"job-executions",
+				BoolQueryBuilderUtil.filter(
+					QueryBuilders.termsQuery("job.id", id)).filter(
+						QueryBuilders.termsQuery("status", "COMPLETED")))) {
+
+			return JobStatus.READY;
+		}
+
+		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.fetch(
+			"job-executions", QueryBuilders.termsQuery("job.id", id),
+			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
+
+		if (jobExecutionJSONObject != null) {
+			if (Objects.equals(
+					jobExecutionJSONObject.getString("status"), "RUNNING")) {
+
+				return JobStatus.TRAINING;
+			}
+
+			return JobStatus.FAILED;
+		}
+
+		Job job = getJob(id);
+
+		if (job.getJobTrainingFrequency() == JobTrainingFrequency.MANUAL) {
+			return JobStatus.PENDING;
+		}
+
+		return JobStatus.SCHEDULED;
 	}
 
 	private SearchSourceBuilder _buildJobSearchSourceBuilder(String jobId) {
