@@ -43,7 +43,6 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 	@Override
 	public Job get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _jobDog.addJob(
-			dataFetchingEnvironment.getArgument("active"),
 			_createJobParameters(dataFetchingEnvironment),
 			JobTrainingFrequency.valueOf(
 				dataFetchingEnvironment.getArgument("trainingFrequency")),
