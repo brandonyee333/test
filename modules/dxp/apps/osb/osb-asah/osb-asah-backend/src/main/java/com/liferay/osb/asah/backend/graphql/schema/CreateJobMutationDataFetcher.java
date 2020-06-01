@@ -19,6 +19,7 @@ import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
+import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 
 import graphql.schema.DataFetcher;
@@ -46,6 +47,8 @@ public class CreateJobMutationDataFetcher implements DataFetcher<Job> {
 			_createJobParameters(dataFetchingEnvironment),
 			JobTrainingFrequency.valueOf(
 				dataFetchingEnvironment.getArgument("trainingFrequency")),
+			JobTrainingPeriod.valueOf(
+				dataFetchingEnvironment.getArgument("trainingPeriod")),
 			JobType.valueOf(dataFetchingEnvironment.getArgument("type")),
 			dataFetchingEnvironment.getArgument("name"));
 	}

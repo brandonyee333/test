@@ -255,6 +255,8 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "trainingFrequency", "jobTrainingFrequency", "Job");
 		_defineCustomPropertyName(
+			builder, "trainingPeriod", "jobTrainingPeriod", "Job");
+		_defineCustomPropertyName(
 			builder, "type", "dataExportTaskType", "DataExportTask");
 		_defineCustomPropertyName(
 			builder, "type", "experimentType", "Experiment");

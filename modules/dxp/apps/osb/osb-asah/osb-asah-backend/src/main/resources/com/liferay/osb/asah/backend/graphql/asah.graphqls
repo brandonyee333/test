@@ -34,6 +34,13 @@ enum JobTrainingFrequency {
 	MANUAL
 }
 
+enum JobTrainingPeriod {
+	LAST_7_DAYS
+	LAST_30_DAYS
+	LAST_180_DAYS
+	LAST_365_DAYS
+}
+
 enum JobType {
 	CONTENT_RECOMMENDATION_ITEM_SIMILARITY
 }
@@ -329,6 +336,7 @@ type Job {
 	name: String
 	parameters: [JobParameter]
 	trainingFrequency: JobTrainingFrequency
+	trainingPeriod: JobTrainingPeriod
 	type: JobType
 }
 
@@ -384,6 +392,7 @@ type MutationType {
 		name: String!
 		parameters: [JobParameterInput]
 		trainingFrequency: JobTrainingFrequency
+		trainingPeriod: JobTrainingPeriod
 		type: JobType!
 	): Job
 
