@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Frontend Editor Simple Web
 Bundle-SymbolicName: com.liferay.frontend.editor.simple.web
-Bundle-Version: 1.0.25
+Bundle-Version: 1.0.26
 Liferay-Releng-Module-Group-Title: Rich Text Editors
 Provide-Capability:\
 	liferay.resource.bundle;\
