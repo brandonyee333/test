@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
+import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -55,7 +56,7 @@ public class JobDogTest {
 					add(new JobParameter("parameter1", "1.2"));
 				}
 			},
-			JobTrainingFrequency.MANUAL,
+			JobTrainingFrequency.MANUAL, JobTrainingPeriod.LAST_30_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY,
 			"Product Recommendation Job");
 
@@ -71,6 +72,8 @@ public class JobDogTest {
 
 		Assert.assertEquals(
 			JobTrainingFrequency.MANUAL, job.getJobTrainingFrequency());
+		Assert.assertEquals(
+			JobTrainingPeriod.LAST_30_DAYS, job.getJobTrainingPeriod());
 		Assert.assertEquals(
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, job.getJobType());
 		Assert.assertEquals("Product Recommendation Job", job.getName());
