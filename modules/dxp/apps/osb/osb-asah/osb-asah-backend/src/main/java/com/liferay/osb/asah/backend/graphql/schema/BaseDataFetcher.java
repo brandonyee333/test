@@ -223,50 +223,6 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 			dataFetchingEnvironment, fragment.getSelectionSet());
 	}
 
-	private Set<String> _getSelectionSetFieldNames(
-		DataFetchingEnvironment dataFetchingEnvironment,
-		SelectionSet selectionSet) {
-
-		Set<String> fieldNames = new HashSet<>();
-
-		List<Selection> selections = selectionSet.getSelections();
-
-		for (Selection selection : selections) {
-			if (selection instanceof FragmentSpread) {
-				FragmentSpread fragmentSpread = (FragmentSpread)selection;
-
-				fieldNames.addAll(
-					_getFragmentFieldNames(
-						dataFetchingEnvironment, fragmentSpread.getName()));
-			}
-			else if (selection instanceof Field) {
-				Field field = (Field)selection;
-
-				SelectionSet fieldSelectionSet = field.getSelectionSet();
-
-				if (fieldSelectionSet != null) {
-					fieldNames.addAll(
-						_getSelectionSetFieldNames(
-							dataFetchingEnvironment, fieldSelectionSet));
-
-					continue;
-				}
-
-				fieldNames.add(field.getName());
-			}
-			else if (selection instanceof InlineFragment) {
-				InlineFragment inlineFragment = (InlineFragment)selection;
-
-				fieldNames.addAll(
-					_getSelectionSetFieldNames(
-						dataFetchingEnvironment,
-						inlineFragment.getSelectionSet()));
-			}
-		}
-
-		return fieldNames;
-	}
-
 	private Set<String> _getSelectedMetrics(
 		List<Field> fields, Set<String> selectedMetrics) {
 
@@ -323,6 +279,50 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		}
 
 		return selectionSet.getSelections();
+	}
+
+	private Set<String> _getSelectionSetFieldNames(
+		DataFetchingEnvironment dataFetchingEnvironment,
+		SelectionSet selectionSet) {
+
+		Set<String> fieldNames = new HashSet<>();
+
+		List<Selection> selections = selectionSet.getSelections();
+
+		for (Selection selection : selections) {
+			if (selection instanceof FragmentSpread) {
+				FragmentSpread fragmentSpread = (FragmentSpread)selection;
+
+				fieldNames.addAll(
+					_getFragmentFieldNames(
+						dataFetchingEnvironment, fragmentSpread.getName()));
+			}
+			else if (selection instanceof Field) {
+				Field field = (Field)selection;
+
+				SelectionSet fieldSelectionSet = field.getSelectionSet();
+
+				if (fieldSelectionSet != null) {
+					fieldNames.addAll(
+						_getSelectionSetFieldNames(
+							dataFetchingEnvironment, fieldSelectionSet));
+
+					continue;
+				}
+
+				fieldNames.add(field.getName());
+			}
+			else if (selection instanceof InlineFragment) {
+				InlineFragment inlineFragment = (InlineFragment)selection;
+
+				fieldNames.addAll(
+					_getSelectionSetFieldNames(
+						dataFetchingEnvironment,
+						inlineFragment.getSelectionSet()));
+			}
+		}
+
+		return fieldNames;
 	}
 
 }
