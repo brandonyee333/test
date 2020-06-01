@@ -37,8 +37,7 @@ public class Job {
 
 		Job job = (Job)obj;
 
-		if (Objects.equals(_active, job._active) &&
-			Objects.equals(_id, job._id) &&
+		if (Objects.equals(_id, job._id) &&
 			Objects.equals(_jobParameters, job._jobParameters) &&
 			Objects.equals(_jobTrainingFrequency, job._jobTrainingFrequency) &&
 			Objects.equals(_jobTrainingPeriod, job._jobTrainingPeriod) &&
@@ -82,16 +81,8 @@ public class Job {
 	@Override
 	public int hashCode() {
 		return Objects.hash(
-			_active, _id, _jobParameters, _jobTrainingFrequency,
-			_jobTrainingPeriod, _jobType, _name);
-	}
-
-	public boolean isActive() {
-		return _active;
-	}
-
-	public void setActive(boolean active) {
-		_active = active;
+			_id, _jobParameters, _jobTrainingFrequency, _jobTrainingPeriod,
+			_jobType, _name);
 	}
 
 	public void setId(String id) {
@@ -120,7 +111,6 @@ public class Job {
 		_name = name;
 	}
 
-	private boolean _active;
 	private String _id;
 	private List<JobParameter> _jobParameters = new ArrayList<>();
 	private JobTrainingFrequency _jobTrainingFrequency;

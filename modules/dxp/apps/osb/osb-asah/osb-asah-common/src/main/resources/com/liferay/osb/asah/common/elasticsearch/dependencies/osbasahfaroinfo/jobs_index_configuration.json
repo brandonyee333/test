@@ -2,9 +2,6 @@
 	"mappings": {
 		"jobs": {
 			"properties": {
-				"active": {
-					"type": "boolean"
-				},
 				"id": {
 					"type": "keyword"
 				},

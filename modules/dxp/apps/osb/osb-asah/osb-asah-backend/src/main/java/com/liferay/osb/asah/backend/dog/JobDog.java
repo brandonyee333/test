@@ -73,13 +73,12 @@ import org.springframework.stereotype.Component;
 public class JobDog {
 
 	public Job addJob(
-		boolean active, List<JobParameter> jobParameters,
+		List<JobParameter> jobParameters,
 		JobTrainingFrequency jobTrainingFrequency,
 		JobTrainingPeriod jobTrainingPeriod, JobType jobType, String name) {
 
 		JSONObject jsonObject = new JSONObject();
 
-		jsonObject.put("active", active);
 		jsonObject.put("name", name);
 		jsonObject.put(
 			"parameters",
