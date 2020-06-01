@@ -27,6 +27,14 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum JobStatus {
+	FAILED
+	PENDING
+	READY
+	SCHEDULED
+	TRAINING
+}
+
 enum JobTrainingFrequency {
 	EVERY_7_DAYS
 	EVERY_14_DAYS
@@ -335,6 +343,7 @@ type Job {
 	id: String
 	name: String
 	parameters: [JobParameter]
+	status: JobStatus
 	trainingFrequency: JobTrainingFrequency
 	trainingPeriod: JobTrainingPeriod
 	type: JobType
