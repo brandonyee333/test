@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.osb.asah.backend.dog.ml.test;
+package com.liferay.osb.asah.backend.dog.test;
 
 import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.model.Job;
