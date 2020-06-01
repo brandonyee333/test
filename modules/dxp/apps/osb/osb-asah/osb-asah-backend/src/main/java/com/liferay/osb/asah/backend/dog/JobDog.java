@@ -85,8 +85,11 @@ public class JobDog {
 
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
 
-		_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
-			_jobTypeNaniteMap.get(jobType), jsonObject, cronExpression);
+		if (jobTrainingFrequency != JobTrainingFrequency.MANUAL) {
+			_faroInfoOSBAsahTaskDog.scheduleOSBAsahTask(
+				_jobTypeNaniteMap.get(jobType), jsonObject,
+				jobTrainingFrequency.getCronExpression());
+		}
 
 		try {
 			return _objectMapper.readValue(jsonObject.toString(), Job.class);
