@@ -52,7 +52,6 @@ public class JobDogTest {
 	@Test
 	public void testAddJob() {
 		Job job = _jobDog.addJob(
-			true,
 			new ArrayList<JobParameter>() {
 				{
 					add(new JobParameter("parameter1", "1.2"));
@@ -116,7 +115,7 @@ public class JobDogTest {
 	@Test
 	public void testGetJobStatusPending() {
 		Job job = _jobDog.addJob(
-			true, Collections.emptyList(), JobTrainingFrequency.MANUAL,
+			Collections.emptyList(), JobTrainingFrequency.MANUAL,
 			JobTrainingPeriod.LAST_30_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job");
 
@@ -136,7 +135,7 @@ public class JobDogTest {
 	@Test
 	public void testGetJobStatusScheduled() {
 		Job job = _jobDog.addJob(
-			true, Collections.emptyList(), JobTrainingFrequency.EVERY_7_DAYS,
+			Collections.emptyList(), JobTrainingFrequency.EVERY_7_DAYS,
 			JobTrainingPeriod.LAST_30_DAYS,
 			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job");
 
