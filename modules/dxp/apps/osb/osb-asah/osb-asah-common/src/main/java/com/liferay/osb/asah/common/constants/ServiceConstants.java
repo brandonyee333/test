@@ -102,6 +102,9 @@ public class ServiceConstants {
 		if (lcpProjectCluster.equals("europe-west2-c1")) {
 			sb.append("qbcxohfftcjtgoiczl");
 		}
+		else if (lcpProjectCluster.equals("europe-west3-c1")) {
+			sb.append("qiwvfjzwojvfzdelon");
+		}
 		else if (lcpProjectCluster.equals("southamerica-east1-c1")) {
 			sb.append("djjykaalhvzcovrqam");
 		}
