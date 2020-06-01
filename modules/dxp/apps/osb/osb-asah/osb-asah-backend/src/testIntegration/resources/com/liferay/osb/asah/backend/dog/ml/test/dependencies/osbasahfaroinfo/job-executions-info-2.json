@@ -1,0 +1,30 @@
+[
+	{
+		"createdDate": "${now-2d}",
+		"id": "1",
+		"job": {
+			"id": "1"
+		},
+		"lastUpdatedDate": "${now-2d}",
+		"status": "FAILED"
+	},
+	{
+		"completedDate": "${now-1d}",
+		"createdDate": "${now-1d}",
+		"id": "2",
+		"job": {
+			"id": "1"
+		},
+		"lastUpdatedDate": "${now-1d}",
+		"status": "COMPLETED"
+	},
+	{
+		"createdDate": "${now}",
+		"id": "3",
+		"job": {
+			"id": "1"
+		},
+		"lastUpdatedDate": "${now}",
+		"status": "FAILED"
+	}
+]

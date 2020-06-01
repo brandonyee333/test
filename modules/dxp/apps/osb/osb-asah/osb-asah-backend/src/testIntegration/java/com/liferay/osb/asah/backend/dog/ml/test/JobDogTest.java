@@ -17,6 +17,7 @@ package com.liferay.osb.asah.backend.dog.ml.test;
 import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
@@ -27,6 +28,7 @@ import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -100,6 +102,55 @@ public class JobDogTest {
 
 		Assert.assertNotNull(job);
 		Assert.assertEquals("Related Content Job", job.getName());
+	}
+
+	@ElasticsearchIndex(
+		name = "job-executions", resourcePath = "job-executions-info-1.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetJobStatusFailed() {
+		Assert.assertEquals(JobStatus.FAILED, _jobDog.getJobStatus("1"));
+	}
+
+	@Test
+	public void testGetJobStatusPending() {
+		Job job = _jobDog.addJob(
+			true, Collections.emptyList(), JobTrainingFrequency.MANUAL,
+			JobTrainingPeriod.LAST_30_DAYS,
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job");
+
+		Assert.assertEquals(
+			JobStatus.PENDING, _jobDog.getJobStatus(job.getId()));
+	}
+
+	@ElasticsearchIndex(
+		name = "job-executions", resourcePath = "job-executions-info-2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetJobStatusReady() {
+		Assert.assertEquals(JobStatus.READY, _jobDog.getJobStatus("1"));
+	}
+
+	@Test
+	public void testGetJobStatusScheduled() {
+		Job job = _jobDog.addJob(
+			true, Collections.emptyList(), JobTrainingFrequency.EVERY_7_DAYS,
+			JobTrainingPeriod.LAST_30_DAYS,
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, "Job");
+
+		Assert.assertEquals(
+			JobStatus.SCHEDULED, _jobDog.getJobStatus(job.getId()));
+	}
+
+	@ElasticsearchIndex(
+		name = "job-executions", resourcePath = "job-executions-info-3.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetJobStatusTraining() {
+		Assert.assertEquals(JobStatus.TRAINING, _jobDog.getJobStatus("1"));
 	}
 
 	@Autowired
