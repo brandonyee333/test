@@ -24,6 +24,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
+import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -70,8 +71,8 @@ public class JobDog {
 
 	public Job addJob(
 		boolean active, List<JobParameter> jobParameters,
-		JobTrainingFrequency jobTrainingFrequency, JobType jobType,
-		String name) {
+		JobTrainingFrequency jobTrainingFrequency,
+		JobTrainingPeriod jobTrainingPeriod, JobType jobType, String name) {
 
 		JSONObject jsonObject = new JSONObject();
 
@@ -81,6 +82,7 @@ public class JobDog {
 			"parameters",
 			_objectMapper.convertValue(jobParameters, JSONArray.class));
 		jsonObject.put("trainingFrequency", jobTrainingFrequency.toString());
+		jsonObject.put("trainingPeriod", jobTrainingPeriod.toString());
 		jsonObject.put("type", jobType.toString());
 
 		jsonObject = _faroInfoElasticsearchInvoker.add("jobs", jsonObject);
