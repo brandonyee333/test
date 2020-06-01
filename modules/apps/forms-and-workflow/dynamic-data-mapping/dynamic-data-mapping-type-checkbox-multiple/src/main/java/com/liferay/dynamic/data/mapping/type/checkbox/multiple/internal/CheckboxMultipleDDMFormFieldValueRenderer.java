@@ -59,7 +59,12 @@ public class CheckboxMultipleDDMFormFieldValueRenderer
 			LocalizedValue optionLabel = ddmFormFieldOptions.getOptionLabels(
 				optionValue);
 
-			sb.append(optionLabel.getString(locale));
+			if (optionLabel == null) {
+				sb.append(optionValue);
+			}
+			else {
+				sb.append(optionLabel.getString(locale));
+			}
 
 			sb.append(StringPool.COMMA_AND_SPACE);
 		}
