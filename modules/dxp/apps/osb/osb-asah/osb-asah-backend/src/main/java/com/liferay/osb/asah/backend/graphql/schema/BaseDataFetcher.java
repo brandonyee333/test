@@ -199,7 +199,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 
 				if (selectionSet != null) {
 					fieldNames.addAll(
-						_getFieldNamesFromSelectionSet(
+						_getSelectionSetFieldNames(
 							dataFetchingEnvironment, selectionSet));
 				}
 				else {
@@ -211,7 +211,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 		return fieldNames;
 	}
 
-	private Set<String> _getFieldNamesFromFragment(
+	private Set<String> _getFragmentFieldNames(
 		DataFetchingEnvironment dataFetchingEnvironment, String fragmentName) {
 
 		Map<String, FragmentDefinition> fragments =
@@ -219,11 +219,11 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 
 		FragmentDefinition fragment = fragments.get(fragmentName);
 
-		return _getFieldNamesFromSelectionSet(
+		return _getSelectionSetFieldNames(
 			dataFetchingEnvironment, fragment.getSelectionSet());
 	}
 
-	private Set<String> _getFieldNamesFromSelectionSet(
+	private Set<String> _getSelectionSetFieldNames(
 		DataFetchingEnvironment dataFetchingEnvironment,
 		SelectionSet selectionSet) {
 
@@ -236,7 +236,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 				FragmentSpread fragmentSpread = (FragmentSpread)selection;
 
 				fieldNames.addAll(
-					_getFieldNamesFromFragment(
+					_getFragmentFieldNames(
 						dataFetchingEnvironment, fragmentSpread.getName()));
 			}
 			else if (selection instanceof Field) {
@@ -246,7 +246,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 
 				if (fieldSelectionSet != null) {
 					fieldNames.addAll(
-						_getFieldNamesFromSelectionSet(
+						_getSelectionSetFieldNames(
 							dataFetchingEnvironment, fieldSelectionSet));
 
 					continue;
@@ -258,7 +258,7 @@ public abstract class BaseDataFetcher<T> implements DataFetcher<T> {
 				InlineFragment inlineFragment = (InlineFragment)selection;
 
 				fieldNames.addAll(
-					_getFieldNamesFromSelectionSet(
+					_getSelectionSetFieldNames(
 						dataFetchingEnvironment,
 						inlineFragment.getSelectionSet()));
 			}
