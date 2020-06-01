@@ -20,6 +20,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ExternalLink;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Team;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.TeamSerDes;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -83,7 +84,10 @@ public class TeamMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		Team team = TeamSerDes.toDTO((String)message.getPayload());
+		JSONObject jsonObject = _jsonFactory.createJSONObject(
+			(String)message.getPayload());
+
+		Team team = TeamSerDes.toDTO(jsonObject.getString("team"));
 
 		ExternalLink[] externalLinks = team.getExternalLinks();
 

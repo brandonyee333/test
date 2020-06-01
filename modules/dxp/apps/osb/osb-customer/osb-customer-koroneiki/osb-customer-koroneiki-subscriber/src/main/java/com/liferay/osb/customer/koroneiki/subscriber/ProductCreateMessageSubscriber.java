@@ -20,6 +20,7 @@ import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Product;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductSerDes;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,7 +37,10 @@ public class ProductCreateMessageSubscriber
 
 	@Override
 	public void doReceive(Message message) throws Exception {
-		Product product = ProductSerDes.toDTO((String)message.getPayload());
+		JSONObject jsonObject = jsonFactory.createJSONObject(
+			(String)message.getPayload());
+
+		Product product = ProductSerDes.toDTO(jsonObject.getString("product"));
 
 		_productEntryLocalService.addProductEntry(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID, product.getKey(),

@@ -21,6 +21,8 @@ import com.liferay.osb.customer.zendesk.synchronizer.constants.ZendeskDestinatio
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.ProductPurchase;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.ProductPurchaseSerDes;
+import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -84,8 +86,11 @@ public class ProductPurchaseMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		ProductPurchase productPurchase = ProductPurchaseSerDes.toDTO(
+		JSONObject jsonObject = _jsonFactory.createJSONObject(
 			(String)message.getPayload());
+
+		ProductPurchase productPurchase = ProductPurchaseSerDes.toDTO(
+			jsonObject.getString("productPurchase"));
 
 		Account account = _accountWebService.getAccount(
 			productPurchase.getAccountKey());
@@ -103,6 +108,9 @@ public class ProductPurchaseMessageListener extends BaseMessageListener {
 
 	@Reference
 	private DestinationFactory _destinationFactory;
+
+	@Reference
+	private JSONFactory _jsonFactory;
 
 	@Reference
 	private ProductPurchaseWebService _productPurchaseWebService;

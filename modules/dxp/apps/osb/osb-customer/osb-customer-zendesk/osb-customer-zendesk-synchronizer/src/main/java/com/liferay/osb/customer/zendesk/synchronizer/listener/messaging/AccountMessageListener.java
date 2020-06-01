@@ -28,6 +28,7 @@ import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
@@ -94,7 +95,10 @@ public class AccountMessageListener extends BaseMessageListener {
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-		Account account = AccountSerDes.toDTO((String)message.getPayload());
+		JSONObject jsonObject = _jsonFactory.createJSONObject(
+			(String)message.getPayload());
+
+		Account account = AccountSerDes.toDTO(jsonObject.getString("account"));
 
 		String topic = message.getString("topic");
 

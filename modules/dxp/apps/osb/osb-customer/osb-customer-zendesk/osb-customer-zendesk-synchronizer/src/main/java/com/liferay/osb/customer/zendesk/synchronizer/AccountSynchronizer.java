@@ -369,7 +369,7 @@ public class AccountSynchronizer {
 
 		_zendeskOrganizationWebService.createOrUpdateZendeskOrganization(
 			account.getCode(), countryName, address, account.getKey(),
-			account.getName(), account.getNotes(),
+			account.getName(), accountEntry.getInstructions(),
 			String.valueOf(partnerManagedSupport), partnerJiraProject,
 			partnerName, getSupportLevel(account.getKey()),
 			account.getStatusAsString(), supportLanguage, supportRegion,

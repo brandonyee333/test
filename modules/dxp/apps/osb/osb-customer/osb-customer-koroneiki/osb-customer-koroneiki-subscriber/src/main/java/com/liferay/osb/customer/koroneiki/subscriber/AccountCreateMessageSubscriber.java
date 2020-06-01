@@ -20,6 +20,7 @@ import com.liferay.osb.distributed.messaging.Message;
 import com.liferay.osb.distributed.messaging.subscribing.MessageSubscriber;
 import com.liferay.osb.koroneiki.phloem.rest.client.dto.v1_0.Account;
 import com.liferay.osb.koroneiki.phloem.rest.client.serdes.v1_0.AccountSerDes;
+import com.liferay.portal.kernel.json.JSONObject;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -36,7 +37,10 @@ public class AccountCreateMessageSubscriber
 
 	@Override
 	public void doReceive(Message message) throws Exception {
-		Account account = AccountSerDes.toDTO((String)message.getPayload());
+		JSONObject jsonObject = jsonFactory.createJSONObject(
+			(String)message.getPayload());
+
+		Account account = AccountSerDes.toDTO(jsonObject.getString("account"));
 
 		_accountEntryLocalService.addAccountEntry(
 			OSBCustomerConstants.USER_DEFAULT_USER_ID, account.getKey(),
