@@ -18,7 +18,6 @@ import com.liferay.osb.customer.koroneiki.subscriber.AccountContactAssignedMessa
 import com.liferay.osb.customer.koroneiki.subscriber.AccountContactRoleAssignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountContactRoleUnassignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountContactUnassignedMessageSubscriber;
-import com.liferay.osb.customer.koroneiki.subscriber.AccountCreateMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountDeleteMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountTeamRoleAssignedMessageSubscriber;
 import com.liferay.osb.customer.koroneiki.subscriber.AccountTeamRoleUnassignedMessageSubscriber;
@@ -80,14 +79,6 @@ public class KoroneikiMessageRouter extends BaseMessageRouter {
 		Map<String, Object> properties) {
 
 		addRoute(accountContactUnassignedMessageSubscriber, properties);
-	}
-
-	@Reference(unbind = "-")
-	protected void setAccountCreateMessageSubscriber(
-		AccountCreateMessageSubscriber accountCreateMessageSubscriber,
-		Map<String, Object> properties) {
-
-		addRoute(accountCreateMessageSubscriber, properties);
 	}
 
 	@Reference(unbind = "-")
