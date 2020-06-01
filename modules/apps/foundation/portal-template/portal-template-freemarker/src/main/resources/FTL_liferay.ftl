@@ -20,11 +20,16 @@ LPS-30525.
 
 <#if themeDisplay??>
 	<#if httpServletRequest??>
-		<#assign css_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(httpServletRequest, "${themeDisplay.getPathThemeCss()}/main.css")) />
-		<#assign js_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(httpServletRequest, "${themeDisplay.getPathThemeJavaScript()}/main.js")) />
+		<#assign
+			css_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(httpServletRequest, "${themeDisplay.getPathThemeCss()}/main.css"))
+			js_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(httpServletRequest, "${themeDisplay.getPathThemeJavaScript()}/main.js"))
+		/>
+
 	<#else>
-		<#assign css_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${themeDisplay.getPathThemeCss()}/main.css")) />
-		<#assign js_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${themeDisplay.getPathThemeJavaScript()}/main.js")) />
+		<#assign
+			css_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${themeDisplay.getPathThemeCss()}/main.css"))
+			js_main_file = htmlUtil.escape(portalUtil.getStaticResourceURL(request, "${themeDisplay.getPathThemeJavaScript()}/main.js"))
+		/>
 	</#if>
 
 	<#assign is_signed_in = themeDisplay.isSignedIn() />

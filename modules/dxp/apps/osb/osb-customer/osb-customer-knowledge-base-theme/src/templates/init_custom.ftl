@@ -26,16 +26,14 @@
 <#assign
 	guest_group = group_local_service.fetchGroup(company_id, "Guest")
 	guest_group_id = guest_group.getGroupId()
-/>
 
-<#assign
 	footer_nav_friendly_url = "/footer-navigation"
 	main_nav_friendly_url = "/main-navigation"
 	mobile_footer_nav_friendly_url = "/mobile-footer-navigation"
 	new_help_center_url = "https://help.liferay.com/hc"
-/>
 
-<#assign nav_options = theme_settings["nav-options"] />
+	nav_options = theme_settings["nav-options"]
+/>
 
 <#if theme_settings["open-graph-image"] != "">
 	<#assign open_graph_image = theme_settings["open-graph-image"] />
