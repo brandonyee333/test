@@ -191,6 +191,23 @@ public class JobDog {
 		return JobStatus.SCHEDULED;
 	}
 
+	public String getJobTrainingDateString(String id) {
+		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.fetch(
+			"job-executions",
+			BoolQueryBuilderUtil.filter(
+				QueryBuilders.termsQuery("job.id", id)
+			).filter(
+				QueryBuilders.termsQuery("status", "COMPLETED")
+			),
+			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
+
+		if (jobExecutionJSONObject == null) {
+			return null;
+		}
+
+		return jobExecutionJSONObject.getString("completedDate");
+	}
+
 	private SearchSourceBuilder _buildJobSearchSourceBuilder(String jobId) {
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
