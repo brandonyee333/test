@@ -144,7 +144,7 @@ if (offeringBundle != null) {
 			/>
 
 			<liferay-ui:search-container-column-text>
-				<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('offeringDefinitionIds', '" + offeringDefinition.getOfferingDefinitionId() +"', '" + renderResponse.getNamespace() + "offeringSearchContainer', this);" %>' value="remove" />
+				<aui:button onClick="<%= renderResponse.getNamespace() + "removeRow('offeringDefinitionIds', '" + offeringDefinition.getOfferingDefinitionId() +"', '" + renderResponse.getNamespace() + "offeringSearchContainer', this);" %>" value="remove" />
 			</liferay-ui:search-container-column-text>
 		</liferay-ui:search-container-row>
 

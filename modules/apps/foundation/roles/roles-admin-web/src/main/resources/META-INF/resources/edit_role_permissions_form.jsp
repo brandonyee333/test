@@ -221,7 +221,7 @@ request.setAttribute("edit_role_permissions_form.jsp-unselectedResourceBlockPerm
 	</c:if>
 
 	<div class="form-group">
-		<aui:button cssClass="btn-lg" onClick='<%= liferayPortletResponse.getNamespace() + "updateActions('" + StringUtil.merge(selectedResourceBlockPermissionActionIds) + "', '" + StringUtil.merge(unselectedResourceBlockPermissionActionIds) + "');" %>' value="save" />
+		<aui:button cssClass="btn-lg" onClick="<%= liferayPortletResponse.getNamespace() + "updateActions('" + StringUtil.merge(selectedResourceBlockPermissionActionIds) + "', '" + StringUtil.merge(unselectedResourceBlockPermissionActionIds) + "');" %>" value="save" />
 	</div>
 </aui:form>
 

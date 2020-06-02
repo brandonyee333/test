@@ -422,7 +422,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<portlet:param name="renewCount" value="<%= String.valueOf(orderEntry.getRenewCount() + 1) %>" />
 			</portlet:actionURL>
 
-			<aui:button onClick='<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-renew-this-order") + "')) { location.href='" + renewOrderEntryURL + "'; } else { self.focus(); }" %>' value="renew-support" />
+			<aui:button onClick="<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-renew-this-order") + "')) { location.href='" + renewOrderEntryURL + "'; } else { self.focus(); }" %>" value="renew-support" />
 
 			<portlet:actionURL name="renewOrderEntry" var="resetOrderEntryURL">
 				<portlet:param name="mvcPath" value="/admin/edit_order_entry.jsp" />
@@ -430,7 +430,7 @@ portletURL.setParameter("orderEntryId", String.valueOf(orderEntryId));
 				<portlet:param name="orderEntryId" value="<%= String.valueOf(orderEntry.getOrderEntryId()) %>" />
 			</portlet:actionURL>
 
-			<aui:button onClick='<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") + "')) { location.href='" + resetOrderEntryURL + "'; } else { self.focus(); }" %>' value="reset-renewals" />
+			<aui:button onClick="<%= "javascript:if (confirm('" + UnicodeLanguageUtil.get(request, "are-you-sure-you-want-to-reset-this-order") + "')) { location.href='" + resetOrderEntryURL + "'; } else { self.focus(); }" %>" value="reset-renewals" />
 		</c:if>
 
 		<aui:a cssClass="btn btn-default" href="<%= backURL %>" label="cancel" />

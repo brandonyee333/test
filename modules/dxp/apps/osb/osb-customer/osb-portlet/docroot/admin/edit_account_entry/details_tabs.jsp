@@ -217,7 +217,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					/>
 
 					<liferay-ui:search-container-column-text>
-						<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('supportRegionIds', '" + supportRegion.getSupportRegionId() + "', '" + renderResponse.getNamespace() + "supportRegionSearchContainer', this);" %>' value="remove" />
+						<aui:button onClick="<%= renderResponse.getNamespace() + "removeRow('supportRegionIds', '" + supportRegion.getSupportRegionId() + "', '" + renderResponse.getNamespace() + "supportRegionSearchContainer', this);" %>" value="remove" />
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
@@ -260,7 +260,7 @@ for (SupportRegion supportRegion : supportRegions) {
 					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text>
-						<aui:button onClick='<%= renderResponse.getNamespace() + "removeRow('languageIds', '" + languageId + "', '" + renderResponse.getNamespace() + "languageSearchContainer', this);" %>' value="remove" />
+						<aui:button onClick="<%= renderResponse.getNamespace() + "removeRow('languageIds', '" + languageId + "', '" + renderResponse.getNamespace() + "languageSearchContainer', this);" %>" value="remove" />
 					</liferay-ui:search-container-column-text>
 				</liferay-ui:search-container-row>
 
