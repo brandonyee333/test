@@ -79,7 +79,11 @@ export default function AddSourceCodeAccessModal({
 	}
 
 	function validateAllFields() {
-		return Object.values(fields).every(field => isValid(field));
+		// Object.values() not supported when running gradle packageRunTest due to the version of node version supported for the task being 6.6.0. Rewrote using Object.keys()
+
+		return Object.keys(fields)
+			.map(key => fields[key])
+			.every(field => isValid(field));
 	}
 
 	function handleUpdate(event) {
