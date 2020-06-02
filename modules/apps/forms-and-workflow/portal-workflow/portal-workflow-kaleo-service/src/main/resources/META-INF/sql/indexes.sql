@@ -14,6 +14,7 @@ create index IX_58D85ECB on KaleoInstance (className[$COLUMN_LENGTH:200$], class
 create index IX_BF5839F8 on KaleoInstance (companyId, kaleoDefinitionName[$COLUMN_LENGTH:200$], kaleoDefinitionVersion, completionDate);
 create index IX_C6D7A867 on KaleoInstance (companyId, userId);
 create index IX_ACF16238 on KaleoInstance (kaleoDefinitionId, completed);
+create index IX_6D12641D on KaleoInstance (kaleoInstanceId, companyId, userId);
 
 create index IX_360D34D9 on KaleoInstanceToken (companyId, parentKaleoInstanceTokenId, completionDate);
 create index IX_7BDB04B4 on KaleoInstanceToken (kaleoDefinitionId);

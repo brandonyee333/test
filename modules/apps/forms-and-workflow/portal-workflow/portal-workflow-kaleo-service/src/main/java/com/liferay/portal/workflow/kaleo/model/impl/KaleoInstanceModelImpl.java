@@ -149,9 +149,9 @@ public class KaleoInstanceModelImpl
 
 	public static final long KALEODEFINITIONVERSION_COLUMN_BITMASK = 128L;
 
-	public static final long USERID_COLUMN_BITMASK = 256L;
+	public static final long KALEOINSTANCEID_COLUMN_BITMASK = 256L;
 
-	public static final long KALEOINSTANCEID_COLUMN_BITMASK = 512L;
+	public static final long USERID_COLUMN_BITMASK = 512L;
 
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(
 		com.liferay.portal.workflow.kaleo.service.util.ServiceProps.get(
@@ -662,7 +662,17 @@ public class KaleoInstanceModelImpl
 	public void setKaleoInstanceId(long kaleoInstanceId) {
 		_columnBitmask = -1L;
 
+		if (!_setOriginalKaleoInstanceId) {
+			_setOriginalKaleoInstanceId = true;
+
+			_originalKaleoInstanceId = _kaleoInstanceId;
+		}
+
 		_kaleoInstanceId = kaleoInstanceId;
+	}
+
+	public long getOriginalKaleoInstanceId() {
+		return _originalKaleoInstanceId;
 	}
 
 	@Override
@@ -1086,6 +1096,11 @@ public class KaleoInstanceModelImpl
 	public void resetOriginalValues() {
 		KaleoInstanceModelImpl kaleoInstanceModelImpl = this;
 
+		kaleoInstanceModelImpl._originalKaleoInstanceId =
+			kaleoInstanceModelImpl._kaleoInstanceId;
+
+		kaleoInstanceModelImpl._setOriginalKaleoInstanceId = false;
+
 		kaleoInstanceModelImpl._originalCompanyId =
 			kaleoInstanceModelImpl._companyId;
 
@@ -1290,6 +1305,8 @@ public class KaleoInstanceModelImpl
 	}
 
 	private long _kaleoInstanceId;
+	private long _originalKaleoInstanceId;
+	private boolean _setOriginalKaleoInstanceId;
 	private long _groupId;
 	private long _companyId;
 	private long _originalCompanyId;
