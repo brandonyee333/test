@@ -14,10 +14,10 @@
 
 package com.liferay.osb.customer.zendesk.servlet;
 
-import com.liferay.osb.customer.restful.servlet.SimpleRestfulServlet;
-import com.liferay.osb.customer.restful.servlet.exception.NoResourceException;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;
 import com.liferay.osb.customer.jira.rest.connector.service.JIRAIssueRESTService;
+import com.liferay.osb.customer.restful.servlet.SimpleRestfulServlet;
+import com.liferay.osb.customer.restful.servlet.exception.NoResourceException;
 import com.liferay.osb.customer.zendesk.configuration.ZendeskConnectorConfigurationValues;
 import com.liferay.osb.customer.zendesk.connector.service.ZendeskBaseWebService;
 import com.liferay.portal.kernel.exception.PortalException;
