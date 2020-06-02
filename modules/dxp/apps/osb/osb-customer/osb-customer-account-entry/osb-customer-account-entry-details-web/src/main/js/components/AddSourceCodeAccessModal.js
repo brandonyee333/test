@@ -79,9 +79,7 @@ export default function AddSourceCodeAccessModal({
 	}
 
 	function validateAllFields() {
-		return Object.keys(fields)
-			.map(key => fields[key])
-			.every(field => isValid(field));
+		return Object.keys(fields).map(key => fields[key]).every(field => isValid(field));
 	}
 
 	function handleUpdate(event) {
