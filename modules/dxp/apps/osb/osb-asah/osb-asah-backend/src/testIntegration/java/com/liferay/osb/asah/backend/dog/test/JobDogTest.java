@@ -22,9 +22,13 @@ import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -150,6 +154,34 @@ public class JobDogTest {
 	@Test
 	public void testGetJobStatusTraining() {
 		Assert.assertEquals(JobStatus.TRAINING, _jobDog.getJobStatus("1"));
+	}
+
+	@ElasticsearchIndex(
+		name = "job-executions", resourcePath = "job-executions-info-2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetJobTrainingDate() {
+		LocalDateTime nowLocalDateTime = LocalDateTime.parse(
+			DateUtil.newUTCDateString(),
+			DateTimeFormatter.ofPattern(DateUtil.PATTERN_ISO_8601));
+
+		LocalDateTime expectedTrainingLocalDateTime =
+			nowLocalDateTime.minusDays(1);
+
+		LocalDateTime trainingLocalDateTime = LocalDateTime.parse(
+			_jobDog.getJobTrainingDateString("1"),
+			DateTimeFormatter.ofPattern(DateUtil.PATTERN_ISO_8601));
+
+		Assert.assertEquals(
+			expectedTrainingLocalDateTime.getDayOfMonth(),
+			trainingLocalDateTime.getDayOfMonth());
+		Assert.assertEquals(
+			expectedTrainingLocalDateTime.getMonthValue(),
+			trainingLocalDateTime.getMonthValue());
+		Assert.assertEquals(
+			expectedTrainingLocalDateTime.getYear(),
+			trainingLocalDateTime.getYear());
 	}
 
 	@Autowired
