@@ -123,33 +123,33 @@ public class LicenseKeySetLocalServiceClpInvoker {
 				"com.liferay.osb.model.LicenseKeySet"
 			};
 
-		_methodName170 = "getOSGiServiceIdentifier";
+		_methodName58 = "getOSGiServiceIdentifier";
 
-		_methodParameterTypes170 = new String[] {  };
+		_methodParameterTypes58 = new String[] {  };
 
-		_methodName175 = "addLicenseKeySet";
+		_methodName63 = "addLicenseKeySet";
 
-		_methodParameterTypes175 = new String[] {
+		_methodParameterTypes63 = new String[] {
 				"long", "long", "java.lang.String"
 			};
 
-		_methodName176 = "deleteLicenseKeySet";
+		_methodName64 = "deleteLicenseKeySet";
 
-		_methodParameterTypes176 = new String[] {
+		_methodParameterTypes64 = new String[] {
 				"com.liferay.osb.model.LicenseKeySet"
 			};
 
-		_methodName177 = "getAccountEntryLicenseKeySets";
+		_methodName65 = "getAccountEntryLicenseKeySets";
 
-		_methodParameterTypes177 = new String[] { "long", "int", "int" };
+		_methodParameterTypes65 = new String[] { "long", "int", "int" };
 
-		_methodName178 = "getAccountEntryLicenseKeySetsCount";
+		_methodName66 = "getAccountEntryLicenseKeySetsCount";
 
-		_methodParameterTypes178 = new String[] { "long" };
+		_methodParameterTypes66 = new String[] { "long" };
 
-		_methodName179 = "updateLicenseKeySet";
+		_methodName67 = "updateLicenseKeySet";
 
-		_methodParameterTypes179 = new String[] { "long", "java.lang.String" };
+		_methodParameterTypes67 = new String[] { "long", "java.lang.String" };
 	}
 
 	public Object invokeMethod(String name, String[] parameterTypes,
@@ -256,36 +256,36 @@ public class LicenseKeySetLocalServiceClpInvoker {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet((com.liferay.osb.model.LicenseKeySet)arguments[0]);
 		}
 
-		if (_methodName170.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes170, parameterTypes)) {
+		if (_methodName58.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes58, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getOSGiServiceIdentifier();
 		}
 
-		if (_methodName175.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes175, parameterTypes)) {
+		if (_methodName63.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes63, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.addLicenseKeySet(((Long)arguments[0]).longValue(),
 				((Long)arguments[1]).longValue(), (java.lang.String)arguments[2]);
 		}
 
-		if (_methodName176.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes176, parameterTypes)) {
+		if (_methodName64.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes64, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.deleteLicenseKeySet((com.liferay.osb.model.LicenseKeySet)arguments[0]);
 		}
 
-		if (_methodName177.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes177, parameterTypes)) {
+		if (_methodName65.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes65, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySets(((Long)arguments[0]).longValue(),
 				((Integer)arguments[1]).intValue(),
 				((Integer)arguments[2]).intValue());
 		}
 
-		if (_methodName178.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes178, parameterTypes)) {
+		if (_methodName66.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes66, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.getAccountEntryLicenseKeySetsCount(((Long)arguments[0]).longValue());
 		}
 
-		if (_methodName179.equals(name) &&
-				Arrays.deepEquals(_methodParameterTypes179, parameterTypes)) {
+		if (_methodName67.equals(name) &&
+				Arrays.deepEquals(_methodParameterTypes67, parameterTypes)) {
 			return LicenseKeySetLocalServiceUtil.updateLicenseKeySet(((Long)arguments[0]).longValue(),
 				(java.lang.String)arguments[1]);
 		}
@@ -331,16 +331,16 @@ public class LicenseKeySetLocalServiceClpInvoker {
 	private String[] _methodParameterTypes18;
 	private String _methodName19;
 	private String[] _methodParameterTypes19;
-	private String _methodName170;
-	private String[] _methodParameterTypes170;
-	private String _methodName175;
-	private String[] _methodParameterTypes175;
-	private String _methodName176;
-	private String[] _methodParameterTypes176;
-	private String _methodName177;
-	private String[] _methodParameterTypes177;
-	private String _methodName178;
-	private String[] _methodParameterTypes178;
-	private String _methodName179;
-	private String[] _methodParameterTypes179;
+	private String _methodName58;
+	private String[] _methodParameterTypes58;
+	private String _methodName63;
+	private String[] _methodParameterTypes63;
+	private String _methodName64;
+	private String[] _methodParameterTypes64;
+	private String _methodName65;
+	private String[] _methodParameterTypes65;
+	private String _methodName66;
+	private String[] _methodParameterTypes66;
+	private String _methodName67;
+	private String[] _methodParameterTypes67;
 }

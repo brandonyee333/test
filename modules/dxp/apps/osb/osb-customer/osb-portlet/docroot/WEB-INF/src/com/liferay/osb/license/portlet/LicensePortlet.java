@@ -37,6 +37,7 @@ import com.liferay.osb.service.LicenseKeyServiceUtil;
 import com.liferay.osb.service.LicenseKeySetServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;

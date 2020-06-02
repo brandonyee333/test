@@ -17,6 +17,8 @@ package com.liferay.osb.license.util;
 import com.liferay.osb.model.LicenseEntryConstants;
 import com.liferay.osb.model.LicenseKey;
 import com.liferay.osb.service.LicenseKeyLocalServiceUtil;
+import com.liferay.petra.string.CharPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Base64;

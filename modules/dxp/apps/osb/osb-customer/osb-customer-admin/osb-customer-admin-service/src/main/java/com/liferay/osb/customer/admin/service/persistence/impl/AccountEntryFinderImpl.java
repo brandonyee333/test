@@ -483,6 +483,7 @@ public class AccountEntryFinderImpl
 		}
 
 		for (Map.Entry<String, Object> entry : params.entrySet()) {
+			String key = entry.getKey();
 			Object value = entry.getValue();
 
 			if (value instanceof int[]) {

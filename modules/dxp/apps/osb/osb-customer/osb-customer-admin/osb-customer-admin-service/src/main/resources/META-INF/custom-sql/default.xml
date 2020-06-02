@@ -86,10 +86,10 @@
 		<![CDATA[
 			INNER JOIN
 				OSB_OfferingEntry ON
-					(OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId)
+					OSB_OfferingEntry.accountEntryId = OSB_AccountEntry.accountEntryId
 			INNER JOIN
 				OSB_ProductEntry ON
-					(OSB_ProductEntry.productEntryId = OSB_OfferingEntry.productEntryId)
+					OSB_ProductEntry.productEntryId = OSB_OfferingEntry.productEntryId
 			WHERE
 				(
 					(OSB_AccountEntry.type_ != 4) AND
@@ -98,11 +98,11 @@
 						(
 							(OSB_OfferingEntry.licenses = [$TRUE$]) AND
 							(
-								(lower(OSB_ProductEntry.name) LIKE ?) OR
-								(lower(OSB_ProductEntry.name) LIKE ?)
+								(LOWER(OSB_ProductEntry.name) LIKE ?) OR
+								(LOWER(OSB_ProductEntry.name) LIKE ?)
 							)
 						) OR
-						(lower(OSB_ProductEntry.name) LIKE ?)
+						(LOWER(OSB_ProductEntry.name) LIKE ?)
 					) AND
 					(OSB_ProductEntry.type_ = ?) AND
 					(OSB_ProductEntry.environment != ?)

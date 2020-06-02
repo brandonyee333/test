@@ -53,7 +53,7 @@ public class OrganizationAssignmentMessageProcessor
 				return;
 			}
 
-			user = addUser(userJSONObject);
+			user = addWebUser(userJSONObject);
 		}
 		else if (user == null) {
 			return;

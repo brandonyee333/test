@@ -16,10 +16,10 @@ package com.liferay.osb.service.impl;
 
 import com.liferay.osb.service.base.LCSSubscriptionEntryServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Amos Fong

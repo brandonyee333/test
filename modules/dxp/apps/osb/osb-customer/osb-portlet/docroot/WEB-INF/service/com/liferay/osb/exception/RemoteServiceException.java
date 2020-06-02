@@ -14,8 +14,8 @@
 
 package com.liferay.osb.exception;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Amos Fong

@@ -14,10 +14,6 @@
  */
 --%>
 
-<%
-String tabs3 = ParamUtil.getString(request, "tabs3", "license");
-%>
-
 <liferay-ui:tabs
 	names="license"
 	param="tabs3"

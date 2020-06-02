@@ -20,6 +20,7 @@ import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.admin.exception.AccountEntryKoroneikiAccountKeyException;
 import com.liferay.osb.customer.admin.model.AccountAttachment;
 import com.liferay.osb.customer.admin.model.AccountEntry;
+import com.liferay.osb.customer.admin.model.AccountEnvironment;
 import com.liferay.osb.customer.admin.model.SupportRegion;
 import com.liferay.osb.customer.admin.service.base.AccountEntryLocalServiceBaseImpl;
 import com.liferay.osb.customer.constants.OSBCustomerConstants;

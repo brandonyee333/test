@@ -238,39 +238,6 @@ public class AccountEntryViewDisplayContext {
 		return auditEntrySets;
 	}
 
-	public List<Contact> getCustomerContacts() throws Exception {
-		List<Contact> contacts = _contactWebService.getAccountContacts(
-			_account.getKey(), 1, 1000);
-
-		Iterator<Contact> iterator = contacts.iterator();
-
-		while (iterator.hasNext()) {
-			Contact contact = iterator.next();
-
-			boolean liferayContact = false;
-
-			ContactRole[] contactRoles = contact.getContactRoles();
-
-			if (contactRoles != null) {
-				for (ContactRole contactRole : contactRoles) {
-					String name = contactRole.getName();
-
-					if (name.startsWith(
-							ContactRoleConstants.NAME_PREFIX_LIFERAY)) {
-
-						liferayContact = true;
-					}
-				}
-			}
-
-			if (liferayContact) {
-				iterator.remove();
-			}
-		}
-
-		return contacts;
-	}
-
 	public String getCollaboratorAddURL() throws PortletException {
 		PortletURL portletURL = _mimeResponse.createActionURL();
 
@@ -305,6 +272,39 @@ public class AccountEntryViewDisplayContext {
 		}
 
 		return jsonArray;
+	}
+
+	public List<Contact> getCustomerContacts() throws Exception {
+		List<Contact> contacts = _contactWebService.getAccountContacts(
+			_account.getKey(), 1, 1000);
+
+		Iterator<Contact> iterator = contacts.iterator();
+
+		while (iterator.hasNext()) {
+			Contact contact = iterator.next();
+
+			boolean liferayContact = false;
+
+			ContactRole[] contactRoles = contact.getContactRoles();
+
+			if (contactRoles != null) {
+				for (ContactRole contactRole : contactRoles) {
+					String name = contactRole.getName();
+
+					if (name.startsWith(
+							ContactRoleConstants.NAME_PREFIX_LIFERAY)) {
+
+						liferayContact = true;
+					}
+				}
+			}
+
+			if (liferayContact) {
+				iterator.remove();
+			}
+		}
+
+		return contacts;
 	}
 
 	public JSONObject getEnvCommerceJSONObject(

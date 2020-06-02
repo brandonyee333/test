@@ -15,17 +15,9 @@
 package com.liferay.osb.customer.account.entry.details.web.internal.portlet.action;
 
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
+import com.liferay.osb.customer.admin.constants.WorkflowConstants;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
-import com.liferay.osb.util.OSBConstants;
-import com.liferay.osb.util.WorkflowConstants;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
-import com.liferay.portal.kernel.portlet.LiferayPortletURL;
-import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
