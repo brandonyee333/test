@@ -28,6 +28,8 @@ import com.liferay.portal.kernel.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.exception.UserLockoutException;
 import com.liferay.portal.kernel.exception.UserReminderQueryException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
@@ -55,6 +57,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -98,10 +105,15 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 
 		User user = getUser(actionRequest);
 
-		String login = ParamUtil.getString(actionRequest, "login");
+		String login = (String)portletSession.getAttribute(
+			WebKeys.FORGOT_PASSWORD_REMINDER_USER_EMAIL_ADDRESS);
 
-		portletSession.setAttribute(
-			WebKeys.FORGOT_PASSWORD_REMINDER_USER_EMAIL_ADDRESS, login);
+		if (Validator.isNull(login)) {
+			login = ParamUtil.getString(actionRequest, "login");
+
+			portletSession.setAttribute(
+				WebKeys.FORGOT_PASSWORD_REMINDER_USER_EMAIL_ADDRESS, login);
+		}
 
 		actionRequest.setAttribute(WebKeys.FORGOT_PASSWORD_REMINDER_USER, user);
 
@@ -153,9 +165,14 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 			}
 		}
 		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Unable to send password: " + e.getMessage(), e);
+			}
+
 			if (e instanceof CaptchaConfigurationException ||
 				e instanceof CaptchaTextException ||
-				e instanceof UserEmailAddressException) {
+				e instanceof UserEmailAddressException ||
+				e instanceof UserReminderQueryException) {
 
 				SessionErrors.add(actionRequest, e.getClass());
 			}
@@ -163,8 +180,7 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 					 e instanceof RequiredReminderQueryException ||
 					 e instanceof SendPasswordException ||
 					 e instanceof UserActiveException ||
-					 e instanceof UserLockoutException ||
-					 e instanceof UserReminderQueryException) {
+					 e instanceof UserLockoutException) {
 
 				if (PropsValues.LOGIN_SECURE_FORGOT_PASSWORD) {
 					HttpServletRequest httpServletRequest =
@@ -182,16 +198,49 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 			else {
 				_portal.sendError(e, actionRequest, actionResponse);
 			}
-
-			String login = ParamUtil.getString(actionRequest, "login");
-
-			if (Validator.isNotNull(login)) {
-				SessionErrors.add(actionRequest, "login", login);
-			}
 		}
 	}
 
 	protected User getUser(ActionRequest actionRequest) throws Exception {
+		if (!PropsValues.LOGIN_SECURE_FORGOT_PASSWORD) {
+			return _getUser(actionRequest);
+		}
+
+		try {
+			return _getUser(actionRequest);
+		}
+		catch (Exception e) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Unable to get user: " + e.getMessage(), e);
+			}
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		User defaultUser = _userLocalService.getDefaultUser(
+			themeDisplay.getCompanyId());
+
+		Set<String> reminderQueryQuestions =
+			defaultUser.getReminderQueryQuestions();
+
+		if (reminderQueryQuestions.size() > 0) {
+			Iterator<String> it = reminderQueryQuestions.iterator();
+
+			defaultUser.setReminderQueryQuestion(it.next());
+		}
+		else {
+			defaultUser.setReminderQueryQuestion(
+				"what-is-your-library-card-number");
+		}
+
+		defaultUser.setReminderQueryAnswer(
+			defaultUser.getReminderQueryQuestion());
+
+		return defaultUser;
+	}
+
+	private User _getUser(ActionRequest actionRequest) throws Exception {
 		PortletSession portletSession = actionRequest.getPortletSession();
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
@@ -246,6 +295,11 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 		User user = getUser(actionRequest);
 
 		if (PropsValues.USERS_REMINDER_QUERIES_ENABLED) {
+			if (user.isDefaultUser()) {
+				throw new UserReminderQueryException(
+					"Reminder query answer does not match answer");
+			}
+
 			if (PropsValues.USERS_REMINDER_QUERIES_REQUIRED &&
 				!user.hasReminderQuery()) {
 
@@ -262,6 +316,14 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 				throw new UserReminderQueryException(
 					"Reminder query answer does not match answer");
 			}
+		}
+
+		if (user.isDefaultUser()) {
+			SessionMessages.add(
+				_portal.getHttpServletRequest(actionRequest),
+				"forgotPasswordSent");
+
+			return;
 		}
 
 		PortletPreferences portletPreferences = actionRequest.getPreferences();
@@ -306,5 +368,7 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 	private Portal _portal;
 
 	private UserLocalService _userLocalService;
+	private static final Log _log = LogFactoryUtil.getLog(
+		ForgotPasswordMVCActionCommand.class);
 
 }
