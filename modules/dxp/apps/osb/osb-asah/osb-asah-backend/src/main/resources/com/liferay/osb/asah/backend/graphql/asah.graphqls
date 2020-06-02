@@ -343,6 +343,7 @@ type Job {
 	name: String
 	parameters: [JobParameter]
 	status: JobStatus
+	trainingDate: String
 	trainingFrequency: JobTrainingFrequency
 	trainingPeriod: JobTrainingPeriod
 	type: JobType
