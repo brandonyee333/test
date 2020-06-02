@@ -347,12 +347,23 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	}
 
 	private List<String> _getIndividualSegmentIds(
-		JSONObject individualJSONObject) {
+		String channelId, JSONObject individualJSONObject) {
 
-		JSONArray individualSegmentIds = individualJSONObject.getJSONArray(
-			"individualSegmentIds");
+		JSONArray individualSegmentIdsJSONArray =
+			individualJSONObject.getJSONArray("individualSegmentIds");
 
-		return JSONUtil.toStringList(individualSegmentIds);
+		List<String> individualSegmentIds = JSONUtil.toStringList(
+			individualSegmentIdsJSONArray);
+
+		JSONArray individualSegmentsJSONArray =
+			_faroInfoElasticsearchInvoker.get(
+				"individual-segments",
+				QueryBuilders.termQuery("channelId", channelId));
+
+		individualSegmentIds.retainAll(
+			JSONUtil.toStringList(individualSegmentsJSONArray, "id"));
+
+		return individualSegmentIds;
 	}
 
 	private Function<AnalyticsEvent, T> _getMapperFunction() {
@@ -474,7 +485,7 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		JSONObject individualJSONObject, T model) {
 
 		List<String> individualSegmentIds = _getIndividualSegmentIds(
-			individualJSONObject);
+			model.getChannelId(), individualJSONObject);
 
 		if (individualSegmentIds.isEmpty()) {
 			return;
