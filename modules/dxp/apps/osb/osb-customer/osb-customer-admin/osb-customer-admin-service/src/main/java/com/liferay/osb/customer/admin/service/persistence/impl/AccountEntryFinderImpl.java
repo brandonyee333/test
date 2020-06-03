@@ -17,7 +17,7 @@ package com.liferay.osb.customer.admin.service.persistence.impl;
 import com.liferay.osb.customer.admin.model.AccountEntry;
 import com.liferay.osb.customer.admin.model.impl.AccountEntryImpl;
 import com.liferay.osb.customer.admin.service.persistence.AccountEntryFinder;
-import com.liferay.osb.customer.admin.service.util.OSBCustomSQLUtil;
+import com.liferay.osb.customer.util.OSBCustomSQL;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.PortalCustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -84,7 +85,7 @@ public class AccountEntryFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
-			names = OSBCustomSQLUtil.keywords(keywords);
+			names = _osbCustomSQL.keywords(keywords);
 			codes = CustomSQLUtil.keywords(keywords);
 			instructions = CustomSQLUtil.keywords(keywords);
 		}
@@ -106,7 +107,7 @@ public class AccountEntryFinderImpl
 			koroneikiAccountKey);
 		String[] dossieraAccountKeys = CustomSQLUtil.keywords(
 			dossieraAccountKey);
-		String[] names = OSBCustomSQLUtil.keywords(name);
+		String[] names = _osbCustomSQL.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
 		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
 
@@ -125,7 +126,7 @@ public class AccountEntryFinderImpl
 		boolean andOperator = false;
 
 		if (Validator.isNotNull(keywords)) {
-			names = OSBCustomSQLUtil.keywords(keywords);
+			names = _osbCustomSQL.keywords(keywords);
 			codes = CustomSQLUtil.keywords(keywords);
 			instructions = CustomSQLUtil.keywords(keywords);
 		}
@@ -148,7 +149,7 @@ public class AccountEntryFinderImpl
 			koroneikiAccountKey);
 		String[] dossieraAccountKeys = CustomSQLUtil.keywords(
 			dossieraAccountKey);
-		String[] names = OSBCustomSQLUtil.keywords(name);
+		String[] names = _osbCustomSQL.keywords(name);
 		String[] codes = CustomSQLUtil.keywords(code);
 		String[] instructionsArray = CustomSQLUtil.keywords(instructions);
 
@@ -581,5 +582,8 @@ public class AccountEntryFinderImpl
 		qPos.add(statuses);
 		qPos.add(instructions, 2);
 	}
+
+	@ServiceReference(type = OSBCustomSQL.class)
+	private OSBCustomSQL _osbCustomSQL;
 
 }

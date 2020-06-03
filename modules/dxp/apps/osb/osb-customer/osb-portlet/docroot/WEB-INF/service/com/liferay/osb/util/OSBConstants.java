@@ -92,8 +92,6 @@ public class OSBConstants {
 
 	public static final long SUPPORT_REGION_US_ID = 42356488;
 
-	public static final String TEMP_DIR = "osb/temp/";
-
 	public static final long USER_AMOS_FONG_USER_ID = 23463;
 
 	public static final long USER_DEFAULT_USER_ID = 10161;

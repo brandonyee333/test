@@ -1,0 +1,900 @@
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+
+package com.liferay.osb.customer.license.service.impl;
+
+import com.liferay.osb.customer.admin.constants.LicenseEntryConstants;
+import com.liferay.osb.customer.admin.model.LicenseEntry;
+import com.liferay.osb.customer.admin.service.LicenseEntryLocalService;
+import com.liferay.osb.customer.constants.OSBActionKeys;
+import com.liferay.osb.customer.constants.OSBCustomerConstants;
+import com.liferay.osb.customer.license.constants.LicenseKeyConstants;
+import com.liferay.osb.customer.license.model.LicenseKey;
+import com.liferay.osb.customer.license.service.base.LicenseKeyServiceBaseImpl;
+import com.liferay.osb.customer.license.service.permission.AssetReceiptPermission;
+import com.liferay.osb.customer.license.service.permission.LicenseKeyPermission;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.io.Base64OutputStream;
+import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
+import com.liferay.portal.kernel.jsonwebservice.JSONWebServiceMode;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.OrderByComparator;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.spring.extender.service.ServiceReference;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+/**
+ * @author Amos Fong
+ */
+@JSONWebService(mode = JSONWebServiceMode.MANUAL)
+public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
+
+	public LicenseKey addDeveloperLicenseKey(
+			long accountEntryId, String productEntryRootName,
+			int productMinorVersion)
+		throws PortalException {
+
+		/*
+		TODO
+
+		if (!accountCustomerLocalService.hasAccountCustomer(
+				getUserId(), accountEntryId)) {
+
+			throw new PrincipalException();
+		}
+		*/
+
+		return licenseKeyLocalService.addDeveloperLicenseKey(
+			getUserId(), accountEntryId, productEntryRootName,
+			productMinorVersion);
+	}
+
+	public LicenseKey addLicenseKey(
+			long userId, long licenseKeySetId, String name,
+			long offeringEntryId, long licenseEntryId, long productEntryId,
+			int productVersion, long clusterId, String owner, int maxServers,
+			int maxHttpSessions, String description, String[] hostNames,
+			String[] ipAddresses, String[] macAddresses, String[] serverIds,
+			Date startDate, Date expirationDate, boolean complimentary,
+			boolean active)
+		throws PortalException {
+
+		/*
+		TODO
+		OfferingEntry offeringEntry =
+			offeringEntryLocalService.getOfferingEntry(offeringEntryId);
+
+		OSBAccountEntryPermission.check(
+			getPermissionChecker(), offeringEntry.getAccountEntryId(),
+			ActionKeys.ADD_LICENSE);
+		*/
+
+		ProductEntry productEntry = null;
+
+		if (productEntryId > 0) {
+			productEntry = productEntryLocalService.getProductEntry(
+				productEntryId);
+		}
+		else {
+			productEntry = productEntryLocalService.getProductEntry(
+				offeringEntry.getProductEntryId());
+		}
+
+		LicenseEntry licenseEntry = _licenseEntryLocalService.getLicenseEntry(
+			licenseEntryId);
+
+		String licenseEntryType = licenseEntry.getType();
+
+		if ((LicenseKeyConstants.getLicenseVersion(
+				productEntry, productVersion) >= 3) &&
+			(licenseEntryType.equals(LicenseEntryConstants.TYPE_DEVELOPER) ||
+			 licenseEntryType.equals(
+				 LicenseEntryConstants.TYPE_DEVELOPER_CLUSTER)) &&
+			(maxHttpSessions != 5) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			throw new PrincipalException();
+		}
+
+		if ((startDate != null) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID) &&
+			!roleLocalService.hasUserRole(
+				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			throw new PrincipalException();
+		}
+
+		return licenseKeyLocalService.addLicenseKey(
+			userId, licenseKeySetId, name, offeringEntryId, licenseEntryId,
+			productEntryId, productVersion, clusterId, owner, maxServers,
+			maxHttpSessions, description, hostNames, ipAddresses, macAddresses,
+			serverIds, startDate, expirationDate, false, true);
+	}
+
+	@JSONWebService
+	public LicenseKey addLicenseKey(
+			String userUuid, String assetReceiptLicenseUuid,
+			String licenseEntryType, String productEntryName, String productId,
+			int productVersion, String owner, long maxUsers, String description,
+			String hostName, String ipAddresses, String macAddresses,
+			String serverId, Date startDate, Date expirationDate)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		User user = userLocalService.getUserByUuidAndCompanyId(
+			userUuid, OSBCustomerConstants.COMPANY_ID);
+
+		return licenseKeyLocalService.addLicenseKey(
+			user.getUserId(), assetReceiptLicenseUuid, licenseEntryType,
+			productEntryName, productId, productVersion, owner, maxUsers,
+			description, hostName, ipAddresses, macAddresses, serverId,
+			startDate, expirationDate);
+	}
+
+	@JSONWebService
+	public String generateCommerceLicenseKey(
+			String owner, Date startDate, long licenseLifetime)
+		throws Exception {
+
+		validateJSONWebServicePermissions();
+
+		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
+
+		/*
+		TODO
+		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
+			getUserId(), StringPool.BLANK,
+			LicenseEntryConstants.TYPE_ENTERPRISE, "Liferay Commerce",
+			ProductEntryConstants.PRODUCT_ID_COMMERCE, 1, owner, 0,
+			"Trial Activation Key", StringPool.BLANK, StringPool.BLANK,
+			StringPool.BLANK, StringPool.BLANK, startDate, expirationDate);
+
+		return exportToLI(licenseKey);
+		*/
+
+		return null;
+	}
+
+	@JSONWebService
+	public String generateWeDeployLicenseKey(
+			String owner, Date startDate, long licenseLifetime)
+		throws Exception {
+
+		validateJSONWebServicePermissions();
+
+		/*
+		TODO
+		OfferingEntry offeringEntry = getWeDeployOfferingEntry();
+
+		LicenseEntry licenseEntry = licenseEntryPersistence.findByPEI_T(
+			offeringEntry.getProductEntryId(),
+			LicenseEntryConstants.TYPE_DEVELOPER);
+
+		Date expirationDate = new Date(startDate.getTime() + licenseLifetime);
+
+		LicenseKey licenseKey = licenseKeyLocalService.addLicenseKey(
+			getUserId(), null, "Trial Activation Key", offeringEntry,
+			licenseEntry, null,
+			ProductEntryConstants.DIGITAL_ENTERPRISE_VERSION_7_0_10, 0, owner,
+			0, 5, "Trial Activation Key", new String[0], new String[0],
+			new String[0],
+			new String[] {LicenseKeyConstants.SERVER_ID_DEVELOPER}, startDate,
+			expirationDate, StringPool.BLANK, false, true);
+
+		return LicenseUtil.exportToXML(licenseKey);
+		*/
+
+		return null;
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getAssetReceiptLicenseLicenseKeys(
+			String assetReceiptLicenseUuid, boolean complimentary,
+			boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getAssetReceiptLicenseLicenseKeys(
+			assetReceiptLicenseUuid, complimentary, active);
+	}
+
+	@JSONWebService
+	public int getAssetReceiptLicenseLicenseKeysCount(
+			String assetReceiptLicenseUuid, boolean complimentary,
+			boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getAssetReceiptLicenseLicenseKeysCount(
+			assetReceiptLicenseUuid, complimentary, active);
+	}
+
+	public LicenseKey getLicenseKey(long licenseKeyId) throws PortalException {
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
+			licenseKeyId);
+
+		if (Validator.isNotNull(licenseKey.getAssetReceiptLicenseUuid())) {
+			AssetReceiptPermission.check(
+				getPermissionChecker(), OSBActionKeys.VIEW);
+		}
+		else {
+			LicenseKeyPermission.check(
+				getPermissionChecker(), licenseKey, ActionKeys.VIEW);
+		}
+
+		return licenseKey;
+	}
+
+	@JSONWebService
+	public LicenseKey getLicenseKey(String uuid) throws PortalException {
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeyByUuid(uuid);
+	}
+
+	public List<LicenseKey> getLicenseKeys(long userId, String productId)
+		throws PortalException {
+
+		List<LicenseKey> licenseKeys = licenseKeyLocalService.getLicenseKeys(
+			userId, productId);
+
+		return filterLicenseKeys(licenseKeys);
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getLicenseKeys(String productId, String serverId)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeys(productId, serverId);
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getLicenseKeys(
+			String assetReceiptLicenseUuid, String productId, String serverId,
+			boolean active, int start, int end, OrderByComparator obc)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeys(
+			assetReceiptLicenseUuid, productId, serverId, active, start, end,
+			obc);
+	}
+
+	@JSONWebService
+	public List<LicenseKey> getLicenseKeysByName(
+			String productEntryName, String serverId, boolean active, int start,
+			int end, OrderByComparator obc)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getLicenseKeysByName(
+			productEntryName, serverId, active, start, end, obc);
+	}
+
+	public List<LicenseKey> getLicenseKeySetLicenseKeys(long licenseKeySetId)
+		throws PortalException {
+
+		List<LicenseKey> licenseKeys =
+			licenseKeyPersistence.findByLicenseKeySetId(licenseKeySetId);
+
+		return filterLicenseKeys(licenseKeys);
+	}
+
+	public List<LicenseKey> getOfferingEntryGroupLicenseKeys(
+			long[] offeringEntryIds, boolean complimentary, boolean active,
+			int start, int end, OrderByComparator obc)
+		throws PortalException {
+
+		if (!isAccountAdmin(getUserId()) &&
+			!roleLocalService.hasUserRole(
+				getUserId(),
+				OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
+
+			throw new PrincipalException();
+		}
+
+		return licenseKeyLocalService.getOfferingEntryGroupLicenseKeys(
+			offeringEntryIds, complimentary, active, start, end, obc);
+	}
+
+	public int getOfferingEntryGroupLicenseKeysCount(
+			long[] offeringEntryIds, boolean complimentary, boolean active)
+		throws PortalException {
+
+		if (!isAccountAdmin(getUserId()) &&
+			!roleLocalService.hasUserRole(
+				getUserId(),
+				OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
+
+			throw new PrincipalException();
+		}
+
+		return licenseKeyLocalService.getOfferingEntryGroupLicenseKeysCount(
+			offeringEntryIds, complimentary, active);
+	}
+
+	@JSONWebService
+	public int getOfferingEntryLicenseKeysCount(
+			long offeringEntryId, boolean complimentary, boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		return licenseKeyLocalService.getOfferingEntryLicenseKeysCount(
+			offeringEntryId, complimentary, active);
+	}
+
+	@JSONWebService
+	public boolean isActive(String serverId, String productId, String key)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		LinkedHashMap<String, Object> params = new LinkedHashMap<>();
+
+		params.put("active", true);
+
+		int activeLicensesCount = licenseKeyLocalService.searchCount(
+			null, 0, 0, 0, 0, 0, 0, null, 0, 0, 0, 0, 0, 0, null, null, 0, 0, 0,
+			0, 0, 0, new long[0], new long[0], null, productId, new int[0],
+			null, null, null, null, null, serverId, key, 0, 0, 0, 0, 0, 0,
+			params, true);
+
+		if (activeLicensesCount > 0) {
+			return true;
+		}
+
+		return false;
+	}
+
+	@JSONWebService
+	public LicenseKey registerLicenseKey(
+			String orderEntryUuid, String productEntryName, int liferayVersion,
+			int maxServers, String hostName, String ipAddresses,
+			String macAddresses, String serverId)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		/*
+		TODO
+		OrderEntry orderEntry = orderEntryLocalService.getOrderEntry(
+			orderEntryUuid);
+
+		List<OfferingEntry> availableOfferingEntries = new ArrayList<>();
+
+		List<OfferingEntry> offeringEntries = orderEntry.getOfferingEntries();
+
+		for (OfferingEntry offeringEntry : offeringEntries) {
+			ProductEntry productEntry = offeringEntry.getProductEntry();
+
+			int environment = productEntry.getEnvironment();
+
+			if ((environment ==
+					ProductEntryConstants.ENVIRONMENT_DEVELOPMENT) ||
+				(environment == ProductEntryConstants.ENVIRONMENT_NONE)) {
+
+				continue;
+			}
+
+			String curProductEntryName = productEntry.getName();
+
+			if (!curProductEntryName.equals(productEntryName)) {
+				continue;
+			}
+
+			availableOfferingEntries.add(offeringEntry);
+		}
+
+		OfferingEntryGroup offeringEntryGroup =
+			OfferingEntryGroupFactoryUtil.createOfferingEntryGroup(
+				availableOfferingEntries);
+
+		OfferingEntry offeringEntry =
+			offeringEntryGroup.getAvailableLicenseOfferingEntry();
+
+		ProductEntry productEntry = offeringEntry.getProductEntry();
+
+		AccountEntry accountEntry = offeringEntry.getAccountEntry();
+
+		long licenseEntryId = getLicenseEntryId(productEntry);
+
+		int productVersion = getProductVersion(liferayVersion);
+
+		try {
+			return licenseKeyLocalService.addLicenseKey(
+				offeringEntry.getUserId(), 0, accountEntry.getName(),
+				offeringEntry.getOfferingEntryId(), licenseEntryId, 0,
+				productVersion, 0, accountEntry.getName(), maxServers, 0,
+				accountEntry.getName(), new String[] {hostName},
+				new String[] {ipAddresses}, new String[] {macAddresses},
+				new String[] {serverId}, orderEntry.getStartDate(), null, false,
+				true);
+		}
+		catch (MaximumLicenseKeyException mlke) {
+		}
+		catch (OfferingEntryStatusException oese) {
+		}
+		*/
+
+		return null;
+	}
+
+	public LicenseKey renewLicenseKey(
+			long licenseKeyId, Date startDate, int renewTime)
+		throws Exception {
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
+			licenseKeyId);
+
+		/*
+		OSBAccountEntryPermission.check(
+			getPermissionChecker(), licenseKey.getAccountEntryId(),
+			OSBActionKeys.ADD_LICENSE);
+		*/
+
+		return licenseKeyLocalService.renewLicenseKey(
+			getUserId(), licenseKeyId, startDate, renewTime);
+	}
+
+	@JSONWebService
+	public LicenseKey renewLicenseKey(
+			String uuid, Date startDate, Date expirationDate)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
+			uuid);
+
+		return licenseKeyLocalService.renewLicenseKey(
+			getUserId(), licenseKey.getLicenseKeyId(), startDate,
+			expirationDate);
+	}
+
+	public List<LicenseKey> search(
+			Long createUserId, int createDateGTDay, int createDateGTMonth,
+			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+			int modifiedDateGTMonth, int modifiedDateGTYear,
+			int modifiedDateLTDay, int modifiedDateLTMonth,
+			int modifiedDateLTYear, String accountEntryName,
+			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
+			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
+			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
+			String productEntryName, String productId, int[] productVersions,
+			String owner, String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			int expirationDateGTDay, int expirationDateGTMonth,
+			int expirationDateGTYear, int expirationDateLTDay,
+			int expirationDateLTMonth, int expirationDateLTYear,
+			LinkedHashMap<String, Object> params, boolean andSearch, int start,
+			int end, OrderByComparator obc)
+		throws PortalException {
+
+		addPermissionParams(params);
+
+		return licenseKeyLocalService.search(
+			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
+			createDateLTDay, createDateLTMonth, createDateLTYear,
+			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
+			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
+			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
+			productEntryName, productId, productVersions, owner, description,
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
+			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
+			expirationDateLTMonth, expirationDateLTYear, params, andSearch,
+			start, end, obc);
+	}
+
+	public List<LicenseKey> search(
+			String keywords, LinkedHashMap<String, Object> params, int start,
+			int end, OrderByComparator obc)
+		throws PortalException {
+
+		addPermissionParams(params);
+
+		return licenseKeyLocalService.search(keywords, params, start, end, obc);
+	}
+
+	public int searchCount(
+			Long createUserId, int createDateGTDay, int createDateGTMonth,
+			int createDateGTYear, int createDateLTDay, int createDateLTMonth,
+			int createDateLTYear, Long modifiedUserId, int modifiedDateGTDay,
+			int modifiedDateGTMonth, int modifiedDateGTYear,
+			int modifiedDateLTDay, int modifiedDateLTMonth,
+			int modifiedDateLTYear, String accountEntryName,
+			String licenseKeySetName, int startDateGTDay, int startDateGTMonth,
+			int startDateGTYear, int startDateLTDay, int startDateLTMonth,
+			int startDateLTYear, long[] licenseEntryIds, long[] productEntryIds,
+			String productEntryName, String productId, int[] productVersions,
+			String owner, String description, String hostName, String ipAddress,
+			String macAddress, String serverId, String key,
+			int expirationDateGTDay, int expirationDateGTMonth,
+			int expirationDateGTYear, int expirationDateLTDay,
+			int expirationDateLTMonth, int expirationDateLTYear,
+			LinkedHashMap<String, Object> params, boolean andSearch)
+		throws PortalException {
+
+		addPermissionParams(params);
+
+		return licenseKeyLocalService.searchCount(
+			createUserId, createDateGTDay, createDateGTMonth, createDateGTYear,
+			createDateLTDay, createDateLTMonth, createDateLTYear,
+			modifiedUserId, modifiedDateGTDay, modifiedDateGTMonth,
+			modifiedDateGTYear, modifiedDateLTDay, modifiedDateLTMonth,
+			modifiedDateLTYear, accountEntryName, licenseKeySetName,
+			startDateGTDay, startDateGTMonth, startDateGTYear, startDateLTDay,
+			startDateLTMonth, startDateLTYear, licenseEntryIds, productEntryIds,
+			productEntryName, productId, productVersions, owner, description,
+			hostName, ipAddress, macAddress, serverId, key, expirationDateGTDay,
+			expirationDateGTMonth, expirationDateGTYear, expirationDateLTDay,
+			expirationDateLTMonth, expirationDateLTYear, params, andSearch);
+	}
+
+	public int searchCount(
+			String keywords, LinkedHashMap<String, Object> params)
+		throws PortalException {
+
+		addPermissionParams(params);
+
+		return licenseKeyLocalService.searchCount(keywords, params);
+	}
+
+	public void updateLicenseKey(long userId, long licenseKeyId, boolean active)
+		throws PortalException {
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
+			licenseKeyId);
+
+		if (licenseKey.getActive() != active) {
+			if (Validator.isNull(licenseKey.getServerId())) {
+				LicenseKeyPermission.check(
+					getPermissionChecker(), licenseKey,
+					OSBActionKeys.UPDATE_ADVANCED);
+			}
+			else {
+				AssetReceiptPermission.check(
+					getPermissionChecker(), OSBActionKeys.MANAGE);
+			}
+		}
+		else {
+			LicenseKeyPermission.check(
+				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
+		}
+
+		licenseKeyLocalService.updateLicenseKey(userId, licenseKeyId, active);
+	}
+
+	public LicenseKey updateLicenseKey(
+			long userId, long licenseKeyId, long licenseKeySetId,
+			long offeringEntryId, String name, boolean active)
+		throws PortalException {
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKey(
+			licenseKeyId);
+
+		if (licenseKey.getOfferingEntryId() != offeringEntryId) {
+			LicenseKeyPermission.check(
+				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_ADMIN);
+		}
+		else if (licenseKey.getActive() != active) {
+			LicenseKeyPermission.check(
+				getPermissionChecker(), licenseKey,
+				OSBActionKeys.UPDATE_ADVANCED);
+		}
+		else {
+			LicenseKeyPermission.check(
+				getPermissionChecker(), licenseKey, OSBActionKeys.UPDATE_BASIC);
+		}
+
+		return licenseKeyLocalService.updateLicenseKey(
+			userId, licenseKeyId, licenseKeySetId, offeringEntryId, name,
+			active);
+	}
+
+	@JSONWebService
+	public void updateLicenseKey(String userUuid, String uuid, boolean active)
+		throws PortalException {
+
+		validateJSONWebServicePermissions();
+
+		User user = userLocalService.getUserByUuidAndCompanyId(
+			userUuid, OSBCustomerConstants.COMPANY_ID);
+
+		LicenseKey licenseKey = licenseKeyLocalService.getLicenseKeyByUuid(
+			uuid);
+
+		licenseKeyLocalService.updateLicenseKey(
+			user.getUserId(), licenseKey.getLicenseKeyId(), active);
+	}
+
+	@JSONWebService
+	public void updateLicenseKeys(
+			String assetReceiptLicenseUuid, boolean active)
+		throws PortalException {
+
+		List<LicenseKey> licenseKeys = licenseKeyPersistence.findByARLU_A(
+			assetReceiptLicenseUuid, !active);
+
+		for (LicenseKey licenseKey : licenseKeys) {
+			licenseKeyLocalService.updateLicenseKey(
+				getUserId(), licenseKey.getLicenseKeyId(), active);
+		}
+	}
+
+	protected void addPermissionParams(LinkedHashMap<String, Object> params)
+		throws PortalException {
+
+		if (isAccountAdmin(getUserId())) {
+			return;
+		}
+
+		/*
+		TODO
+
+		if (roleLocalService.hasUserRole(
+				getUserId(), OSBCustomerConstants.ROLE_OSB_TRIAL_LICENSE_ADMIN_ID)) {
+
+			params.put("accountEntryType", AccountEntryConstants.TYPE_TRIAL);
+
+			return;
+		}
+
+		params.put("accountEntryMembership", Long.valueOf(getUserId()));
+
+		if (accountWorkerLocalService.hasAccountWorkerRole(
+				getUserId(), AccountWorkerConstants.ROLE_SALES)) {
+
+			return;
+		}
+		*/
+
+		params.put("active", Boolean.TRUE);
+	}
+
+	protected String exportToLI(LicenseKey licenseKey) throws IOException {
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+		ObjectOutputStream objectOutputStream = null;
+
+		try {
+			objectOutputStream = new ObjectOutputStream(
+				new Base64OutputStream(unsyncByteArrayOutputStream));
+
+			objectOutputStream.writeInt(4);
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getAccountEntryName()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getDescription()));
+			objectOutputStream.writeObject(licenseKey.getExpirationDate());
+
+			String[] hostNames = null;
+
+			if (Validator.isNotNull(licenseKey.getHostName())) {
+				hostNames = new String[] {licenseKey.getHostName()};
+			}
+			else {
+				hostNames = new String[0];
+			}
+
+			objectOutputStream.writeObject(hostNames);
+
+			objectOutputStream.writeObject(
+				StringUtil.split(licenseKey.getIpAddresses()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getKey()));
+			objectOutputStream.writeLong(System.currentTimeMillis());
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getLicenseEntryName()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getLicenseEntryType()));
+			objectOutputStream.writeUTF(
+				String.valueOf(licenseKey.getLicenseVersion()));
+
+			objectOutputStream.writeObject(
+				StringUtil.split(licenseKey.getMacAddresses()));
+			objectOutputStream.writeInt(licenseKey.getMaxHttpSessions());
+			objectOutputStream.writeInt(licenseKey.getMaxServers());
+			objectOutputStream.writeLong(licenseKey.getMaxConcurrentUsers());
+			objectOutputStream.writeLong(licenseKey.getMaxUsers());
+
+			String sizing = StringPool.BLANK;
+
+			if (licenseKey.getSizing() > 0) {
+				/*
+				TODO
+				sizing = LanguageUtil.get(
+					LocaleUtil.US,
+					OfferingEntryConstants.getSizingLabel(
+						licenseKey.getSizing()));
+				*/
+			}
+
+			objectOutputStream.writeUTF(sizing);
+
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getOwner()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getProductEntryName()));
+			objectOutputStream.writeUTF(
+				GetterUtil.getString(licenseKey.getProductId()));
+			objectOutputStream.writeUTF(
+				String.valueOf(licenseKey.getProductVersion()));
+
+			String[] serverIds = null;
+
+			if (Validator.isNotNull(licenseKey.getServerId())) {
+				serverIds = new String[] {licenseKey.getServerId()};
+			}
+			else {
+				serverIds = new String[0];
+			}
+
+			objectOutputStream.writeObject(serverIds);
+
+			objectOutputStream.writeObject(licenseKey.getStartDate());
+
+			objectOutputStream.flush();
+
+			return new String(unsyncByteArrayOutputStream.toByteArray());
+		}
+		finally {
+			if (objectOutputStream != null) {
+				objectOutputStream.close();
+			}
+
+			if (unsyncByteArrayOutputStream != null) {
+				unsyncByteArrayOutputStream.close();
+			}
+		}
+	}
+
+	protected List<LicenseKey> filterLicenseKeys(List<LicenseKey> licenseKeys)
+		throws PortalException {
+
+		List<LicenseKey> filteredLicenseKeys = ListUtil.copy(licenseKeys);
+
+		Iterator<LicenseKey> itr = filteredLicenseKeys.iterator();
+
+		while (itr.hasNext()) {
+			LicenseKey licenseKey = itr.next();
+
+			if (!LicenseKeyPermission.contains(
+					getPermissionChecker(), licenseKey, ActionKeys.VIEW)) {
+
+				itr.remove();
+			}
+		}
+
+		return filteredLicenseKeys;
+	}
+
+	/*
+	TODO
+	protected long getLicenseEntryId(ProductEntry productEntry) {
+
+		List<LicenseEntry> licenseEntries = productEntry.getLicenseEntries();
+
+		for (LicenseEntry licenseEntry : licenseEntries) {
+			String type = licenseEntry.getType();
+
+			if (type.equals(LicenseEntryConstants.TYPE_LIMITED) ||
+				type.equals(LicenseEntryConstants.TYPE_PER_USER) ||
+				type.equals(LicenseEntryConstants.TYPE_PRODUCTION)) {
+
+				return licenseEntry.getLicenseEntryId();
+			}
+		}
+
+		return 0;
+	}
+
+	protected int getProductVersion(int liferayVersion) {
+		if (liferayVersion == 6120) {
+			return ProductEntryConstants.PORTAL_VERSION_6_1_20;
+		}
+		else if (liferayVersion == 6130) {
+			return ProductEntryConstants.PORTAL_VERSION_6_1_30;
+		}
+		else if (liferayVersion == 6210) {
+			return ProductEntryConstants.PORTAL_VERSION_6_2_10;
+		}
+
+		return ProductEntryConstants.PORTAL_VERSION_6_1_10;
+	}
+
+	*/
+
+	/*
+	TODO
+	protected OfferingEntry getWeDeployOfferingEntry() throws PortalException {
+		List<OrderEntry> orderEntries =
+			orderEntryLocalService.getAccountEntryOrderEntries(
+				OSBCustomerConstants.ACCOUNT_ENTRY_WEDEPLOY_ID);
+
+		for (OrderEntry orderEntry : orderEntries) {
+			List<OfferingEntry> offeringEntries =
+				offeringEntryLocalService.getOrderEntryOfferingEntries(
+					orderEntry.getOrderEntryId());
+
+			for (OfferingEntry offeringEntry : offeringEntries) {
+				if (offeringEntry.getType() ==
+						OfferingEntryConstants.TYPE_DEVELOPER) {
+
+					return offeringEntry;
+				}
+			}
+		}
+
+		throw new NoSuchOfferingEntryException();
+	}
+
+	*/
+
+	protected boolean isAccountAdmin(long userId) {
+		if (roleLocalService.hasUserRole(
+				userId, OSBCustomerConstants.ROLE_OSB_ACCOUNT_ADMIN_ID)) {
+
+			return true;
+		}
+
+		if (roleLocalService.hasUserRole(
+				userId, OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			return true;
+		}
+
+		return false;
+	}
+
+	protected void validateJSONWebServicePermissions() throws PortalException {
+		if (!roleLocalService.hasUserRole(
+				getUserId(), OSBCustomerConstants.ROLE_OSB_ADMINISTRATOR_ID)) {
+
+			throw new PrincipalException();
+		}
+	}
+
+	@ServiceReference
+	private LicenseEntryLocalService _licenseEntryLocalService;
+
+}

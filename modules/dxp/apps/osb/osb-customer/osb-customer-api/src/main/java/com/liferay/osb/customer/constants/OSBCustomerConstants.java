@@ -54,6 +54,8 @@ public class OSBCustomerConstants {
 	public static final long ROLE_CUSTOMER_COMMERCE_CONNECTOR_TO_SALESFORCE_ID =
 		3525738;
 
+	public static final String TEMP_DIR = "osb/temp/";
+
 	public static final long ROLE_CUSTOMER_COMMERCE_ID = 3525734;
 
 	public static final long ROLE_CUSTOMER_DXP_ID = 1546576;
@@ -72,6 +74,8 @@ public class OSBCustomerConstants {
 
 	public static final long ROLE_OSB_ADMINISTRATOR_ID = 1546561;
 
+	public static final long ROLE_OSB_TRIAL_LICENSE_ADMIN_ID = 1546565;
+	
 	public static final long ROLE_OSB_SUPPORT_ADMIN_ID = 1546564;
 
 	public static final long ROLE_PARTNER_ID = 54427;
