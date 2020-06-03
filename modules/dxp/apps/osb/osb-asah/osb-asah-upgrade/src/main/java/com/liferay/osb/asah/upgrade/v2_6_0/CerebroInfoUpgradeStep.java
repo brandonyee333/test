@@ -27,8 +27,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,8 +53,11 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
 
-		List<String> channelIds = JSONUtil.toStringList(
-			_faroInfoElasticsearchInvoker.get("channels"), "id");
+		List<String> channelIds = _getChannelIds();
+
+		if (channelIds.isEmpty()) {
+			return;
+		}
 
 		JSONArray individualSegmentsJSONArray =
 			_faroInfoElasticsearchInvoker.get(
@@ -107,6 +116,48 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 				false
 			).iterate();
 		}
+	}
+
+	private List<String> _getChannelIds() {
+		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
+			"channels",
+			searchSourceBuilder -> {
+				searchSourceBuilder.aggregation(
+					AggregationBuilders.terms(
+						"dataSources"
+					).field(
+						"dataSources.id"
+					).size(
+						Integer.MAX_VALUE
+					).subAggregation(
+						PipelineAggregatorBuilders.bucketSelector(
+							"bucket_filter",
+							new HashMap() {
+								{
+									put("doc_count", "_count");
+								}
+							},
+							new Script("params.doc_count > 1"))
+					));
+
+				searchSourceBuilder.size(0);
+			});
+
+		Aggregations aggregations = searchResponse.getAggregations();
+
+		Terms terms = aggregations.get("dataSources");
+
+		List<String> dataSourceIds = new ArrayList<>();
+
+		for (Terms.Bucket bucket : terms.getBuckets()) {
+			dataSourceIds.add(bucket.getKeyAsString());
+		}
+
+		JSONArray jsonArray = _faroInfoElasticsearchInvoker.get(
+			"channels",
+			QueryBuilders.termsQuery("dataSources.id", dataSourceIds));
+
+		return JSONUtil.toStringList(jsonArray, "id");
 	}
 
 	private ElasticsearchBulkRequestBuilder _updateSegmentNames(
