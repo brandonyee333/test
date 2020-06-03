@@ -16,14 +16,13 @@ import {ClayButtonWithIcon} from '@clayui/button';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import React, {useState} from 'react';
 
-import {EVENT_TYPES, usePage} from '../../hooks/usePage.es';
+import {EVENT_TYPES, useForm} from '../../hooks/useForm.es';
+import {usePage} from '../../hooks/usePage.es';
 import {setValue} from '../../util/i18n.es';
 
 export const Container = ({children, pages, strings = {}}) => {
-	const {
-		dispatch,
-		store: {editingLanguageId},
-	} = usePage();
+	const {editingLanguageId} = usePage();
+	const dispatch = useForm();
 
 	return (
 		<div className="page">
@@ -74,9 +73,10 @@ export const Container = ({children, pages, strings = {}}) => {
 };
 
 export const Page = ({page}) => {
-	const {dispatch, store} = usePage();
+	const {editingLanguageId} = usePage();
+	const dispatch = useForm();
+
 	const {successPageSettings} = page;
-	const {editingLanguageId} = store;
 
 	const {initialBody, initialTitle} = {
 		initialBody:
