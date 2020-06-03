@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.common.faro.info.dog;
 
+import com.liferay.osb.asah.common.cerebro.info.dog.CerebroInfoDog;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
@@ -887,6 +888,8 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 					individualSegmentJSONObject.getString("id"));
 			}
 		}
+
+		_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
 	}
 
 	private static final String _ACCOUNT_PREFIX = "Account: ";
@@ -902,6 +905,9 @@ public class FaroInfoIndividualSegmentDog extends BaseFaroInfoDog {
 		"activeIndividualCount", "activitiesCount", "engagementScore",
 		"individualCount", "lastActivityDate"
 	};
+
+	@Autowired
+	private CerebroInfoDog _cerebroInfoDog;
 
 	private ElasticsearchInvoker _dxpRawElasticsearchInvoker;
 

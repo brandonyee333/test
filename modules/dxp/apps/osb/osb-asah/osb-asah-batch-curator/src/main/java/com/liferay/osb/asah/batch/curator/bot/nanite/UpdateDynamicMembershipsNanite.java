@@ -14,6 +14,7 @@
 
 package com.liferay.osb.asah.batch.curator.bot.nanite;
 
+import com.liferay.osb.asah.common.cerebro.info.dog.CerebroInfoDog;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.converter.FilterStringToQueryBuilderConverter;
 import com.liferay.osb.asah.common.elasticsearch.converter.helper.faro.info.FaroInfoIndividualsFilterStringConverterHelper;
@@ -55,6 +56,8 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 		if (individualSegmentJSONObject != null) {
 			_updateDynamicMembershipsForIndividualSegment(
 				dateModified, individualSegmentJSONObject);
+
+			_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
 
 			return;
 		}
@@ -374,6 +377,9 @@ public class UpdateDynamicMembershipsNanite extends BaseNanite {
 				individualSegmentJSONObject.getString("id"));
 		}
 	}
+
+	@Autowired
+	private CerebroInfoDog _cerebroInfoDog;
 
 	@Autowired
 	private FaroInfoIndividualSegmentDog _faroInfoIndividualSegmentDog;
