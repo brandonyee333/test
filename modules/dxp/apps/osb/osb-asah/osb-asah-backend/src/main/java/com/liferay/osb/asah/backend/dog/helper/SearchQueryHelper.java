@@ -198,10 +198,10 @@ public class SearchQueryHelper {
 
 		BoolQueryBuilder assetIdsBoolQueryBuilder = QueryBuilders.boolQuery();
 
-		for (String assetId : assetIds) {
-			assetIdsBoolQueryBuilder.should(
-				QueryBuilders.termQuery(
-					assetResolver.getAssetIdFieldName(), assetId));
+		if (!assetIds.isEmpty()) {
+			assetIdsBoolQueryBuilder.filter(
+				QueryBuilders.termsQuery(
+					assetResolver.getAssetIdFieldName(), assetIds));
 		}
 
 		boolQueryBuilder.filter(assetIdsBoolQueryBuilder);
