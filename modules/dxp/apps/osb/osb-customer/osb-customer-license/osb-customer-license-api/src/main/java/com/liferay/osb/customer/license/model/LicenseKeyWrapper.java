@@ -374,6 +374,13 @@ public class LicenseKeyWrapper implements LicenseKey, ModelWrapper<LicenseKey> {
 		return _licenseKey.compareTo(licenseKey);
 	}
 
+	@Override
+	public com.liferay.osb.customer.admin.model.AccountEntry getAccountEntry()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _licenseKey.getAccountEntry();
+	}
+
 	/**
 	 * Returns the account entry ID of this license key.
 	 *

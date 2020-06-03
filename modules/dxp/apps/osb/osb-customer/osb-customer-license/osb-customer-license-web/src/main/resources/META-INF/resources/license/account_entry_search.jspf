@@ -1,0 +1,42 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * The contents of this file are subject to the terms of the Liferay Enterprise
+ * Subscription License ("License"). You may not use this file except in
+ * compliance with the License. You can obtain a copy of the License by
+ * contacting Liferay, Inc. See the License for the specific language governing
+ * permissions and limitations under the License, including but not limited to
+ * distribution rights of the Software.
+ *
+ *
+ *
+ */
+--%>
+
+<liferay-ui:search-toggle
+	buttonLabel="search"
+	displayTerms="<%= displayTerms %>"
+	id="toggle_id_account_entry_search"
+>
+	<table class="lfr-table">
+		<tr>
+			<td valign="top">
+				<table class="lfr-table">
+					<tr>
+						<td>
+							<div id="<portlet:namespace />nameContainer">
+								<aui:input label="project-name" name="<%= displayTerms.NAME %>" size="20" type="text" value="<%= displayTerms.getName() %>" />
+							</div>
+						</td>
+						<td>
+							<div id="<portlet:namespace />codeContainer">
+								<aui:input label="code" name="<%= displayTerms.CODE %>" size="20" type="text" value="<%= displayTerms.getCode() %>" />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</liferay-ui:search-toggle>
