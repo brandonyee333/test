@@ -1,0 +1,87 @@
+[
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"country": null,
+		"ctaClicks": 1,
+		"dataSourceId": "333962835564819755",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-1d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-1d}",
+		"experimentId": "20",
+		"firstEventDate": "${now-1d}",
+		"formSubmissions": 0,
+		"id": "4",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": "1",
+		"interactionDates": [
+		],
+		"knownIndividual": true,
+		"lastEventDate": "${now-1d}",
+		"modifiedDate": "${now-1d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"reads": 2,
+		"region": null,
+		"segmentNames": [
+		],
+		"sessionId": "4",
+		"timeOnPage": 445229,
+		"title": "Page 1",
+		"url": "http://192.168.108.90:8080/",
+		"userId": "4",
+		"variantId": "1",
+		"views": 1
+	},
+	{
+		"bounce": 0,
+		"browserName": "Chrome",
+		"channelId": "1",
+		"city": null,
+		"country": null,
+		"ctaClicks": 0,
+		"dataSourceId": "333962835564819755",
+		"deviceType": "Desktop",
+		"directAccess": 1,
+		"directAccessDates": [
+			"${now-1d}"
+		],
+		"engagementScore": 0.09893977777777777,
+		"eventDate": "${now-1d}",
+		"experimentId": "10",
+		"firstEventDate": "${now-1d}",
+		"formSubmissions": 0,
+		"id": "5",
+		"indirectAccess": 0,
+		"indirectAccessDates": [
+		],
+		"individualId": "1",
+		"interactionDates": [
+		],
+		"lastEventDate": "${now-1d}",
+		"modifiedDate": "${now-1d}",
+		"pageScrolls": [
+		],
+		"platformName": "Unknown",
+		"reads": null,
+		"region": null,
+		"segmentNames": [
+		],
+		"sessionId": "5",
+		"timeOnPage": 445229,
+		"title": "Page 1",
+		"url": "http://192.168.108.90:8080/",
+		"userId": "5",
+		"variantId": "2",
+		"views": 1
+	}
+]
