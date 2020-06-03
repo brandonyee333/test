@@ -1,6 +1,6 @@
 {
 	"mappings": {
-		"job-executions": {
+		"job-runs": {
 			"properties": {
 				"completedDate": {
 					"type": "date"
