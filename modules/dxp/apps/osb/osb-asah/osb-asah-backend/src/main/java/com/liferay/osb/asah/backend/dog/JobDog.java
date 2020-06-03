@@ -169,7 +169,7 @@ public class JobDog {
 		}
 
 		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"job-executions", QueryBuilders.termsQuery("job.id", id),
+			"job-executions", QueryBuilders.termQuery("job.id", id),
 			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
 
 		if (jobExecutionJSONObject != null) {
@@ -195,9 +195,9 @@ public class JobDog {
 		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.fetch(
 			"job-executions",
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("job.id", id)
+				QueryBuilders.termQuery("job.id", id)
 			).filter(
-				QueryBuilders.termsQuery("status", "COMPLETED")
+				QueryBuilders.termQuery("status", "COMPLETED")
 			),
 			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
 
@@ -246,9 +246,9 @@ public class JobDog {
 		return _faroInfoElasticsearchInvoker.exists(
 			"job-executions",
 			BoolQueryBuilderUtil.filter(
-				QueryBuilders.termsQuery("job.id", id)
+				QueryBuilders.termQuery("job.id", id)
 			).filter(
-				QueryBuilders.termsQuery("status", "COMPLETED")
+				QueryBuilders.termQuery("status", "COMPLETED")
 			));
 	}
 
