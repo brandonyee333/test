@@ -229,7 +229,7 @@ if (Validator.isNotNull(keywords)) {
 						if (fileEntry != null) {
 							FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
-							String title = DLUtil.getTitleWithExtension(fileEntry);
+							String title = fileEntry.getTitle();
 
 							JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
 						%>
@@ -364,7 +364,7 @@ if (Validator.isNotNull(keywords)) {
 								if (fileEntry != null) {
 									FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
-									String title = DLUtil.getTitleWithExtension(fileEntry);
+									String title = fileEntry.getTitle();
 
 									JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
 
@@ -471,7 +471,7 @@ if (Validator.isNotNull(keywords)) {
 								if (fileEntry != null) {
 									FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
-									String title = DLUtil.getTitleWithExtension(fileEntry);
+									String title = fileEntry.getTitle();
 
 									JSONObject itemMedatadaJSONObject = ItemSelectorRepositoryEntryBrowserUtil.getItemMetadataJSONObject(fileEntry, locale);
 								%>
