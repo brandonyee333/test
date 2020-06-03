@@ -16,10 +16,14 @@ package com.liferay.osb.asah.common.cerebro.info.dog;
 
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchBulkRequestBuilder;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.json.JSONArrayIterator;
 import com.liferay.osb.asah.common.json.JSONUtil;
 
 import java.util.List;
+
+import javax.annotation.PostConstruct;
 
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -27,13 +31,22 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * @author Rachael Koestartyo
  */
 @Component
-public class CerebroInfoDog extends BaseCerebroInfoDog {
+public class CerebroInfoDog {
+
+	@PostConstruct
+	public void init() {
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forCerebroInfo();
+
+		_faroInfoElasticsearchInvoker =
+			_elasticsearchInvokerFactory.forFaroInfo();
+	}
 
 	public void updateSegmentNames(JSONObject individualSegmentJSONObject)
 		throws Exception {
@@ -49,13 +62,13 @@ public class CerebroInfoDog extends BaseCerebroInfoDog {
 
 		for (String collectionName : _CEREBRO_INFO_COLLECTION_NAMES) {
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-				elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
+				_elasticsearchInvoker.createElasticsearchBulkRequestBuilder();
 
 			elasticsearchBulkRequestBuilder.refreshPolicy(
 				WriteRequest.RefreshPolicy.IMMEDIATE);
 
 			JSONArrayIterator.of(
-				collectionName, elasticsearchInvoker,
+				collectionName, _elasticsearchInvoker,
 				jsonObject -> _updateSegmentNames(
 					collectionName, elasticsearchBulkRequestBuilder,
 					individualSegmentJSONObject.getString("id"),
@@ -76,7 +89,7 @@ public class CerebroInfoDog extends BaseCerebroInfoDog {
 		String individualSegmentId, String individualSegmentName,
 		JSONObject jsonObject) {
 
-		JSONArray individualJSONArray = faroInfoElasticsearchInvoker.get(
+		JSONArray individualJSONArray = _faroInfoElasticsearchInvoker.get(
 			"individuals",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery(
@@ -120,5 +133,12 @@ public class CerebroInfoDog extends BaseCerebroInfoDog {
 		"blogs", "custom-assets", "document-libraries", "forms", "journals",
 		"pages"
 	};
+
+	private ElasticsearchInvoker _elasticsearchInvoker;
+
+	@Autowired
+	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
+
+	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }

@@ -42,11 +42,11 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(classes = OSBAsahSpringBootApplication.class)
 @RunWith(OSBAsahSpringJUnit4ClassRunner.class)
-public class CerebroInfoDogTest extends BaseCerebroInfoDogTestCase {
+public class CerebroInfoDogTest {
 
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();
+		_elasticsearchInvoker = _elasticsearchInvokerFactory.forCerebroInfo();
 
 		_faroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forFaroInfo();
@@ -77,7 +77,7 @@ public class CerebroInfoDogTest extends BaseCerebroInfoDogTestCase {
 
 		_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
 
-		JSONArray pagesJSONArray = elasticsearchInvoker.get(
+		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
 			"pages", QueryBuilders.termQuery("individualId", "1"));
 
 		for (int i = 0; i < pagesJSONArray.length(); i++) {
@@ -91,6 +91,8 @@ public class CerebroInfoDogTest extends BaseCerebroInfoDogTestCase {
 
 	@Autowired
 	private CerebroInfoDog _cerebroInfoDog;
+
+	private ElasticsearchInvoker _elasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
