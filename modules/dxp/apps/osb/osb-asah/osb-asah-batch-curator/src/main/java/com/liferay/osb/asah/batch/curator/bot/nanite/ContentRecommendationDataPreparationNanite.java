@@ -69,8 +69,8 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 
 		String now = DateUtil.newUTCDateString();
 
-		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.add(
-			"job-executions",
+		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.add(
+			"job-runs",
 			JSONUtil.put(
 				"context", new JSONObject()
 			).put(
@@ -89,7 +89,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			Arrays.asList(
 				"--elasticsearch-hostname",
 				ServiceConstants.LCP_ENGINE_ELASTICSEARCH_SERVER_IP,
-				"--job-execution-id", jobExecutionJSONObject.getString("id"),
+				"--job-run-id", jobRunJSONObject.getString("id"),
 				"--lcp-project-id", ServiceConstants.LCP_PROJECT_ID),
 			"content_recommendation.yaml",
 			"liferay.content_recommendation.ContentRecommendationApplication");
@@ -97,7 +97,7 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 
 	private long _getCurrentMonthJobRunsCount(String jobId) {
 		return _faroInfoElasticsearchInvoker.count(
-			"job-executions",
+			"job-runs",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("job.id", jobId)
 			).filter(

@@ -168,13 +168,13 @@ public class JobDog {
 			return JobStatus.READY;
 		}
 
-		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"job-executions", QueryBuilders.termQuery("job.id", id),
+		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.fetch(
+			"job-runs", QueryBuilders.termQuery("job.id", id),
 			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
 
-		if (jobExecutionJSONObject != null) {
+		if (jobRunJSONObject != null) {
 			if (Objects.equals(
-					jobExecutionJSONObject.getString("status"), "RUNNING")) {
+					jobRunJSONObject.getString("status"), "RUNNING")) {
 
 				return JobStatus.TRAINING;
 			}
@@ -192,8 +192,8 @@ public class JobDog {
 	}
 
 	public String getJobTrainingDateString(String id) {
-		JSONObject jobExecutionJSONObject = _faroInfoElasticsearchInvoker.fetch(
-			"job-executions",
+		JSONObject jobRunJSONObject = _faroInfoElasticsearchInvoker.fetch(
+			"job-runs",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("job.id", id)
 			).filter(
@@ -201,11 +201,11 @@ public class JobDog {
 			),
 			SortBuilderUtil.fieldSort("id", SortOrder.DESC), null, null);
 
-		if (jobExecutionJSONObject == null) {
+		if (jobRunJSONObject == null) {
 			return null;
 		}
 
-		return jobExecutionJSONObject.getString("completedDate");
+		return jobRunJSONObject.getString("completedDate");
 	}
 
 	private SearchSourceBuilder _buildJobSearchSourceBuilder(String jobId) {
@@ -244,7 +244,7 @@ public class JobDog {
 
 	private boolean _hasJobCompleted(String id) {
 		return _faroInfoElasticsearchInvoker.exists(
-			"job-executions",
+			"job-runs",
 			BoolQueryBuilderUtil.filter(
 				QueryBuilders.termQuery("job.id", id)
 			).filter(

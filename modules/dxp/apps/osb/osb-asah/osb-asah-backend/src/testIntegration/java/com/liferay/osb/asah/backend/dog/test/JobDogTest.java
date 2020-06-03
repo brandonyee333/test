@@ -108,7 +108,7 @@ public class JobDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "job-executions", resourcePath = "job-executions-info-1.json",
+		name = "job-runs", resourcePath = "job-runs-info-1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -128,7 +128,7 @@ public class JobDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "job-executions", resourcePath = "job-executions-info-2.json",
+		name = "job-runs", resourcePath = "job-runs-info-2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -148,7 +148,7 @@ public class JobDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "job-executions", resourcePath = "job-executions-info-3.json",
+		name = "job-runs", resourcePath = "job-runs-info-3.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
@@ -157,7 +157,7 @@ public class JobDogTest {
 	}
 
 	@ElasticsearchIndex(
-		name = "job-executions", resourcePath = "job-executions-info-2.json",
+		name = "job-runs", resourcePath = "job-runs-info-2.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test

@@ -16,7 +16,7 @@ from pyspark.sql.functions import col, count, unix_timestamp
 
 import datetime
 
-class CompleteJobExecutionStepSparkJob(BaseSparkJob):
+class CompleteJobRunSparkJob(BaseSparkJob):
 	def run(self):
 		spark_application = self.spark_application
 
@@ -26,11 +26,11 @@ class CompleteJobExecutionStepSparkJob(BaseSparkJob):
 		now = datetime.datetime.utcnow()
 
 		elasticsearch_bridge.update_document(
-		    'job-executions', {
+		    'job-runs', {
 		        'completedDate': now,
 		        'lastUpdatedDate': now,
 		        'status': 'COMPLETED'
-		    }, args.job_execution_id, 'osbasahfaroinfo'
+		    }, args.job_run_id, 'osbasahfaroinfo'
 		)
 
 class GenerateItemsSparkJob(BaseSparkJob):
@@ -107,9 +107,9 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 
 		data_frame_reader = spark_session.read
 
-		job_execution = spark_application.job_execution
+		job_run = spark_application.job_run
 
-		job = job_execution.get('job')
+		job = job_run.get('job')
 
 		recommended_items_data_frame = data_frame_reader.json(
 		    '{}/{}/{}/inference_result/*.json.out'.format(
@@ -133,10 +133,10 @@ class UpdateJobExecutionStepSparkJob(BaseSparkJob):
 		elasticsearch_bridge = spark_application.elasticsearch_bridge
 
 		elasticsearch_bridge.update_document(
-		    'job-executions', {
+		    'job-runs', {
 		        'lastUpdatedDate': datetime.datetime.utcnow(),
 		        'step': 'DATA_SOLUTION'
-		    }, args.job_execution_id, 'osbasahfaroinfo'
+		    }, args.job_run_id, 'osbasahfaroinfo'
 		)
 
 class WriteDataframeSparkJob(BaseSparkJob):
@@ -155,9 +155,9 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		args = self.spark_application.args
 		configuration = self.spark_application.configuration
-		job_execution = self.spark_application.job_execution
+		job_run = self.spark_application.job_run
 
-		job = job_execution.get('job')
+		job = job_run.get('job')
 
 		data_frame_writer.format(
 		    self._output_format

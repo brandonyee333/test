@@ -31,14 +31,14 @@ class ContentRecommendationApplication(BaseSparkApplication):
 		    usage='{} liferay.hello_world.ContentRecommendationApplication '
 		    '--configuration <Configuration Path> '
 		    '--elasticsearch-hostname <Elasticsearch Hostname> '
-		    '--job-execution-id <Job Execution ID> '
+		    '--job-run-id <Job Run ID> '
 		    '--lcp-project-id <LCP Project ID>'.format(sys.argv[0])
 		)
 
 		argument_parser.add_argument('application')
 		argument_parser.add_argument('--configuration', required=True)
 		argument_parser.add_argument('--elasticsearch-hostname', required=True)
-		argument_parser.add_argument('--job-execution-id', required=True)
+		argument_parser.add_argument('--job-run-id', required=True)
 		argument_parser.add_argument('--lcp-project-id', required=True)
 
 		return argument_parser
@@ -65,7 +65,7 @@ class ContentRecommendationApplication(BaseSparkApplication):
 	def _create_spark_job_pipeline(self):
 		jobs = []
 
-		if self.job_execution.get('step') == 'DATA_PREPARATION':
+		if self.job_run.get('step') == 'DATA_PREPARATION':
 			jobs.append(ReadAnalyticsEventsSparkJob(self))
 
 			jobs.append(GenerateUserItemInteractionsSparkJob(self))
@@ -81,38 +81,38 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 			jobs.append(WriteRecommendedItemsSparkJob(self))
 
-			jobs.append(CompleteJobExecutionStepSparkJob(self))
+			jobs.append(CompleteJobRunSparkJob(self))
 
 		return SparkJobPipeline(jobs)
 
-	def _get_job_execution(self):
+	def _get_job_run(self):
 		elasticsearch_bridge = self.elasticsearch_bridge
 
 		return elasticsearch_bridge.get_document(
-		    'job-executions', self.args.job_execution_id, 'osbasahfaroinfo'
+		    'job-runs', self.args.job_run_id, 'osbasahfaroinfo'
 		)
 
-	def _update_job_execution_status(self, status):
+	def _update_job_run_status(self, status):
 		elasticsearch_bridge = self.elasticsearch_bridge
-		job_execution = self.job_execution
+		job_run = self.job_run
 
 		now = datetime.datetime.utcnow()
 
 		elasticsearch_bridge.update_document(
-		    'job-executions', {
+		    'job-runs', {
 		        'lastUpdatedDate': now,
 		        'status': status
-		    }, job_execution.get('id'), 'osbasahfaroinfo'
+		    }, job_run.get('id'), 'osbasahfaroinfo'
 		)
 
 	def start(self):
-		self.job_execution = self._get_job_execution()
+		self.job_run = self._get_job_run()
 
 		spark_job_pipeline = self._create_spark_job_pipeline()
 
 		try:
 			spark_job_pipeline.run()
 		except Exception as e:
-			self._update_job_execution_status('FAILED')
+			self._update_job_run_status('FAILED')
 
 			raise e
