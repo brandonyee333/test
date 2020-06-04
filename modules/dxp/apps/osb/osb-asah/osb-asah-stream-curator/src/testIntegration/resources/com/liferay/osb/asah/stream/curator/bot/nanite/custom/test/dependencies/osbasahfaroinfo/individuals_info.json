@@ -1,5 +1,8 @@
 [
 	{
+		"channelIds": [
+			"1"
+		],
 		"dataSourceIndividualPKs": [
 			{
 				"dataSourceId": "www.liferay.com",
@@ -22,6 +25,9 @@
 		]
 	},
 	{
+		"channelIds": [
+			"1"
+		],
 		"dataSourceIndividualPKs": [
 			{
 				"dataSourceId": "www.liferay.com",

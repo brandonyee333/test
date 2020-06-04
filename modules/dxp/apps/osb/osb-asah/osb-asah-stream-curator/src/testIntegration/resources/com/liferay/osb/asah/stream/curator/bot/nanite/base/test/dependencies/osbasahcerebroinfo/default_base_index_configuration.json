@@ -5,6 +5,9 @@
 				"browserName": {
 					"type": "keyword"
 				},
+				"channelId": {
+					"type": "keyword"
+				},
 				"city": {
 					"type": "keyword"
 				},

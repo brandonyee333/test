@@ -1,6 +1,7 @@
 [
 	{
 		"applicationId": "Page",
+		"channelId": "1",
 		"context": {
 			"browserName": "Firefox",
 			"city": "Recife",
@@ -23,6 +24,7 @@
 	},
 	{
 		"applicationId": "Page",
+		"channelId": "1",
 		"context": {
 			"browserName": "Chrome",
 			"city": "Recife",
