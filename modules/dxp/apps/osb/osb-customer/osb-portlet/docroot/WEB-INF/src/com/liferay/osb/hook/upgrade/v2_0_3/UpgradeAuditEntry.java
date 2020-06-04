@@ -21,12 +21,12 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.AuditEntryLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;

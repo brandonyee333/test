@@ -22,6 +22,7 @@ import com.liferay.osb.model.OrderEntry;
 import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -29,7 +30,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;

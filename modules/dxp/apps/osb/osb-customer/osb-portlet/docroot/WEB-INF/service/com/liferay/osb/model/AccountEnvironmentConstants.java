@@ -14,11 +14,11 @@
 
 package com.liferay.osb.model;
 
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 

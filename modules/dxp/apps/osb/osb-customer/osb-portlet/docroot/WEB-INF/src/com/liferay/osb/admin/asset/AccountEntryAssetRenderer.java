@@ -18,11 +18,11 @@ import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.osb.model.AccountEntry;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.OSBPortletKeys;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Locale;
 

@@ -17,9 +17,9 @@ package com.liferay.osb.model.impl;
 import com.liferay.document.library.kernel.store.DLStoreUtil;
 import com.liferay.osb.model.AccountAttachmentConstants;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Brent Krone-Schmidt

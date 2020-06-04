@@ -32,11 +32,11 @@ import com.liferay.osb.model.impl.LCSSubscriptionEntryImpl;
 import com.liferay.osb.remote.lcs.LCSJSONWebServiceUtil;
 import com.liferay.osb.service.base.LCSSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.osb.util.PortletPropsValues;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.util.DateUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 

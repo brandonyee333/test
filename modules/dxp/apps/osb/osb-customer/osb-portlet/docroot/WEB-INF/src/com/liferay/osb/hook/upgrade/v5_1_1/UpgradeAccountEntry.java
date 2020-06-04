@@ -20,9 +20,9 @@ import com.liferay.osb.model.AccountEntryConstants;
 import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.RemoteCorpProjectLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 

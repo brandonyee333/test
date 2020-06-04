@@ -20,9 +20,9 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.SupportResponse;
 import com.liferay.osb.service.ProductEntryLocalServiceUtil;
 import com.liferay.osb.service.SupportResponseLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Brian Wing Shun Chan

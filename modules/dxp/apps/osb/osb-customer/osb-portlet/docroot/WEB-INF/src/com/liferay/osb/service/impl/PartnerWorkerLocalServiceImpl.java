@@ -22,12 +22,12 @@ import com.liferay.osb.model.PartnerWorkerConstants;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.PartnerWorkerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 

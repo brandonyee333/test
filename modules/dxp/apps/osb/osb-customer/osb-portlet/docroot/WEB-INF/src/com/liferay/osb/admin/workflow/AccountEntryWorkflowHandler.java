@@ -19,6 +19,7 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.LCSSubscriptionEntryLocalServiceUtil;
 import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -32,7 +33,6 @@ import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.BaseWorkflowHandler;
 

@@ -31,11 +31,11 @@ import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.base.AccountEnvironmentLocalServiceBaseImpl;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 

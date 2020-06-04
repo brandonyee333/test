@@ -21,11 +21,11 @@ import com.liferay.osb.model.ProductEntry;
 import com.liferay.osb.model.ProductEntryConstants;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.LicenseEntryLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.ListType;
 import com.liferay.portal.kernel.service.ListTypeServiceUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.List;

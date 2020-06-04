@@ -29,6 +29,7 @@ import com.liferay.osb.support.util.SupportUtil;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
 import com.liferay.osb.util.comparator.OfferingEntrySupportEndDateComparator;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -38,7 +39,6 @@ import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Time;
 
 import java.text.Format;

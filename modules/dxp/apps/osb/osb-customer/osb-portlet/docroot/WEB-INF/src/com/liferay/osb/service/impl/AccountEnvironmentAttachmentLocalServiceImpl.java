@@ -20,11 +20,11 @@ import com.liferay.osb.exception.DuplicateAccountEnvironmentAttachmentException;
 import com.liferay.osb.model.AccountEnvironmentAttachment;
 import com.liferay.osb.service.base.AccountEnvironmentAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.io.File;
 import java.io.InputStream;

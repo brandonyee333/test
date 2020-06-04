@@ -22,9 +22,9 @@ import com.liferay.expando.kernel.model.ExpandoTableConstants;
 import com.liferay.expando.kernel.service.ExpandoColumnLocalServiceUtil;
 import com.liferay.expando.kernel.service.ExpandoTableLocalServiceUtil;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.StringPool;
 
 /**
  * @author Rachael Koestartyo

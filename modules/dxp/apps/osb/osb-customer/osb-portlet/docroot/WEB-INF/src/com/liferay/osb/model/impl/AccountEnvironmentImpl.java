@@ -16,7 +16,7 @@ package com.liferay.osb.model.impl;
 
 import com.liferay.osb.model.AccountEnvironmentConstants;
 import com.liferay.osb.model.ProductEntryConstants;
-import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.util.ArrayList;

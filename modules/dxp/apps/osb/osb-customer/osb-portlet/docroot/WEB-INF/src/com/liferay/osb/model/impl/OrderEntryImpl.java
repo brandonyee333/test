@@ -25,10 +25,10 @@ import com.liferay.osb.service.AccountEntryLocalServiceUtil;
 import com.liferay.osb.service.ExternalIdMapperLocalServiceUtil;
 import com.liferay.osb.service.OfferingEntryLocalServiceUtil;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.List;
 

@@ -19,11 +19,11 @@ import com.liferay.osb.model.impl.CorpProjectImpl;
 import com.liferay.osb.remote.web.WebRESTWebServiceUtil;
 import com.liferay.osb.service.base.RemoteCorpProjectLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 

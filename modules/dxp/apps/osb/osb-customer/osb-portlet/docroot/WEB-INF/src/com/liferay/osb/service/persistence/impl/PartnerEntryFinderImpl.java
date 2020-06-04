@@ -18,6 +18,7 @@ import com.liferay.osb.model.PartnerEntry;
 import com.liferay.osb.model.impl.PartnerEntryImpl;
 import com.liferay.osb.service.persistence.PartnerEntryFinder;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.orm.custom.sql.CustomSQLUtil;
 import com.liferay.portal.kernel.dao.orm.QueryPos;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -28,7 +29,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 

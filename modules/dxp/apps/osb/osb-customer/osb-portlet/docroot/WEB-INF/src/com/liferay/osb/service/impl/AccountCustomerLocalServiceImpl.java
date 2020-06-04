@@ -26,11 +26,11 @@ import com.liferay.osb.model.AuditEntryConstants;
 import com.liferay.osb.service.base.AccountCustomerLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.VisibilityConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.Date;
 import java.util.List;

@@ -18,12 +18,12 @@ import com.liferay.osb.hook.upgrade.BaseUpgradeProcess;
 import com.liferay.osb.model.OfferingDefinition;
 import com.liferay.osb.service.OfferingBundleLocalServiceUtil;
 import com.liferay.osb.service.OfferingDefinitionLocalServiceUtil;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
 
 import java.util.HashMap;
 import java.util.List;

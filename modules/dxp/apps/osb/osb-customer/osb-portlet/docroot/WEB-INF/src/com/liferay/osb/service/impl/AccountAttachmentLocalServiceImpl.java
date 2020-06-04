@@ -23,11 +23,11 @@ import com.liferay.osb.exception.DuplicateAccountAttachmentException;
 import com.liferay.osb.model.AccountAttachment;
 import com.liferay.osb.service.base.AccountAttachmentLocalServiceBaseImpl;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.ObjectValuePair;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.File;
