@@ -77,6 +77,8 @@ public class CerebroInfoDogTest {
 
 		_cerebroInfoDog.updateSegmentNames(individualSegmentJSONObject);
 
+		JSONArray segmentNamesJSONArray = JSONUtil.put("Test Segment 1");
+
 		JSONArray pagesJSONArray = _elasticsearchInvoker.get(
 			"pages", QueryBuilders.termQuery("individualId", "1"));
 
@@ -84,7 +86,7 @@ public class CerebroInfoDogTest {
 			JSONObject pageJSONObject = pagesJSONArray.getJSONObject(i);
 
 			JSONAssert.assertEquals(
-				JSONUtil.put("Test Segment 1"),
+				segmentNamesJSONArray,
 				pageJSONObject.getJSONArray("segmentNames"), true);
 		}
 	}

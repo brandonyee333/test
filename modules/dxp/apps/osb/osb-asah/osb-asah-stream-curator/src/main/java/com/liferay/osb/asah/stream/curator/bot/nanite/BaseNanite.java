@@ -349,11 +349,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 	private List<String> _getIndividualSegmentIds(
 		String channelId, JSONObject individualJSONObject) {
 
-		JSONArray individualSegmentIdsJSONArray =
-			individualJSONObject.getJSONArray("individualSegmentIds");
-
 		List<String> individualSegmentIds = JSONUtil.toStringList(
-			individualSegmentIdsJSONArray);
+			individualJSONObject.getJSONArray("individualSegmentIds"));
 
 		JSONArray individualSegmentsJSONArray =
 			_faroInfoElasticsearchInvoker.get(

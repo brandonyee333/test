@@ -59,22 +59,22 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 			return;
 		}
 
+		Map<String, List<String>> channelIndividualSegmentNames =
+			new HashMap<>();
+
 		JSONArray individualSegmentsJSONArray =
 			_faroInfoElasticsearchInvoker.get(
 				"individual-segments",
 				QueryBuilders.termsQuery("channelId", channelIds));
 
-		Map<String, List<String>> channelIndividualSegmentNames =
-			new HashMap<>();
-
 		for (int i = 0; i < individualSegmentsJSONArray.length(); i++) {
+			List<String> individualSegmentNames = new ArrayList<>();
+
 			JSONObject individualSegmentJSONObject =
 				individualSegmentsJSONArray.getJSONObject(i);
 
 			String channelId = individualSegmentJSONObject.getString(
 				"channelId");
-
-			List<String> individualSegmentNames = new ArrayList<>();
 
 			if (channelIndividualSegmentNames.containsKey(channelId)) {
 				individualSegmentNames = channelIndividualSegmentNames.get(
@@ -89,19 +89,19 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 				individualSegmentNames);
 		}
 
-		_cerebroInfoElasticsearchInvoker =
+		ElasticsearchInvoker cerebroInfoElasticsearchInvoker =
 			_elasticsearchInvokerFactory.forCerebroInfo();
 
 		for (String collectionName : _CEREBRO_INFO_COLLECTION_NAMES) {
 			ElasticsearchBulkRequestBuilder elasticsearchBulkRequestBuilder =
-				_cerebroInfoElasticsearchInvoker.
+				cerebroInfoElasticsearchInvoker.
 					createElasticsearchBulkRequestBuilder();
 
 			elasticsearchBulkRequestBuilder.refreshPolicy(
 				WriteRequest.RefreshPolicy.IMMEDIATE);
 
 			JSONArrayIterator.of(
-				collectionName, _cerebroInfoElasticsearchInvoker,
+				collectionName, cerebroInfoElasticsearchInvoker,
 				jsonObject -> _updateSegmentNames(
 					channelIndividualSegmentNames.get(
 						jsonObject.getString("channelId")),
@@ -119,6 +119,8 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 	}
 
 	private List<String> _getChannelIds() {
+		List<String> dataSourceIds = new ArrayList<>();
+
 		SearchResponse searchResponse = _faroInfoElasticsearchInvoker.search(
 			"channels",
 			searchSourceBuilder -> {
@@ -146,8 +148,6 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 		Aggregations aggregations = searchResponse.getAggregations();
 
 		Terms terms = aggregations.get("dataSources");
-
-		List<String> dataSourceIds = new ArrayList<>();
 
 		for (Terms.Bucket bucket : terms.getBuckets()) {
 			dataSourceIds.add(bucket.getKeyAsString());
@@ -196,8 +196,6 @@ public class CerebroInfoUpgradeStep implements UpgradeStep {
 		"custom-assets", "document-libraries", "forms", "journal-clicks",
 		"journals", "page-referrers", "pages"
 	};
-
-	private ElasticsearchInvoker _cerebroInfoElasticsearchInvoker;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
