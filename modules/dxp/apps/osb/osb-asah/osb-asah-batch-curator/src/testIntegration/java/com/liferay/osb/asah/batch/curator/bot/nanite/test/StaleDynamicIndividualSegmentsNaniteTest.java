@@ -77,7 +77,8 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 				_dataSourceJSONObject.getString("id")));
 
 		_individualJSONObject = _faroInfoIndividualDog.addIndividual(
-			FaroInfoTestUtil.buildIndividualJSONObject(_dataSourceJSONObject),
+			FaroInfoTestUtil.buildIndividualJSONObject(
+				"1", _dataSourceJSONObject),
 			false);
 	}
 
@@ -239,6 +240,7 @@ public class StaleDynamicIndividualSegmentsNaniteTest
 			JSONObject individualSegmentJSONObject =
 				_faroInfoIndividualSegmentDog.addIndividualSegment(
 					FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+						"1",
 						"(((activities/" + duration + " eq 'Page#pageViewed#" +
 							_assetJSONObject.getString("id") + "')))"));
 

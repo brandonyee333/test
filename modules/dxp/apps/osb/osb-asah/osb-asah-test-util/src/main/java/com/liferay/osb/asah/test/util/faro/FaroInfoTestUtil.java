@@ -390,6 +390,36 @@ public class FaroInfoTestUtil {
 		return JSONUtil.put(
 			"activitiesCount", 0
 		).put(
+			"channelId", RandomTestUtil.randomId()
+		).put(
+			"dateCreated", dateString
+		).put(
+			"dateModified", dateString
+		).put(
+			"filter", filterString
+		).put(
+			"individualCount", 0
+		).put(
+			"name", RandomTestUtil.randomString()
+		).put(
+			"scope", "PROJECT"
+		).put(
+			"segmentType", "DYNAMIC"
+		).put(
+			"status", "ACTIVE"
+		);
+	}
+
+	public static JSONObject buildDynamicIndividualSegmentJSONObject(
+		String channelId, String filterString) {
+
+		String dateString = DateUtil.newDateString();
+
+		return JSONUtil.put(
+			"activitiesCount", 0
+		).put(
+			"channelId", channelId
+		).put(
 			"dateCreated", dateString
 		).put(
 			"dateModified", dateString

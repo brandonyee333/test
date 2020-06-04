@@ -67,7 +67,8 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 
 		_individualJSONObject = faroInfoElasticsearchInvoker.add(
 			"individuals",
-			FaroInfoTestUtil.buildIndividualJSONObject(dataSourceJSONObject));
+			FaroInfoTestUtil.buildIndividualJSONObject(
+				"1", dataSourceJSONObject));
 
 		_dataSourceId = dataSourceJSONObject.getString("id");
 
@@ -188,12 +189,14 @@ public class IndividualInterestScoresNaniteTest extends BaseNaniteTestCase {
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+					"1",
 					"interests.filter(filter='(name eq ''" + keyword + "'') " +
 						"and (score eq ''false'')')"));
 		JSONObject individualSegment2JSONObject =
 			faroInfoElasticsearchInvoker.add(
 				"individual-segments",
 				FaroInfoTestUtil.buildDynamicIndividualSegmentJSONObject(
+					"1",
 					"interests.filter(filter='(name eq ''" + keyword + "'') " +
 						"and (score eq ''true'')')"));
 
