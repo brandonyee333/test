@@ -38,6 +38,7 @@ import com.liferay.osb.service.permission.OSBAssetReceiptPermission;
 import com.liferay.osb.service.permission.OSBLicenseKeyPermission;
 import com.liferay.osb.util.OSBActionKeys;
 import com.liferay.osb.util.OSBConstants;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.io.Base64OutputStream;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayOutputStream;
@@ -51,7 +52,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -744,6 +744,8 @@ public class LicenseKeyServiceImpl extends LicenseKeyServiceBaseImpl {
 			objectOutputStream.writeObject(serverIds);
 
 			objectOutputStream.writeObject(licenseKey.getStartDate());
+
+			objectOutputStream.flush();
 
 			return new String(unsyncByteArrayOutputStream.toByteArray());
 		}
