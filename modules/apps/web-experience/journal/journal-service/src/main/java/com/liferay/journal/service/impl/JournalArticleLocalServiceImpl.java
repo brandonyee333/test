@@ -5887,19 +5887,7 @@ public class JournalArticleLocalServiceImpl
 			visible = false;
 		}
 
-		boolean addDraftAssetEntry = false;
-
-		if (!article.isApproved() &&
-			(article.getVersion() != JournalArticleConstants.VERSION_DEFAULT)) {
-
-			int approvedArticlesCount = journalArticlePersistence.countByG_A_ST(
-				article.getGroupId(), article.getArticleId(),
-				JournalArticleConstants.ASSET_ENTRY_CREATION_STATUSES);
-
-			if (approvedArticlesCount > 0) {
-				addDraftAssetEntry = true;
-			}
-		}
+		boolean addDraftAssetEntry = _addDraftAssetEntry(article);
 
 		AssetEntry assetEntry = null;
 
@@ -8665,6 +8653,24 @@ public class JournalArticleLocalServiceImpl
 
 	@ServiceReference(type = JournalConverter.class)
 	protected JournalConverter journalConverter;
+
+	private boolean _addDraftAssetEntry(JournalArticle article) {
+		boolean addDraftAssetEntry = false;
+
+		if (!article.isApproved() &&
+			(article.getVersion() != JournalArticleConstants.VERSION_DEFAULT)) {
+
+			int approvedArticlesCount = journalArticlePersistence.countByG_A_ST(
+				article.getGroupId(), article.getArticleId(),
+				JournalArticleConstants.ASSET_ENTRY_CREATION_STATUSES);
+
+			if (approvedArticlesCount > 0) {
+				addDraftAssetEntry = true;
+			}
+		}
+
+		return addDraftAssetEntry;
+	}
 
 	private long _countSimilarURLTitles(long groupId, String urlTitle) {
 		DynamicQuery dynamicQuery = dynamicQuery();
