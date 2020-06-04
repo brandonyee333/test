@@ -25,6 +25,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.elasticsearch.action.support.WriteRequest;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -51,6 +53,13 @@ public class CerebroInfoDog {
 	public void updateSegmentNames(JSONObject individualSegmentJSONObject)
 		throws Exception {
 
+		String channelId = individualSegmentJSONObject.optString(
+			"channelId", null);
+
+		if (StringUtils.isEmpty(channelId)) {
+			return;
+		}
+
 		JSONArray referencedAssetIdsJSONArray =
 			individualSegmentJSONObject.optJSONArray("referencedAssetIds");
 
@@ -74,9 +83,7 @@ public class CerebroInfoDog {
 					individualSegmentJSONObject.getString("id"),
 					individualSegmentJSONObject.getString("name"), jsonObject)
 			).setQueryBuilder(
-				QueryBuilders.termQuery(
-					"channelId",
-					individualSegmentJSONObject.getString("channelId"))
+				QueryBuilders.termQuery("channelId", channelId)
 			).setStopOnExceptions(
 				false
 			).iterate();
