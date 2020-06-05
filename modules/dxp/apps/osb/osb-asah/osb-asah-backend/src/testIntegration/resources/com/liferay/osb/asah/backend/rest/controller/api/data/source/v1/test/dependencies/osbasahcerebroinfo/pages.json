@@ -2,6 +2,7 @@
 	{
 		"bounce": 1,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -54,6 +55,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -96,6 +98,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 2,
@@ -138,6 +141,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 1,
@@ -180,6 +184,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -221,6 +226,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay%20DXP",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -261,6 +267,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay",
 		"city": null,
 		"country": null,
 		"ctaClicks": 0,
@@ -301,6 +308,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay",
 		"city": null,
 		"country": null,
 		"ctaClicks": 1,
@@ -346,6 +354,7 @@
 	{
 		"bounce": 0,
 		"browserName": "Chrome",
+		"canonicalUrl": "https://liferay.com/search?q=Liferay",
 		"city": null,
 		"country": null,
 		"ctaClicks": 3,
