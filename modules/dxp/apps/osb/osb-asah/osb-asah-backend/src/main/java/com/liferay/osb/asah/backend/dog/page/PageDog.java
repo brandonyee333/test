@@ -104,9 +104,8 @@ public class PageDog {
 		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
 
 		return getMetricValue(
-			Optional.empty(),
-			fromDateStringOptional, PageMetricType.VIEWS, toDateStringOptional,
-			urlOptional);
+			Optional.empty(), fromDateStringOptional, PageMetricType.VIEWS,
+			toDateStringOptional, urlOptional);
 	}
 
 	private QueryBuilder _createQueryBuilder(

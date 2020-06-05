@@ -331,6 +331,15 @@ public class SearchQueryHelper {
 		}
 	}
 
+	private void _addCanonicalUrlFilter(
+		BoolQueryBuilder boolQueryBuilder, URL canonicalUrl) {
+
+		if (!canonicalUrl.equals(URL.any())) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("canonicalUrl", canonicalUrl.getURL()));
+		}
+	}
+
 	private void _addChannelIdFilter(
 		BoolQueryBuilder boolQueryBuilder, String channelId) {
 
@@ -544,15 +553,6 @@ public class SearchQueryHelper {
 
 		if (title != null) {
 			boolQueryBuilder.filter(QueryBuilders.termQuery("title", title));
-		}
-	}
-
-	private void _addCanonicalUrlFilter(
-		BoolQueryBuilder boolQueryBuilder, URL canonicalUrl) {
-
-		if (!canonicalUrl.equals(URL.any())) {
-			boolQueryBuilder.filter(
-				QueryBuilders.termQuery("canonicalUrl", canonicalUrl.getURL()));
 		}
 	}
 
