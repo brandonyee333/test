@@ -544,6 +544,8 @@ public abstract class BaseNanite<T extends Model> implements Nanite {
 		else {
 			BasePageModel basePageModel = (BasePageModel)model;
 
+			basePageModel.setCanonicalUrl(
+				MapUtil.getString(analyticsEvent.getContext(), "canonicalUrl"));
 			basePageModel.setURL(url);
 		}
 	}
