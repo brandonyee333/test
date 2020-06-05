@@ -54,6 +54,7 @@ public class PageDog {
 	}
 
 	public long getMetricValue(
+		Optional<String> canonicalUrlOptional,
 		Optional<String> fromDateStringOptional, MetricType metricType,
 		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
 
@@ -71,6 +72,14 @@ public class PageDog {
 				queryBuilder
 			).filter(
 				QueryBuilders.termQuery("url", urlOptional.get())
+			);
+		}
+		else if (canonicalUrlOptional.isPresent()) {
+			queryBuilder = BoolQueryBuilderUtil.filter(
+				queryBuilder
+			).filter(
+				QueryBuilders.termQuery(
+					"canonicalUrl", canonicalUrlOptional.get())
 			);
 		}
 
@@ -95,6 +104,7 @@ public class PageDog {
 		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
 
 		return getMetricValue(
+			Optional.empty(),
 			fromDateStringOptional, PageMetricType.VIEWS, toDateStringOptional,
 			urlOptional);
 	}

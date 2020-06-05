@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Shinn Lok
+ * @author André Miranda
  */
 @RequestMapping(produces = "application/json", value = "/api/1.0/pages")
 @RestController
@@ -48,7 +49,7 @@ public class PagesRestController extends BaseRestController {
 	public String getGeolocations(@RequestParam String url) {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
-		searchQueryContext.setURL(url);
+		searchQueryContext.setCanonicalUrl(url);
 
 		return String.valueOf(
 			new JSONArray(
@@ -60,8 +61,8 @@ public class PagesRestController extends BaseRestController {
 	public String getReadCount(@RequestParam String url) {
 		return String.valueOf(
 			_pageDog.getMetricValue(
-				Optional.empty(), PageMetricType.READS, Optional.empty(),
-				Optional.of(url)));
+				Optional.of(url), Optional.empty(), PageMetricType.READS,
+				Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/read-counts")
@@ -76,14 +77,15 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam String url) {
 
 		return _getHistogramMetrics(
-			endLocalDate, interval, PageMetricType.READS, startLocalDate, url);
+			url, endLocalDate, interval, PageMetricType.READS, startLocalDate);
 	}
 
 	@GetMapping("/view-count")
 	public String getViewCount(@RequestParam String url) {
 		return String.valueOf(
-			_pageDog.getViewsMetricValue(
-				Optional.empty(), Optional.empty(), Optional.of(url)));
+			_pageDog.getMetricValue(
+				Optional.of(url), Optional.empty(), PageMetricType.VIEWS,
+				Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/view-counts")
@@ -98,12 +100,12 @@ public class PagesRestController extends BaseRestController {
 		@RequestParam String url) {
 
 		return _getHistogramMetrics(
-			endLocalDate, interval, PageMetricType.VIEWS, startLocalDate, url);
+			url, endLocalDate, interval, PageMetricType.VIEWS, startLocalDate);
 	}
 
 	private String _getHistogramMetrics(
-		LocalDate endLocalDate, String interval, MetricType metricType,
-		LocalDate startLocalDate, String url) {
+		String canonicalUrl, LocalDate endLocalDate, String interval,
+		MetricType metricType, LocalDate startLocalDate) {
 
 		return JSONUtil.put(
 			"histogram",
@@ -111,17 +113,18 @@ public class PagesRestController extends BaseRestController {
 				true, metricType,
 				new SearchQueryContext() {
 					{
+						setCanonicalUrl(canonicalUrl);
 						setInterval(interval);
 						setTimeRange(
 							TimeRange.of(endLocalDate, startLocalDate));
-						setURL(url);
 					}
 				})
 		).put(
 			"value",
 			_pageDog.getMetricValue(
+				Optional.of(canonicalUrl),
 				Optional.of(startLocalDate.toString()), metricType,
-				Optional.of(endLocalDate.toString()), Optional.of(url))
+				Optional.of(endLocalDate.toString()), Optional.empty())
 		).toString();
 	}
 
