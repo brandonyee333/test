@@ -46,10 +46,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PagesRestController extends BaseRestController {
 
 	@GetMapping("/geolocations")
-	public String getGeolocations(@RequestParam String url) {
+	public String getGeolocations(@RequestParam String canonicalUrl) {
 		SearchQueryContext searchQueryContext = new SearchQueryContext();
 
-		searchQueryContext.setCanonicalUrl(url);
+		searchQueryContext.setCanonicalUrl(canonicalUrl);
 
 		return String.valueOf(
 			new JSONArray(
@@ -58,49 +58,51 @@ public class PagesRestController extends BaseRestController {
 	}
 
 	@GetMapping("/read-count")
-	public String getReadCount(@RequestParam String url) {
+	public String getReadCount(@RequestParam String canonicalUrl) {
 		return String.valueOf(
 			_pageDog.getMetricValue(
-				Optional.of(url), Optional.empty(), PageMetricType.READS,
-				Optional.empty(), Optional.empty()));
+				Optional.of(canonicalUrl), Optional.empty(),
+				PageMetricType.READS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/read-counts")
 	public String getReadCounts(
+		@RequestParam String canonicalUrl,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "endDate")
 			LocalDate endLocalDate,
 		@RequestParam String interval,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "startDate")
-			LocalDate startLocalDate,
-		@RequestParam String url) {
+			LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
-			url, endLocalDate, interval, PageMetricType.READS, startLocalDate);
+			canonicalUrl, endLocalDate, interval, PageMetricType.READS,
+			startLocalDate);
 	}
 
 	@GetMapping("/view-count")
-	public String getViewCount(@RequestParam String url) {
+	public String getViewCount(@RequestParam String canonicalUrl) {
 		return String.valueOf(
 			_pageDog.getMetricValue(
-				Optional.of(url), Optional.empty(), PageMetricType.VIEWS,
-				Optional.empty(), Optional.empty()));
+				Optional.of(canonicalUrl), Optional.empty(),
+				PageMetricType.VIEWS, Optional.empty(), Optional.empty()));
 	}
 
 	@GetMapping("/view-counts")
 	public String getViewCounts(
+		@RequestParam String canonicalUrl,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "endDate")
 			LocalDate endLocalDate,
 		@RequestParam String interval,
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		@RequestParam(name = "startDate")
-			LocalDate startLocalDate,
-		@RequestParam String url) {
+			LocalDate startLocalDate) {
 
 		return _getHistogramMetrics(
-			url, endLocalDate, interval, PageMetricType.VIEWS, startLocalDate);
+			canonicalUrl, endLocalDate, interval, PageMetricType.VIEWS,
+			startLocalDate);
 	}
 
 	private String _getHistogramMetrics(
