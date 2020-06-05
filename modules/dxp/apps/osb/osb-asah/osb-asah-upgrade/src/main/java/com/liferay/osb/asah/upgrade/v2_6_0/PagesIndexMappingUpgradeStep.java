@@ -34,7 +34,23 @@ public class PagesIndexMappingUpgradeStep implements UpgradeStep {
 			"pages",
 			JSONUtil.put(
 				"properties",
-				JSONUtil.put("reads", JSONUtil.put("type", "long"))
+				JSONUtil.put(
+					"canonicalUrl",
+					JSONUtil.put(
+						"fields",
+						JSONUtil.put(
+							"search",
+							JSONUtil.put(
+								"normalizer", "folding_normalizer"
+							).put(
+								"type", "keyword"
+							))
+					).put(
+						"type", "keyword"
+					)
+				).put(
+					"reads", JSONUtil.put("type", "long")
+				)
 			).toString(),
 			"pages", WeDeployDataService.OSB_ASAH_CEREBRO_INFO);
 	}
