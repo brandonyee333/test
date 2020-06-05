@@ -46,6 +46,10 @@ public class SearchQueryContext {
 		return _assetType;
 	}
 
+	public URL getCanonicalUrl() {
+		return _canonicalUrl;
+	}
+
 	public String getChannelId() {
 		return _channelId;
 	}
@@ -122,6 +126,10 @@ public class SearchQueryContext {
 		_assetType = assetType;
 	}
 
+	public void setCanonicalUrl(String canonicalUrl) {
+		_canonicalUrl = URL.url(canonicalUrl);
+	}
+
 	public void setChannelId(String channelId) {
 		_channelId = channelId;
 	}
@@ -193,6 +201,7 @@ public class SearchQueryContext {
 	private Boolean _active;
 	private String _assetId;
 	private AssetType _assetType = AssetType.PAGE;
+	private URL _canonicalUrl = URL.any();
 	private String _channelId;
 	private String _dataSourceId;
 	private String _experienceId;

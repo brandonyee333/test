@@ -276,6 +276,8 @@ public class SearchQueryHelper {
 		searchSourceBuilder.aggregation(aggregationBuilder);
 
 		_addAssetIdFilter(assetIdOptional, boolQueryBuilder);
+		_addCanonicalUrlFilter(
+			boolQueryBuilder, searchQueryContext.getCanonicalUrl());
 		_addChannelIdFilter(
 			boolQueryBuilder, searchQueryContext.getChannelId());
 		_addDataSourceIdFilter(
@@ -542,6 +544,15 @@ public class SearchQueryHelper {
 
 		if (title != null) {
 			boolQueryBuilder.filter(QueryBuilders.termQuery("title", title));
+		}
+	}
+
+	private void _addCanonicalUrlFilter(
+		BoolQueryBuilder boolQueryBuilder, URL canonicalUrl) {
+
+		if (!canonicalUrl.equals(URL.any())) {
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("canonicalUrl", canonicalUrl.getURL()));
 		}
 	}
 
