@@ -8,6 +8,15 @@
 				"browserName": {
 					"type": "keyword"
 				},
+				"canonicalUrl": {
+					"fields": {
+						"search": {
+							"normalizer": "folding_normalizer",
+							"type": "keyword"
+						}
+					},
+					"type": "keyword"
+				},
 				"channelId": {
 					"type": "keyword"
 				},
