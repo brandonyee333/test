@@ -94,6 +94,20 @@ schema {
 	mutation: MutationType
 }
 
+type Activity {
+	applicationId: String
+	eventContext: String
+	eventId: String
+	eventProperties: String
+	ownerId: String
+	startTime: String
+}
+
+type ActivityBag {
+	activities: [Activity]
+	total: Int
+}
+
 type AssetMetricBag {
 	assetMetrics: [AssetMetric]
 	total: Int
@@ -499,6 +513,14 @@ type QueryType {
 		size: Int!,
 		start: Int!
 	): CompositionBag
+
+	activities(
+		applicationId: String!
+		eventId: String!
+		eventContextFilter: String
+		size: Int!
+		start: Int!
+	): ActivityBag
 
 	assetPages(
 		assetId: String!,

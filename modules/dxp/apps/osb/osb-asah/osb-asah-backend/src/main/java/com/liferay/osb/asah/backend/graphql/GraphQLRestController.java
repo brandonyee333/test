@@ -205,6 +205,8 @@ public class GraphQLRestController {
 				_buildDXPEntityTypeResolver()));
 
 		_defineCustomPropertyName(
+			builder, "activities", "results", "ActivityBag");
+		_defineCustomPropertyName(
 			builder, "assetMetrics", "results", "AssetMetricBag");
 		_defineCustomPropertyName(
 			builder, "compositions", "results", "CompositionBag");
