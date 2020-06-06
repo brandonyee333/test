@@ -16,13 +16,21 @@ package com.liferay.osb.asah.backend.dog;
 
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.ResultBag;
+import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
 
@@ -45,6 +53,67 @@ public class ActivityDog {
 				QueryBuilders.termQuery("ownerId", ownerId), size, start));
 
 		return DogUtil.createResultBag(Activity.class, searchHits);
+	}
+
+	public ResultBag<Activity> getActivityResultBag(
+		String applicationId, String eventContextFilterString, String eventId,
+		int size, int start) {
+
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"activities", _faroInfoElasticsearchInvoker,
+			DogUtil.buildSearchSourceBuilder(
+				Collections.emptyList(),
+				_buildQueryBuilder(
+					applicationId, eventContextFilterString, eventId),
+				size, start));
+
+		return DogUtil.createResultBag(Activity.class, searchHits);
+	}
+
+	private QueryBuilder _buildQueryBuilder(String eventContextFilterString) {
+		List<String> tokens = _getFilterTokens(eventContextFilterString);
+
+		if (tokens.size() != 3) {
+			throw new IllegalArgumentException(
+				"Invalid filter " + eventContextFilterString);
+		}
+
+		if (Objects.equals(tokens.get(1), "~")) {
+			return QueryBuilders.regexpQuery(
+				"eventContext." + tokens.get(0), tokens.get(2));
+		}
+
+		return QueryBuilders.termQuery(
+			"eventContext." + tokens.get(0), tokens.get(2));
+	}
+
+	private QueryBuilder _buildQueryBuilder(
+		String applicationId, String eventContextFilterString, String eventId) {
+
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			QueryBuilders.termQuery("applicationId", applicationId)
+		).filter(
+			QueryBuilders.termQuery("eventId", eventId)
+		);
+
+		if (StringUtils.isNotBlank(eventContextFilterString)) {
+			boolQueryBuilder.filter(
+				_buildQueryBuilder(eventContextFilterString));
+		}
+
+		return boolQueryBuilder;
+	}
+
+	private List<String> _getFilterTokens(String eventContextFilterString) {
+		List<String> tokens = new ArrayList<>();
+
+		for (String token : eventContextFilterString.split(" ")) {
+			if (!StringUtils.isBlank(token)) {
+				tokens.add(token);
+			}
+		}
+
+		return tokens;
 	}
 
 	@PostConstruct
