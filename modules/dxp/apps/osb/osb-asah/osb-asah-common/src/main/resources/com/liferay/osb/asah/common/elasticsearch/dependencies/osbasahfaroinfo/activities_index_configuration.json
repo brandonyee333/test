@@ -35,6 +35,9 @@
 				"endTime": {
 					"type": "date"
 				},
+				"eventContext": {
+					"type": "object"
+				},
 				"eventId": {
 					"normalizer": "case_insensitive_sort",
 					"type": "keyword"
