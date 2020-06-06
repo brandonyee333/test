@@ -18,6 +18,7 @@ import com.liferay.osb.asah.backend.dog.ActivityDog;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
+import com.liferay.osb.asah.common.util.MapUtil;
 import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
@@ -55,6 +56,63 @@ public class ActivityDogTest {
 		Assert.assertEquals(
 			SetUtil.of("pageLoaded", "pageViewed"),
 			_getActivitiesEventIds(activityResultBag.getResults()));
+	}
+
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetPageUnloadedActivityResultBag() {
+		ResultBag<Activity> activityResultBag =
+			_activityDog.getActivityResultBag(
+				"Page", null, "pageUnloaded", 20, 0);
+
+		Assert.assertEquals(2, activityResultBag.getTotal());
+	}
+
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetPageUnloadedActivityResultBagEqualsContextFilter() {
+		ResultBag<Activity> activityResultBag =
+			_activityDog.getActivityResultBag(
+				"Page", "country = Brazil", "pageUnloaded", 20, 0);
+
+		Assert.assertEquals(1, activityResultBag.getTotal());
+	}
+
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetPageUnloadedActivityResultBagRegexContextFilter() {
+		ResultBag<Activity> activityResultBag =
+			_activityDog.getActivityResultBag(
+				"Page", "country ~ Br.*", "pageUnloaded", 20, 0);
+
+		Assert.assertEquals(2, activityResultBag.getTotal());
+		Assert.assertEquals(
+			SetUtil.of("Brazil", "Brunei"),
+			_getActivitiesEventContextProperty(
+				activityResultBag.getResults(), "country"));
+	}
+
+	private Set<String> _getActivitiesEventContextProperty(
+		List<Activity> activities, String property) {
+
+		Stream<Activity> stream = activities.stream();
+
+		return stream.map(
+			Activity::getEventContext
+		).map(
+			eventContext -> MapUtil.getString(eventContext, property)
+		).collect(
+			Collectors.toSet()
+		);
 	}
 
 	private Set<String> _getActivitiesEventIds(List<Activity> activities) {

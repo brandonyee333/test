@@ -73,5 +73,61 @@
 		"ownerId": "337984659206412898",
 		"startTime": "2019-09-24T17:37:02.244Z",
 		"userId": "d1cb5880-def1-11e9-8caf-1d0d61d4920d"
+	},
+	{
+		"activityKey": "Page#pageUnloaded#370982839082228041",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "370975939087274525",
+		"day": "2019-08-23T00:00:00.000Z",
+		"endTime": "2019-08-23T10:35:30.521Z",
+		"eventContext": {
+			"country": "Brunei"
+		},
+		"eventId": "pageUnloaded",
+		"eventProperties": {
+			"pageViewActivityId": "695e80c3-69cb-4f97-81e9-bf606e78067c",
+			"viewDuration": "11638"
+		},
+		"groupId": "373596281614489603",
+		"id": "373596360693305128",
+		"object": {
+			"dataSourceAssetPK": "https://www.liferay.com",
+			"id": "370982839082228041",
+			"name": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"objectType": "Page",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"ownerId": "370997372450569302",
+		"startTime": "2019-08-23T10:35:30.521Z",
+		"userId": "b6768060-c591-11e9-bdb3-7d8fa2cd3cfc"
+	},
+	{
+		"activityKey": "Page#pageUnloaded#370982839082228041",
+		"activityType": "BROWSE",
+		"applicationId": "Page",
+		"dataSourceId": "370975939087274525",
+		"day": "2019-08-23T00:00:00.000Z",
+		"endTime": "2019-08-23T10:43:13.224Z",
+		"eventContext": {
+			"country": "Brazil"
+		},
+		"eventId": "pageUnloaded",
+		"eventProperties": {
+			"pageViewActivityId": "0bd29e95-464c-46d5-ab7c-98f6e39becc6",
+			"viewDuration": "25941"
+		},
+		"groupId": "373598261385090009",
+		"id": "373598485364960862",
+		"object": {
+			"dataSourceAssetPK": "https://www.liferay.com",
+			"id": "370982839082228041",
+			"name": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"objectType": "Page",
+			"url": "https://www.liferay.com/es/home"
+		},
+		"ownerId": "373408403592592166",
+		"startTime": "2019-08-23T10:43:13.224Z",
+		"userId": "c49580a0-c592-11e9-92f9-f7e41e09bfe8"
 	}
 ]
