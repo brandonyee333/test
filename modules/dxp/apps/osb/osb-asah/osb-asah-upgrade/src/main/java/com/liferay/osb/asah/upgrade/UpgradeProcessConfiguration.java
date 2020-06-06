@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.upgrade;
 
 import com.liferay.osb.asah.upgrade.v2_5_1.PagesUpgradeStep;
+import com.liferay.osb.asah.upgrade.v2_6_0.ActivitiesIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.CerebroInfoUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.OSBAsahTasksIndexMappingUpgradeStep;
 import com.liferay.osb.asah.upgrade.v2_6_0.PagesIndexMappingUpgradeStep;
@@ -35,12 +36,16 @@ public class UpgradeProcessConfiguration {
 
 		upgradeProcess.addUpgradeSteps("2.5.0", "2.5.1", _pagesUpgradeStep);
 		upgradeProcess.addUpgradeSteps(
-			"2.5.1", "2.6.0", _cerebroInfoUpgradeStep,
-			_osbAsahTasksIndexMappingUpgradeStep,
+			"2.5.1", "2.6.0", _activitiesIndexMappingUpgradeStep,
+			_cerebroInfoUpgradeStep, _osbAsahTasksIndexMappingUpgradeStep,
 			_pagesIndexMappingUpgradeStep);
 
 		return upgradeProcess;
 	}
+
+	@Autowired
+	private ActivitiesIndexMappingUpgradeStep
+		_activitiesIndexMappingUpgradeStep;
 
 	@Autowired
 	private CerebroInfoUpgradeStep _cerebroInfoUpgradeStep;
