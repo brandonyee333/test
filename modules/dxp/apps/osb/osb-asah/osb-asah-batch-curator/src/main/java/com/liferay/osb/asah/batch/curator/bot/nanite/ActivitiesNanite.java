@@ -274,6 +274,8 @@ public class ActivitiesNanite extends BaseActivitiesNanite {
 			).put(
 				"endTime", eventDateString
 			).put(
+				"eventContext", new JSONObject(analyticsEvent.getContext())
+			).put(
 				"eventId", eventId
 			).put(
 				"eventProperties", _getEventPropertiesJSONObject(analyticsEvent)
