@@ -81,14 +81,14 @@ public class ActivityDog {
 			_elasticsearchIndexManager.getIndexMappings(
 				"activities", WeDeployDataService.OSB_ASAH_FARO_INFO);
 
-		Map<String, Object> indexProperties =
-			(Map<String, Object>)indexMappings.get("properties");
+		Map<String, Object> indexProperties = MapUtil.get(
+			indexMappings, "properties");
 
-		Map<String, Object> eventContext =
-			(Map<String, Object>)indexProperties.get("eventContext");
+		Map<String, Object> eventContext = MapUtil.get(
+			indexProperties, "eventContext");
 
-		Map<String, Object> eventContextProperties =
-			(Map<String, Object>)eventContext.get("properties");
+		Map<String, Object> eventContextProperties = MapUtil.get(
+			eventContext, "properties");
 
 		Set<String> eventContextKeys = new HashSet<>();
 

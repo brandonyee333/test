@@ -22,6 +22,10 @@ import java.util.function.BiFunction;
  */
 public class MapUtil {
 
+	public static <T> T get(Map<String, Object> map, String key) {
+		return (T)map.get(key);
+	}
+
 	public static long getLong(Map<String, ?> map, String key) {
 		return getLong(map, key, 0);
 	}
