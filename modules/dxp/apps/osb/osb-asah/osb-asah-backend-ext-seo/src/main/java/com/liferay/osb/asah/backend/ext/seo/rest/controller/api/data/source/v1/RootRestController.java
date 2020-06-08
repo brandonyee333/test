@@ -140,7 +140,7 @@ public class RootRestController {
 		uriComponentsBuilder.queryParam("display_sort", "tg_desc");
 		uriComponentsBuilder.queryParam("export_columns", "Ph,Po,Nq,Tg");
 		uriComponentsBuilder.queryParam(
-			"key", _environment.getProperty("SEMRUSH_API_KEY"));
+			"key", _environment.getProperty("SEMRUSH_API_KEY", _semrushAPIKey));
 		uriComponentsBuilder.queryParam("type", type);
 		uriComponentsBuilder.queryParam("url", url);
 
@@ -195,6 +195,9 @@ public class RootRestController {
 
 	@Autowired
 	private Http _http;
+
+	@Value("${osb.asah.seo.semrush.api.key}")
+	private String _semrushAPIKey;
 
 	@Value("${osb.asah.seo.semrush.url.adwords.display.limit:10}")
 	private int _urlAdwordsDisplayLimit;
