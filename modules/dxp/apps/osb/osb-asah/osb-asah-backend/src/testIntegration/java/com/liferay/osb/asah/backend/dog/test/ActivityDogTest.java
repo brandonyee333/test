@@ -63,6 +63,16 @@ public class ActivityDogTest {
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
 	@Test
+	public void testGetEventContextKeys() {
+		Assert.assertEquals(
+			SetUtil.of("country"), _activityDog.getEventContextKeys());
+	}
+
+	@ElasticsearchIndex(
+		name = "activities", resourcePath = "activities-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
 	public void testGetPageUnloadedActivityResultBag() {
 		ResultBag<Activity> activityResultBag =
 			_activityDog.getActivityResultBag(
