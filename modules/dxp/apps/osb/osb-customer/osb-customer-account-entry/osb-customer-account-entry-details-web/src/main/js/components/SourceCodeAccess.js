@@ -11,24 +11,24 @@ const sortDateByRecency = (a, b) =>
 	new Date(a.createDate) > new Date(b.createDate) ? -1 : 1;
 
 export const CollabRecord = Record({
+	collaboratorId: null,
 	createDate: null,
 	deleteCollaboratorURL: '',
 	emailAddress: '',
 	fullName: '',
-	gitHubUserName: '',
-	collaboratorId: null
+	gitHubUserName: ''
 });
 
 SourceCodeAccess.propTypes = {
 	addCollaboratorURL: PropTypes.string.isRequired,
 	collaborators: PropTypes.arrayOf(
 		PropTypes.shape({
+			collaboratorId: PropTypes.number.isRequired,
 			createDate: PropTypes.string.isRequired,
 			deleteCollaboratorURL: PropTypes.string.isRequired,
 			emailAddress: PropTypes.string.isRequired,
 			fullName: PropTypes.string.isRequired,
-			gitHubUserName: PropTypes.string.isRequired,
-			collaboratorId: PropTypes.number.isRequired
+			gitHubUserName: PropTypes.string.isRequired
 		})
 	).isRequired
 };
@@ -37,12 +37,12 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 	const processedCollaborators = collaborators.map(collaborator => [
 		collaborator.collaboratorId,
 		CollabRecord({
+			collaboratorId: collaborator.collaboratorId,
 			createDate: collaborator.createDate,
 			deleteCollaboratorURL: collaborator.deleteCollaboratorURL,
 			emailAddress: collaborator.emailAddress,
 			fullName: collaborator.fullName,
-			gitHubUserName: collaborator.gitHubUserName,
-			collaboratorId: collaborator.collaboratorId
+			gitHubUserName: collaborator.gitHubUserName
 		})
 	]);
 

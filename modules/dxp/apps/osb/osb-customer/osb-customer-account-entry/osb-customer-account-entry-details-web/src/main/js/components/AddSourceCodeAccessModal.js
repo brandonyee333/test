@@ -129,12 +129,12 @@ export default function AddSourceCodeAccessModal({
 						case 'success':
 							addCollaboratorToMap(
 								CollabRecord({
+									collaboratorId: data.collaboratorId,
 									createDate: data.createDate,
 									deleteCollaboratorURL: data.deleteCollaboratorURL,
 									emailAddress: fields.emailAddress.value,
 									fullName: fields.fullName.value,
-									gitHubUserName: fields.gitHubUserName.value,
-									collaboratorId: data.collaboratorId
+									gitHubUserName: fields.gitHubUserName.value
 								})
 							);
 
