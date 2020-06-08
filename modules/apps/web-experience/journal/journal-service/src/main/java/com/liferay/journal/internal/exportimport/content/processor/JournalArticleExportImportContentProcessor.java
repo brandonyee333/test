@@ -657,8 +657,7 @@ public class JournalArticleExportImportContentProcessor
 		JournalArticleExportImportContentProcessor.class);
 
 	private static final Pattern _htmlCommentRegexPattern = Pattern.compile(
-		"\\<![ \\r\\n\\t]*(--([^\\-]|[\\r\\n]|-[^\\-])*--" +
-			"[ \\r\\n\\t]*)\\>");
+		"\\<!--([\\s\\S]*)--\\>");
 
 	@Reference
 	private GroupLocalService _groupLocalService;
