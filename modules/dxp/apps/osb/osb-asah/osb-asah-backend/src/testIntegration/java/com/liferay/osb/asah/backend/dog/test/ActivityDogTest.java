@@ -24,6 +24,7 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -65,7 +66,8 @@ public class ActivityDogTest {
 	@Test
 	public void testGetEventContextKeys() {
 		Assert.assertEquals(
-			SetUtil.of("country"), _activityDog.getEventContextKeys());
+			Arrays.asList("canonicalUrl", "country", "title", "url"),
+			_activityDog.getEventContextKeys());
 	}
 
 	@ElasticsearchIndex(

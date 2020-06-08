@@ -82,7 +82,10 @@
 		"day": "2019-08-23T00:00:00.000Z",
 		"endTime": "2019-08-23T10:35:30.521Z",
 		"eventContext": {
-			"country": "Brunei"
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brunei",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
 		},
 		"eventId": "pageUnloaded",
 		"eventProperties": {
@@ -110,7 +113,10 @@
 		"day": "2019-08-23T00:00:00.000Z",
 		"endTime": "2019-08-23T10:43:13.224Z",
 		"eventContext": {
-			"country": "Brazil"
+			"canonicalUrl": "https://www.liferay.com/es/home",
+			"country": "Brazil",
+			"title": "Software de Experiencia Digital adaptado a tus necesidades | Liferay",
+			"url": "https://www.liferay.com/es/home"
 		},
 		"eventId": "pageUnloaded",
 		"eventProperties": {
