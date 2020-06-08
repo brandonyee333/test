@@ -522,6 +522,8 @@ type QueryType {
 		start: Int!
 	): ActivityBag
 
+	activityEventContextKeys: [String]
+
 	assetPages(
 		assetId: String!,
 		assetType: AssetType!,
