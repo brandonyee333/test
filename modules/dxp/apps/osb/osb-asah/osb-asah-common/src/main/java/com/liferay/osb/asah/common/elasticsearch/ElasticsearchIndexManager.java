@@ -51,6 +51,9 @@ public interface ElasticsearchIndexManager {
 	public JSONArray getCollectionsJSONArray(
 		WeDeployDataService weDeployDataService);
 
+	public Map<String, Object> getIndexMappings(
+		String collectionName, WeDeployDataService weDeployDataService);
+
 	public String getIndexName(String indexAlias);
 
 	public String getIndexName(

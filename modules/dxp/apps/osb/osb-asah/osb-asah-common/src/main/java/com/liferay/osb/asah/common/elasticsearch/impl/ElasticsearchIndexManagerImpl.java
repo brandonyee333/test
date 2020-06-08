@@ -52,6 +52,8 @@ import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsRequest;
+import org.elasticsearch.action.admin.indices.mapping.get.GetMappingsResponse;
 import org.elasticsearch.action.admin.indices.mapping.put.PutMappingRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesRequestBuilder;
 import org.elasticsearch.action.admin.indices.template.get.GetIndexTemplatesResponse;
@@ -62,6 +64,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.cluster.metadata.AliasMetaData;
 import org.elasticsearch.cluster.metadata.IndexTemplateMetaData;
+import org.elasticsearch.cluster.metadata.MappingMetaData;
 import org.elasticsearch.common.collect.ImmutableOpenMap;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -299,6 +302,37 @@ public class ElasticsearchIndexManagerImpl
 		WeDeployDataService weDeployDataService) {
 
 		return _indicesJSONObject.optJSONArray(weDeployDataService.toString());
+	}
+
+	@Override
+	public Map<String, Object> getIndexMappings(
+		String collectionName, WeDeployDataService weDeployDataService) {
+
+		IndicesAdminClient indicesAdminClient = _adminClient.indices();
+
+		ClientUtil.waitForConnection(_client);
+
+		String indexName = getIndexName(collectionName, weDeployDataService);
+
+		ActionFuture<GetMappingsResponse> actionFuture =
+			indicesAdminClient.getMappings(
+				new GetMappingsRequest() {
+					{
+						indices(indexName);
+					}
+				});
+
+		GetMappingsResponse getMappingsResponse = actionFuture.actionGet();
+
+		ImmutableOpenMap<String, ImmutableOpenMap<String, MappingMetaData>>
+			mappings = getMappingsResponse.getMappings();
+
+		ImmutableOpenMap<String, MappingMetaData> immutableOpenMap =
+			mappings.get(indexName);
+
+		MappingMetaData mappingMetaData = immutableOpenMap.get(collectionName);
+
+		return mappingMetaData.getSourceAsMap();
 	}
 
 	public String getIndexName(String indexAlias) {
