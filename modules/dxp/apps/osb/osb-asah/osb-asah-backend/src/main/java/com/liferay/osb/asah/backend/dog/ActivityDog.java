@@ -17,13 +17,19 @@ package com.liferay.osb.asah.backend.dog;
 import com.liferay.osb.asah.backend.model.Activity;
 import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
+import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
+import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -68,6 +74,38 @@ public class ActivityDog {
 				size, start));
 
 		return DogUtil.createResultBag(Activity.class, searchHits);
+	}
+
+	public Set<String> getEventContextKeys() {
+		Map<String, Object> indexMappings =
+			_elasticsearchIndexManager.getIndexMappings(
+				"activities", WeDeployDataService.OSB_ASAH_FARO_INFO);
+
+		Map<String, Object> indexProperties =
+			(Map<String, Object>)indexMappings.get("properties");
+
+		Map<String, Object> eventContext =
+			(Map<String, Object>)indexProperties.get("eventContext");
+
+		Map<String, Object> eventContextProperties =
+			(Map<String, Object>)eventContext.get("properties");
+
+		Set<String> eventContextKeys = new HashSet<>();
+
+		for (Map.Entry<String, Object> entry :
+				eventContextProperties.entrySet()) {
+
+			Map<String, Object> fieldMapping =
+				(Map<String, Object>)entry.getValue();
+
+			if (Objects.equals(
+					MapUtil.getString(fieldMapping, "type"), "keyword")) {
+
+				eventContextKeys.add(entry.getKey());
+			}
+		}
+
+		return eventContextKeys;
 	}
 
 	private QueryBuilder _buildQueryBuilder(String eventContextFilterString) {
@@ -124,6 +162,9 @@ public class ActivityDog {
 
 	@Autowired
 	private DataDog _dataDog;
+
+	@Autowired
+	private ElasticsearchIndexManager _elasticsearchIndexManager;
 
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
