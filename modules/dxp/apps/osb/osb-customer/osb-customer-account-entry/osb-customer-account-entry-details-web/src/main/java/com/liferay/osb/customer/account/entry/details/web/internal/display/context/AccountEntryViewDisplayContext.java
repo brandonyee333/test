@@ -179,6 +179,7 @@ public class AccountEntryViewDisplayContext {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			jsonObject.put("collaboratorId", collaborator.getCollaboratorId());
+			jsonObject.put("createDate", collaborator.getCreateDate());
 
 			jsonObject.put(
 				"deleteCollaboratorURL",

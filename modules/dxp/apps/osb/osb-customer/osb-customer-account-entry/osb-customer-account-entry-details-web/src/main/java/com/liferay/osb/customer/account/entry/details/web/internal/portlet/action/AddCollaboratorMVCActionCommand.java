@@ -17,18 +17,28 @@ package com.liferay.osb.customer.account.entry.details.web.internal.portlet.acti
 import com.liferay.osb.customer.account.entry.details.web.internal.constants.AccountEntryDetailsPortletKeys;
 import com.liferay.osb.customer.github.model.Collaborator;
 import com.liferay.osb.customer.github.service.CollaboratorLocalService;
+import com.liferay.osb.util.OSBConstants;
 import com.liferay.osb.util.WorkflowConstants;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.JSONPortletResponseUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletURL;
+import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -53,6 +63,8 @@ public class AddCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		JSONObject jsonObject = null;
+
 		long accountEntryId = ParamUtil.getLong(
 			actionRequest, "accountEntryId");
 		String emailAddress = ParamUtil.getString(
@@ -67,32 +79,69 @@ public class AddCollaboratorMVCActionCommand extends BaseMVCActionCommand {
 					themeDisplay.getUserId(), accountEntryId, emailAddress,
 					fullName, gitHubUserName);
 
+			jsonObject = JSONFactoryUtil.createJSONObject();
+
+			jsonObject.put("collaboratorId", collaborator.getCollaboratorId());
+			jsonObject.put("createDate", collaborator.getCreateDate());
+
+			String portletId =
+				AccountEntryDetailsPortletKeys.ACCOUNT_ENTRY_DETAILS;
+
+			long plid = _portal.getPlidFromPortletId(
+				OSBConstants.GROUP_CUSTOMER_ID, portletId);
+
+			LiferayPortletURL portletURL = PortletURLFactoryUtil.create(
+				actionRequest, portletId, plid, PortletRequest.ACTION_PHASE);
+
+			portletURL.setParameter(
+				ActionRequest.ACTION_NAME, "deleteCollaborator");
+			portletURL.setParameter(
+				"collaboratorId",
+				String.valueOf(collaborator.getCollaboratorId()));
+
+			jsonObject.put("deleteCollaboratorURL", portletURL.toString());
+
 			if (collaborator.getStatus() == WorkflowConstants.STATUS_CLOSED) {
-				SessionMessages.add(actionRequest, "pendingProjectStatus");
+				jsonObject.put("message", "pending-project-status");
 			}
 			else if (collaborator.getStatus() ==
 						WorkflowConstants.STATUS_PENDING) {
 
-				SessionMessages.add(actionRequest, "pendingInvitationLimit");
+				jsonObject.put("message", "pending-invitation-limit");
+			}
+			else {
+				jsonObject.put("message", "success");
 			}
 		}
 		catch (Exception e) {
+			_log.error(e, e);
+
+			HttpServletResponse httpServletResponse =
+				_portal.getHttpServletResponse(actionResponse);
+
+			httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+
+			jsonObject = JSONFactoryUtil.createJSONObject();
+
 			if (Validator.isNotNull(e.getMessage())) {
-				SessionErrors.add(actionRequest, e.getMessage());
+				jsonObject.put("errorMessage", e.getMessage());
 			}
 			else {
-				SessionErrors.add(actionRequest, e.getClass());
+				jsonObject.put("errorMessage", e.getClass());
 			}
 		}
 
-		actionResponse.setRenderParameter(
-			"mvcRenderCommandName", "/view_account_entry");
-		actionResponse.setRenderParameter("tabs1", "source-code-access");
-		actionResponse.setRenderParameter(
-			"accountEntryId", String.valueOf(accountEntryId));
+		JSONPortletResponseUtil.writeJSON(
+			actionRequest, actionResponse, jsonObject);
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		AddCollaboratorMVCActionCommand.class);
 
 	@Reference
 	private CollaboratorLocalService _collaboratorLocalService;
+
+	@Reference
+	private Portal _portal;
 
 }

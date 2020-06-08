@@ -12,11 +12,11 @@ const sortDateByRecency = (a, b) =>
 
 export const CollabRecord = Record({
 	createDate: null,
-	deleteURL: '',
+	deleteCollaboratorURL: '',
 	emailAddress: '',
 	fullName: '',
 	gitHubUserName: '',
-	id: null
+	collaboratorId: null
 });
 
 SourceCodeAccess.propTypes = {
@@ -24,25 +24,25 @@ SourceCodeAccess.propTypes = {
 	collaborators: PropTypes.arrayOf(
 		PropTypes.shape({
 			createDate: PropTypes.string.isRequired,
-			deleteURL: PropTypes.string.isRequired,
+			deleteCollaboratorURL: PropTypes.string.isRequired,
 			emailAddress: PropTypes.string.isRequired,
 			fullName: PropTypes.string.isRequired,
 			gitHubUserName: PropTypes.string.isRequired,
-			id: PropTypes.number.isRequired
+			collaboratorId: PropTypes.number.isRequired
 		})
 	).isRequired
 };
 
 export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 	const processedCollaborators = collaborators.map(collaborator => [
-		collaborator.id,
+		collaborator.collaboratorId,
 		CollabRecord({
 			createDate: collaborator.createDate,
-			deleteURL: collaborator.deleteURL,
+			deleteCollaboratorURL: collaborator.deleteCollaboratorURL,
 			emailAddress: collaborator.emailAddress,
 			fullName: collaborator.fullName,
 			gitHubUserName: collaborator.gitHubUserName,
-			id: collaborator.id
+			collaboratorId: collaborator.collaboratorId
 		})
 	]);
 
@@ -53,17 +53,17 @@ export default function SourceCodeAccess({addCollaboratorURL, collaborators}) {
 
 	function addCollaboratorToMap(collaborator) {
 		setCollaboratorsMap(
-			collaboratorsMap.set(collaborator.id, collaborator)
+			collaboratorsMap.set(collaborator.collaboratorId, collaborator)
 		);
 	}
 
 	function deleteCollaboratorFromMap(collaborator) {
 		axios
-			.post(collaborator.deleteURL)
+			.post(collaborator.deleteCollaboratorURL)
 			.then(({data}) => {
 				if (data.message === 'success') {
 					setCollaboratorsMap(
-						collaboratorsMap.delete(collaborator.id)
+						collaboratorsMap.delete(collaborator.collaboratorId)
 					);
 				}
 			})

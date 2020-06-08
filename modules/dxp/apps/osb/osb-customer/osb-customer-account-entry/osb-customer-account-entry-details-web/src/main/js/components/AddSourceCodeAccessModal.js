@@ -14,7 +14,6 @@ const ERROR_VALIDATION = {
 	fullName: /^[a-z,.'-]+\s[a-z\s,.'-]+$/i,
 	gitHubUserName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i
 };
-const LENGTH_OF_DAYS = '3';
 
 const isValid = field => {
 	return field.value.match(ERROR_VALIDATION[field.name]);
@@ -131,11 +130,11 @@ export default function AddSourceCodeAccessModal({
 							addCollaboratorToMap(
 								CollabRecord({
 									createDate: data.createDate,
-									deleteURL: data.deleteCollaboratorURL,
+									deleteCollaboratorURL: data.deleteCollaboratorURL,
 									emailAddress: fields.emailAddress.value,
 									fullName: fields.fullName.value,
 									gitHubUserName: fields.gitHubUserName.value,
-									id: data.collaboratorId
+									collaboratorId: data.collaboratorId
 								})
 							);
 
@@ -246,15 +245,7 @@ export default function AddSourceCodeAccessModal({
 			</div>
 
 			<div className="modal-body-text">
-				{langSub(
-					Liferay.Language.get('you-will-gain-access-within-x'),
-					[
-						<span className="semi-bold">
-							{LENGTH_OF_DAYS} {Liferay.Language.get('days')}
-						</span>
-					],
-					false
-				)}
+				{Liferay.Language.get('you-will-gain-access-within-a-few-days')}
 			</div>
 
 			<div className="modal-body-text">
