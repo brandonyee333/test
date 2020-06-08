@@ -780,9 +780,9 @@ definition {
 		DMDocument.downloadPG(dmDocumentTitle = "/D/M/Document Title");
 	}
 
-	@ignore = "true"
 	@priority = "5"
 	test EditAndDeleteGoogleDoc {
+		property portal.acceptance = "yvonne";
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "PGDocumentsandmedia#EditAndDeleteGoogleDoc";
 
@@ -1112,9 +1112,9 @@ definition {
 			locationFieldName = "true");
 	}
 
-	@ignore = "true"
 	@priority = "5"
 	test MoveGoogleDocToFolder {
+		property portal.acceptance = "yvonne";
 		property portal.release = "false";
 		property test.name.skip.portal.instance = "PGDocumentsandmedia#MoveGoogleDocToFolder";
 
