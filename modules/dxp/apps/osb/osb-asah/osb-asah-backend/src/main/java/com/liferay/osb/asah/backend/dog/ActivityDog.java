@@ -21,6 +21,7 @@ import com.liferay.osb.asah.common.elasticsearch.ElasticsearchIndexManager;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvoker;
 import com.liferay.osb.asah.common.elasticsearch.ElasticsearchInvokerFactory;
 import com.liferay.osb.asah.common.util.MapUtil;
+import com.liferay.osb.asah.common.util.SetUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
@@ -98,7 +99,8 @@ public class ActivityDog {
 			Map<String, Object> fieldMapping =
 				(Map<String, Object>)entry.getValue();
 
-			if (Objects.equals(
+			if (!_eventContextKeysExclude.contains(entry.getKey()) &&
+				Objects.equals(
 					MapUtil.getString(fieldMapping, "type"), "keyword")) {
 
 				eventContextKeys.add(entry.getKey());
@@ -169,6 +171,10 @@ public class ActivityDog {
 	@Autowired
 	private ElasticsearchInvokerFactory _elasticsearchInvokerFactory;
 
+	private final Set<String> _eventContextKeysExclude = SetUtil.of(
+		"crawler", "devicePixelRatio", "experienceId", "experimentId",
+		"referrer", "screenHeight", "screenHeightSize", "screenWidth",
+		"screenWidthSize", "timezoneOffset", "userAgent", "variantId");
 	private ElasticsearchInvoker _faroInfoElasticsearchInvoker;
 
 }
