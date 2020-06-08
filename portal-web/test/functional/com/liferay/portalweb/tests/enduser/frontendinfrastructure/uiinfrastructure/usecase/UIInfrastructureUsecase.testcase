@@ -161,7 +161,7 @@ definition {
 	@ignore = "true"
 	@priority = "5"
 	test Smoke {
-		property portal.acceptance = "true";
+		property portal.acceptance = "summer";
 
 		ProductMenu.gotoPortlet(
 			category = "Site Builder",
@@ -175,7 +175,9 @@ definition {
 		Portlet.addPG(portletName = "Hello World");
 
 		task ("Close the Add Panel") {
-			Click(locator1 = "ControlMenuAddPanel#CLOSE_ADD_PANEL");
+			if (IsVisible(locator1 = "ControlMenuAddPanel#CLOSE_ADD_PANEL")) {
+				Click(locator1 = "ControlMenuAddPanel#CLOSE_ADD_PANEL");
+			}
 		}
 
 		task ("Assert the 'Configuration' iframe of the Hello World portlet") {
