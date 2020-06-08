@@ -2,6 +2,7 @@
 definition {
 
 	property osgi.app.includes = "sharepoint-rest";
+	property portal.acceptance = "yvonne";
 	property portal.ssl.enabled = "true";
 	property portal.release = "false";
 	property portal.upstream = "true";
