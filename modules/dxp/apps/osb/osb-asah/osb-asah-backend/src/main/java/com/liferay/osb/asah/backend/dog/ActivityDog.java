@@ -26,7 +26,6 @@ import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -77,7 +76,7 @@ public class ActivityDog {
 		return DogUtil.createResultBag(Activity.class, searchHits);
 	}
 
-	public Set<String> getEventContextKeys() {
+	public List<String> getEventContextKeys() {
 		Map<String, Object> indexMappings =
 			_elasticsearchIndexManager.getIndexMappings(
 				"activities", WeDeployDataService.OSB_ASAH_FARO_INFO);
@@ -91,7 +90,7 @@ public class ActivityDog {
 		Map<String, Object> eventContextProperties = MapUtil.get(
 			eventContext, "properties");
 
-		Set<String> eventContextKeys = new HashSet<>();
+		List<String> eventContextKeys = new ArrayList<>();
 
 		for (Map.Entry<String, Object> entry :
 				eventContextProperties.entrySet()) {

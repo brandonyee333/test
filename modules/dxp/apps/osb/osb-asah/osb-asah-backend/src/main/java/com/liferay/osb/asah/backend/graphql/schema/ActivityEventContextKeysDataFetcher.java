@@ -20,7 +20,7 @@ import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,10 +33,10 @@ import org.springframework.stereotype.Component;
 	fieldName = "activityEventContextKeys", typeName = "QueryType"
 )
 public class ActivityEventContextKeysDataFetcher
-	implements DataFetcher<Set<String>> {
+	implements DataFetcher<List<String>> {
 
 	@Override
-	public Set<String> get(DataFetchingEnvironment dataFetchingEnvironment) {
+	public List<String> get(DataFetchingEnvironment dataFetchingEnvironment) {
 		return _activityDog.getEventContextKeys();
 	}
 
