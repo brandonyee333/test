@@ -40,11 +40,9 @@ public class ShoppingItemImpl extends ShoppingItemBaseImpl {
 
 	@Override
 	public int compareTo(ShoppingItem item) {
-		return new ItemNameComparator(
-			true
-		).compare(
-			this, item
-		);
+		ItemNameComparator itemNameComparator = new ItemNameComparator(true);
+
+		return itemNameComparator.compare(this, item);
 	}
 
 	@Override

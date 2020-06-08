@@ -560,6 +560,8 @@ public class FileSystemStore extends BaseStore {
 
 		String[] pathDirNames = FileUtil.listDirs(path);
 
+		File file = new File(path);
+
 		if (ArrayUtil.isNotEmpty(pathDirNames)) {
 			for (String pathDirName : pathDirNames) {
 				String subdirName = null;
@@ -576,7 +578,7 @@ public class FileSystemStore extends BaseStore {
 					path + StringPool.SLASH + pathDirName);
 			}
 		}
-		else if (new File(path).isDirectory()) {
+		else if (file.isDirectory()) {
 			fileNames.add(dirName);
 		}
 	}
