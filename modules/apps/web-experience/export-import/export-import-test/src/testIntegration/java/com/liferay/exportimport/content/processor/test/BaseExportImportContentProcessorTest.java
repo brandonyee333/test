@@ -125,9 +125,9 @@ public class BaseExportImportContentProcessorTest {
 		_defaultLocale = LocaleUtil.getSiteDefault();
 		_nonDefaultLocale = getNonDefaultLocale();
 
-		_liveGroup = GroupTestUtil.addGroup();
-
 		UserTestUtil.setUser(TestPropsValues.getUser());
+
+		_liveGroup = GroupTestUtil.addGroup();
 
 		GroupTestUtil.enableLocalStaging(
 			_liveGroup, TestPropsValues.getUserId());
