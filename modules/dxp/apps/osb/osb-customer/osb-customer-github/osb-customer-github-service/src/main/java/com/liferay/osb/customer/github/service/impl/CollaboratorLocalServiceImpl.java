@@ -65,6 +65,8 @@ public class CollaboratorLocalServiceImpl
 			AccountEntryLocalServiceUtil.getAccountEntry(accountEntryId);
 
 		if (accountEntry.getStatus() == WorkflowConstants.STATUS_CLOSED) {
+			_gitHubWebService.getUser(gitHubUserName);
+
 			collaborator.setStatus(WorkflowConstants.STATUS_CLOSED);
 		}
 		else {

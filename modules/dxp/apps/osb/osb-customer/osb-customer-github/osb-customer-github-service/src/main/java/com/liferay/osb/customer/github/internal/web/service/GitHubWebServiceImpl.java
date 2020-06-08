@@ -132,6 +132,21 @@ public class GitHubWebServiceImpl
 		}
 	}
 
+	@Override
+	public JSONObject getUser(String gitHubUserName) throws PortalException {
+		try {
+			String url = _URL_GITHUB_USERS + gitHubUserName;
+
+			String response = doGet(
+				url, Collections.<String, String>emptyMap(), _headers);
+
+			return JSONFactoryUtil.createJSONObject(response);
+		}
+		catch (Exception e) {
+			throw new PortalException(e);
+		}
+	}
+
 	protected void addHeaders(
 		HttpMessage httpMessage, Map<String, String> headers) {
 
@@ -170,6 +185,8 @@ public class GitHubWebServiceImpl
 					GitHubConfigurationValues.
 						REMOTE_REST_SERVICE_API_GITHUB_REPOSITORY_NAME +
 							"/collaborators";
+
+	private static final String _URL_GITHUB_USERS = "/users/";
 
 	private static final Map<String, String> _headers =
 		new HashMap<String, String>() {

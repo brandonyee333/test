@@ -30,4 +30,6 @@ public interface GitHubWebService {
 
 	public JSONArray getCollaborators() throws PortalException;
 
+	public JSONObject getUser(String userName) throws PortalException;
+
 }
