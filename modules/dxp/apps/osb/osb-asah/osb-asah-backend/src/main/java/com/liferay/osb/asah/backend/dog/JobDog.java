@@ -95,12 +95,7 @@ public class JobDog {
 				jobTrainingFrequency.getCronExpression());
 		}
 
-		try {
-			return _objectMapper.readValue(jsonObject.toString(), Job.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process update request", ioe);
-		}
+		return _deserializeJob(jsonObject.toString());
 	}
 
 	public List<Boolean> deleteJobs(List<String> ids) {
@@ -133,14 +128,7 @@ public class JobDog {
 
 		SearchHit searchHit = searchHits.getAt(0);
 
-		String source = searchHit.getSourceAsString();
-
-		try {
-			return _objectMapper.readValue(source, Job.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
+		return _deserializeJob(searchHit.getSourceAsString());
 	}
 
 	public Job getJob(String id) {
@@ -162,14 +150,7 @@ public class JobDog {
 
 		SearchHit searchHit = searchHits.getAt(0);
 
-		String source = searchHit.getSourceAsString();
-
-		try {
-			return _objectMapper.readValue(source, Job.class);
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException("Unable to process search request", ioe);
-		}
+		return _deserializeJob(searchHit.getSourceAsString());
 	}
 
 	public ResultBag<Job> getJobResultBag(
@@ -264,6 +245,15 @@ public class JobDog {
 			));
 
 		return boolQueryBuilder;
+	}
+
+	private Job _deserializeJob(String json) {
+		try {
+			return _objectMapper.readValue(json, Job.class);
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to deserialize job JSON", ioe);
+		}
 	}
 
 	private boolean _hasJobCompleted(String id) {
