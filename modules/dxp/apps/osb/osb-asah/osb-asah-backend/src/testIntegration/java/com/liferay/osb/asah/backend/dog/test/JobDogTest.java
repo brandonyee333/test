@@ -26,6 +26,7 @@ import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
 import com.liferay.osb.asah.test.util.elasticsearch.ElasticsearchIndex;
 import com.liferay.osb.asah.test.util.spring.OSBAsahSpringJUnit4ClassRunner;
+import com.liferay.osb.asah.test.util.util.RandomTestUtil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -93,6 +94,18 @@ public class JobDogTest {
 		List<Boolean> statuses = _jobDog.deleteJobs(Arrays.asList("1"));
 
 		Assert.assertTrue(statuses.get(0));
+	}
+
+	@Test
+	public void testFetchJob() {
+		String jobName = RandomTestUtil.randomString();
+
+		Job job = _jobDog.addJob(
+			Collections.emptyList(), JobTrainingFrequency.MANUAL,
+			JobTrainingPeriod.LAST_30_DAYS,
+			JobType.CONTENT_RECOMMENDATION_ITEM_SIMILARITY, jobName);
+
+		Assert.assertEquals(job, _jobDog.fetchJob(jobName));
 	}
 
 	@ElasticsearchIndex(
