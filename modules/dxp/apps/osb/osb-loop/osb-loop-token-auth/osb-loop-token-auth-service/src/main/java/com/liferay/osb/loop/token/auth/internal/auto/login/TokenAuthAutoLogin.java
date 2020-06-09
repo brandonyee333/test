@@ -192,7 +192,7 @@ public class TokenAuthAutoLogin extends BaseAutoLogin implements AuthVerifier {
 		String path = StringUtil.toLowerCase(request.getRequestURI());
 
 		if (!contextPath.equals(StringPool.SLASH) &&
-			path.contains(contextPath)) {
+			path.startsWith(contextPath)) {
 
 			path = path.substring(contextPath.length());
 		}
