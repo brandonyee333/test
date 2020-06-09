@@ -102,12 +102,12 @@
 			</library>
 			<library>
 				<file-name>com.liferay.analytics.settings.web.jar!httpcore.jar</file-name>
-				<version>4.4.6</version>
+				<version>4.4.9</version>
 				<project-name>HttpComponents Apache HttpCore</project-name>
 				<project-url>http://hc.apache.org/httpcomponents-core-ga</project-url>
 				<licenses>
 					<license>
-						<license-name>The Apache Software License, Version 2.0</license-name>
+						<license-name>Apache License, Version 2.0</license-name>
 						<license-url>http://www.apache.org/licenses/LICENSE-2.0.txt</license-url>
 					</license>
 				</licenses>
@@ -1481,7 +1481,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!asm-commons.jar</file-name>
-				<version>4.1</version>
+				<version>5.0.4</version>
 				<project-name>ASM commons classes</project-name>
 				<project-url>http://asm.objectweb.org</project-url>
 				<licenses>
@@ -1493,7 +1493,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.search.elasticsearch.jar!asm.jar</file-name>
-				<version>4.1</version>
+				<version>5.0.4</version>
 				<project-name>ASM Core</project-name>
 				<project-url>http://asm.objectweb.org</project-url>
 				<licenses>
@@ -2604,7 +2604,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-core.jar</file-name>
-				<version>1.11.277</version>
+				<version>1.11.790</version>
 				<project-name>AWS SDK for Java - Core</project-name>
 				<project-url>https://aws.amazon.com/sdkforjava</project-url>
 				<licenses>
@@ -2616,7 +2616,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-kms.jar</file-name>
-				<version>1.11.277</version>
+				<version>1.11.790</version>
 				<project-name>AWS Java SDK for AWS KMS</project-name>
 				<project-url>https://aws.amazon.com/sdkforjava</project-url>
 				<licenses>
@@ -2628,7 +2628,7 @@
 			</library>
 			<library>
 				<file-name>com.liferay.portal.store.s3.jar!aws-java-sdk-s3.jar</file-name>
-				<version>1.11.277</version>
+				<version>1.11.790</version>
 				<project-name>AWS Java SDK for Amazon S3</project-name>
 				<project-url>https://aws.amazon.com/sdkforjava</project-url>
 				<licenses>
