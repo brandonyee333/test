@@ -209,6 +209,8 @@ public class GraphQLRestController {
 		_defineCustomPropertyName(
 			builder, "assetMetrics", "results", "AssetMetricBag");
 		_defineCustomPropertyName(
+			builder, "completedDate", "completedDateISO", "JobRun");
+		_defineCustomPropertyName(
 			builder, "compositions", "results", "CompositionBag");
 		_defineCustomPropertyName(
 			builder, "confidenceInterval", "confidenceIntervalArray",
@@ -239,6 +241,7 @@ public class GraphQLRestController {
 			builder, "finishedDate", "finishedDateISO", "Experiment");
 		_defineCustomPropertyName(
 			builder, "individuals", "results", "IndividualBag");
+		_defineCustomPropertyName(builder, "jobRuns", "results", "JobRunBag");
 		_defineCustomPropertyName(builder, "jobs", "results", "JobBag");
 		_defineCustomPropertyName(builder, "metric", "goalMetric", "Goal");
 		_defineCustomPropertyName(builder, "metrics", "results", "MetricBag");
@@ -252,6 +255,7 @@ public class GraphQLRestController {
 			builder, "status", "dataExportTaskStatus", "DataExportTask");
 		_defineCustomPropertyName(
 			builder, "status", "experimentStatus", "Experiment");
+		_defineCustomPropertyName(builder, "status", "jobRunStatus", "JobRun");
 		_defineCustomPropertyName(
 			builder, "suppressions", "results", "SuppressionBag");
 		_defineCustomPropertyName(

@@ -27,6 +27,12 @@ enum DataControlTaskType {
 	UNSUPPRESS
 }
 
+enum JobRunStatus {
+	COMPLETED
+	FAILED
+	RUNNING
+}
+
 enum JobStatus {
 	FAILED
 	PENDING
@@ -373,6 +379,17 @@ type JobParameter {
 	value: String
 }
 
+type JobRun {
+	id: String
+	completedDate: String
+	status: JobRunStatus
+}
+
+type JobRunBag {
+	jobRuns: [JobRun]
+	total: Int
+}
+
 type JournalMetric implements AssetMetric {
 	assetId: String
 	assetMetrics: [AssetMetric]
@@ -701,6 +718,13 @@ type QueryType {
 	jobByName(
 		name: String!
 	): Job
+
+	jobRuns(
+		jobId: String!
+		size: Int!,
+		sort: Sort!,
+		start: Int!
+	): JobRunBag
 
 	jobs(
 		keywords: String,
