@@ -23,6 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobRun;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
@@ -163,6 +164,18 @@ public class JobDog {
 				_buildKeywordsQueryBuilder(keywords), size, start));
 
 		return DogUtil.createResultBag(Job.class, searchHits);
+	}
+
+	public ResultBag<JobRun> getJobRunResultBag(
+		String jobId, int size, Map<String, String> sort, int start) {
+
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"job-runs", _faroInfoElasticsearchInvoker,
+			DogUtil.buildSearchSourceBuilder(
+				SortBuilderUtil.fieldSort(sort),
+				QueryBuilders.termQuery("job.id", jobId), size, start));
+
+		return DogUtil.createResultBag(JobRun.class, searchHits);
 	}
 
 	public JobStatus getJobStatus(String id) {
