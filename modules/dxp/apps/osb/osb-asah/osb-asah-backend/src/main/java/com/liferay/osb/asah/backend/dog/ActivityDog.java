@@ -77,6 +77,8 @@ public class ActivityDog {
 	}
 
 	public List<String> getEventContextKeys() {
+		List<String> eventContextKeys = new ArrayList<>();
+
 		Map<String, Object> indexMappings =
 			_elasticsearchIndexManager.getIndexMappings(
 				"activities", WeDeployDataService.OSB_ASAH_FARO_INFO);
@@ -89,8 +91,6 @@ public class ActivityDog {
 
 		Map<String, Object> eventContextProperties = MapUtil.get(
 			eventContext, "properties");
-
-		List<String> eventContextKeys = new ArrayList<>();
 
 		for (Map.Entry<String, Object> entry :
 				eventContextProperties.entrySet()) {
