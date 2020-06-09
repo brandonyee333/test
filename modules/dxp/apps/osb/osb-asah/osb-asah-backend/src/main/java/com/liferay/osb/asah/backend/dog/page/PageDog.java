@@ -55,48 +55,24 @@ public class PageDog {
 
 	public long getMetricValue(
 		Optional<String> canonicalUrlOptional,
-		Optional<String> fromDateStringOptional, MetricType metricType,
+		Optional<String> fromDateStringOptional, PageMetricType pageMetricType,
 		Optional<String> toDateStringOptional, Optional<String> urlOptional) {
 
-		SearchSourceBuilder searchSourceBuilder =
-			SearchSourceBuilder.searchSource();
-
-		searchSourceBuilder.aggregation(
-			_createSumAggregationBuilder(metricType));
-
-		QueryBuilder queryBuilder = _createRangeQueryBuilder(
-			fromDateStringOptional, toDateStringOptional);
+		BoolQueryBuilder boolQueryBuilder = BoolQueryBuilderUtil.filter(
+			_createRangeQueryBuilder(
+				fromDateStringOptional, toDateStringOptional));
 
 		if (urlOptional.isPresent()) {
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				queryBuilder
-			).filter(
-				QueryBuilders.termQuery("url", urlOptional.get())
-			);
+			boolQueryBuilder.filter(
+				QueryBuilders.termQuery("url", urlOptional.get()));
 		}
 		else if (canonicalUrlOptional.isPresent()) {
-			queryBuilder = BoolQueryBuilderUtil.filter(
-				queryBuilder
-			).filter(
+			boolQueryBuilder.filter(
 				QueryBuilders.termQuery(
-					"canonicalUrl", canonicalUrlOptional.get())
-			);
+					"canonicalUrl", canonicalUrlOptional.get()));
 		}
 
-		searchSourceBuilder.query(queryBuilder);
-
-		searchSourceBuilder.size(0);
-
-		Aggregations aggregations = _dataDog.queryAggregations(
-			"pages", searchSourceBuilder);
-
-		if (DogUtil.isEmpty(aggregations)) {
-			return 0;
-		}
-
-		Sum sum = aggregations.get(metricType.getAggregationName());
-
-		return (long)sum.getValue();
+		return _getMetricValue(pageMetricType, boolQueryBuilder);
 	}
 
 	public long getViewsMetricValue(
@@ -152,14 +128,14 @@ public class PageDog {
 	}
 
 	private long _getMetricValue(
-		PageMetricType pageMetricType, QueryBuilder queries) {
+		PageMetricType pageMetricType, QueryBuilder queryBuilder) {
 
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
 
 		searchSourceBuilder.aggregation(
 			_createSumAggregationBuilder(pageMetricType));
-		searchSourceBuilder.query(queries);
+		searchSourceBuilder.query(queryBuilder);
 		searchSourceBuilder.size(0);
 
 		Aggregations aggregations = _dataDog.queryAggregations(

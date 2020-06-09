@@ -18,7 +18,6 @@ import com.liferay.osb.asah.backend.dog.GeolocationDog;
 import com.liferay.osb.asah.backend.dog.HistogramDog;
 import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.page.PageDog;
-import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.backend.model.PageMetricType;
 import com.liferay.osb.asah.backend.model.TimeRange;
 import com.liferay.osb.asah.backend.rest.controller.BaseRestController;
@@ -107,12 +106,12 @@ public class PagesRestController extends BaseRestController {
 
 	private String _getHistogramMetrics(
 		String canonicalUrl, LocalDate endLocalDate, String interval,
-		MetricType metricType, LocalDate startLocalDate) {
+		PageMetricType pageMetricType, LocalDate startLocalDate) {
 
 		return JSONUtil.put(
 			"histogram",
 			_histogramDog.getHistogramMetrics(
-				true, metricType,
+				true, pageMetricType,
 				new SearchQueryContext() {
 					{
 						setCanonicalUrl(canonicalUrl);
@@ -125,7 +124,7 @@ public class PagesRestController extends BaseRestController {
 			"value",
 			_pageDog.getMetricValue(
 				Optional.of(canonicalUrl),
-				Optional.of(startLocalDate.toString()), metricType,
+				Optional.of(startLocalDate.toString()), pageMetricType,
 				Optional.of(endLocalDate.toString()), Optional.empty())
 		).toString();
 	}
