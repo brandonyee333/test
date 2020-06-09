@@ -1,7 +1,5 @@
 [
 	{
-		"active": false,
-		"cronExpression": "0 0 */6 * * ?",
 		"id": "1",
 		"name": "Related Content Job",
 		"parameters": [
@@ -13,6 +11,9 @@
 				"name": "parameter2",
 				"value": "value2"
 			}
-		]
+		],
+		"trainingFrequency": "EVERY_7_DAYS",
+		"trainingPeriod": "LAST_30_DAYS",
+		"type": "CONTENT_RECOMMENDATION_ITEM_SIMILARITY"
 	}
 ]
