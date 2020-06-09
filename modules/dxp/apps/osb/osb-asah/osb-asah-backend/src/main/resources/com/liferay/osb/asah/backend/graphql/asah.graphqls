@@ -694,8 +694,8 @@ type QueryType {
 		start: Int!
 	): CompositionBag
 
-	job(
-		jobId: String!
+	jobById(
+		id: String!
 	): Job
 
 	jobByName(
