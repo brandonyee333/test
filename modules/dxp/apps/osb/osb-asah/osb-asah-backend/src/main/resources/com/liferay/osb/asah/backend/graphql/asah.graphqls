@@ -698,6 +698,10 @@ type QueryType {
 		jobId: String!
 	): Job
 
+	jobByName(
+		name: String!
+	): Job
+
 	jobs(
 		keywords: String,
 		size: Int!,
