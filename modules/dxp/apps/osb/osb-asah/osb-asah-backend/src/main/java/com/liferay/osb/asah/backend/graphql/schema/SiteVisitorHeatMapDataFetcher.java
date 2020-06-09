@@ -15,10 +15,10 @@
 package com.liferay.osb.asah.backend.graphql.schema;
 
 import com.liferay.osb.asah.backend.dog.SiteVisitorHeatMapDog;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.graphql.GraphQLTypeWiring;
 import com.liferay.osb.asah.backend.model.HeatMapMetric;
 
-import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
 import java.util.List;
@@ -32,17 +32,17 @@ import org.springframework.stereotype.Component;
 @Component
 @GraphQLTypeWiring(fieldName = "siteVisitorHeatMap", typeName = "QueryType")
 public class SiteVisitorHeatMapDataFetcher
-	implements DataFetcher<List<HeatMapMetric>> {
+	extends BaseDataFetcher<List<HeatMapMetric>> {
 
 	@Override
 	public List<HeatMapMetric> get(
-		DataFetchingEnvironment dataFetchingEnvironment) {
+		DataFetchingEnvironment dataFetchingEnvironment,
+		SearchQueryContext searchQueryContext) {
 
 		return siteVisitorHeatMapDog.getHeatMapMetrics(
-			dataFetchingEnvironment.getArgument("assetId"),
-			dataFetchingEnvironment.getArgument("channelId"),
-			dataFetchingEnvironment.getArgument("rangeKey"),
-			dataFetchingEnvironment.getArgument("timeZoneId"));
+			searchQueryContext.getAssetId(), searchQueryContext.getChannelId(),
+			searchQueryContext.getTimeRange(),
+			searchQueryContext.getTimeZoneId());
 	}
 
 	@Autowired

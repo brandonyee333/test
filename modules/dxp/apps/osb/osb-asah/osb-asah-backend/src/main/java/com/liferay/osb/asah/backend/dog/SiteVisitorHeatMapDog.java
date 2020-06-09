@@ -53,12 +53,13 @@ import org.springframework.stereotype.Component;
 public class SiteVisitorHeatMapDog {
 
 	public List<HeatMapMetric> getHeatMapMetrics(
-		String assetId, String channelId, int rangeKey, String timeZoneId) {
+		String assetId, String channelId, TimeRange timeRange,
+		String timeZoneId) {
 
 		Aggregations aggregations = _dataDog.queryAggregations(
 			"pages",
 			_buildSearchSourceBuilder(
-				assetId, channelId, rangeKey, timeZoneId));
+				assetId, channelId, timeRange, timeZoneId));
 
 		if (DogUtil.isEmpty(aggregations)) {
 			return Collections.emptyList();
@@ -81,7 +82,8 @@ public class SiteVisitorHeatMapDog {
 	}
 
 	private SearchSourceBuilder _buildSearchSourceBuilder(
-		String assetId, String channelId, int rangeKey, String timeZoneId) {
+		String assetId, String channelId, TimeRange timeRange,
+		String timeZoneId) {
 
 		AggregationBuilder aggregationBuilder = _getTermsAggregationBuilder(
 			timeZoneId);
@@ -90,7 +92,7 @@ public class SiteVisitorHeatMapDog {
 
 		searchQueryContext.setDataSourceId(assetId);
 		searchQueryContext.setChannelId(channelId);
-		searchQueryContext.setTimeRange(TimeRange.of(rangeKey));
+		searchQueryContext.setTimeRange(timeRange);
 		searchQueryContext.setTimeZoneId(timeZoneId);
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
