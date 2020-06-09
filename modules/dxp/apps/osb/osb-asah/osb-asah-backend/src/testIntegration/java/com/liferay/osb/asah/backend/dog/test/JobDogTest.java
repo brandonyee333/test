@@ -57,10 +57,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = OSBAsahBackendSpringBootApplication.class)
 public class JobDogTest {
 
-	@ElasticsearchIndex(
-		name = "jobs", resourcePath = "jobs-info.json",
-		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
-	)
 	@Test
 	public void testAddJob() {
 		Job job = _jobDog.addJob(
