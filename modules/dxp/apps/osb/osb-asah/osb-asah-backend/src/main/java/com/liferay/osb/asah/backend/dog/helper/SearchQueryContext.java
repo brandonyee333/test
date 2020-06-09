@@ -110,6 +110,10 @@ public class SearchQueryContext {
 		return _active;
 	}
 
+	public Boolean isIncludeActiveSessions() {
+		return _includeActiveSessions;
+	}
+
 	public Boolean isIncludePrevious() {
 		return _includePrevious;
 	}
@@ -152,6 +156,10 @@ public class SearchQueryContext {
 
 	public void setExperimentId(String experimentId) {
 		_experimentId = experimentId;
+	}
+
+	public void setIncludeActiveSessions(Boolean includeActiveSessions) {
+		_includeActiveSessions = includeActiveSessions;
 	}
 
 	public void setIncludePrevious(Boolean includePrevious) {
@@ -207,6 +215,7 @@ public class SearchQueryContext {
 	private String _experienceId;
 	private String _experimentId;
 	private Geolocation _geolocation = Geolocation.any();
+	private Boolean _includeActiveSessions = false;
 	private Boolean _includePrevious = true;
 	private Interval _interval = Interval.DAY;
 	private String _keywords;

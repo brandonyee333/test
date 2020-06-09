@@ -229,7 +229,8 @@ public class MetricDog {
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			cardinalityAggregationBuilder, Optional.empty(),
 			Collections.emptySet(), assetResolver,
-			dogConfiguration.getQueryBuilder(), searchQueryContext);
+			dogConfiguration.getQueryBuilder(searchQueryContext),
+			searchQueryContext);
 	}
 
 	private SearchSourceBuilder _buildAssetMetricSearchSourceBuilder(
@@ -261,7 +262,8 @@ public class MetricDog {
 				Optional.of(
 					assetResolver.getAssetId(searchQueryContext.getAssetId())),
 				_getPipelineAggregationBuilders(metricResolvers),
-				dogConfiguration.getQueryBuilder(), searchQueryContext);
+				dogConfiguration.getQueryBuilder(searchQueryContext),
+				searchQueryContext);
 		}
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
@@ -269,7 +271,8 @@ public class MetricDog {
 			Optional.of(
 				assetResolver.getAssetId(searchQueryContext.getAssetId())),
 			_getPipelineAggregationBuilders(metricResolvers),
-			dogConfiguration.getQueryBuilder(), searchQueryContext);
+			dogConfiguration.getQueryBuilder(searchQueryContext),
+			searchQueryContext);
 	}
 
 	private SearchSourceBuilder _buildAssetMetricsSearchSourceBuilder(
@@ -302,7 +305,8 @@ public class MetricDog {
 
 		return _searchQueryHelper.createRangeSearchSourceBuilder(
 			termsAggregationBuilder, Optional.empty(), assetIds, assetResolver,
-			dogConfiguration.getQueryBuilder(), searchQueryContext);
+			dogConfiguration.getQueryBuilder(searchQueryContext),
+			searchQueryContext);
 	}
 
 	private BucketSortPipelineAggregationBuilder

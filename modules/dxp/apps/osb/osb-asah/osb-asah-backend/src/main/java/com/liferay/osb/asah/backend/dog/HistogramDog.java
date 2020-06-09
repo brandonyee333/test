@@ -123,7 +123,8 @@ public class HistogramDog {
 				Collections.singleton(dateHistogramAggregationBuilder),
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				Collections.emptySet(), dogConfiguration.getQueryBuilder(),
+				Collections.emptySet(),
+				dogConfiguration.getQueryBuilder(searchQueryContext),
 				searchQueryContext);
 		}
 
@@ -131,7 +132,8 @@ public class HistogramDog {
 			Collections.singleton(dateHistogramAggregationBuilder),
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(), dogConfiguration.getQueryBuilder(),
+			Collections.emptySet(),
+			dogConfiguration.getQueryBuilder(searchQueryContext),
 			searchQueryContext);
 	}
 

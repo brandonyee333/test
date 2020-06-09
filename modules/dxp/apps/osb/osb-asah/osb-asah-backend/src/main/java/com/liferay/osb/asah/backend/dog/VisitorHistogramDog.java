@@ -111,7 +111,8 @@ public class VisitorHistogramDog {
 				Collections.singleton(scriptedMetricAggregationBuilder),
 				DogUtil.getAssetIdOptional(
 					searchQueryContext.getAssetId(), dogConfiguration),
-				Collections.emptySet(), dogConfiguration.getQueryBuilder(),
+				Collections.emptySet(),
+				dogConfiguration.getQueryBuilder(searchQueryContext),
 				searchQueryContext);
 		}
 
@@ -119,7 +120,8 @@ public class VisitorHistogramDog {
 			Collections.singleton(scriptedMetricAggregationBuilder),
 			DogUtil.getAssetIdOptional(
 				searchQueryContext.getAssetId(), dogConfiguration),
-			Collections.emptySet(), dogConfiguration.getQueryBuilder(),
+			Collections.emptySet(),
+			dogConfiguration.getQueryBuilder(searchQueryContext),
 			searchQueryContext);
 	}
 

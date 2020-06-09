@@ -15,6 +15,7 @@
 package com.liferay.osb.asah.backend.dog.configuration;
 
 import com.liferay.osb.asah.backend.dog.DogUtil;
+import com.liferay.osb.asah.backend.dog.helper.SearchQueryContext;
 import com.liferay.osb.asah.backend.dog.resolver.MetricResolver;
 import com.liferay.osb.asah.backend.model.MetricType;
 import com.liferay.osb.asah.common.elasticsearch.BoolQueryBuilderUtil;
@@ -51,7 +52,7 @@ import org.elasticsearch.search.aggregations.pipeline.PipelineAggregatorBuilders
 public abstract class BaseDogConfiguration implements DogConfiguration {
 
 	@Override
-	public QueryBuilder getQueryBuilder() {
+	public QueryBuilder getQueryBuilder(SearchQueryContext searchQueryContext) {
 		return null;
 	}
 
