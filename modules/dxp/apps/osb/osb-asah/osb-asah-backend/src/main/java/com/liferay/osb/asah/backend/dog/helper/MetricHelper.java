@@ -48,14 +48,9 @@ public class MetricHelper {
 
 		Map<String, Metric> metrics = new LinkedHashMap<>();
 
-		LocalDateTime localDateTime = LocalDateTime.of(
-			LocalDate.now(clock), LocalTime.MIDNIGHT);
+		LocalDate localDate = timeRange.getEndLocalDate();
 
-		if (!timeRange.getIncludeToday() &&
-			!TimeRange.YESTERDAY.equals(timeRange)) {
-
-			localDateTime = localDateTime.minusDays(1);
-		}
+		LocalDateTime localDateTime = localDate.atStartOfDay();
 
 		if (TimeRange.LAST_24_HOURS.equals(timeRange)) {
 			localDateTime = LocalDateTime.now(clock);
@@ -90,8 +85,8 @@ public class MetricHelper {
 				90, interval, localDateTime, metricType, metrics, timeRange);
 		}
 		else if (TimeRange.YESTERDAY.equals(timeRange)) {
-			for (int i = 24; i > 0; i--) {
-				LocalDateTime periodLocalDateTime = localDateTime.minusHours(i);
+			for (int i = 0; i < 24; i++) {
+				LocalDateTime periodLocalDateTime = localDateTime.plusHours(i);
 
 				metrics.put(
 					String.valueOf(periodLocalDateTime),
