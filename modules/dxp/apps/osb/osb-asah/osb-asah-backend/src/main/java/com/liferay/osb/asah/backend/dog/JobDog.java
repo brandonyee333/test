@@ -122,10 +122,31 @@ public class JobDog {
 		return statuses;
 	}
 
+	public Job fetchJob(String name) {
+		SearchHits searchHits = _dataDog.querySearchHits(
+			"jobs", _faroInfoElasticsearchInvoker,
+			_buildJobSearchSourceBuilder("name", name));
+
+		if (searchHits.getTotalHits() == 0) {
+			return null;
+		}
+
+		SearchHit searchHit = searchHits.getAt(0);
+
+		String source = searchHit.getSourceAsString();
+
+		try {
+			return _objectMapper.readValue(source, Job.class);
+		}
+		catch (IOException ioe) {
+			throw new RuntimeException("Unable to process search request", ioe);
+		}
+	}
+
 	public Job getJob(String id) {
 		SearchHits searchHits = _dataDog.querySearchHits(
 			"jobs", _faroInfoElasticsearchInvoker,
-			_buildJobSearchSourceBuilder(id));
+			_buildJobSearchSourceBuilder("id", id));
 
 		if (searchHits.getTotalHits() != 1) {
 			if (_log.isWarnEnabled()) {
@@ -208,11 +229,14 @@ public class JobDog {
 		return jobRunJSONObject.getString("completedDate");
 	}
 
-	private SearchSourceBuilder _buildJobSearchSourceBuilder(String jobId) {
+	private SearchSourceBuilder _buildJobSearchSourceBuilder(
+		String fieldName, String fieldValue) {
+
 		SearchSourceBuilder searchSourceBuilder =
 			SearchSourceBuilder.searchSource();
 
-		searchSourceBuilder.query(QueryBuilders.termQuery("id", jobId));
+		searchSourceBuilder.query(
+			QueryBuilders.termQuery(fieldName, fieldValue));
 		searchSourceBuilder.size(1);
 
 		return searchSourceBuilder;
