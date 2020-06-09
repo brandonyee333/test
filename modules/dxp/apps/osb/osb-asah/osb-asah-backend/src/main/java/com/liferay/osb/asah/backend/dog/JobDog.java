@@ -24,6 +24,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
 import com.liferay.osb.asah.backend.model.JobRun;
+import com.liferay.osb.asah.backend.model.JobRunStatus;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
@@ -223,6 +224,26 @@ public class JobDog {
 		return jobRunJSONObject.getString("completedDate");
 	}
 
+	public Job runJob(String id) {
+		JobRun jobRun = _fetchLatestJobRun(id);
+
+		if ((jobRun != null) &&
+			(jobRun.getJobRunStatus() == JobRunStatus.RUNNING)) {
+
+			throw new IllegalStateException(
+				String.format(
+					"Unable to run job %s because it is already running", id));
+		}
+
+		Job job = getJob(id);
+
+		_faroInfoOSBAsahTaskDog.addOSBAsahTask(
+			_jobTypeNaniteMap.get(job.getJobType()),
+			_objectMapper.convertValue(job, JSONObject.class));
+
+		return job;
+	}
+
 	private SearchSourceBuilder _buildJobSearchSourceBuilder(
 		String fieldName, String fieldValue) {
 
@@ -267,6 +288,26 @@ public class JobDog {
 		catch (IOException ioe) {
 			throw new RuntimeException("Unable to deserialize job JSON", ioe);
 		}
+	}
+
+	private JobRun _fetchLatestJobRun(String jobId) {
+		ResultBag<JobRun> resultBag = getJobRunResultBag(
+			jobId, 1,
+			new HashMap<String, String>() {
+				{
+					put("column", "id");
+					put("type", "DESC");
+				}
+			},
+			0);
+
+		if (resultBag.getTotal() == 0) {
+			return null;
+		}
+
+		List<JobRun> results = resultBag.getResults();
+
+		return results.get(0);
 	}
 
 	private boolean _hasJobCompleted(String id) {
