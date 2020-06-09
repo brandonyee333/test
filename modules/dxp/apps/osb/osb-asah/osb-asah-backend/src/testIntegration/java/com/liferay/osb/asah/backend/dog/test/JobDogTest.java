@@ -17,10 +17,13 @@ package com.liferay.osb.asah.backend.dog.test;
 import com.liferay.osb.asah.backend.dog.JobDog;
 import com.liferay.osb.asah.backend.model.Job;
 import com.liferay.osb.asah.backend.model.JobParameter;
+import com.liferay.osb.asah.backend.model.JobRun;
+import com.liferay.osb.asah.backend.model.JobRunStatus;
 import com.liferay.osb.asah.backend.model.JobStatus;
 import com.liferay.osb.asah.backend.model.JobTrainingFrequency;
 import com.liferay.osb.asah.backend.model.JobTrainingPeriod;
 import com.liferay.osb.asah.backend.model.JobType;
+import com.liferay.osb.asah.backend.model.ResultBag;
 import com.liferay.osb.asah.backend.spring.OSBAsahBackendSpringBootApplication;
 import com.liferay.osb.asah.common.date.DateUtil;
 import com.liferay.osb.asah.common.wedeploy.data.WeDeployDataService;
@@ -34,7 +37,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -121,6 +128,39 @@ public class JobDogTest {
 	}
 
 	@ElasticsearchIndex(
+		name = "jobs", resourcePath = "jobs-info.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@ElasticsearchIndex(
+		name = "job-runs", resourcePath = "job-runs-info-2.json",
+		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
+	)
+	@Test
+	public void testGetJobRunResultBag() {
+		ResultBag<JobRun> jobRunResultBag = _jobDog.getJobRunResultBag(
+			"1", 10,
+			new HashMap<String, String>() {
+				{
+					put("column", "id");
+					put("type", "DESC");
+				}
+			},
+			0);
+
+		Assert.assertEquals(3, jobRunResultBag.getTotal());
+
+		Assert.assertEquals(
+			Arrays.asList("3", "2", "1"),
+			_getJobRunsProperty(jobRunResultBag.getResults(), JobRun::getId));
+		Assert.assertEquals(
+			Arrays.asList(
+				JobRunStatus.FAILED, JobRunStatus.COMPLETED,
+				JobRunStatus.FAILED),
+			_getJobRunsProperty(
+				jobRunResultBag.getResults(), JobRun::getJobRunStatus));
+	}
+
+	@ElasticsearchIndex(
 		name = "job-runs", resourcePath = "job-runs-info-1.json",
 		weDeployDataService = WeDeployDataService.OSB_ASAH_FARO_INFO
 	)
@@ -195,6 +235,18 @@ public class JobDogTest {
 		Assert.assertEquals(
 			expectedTrainingLocalDateTime.getYear(),
 			trainingLocalDateTime.getYear());
+	}
+
+	private <R> List<R> _getJobRunsProperty(
+		List<JobRun> jobRuns, Function<JobRun, ? extends R> mapFunction) {
+
+		Stream<JobRun> stream = jobRuns.stream();
+
+		return stream.map(
+			mapFunction
+		).collect(
+			Collectors.toList()
+		);
 	}
 
 	@Autowired
