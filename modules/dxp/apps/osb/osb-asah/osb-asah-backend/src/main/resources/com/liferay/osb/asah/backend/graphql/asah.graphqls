@@ -468,6 +468,10 @@ type MutationType {
 		key: String!
 		value: String!
 	): Preference
+
+	runJob(
+		jobId: String!
+	): Job
 }
 
 type Organization implements DXPEntity{
