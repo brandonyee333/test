@@ -115,6 +115,7 @@ public class PagesRestController extends BaseRestController {
 				new SearchQueryContext() {
 					{
 						setCanonicalUrl(canonicalUrl);
+						setIncludeActiveSessions(true);
 						setInterval(interval);
 						setTimeRange(
 							TimeRange.of(endLocalDate, startLocalDate));
