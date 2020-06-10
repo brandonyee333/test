@@ -93,9 +93,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 			return expression
 
 	def _get_filter_expresssions(self):
-		job_run = self.spark_application.job_run
-
-		job = job_run.get('job')
+		job = self.spark_application.job
 
 		expressions = ['(eventId = "pageUnloaded")']
 
@@ -112,9 +110,7 @@ class ReadAnalyticsEventsSparkJob(BaseSparkJob):
 		return " AND ".join(expressions)
 
 	def _get_maximum_days_delta(self):
-		job_run = self.spark_application.job_run
-
-		job = job_run.get('job')
+		job = self.spark_application.job
 
 		return self._training_periods_days_delta.get(job.get('trainingPeriod'))
 
@@ -164,9 +160,7 @@ class ReadRecommendedItemsSparkJob(BaseSparkJob):
 
 		data_frame_reader = spark_session.read
 
-		job_run = spark_application.job_run
-
-		job = job_run.get('job')
+		job = spark_application.job
 
 		recommended_items_data_frame = data_frame_reader.json(
 		    '{}/{}/{}/inference_result/*.json.out'.format(
@@ -212,9 +206,7 @@ class WriteDataframeSparkJob(BaseSparkJob):
 
 		args = self.spark_application.args
 		configuration = self.spark_application.configuration
-		job_run = self.spark_application.job_run
-
-		job = job_run.get('job')
+		job = self.spark_application.job
 
 		data_frame_writer.format(
 		    self._output_format
