@@ -76,7 +76,12 @@ public class ContentRecommendationDataPreparationNanite extends BaseNanite {
 			).put(
 				"createdDate", now
 			).put(
-				"job", jobJSONObject
+				"job",
+				JSONUtil.put(
+					"id", jobJSONObject.getString("id")
+				).put(
+					"type", jobJSONObject.getString("type")
+				)
 			).put(
 				"lastUpdatedDate", now
 			).put(

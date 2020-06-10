@@ -19,12 +19,6 @@
 						"id": {
 							"type": "keyword"
 						},
-						"name": {
-							"type": "keyword"
-						},
-						"parameters": {
-							"type": "object"
-						},
 						"type": {
 							"type": "keyword"
 						}
