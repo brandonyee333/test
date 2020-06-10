@@ -16,10 +16,10 @@ import {ClayButtonWithIcon} from '@clayui/button';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import React, {useState} from 'react';
 
+import {EVENT_TYPES} from '../../actions/types.es';
 import {useForm} from '../../hooks/useForm.es';
 import {usePage} from '../../hooks/usePage.es';
 import {setValue} from '../../util/i18n.es';
-import {EVENT_TYPES} from '../actions/types.es';
 
 export const Container = ({children, pages, strings = {}}) => {
 	const {editingLanguageId} = usePage();
