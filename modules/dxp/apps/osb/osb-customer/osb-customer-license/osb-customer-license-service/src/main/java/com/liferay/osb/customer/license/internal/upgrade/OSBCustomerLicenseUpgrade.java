@@ -14,7 +14,7 @@
 
 package com.liferay.osb.customer.license.internal.upgrade;
 
-import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
+import com.liferay.osb.customer.license.internal.upgrade.v1_0_0.UpgradeSchema;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -29,7 +29,7 @@ public class OSBCustomerLicenseUpgrade implements UpgradeStepRegistrator {
 	public void register(Registry registry) {
 		registry.register(
 			"com.liferay.osb.customer.license.service", "0.0.0", "1.0.0",
-			new DummyUpgradeStep());
+			new UpgradeSchema());
 	}
 
 }
