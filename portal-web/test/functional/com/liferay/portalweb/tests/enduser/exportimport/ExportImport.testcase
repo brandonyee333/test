@@ -1456,6 +1456,7 @@ definition {
 	}
 
 	@description = "This is a use case for LPS-88571."
+	@ignore = "true"
 	@priority = "3"
 	test ImportSiteWithMissingReferenceOfPreloadedEntry {
 		property test.name.skip.portal.instance = "ExportImport#ImportSiteWithMissingReferenceOfPreloadedEntry";
