@@ -85,6 +85,15 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 		return SparkJobPipeline(jobs)
 
+	def _get_job(self):
+		elasticsearch_bridge = self.elasticsearch_bridge
+
+		job = self.job_run.get('job')
+
+		return elasticsearch_bridge.get_document(
+		    'jobs', job.get('id'), 'osbasahfaroinfo'
+		)
+
 	def _get_job_run(self):
 		elasticsearch_bridge = self.elasticsearch_bridge
 
@@ -107,6 +116,8 @@ class ContentRecommendationApplication(BaseSparkApplication):
 
 	def start(self):
 		self.job_run = self._get_job_run()
+
+		self.job = self._get_job()
 
 		spark_job_pipeline = self._create_spark_job_pipeline()
 
